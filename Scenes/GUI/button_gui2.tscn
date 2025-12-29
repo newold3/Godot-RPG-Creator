@@ -1,0 +1,74 @@
+[gd_scene load_steps=8 format=3 uid="uid://dbclsou1wgkwr"]
+
+[ext_resource type="Texture2D" uid="uid://deemx08885oog" path="res://Assets/Images/GUI/credits_button_normal.png" id="1_ufv4l"]
+[ext_resource type="Texture2D" uid="uid://0cbvnp833rc1" path="res://Assets/Images/GUI/credits_button_hover.png" id="2_hfpiy"]
+[ext_resource type="Texture2D" uid="uid://besftqgawaiyf" path="res://Assets/Images/GUI/credits_button_selected.png" id="2_lf4ix"]
+[ext_resource type="Script" uid="uid://2ynl05bommqu" path="res://Scripts/button_gui_2.gd" id="3_drghm"]
+[ext_resource type="PackedScene" uid="uid://8gbgmsgpvibk" path="res://addons/CustomControls/auto_fit_label.tscn" id="4_6yqm2"]
+[ext_resource type="FontFile" uid="uid://d4c6c2u86nvso" path="res://Assets/Fonts/Cinzel-Bold.ttf" id="5_0ei52"]
+
+[sub_resource type="Curve" id="Curve_vtcw5"]
+_data = [Vector2(0, 0.0943128), 0.0, 1.4, 0, 0, Vector2(0.389578, 1), 0.0, 0.0, 0, 0, Vector2(0.441687, 0.125118), 0.0, 0.0, 0, 0, Vector2(0.521092, 0.987678), 0.0, 0.0, 0, 0, Vector2(0.588089, 0.205213), 0.682808, 0.682808, 0, 0, Vector2(0.647643, 0.765877), 0.0, 0.0, 0, 0, Vector2(0.707196, 0.334597), 0.0, 0.0, 0, 0, Vector2(0.739454, 0.882938), 0.0, 0.0, 0, 0, Vector2(0.796526, 0.51327), 0.0, 0.0, 0, 0, Vector2(0.856079, 0.926066), 0.0, 0.0, 0, 0, Vector2(0.908189, 0.735071), 0.0, 0.0, 0, 0, Vector2(0.930521, 0.895261), 0.0, 0.0, 0, 0, Vector2(0.970223, 0.870616), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 14
+
+[node name="Button" type="TextureButton"]
+pivot_offset = Vector2(59, 17)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_default_cursor_shape = 2
+toggle_mode = true
+texture_normal = ExtResource("1_ufv4l")
+texture_pressed = ExtResource("2_lf4ix")
+script = ExtResource("3_drghm")
+curve_animation = SubResource("Curve_vtcw5")
+
+[node name="MarginContainer2" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 23
+theme_override_constants/margin_top = 7
+theme_override_constants/margin_right = 1
+theme_override_constants/margin_bottom = 7
+
+[node name="ButtonName" parent="MarginContainer2" instance=ExtResource("4_6yqm2")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0, 0.183594, 0.0243835, 1)
+theme_override_fonts/font = ExtResource("5_0ei52")
+theme_override_font_sizes/font_size = 17
+text = "button name"
+horizontal_alignment = 0
+auto_adjust_text = true
+mark_current_size_as_default = false
+metadata/original_size = Vector2(66, 28)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = -8
+theme_override_constants/margin_top = -8
+theme_override_constants/margin_right = -8
+theme_override_constants/margin_bottom = -8
+
+[node name="HoverImage" type="TextureRect" parent="MarginContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("2_hfpiy")
+expand_mode = 1

@@ -1,0 +1,236 @@
+[gd_scene load_steps=26 format=3 uid="uid://w5w80sp57cvj"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_rhmd2"]
+[ext_resource type="Script" uid="uid://cbg7upa43jb0w" path="res://addons/CustomControls/Dialogs/CommandEvents/gather_followers_dialog.gd" id="2_rhmd2"]
+[ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="3_ud642"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="4_g1weg"]
+[ext_resource type="Texture2D" uid="uid://bkfn4ru5noaaa" path="res://addons/CustomControls/Images/button1_background_disabled.png" id="5_sd2il"]
+[ext_resource type="Texture2D" uid="uid://dqnnp323vr1vo" path="res://addons/CustomControls/Images/button1_background_hover.png" id="6_be6cq"]
+[ext_resource type="Texture2D" uid="uid://beg6i1p118qd" path="res://addons/CustomControls/Images/button1_background_selected.png" id="7_eirmq"]
+[ext_resource type="Texture2D" uid="uid://xl88b63otgpi" path="res://addons/CustomControls/Images/button1_background.png" id="8_y5c7r"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_mv5b2"]
+
+[sub_resource type="Gradient" id="Gradient_u5yrp"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ogwiw"]
+gradient = SubResource("Gradient_u5yrp")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1n5o8"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Gradient" id="Gradient_ctwx1"]
+colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_06ps3"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_p7bkc"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_06ps3")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uxgbc"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_wby2p"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_umt67"]
+texture = ExtResource("5_sd2il")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8632l"]
+texture = ExtResource("6_be6cq")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xnmr8"]
+texture = ExtResource("7_eirmq")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_s0hl2"]
+texture = ExtResource("8_y5c7r")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_56t2m"]
+texture = ExtResource("5_sd2il")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_el6ll"]
+texture = ExtResource("6_be6cq")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ep53t"]
+texture = ExtResource("7_eirmq")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qu15e"]
+texture = ExtResource("8_y5c7r")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[node name="GatherFollowersDialog" type="Window"]
+title = "Party Leader Tracking"
+position = Vector2i(0, 36)
+size = Vector2i(448, 161)
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_rhmd2")
+script = ExtResource("2_rhmd2")
+
+[node name="Background" type="TextureRect" parent="."]
+material = SubResource("CanvasItemMaterial_mv5b2")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_ogwiw")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Operation" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_ud642")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1n5o8")
+style1 = SubResource("StyleBoxFlat_1n5o8")
+style2 = SubResource("StyleBoxTexture_p7bkc")
+style3 = SubResource("StyleBoxFlat_uxgbc")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Operation"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Operation/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Enable party leader tracking"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Enabled" type="CheckBox" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Enable follower tracking for the leader"
+mouse_default_cursor_shape = 2
+button_pressed = true
+button_group = SubResource("ButtonGroup_wby2p")
+text = "ON"
+
+[node name="Disabled" type="CheckBox" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Disable follower tracking for the leader"
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_wby2p")
+text = "OFF"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_g1weg")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+theme_override_styles/disabled = SubResource("StyleBoxTexture_umt67")
+theme_override_styles/hover = SubResource("StyleBoxTexture_8632l")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_xnmr8")
+theme_override_styles/normal = SubResource("StyleBoxTexture_s0hl2")
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_g1weg")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+theme_override_styles/disabled = SubResource("StyleBoxTexture_56t2m")
+theme_override_styles/hover = SubResource("StyleBoxTexture_el6ll")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_ep53t")
+theme_override_styles/normal = SubResource("StyleBoxTexture_qu15e")
+text = "CANCEL"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

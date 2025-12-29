@@ -1,0 +1,69 @@
+[gd_scene load_steps=11 format=3 uid="uid://ddq8ntwy5i1cp"]
+
+[ext_resource type="Script" uid="uid://cb1f31r150uwu" path="res://addons/RPGData/Scripts/effects_panel.gd" id="1_pw4xj"]
+[ext_resource type="PackedScene" uid="uid://dxcyqc2dscbvw" path="res://addons/CustomControls/custom_simple_column_item_list.tscn" id="2_5wa0a"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_scogd"]
+
+[sub_resource type="Gradient" id="Gradient_roxw5"]
+colors = PackedColorArray(0.333333, 0.352941, 0.360784, 1, 0.380392, 0.4, 0.407843, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_0n3ye"]
+gradient = SubResource("Gradient_roxw5")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2s8e2"]
+texture = SubResource("GradientTexture2D_0n3ye")
+
+[sub_resource type="Gradient" id="Gradient_8an5v"]
+offsets = PackedFloat32Array(0, 0.369535, 1)
+colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ygvtv"]
+gradient = SubResource("Gradient_8an5v")
+fill_from = Vector2(0.547009, 1)
+fill_to = Vector2(0.559829, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_alj40"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_ygvtv")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_261u5"]
+bg_color = Color(0, 0, 0, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+
+[node name="EffectsPanel" type="PanelContainer"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_scogd")
+script = ExtResource("1_pw4xj")
+
+[node name="EffectsList" parent="." instance=ExtResource("2_5wa0a")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
+event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
+top_bar_style = SubResource("StyleBoxTexture_2s8e2")
+columns_text_colors = PackedColorArray(0.72549, 0.992157, 0.772549, 1)
+cursor_style = SubResource("StyleBoxTexture_alj40")
+panel_style = SubResource("StyleBoxFlat_261u5")
+columns = 2
+names = PackedStringArray("Type", "Content")
+sizes = PackedInt32Array(174, 0)
+placeholder_text = "Select effect..."
+enable_multiselection = true
+
+[connection signal="copy_requested" from="EffectsList" to="." method="_on_effects_list_copy_requested"]
+[connection signal="cut_requested" from="EffectsList" to="." method="_on_effects_list_cut_requested"]
+[connection signal="delete_pressed" from="EffectsList" to="." method="_on_effects_list_delete_pressed"]
+[connection signal="item_activated" from="EffectsList" to="." method="_on_effects_list_item_activated"]
+[connection signal="multi_selected" from="EffectsList" to="." method="_on_effects_list_multi_selected"]
+[connection signal="paste_requested" from="EffectsList" to="." method="_on_effects_list_paste_requested"]

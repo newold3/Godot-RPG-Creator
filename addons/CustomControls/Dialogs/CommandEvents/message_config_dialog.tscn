@@ -1,0 +1,1435 @@
+[gd_scene load_steps=50 format=3 uid="uid://xd8cqwpmrvgv"]
+
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="1_7ch3a"]
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_kex51"]
+[ext_resource type="Script" uid="uid://dovs2x7k0k7cs" path="res://addons/CustomControls/Dialogs/CommandEvents/message_config_dialog.gd" id="1_m48b2"]
+[ext_resource type="Texture2D" uid="uid://xl88b63otgpi" path="res://addons/CustomControls/Images/button1_background.png" id="2_e0nf1"]
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="3_mp7n3"]
+[ext_resource type="PackedScene" uid="uid://ym187k7xtdk0" path="res://addons/CustomControls/preset_compose_scene.tscn" id="3_rs22u"]
+[ext_resource type="Texture2D" uid="uid://dqnnp323vr1vo" path="res://addons/CustomControls/Images/button1_background_hover.png" id="3_s6lij"]
+[ext_resource type="Texture2D" uid="uid://beg6i1p118qd" path="res://addons/CustomControls/Images/button1_background_selected.png" id="4_7wcur"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="4_lmsvt"]
+[ext_resource type="Texture2D" uid="uid://bkfn4ru5noaaa" path="res://addons/CustomControls/Images/button1_background_disabled.png" id="5_cxo5l"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="5_rpjr3"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="6_1l7ot"]
+[ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="6_meplk"]
+[ext_resource type="PackedScene" uid="uid://bbd8rv6w7vjb3" path="res://addons/CustomControls/custom_color_button.tscn" id="7_yaq6m"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_hf1uh"]
+
+[sub_resource type="Gradient" id="Gradient_bsdqw"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_akej4"]
+gradient = SubResource("Gradient_bsdqw")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_blki1"]
+atlas = ExtResource("6_1l7ot")
+region = Rect2(168, 192, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b85cy"]
+atlas = ExtResource("6_1l7ot")
+region = Rect2(144, 192, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2eawu"]
+atlas = ExtResource("6_1l7ot")
+region = Rect2(168, 168, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g2y84"]
+atlas = ExtResource("6_1l7ot")
+region = Rect2(120, 192, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8lqmy"]
+atlas = ExtResource("6_1l7ot")
+region = Rect2(96, 192, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8ai0m"]
+atlas = ExtResource("6_1l7ot")
+region = Rect2(72, 192, 24, 24)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cbn8q"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mu71f"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i11cm"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.94902, 0.627451, 0.0117647, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jwhel"]
+resource_local_to_scene = true
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 21.0
+content_margin_bottom = 4.0
+bg_color = Color(0.184314, 0.196078, 0.203922, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_42fv6"]
+resource_local_to_scene = true
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hre8h"]
+resource_local_to_scene = true
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w4mxk"]
+resource_local_to_scene = true
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.94902, 0.627451, 0.0117647, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2vl4o"]
+resource_local_to_scene = true
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 21.0
+content_margin_bottom = 4.0
+bg_color = Color(0.184314, 0.196078, 0.203922, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h8aok"]
+resource_local_to_scene = true
+bg_color = Color(0, 0, 0, 0.576471)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f6hqx"]
+resource_local_to_scene = true
+bg_color = Color(0, 0, 0, 0.576471)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nsnce"]
+resource_local_to_scene = true
+bg_color = Color(0, 0, 0, 0.576471)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.94902, 0.627451, 0.0117647, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kc20p"]
+resource_local_to_scene = true
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 21.0
+content_margin_bottom = 4.0
+bg_color = Color(0.184314, 0.196078, 0.203922, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hl7fv"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u3mak"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dgrci"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.94902, 0.627451, 0.0117647, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_guk7j"]
+resource_local_to_scene = true
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 21.0
+content_margin_bottom = 4.0
+bg_color = Color(0.184314, 0.196078, 0.203922, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ct5bt"]
+resource_local_to_scene = true
+bg_color = Color(0.992188, 0.00775146, 0.00775146, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_11jy6"]
+resource_local_to_scene = true
+bg_color = Color(0.992188, 0.00775146, 0.00775146, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mxtkm"]
+resource_local_to_scene = true
+bg_color = Color(0.992188, 0.00775146, 0.00775146, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.94902, 0.627451, 0.0117647, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s4w2o"]
+resource_local_to_scene = true
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 21.0
+content_margin_bottom = 4.0
+bg_color = Color(0.184314, 0.196078, 0.203922, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_js5pl"]
+atlas = ExtResource("6_1l7ot")
+region = Rect2(48, 72, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_74im4"]
+atlas = ExtResource("6_1l7ot")
+region = Rect2(48, 96, 24, 24)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_x8sfg"]
+texture = ExtResource("2_e0nf1")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hdg8b"]
+texture = ExtResource("4_7wcur")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0m08c"]
+texture = ExtResource("3_s6lij")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_r8rbm"]
+texture = ExtResource("5_cxo5l")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[node name="MessageConfigDialog" type="Window"]
+oversampling_override = 1.0
+title = "Message Config"
+position = Vector2i(0, 36)
+size = Vector2i(1153, 960)
+transient = true
+exclusive = true
+unresizable = true
+min_size = Vector2i(1140, 948)
+theme = ExtResource("1_kex51")
+script = ExtResource("1_m48b2")
+
+[node name="Background" type="TextureRect" parent="."]
+material = SubResource("CanvasItemMaterial_hf1uh")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_akej4")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer21" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="Label4" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer21"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.604111, 0.72216, 0.972656, 1)
+text = "General Settings"
+
+[node name="PresetComposeScene" parent="MarginContainer/VBoxContainer/HBoxContainer21" instance=ExtResource("3_rs22u")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
+presets_key = "message_config_presets"
+selected_key_presset = "message_config_select_preset"
+
+[node name="CopyParameters" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer21"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Copy this config into clipboard"
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_blki1")
+texture_hover = SubResource("AtlasTexture_b85cy")
+texture_disabled = SubResource("AtlasTexture_2eawu")
+
+[node name="PasteParameters" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer21"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Paste a previously saved message configuration from the clipboard"
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = SubResource("AtlasTexture_g2y84")
+texture_hover = SubResource("AtlasTexture_8lqmy")
+texture_disabled = SubResource("AtlasTexture_8ai0m")
+
+[node name="HSeparator3" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Dialog Scene:"
+
+[node name="DialogScene" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("3_mp7n3")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Scene that will reproduce the dialog. The scene must be of type \"DialogBase\"."
+text = "Select dialog scene"
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Text Box Position:"
+
+[node name="TextBoxPosition" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_rpjr3")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Determines the specific location of the text box on
+the screen or within the game’s user interface."
+selected = 7
+item_count = 10
+popup/item_0/text = "Top Left"
+popup/item_0/id = 0
+popup/item_1/text = "Top Mid"
+popup/item_1/id = 1
+popup/item_2/text = "Top Right"
+popup/item_2/id = 2
+popup/item_3/text = "Left"
+popup/item_3/id = 3
+popup/item_4/text = "Mid"
+popup/item_4/id = 4
+popup/item_5/text = "Right"
+popup/item_5/id = 5
+popup/item_6/text = "Bottom Left"
+popup/item_6/id = 6
+popup/item_7/text = "Bottom Mid"
+popup/item_7/id = 7
+popup/item_8/text = "Bottom Right"
+popup/item_8/id = 8
+popup/item_9/text = "Random"
+popup/item_9/id = 9
+
+[node name="HBoxContainer17" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer17"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Margins:"
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer17"]
+layout_mode = 2
+text = "Left: "
+
+[node name="TextBoxMarginLeft" parent="MarginContainer/VBoxContainer/HBoxContainer17" instance=ExtResource("4_lmsvt")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 500.0
+value = 16.0
+allow_greater = true
+allow_lesser = true
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer17"]
+layout_mode = 2
+text = "    Right: "
+
+[node name="TextBoxMarginRight" parent="MarginContainer/VBoxContainer/HBoxContainer17" instance=ExtResource("4_lmsvt")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 500.0
+value = 16.0
+allow_greater = true
+allow_lesser = true
+
+[node name="Label4" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer17"]
+layout_mode = 2
+text = "    Top: "
+
+[node name="TextBoxMarginTop" parent="MarginContainer/VBoxContainer/HBoxContainer17" instance=ExtResource("4_lmsvt")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 500.0
+value = 16.0
+allow_greater = true
+allow_lesser = true
+
+[node name="Label5" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer17"]
+layout_mode = 2
+text = "    Down: "
+
+[node name="TextBoxMarginBottom" parent="MarginContainer/VBoxContainer/HBoxContainer17" instance=ExtResource("4_lmsvt")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 500.0
+value = 16.0
+allow_greater = true
+allow_lesser = true
+
+[node name="HBoxContainer8" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer8"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Font:"
+
+[node name="Font" parent="MarginContainer/VBoxContainer/HBoxContainer8" instance=ExtResource("3_mp7n3")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Font to be used by default."
+text = "Select Font"
+
+[node name="HBoxContainer17" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer8"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer8/HBoxContainer17"]
+layout_mode = 2
+text = "    Text Size:"
+
+[node name="TextSize" parent="MarginContainer/VBoxContainer/HBoxContainer8/HBoxContainer17" instance=ExtResource("4_lmsvt")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(142, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 8.0
+max_value = 500.0
+value = 22.0
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer8"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+text = "   Text Color:"
+
+[node name="TextColor" parent="MarginContainer/VBoxContainer/HBoxContainer8" instance=ExtResource("7_yaq6m")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+size_flags_horizontal = 0
+tooltip_text = "Default Text Color."
+theme_override_styles/normal = SubResource("StyleBoxFlat_cbn8q")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_mu71f")
+theme_override_styles/hover = SubResource("StyleBoxFlat_i11cm")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_jwhel")
+current_color = Color(1, 1, 1, 1)
+
+[node name="HBoxContainer19" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer19"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Outline Size:"
+
+[node name="OutlineSize" parent="MarginContainer/VBoxContainer/HBoxContainer19" instance=ExtResource("4_lmsvt")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 500.0
+value = 2.0
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer19"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+text = "   Outline Color:"
+
+[node name="OutlineColor" parent="MarginContainer/VBoxContainer/HBoxContainer19" instance=ExtResource("7_yaq6m")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+size_flags_horizontal = 0
+tooltip_text = "Default text outline color"
+theme_override_styles/normal = SubResource("StyleBoxFlat_42fv6")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_hre8h")
+theme_override_styles/hover = SubResource("StyleBoxFlat_w4mxk")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_2vl4o")
+
+[node name="HBoxContainer20" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer20"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Shadow Offset:"
+
+[node name="ShadowOffsetX" parent="MarginContainer/VBoxContainer/HBoxContainer20" instance=ExtResource("4_lmsvt")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+value = 2.0
+allow_greater = true
+allow_lesser = true
+prefix = "X ="
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer20"]
+custom_minimum_size = Vector2(26, 0)
+layout_mode = 2
+
+[node name="ShadowOffsetY" parent="MarginContainer/VBoxContainer/HBoxContainer20" instance=ExtResource("4_lmsvt")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+value = 2.0
+allow_greater = true
+allow_lesser = true
+prefix = "Y ="
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer20"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+text = "   Shadow Color:"
+
+[node name="ShadowColor" parent="MarginContainer/VBoxContainer/HBoxContainer20" instance=ExtResource("7_yaq6m")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+tooltip_text = "Default shadow color"
+theme_override_styles/normal = SubResource("StyleBoxFlat_h8aok")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_f6hqx")
+theme_override_styles/hover = SubResource("StyleBoxFlat_nsnce")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_kc20p")
+current_color = Color(0, 0, 0, 0.576471)
+
+[node name="HBoxContainer18" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer18"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Text Align:"
+
+[node name="TextAlign" parent="MarginContainer/VBoxContainer/HBoxContainer18" instance=ExtResource("5_rpjr3")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Default text alignment."
+selected = 0
+item_count = 3
+popup/item_0/text = "Left"
+popup/item_0/id = 0
+popup/item_1/text = "Center"
+popup/item_1/id = 1
+popup/item_2/text = "Right"
+popup/item_2/id = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Max Width:"
+
+[node name="MaxWidth" parent="MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("4_lmsvt")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 200.0
+max_value = 200.0
+value = 200.0
+allow_greater = true
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Max Lines:"
+
+[node name="MaxLines" parent="MarginContainer/VBoxContainer/HBoxContainer4" instance=ExtResource("4_lmsvt")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 1.0
+value = 4.0
+allow_greater = true
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer5"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Characterter Delay:"
+
+[node name="CharacterDelay" parent="MarginContainer/VBoxContainer/HBoxContainer5" instance=ExtResource("4_lmsvt")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+step = 0.01
+rounded = false
+allow_greater = true
+
+[node name="HBoxContainer22" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer22"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer22/HBoxContainer6"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Dot Delay:"
+
+[node name="DotDelay" parent="MarginContainer/VBoxContainer/HBoxContainer22/HBoxContainer6" instance=ExtResource("4_lmsvt")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+step = 0.01
+rounded = false
+allow_greater = true
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer22"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer22/HBoxContainer7"]
+layout_mode = 2
+text = "  Comma Delay:"
+
+[node name="CommaDelay" parent="MarginContainer/VBoxContainer/HBoxContainer22/HBoxContainer7" instance=ExtResource("4_lmsvt")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+step = 0.01
+rounded = false
+allow_greater = true
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Paragraph Delay:"
+
+[node name="ParagraphDelay" parent="MarginContainer/VBoxContainer/HBoxContainer6" instance=ExtResource("4_lmsvt")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "When the message is in floating mode, after finishing a paragraph, wait for the time indicated here before continuing.
+
+[Note]: In messages, you can use the wait command if you need to leave the message on the screen longer."
+step = 0.01
+value = 2.0
+rounded = false
+allow_greater = true
+
+[node name="Label5" type="Label" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.604111, 0.72216, 0.972656, 1)
+text = "Skip Text"
+
+[node name="HSeparator4" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer9" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer9"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Skip Mode:"
+
+[node name="SkipMode" parent="MarginContainer/VBoxContainer/HBoxContainer9" instance=ExtResource("5_rpjr3")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Selects the behavior to be applied when trying to skip a text:
+
+[ul] - [Skip All (Run Commands)]:[/ul]
+	Displays all text at once and executes any command found.
+ [ul] - [Skip All]:[/ul]
+	Displays all text and ignores any command.
+ [ul] - [Skip All While Respecting Pauses]:[/ul]
+	Displays all text, executes any command encountered, respects pauses encountered (the \"dots\", the \"commas\" and the \"wait\" commands).
+ [ul] - [Fast Forward]:[/ul]
+	Accelerates the letter-by-letter animation to x the value defined in \"Skip Speed\"."
+selected = 3
+item_count = 4
+popup/item_0/text = "None"
+popup/item_0/id = 0
+popup/item_1/text = "Skip All (run Commands)"
+popup/item_1/id = 1
+popup/item_2/text = "Skip All"
+popup/item_2/id = 2
+popup/item_3/text = "Fast Forward"
+popup/item_3/id = 3
+
+[node name="HBoxContainer10" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer10"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Skip Delay Speed:"
+
+[node name="SkipSpeed" parent="MarginContainer/VBoxContainer/HBoxContainer10" instance=ExtResource("4_lmsvt")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+min_value = 0.01
+step = 0.01
+value = 0.01
+allow_greater = true
+editable = false
+disabled = true
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.604111, 0.72216, 0.972656, 1)
+text = "Animations"
+
+[node name="HBoxContainer11" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer11"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Start Animation:"
+
+[node name="StartAnimation" parent="MarginContainer/VBoxContainer/HBoxContainer11" instance=ExtResource("5_rpjr3")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Initial dialog box animation (when it opens)."
+selected = 2
+item_count = 12
+popup/item_0/text = "None"
+popup/item_0/id = 0
+popup/item_1/text = "Fade In"
+popup/item_1/id = 1
+popup/item_2/text = "Fade In + Horizontal Grow"
+popup/item_2/id = 2
+popup/item_3/text = "Fade In + Vertical Grow"
+popup/item_3/id = 3
+popup/item_4/text = "Fade In + Grow"
+popup/item_4/id = 4
+popup/item_5/text = "Horizontal Grow"
+popup/item_5/id = 5
+popup/item_6/text = "Vertical Grow"
+popup/item_6/id = 6
+popup/item_7/text = "Grow"
+popup/item_7/id = 7
+popup/item_8/text = "Move Left To Right"
+popup/item_8/id = 8
+popup/item_9/text = "Move Left To Right + Fade In"
+popup/item_9/id = 9
+popup/item_10/text = "Move Right To Left"
+popup/item_10/id = 10
+popup/item_11/text = "Move Right To Left + Fade In"
+popup/item_11/id = 11
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer11"]
+layout_mode = 2
+text = "Duration: "
+
+[node name="StartAnimationDuration" parent="MarginContainer/VBoxContainer/HBoxContainer11" instance=ExtResource("4_lmsvt")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+min_value = 0.01
+step = 0.01
+value = 0.01
+rounded = false
+allow_greater = true
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer11"]
+layout_mode = 2
+text = "Type: "
+
+[node name="StartAnimationTransitionType" parent="MarginContainer/VBoxContainer/HBoxContainer11" instance=ExtResource("5_rpjr3")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Transition type for this animation."
+selected = 10
+item_count = 12
+popup/item_0/text = "Linear"
+popup/item_0/id = 0
+popup/item_1/text = "Sine"
+popup/item_1/id = 1
+popup/item_2/text = "Quint"
+popup/item_2/id = 2
+popup/item_3/text = "Quart"
+popup/item_3/id = 3
+popup/item_4/text = "Quad"
+popup/item_4/id = 4
+popup/item_5/text = "Expo"
+popup/item_5/id = 5
+popup/item_6/text = "Elastic"
+popup/item_6/id = 6
+popup/item_7/text = "Cubic"
+popup/item_7/id = 7
+popup/item_8/text = "Circ"
+popup/item_8/id = 8
+popup/item_9/text = "Bounce"
+popup/item_9/id = 9
+popup/item_10/text = "Back"
+popup/item_10/id = 10
+popup/item_11/text = "Spring"
+popup/item_11/id = 11
+
+[node name="Label4" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer11"]
+layout_mode = 2
+text = "Ease:"
+
+[node name="StartAnimationTransitionEase" parent="MarginContainer/VBoxContainer/HBoxContainer11" instance=ExtResource("5_rpjr3")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Ease type for this animation."
+selected = 1
+item_count = 4
+popup/item_0/text = "Ease In"
+popup/item_0/id = 0
+popup/item_1/text = "Ease Out"
+popup/item_1/id = 1
+popup/item_2/text = "Ease In Out"
+popup/item_2/id = 2
+popup/item_3/text = "Ease Out In"
+popup/item_3/id = 3
+
+[node name="HBoxContainer12" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer12"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "End Animation:"
+
+[node name="EndAnimation" parent="MarginContainer/VBoxContainer/HBoxContainer12" instance=ExtResource("5_rpjr3")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Final animation of the dialog box (when it closes)"
+selected = 1
+item_count = 7
+popup/item_0/text = "None"
+popup/item_0/id = 0
+popup/item_1/text = "Fade Out"
+popup/item_1/id = 1
+popup/item_2/text = "Fade Out + Sink"
+popup/item_2/id = 2
+popup/item_3/text = "Move To Left"
+popup/item_3/id = 3
+popup/item_4/text = "Move To Left + Fade Out"
+popup/item_4/id = 4
+popup/item_5/text = "Move To Right"
+popup/item_5/id = 5
+popup/item_6/text = "Move To Right + Fade Out"
+popup/item_6/id = 6
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer12"]
+layout_mode = 2
+text = "Duration: "
+
+[node name="EndAnimationDuration" parent="MarginContainer/VBoxContainer/HBoxContainer12" instance=ExtResource("4_lmsvt")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+min_value = 0.01
+step = 0.01
+value = 0.01
+rounded = false
+allow_greater = true
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer12"]
+layout_mode = 2
+text = "Type: "
+
+[node name="EndAnimationTransitionType" parent="MarginContainer/VBoxContainer/HBoxContainer12" instance=ExtResource("5_rpjr3")]
+unique_name_in_owner = true
+layout_mode = 2
+selected = 10
+item_count = 12
+popup/item_0/text = "Linear"
+popup/item_0/id = 0
+popup/item_1/text = "Sine"
+popup/item_1/id = 1
+popup/item_2/text = "Quint"
+popup/item_2/id = 2
+popup/item_3/text = "Quart"
+popup/item_3/id = 3
+popup/item_4/text = "Quad"
+popup/item_4/id = 4
+popup/item_5/text = "Expo"
+popup/item_5/id = 5
+popup/item_6/text = "Elastic"
+popup/item_6/id = 6
+popup/item_7/text = "Cubic"
+popup/item_7/id = 7
+popup/item_8/text = "Circ"
+popup/item_8/id = 8
+popup/item_9/text = "Bounce"
+popup/item_9/id = 9
+popup/item_10/text = "Back"
+popup/item_10/id = 10
+popup/item_11/text = "Spring"
+popup/item_11/id = 11
+
+[node name="Label4" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer12"]
+layout_mode = 2
+text = "Ease:"
+
+[node name="EndAnimationTransitionEase" parent="MarginContainer/VBoxContainer/HBoxContainer12" instance=ExtResource("5_rpjr3")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Ease type for this animation."
+selected = 0
+item_count = 4
+popup/item_0/text = "Ease In"
+popup/item_0/id = 0
+popup/item_1/text = "Ease Out"
+popup/item_1/id = 1
+popup/item_2/text = "Ease In Out"
+popup/item_2/id = 2
+popup/item_3/text = "Ease Out In"
+popup/item_3/id = 3
+
+[node name="HBoxContainer13" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer13"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Text Transition:"
+
+[node name="TextTransition" parent="MarginContainer/VBoxContainer/HBoxContainer13" instance=ExtResource("5_rpjr3")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Animation used to display the text letter-by+letter.
+[ul]- \"Default\": Simple Fade-in.
+- \"Bounce\": Letters fade and bounce in.
+- \"Console\": Letters are lead in by a blinking \"cursor.\" When fading out they scroll up.
+- \"Embers\": Letters fade in/out from random directions.
+- \"Prickle\":  Letters fade in/out in a noisy random way.
+- \"Redacted\": Letters are blocked out before being exposed.
+- \"WFC\": Wave function collapse inspired effect, where flickering numbers \"collapse\" to letters.
+- \"Word\": Fade in/out on a word by word basis, rather than letters.[/ul]"
+selected = 3
+item_count = 8
+popup/item_0/text = "Default"
+popup/item_0/id = 0
+popup/item_1/text = "Bounce"
+popup/item_1/id = 1
+popup/item_2/text = "Console"
+popup/item_2/id = 2
+popup/item_3/text = "Embers"
+popup/item_3/id = 3
+popup/item_4/text = "Prickle"
+popup/item_4/id = 4
+popup/item_5/text = "Redacted"
+popup/item_5/id = 5
+popup/item_6/text = "Wfc"
+popup/item_6/id = 6
+popup/item_7/text = "Word"
+popup/item_7/id = 7
+
+[node name="TextTransitionvalueExtra" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Control" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TextTransitionvalueExtra"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+alignment = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TextTransitionvalueExtra/Control"]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_colors/font_color = Color(0.603922, 0.721569, 0.972549, 1)
+text = "PARAMETERS"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/TextTransitionvalueExtra/Control"]
+custom_minimum_size = Vector2(12, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TextTransitionvalueExtra"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LengthContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TextTransitionvalueExtra/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 6
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TextTransitionvalueExtra/VBoxContainer/LengthContainer"]
+layout_mode = 2
+text = "Length"
+
+[node name="Length" parent="MarginContainer/VBoxContainer/TextTransitionvalueExtra/VBoxContainer/LengthContainer" instance=ExtResource("4_lmsvt")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 1.0
+max_value = 120.0
+value = 16.0
+
+[node name="Control2" type="Control" parent="MarginContainer/VBoxContainer/TextTransitionvalueExtra"]
+custom_minimum_size = Vector2(22, 0)
+layout_mode = 2
+
+[node name="TransitionsValueContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TextTransitionvalueExtra"]
+layout_mode = 2
+
+[node name="Bounce" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TextTransitionvalueExtra/TransitionsValueContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TextTransitionvalueExtra/TransitionsValueContainer/Bounce"]
+layout_mode = 2
+text = "Intensity:"
+
+[node name="BounceIntensity" parent="MarginContainer/VBoxContainer/TextTransitionvalueExtra/TransitionsValueContainer/Bounce" instance=ExtResource("4_lmsvt")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+min_value = 0.1
+max_value = 30.0
+step = 0.1
+value = 8.0
+
+[node name="Console" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TextTransitionvalueExtra/TransitionsValueContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TextTransitionvalueExtra/TransitionsValueContainer/Console"]
+layout_mode = 2
+text = "Cursor Text:"
+
+[node name="ConsoleCursorText" parent="MarginContainer/VBoxContainer/TextTransitionvalueExtra/TransitionsValueContainer/Console" instance=ExtResource("6_meplk")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+tooltip_text = "Cursor appearance."
+text = "┃"
+alignment = 1
+max_length = 1
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/TextTransitionvalueExtra/TransitionsValueContainer/Console"]
+layout_mode = 2
+text = " Cursor Color:"
+
+[node name="ConsoleCursorColor" parent="MarginContainer/VBoxContainer/TextTransitionvalueExtra/TransitionsValueContainer/Console" instance=ExtResource("7_yaq6m")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+tooltip_text = "Cursor color."
+theme_override_styles/normal = SubResource("StyleBoxFlat_hl7fv")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_u3mak")
+theme_override_styles/hover = SubResource("StyleBoxFlat_dgrci")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_guk7j")
+current_color = Color(0.678431, 1, 0.184314, 1)
+
+[node name="UseTextColor" type="CheckBox" parent="MarginContainer/VBoxContainer/TextTransitionvalueExtra/TransitionsValueContainer/Console"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Use Text Color"
+
+[node name="Ember" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TextTransitionvalueExtra/TransitionsValueContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TextTransitionvalueExtra/TransitionsValueContainer/Ember"]
+layout_mode = 2
+text = "Ember Text:"
+
+[node name="EmberText" parent="MarginContainer/VBoxContainer/TextTransitionvalueExtra/TransitionsValueContainer/Ember" instance=ExtResource("6_meplk")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+tooltip_text = "Ember appearance."
+text = "."
+alignment = 1
+max_length = 1
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/TextTransitionvalueExtra/TransitionsValueContainer/Ember"]
+layout_mode = 2
+text = " Ember Color:"
+
+[node name="EmberColor" parent="MarginContainer/VBoxContainer/TextTransitionvalueExtra/TransitionsValueContainer/Ember" instance=ExtResource("7_yaq6m")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+tooltip_text = "Ember color."
+theme_override_styles/normal = SubResource("StyleBoxFlat_ct5bt")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_11jy6")
+theme_override_styles/hover = SubResource("StyleBoxFlat_mxtkm")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_s4w2o")
+current_color = Color(0.992188, 0.00775146, 0.00775146, 1)
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/TextTransitionvalueExtra/TransitionsValueContainer/Ember"]
+layout_mode = 2
+text = " Ember Scale:"
+
+[node name="EmberScale" parent="MarginContainer/VBoxContainer/TextTransitionvalueExtra/TransitionsValueContainer/Ember" instance=ExtResource("4_lmsvt")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+min_value = 1.0
+max_value = 120.0
+value = 16.0
+
+[node name="Prickle" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TextTransitionvalueExtra/TransitionsValueContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TextTransitionvalueExtra/TransitionsValueContainer/Prickle"]
+layout_mode = 2
+text = "Pow:"
+
+[node name="PricklePow" parent="MarginContainer/VBoxContainer/TextTransitionvalueExtra/TransitionsValueContainer/Prickle" instance=ExtResource("4_lmsvt")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+min_value = 1.0
+max_value = 120.0
+value = 2.0
+
+[node name="Redacted" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TextTransitionvalueExtra/TransitionsValueContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TextTransitionvalueExtra/TransitionsValueContainer/Redacted"]
+layout_mode = 2
+text = "Frequency:"
+
+[node name="RedactedFrecuency" parent="MarginContainer/VBoxContainer/TextTransitionvalueExtra/TransitionsValueContainer/Redacted" instance=ExtResource("4_lmsvt")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+min_value = 1.0
+max_value = 120.0
+value = 1.0
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/TextTransitionvalueExtra/TransitionsValueContainer/Redacted"]
+layout_mode = 2
+text = "Scale:"
+
+[node name="RedactedScale" parent="MarginContainer/VBoxContainer/TextTransitionvalueExtra/TransitionsValueContainer/Redacted" instance=ExtResource("4_lmsvt")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+min_value = 1.0
+max_value = 120.0
+value = 1.0
+
+[node name="DefaultParameters" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/DefaultParameters"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+alignment = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/DefaultParameters/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_colors/font_color = Color(0.603922, 0.721569, 0.972549, 1)
+text = "PARAMETERS"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/DefaultParameters/HBoxContainer"]
+custom_minimum_size = Vector2(12, 0)
+layout_mode = 2
+
+[node name="Default" type="HBoxContainer" parent="MarginContainer/VBoxContainer/DefaultParameters"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/DefaultParameters/Default"]
+layout_mode = 2
+text = "Fade In Time: "
+
+[node name="DefaultFadeTime" parent="MarginContainer/VBoxContainer/DefaultParameters/Default" instance=ExtResource("4_lmsvt")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+step = 0.01
+allow_greater = true
+suffix = "seconds"
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.604111, 0.72216, 0.972656, 1)
+text = "Typewriter Sound"
+
+[node name="HBoxContainer14" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer14"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "FX:"
+
+[node name="FX" parent="MarginContainer/VBoxContainer/HBoxContainer14" instance=ExtResource("3_mp7n3")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Click to select a sound
+
+Middle Click to erase the current sound"
+text = "Select Audio File"
+
+[node name="PlayButton" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer14"]
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "[title]Play Audio[/title]
+Plays the audio specified in filename."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_js5pl")
+texture_hover = SubResource("AtlasTexture_74im4")
+
+[node name="HBoxContainer15" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer15"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Volume DB:"
+
+[node name="Volume" parent="MarginContainer/VBoxContainer/HBoxContainer15" instance=ExtResource("4_lmsvt")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -80.0
+max_value = 24.0
+
+[node name="HBoxContainer16" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer16"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Pitch"
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer16"]
+layout_mode = 2
+text = " Min: "
+
+[node name="PitchMin" parent="MarginContainer/VBoxContainer/HBoxContainer16" instance=ExtResource("4_lmsvt")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.01
+max_value = 4.0
+step = 0.01
+value = 1.0
+rounded = false
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer16"]
+layout_mode = 2
+text = " Max: "
+
+[node name="PitchMax" parent="MarginContainer/VBoxContainer/HBoxContainer16" instance=ExtResource("4_lmsvt")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.01
+max_value = 4.0
+step = 0.01
+value = 1.0
+rounded = false
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("1_7ch3a")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+theme_override_styles/normal = SubResource("StyleBoxTexture_x8sfg")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_hdg8b")
+theme_override_styles/hover = SubResource("StyleBoxTexture_0m08c")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_r8rbm")
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("1_7ch3a")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+theme_override_styles/normal = SubResource("StyleBoxTexture_x8sfg")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_hdg8b")
+theme_override_styles/hover = SubResource("StyleBoxTexture_0m08c")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_r8rbm")
+text = "CANCEL"
+
+[node name="PreviewConfig" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("1_7ch3a")]
+unique_name_in_owner = true
+modulate = Color(0.704788, 0.934368, 0.964844, 1)
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "Displays a test message with this configuration applied. The message may appear slightly buggy, but this issue only occurs here."
+theme_override_styles/normal = SubResource("StyleBoxTexture_x8sfg")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_hdg8b")
+theme_override_styles/hover = SubResource("StyleBoxTexture_0m08c")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_r8rbm")
+text = "PREVIEW MESSAGE CONFIG"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="Timer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 0.3
+autostart = true
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer21/CopyParameters" to="." method="_on_copy_parameters_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer21/PasteParameters" to="." method="_on_paste_parameters_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/DialogScene" to="." method="_on_dialog_scene_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer8/Font" to="." method="_on_font_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer8/TextColor" to="." method="_on_text_color_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer19/OutlineColor" to="." method="_on_outline_color_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer20/ShadowColor" to="." method="_on_shadow_color_pressed"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer9/SkipMode" to="." method="_on_skip_mode_item_selected"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer13/TextTransition" to="." method="_on_text_transition_item_selected"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/TextTransitionvalueExtra/VBoxContainer/LengthContainer/Length" to="." method="_on_length_value_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/TextTransitionvalueExtra/TransitionsValueContainer/Console/ConsoleCursorColor" to="." method="_on_console_cursor_color_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/TextTransitionvalueExtra/TransitionsValueContainer/Ember/EmberColor" to="." method="_on_ember_color_pressed"]
+[connection signal="middle_click_pressed" from="MarginContainer/VBoxContainer/HBoxContainer14/FX" to="." method="_on_fx_middle_click_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer14/FX" to="." method="_on_fx_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer14/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/PreviewConfig" to="." method="_on_preview_config_pressed"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

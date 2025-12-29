@@ -1,0 +1,376 @@
+[gd_scene load_steps=20 format=3 uid="uid://bjgyv8ubry3nt"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_q0wko"]
+[ext_resource type="Script" uid="uid://bhq1sn7dgh43" path="res://addons/CustomControls/Dialogs/select_actor_battle_action_dialog.gd" id="2_pkko1"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="3_xc40j"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="4_duvkt"]
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="4_o814e"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="5_elu16"]
+[ext_resource type="Texture2D" uid="uid://xl88b63otgpi" path="res://addons/CustomControls/Images/button1_background.png" id="5_j3dar"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="5_srb0b"]
+[ext_resource type="Texture2D" uid="uid://dqnnp323vr1vo" path="res://addons/CustomControls/Images/button1_background_hover.png" id="6_70xww"]
+[ext_resource type="Texture2D" uid="uid://beg6i1p118qd" path="res://addons/CustomControls/Images/button1_background_selected.png" id="7_ee864"]
+[ext_resource type="Texture2D" uid="uid://bkfn4ru5noaaa" path="res://addons/CustomControls/Images/button1_background_disabled.png" id="8_slxpc"]
+
+[sub_resource type="Gradient" id="Gradient_vvvrv"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_72itl"]
+gradient = SubResource("Gradient_vvvrv")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bvkqh"]
+atlas = ExtResource("5_elu16")
+region = Rect2(48, 72, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_duo1s"]
+atlas = ExtResource("5_elu16")
+region = Rect2(48, 96, 24, 24)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7v466"]
+texture = ExtResource("8_slxpc")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_turd0"]
+texture = ExtResource("6_70xww")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_iiba0"]
+texture = ExtResource("7_ee864")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vmbjb"]
+texture = ExtResource("5_j3dar")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[node name="SelectActorBattleActionDialog" type="Window"]
+title = "Actor Battle Actions"
+position = Vector2i(0, 36)
+size = Vector2i(600, 256)
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+min_size = Vector2i(0, 178)
+theme = ExtResource("1_q0wko")
+script = ExtResource("2_pkko1")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_72itl")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Occasion:"
+
+[node name="Occasion" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_xc40j")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Indicates when this action can be taken"
+selected = 0
+item_count = 17
+popup/item_0/text = "Start Battle"
+popup/item_1/text = "End Battle"
+popup/item_1/id = 1
+popup/item_2/text = "Amidst The Battle"
+popup/item_2/id = 2
+popup/item_3/text = "When Attack"
+popup/item_3/id = 3
+popup/item_4/text = "When Take Damage"
+popup/item_4/id = 4
+popup/item_5/text = "Dying"
+popup/item_5/id = 5
+popup/item_6/text = "Before Launch Skill"
+popup/item_6/id = 6
+popup/item_7/text = "After Launch Skill"
+popup/item_7/id = 7
+popup/item_8/text = "Ally Receives Healing"
+popup/item_8/id = 8
+popup/item_9/text = "Ally Revives"
+popup/item_9/id = 9
+popup/item_10/text = "Ally Dies"
+popup/item_10/id = 10
+popup/item_11/text = "When Receives Healing (Self)"
+popup/item_11/id = 11
+popup/item_12/text = "When Revives (Self)"
+popup/item_12/id = 12
+popup/item_13/text = "When Dies (Self)"
+popup/item_13/id = 13
+popup/item_14/text = "Enemy Receives Healing"
+popup/item_14/id = 14
+popup/item_15/text = "Enemy Revives"
+popup/item_15/id = 15
+popup/item_16/text = "Enemy Dies"
+popup/item_16/id = 16
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Type:"
+
+[node name="Type" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("3_xc40j")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Indicates what to do when playing this action (you can play a sound for example to play voices when attacking or casting a skill, or use a common event)."
+selected = 0
+item_count = 2
+popup/item_0/text = "Play a sound"
+popup/item_1/text = "Play a common event"
+popup/item_1/id = 1
+
+[node name="FXContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/FXContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Select FX:"
+
+[node name="SelectFx" parent="MarginContainer/VBoxContainer/FXContainer" instance=ExtResource("4_o814e")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Selects the \"sound\" that will be played when this action is executed"
+text = "Select an fx"
+
+[node name="PlayButton" type="TextureButton" parent="MarginContainer/VBoxContainer/FXContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "[title]Play Audio[/title]
+Plays the audio specified in filename."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_bvkqh")
+texture_hover = SubResource("AtlasTexture_duo1s")
+
+[node name="EventIDContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/EventIDContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Event ID:"
+
+[node name="CommonEvent" parent="MarginContainer/VBoxContainer/EventIDContainer" instance=ExtResource("4_o814e")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Selects the \"common event\" that will be played when this action is executed"
+text = "Common Event 1"
+
+[node name="SkillIDContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SkillIDContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Skill ID:"
+
+[node name="SkillID" parent="MarginContainer/VBoxContainer/SkillIDContainer" instance=ExtResource("4_o814e")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Select the skill that must be used for this action can be taken"
+text = "Skill ID 1"
+
+[node name="ConditionContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer/ConditionContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ConditionContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ConditionContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Conditon:"
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/ConditionContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Rate:"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ConditionContainer"]
+layout_mode = 2
+
+[node name="Condition" parent="MarginContainer/VBoxContainer/ConditionContainer/HBoxContainer" instance=ExtResource("3_xc40j")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Select the condition that must be met for this action to occur. In the case of enemy or ally hp loss, it refers to the fact of losing the specified percentage of hp in one hit."
+selected = 0
+item_count = 5
+popup/item_0/text = "By percentage"
+popup/item_1/text = "When an Ally loses HP"
+popup/item_1/id = 1
+popup/item_2/text = "When an Ally dies"
+popup/item_2/id = 2
+popup/item_3/text = "When an Enemy loses HP"
+popup/item_3/id = 3
+popup/item_4/text = "When an enemy dies"
+popup/item_4/id = 4
+
+[node name="ConditionRate" parent="MarginContainer/VBoxContainer/ConditionContainer/HBoxContainer" instance=ExtResource("5_srb0b")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Percentage that must be met by the selected condition for this action to take place"
+step = 0.01
+value = 100.0
+suffix = " %"
+
+[node name="Condition2Container" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer/Condition2Container"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Condition2Container"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Condition2Container/HBoxContainer2"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Conditon:"
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Condition2Container/HBoxContainer2"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Rate:"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Condition2Container"]
+layout_mode = 2
+
+[node name="Condition2" parent="MarginContainer/VBoxContainer/Condition2Container/HBoxContainer" instance=ExtResource("3_xc40j")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "[title]Condition[/title]
+Select the condition that must be met for this action to occur."
+selected = 0
+item_count = 1
+popup/item_0/text = "By percentage"
+
+[node name="ConditionRate2" parent="MarginContainer/VBoxContainer/Condition2Container/HBoxContainer" instance=ExtResource("5_srb0b")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "[title]Condition rate[/title]
+Percentage that must be met by the selected condition for this action to take place"
+step = 0.01
+value = 100.0
+suffix = " %"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("4_duvkt")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+theme_override_styles/disabled = SubResource("StyleBoxTexture_7v466")
+theme_override_styles/hover = SubResource("StyleBoxTexture_turd0")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_iiba0")
+theme_override_styles/normal = SubResource("StyleBoxTexture_vmbjb")
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("4_duvkt")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+theme_override_styles/disabled = SubResource("StyleBoxTexture_7v466")
+theme_override_styles/hover = SubResource("StyleBoxTexture_turd0")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_iiba0")
+theme_override_styles/normal = SubResource("StyleBoxTexture_vmbjb")
+text = "Cancel"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer/Occasion" to="." method="_on_occasion_item_selected"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer2/Type" to="." method="_on_type_item_selected"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/FXContainer/SelectFx" to="." method="_on_select_fx_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/FXContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/EventIDContainer/CommonEvent" to="." method="_on_common_event_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/SkillIDContainer/SkillID" to="." method="_on_skill_id_pressed"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/ConditionContainer/HBoxContainer/Condition" to="." method="_on_condition_item_selected"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/ConditionContainer/HBoxContainer/ConditionRate" to="." method="_on_condition_rate_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/Condition2Container/HBoxContainer/ConditionRate2" to="." method="_on_condition2_rate_value_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer3/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer3/CancelButton" to="." method="_on_cancel_button_pressed"]

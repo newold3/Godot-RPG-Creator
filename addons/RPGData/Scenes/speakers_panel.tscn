@@ -1,0 +1,562 @@
+[gd_scene load_steps=32 format=3 uid="uid://dlocm6qhhp61i"]
+
+[ext_resource type="PackedScene" uid="uid://pc2xir2w2ox2" path="res://addons/RPGData/Scenes/panel_title.tscn" id="1_8pgtu"]
+[ext_resource type="Script" uid="uid://cnd3le3r76wd2" path="res://addons/RPGData/Scripts/speakers_panel.gd" id="1_56xie"]
+[ext_resource type="PackedScene" uid="uid://m1iixxkyrur5" path="res://addons/CustomControls/custom_simple_item_list.tscn" id="2_t4oyw"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="3_hvve1"]
+[ext_resource type="PackedScene" uid="uid://ccipi0sikmjuu" path="res://addons/CustomControls/custom_tab_container.tscn" id="5_2vwoa"]
+[ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="5_7nujf"]
+[ext_resource type="Texture2D" uid="uid://boox5y8kclay2" path="res://addons/CustomControls/Images/tab2_button_normal.png" id="6_56gwj"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="7_v61bk"]
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="8_3pg5w"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="8_di4iy"]
+[ext_resource type="PackedScene" uid="uid://bbd8rv6w7vjb3" path="res://addons/CustomControls/custom_color_button.tscn" id="9_jmxux"]
+[ext_resource type="PackedScene" uid="uid://duykjs55o5h2m" path="res://addons/CustomControls/custom_image_picker.tscn" id="10_c6c50"]
+[ext_resource type="PackedScene" uid="uid://barmev3c3hfbu" path="res://addons/CustomControls/custom_text_edit.tscn" id="11_utr8h"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uoecs"]
+resource_local_to_scene = true
+content_margin_left = 3.0
+content_margin_right = 3.0
+bg_color = Color(1, 1, 1, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7kdov"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="Gradient" id="Gradient_hlxny"]
+offsets = PackedFloat32Array(0, 0.369535, 1)
+colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_oswm7"]
+gradient = SubResource("Gradient_hlxny")
+fill_from = Vector2(0.547009, 1)
+fill_to = Vector2(0.559829, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4f7lr"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_oswm7")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xsory"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_oswm7")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1573j"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_u5dgi"]
+texture = ExtResource("6_56gwj")
+texture_margin_left = 18.0
+texture_margin_right = 18.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fl2sj"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Gradient" id="Gradient_yxw0o"]
+colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_bafj1"]
+gradient = SubResource("Gradient_yxw0o")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_70ex8"]
+texture = SubResource("GradientTexture2D_bafj1")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ai2ta"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qh56l"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_op6wf"]
+resource_local_to_scene = true
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fsa4b"]
+resource_local_to_scene = true
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rddkj"]
+resource_local_to_scene = true
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.94902, 0.627451, 0.0117647, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_655wm"]
+resource_local_to_scene = true
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 21.0
+content_margin_bottom = 4.0
+bg_color = Color(0.184314, 0.196078, 0.203922, 1)
+
+[node name="SpeakersPanel" type="HBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 8
+script = ExtResource("1_56xie")
+
+[node name="LeftColumn" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="PanelTitle" parent="LeftColumn" instance=ExtResource("1_8pgtu")]
+layout_mode = 2
+text = "Talkers"
+
+[node name="MainList" parent="LeftColumn" instance=ExtResource("2_t4oyw")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "[title]Talker List[/title]
+Contains the list of talkers created. Select one to edit its properties.
+
+\"Note\": These characters are used in the dialog box. When a character enters the scene, the dialog will show its name, face and body image and additionally can change the letter-by-letter sound."
+theme_override_constants/v_separation = -1
+theme_override_styles/panel = SubResource("StyleBoxFlat_uoecs")
+theme_override_styles/focus = SubResource("StyleBoxFlat_uoecs")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_7kdov")
+theme_override_styles/selected = SubResource("StyleBoxTexture_4f7lr")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_xsory")
+select_mode = 1
+odd_line_color = Color(0.172549, 0.184314, 0.192157, 1)
+event_line_color = Color(0.145098, 0.156863, 0.164706, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="LeftColumn"]
+layout_mode = 2
+
+[node name="AddDataButton" parent="LeftColumn/HBoxContainer" instance=ExtResource("3_hvve1")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Add Talker[/title]
+Create a new talker"
+text = "Add
+Talker"
+text_overrun_behavior = 3
+
+[node name="RemoveDataButton" parent="LeftColumn/HBoxContainer" instance=ExtResource("3_hvve1")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.65)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Remove Talker[/title]
+Remove the selected talker"
+disabled = true
+text = "Delete
+Talker"
+text_overrun_behavior = 3
+
+[node name="RightColumn" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_1573j")
+
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="RightColumn/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(16, 0)
+layout_mode = 2
+
+[node name="ConfigDataTabs" parent="RightColumn/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_2vwoa")]
+unique_name_in_owner = true
+clip_children = 0
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+default_tabs = Array[String](["General", "Other"])
+tab_name_base = ""
+background_color = Color(0, 0, 0, 0)
+tab_selected = null
+stylebox_tab_selected = SubResource("StyleBoxTexture_u5dgi")
+
+[node name="ControlContainer" parent="RightColumn/MarginContainer/VBoxContainer" instance=ExtResource("5_7nujf")]
+custom_minimum_size = Vector2(510, 160)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_fl2sj")
+style1 = SubResource("StyleBoxFlat_fl2sj")
+style2 = SubResource("StyleBoxTexture_70ex8")
+style3 = SubResource("StyleBoxFlat_ai2ta")
+
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="Tab1" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="General" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qh56l")
+
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="GeneralSettings" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer"]
+layout_mode = 2
+size_flags_stretch_ratio = 0.4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LabelT1" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Select Name:"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer"]
+layout_mode = 2
+
+[node name="Name" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer/HBoxContainer" instance=ExtResource("8_3pg5w")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Assign a name to this character. The name will be displayed in one of the two name-boxes available in the dialog.
+
+\"Caution\": The Name will be displayed in one of the two available positions in the dialog box. If the chosen position is already displaying a name, it will be replaced with the name of this character."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+text = "Select Name"
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "   Position:  "
+
+[node name="Position" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer/HBoxContainer" instance=ExtResource("7_v61bk")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Choose the position where this character's face and name will appear (The positions selected in the face and name command will be ignored, and this one will be used instead)."
+selected = 0
+item_count = 2
+popup/item_0/text = "Left"
+popup/item_0/id = 0
+popup/item_1/text = "Right"
+popup/item_1/id = 1
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings"]
+layout_mode = 2
+
+[node name="LabelT2" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Text Type Fx:"
+
+[node name="TypeFx" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer2" instance=ExtResource("8_3pg5w")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Sound played when each letter is displayed. When the character enters the scene, the letter-by-letter sound changes to the one defined here.
+
+[Note]: Middle click to erase the current sound. (This will disable the letter-by-letter sound until a letter-by-letter sound is added again or a character enters the dialogue that does play sound.)"
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+text = "Select Type Fx"
+
+[node name="VBoxContainer5" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings"]
+layout_mode = 2
+
+[node name="LabelT3" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer5"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Text Color:"
+
+[node name="TextColor" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer5" instance=ExtResource("9_jmxux")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "When this character enters the dialog, the current color of the text will change to the one defined here
+
+\"Caution\": The text will be drawn in this color until another color command changes it."
+theme_override_styles/normal = SubResource("StyleBoxFlat_op6wf")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_fsa4b")
+theme_override_styles/hover = SubResource("StyleBoxFlat_rddkj")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_655wm")
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings"]
+layout_mode = 2
+text = "Font:"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FontName" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer" instance=ExtResource("8_3pg5w")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Text font used to represent the text for this speaker.
+
+[Note]: Middle Click to use the current font of the text message."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+text = "Select Font (Default Selected)"
+clip_text = true
+
+[node name="VBoxContainer2" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = " Size:"
+horizontal_alignment = 1
+
+[node name="FontSize" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer2" instance=ExtResource("8_di4iy")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Size for text displayed when this character speaks"
+value = 22.0
+
+[node name="BoldText" type="CheckBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Write the text in bold when this character speaks"
+mouse_default_cursor_shape = 2
+text = "Is bold"
+
+[node name="ItalicText" type="CheckBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Write the text in italics when this character is speaking."
+mouse_default_cursor_shape = 2
+text = "Is italic"
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer"]
+layout_mode = 2
+text = "Wait on finish"
+
+[node name="WaitOnFinish" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer" instance=ExtResource("8_di4iy")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "When this character finishes speaking, there will be a pause for the time indicated here.
+
+[Note]: Leave it at 0 so that there will be no pause."
+step = 0.01
+rounded = false
+allow_greater = true
+
+[node name="Images" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_qh56l")
+
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images/MarginContainer"]
+layout_mode = 2
+
+[node name="LabelT4" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Images:"
+
+[node name="ImagesScenes" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images/MarginContainer/VBoxContainer/ImagesScenes"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LabelT5" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Face:"
+
+[node name="FacePicker" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer" instance=ExtResource("10_c6c50")]
+unique_name_in_owner = true
+texture_filter = 1
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "Shows the face of this character in the dialog box.
+
+[Note]: Middle-click to clear the character face (If left blank, the active face(s) will not be hidden or have their content changed.)
+
+\"Caution\": The face will be displayed in one of the two available positions in the dialog box. If the chosen position is already displaying a face, it will be replaced with the face of this character."
+custom_copy_and_paste_enabled = true
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images/MarginContainer/VBoxContainer/ImagesScenes"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LabelT6" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Character:"
+
+[node name="CharacterPicker" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer2" instance=ExtResource("10_c6c50")]
+unique_name_in_owner = true
+texture_filter = 1
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "Displays the character image for this character.
+
+[Note]: Middle-click to clear the currently selected character. (If left blank, no character image will be displayed.)
+
+\"Caution\": This image uses an ID shared with other images. If an image with this ID is already displayed, it will be replaced by the new image."
+custom_copy_and_paste_enabled = true
+
+[node name="Tab2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Notes" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_qh56l")
+
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Notes"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Notes/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Notes/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Notes:"
+
+[node name="Notes" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Notes/MarginContainer/VBoxContainer" instance=ExtResource("11_utr8h")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "[title]Notes[/title]
+Used to make notes while making your game."
+editable = true
+wrap_mode = 1
+
+[connection signal="multi_selected" from="LeftColumn/MainList" to="." method="_on_main_list_multi_selected"]
+[connection signal="pressed" from="LeftColumn/HBoxContainer/AddDataButton" to="." method="_on_add_data_button_pressed"]
+[connection signal="pressed" from="LeftColumn/HBoxContainer/RemoveDataButton" to="." method="_on_remove_data_button_pressed"]
+[connection signal="tab_changed" from="RightColumn/MarginContainer/VBoxContainer/HBoxContainer/ConfigDataTabs" to="." method="_on_config_data_tabs_tab_changed"]
+[connection signal="middle_click_pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer/HBoxContainer/Name" to="." method="_on_name_middle_click_pressed"]
+[connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer/HBoxContainer/Name" to="." method="_on_name_pressed"]
+[connection signal="item_selected" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer/HBoxContainer/Position" to="." method="_on_position_item_selected"]
+[connection signal="middle_click_pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer2/TypeFx" to="." method="_on_type_fx_middle_click_pressed"]
+[connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer2/TypeFx" to="." method="_on_type_fx_pressed"]
+[connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer5/TextColor" to="." method="_on_text_color_pressed"]
+[connection signal="middle_click_pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer/FontName" to="." method="_on_font_name_middle_click_pressed"]
+[connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer/FontName" to="." method="_on_font_name_pressed"]
+[connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer2/FontSize" to="." method="_on_font_size_value_changed"]
+[connection signal="toggled" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/BoldText" to="." method="_on_bold_text_toggled"]
+[connection signal="toggled" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/ItalicText" to="." method="_on_italic_text_toggled"]
+[connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/WaitOnFinish" to="." method="_on_wait_on_finish_value_changed"]
+[connection signal="clicked" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer/FacePicker" to="." method="_on_face_picker_clicked"]
+[connection signal="custom_copy" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer/FacePicker" to="." method="_on_face_picker_custom_copy"]
+[connection signal="custom_paste" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer/FacePicker" to="." method="_on_face_picker_custom_paste"]
+[connection signal="remove_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer/FacePicker" to="." method="_on_face_picker_remove_requested"]
+[connection signal="clicked" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer2/CharacterPicker" to="." method="_on_character_picker_clicked"]
+[connection signal="custom_copy" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer2/CharacterPicker" to="." method="_on_character_picker_custom_copy"]
+[connection signal="custom_paste" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer2/CharacterPicker" to="." method="_on_character_picker_custom_paste"]
+[connection signal="remove_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer2/CharacterPicker" to="." method="_on_character_picker_remove_requested"]
+[connection signal="text_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Notes/MarginContainer/VBoxContainer/Notes" to="." method="_on_notes_text_changed"]

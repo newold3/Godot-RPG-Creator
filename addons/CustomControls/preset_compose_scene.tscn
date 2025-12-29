@@ -1,0 +1,100 @@
+[gd_scene load_steps=13 format=3 uid="uid://ym187k7xtdk0"]
+
+[ext_resource type="Script" uid="uid://ocfso28wb70d" path="res://addons/CustomControls/preset_compose_scene.gd" id="1_6ewnc"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="1_guyee"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="2_6ewnc"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v76go"]
+atlas = ExtResource("2_6ewnc")
+region = Rect2(168, 72, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2b3a7"]
+atlas = ExtResource("2_6ewnc")
+region = Rect2(48, 192, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6fy1i"]
+atlas = ExtResource("2_6ewnc")
+region = Rect2(72, 216, 24, 24)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_luuke"]
+load_path = "res://.godot/imported/buttons.png-c08ce4315629138dcb3fe4a0d034f7bd.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m1ef8"]
+atlas = SubResource("CompressedTexture2D_luuke")
+region = Rect2(0, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o26rr"]
+atlas = SubResource("CompressedTexture2D_luuke")
+region = Rect2(24, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3sykw"]
+atlas = SubResource("CompressedTexture2D_luuke")
+region = Rect2(0, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ita10"]
+atlas = SubResource("CompressedTexture2D_luuke")
+region = Rect2(24, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hs34a"]
+atlas = SubResource("CompressedTexture2D_luuke")
+region = Rect2(48, 24, 24, 24)
+
+[node name="PresetComposeScene" type="HBoxContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_6ewnc")
+
+[node name="Presets" parent="." instance=ExtResource("1_guyee")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
+tooltip_text = "Select a preset from the list to preconfigure this dialog."
+selected = 0
+item_count = 2
+popup/item_0/text = "Select Preset"
+popup/item_0/id = 0
+popup/item_0/separator = true
+popup/item_1/id = 1
+popup/item_1/separator = true
+
+[node name="ApplyPreset" type="TextureButton" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Applies the selected preset to the current settings."
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = SubResource("AtlasTexture_v76go")
+texture_hover = SubResource("AtlasTexture_2b3a7")
+texture_disabled = SubResource("AtlasTexture_6fy1i")
+
+[node name="SavePreset" type="TextureButton" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Save the current settings as a preset"
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_m1ef8")
+texture_hover = SubResource("AtlasTexture_o26rr")
+
+[node name="RemovePreset" type="TextureButton" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Copy this config into clipboard"
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = SubResource("AtlasTexture_3sykw")
+texture_hover = SubResource("AtlasTexture_ita10")
+texture_disabled = SubResource("AtlasTexture_hs34a")
+
+[node name="VSeparator" type="VSeparator" parent="."]
+layout_mode = 2
+
+[connection signal="item_selected" from="Presets" to="." method="_on_presets_item_selected"]
+[connection signal="pressed" from="ApplyPreset" to="." method="_on_apply_preset_pressed"]
+[connection signal="pressed" from="SavePreset" to="." method="_on_save_preset_pressed"]
+[connection signal="pressed" from="RemovePreset" to="." method="_on_remove_preset_pressed"]

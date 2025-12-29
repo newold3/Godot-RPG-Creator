@@ -1,0 +1,783 @@
+[gd_scene load_steps=19 format=3 uid="uid://lf633cbp30hl"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_e6ltr"]
+[ext_resource type="Script" uid="uid://gbkk6dd3kqv5" path="res://addons/CustomControls/Dialogs/timer_extra_config_dialog.gd" id="2_e5qbx"]
+[ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="3_e5qbx"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="4_gw8g1"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="4_krhrl"]
+[ext_resource type="PackedScene" uid="uid://bbd8rv6w7vjb3" path="res://addons/CustomControls/custom_color_button.tscn" id="5_gw8g1"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="5_legks"]
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="6_krhrl"]
+
+[sub_resource type="Gradient" id="Gradient_vvvrv"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_fg0k8"]
+gradient = SubResource("Gradient_vvvrv")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vpvis"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5h2xs"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_38la6"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.94902, 0.627451, 0.0117647, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_legks"]
+resource_local_to_scene = true
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 21.0
+content_margin_bottom = 4.0
+bg_color = Color(0.184314, 0.196078, 0.203922, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hbddb"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1fl5u"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gdmfq"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.94902, 0.627451, 0.0117647, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gw8g1"]
+resource_local_to_scene = true
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 21.0
+content_margin_bottom = 4.0
+bg_color = Color(0.184314, 0.196078, 0.203922, 1)
+
+[node name="TimerExtraConfig" type="Window"]
+oversampling_override = 1.0
+title = "Timer Extra Config"
+position = Vector2i(0, 36)
+size = Vector2i(680, 926)
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_e6ltr")
+script = ExtResource("2_e5qbx")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_fg0k8")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="BasicConfigurationContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HSeparator3" type="HSeparator" parent="MarginContainer/VBoxContainer/BasicConfigurationContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BasicConfigurationContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.826088, 1, 0.80839, 1)
+text = "Basic configuration"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/BasicConfigurationContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BasicConfigurationContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/BasicConfigurationContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+text = "Title Aligns:"
+
+[node name="TitleAlign" parent="MarginContainer/VBoxContainer/BasicConfigurationContainer/HBoxContainer3" instance=ExtResource("4_gw8g1")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Alignment of the name with respect to the timer"
+selected = 0
+fit_to_longest_item = false
+item_count = 4
+popup/item_0/text = "Same as Timer"
+popup/item_0/id = 0
+popup/item_1/text = "Left"
+popup/item_1/id = 1
+popup/item_2/text = "Center"
+popup/item_2/id = 2
+popup/item_3/text = "Right"
+popup/item_3/id = 3
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BasicConfigurationContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/BasicConfigurationContainer/HBoxContainer4"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+text = "Title Modulate:"
+
+[node name="TitleModulate" parent="MarginContainer/VBoxContainer/BasicConfigurationContainer/HBoxContainer4" instance=ExtResource("5_gw8g1")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(31, 31)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Choose the desired color for this effect"
+theme_override_styles/normal = SubResource("StyleBoxFlat_vpvis")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_5h2xs")
+theme_override_styles/hover = SubResource("StyleBoxFlat_38la6")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_legks")
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BasicConfigurationContainer/HBoxContainer4"]
+layout_mode = 2
+text = "  Mix Strength: "
+
+[node name="TitleModulateMix" parent="MarginContainer/VBoxContainer/BasicConfigurationContainer/HBoxContainer4" instance=ExtResource("5_legks")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+tooltip_text = "Strength of the modulation color blend with respect to the gradient applied to the text"
+max_value = 1.0
+step = 0.01
+rounded = false
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BasicConfigurationContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BasicConfigurationContainer/HBoxContainer"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+text = "Text Format:"
+
+[node name="TextFormat" parent="MarginContainer/VBoxContainer/BasicConfigurationContainer/HBoxContainer" instance=ExtResource("3_e5qbx")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Visual representation of the timer on the screen.
+[ul] \"HH\": Will be replaced by the hours remaining.
+ \"MM\": Will be replaced by the minutes remaining.
+ \"SS\": Will be replaced by the seconds remaining in the current minute.
+ \"MS\": Will be replaced by the milliseconds in the current second.
+ \"TS\": Will be replaced by the total seconds remaining.[/ul]"
+
+[node name="PositionContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HSeparator3" type="HSeparator" parent="MarginContainer/VBoxContainer/PositionContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PositionContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.826088, 1, 0.80839, 1)
+text = "Position configuration"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/PositionContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PositionContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/PositionContainer/HBoxContainer"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+text = "Position:"
+
+[node name="TimerPosition" parent="MarginContainer/VBoxContainer/PositionContainer/HBoxContainer" instance=ExtResource("4_gw8g1")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+tooltip_text = "Timer position on the screen. You can choose a preset or \"Custom\" to manually set the position."
+selected = 0
+item_count = 7
+popup/item_0/text = "Top Left"
+popup/item_0/id = 0
+popup/item_1/text = "Top Center"
+popup/item_1/id = 1
+popup/item_2/text = "Top Right"
+popup/item_2/id = 2
+popup/item_3/text = "Bottom Left"
+popup/item_3/id = 3
+popup/item_4/text = "Bottom Center"
+popup/item_4/id = 4
+popup/item_5/text = "Bottom Right"
+popup/item_5/id = 5
+popup/item_6/text = "Custom Position"
+popup/item_6/id = 6
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PositionContainer/HBoxContainer"]
+layout_mode = 2
+text = "X:"
+
+[node name="CustomPositionX" parent="MarginContainer/VBoxContainer/PositionContainer/HBoxContainer" instance=ExtResource("5_legks")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Timer position X when the \"Custom\" preset is selected"
+mouse_filter = 2
+allow_greater = true
+editable = false
+disabled = true
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/PositionContainer/HBoxContainer"]
+layout_mode = 2
+text = "Y:"
+
+[node name="CustomPositionY" parent="MarginContainer/VBoxContainer/PositionContainer/HBoxContainer" instance=ExtResource("5_legks")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Timer position Y when the \"Custom\" preset is selected"
+mouse_filter = 2
+allow_greater = true
+editable = false
+disabled = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PositionContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/PositionContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+text = "Margins:"
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PositionContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Horizontal:"
+
+[node name="HorizontalMargin" parent="MarginContainer/VBoxContainer/PositionContainer/HBoxContainer2" instance=ExtResource("5_legks")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Horizontal margin with respect to the position chosen for the timer (Not applicable to presets that center the text)"
+mouse_filter = 2
+allow_greater = true
+editable = false
+disabled = true
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/PositionContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(12, 0)
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/PositionContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Vertical:"
+
+[node name="VerticalMargin" parent="MarginContainer/VBoxContainer/PositionContainer/HBoxContainer2" instance=ExtResource("5_legks")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Vertical margin with respect to the position chosen for the timer (Not applicable to presets that center the text)"
+mouse_filter = 2
+allow_greater = true
+editable = false
+disabled = true
+
+[node name="BackgroundContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HSeparator3" type="HSeparator" parent="MarginContainer/VBoxContainer/BackgroundContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BackgroundContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.826088, 1, 0.80839, 1)
+text = "Background configuration"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/BackgroundContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BackgroundContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/BackgroundContainer/HBoxContainer"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+text = "Show:"
+
+[node name="ShowBackground" type="CheckBox" parent="MarginContainer/VBoxContainer/BackgroundContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Show or hide the timer background"
+mouse_default_cursor_shape = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BackgroundContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/BackgroundContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+text = "Image:"
+
+[node name="BackgroundImage" parent="MarginContainer/VBoxContainer/BackgroundContainer/HBoxContainer3" instance=ExtResource("6_krhrl")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Select the background image for the timer"
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+text = "Select Background"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BackgroundContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/BackgroundContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+text = "Size:"
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BackgroundContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Width:"
+
+[node name="BackgroundWidth" parent="MarginContainer/VBoxContainer/BackgroundContainer/HBoxContainer2" instance=ExtResource("5_legks")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Minimum width for the background (only applicable when the position preset is \"Custom\"; for other presets, the background automatically adjusts its width to the screen and its height to its content; for \"Custom\", the background adjusts to its content while respecting the minimum width defined here)."
+mouse_filter = 2
+allow_greater = true
+editable = false
+disabled = true
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/BackgroundContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(12, 0)
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/BackgroundContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Height:"
+
+[node name="BackgroundHeight" parent="MarginContainer/VBoxContainer/BackgroundContainer/HBoxContainer2" instance=ExtResource("5_legks")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Minimum height for the background (only applicable when the position preset is \"Custom\"; for other presets, the background automatically adjusts its width to the screen and its height to its content; for \"Custom\", the background adjusts to its content while respecting the minimum height defined here)."
+mouse_filter = 2
+allow_greater = true
+editable = false
+disabled = true
+
+[node name="TextFormatContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HSeparator3" type="HSeparator" parent="MarginContainer/VBoxContainer/TextFormatContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TextFormatContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.826088, 1, 0.80839, 1)
+text = "Text Format configuration"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/TextFormatContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TextFormatContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/TextFormatContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+text = "Font:"
+
+[node name="TimerFont" parent="MarginContainer/VBoxContainer/TextFormatContainer/HBoxContainer3" instance=ExtResource("6_krhrl")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Font used to draw the title and timer."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+text = "Select Font"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TextFormatContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/TextFormatContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+text = "Text Size:"
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TextFormatContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+text = "Timer:"
+
+[node name="TimerSize" parent="MarginContainer/VBoxContainer/TextFormatContainer/HBoxContainer2" instance=ExtResource("5_legks")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Font size for the timer"
+min_value = 1.0
+value = 1.0
+allow_greater = true
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/TextFormatContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(12, 0)
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/TextFormatContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+text = "Title:"
+
+[node name="TitleSize" parent="MarginContainer/VBoxContainer/TextFormatContainer/HBoxContainer2" instance=ExtResource("5_legks")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Font size for the title"
+min_value = 1.0
+value = 1.0
+allow_greater = true
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TextFormatContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/TextFormatContainer/HBoxContainer4"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+text = "Outline:"
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TextFormatContainer/HBoxContainer4"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+text = "Size:"
+
+[node name="OutlineSize" parent="MarginContainer/VBoxContainer/TextFormatContainer/HBoxContainer4" instance=ExtResource("5_legks")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "outline size (applies to both the title and the timer)"
+min_value = 1.0
+value = 1.0
+allow_greater = true
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/TextFormatContainer/HBoxContainer4"]
+custom_minimum_size = Vector2(12, 0)
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/TextFormatContainer/HBoxContainer4"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+text = "Color:"
+
+[node name="OutlineColor" parent="MarginContainer/VBoxContainer/TextFormatContainer/HBoxContainer4" instance=ExtResource("5_gw8g1")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(31, 31)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Choose the desired color for this effect"
+theme_override_styles/normal = SubResource("StyleBoxFlat_hbddb")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_1fl5u")
+theme_override_styles/hover = SubResource("StyleBoxFlat_gdmfq")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_gw8g1")
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TextFormatContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/TextFormatContainer/HBoxContainer5"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+text = "Gradient:"
+
+[node name="TextGradient" parent="MarginContainer/VBoxContainer/TextFormatContainer/HBoxContainer5" instance=ExtResource("6_krhrl")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Image used to texture the timer and title text. You can change the color of the title by changing its modulation in the \"basic settings\"."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+text = "Select Text Gradient"
+
+[node name="AnimationAndSoundContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HSeparator3" type="HSeparator" parent="MarginContainer/VBoxContainer/AnimationAndSoundContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/AnimationAndSoundContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.826088, 1, 0.80839, 1)
+text = "Animations and sounds configuration"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/AnimationAndSoundContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/AnimationAndSoundContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/AnimationAndSoundContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+text = "Start FX:"
+
+[node name="StartFX" parent="MarginContainer/VBoxContainer/AnimationAndSoundContainer/HBoxContainer3" instance=ExtResource("6_krhrl")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Sound played when the timer starts"
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+text = "Select Sound"
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/AnimationAndSoundContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/AnimationAndSoundContainer/HBoxContainer4"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+text = "Timeout FX:"
+
+[node name="TimeoutFX" parent="MarginContainer/VBoxContainer/AnimationAndSoundContainer/HBoxContainer4" instance=ExtResource("6_krhrl")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Sound played when the timer runs out"
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+text = "Select Sound"
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer/AnimationAndSoundContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/AnimationAndSoundContainer/HBoxContainer5"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+text = "Warning FX:"
+
+[node name="WarningFX" parent="MarginContainer/VBoxContainer/AnimationAndSoundContainer/HBoxContainer5" instance=ExtResource("6_krhrl")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Sound played when the timer is ending"
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+text = "Select Sound"
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/VBoxContainer/AnimationAndSoundContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/AnimationAndSoundContainer/HBoxContainer6"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+text = "Tick FX:"
+
+[node name="TickFX" parent="MarginContainer/VBoxContainer/AnimationAndSoundContainer/HBoxContainer6" instance=ExtResource("6_krhrl")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Sound played every second while the timer is active (1 tick by second)"
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+text = "Select Sound"
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="MarginContainer/VBoxContainer/AnimationAndSoundContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/AnimationAndSoundContainer/HBoxContainer7"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+text = "Warning Start:"
+
+[node name="WarningStart" parent="MarginContainer/VBoxContainer/AnimationAndSoundContainer/HBoxContainer7" instance=ExtResource("5_legks")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+tooltip_text = "When warnings will start to be issued (in seconds)
+The intensity of the sound and speed will vary along the curve"
+min_value = 1.0
+value = 1.0
+allow_greater = true
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/AnimationAndSoundContainer/HBoxContainer7"]
+custom_minimum_size = Vector2(12, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/AnimationAndSoundContainer/HBoxContainer7"]
+layout_mode = 2
+text = "Curve"
+
+[node name="WarningCurve" parent="MarginContainer/VBoxContainer/AnimationAndSoundContainer/HBoxContainer7" instance=ExtResource("6_krhrl")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Curve used to animate warnings"
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+text = "Select Curve"
+
+[node name="HBoxContainer9" type="HBoxContainer" parent="MarginContainer/VBoxContainer/AnimationAndSoundContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/AnimationAndSoundContainer/HBoxContainer9"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+text = "Enable Blink:"
+
+[node name="EnableBlink" type="CheckBox" parent="MarginContainer/VBoxContainer/AnimationAndSoundContainer/HBoxContainer9"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+
+[node name="HBoxContainer8" type="HBoxContainer" parent="MarginContainer/VBoxContainer/AnimationAndSoundContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/AnimationAndSoundContainer/HBoxContainer8"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+text = "Blink Start:"
+
+[node name="BlinkStart" parent="MarginContainer/VBoxContainer/AnimationAndSoundContainer/HBoxContainer8" instance=ExtResource("5_legks")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+tooltip_text = "When will flashing begin (in seconds)
+The frequency of the flashing will vary along the curve."
+mouse_filter = 2
+min_value = 1.0
+value = 1.0
+allow_greater = true
+editable = false
+disabled = true
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/AnimationAndSoundContainer/HBoxContainer8"]
+custom_minimum_size = Vector2(12, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/AnimationAndSoundContainer/HBoxContainer8"]
+layout_mode = 2
+text = "Curve"
+
+[node name="BlinkCurve" parent="MarginContainer/VBoxContainer/AnimationAndSoundContainer/HBoxContainer8" instance=ExtResource("6_krhrl")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Curve used to animate blinks"
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+disabled = true
+text = "Select Curve"
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_krhrl")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_krhrl")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+text = "Cancel"
+
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/BasicConfigurationContainer/HBoxContainer3/TitleAlign" to="." method="_on_title_align_item_selected"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/BasicConfigurationContainer/HBoxContainer4/TitleModulate" to="." method="_on_title_modulate_pressed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/BasicConfigurationContainer/HBoxContainer4/TitleModulateMix" to="." method="_on_title_modulate_mix_value_changed"]
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/BasicConfigurationContainer/HBoxContainer/TextFormat" to="." method="_on_text_format_text_changed"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/PositionContainer/HBoxContainer/TimerPosition" to="." method="_on_timer_position_item_selected"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/PositionContainer/HBoxContainer/CustomPositionX" to="." method="_on_custom_position_x_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/PositionContainer/HBoxContainer/CustomPositionY" to="." method="_on_custom_position_y_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/PositionContainer/HBoxContainer2/HorizontalMargin" to="." method="_on_horizontal_margin_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/PositionContainer/HBoxContainer2/VerticalMargin" to="." method="_on_vertical_margin_value_changed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/BackgroundContainer/HBoxContainer/ShowBackground" to="." method="_on_show_background_toggled"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/BackgroundContainer/HBoxContainer3/BackgroundImage" to="." method="_on_background_image_pressed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/BackgroundContainer/HBoxContainer2/BackgroundWidth" to="." method="_on_background_width_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/BackgroundContainer/HBoxContainer2/BackgroundHeight" to="." method="_on_background_height_value_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/TextFormatContainer/HBoxContainer3/TimerFont" to="." method="_on_timer_font_pressed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/TextFormatContainer/HBoxContainer2/TimerSize" to="." method="_on_timer_size_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/TextFormatContainer/HBoxContainer2/TitleSize" to="." method="_on_title_size_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/TextFormatContainer/HBoxContainer4/OutlineSize" to="." method="_on_outline_size_value_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/TextFormatContainer/HBoxContainer4/OutlineColor" to="." method="_on_outline_color_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/TextFormatContainer/HBoxContainer5/TextGradient" to="." method="_on_text_gradient_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/AnimationAndSoundContainer/HBoxContainer3/StartFX" to="." method="_on_start_fx_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/AnimationAndSoundContainer/HBoxContainer4/TimeoutFX" to="." method="_on_timeout_fx_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/AnimationAndSoundContainer/HBoxContainer5/WarningFX" to="." method="_on_warning_fx_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/AnimationAndSoundContainer/HBoxContainer6/TickFX" to="." method="_on_tick_fx_pressed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/AnimationAndSoundContainer/HBoxContainer7/WarningStart" to="." method="_on_warning_start_value_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/AnimationAndSoundContainer/HBoxContainer7/WarningCurve" to="." method="_on_warning_curve_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/AnimationAndSoundContainer/HBoxContainer9/EnableBlink" to="." method="_on_enable_blink_toggled"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/AnimationAndSoundContainer/HBoxContainer8/BlinkStart" to="." method="_on_blink_start_value_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/AnimationAndSoundContainer/HBoxContainer8/BlinkCurve" to="." method="_on_blink_curve_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

@@ -1,0 +1,376 @@
+[gd_scene load_steps=19 format=3 uid="uid://cnc3cxeorslxs"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_58flr"]
+[ext_resource type="Script" uid="uid://c31htenoh4e4n" path="res://addons/CustomControls/Dialogs/CommandEvents/numerical_input_dialog.gd" id="1_bofru"]
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="1_o3l6v"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="2_f5ud6"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="3_m5a8h"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="3_tbha7"]
+[ext_resource type="Texture2D" uid="uid://xl88b63otgpi" path="res://addons/CustomControls/Images/button1_background.png" id="4_unctx"]
+[ext_resource type="Texture2D" uid="uid://dqnnp323vr1vo" path="res://addons/CustomControls/Images/button1_background_hover.png" id="5_u135p"]
+[ext_resource type="Texture2D" uid="uid://beg6i1p118qd" path="res://addons/CustomControls/Images/button1_background_selected.png" id="6_heyt3"]
+[ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="6_rdg3j"]
+[ext_resource type="Texture2D" uid="uid://bkfn4ru5noaaa" path="res://addons/CustomControls/Images/button1_background_disabled.png" id="7_2h5h0"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_erns2"]
+
+[sub_resource type="Gradient" id="Gradient_u5yrp"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_2105m"]
+gradient = SubResource("Gradient_u5yrp")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nv5ev"]
+texture = ExtResource("7_2h5h0")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cr2q0"]
+texture = ExtResource("5_u135p")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3ldxg"]
+texture = ExtResource("6_heyt3")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jfd0k"]
+texture = ExtResource("4_unctx")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[node name="NumericalInputDialog" type="Window"]
+title = "Input Number"
+position = Vector2i(0, 36)
+size = Vector2i(448, 652)
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_58flr")
+script = ExtResource("1_bofru")
+
+[node name="Background" type="TextureRect" parent="."]
+material = SubResource("CanvasItemMaterial_erns2")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_2105m")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Type:"
+
+[node name="Type" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_m5a8h")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Choose the type of input (between numbers or letters)"
+selected = 0
+item_count = 2
+popup/item_0/text = "Numerical Entry"
+popup/item_0/id = 0
+popup/item_1/text = "Text Entry"
+popup/item_1/id = 1
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Variable:"
+
+[node name="VariableID" parent="MarginContainer/VBoxContainer" instance=ExtResource("1_o3l6v")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Asks the user to select an n-digit number/text and assigns the entered value to this variable."
+text = "0001:1"
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Max Digits / Characters:"
+
+[node name="Digits" parent="MarginContainer/VBoxContainer" instance=ExtResource("2_f5ud6")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Prompts the user to enter a number of length equal to the one defined here."
+min_value = 1.0
+max_value = 9.0
+value = 1.0
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label5" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Config:"
+
+[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(188, 0)
+layout_mode = 2
+text = "Title:"
+
+[node name="Title" parent="MarginContainer/VBoxContainer/VBoxContainer" instance=ExtResource("6_rdg3j")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Enter Number"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(188, 0)
+layout_mode = 2
+text = "Empty Digit"
+
+[node name="EmptyPlace" parent="MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("6_rdg3j")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Fill in the blanks with the symbol defined here."
+text = "·"
+max_length = 1
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer7"]
+custom_minimum_size = Vector2(188, 0)
+layout_mode = 2
+text = "Scene Path:"
+
+[node name="ScenePath" parent="MarginContainer/VBoxContainer/HBoxContainer7" instance=ExtResource("1_o3l6v")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Select the input scene to be display.
+
+[Note]: The scene must be valid for the required input type (“SelectDigitsScene” for numbers and “SelectTextScene” for letters)."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+text = "select_digits_scene.tscn"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(188, 0)
+layout_mode = 2
+text = "Position:"
+
+[node name="Position" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("3_m5a8h")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Indicates in which position the choices will be displayed."
+selected = 5
+item_count = 9
+popup/item_0/text = "Top Left"
+popup/item_0/id = 0
+popup/item_1/text = "Top Center"
+popup/item_1/id = 1
+popup/item_2/text = "Top Right"
+popup/item_2/id = 2
+popup/item_3/text = "Left"
+popup/item_3/id = 3
+popup/item_4/text = "Center"
+popup/item_4/id = 4
+popup/item_5/text = "Right"
+popup/item_5/id = 5
+popup/item_6/text = "Bottom Left"
+popup/item_6/id = 6
+popup/item_7/text = "Bottom Center"
+popup/item_7/id = 7
+popup/item_8/text = "Bottom Right"
+popup/item_8/id = 8
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="UseMessageBounds" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer6"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Use the boundaries of the text box to position the selection dialogue"
+mouse_default_cursor_shape = 2
+button_pressed = true
+text = "Use the message boundaries"
+
+[node name="HBoxContainer11" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer11"]
+custom_minimum_size = Vector2(188, 0)
+layout_mode = 2
+text = "Offset:"
+
+[node name="OffsetX" parent="MarginContainer/VBoxContainer/HBoxContainer11" instance=ExtResource("2_f5ud6")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Moves the choice box dialog along the X-axis from the final position."
+allow_greater = true
+allow_lesser = true
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer11"]
+layout_mode = 2
+text = " X "
+
+[node name="OffsetY" parent="MarginContainer/VBoxContainer/HBoxContainer11" instance=ExtResource("2_f5ud6")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Moves the choice box dialog along the Y-axis from the final position."
+allow_greater = true
+allow_lesser = true
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer11"]
+layout_mode = 2
+text = " Y"
+
+[node name="HBoxContainer8" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer8"]
+custom_minimum_size = Vector2(188, 0)
+layout_mode = 2
+text = "Cursor Move FX: "
+
+[node name="CursorMoveFx" parent="MarginContainer/VBoxContainer/HBoxContainer8" instance=ExtResource("1_o3l6v")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Sound Played When change the digits.
+(Middle Click to Clear)"
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+text = "button_hover_se.wav"
+
+[node name="HBoxContainer9" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer9"]
+custom_minimum_size = Vector2(188, 0)
+layout_mode = 2
+text = "Selection FX: "
+
+[node name="SelectionFx" parent="MarginContainer/VBoxContainer/HBoxContainer9" instance=ExtResource("1_o3l6v")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Sound Played When select an digit.
+(Middle Click to Clear)"
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+text = "button_click_se.wav"
+
+[node name="HBoxContainer10" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer10"]
+custom_minimum_size = Vector2(188, 0)
+layout_mode = 2
+text = "Cancel FX: "
+
+[node name="RemovelFx" parent="MarginContainer/VBoxContainer/HBoxContainer10" instance=ExtResource("1_o3l6v")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Sound Played When \"Remove Button\" is pressed.
+(Middle Click to Clear)"
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+text = "cancel1.ogg"
+
+[node name="TextFormat" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_tbha7")]
+modulate = Color(0.792157, 0.792157, 0.984314, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+tooltip_text = "Edits text formatting settings (font, size, color)
+
+[Note]: By default, the current settings of the message dialog will be used if no other settings are specified."
+text = "Text Format..."
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_tbha7")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+theme_override_styles/disabled = SubResource("StyleBoxTexture_nv5ev")
+theme_override_styles/hover = SubResource("StyleBoxTexture_cr2q0")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_3ldxg")
+theme_override_styles/normal = SubResource("StyleBoxTexture_jfd0k")
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_tbha7")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+theme_override_styles/disabled = SubResource("StyleBoxTexture_nv5ev")
+theme_override_styles/hover = SubResource("StyleBoxTexture_cr2q0")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_3ldxg")
+theme_override_styles/normal = SubResource("StyleBoxTexture_jfd0k")
+text = "CANCEL"
+
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Type" to="." method="_on_type_item_selected"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/VariableID" to="." method="_on_variable_id_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer7/ScenePath" to="." method="_on_scene_path_pressed"]
+[connection signal="middle_click_pressed" from="MarginContainer/VBoxContainer/HBoxContainer8/CursorMoveFx" to="." method="_on_cursor_move_fx_middle_click_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer8/CursorMoveFx" to="." method="_on_cursor_move_fx_pressed"]
+[connection signal="middle_click_pressed" from="MarginContainer/VBoxContainer/HBoxContainer9/SelectionFx" to="." method="_on_selection_fx_middle_click_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer9/SelectionFx" to="." method="_on_selection_fx_pressed"]
+[connection signal="middle_click_pressed" from="MarginContainer/VBoxContainer/HBoxContainer10/RemovelFx" to="." method="_on_removel_fx_middle_click_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer10/RemovelFx" to="." method="_on_removel_fx_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/TextFormat" to="." method="_on_text_format_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

@@ -1,0 +1,466 @@
+[gd_scene load_steps=29 format=3 uid="uid://ckrmqq6qvlduj"]
+
+[ext_resource type="Script" uid="uid://c70281lpw3v0q" path="res://Scenes/GUI/base_animatable_window.gd" id="1_rsa1n"]
+[ext_resource type="Texture2D" uid="uid://du5ul2f1bik77" path="res://Assets/Images/GUI/main_background.png" id="2_12tdt"]
+[ext_resource type="Texture2D" uid="uid://duu13dsov6vp5" path="res://Assets/Images/GUI/main_gui.png" id="3_aaad5"]
+[ext_resource type="VideoStream" uid="uid://bbbient0hh724" path="res://Assets/Videos/steampunk_loop.ogv" id="3_n21jk"]
+[ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="4_emh68"]
+[ext_resource type="Script" uid="uid://4in2twhppcmd" path="res://Scenes/GUI/auto_video_start.gd" id="4_ljgjw"]
+[ext_resource type="Shader" uid="uid://ba78odfkakk1o" path="res://Assets/Shaders/realistic_crt.gdshader" id="5_kyksk"]
+[ext_resource type="Shader" uid="uid://btiph3cafdne" path="res://Assets/Shaders/simple_gaussian_blur.gdshader" id="5_n21jk"]
+[ext_resource type="PackedScene" uid="uid://c6iv6fidh4be8" path="res://Scenes/GUI/SteamPunkTheme/CommonScenes/menu_title_container.tscn" id="6_n21jk"]
+[ext_resource type="Script" uid="uid://capl3nbl7whnu" path="res://Scenes/GUI/custom_draw_button.gd" id="7_ljgjw"]
+[ext_resource type="Texture2D" uid="uid://dmx2v3ccts2ne" path="res://Assets/Images/Particles/simple_particle1.png" id="7_tlu36"]
+[ext_resource type="FontFile" uid="uid://dvh0mi6yu0ywx" path="res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf" id="8_fqqmp"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_01fnq"]
+shader = ExtResource("5_n21jk")
+shader_parameter/blur_strength = 1.2710000603725
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_kyksk"]
+viewport_path = NodePath("SceneMainContainer/BottomLayer/SubViewport")
+
+[sub_resource type="Curve" id="Curve_6i4xk"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.354244, 0.206815), 0.0, 0.0, 0, 0, Vector2(0.516605, 1), 0.0, 0.0, 0, 0, Vector2(0.734317, 0.732171), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 5
+
+[sub_resource type="CurveTexture" id="CurveTexture_uf41i"]
+curve = SubResource("Curve_6i4xk")
+
+[sub_resource type="Curve" id="Curve_f05g1"]
+_data = [Vector2(0.0147601, 0), 0.0, 0.0, 0, 0, Vector2(0.0941176, 0.319897), -0.974762, -0.974762, 0, 0, Vector2(0.99999, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_p3fi2"]
+curve = SubResource("Curve_f05g1")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_n1s0o"]
+particle_flag_rotate_y = true
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(450, 249.235, 1)
+angle_min = -114.3
+angle_max = 159.4
+velocity_pivot = Vector3(3.63, -63.455, 0)
+direction = Vector3(8.24, 17.32, 0)
+spread = 180.0
+initial_velocity_max = 100.0
+angular_velocity_min = -1.60933e-05
+angular_velocity_max = 254.12
+gravity = Vector3(0, -3, 0)
+linear_accel_min = -2.23517e-06
+linear_accel_max = 61.76
+scale_max = 8.0
+scale_curve = SubResource("CurveTexture_p3fi2")
+color = Color(0.67650795, 0.20015317, 0.043794155, 1)
+alpha_curve = SubResource("CurveTexture_uf41i")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b03tl"]
+atlas = ExtResource("3_aaad5")
+region = Rect2(689, 319, 35, 35)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tlu36"]
+shader = ExtResource("5_kyksk")
+shader_parameter/resolution = Vector2(1152, 648)
+shader_parameter/scan_line_amount = 0.0630000029925
+shader_parameter/warp_amount = 0.0
+shader_parameter/noise_amount = 0.0
+shader_parameter/interference_amount = 0.5390000256025
+shader_parameter/grille_amount = 0.14400000684
+shader_parameter/grille_size = 0.0
+shader_parameter/vignette_amount = 0.762000036195
+shader_parameter/vignette_intensity = 0.1330000063175
+shader_parameter/aberation_amount = 0.0
+shader_parameter/roll_line_amount = 0.046
+shader_parameter/roll_speed = 1.0
+shader_parameter/scan_line_strength = -1.0
+shader_parameter/pixel_strength = -2.0
+shader_parameter/final_alpha = 1.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_01fnq"]
+atlas = ExtResource("3_aaad5")
+region = Rect2(387, 285, 104, 104)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6i4xk"]
+atlas = ExtResource("3_aaad5")
+region = Rect2(504, 285, 104, 104)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f05g1"]
+atlas = ExtResource("3_aaad5")
+region = Rect2(504, 285, 104, 104)
+
+[sub_resource type="Gradient" id="Gradient_n21jk"]
+offsets = PackedFloat32Array(0, 0.31320754, 0.702, 1)
+colors = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 0.32941177, 0, 0, 0, 0.32941177, 0.25, 0.25, 0.25, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ljgjw"]
+gradient = SubResource("Gradient_n21jk")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fqqmp"]
+texture = SubResource("GradientTexture2D_ljgjw")
+
+[sub_resource type="LabelSettings" id="LabelSettings_n1s0o"]
+font = ExtResource("8_fqqmp")
+font_size = 22
+font_color = Color(1, 0.7764706, 0.44313726, 1)
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+stacked_outline_count = 2
+stacked_outline_0/size = 1
+stacked_outline_0/color = Color(0.21230483, 0.21230483, 0.21230483, 1)
+stacked_outline_1/size = 4
+
+[node name="BaseAnimatableWindow" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(576, 320)
+script = ExtResource("1_rsa1n")
+move_in_direction = 2
+move_in_trans_type = 5
+move_in_duration = 0.35
+move_out_direction = 3
+move_out_ease_type = 0
+move_out_trans_type = 5
+move_out_duration = 0.25
+zoom_in_start = 1.2
+zoom_in_trans_type = 5
+zoom_in_duration = 0.2
+zoom_out_end = 0.91
+zoom_out_ease_type = 0
+zoom_out_trans_type = 5
+shake_in_frequency = 100.0
+shake_in_duration = 1.0
+auto_play_on_start = true
+metadata/_custom_type_script = "uid://c70281lpw3v0q"
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="SceneMainContainer" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="BottomLayer" type="Control" parent="SceneMainContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(576, 320)
+mouse_filter = 2
+script = ExtResource("1_rsa1n")
+metadata/_custom_type_script = "uid://c70281lpw3v0q"
+metadata/_edit_lock_ = true
+metadata/_edit_group_ = true
+
+[node name="SubViewport" type="SubViewport" parent="SceneMainContainer/BottomLayer"]
+size = Vector2i(1152, 640)
+
+[node name="Background" type="TextureRect" parent="SceneMainContainer/BottomLayer/SubViewport"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_12tdt")
+expand_mode = 1
+
+[node name="VideoBackground" type="VideoStreamPlayer" parent="SceneMainContainer/BottomLayer/SubViewport"]
+modulate = Color(0.24, 0.07800001, 0.024000006, 1)
+offset_left = -40.0
+offset_right = 1192.0
+offset_bottom = 655.0
+mouse_filter = 2
+stream = ExtResource("3_n21jk")
+autoplay = true
+expand = true
+loop = true
+script = ExtResource("4_ljgjw")
+
+[node name="BackgroundEffect" type="ColorRect" parent="SceneMainContainer/BottomLayer/SubViewport"]
+material = SubResource("ShaderMaterial_01fnq")
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 1148.0
+offset_bottom = 636.0
+mouse_filter = 2
+color = Color(1, 1, 1, 0)
+
+[node name="Background" type="TextureRect" parent="SceneMainContainer/BottomLayer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("ViewportTexture_kyksk")
+
+[node name="ParticleContainer" type="Control" parent="SceneMainContainer/BottomLayer"]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 13.0
+offset_top = 15.0
+offset_right = -13.0
+offset_bottom = -14.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="SceneMainContainer/BottomLayer/ParticleContainer"]
+z_index = 1
+position = Vector2(483, 287.5)
+amount = 200
+texture = ExtResource("7_tlu36")
+lifetime = 8.0
+preprocess = 8.0
+speed_scale = 0.1
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_n1s0o")
+
+[node name="BackgroundDecorationContainer" type="MarginContainer" parent="SceneMainContainer/BottomLayer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 18
+
+[node name="BackgroundDecorationTopLeft" type="TextureRect" parent="SceneMainContainer/BottomLayer/BackgroundDecorationContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+texture = SubResource("AtlasTexture_b03tl")
+
+[node name="BackgroundDecorationTopRight" type="TextureRect" parent="SceneMainContainer/BottomLayer/BackgroundDecorationContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+mouse_filter = 2
+texture = SubResource("AtlasTexture_b03tl")
+
+[node name="BackgroundDecorationBottomLeft" type="TextureRect" parent="SceneMainContainer/BottomLayer/BackgroundDecorationContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+mouse_filter = 2
+texture = SubResource("AtlasTexture_b03tl")
+
+[node name="BackgroundDecorationBottomRight" type="TextureRect" parent="SceneMainContainer/BottomLayer/BackgroundDecorationContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+mouse_filter = 2
+texture = SubResource("AtlasTexture_b03tl")
+
+[node name="MainContainer" type="MarginContainer" parent="SceneMainContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 64
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 64
+
+[node name="ContentsContainer" type="MarginContainer" parent="SceneMainContainer/MainContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="MainSceneContainer" type="ScrollContainer" parent="SceneMainContainer/MainContainer/ContentsContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 4
+script = ExtResource("4_emh68")
+use_custom_vertical_scroll = true
+custom_vscroll_size = Vector2(12, 420)
+custom_vscroll_offset = Vector2(1033, 22.32)
+metadata/_custom_type_script = "uid://cs6g8remlafby"
+
+[node name="TopFrame" type="NinePatchRect" parent="SceneMainContainer/MainContainer"]
+z_index = 4
+layout_mode = 2
+texture = ExtResource("3_aaad5")
+region_rect = Rect2(89, 69, 212, 153)
+patch_margin_left = 68
+patch_margin_top = 61
+patch_margin_right = 68
+patch_margin_bottom = 61
+metadata/_edit_lock_ = true
+
+[node name="Title" type="Control" parent="SceneMainContainer/MainContainer"]
+z_index = 5
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+metadata/_edit_lock_ = true
+metadata/_edit_group_ = true
+
+[node name="TitleContainer" parent="SceneMainContainer/MainContainer/Title" instance=ExtResource("6_n21jk")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -3.0
+offset_right = 160.0
+offset_bottom = 37.0
+grow_horizontal = 2
+grow_vertical = 2
+title = "TITLE"
+initial_position = Vector2(-160, -106)
+end_position = Vector2(-160, -3)
+
+[node name="CRTEffect" type="ColorRect" parent="SceneMainContainer"]
+modulate = Color(0.763958, 0.893715, 0.952629, 1)
+material = SubResource("ShaderMaterial_tlu36")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -0.6029053
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+metadata/_edit_lock_ = true
+
+[node name="BackButton" type="Control" parent="SceneMainContainer"]
+unique_name_in_owner = true
+z_index = 50
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -96.0
+offset_top = -116.0
+offset_right = -32.0
+offset_bottom = -52.0
+grow_horizontal = 0
+grow_vertical = 0
+pivot_offset = Vector2(32, 32)
+size_flags_horizontal = 0
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath(".")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath(".")
+focus_next = NodePath(".")
+focus_previous = NodePath(".")
+focus_mode = 1
+mouse_default_cursor_shape = 2
+script = ExtResource("7_ljgjw")
+normal_texture = SubResource("AtlasTexture_01fnq")
+normal_hover_texture = SubResource("AtlasTexture_6i4xk")
+pressed_texture = SubResource("AtlasTexture_6i4xk")
+pressed_hover_texture = SubResource("AtlasTexture_f05g1")
+content_justification = 1
+min_texture_size_no_pressed = Vector2(86, 86)
+min_texture_size_pressed = Vector2(86, 86)
+manage_mouse_click = false
+on_hover_animation = 4
+on_pressed_animation = 11
+preview_animation = 11
+
+[node name="ToolTipLayers" type="Control" parent="SceneMainContainer"]
+z_index = 20
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_lock_ = true
+metadata/_edit_group_ = true
+
+[node name="TopTooltipLabel" type="Label" parent="SceneMainContainer/ToolTipLayers"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -478.5
+offset_top = 73.0
+offset_right = 478.5
+offset_bottom = 113.0
+grow_horizontal = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 0.7764706, 0.44313726, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5764706)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("8_fqqmp")
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxTexture_fqqmp")
+label_settings = SubResource("LabelSettings_n1s0o")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BottomTooltipLabel" type="Label" parent="SceneMainContainer/ToolTipLayers"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -494.5
+offset_top = -56.0
+offset_right = 462.5
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 0.7764706, 0.44313726, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5764706)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("8_fqqmp")
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxTexture_fqqmp")
+label_settings = SubResource("LabelSettings_n1s0o")
+horizontal_alignment = 1
+vertical_alignment = 1

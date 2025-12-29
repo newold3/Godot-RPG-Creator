@@ -1,0 +1,65 @@
+[gd_scene load_steps=9 format=3 uid="uid://dubfmu8c2jsv"]
+
+[ext_resource type="Script" uid="uid://h0fjpg20wccs" path="res://Assets/Shaders/temporal_depth_dissolve_gdscript.gd" id="1_bcjv4"]
+[ext_resource type="Shader" uid="uid://woym26n38dcl" path="res://Assets/Shaders/temporal_depth_dissolve_shader.gdshader" id="3_gokja"]
+[ext_resource type="Texture2D" uid="uid://dxq6c68tslp4r" path="res://Assets/Images/Backgrounds/tileable_snow.png" id="3_sl0gg"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_aiot2"]
+noise_type = 3
+frequency = 0.0151
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_g2slt"]
+noise = SubResource("FastNoiseLite_aiot2")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ialde"]
+shader = ExtResource("3_gokja")
+shader_parameter/depth_points = PackedVector2Array()
+shader_parameter/start_times = PackedFloat32Array()
+shader_parameter/fade_times = PackedFloat32Array()
+shader_parameter/depth_radius = 0.007
+shader_parameter/max_depth = 0.25
+shader_parameter/depth_color = Color(0.853486, 0.10951, 0.492686, 0.901961)
+shader_parameter/shadow_intensity = 0.2
+shader_parameter/shadow_radius = 1.5
+shader_parameter/gaussian_blur_strength = 1.5
+shader_parameter/current_time = 0.0
+shader_parameter/appear_duration = 0.3
+shader_parameter/disappear_duration = 6.0
+shader_parameter/fade_smoothness = 6.0
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_g2slt")
+shader_parameter/heightmap_texture = ExtResource("3_sl0gg")
+shader_parameter/noise_intensity = 0.3
+shader_parameter/contour_variation_intensity = 0.175
+shader_parameter/initial_size = 0.25
+shader_parameter/heightmap_intensity = 13.28
+shader_parameter/radius_variation = 0.02
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_k022q"]
+noise_type = 3
+frequency = 0.002
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_0oq3w"]
+width = 1152
+height = 648
+seamless = true
+seamless_blend_skirt = 0.726
+noise = SubResource("FastNoiseLite_k022q")
+
+[node name="TrailScene" type="Sprite2D"]
+z_index = 1
+z_as_relative = false
+texture_repeat = 2
+centered = false
+script = ExtResource("1_bcjv4")
+
+[node name="TrailViewport" type="SubViewport" parent="."]
+unique_name_in_owner = true
+transparent_bg = true
+size = Vector2i(1152, 640)
+
+[node name="MainSprite" type="Sprite2D" parent="TrailViewport"]
+unique_name_in_owner = true
+texture_repeat = 3
+material = SubResource("ShaderMaterial_ialde")
+texture = SubResource("NoiseTexture2D_0oq3w")
+centered = false

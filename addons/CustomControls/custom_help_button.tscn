@@ -1,0 +1,41 @@
+[gd_scene load_steps=4 format=3 uid="uid://brsxpnry24tbh"]
+
+[ext_resource type="Texture2D" uid="uid://o57b2rx62b0b" path="res://addons/CustomControls/Images/help_button_normal.png" id="1_u70mq"]
+[ext_resource type="Texture2D" uid="uid://cih2a7cb3de42" path="res://addons/CustomControls/Images/help_button_hover.png" id="2_wfocg"]
+[ext_resource type="Script" uid="uid://bn08mxe62m7v2" path="res://addons/CustomControls/custom_help_button.gd" id="3_qgq3e"]
+
+[node name="CustomHelpButton" type="TextureButton"]
+offset_right = 8.0
+offset_bottom = 8.0
+mouse_default_cursor_shape = 16
+texture_normal = ExtResource("1_u70mq")
+texture_hover = ExtResource("2_wfocg")
+script = ExtResource("3_qgq3e")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_right = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 19
+
+[node name="Label1" type="Label" parent="MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "i"
+
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Help"
+horizontal_alignment = 1

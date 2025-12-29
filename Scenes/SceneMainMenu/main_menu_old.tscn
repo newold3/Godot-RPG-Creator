@@ -1,0 +1,711 @@
+[gd_scene load_steps=25 format=3 uid="uid://giigyrlxmskl"]
+
+[ext_resource type="Theme" uid="uid://cp5rfiijsw4j4" path="res://Assets/Themes/in_game_theme.tres" id="1_bl0ga"]
+[ext_resource type="Script" uid="uid://4y5scb5uk2yi" path="res://Scenes/SceneMainMenu/main_menu2.gd" id="2_bl0ga"]
+[ext_resource type="Texture2D" uid="uid://bw3vuu3ip3mbq" path="res://Assets/Images/GUI/window2_background.png" id="3_lnqq2"]
+[ext_resource type="Texture2D" uid="uid://bcuprqlh7m5ec" path="res://Assets/Images/GUI/frame1b.png" id="4_rvq0d"]
+[ext_resource type="Texture2D" uid="uid://bttv2a7yritf7" path="res://Assets/Images/GUI/decoration1.png" id="5_3uu0g"]
+[ext_resource type="PackedScene" uid="uid://mvu5debmsa2t" path="res://Scenes/OtherScenes/icon_gear_container.tscn" id="6_b0gi4"]
+[ext_resource type="PackedScene" uid="uid://be6h27ee3aauh" path="res://Scenes/GUI/SteamPunkTheme/MainMenu/left_buttons.tscn" id="7_hnkfp"]
+[ext_resource type="PackedScene" uid="uid://c8j4gm2va2bbr" path="res://Scenes/GUI/SteamPunkTheme/MainMenu/party_menu.tscn" id="8_d3ye1"]
+[ext_resource type="FontFile" uid="uid://dvh0mi6yu0ywx" path="res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf" id="9_yr1id"]
+[ext_resource type="Script" uid="uid://bhkluedefy5rg" path="res://Scripts/auto_scroll_container.gd" id="10_ex8l8"]
+[ext_resource type="Texture2D" uid="uid://w462d8423mdp" path="res://Assets/Images/GUI/decoration3.png" id="11_x0y1m"]
+[ext_resource type="Texture2D" uid="uid://iix7coi4dyn7" path="res://Assets/Images/GUI/clock.png" id="12_e2uqr"]
+[ext_resource type="Shader" uid="uid://dkvs3wfnpqp4w" path="res://Assets/Shaders/post_processing_effects.gdshader" id="13_43xnx"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pjxkw"]
+texture = ExtResource("4_rvq0d")
+texture_margin_left = 64.0
+texture_margin_top = 24.0
+texture_margin_right = 64.0
+texture_margin_bottom = 24.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ekrja"]
+texture = ExtResource("5_3uu0g")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qm033"]
+content_margin_left = 22.0
+content_margin_top = 0.0
+content_margin_right = 22.0
+content_margin_bottom = 0.0
+texture = ExtResource("4_rvq0d")
+texture_margin_left = 64.0
+texture_margin_top = 24.0
+texture_margin_right = 64.0
+texture_margin_bottom = 24.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[sub_resource type="LabelSettings" id="LabelSettings_sh5du"]
+font = ExtResource("9_yr1id")
+font_size = 22
+font_color = Color(1, 0.7176471, 0, 1)
+outline_size = 6
+outline_color = Color(0.19727948, 0.19721085, 2.4065375e-08, 1)
+stacked_outline_count = 1
+stacked_outline_0/size = 1
+stacked_outline_0/color = Color(0.99160117, 0.9338184, 0.5793735, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_4vvb8"]
+font = ExtResource("9_yr1id")
+font_size = 22
+font_color = Color(0.7490196, 1, 0, 1)
+outline_size = 6
+outline_color = Color(0, 0.21906719, 0.22020227, 1)
+stacked_outline_count = 1
+stacked_outline_0/size = 1
+stacked_outline_0/color = Color(0.851594, 0.9018106, 1, 0.45000002)
+
+[sub_resource type="LabelSettings" id="LabelSettings_vp5ah"]
+font = ExtResource("9_yr1id")
+font_size = 22
+font_color = Color(0.9607843, 0.9607843, 0.8627451, 1)
+outline_size = 6
+outline_color = Color(0, 0.21906719, 0.22020227, 1)
+stacked_outline_count = 1
+stacked_outline_0/size = 1
+stacked_outline_0/color = Color(0.851594, 0.9018106, 1, 0.45000002)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_odql2"]
+shader = ExtResource("13_43xnx")
+shader_parameter/enable_grayscale = false
+shader_parameter/enable_sepia = false
+shader_parameter/sepia_strength = 0.206
+shader_parameter/enable_grain = false
+shader_parameter/grain_amount = 0.23
+shader_parameter/grain_speed = 0.74
+shader_parameter/enable_cartoon = false
+shader_parameter/cartoon_levels = 5.518
+shader_parameter/enable_posterize = false
+shader_parameter/posterize_levels = 8.0
+shader_parameter/enable_vignette = false
+shader_parameter/vignette_intensity = 1.03
+shader_parameter/vignette_smoothness = 0.387
+shader_parameter/enable_chromatic_aberration = false
+shader_parameter/aberration_strength = 0.01
+shader_parameter/enable_scanlines = false
+shader_parameter/scanlines_count = 300.0
+shader_parameter/scanlines_intensity = 0.5
+shader_parameter/enable_pixelate = false
+shader_parameter/pixel_size = 8
+shader_parameter/enable_blur = false
+shader_parameter/blur_amount = 0.003
+shader_parameter/enable_sharpen = true
+shader_parameter/sharpen_amount = 0.065
+shader_parameter/sharpen_offset = 0.001
+shader_parameter/enable_invert = false
+shader_parameter/enable_night_vision = false
+shader_parameter/night_vision_color = Color(0.1, 1, 0.2, 1)
+shader_parameter/night_vision_noise = 0.3
+shader_parameter/enable_thermal_vision = false
+shader_parameter/thermal_intensity = 0.986
+shader_parameter/thermal_sensitivity = 2.586
+shader_parameter/thermal_offset = -0.201
+shader_parameter/enable_warp = true
+shader_parameter/warp_amount = 0.00800024
+shader_parameter/enable_film_grain = false
+shader_parameter/film_grain_amount = 0.5
+shader_parameter/film_grain_size = 1.0
+shader_parameter/film_grain_speed = 0.3
+shader_parameter/film_grain_rotation = 1.57
+shader_parameter/enable_distortion = false
+shader_parameter/distortion_strength = 0.004
+shader_parameter/enable_color_shift = false
+shader_parameter/color_shift_amount = 0.5
+shader_parameter/color_shift_speed = 1.0
+shader_parameter/enable_bloom = false
+shader_parameter/bloom_intensity = 1.0
+shader_parameter/bloom_threshold = 0.8
+shader_parameter/bloom_radius = 0.005
+shader_parameter/enable_desaturate = false
+shader_parameter/desaturate_amount = 0.0
+shader_parameter/enable_fisheye = false
+shader_parameter/fisheye_strength = 0.0
+shader_parameter/enable_colorize = false
+shader_parameter/colorize_color = Color(1, 0.5, 0.2, 1)
+shader_parameter/colorize_intensity = 0.5
+shader_parameter/colorize_brightness = 1.0
+
+[sub_resource type="Animation" id="Animation_enknq"]
+resource_name = "MoveGear"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer/Center/LeftColumn/IconGearContainer/GearMainContainer/GearGear/FrontPart2:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.233333),
+"transitions": PackedFloat32Array(0.5, 20),
+"update": 0,
+"values": [0.0, -1.5708]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer/Center/LeftColumn/IconGearContainer/GearMainContainer/GearGear/FrontPart3:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.233333),
+"transitions": PackedFloat32Array(0.5, 20),
+"update": 0,
+"values": [0.0, -1.5708]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer/Center/LeftColumn/IconGearContainer/GearMainContainer/GearGear/FrontPart4:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.233333),
+"transitions": PackedFloat32Array(0.5, 20),
+"update": 0,
+"values": [0.0, -1.5708]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer/Center/LeftColumn/IconGearContainer/GearMainContainer/GearGear/FrontPart5:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.233333),
+"transitions": PackedFloat32Array(0.5, 20),
+"update": 0,
+"values": [0.0, -1.5708]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer/Center/LeftColumn/IconGearContainer/GearMainContainer/GearGear/FrontPart6:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.233333),
+"transitions": PackedFloat32Array(0.5, 20),
+"update": 0,
+"values": [0.0, -1.5708]
+}
+
+[sub_resource type="Animation" id="Animation_tymdf"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer/Center/LeftColumn/IconGearContainer/GearMainContainer/GearGear/FrontPart2:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer/Center/LeftColumn/IconGearContainer/GearMainContainer/GearGear/FrontPart3:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.2, 0.2)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer/Center/LeftColumn/IconGearContainer/GearMainContainer/GearGear/FrontPart4:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.2, 0.2)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer/Center/LeftColumn/IconGearContainer/GearMainContainer/GearGear/FrontPart5:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.2, 0.2)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer/Center/LeftColumn/IconGearContainer/GearMainContainer/GearGear/FrontPart6:scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.2, 0.2)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer/Center/LeftColumn/IconGearContainer/GearMainContainer/GearGear/FrontPart5:rotation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer/Center/LeftColumn/IconGearContainer/GearMainContainer/GearGear/FrontPart3:rotation")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer/Center/LeftColumn/IconGearContainer/GearMainContainer/GearGear/FrontPart4:rotation")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer/Center/LeftColumn/IconGearContainer/GearMainContainer/GearGear/FrontPart6:rotation")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_c4ben"]
+resource_name = "Start"
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer/Center/LeftColumn/IconGearContainer/GearMainContainer/GearGear/FrontPart2:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-6.28319, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer/Center/LeftColumn/IconGearContainer/GearMainContainer/GearGear/FrontPart3:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.2, 0.2)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer/Center/LeftColumn/IconGearContainer/GearMainContainer/GearGear/FrontPart4:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.25, 0.25), Vector2(0.25, 0.25), Vector2(0.2, 0.2)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer/Center/LeftColumn/IconGearContainer/GearMainContainer/GearGear/FrontPart5:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.35, 0.35), Vector2(0.35, 0.35), Vector2(0.2, 0.2)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer/Center/LeftColumn/IconGearContainer/GearMainContainer/GearGear/FrontPart6:scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0.4, 0.4), Vector2(0.2, 0.2)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer/Center/LeftColumn/IconGearContainer/GearMainContainer/GearGear/FrontPart5:rotation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.166667, 0.266667),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.0, 1.5708]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer/Center/LeftColumn/IconGearContainer/GearMainContainer/GearGear/FrontPart3:rotation")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.266667, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.0, 1.5708]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer/Center/LeftColumn/IconGearContainer/GearMainContainer/GearGear/FrontPart4:rotation")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 0.266667, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.0, 1.5708]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nm7bp"]
+_data = {
+&"MoveGear": SubResource("Animation_enknq"),
+&"RESET": SubResource("Animation_tymdf"),
+&"Start": SubResource("Animation_c4ben")
+}
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(576, 324)
+theme = ExtResource("1_bl0ga")
+script = ExtResource("2_bl0ga")
+start_animation = 4
+end_animation = 3
+tween_speed_scale = 1.8
+
+[node name="Background" type="TextureRect" parent="."]
+unique_name_in_owner = true
+texture_repeat = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+texture = ExtResource("3_lnqq2")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="InitialContainer" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Main" type="Control" parent="InitialContainer"]
+unique_name_in_owner = true
+clip_contents = true
+custom_minimum_size = Vector2(1024, 600)
+anchors_preset = 0
+offset_left = 64.0
+offset_top = 24.0
+offset_right = 1088.0
+offset_bottom = 624.0
+pivot_offset = Vector2(512, 300)
+mouse_filter = 2
+
+[node name="Vbox" type="VBoxContainer" parent="InitialContainer/Main"]
+layout_mode = 0
+offset_right = 1024.0
+offset_bottom = 600.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(512, 300)
+mouse_filter = 2
+
+[node name="PanelContainer2" type="PanelContainer" parent="InitialContainer/Main/Vbox"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_pjxkw")
+
+[node name="MarginContainer2" type="MarginContainer" parent="InitialContainer/Main/Vbox/PanelContainer2"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = -52
+theme_override_constants/margin_top = -14
+theme_override_constants/margin_right = -52
+theme_override_constants/margin_bottom = -14
+
+[node name="Clipper" type="Control" parent="InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2"]
+clip_contents = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MainSceneContainer" type="MarginContainer" parent="InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 52.0
+offset_top = 14.0
+offset_right = 948.0
+offset_bottom = 514.0
+mouse_filter = 2
+theme_override_constants/margin_left = -40
+theme_override_constants/margin_right = -40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Top" type="MarginContainer" parent="InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer"]
+z_index = 100
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = -14
+theme_override_constants/margin_top = -14
+theme_override_constants/margin_right = -14
+
+[node name="TextureRect" type="PanelContainer" parent="InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer/Top"]
+self_modulate = Color(0.390878, 0.28227, 0.174128, 1)
+texture_repeat = 2
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_ekrja")
+
+[node name="HelpLabel" type="Label" parent="InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer/Top/TextureRect"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Help"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Center" type="HBoxContainer" parent="InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="LeftColumn" type="MarginContainer" parent="InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer/Center"]
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+theme_override_constants/margin_left = -14
+theme_override_constants/margin_top = -40
+
+[node name="IconGearContainer" parent="InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer/Center/LeftColumn" instance=ExtResource("6_b0gi4")]
+unique_name_in_owner = true
+z_index = 50
+layout_mode = 2
+
+[node name="Control" type="Control" parent="InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer/Center/LeftColumn"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="MainMenuItems" parent="InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer/Center/LeftColumn/Control" instance=ExtResource("7_hnkfp")]
+unique_name_in_owner = true
+layout_mode = 1
+offset_left = -2.0
+offset_top = 103.0
+offset_right = 385.699
+offset_bottom = 523.0
+size_flags_vertical = 0
+
+[node name="RightColumn" type="MarginContainer" parent="InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer/Center"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/margin_right = -11
+
+[node name="RightColumnMainContainer" type="VBoxContainer" parent="InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer/Center/RightColumn"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="PartyMenu" parent="InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer/Center/RightColumn/RightColumnMainContainer" instance=ExtResource("8_d3ye1")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Bottom" type="PanelContainer" parent="InitialContainer/Main/Vbox"]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_qm033")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="InitialContainer/Main/Vbox/Bottom"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="InitialContainer/Main/Vbox/Bottom/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.35
+alignment = 1
+
+[node name="GoldIcon" type="TextureRect" parent="InitialContainer/Main/Vbox/Bottom/HBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+texture_filter = 1
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="GoldNumber" type="Label" parent="InitialContainer/Main/Vbox/Bottom/HBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_sh5du")
+
+[node name="GoldLabel" type="Label" parent="InitialContainer/Main/Vbox/Bottom/HBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "G"
+label_settings = SubResource("LabelSettings_sh5du")
+
+[node name="MapNameAutoScrollContainer" type="Container" parent="InitialContainer/Main/Vbox/Bottom/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("10_ex8l8")
+
+[node name="MapName" type="Label" parent="InitialContainer/Main/Vbox/Bottom/HBoxContainer/MapNameAutoScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "MAP NAME"
+label_settings = SubResource("LabelSettings_4vvb8")
+vertical_alignment = 1
+metadata/current_size = Vector2(346, 23)
+metadata/current_size_flags = {
+"h": 3,
+"v": 4
+}
+metadata/base_position = Vector2(0, 18)
+
+[node name="Separator" type="TextureRect" parent="InitialContainer/Main/Vbox/Bottom/HBoxContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("11_x0y1m")
+expand_mode = 1
+
+[node name="ChapterNameAutoScrollContainer" type="Container" parent="InitialContainer/Main/Vbox/Bottom/HBoxContainer"]
+unique_name_in_owner = true
+clip_contents = true
+custom_minimum_size = Vector2(230, 59)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("10_ex8l8")
+scroll_direction = 1
+
+[node name="ChapterName" type="Label" parent="InitialContainer/Main/Vbox/Bottom/HBoxContainer/ChapterNameAutoScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "CHAPTER NAME"
+label_settings = SubResource("LabelSettings_vp5ah")
+horizontal_alignment = 2
+vertical_alignment = 1
+metadata/current_size = Vector2(345, 23)
+metadata/current_size_flags = {
+"h": 3,
+"v": 6
+}
+metadata/base_position = Vector2(0, 18)
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="InitialContainer/Main/Vbox/Bottom/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.35
+alignment = 1
+
+[node name="TimeIcon" type="TextureRect" parent="InitialContainer/Main/Vbox/Bottom/HBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("12_e2uqr")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="GameTimeValue" type="Label" parent="InitialContainer/Main/Vbox/Bottom/HBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "12H:30M"
+
+[node name="PostProcessEffects" type="ColorRect" parent="."]
+unique_name_in_owner = true
+z_index = 50
+material = SubResource("ShaderMaterial_odql2")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 0)
+metadata/_edit_lock_ = true
+
+[node name="MainMenuAnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+&"": SubResource("AnimationLibrary_nm7bp")
+}
+
+[connection signal="button_hovered" from="InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer/Center/LeftColumn/Control/MainMenuItems" to="." method="_on_main_menu_items_button_hovered"]
+[connection signal="selected" from="InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer/Center/LeftColumn/Control/MainMenuItems" to="." method="_on_main_menu_items_selected"]
+[connection signal="clicked" from="InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer/Center/RightColumn/RightColumnMainContainer/PartyMenu" to="." method="_on_main_menu_items_begin_click"]
+[connection signal="item_selected" from="InitialContainer/Main/Vbox/PanelContainer2/MarginContainer2/Clipper/MainSceneContainer/VBoxContainer/Center/RightColumn/RightColumnMainContainer/PartyMenu" to="." method="_on_party_menu_item_selected"]

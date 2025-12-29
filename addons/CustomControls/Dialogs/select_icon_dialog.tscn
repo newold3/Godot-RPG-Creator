@@ -1,0 +1,133 @@
+[gd_scene load_steps=12 format=3 uid="uid://4hjttjjne78w"]
+
+[ext_resource type="Theme" uid="uid://dlgit3j4ygo54" path="res://addons/RPGData/Assets/Themes/database_theme.tres" id="1_yt8ob"]
+[ext_resource type="Script" uid="uid://co00x40kjcmsx" path="res://addons/CustomControls/Dialogs/select_icon_dialog.gd" id="2_ei7gc"]
+[ext_resource type="PackedScene" uid="uid://duykjs55o5h2m" path="res://addons/CustomControls/custom_image_picker.tscn" id="3_5r52i"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="3_c5pat"]
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="4_w4dif"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_88aeh"]
+
+[sub_resource type="Gradient" id="Gradient_4u2ec"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_a3inn"]
+gradient = SubResource("Gradient_4u2ec")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="InputEventKey" id="InputEventKey_ueikt"]
+pressed = true
+keycode = 4194309
+
+[sub_resource type="InputEventKey" id="InputEventKey_6sxke"]
+pressed = true
+keycode = 4194310
+
+[sub_resource type="Shortcut" id="Shortcut_yldtf"]
+events = [SubResource("InputEventKey_ueikt"), SubResource("InputEventKey_6sxke")]
+
+[node name="SelectIconDialog" type="Window"]
+oversampling_override = 1.0
+title = "Select Icon"
+position = Vector2i(0, 36)
+size = Vector2i(400, 400)
+wrap_controls = true
+transient_to_focused = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_yt8ob")
+script = ExtResource("2_ei7gc")
+main_texture = SubResource("AtlasTexture_88aeh")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_a3inn")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="HBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(158, 0)
+layout_mode = 2
+text = "Icon"
+
+[node name="IconPicker" parent="MarginContainer/HBoxContainer/VBoxContainer" instance=ExtResource("3_5r52i")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "[title]Icon[/title]
+Image identifying this data. You can select an image in the [Select an Image] window that appears after clicking on this control.
+
+Mouse wheel click to erase de current image."
+
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(158, 0)
+layout_mode = 2
+text = "Region:"
+
+[node name="ImageRegion" parent="MarginContainer/HBoxContainer/VBoxContainer" instance=ExtResource("4_w4dif")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "[title]Image Region[/title]
+If the image is part of an atlas, define here the region occupied by the selected icon.
+
+[1left Click]: Change region, [1Middle Click]: Erase region (use full image)"
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+text = "Region"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="VBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/HBoxContainer/VBoxContainer2" instance=ExtResource("3_c5pat")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the window."
+shortcut = SubResource("Shortcut_yldtf")
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/HBoxContainer/VBoxContainer2" instance=ExtResource("3_c5pat")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+text = "CANCEL"
+
+[connection signal="clicked" from="MarginContainer/HBoxContainer/VBoxContainer/IconPicker" to="." method="_on_icon_picker_clicked"]
+[connection signal="remove_requested" from="MarginContainer/HBoxContainer/VBoxContainer/IconPicker" to="." method="_on_icon_picker_remove_requested"]
+[connection signal="middle_click_pressed" from="MarginContainer/HBoxContainer/VBoxContainer/ImageRegion" to="." method="_on_image_region_middle_click_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/ImageRegion" to="." method="_on_image_region_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer2/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer2/CancelButton" to="." method="_on_cancel_button_pressed"]

@@ -1,0 +1,35 @@
+[gd_scene load_steps=11 format=3 uid="uid://ccipi0sikmjuu"]
+
+[ext_resource type="Script" uid="uid://djlfn41c3laum" path="res://addons/CustomControls/custom_tab_container.gd" id="1_8d180"]
+[ext_resource type="Texture2D" uid="uid://dcpncbwq8u3mc" path="res://addons/CustomControls/Images/triangle_left_disabled.png" id="2_ch0v0"]
+[ext_resource type="Texture2D" uid="uid://b5qtn0f37e7hl" path="res://addons/CustomControls/Images/tab_button_normal.png" id="2_idhab"]
+[ext_resource type="Texture2D" uid="uid://cquhulyage17k" path="res://addons/CustomControls/Images/tab_button_unselected.png" id="3_2gt5g"]
+[ext_resource type="Texture2D" uid="uid://wr2jlukw5s8o" path="res://addons/CustomControls/Images/triangle_left_normal.png" id="3_ohmta"]
+[ext_resource type="Texture2D" uid="uid://byecjqqvvnmkk" path="res://addons/CustomControls/Images/triangle_left_hover.png" id="4_h4omd"]
+[ext_resource type="Texture2D" uid="uid://cqkfxsx6342wb" path="res://addons/CustomControls/Images/tab_button_hover.png" id="4_yr7dj"]
+[ext_resource type="Texture2D" uid="uid://bf58bi5qgva7h" path="res://addons/CustomControls/Images/triangle_right_disabled.png" id="5_6g3hq"]
+[ext_resource type="Texture2D" uid="uid://df5ova1ajs0h2" path="res://addons/CustomControls/Images/triangle_right_normal.png" id="6_5viob"]
+[ext_resource type="Texture2D" uid="uid://bc00qs21pak7x" path="res://addons/CustomControls/Images/triangle_right_hover.png" id="7_sbfxo"]
+
+[node name="CustomTabContainer" type="MarginContainer"]
+clip_children = 2
+custom_minimum_size = Vector2(120, 32)
+offset_right = 179.0
+offset_bottom = 32.0
+script = ExtResource("1_8d180")
+unselected_color = Color(0.215686, 0.215686, 0.215686, 1)
+tabs_movement_speed = 1000.0
+tab_name_base = "Page"
+tab_name_margins = 8
+text_selected_offset_y = 8
+text_unselected_offset_y = 11
+arrows_offset_y = 3
+tab_selected = ExtResource("2_idhab")
+tab_unselected = ExtResource("3_2gt5g")
+tab_hover = ExtResource("4_yr7dj")
+arrow_left_disabled = ExtResource("2_ch0v0")
+arrow_left_normal = ExtResource("3_ohmta")
+arrow_left_hover = ExtResource("4_h4omd")
+arrow_right_disabled = ExtResource("5_6g3hq")
+arrow_right_normal = ExtResource("6_5viob")
+arrow_right_hover = ExtResource("7_sbfxo")

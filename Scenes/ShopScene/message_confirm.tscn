@@ -1,0 +1,125 @@
+[gd_scene load_steps=8 format=3 uid="uid://poo3tgpmsv8d"]
+
+[ext_resource type="Texture2D" uid="uid://d0kdfvm8lrvx6" path="res://Assets/Images/GUI/frame1.png" id="1_cm7b8"]
+[ext_resource type="Script" uid="uid://dxte3cx6e0c1y" path="res://Scenes/ShopScene/message_confirm.gd" id="1_jvsor"]
+[ext_resource type="Texture2D" uid="uid://xlmohhykb3n8" path="res://Assets/Images/GUI/frame3_hover.png" id="2_jvsor"]
+[ext_resource type="Texture2D" uid="uid://chkdul0xtwjg" path="res://Assets/Images/GUI/frame3.png" id="3_vtkha"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_181j8"]
+texture = ExtResource("2_jvsor")
+texture_margin_left = 17.0
+texture_margin_top = 17.0
+texture_margin_right = 17.0
+texture_margin_bottom = 17.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1q6jm"]
+texture = ExtResource("2_jvsor")
+texture_margin_left = 17.0
+texture_margin_top = 17.0
+texture_margin_right = 17.0
+texture_margin_bottom = 17.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8tdwe"]
+texture = ExtResource("3_vtkha")
+texture_margin_left = 17.0
+texture_margin_top = 17.0
+texture_margin_right = 17.0
+texture_margin_bottom = 17.0
+
+[node name="CancelConfirmContainer" type="Control"]
+z_index = 250
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_jvsor")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.74902)
+
+[node name="CancelConfirmPanel" type="MarginContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -106.0
+offset_top = -60.0
+offset_right = 106.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ShopFrameBottom" type="NinePatchRect" parent="CancelConfirmPanel"]
+layout_mode = 2
+texture = ExtResource("1_cm7b8")
+patch_margin_left = 17
+patch_margin_top = 15
+patch_margin_right = 17
+patch_margin_bottom = 15
+
+[node name="MarginContainer" type="MarginContainer" parent="CancelConfirmPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 14
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CancelConfirmPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="CancelConfirmMessage" type="Label" parent="CancelConfirmPanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Confirm Text"
+
+[node name="HSeparator" type="HSeparator" parent="CancelConfirmPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CancelConfirmPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="CancelConfirmCancel" type="Button" parent="CancelConfirmPanel/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+theme_override_colors/font_hover_pressed_color = Color(0.945098, 0.564706, 0.211765, 1)
+theme_override_colors/font_hover_color = Color(0.945612, 0.564587, 0.210209, 1)
+theme_override_colors/font_focus_color = Color(0.945098, 0.564706, 0.211765, 1)
+theme_override_styles/focus = SubResource("StyleBoxTexture_181j8")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_1q6jm")
+theme_override_styles/hover = SubResource("StyleBoxTexture_181j8")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_1q6jm")
+theme_override_styles/normal = SubResource("StyleBoxTexture_8tdwe")
+text = "cancel"
+
+[node name="CancelConfirmOK" type="Button" parent="CancelConfirmPanel/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+theme_override_colors/font_hover_pressed_color = Color(0.945098, 0.564706, 0.211765, 1)
+theme_override_colors/font_hover_color = Color(0.945612, 0.564587, 0.210209, 1)
+theme_override_colors/font_focus_color = Color(0.945098, 0.564706, 0.211765, 1)
+theme_override_styles/focus = SubResource("StyleBoxTexture_181j8")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_1q6jm")
+theme_override_styles/hover = SubResource("StyleBoxTexture_181j8")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_1q6jm")
+theme_override_styles/normal = SubResource("StyleBoxTexture_8tdwe")
+text = "Confirm"
+
+[connection signal="focus_entered" from="CancelConfirmPanel/MarginContainer/VBoxContainer/HBoxContainer/CancelConfirmCancel" to="." method="_on_cancel_confirm_cancel_focus_entered"]
+[connection signal="focus_entered" from="CancelConfirmPanel/MarginContainer/VBoxContainer/HBoxContainer/CancelConfirmOK" to="." method="_on_cancel_confirm_ok_focus_entered"]

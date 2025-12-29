@@ -1,0 +1,95 @@
+[gd_scene load_steps=13 format=3 uid="uid://cb7emuh2o72a5"]
+
+[ext_resource type="Shader" uid="uid://b24gls5ur6xdm" path="res://Assets/Shaders/mist.gdshader" id="1_gum7e"]
+[ext_resource type="Texture2D" uid="uid://dxq6c68tslp4r" path="res://Assets/Images/Backgrounds/tileable_snow.png" id="2_k3nio"]
+
+[sub_resource type="GDScript" id="GDScript_k3nio"]
+script/source = "extends Sprite2D
+
+
+func _ready() -> void:
+	texture = %SubViewport.get_texture()
+	setup()
+
+
+func setup() -> void:
+	await get_tree().process_frame
+	await get_tree().process_frame
+	adjust_to_the_map()
+
+
+func adjust_to_the_map() -> void:
+	var map: RPGMap = get_tree().get_first_node_in_group(\"rpgmap\")
+	if map:
+		var map_rect = map.get_used_rect(false)
+		global_position = map_rect.position
+		global_scale = Vector2(map_rect.size) / texture.get_size()
+		
+		var mat: ShaderMaterial = %MainSprite.get_material()
+		if mat:
+			mat.set_shader_parameter(\"scale\", Vector2(1.0 / global_scale.x, 1.0 / global_scale.y))
+"
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_7r4y4"]
+frequency = 0.0014
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_eexqu"]
+noise = SubResource("FastNoiseLite_7r4y4")
+seamless = true
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_b1fr5"]
+frequency = 0.0023
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_7r4y4"]
+noise = SubResource("FastNoiseLite_b1fr5")
+seamless = true
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_eexqu"]
+noise_type = 4
+frequency = 0.0101
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_h13t4"]
+noise = SubResource("FastNoiseLite_eexqu")
+seamless = true
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_qlr5w"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_1a2hw"]
+noise = SubResource("FastNoiseLite_qlr5w")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r2ee0"]
+shader = ExtResource("1_gum7e")
+shader_parameter/color = Color(0.68, 0.57766, 0.3876, 0.8117647)
+shader_parameter/timescale = 0.1
+shader_parameter/noise_texture1 = SubResource("NoiseTexture2D_7r4y4")
+shader_parameter/noise_texture2 = SubResource("NoiseTexture2D_h13t4")
+shader_parameter/noise_texture3 = SubResource("NoiseTexture2D_1a2hw")
+shader_parameter/hole_texture = SubResource("NoiseTexture2D_eexqu")
+shader_parameter/noise_weight1 = 0.5
+shader_parameter/noise_weight2 = 0.3
+shader_parameter/noise_weight3 = 0.2
+shader_parameter/noiseScale = 1.0
+shader_parameter/scrollDirection1 = Vector2(1, 0.5)
+shader_parameter/scrollDirection2 = Vector2(-0.7, 0.3)
+shader_parameter/scrollDirection3 = Vector2(0.3, -0.8)
+shader_parameter/holeScrollDirection = Vector2(0.2, -0.2)
+shader_parameter/density_threshold = 0.32999999262384
+shader_parameter/edge_softness = 0.32999999262384
+shader_parameter/scale = Vector2(1, 1)
+
+[node name="Mist" type="Sprite2D"]
+centered = false
+script = SubResource("GDScript_k3nio")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+unique_name_in_owner = true
+transparent_bg = true
+size = Vector2i(1152, 640)
+
+[node name="MainSprite" type="Sprite2D" parent="SubViewport"]
+unique_name_in_owner = true
+texture_repeat = 2
+material = SubResource("ShaderMaterial_r2ee0")
+texture = ExtResource("2_k3nio")
+centered = false

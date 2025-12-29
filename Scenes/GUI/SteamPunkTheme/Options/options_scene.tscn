@@ -1,0 +1,764 @@
+[gd_scene load_steps=46 format=3 uid="uid://ci04emvcqy7ts"]
+
+[ext_resource type="PackedScene" uid="uid://b8w1hsyuscqit" path="res://Scenes/GUI/magic_label.tscn" id="1_lyesw"]
+[ext_resource type="Script" uid="uid://u3nu32yh2fk8" path="res://Scenes/GUI/SteamPunkTheme/Options/options_scene.gd" id="1_yj3e1"]
+[ext_resource type="Script" uid="uid://bvspnkrl7fdgc" path="res://Scripts/simple_focusable_control.gd" id="2_8de3c"]
+[ext_resource type="Script" uid="uid://capl3nbl7whnu" path="res://Scenes/GUI/custom_draw_button.gd" id="2_yj3e1"]
+[ext_resource type="Texture2D" uid="uid://duu13dsov6vp5" path="res://Assets/Images/GUI/main_gui.png" id="3_8de3c"]
+[ext_resource type="AudioStream" uid="uid://b03il8b1tct8a" path="res://Assets/Sounds/SE/preview_fx.ogg" id="3_gp8y3"]
+[ext_resource type="PackedScene" uid="uid://dj2hqj4x1ve7p" path="res://Scenes/GUI/item_selector.tscn" id="4_gp8y3"]
+[ext_resource type="Script" uid="uid://4av1kvvbeqa7" path="res://Scenes/GameOptionsScene/simple_item.gd" id="5_owdni"]
+[ext_resource type="PackedScene" uid="uid://bg6k5nxoyrikr" path="res://Scenes/GUI/option_slider.tscn" id="6_2mlk8"]
+[ext_resource type="FontFile" uid="uid://dvh0mi6yu0ywx" path="res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf" id="7_npkwp"]
+
+[sub_resource type="Resource" id="Resource_gp8y3"]
+script = ExtResource("2_8de3c")
+control = NodePath("VBoxContainer/HBoxContainer/Control/FullScreen")
+tooltip = "Options Fullscreen Help"
+metadata/_custom_type_script = "uid://bvspnkrl7fdgc"
+
+[sub_resource type="Resource" id="Resource_owdni"]
+script = ExtResource("2_8de3c")
+control = NodePath("VBoxContainer/HBoxContainer9/VSync")
+tooltip = "Options Vsync Help"
+metadata/_custom_type_script = "uid://bvspnkrl7fdgc"
+
+[sub_resource type="Resource" id="Resource_2mlk8"]
+script = ExtResource("2_8de3c")
+control = NodePath("VBoxContainer/HBoxContainer2/Control/FpsSelector")
+tooltip = "Options Max_fps Help"
+metadata/_custom_type_script = "uid://bvspnkrl7fdgc"
+
+[sub_resource type="Resource" id="Resource_npkwp"]
+script = ExtResource("2_8de3c")
+control = NodePath("VBoxContainer/HBoxContainer3/Brightness")
+tooltip = "Options Brightness Help"
+metadata/_custom_type_script = "uid://bvspnkrl7fdgc"
+
+[sub_resource type="Resource" id="Resource_5w6ml"]
+script = ExtResource("2_8de3c")
+control = NodePath("VBoxContainer/HBoxContainer4/TextSpeed")
+tooltip = "Options Text Speed Help"
+metadata/_custom_type_script = "uid://bvspnkrl7fdgc"
+
+[sub_resource type="Resource" id="Resource_sygh3"]
+script = ExtResource("2_8de3c")
+control = NodePath("VBoxContainer/HBoxContainer5/MasterVolume")
+tooltip = "Options Master Volume Help"
+metadata/_custom_type_script = "uid://bvspnkrl7fdgc"
+
+[sub_resource type="Resource" id="Resource_efrsq"]
+script = ExtResource("2_8de3c")
+control = NodePath("VBoxContainer/HBoxContainer6/MusicVolume")
+tooltip = "Options Music Volume Help"
+metadata/_custom_type_script = "uid://bvspnkrl7fdgc"
+
+[sub_resource type="Resource" id="Resource_32sr8"]
+script = ExtResource("2_8de3c")
+control = NodePath("VBoxContainer/HBoxContainer7/SeVolume")
+tooltip = "Options Sound Fx Volume Help"
+metadata/_custom_type_script = "uid://bvspnkrl7fdgc"
+
+[sub_resource type="Resource" id="Resource_8si47"]
+script = ExtResource("2_8de3c")
+control = NodePath("VBoxContainer/HBoxContainer8/MeVolume")
+tooltip = "Options Ambient Volume Help"
+metadata/_custom_type_script = "uid://bvspnkrl7fdgc"
+
+[sub_resource type="Resource" id="Resource_busy6"]
+script = ExtResource("2_8de3c")
+control = NodePath("VBoxContainer/HBoxContainer10/LanguageSelector")
+tooltip = "Options Language Help"
+metadata/_custom_type_script = "uid://bvspnkrl7fdgc"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6hbqa"]
+atlas = ExtResource("3_8de3c")
+region = Rect2(44, 499, 412, 19)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bc124"]
+atlas = ExtResource("3_8de3c")
+region = Rect2(462, 492, 31, 31)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1ydyy"]
+atlas = ExtResource("3_8de3c")
+region = Rect2(706, 499, 412, 19)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8de3c"]
+atlas = ExtResource("3_8de3c")
+region = Rect2(758, 120, 38, 38)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l0x48"]
+atlas = ExtResource("3_8de3c")
+region = Rect2(774, 180, 38, 38)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uf41i"]
+atlas = ExtResource("3_8de3c")
+region = Rect2(828, 112, 55, 55)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pco8h"]
+atlas = ExtResource("3_8de3c")
+region = Rect2(830, 178, 55, 55)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gp8y3"]
+atlas = ExtResource("3_8de3c")
+region = Rect2(758, 120, 38, 38)
+
+[sub_resource type="Resource" id="Resource_eeobh"]
+script = ExtResource("5_owdni")
+name = "Unlimited FPS"
+value = "0"
+
+[sub_resource type="Resource" id="Resource_ms875"]
+script = ExtResource("5_owdni")
+name = "24 FPS"
+value = "24"
+
+[sub_resource type="Resource" id="Resource_ch1ra"]
+script = ExtResource("5_owdni")
+name = "30 FPS"
+value = "30"
+
+[sub_resource type="Resource" id="Resource_12u6i"]
+script = ExtResource("5_owdni")
+name = "60 FPS"
+value = "60"
+
+[sub_resource type="Resource" id="Resource_t2lmn"]
+script = ExtResource("5_owdni")
+name = "120 FPS"
+value = "120"
+
+[sub_resource type="Resource" id="Resource_f1hy8"]
+script = ExtResource("5_owdni")
+name = "144 FPS"
+value = "144"
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1ydyy"]
+texture = ExtResource("3_8de3c")
+texture_margin_left = 27.459316
+texture_margin_top = 25.996336
+texture_margin_right = 26.918793
+texture_margin_bottom = 24.215696
+region_rect = Rect2(803, 310, 74, 54)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_l0x48"]
+texture = ExtResource("3_8de3c")
+texture_margin_left = 27.459316
+texture_margin_top = 24.620928
+texture_margin_right = 26.918793
+texture_margin_bottom = 24.215696
+region_rect = Rect2(803, 310, 74, 54)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_asak7"]
+texture = ExtResource("3_8de3c")
+texture_margin_left = 27.459316
+texture_margin_top = 24.620928
+texture_margin_right = 26.918793
+texture_margin_bottom = 24.215696
+region_rect = Rect2(803, 310, 74, 54)
+
+[sub_resource type="Curve" id="Curve_5w6ml"]
+_limits = [0.5, 2.0, 0.0, 1.0]
+_data = [Vector2(0, 0.5), 0.0, 0.0, 0, 0, Vector2(1, 2), 2.45, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="LabelSettings" id="LabelSettings_3mno1"]
+font = ExtResource("7_npkwp")
+font_size = 22
+font_color = Color(1, 0.7764706, 0.44313726, 1)
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+stacked_outline_count = 2
+stacked_outline_0/size = 1
+stacked_outline_0/color = Color(0.21230483, 0.21230483, 0.21230483, 1)
+stacked_outline_1/size = 4
+
+[sub_resource type="Curve" id="Curve_8de3c"]
+_limits = [0.0, 5.0, 0.0, 1.0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 5), 7.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_gp8y3"]
+_limits = [-80.0, 0.0, 0.0, 1.0]
+_data = [Vector2(0.0141509, -80), 0.0, 243.071, 0, 0, Vector2(0.497642, -30.3373), 100.492, 100.492, 0, 0, Vector2(0.997642, 0), 37.2193, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_owdni"]
+_limits = [-80.0, 0.0, 0.0, 1.0]
+_data = [Vector2(0.0141509, -80), 0.0, 243.071, 0, 0, Vector2(0.497642, -30.3373), 100.492, 100.492, 0, 0, Vector2(0.997642, 0), 37.2193, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_2mlk8"]
+_limits = [-80.0, 0.0, 0.0, 1.0]
+_data = [Vector2(0.0141509, -80), 0.0, 243.071, 0, 0, Vector2(0.497642, -30.3373), 100.492, 100.492, 0, 0, Vector2(0.997642, 0), 37.2193, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_npkwp"]
+_limits = [-80.0, 0.0, 0.0, 1.0]
+_data = [Vector2(0.0141509, -80), 0.0, 243.071, 0, 0, Vector2(0.497642, -30.3373), 100.492, 100.492, 0, 0, Vector2(0.997642, 0), 37.2193, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Resource" id="Resource_6hbqa"]
+script = ExtResource("5_owdni")
+name = "English"
+value = "en"
+
+[node name="OptionsScene" type="MarginContainer"]
+offset_right = 788.0
+offset_bottom = 1078.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 72
+theme_override_constants/margin_right = 72
+script = ExtResource("1_yj3e1")
+scene_manipulator = "GameOptions"
+current_buttons = Array[ExtResource("2_8de3c")]([SubResource("Resource_gp8y3"), SubResource("Resource_owdni"), SubResource("Resource_2mlk8"), SubResource("Resource_npkwp"), SubResource("Resource_5w6ml"), SubResource("Resource_sygh3"), SubResource("Resource_efrsq"), SubResource("Resource_32sr8"), SubResource("Resource_8si47"), SubResource("Resource_busy6")])
+fx_preview = ExtResource("3_gp8y3")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+
+[node name="Separator4" type="VBoxContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+alignment = 1
+
+[node name="SeparatorSounds" type="HBoxContainer" parent="VBoxContainer/Separator4"]
+layout_mode = 2
+
+[node name="SepInitial" type="TextureRect" parent="VBoxContainer/Separator4/SeparatorSounds"]
+custom_minimum_size = Vector2(0, 19)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+texture = SubResource("AtlasTexture_6hbqa")
+expand_mode = 1
+
+[node name="SepPoint1" type="TextureRect" parent="VBoxContainer/Separator4/SeparatorSounds"]
+layout_mode = 2
+size_flags_vertical = 4
+texture = SubResource("AtlasTexture_bc124")
+
+[node name="SepPoint2" type="TextureRect" parent="VBoxContainer/Separator4/SeparatorSounds"]
+layout_mode = 2
+size_flags_vertical = 4
+texture = SubResource("AtlasTexture_bc124")
+
+[node name="Colum1" type="Control" parent="VBoxContainer/Separator4/SeparatorSounds"]
+custom_minimum_size = Vector2(200, 32)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="GeneralSeparator" parent="VBoxContainer/Separator4/SeparatorSounds/Colum1" instance=ExtResource("1_lyesw")]
+unique_name_in_owner = true
+layout_mode = 1
+offset_right = 0.0
+offset_bottom = 0.0
+label_text = "GENERAL"
+
+[node name="SepPoint3" type="TextureRect" parent="VBoxContainer/Separator4/SeparatorSounds"]
+layout_mode = 2
+size_flags_vertical = 4
+texture = SubResource("AtlasTexture_bc124")
+
+[node name="SepPoint4" type="TextureRect" parent="VBoxContainer/Separator4/SeparatorSounds"]
+layout_mode = 2
+size_flags_vertical = 4
+texture = SubResource("AtlasTexture_bc124")
+
+[node name="SepFinal" type="TextureRect" parent="VBoxContainer/Separator4/SeparatorSounds"]
+custom_minimum_size = Vector2(0, 19)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+texture = SubResource("AtlasTexture_1ydyy")
+expand_mode = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Colum1" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(280, 32)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="ColumName" parent="VBoxContainer/HBoxContainer/Colum1" instance=ExtResource("1_lyesw")]
+layout_mode = 2
+label_text = "FULLSCREEN:"
+horizontal_align = 0
+
+[node name="Control" type="Control" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="FullScreen" type="Control" parent="VBoxContainer/HBoxContainer/Control"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(32, 32)
+size_flags_horizontal = 0
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath(".")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath(".")
+focus_next = NodePath(".")
+focus_previous = NodePath(".")
+focus_mode = 1
+mouse_default_cursor_shape = 2
+script = ExtResource("2_yj3e1")
+normal_texture = SubResource("AtlasTexture_8de3c")
+normal_hover_texture = SubResource("AtlasTexture_l0x48")
+pressed_texture = SubResource("AtlasTexture_uf41i")
+pressed_hover_texture = SubResource("AtlasTexture_pco8h")
+toggle_mode = true
+content_justification = 1
+min_texture_size_no_pressed = Vector2(56, 56)
+min_texture_size_pressed = Vector2(72, 72)
+manage_mouse_click = false
+on_select_animation = 11
+on_hover_animation = 11
+
+[node name="HBoxContainer9" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Colum1" type="MarginContainer" parent="VBoxContainer/HBoxContainer9"]
+custom_minimum_size = Vector2(280, 32)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="ColumName" parent="VBoxContainer/HBoxContainer9/Colum1" instance=ExtResource("1_lyesw")]
+layout_mode = 2
+label_text = "V-SYNC:"
+horizontal_align = 0
+
+[node name="VSync" type="Control" parent="VBoxContainer/HBoxContainer9"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 0
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath(".")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath(".")
+focus_next = NodePath(".")
+focus_previous = NodePath(".")
+focus_mode = 1
+mouse_default_cursor_shape = 2
+script = ExtResource("2_yj3e1")
+normal_texture = SubResource("AtlasTexture_gp8y3")
+normal_hover_texture = SubResource("AtlasTexture_l0x48")
+pressed_texture = SubResource("AtlasTexture_uf41i")
+pressed_hover_texture = SubResource("AtlasTexture_pco8h")
+toggle_mode = true
+content_justification = 1
+min_texture_size_no_pressed = Vector2(56, 56)
+min_texture_size_pressed = Vector2(72, 72)
+manage_mouse_click = false
+on_select_animation = 11
+on_hover_animation = 11
+on_pressed_animation = 11
+
+[node name="Sep1" type="Control" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 28)
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Colum1" type="Control" parent="VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(280, 32)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="ColumName" parent="VBoxContainer/HBoxContainer2/Colum1" instance=ExtResource("1_lyesw")]
+layout_mode = 1
+offset_right = 0.0
+offset_bottom = 0.0
+label_text = "MAX FPS:"
+horizontal_align = 0
+
+[node name="Control" type="MarginContainer" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+
+[node name="FpsSelector" parent="VBoxContainer/HBoxContainer2/Control" instance=ExtResource("4_gp8y3")]
+unique_name_in_owner = true
+clip_contents = true
+custom_minimum_size = Vector2(360, 48)
+layout_mode = 2
+size_flags_vertical = 4
+items = Array[ExtResource("5_owdni")]([SubResource("Resource_eeobh"), SubResource("Resource_ms875"), SubResource("Resource_ch1ra"), SubResource("Resource_12u6i"), SubResource("Resource_t2lmn"), SubResource("Resource_f1hy8")])
+background_style_selected = SubResource("StyleBoxTexture_1ydyy")
+background_style_unselected = SubResource("StyleBoxTexture_l0x48")
+background_style_highlight = SubResource("StyleBoxTexture_asak7")
+item_selected_color = Color(0.8862745, 0.6901961, 0.39607844, 1)
+item_unselected_color = Color(0.89, 0.6942, 0.40049997, 0.5686275)
+item_highlight_color = Color(0.8862745, 0.6901961, 0.39607844, 1)
+item_spacing = 6
+selected_index = 3
+text_offset = 3
+
+[node name="Sep2" type="Control" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 28)
+layout_mode = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Colum1" type="Control" parent="VBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(280, 32)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="ColumName" parent="VBoxContainer/HBoxContainer3/Colum1" instance=ExtResource("1_lyesw")]
+layout_mode = 1
+offset_right = 0.0
+offset_bottom = 0.0
+label_text = "BRIGHTNESS:"
+horizontal_align = 0
+
+[node name="Brightness" parent="VBoxContainer/HBoxContainer3" instance=ExtResource("6_2mlk8")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mod_value_curve = SubResource("Curve_5w6ml")
+key_step = 0.01
+
+[node name="BrightnessLabel" type="Label" parent="VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 0.7764706, 0.44313726, 1)
+theme_override_font_sizes/font_size = 22
+text = "x 1.0"
+label_settings = SubResource("LabelSettings_3mno1")
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Colum1" type="Control" parent="VBoxContainer/HBoxContainer4"]
+custom_minimum_size = Vector2(280, 32)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="ColumName" parent="VBoxContainer/HBoxContainer4/Colum1" instance=ExtResource("1_lyesw")]
+layout_mode = 1
+offset_right = 0.0
+offset_bottom = 0.0
+label_text = "TEXT SPEED:"
+horizontal_align = 0
+
+[node name="TextSpeed" parent="VBoxContainer/HBoxContainer4" instance=ExtResource("6_2mlk8")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mod_value_curve = SubResource("Curve_8de3c")
+key_step = 0.01
+
+[node name="TextSpeedLabel" type="Label" parent="VBoxContainer/HBoxContainer4"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 0.7764706, 0.44313726, 1)
+theme_override_font_sizes/font_size = 22
+text = "x 1.0"
+label_settings = SubResource("LabelSettings_3mno1")
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Separator2" type="VBoxContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+alignment = 1
+
+[node name="SeparatorSounds" type="HBoxContainer" parent="VBoxContainer/Separator2"]
+layout_mode = 2
+
+[node name="SepInitial" type="TextureRect" parent="VBoxContainer/Separator2/SeparatorSounds"]
+custom_minimum_size = Vector2(0, 19)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+texture = SubResource("AtlasTexture_6hbqa")
+expand_mode = 1
+
+[node name="SepPoint1" type="TextureRect" parent="VBoxContainer/Separator2/SeparatorSounds"]
+layout_mode = 2
+size_flags_vertical = 4
+texture = SubResource("AtlasTexture_bc124")
+
+[node name="SepPoint2" type="TextureRect" parent="VBoxContainer/Separator2/SeparatorSounds"]
+layout_mode = 2
+size_flags_vertical = 4
+texture = SubResource("AtlasTexture_bc124")
+
+[node name="Colum1" type="Control" parent="VBoxContainer/Separator2/SeparatorSounds"]
+custom_minimum_size = Vector2(200, 32)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="SoundsSeparator" parent="VBoxContainer/Separator2/SeparatorSounds/Colum1" instance=ExtResource("1_lyesw")]
+unique_name_in_owner = true
+layout_mode = 1
+offset_right = 0.0
+offset_bottom = 0.0
+label_text = "SOUNDS"
+
+[node name="SepPoint3" type="TextureRect" parent="VBoxContainer/Separator2/SeparatorSounds"]
+layout_mode = 2
+size_flags_vertical = 4
+texture = SubResource("AtlasTexture_bc124")
+
+[node name="SepPoint4" type="TextureRect" parent="VBoxContainer/Separator2/SeparatorSounds"]
+layout_mode = 2
+size_flags_vertical = 4
+texture = SubResource("AtlasTexture_bc124")
+
+[node name="SepFinal" type="TextureRect" parent="VBoxContainer/Separator2/SeparatorSounds"]
+custom_minimum_size = Vector2(0, 19)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+texture = SubResource("AtlasTexture_1ydyy")
+expand_mode = 1
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Colum1" type="Control" parent="VBoxContainer/HBoxContainer5"]
+custom_minimum_size = Vector2(280, 32)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="ColumName" parent="VBoxContainer/HBoxContainer5/Colum1" instance=ExtResource("1_lyesw")]
+layout_mode = 1
+offset_right = 0.0
+offset_bottom = 0.0
+label_text = "MASTER VOLUME:"
+horizontal_align = 0
+
+[node name="MasterVolume" parent="VBoxContainer/HBoxContainer5" instance=ExtResource("6_2mlk8")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mod_value_curve = SubResource("Curve_gp8y3")
+key_step = 0.05
+
+[node name="MasterVolumeLabel" type="Label" parent="VBoxContainer/HBoxContainer5"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.7764706, 0.44313726, 1)
+theme_override_font_sizes/font_size = 22
+text = "0.0"
+label_settings = SubResource("LabelSettings_3mno1")
+horizontal_alignment = 2
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Colum1" type="Control" parent="VBoxContainer/HBoxContainer6"]
+custom_minimum_size = Vector2(280, 32)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="ColumName" parent="VBoxContainer/HBoxContainer6/Colum1" instance=ExtResource("1_lyesw")]
+layout_mode = 1
+offset_right = 0.0
+offset_bottom = 0.0
+label_text = "MUSIC VOLUME:"
+horizontal_align = 0
+
+[node name="MusicVolume" parent="VBoxContainer/HBoxContainer6" instance=ExtResource("6_2mlk8")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mod_value_curve = SubResource("Curve_owdni")
+key_step = 0.05
+
+[node name="MusicVolumeLabel" type="Label" parent="VBoxContainer/HBoxContainer6"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.7764706, 0.44313726, 1)
+theme_override_font_sizes/font_size = 22
+text = "0.0"
+label_settings = SubResource("LabelSettings_3mno1")
+horizontal_alignment = 2
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Colum1" type="Control" parent="VBoxContainer/HBoxContainer7"]
+custom_minimum_size = Vector2(280, 32)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="ColumName" parent="VBoxContainer/HBoxContainer7/Colum1" instance=ExtResource("1_lyesw")]
+layout_mode = 1
+offset_right = 0.0
+offset_bottom = 0.0
+label_text = "FX VOLUME:"
+horizontal_align = 0
+
+[node name="SeVolume" parent="VBoxContainer/HBoxContainer7" instance=ExtResource("6_2mlk8")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mod_value_curve = SubResource("Curve_2mlk8")
+key_step = 0.05
+
+[node name="SeVolumeLabel" type="Label" parent="VBoxContainer/HBoxContainer7"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.7764706, 0.44313726, 1)
+theme_override_font_sizes/font_size = 22
+text = "0.0"
+label_settings = SubResource("LabelSettings_3mno1")
+horizontal_alignment = 2
+
+[node name="HBoxContainer8" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Colum1" type="Control" parent="VBoxContainer/HBoxContainer8"]
+custom_minimum_size = Vector2(280, 32)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="ColumName" parent="VBoxContainer/HBoxContainer8/Colum1" instance=ExtResource("1_lyesw")]
+layout_mode = 1
+offset_right = 0.0
+offset_bottom = 0.0
+label_text = "AMBIENT VOLUME:"
+horizontal_align = 0
+
+[node name="MeVolume" parent="VBoxContainer/HBoxContainer8" instance=ExtResource("6_2mlk8")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mod_value_curve = SubResource("Curve_npkwp")
+key_step = 0.05
+
+[node name="MeVolumeLabel" type="Label" parent="VBoxContainer/HBoxContainer8"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.7764706, 0.44313726, 1)
+theme_override_font_sizes/font_size = 22
+text = "0.0"
+label_settings = SubResource("LabelSettings_3mno1")
+horizontal_alignment = 2
+
+[node name="Separator3" type="VBoxContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+alignment = 1
+
+[node name="SeparatorLanguage" type="HBoxContainer" parent="VBoxContainer/Separator3"]
+layout_mode = 2
+
+[node name="SepInitial" type="TextureRect" parent="VBoxContainer/Separator3/SeparatorLanguage"]
+custom_minimum_size = Vector2(0, 19)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+texture = SubResource("AtlasTexture_6hbqa")
+expand_mode = 1
+
+[node name="SepPoint1" type="TextureRect" parent="VBoxContainer/Separator3/SeparatorLanguage"]
+layout_mode = 2
+size_flags_vertical = 4
+texture = SubResource("AtlasTexture_bc124")
+
+[node name="SepPoint2" type="TextureRect" parent="VBoxContainer/Separator3/SeparatorLanguage"]
+layout_mode = 2
+size_flags_vertical = 4
+texture = SubResource("AtlasTexture_bc124")
+
+[node name="Colum1" type="Control" parent="VBoxContainer/Separator3/SeparatorLanguage"]
+custom_minimum_size = Vector2(200, 32)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="LanguageSeparator" parent="VBoxContainer/Separator3/SeparatorLanguage/Colum1" instance=ExtResource("1_lyesw")]
+unique_name_in_owner = true
+layout_mode = 1
+offset_right = 0.0
+offset_bottom = 0.0
+label_text = "LANGUAGE"
+
+[node name="SepPoint3" type="TextureRect" parent="VBoxContainer/Separator3/SeparatorLanguage"]
+layout_mode = 2
+size_flags_vertical = 4
+texture = SubResource("AtlasTexture_bc124")
+
+[node name="SepPoint4" type="TextureRect" parent="VBoxContainer/Separator3/SeparatorLanguage"]
+layout_mode = 2
+size_flags_vertical = 4
+texture = SubResource("AtlasTexture_bc124")
+
+[node name="SepFinal" type="TextureRect" parent="VBoxContainer/Separator3/SeparatorLanguage"]
+custom_minimum_size = Vector2(0, 19)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+texture = SubResource("AtlasTexture_1ydyy")
+expand_mode = 1
+
+[node name="HBoxContainer10" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Colum1" type="Control" parent="VBoxContainer/HBoxContainer10"]
+custom_minimum_size = Vector2(280, 32)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="ColumName" parent="VBoxContainer/HBoxContainer10/Colum1" instance=ExtResource("1_lyesw")]
+layout_mode = 1
+offset_right = 0.0
+offset_bottom = 0.0
+label_text = "select LANGUAGE:"
+horizontal_align = 0
+
+[node name="LanguageSelector" parent="VBoxContainer/HBoxContainer10" instance=ExtResource("4_gp8y3")]
+unique_name_in_owner = true
+clip_contents = true
+custom_minimum_size = Vector2(360, 48)
+layout_mode = 2
+size_flags_vertical = 4
+items = Array[ExtResource("5_owdni")]([SubResource("Resource_6hbqa")])
+background_style_selected = SubResource("StyleBoxTexture_1ydyy")
+background_style_unselected = SubResource("StyleBoxTexture_l0x48")
+background_style_highlight = SubResource("StyleBoxTexture_asak7")
+item_selected_color = Color(0.8862745, 0.6901961, 0.39607844, 1)
+item_unselected_color = Color(0.89, 0.6942, 0.40049997, 0.5686275)
+item_highlight_color = Color(0.8862745, 0.6901961, 0.39607844, 1)
+item_spacing = 6
+text_offset = 3
+
+[node name="BottomSeparator" type="Control" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Control/FullScreen" to="." method="_on_full_screen_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer9/VSync" to="." method="_on_v_sync_pressed"]
+[connection signal="item_changed" from="VBoxContainer/HBoxContainer2/Control/FpsSelector" to="." method="_on_fps_selector_item_changed"]
+[connection signal="changed" from="VBoxContainer/HBoxContainer3/Brightness" to="." method="_on_brightness_changed"]
+[connection signal="changed" from="VBoxContainer/HBoxContainer4/TextSpeed" to="." method="_on_text_speed_changed"]
+[connection signal="changed" from="VBoxContainer/HBoxContainer5/MasterVolume" to="." method="_on_master_volume_changed"]
+[connection signal="changed" from="VBoxContainer/HBoxContainer6/MusicVolume" to="." method="_on_music_volume_changed"]
+[connection signal="changed" from="VBoxContainer/HBoxContainer7/SeVolume" to="." method="_on_se_volume_changed"]
+[connection signal="changed" from="VBoxContainer/HBoxContainer8/MeVolume" to="." method="_on_me_volume_changed"]
+[connection signal="item_changed" from="VBoxContainer/HBoxContainer10/LanguageSelector" to="." method="_on_language_selector_item_changed"]

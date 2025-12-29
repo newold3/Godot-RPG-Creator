@@ -1,0 +1,46 @@
+[gd_scene load_steps=7 format=3 uid="uid://dl3njfum4oex8"]
+
+[ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="1_sdvwr"]
+[ext_resource type="Script" uid="uid://e3v1pldi6jqy" path="res://addons/CustomControls/choice_panel.gd" id="1_ujbga"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="2_dxdox"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_icsl0"]
+atlas = ExtResource("2_dxdox")
+region = Rect2(0, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_50cyr"]
+atlas = ExtResource("2_dxdox")
+region = Rect2(24, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6npal"]
+atlas = ExtResource("2_dxdox")
+region = Rect2(48, 24, 24, 24)
+
+[node name="ChoicePanel" type="HBoxContainer"]
+size_flags_vertical = 0
+script = ExtResource("1_ujbga")
+
+[node name="ID" type="Label" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+text = "#1"
+
+[node name="Value" parent="." instance=ExtResource("1_sdvwr")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Choice text"
+
+[node name="EraseChoice" type="TextureButton" parent="."]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+tooltip_text = "Remove this choice from the list."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_icsl0")
+texture_hover = SubResource("AtlasTexture_50cyr")
+texture_disabled = SubResource("AtlasTexture_6npal")
+
+[connection signal="pressed" from="EraseChoice" to="." method="_on_erase_choice_pressed"]

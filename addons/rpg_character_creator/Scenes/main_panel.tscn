@@ -1,0 +1,807 @@
+[gd_scene load_steps=41 format=3 uid="uid://dwupjod8sfjgd"]
+
+[ext_resource type="Script" uid="uid://sdc3qnfvry14" path="res://addons/rpg_character_creator/Scripts/main_panel.gd" id="1_8lq1k"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="2_2fo5f"]
+[ext_resource type="PackedScene" uid="uid://brsxpnry24tbh" path="res://addons/CustomControls/custom_help_button.tscn" id="2_4iill"]
+[ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="2_pf7n8"]
+[ext_resource type="PackedScene" uid="uid://drrru5flvnlto" path="res://addons/rpg_character_creator/Scenes/character_editor_palette_button.tscn" id="3_2vs2v"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="5_wt26l"]
+[ext_resource type="Texture2D" uid="uid://dmceyhk7mt4eh" path="res://addons/rpg_character_creator/GUI/pennomi.png" id="6_06de3"]
+[ext_resource type="PackedScene" uid="uid://eegltsbwbyk3" path="res://addons/rpg_character_creator/Scenes/editor_character.tscn" id="8_hdc7x"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="9_udigg"]
+[ext_resource type="PackedScene" uid="uid://jdxvlv40pxd0" path="res://addons/rpg_character_creator/Scenes/palette_dialog.tscn" id="10_8up4c"]
+[ext_resource type="Texture2D" uid="uid://bnfb7u5j2x4pq" path="res://addons/CustomControls/Images/loading_icon.png" id="11_skw2v"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g31f5"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Gradient" id="Gradient_ctwx1"]
+colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_5wkvt"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ms3lh"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_5wkvt")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ajixy"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_55ves"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0, 0, 0, 0.258824)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7xavs"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0, 0, 0, 0.258824)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4emis"]
+content_margin_left = 32.0
+content_margin_top = 4.0
+content_margin_right = 32.0
+content_margin_bottom = 4.0
+bg_color = Color(0.270588, 0.270588, 0.270588, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4yua4"]
+atlas = ExtResource("6_06de3")
+region = Rect2(68.8922, 0.918444, 18.0039, 19.4095)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gg20e"]
+atlas = ExtResource("6_06de3")
+region = Rect2(111.971, 224.377, 12.0266, 12.9725)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3sumr"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vcd7e"]
+atlas = ExtResource("9_udigg")
+region = Rect2(216, 168, 24, 24)
+
+[sub_resource type="Gradient" id="Gradient_skw2v"]
+offsets = PackedFloat32Array(0, 0.391586, 0.595469, 1)
+colors = PackedColorArray(0, 0, 0, 0.192157, 0, 0, 0, 0.388235, 0, 0, 0, 0.376471, 0, 0, 0, 0.254902)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_am51x"]
+gradient = SubResource("Gradient_skw2v")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wkjry"]
+atlas = ExtResource("11_skw2v")
+region = Rect2(600, 300, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_goxh6"]
+atlas = ExtResource("11_skw2v")
+region = Rect2(0, 0, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uwjbp"]
+atlas = ExtResource("11_skw2v")
+region = Rect2(300, 0, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qe788"]
+atlas = ExtResource("11_skw2v")
+region = Rect2(600, 0, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n0ojs"]
+atlas = ExtResource("11_skw2v")
+region = Rect2(900, 0, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o15lp"]
+atlas = ExtResource("11_skw2v")
+region = Rect2(0, 300, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jbx63"]
+atlas = ExtResource("11_skw2v")
+region = Rect2(300, 300, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dbb1o"]
+atlas = ExtResource("11_skw2v")
+region = Rect2(900, 300, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g0vwv"]
+atlas = ExtResource("11_skw2v")
+region = Rect2(0, 600, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p71ux"]
+atlas = ExtResource("11_skw2v")
+region = Rect2(300, 600, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_enu6e"]
+atlas = ExtResource("11_skw2v")
+region = Rect2(600, 600, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2eurm"]
+atlas = ExtResource("11_skw2v")
+region = Rect2(900, 600, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_km4c5"]
+atlas = ExtResource("11_skw2v")
+region = Rect2(0, 900, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o8kil"]
+atlas = ExtResource("11_skw2v")
+region = Rect2(300, 900, 300, 300)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_am51x"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wkjry")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_goxh6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uwjbp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qe788")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n0ojs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o15lp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jbx63")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dbb1o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g0vwv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p71ux")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_enu6e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2eurm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_km4c5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o8kil")
+}],
+"loop": true,
+"name": &"default",
+"speed": 15.0
+}]
+
+[node name="MainPanel" type="MarginContainer" node_paths=PackedStringArray("preview_character")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -17.0
+offset_right = 17.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+script = ExtResource("1_8lq1k")
+preview_character = NodePath("VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer2/PreviewCharacter")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Race:"
+
+[node name="Races" parent="VBoxContainer/HBoxContainer" instance=ExtResource("2_2fo5f")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+selected = 12
+item_count = 29
+popup/item_0/text = "Alien"
+popup/item_0/id = 0
+popup/item_1/text = "Boarman"
+popup/item_1/id = 1
+popup/item_2/text = "Cyclops"
+popup/item_2/id = 2
+popup/item_3/text = "Dark Elf"
+popup/item_3/id = 3
+popup/item_4/text = "Demon"
+popup/item_4/id = 4
+popup/item_5/text = "Drake"
+popup/item_5/id = 5
+popup/item_6/text = "Fairy"
+popup/item_6/id = 6
+popup/item_7/text = "Faun"
+popup/item_7/id = 7
+popup/item_8/text = "Frankenstein"
+popup/item_8/id = 8
+popup/item_9/text = "Goblin"
+popup/item_9/id = 9
+popup/item_10/text = "Half Bird"
+popup/item_10/id = 10
+popup/item_11/text = "Half Cat"
+popup/item_11/id = 11
+popup/item_12/text = "Human"
+popup/item_12/id = 12
+popup/item_13/text = "Half Wolf"
+popup/item_13/id = 13
+popup/item_14/text = "Lizard"
+popup/item_14/id = 14
+popup/item_15/text = "Marked"
+popup/item_15/id = 15
+popup/item_16/text = "Minotaur"
+popup/item_16/id = 16
+popup/item_17/text = "Mouse"
+popup/item_17/id = 17
+popup/item_18/text = "Orc"
+popup/item_18/id = 18
+popup/item_19/text = "Pig"
+popup/item_19/id = 19
+popup/item_20/text = "Rabbit"
+popup/item_20/id = 20
+popup/item_21/text = "Rat"
+popup/item_21/id = 21
+popup/item_22/text = "Sheep"
+popup/item_22/id = 22
+popup/item_23/text = "Skeleton"
+popup/item_23/id = 23
+popup/item_24/text = "Troll"
+popup/item_24/id = 24
+popup/item_25/text = "Vampire"
+popup/item_25/id = 25
+popup/item_26/text = "Wartotaur"
+popup/item_26/id = 26
+popup/item_27/text = "Wolf"
+popup/item_27/id = 27
+popup/item_28/text = "Zombie"
+popup/item_28/id = 28
+
+[node name="Label4" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Default Palette:"
+
+[node name="Palettes" parent="VBoxContainer/HBoxContainer" instance=ExtResource("2_2fo5f")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+selected = 1
+item_count = 5
+popup/item_0/text = "Aurora"
+popup/item_0/id = 0
+popup/item_1/text = "Default"
+popup/item_1/id = 1
+popup/item_2/text = "Duel"
+popup/item_2/id = 2
+popup/item_3/text = "Lpc 512"
+popup/item_3/id = 3
+popup/item_4/text = "Sonic Robo Blast 2"
+popup/item_4/id = 4
+
+[node name="Reset" parent="VBoxContainer/HBoxContainer" instance=ExtResource("5_wt26l")]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+tooltip_text = "[title]Reset Character[/title]
+Resets the editor to default values"
+text = "Reset"
+
+[node name="ImportData" parent="VBoxContainer/HBoxContainer" instance=ExtResource("5_wt26l")]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+tooltip_text = "[title]Import Data[/title]
+Import a character previously created with this editor or a piece of equipment (the piece will be discarded if it is not compatible with the current character) for editing."
+text = "Import data"
+
+[node name="HelpButton" parent="VBoxContainer/HBoxContainer" instance=ExtResource("2_4iill")]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+tooltip_text = "[title]Help[/title]
+The following keys can be used:
+
+[ul]
+Keys \"UP,\" \"DOWN,\" \"LEFT,\" \"RIGHT\": Hold any of these keys to display the character's walking animation in the corresponding direction.
+Keys \"1,\" \"2,\" \"3,\" \"4,\" \"5,\" \"6\": Show one of the attack animations (if the equipped weapon has one): \"cast,\" \"slash,\" \"islash,\" \"thrust,\" \"smash,\" or \"shoot.\"
+Key \"SPACE\": Displays the attack animation for the equipped weapon.
+Mouse \"Wheel Up\"/\"Wheel Down\": Scroll through selectable parts to quickly choose the previous or next item.
+Mouse \"Middle Button\": Resets the selected part to its default (item 0).
+[/ul]"
+
+[node name="CustomPanel" parent="VBoxContainer" instance=ExtResource("2_pf7n8")]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_g31f5")
+style1 = SubResource("StyleBoxFlat_g31f5")
+style2 = SubResource("StyleBoxTexture_ms3lh")
+style3 = SubResource("StyleBoxFlat_ajixy")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/CustomPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer"]
+z_index = 1
+custom_minimum_size = Vector2(440, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_55ves")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_7xavs")
+
+[node name="BodyContainer" type="VBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/BodyContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_4emis")
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/BodyContainer/PanelContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+text = "BODY"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Gender" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/BodyContainer" instance=ExtResource("3_2vs2v")]
+unique_name_in_owner = true
+layout_mode = 2
+button_name = "Gender"
+part_id = "gender"
+palette_button_disabled = true
+use_icons = false
+
+[node name="Body" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/BodyContainer" instance=ExtResource("3_2vs2v")]
+unique_name_in_owner = true
+layout_mode = 2
+button_name = "Body"
+part_id = "body"
+use_icons = false
+
+[node name="Eyes" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/BodyContainer" instance=ExtResource("3_2vs2v")]
+unique_name_in_owner = true
+layout_mode = 2
+button_name = "Eyes"
+part_id = "eyes"
+
+[node name="Wings" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/BodyContainer" instance=ExtResource("3_2vs2v")]
+unique_name_in_owner = true
+layout_mode = 2
+button_name = "Wings"
+part_id = "wings"
+
+[node name="Tail" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/BodyContainer" instance=ExtResource("3_2vs2v")]
+unique_name_in_owner = true
+layout_mode = 2
+button_name = "Tail"
+part_id = "tail"
+
+[node name="Horns" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/BodyContainer" instance=ExtResource("3_2vs2v")]
+unique_name_in_owner = true
+layout_mode = 2
+button_name = "Horns"
+part_id = "horns"
+
+[node name="Hair" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/BodyContainer" instance=ExtResource("3_2vs2v")]
+unique_name_in_owner = true
+layout_mode = 2
+button_name = "Hair"
+part_id = "hair"
+
+[node name="HairAddon" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/BodyContainer" instance=ExtResource("3_2vs2v")]
+unique_name_in_owner = true
+layout_mode = 2
+button_name = "Hair Addon"
+part_id = "hairadd"
+
+[node name="Ears" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/BodyContainer" instance=ExtResource("3_2vs2v")]
+unique_name_in_owner = true
+layout_mode = 2
+button_name = "Ears"
+part_id = "ears"
+
+[node name="Nose" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/BodyContainer" instance=ExtResource("3_2vs2v")]
+unique_name_in_owner = true
+layout_mode = 2
+button_name = "Nose"
+part_id = "nose"
+
+[node name="FacialHair" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/BodyContainer" instance=ExtResource("3_2vs2v")]
+unique_name_in_owner = true
+layout_mode = 2
+button_name = "Facial Hair"
+part_id = "facial"
+
+[node name="BodyAddon1" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/BodyContainer" instance=ExtResource("3_2vs2v")]
+unique_name_in_owner = true
+layout_mode = 2
+button_name = "Body Addon 1"
+part_id = "add1"
+
+[node name="BodyAddon2" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/BodyContainer" instance=ExtResource("3_2vs2v")]
+unique_name_in_owner = true
+layout_mode = 2
+button_name = "Body Addon 2"
+part_id = "add2"
+
+[node name="BodyAddon3" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/BodyContainer" instance=ExtResource("3_2vs2v")]
+unique_name_in_owner = true
+layout_mode = 2
+button_name = "Body Addon 3"
+part_id = "add3"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="RandomBody" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_wt26l")]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+tooltip_text = "Randomly choose the body parts for this character."
+text = "Random "
+icon = SubResource("AtlasTexture_4yua4")
+expand_icon = true
+
+[node name="ClearBody" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_wt26l")]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+tooltip_text = "Remove all added body parts from this character and leave a base character.
+
+[Note]: The equipment will not be changed."
+text = "Clear Body"
+icon = SubResource("AtlasTexture_gg20e")
+expand_icon = true
+
+[node name="PanelContainer2" type="PanelContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_3sumr")
+
+[node name="PreviewCharacter" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer2" instance=ExtResource("8_hdc7x")]
+unique_name_in_owner = true
+modulate = Color(0.73628855, 0.00044915616, 0.7436323, 0)
+custom_minimum_size = Vector2(250, 547)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer2"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_4emis")
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/PanelContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+text = "CURRENT CHARACTER"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EditorCharacter" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer" instance=ExtResource("8_hdc7x")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+
+[node name="CreateCharacterAndEquipment" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer" instance=ExtResource("5_wt26l")]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+text = "Save Actor / Equipment"
+icon = SubResource("AtlasTexture_vcd7e")
+expand_icon = true
+
+[node name="Control" type="Control" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer"]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+
+[node name="PanelContainer3" type="PanelContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer"]
+z_index = 1
+custom_minimum_size = Vector2(440, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_55ves")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_7xavs")
+
+[node name="GearContainer" type="VBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/GearContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_4emis")
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/GearContainer/PanelContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+text = "GEAR"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Mask" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/GearContainer" instance=ExtResource("3_2vs2v")]
+unique_name_in_owner = true
+layout_mode = 2
+button_name = "Mask"
+part_id = "mask"
+
+[node name="Hat" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/GearContainer" instance=ExtResource("3_2vs2v")]
+unique_name_in_owner = true
+layout_mode = 2
+button_name = "Hat"
+part_id = "hat"
+
+[node name="GearFacial" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/GearContainer" instance=ExtResource("3_2vs2v")]
+unique_name_in_owner = true
+layout_mode = 2
+button_name = "Facial"
+part_id = "glasses"
+
+[node name="Suit" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/GearContainer" instance=ExtResource("3_2vs2v")]
+unique_name_in_owner = true
+layout_mode = 2
+button_name = "Suit"
+part_id = "suit"
+
+[node name="Jacket" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/GearContainer" instance=ExtResource("3_2vs2v")]
+unique_name_in_owner = true
+layout_mode = 2
+button_name = "Coverall"
+part_id = "jacket"
+
+[node name="Shirt" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/GearContainer" instance=ExtResource("3_2vs2v")]
+unique_name_in_owner = true
+layout_mode = 2
+button_name = "Shirt"
+part_id = "shirt"
+
+[node name="Gloves" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/GearContainer" instance=ExtResource("3_2vs2v")]
+unique_name_in_owner = true
+layout_mode = 2
+button_name = "Gloves"
+part_id = "gloves"
+
+[node name="Belt" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/GearContainer" instance=ExtResource("3_2vs2v")]
+unique_name_in_owner = true
+layout_mode = 2
+button_name = "Belt"
+part_id = "belt"
+
+[node name="Pants" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/GearContainer" instance=ExtResource("3_2vs2v")]
+unique_name_in_owner = true
+layout_mode = 2
+button_name = "Pants"
+part_id = "pants"
+
+[node name="Shoes" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/GearContainer" instance=ExtResource("3_2vs2v")]
+unique_name_in_owner = true
+layout_mode = 2
+button_name = "Shoes"
+part_id = "shoes"
+
+[node name="Back" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/GearContainer" instance=ExtResource("3_2vs2v")]
+unique_name_in_owner = true
+layout_mode = 2
+button_name = "Back"
+part_id = "back"
+
+[node name="MainHand" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/GearContainer" instance=ExtResource("3_2vs2v")]
+unique_name_in_owner = true
+layout_mode = 2
+button_name = "Main Hand"
+part_id = "mainhand"
+
+[node name="Ammo" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/GearContainer" instance=ExtResource("3_2vs2v")]
+unique_name_in_owner = true
+layout_mode = 2
+button_name = "Ammo"
+part_id = "ammo"
+
+[node name="Offhand" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/GearContainer" instance=ExtResource("3_2vs2v")]
+unique_name_in_owner = true
+layout_mode = 2
+button_name = "Offhand"
+part_id = "offhand"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="RandomGear" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer" instance=ExtResource("5_wt26l")]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+tooltip_text = "Randomly choose the body parts for this character."
+text = "Random "
+icon = SubResource("AtlasTexture_4yua4")
+expand_icon = true
+
+[node name="ClearGear" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer" instance=ExtResource("5_wt26l")]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+tooltip_text = "Remove all added body parts from this character and leave a base character.
+
+[Note]: The equipment will not be changed."
+text = "Clear Gear"
+icon = SubResource("AtlasTexture_gg20e")
+expand_icon = true
+
+[node name="PaletteDialog" parent="." instance=ExtResource("10_8up4c")]
+unique_name_in_owner = true
+title = "Colors for \"Body\""
+position = Vector2i(1340, 43)
+size = Vector2i(512, 35)
+
+[node name="LoadingData" type="Control" parent="."]
+unique_name_in_owner = true
+z_index = 1
+layout_mode = 2
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
+
+[node name="ColorRect" type="ColorRect" parent="LoadingData"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.403922)
+
+[node name="ColorRect2" type="TextureRect" parent="LoadingData"]
+custom_minimum_size = Vector2(80, 60)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -175.0
+offset_bottom = -115.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = SubResource("GradientTexture2D_am51x")
+expand_mode = 1
+
+[node name="Control" type="Control" parent="LoadingData"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="LoadingData/Control"]
+unique_name_in_owner = true
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_am51x")
+autoplay = "default"
+frame_progress = 0.7468225
+
+[node name="Label" type="Label" parent="LoadingData/Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -302.5
+offset_top = 137.5
+offset_right = 302.5
+offset_bottom = 182.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 32
+text = "One moment please, editor is loading..."
+horizontal_alignment = 1
+
+[connection signal="item_selected" from="VBoxContainer/HBoxContainer/Races" to="." method="_on_races_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/HBoxContainer/Palettes" to="." method="_on_palettes_item_selected"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Reset" to="." method="_on_reset_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/ImportData" to="." method="_on_import_data_pressed"]
+[connection signal="pressed" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/RandomBody" to="." method="_on_random_body_pressed"]
+[connection signal="pressed" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/ClearBody" to="." method="_on_clear_body_pressed"]
+[connection signal="pressed" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/CreateCharacterAndEquipment" to="." method="_on_create_character_and_equipment_pressed"]
+[connection signal="pressed" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer/RandomGear" to="." method="_on_random_gear_pressed"]
+[connection signal="pressed" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer/ClearGear" to="." method="_on_clear_gear_pressed"]

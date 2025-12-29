@@ -1,0 +1,91 @@
+[gd_scene load_steps=5 format=3 uid="uid://duykjs55o5h2m"]
+
+[ext_resource type="Script" uid="uid://c6jnaxrqy2316" path="res://addons/CustomControls/custom_image_picker.gd" id="1_ilqc6"]
+[ext_resource type="Texture2D" uid="uid://c73240mifi8i" path="res://addons/CustomControls/Images/button_image_background.png" id="1_jamne"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2173t"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nlou2"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+
+[node name="CustomImagePicker" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 84.0
+offset_bottom = 103.0
+focus_mode = 2
+mouse_default_cursor_shape = 2
+script = ExtResource("1_ilqc6")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+metadata/_edit_lock_ = true
+
+[node name="Background" type="TextureRect" parent="MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("1_jamne")
+expand_mode = 1
+stretch_mode = 1
+metadata/_edit_lock_ = true
+
+[node name="MainImage" type="TextureRect" parent="MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+texture = SubResource("AtlasTexture_2173t")
+expand_mode = 1
+stretch_mode = 5
+metadata/_edit_lock_ = true
+
+[node name="Cursor" type="ColorRect" parent="MarginContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.933333, 0.52549, 0.0470588, 0.176471)
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_nlou2")
+metadata/_edit_lock_ = true
+
+[node name="MainPopup" type="PopupMenu" parent="."]
+unique_name_in_owner = true
+size = Vector2i(135, 124)
+item_count = 6
+item_0/text = "Change Image"
+item_0/id = 0
+item_1/id = 1
+item_1/separator = true
+item_2/text = "Copy"
+item_2/id = 2
+item_3/text = "Paste"
+item_3/id = 3
+item_4/id = 4
+item_4/separator = true
+item_5/text = "Remove Image"
+item_5/id = 5
+
+[connection signal="index_pressed" from="MainPopup" to="." method="_on_main_popup_index_pressed"]

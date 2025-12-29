@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://bw51i1cnalbag"]
+
+[node name="AutoAudioPlayer" type="AudioStreamPlayer"]
+autoplay = true
+bus = &"SE"
+
+[connection signal="finished" from="." to="." method="queue_free"]

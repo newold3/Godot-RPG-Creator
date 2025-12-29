@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://da23sxb2pplxd"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_c414m"]
+
+[sub_resource type="Gradient" id="Gradient_iphf6"]
+colors = PackedColorArray(0.211765, 0.239216, 0.290196, 1, 0.113725, 0.133333, 0.160784, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_wk24y"]
+gradient = SubResource("Gradient_iphf6")
+fill_from = Vector2(0.521368, 0.192308)
+fill_to = Vector2(0.529915, 0.995726)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ockyd"]
+texture = SubResource("GradientTexture2D_wk24y")
+
+[node name="RPGSartPositionMenu" type="PopupMenu"]
+oversampling_override = 1.0
+size = Vector2i(251, 89)
+visible = true
+unfocusable = true
+theme = ExtResource("1_c414m")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_disabled_color = Color(0.52549, 0.52549, 0.52549, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_styles/hover = SubResource("StyleBoxTexture_ockyd")
+item_count = 3
+item_0/text = "Cut Start Position"
+item_0/id = 0
+item_1/text = "Copy Start Position"
+item_1/id = 1
+item_2/text = "Remove Start Position"
+item_2/id = 2

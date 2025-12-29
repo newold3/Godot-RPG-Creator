@@ -1,0 +1,584 @@
+[gd_scene load_steps=14 format=3 uid="uid://c0ovdak70twbl"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_77tbr"]
+[ext_resource type="Script" uid="uid://fac5sxqwpas5" path="res://addons/CustomControls/Dialogs/text_image_animation.gd" id="1_j6gjv"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="1_movdi"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="2_fy04s"]
+[ext_resource type="Script" uid="uid://d0kowhkcjb7kv" path="res://addons/CustomControls/custom_option_button.gd" id="3_5xs34"]
+[ext_resource type="PackedScene" uid="uid://bbd8rv6w7vjb3" path="res://addons/CustomControls/custom_color_button.tscn" id="4_5du8b"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="5_0ixe6"]
+
+[sub_resource type="Gradient" id="Gradient_p6kln"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_5rmil"]
+gradient = SubResource("Gradient_p6kln")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m1kb1"]
+resource_local_to_scene = true
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 21.0
+content_margin_bottom = 4.0
+bg_color = Color(0.184314, 0.196078, 0.203922, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2l1gw"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.94902, 0.627451, 0.0117647, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ku34b"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d8hvb"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[node name="TextImageAnimation" type="Window"]
+title = "Text Image Animation"
+position = Vector2i(0, 36)
+size = Vector2i(720, 511)
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+min_size = Vector2i(0, 398)
+theme = ExtResource("1_77tbr")
+script = ExtResource("1_j6gjv")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_5rmil")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+text = "Image Type:"
+
+[node name="ImageType" type="OptionButton" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Select the type of image:
+
+[ul] [Face]: The \"face\" will receive this animation.
+ [Character]: The \"background image / character\" will receive this animation.
+"
+mouse_default_cursor_shape = 2
+selected = 0
+item_count = 2
+popup/item_0/text = "Face"
+popup/item_0/id = 0
+popup/item_1/text = "Background Character Image"
+popup/item_1/id = 1
+script = ExtResource("3_5xs34")
+
+[node name="ImageID" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ImageID"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+text = "Image ID:"
+
+[node name="ID" parent="MarginContainer/VBoxContainer/ImageID" instance=ExtResource("1_movdi")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "ID to identify the background image/character to be animated (Default is 0)
+
+\"Caution\": If no image with the given ID is currently added, this effect will be discarded."
+allow_greater = true
+
+[node name="FacePositionContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/FacePositionContainer"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+text = "Face Target:"
+
+[node name="FacePosition" parent="MarginContainer/VBoxContainer/FacePositionContainer" instance=ExtResource("5_0ixe6")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Choose which face to animate (\"Left\" or \"Right\")"
+selected = 0
+item_count = 2
+popup/item_0/text = "Left"
+popup/item_0/id = 0
+popup/item_1/text = "Right"
+popup/item_1/id = 1
+
+[node name="IdleAnimationContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Idle" type="Label" parent="MarginContainer/VBoxContainer/IdleAnimationContainer"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+tooltip_text = "Fade in/out of the image"
+mouse_default_cursor_shape = 2
+text = "Idle Animation:"
+
+[node name="IdleAnimation" type="OptionButton" parent="MarginContainer/VBoxContainer/IdleAnimationContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Selects the type of idle animation for this image.
+
+[ul] \"Keep Current Animation\": Maintains the current Idle animation of the image
+ \"None\": No animation.
+ \"Breathing\": The image shows a breathing animation
+ \"Scaredt\": The image shows a scary animation[/ul]"
+mouse_default_cursor_shape = 2
+selected = 0
+item_count = 4
+popup/item_0/text = "Keep Current Animation"
+popup/item_0/id = 0
+popup/item_1/text = "None"
+popup/item_1/id = 1
+popup/item_2/text = "Breathing"
+popup/item_2/id = 2
+popup/item_3/text = "Scared"
+popup/item_3/id = 3
+script = ExtResource("3_5xs34")
+
+[node name="Wait" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Wait"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+text = "Wait to Finish:"
+
+[node name="WaitToFinish" type="CheckBox" parent="MarginContainer/VBoxContainer/Wait"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "The text flow stops until this animation ends."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+text = "Enable wait to finish"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer8" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer8"]
+custom_minimum_size = Vector2(135, 0)
+layout_mode = 2
+text = "Effect Duration:"
+
+[node name="Duration" parent="MarginContainer/VBoxContainer/HBoxContainer8" instance=ExtResource("1_movdi")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Specifies the number of seconds this animation will last"
+step = 0.01
+value = 0.15
+allow_greater = true
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer8"]
+layout_mode = 2
+text = " seconds"
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Effects:"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Move" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(185, 0)
+layout_mode = 2
+tooltip_text = "Move the image according to this value"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+text = "Move"
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "X: "
+
+[node name="MovementX" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("1_movdi")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Moves the image on the X axis by the pixels indicated by this value."
+mouse_filter = 2
+allow_greater = true
+allow_lesser = true
+editable = false
+disabled = true
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = " Y: "
+
+[node name="MovementY" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("1_movdi")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Moves the image on the Y axis by the pixels indicated by this value."
+mouse_filter = 2
+allow_greater = true
+allow_lesser = true
+editable = false
+disabled = true
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Rotate" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer4"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(185, 0)
+layout_mode = 2
+tooltip_text = "Rotates the image according to this value"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+text = "Rotate"
+
+[node name="Rotation" parent="MarginContainer/VBoxContainer/HBoxContainer4" instance=ExtResource("1_movdi")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Rotates the image the degrees specified here from its current rotation."
+mouse_filter = 2
+min_value = -360.0
+max_value = 360.0
+step = 0.01
+allow_greater = true
+allow_lesser = true
+editable = false
+disabled = true
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+text = " degrees"
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Scale" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer5"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(185, 0)
+layout_mode = 2
+tooltip_text = "Scale the image by this value"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+text = "Zoom"
+
+[node name="Zoom" parent="MarginContainer/VBoxContainer/HBoxContainer5" instance=ExtResource("1_movdi")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Scales the image using the value defined here from its current scale."
+mouse_filter = 2
+step = 0.01
+allow_greater = true
+allow_lesser = true
+editable = false
+disabled = true
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Modulate" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer7"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(185, 0)
+layout_mode = 2
+tooltip_text = "Modulates the image with a given color."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+text = "Modulate"
+
+[node name="ImageModulate" parent="MarginContainer/VBoxContainer/HBoxContainer7" instance=ExtResource("4_5du8b")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Modulates the image with this color"
+focus_mode = 0
+theme_override_styles/disabled = SubResource("StyleBoxFlat_m1kb1")
+theme_override_styles/hover = SubResource("StyleBoxFlat_2l1gw")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ku34b")
+theme_override_styles/normal = SubResource("StyleBoxFlat_d8hvb")
+disabled = true
+
+[node name="HBoxContainer9" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Shake" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer9"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(185, 0)
+layout_mode = 2
+tooltip_text = "Shake makes the image shake"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+text = "Shake"
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer9"]
+layout_mode = 2
+text = "Amplitude: "
+
+[node name="ShakeAmplitude" parent="MarginContainer/VBoxContainer/HBoxContainer9" instance=ExtResource("1_movdi")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Controls how far the image is offset from the origin"
+mouse_filter = 2
+min_value = 0.01
+step = 0.01
+value = 1.1
+allow_greater = true
+editable = false
+disabled = true
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer9"]
+layout_mode = 2
+text = "Frequency"
+
+[node name="ShakeFrequency" parent="MarginContainer/VBoxContainer/HBoxContainer9" instance=ExtResource("1_movdi")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Controls the frequency with which the target is agitated"
+mouse_filter = 2
+min_value = 0.01
+step = 0.01
+value = 10.0
+allow_greater = true
+editable = false
+disabled = true
+
+[node name="TransitionContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Transition" type="CheckBox" parent="MarginContainer/VBoxContainer/TransitionContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(185, 0)
+layout_mode = 2
+tooltip_text = "Fade in/out of the image"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+text = "Transition"
+
+[node name="TransitionType" type="OptionButton" parent="MarginContainer/VBoxContainer/TransitionContainer"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Selects the type of transition for the image:
+
+[ul] \"None\": No transition (image is displayed immediately).
+ \"Fade Out\": Makes the image disappear.
+ \"Move to Position Left / Center / Right\": The image moves from its initial position to the designated position.
+ \"Horizontal Flip\": Flips the image horizontally[/ul]"
+mouse_default_cursor_shape = 2
+disabled = true
+selected = 0
+item_count = 10
+popup/item_0/text = "None"
+popup/item_0/id = 0
+popup/item_1/text = "Fade Out"
+popup/item_1/id = 1
+popup/item_2/text = "Move to Position Left"
+popup/item_2/id = 2
+popup/item_3/text = "Move to Position Center"
+popup/item_3/id = 3
+popup/item_4/text = "Move to Position Right"
+popup/item_4/id = 4
+popup/item_5/text = "Horizontal Flip"
+popup/item_5/id = 5
+popup/item_6/text = "Jump"
+popup/item_6/id = 6
+popup/item_7/text = "Zoom in-Out"
+popup/item_7/id = 7
+popup/item_8/text = "Zoom Out-in"
+popup/item_8/id = 8
+popup/item_9/text = "Fade in"
+popup/item_9/id = 9
+script = ExtResource("3_5xs34")
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer6" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6"]
+custom_minimum_size = Vector2(185, 0)
+layout_mode = 2
+text = "Animation Ease:"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer6"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/HBoxContainer"]
+custom_minimum_size = Vector2(185, 0)
+layout_mode = 2
+text = "Ease Type:"
+
+[node name="EaseType" parent="MarginContainer/VBoxContainer/HBoxContainer6/HBoxContainer" instance=ExtResource("5_0ixe6")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 0
+item_count = 4
+popup/item_0/text = "Ease in"
+popup/item_0/id = 0
+popup/item_1/text = "Ease Out"
+popup/item_1/id = 1
+popup/item_2/text = "Ease in OUT"
+popup/item_2/id = 2
+popup/item_3/text = "Ease Out in"
+popup/item_3/id = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer6"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/HBoxContainer2"]
+custom_minimum_size = Vector2(185, 0)
+layout_mode = 2
+text = "Transition Type:"
+
+[node name="EaseTransition" parent="MarginContainer/VBoxContainer/HBoxContainer6/HBoxContainer2" instance=ExtResource("5_0ixe6")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 0
+item_count = 12
+popup/item_0/text = "Trans Linear"
+popup/item_0/id = 0
+popup/item_1/text = "Trans Sine"
+popup/item_1/id = 1
+popup/item_2/text = "Trans Quint"
+popup/item_2/id = 2
+popup/item_3/text = "Trans Quart"
+popup/item_3/id = 3
+popup/item_4/text = "Trans Quad"
+popup/item_4/id = 4
+popup/item_5/text = "Trans Expo"
+popup/item_5/id = 5
+popup/item_6/text = "Trans Elastic"
+popup/item_6/id = 6
+popup/item_7/text = "Trans Cubic"
+popup/item_7/id = 7
+popup/item_8/text = "Trans Circ"
+popup/item_8/id = 8
+popup/item_9/text = "Trans Bounce"
+popup/item_9/id = 9
+popup/item_10/text = "Trans Back"
+popup/item_10/id = 10
+popup/item_11/text = "Trans Spring"
+popup/item_11/id = 11
+
+[node name="HSeparator3" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("2_fy04s")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("2_fy04s")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+text = "Cancel"
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.08
+autostart = true
+
+[connection signal="item_rect_changed" from="MarginContainer" to="." method="_on_margin_container_item_rect_changed"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer/ImageType" to="." method="_on_image_type_item_selected"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/HBoxContainer2/Move" to="." method="_on_move_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/HBoxContainer4/Rotate" to="." method="_on_rotate_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/HBoxContainer5/Scale" to="." method="_on_scale_toggled"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer7/ImageModulate" to="." method="_on_image_modulate_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/HBoxContainer9/Shake" to="." method="_on_shake_toggled"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer6/HBoxContainer/EaseType" to="." method="_on_ease_type_item_selected"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer6/HBoxContainer2/EaseTransition" to="." method="_on_trans_type_item_selected"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer3/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer3/CancelButton" to="." method="_on_cancel_button_pressed"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

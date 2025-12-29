@@ -1,0 +1,353 @@
+[gd_scene load_steps=25 format=3 uid="uid://fp8d7t383dho"]
+
+[ext_resource type="Script" uid="uid://bjobwrs7myjj4" path="res://addons/RPGData/Scenes/edit_battler_presets.gd" id="1_f8p3i"]
+[ext_resource type="Script" uid="uid://d0kowhkcjb7kv" path="res://addons/CustomControls/custom_option_button.gd" id="1_gbgm2"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="2_f8p3i"]
+[ext_resource type="Texture2D" uid="uid://1s2sb726hnea" path="res://addons/RPGData/Assets/Images/aligment_buttons.png" id="4_cmlkr"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4wdh6"]
+atlas = ExtResource("2_f8p3i")
+region = Rect2(168, 72, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c8q6y"]
+atlas = ExtResource("2_f8p3i")
+region = Rect2(48, 192, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n8d2c"]
+atlas = ExtResource("2_f8p3i")
+region = Rect2(0, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_41qsy"]
+atlas = ExtResource("2_f8p3i")
+region = Rect2(24, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qxpfe"]
+atlas = ExtResource("2_f8p3i")
+region = Rect2(48, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_52whh"]
+atlas = ExtResource("2_f8p3i")
+region = Rect2(0, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0403o"]
+atlas = ExtResource("2_f8p3i")
+region = Rect2(24, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4x3ec"]
+atlas = ExtResource("2_f8p3i")
+region = Rect2(48, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8eog7"]
+atlas = ExtResource("4_cmlkr")
+region = Rect2(0, 0, 16, 19)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l7ay5"]
+atlas = ExtResource("4_cmlkr")
+region = Rect2(16, 0, 16, 19)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l0i1f"]
+atlas = ExtResource("4_cmlkr")
+region = Rect2(32, 0, 16, 19)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ovdwn"]
+atlas = ExtResource("4_cmlkr")
+region = Rect2(48, 0, 16, 19)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3o0f1"]
+atlas = ExtResource("4_cmlkr")
+region = Rect2(64, 0, 16, 19)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ajb0m"]
+atlas = ExtResource("4_cmlkr")
+region = Rect2(80, 0, 16, 19)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b368g"]
+atlas = ExtResource("4_cmlkr")
+region = Rect2(0, 19, 16, 19)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w04ks"]
+atlas = ExtResource("4_cmlkr")
+region = Rect2(16, 19, 16, 19)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_txvxh"]
+atlas = ExtResource("4_cmlkr")
+region = Rect2(32, 19, 16, 19)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_na1r5"]
+atlas = ExtResource("4_cmlkr")
+region = Rect2(48, 19, 16, 19)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r3142"]
+atlas = ExtResource("4_cmlkr")
+region = Rect2(64, 19, 16, 19)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5cddk"]
+atlas = ExtResource("4_cmlkr")
+region = Rect2(80, 19, 16, 19)
+
+[node name="EditBattlerPresets" type="MarginContainer"]
+custom_minimum_size = Vector2(0, 60)
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 60.0
+grow_horizontal = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+script = ExtResource("1_f8p3i")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+color = Color(0.211765, 0.239216, 0.290196, 0.819608)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.4
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Enemy Presets: "
+
+[node name="EnemyPresets" type="OptionButton" parent="MarginContainer/HBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "[title]Enemy Presets[/title]
+List of available presets for enemy formations"
+mouse_default_cursor_shape = 2
+text_overrun_behavior = 3
+clip_text = true
+selected = 0
+fit_to_longest_item = false
+item_count = 1
+popup/item_0/text = "Default"
+popup/item_0/id = 0
+script = ExtResource("1_gbgm2")
+
+[node name="ApplyEnemyPreset" type="TextureButton" parent="MarginContainer/HBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Applies the selected preset to the list of enemies added to this troop."
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_4wdh6")
+texture_hover = SubResource("AtlasTexture_c8q6y")
+
+[node name="RemoveEnemyPreset" type="TextureButton" parent="MarginContainer/HBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Delete the selected preset from the enemy preset list."
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = SubResource("AtlasTexture_n8d2c")
+texture_hover = SubResource("AtlasTexture_41qsy")
+texture_disabled = SubResource("AtlasTexture_qxpfe")
+
+[node name="SaveEnemyPreset" type="TextureButton" parent="MarginContainer/HBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Add a new preset with the current positions and directions of enemies in this panel to the list of enemy position presets."
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_52whh")
+texture_hover = SubResource("AtlasTexture_0403o")
+texture_disabled = SubResource("AtlasTexture_4x3ec")
+
+[node name="AlignContainer" type="Control" parent="MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 26)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+size_flags_stretch_ratio = 0.2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/AlignContainer"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -68.0
+offset_top = -19.0
+offset_right = 68.0
+offset_bottom = 19.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_top = -40
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/AlignContainer/MarginContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.596078, 0.596078, 0.596078, 1)
+theme_override_font_sizes/font_size = 14
+text = "Aligment"
+horizontal_alignment = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/HBoxContainer/AlignContainer"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -68.0
+offset_top = -19.0
+offset_right = 68.0
+offset_bottom = 19.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_top = 19
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/AlignContainer/MarginContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+alignment = 1
+
+[node name="VerticalAligmentLeft" type="TextureButton" parent="MarginContainer/HBoxContainer/AlignContainer/MarginContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Align left edges"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_8eog7")
+texture_hover = SubResource("AtlasTexture_l7ay5")
+
+[node name="VerticalAligmentCenter" type="TextureButton" parent="MarginContainer/HBoxContainer/AlignContainer/MarginContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Align horizontal centers"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_l0i1f")
+texture_hover = SubResource("AtlasTexture_ovdwn")
+
+[node name="VerticalAligmentRight" type="TextureButton" parent="MarginContainer/HBoxContainer/AlignContainer/MarginContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Align right edges"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_3o0f1")
+texture_hover = SubResource("AtlasTexture_ajb0m")
+
+[node name="Control" type="VSeparator" parent="MarginContainer/HBoxContainer/AlignContainer/MarginContainer2/HBoxContainer"]
+custom_minimum_size = Vector2(16, 0)
+layout_mode = 2
+
+[node name="horizontalAligmentLeft" type="TextureButton" parent="MarginContainer/HBoxContainer/AlignContainer/MarginContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Align top edges"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_b368g")
+texture_hover = SubResource("AtlasTexture_w04ks")
+
+[node name="HorizontalAligmentCenter" type="TextureButton" parent="MarginContainer/HBoxContainer/AlignContainer/MarginContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Align vertical centers"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_txvxh")
+texture_hover = SubResource("AtlasTexture_na1r5")
+
+[node name="HorizontalAligmentRight" type="TextureButton" parent="MarginContainer/HBoxContainer/AlignContainer/MarginContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Alinear bordes inferiores"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_r3142")
+texture_hover = SubResource("AtlasTexture_5cddk")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.4
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Hero Presets:"
+
+[node name="HeroPresets" type="OptionButton" parent="MarginContainer/HBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "[title]Hero Presets[/title]
+List of available presets for heroes formations"
+mouse_default_cursor_shape = 2
+text_overrun_behavior = 3
+clip_text = true
+selected = 0
+fit_to_longest_item = false
+item_count = 1
+popup/item_0/text = "Default"
+popup/item_0/id = 0
+script = ExtResource("1_gbgm2")
+
+[node name="ApplyHeroPreset" type="TextureButton" parent="MarginContainer/HBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Applies the selected preset to the list of heroes."
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_4wdh6")
+texture_hover = SubResource("AtlasTexture_c8q6y")
+
+[node name="RemoveHeroPreset" type="TextureButton" parent="MarginContainer/HBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Delete the selected preset from the hero preset list."
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = SubResource("AtlasTexture_n8d2c")
+texture_hover = SubResource("AtlasTexture_41qsy")
+texture_disabled = SubResource("AtlasTexture_qxpfe")
+
+[node name="SaveHeroPreset" type="TextureButton" parent="MarginContainer/HBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Add a new preset with the current positions and directions of heroes in this panel to the list of heroes position presets."
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_52whh")
+texture_hover = SubResource("AtlasTexture_0403o")
+texture_disabled = SubResource("AtlasTexture_4x3ec")
+
+[connection signal="item_selected" from="MarginContainer/HBoxContainer/HBoxContainer/EnemyPresets" to="." method="_on_enemy_presets_item_selected"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/HBoxContainer/ApplyEnemyPreset" to="." method="_on_apply_enemy_preset_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/HBoxContainer/RemoveEnemyPreset" to="." method="_on_remove_enemy_preset_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/HBoxContainer/SaveEnemyPreset" to="." method="_on_save_enemy_preset_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/AlignContainer/MarginContainer2/HBoxContainer/VerticalAligmentLeft" to="." method="_on_vertical_aligment_left_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/AlignContainer/MarginContainer2/HBoxContainer/VerticalAligmentCenter" to="." method="_on_vertical_aligment_center_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/AlignContainer/MarginContainer2/HBoxContainer/VerticalAligmentRight" to="." method="_on_vertical_aligment_right_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/AlignContainer/MarginContainer2/HBoxContainer/horizontalAligmentLeft" to="." method="_on_horizontal_aligment_left_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/AlignContainer/MarginContainer2/HBoxContainer/HorizontalAligmentCenter" to="." method="_on_horizontal_aligment_center_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/AlignContainer/MarginContainer2/HBoxContainer/HorizontalAligmentRight" to="." method="_on_horizontal_aligment_right_pressed"]
+[connection signal="item_selected" from="MarginContainer/HBoxContainer/HBoxContainer2/HeroPresets" to="." method="_on_hero_presets_item_selected"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/HBoxContainer2/ApplyHeroPreset" to="." method="_on_apply_hero_preset_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/HBoxContainer2/RemoveHeroPreset" to="." method="_on_remove_hero_preset_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/HBoxContainer2/SaveHeroPreset" to="." method="_on_save_hero_preset_pressed"]

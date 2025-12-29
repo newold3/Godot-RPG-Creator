@@ -1,0 +1,109 @@
+[gd_scene load_steps=15 format=3 uid="uid://i872ast77olr"]
+
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="1_5u2cu"]
+[ext_resource type="Script" uid="uid://43gfayvmco7b" path="res://addons/CustomControls/manipulate_scene_param.gd" id="1_fp4rd"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fp4rd"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_uu8to"]
+load_path = "res://.godot/imported/buttons.png-c08ce4315629138dcb3fe4a0d034f7bd.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bcq6n"]
+atlas = SubResource("CompressedTexture2D_uu8to")
+region = Rect2(0, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_keywo"]
+atlas = ExtResource("1_5u2cu")
+region = Rect2(24, 24, 24, 24)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_fp4rd"]
+load_path = "res://.godot/imported/buttons.png-c08ce4315629138dcb3fe4a0d034f7bd.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uu8to"]
+atlas = SubResource("CompressedTexture2D_fp4rd")
+region = Rect2(96, 0, 24, 24)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_bcq6n"]
+load_path = "res://.godot/imported/buttons.png-c08ce4315629138dcb3fe4a0d034f7bd.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jn1mo"]
+atlas = SubResource("CompressedTexture2D_bcq6n")
+region = Rect2(96, 24, 24, 24)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_4ktrg"]
+load_path = "res://.godot/imported/buttons.png-c08ce4315629138dcb3fe4a0d034f7bd.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mvjni"]
+atlas = SubResource("CompressedTexture2D_4ktrg")
+region = Rect2(72, 0, 24, 24)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_qosry"]
+load_path = "res://.godot/imported/buttons.png-c08ce4315629138dcb3fe4a0d034f7bd.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_doxhe"]
+atlas = SubResource("CompressedTexture2D_qosry")
+region = Rect2(72, 24, 24, 24)
+
+[node name="ManipulateSceneParam" type="PanelContainer"]
+offset_right = 49.0
+offset_bottom = 40.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_fp4rd")
+script = ExtResource("1_fp4rd")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ParamContainer" type="MarginContainer" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RemoveParameter" type="TextureButton" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Erase this param from the list."
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_bcq6n")
+texture_hover = SubResource("AtlasTexture_keywo")
+
+[node name="MoveUp" type="TextureButton" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Move this parameter up one position"
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_uu8to")
+texture_hover = SubResource("AtlasTexture_jn1mo")
+
+[node name="MoveDown" type="TextureButton" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Move this parameter down one position"
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_mvjni")
+texture_hover = SubResource("AtlasTexture_doxhe")
+
+[connection signal="pressed" from="HBoxContainer/RemoveParameter" to="." method="_on_remove_parameter_pressed"]
+[connection signal="pressed" from="HBoxContainer/MoveUp" to="." method="_on_move_up_pressed"]
+[connection signal="pressed" from="HBoxContainer/MoveDown" to="." method="_on_move_down_pressed"]

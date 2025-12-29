@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://bm23t6tab872q"]
+
+[ext_resource type="Script" uid="uid://s1u1q4ki0kd5" path="res://addons/CustomControls/editable_rect_control.gd" id="1_ry4jh"]
+[ext_resource type="Texture2D" uid="uid://c73240mifi8i" path="res://addons/CustomControls/Images/button_image_background.png" id="2_elmpj"]
+
+[node name="EditableRectControl" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = -1.0
+offset_right = 5.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ry4jh")
+margin = -20
+background_texture = ExtResource("2_elmpj")

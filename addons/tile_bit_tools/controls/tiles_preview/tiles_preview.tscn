@@ -1,0 +1,274 @@
+[gd_scene load_steps=7 format=3 uid="uid://loch8a1s1gbq"]
+
+[ext_resource type="Script" uid="uid://n2vhx5cna5cv" path="res://addons/tile_bit_tools/controls/tiles_preview/tiles_preview.gd" id="1_78hye"]
+[ext_resource type="PackedScene" uid="uid://rt2lmg0mecbq" path="res://addons/tile_bit_tools/controls/tiles_preview/tiles_view.tscn" id="3_8hney"]
+[ext_resource type="Script" uid="uid://olsr5lg5bmli" path="res://addons/tile_bit_tools/controls/shared/icon_button.gd" id="3_74kk7"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v4yc1"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.13125, 0.15, 0.18125, 1)
+border_color = Color(0.084, 0.096, 0.116, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 4
+anti_aliasing = false
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lvdcr"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vk4i3"]
+
+[node name="TilesPreview" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+script = ExtResource("1_78hye")
+
+[node name="CollapsedControls" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="BackPanelCollapsed" type="PanelContainer" parent="CollapsedControls" groups=["TBTPreviewPanelBackground"]]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="CollapsedControls/BackPanelCollapsed"]
+layout_mode = 2
+
+[node name="FrontPanelCollapsed" type="PanelContainer" parent="CollapsedControls/BackPanelCollapsed/MarginContainer" groups=["TBTPreviewPanelForeground"]]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_v4yc1")
+
+[node name="MarginContainer" type="MarginContainer" parent="CollapsedControls/BackPanelCollapsed/MarginContainer/FrontPanelCollapsed"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CollapsedControls/BackPanelCollapsed/MarginContainer/FrontPanelCollapsed/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 16
+
+[node name="Label" type="Label" parent="CollapsedControls/BackPanelCollapsed/MarginContainer/FrontPanelCollapsed/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "TileBitTools: Preview"
+
+[node name="Button" type="Button" parent="CollapsedControls/BackPanelCollapsed/MarginContainer/FrontPanelCollapsed/MarginContainer/HBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+flat = true
+script = ExtResource("3_74kk7")
+editor_name = "MoveUp"
+
+[node name="ExpandedControls" type="Control" parent="."]
+unique_name_in_owner = true
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="BackPanel" type="Panel" parent="ExpandedControls" groups=["TBTPreviewPanelBackground"]]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 186)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_vertical = 3
+
+[node name="VSplitContainer" type="VSplitContainer" parent="ExpandedControls"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="PlaceholderControl" type="Control" parent="ExpandedControls/VSplitContainer"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="FrontContainer" type="PanelContainer" parent="ExpandedControls/VSplitContainer" groups=["TBTPreviewPanelForeground"]]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="ExpandedControls/VSplitContainer/FrontContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="PreviewContainer" type="PanelContainer" parent="ExpandedControls/VSplitContainer/FrontContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_lvdcr")
+
+[node name="MarginContainer" type="MarginContainer" parent="ExpandedControls/VSplitContainer/FrontContainer/MarginContainer/PreviewContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ExpandedControls/VSplitContainer/FrontContainer/MarginContainer/PreviewContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ExpandedControls/VSplitContainer/FrontContainer/MarginContainer/PreviewContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ExpandedControls/VSplitContainer/FrontContainer/MarginContainer/PreviewContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="ExpandedControls/VSplitContainer/FrontContainer/MarginContainer/PreviewContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" groups=["TBTSubPropertyLabel"]]
+layout_mode = 2
+text = "Current Terrain Bits"
+horizontal_alignment = 1
+
+[node name="LeftPreview" type="PanelContainer" parent="ExpandedControls/VSplitContainer/FrontContainer/MarginContainer/PreviewContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" groups=["TBTPreviewHBoxPanel"]]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="CurrentTilesView" parent="ExpandedControls/VSplitContainer/FrontContainer/MarginContainer/PreviewContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/LeftPreview" instance=ExtResource("3_8hney")]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_vk4i3")
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="ExpandedControls/VSplitContainer/FrontContainer/MarginContainer/PreviewContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="ExpandedControls/VSplitContainer/FrontContainer/MarginContainer/PreviewContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2" groups=["TBTSubPropertyLabel"]]
+layout_mode = 2
+text = "Preview Changes"
+horizontal_alignment = 1
+
+[node name="RightPreview" type="PanelContainer" parent="ExpandedControls/VSplitContainer/FrontContainer/MarginContainer/PreviewContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2" groups=["TBTPreviewHBoxPanel"]]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="PlaceholderLabel" type="RichTextLabel" parent="ExpandedControls/VSplitContainer/FrontContainer/MarginContainer/PreviewContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/RightPreview" groups=["TBTPlaceholderLabel"]]
+unique_name_in_owner = true
+layout_mode = 2
+bbcode_enabled = true
+text = "[center]Use the [img]res://addons/tile_bit_tools/controls/icons/tile_bit_tools_16.svg[/img] TileBitTools inspector on the left to make changes.
+
+Then click Apply Changes to apply them to the TileSet.[/center]"
+scroll_active = false
+
+[node name="PreviewTilesView" parent="ExpandedControls/VSplitContainer/FrontContainer/MarginContainer/PreviewContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/RightPreview" instance=ExtResource("3_8hney")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Control" type="Control" parent="ExpandedControls/VSplitContainer/FrontContainer/MarginContainer/PreviewContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/RightPreview"]
+layout_mode = 2
+
+[node name="ResetButton" type="Button" parent="ExpandedControls/VSplitContainer/FrontContainer/MarginContainer/PreviewContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/RightPreview/Control"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -36.0
+offset_bottom = 36.0
+grow_horizontal = 0
+tooltip_text = "Reset changes"
+script = ExtResource("3_74kk7")
+editor_name = "Reload"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="ExpandedControls/VSplitContainer/FrontContainer/MarginContainer/PreviewContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 32
+alignment = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ExpandedControls/VSplitContainer/FrontContainer/MarginContainer/PreviewContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+theme_override_constants/separation = 16
+
+[node name="Label2" type="Label" parent="ExpandedControls/VSplitContainer/FrontContainer/MarginContainer/PreviewContainer/MarginContainer/VBoxContainer/HBoxContainer2/HBoxContainer" groups=["TBTPropertyLabel"]]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Terrain"
+
+[node name="TerrainOpacitySlider" type="HSlider" parent="ExpandedControls/VSplitContainer/FrontContainer/MarginContainer/PreviewContainer/MarginContainer/VBoxContainer/HBoxContainer2/HBoxContainer" groups=["TBTHSlider"]]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.05
+value = 0.75
+
+[node name="Control" type="Control" parent="ExpandedControls/VSplitContainer/FrontContainer/MarginContainer/PreviewContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="ExpandedControls/VSplitContainer/FrontContainer/MarginContainer/PreviewContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+alignment = 2
+
+[node name="ApplyButton" type="Button" parent="ExpandedControls/VSplitContainer/FrontContainer/MarginContainer/PreviewContainer/MarginContainer/VBoxContainer/HBoxContainer2/HBoxContainer2" groups=["TBTTextButton"]]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Apply changes to the TileSet"
+disabled = true
+text = "Apply Changes (no undo)"
+text_overrun_behavior = 3
+clip_text = true
+
+[connection signal="gui_input" from="CollapsedControls/BackPanelCollapsed/MarginContainer/FrontPanelCollapsed" to="." method="_on_front_panel_collapsed_gui_input"]
+[connection signal="pressed" from="ExpandedControls/VSplitContainer/FrontContainer/MarginContainer/PreviewContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/RightPreview/Control/ResetButton" to="." method="_on_reset_button_pressed"]
+[connection signal="pressed" from="ExpandedControls/VSplitContainer/FrontContainer/MarginContainer/PreviewContainer/MarginContainer/VBoxContainer/HBoxContainer2/HBoxContainer2/ApplyButton" to="." method="_on_apply_button_pressed"]

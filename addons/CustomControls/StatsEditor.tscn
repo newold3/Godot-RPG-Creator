@@ -1,0 +1,248 @@
+[gd_scene load_steps=20 format=3 uid="uid://xgopjrnx0q38"]
+
+[ext_resource type="Script" uid="uid://cdout5fpuf4n" path="res://addons/CustomControls/StatsEditor.gd" id="1_atl76"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="2_1up57"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wr13x"]
+bg_color = Color(0, 0.14, 0.2, 0.88)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.12549, 0.141176, 0.192157, 1)
+border_blend = true
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_da7xi"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.980392, 0.733333, 0.121569, 1)
+border_blend = true
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0bfh0"]
+atlas = ExtResource("2_1up57")
+region = Rect2(144, 120, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sx6je"]
+atlas = ExtResource("2_1up57")
+region = Rect2(168, 120, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lomei"]
+atlas = ExtResource("2_1up57")
+region = Rect2(48, 120, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wpjqm"]
+atlas = ExtResource("2_1up57")
+region = Rect2(72, 120, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5svsq"]
+atlas = ExtResource("2_1up57")
+region = Rect2(96, 120, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_siabv"]
+atlas = ExtResource("2_1up57")
+region = Rect2(120, 120, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wr13x"]
+atlas = ExtResource("2_1up57")
+region = Rect2(0, 240, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bll5o"]
+atlas = ExtResource("2_1up57")
+region = Rect2(48, 240, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eminq"]
+atlas = ExtResource("2_1up57")
+region = Rect2(24, 240, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8j7lm"]
+atlas = ExtResource("2_1up57")
+region = Rect2(72, 240, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_efnmk"]
+atlas = ExtResource("2_1up57")
+region = Rect2(168, 192, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gfs24"]
+atlas = ExtResource("2_1up57")
+region = Rect2(144, 192, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jofmc"]
+atlas = ExtResource("2_1up57")
+region = Rect2(120, 192, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3kb6i"]
+atlas = ExtResource("2_1up57")
+region = Rect2(96, 192, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lwp2v"]
+atlas = ExtResource("2_1up57")
+region = Rect2(72, 192, 24, 24)
+
+[node name="StatsEditor" type="Panel"]
+custom_minimum_size = Vector2(200, 200)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+focus_mode = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_wr13x")
+script = ExtResource("1_atl76")
+title = "Algo"
+title_text_color = Color(0, 0, 0, 0.0627451)
+
+[node name="FocusedPanel" type="Panel" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_da7xi")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+clip_children = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+clip_children = 2
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="StatsEditor" type="Control" parent="MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/StatsEditor"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+anchor_right = 1.0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 2.0
+offset_bottom = 25.0
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 0.0627451)
+theme_override_font_sizes/font_size = 16
+text = "Algo"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(36, 0)
+layout_mode = 2
+mouse_filter = 2
+alignment = 2
+
+[node name="InvertCurve" type="TextureButton" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Inverts the curve"
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_0bfh0")
+texture_hover = SubResource("AtlasTexture_sx6je")
+
+[node name="UpgradeValues" type="TextureButton" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Increases the values of the curve by 1%."
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_lomei")
+texture_hover = SubResource("AtlasTexture_wpjqm")
+
+[node name="DowngradeValues" type="TextureButton" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Decreases the values of the curve by 1%."
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_5svsq")
+texture_hover = SubResource("AtlasTexture_siabv")
+
+[node name="UpgradeValuesPercent" type="TextureButton" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Increases the values of the curve by 1% exponentially."
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_wr13x")
+texture_hover = SubResource("AtlasTexture_bll5o")
+
+[node name="DowngradeValuesPercent" type="TextureButton" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Decreases the values of the curve by 1% exponentially."
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_eminq")
+texture_hover = SubResource("AtlasTexture_8j7lm")
+
+[node name="CopyCurve" type="TextureButton" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Copies the current curve to the clipboard."
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_efnmk")
+texture_hover = SubResource("AtlasTexture_gfs24")
+
+[node name="PasteCurve" type="TextureButton" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Paste a previously saved curve from the clipboard."
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = SubResource("AtlasTexture_jofmc")
+texture_hover = SubResource("AtlasTexture_3kb6i")
+texture_disabled = SubResource("AtlasTexture_lwp2v")
+
+[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 8)
+layout_mode = 2
+
+[node name="Cursor" type="ColorRect" parent="MarginContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+mouse_filter = 2
+
+[connection signal="mouse_entered" from="MarginContainer/HBoxContainer/VBoxContainer" to="." method="_on_v_box_container_mouse_entered"]
+[connection signal="mouse_exited" from="MarginContainer/HBoxContainer/VBoxContainer" to="." method="_on_v_box_container_mouse_exited"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/InvertCurve" to="." method="_on_invert_curve_pressed"]
+[connection signal="button_down" from="MarginContainer/HBoxContainer/VBoxContainer/UpgradeValues" to="." method="_on_upgrade_values_button_down"]
+[connection signal="button_up" from="MarginContainer/HBoxContainer/VBoxContainer/UpgradeValues" to="." method="_on_upgrade_values_button_up"]
+[connection signal="button_down" from="MarginContainer/HBoxContainer/VBoxContainer/DowngradeValues" to="." method="_on_downgrade_values_button_down"]
+[connection signal="button_up" from="MarginContainer/HBoxContainer/VBoxContainer/DowngradeValues" to="." method="_on_downgrade_values_button_up"]
+[connection signal="button_down" from="MarginContainer/HBoxContainer/VBoxContainer/UpgradeValuesPercent" to="." method="_on_upgrade_values_percent_button_down"]
+[connection signal="button_up" from="MarginContainer/HBoxContainer/VBoxContainer/UpgradeValuesPercent" to="." method="_on_upgrade_values_percent_button_up"]
+[connection signal="button_down" from="MarginContainer/HBoxContainer/VBoxContainer/DowngradeValuesPercent" to="." method="_on_downgrade_values_percent_button_down"]
+[connection signal="button_up" from="MarginContainer/HBoxContainer/VBoxContainer/DowngradeValuesPercent" to="." method="_on_downgrade_values_percent_button_up"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/CopyCurve" to="." method="_on_copy_curve_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/PasteCurve" to="." method="_on_paste_curve_pressed"]

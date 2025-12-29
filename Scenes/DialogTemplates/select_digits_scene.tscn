@@ -1,0 +1,348 @@
+[gd_scene load_steps=8 format=3 uid="uid://buhyld2e6wsoh"]
+
+[ext_resource type="Texture2D" uid="uid://ckjqjoly7o1t1" path="res://Assets/Images/Other/digit_dialog_skin.png" id="1_ldqhd"]
+[ext_resource type="Script" uid="uid://bccp5qg72u436" path="res://Scenes/DialogTemplates/select_digits_scene.gd" id="2_218vm"]
+[ext_resource type="Texture2D" uid="uid://c8fnc6igy6ooh" path="res://Assets/Images/Other/digit_separator.png" id="3_vrpoi"]
+[ext_resource type="PackedScene" uid="uid://bsa4ctlfh2ww1" path="res://Scenes/DialogTemplates/digit_button.tscn" id="4_me2ln"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7i4yk"]
+content_margin_left = 36.0
+content_margin_top = 36.0
+content_margin_right = 36.0
+content_margin_bottom = 36.0
+texture = ExtResource("1_ldqhd")
+texture_margin_left = 83.0
+texture_margin_top = 59.0
+texture_margin_right = 83.0
+texture_margin_bottom = 59.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yd6mt"]
+draw_center = false
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.0177324, 0.0177324, 0.0177324, 1)
+border_blend = true
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eq3i2"]
+bg_color = Color(0.184947, 0.239197, 0.303329, 1)
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+
+[node name="SelectDigitsScene" type="PanelContainer" node_paths=PackedStringArray("first_button")]
+clip_contents = true
+offset_right = 254.0
+offset_bottom = 340.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_7i4yk")
+script = ExtResource("2_218vm")
+first_button = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer/1")
+title_color = Color(0.330233, 0.65346, 0.862236, 1)
+number_selected_color = Color(0.326846, 0.649141, 0.857749, 1)
+empty_character = "·"
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 2
+
+[node name="Separator" type="TextureRect" parent="Control"]
+layout_mode = 2
+anchor_top = 0.563
+anchor_bottom = 0.563
+offset_left = -74.0
+offset_top = -7.297
+offset_right = 75.0
+offset_bottom = 12.703
+rotation = -1.5708
+pivot_offset = Vector2(72.1724, 9.64511)
+size_flags_vertical = 0
+texture = ExtResource("3_vrpoi")
+expand_mode = 1
+
+[node name="Separator2" type="TextureRect" parent="Control"]
+layout_mode = 2
+anchor_left = 1.006
+anchor_top = 0.566
+anchor_right = 1.006
+anchor_bottom = 0.566
+offset_left = -71.864
+offset_top = -11.954
+offset_right = 77.136
+offset_bottom = 8.04599
+rotation = 1.5708
+pivot_offset = Vector2(72.1724, 9.64511)
+size_flags_vertical = 0
+texture = ExtResource("3_vrpoi")
+expand_mode = 1
+
+[node name="Separator3" type="TextureRect" parent="Control"]
+custom_minimum_size = Vector2(0, 46)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -12.5
+offset_top = -11.75
+offset_right = 12.5
+offset_bottom = 34.25
+grow_horizontal = 2
+grow_vertical = 0
+pivot_offset = Vector2(12, 23)
+size_flags_vertical = 0
+texture = ExtResource("3_vrpoi")
+expand_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = -25
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 0
+
+[node name="Title" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer2"]
+unique_name_in_owner = true
+z_index = 1
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.330233, 0.65346, 0.862236, 1)
+text = "ENTER NUMBER"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+uppercase = true
+
+[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = -27
+theme_override_constants/margin_top = -15
+theme_override_constants/margin_right = -27
+theme_override_constants/margin_bottom = -25
+
+[node name="Separator" type="TextureRect" parent="MarginContainer/VBoxContainer/MarginContainer3"]
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+texture = ExtResource("3_vrpoi")
+expand_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = -27
+theme_override_constants/margin_top = -15
+theme_override_constants/margin_right = -27
+theme_override_constants/margin_bottom = -25
+
+[node name="Separator" type="TextureRect" parent="MarginContainer/VBoxContainer/MarginContainer"]
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+texture = ExtResource("3_vrpoi")
+expand_mode = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_yd6mt")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = -1
+theme_override_constants/margin_top = -1
+theme_override_constants/margin_right = -1
+
+[node name="Digits" type="LineEdit" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer"]
+unique_name_in_owner = true
+z_index = 1
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/caret_color = Color(0.326846, 0.649141, 0.857749, 1)
+theme_override_colors/font_color = Color(0.326846, 0.649141, 0.857749, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_eq3i2")
+alignment = 1
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/Digits"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Separator" type="TextureRect" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 8)
+layout_mode = 2
+size_flags_vertical = 0
+texture = ExtResource("3_vrpoi")
+expand_mode = 1
+flip_v = true
+
+[node name="DigitContainer" type="GridContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+columns = 3
+
+[node name="1" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer" node_paths=PackedStringArray("left_child", "upper_child") instance=ExtResource("4_me2ln")]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_neighbor_left = NodePath("/root/@EditorNode@21272/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@54/@VBoxContainer@55/@EditorMainScreen@102/MainScreen/@CanvasItemEditor@11482/@VSplitContainer@11134/@HSplitContainer@11136/@HSplitContainer@11138/@Control@11139/@SubViewportContainer@11140/@SubViewport@11141/SelectDigitsScene/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer/OK")
+focus_neighbor_top = NodePath("/root/@EditorNode@21272/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@54/@VBoxContainer@55/@EditorMainScreen@102/MainScreen/@CanvasItemEditor@11482/@VSplitContainer@11134/@HSplitContainer@11136/@HSplitContainer@11138/@Control@11139/@SubViewportContainer@11140/@SubViewport@11141/SelectDigitsScene/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer/DELETE")
+id = 1
+button_text = "1"
+button_text_font_size = 26
+left_child = NodePath("../OK")
+upper_child = NodePath("../DELETE")
+
+[node name="2" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer" node_paths=PackedStringArray("upper_child") instance=ExtResource("4_me2ln")]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_neighbor_top = NodePath("/root/@EditorNode@21272/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@54/@VBoxContainer@55/@EditorMainScreen@102/MainScreen/@CanvasItemEditor@11482/@VSplitContainer@11134/@HSplitContainer@11136/@HSplitContainer@11138/@Control@11139/@SubViewportContainer@11140/@SubViewport@11141/SelectDigitsScene/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer/0")
+id = 2
+button_text = "2"
+button_text_font_size = 26
+upper_child = NodePath("../0")
+
+[node name="3" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer" node_paths=PackedStringArray("right_child", "upper_child") instance=ExtResource("4_me2ln")]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_neighbor_top = NodePath("/root/@EditorNode@21272/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@54/@VBoxContainer@55/@EditorMainScreen@102/MainScreen/@CanvasItemEditor@11482/@VSplitContainer@11134/@HSplitContainer@11136/@HSplitContainer@11138/@Control@11139/@SubViewportContainer@11140/@SubViewport@11141/SelectDigitsScene/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer/OK")
+focus_neighbor_right = NodePath("/root/@EditorNode@21272/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@54/@VBoxContainer@55/@EditorMainScreen@102/MainScreen/@CanvasItemEditor@11482/@VSplitContainer@11134/@HSplitContainer@11136/@HSplitContainer@11138/@Control@11139/@SubViewportContainer@11140/@SubViewport@11141/SelectDigitsScene/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer/4")
+id = 3
+button_text = "3"
+button_text_font_size = 26
+right_child = NodePath("../4")
+upper_child = NodePath("../OK")
+
+[node name="4" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer" node_paths=PackedStringArray("left_child") instance=ExtResource("4_me2ln")]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_neighbor_left = NodePath("/root/@EditorNode@21272/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@54/@VBoxContainer@55/@EditorMainScreen@102/MainScreen/@CanvasItemEditor@11482/@VSplitContainer@11134/@HSplitContainer@11136/@HSplitContainer@11138/@Control@11139/@SubViewportContainer@11140/@SubViewport@11141/SelectDigitsScene/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer/3")
+id = 4
+button_text = "4"
+button_text_font_size = 26
+left_child = NodePath("../3")
+
+[node name="5" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer" instance=ExtResource("4_me2ln")]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+id = 5
+button_text = "5"
+button_text_font_size = 26
+
+[node name="6" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer" node_paths=PackedStringArray("right_child") instance=ExtResource("4_me2ln")]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_neighbor_right = NodePath("/root/@EditorNode@21272/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@54/@VBoxContainer@55/@EditorMainScreen@102/MainScreen/@CanvasItemEditor@11482/@VSplitContainer@11134/@HSplitContainer@11136/@HSplitContainer@11138/@Control@11139/@SubViewportContainer@11140/@SubViewport@11141/SelectDigitsScene/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer/7")
+id = 6
+button_text = "6"
+button_text_font_size = 26
+right_child = NodePath("../7")
+
+[node name="7" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer" node_paths=PackedStringArray("left_child", "right_child") instance=ExtResource("4_me2ln")]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_neighbor_left = NodePath("/root/@EditorNode@21272/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@54/@VBoxContainer@55/@EditorMainScreen@102/MainScreen/@CanvasItemEditor@11482/@VSplitContainer@11134/@HSplitContainer@11136/@HSplitContainer@11138/@Control@11139/@SubViewportContainer@11140/@SubViewport@11141/SelectDigitsScene/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer/6")
+focus_neighbor_right = NodePath("/root/@EditorNode@21272/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@54/@VBoxContainer@55/@EditorMainScreen@102/MainScreen/@CanvasItemEditor@11482/@VSplitContainer@11134/@HSplitContainer@11136/@HSplitContainer@11138/@Control@11139/@SubViewportContainer@11140/@SubViewport@11141/SelectDigitsScene/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer/8")
+id = 7
+button_text = "7"
+button_text_font_size = 26
+left_child = NodePath("../6")
+right_child = NodePath("../8")
+
+[node name="8" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer" node_paths=PackedStringArray("left_child") instance=ExtResource("4_me2ln")]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_neighbor_left = NodePath("/root/@EditorNode@21272/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@54/@VBoxContainer@55/@EditorMainScreen@102/MainScreen/@CanvasItemEditor@11482/@VSplitContainer@11134/@HSplitContainer@11136/@HSplitContainer@11138/@Control@11139/@SubViewportContainer@11140/@SubViewport@11141/SelectDigitsScene/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer/7")
+id = 8
+button_text = "8"
+button_text_font_size = 26
+left_child = NodePath("../7")
+
+[node name="9" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer" node_paths=PackedStringArray("right_child") instance=ExtResource("4_me2ln")]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_neighbor_right = NodePath("/root/@EditorNode@21272/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@54/@VBoxContainer@55/@EditorMainScreen@102/MainScreen/@CanvasItemEditor@11482/@VSplitContainer@11134/@HSplitContainer@11136/@HSplitContainer@11138/@Control@11139/@SubViewportContainer@11140/@SubViewport@11141/SelectDigitsScene/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer/DELETE")
+id = 9
+button_text = "9"
+button_text_font_size = 26
+right_child = NodePath("../DELETE")
+
+[node name="DELETE" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer" node_paths=PackedStringArray("left_child", "bottom_child") instance=ExtResource("4_me2ln")]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_neighbor_left = NodePath("/root/@EditorNode@21272/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@54/@VBoxContainer@55/@EditorMainScreen@102/MainScreen/@CanvasItemEditor@11482/@VSplitContainer@11134/@HSplitContainer@11136/@HSplitContainer@11138/@Control@11139/@SubViewportContainer@11140/@SubViewport@11141/SelectDigitsScene/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer/9")
+focus_neighbor_bottom = NodePath("/root/@EditorNode@21272/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@54/@VBoxContainer@55/@EditorMainScreen@102/MainScreen/@CanvasItemEditor@11482/@VSplitContainer@11134/@HSplitContainer@11136/@HSplitContainer@11138/@Control@11139/@SubViewportContainer@11140/@SubViewport@11141/SelectDigitsScene/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer/1")
+id = 10
+button_text = "🡸"
+button_text_font_size = 26
+left_child = NodePath("../9")
+bottom_child = NodePath("../1")
+
+[node name="0" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer" node_paths=PackedStringArray("bottom_child") instance=ExtResource("4_me2ln")]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_neighbor_bottom = NodePath("/root/@EditorNode@21272/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@54/@VBoxContainer@55/@EditorMainScreen@102/MainScreen/@CanvasItemEditor@11482/@VSplitContainer@11134/@HSplitContainer@11136/@HSplitContainer@11138/@Control@11139/@SubViewportContainer@11140/@SubViewport@11141/SelectDigitsScene/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer/2")
+id = 11
+button_text = "0"
+button_text_font_size = 26
+bottom_child = NodePath("../2")
+
+[node name="OK" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer" node_paths=PackedStringArray("right_child", "bottom_child") instance=ExtResource("4_me2ln")]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_neighbor_right = NodePath("/root/@EditorNode@21272/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@54/@VBoxContainer@55/@EditorMainScreen@102/MainScreen/@CanvasItemEditor@11482/@VSplitContainer@11134/@HSplitContainer@11136/@HSplitContainer@11138/@Control@11139/@SubViewportContainer@11140/@SubViewport@11141/SelectDigitsScene/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer/1")
+focus_neighbor_bottom = NodePath("/root/@EditorNode@21272/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@54/@VBoxContainer@55/@EditorMainScreen@102/MainScreen/@CanvasItemEditor@11482/@VSplitContainer@11134/@HSplitContainer@11136/@HSplitContainer@11138/@Control@11139/@SubViewportContainer@11140/@SubViewport@11141/SelectDigitsScene/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer/3")
+id = 12
+button_text = "OK"
+button_text_font_size = 26
+repeat_pressed_enabled = false
+right_child = NodePath("../1")
+bottom_child = NodePath("../3")
+
+[node name="AudioPlayer" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+bus = &"SE"
+
+[connection signal="focus_entered" from="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer/1" to="." method="_on_button_focus_entered"]
+[connection signal="focus_entered" from="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer/2" to="." method="_on_button_focus_entered"]
+[connection signal="focus_entered" from="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer/3" to="." method="_on_button_focus_entered"]
+[connection signal="focus_entered" from="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer/4" to="." method="_on_button_focus_entered"]
+[connection signal="focus_entered" from="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer/5" to="." method="_on_button_focus_entered"]
+[connection signal="focus_entered" from="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer/6" to="." method="_on_button_focus_entered"]
+[connection signal="focus_entered" from="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer/7" to="." method="_on_button_focus_entered"]
+[connection signal="focus_entered" from="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer/8" to="." method="_on_button_focus_entered"]
+[connection signal="focus_entered" from="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer/9" to="." method="_on_button_focus_entered"]
+[connection signal="focus_entered" from="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer/DELETE" to="." method="_on_button_focus_entered"]
+[connection signal="focus_entered" from="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer/0" to="." method="_on_button_focus_entered"]
+[connection signal="focus_entered" from="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/DigitContainer/OK" to="." method="_on_button_focus_entered"]

@@ -1,0 +1,328 @@
+[gd_scene load_steps=26 format=3 uid="uid://co46egqdekn7p"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_2y4h0"]
+[ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="1_cje7d"]
+[ext_resource type="Script" uid="uid://cjkywli8kvxyb" path="res://addons/CustomControls/Dialogs/other_command_dialog.gd" id="1_fewbt"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="2_0673p"]
+[ext_resource type="Script" uid="uid://d0kowhkcjb7kv" path="res://addons/CustomControls/custom_option_button.gd" id="2_veg16"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="3_ullnk"]
+[ext_resource type="Texture2D" uid="uid://xl88b63otgpi" path="res://addons/CustomControls/Images/button1_background.png" id="4_ui4x8"]
+[ext_resource type="Texture2D" uid="uid://dqnnp323vr1vo" path="res://addons/CustomControls/Images/button1_background_hover.png" id="5_rdmkx"]
+[ext_resource type="Texture2D" uid="uid://beg6i1p118qd" path="res://addons/CustomControls/Images/button1_background_selected.png" id="6_63m2u"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="7_ghvw6"]
+[ext_resource type="Texture2D" uid="uid://bkfn4ru5noaaa" path="res://addons/CustomControls/Images/button1_background_disabled.png" id="7_tmv0p"]
+
+[sub_resource type="Gradient" id="Gradient_xvnf6"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_jowpr"]
+gradient = SubResource("Gradient_xvnf6")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0fktj"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Gradient" id="Gradient_ctwx1"]
+colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_odtsu"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_exlro"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_odtsu")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0bxs7"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2wgph"]
+atlas = ExtResource("7_ghvw6")
+region = Rect2(120, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_58rao"]
+atlas = ExtResource("7_ghvw6")
+region = Rect2(144, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ei5ax"]
+atlas = ExtResource("7_ghvw6")
+region = Rect2(168, 0, 24, 24)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_llnqs"]
+texture = ExtResource("4_ui4x8")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_krfwp"]
+texture = ExtResource("6_63m2u")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_krib4"]
+texture = ExtResource("5_rdmkx")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_03cbx"]
+texture = ExtResource("7_tmv0p")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[node name="OtherCommandDialog" type="Window"]
+oversampling_override = 1.0
+title = "Other Commands"
+position = Vector2i(0, 36)
+size = Vector2i(567, 270)
+transient = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_2y4h0")
+script = ExtResource("1_fewbt")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_jowpr")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Select Command:"
+
+[node name="CommandType" type="OptionButton" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Select the desired command from this list."
+mouse_default_cursor_shape = 2
+selected = 0
+item_count = 12
+popup/item_0/text = "Show Variable Value"
+popup/item_0/id = 0
+popup/item_1/text = "Show Actor Name"
+popup/item_1/id = 1
+popup/item_2/text = "Show Party Member Name"
+popup/item_2/id = 2
+popup/item_3/text = "Show Current Gold"
+popup/item_3/id = 3
+popup/item_4/text = "Show Class Name"
+popup/item_4/id = 4
+popup/item_5/text = "Show Item Name"
+popup/item_5/id = 5
+popup/item_6/text = "Show Weapon Name"
+popup/item_6/id = 6
+popup/item_7/text = "Show Armor Name"
+popup/item_7/id = 7
+popup/item_8/text = "Show Enemy Name"
+popup/item_8/id = 8
+popup/item_9/text = "Show State Name"
+popup/item_9/id = 9
+popup/item_10/text = "Show Profession Name"
+popup/item_10/id = 10
+popup/item_11/text = "Show Profession Level"
+popup/item_11/id = 11
+script = ExtResource("2_veg16")
+
+[node name="CustomPanel" parent="MarginContainer/VBoxContainer" instance=ExtResource("1_cje7d")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_0fktj")
+style1 = SubResource("StyleBoxFlat_0fktj")
+style2 = SubResource("StyleBoxTexture_exlro")
+style3 = SubResource("StyleBoxFlat_0bxs7")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/CustomPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "ID:"
+
+[node name="ID" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("2_0673p")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "ID for the command selected"
+min_value = 1.0
+value = 1.0
+allow_greater = true
+
+[node name="SetValue" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_ullnk")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Take the desired ID by selecting it from a list."
+text = "Set"
+
+[node name="ShowIcon" type="CheckBox" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "[title]Show Extra data[/title]
+
+[ul] [Variables]: Displays the variable name to the left of the value.
+ [Gold]: The currency unit will be added next to the amount of gold.
+ [Other]: Displays the icon of the selected object to the left of its name
+[/ul]"
+mouse_default_cursor_shape = 2
+text = "Show variable name to the left of the value?"
+
+[node name="ShowIcon2" type="CheckBox" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+tooltip_text = "[title]Show Gold Icon[/title]
+
+Displays the gold icon to the right of the quantity"
+mouse_default_cursor_shape = 2
+text = "Show gold icon?"
+
+[node name="SizeContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/SizeContainer"]
+layout_mode = 2
+text = "Icon size: "
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/SizeContainer"]
+layout_mode = 2
+text = "Width"
+
+[node name="Width" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/SizeContainer" instance=ExtResource("2_0673p")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Displays the icon with the specified size. Set to 0 to use the actual size of the icon image."
+mouse_filter = 2
+value = 26.0
+allow_greater = true
+editable = false
+disabled = true
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/SizeContainer"]
+layout_mode = 2
+text = " Height"
+
+[node name="Height" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/SizeContainer" instance=ExtResource("2_0673p")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Displays the icon with the specified size. Set to 0 to use the actual size of the icon image."
+mouse_filter = 2
+value = 26.0
+allow_greater = true
+editable = false
+disabled = true
+
+[node name="ChainSize" type="TextureButton" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/SizeContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Resizes in proportion when changing height or width"
+mouse_default_cursor_shape = 2
+toggle_mode = true
+button_pressed = true
+texture_normal = SubResource("AtlasTexture_2wgph")
+texture_pressed = SubResource("AtlasTexture_58rao")
+texture_hover = SubResource("AtlasTexture_ei5ax")
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_ullnk")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+theme_override_styles/normal = SubResource("StyleBoxTexture_llnqs")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_krfwp")
+theme_override_styles/hover = SubResource("StyleBoxTexture_krib4")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_03cbx")
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_ullnk")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+theme_override_styles/normal = SubResource("StyleBoxTexture_llnqs")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_krfwp")
+theme_override_styles/hover = SubResource("StyleBoxTexture_krib4")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_03cbx")
+text = "CANCEL"
+
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/CommandType" to="." method="_on_command_type_item_selected"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer/SetValue" to="." method="_on_set_value_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/ShowIcon" to="." method="_on_show_icon_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/ShowIcon2" to="." method="_on_show_icon_toggled"]
+[connection signal="value_updated" from="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/SizeContainer/Width" to="." method="_on_width_value_updated"]
+[connection signal="value_updated" from="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/SizeContainer/Height" to="." method="_on_height_value_updated"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/SizeContainer/ChainSize" to="." method="_on_chain_size_toggled"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

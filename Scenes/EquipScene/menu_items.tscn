@@ -1,0 +1,99 @@
+[gd_scene load_steps=8 format=3 uid="uid://dkxvob1cic0jk"]
+
+[ext_resource type="Texture2D" uid="uid://dntvanomr6m2o" path="res://Assets/Images/GUI/frame5.png" id="1_iqljy"]
+[ext_resource type="Texture2D" uid="uid://c8guerd3v0l6t" path="res://Assets/Images/SceneMenu/part8.png" id="2_gg6i3"]
+[ext_resource type="Script" uid="uid://b7kt3fwslce1b" path="res://Scenes/EquipScene/menu_items.gd" id="2_rjcgx"]
+[ext_resource type="Texture2D" uid="uid://bttv2a7yritf7" path="res://Assets/Images/GUI/decoration1.png" id="3_rjcgx"]
+[ext_resource type="Texture2D" uid="uid://b0mo5iykdxq0l" path="res://Assets/Images/SceneMenu/part5.png" id="4_wt75o"]
+[ext_resource type="Texture2D" uid="uid://ct0ki5xyiptwg" path="res://Assets/Images/SceneMenu/part6.png" id="5_1ckln"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dlmwn"]
+texture = ExtResource("1_iqljy")
+texture_margin_left = 37.0
+texture_margin_top = 11.0
+texture_margin_right = 37.0
+texture_margin_bottom = 11.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="MenuItems" type="PanelContainer"]
+z_index = 1
+offset_right = 430.0
+offset_bottom = 483.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_dlmwn")
+script = ExtResource("2_rjcgx")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = -30
+theme_override_constants/margin_right = -30
+
+[node name="Background1" type="TextureRect" parent="MarginContainer"]
+modulate = Color(1, 1, 1, 0.47451)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("2_gg6i3")
+expand_mode = 1
+
+[node name="Background2" type="TextureRect" parent="MarginContainer"]
+texture_repeat = 2
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("3_rjcgx")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="Gears" type="Control" parent="."]
+layout_mode = 2
+
+[node name="Gear1" type="Control" parent="Gears"]
+unique_name_in_owner = true
+z_index = 10
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -199.0
+offset_top = 227.5
+offset_right = -199.0
+offset_bottom = 227.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.09, 0.09)
+mouse_filter = 2
+
+[node name="Part1" type="TextureRect" parent="Gears/Gear1"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -234.5
+offset_top = -229.5
+offset_right = 234.5
+offset_bottom = 229.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("4_wt75o")
+
+[node name="Part2" type="TextureRect" parent="Gears/Gear1"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -117.5
+offset_top = -120.5
+offset_right = 117.5
+offset_bottom = 120.5
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -6.28319
+pivot_offset = Vector2(117, 120)
+mouse_filter = 2
+texture = ExtResource("5_1ckln")

@@ -1,0 +1,25 @@
+[gd_scene load_steps=2 format=3 uid="uid://dlll4x7jafusp"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8nktf"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.415686, 0.278431, 0.105882, 0.541176)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.678431, 0.415686, 0.101961, 1)
+border_blend = true
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="StatTitle" type="Label"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 31.0
+grow_horizontal = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_8nktf")

@@ -1,0 +1,453 @@
+[gd_scene load_steps=17 format=3 uid="uid://cxlu4ygn6byb8"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_cl6ce"]
+[ext_resource type="Script" uid="uid://di1r34ekjqku" path="res://addons/CustomControls/Dialogs/edit_extraction_event_dialog.gd" id="2_x4y3e"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="3_1ehxp"]
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="3_2vke3"]
+[ext_resource type="Script" uid="uid://d0kowhkcjb7kv" path="res://addons/CustomControls/custom_option_button.gd" id="4_1ehxp"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="5_u0ewl"]
+[ext_resource type="PackedScene" uid="uid://dxcyqc2dscbvw" path="res://addons/CustomControls/custom_simple_column_item_list.tscn" id="6_1ehxp"]
+
+[sub_resource type="Gradient" id="Gradient_gxhcl"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_s3a4r"]
+gradient = SubResource("Gradient_gxhcl")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="Gradient" id="Gradient_u0ewl"]
+colors = PackedColorArray(0.333333, 0.352941, 0.360784, 1, 0.380392, 0.4, 0.407843, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_b25ih"]
+gradient = SubResource("Gradient_u0ewl")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_s63jj"]
+texture = SubResource("GradientTexture2D_b25ih")
+
+[sub_resource type="Gradient" id="Gradient_hdene"]
+offsets = PackedFloat32Array(0, 0.369535, 1)
+colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_8w0ni"]
+gradient = SubResource("Gradient_hdene")
+fill_from = Vector2(0.547009, 1)
+fill_to = Vector2(0.559829, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1ehxp"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_8w0ni")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tvfoe"]
+bg_color = Color(0, 0, 0, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+
+[node name="EditExtractionEventDialog" type="Window" groups=["event_editor"]]
+oversampling_override = 1.0
+title = "Edit Extraction Item"
+position = Vector2i(0, 36)
+size = Vector2i(760, 774)
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+min_size = Vector2i(600, 380)
+theme = ExtResource("1_cl6ce")
+script = ExtResource("2_x4y3e")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_s3a4r")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 18
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Name" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 32
+
+[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Name"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+size_flags_stretch_ratio = 0.15
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Name/VBoxContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+text = "Name:"
+
+[node name="EventName" type="LineEdit" parent="MarginContainer/VBoxContainer/Name/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(470.625, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "The name shown for this item in the  maps"
+caret_blink = true
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Scene" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 32
+
+[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Scene"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+size_flags_stretch_ratio = 0.15
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Scene/VBoxContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+text = "* Item Scene:"
+
+[node name="ItemScenePath" parent="MarginContainer/VBoxContainer/Scene/VBoxContainer" instance=ExtResource("3_2vke3")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "[RPGExtractionScene] scene that will be used to display this item on the map and interact with it.
+
+[Note]: If no scene is specified, this resource will not appear on the map and cannot be interacted with."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+
+[node name="HSeparator6" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Experience" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 32
+
+[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Experience"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+size_flags_stretch_ratio = 0.15
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Experience/VBoxContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+text = "Experience Base:"
+
+[node name="ExperienceBase" parent="MarginContainer/VBoxContainer/Experience/VBoxContainer" instance=ExtResource("5_u0ewl")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Base experience that this item provides when extracted with a profession level equal to the level of this item. Extracting it with a lower level will provide more experience, and extracting it with a higher level will provide less experience."
+min_value = 1.0
+value = 1.0
+allow_greater = true
+
+[node name="HSeparator10" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Profession" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Profession"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+text = "Required Profession:"
+
+[node name="ProfessionList" type="OptionButton" parent="MarginContainer/VBoxContainer/Profession"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+tooltip_text = "[title]Required Profession[/title]
+Profession required in order to attempt to extract this resource"
+mouse_default_cursor_shape = 2
+script = ExtResource("4_1ehxp")
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="RequiredLevel" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/RequiredLevel"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+text = "Required Level Rank:"
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/RequiredLevel"]
+layout_mode = 2
+text = "Min:"
+
+[node name="MinRequiredLevel" parent="MarginContainer/VBoxContainer/RequiredLevel" instance=ExtResource("5_u0ewl")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Minimun level required of the chosen profession in order to attempt to extract this resource.
+
+[Note] Level = Profession Rank (novice, expert, ...)"
+min_value = 1.0
+value = 1.0
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/RequiredLevel"]
+layout_mode = 2
+text = "Max:"
+
+[node name="MaxRequiredLevel" parent="MarginContainer/VBoxContainer/RequiredLevel" instance=ExtResource("5_u0ewl")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Maximun level required of the chosen profession in order to attempt to extract this resource.
+
+[Note] Level = Profession Rank (novice, expert, ...)"
+min_value = 1.0
+value = 1.0
+
+[node name="Label4" type="Label" parent="MarginContainer/VBoxContainer/RequiredLevel"]
+layout_mode = 2
+text = "/"
+
+[node name="ProfessionMaxRanks" type="Label" parent="MarginContainer/VBoxContainer/RequiredLevel"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Maximun ranls levels for the profession selected"
+mouse_filter = 0
+mouse_default_cursor_shape = 16
+theme_override_colors/font_color = Color(0.678944, 0.678944, 0.678944, 1)
+text = "5"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+
+[node name="NoLevelRestrictions" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "By enabling this option, this item can be extracted at any level (as long as the item's level is no more than 10 levels higher than the player's)."
+mouse_default_cursor_shape = 2
+text = "No level restrictions"
+
+[node name="HSeparator9" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="CurrentLevel" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/CurrentLevel"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+text = "Item Level:"
+
+[node name="CurrentItemLevel" parent="MarginContainer/VBoxContainer/CurrentLevel" instance=ExtResource("5_u0ewl")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Current level of this resource.
+
+[Note]: The level can never be lower than the \"minimum level\" required or higher than the \"maximum level\" required for the profession if \"No level restrictions\" is unselected.
+
+[Note 2]: The level will automatically adjust to the correct value when you save your changes if you are using level restrictions."
+min_value = 1.0
+value = 1.0
+
+[node name="Label4" type="Label" parent="MarginContainer/VBoxContainer/CurrentLevel"]
+layout_mode = 2
+text = "/"
+
+[node name="ProfessionMaxLevels" type="Label" parent="MarginContainer/VBoxContainer/CurrentLevel"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Maximun levels for the profession selected"
+mouse_filter = 0
+mouse_default_cursor_shape = 16
+theme_override_colors/font_color = Color(0.678944, 0.678944, 0.678944, 1)
+text = "5"
+
+[node name="HSeparator4" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Uses" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Uses"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+text = "Max Uses:"
+
+[node name="MaxUses" parent="MarginContainer/VBoxContainer/Uses" instance=ExtResource("5_u0ewl")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Number of times that can be extracted until the resource is depleted and enters recharge time."
+min_value = 1.0
+value = 1.0
+
+[node name="HSeparator5" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Respawn" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Respawn"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+text = "Respawn Time:"
+
+[node name="RespawnTime" parent="MarginContainer/VBoxContainer/Respawn" instance=ExtResource("5_u0ewl")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Actual time it will take for this item to recharge once depleted (in seconds)"
+min_value = 5.0
+value = 5.0
+allow_greater = true
+suffix = "Seconds"
+
+[node name="HSeparator7" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Sound" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 32
+
+[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Sound"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+size_flags_stretch_ratio = 0.15
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Sound/VBoxContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+text = "Extraction Sound:"
+
+[node name="ExtractionFx" parent="MarginContainer/VBoxContainer/Sound/VBoxContainer" instance=ExtResource("3_2vke3")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Sound played on loop while this item is being extracted"
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+
+[node name="HSeparator8" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Drops" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Drops"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+text = "Drops:"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/Drops"]
+custom_minimum_size = Vector2(0, 240)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="DropList" parent="MarginContainer/VBoxContainer/Drops/ScrollContainer" instance=ExtResource("6_1ehxp")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
+event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
+top_bar_style = SubResource("StyleBoxTexture_s63jj")
+columns_text_colors = PackedColorArray(0.72549, 0.992157, 0.772549, 1)
+cursor_style = SubResource("StyleBoxTexture_1ehxp")
+panel_style = SubResource("StyleBoxFlat_tvfoe")
+columns = 4
+names = PackedStringArray("Type", "Item ID", "Quantity", "%")
+sizes = PackedInt32Array(130, 400, 100, 40)
+placeholder_text = "add item..."
+enable_multiselection = true
+itemlist_tooltip = "[title]Drop List[/title]
+List of items that can be extracted from this node
+
+[Note]: If no items is specified, this resource will not appear on the map and cannot be interacted with."
+
+[node name="HSeparator3" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="BottomButtons" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+alignment = 2
+
+[node name="SaveAsPresetButton" parent="MarginContainer/VBoxContainer/BottomButtons" instance=ExtResource("3_1ehxp")]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 2
+tooltip_text = "[title]Save As Preset[/title]
+Save this extraction event as a preset so you can create it quickly whenever you want."
+text = "Save As Preset"
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/BottomButtons" instance=ExtResource("3_1ehxp")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/BottomButtons" instance=ExtResource("3_1ehxp")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "CANCEL"
+
+[node name="ApplyButton" parent="MarginContainer/VBoxContainer/BottomButtons" instance=ExtResource("3_1ehxp")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.65)
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+disabled = true
+text = "APPLY"
+
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/Name/VBoxContainer/EventName" to="." method="_on_event_name_text_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Scene/VBoxContainer/ItemScenePath" to="." method="_on_item_scene_path_pressed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/Experience/VBoxContainer/ExperienceBase" to="." method="_on_experience_base_value_changed"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Profession/ProfessionList" to="." method="_on_profession_list_item_selected"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/RequiredLevel/MinRequiredLevel" to="." method="_on_min_required_level_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/RequiredLevel/MaxRequiredLevel" to="." method="_on_max_required_level_value_changed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/HBoxContainer/NoLevelRestrictions" to="." method="_on_no_level_restrictions_toggled"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/CurrentLevel/CurrentItemLevel" to="." method="_on_current_item_level_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/Uses/MaxUses" to="." method="_on_max_uses_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/Respawn/RespawnTime" to="." method="_on_respawn_time_value_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Sound/VBoxContainer/ExtractionFx" to="." method="_on_extraction_fx_pressed"]
+[connection signal="copy_requested" from="MarginContainer/VBoxContainer/Drops/ScrollContainer/DropList" to="." method="_on_drop_list_copy_requested"]
+[connection signal="cut_requested" from="MarginContainer/VBoxContainer/Drops/ScrollContainer/DropList" to="." method="_on_drop_list_cut_requested"]
+[connection signal="delete_pressed" from="MarginContainer/VBoxContainer/Drops/ScrollContainer/DropList" to="." method="_on_drop_list_delete_pressed"]
+[connection signal="item_activated" from="MarginContainer/VBoxContainer/Drops/ScrollContainer/DropList" to="." method="_on_drop_list_item_activated"]
+[connection signal="paste_requested" from="MarginContainer/VBoxContainer/Drops/ScrollContainer/DropList" to="." method="_on_drop_list_paste_requested"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/BottomButtons/SaveAsPresetButton" to="." method="_on_save_as_preset_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/BottomButtons/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/BottomButtons/CancelButton" to="." method="_on_cancel_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/BottomButtons/ApplyButton" to="." method="_on_apply_button_pressed"]

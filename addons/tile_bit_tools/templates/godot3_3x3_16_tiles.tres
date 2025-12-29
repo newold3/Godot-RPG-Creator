@@ -1,0 +1,160 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dvhege7ynlv7t"]
+
+[ext_resource type="Script" uid="uid://dm3x2blhqmk0" path="res://addons/tile_bit_tools/core/template_bit_data.gd" id="1_4fue2"]
+
+[resource]
+script = ExtResource("1_4fue2")
+version = "0.1.0"
+template_name = "3x3 16 Tiles (Godot 3)"
+template_description = "Like all side-matching templates, it can be used for paths or fences in straight lines. It cannot make diagonal lines or shapes wider than one tile. This configuration is based on the Godot 3 documentation (https://docs.godotengine.org/en/3.5/tutorials/2d/using_tilemaps.html)."
+_custom_tags = ["Godot 3"]
+template_terrain_count = 2
+example_folder_path = "res://addons/tile_bit_tools/examples/godot3_3x3_16_tiles/"
+_tiles = {
+Vector2i(0, 0): {
+0: 0,
+1: {
+0: 1,
+4: 0,
+8: 1,
+12: 1
+}
+},
+Vector2i(0, 1): {
+0: 0,
+1: {
+0: 1,
+4: 0,
+8: 1,
+12: 0
+}
+},
+Vector2i(0, 2): {
+0: 0,
+1: {
+0: 1,
+4: 1,
+8: 1,
+12: 0
+}
+},
+Vector2i(0, 3): {
+0: 0,
+1: {
+0: 1,
+4: 1,
+8: 1,
+12: 1
+}
+},
+Vector2i(1, 0): {
+0: 0,
+1: {
+0: 0,
+4: 0,
+8: 1,
+12: 1
+}
+},
+Vector2i(1, 1): {
+0: 0,
+1: {
+0: 0,
+4: 0,
+8: 1,
+12: 0
+}
+},
+Vector2i(1, 2): {
+0: 0,
+1: {
+0: 0,
+4: 1,
+8: 1,
+12: 0
+}
+},
+Vector2i(1, 3): {
+0: 0,
+1: {
+0: 0,
+4: 1,
+8: 1,
+12: 1
+}
+},
+Vector2i(2, 0): {
+0: 0,
+1: {
+0: 0,
+4: 0,
+8: 0,
+12: 1
+}
+},
+Vector2i(2, 1): {
+0: 0,
+1: {
+0: 0,
+4: 0,
+8: 0,
+12: 0
+}
+},
+Vector2i(2, 2): {
+0: 0,
+1: {
+0: 0,
+4: 1,
+8: 0,
+12: 0
+}
+},
+Vector2i(2, 3): {
+0: 0,
+1: {
+0: 0,
+4: 1,
+8: 0,
+12: 1
+}
+},
+Vector2i(3, 0): {
+0: 0,
+1: {
+0: 1,
+4: 0,
+8: 0,
+12: 1
+}
+},
+Vector2i(3, 1): {
+0: 0,
+1: {
+0: 1,
+4: 0,
+8: 0,
+12: 0
+}
+},
+Vector2i(3, 2): {
+0: 0,
+1: {
+0: 1,
+4: 1,
+8: 0,
+12: 0
+}
+},
+Vector2i(3, 3): {
+0: 0,
+1: {
+0: 1,
+4: 1,
+8: 0,
+12: 1
+}
+}
+}
+terrain_set = -1
+terrain_mode = 2

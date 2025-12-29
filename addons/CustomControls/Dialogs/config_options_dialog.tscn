@@ -1,0 +1,431 @@
+[gd_scene load_steps=31 format=3 uid="uid://xudxiubniyvw"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_f4ig5"]
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="2_4wwb0"]
+[ext_resource type="Script" uid="uid://do3egf53ymjk7" path="res://addons/CustomControls/Dialogs/config_options_dialog.gd" id="2_dxk40"]
+[ext_resource type="PackedScene" uid="uid://bbd8rv6w7vjb3" path="res://addons/CustomControls/custom_color_button.tscn" id="3_v6gdu"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="4_gwurd"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="5_43hwo"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="6_8h2pw"]
+[ext_resource type="Texture2D" uid="uid://bkfn4ru5noaaa" path="res://addons/CustomControls/Images/button1_background_disabled.png" id="7_sk775"]
+[ext_resource type="Texture2D" uid="uid://dqnnp323vr1vo" path="res://addons/CustomControls/Images/button1_background_hover.png" id="8_jm6ef"]
+[ext_resource type="Texture2D" uid="uid://beg6i1p118qd" path="res://addons/CustomControls/Images/button1_background_selected.png" id="9_8fwnu"]
+[ext_resource type="Texture2D" uid="uid://xl88b63otgpi" path="res://addons/CustomControls/Images/button1_background.png" id="10_ji8bt"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_4adlr"]
+
+[sub_resource type="Gradient" id="Gradient_u5yrp"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_gnkwy"]
+gradient = SubResource("Gradient_u5yrp")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wn4oh"]
+resource_local_to_scene = true
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 21.0
+content_margin_bottom = 4.0
+bg_color = Color(0.184314, 0.196078, 0.203922, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t05es"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.94902, 0.627451, 0.0117647, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hk1kp"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5uy8f"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e0oj7"]
+resource_local_to_scene = true
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 21.0
+content_margin_bottom = 4.0
+bg_color = Color(0.184314, 0.196078, 0.203922, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p607g"]
+resource_local_to_scene = true
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.94902, 0.627451, 0.0117647, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kodcg"]
+resource_local_to_scene = true
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iagr7"]
+resource_local_to_scene = true
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mcotv"]
+resource_local_to_scene = true
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 21.0
+content_margin_bottom = 4.0
+bg_color = Color(0.184314, 0.196078, 0.203922, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cimtg"]
+resource_local_to_scene = true
+bg_color = Color(0, 0, 0, 0.576471)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.94902, 0.627451, 0.0117647, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_euvcc"]
+resource_local_to_scene = true
+bg_color = Color(0, 0, 0, 0.576471)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rc8wy"]
+resource_local_to_scene = true
+bg_color = Color(0, 0, 0, 0.576471)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xsg1b"]
+texture = ExtResource("7_sk775")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_b7cj5"]
+texture = ExtResource("8_jm6ef")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_d77lg"]
+texture = ExtResource("9_8fwnu")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_87y8e"]
+texture = ExtResource("10_ji8bt")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[node name="ConfigOptionsDialog" type="Window"]
+title = "Options Config"
+position = Vector2i(0, 36)
+size = Vector2i(800, 335)
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_f4ig5")
+script = ExtResource("2_dxk40")
+
+[node name="Background" type="TextureRect" parent="."]
+material = SubResource("CanvasItemMaterial_4adlr")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_gnkwy")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="UseMessageConfig" type="CheckBox" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "When active, the current settings of the message dialog will be used. Otherwise, the settings specified below will apply."
+mouse_default_cursor_shape = 2
+button_pressed = true
+text = "Use Message Config"
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="SelfConfigContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfConfigContainer"]
+layout_mode = 2
+text = "Manual configuration"
+
+[node name="HBoxContainer8" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfConfigContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer8"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Font:"
+
+[node name="Font" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer8" instance=ExtResource("2_4wwb0")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Font to be used by default."
+disabled = true
+text = "Fontsunifont-13.0.01.ttf"
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer8"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+text = "   Text Color:"
+
+[node name="TextColor" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer8" instance=ExtResource("3_v6gdu")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+size_flags_horizontal = 0
+tooltip_text = "Default Text Color."
+theme_override_styles/disabled = SubResource("StyleBoxFlat_wn4oh")
+theme_override_styles/hover = SubResource("StyleBoxFlat_t05es")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_hk1kp")
+theme_override_styles/normal = SubResource("StyleBoxFlat_5uy8f")
+disabled = true
+current_color = Color(1, 1, 1, 1)
+
+[node name="HBoxContainer17" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfConfigContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer17"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Text Size:"
+
+[node name="TextSize" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer17" instance=ExtResource("4_gwurd")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Default text size"
+mouse_filter = 2
+min_value = 8.0
+max_value = 500.0
+value = 22.0
+editable = false
+disabled = true
+
+[node name="HBoxContainer19" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfConfigContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer19"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Outline Size:"
+
+[node name="OutlineSize" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer19" instance=ExtResource("4_gwurd")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Default text outline"
+mouse_filter = 2
+max_value = 500.0
+value = 2.0
+editable = false
+disabled = true
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer19"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+text = "   Outline Color:"
+
+[node name="OutlineColor" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer19" instance=ExtResource("3_v6gdu")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+size_flags_horizontal = 0
+tooltip_text = "Default text outline color"
+theme_override_styles/disabled = SubResource("StyleBoxFlat_e0oj7")
+theme_override_styles/hover = SubResource("StyleBoxFlat_p607g")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_kodcg")
+theme_override_styles/normal = SubResource("StyleBoxFlat_iagr7")
+disabled = true
+
+[node name="HBoxContainer20" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfConfigContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer20"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Shadow Offset:"
+
+[node name="ShadowOffsetX" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer20" instance=ExtResource("4_gwurd")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Horizontal shadow offset by default"
+mouse_filter = 2
+value = 2.0
+allow_greater = true
+allow_lesser = true
+editable = false
+prefix = "X ="
+disabled = true
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer20"]
+custom_minimum_size = Vector2(26, 0)
+layout_mode = 2
+
+[node name="ShadowOffsetY" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer20" instance=ExtResource("4_gwurd")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Vertical shadow offset by default"
+mouse_filter = 2
+value = 2.0
+allow_greater = true
+allow_lesser = true
+editable = false
+prefix = "Y ="
+disabled = true
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer20"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+text = "   Shadow Color:"
+
+[node name="ShadowColor" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer20" instance=ExtResource("3_v6gdu")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+tooltip_text = "Default shadow color"
+theme_override_styles/disabled = SubResource("StyleBoxFlat_mcotv")
+theme_override_styles/hover = SubResource("StyleBoxFlat_cimtg")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_euvcc")
+theme_override_styles/normal = SubResource("StyleBoxFlat_rc8wy")
+disabled = true
+current_color = Color(0, 0, 0, 0.576471)
+
+[node name="HBoxContainer18" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfConfigContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer18"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Text Align:"
+
+[node name="TextAlign" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer18" instance=ExtResource("5_43hwo")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Default text alignment."
+disabled = true
+selected = 0
+item_count = 3
+popup/item_0/text = "Left"
+popup/item_0/id = 0
+popup/item_1/text = "Center"
+popup/item_1/id = 1
+popup/item_2/text = "Right"
+popup/item_2/id = 2
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("6_8h2pw")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+theme_override_styles/disabled = SubResource("StyleBoxTexture_xsg1b")
+theme_override_styles/hover = SubResource("StyleBoxTexture_b7cj5")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_d77lg")
+theme_override_styles/normal = SubResource("StyleBoxTexture_87y8e")
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("6_8h2pw")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+theme_override_styles/disabled = SubResource("StyleBoxTexture_xsg1b")
+theme_override_styles/hover = SubResource("StyleBoxTexture_b7cj5")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_d77lg")
+theme_override_styles/normal = SubResource("StyleBoxTexture_87y8e")
+text = "CANCEL"
+
+[connection signal="toggled" from="MarginContainer/VBoxContainer/UseMessageConfig" to="." method="_on_use_message_config_toggled"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer8/Font" to="." method="_on_font_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer8/TextColor" to="." method="_on_text_color_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer19/OutlineColor" to="." method="_on_outline_color_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer20/ShadowColor" to="." method="_on_shadow_color_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="button_down" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_button_down"]

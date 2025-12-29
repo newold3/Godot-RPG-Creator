@@ -1,0 +1,150 @@
+[gd_scene load_steps=15 format=3 uid="uid://cbq86nns4j2j7"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_udrxu"]
+[ext_resource type="Script" uid="uid://cwcdlq2uluvus" path="res://addons/CustomControls/Dialogs/sequence_select_animation_dialog.gd" id="2_udrxu"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="3_atlb6"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="4_jyrn0"]
+[ext_resource type="Texture2D" uid="uid://xl88b63otgpi" path="res://addons/CustomControls/Images/button1_background.png" id="5_cr2co"]
+[ext_resource type="Texture2D" uid="uid://dqnnp323vr1vo" path="res://addons/CustomControls/Images/button1_background_hover.png" id="6_c82hl"]
+[ext_resource type="Texture2D" uid="uid://beg6i1p118qd" path="res://addons/CustomControls/Images/button1_background_selected.png" id="7_p3hvr"]
+[ext_resource type="Texture2D" uid="uid://bkfn4ru5noaaa" path="res://addons/CustomControls/Images/button1_background_disabled.png" id="8_320t5"]
+
+[sub_resource type="Gradient" id="Gradient_c5ein"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_02hwu"]
+gradient = SubResource("Gradient_c5ein")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4pbal"]
+texture = ExtResource("5_cr2co")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kutq7"]
+texture = ExtResource("7_p3hvr")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ojf1l"]
+texture = ExtResource("6_c82hl")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6v2cm"]
+texture = ExtResource("8_320t5")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[node name="SequenceSelectAnimationDialog" type="Window"]
+oversampling_override = 1.0
+title = "Member Action"
+position = Vector2i(0, 36)
+size = Vector2i(448, 137)
+transient = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_udrxu")
+script = ExtResource("2_udrxu")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_02hwu")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Action:"
+
+[node name="ActionsList" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_atlb6")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+tooltip_text = "Plays a specific character animation.
+
+[Note]: The animation will play all frames and pause the sequence for the duration of the animation.
+
+[Note 2]: If the equipped weapon does not have any of these animations, this command will be ignored. If the character is unarmed, the corresponding attack animation for the character will be displayed instead."
+selected = 0
+item_count = 9
+popup/item_0/text = "Casting Animation"
+popup/item_0/id = 0
+popup/item_1/text = "Attack Animation (current Weapon)"
+popup/item_1/id = 1
+popup/item_2/text = "Attack Animation (thrust Attack)"
+popup/item_2/id = 2
+popup/item_3/text = "Attack Animation (slash Attack)"
+popup/item_3/id = 3
+popup/item_4/text = "Attack Animation (smash Attack)"
+popup/item_4/id = 4
+popup/item_5/text = "Attack Animation (islash Attack)"
+popup/item_5/id = 5
+popup/item_6/text = "Attack Animation (shoot Attack)"
+popup/item_6/id = 6
+popup/item_7/text = "Attack Animation (whip Attack)"
+popup/item_7/id = 7
+popup/item_8/text = "Fishing Animation"
+popup/item_8/id = 8
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_jyrn0")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+theme_override_styles/normal = SubResource("StyleBoxTexture_4pbal")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_kutq7")
+theme_override_styles/hover = SubResource("StyleBoxTexture_ojf1l")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_6v2cm")
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_jyrn0")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+theme_override_styles/normal = SubResource("StyleBoxTexture_4pbal")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_kutq7")
+theme_override_styles/hover = SubResource("StyleBoxTexture_ojf1l")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_6v2cm")
+text = "CANCEL"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

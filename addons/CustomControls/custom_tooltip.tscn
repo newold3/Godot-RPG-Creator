@@ -1,0 +1,115 @@
+[gd_scene load_steps=9 format=3 uid="uid://b015fv21alcoi"]
+
+[ext_resource type="Script" uid="uid://ibdxv0rrn54g" path="res://addons/CustomControls/custom_tooltip.gd" id="1_yk7o8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gw11s"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Gradient" id="Gradient_v41hm"]
+colors = PackedColorArray(0, 0, 0, 1, 0.355469, 0.355469, 0.355469, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_3otur"]
+gradient = SubResource("Gradient_v41hm")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_r2l2g"]
+texture = SubResource("GradientTexture2D_3otur")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1d6xl"]
+content_margin_left = 7.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 4.0
+bg_color = Color(0.00784314, 0, 0, 0.435294)
+border_width_bottom = 6
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mtk13"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_thyqx"]
+
+[node name="CustomTooltip" type="Window"]
+physics_interpolation_mode = 2
+disable_3d = true
+transparent_bg = true
+handle_input_locally = false
+anisotropic_filtering_level = 0
+gui_disable_input = true
+gui_embed_subwindows = true
+oversampling_override = 1.0
+size = Vector2i(1, 1)
+transient = true
+borderless = true
+transparent = true
+unfocusable = true
+mouse_passthrough = true
+exclude_from_capture = true
+popup_wm_hint = true
+max_size = Vector2i(1200, 16384)
+script = ExtResource("1_yk7o8")
+
+[node name="MainContainer" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+process_mode = 4
+modulate = Color(1, 1, 1, 0)
+clip_children = 2
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_gw11s")
+
+[node name="PanelContainer2" type="PanelContainer" parent="MainContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_r2l2g")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="MainContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1d6xl")
+
+[node name="Control" type="Control" parent="MainContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Title" type="Label" parent="MainContainer/VBoxContainer/PanelContainer/Control"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 1.0
+offset_bottom = 23.0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer" type="Control" parent="MainContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Contents" type="RichTextLabel" parent="MainContainer/VBoxContainer/MarginContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1200, 0)
+layout_mode = 0
+mouse_filter = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_mtk13")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_thyqx")
+bbcode_enabled = true
+fit_content = true
+scroll_active = false

@@ -1,0 +1,1997 @@
+[gd_scene load_steps=42 format=3 uid="uid://bmfaglq01savq"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_3ndwo"]
+[ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="1_bfaqe"]
+[ext_resource type="Script" uid="uid://vfivwowvmg0v" path="res://addons/CustomControls/Dialogs/CommandEvents/conditional_branch_dialog.gd" id="1_jes48"]
+[ext_resource type="PackedScene" uid="uid://ccipi0sikmjuu" path="res://addons/CustomControls/custom_tab_container.tscn" id="2_5pa0t"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="2_6ebal"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="3_6k0ow"]
+[ext_resource type="Texture2D" uid="uid://xl88b63otgpi" path="res://addons/CustomControls/Images/button1_background.png" id="4_dmqb3"]
+[ext_resource type="Texture2D" uid="uid://dqnnp323vr1vo" path="res://addons/CustomControls/Images/button1_background_hover.png" id="5_0kfdp"]
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="5_6d8ru"]
+[ext_resource type="Texture2D" uid="uid://dwcnj2mbl2v2y" path="res://addons/CustomControls/Images/magnifying_glass.png" id="5_h3qcx"]
+[ext_resource type="Texture2D" uid="uid://beg6i1p118qd" path="res://addons/CustomControls/Images/button1_background_selected.png" id="6_1fpjr"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="6_wnn6k"]
+[ext_resource type="Texture2D" uid="uid://bkfn4ru5noaaa" path="res://addons/CustomControls/Images/button1_background_disabled.png" id="7_nbsdq"]
+[ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="8_je5le"]
+[ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="10_bjwi3"]
+[ext_resource type="Script" uid="uid://bujrsiao8ow4m" path="res://addons/CustomControls/flow_container_vertical_decorative.gd" id="11_bjwi3"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_6v7qo"]
+
+[sub_resource type="Gradient" id="Gradient_niuei"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_p4fwj"]
+gradient = SubResource("Gradient_niuei")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cou6y"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Gradient" id="Gradient_ctwx1"]
+colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_rv6yu"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lryw6"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_rv6yu")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_stm7h"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dgb2p"]
+content_margin_left = 12.0
+content_margin_top = 12.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+draw_center = false
+border_width_left = 1
+border_width_top = 2
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.156372, 0.161499, 0.164063, 1)
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_krul0"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_52akj"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_7j6jq"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_bjwi3"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_f7i2m"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_b5t0j"]
+
+[sub_resource type="Gradient" id="Gradient_bjwi3"]
+colors = PackedColorArray(1, 1, 1, 0.34902, 0, 0, 0, 0.788235)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7j6jq"]
+gradient = SubResource("Gradient_bjwi3")
+height = 3
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0.108475)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_epknr"]
+texture = ExtResource("4_dmqb3")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_eq1vl"]
+texture = ExtResource("6_1fpjr")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_64dt2"]
+texture = ExtResource("5_0kfdp")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_obvif"]
+texture = ExtResource("7_nbsdq")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_w77q5"]
+texture = ExtResource("4_dmqb3")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nkl6m"]
+texture = ExtResource("6_1fpjr")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ti5ar"]
+texture = ExtResource("5_0kfdp")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_w1rvw"]
+texture = ExtResource("7_nbsdq")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[node name="ConditionalBranchDialog" type="Window"]
+oversampling_override = 1.0
+title = "Conditional Branch"
+position = Vector2i(0, 36)
+size = Vector2i(977, 825)
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_3ndwo")
+script = ExtResource("1_jes48")
+
+[node name="Background" type="TextureRect" parent="."]
+material = SubResource("CanvasItemMaterial_6v7qo")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_p4fwj")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Item" parent="MarginContainer/VBoxContainer" instance=ExtResource("1_bfaqe")]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_cou6y")
+style1 = SubResource("StyleBoxFlat_cou6y")
+style2 = SubResource("StyleBoxTexture_lryw6")
+style3 = SubResource("StyleBoxFlat_stm7h")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Item"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Filter: "
+metadata/original_index = 0
+
+[node name="Filter" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("8_je5le")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Filter commands by name, including those shown in dropdown menus)"
+right_icon = ExtResource("5_h3qcx")
+metadata/original_index = 1
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 8)
+layout_mode = 2
+
+[node name="TabsContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer" instance=ExtResource("2_5pa0t")]
+unique_name_in_owner = true
+layout_mode = 2
+background_color = Color(0, 0, 0, 0)
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TargetContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_dgb2p")
+
+[node name="Page1" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 32
+
+[node name="Condition1" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1" groups=["main_trait_filter_tab"]]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("..")
+metadata/original_parent = {
+"index": 0,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","theme_override_constants/separation":32,"alignment":0,"script":null)
+
+}
+
+[node name="Switch" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition1"]
+layout_mode = 2
+
+[node name="SwitchSelection" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition1/Switch"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+tooltip_text = "Use the value of the specified switch as a criterion. Set the target switch and its value to (ON/OFF)."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_pressed = true
+button_group = SubResource("ButtonGroup_krul0")
+text = "Switch:"
+
+[node name="SwitchID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition1/Switch" instance=ExtResource("5_6d8ru")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use the value of the specified switch as a criterion. Set the target switch and its value to (ON/OFF)."
+text = "0001:algo2"
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition1/Switch"]
+layout_mode = 2
+text = " is "
+
+[node name="SwitchValue" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition1/Switch" instance=ExtResource("6_wnn6k")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+tooltip_text = "Use the value of the specified switch as a criterion. Set the target switch and its value to (ON/OFF)."
+selected = 0
+item_count = 2
+popup/item_0/text = "On"
+popup/item_0/id = 0
+popup/item_1/text = "Off"
+popup/item_1/id = 1
+
+[node name="Condition2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1" groups=["main_trait_filter_tab"]]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("..")
+metadata/original_parent = {
+"index": 1,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","theme_override_constants/separation":32,"alignment":0,"script":null)
+
+}
+
+[node name="Variable" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition2"]
+layout_mode = 2
+
+[node name="VarVariable" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition2/Variable"]
+layout_mode = 2
+
+[node name="VariableSelection" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition2/Variable/VarVariable"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+tooltip_text = "Use the value of the specified variable as a criterion. Set the variable used to evaluate conditions, the value to compare, and the method for comparison. When using a variable for the value to compare, select [Variable], and specify the value to reference."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_krul0")
+text = "Variable:"
+
+[node name="VariableID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition2/Variable/VarVariable" instance=ExtResource("5_6d8ru")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use the value of the specified variable as a criterion. Set the variable used to evaluate conditions, the value to compare, and the method for comparison. When using a variable for the value to compare, select [Variable], and specify the value to reference."
+disabled = true
+text = "0001:uno"
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition2/Variable/VarVariable"]
+layout_mode = 2
+text = " is "
+
+[node name="VariableCondition" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition2/Variable/VarVariable" instance=ExtResource("6_wnn6k")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+tooltip_text = "Use the value of the specified variable as a criterion. Set the variable used to evaluate conditions, the value to compare, and the method for comparison. When using a variable for the value to compare, select [Variable], and specify the value to reference."
+disabled = true
+selected = 0
+item_count = 6
+popup/item_0/text = "="
+popup/item_0/id = 0
+popup/item_1/text = ">="
+popup/item_1/id = 1
+popup/item_2/text = "<="
+popup/item_2/id = 2
+popup/item_3/text = ">"
+popup/item_3/id = 3
+popup/item_4/text = "<"
+popup/item_4/id = 4
+popup/item_5/text = "≠"
+popup/item_5/id = 5
+
+[node name="VarConstant" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition2/Variable"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition2/Variable/VarConstant"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+
+[node name="VariableConstantSelection" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition2/Variable/VarConstant"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+tooltip_text = "Use the value of the specified variable as a criterion. Set the variable used to evaluate conditions, the value to compare, and the method for comparison. When using a variable for the value to compare, select [Variable], and specify the value to reference."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+disabled = true
+button_pressed = true
+button_group = SubResource("ButtonGroup_52akj")
+text = "Constant:"
+
+[node name="VariableConstantValue" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition2/Variable/VarConstant" instance=ExtResource("2_6ebal")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use the value of the specified variable as a criterion. Set the variable used to evaluate conditions, the value to compare, and the method for comparison. When using a variable for the value to compare, select [Variable], and specify the value to reference."
+mouse_filter = 2
+allow_greater = true
+allow_lesser = true
+editable = false
+disabled = true
+
+[node name="VarVar" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition2/Variable"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition2/Variable/VarVar"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+
+[node name="VariableVariableSelection" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition2/Variable/VarVar"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+tooltip_text = "Use the value of the specified variable as a criterion. Set the variable used to evaluate conditions, the value to compare, and the method for comparison. When using a variable for the value to compare, select [Variable], and specify the value to reference."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+disabled = true
+button_group = SubResource("ButtonGroup_52akj")
+text = "Variable: "
+
+[node name="VariableVariableValue" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition2/Variable/VarVar" instance=ExtResource("5_6d8ru")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use the value of the specified variable as a criterion. Set the variable used to evaluate conditions, the value to compare, and the method for comparison. When using a variable for the value to compare, select [Variable], and specify the value to reference."
+disabled = true
+text = "0001:uno"
+
+[node name="Condition5" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1" groups=["main_trait_filter_tab"]]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("..")
+metadata/original_parent = {
+"index": 2,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","theme_override_constants/separation":32,"alignment":0,"script":null)
+
+}
+
+[node name="TextVariable" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition5"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VariableTextSelection" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition5/TextVariable"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+size_flags_vertical = 0
+tooltip_text = "Use the value of the specified variable as a criterion. Set the variable used to evaluate conditions, the value to compare, and the method for comparison. When using a variable for the value to compare, select [Variable], and specify the value to reference."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_krul0")
+text = "Text
+Variable:"
+
+[node name="Variable" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition5/TextVariable"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition5/TextVariable/Variable"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition5/TextVariable/Variable/VBoxContainer"]
+layout_mode = 2
+
+[node name="TextVariableID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition5/TextVariable/Variable/VBoxContainer/HBoxContainer2" instance=ExtResource("5_6d8ru")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use the value of the specified variable as a criterion. Set the variable used to evaluate conditions, the value to compare, and the method for comparison. When using a variable for the value to compare, select [Variable], and specify the value to reference."
+disabled = true
+text = "0001:uno"
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition5/TextVariable/Variable/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = " is "
+
+[node name="TextVariableCondition" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition5/TextVariable/Variable/VBoxContainer/HBoxContainer2" instance=ExtResource("6_wnn6k")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+tooltip_text = "Condition to use for validation"
+disabled = true
+selected = 0
+item_count = 6
+popup/item_0/text = "="
+popup/item_0/id = 0
+popup/item_1/text = ">="
+popup/item_1/id = 1
+popup/item_2/text = "<="
+popup/item_2/id = 2
+popup/item_3/text = ">"
+popup/item_3/id = 3
+popup/item_4/text = "<"
+popup/item_4/id = 4
+popup/item_5/text = "≠"
+popup/item_5/id = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition5/TextVariable/Variable/VBoxContainer"]
+layout_mode = 2
+
+[node name="TextVariableConstantSelection" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition5/TextVariable/Variable/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+tooltip_text = "Use the value of the specified variable as a criterion. Set the variable used to evaluate conditions, the value to compare, and the method for comparison. When using a variable for the value to compare, select [Variable], and specify the value to reference."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+disabled = true
+button_pressed = true
+button_group = SubResource("ButtonGroup_7j6jq")
+text = "Constant:"
+
+[node name="TextVariableConstantValue" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition5/TextVariable/Variable/VBoxContainer/HBoxContainer" instance=ExtResource("8_je5le")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Value with which you want to compare"
+focus_mode = 0
+mouse_filter = 2
+editable = false
+selecting_enabled = false
+disabled = true
+metadata/original_text = ""
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition5/TextVariable/Variable/VBoxContainer"]
+layout_mode = 2
+
+[node name="TextVariableVariableSelection" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition5/TextVariable/Variable/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+tooltip_text = "Use the value of the specified variable as a criterion. Set the variable used to evaluate conditions, the value to compare, and the method for comparison. When using a variable for the value to compare, select [Variable], and specify the value to reference."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+disabled = true
+button_group = SubResource("ButtonGroup_7j6jq")
+text = "Variable:"
+
+[node name="TextVariableVariableValue" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition5/TextVariable/Variable/VBoxContainer/HBoxContainer3" instance=ExtResource("5_6d8ru")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use the value of the specified variable as a criterion. Set the variable used to evaluate conditions, the value to compare, and the method for comparison. When using a variable for the value to compare, select [Variable], and specify the value to reference."
+disabled = true
+text = "0001:uno"
+
+[node name="Condition6" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1" groups=["main_trait_filter_tab"]]
+layout_mode = 2
+metadata/original_parent = {
+"index": 3,
+"parent": null
+}
+
+[node name="GlobalUserParameter" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition6"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="GlobalUserParametersSelection" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition6/GlobalUserParameter"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+size_flags_vertical = 0
+tooltip_text = "User-defined parameters. Use this parameter as a condition."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_krul0")
+text = "Global user
+parameter:"
+
+[node name="HBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition6/GlobalUserParameter"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition6/GlobalUserParameter/HBoxContainer"]
+layout_mode = 2
+
+[node name="GlobalUserParameters" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition6/GlobalUserParameter/HBoxContainer/HBoxContainer4" instance=ExtResource("6_wnn6k")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Global User Parameter[/title]
+ID of the parameter you want to use"
+disabled = true
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition6/GlobalUserParameter/HBoxContainer/HBoxContainer4"]
+layout_mode = 2
+text = " is "
+
+[node name="GlobalUserParametersCondition" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition6/GlobalUserParameter/HBoxContainer/HBoxContainer4" instance=ExtResource("6_wnn6k")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+tooltip_text = "Condition to use for validation"
+disabled = true
+selected = 0
+item_count = 6
+popup/item_0/text = "="
+popup/item_0/id = 0
+popup/item_1/text = ">="
+popup/item_1/id = 1
+popup/item_2/text = "<="
+popup/item_2/id = 2
+popup/item_3/text = ">"
+popup/item_3/id = 3
+popup/item_4/text = "<"
+popup/item_4/id = 4
+popup/item_5/text = "≠"
+popup/item_5/id = 5
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition6/GlobalUserParameter/HBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition6/GlobalUserParameter/HBoxContainer"]
+layout_mode = 2
+
+[node name="GlobalParameterConstantSelection" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition6/GlobalUserParameter/HBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+tooltip_text = "Use the value of the specified variable as a criterion. Set the variable used to evaluate conditions, the value to compare, and the method for comparison. When using a variable for the value to compare, select [Variable], and specify the value to reference."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+disabled = true
+button_pressed = true
+button_group = SubResource("ButtonGroup_bjwi3")
+text = "Constant:"
+
+[node name="GlobalParameterConstantValue" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition6/GlobalUserParameter/HBoxContainer/HBoxContainer" instance=ExtResource("2_6ebal")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Value with which you want to compare"
+mouse_filter = 2
+allow_greater = true
+allow_lesser = true
+editable = false
+disabled = true
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition6/GlobalUserParameter/HBoxContainer"]
+layout_mode = 2
+
+[node name="GlobalParameterVariableSelection" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition6/GlobalUserParameter/HBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+tooltip_text = "Use the value of the specified variable as a criterion. Set the variable used to evaluate conditions, the value to compare, and the method for comparison. When using a variable for the value to compare, select [Variable], and specify the value to reference."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+disabled = true
+button_group = SubResource("ButtonGroup_bjwi3")
+text = "Variable:"
+
+[node name="GlobalParameterVariableValue" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition6/GlobalUserParameter/HBoxContainer/HBoxContainer3" instance=ExtResource("6_wnn6k")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use the value of the specified variable as a criterion. Set the variable used to evaluate conditions, the value to compare, and the method for comparison. When using a variable for the value to compare, select [Variable], and specify the value to reference."
+disabled = true
+
+[node name="Condition3" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1" groups=["main_trait_filter_tab"]]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("..")
+metadata/original_parent = {
+"index": 4,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","theme_override_constants/separation":32,"alignment":0,"script":null)
+
+}
+
+[node name="SelfSwitch" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition3"]
+layout_mode = 2
+metadata/original_parent = {
+"index": 0,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","theme_override_constants/separation":32,"alignment":0,"script":null)
+
+}
+
+[node name="SelfSwitchSelection" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition3/SelfSwitch"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+tooltip_text = "Use the state of the specified self switch as a criterion. Set the target switch and its value to (ON/OFF)."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_krul0")
+text = "Self Switch:"
+
+[node name="SelfSwitchID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition3/SelfSwitch" instance=ExtResource("6_wnn6k")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use the state of the specified self switch as a criterion. Set the target switch and its value to (ON/OFF)."
+disabled = true
+selected = 0
+item_count = 8
+popup/item_0/text = "A"
+popup/item_0/id = 0
+popup/item_1/text = "B"
+popup/item_1/id = 1
+popup/item_2/text = "C"
+popup/item_2/id = 2
+popup/item_3/text = "D"
+popup/item_3/id = 3
+popup/item_4/text = "E"
+popup/item_4/id = 4
+popup/item_5/text = "F"
+popup/item_5/id = 5
+popup/item_6/text = "G"
+popup/item_6/id = 6
+popup/item_7/text = "H"
+popup/item_7/id = 7
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition3/SelfSwitch"]
+layout_mode = 2
+text = " is "
+
+[node name="SelfSwitchValue" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition3/SelfSwitch" instance=ExtResource("6_wnn6k")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use the state of the specified self switch as a criterion. Set the target switch and its value to (ON/OFF)."
+disabled = true
+selected = 0
+fit_to_longest_item = false
+item_count = 2
+popup/item_0/text = "On"
+popup/item_0/id = 0
+popup/item_1/text = "Off"
+popup/item_1/id = 1
+
+[node name="Condition4" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1" groups=["main_trait_filter_tab"]]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("..")
+metadata/original_parent = {
+"index": 5,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","theme_override_constants/separation":32,"alignment":0,"script":null)
+
+}
+
+[node name="Timer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition4"]
+layout_mode = 2
+
+[node name="TimerTop" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition4/Timer"]
+layout_mode = 2
+
+[node name="TimerSelection" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition4/Timer/TimerTop"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+tooltip_text = "Use the remaining time on the timer as a criterion. Specify the remaining time and criterion (greater than/less than)."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_krul0")
+text = "Timer:"
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition4/Timer/TimerTop"]
+layout_mode = 2
+text = "is"
+
+[node name="TimerCondition" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition4/Timer/TimerTop" instance=ExtResource("6_wnn6k")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use the remaining time on the timer as a criterion. Specify the remaining time and criterion (greater than/less than)."
+disabled = true
+selected = 0
+item_count = 2
+popup/item_0/text = ">="
+popup/item_0/id = 0
+popup/item_1/text = "<="
+popup/item_1/id = 1
+
+[node name="TimerMin" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition4/Timer/TimerTop" instance=ExtResource("2_6ebal")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use the remaining time on the timer as a criterion. Specify the remaining time and criterion (greater than/less than)."
+mouse_filter = 2
+allow_greater = true
+editable = false
+suffix = " min"
+disabled = true
+
+[node name="TimerSec" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition4/Timer/TimerTop" instance=ExtResource("2_6ebal")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use the remaining time on the timer as a criterion. Specify the remaining time and criterion (greater than/less than)."
+mouse_filter = 2
+max_value = 59.0
+editable = false
+suffix = " sec"
+disabled = true
+
+[node name="TimerID" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition4/Timer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition4/Timer/TimerID"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition4/Timer/TimerID"]
+layout_mode = 2
+text = "Timer ID:"
+
+[node name="TimerID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition4/Timer/TimerID" instance=ExtResource("2_6ebal")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use the remaining time on the timer as a criterion. Specify the remaining time and criterion (greater than/less than)."
+mouse_filter = 2
+allow_greater = true
+editable = false
+disabled = true
+
+[node name="Page2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Condition1" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2" groups=["main_trait_filter_tab"]]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("..")
+metadata/original_parent = {
+"index": 0,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","theme_override_constants/separation":8,"alignment":0,"script":null)
+
+}
+
+[node name="ActorID" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1"]
+layout_mode = 2
+metadata/original_parent = {
+"index": 0,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","theme_override_constants/separation":8,"alignment":0,"script":null)
+
+}
+
+[node name="ActorSelection" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorID"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+tooltip_text = "Use the specified actor as a criterion. Select the target actor, the content to reference (in party/name/class/skill/weapon/armor/state) and the evaluation criteria (specific item)."
+focus_mode = 1
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_krul0")
+text = "Actor:"
+
+[node name="ActorID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorID" instance=ExtResource("5_6d8ru")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use the specified actor as a criterion. Select the target actor, the content to reference (in party/name/class/skill/weapon/armor/state) and the evaluation criteria (specific item)."
+disabled = true
+text = "0001:Sirion Shadowblade"
+
+[node name="ActorIsInParty" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1"]
+layout_mode = 2
+metadata/original_parent = {
+"index": 1,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","theme_override_constants/separation":8,"alignment":0,"script":null)
+
+}
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorIsInParty"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+
+[node name="ActorIsInPartySelection" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorIsInParty"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use the specified actor as a criterion. Select the target actor, the content to reference (in party/name/class/skill/weapon/armor/state) and the evaluation criteria (specific item)."
+focus_mode = 1
+mouse_default_cursor_shape = 2
+disabled = true
+button_pressed = true
+button_group = SubResource("ButtonGroup_f7i2m")
+text = "Is in party"
+
+[node name="ActorName" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1"]
+layout_mode = 2
+metadata/original_parent = {
+"index": 2,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","theme_override_constants/separation":8,"alignment":0,"script":null)
+
+}
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorName"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+
+[node name="ActorNameSelection" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorName"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+tooltip_text = "Use the specified actor as a criterion. Select the target actor, the content to reference (in party/name/class/skill/weapon/armor/state) and the evaluation criteria (specific item)."
+focus_mode = 1
+mouse_default_cursor_shape = 2
+disabled = true
+button_group = SubResource("ButtonGroup_f7i2m")
+text = "Name:"
+
+[node name="ActorNameValue" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorName" instance=ExtResource("8_je5le")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use the specified actor as a criterion. Select the target actor, the content to reference (in party/name/class/skill/weapon/armor/state) and the evaluation criteria (specific item)."
+focus_mode = 0
+mouse_filter = 2
+editable = false
+selecting_enabled = false
+disabled = true
+metadata/original_text = ""
+
+[node name="ActorClass" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1"]
+layout_mode = 2
+metadata/original_parent = {
+"index": 3,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","theme_override_constants/separation":8,"alignment":0,"script":null)
+
+}
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorClass"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+
+[node name="ActorClassSelection" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorClass"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+tooltip_text = "Use the specified actor as a criterion. Select the target actor, the content to reference (in party/name/class/skill/weapon/armor/state) and the evaluation criteria (specific item)."
+focus_mode = 1
+mouse_default_cursor_shape = 2
+disabled = true
+button_group = SubResource("ButtonGroup_f7i2m")
+text = "Class:"
+
+[node name="ActorClassID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorClass" instance=ExtResource("5_6d8ru")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use the specified actor as a criterion. Select the target actor, the content to reference (in party/name/class/skill/weapon/armor/state) and the evaluation criteria (specific item)."
+disabled = true
+text = "0001:Hero"
+
+[node name="ActorSkill" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1"]
+layout_mode = 2
+metadata/original_parent = {
+"index": 4,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","theme_override_constants/separation":8,"alignment":0,"script":null)
+
+}
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorSkill"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+
+[node name="ActorSkillSelection" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorSkill"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+tooltip_text = "Use the specified actor as a criterion. Select the target actor, the content to reference (in party/name/class/skill/weapon/armor/state) and the evaluation criteria (specific item)."
+focus_mode = 1
+mouse_default_cursor_shape = 2
+disabled = true
+button_group = SubResource("ButtonGroup_f7i2m")
+text = "Skill:"
+
+[node name="ActorSkillID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorSkill" instance=ExtResource("5_6d8ru")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use the specified actor as a criterion. Select the target actor, the content to reference (in party/name/class/skill/weapon/armor/state) and the evaluation criteria (specific item)."
+disabled = true
+text = "0001:Attack"
+
+[node name="ActorWeapon" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1"]
+layout_mode = 2
+metadata/original_parent = {
+"index": 5,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","theme_override_constants/separation":8,"alignment":0,"script":null)
+
+}
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorWeapon"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+
+[node name="ActorWeaponSelection" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorWeapon"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+tooltip_text = "Use the specified actor as a criterion. Select the target actor, the content to reference (in party/name/class/skill/weapon/armor/state) and the evaluation criteria (specific item)."
+focus_mode = 1
+mouse_default_cursor_shape = 2
+disabled = true
+button_group = SubResource("ButtonGroup_f7i2m")
+text = "Weapon:"
+
+[node name="ActorWeaponID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorWeapon" instance=ExtResource("5_6d8ru")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use the specified actor as a criterion. Select the target actor, the content to reference (in party/name/class/skill/weapon/armor/state) and the evaluation criteria (specific item)."
+disabled = true
+text = "0001:Weapon 1"
+
+[node name="ActorArmor" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1"]
+layout_mode = 2
+metadata/original_parent = {
+"index": 6,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","theme_override_constants/separation":8,"alignment":0,"script":null)
+
+}
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorArmor"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+
+[node name="ActorArmorSelection" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorArmor"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+tooltip_text = "Use the specified actor as a criterion. Select the target actor, the content to reference (in party/name/class/skill/weapon/armor/state) and the evaluation criteria (specific item)."
+focus_mode = 1
+mouse_default_cursor_shape = 2
+disabled = true
+button_group = SubResource("ButtonGroup_f7i2m")
+text = "Armor:"
+
+[node name="ActorArmorID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorArmor" instance=ExtResource("5_6d8ru")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use the specified actor as a criterion. Select the target actor, the content to reference (in party/name/class/skill/weapon/armor/state) and the evaluation criteria (specific item)."
+disabled = true
+text = "0001:Armor 1"
+
+[node name="ActorState" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1"]
+layout_mode = 2
+metadata/original_parent = {
+"index": 7,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","theme_override_constants/separation":8,"alignment":0,"script":null)
+
+}
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorState"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+
+[node name="ActorStateSelection" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorState"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+tooltip_text = "Use the specified actor as a criterion. Select the target actor, the content to reference (in party/name/class/skill/weapon/armor/state) and the evaluation criteria (specific item)."
+focus_mode = 1
+mouse_default_cursor_shape = 2
+disabled = true
+button_group = SubResource("ButtonGroup_f7i2m")
+text = "State:"
+
+[node name="ActorStateID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorState" instance=ExtResource("5_6d8ru")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use the specified actor as a criterion. Select the target actor, the content to reference (in party/name/class/skill/weapon/armor/state) and the evaluation criteria (specific item)."
+disabled = true
+text = "0001:Dead"
+
+[node name="ActorParameters" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1"]
+layout_mode = 2
+metadata/original_parent = {
+"index": 7,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","theme_override_constants/separation":8,"alignment":0,"script":null)
+
+}
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorParameters"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+
+[node name="ActorParametersSelection" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorParameters"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_vertical = 0
+tooltip_text = "Use the specified actor as a criterion. Select the target actor, the content to reference (in party/name/class/skill/weapon/armor/state) and the evaluation criteria (specific item)."
+focus_mode = 1
+mouse_default_cursor_shape = 2
+disabled = true
+button_group = SubResource("ButtonGroup_f7i2m")
+text = "Param:"
+
+[node name="HBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorParameters"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ActorParameters" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorParameters/HBoxContainer" instance=ExtResource("6_wnn6k")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Actor Parameter[/title]
+ID of the parameter you want to use"
+disabled = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorParameters/HBoxContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorParameters/HBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = " is "
+
+[node name="ActorParametersCondition" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorParameters/HBoxContainer/HBoxContainer2" instance=ExtResource("6_wnn6k")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+tooltip_text = "Condition to use for validation"
+disabled = true
+selected = 0
+item_count = 6
+popup/item_0/text = "="
+popup/item_0/id = 0
+popup/item_1/text = ">="
+popup/item_1/id = 1
+popup/item_2/text = "<="
+popup/item_2/id = 2
+popup/item_3/text = ">"
+popup/item_3/id = 3
+popup/item_4/text = "<"
+popup/item_4/id = 4
+popup/item_5/text = "≠"
+popup/item_5/id = 5
+
+[node name="ActorParametersValue" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorParameters/HBoxContainer/HBoxContainer2" instance=ExtResource("2_6ebal")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Value with which you want to compare"
+mouse_filter = 2
+allow_greater = true
+allow_lesser = true
+editable = false
+disabled = true
+
+[node name="Page3" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 40
+
+[node name="Condition1" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3" groups=["main_trait_filter_tab"]]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("..")
+metadata/original_parent = {
+"index": 0,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","theme_override_constants/separation":40,"alignment":0,"script":null)
+
+}
+
+[node name="Enemy" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition1"]
+layout_mode = 2
+
+[node name="EnemyID" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition1/Enemy"]
+layout_mode = 2
+
+[node name="EnemySelection" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition1/Enemy/EnemyID"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+tooltip_text = "Use the specified enemy during battle as a criterion. Select the target enemy and the evaluation criteria (appeared/state). This is only effective in battle events."
+focus_mode = 1
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_krul0")
+text = "Enemy:"
+
+[node name="EnemyID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition1/Enemy/EnemyID" instance=ExtResource("6_wnn6k")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use the specified enemy during battle as a criterion. Select the target enemy and the evaluation criteria (appeared/state). This is only effective in battle events."
+disabled = true
+selected = 0
+item_count = 8
+popup/item_0/text = "Enemy 1"
+popup/item_0/id = 0
+popup/item_1/text = "Enemy 2"
+popup/item_1/id = 1
+popup/item_2/text = "Enemy 3"
+popup/item_2/id = 2
+popup/item_3/text = "Enemy 4"
+popup/item_3/id = 3
+popup/item_4/text = "Enemy 5"
+popup/item_4/id = 4
+popup/item_5/text = "Enemy 6"
+popup/item_5/id = 5
+popup/item_6/text = "Enemy 7"
+popup/item_6/id = 6
+popup/item_7/text = "Enemy 8"
+popup/item_7/id = 7
+
+[node name="EnemyAppeared" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition1/Enemy"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition1/Enemy/EnemyAppeared"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+
+[node name="EnemyAppearedSelection" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition1/Enemy/EnemyAppeared"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use the specified enemy during battle as a criterion. Select the target enemy and the evaluation criteria (appeared/state). This is only effective in battle events."
+focus_mode = 1
+mouse_default_cursor_shape = 2
+disabled = true
+button_pressed = true
+button_group = SubResource("ButtonGroup_b5t0j")
+text = "Appeared"
+
+[node name="EnemyHasState" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition1/Enemy"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition1/Enemy/EnemyHasState"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+
+[node name="EnemyStateSelection" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition1/Enemy/EnemyHasState"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+tooltip_text = "Use the specified enemy during battle as a criterion. Select the target enemy and the evaluation criteria (appeared/state). This is only effective in battle events."
+focus_mode = 1
+mouse_default_cursor_shape = 2
+disabled = true
+button_group = SubResource("ButtonGroup_b5t0j")
+text = "Has State"
+
+[node name="EnemyStateID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition1/Enemy/EnemyHasState" instance=ExtResource("5_6d8ru")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use the specified enemy during battle as a criterion. Select the target enemy and the evaluation criteria (appeared/state). This is only effective in battle events."
+disabled = true
+text = "0001:Dead"
+
+[node name="Condition2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3" groups=["main_trait_filter_tab"]]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("..")
+metadata/original_parent = {
+"index": 1,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","theme_override_constants/separation":40,"alignment":0,"script":null)
+
+}
+
+[node name="Character" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition2"]
+layout_mode = 2
+
+[node name="CharacterID" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition2/Character"]
+layout_mode = 2
+
+[node name="CharacterSelection" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition2/Character/CharacterID"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+tooltip_text = "Uses the direction of the player or map event as a criterion. Specify the target character and direction. This is only effective in map events."
+focus_mode = 1
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_krul0")
+text = "Character:"
+
+[node name="CharacterID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition2/Character/CharacterID" instance=ExtResource("6_wnn6k")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Uses the selected param of the player or map event as a criterion. Specify the target character and the param. This is only effective in map events."
+disabled = true
+selected = 0
+item_count = 1
+popup/item_0/text = "Player"
+popup/item_0/id = 0
+
+[node name="CharacterDirection" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition2/Character"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition2/Character/CharacterDirection"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition2/Character/CharacterDirection"]
+layout_mode = 2
+text = "Is "
+
+[node name="CharacterState" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition2/Character/CharacterDirection" instance=ExtResource("6_wnn6k")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Uses the selected param of the player or map event as a criterion. Specify the target character and the param. This is only effective in map events."
+disabled = true
+selected = 0
+item_count = 9
+popup/item_0/text = "Looking At Down"
+popup/item_0/id = 0
+popup/item_1/text = "Looking At Left"
+popup/item_1/id = 1
+popup/item_2/text = "Looking At Right"
+popup/item_2/id = 2
+popup/item_3/text = "Looking At Up"
+popup/item_3/id = 3
+popup/item_4/text = "Is In My Tile"
+popup/item_4/id = 4
+popup/item_5/text = "Is Out Of My Tile"
+popup/item_5/id = 5
+popup/item_6/text = "Is Jumping"
+popup/item_6/id = 6
+popup/item_7/text = "Is Passable"
+popup/item_7/id = 7
+popup/item_8/text = "Is On Vehicle"
+popup/item_8/id = 8
+
+[node name="Condition3" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3" groups=["main_trait_filter_tab"]]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("..")
+metadata/original_parent = {
+"index": 2,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","theme_override_constants/separation":40,"alignment":0,"script":null)
+
+}
+
+[node name="Vehicle" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition3"]
+layout_mode = 2
+
+[node name="VehicleSelection" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition3/Vehicle"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+tooltip_text = "Use whether the player is riding the specified vehicle (boat/ship/plane) as a criterion."
+focus_mode = 1
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_krul0")
+text = "Vehicle:"
+
+[node name="VehicleID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition3/Vehicle" instance=ExtResource("6_wnn6k")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use whether the player is riding the specified vehicle (boat/ship/plane) as a criterion."
+disabled = true
+selected = 0
+item_count = 3
+popup/item_0/text = "Boat"
+popup/item_0/id = 0
+popup/item_1/text = "Ship"
+popup/item_1/id = 1
+popup/item_2/text = "Air Ship"
+popup/item_2/id = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition3/Vehicle"]
+layout_mode = 2
+text = "is being driven"
+
+[node name="Condition4" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3" groups=["main_trait_filter_tab"]]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("..")
+metadata/original_parent = {
+"index": 3,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","theme_override_constants/separation":40,"alignment":0,"script":null)
+
+}
+
+[node name="Profession" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition4"]
+layout_mode = 2
+
+[node name="ProfessionTop" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition4/Profession"]
+layout_mode = 2
+
+[node name="ProfessionSelection" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition4/Profession/ProfessionTop"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+tooltip_text = "Use the specified profession level as condition."
+focus_mode = 1
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_krul0")
+text = "Profession:"
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition4/Profession/ProfessionTop"]
+layout_mode = 2
+text = "Level of"
+
+[node name="ProfessionID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition4/Profession/ProfessionTop" instance=ExtResource("5_6d8ru")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use the specified profession level as condition."
+disabled = true
+text = "0001:Dead"
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition4/Profession/ProfessionTop"]
+layout_mode = 2
+text = " is "
+
+[node name="ProfessionCondition" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition4/Profession/ProfessionTop" instance=ExtResource("6_wnn6k")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+tooltip_text = "Compare the specified number with the current profession level."
+disabled = true
+selected = 0
+item_count = 6
+popup/item_0/text = "="
+popup/item_0/id = 0
+popup/item_1/text = ">="
+popup/item_1/id = 1
+popup/item_2/text = "<="
+popup/item_2/id = 2
+popup/item_3/text = ">"
+popup/item_3/id = 3
+popup/item_4/text = "<"
+popup/item_4/id = 4
+popup/item_5/text = "≠"
+popup/item_5/id = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition4/Profession"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition4/Profession/HBoxContainer"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+
+[node name="ProfessionValue" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition4/Profession/HBoxContainer" instance=ExtResource("2_6ebal")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Compare the specified number with the current profession level."
+mouse_filter = 2
+allow_greater = true
+allow_lesser = true
+editable = false
+disabled = true
+
+[node name="Condition5" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3" groups=["main_trait_filter_tab"]]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("..")
+metadata/original_parent = {
+"index": 4,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","theme_override_constants/separation":40,"alignment":0,"script":null)
+
+}
+
+[node name="Relationship" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition5"]
+layout_mode = 2
+
+[node name="RelationshipSelection" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition5/Relationship"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+tooltip_text = "Use the current relationship level of current NPC as condition."
+focus_mode = 1
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_krul0")
+text = "Relationship:"
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition5/Relationship"]
+layout_mode = 2
+text = " Level is "
+
+[node name="RelationshipCondition" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition5/Relationship" instance=ExtResource("6_wnn6k")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+tooltip_text = "Condition to use for validation"
+disabled = true
+selected = 0
+item_count = 6
+popup/item_0/text = "="
+popup/item_0/id = 0
+popup/item_1/text = ">="
+popup/item_1/id = 1
+popup/item_2/text = "<="
+popup/item_2/id = 2
+popup/item_3/text = ">"
+popup/item_3/id = 3
+popup/item_4/text = "<"
+popup/item_4/id = 4
+popup/item_5/text = "≠"
+popup/item_5/id = 5
+
+[node name="RelationshipValue" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition5/Relationship" instance=ExtResource("2_6ebal")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Value with which you want to compare"
+mouse_filter = 2
+allow_greater = true
+allow_lesser = true
+editable = false
+disabled = true
+
+[node name="Page4" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer"]
+visible = false
+layout_mode = 2
+focus_neighbor_bottom = NodePath(".")
+theme_override_constants/separation = 12
+
+[node name="Condition1" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4" groups=["main_trait_filter_tab"]]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("..")
+metadata/original_parent = {
+"index": 0,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath("."),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","theme_override_constants/separation":12,"alignment":0,"script":null)
+
+}
+
+[node name="Gold" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition1"]
+layout_mode = 2
+metadata/original_parent = {
+"index": 0,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath("."),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","theme_override_constants/separation":12,"alignment":0,"script":null)
+
+}
+
+[node name="GoldSelection" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition1/Gold"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+tooltip_text = "Use Gold possessed by the party as a criterion. Specify the amount and method for comparison (greater than/less than)."
+focus_mode = 1
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_krul0")
+text = "Gold:"
+
+[node name="GoldCondition" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition1/Gold" instance=ExtResource("6_wnn6k")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use Gold possessed by the party as a criterion. Specify the amount and method for comparison (greater than/less than)."
+disabled = true
+selected = 0
+item_count = 3
+popup/item_0/text = ">="
+popup/item_0/id = 0
+popup/item_1/text = "<="
+popup/item_1/id = 1
+popup/item_2/text = "<"
+popup/item_2/id = 2
+
+[node name="GoldValue" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition1/Gold" instance=ExtResource("2_6ebal")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use Gold possessed by the party as a criterion. Specify the amount and method for comparison (greater than/less than)."
+mouse_filter = 2
+allow_greater = true
+editable = false
+disabled = true
+
+[node name="Condition2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4" groups=["main_trait_filter_tab"]]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("..")
+metadata/original_parent = {
+"index": 1,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath("."),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","theme_override_constants/separation":12,"alignment":0,"script":null)
+
+}
+
+[node name="Item" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition2"]
+layout_mode = 2
+metadata/original_parent = {
+"index": 1,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath("."),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","theme_override_constants/separation":12,"alignment":0,"script":null)
+
+}
+
+[node name="ItemSelection" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition2/Item"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+tooltip_text = "Use whether the party possesses the specified item as a criterion."
+focus_mode = 1
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_krul0")
+text = "Has Item:"
+
+[node name="ItemID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition2/Item" instance=ExtResource("5_6d8ru")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use whether the party possesses the specified item as a criterion."
+disabled = true
+text = "0001:Item 1"
+
+[node name="Condition3" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4" groups=["main_trait_filter_tab"]]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("..")
+metadata/original_parent = {
+"index": 2,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath("."),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","theme_override_constants/separation":12,"alignment":0,"script":null)
+
+}
+
+[node name="HasWeapon" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition3"]
+layout_mode = 2
+
+[node name="WeaponID" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition3/HasWeapon"]
+layout_mode = 2
+metadata/original_parent = {
+"index": 0,
+"parent": null
+}
+
+[node name="WeaponSelection" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition3/HasWeapon/WeaponID"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+tooltip_text = "Use whether the party possesses the specified weapon as a criterion. When [Include Equipped] is enabled, the equipment the actors are wearing will also be evaluated."
+focus_mode = 1
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_krul0")
+text = "Has Weapon:"
+
+[node name="WeaponID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition3/HasWeapon/WeaponID" instance=ExtResource("5_6d8ru")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use whether the party possesses the specified weapon as a criterion. When [Include Equipped] is enabled, the equipment the actors are wearing will also be evaluated."
+disabled = true
+text = "0001:Weapon 1"
+
+[node name="HasWeaponEquipment" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition3/HasWeapon"]
+layout_mode = 2
+metadata/original_parent = {
+"index": 1,
+"parent": null
+}
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition3/HasWeapon/HasWeaponEquipment"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+
+[node name="WeaponIncludeEquipment" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition3/HasWeapon/HasWeaponEquipment"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Use whether the party possesses the specified weapon as a criterion. When [Include Equipped] is enabled, the equipment the actors are wearing will also be evaluated."
+focus_mode = 1
+mouse_default_cursor_shape = 2
+disabled = true
+text = "Include Equipment"
+
+[node name="Condition4" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4" groups=["main_trait_filter_tab"]]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("..")
+metadata/original_parent = {
+"index": 3,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath("."),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","theme_override_constants/separation":12,"alignment":0,"script":null)
+
+}
+
+[node name="HasArmor" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition4"]
+layout_mode = 2
+
+[node name="ArmorID" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition4/HasArmor"]
+layout_mode = 2
+metadata/original_parent = {
+"index": 0,
+"parent": null
+}
+
+[node name="HasArmorEquipment" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition4/HasArmor/ArmorID"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+tooltip_text = "Use whether the party possesses the specified armor as a criterion. When [Include Equipped] is enabled, the equipment the actors are wearing will also be evaluated."
+focus_mode = 1
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_krul0")
+text = "Has Armor:"
+
+[node name="ArmorID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition4/HasArmor/ArmorID" instance=ExtResource("5_6d8ru")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use whether the party possesses the specified armor as a criterion. When [Include Equipped] is enabled, the equipment the actors are wearing will also be evaluated."
+disabled = true
+text = "0001:Armor 1"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition4/HasArmor"]
+layout_mode = 2
+metadata/original_parent = {
+"index": 1,
+"parent": null
+}
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition4/HasArmor/HBoxContainer"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+
+[node name="ArmorIncludeEquipment" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition4/HasArmor/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Use whether the party possesses the specified armor as a criterion. When [Include Equipped] is enabled, the equipment the actors are wearing will also be evaluated."
+focus_mode = 1
+mouse_default_cursor_shape = 2
+disabled = true
+text = "Include Equipment"
+
+[node name="Condition5" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4" groups=["main_trait_filter_tab"]]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("..")
+metadata/original_parent = {
+"index": 4,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath("."),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","theme_override_constants/separation":12,"alignment":0,"script":null)
+
+}
+
+[node name="ButtonPressed" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition5"]
+layout_mode = 2
+metadata/original_parent = {
+"index": 4,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath("."),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","theme_override_constants/separation":12,"alignment":0,"script":null)
+
+}
+
+[node name="ButtonSelection" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition5/ButtonPressed"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+tooltip_text = "Use whether the specified button is [Pressed], [Triggered], or [Repeated] as a criterion.
+
+[ul] \"Pressed\": The conditions will count as being met the entire time the button is pressed.
+ \"Triggered\": The conditions will count as being met only in the initial moment that the button is pressed.
+ \"Repeated\": While the button is continually pressed, the conditions will count as being met in the initial moment the button is pressed, then 24 frames after, then every 6 frames after that.[/ul]
+"
+focus_mode = 1
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_krul0")
+text = "Button:"
+
+[node name="ButtonID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition5/ButtonPressed" instance=ExtResource("6_wnn6k")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use whether the specified button is [Pressed], [Triggered], or [Repeated] as a criterion.
+
+[ul] \"Pressed\": The conditions will count as being met the entire time the button is pressed.
+ \"Triggered\": The conditions will count as being met only in the initial moment that the button is pressed.
+ \"Repeated\": While the button is continually pressed, the conditions will count as being met in the initial moment the button is pressed, then 24 frames after, then every 6 frames after that.[/ul]
+"
+disabled = true
+selected = 0
+item_count = 10
+popup/item_0/text = "Ok"
+popup/item_0/id = 0
+popup/item_1/text = "Cancel"
+popup/item_1/id = 1
+popup/item_2/text = "Shift"
+popup/item_2/id = 2
+popup/item_3/text = "Ctrl"
+popup/item_3/id = 3
+popup/item_4/text = "Up"
+popup/item_4/id = 4
+popup/item_5/text = "Down"
+popup/item_5/id = 5
+popup/item_6/text = "Left"
+popup/item_6/id = 6
+popup/item_7/text = "Right"
+popup/item_7/id = 7
+popup/item_8/text = "Next Page"
+popup/item_8/id = 8
+popup/item_9/text = "Previous Page"
+popup/item_9/id = 9
+
+[node name="ButtonAction" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition5/ButtonPressed" instance=ExtResource("6_wnn6k")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use whether the specified button is [Pressed], [Triggered], or [Repeated] as a criterion.
+
+[ul] \"Pressed\": The conditions will count as being met the entire time the button is pressed.
+ \"Triggered\": The conditions will count as being met only in the initial moment that the button is pressed.
+ \"Repeated\": While the button is continually pressed, the conditions will count as being met in the initial moment the button is pressed, then 24 frames after, then every 6 frames after that.[/ul]
+"
+disabled = true
+selected = 0
+item_count = 3
+popup/item_0/text = "Is Being Pressed"
+popup/item_0/id = 0
+popup/item_1/text = "Is Being Triggered"
+popup/item_1/id = 1
+popup/item_2/text = "Is Being Repeated"
+popup/item_2/id = 2
+
+[node name="Condition6" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4" groups=["main_trait_filter_tab"]]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("..")
+metadata/original_parent = {
+"index": 5,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath("."),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","theme_override_constants/separation":12,"alignment":0,"script":null)
+
+}
+
+[node name="Script" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition6"]
+layout_mode = 2
+metadata/original_parent = {
+"index": 5,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath("."),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","theme_override_constants/separation":12,"alignment":0,"script":null)
+
+}
+
+[node name="ScriptSelection" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition6/Script"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+tooltip_text = "For advanced users: Use the evaluated result of a script."
+focus_mode = 1
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_krul0")
+text = "Script:"
+
+[node name="ScriptContents" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition6/Script" instance=ExtResource("8_je5le")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "For advanced users: Use the evaluated result of a script."
+focus_mode = 0
+mouse_filter = 2
+editable = false
+selecting_enabled = false
+disabled = true
+metadata/original_text = ""
+
+[node name="FilterContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
+
+[node name="FilterSmoothContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/FilterContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+script = ExtResource("10_bjwi3")
+metadata/_custom_type_script = "uid://cs6g8remlafby"
+
+[node name="FlowContainer" type="GridContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/FilterContainer/FilterSmoothContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/v_separation = 14
+script = ExtResource("11_bjwi3")
+vertical_separator_texture = SubResource("GradientTexture2D_7j6jq")
+
+[node name="CreateElseBranch" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "When [Create Else Branch] is enabled, it is possible to branch conditions when the specified conditions are not met"
+focus_mode = 1
+mouse_default_cursor_shape = 2
+text = "Create Else Branch"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_6k0ow")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+theme_override_styles/normal = SubResource("StyleBoxTexture_epknr")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_eq1vl")
+theme_override_styles/hover = SubResource("StyleBoxTexture_64dt2")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_obvif")
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_6k0ow")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+theme_override_styles/normal = SubResource("StyleBoxTexture_w77q5")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_nkl6m")
+theme_override_styles/hover = SubResource("StyleBoxTexture_ti5ar")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_w1rvw")
+text = "CANCEL"
+
+[connection signal="gui_input" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer2/Filter" to="." method="_on_filter_gui_input"]
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer2/Filter" to="." method="_on_filter_text_changed"]
+[connection signal="tab_changed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/TabsContainer" to="." method="_on_custom_tab_container_tab_changed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition1/Switch/SwitchSelection" to="." method="_on_item_selected_toggled" binds= [0]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition1/Switch/SwitchID" to="." method="_on_switch_id_pressed"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition1/Switch/SwitchValue" to="." method="_on_switch_value_item_selected"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition2/Variable/VarVariable/VariableSelection" to="." method="_on_item_selected_toggled" binds= [1]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition2/Variable/VarVariable/VariableID" to="." method="_on_variable_id_pressed"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition2/Variable/VarVariable/VariableCondition" to="." method="_on_variable_condition_item_selected"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition2/Variable/VarConstant/VariableConstantSelection" to="." method="_on_variable_item_selected" binds= [0]]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition2/Variable/VarConstant/VariableConstantValue" to="." method="_on_variable_constant_value_value_changed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition2/Variable/VarVar/VariableVariableSelection" to="." method="_on_variable_item_selected" binds= [1]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition2/Variable/VarVar/VariableVariableValue" to="." method="_on_variable_variable_value_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition5/TextVariable/VariableTextSelection" to="." method="_on_item_selected_toggled" binds= [14]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition5/TextVariable/Variable/VBoxContainer/HBoxContainer2/TextVariableID" to="." method="_on_text_variable_id_pressed"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition5/TextVariable/Variable/VBoxContainer/HBoxContainer2/TextVariableCondition" to="." method="_on_text_variable_condition_item_selected"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition5/TextVariable/Variable/VBoxContainer/HBoxContainer/TextVariableConstantSelection" to="." method="_on_text_variable_item_selected" binds= [0]]
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition5/TextVariable/Variable/VBoxContainer/HBoxContainer/TextVariableConstantValue" to="." method="_on_text_variable_constant_value_text_changed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition5/TextVariable/Variable/VBoxContainer/HBoxContainer3/TextVariableVariableSelection" to="." method="_on_text_variable_item_selected" binds= [1]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition5/TextVariable/Variable/VBoxContainer/HBoxContainer3/TextVariableVariableValue" to="." method="_on_text_variable_variable_value_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition6/GlobalUserParameter/GlobalUserParametersSelection" to="." method="_on_item_selected_toggled" binds= [17]]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition6/GlobalUserParameter/HBoxContainer/HBoxContainer4/GlobalUserParameters" to="." method="_on_global_user_parameters_item_selected"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition6/GlobalUserParameter/HBoxContainer/HBoxContainer4/GlobalUserParametersCondition" to="." method="_on_global_user_parameters_condition_item_selected"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition6/GlobalUserParameter/HBoxContainer/HBoxContainer/GlobalParameterConstantSelection" to="." method="_on_global_parameter_item_selected" binds= [0]]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition6/GlobalUserParameter/HBoxContainer/HBoxContainer/GlobalParameterConstantValue" to="." method="_on_global_parameter_constant_value_value_changed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition6/GlobalUserParameter/HBoxContainer/HBoxContainer3/GlobalParameterVariableSelection" to="." method="_on_global_parameter_item_selected" binds= [1]]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition6/GlobalUserParameter/HBoxContainer/HBoxContainer3/GlobalParameterVariableValue" to="." method="_on_global_parameter_variable_value_item_selected"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition3/SelfSwitch/SelfSwitchSelection" to="." method="_on_item_selected_toggled" binds= [2]]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition3/SelfSwitch/SelfSwitchID" to="." method="_on_self_switch_id_item_selected"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition3/SelfSwitch/SelfSwitchValue" to="." method="_on_self_switch_value_item_selected"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition4/Timer/TimerTop/TimerSelection" to="." method="_on_item_selected_toggled" binds= [3]]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition4/Timer/TimerTop/TimerCondition" to="." method="_on_timer_condition_item_selected"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition4/Timer/TimerTop/TimerMin" to="." method="_on_timer_min_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition4/Timer/TimerTop/TimerSec" to="." method="_on_timer_sec_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page1/Condition4/Timer/TimerID/TimerID" to="." method="_on_timer_id_value_changed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorID/ActorSelection" to="." method="_on_item_selected_toggled" binds= [4]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorID/ActorID" to="." method="_on_actor_id_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorIsInParty/ActorIsInPartySelection" to="." method="_on_actor_item_selected" binds= [0]]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorName/ActorNameSelection" to="." method="_on_actor_item_selected" binds= [1]]
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorName/ActorNameValue" to="." method="_on_actor_name_value_text_changed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorClass/ActorClassSelection" to="." method="_on_actor_item_selected" binds= [2]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorClass/ActorClassID" to="." method="_on_actor_class_id_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorSkill/ActorSkillSelection" to="." method="_on_actor_item_selected" binds= [3]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorSkill/ActorSkillID" to="." method="_on_actor_skill_id_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorWeapon/ActorWeaponSelection" to="." method="_on_actor_item_selected" binds= [4]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorWeapon/ActorWeaponID" to="." method="_on_actor_weapon_id_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorArmor/ActorArmorSelection" to="." method="_on_actor_item_selected" binds= [5]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorArmor/ActorArmorID" to="." method="_on_actor_armor_id_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorState/ActorStateSelection" to="." method="_on_actor_item_selected" binds= [6]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorState/ActorStateID" to="." method="_on_actor_state_id_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorParameters/ActorParametersSelection" to="." method="_on_actor_item_selected" binds= [7]]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorParameters/HBoxContainer/ActorParameters" to="." method="_on_actor_parameters_item_selected"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorParameters/HBoxContainer/HBoxContainer2/ActorParametersCondition" to="." method="_on_actor_parameters_condition_item_selected"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page2/Condition1/ActorParameters/HBoxContainer/HBoxContainer2/ActorParametersValue" to="." method="_on_actor_parameters_value_value_changed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition1/Enemy/EnemyID/EnemySelection" to="." method="_on_item_selected_toggled" binds= [5]]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition1/Enemy/EnemyID/EnemyID" to="." method="_on_enemy_id_item_selected"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition1/Enemy/EnemyAppeared/EnemyAppearedSelection" to="." method="_on_enemy_item_selected" binds= [0]]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition1/Enemy/EnemyHasState/EnemyStateSelection" to="." method="_on_enemy_item_selected" binds= [1]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition1/Enemy/EnemyHasState/EnemyStateID" to="." method="_on_enemy_state_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition2/Character/CharacterID/CharacterSelection" to="." method="_on_item_selected_toggled" binds= [6]]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition2/Character/CharacterID/CharacterID" to="." method="_on_character_id_item_selected"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition2/Character/CharacterDirection/CharacterState" to="." method="_on_character_direction_item_selected"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition3/Vehicle/VehicleSelection" to="." method="_on_item_selected_toggled" binds= [7]]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition3/Vehicle/VehicleID" to="." method="_on_vehicle_id_item_selected"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition4/Profession/ProfessionTop/ProfessionSelection" to="." method="_on_item_selected_toggled" binds= [15]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition4/Profession/ProfessionTop/ProfessionID" to="." method="_on_profession_id_pressed"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition4/Profession/ProfessionTop/ProfessionCondition" to="." method="_on_profession_condition_item_selected"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition4/Profession/HBoxContainer/ProfessionValue" to="." method="_on_profession_value_value_changed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition5/Relationship/RelationshipSelection" to="." method="_on_item_selected_toggled" binds= [16]]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition5/Relationship/RelationshipCondition" to="." method="_on_relationship_condition_item_selected"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3/Condition5/Relationship/RelationshipValue" to="." method="_on_relationship_value_value_changed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition1/Gold/GoldSelection" to="." method="_on_item_selected_toggled" binds= [8]]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition1/Gold/GoldCondition" to="." method="_on_gold_condition_item_selected"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition1/Gold/GoldValue" to="." method="_on_gold_value_value_changed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition2/Item/ItemSelection" to="." method="_on_item_selected_toggled" binds= [9]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition2/Item/ItemID" to="." method="_on_item_id_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition3/HasWeapon/WeaponID/WeaponSelection" to="." method="_on_item_selected_toggled" binds= [10]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition3/HasWeapon/WeaponID/WeaponID" to="." method="_on_weapon_id_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition3/HasWeapon/HasWeaponEquipment/WeaponIncludeEquipment" to="." method="_on_weapon_include_equipment_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition4/HasArmor/ArmorID/HasArmorEquipment" to="." method="_on_item_selected_toggled" binds= [11]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition4/HasArmor/ArmorID/ArmorID" to="." method="_on_armor_id_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition4/HasArmor/HBoxContainer/ArmorIncludeEquipment" to="." method="_on_armor_include_equipment_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition5/ButtonPressed/ButtonSelection" to="." method="_on_item_selected_toggled" binds= [12]]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition5/ButtonPressed/ButtonID" to="." method="_on_button_id_item_selected"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition5/ButtonPressed/ButtonAction" to="." method="_on_button_action_item_selected"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition6/Script/ScriptSelection" to="." method="_on_item_selected_toggled" binds= [13]]
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page4/Condition6/Script/ScriptContents" to="." method="_on_custom_line_edit_text_changed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/CreateElseBranch" to="." method="_on_create_else_branch_toggled"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

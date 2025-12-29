@@ -1,0 +1,51 @@
+[gd_scene load_steps=3 format=3 uid="uid://b5nbqr8ah0ay2"]
+
+[ext_resource type="Script" uid="uid://b3tu2078lsmhy" path="res://addons/tile_bit_tools/controls/tiles_inspector/tool_buttons/tool_buttons.gd" id="1_8r32g"]
+[ext_resource type="Script" uid="uid://olsr5lg5bmli" path="res://addons/tile_bit_tools/controls/shared/icon_button.gd" id="3_hprs6"]
+
+[node name="ToolButtons" type="HFlowContainer"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 149.0
+grow_horizontal = 2
+theme_override_constants/h_separation = 16
+alignment = 1
+script = ExtResource("1_8r32g")
+
+[node name="FillButton" type="MenuButton" parent="." groups=["TBTToolButton"]]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(123, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+tooltip_text = "Fill all terrain bits in selected tiles"
+focus_mode = 2
+text = "Fill"
+flat = false
+alignment = 0
+script = ExtResource("3_hprs6")
+editor_name = "Bucket"
+
+[node name="BitButton" type="MenuButton" parent="." groups=["TBTToolButton"]]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(123, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+tooltip_text = "Fill all terrain bits with a single terrain"
+focus_mode = 2
+text = "Set Bits"
+flat = false
+alignment = 0
+script = ExtResource("3_hprs6")
+editor_name = "EditKey"
+
+[node name="ClearButton" type="Button" parent="." groups=["TBTToolButton"]]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+text = "Clear"
+alignment = 0
+script = ExtResource("3_hprs6")
+editor_name = "Clear"
+
+[connection signal="pressed" from="ClearButton" to="." method="_on_erase_button_pressed"]

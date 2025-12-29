@@ -1,0 +1,112 @@
+[gd_scene load_steps=9 format=3 uid="uid://cqqo2posnfpon"]
+
+[ext_resource type="Texture2D" uid="uid://bsyrmk6i6sput" path="res://Assets/Images/GUI/frame8.png" id="1_trhw0"]
+[ext_resource type="Script" uid="uid://cklwhc8iycs6q" path="res://Scenes/LoadSaveScene/save_slot.gd" id="2_bka2v"]
+[ext_resource type="FontFile" uid="uid://d4c6c2u86nvso" path="res://Assets/Fonts/Cinzel-Bold.ttf" id="2_k3h06"]
+[ext_resource type="AudioStream" uid="uid://kwsv0pj5fqd6" path="res://Assets/Sounds/SE/button_hover_se.wav" id="3_7ewf3"]
+[ext_resource type="AudioStream" uid="uid://c7s1i4mwxxfg8" path="res://Assets/Sounds/SE/button_click_se.wav" id="4_mp6bb"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5mssx"]
+texture = ExtResource("1_trhw0")
+texture_margin_left = 39.0
+texture_margin_top = 41.0
+texture_margin_right = 39.0
+texture_margin_bottom = 16.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uh7pr"]
+corner_radius_top_left = 11
+corner_radius_top_right = 11
+corner_radius_bottom_right = 11
+corner_radius_bottom_left = 11
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rj61l"]
+bg_color = Color(0.67, 0.544933, 0.201, 0.109804)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.899803, 0.756097, 0.511471, 1)
+border_blend = true
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="SaveSlot" type="PanelContainer"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 121.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_5mssx")
+script = ExtResource("2_bka2v")
+hover_se = ExtResource("3_7ewf3")
+click_se = ExtResource("4_mp6bb")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = -39
+theme_override_constants/margin_top = -41
+theme_override_constants/margin_right = -39
+theme_override_constants/margin_bottom = -38
+
+[node name="NoDataLabel" type="Label" parent="MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.410156, 0.410156, 0.410156, 1)
+theme_override_fonts/font = ExtResource("2_k3h06")
+theme_override_font_sizes/font_size = 48
+text = "NO DATA"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="MarginContainer2" type="MarginContainer" parent="."]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = -39
+theme_override_constants/margin_top = -41
+theme_override_constants/margin_right = -39
+theme_override_constants/margin_bottom = -16
+
+[node name="Panel" type="Panel" parent="MarginContainer2"]
+clip_children = 1
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_uh7pr")
+
+[node name="MainCursor" type="ColorRect" parent="MarginContainer2/Panel"]
+unique_name_in_owner = true
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 1
+mouse_default_cursor_shape = 2
+color = Color(0.86, 0.600137, 0.5418, 0.290196)
+
+[node name="MarginContainer3" type="MarginContainer" parent="."]
+show_behind_parent = true
+z_index = 1
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = -39
+theme_override_constants/margin_top = -41
+theme_override_constants/margin_right = -39
+theme_override_constants/margin_bottom = -16
+
+[node name="MouseHover" type="Panel" parent="MarginContainer3"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_rj61l")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+bus = &"SE"

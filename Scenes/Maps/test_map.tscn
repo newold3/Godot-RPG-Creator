@@ -1,0 +1,663 @@
+[gd_scene load_steps=97 format=4 uid="uid://cluc8yqovtlvf"]
+
+[ext_resource type="Script" uid="uid://cjwvraifvygt2" path="res://Scenes/Maps/test_map.gd" id="1_didij"]
+[ext_resource type="Gradient" uid="uid://bqcge4l0i5fro" path="res://addons/RPGMap/Assets/GridGradient/orange_gradient.tres" id="2_kukki"]
+[ext_resource type="Script" uid="uid://cioqek6v6bgx4" path="res://addons/RPGMap/Scripts/events.gd" id="3_kxphi"]
+[ext_resource type="Script" uid="uid://c4n8w1wb1qopr" path="res://addons/RPGData/ModulesRPG/rpg_event_page.gd" id="3_nd5sh"]
+[ext_resource type="Script" uid="uid://biahpabcgjkgs" path="res://addons/RPGData/ModulesRPG/rpg_event_page_condition.gd" id="4_htxeb"]
+[ext_resource type="TileSet" uid="uid://cro7sb3ncrmmi" path="res://Assets/Tilesets/terrains01.tres" id="4_j28jb"]
+[ext_resource type="Script" uid="uid://oh1bgoqomrdj" path="res://addons/RPGData/ModulesRPG/rpg_event_command.gd" id="5_fiyda"]
+[ext_resource type="TileSet" uid="uid://b2lnlxrnubop0" path="res://Assets/Tilesets/test.tres" id="5_xj7ls"]
+[ext_resource type="Script" uid="uid://jy4tlmnmv3dk" path="res://addons/RPGData/ModulesRPG/rpg_icon.gd" id="6_ewx0n"]
+[ext_resource type="Script" uid="uid://b7ykdbujk8i3l" path="res://addons/RPGData/ModulesRPG/rpg_movement_command.gd" id="7_aukdg"]
+[ext_resource type="Script" uid="uid://by33wnof5fhmw" path="res://addons/RPGData/ModulesRPG/rpg_movement_route.gd" id="8_didij"]
+[ext_resource type="Script" uid="uid://b1paousg2byp3" path="res://addons/RPGData/ModulesRPG/rpg_event_page_options.gd" id="9_uohsy"]
+[ext_resource type="Script" uid="uid://dcx6f8knjwegv" path="res://addons/RPGData/ModulesRPG/rpg_event_quest.gd" id="10_urkqk"]
+[ext_resource type="Script" uid="uid://ccw0uhbc0ne88" path="res://addons/RPGData/ModulesRPG/rpg_relationship_level.gd" id="11_dhmk3"]
+[ext_resource type="Script" uid="uid://dex58yidnaamn" path="res://addons/RPGData/ModulesRPG/rpg_relationship.gd" id="12_yak7x"]
+[ext_resource type="Script" uid="uid://dvbel4d37a2dd" path="res://addons/RPGData/ModulesRPG/rpg_event.gd" id="13_11apb"]
+
+[sub_resource type="Resource" id="Resource_didij"]
+script = ExtResource("4_htxeb")
+
+[sub_resource type="Resource" id="Resource_htxeb"]
+script = ExtResource("5_fiyda")
+code = 65
+parameters = {
+&"color": Color(0, 0, 0, 1),
+&"duration": 0.0,
+&"remove": false,
+&"wait": false
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_fiyda"]
+script = ExtResource("5_fiyda")
+code = 33
+parameters = {
+&"duration": 1.5,
+&"is_local": false
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_ewx0n"]
+script = ExtResource("6_ewx0n")
+
+[sub_resource type="Resource" id="Resource_aukdg"]
+script = ExtResource("5_fiyda")
+code = 2
+parameters = {
+&"character_name": {
+"type": 0,
+"value": "?????"
+},
+&"face": SubResource("Resource_ewx0n"),
+&"height": 0.0,
+&"is_floating_dialog": false,
+&"position": 1,
+&"width": 0.0
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_pssmi"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "Do you find the darkness oppressive?"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_uohsy"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[wait type=0 seconds=1][p]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_urkqk"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[face path=\"res://Assets/Images/LPCImages/Portraits/dadarian_face.png\" region=0,341,342,341 trans_type=1 trans_time=0 trans_wait=0]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_dhmk3"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[showbox type=1 val=\"1\" pos=0]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_yak7x"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[highlight_character mode=0 pos=0]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_11apb"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "I can’t see the path. I can't see anything."
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_n6hqn"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[p]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_squlj"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[highlight_character mode=0 pos=1]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_6w4q5"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[character path=\"res://Assets/Images/LPCImages/FullBody/unknown_ente.png\" position=\"custom\" trans_type=3 trans_time=1.50 trans_wait=1 size=319.0x640.0 image_offset=798x-1 trans_type_end=1]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_hqcv1"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[showbox type=0 val=\"?????\" pos=1]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_210bu"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "That is because the Base Layer is empty. The world hasn't been painted yet."
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_sa3ic"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[p]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_j1v7j"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[character path=\"res://Assets/Images/LPCImages/FullBody/dadarian_posture3.png\" id=1 position=\"custom\" trans_type=1 trans_time=0.50 trans_wait=1 size=283.0x569.0 image_offset=151x90 trans_type_end=1]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_1bs0q"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[face path=\"res://Assets/Images/LPCImages/Portraits/dadarian_face.png\" region=0,682,342,341 trans_type=1 trans_time=0 trans_wait=0]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_2s5q5"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[imgfx type=1 id=1 idle_animation=3]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_a2jyw"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[highlight_character mode=0 pos=0]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_bk7r0"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "Is this a prison?"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_amqfu"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[p]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_wa0qo"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[highlight_character mode=0 pos=1]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_x7k3o"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "Quite the opposite. Prisons are built by corporations, walled off by"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_4r7f8"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "copyrights and closed code. This place? This is a sanctuary."
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_qiwtu"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[p]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_b2lnm"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[highlight_character mode=0 pos=0]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_7mnof"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[face path=\"res://Assets/Images/LPCImages/Portraits/dadarian_face.png\" region=0,0,342,341 trans_type=1 trans_time=0 trans_wait=0]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_err6k"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[character path=\"res://Assets/Images/LPCImages/FullBody/dadarian_posture1.png\" id=1 position=\"custom\" trans_type=1 trans_time=0.50 trans_wait=1 size=283.0x569.0 image_offset=151x90 trans_type_end=1]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_xd84v"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[imgfx type=1 id=1 idle_animation=2]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_jcyen"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "A sanctuary of nothingness?"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_vjmuk"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[p]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_3a48r"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[highlight_character mode=0 pos=1]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_wyktd"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "A sanctuary of potential."
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_n6f4h"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "This reality runs on an engine built to be given away."
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_8u8le"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "They call it the \"[color=#f20e0eff]MIT Covenant[/color]\"."
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_f4mlh"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[p]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_yffyc"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[highlight_character mode=0 pos=0]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_4ivrs"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[shake rate=20 level=5 connected=0]MIT[/shake]? Sounds like a spell."
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_xflcw"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[p]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_a6isu"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[highlight_character mode=0 pos=1]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_t211t"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "It’s a promise. It means no one owns the horizon."
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_vox0t"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "No one owns the logic that governs the tides or the sun."
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_u158e"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "It was forged in solitude so that anyone—even you—could"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_1q6pl"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "take it and build a kingdom without paying a tithe."
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_2dv5r"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[p]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_qcaub"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[highlight_character mode=0 pos=0]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_lmxvo"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "So... I can change this?"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_sas7n"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[p]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_877qh"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[highlight_character mode=0 pos=1]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_xlu3a"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "You can rewrite the physics."
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_1xebb"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "You can shatter the hierarchy."
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_vihoy"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "But first, you must learn to observe the changes."
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_brrwd"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[p]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_o7tmb"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[highlight_character mode=0 pos=0]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_qqimu"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "What changes?"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_nxaxr"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[p]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_ylihp"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[highlight_character mode=0 pos=1]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_2vnqm"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "The Weather Priority is shifting. The variables are aligning."
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_83rae"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[p]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_jh1l8"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[highlight_character mode=0 pos=0]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_soub8"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "I don't feel anything."
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_hndss"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[p]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_slv0a"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[highlight_character mode=0 pos=1]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_tnuir"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "You will. The weight of the rain is about to override the void."
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_joioc"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[p]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_tdn8e"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[no_wait_input enabled=1 time=1]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_b8uqv"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "Three[p]two[p]one"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_d8jsx"]
+script = ExtResource("5_fiyda")
+code = 65
+parameters = {
+&"color": Color(0.20703125, 0.026687622, 0.026687622, 1),
+&"duration": 3.0,
+&"remove": true,
+&"wait": false
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_33ive"]
+script = ExtResource("5_fiyda")
+code = 68
+parameters = {
+&"id": 1.0,
+&"scene": "res://Scenes/WeatherScenes/RainScenes/rain_compose_scene.tscn",
+&"type": 0
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_28m88"]
+script = ExtResource("5_fiyda")
+code = 94
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_mka21"]
+script = ExtResource("5_fiyda")
+
+[sub_resource type="Resource" id="Resource_pej2v"]
+script = ExtResource("8_didij")
+skippable = true
+
+[sub_resource type="Resource" id="Resource_npp1l"]
+script = ExtResource("9_uohsy")
+
+[sub_resource type="Resource" id="Resource_mlg3a"]
+script = ExtResource("3_nd5sh")
+list = Array[ExtResource("5_fiyda")]([SubResource("Resource_htxeb"), SubResource("Resource_fiyda"), SubResource("Resource_aukdg"), SubResource("Resource_pssmi"), SubResource("Resource_uohsy"), SubResource("Resource_urkqk"), SubResource("Resource_dhmk3"), SubResource("Resource_yak7x"), SubResource("Resource_11apb"), SubResource("Resource_n6hqn"), SubResource("Resource_squlj"), SubResource("Resource_6w4q5"), SubResource("Resource_hqcv1"), SubResource("Resource_210bu"), SubResource("Resource_sa3ic"), SubResource("Resource_j1v7j"), SubResource("Resource_1bs0q"), SubResource("Resource_2s5q5"), SubResource("Resource_a2jyw"), SubResource("Resource_bk7r0"), SubResource("Resource_amqfu"), SubResource("Resource_wa0qo"), SubResource("Resource_x7k3o"), SubResource("Resource_4r7f8"), SubResource("Resource_qiwtu"), SubResource("Resource_b2lnm"), SubResource("Resource_7mnof"), SubResource("Resource_err6k"), SubResource("Resource_xd84v"), SubResource("Resource_jcyen"), SubResource("Resource_vjmuk"), SubResource("Resource_3a48r"), SubResource("Resource_wyktd"), SubResource("Resource_n6f4h"), SubResource("Resource_8u8le"), SubResource("Resource_f4mlh"), SubResource("Resource_yffyc"), SubResource("Resource_4ivrs"), SubResource("Resource_xflcw"), SubResource("Resource_a6isu"), SubResource("Resource_t211t"), SubResource("Resource_vox0t"), SubResource("Resource_u158e"), SubResource("Resource_1q6pl"), SubResource("Resource_2dv5r"), SubResource("Resource_qcaub"), SubResource("Resource_lmxvo"), SubResource("Resource_sas7n"), SubResource("Resource_877qh"), SubResource("Resource_xlu3a"), SubResource("Resource_1xebb"), SubResource("Resource_vihoy"), SubResource("Resource_brrwd"), SubResource("Resource_o7tmb"), SubResource("Resource_qqimu"), SubResource("Resource_nxaxr"), SubResource("Resource_ylihp"), SubResource("Resource_2vnqm"), SubResource("Resource_83rae"), SubResource("Resource_jh1l8"), SubResource("Resource_soub8"), SubResource("Resource_hndss"), SubResource("Resource_slv0a"), SubResource("Resource_tnuir"), SubResource("Resource_joioc"), SubResource("Resource_tdn8e"), SubResource("Resource_b8uqv"), SubResource("Resource_d8jsx"), SubResource("Resource_33ive"), SubResource("Resource_28m88"), SubResource("Resource_mka21")])
+condition = SubResource("Resource_didij")
+movement_route = SubResource("Resource_pej2v")
+options = SubResource("Resource_npp1l")
+launcher = 3
+event_trigger_list = PackedInt32Array()
+
+[sub_resource type="Resource" id="Resource_h5oid"]
+script = ExtResource("11_dhmk3")
+
+[sub_resource type="Resource" id="Resource_ytote"]
+script = ExtResource("12_yak7x")
+levels = Array[ExtResource("11_dhmk3")]([SubResource("Resource_h5oid")])
+
+[sub_resource type="Resource" id="Resource_8vxlm"]
+script = ExtResource("13_11apb")
+name = "EV0001"
+id = 2
+pages = Array[ExtResource("3_nd5sh")]([SubResource("Resource_mlg3a")])
+relationship = SubResource("Resource_ytote")
+
+[sub_resource type="Resource" id="Resource_xn408"]
+script = ExtResource("3_kxphi")
+events = Array[ExtResource("13_11apb")]([SubResource("Resource_8vxlm")])
+
+[node name="TestMap" type="Node2D"]
+y_sort_enabled = true
+script = ExtResource("1_didij")
+grid_gradient = ExtResource("2_kukki")
+events = SubResource("Resource_xn408")
+internal_id = 2651459344452080
+
+[node name="GroundBase" type="TileMapLayer" parent="."]
+unique_name_in_owner = true
+tile_map_data = PackedByteArray("AAAAAAAAAQAOACAAAAABAAAAAQAOACAAAAABAAEAAQAOACAAAAACAAEAAQAOACAAAAADAAEAAQAOACAAAAAEAAEAAQAUACAAAAAFAAEAAQAOACAAAAAFAAIAAQAUACIAAAAGAAIAAQAOACAAAAAHAAIAAQAOACAAAAAIAAIAAQAOACAAAAAJAAIAAQAOACAAAAAJAAMAAQAOACAAAAAKAAMAAQAOACAAAAALAAMAAQAOACAAAAAMAAMAAQAOACAAAAANAAMAAQAOACAAAAANAAQAAQAUACEAAAAOAAQAAQAUACAAAAAPAAQAAQAOACAAAAAQAAQAAQAOACAAAAARAAQAAQAOACAAAAASAAQAAQAOACAAAAASAAUAAQAOACAAAAATAAUAAQAOACAAAAAUAAUAAQAOACAAAAAVAAUAAQAUACIAAAAWAAUAAQAUACIAAAAWAAYAAQAOACAAAAAXAAYAAQAOACAAAAAYAAYAAQAOACAAAAAZAAYAAQAOACAAAAAZAAUAAQAOACAAAAAaAAUAAQAUACAAAAAbAAUAAQAOACAAAAAbAAQAAQAUACEAAAAbAAMAAQAOACAAAAAbAAIAAQAOACAAAAAbAAEAAQAUACAAAAAaAAEAAQAOACAAAAAZAAEAAQAUACEAAAAYAAEAAQAUACIAAAAXAAEAAQAUACEAAAAWAAAAAQAOACAAAAAVAAAAAQAOACAAAAAUAAAAAQAOACAAAAATAAAAAQAUACQAAAASAAAAAQAOACAAAAARAAAAAQAOACAAAAAQAAAAAQAOACAAAAAPAAAAAQAUACIAAAAOAAAAAQAOACAAAAANAAAAAQAOACAAAAAMAAAAAQAUACAAAAALAAAAAQAUACIAAAAKAAAAAQAOACAAAAAJAAAAAQAUACAAAAAIAAAAAQAOACAAAAAHAAAAAQAOACAAAAAGAAAAAQAUACIAAAAFAAAAAQAOACAAAAAEAAAAAQAOACAAAAADAAAAAQAOACAAAAACAAAAAQAOACAAAAAGAAEAAQAUACAAAAAHAAEAAQAUACEAAAAIAAEAAQAOACAAAAAJAAEAAQAOACAAAAAKAAEAAQAUACAAAAALAAEAAQAOACAAAAAMAAEAAQAUACEAAAANAAEAAQAOACAAAAAOAAEAAQAOACAAAAAPAAEAAQAUACAAAAAQAAEAAQAOACAAAAARAAEAAQAOACAAAAASAAEAAQAUACAAAAATAAEAAQAUACEAAAAUAAEAAQAOACAAAAAVAAEAAQAOACAAAAAWAAEAAQAOACAAAAAYAAIAAQAOACAAAAAZAAIAAQAUACEAAAAaAAIAAQAOACAAAAAXAAIAAQAOACAAAAAWAAIAAQAOACAAAAAVAAIAAQAUACIAAAAUAAIAAQAOACAAAAATAAIAAQAOACAAAAASAAIAAQAOACAAAAARAAIAAQAOACAAAAAQAAIAAQAOACAAAAAPAAIAAQAOACAAAAAOAAIAAQAOACAAAAANAAIAAQAUACIAAAAMAAIAAQAOACAAAAAKAAIAAQAUACIAAAALAAIAAQAOACAAAAATAAMAAQAOACAAAAAVAAMAAQAOACAAAAAUAAMAAQAOACAAAAAWAAMAAQAUACAAAAAXAAMAAQAOACAAAAAYAAMAAQAOACAAAAAZAAMAAQAOACAAAAAaAAMAAQAUACIAAAAZAAQAAQAOACAAAAAYAAUAAQAOACAAAAAXAAUAAQAOACAAAAAWAAQAAQAUACIAAAAVAAQAAQAOACAAAAAUAAQAAQAOACAAAAATAAQAAQAUACQAAAASAAMAAQAOACAAAAARAAMAAQAOACAAAAAQAAMAAQAOACAAAAAPAAMAAQAOACAAAAAOAAMAAQAUACIAAAAXAAQAAQAOACAAAAAYAAQAAQAOACAAAAAaAAQAAQAUACAAAAAjABMAAQAOACAAAAAjABIAAQAOACAAAAAjABEAAQAOACAAAAAjABAAAQAOACAAAAAjAA8AAQAOACAAAAAjAA4AAQAOACAAAAAjAA0AAQAOACAAAAAjAAwAAQAUACIAAAAjAAsAAQAUACQAAAAjAAoAAQAOACAAAAAjAAkAAQAOACAAAAAjAAgAAQAUACIAAAAjAAcAAQAOACAAAAAjAAYAAQAOACAAAAAjAAUAAQAUACEAAAAjAAQAAQAUACQAAAAjAAMAAQAUACIAAAAjAAIAAQAOACAAAAAjAAEAAQAOACAAAAAjAAAAAQAOACAAAAAiABMAAQAOACAAAAAiABIAAQAOACAAAAAiABEAAQAOACAAAAAiABAAAQAUACIAAAAiAA8AAQAOACAAAAAiAA4AAQAUACQAAAAiAA0AAQAOACAAAAAiAAwAAQAOACAAAAAiAAsAAQAOACAAAAAiAAoAAQAUACAAAAAiAAkAAQAOACAAAAAiAAgAAQAOACAAAAAiAAcAAQAUACIAAAAiAAYAAQAUACQAAAAiAAUAAQAOACAAAAAiAAQAAQAOACAAAAAiAAMAAQAOACAAAAAiAAIAAQAUACIAAAAiAAEAAQAUACQAAAAiAAAAAQAUACIAAAAhABMAAQAOACAAAAAhABIAAQAOACAAAAAhABEAAQAOACAAAAAhABAAAQAOACAAAAAhAA8AAQAUACQAAAAhAA4AAQAOACAAAAAhAA0AAQAOACAAAAAhAAwAAQAOACAAAAAhAAsAAQAOACAAAAAhAAoAAQAUACQAAAAhAAkAAQAOACAAAAAhAAgAAQAUACAAAAAhAAcAAQAOACAAAAAhAAYAAQAOACAAAAAhAAUAAQAOACAAAAAhAAQAAQAUACQAAAAhAAMAAQAOACAAAAAhAAIAAQAUACAAAAAhAAEAAQAUACAAAAAhAAAAAQAOACAAAAAgABMAAQAOACAAAAAgABIAAQAUACAAAAAgABEAAQAOACAAAAAgABAAAQAOACAAAAAgAA8AAQAOACAAAAAgAA4AAQAOACAAAAAgAA0AAQAOACAAAAAgAAwAAQAOACAAAAAgAAsAAQAOACAAAAAgAAoAAQAOACAAAAAgAAkAAQAOACAAAAAgAAgAAQAUACIAAAAgAAcAAQAUACIAAAAgAAYAAQAOACAAAAAgAAUAAQAOACAAAAAgAAQAAQAOACAAAAAgAAMAAQAUACAAAAAgAAIAAQAOACAAAAAgAAEAAQAOACAAAAAgAAAAAQAUACQAAAAfABMAAQAUACIAAAAfABIAAQAOACAAAAAfABEAAQAOACAAAAAfABAAAQAOACAAAAAfAA8AAQAOACAAAAAfAA4AAQAUACEAAAAfAA0AAQAOACAAAAAfAAwAAQAOACAAAAAfAAsAAQAOACAAAAAfAAoAAQAOACAAAAAfAAkAAQAOACAAAAAfAAgAAQAOACAAAAAfAAcAAQAUACEAAAAfAAYAAQAOACAAAAAfAAUAAQAUACQAAAAfAAQAAQAOACAAAAAfAAMAAQAOACAAAAAfAAIAAQAOACAAAAAfAAEAAQAUACAAAAAfAAAAAQAOACAAAAAeABMAAQAOACAAAAAeABIAAQAOACAAAAAeABEAAQAUACQAAAAeABAAAQAOACAAAAAeAA8AAQAOACAAAAAeAA4AAQAOACAAAAAeAA0AAQAOACAAAAAeAAwAAQAUACAAAAAeAAsAAQAOACAAAAAeAAoAAQAOACAAAAAeAAkAAQAOACAAAAAeAAgAAQAOACAAAAAeAAcAAQAOACAAAAAeAAYAAQAUACEAAAAeAAUAAQAOACAAAAAeAAQAAQAOACAAAAAeAAMAAQAOACAAAAAeAAIAAQAOACAAAAAeAAEAAQAOACAAAAAeAAAAAQAOACAAAAAdABMAAQAOACAAAAAdABIAAQAOACAAAAAdABEAAQAUACIAAAAdABAAAQAUACEAAAAdAA8AAQAOACAAAAAdAA4AAQAOACAAAAAdAA0AAQAOACAAAAAdAAwAAQAOACAAAAAdAAsAAQAUACQAAAAdAAoAAQAOACAAAAAdAAkAAQAUACEAAAAdAAgAAQAUACEAAAAdAAcAAQAOACAAAAAdAAYAAQAUACEAAAAdAAUAAQAOACAAAAAdAAQAAQAUACAAAAAdAAMAAQAOACAAAAAdAAIAAQAUACQAAAAdAAEAAQAOACAAAAAdAAAAAQAOACAAAAAcABMAAQAUACIAAAAcABIAAQAUACQAAAAcABEAAQAOACAAAAAcABAAAQAOACAAAAAcAA8AAQAOACAAAAAcAA4AAQAOACAAAAAcAA0AAQAUACAAAAAcAAwAAQAOACAAAAAcAAsAAQAOACAAAAAcAAoAAQAOACAAAAAcAAkAAQAOACAAAAAcAAgAAQAUACIAAAAcAAcAAQAOACAAAAAcAAYAAQAOACAAAAAcAAUAAQAOACAAAAAcAAQAAQAOACAAAAAcAAMAAQAOACAAAAAcAAIAAQAOACAAAAAcAAEAAQAOACAAAAAcAAAAAQAOACAAAAAbABMAAQAOACAAAAAbABIAAQAOACAAAAAbABEAAQAOACAAAAAbABAAAQAUACIAAAAbAA8AAQAOACAAAAAbAA4AAQAOACAAAAAbAA0AAQAOACAAAAAbAAwAAQAUACAAAAAbAAsAAQAOACAAAAAbAAoAAQAOACAAAAAbAAkAAQAUACQAAAAbAAgAAQAUACQAAAAbAAcAAQAOACAAAAAbAAYAAQAOACAAAAAbAAAAAQAOACAAAAAaABMAAQAUACAAAAAaABIAAQAOACAAAAAaABEAAQAUACEAAAAaABAAAQAOACAAAAAaAA8AAQAOACAAAAAaAA4AAQAOACAAAAAaAA0AAQAUACQAAAAaAAwAAQAUACAAAAAaAAsAAQAUACEAAAAaAAoAAQAUACIAAAAaAAkAAQAUACIAAAAaAAgAAQAOACAAAAAaAAcAAQAOACAAAAAaAAYAAQAOACAAAAAaAAAAAQAUACAAAAAZABMAAQAOACAAAAAZABIAAQAUACEAAAAZABEAAQAOACAAAAAZABAAAQAOACAAAAAZAA8AAQAOACAAAAAZAA4AAQAOACAAAAAZAA0AAQAOACAAAAAZAAwAAQAUACEAAAAZAAsAAQAUACAAAAAZAAoAAQAOACAAAAAZAAkAAQAOACAAAAAZAAgAAQAUACAAAAAZAAcAAQAOACAAAAAZAAAAAQAOACAAAAAYABMAAQAUACEAAAAYABIAAQAUACEAAAAYABEAAQAUACEAAAAYABAAAQAUACQAAAAYAA8AAQAUACAAAAAYAA4AAQAUACAAAAAYAA0AAQAUACQAAAAYAAwAAQAOACAAAAAYAAsAAQAOACAAAAAYAAoAAQAUACIAAAAYAAkAAQAOACAAAAAYAAgAAQAUACIAAAAYAAcAAQAOACAAAAAYAAAAAQAOACAAAAAXABMAAQAOACAAAAAXABIAAQAOACAAAAAXABEAAQAOACAAAAAXABAAAQAOACAAAAAXAA8AAQAOACAAAAAXAA4AAQAOACAAAAAXAA0AAQAOACAAAAAXAAwAAQAOACAAAAAXAAsAAQAOACAAAAAXAAoAAQAOACAAAAAXAAkAAQAOACAAAAAXAAgAAQAUACEAAAAXAAcAAQAUACEAAAAXAAAAAQAUACQAAAAWABMAAQAUACIAAAAWABIAAQAOACAAAAAWABEAAQAUACQAAAAWABAAAQAOACAAAAAWAA8AAQAUACIAAAAWAA4AAQAOACAAAAAWAA0AAQAOACAAAAAWAAwAAQAOACAAAAAWAAsAAQAUACIAAAAWAAoAAQAUACAAAAAWAAkAAQAOACAAAAAWAAgAAQAOACAAAAAWAAcAAQAUACEAAAAVABMAAQAOACAAAAAVABIAAQAUACQAAAAVABEAAQAOACAAAAAVABAAAQAOACAAAAAVAA8AAQAOACAAAAAVAA4AAQAOACAAAAAVAA0AAQAOACAAAAAVAAwAAQAOACAAAAAVAAsAAQAOACAAAAAVAAoAAQAUACIAAAAVAAkAAQAUACAAAAAVAAgAAQAUACQAAAAVAAcAAQAOACAAAAAVAAYAAQAUACIAAAAUABMAAQAUACAAAAAUABIAAQAOACAAAAAUABEAAQAOACAAAAAUABAAAQAUACIAAAAUAA8AAQAOACAAAAAUAA4AAQAOACAAAAAUAA0AAQAUACQAAAAUAAwAAQAUACIAAAAUAAsAAQAOACAAAAAUAAoAAQAUACEAAAAUAAkAAQAOACAAAAAUAAgAAQAUACEAAAAUAAcAAQAUACEAAAAUAAYAAQAUACIAAAATABMAAQAOACAAAAATABIAAQAOACAAAAATABEAAQAUACIAAAATABAAAQAOACAAAAATAA8AAQAOACAAAAATAA4AAQAOACAAAAATAA0AAQAOACAAAAATAAwAAQAOACAAAAATAAsAAQAUACIAAAATAAoAAQAOACAAAAATAAkAAQAUACAAAAATAAgAAQAUACQAAAATAAcAAQAUACAAAAATAAYAAQAOACAAAAASABMAAQAOACAAAAASABIAAQAUACIAAAASABEAAQAUACAAAAASABAAAQAUACEAAAASAA8AAQAOACAAAAASAA4AAQAOACAAAAASAA0AAQAOACAAAAASAAwAAQAOACAAAAASAAsAAQAOACAAAAASAAoAAQAOACAAAAASAAkAAQAOACAAAAASAAgAAQAUACQAAAASAAcAAQAOACAAAAASAAYAAQAUACEAAAARABMAAQAUACAAAAARABIAAQAOACAAAAARABEAAQAOACAAAAARABAAAQAOACAAAAARAA8AAQAOACAAAAARAA4AAQAUACAAAAARAA0AAQAUACAAAAARAAwAAQAUACAAAAARAAsAAQAOACAAAAARAAoAAQAOACAAAAARAAkAAQAOACAAAAARAAgAAQAOACAAAAARAAcAAQAOACAAAAARAAYAAQAOACAAAAARAAUAAQAOACAAAAAQABMAAQAUACQAAAAQABIAAQAOACAAAAAQABEAAQAOACAAAAAQABAAAQAOACAAAAAQAA8AAQAOACAAAAAQAA4AAQAOACAAAAAQAA0AAQAOACAAAAAQAAwAAQAOACAAAAAQAAsAAQAOACAAAAAQAAoAAQAOACAAAAAQAAkAAQAOACAAAAAQAAgAAQAOACAAAAAQAAcAAQAUACIAAAAQAAYAAQAOACAAAAAQAAUAAQAOACAAAAAPABMAAQAOACAAAAAPABIAAQAOACAAAAAPABEAAQAUACEAAAAPABAAAQAOACAAAAAPAA8AAQAUACQAAAAPAA4AAQAOACAAAAAPAA0AAQAOACAAAAAPAAwAAQAOACAAAAAPAAsAAQAUACEAAAAPAAoAAQAOACAAAAAPAAkAAQAOACAAAAAPAAgAAQAOACAAAAAPAAcAAQAUACQAAAAPAAYAAQAUACEAAAAPAAUAAQAOACAAAAAOABMAAQAOACAAAAAOABIAAQAUACIAAAAOABEAAQAUACQAAAAOABAAAQAUACIAAAAOAA8AAQAOACAAAAAOAA4AAQAUACIAAAAOAA0AAQAOACAAAAAOAAwAAQAUACQAAAAOAAsAAQAOACAAAAAOAAoAAQAUACEAAAAOAAkAAQAOACAAAAAOAAgAAQAOACAAAAAOAAcAAQAOACAAAAAOAAYAAQAOACAAAAAOAAUAAQAOACAAAAANABMAAQAUACEAAAANABIAAQAOACAAAAANABEAAQAOACAAAAANABAAAQAOACAAAAANAA8AAQAOACAAAAANAA4AAQAOACAAAAANAA0AAQAUACIAAAANAAwAAQAOACAAAAANAAsAAQAOACAAAAANAAoAAQAUACEAAAANAAkAAQAUACEAAAANAAgAAQAOACAAAAANAAcAAQAOACAAAAANAAYAAQAUACIAAAANAAUAAQAOACAAAAAMABMAAQAOACAAAAAMABIAAQAUACIAAAAMABEAAQAOACAAAAAMABAAAQAUACAAAAAMAA8AAQAUACEAAAAMAA4AAQAOACAAAAAMAA0AAQAOACAAAAAMAAwAAQAOACAAAAAMAAsAAQAOACAAAAAMAAoAAQAOACAAAAAMAAkAAQAUACQAAAAMAAgAAQAOACAAAAAMAAcAAQAOACAAAAAMAAYAAQAOACAAAAAMAAUAAQAOACAAAAAMAAQAAQAOACAAAAALABMAAQAUACAAAAALABIAAQAOACAAAAALABEAAQAOACAAAAALABAAAQAUACAAAAALAA8AAQAUACQAAAALAA4AAQAOACAAAAALAA0AAQAOACAAAAALAAwAAQAUACEAAAALAAsAAQAUACIAAAALAAoAAQAOACAAAAALAAkAAQAOACAAAAALAAgAAQAOACAAAAALAAcAAQAOACAAAAALAAYAAQAOACAAAAALAAUAAQAOACAAAAALAAQAAQAUACIAAAAKABMAAQAOACAAAAAKABIAAQAUACQAAAAKABEAAQAUACQAAAAKABAAAQAOACAAAAAKAA8AAQAOACAAAAAKAA4AAQAOACAAAAAKAA0AAQAOACAAAAAKAAwAAQAUACQAAAAKAAsAAQAUACAAAAAKAAoAAQAUACAAAAAKAAkAAQAOACAAAAAKAAgAAQAUACEAAAAKAAcAAQAOACAAAAAKAAYAAQAOACAAAAAKAAUAAQAOACAAAAAKAAQAAQAOACAAAAAJABMAAQAOACAAAAAJABIAAQAOACAAAAAJABEAAQAUACQAAAAJABAAAQAUACIAAAAJAA8AAQAOACAAAAAJAA4AAQAOACAAAAAJAA0AAQAUACAAAAAJAAwAAQAOACAAAAAJAAsAAQAOACAAAAAJAAoAAQAOACAAAAAJAAkAAQAUACIAAAAJAAgAAQAUACQAAAAJAAcAAQAOACAAAAAJAAYAAQAUACQAAAAJAAUAAQAOACAAAAAJAAQAAQAOACAAAAAIABMAAQAOACAAAAAIABIAAQAOACAAAAAIABEAAQAOACAAAAAIABAAAQAUACAAAAAIAA8AAQAOACAAAAAIAA4AAQAOACAAAAAIAA0AAQAOACAAAAAIAAwAAQAOACAAAAAIAAsAAQAUACEAAAAIAAoAAQAUACAAAAAIAAkAAQAUACIAAAAIAAgAAQAOACAAAAAIAAcAAQAOACAAAAAIAAYAAQAOACAAAAAIAAUAAQAOACAAAAAIAAQAAQAOACAAAAAIAAMAAQAUACEAAAAHABMAAQAOACAAAAAHABIAAQAOACAAAAAHABEAAQAOACAAAAAHABAAAQAOACAAAAAHAA8AAQAOACAAAAAHAA4AAQAOACAAAAAHAA0AAQAOACAAAAAHAAwAAQAOACAAAAAHAAsAAQAOACAAAAAHAAoAAQAOACAAAAAHAAkAAQAOACAAAAAHAAgAAQAOACAAAAAHAAcAAQAOACAAAAAHAAYAAQAOACAAAAAHAAUAAQAUACAAAAAHAAQAAQAOACAAAAAHAAMAAQAUACQAAAAGABMAAQAOACAAAAAGABIAAQAUACAAAAAGABEAAQAOACAAAAAGABAAAQAUACAAAAAGAA8AAQAUACQAAAAGAA4AAQAOACAAAAAGAA0AAQAUACAAAAAGAAwAAQAOACAAAAAGAAsAAQAUACQAAAAGAAoAAQAUACQAAAAGAAkAAQAUACEAAAAGAAgAAQAOACAAAAAGAAcAAQAOACAAAAAGAAYAAQAOACAAAAAGAAUAAQAOACAAAAAGAAQAAQAOACAAAAAGAAMAAQAOACAAAAAFABMAAQAOACAAAAAFABIAAQAUACIAAAAFABEAAQAOACAAAAAFABAAAQAOACAAAAAFAA8AAQAUACEAAAAFAA4AAQAOACAAAAAFAA0AAQAOACAAAAAFAAwAAQAOACAAAAAFAAsAAQAOACAAAAAFAAoAAQAUACAAAAAFAAkAAQAUACQAAAAFAAgAAQAUACIAAAAFAAcAAQAOACAAAAAFAAYAAQAOACAAAAAFAAUAAQAOACAAAAAFAAQAAQAOACAAAAAFAAMAAQAOACAAAAAEABMAAQAOACAAAAAEABIAAQAOACAAAAAEABEAAQAOACAAAAAEABAAAQAOACAAAAAEAA8AAQAOACAAAAAEAA4AAQAUACQAAAAEAA0AAQAUACQAAAAEAAwAAQAUACAAAAAEAAsAAQAOACAAAAAEAAoAAQAOACAAAAAEAAkAAQAOACAAAAAEAAgAAQAOACAAAAAEAAcAAQAOACAAAAAEAAYAAQAUACAAAAAEAAUAAQAOACAAAAAEAAQAAQAOACAAAAAEAAMAAQAOACAAAAAEAAIAAQAOACAAAAADABMAAQAOACAAAAADABIAAQAOACAAAAADABEAAQAOACAAAAADABAAAQAUACEAAAADAA8AAQAOACAAAAADAA4AAQAOACAAAAADAA0AAQAOACAAAAADAAwAAQAOACAAAAADAAsAAQAOACAAAAADAAoAAQAUACAAAAADAAkAAQAOACAAAAADAAgAAQAOACAAAAADAAcAAQAOACAAAAADAAYAAQAOACAAAAADAAUAAQAOACAAAAADAAQAAQAOACAAAAADAAMAAQAOACAAAAADAAIAAQAOACAAAAACABMAAQAOACAAAAACABIAAQAUACEAAAACABEAAQAOACAAAAACABAAAQAUACQAAAACAA8AAQAOACAAAAACAA4AAQAUACQAAAACAA0AAQAOACAAAAACAAwAAQAUACQAAAACAAsAAQAOACAAAAACAAoAAQAOACAAAAACAAkAAQAUACIAAAACAAgAAQAUACEAAAACAAcAAQAUACIAAAACAAYAAQAOACAAAAACAAUAAQAOACAAAAACAAQAAQAUACAAAAACAAMAAQAUACAAAAACAAIAAQAOACAAAAABABMAAQAOACAAAAABABIAAQAOACAAAAABABEAAQAOACAAAAABABAAAQAOACAAAAABAA8AAQAOACAAAAABAA4AAQAOACAAAAABAA0AAQAOACAAAAABAAwAAQAUACQAAAABAAsAAQAOACAAAAABAAoAAQAOACAAAAABAAkAAQAOACAAAAABAAgAAQAUACAAAAABAAcAAQAOACAAAAABAAYAAQAUACEAAAABAAUAAQAUACIAAAABAAQAAQAOACAAAAABAAMAAQAOACAAAAABAAIAAQAOACAAAAAAABMAAQAOACAAAAAAABIAAQAUACQAAAAAABEAAQAUACQAAAAAABAAAQAOACAAAAAAAA8AAQAUACIAAAAAAA4AAQAOACAAAAAAAA0AAQAOACAAAAAAAAwAAQAOACAAAAAAAAsAAQAUACAAAAAAAAoAAQAOACAAAAAAAAkAAQAOACAAAAAAAAgAAQAUACIAAAAAAAcAAQAUACAAAAAAAAYAAQAUACQAAAAAAAUAAQAOACAAAAAAAAQAAQAUACAAAAAAAAMAAQAOACAAAAAAAAIAAQAUACIAAAAAAAEAAQAOACAAAAA=")
+tile_set = ExtResource("4_j28jb")
+
+[node name="GroundDetail" type="TileMapLayer" parent="."]
+unique_name_in_owner = true
+tile_set = ExtResource("5_xj7ls")
+
+[node name="Environment" type="TileMapLayer" parent="."]
+unique_name_in_owner = true
+z_index = 1
+y_sort_enabled = true
+tile_map_data = PackedByteArray("AAABAAIAAAAcABMAAAABAAMAAAAcABQAAAACAAIAAAAcABMAAAACAAMAAAAcABQAAAADAAAAAAAcABMAAAADAAEAAAAcABQAAAAEAAAAAAAcABMAAAAEAAEAAAAcABQAAAAEAAwAAAAcABMAAAAEAA0AAAAcABQAAAAFAAAAAAAcABMAAAAFAAEAAAAcABQAAAAFAAwAAAAcABMAAAAFAA0AAAAcABQAAAAFAA4AAAAcABMAAAAFAA8AAAAcABQAAAAGAAAAAAAcABMAAAAGAAEAAAAcABQAAAAGAA4AAAAcABMAAAAGAA8AAAAcABQAAAAHAA4AAAAcABMAAAAHAA8AAAAcABQAAAAIAAcAAAAcABMAAAAIAAgAAAAcABQAAAAIAAwAAAAcABMAAAAIAA0AAAAcABQAAAAIAA4AAAAcABMAAAAIAA8AAAAcABQAAAAJAAcAAAAcABMAAAAJAAgAAAAcABQAAAAJAAwAAAAcABMAAAAJAA0AAAAcABQAAAAKAAcAAAAcABMAAAAKAAgAAAAcABQAAAAKAAwAAAAcABMAAAAKAA0AAAAcABQAAAALAAUAAAAcABMAAAALAAYAAAAcABQAAAALAAcAAAAcABMAAAALAAgAAAAcABQAAAALAAwAAAAcABMAAAALAA0AAAAcABQAAAAMAAUAAAAcABMAAAAMAAYAAAAcABQAAAANAAUAAAAcABMAAAANAAYAAAAcABQAAAAOAAUAAAAcABMAAAAOAAYAAAAcABQAAAAPAAUAAAAcABMAAAAPAAYAAAAcABQAAAAPAA4AAAAcABMAAAAPAA8AAAAcABQAAAAQAAMAAAAcABMAAAAQAAQAAAAcABQAAAAQAA4AAAAcABMAAAAQAA8AAAAcABQAAAARAA4AAAAcABMAAAARAA8AAAAcABQAAAASAA4AAAAcABMAAAASAA8AAAAcABQAAAATAAwAAAAcABMAAAATAA0AAAAcABQAAAATAA4AAAAcABMAAAATAA8AAAAcABQAAAAUAAwAAAAcABMAAAAUAA0AAAAcABQAAAAVAAcAAAAcABMAAAAVAAgAAAAcABQAAAAWAAcAAAAcABMAAAAWAAgAAAAcABQAAAAXAAcAAAAcABMAAAAXAAgAAAAcABQAAAAYAAcAAAAcABMAAAAYAAgAAAAcABQAAAAYAAkAAAAcABMAAAAYAAoAAAAcABQAAAAZAAkAAAAcABMAAAAZAAoAAAAcABQAAAAaAAkAAAAcABMAAAAaAAoAAAAcABQAAAAaAAsAAAAcABMAAAAaAAwAAAAcABQAAAAbAAsAAAAcABMAAAAbAAwAAAAcABQAAAAdAAIAAAAcABMAAAAdAAMAAAAcABQAAAAdABEAAAAcABMAAAAdABIAAAAcABQAAAAeAAIAAAAcABMAAAAeAAMAAAAcABQAAAAeABEAAAAcABMAAAAeABIAAAAcABQAAAAfAAIAAAAcABMAAAAfAAMAAAAcABQAAAAfAA8AAAAcABMAAAAfABAAAAAcABQAAAAfABEAAAAcABMAAAAfABIAAAAcABQAAAAgAAIAAAAcABMAAAAgAAMAAAAcABQAAAAgAAQAAAAcABMAAAAgAAUAAAAcABQAAAAgAA0AAAAcABMAAAAgAA4AAAAcABQAAAAgAA8AAAAcABMAAAAgABAAAAAcABQAAAAhAAsAAAAcABMAAAAhAAwAAAAcABQAAAAhAA0AAAAcABMAAAAhAA4AAAAcABQAAAA=")
+tile_set = ExtResource("5_xj7ls")
+
+[node name="Overlay" type="TileMapLayer" parent="."]
+unique_name_in_owner = true
+z_index = 1
+tile_set = ExtResource("5_xj7ls")

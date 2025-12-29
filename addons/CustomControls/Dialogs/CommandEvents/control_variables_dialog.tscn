@@ -1,0 +1,652 @@
+[gd_scene load_steps=43 format=3 uid="uid://48h2dv7e1hcf"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_h6nir"]
+[ext_resource type="Script" uid="uid://c8ks15g52coec" path="res://addons/CustomControls/Dialogs/CommandEvents/control_variables_dialog.gd" id="2_5x0fq"]
+[ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="3_dlo4s"]
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="4_sih3x"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="5_7m2rc"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="6_0ohqy"]
+[ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="6_ccojj"]
+[ext_resource type="Texture2D" uid="uid://xl88b63otgpi" path="res://addons/CustomControls/Images/button1_background.png" id="7_fhnot"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="7_jcs72"]
+[ext_resource type="Texture2D" uid="uid://dqnnp323vr1vo" path="res://addons/CustomControls/Images/button1_background_hover.png" id="8_cm3bi"]
+[ext_resource type="Texture2D" uid="uid://beg6i1p118qd" path="res://addons/CustomControls/Images/button1_background_selected.png" id="9_qoopa"]
+[ext_resource type="Texture2D" uid="uid://bkfn4ru5noaaa" path="res://addons/CustomControls/Images/button1_background_disabled.png" id="10_8oswq"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_mv5b2"]
+
+[sub_resource type="Gradient" id="Gradient_u5yrp"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ogwiw"]
+gradient = SubResource("Gradient_u5yrp")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_faxed"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Gradient" id="Gradient_ctwx1"]
+colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_jcs72"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_sbngs"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_jcs72")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_263tv"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_i8abc"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vyf6c"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_wyqqb"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kke3s"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_wyqqb")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f6v0s"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_wby2p"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wdl87"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_g7a08"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0g6gq"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_g7a08")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pu77k"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_tttgk"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sbngs"]
+atlas = ExtResource("7_jcs72")
+region = Rect2(48, 72, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_263tv"]
+atlas = ExtResource("7_jcs72")
+region = Rect2(48, 96, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jcs72"]
+atlas = ExtResource("7_jcs72")
+region = Rect2(96, 240, 24, 24)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_s0hl2"]
+texture = ExtResource("7_fhnot")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xnmr8"]
+texture = ExtResource("9_qoopa")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8632l"]
+texture = ExtResource("8_cm3bi")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_umt67"]
+texture = ExtResource("10_8oswq")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qu15e"]
+texture = ExtResource("7_fhnot")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ep53t"]
+texture = ExtResource("9_qoopa")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_el6ll"]
+texture = ExtResource("8_cm3bi")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_56t2m"]
+texture = ExtResource("10_8oswq")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[node name="ControlVariablesDialog" type="Window"]
+oversampling_override = 1.0
+title = "Control Variables"
+position = Vector2i(0, 36)
+size = Vector2i(698, 508)
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_h6nir")
+script = ExtResource("2_5x0fq")
+
+[node name="Background" type="TextureRect" parent="."]
+material = SubResource("CanvasItemMaterial_mv5b2")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_ogwiw")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Item" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_dlo4s")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_faxed")
+style1 = SubResource("StyleBoxFlat_faxed")
+style2 = SubResource("StyleBoxTexture_sbngs")
+style3 = SubResource("StyleBoxFlat_263tv")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Item"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Variable"
+
+[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Single" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(110, 0)
+layout_mode = 2
+tooltip_text = "Select individual variable"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_pressed = true
+button_group = SubResource("ButtonGroup_i8abc")
+text = "Single:"
+
+[node name="ItemID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/VBoxContainer" instance=ExtResource("4_sih3x")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Click to select the variable for this operation"
+text = "0001:uno"
+
+[node name="VBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Random" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/VBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(110, 0)
+layout_mode = 2
+tooltip_text = "[title]Set Of Variables[/title]
+Operates all variables found beetween two specified numbers
+
+"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_i8abc")
+text = "Group:"
+
+[node name="From" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/VBoxContainer2" instance=ExtResource("5_7m2rc")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Operates all variables found beetween two specified numbers"
+mouse_filter = 2
+min_value = 1.0
+value = 1.0
+allow_greater = true
+editable = false
+disabled = true
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 1
+text = " ~ "
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="To" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/VBoxContainer2" instance=ExtResource("5_7m2rc")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Operates all variables found beetween two specified numbers"
+mouse_filter = 2
+min_value = 1.0
+value = 1.0
+allow_greater = true
+editable = false
+disabled = true
+
+[node name="Operation" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_dlo4s")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_vyf6c")
+style1 = SubResource("StyleBoxFlat_vyf6c")
+style2 = SubResource("StyleBoxTexture_kke3s")
+style3 = SubResource("StyleBoxFlat_f6v0s")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Operation"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Operation/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Operation"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="OperationSet" type="CheckBox" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Stores the operand to the specified variable/s"
+mouse_default_cursor_shape = 2
+button_pressed = true
+button_group = SubResource("ButtonGroup_wby2p")
+text = "Set (=)"
+
+[node name="OperationAdd" type="CheckBox" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Adds the operand to the specified variable/s"
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_wby2p")
+text = "Add (+)"
+
+[node name="OperationSub" type="CheckBox" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Subtracts the operand to the specified variable/s"
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_wby2p")
+text = "Sub (-)"
+
+[node name="OperationMul" type="CheckBox" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Multiplies the operand to the specified variable/s"
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_wby2p")
+text = "Mul (*)"
+
+[node name="OperationDiv" type="CheckBox" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Divides the operand to the specified variable/s"
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_wby2p")
+text = "Div (/)"
+
+[node name="OperationMod" type="CheckBox" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Divides the specified variable/s by the operand and stores the remainder/s"
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_wby2p")
+text = "Mod (%)"
+
+[node name="Operand" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_dlo4s")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_wdl87")
+style1 = SubResource("StyleBoxFlat_wdl87")
+style2 = SubResource("StyleBoxTexture_0g6gq")
+style3 = SubResource("StyleBoxFlat_pu77k")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Operand"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Operand/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Operand"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Constant" type="CheckBox" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+tooltip_text = "Uses the constant value"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_pressed = true
+button_group = SubResource("ButtonGroup_tttgk")
+text = "Constant
+"
+
+[node name="OperandConstant" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_7m2rc")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Uses the constant value"
+value = 8.0
+allow_greater = true
+allow_lesser = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Variable" type="CheckBox" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+tooltip_text = "Uses the value of the specified variable"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_tttgk")
+text = "Variable
+"
+
+[node name="OperandVariableID" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("4_sih3x")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Uses the value of the specified variable"
+disabled = true
+text = "0001:uno"
+
+[node name="VBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="OperandRandom" type="CheckBox" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/VBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+tooltip_text = "Uses a random value beetween two specified values"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_tttgk")
+text = "Random"
+
+[node name="OperandFrom" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/VBoxContainer2" instance=ExtResource("5_7m2rc")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Uses a random value beetween two specified values"
+mouse_filter = 2
+min_value = 1.0
+value = 1.0
+allow_greater = true
+editable = false
+disabled = true
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 1
+text = " ~ "
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="OperandTo" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/VBoxContainer2" instance=ExtResource("5_7m2rc")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Uses a random value beetween two specified values"
+mouse_filter = 2
+min_value = 1.0
+value = 1.0
+allow_greater = true
+editable = false
+disabled = true
+
+[node name="VBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="GameData" type="CheckBox" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/VBoxContainer3"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+tooltip_text = "Uses a value of various data in the game"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_tttgk")
+text = "Game Data"
+
+[node name="OperandGameData" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/VBoxContainer3" instance=ExtResource("4_sih3x")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Uses a value of various data in the game"
+disabled = true
+text = "Map ID"
+
+[node name="VBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Script" type="CheckBox" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/VBoxContainer4"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+tooltip_text = "Evaluates text as gdscript"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_tttgk")
+text = "Script"
+
+[node name="OperandScript" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/VBoxContainer4" instance=ExtResource("6_ccojj")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Evaluates text as gdscript
+
+[Note]: The script should return a numeric value."
+focus_mode = 0
+mouse_filter = 2
+editable = false
+selecting_enabled = false
+disabled = true
+metadata/original_text = ""
+
+[node name="OpenAdvancedScriptEditor" type="TextureButton" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/VBoxContainer4"]
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Open the advanced script editor"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = SubResource("AtlasTexture_sbngs")
+texture_hover = SubResource("AtlasTexture_263tv")
+texture_disabled = SubResource("AtlasTexture_jcs72")
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("6_0ohqy")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+theme_override_styles/normal = SubResource("StyleBoxTexture_s0hl2")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_xnmr8")
+theme_override_styles/hover = SubResource("StyleBoxTexture_8632l")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_umt67")
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("6_0ohqy")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+theme_override_styles/normal = SubResource("StyleBoxTexture_qu15e")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_ep53t")
+theme_override_styles/hover = SubResource("StyleBoxTexture_el6ll")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_56t2m")
+text = "CANCEL"
+
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/VBoxContainer/Single" to="." method="_on_single_toggled"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/VBoxContainer/ItemID" to="." method="_on_item_id_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/VBoxContainer2/Random" to="." method="_on_random_toggled"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/VBoxContainer2/From" to="." method="_on_from_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/VBoxContainer2/To" to="." method="_on_to_value_changed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer/OperationSet" to="." method="_on_operation_changed" binds= [0]]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer/OperationAdd" to="." method="_on_operation_changed" binds= [1]]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer/OperationSub" to="." method="_on_operation_changed" binds= [2]]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer/OperationMul" to="." method="_on_operation_changed" binds= [3]]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer/OperationDiv" to="." method="_on_operation_changed" binds= [4]]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer/OperationMod" to="." method="_on_operation_changed" binds= [5]]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/HBoxContainer/Constant" to="." method="_on_operand_toggled" binds= [0]]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/HBoxContainer/OperandConstant" to="." method="_on_operand_constant_value_changed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/HBoxContainer2/Variable" to="." method="_on_operand_toggled" binds= [1]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/HBoxContainer2/OperandVariableID" to="." method="_on_operand_variable_id_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/VBoxContainer2/OperandRandom" to="." method="_on_operand_toggled" binds= [2]]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/VBoxContainer2/OperandFrom" to="." method="_on_operand_from_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/VBoxContainer2/OperandTo" to="." method="_on_operand_to_value_changed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/VBoxContainer3/GameData" to="." method="_on_operand_toggled" binds= [3]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/VBoxContainer3/OperandGameData" to="." method="_on_operand_game_data_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/VBoxContainer4/Script" to="." method="_on_operand_toggled" binds= [4]]
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/VBoxContainer4/OperandScript" to="." method="_on_operand_script_text_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/VBoxContainer4/OpenAdvancedScriptEditor" to="." method="_on_open_advanced_script_editor_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

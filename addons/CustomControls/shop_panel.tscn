@@ -1,0 +1,298 @@
+[gd_scene load_steps=27 format=3 uid="uid://cobosqfcyccw1"]
+
+[ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="1_b0d2m"]
+[ext_resource type="Script" uid="uid://bctqrjk26q55e" path="res://addons/CustomControls/shop_panel.gd" id="1_dvsdp"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="2_fc0sr"]
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="3_u6puw"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="4_lslks"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="5_v1wsc"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_56esr"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Gradient" id="Gradient_ctwx1"]
+colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_p053n"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_n3ec6"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_p053n")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ss3n2"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_tsehd"]
+load_path = "res://.godot/imported/buttons.png-c08ce4315629138dcb3fe4a0d034f7bd.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c7jkm"]
+atlas = SubResource("CompressedTexture2D_tsehd")
+region = Rect2(24, 72, 24, 24)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_qq4aq"]
+load_path = "res://.godot/imported/buttons.png-c08ce4315629138dcb3fe4a0d034f7bd.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tl2cj"]
+atlas = SubResource("CompressedTexture2D_qq4aq")
+region = Rect2(24, 96, 24, 24)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_omsgp"]
+load_path = "res://.godot/imported/buttons.png-c08ce4315629138dcb3fe4a0d034f7bd.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hlfpm"]
+atlas = SubResource("CompressedTexture2D_omsgp")
+region = Rect2(24, 120, 24, 24)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_d8i2k"]
+load_path = "res://.godot/imported/buttons.png-c08ce4315629138dcb3fe4a0d034f7bd.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xuxgx"]
+atlas = SubResource("CompressedTexture2D_d8i2k")
+region = Rect2(0, 72, 24, 24)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_p72qs"]
+load_path = "res://.godot/imported/buttons.png-c08ce4315629138dcb3fe4a0d034f7bd.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_geyls"]
+atlas = SubResource("CompressedTexture2D_p72qs")
+region = Rect2(0, 96, 24, 24)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_yp3ps"]
+load_path = "res://.godot/imported/buttons.png-c08ce4315629138dcb3fe4a0d034f7bd.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lo4q1"]
+atlas = SubResource("CompressedTexture2D_yp3ps")
+region = Rect2(0, 120, 24, 24)
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_tsehd"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4dbxu"]
+atlas = ExtResource("5_v1wsc")
+region = Rect2(0, 48, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lg4te"]
+atlas = ExtResource("5_v1wsc")
+region = Rect2(24, 48, 24, 24)
+
+[node name="ShopPanel" type="MarginContainer"]
+size_flags_horizontal = 3
+script = ExtResource("1_dvsdp")
+
+[node name="CustomPanel" parent="." instance=ExtResource("1_b0d2m")]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_56esr")
+style1 = SubResource("StyleBoxFlat_56esr")
+style2 = SubResource("StyleBoxTexture_n3ec6")
+style3 = SubResource("StyleBoxFlat_ss3n2")
+
+[node name="MainMarginContainer" type="MarginContainer" parent="CustomPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="CustomPanel/MainMarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CustomPanel/MainMarginContainer/HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer"]
+layout_mode = 2
+
+[node name="ItemName" type="Label" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.960993, 0.84834, 0.599135, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+
+[node name="MoveDown" type="TextureButton" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Move the item down one position in the list of items."
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = SubResource("AtlasTexture_c7jkm")
+texture_hover = SubResource("AtlasTexture_tl2cj")
+texture_disabled = SubResource("AtlasTexture_hlfpm")
+
+[node name="MoveUp" type="TextureButton" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Move the item up one position in the list of items."
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = SubResource("AtlasTexture_xuxgx")
+texture_hover = SubResource("AtlasTexture_geyls")
+texture_disabled = SubResource("AtlasTexture_lo4q1")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Type:"
+
+[node name="Type" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer" instance=ExtResource("2_fc0sr")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Choose the type for this item."
+selected = 0
+item_count = 3
+popup/item_0/text = "Items"
+popup/item_0/id = 0
+popup/item_1/text = "Weapons"
+popup/item_1/id = 1
+popup/item_2/text = "Armors"
+popup/item_2/id = 2
+
+[node name="Label2" type="Label" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = " ID:"
+
+[node name="ItemID" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer" instance=ExtResource("3_u6puw")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Choose the item to be displayed in the store"
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+
+[node name="Label3" type="Label" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = " Sales units:"
+
+[node name="Quantity" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer" instance=ExtResource("4_lslks")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Choose the quantity of items in stock in this store. Use the “0” to have an unlimited amount of items.
+
+[Note]: If this store is opened in the middle of a battle, the stock of items for sale will be unlimited and the store’s restocking functions will be disabled."
+value = 1.0
+allow_greater = true
+value_replace = {
+0: "ꝏ"
+}
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer"]
+layout_mode = 2
+
+[node name="DefaultPrice" type="CheckBox" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Uses the price of the item defined in the database"
+mouse_default_cursor_shape = 2
+button_pressed = true
+button_group = SubResource("ButtonGroup_tsehd")
+text = "Use Default Price"
+
+[node name="CustomPrice" type="CheckBox" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Use a custom price for this item"
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_tsehd")
+text = "Custom Price"
+
+[node name="CustomPriceValue" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer3" instance=ExtResource("4_lslks")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Choose the selling price for this item manually"
+min_value = 1.0
+value = 1.0
+allow_greater = true
+editable = false
+
+[node name="Label" type="Label" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = " Restock Amount: "
+
+[node name="RestockAmount" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer3" instance=ExtResource("4_lslks")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Number of items of this type that are replenished when the store restocks. If the quantity is 0, this item will never be replenished in the store. If it is -1, the quantity of this item after restocking will be set to the maximum defined quantity without exceeding it. If it is greater than 0, the specified number of items will be replenished (up to the defined maximum quantity)."
+min_value = -1.0
+allow_greater = true
+value_replace = {
+0: "ꝏ"
+}
+
+[node name="LevelContainer" type="HBoxContainer" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/LevelContainer"]
+layout_mode = 2
+text = "Level: "
+
+[node name="Level" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/LevelContainer" instance=ExtResource("4_lslks")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "The sold equipment will be of the level specified here.
+
+"
+
+[node name="MaxLevelLabel" type="Label" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/LevelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = " / 1"
+
+[node name="ClosePanelButton" type="TextureButton" parent="CustomPanel/MainMarginContainer/HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "[title]Erase Item[/title]
+Remove this item from this store"
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_4dbxu")
+texture_hover = SubResource("AtlasTexture_lg4te")
+
+[connection signal="pressed" from="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer2/MoveDown" to="." method="_on_move_down_pressed"]
+[connection signal="pressed" from="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer2/MoveUp" to="." method="_on_move_up_pressed"]
+[connection signal="item_selected" from="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer/Type" to="." method="_on_type_item_selected"]
+[connection signal="pressed" from="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer/ItemID" to="." method="_on_item_id_pressed"]
+[connection signal="value_changed" from="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer/Quantity" to="." method="_on_quantity_value_changed"]
+[connection signal="toggled" from="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer3/DefaultPrice" to="." method="_on_default_price_toggled"]
+[connection signal="toggled" from="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer3/CustomPrice" to="." method="_on_custom_price_toggled"]
+[connection signal="value_changed" from="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer3/CustomPriceValue" to="." method="_on_custom_price_value_value_changed"]
+[connection signal="value_changed" from="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer3/RestockAmount" to="." method="_on_restock_amount_value_changed"]
+[connection signal="value_changed" from="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/LevelContainer/Level" to="." method="_on_level_value_changed"]
+[connection signal="pressed" from="CustomPanel/MainMarginContainer/HBoxContainer4/ClosePanelButton" to="." method="_on_close_panel_button_pressed"]

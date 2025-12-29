@@ -1,0 +1,755 @@
+[gd_scene load_steps=41 format=3 uid="uid://dsgpu3n3ttyss"]
+
+[ext_resource type="Script" uid="uid://3is2jp50lvs3" path="res://addons/RPGData/Scripts/actors_panel.gd" id="1_na7a6"]
+[ext_resource type="PackedScene" uid="uid://pc2xir2w2ox2" path="res://addons/RPGData/Scenes/panel_title.tscn" id="1_teb60"]
+[ext_resource type="PackedScene" uid="uid://m1iixxkyrur5" path="res://addons/CustomControls/custom_simple_item_list.tscn" id="2_d716f"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="3_5ymlj"]
+[ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="4_n7yrj"]
+[ext_resource type="PackedScene" uid="uid://duykjs55o5h2m" path="res://addons/CustomControls/custom_image_picker.tscn" id="5_adgnd"]
+[ext_resource type="PackedScene" uid="uid://ccipi0sikmjuu" path="res://addons/CustomControls/custom_tab_container.tscn" id="5_k8dgj"]
+[ext_resource type="Texture2D" uid="uid://boox5y8kclay2" path="res://addons/CustomControls/Images/tab2_button_normal.png" id="6_1whuk"]
+[ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="6_7lyu0"]
+[ext_resource type="PackedScene" uid="uid://barmev3c3hfbu" path="res://addons/CustomControls/custom_text_edit.tscn" id="6_a5fwg"]
+[ext_resource type="PackedScene" uid="uid://dxcyqc2dscbvw" path="res://addons/CustomControls/custom_simple_column_item_list.tscn" id="6_um0l1"]
+[ext_resource type="Script" uid="uid://d0kowhkcjb7kv" path="res://addons/CustomControls/custom_option_button.gd" id="7_i5gwo"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="7_omxlk"]
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="9_8sfum"]
+[ext_resource type="PackedScene" uid="uid://os7clwyqwlka" path="res://addons/RPGData/Scenes/traits_panel.tscn" id="11_h6502"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6s3bo"]
+resource_local_to_scene = true
+content_margin_left = 3.0
+content_margin_right = 3.0
+bg_color = Color(1, 1, 1, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kihu1"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="Gradient" id="Gradient_3obsl"]
+offsets = PackedFloat32Array(0, 0.369535, 1)
+colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_j11wx"]
+gradient = SubResource("Gradient_3obsl")
+fill_from = Vector2(0.547009, 1)
+fill_to = Vector2(0.559829, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rxxl6"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_j11wx")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_844mk"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_j11wx")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0fgwc"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1whuk"]
+texture = ExtResource("6_1whuk")
+texture_margin_left = 18.0
+texture_margin_right = 18.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c3mw1"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Gradient" id="Gradient_ctwx1"]
+colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_1whuk"]
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ppivh"]
+texture = SubResource("GradientTexture2D_1whuk")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_smbtw"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1whuk"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j4uwv"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="Gradient" id="Gradient_roxw5"]
+colors = PackedColorArray(0.333333, 0.352941, 0.360784, 1, 0.380392, 0.4, 0.407843, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_b25ih"]
+gradient = SubResource("Gradient_roxw5")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2s8e2"]
+texture = SubResource("GradientTexture2D_b25ih")
+
+[sub_resource type="Gradient" id="Gradient_ms84r"]
+offsets = PackedFloat32Array(0, 0.369535, 1)
+colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_8w0ni"]
+gradient = SubResource("Gradient_ms84r")
+fill_from = Vector2(0.547009, 1)
+fill_to = Vector2(0.559829, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_b25ih"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_8w0ni")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_261u5"]
+bg_color = Color(0, 0, 0, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Gradient" id="Gradient_88iys"]
+offsets = PackedFloat32Array(0, 0.369535, 1)
+colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_oif3a"]
+gradient = SubResource("Gradient_88iys")
+fill_from = Vector2(0.547009, 1)
+fill_to = Vector2(0.559829, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8w0ni"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_oif3a")
+
+[node name="ActorsPanel" type="HBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -3.0
+offset_bottom = 249.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 8
+script = ExtResource("1_na7a6")
+
+[node name="LeftColumn" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="PanelTitle" parent="LeftColumn" instance=ExtResource("1_teb60")]
+layout_mode = 2
+text = "Heroes"
+
+[node name="MainList" parent="LeftColumn" instance=ExtResource("2_d716f")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "[title]Actors List[/title]
+Contains the list of actors created. Select one to edit its properties."
+theme_override_constants/v_separation = -1
+theme_override_styles/panel = SubResource("StyleBoxFlat_6s3bo")
+theme_override_styles/focus = SubResource("StyleBoxFlat_6s3bo")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_kihu1")
+theme_override_styles/selected = SubResource("StyleBoxTexture_rxxl6")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_844mk")
+select_mode = 1
+odd_line_color = Color(0.172549, 0.184314, 0.192157, 1)
+event_line_color = Color(0.145098, 0.156863, 0.164706, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="LeftColumn"]
+layout_mode = 2
+
+[node name="AddDataButton" parent="LeftColumn/HBoxContainer" instance=ExtResource("3_5ymlj")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Add Actor[/title]
+Create a new actor"
+text = "Add
+Actor"
+text_overrun_behavior = 3
+
+[node name="RemoveDataButton" parent="LeftColumn/HBoxContainer" instance=ExtResource("3_5ymlj")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.65)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Remove Actor[/title]
+Remove the selected actor"
+disabled = true
+text = "Delete
+Actor"
+text_overrun_behavior = 3
+
+[node name="RightColumn" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_0fgwc")
+
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="RightColumn/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(16, 0)
+layout_mode = 2
+
+[node name="ConfigDataTabs" parent="RightColumn/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_k8dgj")]
+unique_name_in_owner = true
+clip_children = 0
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+default_tabs = Array[String](["General", "Properties", "Other"])
+tab_name_base = ""
+background_color = Color(0, 0, 0, 0)
+tab_selected = null
+stylebox_tab_selected = SubResource("StyleBoxTexture_1whuk")
+
+[node name="ControlContainer" parent="RightColumn/MarginContainer/VBoxContainer" instance=ExtResource("4_n7yrj")]
+custom_minimum_size = Vector2(510, 160)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_c3mw1")
+style1 = SubResource("StyleBoxFlat_c3mw1")
+style2 = SubResource("StyleBoxTexture_ppivh")
+style3 = SubResource("StyleBoxFlat_smbtw")
+
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="Tab1" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="General" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1whuk")
+
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="GeneralSettings" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings"]
+layout_mode = 2
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer3"]
+layout_mode = 2
+text = "Icon:"
+
+[node name="IconPicker" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer3" instance=ExtResource("5_adgnd")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_vertical = 6
+tooltip_text = "[title]Actor Icon[/title]
+The image that is displayed together with the actor name during gameplay. You can select an image in the [Select an Image] window that appears after clicking on this control.
+
+Mouse wheel click to erase de current image."
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Name:"
+
+[node name="NameLineEdit" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer" instance=ExtResource("6_7lyu0")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 6
+tooltip_text = "[title]Hero Name[/title]
+Is the actor's name, displayed during gameplay. If the name is too long, the player name may not be fully visible in game menus and in battle."
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Alias:"
+
+[node name="NicknameLineEdit" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer2" instance=ExtResource("6_7lyu0")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 6
+tooltip_text = "[title]Alias[/title]
+The alias of the actor. This will be displayed on the status screen in the upper right."
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer"]
+layout_mode = 2
+text = "Class:"
+
+[node name="ClassOptions" type="OptionButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "[title]Class[/title]
+The class which the actor belongs to. This will affect which skills can be used, which weapons can be equipped, which items can be used, etc. Specifics can be edited in the [Class] tab"
+mouse_default_cursor_shape = 2
+text_overrun_behavior = 3
+clip_text = true
+script = ExtResource("7_i5gwo")
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer2"]
+layout_mode = 2
+text = "Initial Level:"
+
+[node name="InitialLevelSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer2" instance=ExtResource("7_omxlk")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "[title]Initial Level[/title]
+Is the level of the actor at the start of game."
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer3"]
+layout_mode = 2
+text = "Max Level:"
+
+[node name="MaxLevelSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer3" instance=ExtResource("7_omxlk")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "[title]Max Level[/title]
+Is the maximum level an actor can be. An actor will never level up beyond its [Max Level]."
+
+[node name="VBoxContainer4" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer4"]
+layout_mode = 2
+text = "Tick Interval:"
+
+[node name="TickInterval" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer4" instance=ExtResource("7_omxlk")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "If the actor has hp or mp regeneration traits and you are out of battle, this value is used to perform the ticks.
+
+[Note]: In battle, regeneration traits are triggered every turn."
+page = 0.01
+allow_greater = true
+suffix = " second/s"
+
+[node name="HBoxContainer3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3"]
+layout_mode = 2
+text = "Description:"
+
+[node name="ProfileTextEdit" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3" instance=ExtResource("6_a5fwg")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "[title]Description[/title]
+The actor's introductory text. This will be displayed at the bottom of the status screen."
+wrap_mode = 1
+
+[node name="Scenes" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_j4uwv")
+
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Character Scene:"
+
+[node name="CharacterSceneButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("9_8sfum")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "[title]Character Scene[/title]
+Select the character scene. The scene must be an \"LPC Character\" created with the character editor or a custom scene created by the user that contains the [get_custom_class] function and returns the name \"LPCCharacter.\"
+
+[Left Click]: Change part, [Middle Click]: Erase Part
+
+[Note]: Images will be automatically filled in if there are previews associated to the scene (Images that have the same name as the scene, are in the same folder and have the suffix \"_face\", \"_character\" or \"_battler\")."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+text = "Select Character Scene"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Images:"
+
+[node name="Label2" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Pose Vertical Offset:"
+
+[node name="PoseVerticalOffset" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("7_omxlk")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+tooltip_text = "If you use poses for the character that include a weapon, the head may appear lower than the top edge in order to keep the full character visible. This offset can be useful and will be used by some menus to position the image."
+allow_greater = true
+allow_lesser = true
+
+[node name="ImagesScenes" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/ImagesScenes"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer"]
+layout_mode = 2
+text = "Face:"
+
+[node name="FacePicker" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer" instance=ExtResource("5_adgnd")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+tooltip_text = "Image displayed on the menu screen. You can select an optional image in the [Select an Image] window that appears after clicking on this control.
+
+Mouse wheel click to erase de current image."
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/ImagesScenes"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer2"]
+layout_mode = 2
+text = "Character:"
+
+[node name="CharacterPicker" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer2" instance=ExtResource("5_adgnd")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+tooltip_text = "[title]Character Image Preview[/title]
+Shows a preview of the character when not in battle.
+
+Mouse wheel click to erase de current image."
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/ImagesScenes"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer3"]
+layout_mode = 2
+text = "Battler:"
+
+[node name="BattlerPicker" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer3" instance=ExtResource("5_adgnd")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+tooltip_text = "[title]Battler Image Preview[/title]
+Shows a preview of the character when is in battle.
+
+Mouse wheel click to erase de current image."
+
+[node name="Equipment" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_1whuk")
+
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Equipment"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="InitialEquipment" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Equipment/MarginContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.6
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Equipment/MarginContainer/InitialEquipment"]
+layout_mode = 2
+text = "Initial Equipment:"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Equipment/MarginContainer/InitialEquipment"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="EquipmentList" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Equipment/MarginContainer/InitialEquipment/ScrollContainer" instance=ExtResource("6_um0l1")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
+event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
+top_bar_style = SubResource("StyleBoxTexture_2s8e2")
+columns_text_colors = PackedColorArray(0.72549, 0.992157, 0.772549, 1)
+cursor_style = SubResource("StyleBoxTexture_b25ih")
+panel_style = SubResource("StyleBoxFlat_261u5")
+columns = 3
+names = PackedStringArray("Type", "Equipment Item", "Initial Level")
+sizes = PackedInt32Array(150, 523, 0)
+enable_multiselection = true
+itemlist_tooltip = "[title]Initial Equipment[/title]
+The actor's equipment at the start of the game. Select one item for each slot from the pull-down list. Selectable equipment is limited to what their class is able to equip. Setting this to [None] will cause nothing to be equipped in that location."
+
+[node name="Tab2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Properties" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_1whuk")
+
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Properties"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="Properties" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Properties/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Properties/MarginContainer/Properties"]
+layout_mode = 2
+text = "Properties"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Properties/MarginContainer/Properties"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TraitsPanel" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Properties/MarginContainer/Properties/ScrollContainer" instance=ExtResource("11_h6502")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(796, 765)
+layout_mode = 2
+itemlist_tooltip = "[title]Properties List[/title]
+An actor's unique properties. Define the details in the window that appears when double-clicking each row of the settings field."
+
+[node name="Tab3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Battle" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_1whuk")
+
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Battle"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="BattleActions" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Battle/MarginContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.6
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Battle/MarginContainer/BattleActions"]
+layout_mode = 2
+text = "Battle Actions:"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Battle/MarginContainer/BattleActions"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BattleActionList" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Battle/MarginContainer/BattleActions/ScrollContainer" instance=ExtResource("6_um0l1")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 69)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
+event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
+top_bar_style = SubResource("StyleBoxTexture_2s8e2")
+columns_text_colors = PackedColorArray(0.72549, 0.992157, 0.772549, 1)
+cursor_style = SubResource("StyleBoxTexture_8w0ni")
+panel_style = SubResource("StyleBoxFlat_261u5")
+columns = 3
+names = PackedStringArray("Occasion", "Action", "Rate")
+sizes = PackedInt32Array(200, 200, 40)
+placeholder_text = "Click to add a new battle Action"
+enable_multiselection = true
+itemlist_tooltip = "[title]Battle Actions[/title]
+Specifies the random actions of the character during battle, including the emission of sounds (a.k.a. battle cries or dialogues) (e.g. when attacking, casting skills, defeating enemies, healing allies, etc...), or the activation of common events (which pause the battle until the event concludes, 
+and they could be used to display a character animation before using a powerful skill, for example.)."
+
+[node name="Notes" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.45
+theme_override_styles/panel = SubResource("StyleBoxFlat_1whuk")
+
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Notes"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="Notes" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Notes/MarginContainer"]
+custom_minimum_size = Vector2(0, 240)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Notes/MarginContainer/Notes"]
+layout_mode = 2
+text = "Notes"
+
+[node name="NoteTextEdit" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Notes/MarginContainer/Notes" instance=ExtResource("6_a5fwg")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "[title]Notes[/title]
+Used to make notes while making your game."
+wrap_mode = 1
+
+[connection signal="multi_selected" from="LeftColumn/MainList" to="." method="_on_main_list_multi_selected"]
+[connection signal="pressed" from="LeftColumn/HBoxContainer/AddDataButton" to="." method="_on_add_data_button_pressed"]
+[connection signal="pressed" from="LeftColumn/HBoxContainer/RemoveDataButton" to="." method="_on_remove_data_button_pressed"]
+[connection signal="tab_changed" from="RightColumn/MarginContainer/VBoxContainer/HBoxContainer/ConfigDataTabs" to="." method="_on_config_data_tabs_tab_changed"]
+[connection signal="clicked" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer3/IconPicker" to="." method="_on_icon_picker_clicked"]
+[connection signal="paste_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer3/IconPicker" to="." method="_on_icon_picker_paste_requested"]
+[connection signal="remove_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer3/IconPicker" to="." method="_on_icon_picker_remove_requested"]
+[connection signal="text_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer/NameLineEdit" to="." method="_on_name_line_edit_text_changed"]
+[connection signal="text_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer2/NicknameLineEdit" to="." method="_on_nickname_line_edit_text_changed"]
+[connection signal="item_selected" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer/ClassOptions" to="." method="_on_class_options_item_selected"]
+[connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer2/InitialLevelSpinBox" to="." method="_on_initial_level_spin_box_value_changed"]
+[connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer3/MaxLevelSpinBox" to="." method="_on_max_level_spin_box_value_changed"]
+[connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer4/TickInterval" to="." method="_on_tick_interval_value_changed"]
+[connection signal="text_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3/ProfileTextEdit" to="." method="_on_profile_text_edit_text_changed"]
+[connection signal="middle_click_pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/HBoxContainer/CharacterSceneButton" to="." method="_on_character_scene_button_middle_click_pressed"]
+[connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/HBoxContainer/CharacterSceneButton" to="." method="_on_character_scene_button_pressed"]
+[connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/HBoxContainer2/PoseVerticalOffset" to="." method="_on_custom_spin_box_value_changed"]
+[connection signal="clicked" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer/FacePicker" to="." method="_on_face_picker_clicked"]
+[connection signal="paste_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer/FacePicker" to="." method="_on_face_picker_paste_requested"]
+[connection signal="remove_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer/FacePicker" to="." method="_on_face_picker_remove_requested"]
+[connection signal="clicked" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer2/CharacterPicker" to="." method="_on_character_picker_clicked"]
+[connection signal="paste_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer2/CharacterPicker" to="." method="_on_character_picker_paste_requested"]
+[connection signal="remove_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer2/CharacterPicker" to="." method="_on_character_picker_remove_requested"]
+[connection signal="clicked" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer3/BattlerPicker" to="." method="_on_battler_picker_clicked"]
+[connection signal="paste_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer3/BattlerPicker" to="." method="_on_battler_picker_paste_requested"]
+[connection signal="remove_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer3/BattlerPicker" to="." method="_on_battler_picker_remove_requested"]
+[connection signal="item_activated" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Equipment/MarginContainer/InitialEquipment/ScrollContainer/EquipmentList" to="." method="_on_equipment_list_item_activated"]
+[connection signal="traits_update" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Properties/MarginContainer/Properties/ScrollContainer/TraitsPanel" to="." method="fill_equipment_list"]
+[connection signal="copy_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Battle/MarginContainer/BattleActions/ScrollContainer/BattleActionList" to="." method="_on_battle_action_list_copy_requested"]
+[connection signal="cut_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Battle/MarginContainer/BattleActions/ScrollContainer/BattleActionList" to="." method="_on_battle_action_list_cut_requested"]
+[connection signal="delete_pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Battle/MarginContainer/BattleActions/ScrollContainer/BattleActionList" to="." method="_on_battle_action_list_delete_pressed"]
+[connection signal="item_activated" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Battle/MarginContainer/BattleActions/ScrollContainer/BattleActionList" to="." method="_on_battle_action_list_item_activated"]
+[connection signal="paste_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Battle/MarginContainer/BattleActions/ScrollContainer/BattleActionList" to="." method="_on_battle_action_list_paste_requested"]
+[connection signal="text_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Notes/MarginContainer/Notes/NoteTextEdit" to="." method="_on_note_text_edit_text_changed"]

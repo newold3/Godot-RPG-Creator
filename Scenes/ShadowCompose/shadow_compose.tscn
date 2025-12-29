@@ -1,0 +1,152 @@
+[gd_scene load_steps=16 format=3 uid="uid://v4ufvixoj8c"]
+
+[ext_resource type="Script" uid="uid://l2mwq0xa3mc7" path="res://Scenes/ShadowCompose/shadow_compose.gd" id="1_njyuq"]
+[ext_resource type="Script" uid="uid://cj4kiemdnbi7n" path="res://Scenes/ShadowCompose/shadow_component.gd" id="2_56cum"]
+[ext_resource type="Shader" uid="uid://b5k56fa1aqc3t" path="res://Assets/Shaders/simple_shadow_mask.gdshader" id="3_ir3x7"]
+[ext_resource type="Shader" uid="uid://dgadfpb7oyxyd" path="res://Assets/Shaders/gaussian_blur.gdshader" id="4_ju3o3"]
+
+[sub_resource type="Resource" id="Resource_ebpiw"]
+resource_local_to_scene = true
+script = ExtResource("2_56cum")
+dynamic_skew = -0.840179252261254
+elongation = Vector2(1, 0.5423088)
+shadow_transform = 2.56841
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_8iou7"]
+viewport_path = NodePath("MaskSubViewport")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_5q4qg"]
+viewport_path = NodePath("ShadowSubViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1s1x6"]
+resource_local_to_scene = true
+shader = ExtResource("3_ir3x7")
+shader_parameter/shadow_texture = SubResource("ViewportTexture_5q4qg")
+shader_parameter/mask_texture = SubResource("ViewportTexture_8iou7")
+shader_parameter/overlay_color = Color(0, 0, 0, 0.5)
+shader_parameter/height_strength = 0.205
+shader_parameter/shadow_direction = Vector2(0.36, 0.24)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_rnuyh"]
+viewport_path = NodePath("ShadowSubViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rqcww"]
+resource_local_to_scene = true
+shader = ExtResource("4_ju3o3")
+shader_parameter/blur_size = 2.5
+shader_parameter/overlay_color = Color(0, 0, 0, 0.45)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_j5kux"]
+viewport_path = NodePath("ShadowFinalMix")
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_8iou7"]
+blend_mode = 4
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_2qft2"]
+viewport_path = NodePath("ShadowFinal")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_7wsp3"]
+viewport_path = NodePath("MaskSubViewport")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_f8s0g"]
+viewport_path = NodePath("ShadowFinal")
+
+[node name="ShadowCompose" type="Node2D"]
+z_index = 100
+script = ExtResource("1_njyuq")
+shadow_component = SubResource("Resource_ebpiw")
+
+[node name="ShadowSubViewport" type="SubViewport" parent="."]
+unique_name_in_owner = true
+transparent_bg = true
+size = Vector2i(2, 2)
+render_target_update_mode = 1
+
+[node name="Canvas1Parallax" type="Parallax2D" parent="ShadowSubViewport"]
+unique_name_in_owner = true
+repeat_times = 4
+
+[node name="Canvas1" type="Node2D" parent="ShadowSubViewport/Canvas1Parallax"]
+unique_name_in_owner = true
+
+[node name="MaskSubViewport" type="SubViewport" parent="."]
+unique_name_in_owner = true
+transparent_bg = true
+size = Vector2i(2, 2)
+render_target_update_mode = 1
+
+[node name="Canvas2Parallax" type="Parallax2D" parent="MaskSubViewport"]
+unique_name_in_owner = true
+repeat_times = 4
+
+[node name="Canvas2" type="Node2D" parent="MaskSubViewport/Canvas2Parallax"]
+unique_name_in_owner = true
+
+[node name="ShadowFinalMix" type="SubViewport" parent="."]
+unique_name_in_owner = true
+transparent_bg = true
+size = Vector2i(2, 2)
+render_target_update_mode = 4
+
+[node name="ShadowsFinalSprite" type="Sprite2D" parent="ShadowFinalMix"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_1s1x6")
+texture = SubResource("ViewportTexture_rnuyh")
+centered = false
+
+[node name="ShadowFinal" type="SubViewport" parent="."]
+unique_name_in_owner = true
+transparent_bg = true
+size = Vector2i(2, 2)
+render_target_update_mode = 4
+
+[node name="ShadowLayer" type="Sprite2D" parent="ShadowFinal"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_rqcww")
+texture = SubResource("ViewportTexture_j5kux")
+centered = false
+
+[node name="Shadows" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+z_index = 1
+material = SubResource("CanvasItemMaterial_8iou7")
+texture = SubResource("ViewportTexture_2qft2")
+centered = false
+
+[node name="DebugLayer" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="Panel" type="Panel" parent="DebugLayer"]
+modulate = Color(1, 1, 1, 0.89411765)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 653.0
+offset_top = 318.0
+offset_right = -26.0
+offset_bottom = -23.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="DebugLayer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("ViewportTexture_7wsp3")
+expand_mode = 1
+
+[node name="TextureRect2" type="TextureRect" parent="DebugLayer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("ViewportTexture_f8s0g")
+expand_mode = 1

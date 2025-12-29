@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://cgx0qrknth7l5"]
+
+[ext_resource type="Texture2D" uid="uid://da5q1bjqutpkn" path="res://addons/RPGMap/Assets/Images/tilemap_cursor_selected.png" id="1_vbxvs"]
+
+[sub_resource type="GDScript" id="GDScript_2awyo"]
+script/source = "@tool
+extends NinePatchRect
+"
+
+[node name="TilemapCursorSelected" type="NinePatchRect"]
+offset_right = 16.0
+offset_bottom = 16.0
+mouse_default_cursor_shape = 13
+texture = ExtResource("1_vbxvs")
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+script = SubResource("GDScript_2awyo")

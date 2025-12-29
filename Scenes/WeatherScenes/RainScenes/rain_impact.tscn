@@ -1,0 +1,72 @@
+[gd_scene load_steps=13 format=3 uid="uid://bt6j68o4qmyj3"]
+
+[ext_resource type="Texture2D" uid="uid://hm7ax2f7ovh0" path="res://Assets/Images/Particles/water1.png" id="1_25ru2"]
+[ext_resource type="Script" uid="uid://dpbgeymtrxuae" path="res://Scenes/WeatherScenes/RainScenes/rain_impact.gd" id="2_ajyp4"]
+
+[sub_resource type="Curve" id="Curve_peikn"]
+_data = [Vector2(0.0364583, 0), 0.0, 0.0, 0, 0, Vector2(0.157549, 0.494565), 0.0, 0.0, 0, 0, Vector2(0.838074, 0.190217), 0.0, 0.0, 0, 0, Vector2(0.954048, 0.0163044), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_tvtc8"]
+curve = SubResource("Curve_peikn")
+
+[sub_resource type="Curve" id="Curve_r4n7l"]
+_limits = [0.0, 100.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.520599, 100), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_m4hwa"]
+curve = SubResource("Curve_r4n7l")
+
+[sub_resource type="Curve" id="Curve_tfr8x"]
+
+[sub_resource type="Curve" id="Curve_gluce"]
+_data = [Vector2(0, 0.0588236), 0.0, 0.0, 0, 0, Vector2(0.0989583, 0.435294), 0.0, 0.0, 0, 0, Vector2(0.359375, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_grpjf"]
+curve_x = SubResource("Curve_tfr8x")
+curve_y = SubResource("Curve_gluce")
+
+[sub_resource type="Curve" id="Curve_qh4lt"]
+_data = [Vector2(0, 0.117647), 0.0, 0.0, 0, 0, Vector2(0.0636704, 1), 0.0, 0.0, 0, 0, Vector2(0.325843, 0.0966454), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_xojpf"]
+curve = SubResource("Curve_qh4lt")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_r3s28"]
+particle_flag_align_y = true
+particle_flag_disable_z = true
+direction = Vector3(0, -20, 0)
+spread = 87.6
+initial_velocity_max = 1.0
+directional_velocity_min = -1.60933e-05
+directional_velocity_max = 0.999984
+directional_velocity_curve = SubResource("CurveXYZTexture_grpjf")
+gravity = Vector3(0, 20, 0)
+linear_accel_min = -2.23517e-06
+linear_accel_max = 50.52
+radial_accel_min = -2.11
+radial_accel_max = -2.11
+tangential_accel_min = -2.23517e-06
+tangential_accel_max = 26.5
+damping_curve = SubResource("CurveTexture_m4hwa")
+scale_max = 3.5
+scale_curve = SubResource("CurveTexture_xojpf")
+color = Color(1, 1, 1, 0.690196)
+alpha_curve = SubResource("CurveTexture_tvtc8")
+
+[node name="RainImpact" type="GPUParticles2D"]
+z_index = 100
+z_as_relative = false
+emitting = false
+amount = 12
+process_material = SubResource("ParticleProcessMaterial_r3s28")
+texture = ExtResource("1_25ru2")
+lifetime = 2.1
+one_shot = true
+explosiveness = 1.0
+randomness = 1.0
+local_coords = true
+script = ExtResource("2_ajyp4")

@@ -1,0 +1,260 @@
+[gd_scene load_steps=10 format=3 uid="uid://bj20kb1252psg"]
+
+[ext_resource type="Script" uid="uid://d3s7xbde3pwgi" path="res://Scenes/EquipScene/equipment_container.gd" id="1_oumcp"]
+[ext_resource type="Texture2D" uid="uid://dntvanomr6m2o" path="res://Assets/Images/GUI/frame5.png" id="2_cin4f"]
+[ext_resource type="Texture2D" uid="uid://dbfc4jvhg1dl6" path="res://Assets/Images/GUI/frame5c_double.png" id="2_oumcp"]
+[ext_resource type="Texture2D" uid="uid://b0mo5iykdxq0l" path="res://Assets/Images/SceneMenu/part5.png" id="3_a24yf"]
+[ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="3_oumcp"]
+[ext_resource type="PackedScene" uid="uid://cr7hlmiwli6aq" path="res://Scenes/EquipScene/equip_item_button.tscn" id="4_a24yf"]
+[ext_resource type="Texture2D" uid="uid://ct0ki5xyiptwg" path="res://Assets/Images/SceneMenu/part6.png" id="4_oumcp"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_oumcp"]
+content_margin_left = 42.0
+content_margin_bottom = 6.0
+texture = ExtResource("2_oumcp")
+texture_margin_left = 12.0
+texture_margin_top = 6.0
+texture_margin_right = 12.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_epx7a"]
+content_margin_left = 12.0
+content_margin_top = 11.0
+content_margin_right = 12.0
+content_margin_bottom = 11.0
+texture = ExtResource("2_cin4f")
+texture_margin_left = 37.0
+texture_margin_top = 11.0
+texture_margin_right = 37.0
+texture_margin_bottom = 11.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="EquipmentContainer" type="Control"]
+clip_contents = true
+layout_mode = 3
+anchors_preset = 0
+offset_right = 393.0
+offset_bottom = 322.0
+script = ExtResource("1_oumcp")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="Top" type="MarginContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+
+[node name="Gear" type="Control" parent="VBoxContainer/Top"]
+show_behind_parent = true
+z_index = 1
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Gear1" type="Control" parent="VBoxContainer/Top/Gear"]
+unique_name_in_owner = true
+z_index = 10
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -178.0
+offset_top = 18.0
+offset_right = -178.0
+offset_bottom = 18.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.08, 0.08)
+mouse_filter = 2
+
+[node name="Part1" type="TextureRect" parent="VBoxContainer/Top/Gear/Gear1"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -234.5
+offset_top = -229.5
+offset_right = 234.5
+offset_bottom = 229.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_a24yf")
+
+[node name="Part2" type="TextureRect" parent="VBoxContainer/Top/Gear/Gear1"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -117.5
+offset_top = -120.5
+offset_right = 117.5
+offset_bottom = 120.5
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -6.28319
+pivot_offset = Vector2(117, 120)
+mouse_filter = 2
+texture = ExtResource("4_oumcp")
+
+[node name="Gear2" type="Control" parent="VBoxContainer/Top/Gear"]
+unique_name_in_owner = true
+z_index = 10
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 177.0
+offset_top = 18.0
+offset_right = 177.0
+offset_bottom = 18.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.08, 0.08)
+mouse_filter = 2
+
+[node name="Part1" type="TextureRect" parent="VBoxContainer/Top/Gear/Gear2"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -234.5
+offset_top = -229.5
+offset_right = 234.5
+offset_bottom = 229.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_a24yf")
+
+[node name="Part2" type="TextureRect" parent="VBoxContainer/Top/Gear/Gear2"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -117.5
+offset_top = -120.5
+offset_right = 117.5
+offset_bottom = 120.5
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -6.28319
+pivot_offset = Vector2(117, 120)
+mouse_filter = 2
+texture = ExtResource("4_oumcp")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Top"]
+layout_mode = 2
+theme_override_constants/margin_top = 8
+
+[node name="MainContainer" type="Control" parent="VBoxContainer/Top/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Container" type="VBoxContainer" parent="VBoxContainer/Top/MarginContainer/MainContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(341, 41)
+theme_override_constants/separation = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Top/MarginContainer/MainContainer/Container"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/margin_left = 29
+theme_override_constants/margin_right = 29
+
+[node name="EquipmentName" type="Label" parent="VBoxContainer/Top/MarginContainer/MainContainer/Container/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.709804, 0.690196, 0.654902, 1)
+theme_override_constants/outline_size = 8
+theme_override_styles/normal = SubResource("StyleBoxTexture_oumcp")
+text = "EQUIPMENT"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="VBoxContainer"]
+custom_minimum_size = Vector2(393, 250)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="EquipmentPanel" type="PanelContainer" parent="VBoxContainer/Control"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(196, 2)
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_epx7a")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Control/EquipmentPanel"]
+layout_mode = 2
+
+[node name="Control2" type="Control" parent="VBoxContainer/Control/EquipmentPanel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="VBoxContainer/Control/EquipmentPanel/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+follow_focus = true
+script = ExtResource("3_oumcp")
+metadata/_custom_type_script = "uid://cs6g8remlafby"
+
+[node name="EquipButtonContainer" type="VBoxContainer" parent="VBoxContainer/Control/EquipmentPanel/VBoxContainer/SmoothScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="EquipItemButton" parent="VBoxContainer/Control/EquipmentPanel/VBoxContainer/SmoothScrollContainer/EquipButtonContainer" instance=ExtResource("4_a24yf")]
+layout_mode = 2
+slot_item_spacing = 17
+
+[node name="EquipItemButton2" parent="VBoxContainer/Control/EquipmentPanel/VBoxContainer/SmoothScrollContainer/EquipButtonContainer" instance=ExtResource("4_a24yf")]
+layout_mode = 2
+
+[node name="EquipItemButton3" parent="VBoxContainer/Control/EquipmentPanel/VBoxContainer/SmoothScrollContainer/EquipButtonContainer" instance=ExtResource("4_a24yf")]
+layout_mode = 2
+
+[node name="EquipItemButton4" parent="VBoxContainer/Control/EquipmentPanel/VBoxContainer/SmoothScrollContainer/EquipButtonContainer" instance=ExtResource("4_a24yf")]
+layout_mode = 2
+
+[node name="EquipItemButton5" parent="VBoxContainer/Control/EquipmentPanel/VBoxContainer/SmoothScrollContainer/EquipButtonContainer" instance=ExtResource("4_a24yf")]
+layout_mode = 2
+
+[node name="EquipItemButton6" parent="VBoxContainer/Control/EquipmentPanel/VBoxContainer/SmoothScrollContainer/EquipButtonContainer" instance=ExtResource("4_a24yf")]
+layout_mode = 2
+
+[node name="EquipItemButton7" parent="VBoxContainer/Control/EquipmentPanel/VBoxContainer/SmoothScrollContainer/EquipButtonContainer" instance=ExtResource("4_a24yf")]
+layout_mode = 2
+
+[node name="EquipItemButton8" parent="VBoxContainer/Control/EquipmentPanel/VBoxContainer/SmoothScrollContainer/EquipButtonContainer" instance=ExtResource("4_a24yf")]
+layout_mode = 2

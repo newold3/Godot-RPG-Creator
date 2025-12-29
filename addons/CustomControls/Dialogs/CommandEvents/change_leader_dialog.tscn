@@ -1,0 +1,98 @@
+[gd_scene load_steps=7 format=3 uid="uid://qxsckjg44p30"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_ptc4e"]
+[ext_resource type="Script" uid="uid://bj5rjyr6aotxh" path="res://addons/CustomControls/Dialogs/CommandEvents/change_leader_dialog.gd" id="2_obu7s"]
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="3_5i17t"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="4_kbxi8"]
+
+[sub_resource type="Gradient" id="Gradient_7ascj"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ourej"]
+gradient = SubResource("Gradient_7ascj")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[node name="ChangeLeaderDialog" type="Window"]
+title = "Change Leader"
+position = Vector2i(0, 36)
+size = Vector2i(400, 95)
+transient = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_ptc4e")
+script = ExtResource("2_obu7s")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_ourej")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ChoseActorButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_5i17t")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "[title]Change Leader[/title]
+Choose a character to become the leader of the current party. The character will be added to the party if they are not already a member, and they will assume the role of leader. If the party exceeds the maximum allowed number of members, the characters in the last positions exceeding the limit will be placed in reserve."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+
+[node name="Lock" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "[title]Lock Leader[/title]
+Prevents the player from changing this leader in the party menu. To remove this leader, you can use this command again by selecting this character (or another one) and removing the lock or by removing the character from the party with the [Change Party Members] command."
+mouse_default_cursor_shape = 2
+text = "Lock"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("4_kbxi8")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("4_kbxi8")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+text = "CANCEL"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/ChoseActorButton" to="." method="_on_chose_actor_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/CancelButton" to="." method="_on_cancel_button_pressed"]

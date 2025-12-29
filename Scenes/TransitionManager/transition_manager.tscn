@@ -1,0 +1,57 @@
+[gd_scene load_steps=8 format=3 uid="uid://cnpdb4o8usbf0"]
+
+[ext_resource type="Script" uid="uid://c8gd1bnfrwy4p" path="res://Scenes/TransitionManager/transition_manager.gd" id="1_d27s4"]
+[ext_resource type="Texture2D" uid="uid://uiavk4ir7u40" path="res://Scenes/TransitionManager/TransitionScenes/preview_transition2.png" id="2_vt7qj"]
+[ext_resource type="Shader" uid="uid://cypqxx76sdqdm" path="res://Assets/Shaders/transition_shader.gdshader" id="3_ixr4c"]
+[ext_resource type="Texture2D" uid="uid://5dvaf1skcgs2" path="res://Assets/Images/Transitions/trans10.png" id="4_vt7qj"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xr5v2"]
+shader = ExtResource("3_ixr4c")
+shader_parameter/fill = -0.01
+shader_parameter/color = Color(0, 0, 0, 1)
+shader_parameter/height_map = ExtResource("4_vt7qj")
+shader_parameter/smooth_amount = 0.045
+shader_parameter/use_simple_fade = false
+shader_parameter/reverse = false
+
+[sub_resource type="Gradient" id="Gradient_w4qts"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_vkaf5"]
+gradient = SubResource("Gradient_w4qts")
+
+[node name="TransitionManager" type="Control"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_d27s4")
+
+[node name="Background" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_vt7qj")
+expand_mode = 1
+
+[node name="ShaderEffect" type="TextureRect" parent="."]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_xr5v2")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_vkaf5")
+expand_mode = 1

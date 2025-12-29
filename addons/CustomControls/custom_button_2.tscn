@@ -1,0 +1,60 @@
+[gd_scene load_steps=6 format=3 uid="uid://c6vqhgg1w1sxj"]
+
+[ext_resource type="Texture2D" uid="uid://ba5r0ammhw53v" path="res://addons/CustomControls/Images/button_ellipsis.png" id="1_rylrg"]
+[ext_resource type="Script" uid="uid://c3vkdt0c3ww2b" path="res://addons/CustomControls/custom_button_2.gd" id="2_n8wld"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d4nfq"]
+content_margin_left = 3.0
+content_margin_top = 3.0
+content_margin_right = 3.0
+content_margin_bottom = 3.0
+bg_color = Color(0.14117648, 0.14901961, 0.14901961, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fpx3f"]
+content_margin_left = 3.0
+content_margin_top = 3.0
+content_margin_right = 3.0
+content_margin_bottom = 3.0
+bg_color = Color(0.101961, 0.101961, 0.101961, 0.6)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.368627, 0.639216, 0.858824, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_86owj"]
+content_margin_left = 3.0
+content_margin_top = 3.0
+content_margin_right = 3.0
+content_margin_bottom = 3.0
+bg_color = Color(0.243137, 0.25098, 0.254902, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.227451, 0.227451, 0.227451, 1)
+border_blend = true
+
+[node name="CustomButton2" type="Button"]
+offset_right = 34.0
+offset_bottom = 9.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_disabled_color = Color(0.611765, 0.611765, 0.635294, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_d4nfq")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_d4nfq")
+theme_override_styles/hover = SubResource("StyleBoxFlat_fpx3f")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_86owj")
+icon = ExtResource("1_rylrg")
+alignment = 0
+text_overrun_behavior = 3
+icon_alignment = 2
+script = ExtResource("2_n8wld")

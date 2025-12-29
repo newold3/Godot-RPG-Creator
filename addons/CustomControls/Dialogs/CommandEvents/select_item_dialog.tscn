@@ -1,0 +1,160 @@
+[gd_scene load_steps=17 format=3 uid="uid://bq2u5gmbx2re"]
+
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="1_86gaf"]
+[ext_resource type="Script" uid="uid://dv0n3x8ybg0bk" path="res://addons/CustomControls/Dialogs/CommandEvents/select_item_dialog.gd" id="1_jfh3l"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="2_ap5bm"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="3_rgl8i"]
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="3_sm0ye"]
+[ext_resource type="Texture2D" uid="uid://xl88b63otgpi" path="res://addons/CustomControls/Images/button1_background.png" id="4_qsck5"]
+[ext_resource type="Texture2D" uid="uid://dqnnp323vr1vo" path="res://addons/CustomControls/Images/button1_background_hover.png" id="5_qjw3c"]
+[ext_resource type="Texture2D" uid="uid://beg6i1p118qd" path="res://addons/CustomControls/Images/button1_background_selected.png" id="6_ny0ve"]
+[ext_resource type="Texture2D" uid="uid://bkfn4ru5noaaa" path="res://addons/CustomControls/Images/button1_background_disabled.png" id="7_bbm86"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_erns2"]
+
+[sub_resource type="Gradient" id="Gradient_1r81o"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_2105m"]
+gradient = SubResource("Gradient_1r81o")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nv5ev"]
+texture = ExtResource("7_bbm86")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cr2q0"]
+texture = ExtResource("5_qjw3c")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3ldxg"]
+texture = ExtResource("6_ny0ve")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jfd0k"]
+texture = ExtResource("4_qsck5")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[node name="SelectItemDialog" type="Window"]
+title = "Select Important Item"
+position = Vector2i(0, 36)
+size = Vector2i(448, 199)
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+theme = ExtResource("3_sm0ye")
+script = ExtResource("1_jfh3l")
+
+[node name="Background" type="TextureRect" parent="."]
+material = SubResource("CanvasItemMaterial_erns2")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_2105m")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Variable:"
+
+[node name="VariableID" parent="MarginContainer/VBoxContainer" instance=ExtResource("1_86gaf")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "It prompts the user to select an item of a specified type and assigns the item ID to this variable."
+theme = ExtResource("3_sm0ye")
+text = "0001:"
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Item type:"
+
+[node name="ItemType" parent="MarginContainer/VBoxContainer" instance=ExtResource("2_ap5bm")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Prompts the user to select an item of the specified type."
+selected = 1
+item_count = 7
+popup/item_0/text = "Normal Item"
+popup/item_0/id = 0
+popup/item_1/text = "Key Item"
+popup/item_1/id = 1
+popup/item_2/text = "Hidden Item 1"
+popup/item_2/id = 2
+popup/item_3/text = "Hidden Item 2"
+popup/item_3/id = 3
+popup/item_4/text = "Hidden Item 3"
+popup/item_4/id = 4
+popup/item_5/text = "Hidden Item 4"
+popup/item_5/id = 5
+popup/item_6/text = "Hidden Item 5"
+popup/item_6/id = 6
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_rgl8i")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+theme_override_styles/disabled = SubResource("StyleBoxTexture_nv5ev")
+theme_override_styles/hover = SubResource("StyleBoxTexture_cr2q0")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_3ldxg")
+theme_override_styles/normal = SubResource("StyleBoxTexture_jfd0k")
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_rgl8i")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+theme_override_styles/disabled = SubResource("StyleBoxTexture_nv5ev")
+theme_override_styles/hover = SubResource("StyleBoxTexture_cr2q0")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_3ldxg")
+theme_override_styles/normal = SubResource("StyleBoxTexture_jfd0k")
+text = "CANCEL"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/VariableID" to="." method="_on_variable_id_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

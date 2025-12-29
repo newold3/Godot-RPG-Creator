@@ -1,0 +1,69 @@
+[gd_scene load_steps=7 format=3 uid="uid://dkmdolef567aa"]
+
+[ext_resource type="Script" uid="uid://ca100da86yfpv" path="res://addons/tile_bit_tools/controls/shared/inspector_section_button.gd" id="1_nbqv8"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mwoex"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kmslc"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_e3ufk"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lkr7c"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bxs77"]
+
+[node name="InspectorSectionButton" type="Button" groups=["TBTSectionButton"]]
+custom_minimum_size = Vector2(0, 34)
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_mwoex")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_kmslc")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_e3ufk")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_lkr7c")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_bxs77")
+toggle_mode = true
+flat = true
+script = ExtResource("1_nbqv8")
+
+[node name="BackgroundRect" type="ColorRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.47451, 0.47451, 0.47451, 1)
+
+[node name="ArrowMarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ArrowRect" type="TextureRect" parent="ArrowMarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+stretch_mode = 2
+
+[node name="LabelMarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="LabelMarginContainer" groups=["TBTSectionLabel"]]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Inspector Section"
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="toggled" from="." to="." method="_on_toggled"]

@@ -1,0 +1,50 @@
+[gd_scene load_steps=5 format=3 uid="uid://djsddrrtnwdw"]
+
+[ext_resource type="Script" uid="uid://dx5fqnedtm636" path="res://addons/CustomControls/lock_button.gd" id="1_dq6o5"]
+[ext_resource type="Texture2D" uid="uid://d3g7lqld34f0r" path="res://addons/CustomControls/Images/mini_padlock_open.png" id="2_yywt0"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5lvls"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7am2n"]
+bg_color = Color(0.937255, 0.662745, 0.239216, 0.372549)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.317647, 0.184314, 0, 1)
+
+[node name="LockButton" type="Button"]
+custom_minimum_size = Vector2(50, 23)
+offset_right = 50.0
+offset_bottom = 23.0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_5lvls")
+theme_override_styles/hover = SubResource("StyleBoxFlat_7am2n")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_5lvls")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_5lvls")
+toggle_mode = true
+script = ExtResource("1_dq6o5")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="LockIcon" type="TextureRect" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("2_yywt0")
+
+[node name="CheckBox" type="CheckBox" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2

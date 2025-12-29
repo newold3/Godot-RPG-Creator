@@ -1,0 +1,317 @@
+[gd_scene load_steps=24 format=3 uid="uid://cm3723njwglc8"]
+
+[ext_resource type="Texture2D" uid="uid://bfgr2ewrp6i0u" path="res://Assets/Images/GUI/party_menu.png" id="1_1rdo5"]
+[ext_resource type="Script" uid="uid://b8vm8gqseu2lq" path="res://Scenes/GUI/SteamPunkTheme/Equip/items_menu.gd" id="1_knrlo"]
+[ext_resource type="Script" uid="uid://b0cv34hixtpg0" path="res://Scenes/GUI/simple_menu_main.gd" id="2_knrlo"]
+[ext_resource type="FontFile" uid="uid://dvh0mi6yu0ywx" path="res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf" id="3_0ylrt"]
+[ext_resource type="Texture2D" uid="uid://duu13dsov6vp5" path="res://Assets/Images/GUI/main_gui.png" id="5_0ylrt"]
+[ext_resource type="Texture2D" uid="uid://p7xallgkjnm0" path="res://Assets/Images/GUI/buttons_style_steampunk.png" id="5_ehgam"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0ylrt"]
+atlas = ExtResource("1_1rdo5")
+region = Rect2(77, 30, 105, 103)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ehgam"]
+atlas = ExtResource("1_1rdo5")
+region = Rect2(77, 30, 105, 103)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_p4cnb"]
+load_path = "res://.godot/imported/buttons_style_steampunk.png-4cecdb04e8ce595be730a2ff44899641.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_75utk"]
+atlas = SubResource("CompressedTexture2D_p4cnb")
+region = Rect2(117, 8, 106, 42)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xmcwd"]
+texture = SubResource("AtlasTexture_75utk")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dm105"]
+atlas = SubResource("CompressedTexture2D_p4cnb")
+region = Rect2(117, 56, 106, 42)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_a0hsx"]
+texture = SubResource("AtlasTexture_dm105")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4dvib"]
+atlas = SubResource("CompressedTexture2D_p4cnb")
+region = Rect2(117, 104, 106, 42)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jmidy"]
+texture = SubResource("AtlasTexture_4dvib")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_10ejw"]
+atlas = SubResource("CompressedTexture2D_p4cnb")
+region = Rect2(117, 152, 106, 42)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_45013"]
+texture = SubResource("AtlasTexture_10ejw")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vs2vi"]
+atlas = SubResource("CompressedTexture2D_p4cnb")
+region = Rect2(117, 200, 106, 42)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_82ijv"]
+texture = SubResource("AtlasTexture_vs2vi")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jssfj"]
+atlas = SubResource("CompressedTexture2D_p4cnb")
+region = Rect2(5, 199, 106, 42)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ty41x"]
+texture = SubResource("AtlasTexture_jssfj")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rbj62"]
+atlas = ExtResource("5_ehgam")
+region = Rect2(26, 28, 25, 28)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knrlo"]
+atlas = ExtResource("5_0ylrt")
+region = Rect2(689, 319, 35, 35)
+
+[node name="ItemsMenu" type="Control"]
+z_index = 10
+custom_minimum_size = Vector2(416, 0)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 461.0
+offset_bottom = 92.0
+size_flags_horizontal = 8
+mouse_filter = 2
+script = ExtResource("1_knrlo")
+metadata/_edit_group_ = true
+
+[node name="BackgroundBottom" type="NinePatchRect" parent="."]
+clip_children = 2
+custom_minimum_size = Vector2(416, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 8
+texture = ExtResource("1_1rdo5")
+region_rect = Rect2(2190, 396, 302, 107)
+patch_margin_top = 45
+patch_margin_bottom = 47
+axis_stretch_vertical = 2
+
+[node name="Gear" type="Control" parent="."]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Gear1" type="Control" parent="Gear"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 0
+offset_left = 29.0
+offset_top = 17.0
+offset_right = 29.0
+offset_bottom = 17.0
+scale = Vector2(0.1, 0.1)
+mouse_filter = 2
+
+[node name="Part" type="TextureRect" parent="Gear/Gear1"]
+z_index = 10
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -234.5
+offset_top = -229.5
+offset_right = 234.5
+offset_bottom = 229.5
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(239.99997, 229.99997)
+mouse_filter = 2
+texture = SubResource("AtlasTexture_0ylrt")
+
+[node name="Gear2" type="Control" parent="Gear"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -31.0
+offset_top = 14.0
+offset_right = -31.0
+offset_bottom = 14.0
+grow_horizontal = 0
+scale = Vector2(0.1, 0.1)
+mouse_filter = 2
+
+[node name="Part" type="TextureRect" parent="Gear/Gear2"]
+z_index = 10
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -234.5
+offset_top = -229.5
+offset_right = 234.5
+offset_bottom = 229.5
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(240, 230)
+mouse_filter = 2
+texture = SubResource("AtlasTexture_0ylrt")
+
+[node name="Gear3" type="Control" parent="Gear"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 33.0
+offset_top = -21.0
+offset_right = 33.0
+offset_bottom = -21.0
+grow_vertical = 0
+scale = Vector2(0.1, 0.1)
+mouse_filter = 2
+
+[node name="Part" type="TextureRect" parent="Gear/Gear3"]
+z_index = 10
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -234.5
+offset_top = -229.5
+offset_right = 234.5
+offset_bottom = 229.5
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(239.99997, 229.99997)
+mouse_filter = 2
+texture = SubResource("AtlasTexture_ehgam")
+
+[node name="TopContainer" type="MarginContainer" parent="."]
+z_index = 1
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 32.0
+grow_horizontal = 2
+size_flags_vertical = 0
+theme_override_constants/margin_left = 52
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 52
+theme_override_constants/margin_bottom = 5
+
+[node name="Name" type="Label" parent="TopContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.83137256, 0.5764706, 0.3137255, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5764706)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("3_0ylrt")
+text = "EQUIPMENT"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Contents" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 45
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 43
+
+[node name="MainScene" type="Control" parent="Contents"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("2_knrlo")
+max_columns = 1
+margin = 16
+style_normal = SubResource("StyleBoxTexture_xmcwd")
+style_hover = SubResource("StyleBoxTexture_a0hsx")
+style_selected = SubResource("StyleBoxTexture_jmidy")
+style_disabled = SubResource("StyleBoxTexture_45013")
+style_hover_disabled = SubResource("StyleBoxTexture_82ijv")
+style_hover_selected = SubResource("StyleBoxTexture_ty41x")
+equip_icon = SubResource("AtlasTexture_rbj62")
+font = ExtResource("3_0ylrt")
+font_size = 16
+
+[node name="BackgroundTop" type="NinePatchRect" parent="."]
+custom_minimum_size = Vector2(416, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 8
+texture = ExtResource("1_1rdo5")
+region_rect = Rect2(1871, 396, 302, 107)
+patch_margin_top = 47
+patch_margin_bottom = 45
+
+[node name="Decoration" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -14.0
+offset_top = -28.0
+offset_right = 14.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(1.134, 1)
+texture = SubResource("AtlasTexture_knrlo")
+expand_mode = 1
+
+[connection signal="cancel" from="Contents/MainScene" to="." method="_on_main_scene_cancel"]
+[connection signal="item_clicked" from="Contents/MainScene" to="." method="_on_main_scene_item_clicked"]
+[connection signal="item_hovered" from="Contents/MainScene" to="." method="_on_main_scene_item_hovered"]
+[connection signal="item_selected" from="Contents/MainScene" to="." method="_on_main_scene_item_selected"]

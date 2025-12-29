@@ -1,0 +1,138 @@
+[gd_scene load_steps=17 format=3 uid="uid://drrru5flvnlto"]
+
+[ext_resource type="Script" uid="uid://cpgcen76qegwp" path="res://addons/rpg_character_creator/Scripts/character_editor_palette_button.gd" id="1_em8ti"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="1_n5e1m"]
+[ext_resource type="Texture2D" uid="uid://c87u13cng51iv" path="res://addons/rpg_character_creator/textures/other_icons/Loading_icon_0008_Capa-1.png" id="2_7d7gw"]
+[ext_resource type="Texture2D" uid="uid://c1co7gsx6wth7" path="res://addons/CustomControls/Images/palette_icon.png" id="2_k7hg1"]
+[ext_resource type="Texture2D" uid="uid://bfvirbwko5v4o" path="res://addons/CustomControls/Images/palette_icon_hover.png" id="3_6varm"]
+[ext_resource type="Texture2D" uid="uid://dinul67r7u8ys" path="res://addons/rpg_character_creator/textures/other_icons/Loading_icon_0007_Capa-2.png" id="3_jf7ih"]
+[ext_resource type="PackedScene" uid="uid://basqbpqkskggi" path="res://addons/CustomControls/lock_button2.tscn" id="4_5hl2m"]
+[ext_resource type="Texture2D" uid="uid://beemjqtaeg2pm" path="res://addons/rpg_character_creator/textures/other_icons/Loading_icon_0006_Capa-3.png" id="4_kh677"]
+[ext_resource type="Texture2D" uid="uid://dx3qljqfo2npj" path="res://addons/CustomControls/Images/palette_icon_disabled.png" id="5_aud24"]
+[ext_resource type="Texture2D" uid="uid://cdy5mvjsmext7" path="res://addons/rpg_character_creator/textures/other_icons/Loading_icon_0005_Capa-4.png" id="5_fnc4p"]
+[ext_resource type="Texture2D" uid="uid://cnie2y4awqu21" path="res://addons/rpg_character_creator/textures/other_icons/Loading_icon_0004_Capa-5.png" id="6_wsqlf"]
+[ext_resource type="Texture2D" uid="uid://bg63cn1ggafb" path="res://addons/rpg_character_creator/textures/other_icons/Loading_icon_0003_Capa-6.png" id="7_d15vh"]
+[ext_resource type="Texture2D" uid="uid://drsrdnqun7i04" path="res://addons/rpg_character_creator/textures/other_icons/Loading_icon_0002_Capa-7.png" id="8_cw28a"]
+[ext_resource type="Texture2D" uid="uid://br1low6pctama" path="res://addons/rpg_character_creator/textures/other_icons/Loading_icon_0001_Capa-8.png" id="9_fo16f"]
+[ext_resource type="Texture2D" uid="uid://c2k4jiswpdy88" path="res://addons/rpg_character_creator/textures/other_icons/Loading_icon_0000_Capa-9-copia-21.png" id="10_83jyv"]
+
+[sub_resource type="AnimatedTexture" id="AnimatedTexture_pgjbx"]
+frames = 8
+frame_0/texture = ExtResource("2_7d7gw")
+frame_0/duration = 0.1
+frame_1/texture = ExtResource("3_jf7ih")
+frame_1/duration = 0.1
+frame_2/texture = ExtResource("4_kh677")
+frame_2/duration = 0.1
+frame_3/texture = ExtResource("5_fnc4p")
+frame_3/duration = 0.1
+frame_4/texture = ExtResource("6_wsqlf")
+frame_4/duration = 0.1
+frame_5/texture = ExtResource("7_d15vh")
+frame_5/duration = 0.1
+frame_6/texture = ExtResource("8_cw28a")
+frame_6/duration = 0.1
+frame_7/texture = ExtResource("9_fo16f")
+frame_7/duration = 0.1
+
+[node name="CharacterEditorPaletteButton" type="HBoxContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_horizontal = 3
+script = ExtResource("1_em8ti")
+loading_icon = SubResource("AnimatedTexture_pgjbx")
+none_icon = ExtResource("10_83jyv")
+
+[node name="Name" type="Label" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+vertical_alignment = 1
+
+[node name="Options" parent="." instance=ExtResource("1_n5e1m")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath(".")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath(".")
+focus_next = NodePath(".")
+focus_previous = NodePath(".")
+focus_mode = 0
+text_overrun_behavior = 4
+fit_to_longest_item = false
+allow_reselect = true
+
+[node name="PaletteButton" type="TextureButton" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "[title]Edit Part Colors[/title]
+Edit the colors of this part of the character."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("2_k7hg1")
+texture_hover = ExtResource("3_6varm")
+texture_disabled = ExtResource("5_aud24")
+metadata/primarycolors = {
+"data": [{
+"color": 4140350000.0,
+"colors": [0.0, 0.0, 29.0, 840312000.0, 94.0, 2553560000.0, 152.0, 3498730000.0, 179.0, 3785060000.0, 220.0, 4140350000.0, 239.0, 4008640000.0],
+"id": "human_skin_light",
+"name": "Light"
+}, {
+"color": 4290740000.0,
+"colors": [0.0, 0.0, 29.0, 840312000.0, 94.0, 2689270000.0, 152.0, 3498730000.0, 179.0, 4289020000.0, 220.0, 4290740000.0, 239.0, 4140350000.0],
+"id": "human_skin_peach",
+"name": "Peach"
+}, {
+"color": 3498730000.0,
+"colors": [0.0, 0.0, 29.0, 840312000.0, 94.0, 1463500000.0, 152.0, 2387960000.0, 179.0, 2691260000.0, 220.0, 3498730000.0, 239.0, 3416950000.0],
+"id": "human_skin_olive",
+"name": "Olive"
+}, {
+"color": 3212790000.0,
+"colors": [0.0, 0.0, 29.0, 840312000.0, 94.0, 1427380000.0, 152.0, 1463500000.0, 179.0, 1933660000.0, 220.0, 3212790000.0, 239.0, 3212790000.0],
+"id": "human_skin_brown",
+"name": "Brown"
+}, {
+"color": 1463500000.0,
+"colors": [0.0, 0.0, 29.0, 840312000.0, 94.0, 286331000.0, 152.0, 840312000.0, 179.0, 992813000.0, 220.0, 1463500000.0, 239.0, 1933660000.0],
+"id": "human_skin_black",
+"name": "Black"
+}],
+"palette": {
+"current_gradient": PackedColorArray(0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.196078, 0.0862745, 0.137255, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.596078, 0.203922, 0.301961, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.815686, 0.541176, 0.454902, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.882353, 0.607843, 0.490196, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.964706, 0.784314, 0.686275, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.933333, 0.933333, 0.933333, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1),
+"custom_colors": {
+"color": 4140350000.0,
+"colors": [0.0, 0.0, 29.0, 840312000.0, 94.0, 2553560000.0, 152.0, 3498730000.0, 179.0, 3785060000.0, 220.0, 4140350000.0, 239.0, 4008640000.0],
+"id": "human_skin_light",
+"name": "Light"
+},
+"item_selected": 0,
+"lightness": 0.0
+},
+"target": Object(TextureRect,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":1,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":1,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(832, 1344),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":832.0,"offset_bottom":1344.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","texture":Resource("res://addons/rpg_character_creator/textures/character/body/humanoid_m1.png"),"expand_mode":0,"stretch_mode":0,"flip_h":false,"flip_v":false,"script":null)
+
+}
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="." instance=ExtResource("4_5hl2m")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "[title]Lock Item[/title]
+Locks this part so that it does not change when the random button is pressed.
+
+[Note]: If this part is not supported by the character's body or head type, it will be replaced by a compatible part."
+focus_mode = 0
+
+[connection signal="item_selected" from="Options" to="." method="_on_options_item_selected"]
+[connection signal="middle_click" from="Options" to="." method="_on_options_middle_click"]
+[connection signal="pressed" from="PaletteButton" to="." method="_on_palette_button_pressed"]
+[connection signal="pressed" from="LockButton" to="." method="_on_lock_button_pressed"]

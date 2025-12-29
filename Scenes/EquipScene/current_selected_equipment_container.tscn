@@ -1,0 +1,246 @@
+[gd_scene load_steps=14 format=3 uid="uid://dc7267j3d6mix"]
+
+[ext_resource type="Texture2D" uid="uid://dntvanomr6m2o" path="res://Assets/Images/GUI/frame5.png" id="1_87ty0"]
+[ext_resource type="Script" uid="uid://ufpcotdhh8gu" path="res://Scenes/EquipScene/current_selected_equipment_container.gd" id="1_uidmq"]
+[ext_resource type="Texture2D" uid="uid://b0mo5iykdxq0l" path="res://Assets/Images/SceneMenu/part5.png" id="2_qvb13"]
+[ext_resource type="Texture2D" uid="uid://ct0ki5xyiptwg" path="res://Assets/Images/SceneMenu/part6.png" id="3_3j05u"]
+[ext_resource type="FontFile" uid="uid://2okej4ay4kdb" path="res://addons/CustomControls/Resources/Fonts/unifont-13.0.01.ttf" id="3_uidmq"]
+[ext_resource type="Texture2D" uid="uid://dwyyf8pj3ksbg" path="res://Assets/Images/GUI/separator.png" id="4_na2vy"]
+[ext_resource type="Texture2D" uid="uid://d2mtvqpdf5ddj" path="res://Assets/Images/GUI/progress_bar2_bottom.png" id="5_0sm8y"]
+[ext_resource type="Texture2D" uid="uid://d1jr8epauirfx" path="res://Assets/Images/GUI/progress_bar2_top.png" id="6_igjox"]
+[ext_resource type="Texture2D" uid="uid://bvvwxc4baoir1" path="res://Assets/Images/GUI/star.png" id="7_uidmq"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_epx7a"]
+content_margin_left = 12.0
+content_margin_top = 11.0
+content_margin_right = 12.0
+content_margin_bottom = 11.0
+texture = ExtResource("1_87ty0")
+texture_margin_left = 37.0
+texture_margin_top = 11.0
+texture_margin_right = 37.0
+texture_margin_bottom = 11.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8di1b"]
+content_margin_left = 3.0
+content_margin_top = 3.0
+content_margin_right = 3.0
+content_margin_bottom = 3.0
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.48235294, 0.33333334, 0.09411765, 1)
+border_blend = true
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="LabelSettings" id="LabelSettings_uidmq"]
+font = ExtResource("3_uidmq")
+font_color = Color(0.9137255, 0.69411767, 0.4117647, 1)
+outline_size = 8
+outline_color = Color(0, 0, 0, 1)
+stacked_outline_count = 1
+stacked_outline_0/size = 2
+stacked_outline_0/color = Color(0.81, 0.81, 0.81, 0.14117648)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6w3t2"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+texture = ExtResource("7_uidmq")
+
+[node name="CurrentSelectedEquipmentContainer" type="Control"]
+custom_minimum_size = Vector2(391, 90)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 391.0
+offset_bottom = 85.0
+script = ExtResource("1_uidmq")
+
+[node name="CurrentSelectedMainContainer" type="Control" parent="."]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CurrentSelectedEquipment" type="PanelContainer" parent="CurrentSelectedMainContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_epx7a")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CurrentSelectedMainContainer/CurrentSelectedEquipment"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="CurrentSelectedMainContainer/CurrentSelectedEquipment/HBoxContainer"]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_8di1b")
+
+[node name="Icon" type="TextureRect" parent="CurrentSelectedMainContainer/CurrentSelectedEquipment/HBoxContainer/PanelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CurrentSelectedMainContainer/CurrentSelectedEquipment/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ItemName" type="Label" parent="CurrentSelectedMainContainer/CurrentSelectedEquipment/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9137255, 0.69411767, 0.4117647, 1)
+theme_override_fonts/font = ExtResource("3_uidmq")
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
+vertical_alignment = 1
+text_overrun_behavior = 2
+uppercase = true
+
+[node name="Separator" type="TextureRect" parent="CurrentSelectedMainContainer/CurrentSelectedEquipment/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+texture = ExtResource("4_na2vy")
+
+[node name="ProgressBarContainer" type="HBoxContainer" parent="CurrentSelectedMainContainer/CurrentSelectedEquipment/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CurrentLevel" type="Label" parent="CurrentSelectedMainContainer/CurrentSelectedEquipment/HBoxContainer/VBoxContainer/ProgressBarContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_colors/font_color = Color(0.9137255, 0.69411767, 0.4117647, 1)
+theme_override_fonts/font = ExtResource("3_uidmq")
+theme_override_font_sizes/font_size = 22
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="ProgressBar" type="TextureProgressBar" parent="CurrentSelectedMainContainer/CurrentSelectedEquipment/HBoxContainer/VBoxContainer/ProgressBarContainer"]
+unique_name_in_owner = true
+texture_filter = 1
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+max_value = 1.0
+step = 0.001
+value = 1.0
+nine_patch_stretch = true
+stretch_margin_left = 13
+stretch_margin_right = 13
+texture_under = ExtResource("5_0sm8y")
+texture_progress = ExtResource("6_igjox")
+
+[node name="MaximunLevel" type="Label" parent="CurrentSelectedMainContainer/CurrentSelectedEquipment/HBoxContainer/VBoxContainer/ProgressBarContainer/ProgressBar"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -52.0
+offset_top = -12.5
+offset_right = 52.0
+offset_bottom = 10.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.9137255, 0.69411767, 0.4117647, 1)
+theme_override_fonts/font = ExtResource("3_uidmq")
+text = "MAXIMUN LEVEL"
+label_settings = SubResource("LabelSettings_uidmq")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MaxLevel" type="Label" parent="CurrentSelectedMainContainer/CurrentSelectedEquipment/HBoxContainer/VBoxContainer/ProgressBarContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_colors/font_color = Color(0.9137255, 0.69411767, 0.4117647, 1)
+theme_override_fonts/font = ExtResource("3_uidmq")
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("StyleBoxTexture_6w3t2")
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="Gear3" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+show_behind_parent = true
+z_index = 1
+layout_mode = 1
+anchors_preset = 0
+offset_top = 35.0
+offset_bottom = 35.0
+mouse_filter = 2
+
+[node name="Container" type="Control" parent="Gear3"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.11, 0.11)
+mouse_filter = 2
+
+[node name="Part1" type="TextureRect" parent="Gear3/Container"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -234.5
+offset_top = -229.5
+offset_right = 234.5
+offset_bottom = 229.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_qvb13")
+
+[node name="Part2" type="TextureRect" parent="Gear3/Container"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -117.5
+offset_top = -120.5
+offset_right = 117.5
+offset_bottom = 120.5
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -6.28319
+pivot_offset = Vector2(117, 120)
+mouse_filter = 2
+texture = ExtResource("3_3j05u")

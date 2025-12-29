@@ -1,0 +1,56 @@
+[gd_scene load_steps=6 format=3 uid="uid://bsa4ctlfh2ww1"]
+
+[ext_resource type="Script" uid="uid://dwe08lf4pwgrx" path="res://Scenes/DialogTemplates/digit_button.gd" id="1_7u3bc"]
+[ext_resource type="Theme" uid="uid://dfa1wys8s2mlt" path="res://Assets/Themes/number_letter_buttom_theme.tres" id="2_8njgk"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_i8474"]
+
+[sub_resource type="Gradient" id="Gradient_8njgk"]
+offsets = PackedFloat32Array(0, 0.952128, 0.994681, 1)
+colors = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 0.443137, 0, 0, 0, 0.075, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_03qjw"]
+gradient = SubResource("Gradient_8njgk")
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 1)
+
+[node name="DigitButton" type="PanelContainer"]
+offset_right = 33.0
+offset_bottom = 35.0
+pivot_offset = Vector2(16.5, 17.5)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+focus_mode = 1
+theme_override_styles/panel = SubResource("StyleBoxEmpty_i8474")
+script = ExtResource("1_7u3bc")
+
+[node name="Button" type="Button" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 5
+focus_mode = 1
+mouse_default_cursor_shape = 2
+theme = ExtResource("2_8njgk")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="ButtonTextLabel" type="Label" parent="MarginContainer"]
+unique_name_in_owner = true
+z_index = 1
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 2
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_03qjw")
+expand_mode = 1

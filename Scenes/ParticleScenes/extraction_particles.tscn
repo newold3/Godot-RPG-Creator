@@ -1,0 +1,62 @@
+[gd_scene load_steps=8 format=3 uid="uid://ds5ne5xu5oufd"]
+
+[ext_resource type="Texture2D" uid="uid://kxt6qpiefuya" path="res://Assets/Images/Particles/extraction_particles.png" id="1_y88ck"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_43nyl"]
+particles_animation = true
+particles_anim_h_frames = 5
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="Curve" id="Curve_jqbgv"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.19181, 1), 0.0, 0.0, 0, 0, Vector2(0.507163, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_quttv"]
+curve = SubResource("Curve_jqbgv")
+
+[sub_resource type="Curve" id="Curve_63d1m"]
+_data = [Vector2(0.00286533, 0.421387), 0.0, 0.0, 0, 0, Vector2(0.332378, 0.93237), 0.0, 0.0, 0, 0, Vector2(1, 0.676879), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_lteu1"]
+curve_x = SubResource("Curve_63d1m")
+curve_y = SubResource("Curve_63d1m")
+curve_z = SubResource("Curve_63d1m")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_71byl"]
+lifetime_randomness = 0.83
+particle_flag_rotate_y = true
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 0.01
+angle_min = 1.07288e-05
+angle_max = 1.07288e-05
+spread = 50.0
+initial_velocity_max = 142.24
+angular_velocity_min = -1.60933e-05
+angular_velocity_max = 200.0
+orbit_velocity_min = 9.49949e-08
+orbit_velocity_max = 9.49949e-08
+gravity = Vector3(0, 0, 0)
+radial_accel_min = -2.23517e-06
+radial_accel_max = 0.999998
+tangential_accel_min = -2.23517e-06
+tangential_accel_max = -2.23517e-06
+damping_min = 200.0
+damping_max = 400.0
+scale_min = 0.0
+scale_curve = SubResource("CurveXYZTexture_lteu1")
+alpha_curve = SubResource("CurveTexture_quttv")
+anim_offset_max = 1.0
+turbulence_noise_strength = 7.33
+turbulence_noise_speed_random = 2.39
+
+[node name="ExtractionParticles" type="GPUParticles2D"]
+material = SubResource("CanvasItemMaterial_43nyl")
+amount = 250
+texture = ExtResource("1_y88ck")
+speed_scale = 0.5
+explosiveness = 0.11
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_71byl")

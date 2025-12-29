@@ -1,0 +1,538 @@
+[gd_scene load_steps=49 format=3 uid="uid://c24rv5gn6xgdx"]
+
+[ext_resource type="Script" uid="uid://2jshx3ui63c4" path="res://addons/CustomControls/Dialogs/custom_edit_texture_region_dialog.gd" id="1_hr5i7"]
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_pk7p4"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="2_2upce"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="3_k6wgg"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="3_pk7p4"]
+[ext_resource type="Texture2D" uid="uid://xl88b63otgpi" path="res://addons/CustomControls/Images/button1_background.png" id="4_k6wgg"]
+[ext_resource type="Texture2D" uid="uid://dqnnp323vr1vo" path="res://addons/CustomControls/Images/button1_background_hover.png" id="5_1qifl"]
+[ext_resource type="Texture2D" uid="uid://b5u47ts7x44w0" path="res://addons/CustomControls/Images/handles.png" id="5_yvwxi"]
+[ext_resource type="Texture2D" uid="uid://fhckpbgkrnf" path="res://addons/CustomControls/Images/handles_hover.png" id="6_8s2qe"]
+[ext_resource type="Texture2D" uid="uid://beg6i1p118qd" path="res://addons/CustomControls/Images/button1_background_selected.png" id="6_yvwxi"]
+[ext_resource type="Texture2D" uid="uid://bkfn4ru5noaaa" path="res://addons/CustomControls/Images/button1_background_disabled.png" id="7_8s2qe"]
+
+[sub_resource type="Gradient" id="Gradient_wghvt"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_f6ugw"]
+gradient = SubResource("Gradient_wghvt")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r50fv"]
+draw_center = false
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.952941, 0.847059, 0.0941176, 1)
+border_blend = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3j072"]
+atlas = ExtResource("5_yvwxi")
+region = Rect2(0, 0, 20, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cmp14"]
+atlas = ExtResource("6_8s2qe")
+region = Rect2(0, 0, 20, 20)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_4x8c0"]
+load_path = "res://.godot/imported/handles.png-061d89e1da0bbff6ce3cc781888a87a8.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6btrv"]
+atlas = SubResource("CompressedTexture2D_4x8c0")
+region = Rect2(20, 0, 20, 20)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_0m0y0"]
+load_path = "res://.godot/imported/handles_hover.png-768998cae141e52f85da4342c3b34154.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5amc8"]
+atlas = SubResource("CompressedTexture2D_0m0y0")
+region = Rect2(20, 0, 20, 20)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_1km0e"]
+load_path = "res://.godot/imported/handles.png-061d89e1da0bbff6ce3cc781888a87a8.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rxykp"]
+atlas = SubResource("CompressedTexture2D_1km0e")
+region = Rect2(40, 0, 20, 20)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_nrcdl"]
+load_path = "res://.godot/imported/handles_hover.png-768998cae141e52f85da4342c3b34154.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gtc55"]
+atlas = SubResource("CompressedTexture2D_nrcdl")
+region = Rect2(40, 0, 20, 20)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_eegkq"]
+load_path = "res://.godot/imported/handles.png-061d89e1da0bbff6ce3cc781888a87a8.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_83mc3"]
+atlas = SubResource("CompressedTexture2D_eegkq")
+region = Rect2(0, 20, 20, 20)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_h2gqb"]
+load_path = "res://.godot/imported/handles_hover.png-768998cae141e52f85da4342c3b34154.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qtc2k"]
+atlas = SubResource("CompressedTexture2D_h2gqb")
+region = Rect2(0, 20, 20, 20)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_0yhfo"]
+load_path = "res://.godot/imported/handles.png-061d89e1da0bbff6ce3cc781888a87a8.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xooo4"]
+atlas = SubResource("CompressedTexture2D_0yhfo")
+region = Rect2(40, 20, 20, 20)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_r8xcm"]
+load_path = "res://.godot/imported/handles_hover.png-768998cae141e52f85da4342c3b34154.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h5mkd"]
+atlas = SubResource("CompressedTexture2D_r8xcm")
+region = Rect2(40, 20, 20, 20)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ebhny"]
+load_path = "res://.godot/imported/handles.png-061d89e1da0bbff6ce3cc781888a87a8.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7e0ai"]
+atlas = SubResource("CompressedTexture2D_ebhny")
+region = Rect2(0, 40, 20, 20)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_nr7ox"]
+load_path = "res://.godot/imported/handles_hover.png-768998cae141e52f85da4342c3b34154.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_06o6j"]
+atlas = SubResource("CompressedTexture2D_nr7ox")
+region = Rect2(0, 40, 20, 20)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_uokf3"]
+load_path = "res://.godot/imported/handles.png-061d89e1da0bbff6ce3cc781888a87a8.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_olgdh"]
+atlas = SubResource("CompressedTexture2D_uokf3")
+region = Rect2(20, 40, 20, 20)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_n56ru"]
+load_path = "res://.godot/imported/handles_hover.png-768998cae141e52f85da4342c3b34154.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l8qk1"]
+atlas = SubResource("CompressedTexture2D_n56ru")
+region = Rect2(20, 40, 20, 20)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_3ify2"]
+load_path = "res://.godot/imported/handles.png-061d89e1da0bbff6ce3cc781888a87a8.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b8nuj"]
+atlas = SubResource("CompressedTexture2D_3ify2")
+region = Rect2(40, 40, 20, 20)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_h8sr0"]
+load_path = "res://.godot/imported/handles_hover.png-768998cae141e52f85da4342c3b34154.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5dbmx"]
+atlas = SubResource("CompressedTexture2D_h8sr0")
+region = Rect2(40, 40, 20, 20)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5ogjp"]
+texture = ExtResource("4_k6wgg")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8tjcx"]
+texture = ExtResource("6_yvwxi")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_d6dbg"]
+texture = ExtResource("5_1qifl")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_28663"]
+texture = ExtResource("7_8s2qe")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[node name="CustomEditTextureRegionDialog" type="Window"]
+oversampling_override = 1.0
+title = "Edit Texture Region"
+position = Vector2i(0, 36)
+size = Vector2i(1400, 680)
+wrap_controls = true
+exclusive = true
+min_size = Vector2i(1400, 0)
+theme = ExtResource("1_pk7p4")
+script = ExtResource("1_hr5i7")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_f6ugw")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Adjustment mode"
+
+[node name="AdjustmentMode" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("2_2upce")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "[ul] \"SNAP_NONE\": Drawing is completely free without any restrictions.
+ \"SNAP_PIXEL\": Snaps the drawing to individual pixels.
+ \"SNAP_GRID\": Drawing is constrained to a custom grid.
+ \"ROWS & COLUMNS\": Specifies the columns and rows to split the current image[/ul]"
+selected = 2
+item_count = 4
+popup/item_0/text = "None"
+popup/item_0/id = 0
+popup/item_1/text = "Pixel Adjustment"
+popup/item_1/id = 1
+popup/item_2/text = "Grid Adjustment"
+popup/item_2/id = 2
+popup/item_3/text = "Rows & Columns"
+popup/item_3/id = 3
+
+[node name="GridContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer"]
+layout_mode = 2
+text = "Offset:"
+
+[node name="OffsetX" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer" instance=ExtResource("3_k6wgg")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+tooltip_text = "Provides a base offset for the entire grid."
+allow_greater = true
+suffix = " px"
+_custom_value = 0.0
+
+[node name="OffsetY" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer" instance=ExtResource("3_k6wgg")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+tooltip_text = "Provides a base offset for the entire grid."
+allow_greater = true
+suffix = " px"
+_custom_value = 0.0
+
+[node name="StepContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer/StepContainer"]
+layout_mode = 2
+text = "Step:"
+
+[node name="StepX" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer/StepContainer" instance=ExtResource("3_k6wgg")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+tooltip_text = "Determines the size of each cell (the content area)."
+min_value = 1.0
+value = 1.0
+allow_greater = true
+suffix = " px"
+_custom_value = 1.0
+
+[node name="StepY" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer/StepContainer" instance=ExtResource("3_k6wgg")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+tooltip_text = "Determines the size of each cell (the content area)."
+min_value = 1.0
+value = 1.0
+allow_greater = true
+suffix = " px"
+_custom_value = 1.0
+
+[node name="ColumnAndRowContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer/ColumnAndRowContainer"]
+layout_mode = 2
+text = "Columns:"
+
+[node name="Columns" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer/ColumnAndRowContainer" instance=ExtResource("3_k6wgg")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+tooltip_text = "Specifies the number of columns in the current image."
+min_value = 1.0
+value = 23.0
+allow_greater = true
+suffix = " px"
+_custom_value = 23.0
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer/ColumnAndRowContainer"]
+layout_mode = 2
+text = "Rows:"
+
+[node name="Rows" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer/ColumnAndRowContainer" instance=ExtResource("3_k6wgg")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+tooltip_text = "Specifies the number of rows in the current image."
+min_value = 1.0
+value = 22.0
+allow_greater = true
+suffix = " px"
+_custom_value = 22.0
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer"]
+layout_mode = 2
+text = "Separation:"
+
+[node name="SeparationX" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer" instance=ExtResource("3_k6wgg")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+tooltip_text = "Specifies the gap between adjacent cells."
+allow_greater = true
+suffix = " px"
+_custom_value = 0.0
+
+[node name="SeparationY" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer" instance=ExtResource("3_k6wgg")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+tooltip_text = "Specifies the gap between adjacent cells."
+allow_greater = true
+suffix = " px"
+_custom_value = 0.0
+
+[node name="Canvas" type="Control" parent="MarginContainer/VBoxContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/VBoxContainer/Canvas"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.129412, 0.14902, 0.180392, 1)
+
+[node name="EditedTexture" type="Control" parent="MarginContainer/VBoxContainer/Canvas"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Grid" type="Control" parent="MarginContainer/VBoxContainer/Canvas"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+
+[node name="Cursor" type="PanelContainer" parent="MarginContainer/VBoxContainer/Canvas"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_left = 197.0
+offset_top = 221.0
+offset_right = 223.0
+offset_bottom = 247.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_r50fv")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Canvas/Cursor"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = -5
+theme_override_constants/margin_top = -5
+theme_override_constants/margin_right = -5
+theme_override_constants/margin_bottom = -5
+
+[node name="TopLeftCursorHandle" type="TextureButton" parent="MarginContainer/VBoxContainer/Canvas/Cursor/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_default_cursor_shape = 12
+texture_normal = SubResource("AtlasTexture_3j072")
+texture_hover = SubResource("AtlasTexture_cmp14")
+
+[node name="TopCursorHandle" type="TextureButton" parent="MarginContainer/VBoxContainer/Canvas/Cursor/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+mouse_default_cursor_shape = 14
+texture_normal = SubResource("AtlasTexture_6btrv")
+texture_hover = SubResource("AtlasTexture_5amc8")
+
+[node name="TopRightCursorHandle" type="TextureButton" parent="MarginContainer/VBoxContainer/Canvas/Cursor/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+mouse_default_cursor_shape = 11
+texture_normal = SubResource("AtlasTexture_rxykp")
+texture_hover = SubResource("AtlasTexture_gtc55")
+
+[node name="LeftCursorHandle" type="TextureButton" parent="MarginContainer/VBoxContainer/Canvas/Cursor/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+mouse_default_cursor_shape = 15
+texture_normal = SubResource("AtlasTexture_83mc3")
+texture_hover = SubResource("AtlasTexture_qtc2k")
+
+[node name="RightCursorHandle" type="TextureButton" parent="MarginContainer/VBoxContainer/Canvas/Cursor/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+mouse_default_cursor_shape = 10
+texture_normal = SubResource("AtlasTexture_xooo4")
+texture_hover = SubResource("AtlasTexture_h5mkd")
+
+[node name="BottomLeftCursorHandle" type="TextureButton" parent="MarginContainer/VBoxContainer/Canvas/Cursor/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+mouse_default_cursor_shape = 11
+texture_normal = SubResource("AtlasTexture_7e0ai")
+texture_hover = SubResource("AtlasTexture_06o6j")
+
+[node name="BottomCursorHandle" type="TextureButton" parent="MarginContainer/VBoxContainer/Canvas/Cursor/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+mouse_default_cursor_shape = 14
+texture_normal = SubResource("AtlasTexture_olgdh")
+texture_hover = SubResource("AtlasTexture_l8qk1")
+
+[node name="BottomRightCursorHandle" type="TextureButton" parent="MarginContainer/VBoxContainer/Canvas/Cursor/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+mouse_default_cursor_shape = 12
+texture_normal = SubResource("AtlasTexture_b8nuj")
+texture_hover = SubResource("AtlasTexture_5dbmx")
+
+[node name="HScrollBar" type="HScrollBar" parent="MarginContainer/VBoxContainer/Canvas"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -8.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_default_cursor_shape = 2
+max_value = 1.0
+step = 0.01
+page = 0.15
+value = 0.42
+
+[node name="VScrollBar" type="VScrollBar" parent="MarginContainer/VBoxContainer/Canvas"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -8.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+max_value = 1.0
+step = 0.01
+page = 0.25
+value = 0.37
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_pk7p4")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+theme_override_styles/normal = SubResource("StyleBoxTexture_5ogjp")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_8tjcx")
+theme_override_styles/hover = SubResource("StyleBoxTexture_d6dbg")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_28663")
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_pk7p4")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+theme_override_styles/normal = SubResource("StyleBoxTexture_5ogjp")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_8tjcx")
+theme_override_styles/hover = SubResource("StyleBoxTexture_d6dbg")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_28663")
+text = "CANCEL"
+
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer2/AdjustmentMode" to="." method="_on_adjustment_mode_item_selected"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer/OffsetX" to="." method="_on_offset_x_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer/OffsetY" to="." method="_on_offset_y_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer/StepContainer/StepX" to="." method="_on_step_x_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer/StepContainer/StepY" to="." method="_on_step_y_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer/ColumnAndRowContainer/Columns" to="." method="_on_columns_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer/ColumnAndRowContainer/Rows" to="." method="_on_rows_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer/SeparationX" to="." method="_on_separation_x_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer/SeparationY" to="." method="_on_separation_y_value_changed"]
+[connection signal="gui_input" from="MarginContainer/VBoxContainer/Canvas/Cursor/MarginContainer/TopLeftCursorHandle" to="." method="_on_cursor_handle_gui_input" binds= ["top_left"]]
+[connection signal="gui_input" from="MarginContainer/VBoxContainer/Canvas/Cursor/MarginContainer/TopCursorHandle" to="." method="_on_cursor_handle_gui_input" binds= ["top"]]
+[connection signal="gui_input" from="MarginContainer/VBoxContainer/Canvas/Cursor/MarginContainer/TopRightCursorHandle" to="." method="_on_cursor_handle_gui_input" binds= ["top_right"]]
+[connection signal="gui_input" from="MarginContainer/VBoxContainer/Canvas/Cursor/MarginContainer/LeftCursorHandle" to="." method="_on_cursor_handle_gui_input" binds= ["left"]]
+[connection signal="gui_input" from="MarginContainer/VBoxContainer/Canvas/Cursor/MarginContainer/RightCursorHandle" to="." method="_on_cursor_handle_gui_input" binds= ["right"]]
+[connection signal="gui_input" from="MarginContainer/VBoxContainer/Canvas/Cursor/MarginContainer/BottomLeftCursorHandle" to="." method="_on_cursor_handle_gui_input" binds= ["bottom_left"]]
+[connection signal="gui_input" from="MarginContainer/VBoxContainer/Canvas/Cursor/MarginContainer/BottomCursorHandle" to="." method="_on_cursor_handle_gui_input" binds= ["bottom"]]
+[connection signal="gui_input" from="MarginContainer/VBoxContainer/Canvas/Cursor/MarginContainer/BottomRightCursorHandle" to="." method="_on_cursor_handle_gui_input" binds= ["bottom_right"]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

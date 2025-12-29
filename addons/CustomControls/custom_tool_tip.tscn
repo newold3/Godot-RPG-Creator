@@ -1,0 +1,76 @@
+[gd_scene load_steps=6 format=3 uid="uid://ud0se11kyo1j"]
+
+[ext_resource type="Script" uid="uid://dyby0vytoodi7" path="res://addons/CustomControls/custom_tool_tip.gd" id="1_fa5qd"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gn50f"]
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nfkdf"]
+content_margin_left = 6.0
+content_margin_right = 6.0
+bg_color = Color(0.262745, 0.262745, 0.262745, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6hmvr"]
+content_margin_left = 6.0
+content_margin_right = 6.0
+bg_color = Color(0.101961, 0.101961, 0.101961, 0.6)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hbw7x"]
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="CustomToolTip" type="PanelContainer"]
+clip_children = 2
+offset_right = 109.0
+offset_bottom = 46.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_gn50f")
+script = ExtResource("1_fa5qd")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_nfkdf")
+
+[node name="Title" type="Label" parent="VBoxContainer/PanelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="PanelContainer2" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_6hmvr")
+
+[node name="Contents" type="Label" parent="VBoxContainer/PanelContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = -1
+theme_override_constants/margin_top = -1
+theme_override_constants/margin_right = -1
+theme_override_constants/margin_bottom = -1
+
+[node name="TopBorder" type="Panel" parent="MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hbw7x")

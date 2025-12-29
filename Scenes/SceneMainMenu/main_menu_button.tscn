@@ -1,0 +1,404 @@
+[gd_scene load_steps=9 format=3 uid="uid://b85ewdmr5u0dv"]
+
+[ext_resource type="Script" uid="uid://cki8tblxwy1ha" path="res://Scenes/SceneMainMenu/main_menu_button.gd" id="1_vuijs"]
+[ext_resource type="Texture2D" uid="uid://bfgr2ewrp6i0u" path="res://Assets/Images/GUI/party_menu.png" id="2_b8dvk"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dqfph"]
+atlas = ExtResource("2_b8dvk")
+region = Rect2(231, 10, 105, 103)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t5ncq"]
+atlas = ExtResource("2_b8dvk")
+region = Rect2(77, 30, 105, 103)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ewwqk"]
+atlas = ExtResource("2_b8dvk")
+region = Rect2(30, 152, 15, 15)
+
+[sub_resource type="Animation" id="Animation_jwkb8"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ButtonContainer:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(240, 40)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ButtonContainer/Gears/Gear1:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-62, -58)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("ButtonContainer/Gears/Gear2:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-72, -47)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("ButtonContainer/Gears/Gear1:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("ButtonContainer/Gears/Gear2:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("ButtonContainer/Gears/Gear3:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-52.000004, -33.499996)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("ButtonContainer/Gears/Gear3:rotation")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("ButtonContainer/Gears/Gear4:rotation")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_0vic1"]
+resource_name = "Start"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ButtonContainer:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1.86607, 1),
+"update": 0,
+"values": [Vector2(53.7, 40), Vector2(240, 40)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ButtonContainer/Gears/Gear1:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-53, -46), Vector2(-54.19, -52.34)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("ButtonContainer/Gears/Gear2:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-62, -39), Vector2(-65.75, -41.79)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("ButtonContainer/Gears/Gear1:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.76666665),
+"transitions": PackedFloat32Array(1, 1, 0.5),
+"update": 0,
+"values": [-6.283185307179586, -0.7853981633974483, 0.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("ButtonContainer/Gears/Gear2:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.76666665),
+"transitions": PackedFloat32Array(1, 1, 0.5),
+"update": 0,
+"values": [-6.283185307179586, -0.7853981633974483, 0.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("ButtonContainer/Gears/Gear3:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-52.000004, -33.499996)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("ButtonContainer/Gears/Gear3:rotation")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.76666665),
+"transitions": PackedFloat32Array(1, 1, 0.5),
+"update": 0,
+"values": [-6.283185307179586, -0.7853981633974483, 0.0]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("ButtonContainer/Gears/Gear4:rotation")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.76666665),
+"transitions": PackedFloat32Array(1, 1, 0.5),
+"update": 0,
+"values": [-6.283185307179586, -0.7853981633974483, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_aa7c1"]
+_data = {
+&"RESET": SubResource("Animation_jwkb8"),
+&"Start": SubResource("Animation_0vic1")
+}
+
+[node name="Button" type="Control"]
+custom_minimum_size = Vector2(240, 36)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 240.0
+offset_bottom = 39.0
+pivot_offset = Vector2(4, 17)
+focus_mode = 1
+mouse_default_cursor_shape = 2
+script = ExtResource("1_vuijs")
+
+[node name="ButtonContainer" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Gears" type="Control" parent="ButtonContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Gear1" type="TextureRect" parent="ButtonContainer/Gears"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = -62.0
+offset_top = -58.0
+offset_right = 43.0
+offset_bottom = 45.0
+scale = Vector2(0.12863809, 0.12863809)
+pivot_offset = Vector2(52, 51)
+mouse_filter = 2
+texture = SubResource("AtlasTexture_dqfph")
+expand_mode = 1
+
+[node name="Gear2" type="TextureRect" parent="ButtonContainer/Gears"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = -72.0
+offset_top = -47.0
+offset_right = 33.0
+offset_bottom = 56.0
+scale = Vector2(0.17050773, 0.17050773)
+pivot_offset = Vector2(52, 51)
+mouse_filter = 2
+texture = SubResource("AtlasTexture_dqfph")
+expand_mode = 1
+
+[node name="Gear3" type="TextureRect" parent="ButtonContainer/Gears"]
+unique_name_in_owner = true
+z_index = 2
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -52.000004
+offset_top = -53.499996
+offset_right = 52.999996
+offset_bottom = 49.5
+grow_vertical = 2
+scale = Vector2(0.33185536, 0.33185536)
+pivot_offset = Vector2(52, 51)
+mouse_filter = 2
+texture = SubResource("AtlasTexture_t5ncq")
+expand_mode = 1
+
+[node name="Gear4" type="TextureRect" parent="ButtonContainer/Gears"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -69.0
+offset_top = -35.0
+offset_right = 36.0
+offset_bottom = 68.0
+grow_horizontal = 0
+scale = Vector2(0.4213549, 0.4213549)
+pivot_offset = Vector2(52.5, 51.5)
+mouse_filter = 2
+texture = SubResource("AtlasTexture_t5ncq")
+expand_mode = 1
+
+[node name="Decoration" type="TextureRect" parent="ButtonContainer"]
+unique_name_in_owner = true
+z_index = 1
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -66.000015
+offset_top = -38.0
+offset_right = 39.0
+offset_bottom = 65.0
+grow_horizontal = 0
+scale = Vector2(0.066, 0.066)
+pivot_offset = Vector2(52, 51)
+mouse_filter = 2
+texture = SubResource("AtlasTexture_ewwqk")
+expand_mode = 1
+
+[node name="Background" type="NinePatchRect" parent="ButtonContainer"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_b8dvk")
+region_rect = Rect2(758, 425, 232, 42)
+patch_margin_left = 18
+patch_margin_top = 21
+patch_margin_right = 40
+patch_margin_bottom = 16
+
+[node name="CursorSelected" type="NinePatchRect" parent="ButtonContainer"]
+unique_name_in_owner = true
+visible = false
+modulate = Color(1.4398985, 1.3955474, 0.7746325, 0.6)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_b8dvk")
+region_rect = Rect2(1081, 571, 232, 42)
+patch_margin_left = 18
+patch_margin_top = 21
+patch_margin_right = 40
+patch_margin_bottom = 16
+
+[node name="CursorHover" type="NinePatchRect" parent="ButtonContainer"]
+unique_name_in_owner = true
+visible = false
+modulate = Color(0.9683209, 0.91561997, 0.8702053, 0.73333335)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_b8dvk")
+region_rect = Rect2(1081, 571, 232, 42)
+patch_margin_left = 18
+patch_margin_top = 21
+patch_margin_right = 40
+patch_margin_bottom = 16
+
+[node name="ButtonLabelContainer" type="MarginContainer" parent="ButtonContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 8
+
+[node name="ButtonLabel" type="Label" parent="ButtonContainer/ButtonLabelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+&"": SubResource("AnimationLibrary_aa7c1")
+}

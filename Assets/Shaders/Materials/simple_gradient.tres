@@ -1,0 +1,22 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://dibwjjaro8dtp"]
+
+[ext_resource type="Shader" uid="uid://byvruuuuqrdn8" path="res://Assets/Shaders/simple_gradient.gdshader" id="1_7pgcd"]
+
+[sub_resource type="Gradient" id="Gradient_7pgcd"]
+offsets = PackedFloat32Array(0, 0.480132, 1)
+colors = PackedColorArray(0.400572, 0.989488, 0.704254, 1, 0.0856886, 0.234656, 0.163843, 1, 0.125463, 0.303639, 0.184808, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_nayjj"]
+gradient = SubResource("Gradient_7pgcd")
+fill_from = Vector2(0.5, 0.474)
+fill_to = Vector2(0.5, 0.897436)
+
+[resource]
+resource_local_to_scene = true
+shader = ExtResource("1_7pgcd")
+shader_parameter/gradient_texture = SubResource("GradientTexture2D_nayjj")
+shader_parameter/use_text_gradient = true
+shader_parameter/size = Vector2(0, 0)
+shader_parameter/use_pixelate_gradient = true
+shader_parameter/pixel_scale = 12.0
+shader_parameter/brightness = 1.0

@@ -1,0 +1,119 @@
+[gd_scene load_steps=7 format=3 uid="uid://dan1heh3lb17r"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_1t0y1"]
+[ext_resource type="Script" uid="uid://dgd1hndgy516a" path="res://addons/CustomControls/Dialogs/code_editor.gd" id="2_e7t3c"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="3_sx0xv"]
+
+[sub_resource type="Gradient" id="Gradient_7ascj"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ourej"]
+gradient = SubResource("Gradient_7ascj")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="CodeHighlighter" id="CodeHighlighter_e7t3c"]
+number_color = Color(0.611765, 0.937255, 0.827451, 1)
+symbol_color = Color(0.580392, 0.611765, 0.74902, 1)
+function_color = Color(0.341176, 0.698039, 1, 1)
+member_variable_color = Color(0.803922, 0.811765, 0.823529, 1)
+keyword_colors = {
+"GameManager": Color(0.658824, 0.839216, 0.788235, 1),
+"break": Color(1, 0.54902, 0.8, 1),
+"else": Color(1, 0.54902, 0.8, 1),
+"false": Color(0.627451, 0.309804, 0.368627, 1),
+"for": Color(0.976471, 0.537255, 0.776471, 1),
+"if": Color(1, 0.54902, 0.8, 1),
+"in": Color(0.894118, 0.411765, 0.478431, 1),
+"return": Color(1, 0.54902, 0.8, 1),
+"true": Color(0.627451, 0.309804, 0.368627, 1),
+"var": Color(0.882353, 0.407843, 0.47451, 1),
+"when": Color(1, 0.54902, 0.8, 1)
+}
+
+[node name="CommandBaseDialog" type="Window"]
+title = "Code Editor"
+position = Vector2i(0, 36)
+size = Vector2i(400, 400)
+wrap_controls = true
+transient = true
+exclusive = true
+theme = ExtResource("1_1t0y1")
+script = ExtResource("2_e7t3c")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_ourej")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="TopButtons" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TopButtons"]
+layout_mode = 2
+text = "Fast Buttons"
+
+[node name="CodeEdit" type="CodeEdit" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/word_highlighted_color = Color(0.243137, 0.372549, 0.490196, 0.352941)
+theme_override_colors/background_color = Color(0.113725, 0.133333, 0.160784, 0.403922)
+theme_override_colors/selection_color = Color(0.243137, 0.372549, 0.490196, 0.352941)
+caret_blink = true
+syntax_highlighter = SubResource("CodeHighlighter_e7t3c")
+highlight_all_occurrences = true
+highlight_current_line = true
+draw_tabs = true
+code_completion_enabled = true
+code_completion_prefixes = Array[String](["."])
+indent_automatic = true
+auto_brace_completion_enabled = true
+auto_brace_completion_highlight_matching = true
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("3_sx0xv")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("3_sx0xv")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+text = "CANCEL"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/CancelButton" to="." method="_on_cancel_button_pressed"]

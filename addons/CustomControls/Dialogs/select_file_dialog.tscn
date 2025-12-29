@@ -1,0 +1,544 @@
+[gd_scene load_steps=42 format=3 uid="uid://bfjehgeo8wgo1"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_dbw7k"]
+[ext_resource type="Script" uid="uid://bjgo36yf2wf5p" path="res://addons/CustomControls/Dialogs/select_file_dialog.gd" id="2_ofpbr"]
+[ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="3_b8num"]
+[ext_resource type="Texture2D" uid="uid://dwcnj2mbl2v2y" path="res://addons/CustomControls/Images/magnifying_glass.png" id="4_tfgt2"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="5_iw4fk"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="5_sp1nc"]
+[ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="6_7yi6c"]
+[ext_resource type="Texture2D" uid="uid://csb2tgq18e4gw" path="res://addons/CustomControls/Images/heart_button_disabled.png" id="6_223sb"]
+[ext_resource type="Curve" uid="uid://qvopxbwffhgr" path="res://addons/CustomControls/Resources/Curves/preset_B.tres" id="7_0n0fi"]
+[ext_resource type="Texture2D" uid="uid://c0ihfakdhxqjp" path="res://addons/CustomControls/Images/heart_button_normal.png" id="7_cetms"]
+[ext_resource type="Texture2D" uid="uid://bnfb7u5j2x4pq" path="res://addons/CustomControls/Images/loading_icon.png" id="7_jwyn7"]
+[ext_resource type="Texture2D" uid="uid://ckghhsxc3n6f1" path="res://addons/CustomControls/Images/heart_button_hover.png" id="8_5sdey"]
+[ext_resource type="Texture2D" uid="uid://d3k74tdw1sbwu" path="res://addons/CustomControls/Images/button_all_disabled.png" id="9_56g62"]
+[ext_resource type="Texture2D" uid="uid://e1noeskjycvb" path="res://addons/CustomControls/Images/button_all_normal.png" id="10_umg3t"]
+[ext_resource type="Texture2D" uid="uid://cj38ikhot8vuo" path="res://addons/CustomControls/Images/button_all_hover.png" id="11_of5pj"]
+
+[sub_resource type="Gradient" id="Gradient_dl3uf"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_e8gxf"]
+gradient = SubResource("Gradient_dl3uf")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4yvde"]
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2xaq3"]
+atlas = ExtResource("5_iw4fk")
+region = Rect2(72, 48, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y1a5w"]
+atlas = ExtResource("5_iw4fk")
+region = Rect2(96, 48, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l75n7"]
+atlas = ExtResource("5_iw4fk")
+region = Rect2(48, 72, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xk8xy"]
+atlas = ExtResource("5_iw4fk")
+region = Rect2(48, 96, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7d665"]
+atlas = ExtResource("5_iw4fk")
+region = Rect2(216, 72, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ybjcm"]
+atlas = ExtResource("5_iw4fk")
+region = Rect2(192, 72, 24, 24)
+
+[sub_resource type="Gradient" id="Gradient_7yi6c"]
+offsets = PackedFloat32Array(0, 0.391586, 0.595469, 1)
+colors = PackedColorArray(0, 0, 0, 0.192157, 0, 0, 0, 0.388235, 0, 0, 0, 0.376471, 0, 0, 0, 0.254902)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_0n0fi"]
+gradient = SubResource("Gradient_7yi6c")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wkjry"]
+atlas = ExtResource("7_jwyn7")
+region = Rect2(600, 300, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_goxh6"]
+atlas = ExtResource("7_jwyn7")
+region = Rect2(0, 0, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uwjbp"]
+atlas = ExtResource("7_jwyn7")
+region = Rect2(300, 0, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qe788"]
+atlas = ExtResource("7_jwyn7")
+region = Rect2(600, 0, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n0ojs"]
+atlas = ExtResource("7_jwyn7")
+region = Rect2(900, 0, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o15lp"]
+atlas = ExtResource("7_jwyn7")
+region = Rect2(0, 300, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jbx63"]
+atlas = ExtResource("7_jwyn7")
+region = Rect2(300, 300, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dbb1o"]
+atlas = ExtResource("7_jwyn7")
+region = Rect2(900, 300, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g0vwv"]
+atlas = ExtResource("7_jwyn7")
+region = Rect2(0, 600, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p71ux"]
+atlas = ExtResource("7_jwyn7")
+region = Rect2(300, 600, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_enu6e"]
+atlas = ExtResource("7_jwyn7")
+region = Rect2(600, 600, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2eurm"]
+atlas = ExtResource("7_jwyn7")
+region = Rect2(900, 600, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_km4c5"]
+atlas = ExtResource("7_jwyn7")
+region = Rect2(0, 900, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o8kil"]
+atlas = ExtResource("7_jwyn7")
+region = Rect2(300, 900, 300, 300)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wjcc4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wkjry")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_goxh6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uwjbp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qe788")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n0ojs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o15lp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jbx63")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dbb1o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g0vwv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p71ux")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_enu6e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2eurm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_km4c5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o8kil")
+}],
+"loop": true,
+"name": &"default",
+"speed": 15.0
+}]
+
+[node name="SelectFileDialog" type="Window" groups=["custom_file_dialog"]]
+disable_3d = true
+snap_2d_transforms_to_pixel = true
+snap_2d_vertices_to_pixel = true
+canvas_item_default_texture_filter = 3
+oversampling_override = 1.0
+title = "Select File"
+position = Vector2i(0, 36)
+size = Vector2i(900, 725)
+transient_to_focused = true
+exclusive = true
+min_size = Vector2i(900, 725)
+theme = ExtResource("1_dbw7k")
+script = ExtResource("2_ofpbr")
+ignore_folders = Array[String](["res://addons/effekseer/", "res://Assets/EffekEffects/"])
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_e8gxf")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_4yvde")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Filter:"
+
+[node name="FilterLineEdit" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_b8num")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Filter Files[/title]
+Type here to filter the list of files/and or folders shown in the list below."
+right_icon = ExtResource("4_tfgt2")
+
+[node name="RebuildCache" type="TextureButton" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Rebuild the file cache (usually, this is unnecessary, but if you notice
+that a file expected to appear here is missing, you can manually
+rebuild the cache to try to fix the issue).
+
+Note: This may take a little while."
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_2xaq3")
+texture_hover = SubResource("AtlasTexture_y1a5w")
+
+[node name="FavoriteButton" type="TextureButton" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+tooltip_text = "Displays the list of files added to favorites"
+mouse_default_cursor_shape = 2
+toggle_mode = true
+texture_normal = ExtResource("6_223sb")
+texture_pressed = ExtResource("7_cetms")
+texture_hover = ExtResource("8_5sdey")
+
+[node name="AllButton" type="TextureButton" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+tooltip_text = "Switch between browsing folders or displaying all files without browsing"
+mouse_default_cursor_shape = 2
+toggle_mode = true
+texture_normal = ExtResource("9_56g62")
+texture_pressed = ExtResource("10_umg3t")
+texture_hover = ExtResource("11_of5pj")
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+
+[node name="DirectoryExtraControls1" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/DirectoryExtraControls1"]
+layout_mode = 2
+text = "Current Folder:"
+
+[node name="CurrentPath" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/DirectoryExtraControls1" instance=ExtResource("3_b8num")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Current folder selected"
+focus_mode = 0
+mouse_filter = 2
+theme_override_colors/font_uneditable_color = Color(0.423529, 0.796078, 1, 1)
+editable = false
+selecting_enabled = false
+disabled = true
+metadata/original_text = ""
+
+[node name="Back" type="TextureButton" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/DirectoryExtraControls1"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Click to go back to a previous directory"
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_l75n7")
+texture_hover = SubResource("AtlasTexture_xk8xy")
+flip_h = true
+
+[node name="Next" type="TextureButton" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/DirectoryExtraControls1"]
+unique_name_in_owner = true
+modulate = Color(0.3137255, 0.3137255, 0.3137255, 0.40392157)
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Click to advance one directory"
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = SubResource("AtlasTexture_l75n7")
+texture_hover = SubResource("AtlasTexture_xk8xy")
+
+[node name="CreateFolder" type="TextureButton" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/DirectoryExtraControls1"]
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Click to create a new directory"
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_7d665")
+texture_hover = SubResource("AtlasTexture_ybjcm")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_top = 12
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_4yvde")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/MarginContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+follow_focus = true
+script = ExtResource("6_7yi6c")
+scroll_duration = 0.3
+curve = ExtResource("7_0n0fi")
+
+[node name="FileContainer" type="FlowContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/MarginContainer/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 4
+theme_override_constants/v_separation = 4
+alignment = 1
+
+[node name="NoFilesFound" type="Control" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/MarginContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/MarginContainer/NoFilesFound"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.403922)
+
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/MarginContainer/NoFilesFound"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/MarginContainer/NoFilesFound/CenterContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "No files found"
+
+[node name="DirectoryExtraControls2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/DirectoryExtraControls2"]
+layout_mode = 2
+text = "File Name:"
+
+[node name="Filename" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/DirectoryExtraControls2" instance=ExtResource("3_b8num")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Current file name"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Selected Path:"
+
+[node name="PathSelected" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0.607843, 0.776471, 1)
+theme_override_font_sizes/font_size = 18
+text = " -"
+text_overrun_behavior = 3
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_sp1nc")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_sp1nc")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+text = "CANCEL"
+
+[node name="Loading" type="Control" parent="MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/Loading"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.403922)
+
+[node name="ColorRect2" type="TextureRect" parent="MarginContainer/Loading"]
+custom_minimum_size = Vector2(80, 60)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -249.0
+offset_bottom = -189.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = SubResource("GradientTexture2D_0n0fi")
+expand_mode = 1
+
+[node name="Control" type="Control" parent="MarginContainer/Loading"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="MarginContainer/Loading/Control"]
+unique_name_in_owner = true
+position = Vector2(-1, 0.5)
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_wjcc4")
+autoplay = "default"
+frame_progress = 0.28049898
+
+[node name="Label" type="Label" parent="MarginContainer/Loading/Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -198.0
+offset_top = 115.0
+offset_right = 198.0
+offset_bottom = 141.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 32
+text = "One moment please, looking for files"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+
+[connection signal="gui_input" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer/FilterLineEdit" to="." method="_on_filter_line_edit_gui_input"]
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer/FilterLineEdit" to="." method="_on_custom_line_edit_text_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer/RebuildCache" to="." method="_on_rebuild_cache_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer/FavoriteButton" to="." method="_on_favorite_button_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer/AllButton" to="." method="_on_all_button_toggled"]
+[connection signal="gui_input" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/DirectoryExtraControls1/CurrentPath" to="." method="_on_filter_line_edit_gui_input"]
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/DirectoryExtraControls1/CurrentPath" to="." method="_on_custom_line_edit_text_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/DirectoryExtraControls1/Back" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/DirectoryExtraControls1/Next" to="." method="_on_next_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/DirectoryExtraControls1/CreateFolder" to="." method="_on_create_folder_pressed"]
+[connection signal="gui_input" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/DirectoryExtraControls2/Filename" to="." method="_on_filter_line_edit_gui_input"]
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/DirectoryExtraControls2/Filename" to="." method="_on_custom_line_edit_text_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/CancelButton" to="." method="_on_cancel_button_pressed"]

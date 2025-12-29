@@ -1,0 +1,942 @@
+[gd_scene load_steps=23 format=3 uid="uid://cmg1eodqg7taj"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_iiyws"]
+[ext_resource type="Script" uid="uid://bke8m6d5y0e7w" path="res://addons/CustomControls/Dialogs/select_effect_dialog.gd" id="2_jhjjr"]
+[ext_resource type="PackedScene" uid="uid://ccipi0sikmjuu" path="res://addons/CustomControls/custom_tab_container.tscn" id="3_hyqcv"]
+[ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="3_vrkgw"]
+[ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="4_dwgg5"]
+[ext_resource type="Texture2D" uid="uid://dwcnj2mbl2v2y" path="res://addons/CustomControls/Images/magnifying_glass.png" id="4_vtb37"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="5_fj12j"]
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="6_4c3ca"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="7_0fv7s"]
+[ext_resource type="Script" uid="uid://d0kowhkcjb7kv" path="res://addons/CustomControls/custom_option_button.gd" id="7_oy6w7"]
+[ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="10_a5tu4"]
+[ext_resource type="Script" uid="uid://bujrsiao8ow4m" path="res://addons/CustomControls/flow_container_vertical_decorative.gd" id="11_vtb37"]
+
+[sub_resource type="Gradient" id="Gradient_4u2ec"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_a3inn"]
+gradient = SubResource("Gradient_4u2ec")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lyd3h"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Gradient" id="Gradient_ctwx1"]
+colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_p4qv1"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ojols"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_p4qv1")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vrkgw"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_a5tu4"]
+
+[sub_resource type="Gradient" id="Gradient_bjwi3"]
+colors = PackedColorArray(1, 1, 1, 0.34902, 0, 0, 0, 0.788235)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_1plc4"]
+gradient = SubResource("Gradient_bjwi3")
+height = 3
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0.108475)
+
+[node name="SelectEffectDialog" type="Window"]
+title = "Effects List"
+position = Vector2i(0, 36)
+size = Vector2i(800, 329)
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+min_size = Vector2i(0, 294)
+theme = ExtResource("1_iiyws")
+script = ExtResource("2_jhjjr")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_a3inn")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="HBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Filter: "
+metadata/original_index = 0
+
+[node name="Filter" parent="MarginContainer/HBoxContainer/HBoxContainer2" instance=ExtResource("3_vrkgw")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Filter commands by name, including those shown in dropdown menus)"
+right_icon = ExtResource("4_vtb37")
+metadata/original_index = 1
+
+[node name="TabsContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+
+[node name="TabsContainer" parent="MarginContainer/HBoxContainer/TabsContainer" instance=ExtResource("3_hyqcv")]
+unique_name_in_owner = true
+clip_children = 0
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tab_name_base = ""
+background_color = Color(0, 0, 0, 0)
+
+[node name="CustomPanel" parent="MarginContainer/HBoxContainer" instance=ExtResource("4_dwgg5")]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_lyd3h")
+style1 = SubResource("StyleBoxFlat_lyd3h")
+style2 = SubResource("StyleBoxTexture_ojols")
+style3 = SubResource("StyleBoxFlat_vrkgw")
+
+[node name="TargetContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/CustomPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="Recover" type="VBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover" groups=["main_trait_filter_tab"]]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("..")
+metadata/original_parent = {
+"index": 0,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":1,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
+
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover/VBoxContainer"]
+layout_mode = 2
+
+[node name="C0-1" type="CheckBox" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Recover HP[/title]
+Recovers HP (adds to current value). Recovery values are specified as a sum of a percentage of the target character's Max HP (-100% to 100%) and a set value (-9999999 to 9999999). If you only wish to set one of these values, make sure to set the other value to 0. When setting this effect to an item, the recovery value will change according to the user's [Pharmacology] special trait value."
+mouse_default_cursor_shape = 2
+button_pressed = true
+button_group = SubResource("ButtonGroup_a5tu4")
+text = "Recover HP"
+
+[node name="C0-2" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover/VBoxContainer/HBoxContainer" instance=ExtResource("5_fj12j")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Recover HP[/title]
+Recovers HP (adds to current value). Recovery values are specified as a sum of a percentage of the target character's Max HP (-100% to 100%) and a set value (-9999999 to 9999999). If you only wish to set one of these values, make sure to set the other value to 0. When setting this effect to an item, the recovery value will change according to the user's [Pharmacology] special trait value."
+mouse_filter = 2
+min_value = -100.0
+value = 100.0
+rounded = true
+editable = false
+suffix = " %"
+disabled = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover/VBoxContainer"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "+ Pharmacology level x"
+
+[node name="C0-3" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover/VBoxContainer/HBoxContainer2" instance=ExtResource("5_fj12j")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Recover HP[/title]
+Recovers HP (adds to current value). Recovery values are specified as a sum of a percentage of the target character's Max HP (-100% to 100%) and a set value (-9999999 to 9999999). If you only wish to set one of these values, make sure to set the other value to 0. When setting this effect to an item, the recovery value will change according to the user's [Pharmacology] special trait value."
+mouse_filter = 2
+min_value = -1e+07
+max_value = 1e+07
+rounded = true
+editable = false
+suffix = " %"
+disabled = true
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover" groups=["main_trait_filter_tab"]]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("..")
+metadata/original_parent = {
+"index": 1,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":1,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
+
+}
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover/VBoxContainer2"]
+layout_mode = 2
+
+[node name="C1-1" type="CheckBox" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover/VBoxContainer2/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Recover MP[/title]
+Recovers MP (adds to current value). Recovery values are specified as a sum of a percentage of the target character's Max MP (-100% to 100%) and a set value (-9999999 to 9999999). If you only wish to set one of these values, make sure to set the other value to 0. When setting this effect to an item, the recovery value will change according to the user's [Pharmacology] special trait value."
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_a5tu4")
+text = "Recover MP"
+
+[node name="C1-2" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover/VBoxContainer2/HBoxContainer3" instance=ExtResource("5_fj12j")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Recover MP[/title]
+Recovers MP (adds to current value). Recovery values are specified as a sum of a percentage of the target character's Max MP (-100% to 100%) and a set value (-9999999 to 9999999). If you only wish to set one of these values, make sure to set the other value to 0. When setting this effect to an item, the recovery value will change according to the user's [Pharmacology] special trait value."
+mouse_filter = 2
+min_value = -100.0
+value = 100.0
+rounded = true
+editable = false
+suffix = " %"
+disabled = true
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover/VBoxContainer2/HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover/VBoxContainer2/HBoxContainer4"]
+layout_mode = 2
+text = "+ Pharmacology level x"
+
+[node name="C1-3" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover/VBoxContainer2/HBoxContainer4" instance=ExtResource("5_fj12j")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Recover MP[/title]
+Recovers MP (adds to current value). Recovery values are specified as a sum of a percentage of the target character's Max MP (-100% to 100%) and a set value (-9999999 to 9999999). If you only wish to set one of these values, make sure to set the other value to 0. When setting this effect to an item, the recovery value will change according to the user's [Pharmacology] special trait value."
+mouse_filter = 2
+min_value = -1e+07
+max_value = 1e+07
+rounded = true
+editable = false
+suffix = " %"
+disabled = true
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover" groups=["main_trait_filter_tab"]]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("..")
+metadata/original_parent = {
+"index": 2,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":1,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
+
+}
+
+[node name="C2-1" type="CheckBox" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover/HBoxContainer5"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Gain TP[/title]
+Increases TP by the specified amount. Specify the increase using a set value (0 to 9999999)."
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_a5tu4")
+text = "Gain TP"
+
+[node name="C2-2" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover/HBoxContainer5" instance=ExtResource("5_fj12j")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Gain TP[/title]
+Increases TP by the specified amount. Specify the increase using a set value (0 to 9999999)."
+mouse_filter = 2
+max_value = 1e+07
+rounded = true
+editable = false
+disabled = true
+
+[node name="State" type="VBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/State" groups=["main_trait_filter_tab"]]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("..")
+metadata/original_parent = {
+"index": 0,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":1,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
+
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/State/VBoxContainer"]
+layout_mode = 2
+
+[node name="C3-1" type="CheckBox" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/State/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Add State[/title]
+Adds a state. Specify the desired state and the rate of success (0 to 10000%). By setting this to a value higher than 100%, this will have a higher chance of success to add the state than its original effectiveness."
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_a5tu4")
+text = "Add State"
+
+[node name="C3-2" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/State/VBoxContainer/HBoxContainer" instance=ExtResource("6_4c3ca")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "[title]Add State[/title]
+Adds a state. Specify the desired state and the rate of success (0 to 10000%). By setting this to a value higher than 100%, this will have a higher chance of success to add the state than its original effectiveness."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+disabled = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/State/VBoxContainer"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/State/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="C3-3" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/State/VBoxContainer/HBoxContainer2" instance=ExtResource("5_fj12j")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Add State[/title]
+Adds a state. Specify the desired state and the rate of success (0 to 10000%). By setting this to a value higher than 100%, this will have a higher chance of success to add the state than its original effectiveness."
+mouse_filter = 2
+max_value = 10000.0
+value = 100.0
+rounded = true
+editable = false
+suffix = " %"
+disabled = true
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/State" groups=["main_trait_filter_tab"]]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("..")
+metadata/original_parent = {
+"index": 1,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":1,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
+
+}
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/State/VBoxContainer2"]
+layout_mode = 2
+
+[node name="C4-1" type="CheckBox" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/State/VBoxContainer2/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Remove State[/title]
+Removes a state. Specify the desired state and the rate of success (0 to 10000%)."
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_a5tu4")
+text = "Remove State"
+
+[node name="C4-2" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/State/VBoxContainer2/HBoxContainer3" instance=ExtResource("6_4c3ca")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "[title]Remove State[/title]
+Removes a state. Specify the desired state and the rate of success (0 to 10000%)."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+disabled = true
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/State/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/State/VBoxContainer2/HBoxContainer6"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="C4-3" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/State/VBoxContainer2/HBoxContainer6" instance=ExtResource("5_fj12j")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Remove State[/title]
+Removes a state. Specify the desired state and the rate of success (0 to 10000%)."
+mouse_filter = 2
+max_value = 10000.0
+value = 100.0
+rounded = true
+editable = false
+suffix = " %"
+disabled = true
+
+[node name="ParameterBuff" type="VBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff" groups=["main_trait_filter_tab"]]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("..")
+metadata/original_parent = {
+"index": 0,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":1,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
+
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/VBoxContainer"]
+layout_mode = 2
+
+[node name="C5-1" type="CheckBox" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Add Buff[/title]
+Raises the fluctuation level of the specified trait by one. There is a 25% fluctuation in the original value per level. To have this raise two or more levels at once, add this effect multiple times. Set the target parameter and the number of turns this effect will last."
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_a5tu4")
+text = "Add Buff"
+
+[node name="C5-2" type="OptionButton" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+custom_minimum_size = Vector2(0, 31)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+tooltip_text = "[title]Add Buff[/title]
+Raises the fluctuation level of the specified trait by one. There is a 25% fluctuation in the original value per level. To have this raise two or more levels at once, add this effect multiple times. Set the target parameter and the number of turns this effect will last."
+mouse_default_cursor_shape = 2
+disabled = true
+selected = 0
+item_count = 8
+popup/item_0/text = "Max HP"
+popup/item_0/id = 0
+popup/item_1/text = "Max MP"
+popup/item_1/id = 1
+popup/item_2/text = "Attack"
+popup/item_2/id = 2
+popup/item_3/text = "Defense"
+popup/item_3/id = 3
+popup/item_4/text = "Magical Attack"
+popup/item_4/id = 4
+popup/item_5/text = "Magical Defense"
+popup/item_5/id = 5
+popup/item_6/text = "Agility"
+popup/item_6/id = 6
+popup/item_7/text = "Luck"
+popup/item_7/id = 7
+script = ExtResource("7_oy6w7")
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/VBoxContainer"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Control2" type="Control" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/VBoxContainer/HBoxContainer4"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+text = "x "
+
+[node name="C5-3" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/VBoxContainer/HBoxContainer4" instance=ExtResource("5_fj12j")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Add Buff[/title]
+Raises the fluctuation level of the specified trait by one. There is a 25% fluctuation in the original value per level. To have this raise two or more levels at once, add this effect multiple times. Set the target parameter and the number of turns this effect will last."
+mouse_filter = 2
+min_value = 1.0
+value = 5.0
+rounded = true
+allow_greater = true
+editable = false
+disabled = true
+
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+text = " turns"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff" groups=["main_trait_filter_tab"]]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("..")
+metadata/original_parent = {
+"index": 1,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":1,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
+
+}
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/VBoxContainer2"]
+layout_mode = 2
+
+[node name="C6-1" type="CheckBox" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/VBoxContainer2/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Add Debuff[/title]
+Lowers the fluctuation level of the specified trait by one. There is a 25% fluctuation in the original value per level. To have this decrease two or more levels at once, add this effect multiple times. Set the target parameter and the number of turns this effect will last."
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_a5tu4")
+text = "Add Debuff"
+
+[node name="C6-2" type="OptionButton" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/VBoxContainer2/HBoxContainer2"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+custom_minimum_size = Vector2(0, 31)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+tooltip_text = "[title]Add Debuff[/title]
+Lowers the fluctuation level of the specified trait by one. There is a 25% fluctuation in the original value per level. To have this decrease two or more levels at once, add this effect multiple times. Set the target parameter and the number of turns this effect will last."
+mouse_default_cursor_shape = 2
+disabled = true
+selected = 0
+item_count = 8
+popup/item_0/text = "Max HP"
+popup/item_0/id = 0
+popup/item_1/text = "Max MP"
+popup/item_1/id = 1
+popup/item_2/text = "Attack"
+popup/item_2/id = 2
+popup/item_3/text = "Defense"
+popup/item_3/id = 3
+popup/item_4/text = "Magical Attack"
+popup/item_4/id = 4
+popup/item_5/text = "Magical Defense"
+popup/item_5/id = 5
+popup/item_6/text = "Agility"
+popup/item_6/id = 6
+popup/item_7/text = "Luck"
+popup/item_7/id = 7
+script = ExtResource("7_oy6w7")
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/VBoxContainer2/HBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Control2" type="Control" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/VBoxContainer2/HBoxContainer5"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/VBoxContainer2/HBoxContainer5"]
+layout_mode = 2
+text = "x "
+
+[node name="C6-3" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/VBoxContainer2/HBoxContainer5" instance=ExtResource("5_fj12j")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Add Debuff[/title]
+Lowers the fluctuation level of the specified trait by one. There is a 25% fluctuation in the original value per level. To have this decrease two or more levels at once, add this effect multiple times. Set the target parameter and the number of turns this effect will last."
+mouse_filter = 2
+min_value = 1.0
+value = 5.0
+rounded = true
+allow_greater = true
+editable = false
+disabled = true
+
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/VBoxContainer2/HBoxContainer5"]
+layout_mode = 2
+text = " turns"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff" groups=["main_trait_filter_tab"]]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("..")
+metadata/original_parent = {
+"index": 2,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":1,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
+
+}
+
+[node name="C7-1" type="CheckBox" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Remove Buff[/title]
+Resets a trait to its original value when the fluctuation level of the specified trait is buffed."
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_a5tu4")
+text = "Remove Buff"
+
+[node name="C7-2" type="OptionButton" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/HBoxContainer3"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+custom_minimum_size = Vector2(0, 31)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+tooltip_text = "[title]Remove Buff[/title]
+Resets a trait to its original value when the fluctuation level of the specified trait is buffed."
+mouse_default_cursor_shape = 2
+disabled = true
+selected = 0
+item_count = 8
+popup/item_0/text = "Max HP"
+popup/item_0/id = 0
+popup/item_1/text = "Max MP"
+popup/item_1/id = 1
+popup/item_2/text = "Attack"
+popup/item_2/id = 2
+popup/item_3/text = "Defense"
+popup/item_3/id = 3
+popup/item_4/text = "Magical Attack"
+popup/item_4/id = 4
+popup/item_5/text = "Magical Defense"
+popup/item_5/id = 5
+popup/item_6/text = "Agility"
+popup/item_6/id = 6
+popup/item_7/text = "Luck"
+popup/item_7/id = 7
+script = ExtResource("7_oy6w7")
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff" groups=["main_trait_filter_tab"]]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("..")
+metadata/original_parent = {
+"index": 3,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":1,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
+
+}
+
+[node name="C8-1" type="CheckBox" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/HBoxContainer6"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Remove Debuff[/title]
+Resets a trait to its original value when the fluctuation level of the specified trait is debuffed."
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_a5tu4")
+text = "Remove Debuff"
+
+[node name="C8-2" type="OptionButton" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/HBoxContainer6"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+custom_minimum_size = Vector2(0, 31)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+tooltip_text = "[title]Remove Debuff[/title]
+Resets a trait to its original value when the fluctuation level of the specified trait is debuffed."
+mouse_default_cursor_shape = 2
+disabled = true
+selected = 0
+item_count = 8
+popup/item_0/text = "Max HP"
+popup/item_0/id = 0
+popup/item_1/text = "Max MP"
+popup/item_1/id = 1
+popup/item_2/text = "Attack"
+popup/item_2/id = 2
+popup/item_3/text = "Defense"
+popup/item_3/id = 3
+popup/item_4/text = "Magical Attack"
+popup/item_4/id = 4
+popup/item_5/text = "Magical Defense"
+popup/item_5/id = 5
+popup/item_6/text = "Agility"
+popup/item_6/id = 6
+popup/item_7/text = "Luck"
+popup/item_7/id = 7
+script = ExtResource("7_oy6w7")
+
+[node name="Other" type="VBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other" groups=["main_trait_filter_tab"]]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("..")
+metadata/original_parent = {
+"index": 0,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":1,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
+
+}
+
+[node name="C9-1" type="CheckBox" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Special Effect[/title]
+Can only be set to [Escape]. The target character will flee from battle (100%). If an actor has received this effect, they will not earn any EXP.
+If all party members flee due to a skill / item with this effect, they will not receive any reward for the battle.
+
+*This is different than the \"Escape\" party command."
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_a5tu4")
+text = "Special Effect"
+
+[node name="C9-2" type="OptionButton" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other/HBoxContainer"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+custom_minimum_size = Vector2(0, 31)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+tooltip_text = "[title]Special Effect[/title]
+Can only be set to [Escape]. The target character will flee from battle (100%). If an actor has received this effect, they will not earn any EXP.
+If all party members flee due to a skill / item with this effect, they will not receive any reward for the battle.
+
+*This is different than the \"Escape\" party command."
+mouse_default_cursor_shape = 2
+disabled = true
+selected = 0
+item_count = 1
+popup/item_0/text = "Escape"
+popup/item_0/id = 0
+script = ExtResource("7_oy6w7")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other" groups=["main_trait_filter_tab"]]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("..")
+metadata/original_parent = {
+"index": 1,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":1,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
+
+}
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other/VBoxContainer"]
+layout_mode = 2
+
+[node name="C10-1" type="CheckBox" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Grow[/title]
+Permanently raise the value of a parameter. Specify the target parameter and the value (1 or more) to be added."
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_a5tu4")
+text = "Grow"
+
+[node name="C10-2" type="OptionButton" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+custom_minimum_size = Vector2(0, 31)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+tooltip_text = "[title]Grow[/title]
+Permanently raise the value of a parameter. Specify the target parameter and the value (1 or more) to be added."
+mouse_default_cursor_shape = 2
+disabled = true
+selected = 0
+item_count = 8
+popup/item_0/text = "Max HP"
+popup/item_0/id = 0
+popup/item_1/text = "Max MP"
+popup/item_1/id = 1
+popup/item_2/text = "Attack"
+popup/item_2/id = 2
+popup/item_3/text = "Defense"
+popup/item_3/id = 3
+popup/item_4/text = "Magical Attack"
+popup/item_4/id = 4
+popup/item_5/text = "Magical Defense"
+popup/item_5/id = 5
+popup/item_6/text = "Agility"
+popup/item_6/id = 6
+popup/item_7/text = "Luck"
+popup/item_7/id = 7
+script = ExtResource("7_oy6w7")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other/VBoxContainer"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "+ "
+
+[node name="C10-3" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other/VBoxContainer/HBoxContainer2" instance=ExtResource("5_fj12j")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Grow[/title]
+Permanently raise the value of a parameter. Specify the target parameter and the value (1 or more) to be added."
+mouse_filter = 2
+min_value = 1.0
+value = 1.0
+rounded = true
+allow_greater = true
+editable = false
+disabled = true
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other" groups=["main_trait_filter_tab"]]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("..")
+metadata/original_parent = {
+"index": 2,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":1,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
+
+}
+
+[node name="C11-1" type="CheckBox" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other/HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Learn Skill[/title]
+An actor will learn the specified skill. This effect will not be applied to enemies."
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_a5tu4")
+text = "Learn Skill"
+
+[node name="C11-2" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other/HBoxContainer4" instance=ExtResource("6_4c3ca")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "[title]Learn Skill[/title]
+An actor will learn the specified skill. This effect will not be applied to enemies."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+disabled = true
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other" groups=["main_trait_filter_tab"]]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("..")
+metadata/original_parent = {
+"index": 3,
+"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":1,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
+
+}
+
+[node name="C12-1" type="CheckBox" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other/HBoxContainer5"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Common Event[/title]
+Specify the common event to run. You can configure multiple events to one data and will be reproduced in the order of appearance."
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_a5tu4")
+text = "Common Event"
+
+[node name="C12-2" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other/HBoxContainer5" instance=ExtResource("6_4c3ca")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "[title]Common Event[/title]Specify the common event to run. You can configure multiple events to one data and will be reproduced in the order of appearance."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+disabled = true
+
+[node name="FilterContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/CustomPanel"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
+
+[node name="FilterSmoothContainer" type="ScrollContainer" parent="MarginContainer/HBoxContainer/CustomPanel/FilterContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+script = ExtResource("10_a5tu4")
+metadata/_custom_type_script = "uid://cs6g8remlafby"
+
+[node name="FlowContainer" type="GridContainer" parent="MarginContainer/HBoxContainer/CustomPanel/FilterContainer/FilterSmoothContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("11_vtb37")
+vertical_separator_texture = SubResource("GradientTexture2D_1plc4")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="OKButton" parent="MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("7_0fv7s")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+text = "OK"
+text_overrun_behavior = 3
+
+[node name="CancelButton" parent="MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("7_0fv7s")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+text = "Cancel"
+text_overrun_behavior = 3
+
+[connection signal="gui_input" from="MarginContainer/HBoxContainer/HBoxContainer2/Filter" to="." method="_on_filter_gui_input"]
+[connection signal="text_changed" from="MarginContainer/HBoxContainer/HBoxContainer2/Filter" to="." method="_on_filter_text_changed"]
+[connection signal="tab_changed" from="MarginContainer/HBoxContainer/TabsContainer/TabsContainer" to="." method="_on_tabs_container_tab_changed"]
+[connection signal="button_up" from="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/State/VBoxContainer/HBoxContainer/C3-2" to="." method="_on_c_32_button_up"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/State/VBoxContainer2/HBoxContainer3/C4-2" to="." method="_on_c_42_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other/HBoxContainer4/C11-2" to="." method="_on_c_112_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other/HBoxContainer5/C12-2" to="." method="_on_c_122_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

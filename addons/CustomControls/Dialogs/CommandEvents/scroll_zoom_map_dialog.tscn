@@ -1,0 +1,259 @@
+[gd_scene load_steps=18 format=3 uid="uid://iavc0litjpcg"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_asak5"]
+[ext_resource type="Script" uid="uid://t1qhdo1plj8c" path="res://addons/CustomControls/Dialogs/CommandEvents/scroll_zoom_map_dialog.gd" id="2_ub7oq"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="3_uf7i0"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="4_xnbxh"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="5_1in5m"]
+[ext_resource type="Texture2D" uid="uid://bkfn4ru5noaaa" path="res://addons/CustomControls/Images/button1_background_disabled.png" id="6_4oj28"]
+[ext_resource type="Texture2D" uid="uid://dqnnp323vr1vo" path="res://addons/CustomControls/Images/button1_background_hover.png" id="7_h6hn7"]
+[ext_resource type="Texture2D" uid="uid://beg6i1p118qd" path="res://addons/CustomControls/Images/button1_background_selected.png" id="8_tvcd7"]
+[ext_resource type="Texture2D" uid="uid://xl88b63otgpi" path="res://addons/CustomControls/Images/button1_background.png" id="9_iu0n4"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_erns2"]
+
+[sub_resource type="Gradient" id="Gradient_1r81o"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_2105m"]
+gradient = SubResource("Gradient_1r81o")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_6tq0i"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nv5ev"]
+texture = ExtResource("6_4oj28")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cr2q0"]
+texture = ExtResource("7_h6hn7")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3ldxg"]
+texture = ExtResource("8_tvcd7")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jfd0k"]
+texture = ExtResource("9_iu0n4")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[node name="ScrollZoomDialog" type="Window"]
+title = "Scroll / Zoom Map"
+position = Vector2i(0, 36)
+size = Vector2i(781, 310)
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_asak5")
+script = ExtResource("2_ub7oq")
+
+[node name="Background" type="TextureRect" parent="."]
+material = SubResource("CanvasItemMaterial_erns2")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_2105m")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ScrollMap" type="CheckBox" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+tooltip_text = "[title]Scroll[/title]
+This command will move the view on the
+current map to a new position."
+mouse_default_cursor_shape = 2
+button_pressed = true
+button_group = SubResource("ButtonGroup_6tq0i")
+text = "Scroll Map:"
+
+[node name="Direction" parent="MarginContainer/VBoxContainer/VBoxContainer" instance=ExtResource("3_uf7i0")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Direction[/title]
+Direction in which the camera will move."
+text_overrun_behavior = 3
+selected = 0
+fit_to_longest_item = false
+item_count = 4
+popup/item_0/text = "up"
+popup/item_0/id = 0
+popup/item_1/text = "Down"
+popup/item_1/id = 1
+popup/item_2/text = "Left"
+popup/item_2/id = 2
+popup/item_3/text = "Right"
+popup/item_3/id = 3
+
+[node name="Amount" parent="MarginContainer/VBoxContainer/VBoxContainer" instance=ExtResource("4_xnbxh")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+tooltip_text = "[title]Amount[/title]
+The map will shift in the direction specified by
+the number of tiles entered in this field."
+value = 1.0
+allow_greater = true
+
+[node name="VBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ZoomMap" type="CheckBox" parent="MarginContainer/VBoxContainer/VBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+tooltip_text = "[title]Zoom[/title]
+This command will adjust the
+zoom of the current camera."
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_6tq0i")
+text = "Zoom Map:"
+
+[node name="Zoom" parent="MarginContainer/VBoxContainer/VBoxContainer2" instance=ExtResource("4_xnbxh")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Zoom Map[/title]
+Adjusts the camera zoom."
+mouse_filter = 2
+min_value = 0.1
+max_value = 20.0
+step = 0.01
+value = 2.0
+editable = false
+disabled = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ResetScrollAndZoom" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Reactivates the camera tracking of its targets resetting its position and zoom"
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_6tq0i")
+text = "Reset Scroll And Zoom"
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/VBoxContainer3"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer3"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer3/HBoxContainer2"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Duration:"
+
+[node name="Duration" parent="MarginContainer/VBoxContainer/VBoxContainer3/HBoxContainer2" instance=ExtResource("4_xnbxh")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Duration[/title]
+The total duration of the animation for transitioning the map from its
+current scroll / zoom level to the new scroll / zoom settings."
+step = 0.01
+value = 0.5
+allow_greater = true
+
+[node name="VBoxContainer4" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Control2" type="Control" parent="MarginContainer/VBoxContainer/VBoxContainer4"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer4"]
+layout_mode = 2
+
+[node name="Wait" type="CheckBox" parent="MarginContainer/VBoxContainer/VBoxContainer4/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 5
+tooltip_text = "[title]Wait[/title]
+Stops the flow of the game until the animation ends."
+mouse_default_cursor_shape = 2
+button_pressed = true
+text = "Wait for completion: "
+
+[node name="Control3" type="Control" parent="MarginContainer/VBoxContainer/VBoxContainer4"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_1in5m")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+theme_override_styles/disabled = SubResource("StyleBoxTexture_nv5ev")
+theme_override_styles/hover = SubResource("StyleBoxTexture_cr2q0")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_3ldxg")
+theme_override_styles/normal = SubResource("StyleBoxTexture_jfd0k")
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_1in5m")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+theme_override_styles/disabled = SubResource("StyleBoxTexture_nv5ev")
+theme_override_styles/hover = SubResource("StyleBoxTexture_cr2q0")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_3ldxg")
+theme_override_styles/normal = SubResource("StyleBoxTexture_jfd0k")
+text = "CANCEL"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

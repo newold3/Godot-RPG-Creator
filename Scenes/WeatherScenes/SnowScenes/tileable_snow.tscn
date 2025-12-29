@@ -1,0 +1,45 @@
+[gd_scene load_steps=7 format=3 uid="uid://c12tmpb4msfdw"]
+
+[ext_resource type="Texture2D" uid="uid://dxq6c68tslp4r" path="res://Assets/Images/Backgrounds/tileable_snow.png" id="1_15ef5"]
+[ext_resource type="Script" uid="uid://fy2h2pd2tobs" path="res://Scenes/WeatherScenes/default_weather_script.gd" id="1_368rk"]
+[ext_resource type="Shader" uid="uid://ciwfvq8nq0gmd" path="res://Scenes/WeatherScenes/SnowScenes/simple_noise_movement_parallax.gdshader" id="3_wjbvo"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_1rnik"]
+noise_type = 3
+frequency = 0.032
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_u4foh"]
+seamless = true
+noise = SubResource("FastNoiseLite_1rnik")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kkhm8"]
+shader = ExtResource("3_wjbvo")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_u4foh")
+shader_parameter/speed = 0.055
+shader_parameter/direction = Vector2(-0.5, 0)
+shader_parameter/threshold = 0.5
+shader_parameter/smoothing_factor = 0.1
+shader_parameter/animation_speed = 1.0
+shader_parameter/deformation_strength = 0.4
+shader_parameter/deformation_frequency = 0.3
+shader_parameter/scale = Vector2(1, 1)
+
+[node name="TileableSnow" type="Sprite2D"]
+self_modulate = Color(1, 1, 1, 0.517)
+texture_repeat = 2
+use_parent_material = true
+centered = false
+script = ExtResource("1_368rk")
+can_add_particle_ripples = false
+
+[node name="SubViewport" type="SubViewport" parent="."]
+unique_name_in_owner = true
+transparent_bg = true
+size = Vector2i(1152, 640)
+
+[node name="MainSprite" type="Sprite2D" parent="SubViewport"]
+unique_name_in_owner = true
+texture_repeat = 2
+material = SubResource("ShaderMaterial_kkhm8")
+texture = ExtResource("1_15ef5")
+centered = false

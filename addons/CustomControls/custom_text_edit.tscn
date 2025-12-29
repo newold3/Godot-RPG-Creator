@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://barmev3c3hfbu"]
+
+[ext_resource type="Script" uid="uid://i7nurqlebeqa" path="res://addons/CustomControls/custom_text_edit.gd" id="1_qjrlx"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_em0fl"]
+content_margin_left = 6.0
+content_margin_top = 5.0
+content_margin_right = 18.0
+content_margin_bottom = 12.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[node name="CustomTextEdit" type="TextEdit"]
+offset_right = 185.0
+offset_bottom = 116.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_em0fl")
+editable = false
+caret_blink = true
+script = ExtResource("1_qjrlx")

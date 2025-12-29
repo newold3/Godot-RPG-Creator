@@ -1,0 +1,283 @@
+[gd_scene load_steps=25 format=3 uid="uid://dpd4nydvjmgyv"]
+
+[ext_resource type="Script" uid="uid://cc6bm4wa4yb1x" path="res://addons/RPGMap/Scripts/event_region_container.gd" id="1_0t8at"]
+[ext_resource type="PackedScene" uid="uid://ct4bwnuyf6l4f" path="res://addons/CustomControls/simple_label.tscn" id="2_1xb6n"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="3_naxcp"]
+[ext_resource type="PackedScene" uid="uid://m1iixxkyrur5" path="res://addons/CustomControls/custom_simple_item_list.tscn" id="4_0c2au"]
+[ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="5_eqe1g"]
+[ext_resource type="Texture2D" uid="uid://dwcnj2mbl2v2y" path="res://addons/CustomControls/Images/magnifying_glass.png" id="6_sh6xy"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="7_3x4i7"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5f5ay"]
+resource_local_to_scene = true
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+
+[sub_resource type="Gradient" id="Gradient_na841"]
+offsets = PackedFloat32Array(0, 0.688144)
+colors = PackedColorArray(0.113725, 0.133333, 0.160784, 1, 0.211765, 0.239216, 0.290196, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_h0yhu"]
+gradient = SubResource("Gradient_na841")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0.209)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bnw5l"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_h0yhu")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_74yu0"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 6
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+shadow_size = 4
+shadow_offset = Vector2(0, 4.18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w8ljc"]
+atlas = ExtResource("3_naxcp")
+region = Rect2(216, 192, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3r4sy"]
+atlas = ExtResource("3_naxcp")
+region = Rect2(192, 192, 24, 24)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2c4c0"]
+resource_local_to_scene = true
+content_margin_left = 3.0
+content_margin_right = 3.0
+bg_color = Color(1, 1, 1, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l7bll"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="Gradient" id="Gradient_3obsl"]
+offsets = PackedFloat32Array(0, 0.369535, 1)
+colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_mtkxg"]
+gradient = SubResource("Gradient_3obsl")
+fill_from = Vector2(0.547009, 1)
+fill_to = Vector2(0.559829, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bh6ko"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_m5qdi"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kxuo2"]
+atlas = ExtResource("3_naxcp")
+region = Rect2(192, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fp3ck"]
+atlas = ExtResource("3_naxcp")
+region = Rect2(216, 0, 24, 24)
+
+[sub_resource type="InputEventAction" id="InputEventAction_tiugb"]
+action = &"ui_graph_delete"
+
+[sub_resource type="Shortcut" id="Shortcut_fmdtf"]
+events = [SubResource("InputEventAction_tiugb")]
+
+[node name="EventRegionContainer" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+script = ExtResource("1_0t8at")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="SimpleLabel" parent="VBoxContainer" instance=ExtResource("2_1xb6n")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_5f5ay")
+current_title = "EVENT REGION LIST"
+mask = SubResource("StyleBoxFlat_5f5ay")
+fill = SubResource("StyleBoxTexture_bnw5l")
+border = SubResource("StyleBoxFlat_74yu0")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/SimpleLabel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_right = 16
+
+[node name="DetachButton" type="TextureButton" parent="VBoxContainer/SimpleLabel/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+tooltip_text = "Turns this panel into a floating window"
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_w8ljc")
+texture_hover = SubResource("AtlasTexture_3r4sy")
+
+[node name="VBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="RegionList" parent="VBoxContainer/VBoxContainer" instance=ExtResource("4_0c2au")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_2c4c0")
+theme_override_styles/focus = SubResource("StyleBoxFlat_2c4c0")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_l7bll")
+theme_override_styles/selected = SubResource("StyleBoxTexture_bh6ko")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_m5qdi")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Filter Regions"
+
+[node name="Filter" parent="VBoxContainer/VBoxContainer/VBoxContainer/VBoxContainer" instance=ExtResource("5_eqe1g")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+right_icon = ExtResource("6_sh6xy")
+
+[node name="Control" type="Control" parent="VBoxContainer/VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+text = "Region Info:"
+
+[node name="Info" type="TextureButton" parent="VBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 10
+tooltip_text = "[title]Event Regions[/title]
+Region events can act as standalone events. They can be used as invisible walls, allowing or blocking passage, and can trigger a common event or a Caller event when entering or exiting them (an event can be configured for both entry and exit). They can be activated by the player, by another event, or by both the player and events.
+
+You can add areas by \"left-clicking and drag\" anywhere on the grid and
+delete them by \"right-clicking\".
+
+Edit any area by “double clicking” or with the “Enter key”.
+
+You can click on an area and drag it to place it anywhere."
+mouse_default_cursor_shape = 16
+texture_normal = SubResource("AtlasTexture_kxuo2")
+texture_hover = SubResource("AtlasTexture_fp3ck")
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "ID:"
+
+[node name="RegionID" type="Label" parent="VBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+vertical_alignment = 1
+text_overrun_behavior = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Name:"
+
+[node name="RegionName" type="Label" parent="VBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+vertical_alignment = 1
+text_overrun_behavior = 3
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Current Region:"
+
+[node name="RegionRect" type="Label" parent="VBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+vertical_alignment = 1
+text_overrun_behavior = 3
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="EditRegionButton" parent="VBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer4" instance=ExtResource("7_3x4i7")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+size_flags_vertical = 10
+tooltip_text = "[title]Edit Region[/title]
+Edit the region selected in the list (you can double click on an item in the list to edit it)."
+text = "Edit Region"
+
+[node name="RemoveRegionButton" parent="VBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer4" instance=ExtResource("7_3x4i7")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+size_flags_vertical = 10
+tooltip_text = "[title]Remove Region[/title]
+Remove the region selected in the list."
+shortcut = SubResource("Shortcut_fmdtf")
+shortcut_in_tooltip = false
+text = "Remove Region"
+
+[connection signal="pressed" from="VBoxContainer/SimpleLabel/MarginContainer/DetachButton" to="." method="_on_detach_button_pressed"]
+[connection signal="item_activated" from="VBoxContainer/VBoxContainer/RegionList" to="." method="_on_region_list_item_activated"]
+[connection signal="item_selected" from="VBoxContainer/VBoxContainer/RegionList" to="." method="_on_region_list_item_selected"]
+[connection signal="gui_input" from="VBoxContainer/VBoxContainer/VBoxContainer/VBoxContainer/Filter" to="." method="_on_filter_gui_input"]
+[connection signal="text_changed" from="VBoxContainer/VBoxContainer/VBoxContainer/VBoxContainer/Filter" to="." method="_on_filter_text_changed"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer4/EditRegionButton" to="." method="_on_edit_region_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer4/RemoveRegionButton" to="." method="_on_remove_region_button_pressed"]

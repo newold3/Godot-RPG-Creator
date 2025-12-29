@@ -1,0 +1,114 @@
+[gd_scene load_steps=5 format=3 uid="uid://c6iv6fidh4be8"]
+
+[ext_resource type="Script" uid="uid://0wxhogfcyg7v" path="res://Scenes/GUI/SteamPunkTheme/CommonScenes/menu_title_container.gd" id="1_cdpv0"]
+[ext_resource type="Texture2D" uid="uid://duu13dsov6vp5" path="res://Assets/Images/GUI/main_gui.png" id="1_o8br4"]
+[ext_resource type="PackedScene" uid="uid://b8w1hsyuscqit" path="res://Scenes/GUI/magic_label.tscn" id="2_cdpv0"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8ox30"]
+atlas = ExtResource("1_o8br4")
+region = Rect2(193, 273, 118, 127)
+
+[node name="TitleContainer" type="MarginContainer"]
+offset_right = 320.0
+offset_bottom = 40.0
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_constants/margin_top = -60
+script = ExtResource("1_cdpv0")
+title = "TEST"
+
+[node name="Gears" type="Control" parent="."]
+layout_mode = 2
+
+[node name="GearLeft1" type="TextureRect" parent="Gears"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -127.0
+offset_top = -94.0
+offset_right = -9.0
+offset_bottom = 33.0
+grow_vertical = 2
+scale = Vector2(0.65, 0.65)
+pivot_offset = Vector2(59, 63)
+texture = SubResource("AtlasTexture_8ox30")
+
+[node name="GearLeft2" type="TextureRect" parent="Gears"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -56.0
+offset_top = -63.5
+offset_right = 62.0
+offset_bottom = 63.5
+grow_vertical = 2
+scale = Vector2(0.8, 0.8)
+pivot_offset = Vector2(59, 63)
+texture = SubResource("AtlasTexture_8ox30")
+
+[node name="GearLeft4" type="TextureRect" parent="Gears"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 11.0
+offset_top = -95.0
+offset_right = 129.0
+offset_bottom = 32.0
+grow_horizontal = 0
+grow_vertical = 2
+scale = Vector2(0.65, 0.65)
+pivot_offset = Vector2(59, 63)
+texture = SubResource("AtlasTexture_8ox30")
+
+[node name="GearLeft3" type="TextureRect" parent="Gears"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = -63.5
+offset_right = 58.0
+offset_bottom = 63.5
+grow_horizontal = 0
+grow_vertical = 2
+scale = Vector2(0.8, 0.8)
+pivot_offset = Vector2(59, 63)
+texture = SubResource("AtlasTexture_8ox30")
+
+[node name="Background" type="NinePatchRect" parent="."]
+custom_minimum_size = Vector2(320, 100)
+layout_mode = 2
+texture = ExtResource("1_o8br4")
+region_rect = Rect2(436, 94, 110, 132)
+patch_margin_left = 31
+patch_margin_top = 22
+patch_margin_right = 31
+patch_margin_bottom = 29
+
+[node name="MarginContainer" type="MarginContainer" parent="Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 17
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 24
+
+[node name="MenuTitle" parent="Background/MarginContainer" instance=ExtResource("2_cdpv0")]
+unique_name_in_owner = true
+layout_mode = 2
+label_text = "TEST"

@@ -1,0 +1,70 @@
+[gd_scene load_steps=7 format=3 uid="uid://chc0l4scuohsq"]
+
+[ext_resource type="Texture2D" uid="uid://dexb7mhxp52c8" path="res://Assets/Images/Other/digit_dialog_skin2.png" id="1_38fy4"]
+[ext_resource type="Script" uid="uid://buubmfcxw2r6d" path="res://Scenes/DialogTemplates/select_digits_scene_2.gd" id="2_hfo6a"]
+[ext_resource type="Texture2D" uid="uid://xib4n5esh240" path="res://Assets/Images/Other/up_arrow_normal.png" id="4_snam4"]
+[ext_resource type="Texture2D" uid="uid://8l3kl6xagbgh" path="res://Assets/Images/Other/up_arrow_pressed.png" id="5_w3eo0"]
+[ext_resource type="Texture2D" uid="uid://2g7t6ldrbt7c" path="res://Assets/Images/Other/up_arrow_hover.png" id="6_kff3t"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xbvgs"]
+content_margin_left = 18.0
+content_margin_top = 15.0
+content_margin_right = 18.0
+content_margin_bottom = 15.0
+texture = ExtResource("1_38fy4")
+texture_margin_left = 29.0
+texture_margin_top = 24.0
+texture_margin_right = 29.0
+texture_margin_bottom = 24.0
+
+[node name="SelectDigitScene2" type="PanelContainer"]
+custom_minimum_size = Vector2(58, 80)
+offset_right = 58.0
+offset_bottom = 58.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_xbvgs")
+script = ExtResource("2_hfo6a")
+minimum_height = 80
+
+[node name="DigitContainer" type="HBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ArrowContainer" type="Control" parent="."]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="ArrowUp" type="TextureButton" parent="ArrowContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+offset_right = 22.0
+offset_bottom = 7.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("4_snam4")
+texture_pressed = ExtResource("5_w3eo0")
+texture_hover = ExtResource("6_kff3t")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="ArrowDown" type="TextureButton" parent="ArrowContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+offset_top = 19.0
+offset_right = 22.0
+offset_bottom = 26.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("4_snam4")
+texture_pressed = ExtResource("5_w3eo0")
+texture_hover = ExtResource("6_kff3t")
+ignore_texture_size = true
+stretch_mode = 0
+flip_v = true
+
+[node name="AudioPlayer" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+
+[connection signal="pressed" from="ArrowContainer/ArrowUp" to="." method="_on_arrow_up_pressed"]
+[connection signal="pressed" from="ArrowContainer/ArrowDown" to="." method="_on_arrow_down_pressed"]

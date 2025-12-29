@@ -1,0 +1,236 @@
+[gd_scene load_steps=17 format=3 uid="uid://cqp8ci4a761dp"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_ss0dj"]
+[ext_resource type="Script" uid="uid://cy4a71yxc1opp" path="res://addons/CustomControls/Dialogs/select_event_dialog.gd" id="2_ss0dj"]
+[ext_resource type="PackedScene" uid="uid://m1iixxkyrur5" path="res://addons/CustomControls/custom_simple_item_list.tscn" id="3_pb61c"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="4_7vhpk"]
+
+[sub_resource type="Gradient" id="Gradient_vvvrv"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_fg0k8"]
+gradient = SubResource("Gradient_vvvrv")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y6qwe"]
+resource_local_to_scene = true
+content_margin_left = 3.0
+content_margin_right = 3.0
+bg_color = Color(1, 1, 1, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mopbk"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="Gradient" id="Gradient_earww"]
+offsets = PackedFloat32Array(0, 0.369535, 1)
+colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_oswm7"]
+gradient = SubResource("Gradient_earww")
+fill_from = Vector2(0.547009, 1)
+fill_to = Vector2(0.559829, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_exses"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_oswm7")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vf6bb"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_oswm7")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ss0dj"]
+resource_local_to_scene = true
+content_margin_left = 3.0
+content_margin_right = 3.0
+bg_color = Color(1, 1, 1, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oqxba"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pb61c"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_oswm7")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7vhpk"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_oswm7")
+
+[node name="SelectEventDialog" type="Window"]
+oversampling_override = 1.0
+title = "Select Event"
+position = Vector2i(0, 36)
+size = Vector2i(800, 400)
+wrap_controls = true
+transient = true
+exclusive = true
+theme = ExtResource("1_ss0dj")
+script = ExtResource("2_ss0dj")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_fg0k8")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="MapTitleLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "MAPS"
+horizontal_alignment = 1
+
+[node name="EventsTitleLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "EVENTS"
+horizontal_alignment = 1
+
+[node name="PageNameLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "PAGES"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MapList" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("3_pb61c")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+tooltip_text = "[title]Map List[/title]
+Contains the list of maps created."
+theme_override_constants/v_separation = -1
+theme_override_styles/panel = SubResource("StyleBoxFlat_y6qwe")
+theme_override_styles/focus = SubResource("StyleBoxFlat_y6qwe")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_mopbk")
+theme_override_styles/selected = SubResource("StyleBoxTexture_exses")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_vf6bb")
+item_count = 2
+item_0/text = "Mapa1"
+item_1/text = "RpgMapPrueba2"
+odd_line_color = Color(0.172549, 0.184314, 0.192157, 1)
+event_line_color = Color(0.145098, 0.156863, 0.164706, 1)
+
+[node name="EventList" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("3_pb61c")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+tooltip_text = "[title]Event List[/title]
+Contains the list of events created in the selected map."
+theme_override_constants/v_separation = -1
+theme_override_styles/panel = SubResource("StyleBoxFlat_ss0dj")
+theme_override_styles/focus = SubResource("StyleBoxFlat_ss0dj")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_oqxba")
+theme_override_styles/selected = SubResource("StyleBoxTexture_pb61c")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_7vhpk")
+item_count = 4
+item_0/text = "1: EV0001"
+item_1/text = "2: EV0002"
+item_2/text = "3: EV0003"
+item_3/text = "5: EV0005"
+odd_line_color = Color(0.172549, 0.184314, 0.192157, 1)
+event_line_color = Color(0.145098, 0.156863, 0.164706, 1)
+
+[node name="PageList" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("3_pb61c")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+tooltip_text = "[title]Page List[/title]
+Displays the list of pages added to the selected event.
+
+[Note]: The selected page must be marked as a \"quest page\" within the event. That page will be triggered when the player interacts with this event while having the quest."
+theme_override_constants/v_separation = -1
+theme_override_styles/panel = SubResource("StyleBoxFlat_ss0dj")
+theme_override_styles/focus = SubResource("StyleBoxFlat_ss0dj")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_oqxba")
+theme_override_styles/selected = SubResource("StyleBoxTexture_pb61c")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_7vhpk")
+item_count = 4
+item_0/text = "1: EV0001"
+item_1/text = "2: EV0002"
+item_2/text = "3: EV0003"
+item_3/text = "5: EV0005"
+odd_line_color = Color(0.172549, 0.184314, 0.192157, 1)
+event_line_color = Color(0.145098, 0.156863, 0.164706, 1)
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_7vhpk")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_7vhpk")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+text = "Cancel"
+
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer2/MapList" to="." method="_on_map_list_item_selected"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer2/EventList" to="." method="_on_event_list_item_selected"]
+[connection signal="item_activated" from="MarginContainer/VBoxContainer/HBoxContainer2/PageList" to="." method="_on_page_list_item_activated"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

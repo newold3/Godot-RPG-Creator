@@ -1,0 +1,46 @@
+[gd_scene load_steps=5 format=3 uid="uid://bdnd67xb736pw"]
+
+[ext_resource type="Script" uid="uid://cne7vc2aj5l02" path="res://Scripts/button_gui_3.gd" id="1_oisiu"]
+[ext_resource type="Texture2D" uid="uid://pmwp2gafynu" path="res://Assets/Images/GUI/button2_normal.png" id="2_6buco"]
+[ext_resource type="Texture2D" uid="uid://borhj1udh4iid" path="res://Assets/Images/GUI/button2_hover.png" id="3_ys7hf"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4ip3y"]
+
+[node name="ButtonGui3" type="PanelContainer"]
+offset_right = 20.0
+offset_bottom = 12.0
+focus_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_4ip3y")
+script = ExtResource("1_oisiu")
+button_normal_texture = ExtResource("2_6buco")
+button_hover_texture = ExtResource("3_ys7hf")
+patch_left = 10
+patch_right = 10
+patch_up = 6
+patch_down = 6
+
+[node name="Background" type="NinePatchRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("2_6buco")
+patch_margin_left = 10
+patch_margin_top = 6
+patch_margin_right = 10
+patch_margin_bottom = 6
+
+[node name="LabelContainer" type="MarginContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 6
+
+[node name="MainLabel" type="Label" parent="LabelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+horizontal_alignment = 1
+vertical_alignment = 1

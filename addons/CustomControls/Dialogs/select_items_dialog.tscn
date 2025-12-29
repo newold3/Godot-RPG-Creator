@@ -1,0 +1,337 @@
+[gd_scene load_steps=34 format=3 uid="uid://b08ox873s6tgw"]
+
+[ext_resource type="Script" uid="uid://bt366i6oufnps" path="res://addons/CustomControls/Dialogs/select_items_dialog.gd" id="1_lwuls"]
+[ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="2_qx7x2"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="4_2rk3k"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="4_6isu0"]
+[ext_resource type="PackedScene" uid="uid://dxcyqc2dscbvw" path="res://addons/CustomControls/custom_simple_column_item_list.tscn" id="4_fydva"]
+[ext_resource type="Texture2D" uid="uid://xl88b63otgpi" path="res://addons/CustomControls/Images/button1_background.png" id="5_2lruu"]
+[ext_resource type="Texture2D" uid="uid://dqnnp323vr1vo" path="res://addons/CustomControls/Images/button1_background_hover.png" id="6_kl84p"]
+[ext_resource type="Texture2D" uid="uid://beg6i1p118qd" path="res://addons/CustomControls/Images/button1_background_selected.png" id="7_8csia"]
+[ext_resource type="Texture2D" uid="uid://bkfn4ru5noaaa" path="res://addons/CustomControls/Images/button1_background_disabled.png" id="8_lfgdh"]
+
+[sub_resource type="Gradient" id="Gradient_goivl"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_68rx3"]
+gradient = SubResource("Gradient_goivl")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nq4kn"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Gradient" id="Gradient_smlq2"]
+colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_xkjm5"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_smlq2")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_taugp"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_xkjm5")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u4wxn"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_8uuv8"]
+load_path = "res://.godot/imported/button1_background_selected.png-d7a0e032c2f1d60baf0aa42faaf76520.ctex"
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_o3gie"]
+texture = SubResource("CompressedTexture2D_8uuv8")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+modulate_color = Color(1.384, 1.718, 1.882, 1)
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_2m55n"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_6isu0"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vs3u3"]
+atlas = ExtResource("4_6isu0")
+region = Rect2(192, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p1ugu"]
+atlas = ExtResource("4_6isu0")
+region = Rect2(216, 0, 24, 24)
+
+[sub_resource type="Gradient" id="Gradient_l3f4g"]
+colors = PackedColorArray(0.333333, 0.352941, 0.360784, 1, 0.380392, 0.4, 0.407843, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ot2ar"]
+gradient = SubResource("Gradient_l3f4g")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_un6p1"]
+texture = SubResource("GradientTexture2D_ot2ar")
+
+[sub_resource type="Gradient" id="Gradient_a6ev6"]
+offsets = PackedFloat32Array(0, 0.369535, 1)
+colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_h70kq"]
+gradient = SubResource("Gradient_a6ev6")
+fill_from = Vector2(0.547009, 1)
+fill_to = Vector2(0.559829, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vs3u3"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_h70kq")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jtbwh"]
+bg_color = Color(0, 0, 0, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dbcns"]
+texture = ExtResource("8_lfgdh")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_62ti0"]
+texture = ExtResource("6_kl84p")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wobpg"]
+texture = ExtResource("7_8csia")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_brw25"]
+texture = ExtResource("5_2lruu")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[node name="SelectItemsDialog" type="Window"]
+title = "Select Items"
+position = Vector2i(0, 36)
+size = Vector2i(640, 480)
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+script = ExtResource("1_lwuls")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_68rx3")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="CustomPanel" parent="MarginContainer/VBoxContainer" instance=ExtResource("2_qx7x2")]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_nq4kn")
+style1 = SubResource("StyleBoxFlat_nq4kn")
+style2 = SubResource("StyleBoxTexture_taugp")
+style3 = SubResource("StyleBoxFlat_u4wxn")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/CustomPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Item List:"
+
+[node name="TypeContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
+
+[node name="Button1" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer/TypeContainer" instance=ExtResource("4_2rk3k")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+tooltip_text = "[title]Items[/title]
+List of items added to database"
+theme_override_styles/pressed = SubResource("StyleBoxTexture_o3gie")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_2m55n")
+text = "Items"
+
+[node name="Button2" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer/TypeContainer" instance=ExtResource("4_2rk3k")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+tooltip_text = "[title]Weapons[/title]
+List of weapons added to the database"
+theme_override_styles/pressed = SubResource("StyleBoxTexture_o3gie")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_2m55n")
+text = "Weapons"
+
+[node name="Button3" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer/TypeContainer" instance=ExtResource("4_2rk3k")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+tooltip_text = "[title]Armors[/title]
+List of armors added to the database"
+theme_override_styles/pressed = SubResource("StyleBoxTexture_o3gie")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_2m55n")
+text = "Armors"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="SelectAll" type="CheckBox" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Cleans the list of duplicate items"
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_6isu0")
+text = "Select All"
+
+[node name="DeselectAll" type="CheckBox" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Cleans the list of duplicate items"
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_6isu0")
+text = "Deselect All"
+
+[node name="Info" type="TextureButton" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+tooltip_text = "[title]Selectable Items[/title]
+Select the items in each category that you want to add.
+
+To select multiple items, use Shift or Control + left click."
+mouse_default_cursor_shape = 16
+texture_normal = SubResource("AtlasTexture_vs3u3")
+texture_hover = SubResource("AtlasTexture_p1ugu")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ItemList" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/ScrollContainer" instance=ExtResource("4_fydva")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
+event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
+top_bar_style = SubResource("StyleBoxTexture_un6p1")
+cursor_style = SubResource("StyleBoxTexture_vs3u3")
+panel_style = SubResource("StyleBoxFlat_jtbwh")
+columns = 3
+names = PackedStringArray("Type", "ID", "Item")
+sizes = PackedInt32Array(120, 80, 0)
+text_margin_left = 4
+enable_multiselection = true
+itemlist_tooltip = "List of objects.
+
+[Note]: Use Control or Shift left click to select 1 or more items from the list."
+items_tooltip = PackedStringArray("[title]Cost[/title]\nCost in gold to perform this craft action.")
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("4_2rk3k")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+theme_override_styles/disabled = SubResource("StyleBoxTexture_dbcns")
+theme_override_styles/hover = SubResource("StyleBoxTexture_62ti0")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wobpg")
+theme_override_styles/normal = SubResource("StyleBoxTexture_brw25")
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("4_2rk3k")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+theme_override_styles/disabled = SubResource("StyleBoxTexture_dbcns")
+theme_override_styles/hover = SubResource("StyleBoxTexture_62ti0")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wobpg")
+theme_override_styles/normal = SubResource("StyleBoxTexture_brw25")
+text = "Cancel"
+
+[connection signal="toggled" from="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer2/SelectAll" to="." method="_on_select_all_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer2/DeselectAll" to="." method="_on_deselect_all_toggled"]
+[connection signal="copy_requested" from="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/ScrollContainer/ItemList" to="." method="_on_item_list_copy_requested"]
+[connection signal="cut_requested" from="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/ScrollContainer/ItemList" to="." method="_on_item_list_cut_requested"]
+[connection signal="delete_pressed" from="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/ScrollContainer/ItemList" to="." method="_on_item_list_delete_pressed"]
+[connection signal="multi_selected" from="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/ScrollContainer/ItemList" to="." method="_on_item_list_multi_selected"]
+[connection signal="paste_requested" from="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/ScrollContainer/ItemList" to="." method="_on_item_list_paste_requested"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer3/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer3/CancelButton" to="." method="_on_cancel_button_pressed"]

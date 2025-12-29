@@ -1,0 +1,403 @@
+[gd_scene load_steps=39 format=3 uid="uid://b5hen2146k3od"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_l6oa6"]
+[ext_resource type="Script" uid="uid://c7dotpqj10tc0" path="res://addons/CustomControls/Dialogs/CommandEvents/tint_screen_and_flash_dialog.gd" id="2_3qcbn"]
+[ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="3_0cab1"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="4_pjvrp"]
+[ext_resource type="PackedScene" uid="uid://bbd8rv6w7vjb3" path="res://addons/CustomControls/custom_color_button.tscn" id="4_r5y54"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="5_pfe5y"]
+[ext_resource type="Texture2D" uid="uid://bkfn4ru5noaaa" path="res://addons/CustomControls/Images/button1_background_disabled.png" id="6_4kj61"]
+[ext_resource type="Texture2D" uid="uid://dqnnp323vr1vo" path="res://addons/CustomControls/Images/button1_background_hover.png" id="7_40tgn"]
+[ext_resource type="Texture2D" uid="uid://beg6i1p118qd" path="res://addons/CustomControls/Images/button1_background_selected.png" id="8_frorg"]
+[ext_resource type="Texture2D" uid="uid://xl88b63otgpi" path="res://addons/CustomControls/Images/button1_background.png" id="9_di3qa"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_iemuh"]
+
+[sub_resource type="Gradient" id="Gradient_uww37"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_j32f4"]
+gradient = SubResource("Gradient_uww37")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fysoy"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Gradient" id="Gradient_ctwx1"]
+colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_wm07h"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fw0ys"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_wm07h")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7fjtw"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nsh1v"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kwyuf"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fic24"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.94902, 0.627451, 0.0117647, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4g74l"]
+resource_local_to_scene = true
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 21.0
+content_margin_bottom = 4.0
+bg_color = Color(0.184314, 0.196078, 0.203922, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xox1i"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_fd7xw"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qnd7l"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_fd7xw")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gfruj"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b85pc"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_m3xcg"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mmbbd"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_m3xcg")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xiv6l"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wanv4"]
+texture = ExtResource("9_di3qa")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_n0new"]
+texture = ExtResource("8_frorg")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_occp0"]
+texture = ExtResource("7_40tgn")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_iu3fr"]
+texture = ExtResource("6_4kj61")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5rb3t"]
+texture = ExtResource("9_di3qa")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_37igj"]
+texture = ExtResource("8_frorg")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gommh"]
+texture = ExtResource("7_40tgn")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yd8hk"]
+texture = ExtResource("6_4kj61")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[node name="TintScreenAndFlashDialog" type="Window"]
+oversampling_override = 1.0
+title = "Fade"
+position = Vector2i(0, 36)
+size = Vector2i(500, 301)
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_l6oa6")
+script = ExtResource("2_3qcbn")
+
+[node name="Background" type="TextureRect" parent="."]
+material = SubResource("CanvasItemMaterial_iemuh")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_j32f4")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="ColorPanel" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_0cab1")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_fysoy")
+style1 = SubResource("StyleBoxFlat_fysoy")
+style2 = SubResource("StyleBoxTexture_fw0ys")
+style3 = SubResource("StyleBoxFlat_7fjtw")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/ColorPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ColorPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ColorPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Color"
+
+[node name="Color" parent="MarginContainer/VBoxContainer/ColorPanel/MarginContainer/VBoxContainer" instance=ExtResource("4_r5y54")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Choose the desired color for this effect"
+theme_override_styles/normal = SubResource("StyleBoxFlat_nsh1v")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_kwyuf")
+theme_override_styles/hover = SubResource("StyleBoxFlat_fic24")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_4g74l")
+
+[node name="DurationPanel" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_0cab1")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_xox1i")
+style1 = SubResource("StyleBoxFlat_xox1i")
+style2 = SubResource("StyleBoxTexture_qnd7l")
+style3 = SubResource("StyleBoxFlat_gfruj")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/DurationPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/DurationPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/DurationPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Duration"
+
+[node name="Duration" parent="MarginContainer/VBoxContainer/DurationPanel/MarginContainer/VBoxContainer" instance=ExtResource("4_pjvrp")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Duration of this effect"
+step = 0.01
+rounded = false
+allow_greater = true
+_custom_value = 0.0
+
+[node name="WaitPanel" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_0cab1")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_b85pc")
+style1 = SubResource("StyleBoxFlat_b85pc")
+style2 = SubResource("StyleBoxTexture_mmbbd")
+style3 = SubResource("StyleBoxFlat_xiv6l")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/WaitPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/WaitPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="Wait" type="CheckBox" parent="MarginContainer/VBoxContainer/WaitPanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Wait until the effect is completed (This pauses the flow of the game for the duration of the effect)."
+mouse_default_cursor_shape = 2
+text = "Wait"
+
+[node name="RemoveTint" type="CheckBox" parent="MarginContainer/VBoxContainer/WaitPanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Removes the current screen tint (this does not remove tints applied by the map, weather scenes, and the day manager)."
+mouse_default_cursor_shape = 2
+text = "Remove Tint"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_pfe5y")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+theme_override_styles/normal = SubResource("StyleBoxTexture_wanv4")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_n0new")
+theme_override_styles/hover = SubResource("StyleBoxTexture_occp0")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_iu3fr")
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_pfe5y")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+theme_override_styles/normal = SubResource("StyleBoxTexture_5rb3t")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_37igj")
+theme_override_styles/hover = SubResource("StyleBoxTexture_gommh")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_yd8hk")
+text = "CANCEL"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/ColorPanel/MarginContainer/VBoxContainer/Color" to="." method="_on_color_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

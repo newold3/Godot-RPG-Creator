@@ -1,0 +1,321 @@
+[gd_scene load_steps=21 format=3 uid="uid://qt0w3h8wx2dy"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_hp6ly"]
+[ext_resource type="Script" uid="uid://dqw2hd8st5cnj" path="res://addons/CustomControls/Dialogs/edit_enemy_spawn_region_dialog.gd" id="2_2ggf1"]
+[ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="3_hpllm"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="4_gg7ij"]
+[ext_resource type="PackedScene" uid="uid://bbd8rv6w7vjb3" path="res://addons/CustomControls/custom_color_button.tscn" id="5_t8owb"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="6_73auu"]
+[ext_resource type="PackedScene" uid="uid://dxcyqc2dscbvw" path="res://addons/CustomControls/custom_simple_column_item_list.tscn" id="6_jefw5"]
+
+[sub_resource type="Gradient" id="Gradient_gxhcl"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_hnlyc"]
+gradient = SubResource("Gradient_gxhcl")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q7fc0"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o11jp"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vgh04"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.94902, 0.627451, 0.0117647, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cjqjr"]
+resource_local_to_scene = true
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 21.0
+content_margin_bottom = 4.0
+bg_color = Color(0.184314, 0.196078, 0.203922, 1)
+
+[sub_resource type="Gradient" id="Gradient_ygh35"]
+colors = PackedColorArray(0.333333, 0.352941, 0.360784, 1, 0.380392, 0.4, 0.407843, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_0n3ye"]
+gradient = SubResource("Gradient_ygh35")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hfuia"]
+texture = SubResource("GradientTexture2D_0n3ye")
+
+[sub_resource type="Gradient" id="Gradient_qx63n"]
+offsets = PackedFloat32Array(0, 0.369535, 1)
+colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ygvtv"]
+gradient = SubResource("Gradient_qx63n")
+fill_from = Vector2(0.547009, 1)
+fill_to = Vector2(0.559829, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_m2tx3"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_ygvtv")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_agv1x"]
+bg_color = Color(0, 0, 0, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+
+[node name="EditEnemySpawnRegionDialog" type="Window"]
+oversampling_override = 1.0
+title = "Edit Region"
+position = Vector2i(0, 36)
+size = Vector2i(629, 509)
+transient = true
+exclusive = true
+theme = ExtResource("1_hp6ly")
+script = ExtResource("2_2ggf1")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_hnlyc")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 18
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Name:"
+
+[node name="Name" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_hpllm")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Name to identify this region"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Position:"
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "X:"
+
+[node name="PositionX" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("4_gg7ij")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Indicates the X position of the tile where this region is located."
+allow_greater = true
+allow_lesser = true
+
+[node name="Separator" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(16, 0)
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Y:"
+
+[node name="PositionY" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("4_gg7ij")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Indicates the Y position of the tile where this region is located."
+allow_greater = true
+allow_lesser = true
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Size:"
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "X:"
+
+[node name="SizeX" parent="MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("4_gg7ij")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Indicates the number of horizontal tiles measured by this region."
+min_value = 1.0
+value = 1.0
+allow_greater = true
+
+[node name="Separator" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(16, 0)
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "Y:"
+
+[node name="SizeY" parent="MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("4_gg7ij")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Indicates the number of vertical tiles measured by this region."
+min_value = 1.0
+value = 1.0
+allow_greater = true
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Color:"
+
+[node name="ColorButton" parent="MarginContainer/VBoxContainer/HBoxContainer4" instance=ExtResource("5_t8owb")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Region Color[/title]
+Color of the region used for drawing on the map in the editor"
+theme_override_styles/normal = SubResource("StyleBoxFlat_q7fc0")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_o11jp")
+theme_override_styles/hover = SubResource("StyleBoxFlat_vgh04")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_cjqjr")
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Steps"
+
+[node name="Steps" parent="MarginContainer/VBoxContainer/HBoxContainer6" instance=ExtResource("4_gg7ij")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Number of steps required to activate a fight."
+min_value = 1.0
+value = 1.0
+allow_greater = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+tooltip_text = "[title]Troop List[/title]
+List of enemies that may appear in this region.
+
+[Dobleclick to edit / add new troop, Delete key to erase any troop]"
+mouse_filter = 1
+text = "Troop List"
+
+[node name="TroopList" parent="MarginContainer/VBoxContainer/VBoxContainer" instance=ExtResource("6_jefw5")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
+event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
+top_bar_style = SubResource("StyleBoxTexture_hfuia")
+columns_text_colors = PackedColorArray(0.72549, 0.992157, 0.772549, 1)
+cursor_style = SubResource("StyleBoxTexture_m2tx3")
+panel_style = SubResource("StyleBoxFlat_agv1x")
+columns = 2
+names = PackedStringArray("Troops", "Occasion")
+sizes = PackedInt32Array(400, 150)
+placeholder_text = "Click to add a new troop"
+enable_multiselection = true
+itemlist_tooltip = "[title]Troop List[/title]
+List of enemies that may appear in this region.
+
+[Dobleclick to edit / add new troop, Delete key to erase any troop]"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer5" instance=ExtResource("6_73auu")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer5" instance=ExtResource("6_73auu")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "CANCEL"
+
+[node name="ApplyButton" parent="MarginContainer/VBoxContainer/HBoxContainer5" instance=ExtResource("6_73auu")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.65)
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+disabled = true
+text = "APPLY"
+
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/HBoxContainer/Name" to="." method="_on_name_text_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/PositionX" to="." method="_on_position_x_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/PositionY" to="." method="_on_position_y_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer3/SizeX" to="." method="_on_size_x_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer3/SizeY" to="." method="_on_size_y_value_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer4/ColorButton" to="." method="_on_color_button_pressed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer6/Steps" to="." method="_on_steps_value_changed"]
+[connection signal="delete_pressed" from="MarginContainer/VBoxContainer/VBoxContainer/TroopList" to="." method="_on_troop_list_delete_pressed"]
+[connection signal="item_activated" from="MarginContainer/VBoxContainer/VBoxContainer/TroopList" to="." method="_on_troop_list_item_activated"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer5/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer5/CancelButton" to="." method="_on_cancel_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer5/ApplyButton" to="." method="_on_apply_button_pressed"]

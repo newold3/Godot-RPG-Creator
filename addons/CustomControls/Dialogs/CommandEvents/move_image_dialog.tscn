@@ -1,0 +1,432 @@
+[gd_scene load_steps=33 format=3 uid="uid://iulpxmpqyjaf"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_bu17r"]
+[ext_resource type="Script" uid="uid://c3l7ya6hkyecm" path="res://addons/CustomControls/Dialogs/CommandEvents/move_image_dialog.gd" id="1_wk33p"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="2_hbsw4"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="3_eig4i"]
+[ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="3_ejbj8"]
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="4_1vvsc"]
+[ext_resource type="Texture2D" uid="uid://bkfn4ru5noaaa" path="res://addons/CustomControls/Images/button1_background_disabled.png" id="4_dbwyr"]
+[ext_resource type="Texture2D" uid="uid://dqnnp323vr1vo" path="res://addons/CustomControls/Images/button1_background_hover.png" id="5_hr23k"]
+[ext_resource type="Texture2D" uid="uid://beg6i1p118qd" path="res://addons/CustomControls/Images/button1_background_selected.png" id="6_i37ny"]
+[ext_resource type="Texture2D" uid="uid://xl88b63otgpi" path="res://addons/CustomControls/Images/button1_background.png" id="7_jirwm"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_u11f1"]
+
+[sub_resource type="Gradient" id="Gradient_u5yrp"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_6yyp3"]
+gradient = SubResource("Gradient_u5yrp")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_18ts1"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Gradient" id="Gradient_lgvqq"]
+colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_fj3v1"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_lgvqq")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_u4w7d"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_fj3v1")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ykujk"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_gersa"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1xy5y"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Gradient" id="Gradient_krxka"]
+colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_m00nc"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_krxka")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cr2v5"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_m00nc")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pn2sm"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qiqap"]
+texture = ExtResource("4_dbwyr")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7qdgr"]
+texture = ExtResource("5_hr23k")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mjylh"]
+texture = ExtResource("6_i37ny")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_subod"]
+texture = ExtResource("7_jirwm")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hfo07"]
+texture = ExtResource("4_dbwyr")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4sujn"]
+texture = ExtResource("5_hr23k")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5stfh"]
+texture = ExtResource("6_i37ny")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_maa40"]
+texture = ExtResource("7_jirwm")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[node name="MoveImageDialog" type="Window"]
+title = "Move Image"
+position = Vector2i(0, 36)
+size = Vector2i(737, 446)
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_bu17r")
+script = ExtResource("1_wk33p")
+
+[node name="Background" type="TextureRect" parent="."]
+material = SubResource("CanvasItemMaterial_u11f1")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_6yyp3")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Image ID: "
+
+[node name="ImageID" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("2_hbsw4")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "ID of the image to be moved"
+min_value = 1.0
+value = 1.0
+allow_greater = true
+
+[node name="Panel2" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_ejbj8")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_18ts1")
+style1 = SubResource("StyleBoxFlat_18ts1")
+style2 = SubResource("StyleBoxTexture_u4w7d")
+style3 = SubResource("StyleBoxFlat_ykujk")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Panel2"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Panel2/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Panel2/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Position
+"
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Panel2/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Panel2/MarginContainer/VBoxContainer/HBoxContainer4"]
+custom_minimum_size = Vector2(225, 0)
+layout_mode = 2
+text = "Relative Movement:"
+
+[node name="RelativeMovement" type="CheckBox" parent="MarginContainer/VBoxContainer/Panel2/MarginContainer/VBoxContainer/HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Panel2/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ManualSettings" type="CheckBox" parent="MarginContainer/VBoxContainer/Panel2/MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(225, 0)
+layout_mode = 2
+tooltip_text = "Specifies the position of the image on the screen directly."
+mouse_default_cursor_shape = 2
+button_pressed = true
+button_group = SubResource("ButtonGroup_gersa")
+text = "Manual Settings"
+
+[node name="ManualPositionContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Panel2/MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Panel2/MarginContainer/VBoxContainer/HBoxContainer2/ManualPositionContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Panel2/MarginContainer/VBoxContainer/HBoxContainer2/ManualPositionContainer/HBoxContainer"]
+layout_mode = 2
+text = " X:"
+
+[node name="PositionX" parent="MarginContainer/VBoxContainer/Panel2/MarginContainer/VBoxContainer/HBoxContainer2/ManualPositionContainer/HBoxContainer" instance=ExtResource("2_hbsw4")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "X position of the image on the screen"
+allow_greater = true
+allow_lesser = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Panel2/MarginContainer/VBoxContainer/HBoxContainer2/ManualPositionContainer"]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/Panel2/MarginContainer/VBoxContainer/HBoxContainer2/ManualPositionContainer/HBoxContainer2"]
+layout_mode = 2
+text = " Y:"
+
+[node name="PositionY" parent="MarginContainer/VBoxContainer/Panel2/MarginContainer/VBoxContainer/HBoxContainer2/ManualPositionContainer/HBoxContainer2" instance=ExtResource("2_hbsw4")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Y position of the image on the screen"
+allow_greater = true
+allow_lesser = true
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Panel2/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="VariableSettings" type="CheckBox" parent="MarginContainer/VBoxContainer/Panel2/MarginContainer/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(225, 0)
+layout_mode = 2
+tooltip_text = "Specifies the position of the image on the screen using two variables."
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_gersa")
+text = "Variable Settings"
+
+[node name="VariablePositionContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Panel2/MarginContainer/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Panel2/MarginContainer/VBoxContainer/HBoxContainer3/VariablePositionContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Panel2/MarginContainer/VBoxContainer/HBoxContainer3/VariablePositionContainer/HBoxContainer"]
+layout_mode = 2
+text = " X:"
+
+[node name="VariableX" parent="MarginContainer/VBoxContainer/Panel2/MarginContainer/VBoxContainer/HBoxContainer3/VariablePositionContainer/HBoxContainer" instance=ExtResource("4_1vvsc")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Choose the variable to be used for displaying the image at position X"
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+disabled = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Panel2/MarginContainer/VBoxContainer/HBoxContainer3/VariablePositionContainer"]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/Panel2/MarginContainer/VBoxContainer/HBoxContainer3/VariablePositionContainer/HBoxContainer2"]
+layout_mode = 2
+text = " Y:"
+
+[node name="VariableY" parent="MarginContainer/VBoxContainer/Panel2/MarginContainer/VBoxContainer/HBoxContainer3/VariablePositionContainer/HBoxContainer2" instance=ExtResource("4_1vvsc")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Choose the variable to be used for displaying the image at position X"
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+disabled = true
+
+[node name="Panel3" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_ejbj8")]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_1xy5y")
+style1 = SubResource("StyleBoxFlat_1xy5y")
+style2 = SubResource("StyleBoxTexture_cr2v5")
+style3 = SubResource("StyleBoxFlat_pn2sm")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Panel3"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Panel3/MarginContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Panel3/MarginContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Duration"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Panel3/MarginContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Duration" parent="MarginContainer/VBoxContainer/Panel3/MarginContainer/VBoxContainer2/HBoxContainer" instance=ExtResource("2_hbsw4")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Duration of the movement from its current position to the new position"
+step = 0.01
+allow_greater = true
+suffix = "second/s"
+
+[node name="Wait" type="CheckBox" parent="MarginContainer/VBoxContainer/Panel3/MarginContainer/VBoxContainer2/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Wait for the movement to be completed (This will stop the flow of the game until the image completes the movement)."
+mouse_default_cursor_shape = 2
+text = "wait"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("3_eig4i")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+theme_override_styles/disabled = SubResource("StyleBoxTexture_qiqap")
+theme_override_styles/hover = SubResource("StyleBoxTexture_7qdgr")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_mjylh")
+theme_override_styles/normal = SubResource("StyleBoxTexture_subod")
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("3_eig4i")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+theme_override_styles/disabled = SubResource("StyleBoxTexture_hfo07")
+theme_override_styles/hover = SubResource("StyleBoxTexture_4sujn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_5stfh")
+theme_override_styles/normal = SubResource("StyleBoxTexture_maa40")
+text = "CANCEL"
+
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Panel2/MarginContainer/VBoxContainer/HBoxContainer2/ManualSettings" to="." method="_on_manual_settings_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Panel2/MarginContainer/VBoxContainer/HBoxContainer3/VariableSettings" to="." method="_on_variable_settings_toggled"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Panel2/MarginContainer/VBoxContainer/HBoxContainer3/VariablePositionContainer/HBoxContainer/VariableX" to="." method="_on_variable_x_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Panel2/MarginContainer/VBoxContainer/HBoxContainer3/VariablePositionContainer/HBoxContainer2/VariableY" to="." method="_on_variable_y_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/CancelButton" to="." method="_on_cancel_button_pressed"]

@@ -1,0 +1,52 @@
+[gd_scene load_steps=10 format=3 uid="uid://djcn8eu51yixv"]
+
+[ext_resource type="Script" uid="uid://de2xylinp8k87" path="res://Scenes/WeatherScenes/RainScenes/ripple_particle.gd" id="1_avu5l"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_6f58a"]
+blend_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_ianil"]
+offsets = PackedFloat32Array(0.866426, 0.902527, 0.913357, 0.942238)
+colors = PackedColorArray(0.905882, 0.905882, 0.905882, 0, 0.94902, 0.94902, 0.94902, 0.258824, 1, 1, 1, 0.133333, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_5x7j8"]
+gradient = SubResource("Gradient_ianil")
+width = 32
+height = 32
+fill = 1
+fill_from = Vector2(0.508547, 0.508547)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="Curve" id="Curve_kavlv"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.27999997, 0.012935877), 0.0, 0.0, 0, 0, Vector2(0.5, 0.13723278), 0.0, 0.0, 0, 0, Vector2(0.7171428, 0.04949379), 0.0, 0.0, 0, 0, Vector2(0.988764, 0), 0.0, 0.0, 0, 0]
+point_count = 5
+
+[sub_resource type="CurveTexture" id="CurveTexture_lj8wc"]
+curve = SubResource("Curve_kavlv")
+
+[sub_resource type="Curve" id="Curve_tocc1"]
+_data = [Vector2(0.0337079, 0), 0.0, 0.0, 0, 0, Vector2(0.40824, 0.35623), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_v642d"]
+curve = SubResource("Curve_tocc1")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_jmxlp"]
+particle_flag_disable_z = true
+gravity = Vector3(0, 0, 0)
+scale_max = 5.0
+scale_curve = SubResource("CurveTexture_v642d")
+alpha_curve = SubResource("CurveTexture_lj8wc")
+
+[node name="RippleParticle" type="GPUParticles2D"]
+material = SubResource("CanvasItemMaterial_6f58a")
+emitting = false
+amount = 3
+texture = SubResource("GradientTexture2D_5x7j8")
+lifetime = 3.0
+one_shot = true
+preprocess = 0.4
+explosiveness = 0.81
+randomness = 0.7
+process_material = SubResource("ParticleProcessMaterial_jmxlp")
+script = ExtResource("1_avu5l")

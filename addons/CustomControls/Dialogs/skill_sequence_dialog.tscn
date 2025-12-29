@@ -1,0 +1,293 @@
+[gd_scene load_steps=23 format=3 uid="uid://qy21tdqcowp"]
+
+[ext_resource type="PackedScene" uid="uid://dxcyqc2dscbvw" path="res://addons/CustomControls/custom_simple_column_item_list.tscn" id="1_67h6q"]
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_d374g"]
+[ext_resource type="Script" uid="uid://dwbkk2pyujfs6" path="res://addons/CustomControls/Dialogs/skill_sequence_dialog.gd" id="1_qqphp"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="2_qqphp"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="3_p47kp"]
+
+[sub_resource type="Gradient" id="Gradient_7ascj"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_5miof"]
+gradient = SubResource("Gradient_7ascj")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1fx8v"]
+atlas = ExtResource("3_p47kp")
+region = Rect2(168, 192, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_foskl"]
+atlas = ExtResource("3_p47kp")
+region = Rect2(144, 192, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8q7go"]
+atlas = ExtResource("3_p47kp")
+region = Rect2(168, 168, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f4ovi"]
+atlas = ExtResource("3_p47kp")
+region = Rect2(120, 192, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_db2ub"]
+atlas = ExtResource("3_p47kp")
+region = Rect2(96, 192, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qqygu"]
+atlas = ExtResource("3_p47kp")
+region = Rect2(72, 192, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p47kp"]
+atlas = ExtResource("3_p47kp")
+region = Rect2(192, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ikcav"]
+atlas = ExtResource("3_p47kp")
+region = Rect2(216, 0, 24, 24)
+
+[sub_resource type="Gradient" id="Gradient_qqphp"]
+colors = PackedColorArray(0.333333, 0.352941, 0.360784, 1, 0.380392, 0.4, 0.407843, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ot2ar"]
+gradient = SubResource("Gradient_qqphp")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_d374g"]
+texture = SubResource("GradientTexture2D_ot2ar")
+
+[sub_resource type="Gradient" id="Gradient_p47kp"]
+offsets = PackedFloat32Array(0, 0.369535, 1)
+colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_h70kq"]
+gradient = SubResource("Gradient_p47kp")
+fill_from = Vector2(0.547009, 1)
+fill_to = Vector2(0.559829, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_p47kp"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_h70kq")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_foskl"]
+bg_color = Color(0, 0, 0, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+
+[node name="SkillSequenceDialog" type="Window"]
+oversampling_override = 1.0
+title = "Edit Skill In - Battle Sequence"
+position = Vector2i(0, 36)
+size = Vector2i(800, 640)
+wrap_controls = true
+transient = true
+exclusive = true
+theme = ExtResource("1_d374g")
+script = ExtResource("1_qqphp")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_5miof")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.61339, 0.61339, 0.61339, 1)
+text = "🟢 Start Sequence Command"
+
+[node name="CopyParameters" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+tooltip_text = "Copy the list of parameters to the clipboard. This list can be pasted into any skill sequence."
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = SubResource("AtlasTexture_1fx8v")
+texture_hover = SubResource("AtlasTexture_foskl")
+texture_disabled = SubResource("AtlasTexture_8q7go")
+
+[node name="PasteParameters" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Paste a list of previously saved parameters from the clipboard
+
+[Note]: This replaces all the parameters added to this sequence with the parameters saved in the clipboard. For a different behavior, use the context menu of the list (right-click), which allows you to copy/delete the selected commands and add the commands saved in the clipboard without replacing the ones already added."
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = SubResource("AtlasTexture_f4ovi")
+texture_hover = SubResource("AtlasTexture_db2ub")
+texture_disabled = SubResource("AtlasTexture_qqygu")
+
+[node name="SequenceEditor" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Add commands by double-clicking or pressing Enter, and edit any command by pressing Space. Right-click for additional options."
+focus_mode = 0
+mouse_default_cursor_shape = 16
+texture_normal = SubResource("AtlasTexture_p47kp")
+texture_hover = SubResource("AtlasTexture_ikcav")
+
+[node name="SequenceList" parent="MarginContainer/VBoxContainer" instance=ExtResource("1_67h6q")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
+event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
+top_bar_style = SubResource("StyleBoxTexture_d374g")
+cursor_style = SubResource("StyleBoxTexture_p47kp")
+panel_style = SubResource("StyleBoxFlat_foskl")
+names = PackedStringArray("User Command")
+placeholder_text = "Select Action..."
+enable_multiselection = true
+itemlist_tooltip = "[title]Sequence List[/title]
+List of commands that will be displayed one after the other when this skill is launched. If the list of commands is empty, the animation defined in “Animation” will be used.
+"
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.61339, 0.61339, 0.61339, 1)
+text = "👊 Applies Remaining Damage/Healing"
+
+[node name="Label4" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.61339, 0.61339, 0.61339, 1)
+text = "🚶 Return To Default Position Command"
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.61339, 0.61339, 0.61339, 1)
+text = "🔴 End Sequence Command"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("2_qqphp")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("2_qqphp")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+text = "CANCEL"
+
+[node name="CommandMenu" type="PopupMenu" parent="."]
+unique_name_in_owner = true
+size = Vector2i(394, 305)
+item_count = 12
+item_0/text = "Show Caster Motion"
+item_0/id = 0
+item_1/text = "Move To Target"
+item_1/id = 1
+item_2/text = "Show Self Animation (No Sequence)"
+item_2/id = 2
+item_3/text = "Show Other Animation (No Sequence)"
+item_3/id = 3
+item_4/text = "Move Out Of Screen (Back)"
+item_4/id = 4
+item_5/text = "Move Out Of Screen (Front)"
+item_5/id = 5
+item_6/text = "Move Out Of Screen (Top)"
+item_6/id = 6
+item_7/text = "Move To Position"
+item_7/id = 7
+item_8/text = "Damage/ Heal % Of Total Effect"
+item_8/id = 8
+item_9/text = "Play Sound FX"
+item_9/id = 9
+item_10/text = "Camera Zoom"
+item_10/id = 10
+item_11/text = "Wait"
+item_11/id = 11
+
+[node name="CustomTooltip" type="Control" parent="CommandMenu"]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="RightClickPopup" type="PopupMenu" parent="."]
+unique_name_in_owner = true
+size = Vector2i(383, 120)
+item_count = 5
+item_0/text = "Copy Selected Parameters"
+item_0/id = 0
+item_1/text = "Cut Selected Parameters"
+item_1/id = 1
+item_2/text = "Paste Parameters Before Selection"
+item_2/id = 2
+item_3/id = 3
+item_3/separator = true
+item_4/text = "Remove Selected Parameters"
+item_4/id = 4
+
+[node name="CustomTooltip2" type="Control" parent="RightClickPopup"]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CopyParameters" to="." method="_on_copy_parameters_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/PasteParameters" to="." method="_on_paste_parameters_pressed"]
+[connection signal="button_right_pressed" from="MarginContainer/VBoxContainer/SequenceList" to="." method="_on_sequence_list_button_right_pressed"]
+[connection signal="copy_requested" from="MarginContainer/VBoxContainer/SequenceList" to="." method="_on_sequence_list_copy_requested"]
+[connection signal="cut_requested" from="MarginContainer/VBoxContainer/SequenceList" to="." method="_on_sequence_list_cut_requested"]
+[connection signal="delete_pressed" from="MarginContainer/VBoxContainer/SequenceList" to="." method="_on_sequence_list_delete_pressed"]
+[connection signal="item_activated" from="MarginContainer/VBoxContainer/SequenceList" to="." method="_on_sequence_list_item_activated"]
+[connection signal="paste_requested" from="MarginContainer/VBoxContainer/SequenceList" to="." method="_on_sequence_list_paste_requested"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/CancelButton" to="." method="_on_cancel_button_pressed"]
+[connection signal="index_pressed" from="CommandMenu" to="." method="_on_command_menu_index_pressed"]
+[connection signal="about_to_popup" from="RightClickPopup" to="." method="_on_right_click_popup_about_to_popup"]
+[connection signal="index_pressed" from="RightClickPopup" to="." method="_on_right_click_popup_index_pressed"]

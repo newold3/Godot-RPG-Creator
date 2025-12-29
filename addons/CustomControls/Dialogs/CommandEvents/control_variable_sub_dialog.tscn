@@ -1,0 +1,894 @@
+[gd_scene load_steps=28 format=3 uid="uid://cwvkqpbxnniv3"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_bkmsk"]
+[ext_resource type="Script" uid="uid://e1m1t5vyaqgy" path="res://addons/CustomControls/Dialogs/CommandEvents/control_variable_sub_dialog.gd" id="2_fvkt2"]
+[ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="2_us6yk"]
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="3_jihb0"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="4_diq7a"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="5_x52s5"]
+[ext_resource type="Texture2D" uid="uid://xl88b63otgpi" path="res://addons/CustomControls/Images/button1_background.png" id="6_7bn2f"]
+[ext_resource type="Texture2D" uid="uid://dqnnp323vr1vo" path="res://addons/CustomControls/Images/button1_background_hover.png" id="7_o75sr"]
+[ext_resource type="Texture2D" uid="uid://beg6i1p118qd" path="res://addons/CustomControls/Images/button1_background_selected.png" id="8_ypnwj"]
+[ext_resource type="Texture2D" uid="uid://bkfn4ru5noaaa" path="res://addons/CustomControls/Images/button1_background_disabled.png" id="9_45wlk"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_p5fln"]
+
+[sub_resource type="Gradient" id="Gradient_pe4v7"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_wtngk"]
+gradient = SubResource("Gradient_pe4v7")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cgfk8"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Gradient" id="Gradient_ctwx1"]
+colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_uscjk"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bcrpr"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_uscjk")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7o5ol"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_yeuqa"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_o1xdk"]
+texture = ExtResource("6_7bn2f")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_p4xgh"]
+texture = ExtResource("8_ypnwj")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jol07"]
+texture = ExtResource("7_o75sr")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2bfr8"]
+texture = ExtResource("9_45wlk")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jkbyo"]
+texture = ExtResource("6_7bn2f")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0j2l8"]
+texture = ExtResource("8_ypnwj")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ltkjm"]
+texture = ExtResource("7_o75sr")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cbfgw"]
+texture = ExtResource("9_45wlk")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[node name="ControlVariableSubDialog" type="Window"]
+oversampling_override = 1.0
+title = "Game Data"
+position = Vector2i(0, 36)
+size = Vector2i(700, 517)
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_bkmsk")
+script = ExtResource("2_fvkt2")
+
+[node name="Background" type="TextureRect" parent="."]
+material = SubResource("CanvasItemMaterial_p5fln")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_wtngk")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Item" parent="MarginContainer/VBoxContainer" instance=ExtResource("2_us6yk")]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_cgfk8")
+style1 = SubResource("StyleBoxFlat_cgfk8")
+style2 = SubResource("StyleBoxTexture_bcrpr")
+style3 = SubResource("StyleBoxFlat_7o5ol")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Item"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Item" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+tooltip_text = "Uses the count of the specified item."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_yeuqa")
+text = "Item:"
+
+[node name="ItemID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_jihb0")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Uses the count of the specified item."
+disabled = true
+text = "1:Mi item"
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.570313, 0.570313, 0.570313, 1)
+text = "(Possesion Count)"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Weapon" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+tooltip_text = "Uses the count of the specified weapon."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_yeuqa")
+text = "Weapon:"
+
+[node name="WeaponID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("3_jihb0")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Uses the count of the specified weapon."
+disabled = true
+text = "01:Crystal Ball"
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.570313, 0.570313, 0.570313, 1)
+text = "(Possesion Count)"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Armor" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+tooltip_text = "Uses the count of the specified armor."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_yeuqa")
+text = "Armor:"
+
+[node name="ArmorID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("3_jihb0")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Uses the count of the specified armor."
+disabled = true
+text = "1:Cloth Robe"
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.570313, 0.570313, 0.570313, 1)
+text = "(Possesion Count)"
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Actor" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer4"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+tooltip_text = "Uses the actor's parameter (HP, MP, etc.) as the value. Specify the target actor and parameter."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_yeuqa")
+text = "Actor:"
+
+[node name="ActorID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer4" instance=ExtResource("3_jihb0")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Uses the actor's parameter (HP, MP, etc.) as the value. Specify the target actor and parameter."
+disabled = true
+text = "1:Aiden"
+
+[node name="ActorParameter" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer4" instance=ExtResource("4_diq7a")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+tooltip_text = "Uses the actor's parameter (HP, MP, etc.) as the value. Specify the target actor and parameter."
+disabled = true
+selected = 0
+fit_to_longest_item = false
+item_count = 34
+popup/item_0/text = "Level"
+popup/item_0/id = 0
+popup/item_1/text = "Experience"
+popup/item_1/id = 1
+popup/item_2/text = "Hit Points"
+popup/item_2/id = 2
+popup/item_3/text = "Magic Points"
+popup/item_3/id = 3
+popup/item_4/text = "Attack"
+popup/item_4/id = 4
+popup/item_5/text = "Defense"
+popup/item_5/id = 5
+popup/item_6/text = "Magical Attack"
+popup/item_6/id = 6
+popup/item_7/text = "Magical Defense"
+popup/item_7/id = 7
+popup/item_8/text = "Agility"
+popup/item_8/id = 8
+popup/item_9/text = "Luck"
+popup/item_9/id = 9
+popup/item_10/text = "Hit Rate"
+popup/item_10/id = 10
+popup/item_11/text = "Evasion Rate"
+popup/item_11/id = 11
+popup/item_12/text = "Critical Rate"
+popup/item_12/id = 12
+popup/item_13/text = "Critical Evasion"
+popup/item_13/id = 13
+popup/item_14/text = "Magic Evasion"
+popup/item_14/id = 14
+popup/item_15/text = "Magic Reflection"
+popup/item_15/id = 15
+popup/item_16/text = "Counter Attack"
+popup/item_16/id = 16
+popup/item_17/text = "HP Regeneration"
+popup/item_17/id = 17
+popup/item_18/text = "MP Regeneration"
+popup/item_18/id = 18
+popup/item_19/text = "TP Regeneration"
+popup/item_19/id = 19
+popup/item_20/text = "Target Rate"
+popup/item_20/id = 20
+popup/item_21/text = "Guard Effect"
+popup/item_21/id = 21
+popup/item_22/text = "Recovery Effect"
+popup/item_22/id = 22
+popup/item_23/text = "Healing Mastery"
+popup/item_23/id = 23
+popup/item_24/text = "MP Cost Rate"
+popup/item_24/id = 24
+popup/item_25/text = "TP Charge Rate"
+popup/item_25/id = 25
+popup/item_26/text = "Physical Damage Rate"
+popup/item_26/id = 26
+popup/item_27/text = "Magic Damage Rate"
+popup/item_27/id = 27
+popup/item_28/text = "Floor Damage Rate"
+popup/item_28/id = 28
+popup/item_29/text = "Experience Rate"
+popup/item_29/id = 29
+popup/item_30/text = "Gold Rate"
+popup/item_30/id = 30
+popup/item_31/id = -1
+popup/item_31/separator = true
+popup/item_32/text = "User Parameter: Param 1"
+popup/item_32/id = 32
+popup/item_33/text = "User Parameter: Param 2"
+popup/item_33/id = 33
+
+[node name="HBoxContainer10" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Profession" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer10"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+tooltip_text = "Use the player's profession level as the value for the variable."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_yeuqa")
+text = "Profession:"
+
+[node name="ProfessionID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer10" instance=ExtResource("3_jihb0")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use the player's profession level as the value for the variable."
+disabled = true
+text = "1:Collector"
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer10"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.570313, 0.570313, 0.570313, 1)
+text = "(Current Level)"
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Enemy" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer5"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+tooltip_text = "Uses the enemy's parameter (HP, MP, etc.) as the value. Specify the target enemy and parameter. This is only effective during battle."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_yeuqa")
+text = "Enemy:"
+
+[node name="EnemyID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer5" instance=ExtResource("4_diq7a")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Uses the enemy's parameter (HP, MP, etc.) as the value. Specify the target enemy and parameter. This is only effective during battle."
+selected = 0
+item_count = 8
+popup/item_0/text = "Enemy #1"
+popup/item_0/id = 0
+popup/item_1/text = "Enemy #2"
+popup/item_1/id = 1
+popup/item_2/text = "Enemy #3"
+popup/item_2/id = 2
+popup/item_3/text = "Enemy #4"
+popup/item_3/id = 3
+popup/item_4/text = "Enemy #5"
+popup/item_4/id = 4
+popup/item_5/text = "Enemy #6"
+popup/item_5/id = 5
+popup/item_6/text = "Enemy #7"
+popup/item_6/id = 6
+popup/item_7/text = "Enemy #8"
+popup/item_7/id = 7
+
+[node name="EnemyParameter" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer5" instance=ExtResource("4_diq7a")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+tooltip_text = "Uses the enemy's parameter (HP, MP, etc.) as the value. Specify the target enemy and parameter. This is only effective during battle."
+disabled = true
+selected = 0
+item_count = 11
+popup/item_0/text = "HP"
+popup/item_0/id = 0
+popup/item_1/text = "MP"
+popup/item_1/id = 1
+popup/item_2/text = "Max HP"
+popup/item_2/id = 2
+popup/item_3/text = "Max MP"
+popup/item_3/id = 3
+popup/item_4/text = "Attack"
+popup/item_4/id = 4
+popup/item_5/text = "Defense"
+popup/item_5/id = 5
+popup/item_6/text = "Magic Attack"
+popup/item_6/id = 6
+popup/item_7/text = "Magic Defense"
+popup/item_7/id = 7
+popup/item_8/text = "Agility"
+popup/item_8/id = 8
+popup/item_9/text = "Luck"
+popup/item_9/id = 9
+popup/item_10/text = "TP"
+popup/item_10/id = 10
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Character" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer6"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+tooltip_text = "Uses values such as the coordinates or direction of the player or events.
+
+[ul] \"Map X, Y\": Map coordinates of current location
+ \"Direction\": Current direction (up = 8 / left = 4 / right = 6 / down = 2)
+ \"Screen X, Y\": Uses the display position coordinates on the screen (pixels)[/ul]"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_yeuqa")
+text = "Character:"
+
+[node name="CharacterID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer6" instance=ExtResource("4_diq7a")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Uses values such as the coordinates or direction of the player or events.
+
+[ul] \"Map X, Y\": Map coordinates of current location
+ \"Direction\": Current direction (up = 8 / left = 4 / right = 6 / down = 2)
+ \"Screen X, Y\": Uses the display position coordinates on the screen (pixels)[/ul]"
+disabled = true
+selected = 0
+item_count = 2
+popup/item_0/text = "Player"
+popup/item_0/id = 0
+popup/item_1/text = "This Event"
+popup/item_1/id = 1
+
+[node name="CharacterParameter" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer6" instance=ExtResource("4_diq7a")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+tooltip_text = "Uses values such as the coordinates or direction of the player or events.
+
+[ul] \"Map X, Y\": Map coordinates of current location
+ \"Direction\": Current direction (up = 8 / left = 4 / right = 6 / down = 2)
+ \"Screen X, Y\": Uses the display position coordinates on the screen (pixels)[/ul]"
+disabled = true
+selected = 0
+item_count = 8
+popup/item_0/text = "Map X"
+popup/item_0/id = 0
+popup/item_1/text = "Map Y"
+popup/item_1/id = 1
+popup/item_2/text = "Direction"
+popup/item_2/id = 2
+popup/item_3/text = "Screen X"
+popup/item_3/id = 3
+popup/item_4/text = "Screen Y"
+popup/item_4/id = 4
+popup/item_5/text = "Global Position X"
+popup/item_5/id = 5
+popup/item_6/text = "Global Position Y"
+popup/item_6/id = 6
+popup/item_7/text = "Z-Index"
+popup/item_7/id = 7
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Party" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer7"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+tooltip_text = "Uses the ID of the actor in the specified position within the party."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_yeuqa")
+text = "Party:"
+
+[node name="PartyID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer7" instance=ExtResource("4_diq7a")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Uses the ID of the actor in the specified position within the party."
+disabled = true
+selected = 0
+item_count = 8
+popup/item_0/text = "Member #1"
+popup/item_0/id = 0
+popup/item_1/text = "Member #2"
+popup/item_1/id = 1
+popup/item_2/text = "Member #3"
+popup/item_2/id = 2
+popup/item_3/text = "Member #4"
+popup/item_3/id = 3
+popup/item_4/text = "Member #5"
+popup/item_4/id = 4
+popup/item_5/text = "Member #6"
+popup/item_5/id = 5
+popup/item_6/text = "Member #7"
+popup/item_6/id = 6
+popup/item_7/text = "Member #8"
+popup/item_7/id = 7
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer7"]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.570313, 0.570313, 0.570313, 1)
+text = "(Party ID)"
+
+[node name="HBoxContainer11" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Stat" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer11"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_vertical = 0
+tooltip_text = "Use the value of the selected stat as the value for this variable."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_yeuqa")
+text = "Stat:"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer11"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="StatID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer11/VBoxContainer" instance=ExtResource("4_diq7a")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use the value of the selected stat as the value for this variable."
+disabled = true
+selected = 0
+item_count = 56
+popup/item_0/text = "Armors Found"
+popup/item_0/id = 0
+popup/item_1/text = "Armors Purchased"
+popup/item_1/id = 1
+popup/item_2/text = "Armors Sold"
+popup/item_2/id = 2
+popup/item_3/text = "Battles/current Lose Streak"
+popup/item_3/id = 3
+popup/item_4/text = "Battles/current Win Streak"
+popup/item_4/id = 4
+popup/item_5/text = "Battles/drawn"
+popup/item_5/id = 5
+popup/item_6/text = "Battles/escaped"
+popup/item_6/id = 6
+popup/item_7/text = "Battles/longest Battle Time"
+popup/item_7/id = 7
+popup/item_8/text = "Battles/longest Lose Streak"
+popup/item_8/id = 8
+popup/item_9/text = "Battles/longest Win Streak"
+popup/item_9/id = 9
+popup/item_10/text = "Battles/lost"
+popup/item_10/id = 10
+popup/item_11/text = "Battles/shortest Battle Time"
+popup/item_11/id = 11
+popup/item_12/text = "Battles/total Combat Turns"
+popup/item_12/id = 12
+popup/item_13/text = "Battles/total Critiques Performed"
+popup/item_13/id = 13
+popup/item_14/text = "Battles/total Damage Done"
+popup/item_14/id = 14
+popup/item_15/text = "Battles/total Damage Received"
+popup/item_15/id = 15
+popup/item_16/text = "Battles/total Experience Earned"
+popup/item_16/id = 16
+popup/item_17/text = "Battles/total Played"
+popup/item_17/id = 17
+popup/item_18/text = "Battles/total Time In Battle"
+popup/item_18/id = 18
+popup/item_19/text = "Battles/total Used Skills"
+popup/item_19/id = 19
+popup/item_20/text = "Battles/won"
+popup/item_20/id = 20
+popup/item_21/text = "Chests Opened"
+popup/item_21/id = 21
+popup/item_22/text = "Dialogues Completed"
+popup/item_22/id = 22
+popup/item_23/text = "Enemy Kills"
+popup/item_23/id = 23
+popup/item_24/text = "Extractions/critical Performs"
+popup/item_24/id = 24
+popup/item_25/text = "Extractions/resources Interactions"
+popup/item_25/id = 25
+popup/item_26/text = "Extractions/super Critical Performs"
+popup/item_26/id = 26
+popup/item_27/text = "Extractions/total Failure"
+popup/item_27/id = 27
+popup/item_28/text = "Extractions/total Finished"
+popup/item_28/id = 28
+popup/item_29/text = "Extractions/total Items Found"
+popup/item_29/id = 29
+popup/item_30/text = "Extractions/total Success"
+popup/item_30/id = 30
+popup/item_31/text = "Extractions/total Unfinished"
+popup/item_31/id = 31
+popup/item_32/text = "Game Progress"
+popup/item_32/id = 32
+popup/item_33/text = "Items Found"
+popup/item_33/id = 33
+popup/item_34/text = "Items Purchased"
+popup/item_34/id = 34
+popup/item_35/text = "Items Sold"
+popup/item_35/id = 35
+popup/item_36/text = "Max Level Reached"
+popup/item_36/id = 36
+popup/item_37/text = "Missions/completed"
+popup/item_37/id = 37
+popup/item_38/text = "Missions/failed"
+popup/item_38/id = 38
+popup/item_39/text = "Missions/in Progress"
+popup/item_39/id = 39
+popup/item_40/text = "Missions/total Found"
+popup/item_40/id = 40
+popup/item_41/text = "Play Time"
+popup/item_41/id = 41
+popup/item_42/text = "Player Deaths"
+popup/item_42/id = 42
+popup/item_43/text = "Rare Items Found"
+popup/item_43/id = 43
+popup/item_44/text = "Save Count"
+popup/item_44/id = 44
+popup/item_45/text = "Secrets Found"
+popup/item_45/id = 45
+popup/item_46/text = "Skills"
+popup/item_46/id = 46
+popup/item_47/text = "Steps"
+popup/item_47/id = 47
+popup/item_48/text = "Total Money Earned"
+popup/item_48/id = 48
+popup/item_49/text = "Total Money Spent"
+popup/item_49/id = 49
+popup/item_50/text = "Weapons Found"
+popup/item_50/id = 50
+popup/item_51/text = "Weapons Purchased"
+popup/item_51/id = 51
+popup/item_52/text = "Weapons Sold"
+popup/item_52/id = 52
+popup/item_53/text = "user Stats"
+popup/item_53/id = -1
+popup/item_53/separator = true
+popup/item_54/text = "Stat 1"
+popup/item_54/id = 54
+popup/item_55/text = "Stat 2"
+popup/item_55/id = 55
+
+[node name="StatItemID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer11/VBoxContainer" instance=ExtResource("3_jihb0")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Uses the count of the specified item."
+disabled = true
+text = " "
+
+[node name="HBoxContainer8" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Last" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer8"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+tooltip_text = "Uses data related to the immediately prior action"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_yeuqa")
+text = "Last:"
+
+[node name="LastID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer8" instance=ExtResource("4_diq7a")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Uses data related to the immediately prior action"
+disabled = true
+selected = 0
+item_count = 6
+popup/item_0/text = "ID Of the Last Used Skill"
+popup/item_0/id = 0
+popup/item_1/text = "ID Of the Last Used Item"
+popup/item_1/id = 1
+popup/item_2/text = "ID Of the Last Actor To Act"
+popup/item_2/id = 2
+popup/item_3/text = "ID Of the Last Enemy Battler To Act"
+popup/item_3/id = 3
+popup/item_4/text = "ID Of the Last Targeted Actor"
+popup/item_4/id = 4
+popup/item_5/text = "ID Of the Last Targeted Enemy"
+popup/item_5/id = 5
+
+[node name="HBoxContainer9" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Other" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer9"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+tooltip_text = "Uses some other type of data"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_pressed = true
+button_group = SubResource("ButtonGroup_yeuqa")
+text = "Other:"
+
+[node name="OtherID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer9" instance=ExtResource("4_diq7a")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Uses some other type of data"
+button_pressed = true
+selected = 0
+item_count = 20
+popup/item_0/text = "Current Map ID"
+popup/item_0/id = 0
+popup/item_1/text = "Party Member Count"
+popup/item_1/id = 1
+popup/item_2/text = "Gold"
+popup/item_2/id = 2
+popup/item_3/text = "Steps"
+popup/item_3/id = 3
+popup/item_4/text = "Play Time"
+popup/item_4/id = 4
+popup/item_5/text = "Current Timer Value"
+popup/item_5/id = 5
+popup/item_6/text = "Save Count"
+popup/item_6/id = 6
+popup/item_7/text = "Battle Count"
+popup/item_7/id = 7
+popup/item_8/text = "Win Count"
+popup/item_8/id = 8
+popup/item_9/text = "Scape Count"
+popup/item_9/id = 9
+popup/item_10/text = "Quests Failed"
+popup/item_10/id = 10
+popup/item_11/text = "Quests In Progress"
+popup/item_11/id = 11
+popup/item_12/text = "Total Completed Quests"
+popup/item_12/id = 12
+popup/item_13/text = "Total Enemy Kills"
+popup/item_13/id = 13
+popup/item_14/text = "Total Money Earned"
+popup/item_14/id = 14
+popup/item_15/text = "Total Quest Found"
+popup/item_15/id = 15
+popup/item_16/text = "Total Relationships Started"
+popup/item_16/id = 16
+popup/item_17/text = "Total Relationships Maximized"
+popup/item_17/id = 17
+popup/item_18/text = "Total Achievements Unlocked"
+popup/item_18/id = 18
+popup/item_19/text = "Global User Parameter"
+popup/item_19/id = 19
+
+[node name="GlobalUserParameterContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/GlobalUserParameterContainer"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+
+[node name="GlobalUserParameter" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/GlobalUserParameterContainer" instance=ExtResource("4_diq7a")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 0
+item_count = 2
+popup/item_0/text = "User Parameter: Param 1"
+popup/item_0/id = 0
+popup/item_1/text = "User Parameter: Param 2"
+popup/item_1/id = 1
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_x52s5")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+theme_override_styles/normal = SubResource("StyleBoxTexture_o1xdk")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_p4xgh")
+theme_override_styles/hover = SubResource("StyleBoxTexture_jol07")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_2bfr8")
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_x52s5")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+theme_override_styles/normal = SubResource("StyleBoxTexture_jkbyo")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_0j2l8")
+theme_override_styles/hover = SubResource("StyleBoxTexture_ltkjm")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_cbfgw")
+text = "CANCEL"
+
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer/Item" to="." method="_on_type_selected" binds= [0]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer/ItemID" to="." method="_on_item_id_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer2/Weapon" to="." method="_on_type_selected" binds= [1]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer2/WeaponID" to="." method="_on_weapon_id_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer3/Armor" to="." method="_on_type_selected" binds= [2]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer3/ArmorID" to="." method="_on_armor_id_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer4/Actor" to="." method="_on_type_selected" binds= [3]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer4/ActorID" to="." method="_on_actor_id_pressed"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer4/ActorParameter" to="." method="_on_actor_parameter_item_selected"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer10/Profession" to="." method="_on_type_selected" binds= [9]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer10/ProfessionID" to="." method="_on_profession_id_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer5/Enemy" to="." method="_on_type_selected" binds= [4]]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer5/EnemyParameter" to="." method="_on_enemy_parameter_item_selected"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer6/Character" to="." method="_on_type_selected" binds= [5]]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer6/CharacterID" to="." method="_on_character_id_item_selected"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer6/CharacterParameter" to="." method="_on_character_parameter_item_selected"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer7/Party" to="." method="_on_type_selected" binds= [6]]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer7/PartyID" to="." method="_on_party_id_item_selected"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer11/Stat" to="." method="_on_type_selected" binds= [10]]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer11/VBoxContainer/StatID" to="." method="_on_stat_id_item_selected"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer11/VBoxContainer/StatItemID" to="." method="_on_stat_item_id_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer8/Last" to="." method="_on_type_selected" binds= [7]]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer8/LastID" to="." method="_on_last_id_item_selected"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer9/Other" to="." method="_on_type_selected" binds= [8]]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer9/OtherID" to="." method="_on_other_id_item_selected"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/GlobalUserParameterContainer/GlobalUserParameter" to="." method="_on_global_user_parameter_item_selected"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

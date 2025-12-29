@@ -1,0 +1,172 @@
+[gd_scene load_steps=8 format=3 uid="uid://dhcakxqoqyykl"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_g3gmy"]
+[ext_resource type="Script" uid="uid://c0u03v437rqlc" path="res://addons/CustomControls/Dialogs/animation_select_shake_dialog.gd" id="2_o7h8m"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="3_e16m8"]
+[ext_resource type="Script" uid="uid://d0kowhkcjb7kv" path="res://addons/CustomControls/custom_option_button.gd" id="4_ma6v4"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="5_doac4"]
+
+[sub_resource type="Gradient" id="Gradient_vvvrv"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_n4cyl"]
+gradient = SubResource("Gradient_vvvrv")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[node name="AnimationSelecShakeDialog" type="Window"]
+title = "Animation Flash"
+position = Vector2i(0, 36)
+size = Vector2i(480, 242)
+transient = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_g3gmy")
+script = ExtResource("2_o7h8m")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_n4cyl")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(115, 0)
+layout_mode = 2
+text = "Frame:"
+
+[node name="Frame" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_e16m8")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Select the frame where this shake will be displayed"
+allow_greater = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(115, 0)
+layout_mode = 2
+text = "Duration:"
+
+[node name="Duration" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("3_e16m8")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Select the time that this shake will stay on the screen."
+min_value = 0.01
+step = 0.01
+value = 0.1
+allow_greater = true
+suffix = " second/s"
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer5"]
+custom_minimum_size = Vector2(115, 0)
+layout_mode = 2
+text = "Target:"
+
+[node name="Target" type="OptionButton" parent="MarginContainer/VBoxContainer/HBoxContainer5"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Select the shake target (you can select either the shake target or the screen)."
+mouse_default_cursor_shape = 2
+selected = 0
+item_count = 2
+popup/item_0/text = "Objetive"
+popup/item_0/id = 0
+popup/item_1/text = "Screen"
+popup/item_1/id = 1
+script = ExtResource("4_ma6v4")
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4"]
+custom_minimum_size = Vector2(115, 0)
+layout_mode = 2
+text = "Amplitude:"
+
+[node name="Amplitude" parent="MarginContainer/VBoxContainer/HBoxContainer4" instance=ExtResource("3_e16m8")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Controls how far the image is offset from the origin.
+
+[Note]: For screen shakes, a value over 10 may give a good result. For character shakes, a value less than 2.5 may give better results."
+step = 0.01
+value = 0.1
+allow_greater = true
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6"]
+custom_minimum_size = Vector2(115, 0)
+layout_mode = 2
+text = "Frequency:"
+
+[node name="Frequency" parent="MarginContainer/VBoxContainer/HBoxContainer6" instance=ExtResource("3_e16m8")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Controls the frequency with which the target is agitated"
+step = 0.1
+value = 0.1
+allow_greater = true
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("5_doac4")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("5_doac4")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+text = "Cancel"
+
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer/Frame" to="." method="_on_frame_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/Duration" to="." method="_on_duration_value_changed"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer5/Target" to="." method="_on_target_item_selected"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer4/Amplitude" to="." method="_on_amplitude_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer6/Frequency" to="." method="_on_frequency_value_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer3/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer3/CancelButton" to="." method="_on_cancel_button_pressed"]

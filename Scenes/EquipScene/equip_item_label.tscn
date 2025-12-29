@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://mt3cduob7ya5"]
+
+[ext_resource type="Script" uid="uid://b65rqlb80xoe0" path="res://Scenes/EquipScene/equip_item_label.gd" id="1_j2qao"]
+
+[sub_resource type="Gradient" id="Gradient_wdadd"]
+offsets = PackedFloat32Array(0, 0.981818)
+colors = PackedColorArray(0.623529, 0.388235, 0.117647, 1, 0.0431373, 0.0313726, 0.027451, 0.419608)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_wdadd"]
+gradient = SubResource("Gradient_wdadd")
+fill_from = Vector2(0.478632, 1)
+fill_to = Vector2(0.508547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ngudq"]
+texture = SubResource("GradientTexture2D_wdadd")
+
+[node name="EquipItemLabel" type="Control"]
+custom_minimum_size = Vector2(0, 26)
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_j2qao")
+margin_right = 40
+font_size = 16
+line_stylebox = SubResource("StyleBoxTexture_ngudq")
+line_height = 3
+show_comparison = false

@@ -1,0 +1,7 @@
+[
+	{
+		"contents": "var quantity = 99\nvar items = RPGSYSTEM.database.items\nvar weapons = RPGSYSTEM.database.weapons\nvar armors = RPGSYSTEM.database.armors\n\nfor i in range(1, items.size(), 1):\n\tvar current_item: RPGItem = items[i]\n\tif current_item.perishable:\n\t\tGameManager.add_item_amount(current_item.id, 1)\n\telse:\n\t\tGameManager.add_item_amount(current_item.id, quantity)\n\t\nfor i in range(1, weapons.size(), 1):\n\tvar current_weapon: RPGWeapon = weapons[i]\n\tif current_weapon.upgrades.max_levels == 1:\n\t\tGameManager.add_weapon_amount(current_weapon.id, quantity, 1)\n\telse:\n\t\tfor j in range(0, current_weapon.upgrades.max_levels, 1):\n\t\t\tGameManager.add_weapon_amount(current_weapon.id, 1, j + 1)\n\t\nfor i in range(1, armors.size(), 1):\n\tvar current_armor: RPGArmor = armors[i]\n\tif current_armor.upgrades.max_levels == 1:\n\t\tGameManager.add_armor_amount(current_armor.id, quantity, 1)\n\telse:\n\t\tfor j in range(0, current_armor.upgrades.max_levels, 1):\n\t\t\tGameManager.add_armor_amount(current_armor.id, 1, j + 1)",
+		"default": true,
+		"name": "Add All Items"
+	}
+]

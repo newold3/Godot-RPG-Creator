@@ -1,0 +1,129 @@
+[gd_scene load_steps=8 format=3 uid="uid://bbhroagvcaw57"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_3j37e"]
+[ext_resource type="Script" uid="uid://cgm40livm0562" path="res://addons/CustomControls/Dialogs/CommandEvents/add_or_remove_actor_trait_dialog.gd" id="2_ao2tm"]
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="3_xy8cs"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="3_ye4e7"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="5_o7xfk"]
+
+[sub_resource type="Gradient" id="Gradient_7ascj"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ourej"]
+gradient = SubResource("Gradient_7ascj")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[node name="AddOrRemoveActorTraitDialog" type="Window"]
+title = "Add Or Remove Trait"
+position = Vector2i(0, 36)
+size = Vector2i(600, 252)
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_3j37e")
+script = ExtResource("2_ao2tm")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_ourej")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Actor ID:"
+
+[node name="ActorID" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_ye4e7")]
+unique_name_in_owner = true
+layout_mode = 2
+selected = 0
+item_count = 6
+popup/item_0/text = "Entire Party"
+popup/item_0/id = 0
+popup/item_1/text = "1: Aiden"
+popup/item_1/id = 1
+popup/item_2/text = "2: Elara"
+popup/item_2/id = 2
+popup/item_3/text = "3: Thorne"
+popup/item_3/id = 3
+popup/item_4/text = "4: Lyra"
+popup/item_4/id = 4
+popup/item_5/text = "5: Gideon"
+popup/item_5/id = 5
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Type:"
+
+[node name="Type" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_ye4e7")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Select between the options “Add Trait” or “Remove Trait”."
+selected = 0
+item_count = 2
+popup/item_0/text = "Add Trait"
+popup/item_0/id = 0
+popup/item_1/text = "Remove Trait"
+popup/item_1/id = 1
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Trait:"
+
+[node name="Trait" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_xy8cs")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Select trait"
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_o7xfk")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_o7xfk")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+text = "CANCEL"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Trait" to="." method="_on_trait_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/CancelButton" to="." method="_on_cancel_button_pressed"]

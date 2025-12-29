@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://cyxr6y64lkue6"]
+
+[ext_resource type="PackedScene" uid="uid://job5gqt1xbrh" path="res://addons/tile_bit_tools/controls/tbt_plugin_control/popups/save_template_dialog.tscn" id="1_5jw1t"]
+[ext_resource type="Script" uid="uid://b41bpno2pgvv8" path="res://addons/tile_bit_tools/controls/tbt_plugin_control/popups/edit_template_dialog.gd" id="2_bgxlq"]
+
+[node name="EditTemplateDialog" instance=ExtResource("1_5jw1t")]
+title = "Edit Terrain Template"
+visible = false
+script = ExtResource("2_bgxlq")
+metadata/_edit_pinned_properties_ = [&"title"]
+
+[node name="FolderLabel" type="Label" parent="BackgroundPanel/MarginContainer/VBoxContainer/ForegroundPanel/MarginContainer/VBoxContainer/BottomPanel/MarginContainer/VBoxContainer/HBoxContainer6" index="1" groups=["TBTSubPropertyLabel"]]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+mouse_filter = 0
+text = "(save path)"
+
+[node name="FolderOptionButton" parent="BackgroundPanel/MarginContainer/VBoxContainer/ForegroundPanel/MarginContainer/VBoxContainer/BottomPanel/MarginContainer/VBoxContainer/HBoxContainer6" index="2"]
+visible = false
+metadata/_edit_pinned_properties_ = [&"visible"]

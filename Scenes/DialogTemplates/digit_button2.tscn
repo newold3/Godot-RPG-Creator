@@ -1,0 +1,69 @@
+[gd_scene load_steps=5 format=3 uid="uid://c5mgn340p7bn0"]
+
+[ext_resource type="Script" uid="uid://y86c2dmceps7" path="res://Scenes/DialogTemplates/digit_button_2.gd" id="1_cch06"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uooe8"]
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l0u2p"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pvgs3"]
+bg_color = Color(0.0666667, 0.219608, 0.117647, 0.686275)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="DigitButton2" type="PanelContainer"]
+clip_children = 1
+custom_minimum_size = Vector2(22, 22)
+offset_right = 22.0
+offset_bottom = 22.0
+size_flags_horizontal = 0
+size_flags_vertical = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_uooe8")
+script = ExtResource("1_cch06")
+no_selected_style = SubResource("StyleBoxFlat_l0u2p")
+selected_style = SubResource("StyleBoxFlat_pvgs3")
+
+[node name="Canvas2" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+clip_contents = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 2
+
+[node name="Canvas1" type="Control" parent="MarginContainer"]
+unique_name_in_owner = true
+clip_contents = true
+layout_mode = 2
+mouse_filter = 2

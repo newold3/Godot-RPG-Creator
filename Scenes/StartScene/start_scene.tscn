@@ -1,0 +1,91 @@
+[gd_scene load_steps=6 format=3 uid="uid://bayf56d5s3sbk"]
+
+[ext_resource type="Script" uid="uid://so2x8pmrk7jt" path="res://Scenes/StartScene/start_scene.gd" id="1_vc51s"]
+[ext_resource type="Shader" uid="uid://dcgq46thufvvc" path="res://Assets/Shaders/simple_ripple.gdshader" id="2_0wpbw"]
+[ext_resource type="AudioStream" uid="uid://cwke6sw0s32vn" path="res://Assets/Sounds/SE/water_drop.ogg" id="3_bary1"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7vvhg"]
+shader = ExtResource("2_0wpbw")
+shader_parameter/center = Vector2(0.5, 0.5)
+shader_parameter/time_factor = 0.5
+shader_parameter/distortion_strength = 0.03
+shader_parameter/wave_count = 100.0
+shader_parameter/wave_speed = 20.0
+shader_parameter/ring_width = 0.4
+shader_parameter/ripple_color = Color(1, 1, 1, 0.647059)
+shader_parameter/spawn_rate = 1.0
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_lgys4"]
+viewport_path = NodePath("SubViewport")
+
+[node name="Intro" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_vc51s")
+title = "GODOT RPG CREATOR"
+sub_title = "Created With"
+
+[node name="SubViewport" type="SubViewport" parent="."]
+transparent_bg = true
+size = Vector2i(1152, 648)
+
+[node name="Ripple" type="ColorRect" parent="SubViewport"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_7vvhg")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -523.0
+offset_top = -135.0
+offset_right = 535.0
+offset_bottom = 168.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="ColorRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="RippleEffect" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(579, 337)
+scale = Vector2(1, 0.819444)
+texture = SubResource("ViewportTexture_lgys4")
+
+[node name="Label1" type="Label" parent="."]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="."]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("3_bary1")

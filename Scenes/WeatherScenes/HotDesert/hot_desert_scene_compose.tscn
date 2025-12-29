@@ -1,0 +1,175 @@
+[gd_scene load_steps=20 format=3 uid="uid://5svltfvmm6qc"]
+
+[ext_resource type="Shader" uid="uid://blw4u864xpd46" path="res://Assets/Shaders/heat_haze.gdshader" id="1_xge2l"]
+[ext_resource type="AudioStream" uid="uid://difa18j3yyfft" path="res://Assets/Sounds/SE/desert_wind.ogg" id="2_8o334"]
+[ext_resource type="PackedScene" uid="uid://cb7emuh2o72a5" path="res://Scenes/WeatherScenes/HotDesert/mist.tscn" id="2_wqa3t"]
+[ext_resource type="Texture2D" uid="uid://dmx2v3ccts2ne" path="res://Assets/Images/Particles/simple_particle1.png" id="5_b1fr5"]
+
+[sub_resource type="GDScript" id="GDScript_mjtd2"]
+script/source = "@tool
+extends Node2D
+
+
+func get_class() -> String:
+	return \"WeatherScene\"
+
+
+const LINE_WIND = preload(\"res://Scenes/WeatherScenes/HotDesert/line_wind.tscn\")
+const MAX_LINE_WIND: int = 10
+
+@export var modulate_scene: Color = Color(\"#081662\")
+
+var current_camera_position: Vector2 = Vector2.ZERO
+var current_lines: int  = 0
+
+
+func _ready() -> void:
+	if Engine.is_editor_hint():
+		set_physics_process(false)
+		set_process(false)
+	else:
+		if GameManager.main_scene:
+			$Mist.modulate = Color.TRANSPARENT
+			var t = create_tween()
+			t.set_parallel(true)
+			t.tween_method(_set_main_canvas_modulate.bind(GameManager.main_scene), Color.TRANSPARENT, modulate_scene, 2.5)
+			t.tween_property($Mist,\"modulate\", Color.WHITE, 2.5)
+
+
+func _set_main_canvas_modulate(color: Color, main_scene: MainScene) -> void:
+	main_scene.set_weather_modulate_color(color)
+
+
+func _physics_process(delta: float) -> void:
+	if ([1, 5, 15].has(randi() % 20) and current_lines < MAX_LINE_WIND):
+		var wind = LINE_WIND.instantiate()
+		var screen_size = get_viewport().size
+		wind.position = Vector2(randi() % screen_size.x, randi() % screen_size.y)
+		wind.direction = Vector2(randf_range(0.75, 1), randf_range(-0.35, 0.35))
+		wind.tree_exiting.connect(
+			func():
+				current_lines -= 1
+		)
+		GameManager.current_map.add_child(wind)
+		current_lines += 1
+"
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_xge2l"]
+noise_type = 5
+frequency = 0.0268
+offset = Vector3(0, 298.7, 0)
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_b1fr5"]
+noise = SubResource("FastNoiseLite_xge2l")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5wcnu"]
+shader = ExtResource("1_xge2l")
+shader_parameter/NOISE_TEXTURE = SubResource("NoiseTexture2D_b1fr5")
+shader_parameter/strength = 1.70000002533204
+shader_parameter/uv_scaling = 0.30000000447036
+shader_parameter/movement_direction = Vector2(1, 0)
+shader_parameter/movement_speed = 0.18
+
+[sub_resource type="Curve" id="Curve_7r4y4"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.131579, 0.975746), 0.0, 0.0, 0, 0, Vector2(0.650718, 0.708955), 0.0, 0.0, 0, 0, Vector2(0.808612, 0.114739), 0.0, 0.0, 0, 0, Vector2(0.997608, 0), 0.0, 0.0, 0, 0]
+point_count = 5
+
+[sub_resource type="CurveTexture" id="CurveTexture_eexqu"]
+curve = SubResource("Curve_7r4y4")
+
+[sub_resource type="Gradient" id="Gradient_h13t4"]
+colors = PackedColorArray(0.52549, 0.423529, 0.243137, 1, 1, 1, 0.537255, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_qlr5w"]
+gradient = SubResource("Gradient_h13t4")
+
+[sub_resource type="Curve" id="Curve_1a2hw"]
+_limits = [0.0, 100.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.296651, 57.556), 0.0, 0.0, 0, 0, Vector2(0.435407, 0), 0.0, 0.0, 0, 0, Vector2(0.626794, 12.5902), 0.0, 0.0, 0, 0, Vector2(0.667464, 83.574), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 6
+
+[sub_resource type="CurveTexture" id="CurveTexture_5moun"]
+curve = SubResource("Curve_1a2hw")
+
+[sub_resource type="Curve" id="Curve_4g1iy"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.270335, 0.739272), 0.0, 0.0, 0, 0, Vector2(1, 0), -1.38424, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_7jyrf"]
+curve = SubResource("Curve_4g1iy")
+
+[sub_resource type="Curve" id="Curve_0w6gc"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.216279, 0.894404), 0.0, 0.0, 0, 0, Vector2(0.825581, 0.624549), 0.0, 0.0, 0, 0, Vector2(1, 0.34296), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_1ivy3"]
+curve = SubResource("Curve_0w6gc")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_pseic"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(576, 320, 1)
+angle_min = -157.0
+angle_max = 337.6
+direction = Vector3(0, -1, 0)
+spread = 180.0
+initial_velocity_min = -500.0
+initial_velocity_max = 500.0
+angular_velocity_min = -213.59
+angular_velocity_max = 303.16
+gravity = Vector3(0, 0, 0)
+damping_max = 7.176
+damping_curve = SubResource("CurveTexture_5moun")
+scale_min = 0.2
+scale_max = 3.0
+scale_curve = SubResource("CurveTexture_7jyrf")
+color_ramp = SubResource("GradientTexture1D_qlr5w")
+alpha_curve = SubResource("CurveTexture_eexqu")
+turbulence_noise_strength = 1.26
+turbulence_noise_scale = 0.0
+turbulence_influence_min = 0.044
+turbulence_influence_max = 0.58
+turbulence_initial_displacement_min = -71.6
+turbulence_initial_displacement_max = 40.9
+turbulence_influence_over_life = SubResource("CurveTexture_1ivy3")
+
+[node name="HotDesertScene" type="Node2D"]
+script = SubResource("GDScript_mjtd2")
+modulate_scene = Color(1.0503058, 0, 0.02043789, 0.12156863)
+
+[node name="Mist" parent="." instance=ExtResource("2_wqa3t")]
+z_index = 100
+z_as_relative = false
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="HeatHaze" type="ColorRect" parent="CanvasLayer"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_5wcnu")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LineContainer" type="Node2D" parent="."]
+unique_name_in_owner = true
+visible = false
+
+[node name="BGSPlayer" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("2_8o334")
+autoplay = true
+bus = &"Ambient"
+
+[node name="Dust" type="GPUParticles2D" parent="."]
+position = Vector2(576, 320)
+amount = 100
+texture = ExtResource("5_b1fr5")
+lifetime = 3.5
+speed_scale = 0.4
+explosiveness = 0.44
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_pseic")

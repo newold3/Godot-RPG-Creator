@@ -1,0 +1,153 @@
+[gd_scene load_steps=14 format=3 uid="uid://llqjaxoxheax"]
+
+[ext_resource type="Texture2D" uid="uid://byteuuaqlicgp" path="res://Assets/Images/GUI/button5_normal.png" id="1_4c6nn"]
+[ext_resource type="Texture2D" uid="uid://6cjq682b26l8" path="res://Assets/Images/GUI/button5_pressed.png" id="2_crwd0"]
+[ext_resource type="PackedScene" uid="uid://8gbgmsgpvibk" path="res://addons/CustomControls/auto_fit_label.tscn" id="3_kt4nv"]
+[ext_resource type="Texture2D" uid="uid://babqc8w557le3" path="res://Assets/Images/GUI/button5_disabled.png" id="3_sakbl"]
+[ext_resource type="Script" uid="uid://daljgc6tj2cg0" path="res://Scripts/button_gui_1.gd" id="3_vjpr1"]
+[ext_resource type="Texture2D" uid="uid://bh5mdip0litws" path="res://Assets/Images/GUI/button5_hover_effect.png" id="5_jysf7"]
+[ext_resource type="Texture2D" uid="uid://dxv5c7g41ixbk" path="res://Assets/Resourcers/Gradients/yellow_and_white.tres" id="8_jysf7"]
+[ext_resource type="Shader" uid="uid://byvruuuuqrdn8" path="res://Assets/Shaders/simple_gradient.gdshader" id="8_sakbl"]
+[ext_resource type="FontFile" uid="uid://dvh0mi6yu0ywx" path="res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf" id="9_jysf7"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4c6nn"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_am65u"]
+resource_local_to_scene = false
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sakbl"]
+shader = ExtResource("8_sakbl")
+shader_parameter/gradient_texture = ExtResource("8_jysf7")
+shader_parameter/use_text_gradient = true
+shader_parameter/size = Vector2(1, 8)
+shader_parameter/use_pixelate_gradient = true
+shader_parameter/pixel_scale = 3.202000104595
+shader_parameter/brightness = 1.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_sakbl"]
+resource_local_to_scene = true
+font = ExtResource("9_jysf7")
+font_size = 8
+outline_size = 4
+outline_color = Color(1, 0.9008333, 0.14999998, 1)
+stacked_outline_count = 4
+stacked_outline_0/size = 3
+stacked_outline_0/color = Color(0.23, 0.23, 0.23, 1)
+stacked_outline_1/size = 3
+stacked_outline_1/color = Color(0.3729816, 0.17604151, 0.020792797, 1)
+stacked_outline_2/size = 6
+stacked_outline_2/color = Color(0.18874526, 0.059626155, 6.016344e-08, 1)
+stacked_outline_3/size = 8
+
+[node name="Button" type="Button"]
+texture_filter = 5
+offset_right = 284.0
+offset_bottom = 67.0
+pivot_offset = Vector2(142, 33.5)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+focus_neighbor_left = NodePath("/root/@EditorNode@20438/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@62/@VBoxContainer@63/@EditorMainScreen@103/MainScreen/@CanvasItemEditor@10871/@VSplitContainer@10516/@HSplitContainer@10518/@HSplitContainer@10520/@Control@10521/@SubViewportContainer@10522/@SubViewport@10523/Button")
+focus_neighbor_top = NodePath("/root/@EditorNode@20438/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@62/@VBoxContainer@63/@EditorMainScreen@103/MainScreen/@CanvasItemEditor@10871/@VSplitContainer@10516/@HSplitContainer@10518/@HSplitContainer@10520/@Control@10521/@SubViewportContainer@10522/@SubViewport@10523/Button")
+focus_neighbor_right = NodePath("/root/@EditorNode@20438/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@62/@VBoxContainer@63/@EditorMainScreen@103/MainScreen/@CanvasItemEditor@10871/@VSplitContainer@10516/@HSplitContainer@10518/@HSplitContainer@10520/@Control@10521/@SubViewportContainer@10522/@SubViewport@10523/Button")
+focus_neighbor_bottom = NodePath("/root/@EditorNode@20438/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@62/@VBoxContainer@63/@EditorMainScreen@103/MainScreen/@CanvasItemEditor@10871/@VSplitContainer@10516/@HSplitContainer@10518/@HSplitContainer@10520/@Control@10521/@SubViewportContainer@10522/@SubViewport@10523/Button")
+focus_next = NodePath("/root/@EditorNode@20438/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@62/@VBoxContainer@63/@EditorMainScreen@103/MainScreen/@CanvasItemEditor@10871/@VSplitContainer@10516/@HSplitContainer@10518/@HSplitContainer@10520/@Control@10521/@SubViewportContainer@10522/@SubViewport@10523/Button")
+focus_previous = NodePath("/root/@EditorNode@20438/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@62/@VBoxContainer@63/@EditorMainScreen@103/MainScreen/@CanvasItemEditor@10871/@VSplitContainer@10516/@HSplitContainer@10518/@HSplitContainer@10520/@Control@10521/@SubViewportContainer@10522/@SubViewport@10523/Button")
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_4c6nn")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_4c6nn")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_4c6nn")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_4c6nn")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_4c6nn")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_4c6nn")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_4c6nn")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_4c6nn")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_4c6nn")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_4c6nn")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_4c6nn")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_am65u")
+script = ExtResource("3_vjpr1")
+ninepatch_texture_normal = ExtResource("1_4c6nn")
+ninepatch_texture_selected = ExtResource("2_crwd0")
+ninepatch_texture_disabled = ExtResource("3_sakbl")
+hover_effect_texture = ExtResource("5_jysf7")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = -9
+theme_override_constants/margin_top = -9
+theme_override_constants/margin_right = -9
+theme_override_constants/margin_bottom = -9
+
+[node name="HoverImage" type="NinePatchRect" parent="MarginContainer"]
+unique_name_in_owner = true
+visible = false
+modulate = Color(1, 1, 1, 0.56645644)
+layout_mode = 2
+texture = ExtResource("5_jysf7")
+patch_margin_left = 30
+patch_margin_top = 28
+patch_margin_right = 30
+patch_margin_bottom = 28
+
+[node name="Background" type="NinePatchRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_4c6nn")
+patch_margin_left = 30
+patch_margin_top = 28
+patch_margin_right = 30
+patch_margin_bottom = 28
+
+[node name="MarginContainer2" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 45
+theme_override_constants/margin_top = 13
+theme_override_constants/margin_right = 45
+theme_override_constants/margin_bottom = 13
+
+[node name="ButtonName" parent="MarginContainer2" instance=ExtResource("3_kt4nv")]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_sakbl")
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("9_jysf7")
+metadata/original_size = Vector2(99, 54)
+
+[node name="Outline" type="Label" parent="MarginContainer2/ButtonName"]
+unique_name_in_owner = true
+show_behind_parent = true
+layout_mode = 1
+offset_right = 1.0
+offset_bottom = 8.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 28
+theme_override_font_sizes/font_size = 8
+label_settings = SubResource("LabelSettings_sakbl")
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+
+[connection signal="font_size_changed" from="MarginContainer2/ButtonName" to="." method="_on_game_title_font_size_changed"]
+[connection signal="item_rect_changed" from="MarginContainer2/ButtonName" to="." method="_on_button_name_item_rect_changed"]

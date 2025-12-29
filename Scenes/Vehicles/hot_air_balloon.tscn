@@ -1,0 +1,348 @@
+[gd_scene load_steps=12 format=3 uid="uid://bsg7pkcjtn5b"]
+
+[ext_resource type="Script" uid="uid://powuheliwl5j" path="res://Scenes/Vehicles/hot_air_balloon.gd" id="1_xt8wq"]
+[ext_resource type="Texture2D" uid="uid://bp3gp81dj2tod" path="res://Assets/Images/Vehicles/hot_air_balloon.png" id="2_acxxb"]
+[ext_resource type="Script" uid="uid://450mjutneyod" path="res://addons/RPGData/ModulesRPG/rpg_dimension.gd" id="2_v8jne"]
+
+[sub_resource type="Resource" id="Resource_5ekhm"]
+script = ExtResource("2_v8jne")
+grow_left = 1
+grow_right = 1
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_gjnqj"]
+viewport_path = NodePath("Ballon")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_m4ryf"]
+size = Vector2(32, 7)
+
+[sub_resource type="Animation" id="Animation_k153e"]
+resource_name = "Flying"
+length = 3.5
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Ballon/Node2D/BalloonBase:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 1.06667, 2.03333, 3.03333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 0.0, 0.0523599, 0.0, -0.0523599]
+}
+
+[sub_resource type="Animation" id="Animation_qe8t7"]
+resource_name = "Launch"
+step = 0.1
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"start_flying_animation"
+}]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("VehicleContainer:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.5, 3.13834),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -120)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Ballon/Node2D/BalloonBase:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:current_scale:x")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 0.75, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 1)
+}
+tracks/4/type = "bezier"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:current_scale:y")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 0.75, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 1)
+}
+
+[sub_resource type="Animation" id="Animation_afojn"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("VehicleContainer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Ballon/Node2D/BalloonBase:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:current_scale:x")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:current_scale:y")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_okd4u"]
+resource_name = "land"
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"end_flying_animation"
+}]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("VehicleContainer:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.329877, 1.68179),
+"update": 0,
+"values": [Vector2(0, -120), Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Ballon/Node2D/BalloonBase:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:current_scale:x")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0.75, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 1)
+}
+tracks/4/type = "bezier"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:current_scale:y")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0.75, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 1)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8ovdc"]
+_data = {
+&"Flying": SubResource("Animation_k153e"),
+&"Launch": SubResource("Animation_qe8t7"),
+&"RESET": SubResource("Animation_afojn"),
+&"land": SubResource("Animation_okd4u")
+}
+
+[node name="HotAirBalloon" type="CharacterBody2D"]
+z_index = 1
+y_sort_enabled = true
+texture_filter = 1
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_xt8wq")
+vehicle_type = 2
+offset_view_from_bottom = -132
+offset_view_from_top = -800
+vehicle_speed = 300.0
+player_container_node = NodePath("Ballon/Node2D/BalloonBase/Character")
+extra_dimensions = SubResource("Resource_5ekhm")
+can_move_on_terrains = PackedStringArray("all")
+can_disembark_on_terrains = PackedStringArray("^water", "all")
+flying_object = true
+
+[node name="Ballon" type="SubViewport" parent="."]
+unique_name_in_owner = true
+transparent_bg = true
+canvas_item_default_texture_filter = 0
+size = Vector2i(1024, 1024)
+
+[node name="Node2D" type="Node2D" parent="Ballon"]
+position = Vector2(512, 512)
+
+[node name="BalloonBase" type="Node2D" parent="Ballon/Node2D"]
+
+[node name="Bottom" type="Sprite2D" parent="Ballon/Node2D/BalloonBase"]
+unique_name_in_owner = true
+position = Vector2(129, -32)
+texture = ExtResource("2_acxxb")
+offset = Vector2(-129, -2)
+region_enabled = true
+region_rect = Rect2(0, 146, 153, 65)
+
+[node name="Character" type="Node2D" parent="Ballon/Node2D/BalloonBase"]
+unique_name_in_owner = true
+texture_filter = 1
+position = Vector2(0, -5)
+
+[node name="Mid" type="Sprite2D" parent="Ballon/Node2D/BalloonBase"]
+unique_name_in_owner = true
+z_index = 200
+z_as_relative = false
+position = Vector2(129, -14)
+texture = ExtResource("2_acxxb")
+offset = Vector2(-129, -2)
+region_enabled = true
+region_rect = Rect2(0, 183, 153, 28)
+
+[node name="Top" type="Sprite2D" parent="Ballon/Node2D"]
+z_index = 10
+z_as_relative = false
+position = Vector2(-75, -134)
+texture = ExtResource("2_acxxb")
+centered = false
+offset = Vector2(0, -77)
+region_enabled = true
+region_rect = Rect2(0, 0, 153, 147)
+
+[node name="Final" type="SubViewport" parent="."]
+transparent_bg = true
+size = Vector2i(153, 209)
+
+[node name="FinalBalloon" type="Sprite2D" parent="Final"]
+unique_name_in_owner = true
+texture = SubResource("ViewportTexture_gjnqj")
+centered = false
+region_enabled = true
+region_rect = Rect2(437, 301, 153, 209)
+
+[node name="Shadow" type="SubViewport" parent="."]
+unique_name_in_owner = true
+transparent_bg = true
+canvas_item_default_texture_filter = 0
+size = Vector2i(1024, 1024)
+
+[node name="FinalShadow" type="Sprite2D" parent="Shadow"]
+unique_name_in_owner = true
+modulate = Color(0, 0, 0, 1)
+position = Vector2(513, 511)
+texture = SubResource("ViewportTexture_gjnqj")
+centered = false
+offset = Vector2(-512, -510)
+
+[node name="VehicleContainer" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Vehicle" type="Sprite2D" parent="VehicleContainer"]
+unique_name_in_owner = true
+z_index = 1
+z_as_relative = false
+position = Vector2(0, -63)
+texture = SubResource("ViewportTexture_gjnqj")
+centered = false
+offset = Vector2(-26, -1)
+region_enabled = true
+region_rect = Rect2(485, 447, 54, 64)
+
+[node name="VehicleTop" type="Sprite2D" parent="VehicleContainer"]
+unique_name_in_owner = true
+z_index = 60
+z_as_relative = false
+position = Vector2(0, -65)
+texture = SubResource("ViewportTexture_gjnqj")
+centered = false
+offset = Vector2(-75, -145)
+region_enabled = true
+region_rect = Rect2(437, 301, 153, 146)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -4.5)
+shape = SubResource("RectangleShape2D_m4ryf")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+&"": SubResource("AnimationLibrary_8ovdc")
+}
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]
+
+[node name="FootLeft" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-17, -1)
+
+[node name="FootRight" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(19, -1)

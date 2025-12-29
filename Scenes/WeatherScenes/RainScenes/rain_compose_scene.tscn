@@ -1,0 +1,54 @@
+[gd_scene load_steps=10 format=3 uid="uid://d10wcige8rrvx"]
+
+[ext_resource type="Script" uid="uid://dknujm3i5cfja" path="res://Scenes/WeatherScenes/RainScenes/rain_compose_scene.gd" id="1_mqhdu"]
+[ext_resource type="PackedScene" uid="uid://c0ropdtr1ajl2" path="res://Scenes/WeatherScenes/RainScenes/water_ripples_scene.tscn" id="2_f88oc"]
+[ext_resource type="PackedScene" uid="uid://2ye0162qoxua" path="res://Scenes/WeatherScenes/RainScenes/rain_scene.tscn" id="2_jqvxy"]
+[ext_resource type="Script" uid="uid://cgniimsa48k1x" path="res://Scenes/WeatherScenes/RainScenes/water_ripples_scene.gd" id="3_g8df1"]
+[ext_resource type="PackedScene" uid="uid://c7ffx4d3r5ff2" path="res://Scenes/WeatherScenes/RainScenes/ray_scene.tscn" id="4_pukin"]
+[ext_resource type="AudioStream" uid="uid://blsudrgq4pd8l" path="res://Assets/Sounds/BGS/rain1.ogg" id="5_un8ib"]
+[ext_resource type="AudioStream" uid="uid://dw134ywhwqmxh" path="res://Assets/Sounds/SE/rain_rumble.ogg" id="6_fmleh"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_5h8a0"]
+blend_mode = 1
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_mmpyy"]
+blend_mode = 1
+
+[node name="RainComposeScene" type="Node2D"]
+script = ExtResource("1_mqhdu")
+modulate_scene = Color(0.68902165, 0.69662315, 0.7472667, 0.77254903)
+
+[node name="WaterRipplesScene" parent="." instance=ExtResource("2_f88oc")]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_5h8a0")
+script = ExtResource("3_g8df1")
+
+[node name="RainScene" parent="." instance=ExtResource("2_jqvxy")]
+unique_name_in_owner = true
+z_index = 100
+z_as_relative = false
+material = SubResource("CanvasItemMaterial_mmpyy")
+
+[node name="Ray" parent="." instance=ExtResource("4_pukin")]
+unique_name_in_owner = true
+z_index = 1
+z_as_relative = false
+
+[node name="ImpacstGroup" type="Node2D" parent="."]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.278431)
+z_index = 1
+z_as_relative = false
+
+[node name="BGSPlayer" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("5_un8ib")
+autoplay = true
+bus = &"Ambient"
+
+[node name="SEPlayer" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("6_fmleh")
+volume_db = -14.3885
+pitch_scale = 1.15332
+bus = &"SE"

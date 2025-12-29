@@ -1,0 +1,313 @@
+[gd_scene load_steps=9 format=3 uid="uid://bpysgunskrt1m"]
+
+[ext_resource type="Script" uid="uid://cmqu4clcoblq7" path="res://Scenes/ShopScene/actor_preview_panel.gd" id="1_k5omy"]
+[ext_resource type="Shader" uid="uid://7p4o2dmpfj0w" path="res://Assets/Shaders/simple_grayscale.gdshader" id="1_wyu2h"]
+[ext_resource type="Texture2D" uid="uid://dart5acu0jnbn" path="res://Assets/Images/SceneShop/euipment_up_down.png" id="3_vvr1e"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8tdwe"]
+content_margin_top = 2.0
+content_margin_bottom = 5.0
+bg_color = Color(0, 0, 0, 0.164706)
+border_width_bottom = 2
+border_color = Color(0.737255, 0.533333, 0.223529, 1)
+border_blend = true
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8tdwe"]
+resource_local_to_scene = true
+shader = ExtResource("1_wyu2h")
+shader_parameter/grayscale = false
+shader_parameter/brightness = -0.04
+shader_parameter/opacity = 1.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wyu2h"]
+resource_local_to_scene = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_650j3"]
+resource_local_to_scene = true
+atlas = ExtResource("3_vvr1e")
+region = Rect2(0, 0, 15, 12)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_181j8"]
+content_margin_left = 6.0
+content_margin_top = 2.0
+content_margin_right = 6.0
+content_margin_bottom = 2.0
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.529412, 0.356863, 0.207843, 0.34902)
+border_blend = true
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="ActorPanel" type="PanelContainer"]
+custom_minimum_size = Vector2(205, 0)
+theme_override_styles/panel = SubResource("StyleBoxFlat_8tdwe")
+script = ExtResource("1_k5omy")
+upgrade_color = Color(0, 0.588235, 0, 1)
+downgrade_color = Color(0.858824, 0, 0.156863, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_right = 8
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/MarginContainer2"]
+layout_mode = 2
+
+[node name="ActorImage" type="TextureRect" parent="VBoxContainer/MarginContainer2/HBoxContainer2"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_8tdwe")
+custom_minimum_size = Vector2(22, 22)
+layout_mode = 2
+size_flags_vertical = 0
+texture = SubResource("AtlasTexture_wyu2h")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ActorName" type="Label" parent="VBoxContainer/MarginContainer2/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Actor Name"
+
+[node name="MainArrow" type="TextureRect" parent="VBoxContainer/MarginContainer2/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+texture = SubResource("AtlasTexture_650j3")
+
+[node name="StatsContainer" type="MarginContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_right = 4
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/StatsContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_181j8")
+
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer/StatsContainer/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/v_separation = 0
+columns = 4
+
+[node name="HPLabel" type="Label" parent="VBoxContainer/StatsContainer/PanelContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.25
+theme_override_constants/outline_size = 8
+theme_override_constants/shadow_outline_size = 0
+theme_override_font_sizes/font_size = 16
+text = "HP:"
+text_overrun_behavior = 1
+uppercase = true
+
+[node name="HP" type="Label" parent="VBoxContainer/StatsContainer/PanelContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.75
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 8
+theme_override_constants/shadow_outline_size = 0
+theme_override_font_sizes/font_size = 16
+text = "-"
+text_overrun_behavior = 1
+
+[node name="MPLabel" type="Label" parent="VBoxContainer/StatsContainer/PanelContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.25
+theme_override_constants/outline_size = 8
+theme_override_constants/shadow_outline_size = 0
+theme_override_font_sizes/font_size = 16
+text = "MP:"
+text_overrun_behavior = 1
+uppercase = true
+
+[node name="MP" type="Label" parent="VBoxContainer/StatsContainer/PanelContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.75
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 8
+theme_override_constants/shadow_outline_size = 0
+theme_override_font_sizes/font_size = 16
+text = "-"
+text_overrun_behavior = 1
+
+[node name="ATKLabel" type="Label" parent="VBoxContainer/StatsContainer/PanelContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.25
+theme_override_constants/outline_size = 8
+theme_override_constants/shadow_outline_size = 0
+theme_override_font_sizes/font_size = 16
+text = "ATK:"
+text_overrun_behavior = 1
+uppercase = true
+
+[node name="ATK" type="Label" parent="VBoxContainer/StatsContainer/PanelContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.75
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 8
+theme_override_constants/shadow_outline_size = 0
+theme_override_font_sizes/font_size = 16
+text = "-"
+text_overrun_behavior = 1
+
+[node name="DEFLabel" type="Label" parent="VBoxContainer/StatsContainer/PanelContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.25
+theme_override_constants/outline_size = 8
+theme_override_constants/shadow_outline_size = 0
+theme_override_font_sizes/font_size = 16
+text = "DEF:"
+text_overrun_behavior = 1
+uppercase = true
+
+[node name="DEF" type="Label" parent="VBoxContainer/StatsContainer/PanelContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.75
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 8
+theme_override_constants/shadow_outline_size = 0
+theme_override_font_sizes/font_size = 16
+text = "-"
+text_overrun_behavior = 1
+
+[node name="AGILabel" type="Label" parent="VBoxContainer/StatsContainer/PanelContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.25
+theme_override_constants/outline_size = 8
+theme_override_constants/shadow_outline_size = 0
+theme_override_font_sizes/font_size = 16
+text = "AGI:"
+text_overrun_behavior = 1
+uppercase = true
+
+[node name="AGI" type="Label" parent="VBoxContainer/StatsContainer/PanelContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.75
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 8
+theme_override_constants/shadow_outline_size = 0
+theme_override_font_sizes/font_size = 16
+text = "-"
+text_overrun_behavior = 1
+
+[node name="MATKLabel" type="Label" parent="VBoxContainer/StatsContainer/PanelContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.25
+theme_override_constants/outline_size = 8
+theme_override_constants/shadow_outline_size = 0
+theme_override_font_sizes/font_size = 16
+text = "MATK:"
+text_overrun_behavior = 1
+uppercase = true
+
+[node name="MTAK" type="Label" parent="VBoxContainer/StatsContainer/PanelContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.75
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 8
+theme_override_constants/shadow_outline_size = 0
+theme_override_font_sizes/font_size = 16
+text = "-"
+text_overrun_behavior = 1
+
+[node name="MDEFLabel" type="Label" parent="VBoxContainer/StatsContainer/PanelContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.25
+theme_override_constants/outline_size = 8
+theme_override_constants/shadow_outline_size = 0
+theme_override_font_sizes/font_size = 16
+text = "MDEF:"
+text_overrun_behavior = 1
+uppercase = true
+
+[node name="MDEF" type="Label" parent="VBoxContainer/StatsContainer/PanelContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.75
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 8
+theme_override_constants/shadow_outline_size = 0
+theme_override_font_sizes/font_size = 16
+text = "-"
+text_overrun_behavior = 1
+
+[node name="LuckLabel" type="Label" parent="VBoxContainer/StatsContainer/PanelContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.25
+theme_override_constants/outline_size = 8
+theme_override_constants/shadow_outline_size = 0
+theme_override_font_sizes/font_size = 16
+text = "LUCK:"
+text_overrun_behavior = 1
+uppercase = true
+
+[node name="Luck" type="Label" parent="VBoxContainer/StatsContainer/PanelContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.75
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 8
+theme_override_constants/shadow_outline_size = 0
+theme_override_font_sizes/font_size = 16
+text = "-"
+text_overrun_behavior = 1

@@ -1,0 +1,415 @@
+[gd_scene load_steps=37 format=3 uid="uid://btce13q5min1n"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_d47am"]
+[ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="2_2hbg7"]
+[ext_resource type="Script" uid="uid://bjcgjx72lfcll" path="res://addons/CustomControls/Dialogs/CommandEvents/change_item_dialog.gd" id="2_jg0qk"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="3_u6yaq"]
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="4_eiyxl"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="5_vyq0y"]
+[ext_resource type="Texture2D" uid="uid://xl88b63otgpi" path="res://addons/CustomControls/Images/button1_background.png" id="6_md4be"]
+[ext_resource type="Texture2D" uid="uid://dqnnp323vr1vo" path="res://addons/CustomControls/Images/button1_background_hover.png" id="7_ck6oh"]
+[ext_resource type="Texture2D" uid="uid://beg6i1p118qd" path="res://addons/CustomControls/Images/button1_background_selected.png" id="8_gi3hs"]
+[ext_resource type="Texture2D" uid="uid://bkfn4ru5noaaa" path="res://addons/CustomControls/Images/button1_background_disabled.png" id="9_bct7o"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_p5lu3"]
+
+[sub_resource type="Gradient" id="Gradient_u5yrp"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_qxyup"]
+gradient = SubResource("Gradient_u5yrp")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oescf"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Gradient" id="Gradient_ctwx1"]
+colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_o2o3j"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nedti"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_o2o3j")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ux8qg"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kweoy"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_60nmk"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gar68"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_60nmk")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t7cl3"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_8fpmd"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rpx4x"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_0gnlj"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2g1i1"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_0gnlj")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vtauf"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_shluh"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4l1ya"]
+texture = ExtResource("6_md4be")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_s0jki"]
+texture = ExtResource("8_gi3hs")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gjfq1"]
+texture = ExtResource("7_ck6oh")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_df84p"]
+texture = ExtResource("9_bct7o")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_x58wi"]
+texture = ExtResource("6_md4be")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dkk42"]
+texture = ExtResource("8_gi3hs")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_s618j"]
+texture = ExtResource("7_ck6oh")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xx0ak"]
+texture = ExtResource("9_bct7o")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[node name="ChangeItemDialog" type="Window"]
+oversampling_override = 1.0
+title = "Change Item"
+position = Vector2i(0, 36)
+size = Vector2i(500, 370)
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_d47am")
+script = ExtResource("2_jg0qk")
+
+[node name="Background" type="TextureRect" parent="."]
+material = SubResource("CanvasItemMaterial_p5lu3")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_qxyup")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Item" parent="MarginContainer/VBoxContainer" instance=ExtResource("2_2hbg7")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_oescf")
+style1 = SubResource("StyleBoxFlat_oescf")
+style2 = SubResource("StyleBoxTexture_nedti")
+style3 = SubResource("StyleBoxFlat_ux8qg")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Item"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Item"
+
+[node name="ItemID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer" instance=ExtResource("4_eiyxl")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Click to select the item for this operation"
+text = "Select an item"
+
+[node name="Operation" parent="MarginContainer/VBoxContainer" instance=ExtResource("2_2hbg7")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_kweoy")
+style1 = SubResource("StyleBoxFlat_kweoy")
+style2 = SubResource("StyleBoxTexture_gar68")
+style3 = SubResource("StyleBoxFlat_t7cl3")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Operation"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Operation/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Operation"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="OperationIncrease" type="CheckBox" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use Adds operator to change this data"
+mouse_default_cursor_shape = 2
+button_pressed = true
+button_group = SubResource("ButtonGroup_8fpmd")
+text = "Inrease"
+
+[node name="OperationDecrease" type="CheckBox" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use Subtracts operator to change this data"
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_8fpmd")
+text = "Decrease"
+
+[node name="Operand" parent="MarginContainer/VBoxContainer" instance=ExtResource("2_2hbg7")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_rpx4x")
+style1 = SubResource("StyleBoxFlat_rpx4x")
+style2 = SubResource("StyleBoxTexture_2g1i1")
+style3 = SubResource("StyleBoxFlat_vtauf")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Operand"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Operand/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Operand"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="OperandConstant" type="CheckBox" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(105, 0)
+layout_mode = 2
+tooltip_text = "Uses a constant value"
+mouse_default_cursor_shape = 2
+button_pressed = true
+button_group = SubResource("ButtonGroup_shluh")
+text = "Constant:"
+
+[node name="OperandValue" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_u6yaq")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Uses a constant value"
+min_value = 1.0
+value = 1.0
+allow_greater = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="OperandVariable" type="CheckBox" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(105, 0)
+layout_mode = 2
+tooltip_text = "Uses the value stored in a variable"
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_shluh")
+text = "Variable:"
+
+[node name="OperandVariableID" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("4_eiyxl")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Uses the value stored in a variable"
+disabled = true
+text = "Select a variable"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_vyq0y")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+theme_override_styles/normal = SubResource("StyleBoxTexture_4l1ya")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_s0jki")
+theme_override_styles/hover = SubResource("StyleBoxTexture_gjfq1")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_df84p")
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_vyq0y")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+theme_override_styles/normal = SubResource("StyleBoxTexture_x58wi")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_dkk42")
+theme_override_styles/hover = SubResource("StyleBoxTexture_s618j")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_xx0ak")
+text = "CANCEL"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/ItemID" to="." method="_on_item_id_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer/OperationIncrease" to="." method="_on_operation_increase_toggled" binds= [0]]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer/OperationDecrease" to="." method="_on_operation_decrease_toggled" binds= [1]]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/HBoxContainer/OperandConstant" to="." method="_on_operand_constant_toggled" binds= [0]]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/HBoxContainer/OperandValue" to="." method="_on_operand_value_value_changed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/HBoxContainer2/OperandVariable" to="." method="_on_operand_variable_toggled" binds= [1]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/HBoxContainer2/OperandVariableID" to="." method="_on_operand_variable_id_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

@@ -1,0 +1,54 @@
+[gd_scene load_steps=10 format=3 uid="uid://bnx7omk3joxly"]
+
+[ext_resource type="Script" uid="uid://c3bb1yusqxtwi" path="res://addons/CustomControls/custom_button.gd" id="1_2hhdr"]
+[ext_resource type="Texture2D" uid="uid://xl88b63otgpi" path="res://addons/CustomControls/Images/button1_background.png" id="1_q3dx7"]
+[ext_resource type="Texture2D" uid="uid://dqnnp323vr1vo" path="res://addons/CustomControls/Images/button1_background_hover.png" id="2_po5uu"]
+[ext_resource type="Texture2D" uid="uid://bkfn4ru5noaaa" path="res://addons/CustomControls/Images/button1_background_disabled.png" id="3_6phwu"]
+[ext_resource type="Texture2D" uid="uid://beg6i1p118qd" path="res://addons/CustomControls/Images/button1_background_selected.png" id="3_qwwlq"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_acf58"]
+texture = ExtResource("3_6phwu")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qvitl"]
+texture = ExtResource("2_po5uu")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_alf5v"]
+texture = ExtResource("3_qwwlq")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xwh64"]
+texture = ExtResource("1_q3dx7")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[node name="CustomButton" type="Button"]
+offset_right = 139.0
+offset_bottom = 35.0
+pivot_offset = Vector2(69.5, 17.5)
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 0.780392)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.282353)
+theme_override_constants/outline_size = 1
+theme_override_styles/disabled = SubResource("StyleBoxTexture_acf58")
+theme_override_styles/hover = SubResource("StyleBoxTexture_qvitl")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_alf5v")
+theme_override_styles/normal = SubResource("StyleBoxTexture_xwh64")
+text = "Button Text"
+script = ExtResource("1_2hhdr")

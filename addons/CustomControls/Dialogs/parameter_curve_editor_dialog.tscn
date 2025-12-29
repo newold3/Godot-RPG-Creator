@@ -1,0 +1,409 @@
+[gd_scene load_steps=31 format=3 uid="uid://b1ll4diq3wvst"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_h4uo4"]
+[ext_resource type="Script" uid="uid://dtgpeubn0hei6" path="res://addons/CustomControls/Dialogs/parameter_curve_editor_dialog.gd" id="2_0dop0"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="3_0mmnt"]
+[ext_resource type="Script" uid="uid://d0kowhkcjb7kv" path="res://addons/CustomControls/custom_option_button.gd" id="3_hoo5m"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="3_t67qt"]
+[ext_resource type="Texture2D" uid="uid://clpwerjgmolbh" path="res://addons/CustomControls/Images/curve_presets.png" id="4_r7atq"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="5_yeuoo"]
+[ext_resource type="PackedScene" uid="uid://xgopjrnx0q38" path="res://addons/CustomControls/StatsEditor.tscn" id="6_6kqr5"]
+
+[sub_resource type="Gradient" id="Gradient_vvvrv"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_e8gxf"]
+gradient = SubResource("Gradient_vvvrv")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4yvde"]
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4jm8b"]
+atlas = ExtResource("4_r7atq")
+region = Rect2(0, 0, 26, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1hlau"]
+atlas = ExtResource("4_r7atq")
+region = Rect2(26, 0, 26, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vkeum"]
+atlas = ExtResource("4_r7atq")
+region = Rect2(52, 0, 26, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tgfoc"]
+atlas = ExtResource("4_r7atq")
+region = Rect2(78, 0, 26, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lfimv"]
+atlas = ExtResource("4_r7atq")
+region = Rect2(0, 26, 26, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gn5ge"]
+atlas = ExtResource("4_r7atq")
+region = Rect2(26, 26, 26, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x80gq"]
+atlas = ExtResource("4_r7atq")
+region = Rect2(52, 26, 26, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ixlho"]
+atlas = ExtResource("4_r7atq")
+region = Rect2(78, 26, 26, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dscdq"]
+atlas = ExtResource("4_r7atq")
+region = Rect2(0, 52, 26, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4tyyv"]
+atlas = ExtResource("4_r7atq")
+region = Rect2(26, 52, 26, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sorbp"]
+atlas = ExtResource("4_r7atq")
+region = Rect2(52, 52, 26, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vvko8"]
+atlas = ExtResource("4_r7atq")
+region = Rect2(78, 52, 26, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qil8i"]
+atlas = ExtResource("5_yeuoo")
+region = Rect2(96, 72, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1stdy"]
+atlas = ExtResource("5_yeuoo")
+region = Rect2(96, 96, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7mye1"]
+atlas = ExtResource("5_yeuoo")
+region = Rect2(120, 72, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iuvf5"]
+atlas = ExtResource("5_yeuoo")
+region = Rect2(120, 96, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y3pcj"]
+atlas = ExtResource("5_yeuoo")
+region = Rect2(144, 72, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_io3lh"]
+atlas = ExtResource("5_yeuoo")
+region = Rect2(144, 96, 24, 24)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bsulq"]
+bg_color = Color(0, 0, 0, 0.878431)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.12549, 0.141176, 0.192157, 1)
+border_blend = true
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="ParameterCurveEditorDialog" type="Window"]
+title = "Parameter Curve Editor"
+position = Vector2i(0, 36)
+size = Vector2i(1200, 600)
+transient = true
+exclusive = true
+min_size = Vector2i(1200, 600)
+theme = ExtResource("1_h4uo4")
+script = ExtResource("2_0dop0")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_e8gxf")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_4yvde")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "Data Selected:"
+
+[node name="DataOptions" type="OptionButton" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+selected = 0
+item_count = 9
+popup/item_0/text = "Experience"
+popup/item_1/text = "Max HP"
+popup/item_1/id = 1
+popup/item_2/text = "Max MP"
+popup/item_2/id = 2
+popup/item_3/text = "Attack"
+popup/item_3/id = 3
+popup/item_4/text = "Defense"
+popup/item_4/id = 4
+popup/item_5/text = "Magical Attack"
+popup/item_5/id = 5
+popup/item_6/text = "Magical Defense"
+popup/item_6/id = 6
+popup/item_7/text = "Agility"
+popup/item_7/id = 7
+popup/item_8/text = "Luck"
+popup/item_8/id = 8
+script = ExtResource("3_hoo5m")
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="VBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Min Value:"
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Level Selected:"
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="MinValueSpinBox" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/VBoxContainer3" instance=ExtResource("3_t67qt")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_vertical = 3
+focus_neighbor_left = NodePath("../../VBoxContainer5/CurrentValueSpinBox")
+focus_neighbor_right = NodePath("../../VBoxContainer5/MaxValueSpinBox")
+allow_greater = true
+allow_lesser = true
+
+[node name="LevelSpinBox" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/VBoxContainer3" instance=ExtResource("3_t67qt")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_vertical = 3
+focus_neighbor_left = NodePath("../../VBoxContainer5/MaxValueSpinBox")
+focus_neighbor_right = NodePath("../../VBoxContainer5/CurrentValueSpinBox")
+
+[node name="VBoxContainer4" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/VBoxContainer4"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Max Value:"
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/VBoxContainer4"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Value:"
+
+[node name="VBoxContainer5" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="MaxValueSpinBox" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/VBoxContainer5" instance=ExtResource("3_t67qt")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_vertical = 3
+focus_neighbor_left = NodePath("../../VBoxContainer3/MinValueSpinBox")
+focus_neighbor_right = NodePath("../../VBoxContainer3/LevelSpinBox")
+allow_greater = true
+allow_lesser = true
+
+[node name="CurrentValueSpinBox" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/VBoxContainer5" instance=ExtResource("3_t67qt")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_vertical = 3
+focus_neighbor_left = NodePath("../../VBoxContainer3/LevelSpinBox")
+focus_neighbor_right = NodePath("../../VBoxContainer3/MinValueSpinBox")
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="Presets" type="OptionButton" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+selected = 0
+item_count = 13
+popup/item_0/text = "Select A Preset..."
+popup/item_1/text = "Preset 1"
+popup/item_1/icon = SubResource("AtlasTexture_4jm8b")
+popup/item_1/id = 1
+popup/item_2/text = "Preset 2"
+popup/item_2/icon = SubResource("AtlasTexture_1hlau")
+popup/item_2/id = 2
+popup/item_3/text = "Preset 3"
+popup/item_3/icon = SubResource("AtlasTexture_vkeum")
+popup/item_3/id = 3
+popup/item_4/text = "Preset 4"
+popup/item_4/icon = SubResource("AtlasTexture_tgfoc")
+popup/item_4/id = 4
+popup/item_5/text = "Preset 5"
+popup/item_5/icon = SubResource("AtlasTexture_lfimv")
+popup/item_5/id = 5
+popup/item_6/text = "Preset 6"
+popup/item_6/icon = SubResource("AtlasTexture_gn5ge")
+popup/item_6/id = 6
+popup/item_7/text = "Preset 7"
+popup/item_7/icon = SubResource("AtlasTexture_x80gq")
+popup/item_7/id = 7
+popup/item_8/text = "Preset 8"
+popup/item_8/icon = SubResource("AtlasTexture_ixlho")
+popup/item_8/id = 8
+popup/item_9/text = "Preset 9"
+popup/item_9/icon = SubResource("AtlasTexture_dscdq")
+popup/item_9/id = 9
+popup/item_10/text = "Preset 10"
+popup/item_10/icon = SubResource("AtlasTexture_4tyyv")
+popup/item_10/id = 10
+popup/item_11/text = "Preset 11"
+popup/item_11/icon = SubResource("AtlasTexture_sorbp")
+popup/item_11/id = 11
+popup/item_12/text = "Customized Straight Line"
+popup/item_12/icon = SubResource("AtlasTexture_vvko8")
+popup/item_12/id = 12
+script = ExtResource("3_hoo5m")
+
+[node name="SavePresetButton" type="TextureButton" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+tooltip_text = "Saves the current curve as a user preset"
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_qil8i")
+texture_hover = SubResource("AtlasTexture_1stdy")
+metadata/last_tooltip = "Saves the current curve as a user preset"
+
+[node name="LoadPresetButton" type="TextureButton" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+tooltip_text = "Use a user preset to create the curve
+(presets are Curve resources)"
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_7mye1")
+texture_hover = SubResource("AtlasTexture_iuvf5")
+metadata/last_tooltip = "Use a user preset to create the curve
+(presets are Curve resources)"
+
+[node name="FixCurveButton" type="TextureButton" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+tooltip_text = "Adjusts the curve to ensure that each subsequent level has
+a value equal to or higher than the previous level for an ascending curve,
+or a value equal to or lower than the previous level for a descending curve"
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_y3pcj")
+texture_hover = SubResource("AtlasTexture_io3lh")
+metadata/last_tooltip = "Adjusts the curve to ensure that each subsequent level has
+a value equal to or higher than the previous level for an ascending curve,
+or a value equal to or lower than the previous level for a descending curve"
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="StatEditor" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer" instance=ExtResource("6_6kqr5")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_bsulq")
+title = "Experiencie"
+title_size = 15
+title_text_color = Color(1, 1, 1, 0.32549)
+background_color = Color(0, 0, 0, 0.878431)
+cursor_color = Color(0.85098, 0.682353, 0.0235294, 0.109804)
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("3_0mmnt")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("3_0mmnt")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Cancel"
+
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer3/DataOptions" to="." method="select_data_type"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/VBoxContainer3/MinValueSpinBox" to="." method="_on_min_value_spin_box_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/VBoxContainer3/LevelSpinBox" to="." method="_on_level_spin_box_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/VBoxContainer5/MaxValueSpinBox" to="." method="_on_max_value_spin_box_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/VBoxContainer5/CurrentValueSpinBox" to="." method="_on_current_value_spin_box_value_changed"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer3/Presets" to="." method="_on_presets_item_selected"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer3/SavePresetButton" to="." method="_on_save_preset_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer3/LoadPresetButton" to="." method="_on_load_preset_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer3/FixCurveButton" to="." method="_on_fix_curve_button_pressed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/StatEditor" to="." method="_on_stat_editor_value_changed"]
+[connection signal="value_clicked" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/StatEditor" to="." method="_on_stat_editor_value_clicked"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/CancelButton" to="." method="_on_cancel_button_pressed"]

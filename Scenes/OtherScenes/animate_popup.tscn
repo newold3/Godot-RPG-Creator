@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://d01le1i701smp"]
+
+[ext_resource type="FontFile" uid="uid://2okej4ay4kdb" path="res://addons/CustomControls/Resources/Fonts/unifont-13.0.01.ttf" id="1_5f1wb"]
+[ext_resource type="Material" uid="uid://bwlkuvg1hauua" path="res://Assets/Resourcers/material_to_ignore_canvas_modulate.tres" id="1_6wph3"]
+[ext_resource type="Script" uid="uid://b11mxu48s8x12" path="res://Scenes/OtherScenes/animate_popup.gd" id="2_koopy"]
+
+[node name="AnimatePopup" type="RichTextLabel"]
+modulate = Color(1, 1, 1, 0)
+light_mask = 0
+material = ExtResource("1_6wph3")
+offset_right = 1.0
+offset_bottom = 16.0
+theme_override_constants/outline_size = 6
+theme_override_fonts/normal_font = ExtResource("1_5f1wb")
+theme_override_font_sizes/normal_font_size = 13
+bbcode_enabled = true
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+script = ExtResource("2_koopy")

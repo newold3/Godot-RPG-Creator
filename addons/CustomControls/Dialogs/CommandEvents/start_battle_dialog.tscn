@@ -1,0 +1,373 @@
+[gd_scene load_steps=8 format=3 uid="uid://bst0siidpyfib"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_ulf2o"]
+[ext_resource type="Script" uid="uid://b0hf6bn8a2ow4" path="res://addons/CustomControls/Dialogs/CommandEvents/start_battle_dialog.gd" id="2_ulf2o"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="3_x0jyx"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="4_nctjt"]
+
+[sub_resource type="Gradient" id="Gradient_7ascj"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ourej"]
+gradient = SubResource("Gradient_7ascj")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_ulf2o"]
+
+[node name="StartBattleDialog" type="Window"]
+title = "Start Battle"
+position = Vector2i(0, 36)
+size = Vector2i(560, 289)
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_ulf2o")
+script = ExtResource("2_ulf2o")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_ourej")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="SelectTroop" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(270, 0)
+layout_mode = 2
+tooltip_text = "Selects the group of enemies to be fought manually"
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_ulf2o")
+text = "Select Troop:"
+
+[node name="TroopList" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_x0jyx")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "List of enemy groups added to the database."
+disabled = true
+selected = 0
+item_count = 4
+popup/item_0/text = "1: Troop 1"
+popup/item_0/id = 0
+popup/item_1/text = "2: Troop 2"
+popup/item_1/id = 1
+popup/item_2/text = "3: Troop 3"
+popup/item_2/id = 2
+popup/item_3/text = "4: Troop 4"
+popup/item_3/id = 3
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="SelectWithVariable" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(270, 0)
+layout_mode = 2
+tooltip_text = "Selects the group of enemies to fight with using the value of a variable"
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_ulf2o")
+text = "Select With Variable:"
+
+[node name="VariableList" parent="MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("3_x0jyx")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "List of numerical variables used in the game"
+disabled = true
+selected = 0
+item_count = 100
+popup/item_0/text = "1: 1"
+popup/item_0/id = 0
+popup/item_1/text = "2: "
+popup/item_1/id = 1
+popup/item_2/text = "3: 3434"
+popup/item_2/id = 2
+popup/item_3/text = "4: "
+popup/item_3/id = 3
+popup/item_4/text = "5: "
+popup/item_4/id = 4
+popup/item_5/text = "6: "
+popup/item_5/id = 5
+popup/item_6/text = "7: "
+popup/item_6/id = 6
+popup/item_7/text = "8: "
+popup/item_7/id = 7
+popup/item_8/text = "9: "
+popup/item_8/id = 8
+popup/item_9/text = "10: "
+popup/item_9/id = 9
+popup/item_10/text = "11: "
+popup/item_10/id = 10
+popup/item_11/text = "12: "
+popup/item_11/id = 11
+popup/item_12/text = "13: "
+popup/item_12/id = 12
+popup/item_13/text = "14: "
+popup/item_13/id = 13
+popup/item_14/text = "15: "
+popup/item_14/id = 14
+popup/item_15/text = "16: "
+popup/item_15/id = 15
+popup/item_16/text = "17: "
+popup/item_16/id = 16
+popup/item_17/text = "18: "
+popup/item_17/id = 17
+popup/item_18/text = "19: "
+popup/item_18/id = 18
+popup/item_19/text = "20: "
+popup/item_19/id = 19
+popup/item_20/text = "21: "
+popup/item_20/id = 20
+popup/item_21/text = "22: "
+popup/item_21/id = 21
+popup/item_22/text = "23: "
+popup/item_22/id = 22
+popup/item_23/text = "24: "
+popup/item_23/id = 23
+popup/item_24/text = "25: "
+popup/item_24/id = 24
+popup/item_25/text = "26: "
+popup/item_25/id = 25
+popup/item_26/text = "27: "
+popup/item_26/id = 26
+popup/item_27/text = "28: "
+popup/item_27/id = 27
+popup/item_28/text = "29: "
+popup/item_28/id = 28
+popup/item_29/text = "30: "
+popup/item_29/id = 29
+popup/item_30/text = "31: "
+popup/item_30/id = 30
+popup/item_31/text = "32: "
+popup/item_31/id = 31
+popup/item_32/text = "33: "
+popup/item_32/id = 32
+popup/item_33/text = "34: "
+popup/item_33/id = 33
+popup/item_34/text = "35: "
+popup/item_34/id = 34
+popup/item_35/text = "36: "
+popup/item_35/id = 35
+popup/item_36/text = "37: "
+popup/item_36/id = 36
+popup/item_37/text = "38: "
+popup/item_37/id = 37
+popup/item_38/text = "39: "
+popup/item_38/id = 38
+popup/item_39/text = "40: "
+popup/item_39/id = 39
+popup/item_40/text = "41: "
+popup/item_40/id = 40
+popup/item_41/text = "42: "
+popup/item_41/id = 41
+popup/item_42/text = "43: "
+popup/item_42/id = 42
+popup/item_43/text = "44: "
+popup/item_43/id = 43
+popup/item_44/text = "45: "
+popup/item_44/id = 44
+popup/item_45/text = "46: "
+popup/item_45/id = 45
+popup/item_46/text = "47: "
+popup/item_46/id = 46
+popup/item_47/text = "48: "
+popup/item_47/id = 47
+popup/item_48/text = "49: "
+popup/item_48/id = 48
+popup/item_49/text = "50: "
+popup/item_49/id = 49
+popup/item_50/text = "51: "
+popup/item_50/id = 50
+popup/item_51/text = "52: "
+popup/item_51/id = 51
+popup/item_52/text = "53: "
+popup/item_52/id = 52
+popup/item_53/text = "54: "
+popup/item_53/id = 53
+popup/item_54/text = "55: "
+popup/item_54/id = 54
+popup/item_55/text = "56: "
+popup/item_55/id = 55
+popup/item_56/text = "57: "
+popup/item_56/id = 56
+popup/item_57/text = "58: "
+popup/item_57/id = 57
+popup/item_58/text = "59: "
+popup/item_58/id = 58
+popup/item_59/text = "60: "
+popup/item_59/id = 59
+popup/item_60/text = "61: "
+popup/item_60/id = 60
+popup/item_61/text = "62: "
+popup/item_61/id = 61
+popup/item_62/text = "63: "
+popup/item_62/id = 62
+popup/item_63/text = "64: "
+popup/item_63/id = 63
+popup/item_64/text = "65: "
+popup/item_64/id = 64
+popup/item_65/text = "66: "
+popup/item_65/id = 65
+popup/item_66/text = "67: "
+popup/item_66/id = 66
+popup/item_67/text = "68: "
+popup/item_67/id = 67
+popup/item_68/text = "69: "
+popup/item_68/id = 68
+popup/item_69/text = "70: "
+popup/item_69/id = 69
+popup/item_70/text = "71: "
+popup/item_70/id = 70
+popup/item_71/text = "72: "
+popup/item_71/id = 71
+popup/item_72/text = "73: "
+popup/item_72/id = 72
+popup/item_73/text = "74: "
+popup/item_73/id = 73
+popup/item_74/text = "75: "
+popup/item_74/id = 74
+popup/item_75/text = "76: "
+popup/item_75/id = 75
+popup/item_76/text = "77: "
+popup/item_76/id = 76
+popup/item_77/text = "78: "
+popup/item_77/id = 77
+popup/item_78/text = "79: "
+popup/item_78/id = 78
+popup/item_79/text = "80: "
+popup/item_79/id = 79
+popup/item_80/text = "81: "
+popup/item_80/id = 80
+popup/item_81/text = "82: "
+popup/item_81/id = 81
+popup/item_82/text = "83: "
+popup/item_82/id = 82
+popup/item_83/text = "84: "
+popup/item_83/id = 83
+popup/item_84/text = "85: "
+popup/item_84/id = 84
+popup/item_85/text = "86: "
+popup/item_85/id = 85
+popup/item_86/text = "87: "
+popup/item_86/id = 86
+popup/item_87/text = "88: "
+popup/item_87/id = 87
+popup/item_88/text = "89: "
+popup/item_88/id = 88
+popup/item_89/text = "90: "
+popup/item_89/id = 89
+popup/item_90/text = "91: "
+popup/item_90/id = 90
+popup/item_91/text = "92: "
+popup/item_91/id = 91
+popup/item_92/text = "93: "
+popup/item_92/id = 92
+popup/item_93/text = "94: "
+popup/item_93/id = 93
+popup/item_94/text = "95: "
+popup/item_94/id = 94
+popup/item_95/text = "96: "
+popup/item_95/id = 95
+popup/item_96/text = "97: "
+popup/item_96/id = 96
+popup/item_97/text = "98: "
+popup/item_97/id = 97
+popup/item_98/text = "99: "
+popup/item_98/id = 98
+popup/item_99/text = "100: 78678678"
+popup/item_99/id = 99
+
+[node name="SelectRandomEnemy" type="CheckBox" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(270, 0)
+layout_mode = 2
+tooltip_text = "Select the group of enemies to fight randomly.
+
+[Note]: The possible enemies will be those defined in the areas containing the player. If no area overlaps with the player, no fight will be processed."
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_ulf2o")
+text = "Select Random Enemy"
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="EnableWinCondition" type="CheckBox" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(270, 0)
+layout_mode = 2
+tooltip_text = "Adds a new command branch if the battle is won"
+mouse_default_cursor_shape = 2
+text = "Enable Win Condition"
+
+[node name="EnableLostCondition" type="CheckBox" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(270, 0)
+layout_mode = 2
+tooltip_text = "Adds a new command branch if the battle is lost.
+
+[Note]: Use this option if you do not want the game to end in case of defeat."
+mouse_default_cursor_shape = 2
+text = "Enable Lost Condition"
+
+[node name="EnableRetreatCondition" type="CheckBox" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(270, 0)
+layout_mode = 2
+tooltip_text = "Adds a new command branch if you escape from the battle.
+
+[Note]: If this option is not checked, the recall command will be inactive."
+mouse_default_cursor_shape = 2
+text = "Enable Retreat Condition"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("4_nctjt")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("4_nctjt")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+text = "CANCEL"
+
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer/TroopList" to="." method="_on_troop_list_item_selected"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer3/VariableList" to="." method="_on_variable_list_item_selected"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/CancelButton" to="." method="_on_cancel_button_pressed"]

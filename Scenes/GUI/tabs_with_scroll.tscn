@@ -1,0 +1,115 @@
+[gd_scene load_steps=18 format=3 uid="uid://cthvqbv7cn8ut"]
+
+[ext_resource type="PackedScene" uid="uid://bdt1ce51rimxq" path="res://Scenes/GUI/tabs.tscn" id="1_nxnf8"]
+[ext_resource type="Script" uid="uid://b3j6aohptcujr" path="res://Scenes/GUI/tabs_with_scroll.gd" id="1_qgkt5"]
+[ext_resource type="Texture2D" uid="uid://c0d0oixei6mhn" path="res://Assets/Images/GUI/tab_disabled.png" id="2_qgkt5"]
+[ext_resource type="Texture2D" uid="uid://d13x21kgwbcen" path="res://Assets/Images/GUI/tab_normal.png" id="3_ftytj"]
+[ext_resource type="Texture2D" uid="uid://tisyc345a4ha" path="res://Assets/Images/GUI/tab_hover_unselected.png" id="3_ty5ex"]
+[ext_resource type="Texture2D" uid="uid://b1xoovwjoejed" path="res://Assets/Images/GUI/tab_hover.png" id="4_ty5ex"]
+[ext_resource type="Texture2D" uid="uid://cq7troqiaogmw" path="res://Assets/Images/GUI/arrow_left_normal.png" id="5_dffnd"]
+[ext_resource type="Texture2D" uid="uid://bsqbwum1dw013" path="res://Assets/Images/GUI/arrow_left_hover.png" id="6_8scxy"]
+[ext_resource type="Texture2D" uid="uid://b1778h8i7eni" path="res://Assets/Images/GUI/arrow_left_disabled.png" id="7_oiemd"]
+[ext_resource type="Texture2D" uid="uid://bkjqr5m7xhycd" path="res://Assets/Images/GUI/arrow_right_normal.png" id="8_3gt7v"]
+[ext_resource type="Texture2D" uid="uid://biwk4gweqfecj" path="res://Assets/Images/GUI/arrow_right_hover.png" id="9_t1tw3"]
+[ext_resource type="Texture2D" uid="uid://4qw6c4l5oc26" path="res://Assets/Images/GUI/arrow_right_disabled.png" id="10_25pmq"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dffnd"]
+texture = ExtResource("3_ty5ex")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_y7084"]
+texture = ExtResource("2_qgkt5")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1bk43"]
+texture = ExtResource("3_ftytj")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jcwd8"]
+texture = ExtResource("4_ty5ex")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ftytj"]
+bg_color = Color(0.384016, 0.251918, 0.129503, 0.745098)
+border_blend = true
+corner_radius_top_right = 16
+
+[node name="TabsWithScroll" type="HBoxContainer"]
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+script = ExtResource("1_qgkt5")
+
+[node name="FilterParent" type="Control" parent="."]
+unique_name_in_owner = true
+clip_contents = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FilterTabs" parent="FilterParent" instance=ExtResource("1_nxnf8")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 0
+offset_right = 0.0
+size_flags_horizontal = 3
+tab_names = PackedStringArray()
+main_panel_focused_stylebox = SubResource("StyleBoxTexture_dffnd")
+unselected_stylebox = SubResource("StyleBoxTexture_y7084")
+selected_stylebox = SubResource("StyleBoxTexture_1bk43")
+hover_stylebox = SubResource("StyleBoxTexture_jcwd8")
+selected_text_color = Color(1, 1, 1, 1)
+hover_text_color = Color(1, 1, 1, 1)
+unselected_offset_y = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="MarginContainer"]
+modulate = Color(1, 1, 1, 0.403922)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ftytj")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="MoveCategoriesToLeft" type="TextureButton" parent="MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(28, 0)
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 1
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = ExtResource("5_dffnd")
+texture_hover = ExtResource("6_8scxy")
+texture_disabled = ExtResource("7_oiemd")
+stretch_mode = 5
+
+[node name="MoveCategoriesToRight" type="TextureButton" parent="MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(28, 0)
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 1
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("8_3gt7v")
+texture_hover = ExtResource("9_t1tw3")
+texture_disabled = ExtResource("10_25pmq")
+stretch_mode = 5
+
+[connection signal="focus_entered" from="MarginContainer/HBoxContainer/MoveCategoriesToLeft" to="." method="_on_move_categories_to_left_focus_entered"]
+[connection signal="focus_entered" from="MarginContainer/HBoxContainer/MoveCategoriesToRight" to="." method="_on_move_categories_to_right_focus_entered"]

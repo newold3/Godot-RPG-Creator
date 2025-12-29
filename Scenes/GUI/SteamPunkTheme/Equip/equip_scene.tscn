@@ -1,0 +1,283 @@
+[gd_scene load_steps=12 format=3 uid="uid://3p2o203smp6v"]
+
+[ext_resource type="Script" uid="uid://b4em3wj8ipcuf" path="res://Scenes/GUI/SteamPunkTheme/Equip/equip_scene.gd" id="1_jbong"]
+[ext_resource type="PackedScene" uid="uid://by4iopf8kl51b" path="res://Scenes/GUI/SteamPunkTheme/Equip/select_heroe_vertical_menu.tscn" id="1_xhc3l"]
+[ext_resource type="Texture2D" uid="uid://bfgr2ewrp6i0u" path="res://Assets/Images/GUI/party_menu.png" id="2_jbong"]
+[ext_resource type="PackedScene" uid="uid://csroyvefl3r0e" path="res://Scenes/EquipScene/main_actor_container.tscn" id="3_qgjgh"]
+[ext_resource type="PackedScene" uid="uid://b0e13ikawqdbq" path="res://Scenes/GUI/SteamPunkTheme/Equip/stats_container.tscn" id="4_ueivf"]
+[ext_resource type="Texture2D" uid="uid://clcx3f1jai82k" path="res://Assets/Images/Other/light_beam.png" id="5_qgjgh"]
+[ext_resource type="PackedScene" uid="uid://bhe278c8ompu1" path="res://Scenes/GUI/SteamPunkTheme/Equip/equipment_container.tscn" id="5_v1rh4"]
+[ext_resource type="FontFile" uid="uid://dvh0mi6yu0ywx" path="res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf" id="7_r2o83"]
+[ext_resource type="PackedScene" uid="uid://dhayhpqxdxhub" path="res://Scenes/GUI/SteamPunkTheme/Equip/current_selected_equipment_container.tscn" id="9_x4so8"]
+[ext_resource type="PackedScene" uid="uid://cm3723njwglc8" path="res://Scenes/GUI/SteamPunkTheme/Equip/items_menu.tscn" id="15_ueivf"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6cilu"]
+atlas = ExtResource("2_jbong")
+region = Rect2(1129, 304, 97, 98)
+
+[node name="EquipScene" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/margin_top = 45
+theme_override_constants/margin_bottom = 40
+script = ExtResource("1_jbong")
+menu_items_end_position = Vector2(420, 0)
+
+[node name="HelpTop" type="MarginContainer" parent="."]
+z_index = 100
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_constants/margin_left = 116
+theme_override_constants/margin_top = -8
+theme_override_constants/margin_right = 506
+theme_override_constants/margin_bottom = -45
+
+[node name="HelpLabel" type="Label" parent="HelpTop"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.83137256, 0.5764706, 0.3137255, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("7_r2o83")
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MainSelectHeroPanel" type="Control" parent="HBoxContainer"]
+custom_minimum_size = Vector2(96, 202)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="ButtonsVerticalMenu" parent="HBoxContainer/MainSelectHeroPanel" instance=ExtResource("1_xhc3l")]
+unique_name_in_owner = true
+z_index = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Contents" parent="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu" index="2"]
+theme_override_constants/margin_top = 44
+
+[node name="SmoothScrollContainer" parent="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu/Contents" index="0"]
+custom_vscroll_size = Vector2(12, 366)
+custom_vscroll_offset = Vector2(70, -3)
+
+[node name="BackgroundTop" parent="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu" index="3"]
+metadata/_edit_lock_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = -20
+theme_override_constants/margin_top = 9
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
+
+[node name="Decoration" type="TextureRect" parent="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu/MarginContainer"]
+z_index = 1
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+mouse_filter = 2
+texture = SubResource("AtlasTexture_6cilu")
+expand_mode = 1
+
+[node name="ActorPanel" type="Control" parent="HBoxContainer"]
+custom_minimum_size = Vector2(148, 415)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="BeamLight" type="TextureRect" parent="HBoxContainer/ActorPanel"]
+modulate = Color(1, 0.79607844, 0.5411765, 0.23137255)
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -214.0
+offset_top = -152.0
+offset_right = 232.0
+offset_bottom = 103.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("5_qgjgh")
+expand_mode = 1
+metadata/_edit_lock_ = true
+
+[node name="MainActorPanel" type="Control" parent="HBoxContainer/ActorPanel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ActorContainer" type="MarginContainer" parent="HBoxContainer/ActorPanel/MainActorPanel"]
+z_index = 1
+custom_minimum_size = Vector2(148, 415)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_bottom = -39
+
+[node name="MainActorContainer" parent="HBoxContainer/ActorPanel/MainActorPanel/ActorContainer" instance=ExtResource("3_qgjgh")]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+alignment = 2
+
+[node name="MainStatsContainer" type="Control" parent="HBoxContainer"]
+custom_minimum_size = Vector2(380, 0)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Stats" type="MarginContainer" parent="HBoxContainer/MainStatsContainer"]
+unique_name_in_owner = true
+z_index = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_top = 60
+theme_override_constants/margin_bottom = -41
+
+[node name="StatsContainer" parent="HBoxContainer/MainStatsContainer/Stats" instance=ExtResource("4_ueivf")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 0)
+layout_mode = 2
+
+[node name="Gear1" parent="HBoxContainer/MainStatsContainer/Stats/StatsContainer/Gear" index="0"]
+offset_left = 15.999998
+offset_top = 11.999998
+offset_right = 15.999998
+offset_bottom = 11.999998
+
+[node name="Part" parent="HBoxContainer/MainStatsContainer/Stats/StatsContainer/Gear/Gear1" index="0"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -234.5
+offset_top = -229.5
+offset_right = 234.5
+offset_bottom = 229.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Gear2" parent="HBoxContainer/MainStatsContainer/Stats/StatsContainer/Gear" index="1"]
+offset_left = -17.0
+offset_top = 11.999998
+offset_right = -17.0
+offset_bottom = 11.999998
+
+[node name="Part" parent="HBoxContainer/MainStatsContainer/Stats/StatsContainer/Gear/Gear2" index="0"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -234.5
+offset_top = -229.5
+offset_right = 234.5
+offset_bottom = 229.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BottomContainer" parent="HBoxContainer/MainStatsContainer/Stats/StatsContainer/MarginContainer/VBoxContainer/MarginContainer" index="0"]
+custom_vscroll_size = Vector2(12, 346)
+custom_vscroll_offset = Vector2(347, -2)
+
+[node name="StatsContainer" parent="HBoxContainer/MainStatsContainer/Stats/StatsContainer/MarginContainer/VBoxContainer/MarginContainer/BottomContainer" index="0"]
+custom_minimum_size = Vector2(0, 0)
+
+[node name="BackgroundTop" parent="HBoxContainer/MainStatsContainer/Stats/StatsContainer" index="3"]
+metadata/_edit_lock_ = true
+
+[node name="EquipmentContainer" type="Control" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Equipment" type="MarginContainer" parent="HBoxContainer/EquipmentContainer"]
+unique_name_in_owner = true
+z_index = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_top = -15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/EquipmentContainer/Equipment"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="EquipmentContainer" parent="HBoxContainer/EquipmentContainer/Equipment/VBoxContainer" instance=ExtResource("5_v1rh4")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="CurrentSelectedEquipmentContainer" parent="HBoxContainer/EquipmentContainer/Equipment/VBoxContainer" instance=ExtResource("9_x4so8")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="SecondaryMenu" type="Control" parent="."]
+z_index = 40
+custom_minimum_size = Vector2(416, 390)
+layout_mode = 2
+size_flags_horizontal = 8
+mouse_filter = 2
+
+[node name="MenuItems" parent="SecondaryMenu" instance=ExtResource("15_ueivf")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(416, 555)
+layout_mode = 0
+offset_left = 419.0
+offset_right = 934.0
+offset_bottom = 555.0
+mouse_filter = 0
+
+[connection signal="back_pressed" from="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu" to="." method="destroy"]
+[connection signal="button_clicked" from="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu" to="." method="_change_actor"]
+[connection signal="button_selected" from="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu" to="." method="_on_actors_menu_button_selected"]
+[connection signal="change_focus_requested" from="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu" to="HBoxContainer/EquipmentContainer/Equipment/VBoxContainer/EquipmentContainer" method="select_last_slot" flags=3]
+[connection signal="change_hero_by_hotkey" from="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu" to="HBoxContainer/EquipmentContainer/Equipment/VBoxContainer/EquipmentContainer" method="select_last_slot"]
+[connection signal="back_pressed" from="HBoxContainer/EquipmentContainer/Equipment/VBoxContainer/EquipmentContainer" to="." method="destroy"]
+[connection signal="change_focus_requested" from="HBoxContainer/EquipmentContainer/Equipment/VBoxContainer/EquipmentContainer" to="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu" method="select_last_button" flags=3]
+[connection signal="slot_clicked" from="HBoxContainer/EquipmentContainer/Equipment/VBoxContainer/EquipmentContainer" to="." method="_on_equipment_container_slot_clicked"]
+[connection signal="slot_selected" from="HBoxContainer/EquipmentContainer/Equipment/VBoxContainer/EquipmentContainer" to="." method="_on_equipment_slot_selected"]
+[connection signal="back_pressed" from="SecondaryMenu/MenuItems" to="." method="_hide_menu"]
+[connection signal="cancel" from="SecondaryMenu/MenuItems" to="." method="_on_menu_items_cancel"]
+[connection signal="item_clicked" from="SecondaryMenu/MenuItems" to="." method="_on_menu_items_item_clicked"]
+[connection signal="item_hovered" from="SecondaryMenu/MenuItems" to="." method="_on_menu_items_item_hovered"]
+[connection signal="item_selected" from="SecondaryMenu/MenuItems" to="." method="_on_menu_items_item_selected"]
+
+[editable path="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu"]
+[editable path="HBoxContainer/MainStatsContainer/Stats/StatsContainer"]

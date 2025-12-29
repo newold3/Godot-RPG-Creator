@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://bhs4chnmg6xaf"]
+
+[ext_resource type="Script" uid="uid://ydpljh41365c" path="res://Scenes/WeatherScenes/HotDesert/line_wind.gd" id="1_4bljn"]
+[ext_resource type="Texture2D" uid="uid://bvusj2u544kop" path="res://Assets/Images/Other/horizontal_line.png" id="1_pslav"]
+
+[sub_resource type="Curve" id="Curve_pslav"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.0433333, 0.0947075), 0.0, 0.0, 0, 0, Vector2(0.283333, 0.525862), 4.25963, 4.25963, 0, 0, Vector2(0.453333, 0.741379), -0.0257282, -0.0257282, 0, 0, Vector2(0.636667, 0.543103), -3.13067, -3.13067, 0, 0, Vector2(0.946667, 0.12069), 0.0, 0.0, 0, 0, Vector2(0.996667, 0), 0.0, 0.0, 0, 0]
+point_count = 7
+
+[sub_resource type="Gradient" id="Gradient_45idr"]
+offsets = PackedFloat32Array(0, 0.156716, 0.511194, 0.753731, 1)
+colors = PackedColorArray(1, 1, 1, 0.0313726, 1, 1, 1, 0.521569, 1, 1, 1, 0.384314, 1, 1, 1, 0.231373, 1, 1, 1, 0)
+
+[node name="LineWind" type="Line2D"]
+points = PackedVector2Array(40, 9, 114, 10, 167, 56, 196, 39, 256, 29)
+width_curve = SubResource("Curve_pslav")
+gradient = SubResource("Gradient_45idr")
+texture = ExtResource("1_pslav")
+texture_mode = 2
+script = ExtResource("1_4bljn")
+wind_color = Color(0.96, 0.86928, 0.7008, 0.709804)
+min_speed = 140.0
+max_speed = 350.0
+wave_amplitude = 10.0
+lifetime = 2.5

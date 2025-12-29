@@ -1,0 +1,56 @@
+[gd_scene load_steps=9 format=3 uid="uid://hb13th4gtoiw"]
+
+[ext_resource type="Texture2D" uid="uid://bwyjc5wd8yrg5" path="res://Assets/Images/Particles/dust1.png" id="1_q6ii5"]
+[ext_resource type="Script" uid="uid://b1m7vwkaelnsa" path="res://Scenes/ParticleScenes/default_particles_script.gd" id="2_sq5ss"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_sq5ss"]
+particles_animation = true
+particles_anim_h_frames = 3
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="Curve" id="Curve_7kr30"]
+_data = [Vector2(0, 0.117932), 0.0, 0.0, 0, 0, Vector2(0.187266, 0.831987), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_rwlfp"]
+curve = SubResource("Curve_7kr30")
+
+[sub_resource type="Curve" id="Curve_3xj4b"]
+_data = [Vector2(0.00374532, 0), 0.0, 0.0, 0, 0, Vector2(0.194757, 0.537964), 0.0, 0.0, 0, 0, Vector2(0.367041, 0.464459), 0.0, 0.0, 0, 0, Vector2(0.501873, 0.201939), 0.0, 0.0, 0, 0, Vector2(1, 0.0234249), 0.0, 0.0, 0, 0]
+point_count = 5
+
+[sub_resource type="CurveTexture" id="CurveTexture_kbd82"]
+curve = SubResource("Curve_3xj4b")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_wtfjf"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(8, 1, 1)
+angle_min = 1.07288e-05
+angle_max = 322.4
+direction = Vector3(0, -80, 0)
+angular_velocity_min = -1.60933e-05
+angular_velocity_max = 85.97
+gravity = Vector3(0, -15, 0)
+linear_accel_min = 6.02
+linear_accel_max = 29.85
+scale_min = 0.0
+scale_curve = SubResource("CurveTexture_kbd82")
+alpha_curve = SubResource("CurveTexture_rwlfp")
+anim_speed_max = 3.0
+anim_offset_max = 1.0
+
+[node name="JumpParticles" type="GPUParticles2D"]
+modulate = Color(1, 1, 1, 0.419608)
+z_index = 1
+material = SubResource("CanvasItemMaterial_sq5ss")
+emitting = false
+texture = ExtResource("1_q6ii5")
+one_shot = true
+explosiveness = 1.0
+randomness = 1.0
+fixed_fps = 8
+trail_sections = 2
+process_material = SubResource("ParticleProcessMaterial_wtfjf")
+script = ExtResource("2_sq5ss")

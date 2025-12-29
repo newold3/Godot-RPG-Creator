@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://dj44lomm46fuq"]
+
+[ext_resource type="Script" uid="uid://cin6u8m8rtny4" path="res://Scenes/OtherScenes/animate_items.gd" id="1_x4al5"]
+[ext_resource type="FontFile" uid="uid://2okej4ay4kdb" path="res://addons/CustomControls/Resources/Fonts/unifont-13.0.01.ttf" id="2_wab0f"]
+[ext_resource type="Texture2D" uid="uid://p1ycew57uy6y" path="res://Assets/Images/GUI/window5.png" id="3_5k8ud"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pyhlv"]
+content_margin_left = 9.0
+content_margin_top = 9.0
+content_margin_right = 9.0
+content_margin_bottom = 9.0
+texture = ExtResource("3_5k8ud")
+texture_margin_left = 9.0
+texture_margin_top = 9.0
+texture_margin_right = 9.0
+texture_margin_bottom = 9.0
+
+[node name="AnimateItems" type="Control"]
+custom_minimum_size = Vector2(600, 200)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_x4al5")
+font = ExtResource("2_wab0f")
+text_background_style = SubResource("StyleBoxTexture_pyhlv")

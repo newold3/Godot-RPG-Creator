@@ -1,0 +1,186 @@
+[gd_scene load_steps=14 format=3 uid="uid://ds6c4hrnyum14"]
+
+[ext_resource type="PackedScene" uid="uid://ckrmqq6qvlduj" path="res://Scenes/GUI/SteamPunkTheme/base_window_for_scenes.tscn" id="1_pxgpe"]
+[ext_resource type="Theme" uid="uid://ctpmflgnlpkjg" path="res://Assets/Themes/in_game_theme2.tres" id="2_mjrof"]
+[ext_resource type="Script" uid="uid://ba7q1f1j8cky3" path="res://Scenes/GUI/SteamPunkTheme/MainMenu/parent_signal_manager.gd" id="3_3uh6u"]
+[ext_resource type="Texture2D" uid="uid://bfgr2ewrp6i0u" path="res://Assets/Images/GUI/party_menu.png" id="4_0vxhb"]
+[ext_resource type="PackedScene" uid="uid://cytaey5habpud" path="res://Scenes/GUI/SteamPunkTheme/MainMenu/scene_contents.tscn" id="5_0m31r"]
+[ext_resource type="FontFile" uid="uid://dvh0mi6yu0ywx" path="res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf" id="6_l66c2"]
+[ext_resource type="PackedScene" uid="uid://bpskwto2as5rb" path="res://Scenes/GUI/SteamPunkTheme/MainMenu/bottom_panel.tscn" id="7_x1cck"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_xb5wn"]
+viewport_path = NodePath("SceneMainContainer/BottomLayer/SubViewport")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cqufr"]
+atlas = ExtResource("4_0vxhb")
+region = Rect2(1357, 10, 102, 415)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_molcp"]
+atlas = ExtResource("4_0vxhb")
+region = Rect2(1379, 446, 374, 161)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3mn25"]
+atlas = ExtResource("4_0vxhb")
+region = Rect2(1246, 218, 68, 297)
+
+[sub_resource type="LabelSettings" id="LabelSettings_2kikc"]
+font = ExtResource("6_l66c2")
+font_color = Color(0.76862746, 0.6, 0.09803922, 1)
+outline_size = 3
+outline_color = Color(0.49803922, 0.28627452, 0.19607843, 1)
+stacked_outline_count = 1
+stacked_outline_0/size = 6
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mg7hj"]
+atlas = ExtResource("4_0vxhb")
+region = Rect2(1529, 321, 287, 39)
+
+[node name="SceneMainMenu" instance=ExtResource("1_pxgpe")]
+offset_right = 0.001953125
+pivot_offset = Vector2(576.001, 320)
+theme = ExtResource("2_mjrof")
+scene_title = "MAIN MENU"
+no_destroy_on_hide = true
+timer_to_emit_end_signal = 0.2
+move_out_direction = 2
+zoom_out_enabled = false
+fade_out_enabled = false
+
+[node name="ParentSignalManager" type="Node" parent="." index="0"]
+script = ExtResource("3_3uh6u")
+
+[node name="BottomLayer" parent="SceneMainContainer" index="0"]
+pivot_offset = Vector2(576.001, 320)
+
+[node name="Background" parent="SceneMainContainer/BottomLayer" index="1"]
+texture = SubResource("ViewportTexture_xb5wn")
+
+[node name="ExtraDecoration" type="Control" parent="SceneMainContainer/BottomLayer" index="4"]
+modulate = Color(0.81, 0.81, 0.81, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="SceneMainContainer/BottomLayer/ExtraDecoration" index="0"]
+layout_mode = 0
+offset_left = 424.0
+offset_top = 80.0
+offset_right = 526.0
+offset_bottom = 495.0
+texture = SubResource("AtlasTexture_cqufr")
+
+[node name="TextureRect2" type="TextureRect" parent="SceneMainContainer/BottomLayer/ExtraDecoration" index="1"]
+layout_mode = 0
+offset_left = 445.0
+offset_top = 494.485
+offset_right = 819.0
+offset_bottom = 655.485
+texture = SubResource("AtlasTexture_molcp")
+
+[node name="TextureRect3" type="TextureRect" parent="SceneMainContainer/BottomLayer/ExtraDecoration" index="2"]
+layout_mode = 0
+offset_left = 360.04
+offset_top = 277.48
+offset_right = 428.04037
+offset_bottom = 574.48047
+texture = SubResource("AtlasTexture_3mn25")
+flip_h = true
+
+[node name="MainContainer" parent="SceneMainContainer" index="1"]
+mouse_filter = 2
+
+[node name="ContentsContainer" parent="SceneMainContainer/MainContainer" index="0"]
+mouse_filter = 2
+
+[node name="MainSceneContainer" parent="SceneMainContainer/MainContainer/ContentsContainer" index="0"]
+mouse_filter = 2
+
+[node name="MainMenuScene" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer" index="0" node_paths=PackedStringArray("initial_container", "help_label") instance=ExtResource("5_0m31r")]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = -30
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = -21
+initial_container = NodePath("../../../..")
+help_label = NodePath("../../../../MarginContainer/HelpLabel")
+
+[node name="MainContainer" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene/HBoxContainer/MarginContainer/PartyMenu" index="0"]
+custom_vscroll_offset = Vector2(535.225, 27.18)
+
+[node name="Title" parent="SceneMainContainer/MainContainer" index="2"]
+mouse_filter = 2
+
+[node name="TitleContainer" parent="SceneMainContainer/MainContainer/Title" index="0"]
+mouse_filter = 2
+title = "MAIN MENU"
+
+[node name="BackButton" parent="SceneMainContainer" index="3"]
+visible = false
+on_hover_selected_animation = 4
+
+[node name="ToolTipLayers" parent="SceneMainContainer" index="4"]
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="SceneMainContainer" index="5"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -102.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/margin_left = 105
+theme_override_constants/margin_right = 122
+theme_override_constants/margin_bottom = 86
+
+[node name="HelpLabel" type="Label" parent="SceneMainContainer/MarginContainer" index="0"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.76862043, 0.60124344, 0.09985284, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5764706)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("6_l66c2")
+text = "Help"
+label_settings = SubResource("LabelSettings_2kikc")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Background" type="TextureRect" parent="SceneMainContainer/MarginContainer/HelpLabel" index="0"]
+modulate = Color(1, 0.110000014, 0.110000014, 0.36078432)
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -30.0
+offset_top = -6.0
+offset_right = 24.0
+offset_bottom = 11.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("AtlasTexture_mg7hj")
+expand_mode = 1
+
+[node name="BottomMainMenu" parent="SceneMainContainer" index="6" instance=ExtResource("7_x1cck")]
+unique_name_in_owner = true
+layout_mode = 1
+mouse_filter = 2
+
+[connection signal="visibility_changed" from="." to="ParentSignalManager" method="_on_parent_visibility_changed"]
+[connection signal="end" from="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene" to="ParentSignalManager" method="destroy"]
+[connection signal="sub_menu_closed" from="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene" to="SceneMainContainer/MainContainer/Title/TitleContainer" method="start"]
+[connection signal="sub_menu_opened" from="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene" to="SceneMainContainer/MainContainer/Title/TitleContainer" method="end"]
+
+[editable path="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene"]
+[editable path="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene/HBoxContainer/MarginContainer/PartyMenu"]

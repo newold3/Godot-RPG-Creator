@@ -1,0 +1,148 @@
+[gd_scene load_steps=18 format=3 uid="uid://dk1kebmf260v4"]
+
+[ext_resource type="Script" uid="uid://vo2ib3pfnxml" path="res://Scenes/WeatherScenes/UnderWater/under_water_compose_scene.gd" id="1_3fctx"]
+[ext_resource type="Shader" uid="uid://blw4u864xpd46" path="res://Assets/Shaders/heat_haze.gdshader" id="2_3fctx"]
+[ext_resource type="AudioStream" uid="uid://bdmmr4oeea3ej" path="res://Assets/Sounds/SE/deep_underwater.ogg" id="3_qb56a"]
+[ext_resource type="Shader" uid="uid://lcxaijqwrbce" path="res://Assets/Shaders/generate_fish_shadws.gdshader" id="4_jf7ac"]
+[ext_resource type="Texture2D" uid="uid://c63eyr0mrdfxy" path="res://Assets/Images/Other/fish_silhouettes.png" id="5_xxw84"]
+[ext_resource type="Shader" uid="uid://b24gls5ur6xdm" path="res://Assets/Shaders/mist.gdshader" id="6_6x1qb"]
+[ext_resource type="Shader" uid="uid://cqq4awjndg3rh" path="res://Assets/Shaders/gaussian_blur_v2.gdshader" id="7_8r84t"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_aq2q4"]
+noise_type = 5
+frequency = 0.0268
+offset = Vector3(0, 298.7, 0)
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_pasoe"]
+noise = SubResource("FastNoiseLite_aq2q4")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qb56a"]
+shader = ExtResource("2_3fctx")
+shader_parameter/NOISE_TEXTURE = SubResource("NoiseTexture2D_pasoe")
+shader_parameter/strength = 5.0
+shader_parameter/uv_scaling = 0.8
+shader_parameter/movement_direction = Vector2(3.5, 0)
+shader_parameter/movement_speed = 0.09
+shader_parameter/scale = Vector2(1, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_judjj"]
+shader = ExtResource("4_jf7ac")
+shader_parameter/fish_atlas = ExtResource("5_xxw84")
+shader_parameter/screen_size = Vector2(1152, 640)
+shader_parameter/fish_count = 15
+shader_parameter/atlas_columns = 4
+shader_parameter/atlas_rows = 4
+shader_parameter/min_speed = 20.0
+shader_parameter/max_speed = 80.0
+shader_parameter/base_wiggle = 0.335
+shader_parameter/wiggle_compensation_factor = 1.085
+shader_parameter/min_lifespan = 20.0
+shader_parameter/max_lifespan = 20.0
+shader_parameter/fade_in_time = 3.0
+shader_parameter/fade_out_time = 3.0
+shader_parameter/fish_scale_min = 0.4
+shader_parameter/fish_scale_max = 6.0
+shader_parameter/fish_color = Color(0, 0, 0, 0.380392)
+shader_parameter/global_scale = Vector2(1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_b1fr5"]
+noise_type = 3
+frequency = 0.005
+offset = Vector3(0, 140.85, 0)
+fractal_type = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_7r4y4"]
+noise = SubResource("FastNoiseLite_b1fr5")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_b1fr5"]
+shader = ExtResource("6_6x1qb")
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/timescale = 0.1
+shader_parameter/noise_texture1 = SubResource("NoiseTexture2D_7r4y4")
+shader_parameter/noise_texture2 = SubResource("NoiseTexture2D_7r4y4")
+shader_parameter/noise_texture3 = SubResource("NoiseTexture2D_7r4y4")
+shader_parameter/hole_texture = SubResource("NoiseTexture2D_7r4y4")
+shader_parameter/noise_weight1 = 0.5
+shader_parameter/noise_weight2 = 0.3
+shader_parameter/noise_weight3 = 0.2
+shader_parameter/noiseScale = 1.0
+shader_parameter/scrollDirection1 = Vector2(1, 0.5)
+shader_parameter/scrollDirection2 = Vector2(-0.7, 0.3)
+shader_parameter/scrollDirection3 = Vector2(0.3, -0.8)
+shader_parameter/holeScrollDirection = Vector2(0.2, -0.2)
+shader_parameter/density_threshold = 0.5
+shader_parameter/edge_softness = 0.28
+shader_parameter/scale = Vector2(1, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ucngf"]
+shader = ExtResource("7_8r84t")
+shader_parameter/radius = 4.0
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_f371h"]
+viewport_path = NodePath("SubViewport2")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_pasoe"]
+viewport_path = NodePath("SubViewport")
+
+[node name="UnderWaterComposeScene" type="Node2D"]
+script = ExtResource("1_3fctx")
+modulate_scene = Color(0.27451, 0.470588, 0.964706, 1)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="MainSprite" type="ColorRect" parent="CanvasLayer"]
+unique_name_in_owner = true
+z_index = 2
+material = SubResource("ShaderMaterial_qb56a")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BGSPlayer" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("3_qb56a")
+autoplay = true
+bus = &"Ambient"
+
+[node name="SubViewport2" type="SubViewport" parent="."]
+transparent_bg = true
+size = Vector2i(1152, 640)
+
+[node name="Fish" type="ColorRect" parent="SubViewport2"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_judjj")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SubViewport" type="SubViewport" parent="."]
+transparent_bg = true
+size = Vector2i(1152, 640)
+
+[node name="Foam" type="ColorRect" parent="SubViewport"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_b1fr5")
+offset_right = 1152.0
+offset_bottom = 640.0
+
+[node name="FishFinal" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+z_index = 3
+z_as_relative = false
+texture_repeat = 3
+material = SubResource("ShaderMaterial_ucngf")
+texture = SubResource("ViewportTexture_f371h")
+centered = false
+
+[node name="FoamFinal" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+z_index = 5
+texture = SubResource("ViewportTexture_pasoe")
+centered = false

@@ -1,0 +1,282 @@
+[gd_scene load_steps=14 format=3 uid="uid://r27spvh8luie"]
+
+[ext_resource type="Script" uid="uid://bymx24oxc1a7q" path="res://Scenes/GUI/SteamPunkTheme/SaveLoad/load_game_scene.gd" id="1_0mtlb"]
+[ext_resource type="Texture2D" uid="uid://bw3vuu3ip3mbq" path="res://Assets/Images/GUI/window2_background.png" id="2_x50iv"]
+[ext_resource type="Texture2D" uid="uid://bvc2gub3sa2wm" path="res://Assets/Images/GUI/window2.png" id="3_pngo8"]
+[ext_resource type="Texture2D" uid="uid://d24112ogy8wc6" path="res://Assets/Images/GUI/window2_background2.png" id="4_4a3pm"]
+[ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="5_7vytf"]
+[ext_resource type="PackedScene" uid="uid://cqqo2posnfpon" path="res://Scenes/LoadSaveScene/save_slot.tscn" id="6_w5sbm"]
+[ext_resource type="Shader" uid="uid://ba78odfkakk1o" path="res://Assets/Shaders/realistic_crt.gdshader" id="7_uxa3f"]
+[ext_resource type="PackedScene" uid="uid://llqjaxoxheax" path="res://Scenes/GUI/button_gui1.tscn" id="8_n7pj6"]
+[ext_resource type="Texture2D" uid="uid://bwq4bq6gp1v0d" path="res://Assets/Images/GUI/exit_button_normal.png" id="9_iun43"]
+[ext_resource type="Texture2D" uid="uid://brx1sgcyg0bub" path="res://Assets/Images/GUI/exit_button_hover.png" id="10_4v8e0"]
+[ext_resource type="Texture2D" uid="uid://dglbc1p7jey14" path="res://Assets/Images/GUI/exit_button_hover_animation.png" id="11_0mtlb"]
+
+[sub_resource type="Curve" id="Curve_pm4ls"]
+_data = [Vector2(0, 0), 0.0, 1.4, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5a1gu"]
+shader = ExtResource("7_uxa3f")
+shader_parameter/resolution = Vector2(1152, 648)
+shader_parameter/scan_line_amount = 0.319
+shader_parameter/warp_amount = 0.154
+shader_parameter/noise_amount = 0.03
+shader_parameter/interference_amount = 0.2
+shader_parameter/grille_amount = 0.1
+shader_parameter/grille_size = 1.0
+shader_parameter/vignette_amount = 0.762
+shader_parameter/vignette_intensity = 0.276
+shader_parameter/aberation_amount = 0.0
+shader_parameter/roll_line_amount = 0.046
+shader_parameter/roll_speed = 1.0
+shader_parameter/scan_line_strength = -8.832
+shader_parameter/pixel_strength = -2.0
+shader_parameter/final_alpha = 1.0
+
+[node name="LoadGameScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0mtlb")
+end_animation = 6
+tween_speed_scale = 1.8
+
+[node name="Background" type="TextureRect" parent="."]
+unique_name_in_owner = true
+modulate = Color(1, 1, 0.998, 1)
+texture_repeat = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_x50iv")
+stretch_mode = 1
+
+[node name="Main" type="NinePatchRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -490.0
+offset_top = -287.5
+offset_right = 490.0
+offset_bottom = 287.5
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(490, 287.5)
+patch_margin_left = 64
+patch_margin_top = 24
+patch_margin_right = 64
+patch_margin_bottom = 24
+
+[node name="Contents" type="Control" parent="Main"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(490, 287.5)
+mouse_filter = 2
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Main/Contents"]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(490, 287.5)
+texture = ExtResource("3_pngo8")
+patch_margin_left = 64
+patch_margin_top = 24
+patch_margin_right = 64
+patch_margin_bottom = 24
+
+[node name="MarginContainer2" type="MarginContainer" parent="Main/Contents"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="TextureRect" type="TextureRect" parent="Main/Contents/MarginContainer2"]
+layout_mode = 2
+texture = ExtResource("4_4a3pm")
+
+[node name="MarginContainer" type="MarginContainer" parent="Main/Contents"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 12
+
+[node name="SaveContainer" type="ScrollContainer" parent="Main/Contents/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 2
+mouse_filter = 2
+follow_focus = true
+horizontal_scroll_mode = 0
+script = ExtResource("5_7vytf")
+curve = SubResource("Curve_pm4ls")
+
+[node name="SlotsContainer" type="VBoxContainer" parent="Main/Contents/MarginContainer/SaveContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SaveSlot" parent="Main/Contents/MarginContainer/SaveContainer/SlotsContainer" instance=ExtResource("6_w5sbm")]
+layout_mode = 2
+
+[node name="SaveSlot2" parent="Main/Contents/MarginContainer/SaveContainer/SlotsContainer" instance=ExtResource("6_w5sbm")]
+layout_mode = 2
+
+[node name="SaveSlot3" parent="Main/Contents/MarginContainer/SaveContainer/SlotsContainer" instance=ExtResource("6_w5sbm")]
+layout_mode = 2
+
+[node name="SaveSlot4" parent="Main/Contents/MarginContainer/SaveContainer/SlotsContainer" instance=ExtResource("6_w5sbm")]
+layout_mode = 2
+
+[node name="SaveSlot5" parent="Main/Contents/MarginContainer/SaveContainer/SlotsContainer" instance=ExtResource("6_w5sbm")]
+layout_mode = 2
+
+[node name="SaveSlot6" parent="Main/Contents/MarginContainer/SaveContainer/SlotsContainer" instance=ExtResource("6_w5sbm")]
+layout_mode = 2
+
+[node name="SaveSlot7" parent="Main/Contents/MarginContainer/SaveContainer/SlotsContainer" instance=ExtResource("6_w5sbm")]
+layout_mode = 2
+
+[node name="SaveSlot8" parent="Main/Contents/MarginContainer/SaveContainer/SlotsContainer" instance=ExtResource("6_w5sbm")]
+layout_mode = 2
+
+[node name="SaveSlot9" parent="Main/Contents/MarginContainer/SaveContainer/SlotsContainer" instance=ExtResource("6_w5sbm")]
+layout_mode = 2
+
+[node name="SaveSlot10" parent="Main/Contents/MarginContainer/SaveContainer/SlotsContainer" instance=ExtResource("6_w5sbm")]
+layout_mode = 2
+
+[node name="Title" type="NinePatchRect" parent="Main/Contents"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -156.5
+offset_top = -35.0
+offset_right = 156.5
+offset_bottom = 42.0
+grow_horizontal = 2
+pivot_offset = Vector2(490, 287.5)
+texture = ExtResource("3_pngo8")
+patch_margin_left = 64
+patch_margin_top = 24
+patch_margin_right = 64
+patch_margin_bottom = 24
+
+[node name="MarginContainer2" type="MarginContainer" parent="Main/Contents/Title"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="TextureRect" type="TextureRect" parent="Main/Contents/Title/MarginContainer2"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("4_4a3pm")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="Main/Contents/Title"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 48
+text = "LOAD GAME"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CRTEffect" type="ColorRect" parent="Main/Contents"]
+modulate = Color(0.763958, 0.893715, 0.952629, 1)
+material = SubResource("ShaderMaterial_5a1gu")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+metadata/_edit_lock_ = true
+
+[node name="BackButton" parent="Main" instance=ExtResource("8_n7pj6")]
+unique_name_in_owner = true
+texture_filter = 2
+custom_minimum_size = Vector2(66, 66)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = -45.0
+offset_right = 74.0
+offset_bottom = 21.000122
+grow_horizontal = 0
+grow_vertical = 0
+pivot_offset = Vector2(33, 33)
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath(".")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath(".")
+focus_next = NodePath(".")
+focus_previous = NodePath(".")
+focus_mode = 1
+max_font_size = 37
+max_scale_on_hover = Vector2(1.01, 1.01)
+ninepatch_texture_normal = ExtResource("9_iun43")
+ninepatch_texture_selected = ExtResource("10_4v8e0")
+ninepatch_texture_disabled = null
+hover_effect_texture = ExtResource("11_0mtlb")
+current_manipulator = "load_save_scene"
+
+[connection signal="begin_click" from="Main/BackButton" to="." method="_on_back_button_begin_click"]
+[connection signal="direction_pressed" from="Main/BackButton" to="." method="_on_direction_pressed"]
+[connection signal="end_click" from="Main/BackButton" to="." method="_on_back_button_end_click"]
+[connection signal="focus_entered" from="Main/BackButton" to="." method="_on_back_button_focus_entered"]
+[connection signal="mouse_entered" from="Main/BackButton" to="." method="_on_back_button_mouse_entered"]
+[connection signal="mouse_exited" from="Main/BackButton" to="." method="_on_back_button_mouse_exited"]
+[connection signal="selected" from="Main/BackButton" to="." method="_on_back_button_selected"]

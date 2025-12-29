@@ -1,0 +1,305 @@
+[gd_scene load_steps=18 format=3 uid="uid://ddyamc47ib6vt"]
+
+[ext_resource type="Theme" uid="uid://cp5rfiijsw4j4" path="res://Assets/Themes/in_game_theme.tres" id="1_7shkr"]
+[ext_resource type="Texture2D" uid="uid://bw3vuu3ip3mbq" path="res://Assets/Images/GUI/window2_background.png" id="1_dl7ti"]
+[ext_resource type="Script" uid="uid://us2s45hhytao" path="res://Scenes/EquipScene/default_equip_scene.gd" id="2_dlmwn"]
+[ext_resource type="Texture2D" uid="uid://bcuprqlh7m5ec" path="res://Assets/Images/GUI/frame1b.png" id="4_i5kgy"]
+[ext_resource type="PackedScene" uid="uid://mvu5debmsa2t" path="res://Scenes/OtherScenes/icon_gear_container.tscn" id="5_l6c1c"]
+[ext_resource type="Texture2D" uid="uid://bttv2a7yritf7" path="res://Assets/Images/GUI/decoration1.png" id="6_stab3"]
+[ext_resource type="PackedScene" uid="uid://csroyvefl3r0e" path="res://Scenes/EquipScene/main_actor_container.tscn" id="11_omkrr"]
+[ext_resource type="PackedScene" uid="uid://cvhnwsf363asi" path="res://Scenes/GUI/simple_menu.tscn" id="11_stab3"]
+[ext_resource type="PackedScene" uid="uid://bmrg358vj720" path="res://Scenes/GUI/buttons_vertical_menu.tscn" id="12_3rpmm"]
+[ext_resource type="PackedScene" uid="uid://dahv4htuw8myv" path="res://Scenes/EquipScene/stats_container.tscn" id="12_7shkr"]
+[ext_resource type="PackedScene" uid="uid://bj20kb1252psg" path="res://Scenes/EquipScene/equipment_container.tscn" id="13_dlmwn"]
+[ext_resource type="Shader" uid="uid://dkvs3wfnpqp4w" path="res://Assets/Shaders/post_processing_effects.gdshader" id="14_kku3e"]
+[ext_resource type="PackedScene" uid="uid://dc7267j3d6mix" path="res://Scenes/EquipScene/current_selected_equipment_container.tscn" id="14_tkpbx"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3rpmm"]
+texture = ExtResource("4_i5kgy")
+texture_margin_left = 64.0
+texture_margin_top = 24.0
+texture_margin_right = 64.0
+texture_margin_bottom = 24.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dl7ti"]
+texture = ExtResource("6_stab3")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_omkrr"]
+texture = ExtResource("4_i5kgy")
+texture_margin_left = 64.0
+texture_margin_top = 24.0
+texture_margin_right = 64.0
+texture_margin_bottom = 24.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mf8g5"]
+shader = ExtResource("14_kku3e")
+shader_parameter/enable_grayscale = false
+shader_parameter/enable_sepia = false
+shader_parameter/sepia_strength = 0.206
+shader_parameter/enable_grain = false
+shader_parameter/grain_amount = 0.23
+shader_parameter/grain_speed = 0.74
+shader_parameter/enable_cartoon = false
+shader_parameter/cartoon_levels = 5.518
+shader_parameter/enable_posterize = false
+shader_parameter/posterize_levels = 8.0
+shader_parameter/enable_vignette = false
+shader_parameter/vignette_intensity = 1.03
+shader_parameter/vignette_smoothness = 0.387
+shader_parameter/enable_chromatic_aberration = false
+shader_parameter/aberration_strength = 0.01
+shader_parameter/enable_scanlines = false
+shader_parameter/scanlines_count = 300.0
+shader_parameter/scanlines_intensity = 0.5
+shader_parameter/enable_pixelate = false
+shader_parameter/pixel_size = 8
+shader_parameter/enable_blur = false
+shader_parameter/blur_amount = 0.003
+shader_parameter/enable_sharpen = true
+shader_parameter/sharpen_amount = 0.065
+shader_parameter/sharpen_offset = 0.001
+shader_parameter/enable_invert = false
+shader_parameter/enable_night_vision = false
+shader_parameter/night_vision_color = Color(0.1, 1, 0.2, 1)
+shader_parameter/night_vision_noise = 0.3
+shader_parameter/enable_thermal_vision = false
+shader_parameter/thermal_intensity = 0.986
+shader_parameter/thermal_sensitivity = 2.586
+shader_parameter/thermal_offset = -0.201
+shader_parameter/enable_warp = true
+shader_parameter/warp_amount = 0.00800024
+shader_parameter/enable_film_grain = false
+shader_parameter/film_grain_amount = 0.5
+shader_parameter/film_grain_size = 1.0
+shader_parameter/film_grain_speed = 0.3
+shader_parameter/film_grain_rotation = 1.57
+shader_parameter/enable_distortion = false
+shader_parameter/distortion_strength = 0.004
+shader_parameter/enable_color_shift = false
+shader_parameter/color_shift_amount = 0.5
+shader_parameter/color_shift_speed = 1.0
+shader_parameter/enable_bloom = false
+shader_parameter/bloom_intensity = 1.0
+shader_parameter/bloom_threshold = 0.8
+shader_parameter/bloom_radius = 0.005
+shader_parameter/enable_desaturate = false
+shader_parameter/desaturate_amount = 0.0
+shader_parameter/enable_fisheye = false
+shader_parameter/fisheye_strength = 0.0
+shader_parameter/enable_colorize = false
+shader_parameter/colorize_color = Color(1, 0.5, 0.2, 1)
+shader_parameter/colorize_intensity = 0.5
+shader_parameter/colorize_brightness = 1.0
+
+[node name="EquipScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_7shkr")
+script = ExtResource("2_dlmwn")
+menu_items_start_position = Vector2(1100, 44)
+menu_items_end_position = Vector2(612, 44)
+start_animation = 3
+end_animation = 3
+
+[node name="Background" type="TextureRect" parent="."]
+unique_name_in_owner = true
+texture_repeat = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+texture = ExtResource("1_dl7ti")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="MarginContainer" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Main" type="Control" parent="MarginContainer"]
+unique_name_in_owner = true
+clip_contents = true
+custom_minimum_size = Vector2(1024, 600)
+anchors_preset = 0
+offset_left = 64.0
+offset_top = 24.0
+offset_right = 1088.0
+offset_bottom = 624.0
+pivot_offset = Vector2(512, 300)
+mouse_filter = 2
+
+[node name="Vbox" type="VBoxContainer" parent="MarginContainer/Main"]
+layout_mode = 0
+offset_right = 1024.0
+offset_bottom = 600.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(512, 300)
+mouse_filter = 2
+
+[node name="TopPanel" type="PanelContainer" parent="MarginContainer/Main/Vbox"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3rpmm")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Main/Vbox/TopPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = -56
+theme_override_constants/margin_top = -16
+theme_override_constants/margin_right = -56
+theme_override_constants/margin_bottom = -16
+
+[node name="TopContentsContainer" type="Control" parent="MarginContainer/Main/Vbox/TopPanel/MarginContainer"]
+clip_contents = true
+layout_mode = 2
+
+[node name="IconGearContainer" parent="MarginContainer/Main/Vbox/TopPanel/MarginContainer/TopContentsContainer" instance=ExtResource("5_l6c1c")]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 427.0
+offset_bottom = 125.0
+title = "Equipment"
+
+[node name="Top" type="MarginContainer" parent="MarginContainer/Main/Vbox/TopPanel/MarginContainer/TopContentsContainer"]
+z_index = 100
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 12.0
+offset_bottom = 14.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_constants/margin_left = -14
+theme_override_constants/margin_top = -14
+theme_override_constants/margin_right = -14
+
+[node name="TextureRect" type="PanelContainer" parent="MarginContainer/Main/Vbox/TopPanel/MarginContainer/TopContentsContainer/Top"]
+self_modulate = Color(0.390878, 0.28227, 0.174128, 1)
+texture_repeat = 2
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_dl7ti")
+
+[node name="HelpLabel" type="Label" parent="MarginContainer/Main/Vbox/TopPanel/MarginContainer/TopContentsContainer/Top/TextureRect"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Help"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MainActorContainer" parent="MarginContainer/Main/Vbox/TopPanel/MarginContainer/TopContentsContainer" instance=ExtResource("11_omkrr")]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 84.0
+offset_top = 151.0
+offset_right = 256.0
+offset_bottom = 514.0
+
+[node name="StatsContainer" parent="MarginContainer/Main/Vbox/TopPanel/MarginContainer/TopContentsContainer" instance=ExtResource("12_7shkr")]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 262.0
+offset_top = 122.0
+offset_right = 605.0
+offset_bottom = 513.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Main/Vbox/TopPanel/MarginContainer/TopContentsContainer"]
+layout_mode = 0
+offset_left = 607.0
+offset_top = 13.0
+offset_right = 999.0
+offset_bottom = 448.0
+theme_override_constants/separation = 0
+
+[node name="EquipmentContainer" parent="MarginContainer/Main/Vbox/TopPanel/MarginContainer/TopContentsContainer/VBoxContainer" instance=ExtResource("13_dlmwn")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(359.22, 390)
+layout_mode = 2
+
+[node name="CurrentSelectedEquipmentContainer" parent="MarginContainer/Main/Vbox/TopPanel/MarginContainer/TopContentsContainer/VBoxContainer" instance=ExtResource("14_tkpbx")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+
+[node name="MenuItems" parent="MarginContainer/Main/Vbox/TopPanel/MarginContainer/TopContentsContainer" instance=ExtResource("11_stab3")]
+unique_name_in_owner = true
+z_index = 11
+layout_mode = 1
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1000.0
+offset_top = 44.0
+offset_right = 1430.0
+offset_bottom = 527.0009
+grow_horizontal = 1
+grow_vertical = 1
+display_mode = 1
+metadata/_edit_lock_ = true
+
+[node name="ButtonsVerticalMenu" parent="MarginContainer/Main/Vbox/TopPanel/MarginContainer/TopContentsContainer" instance=ExtResource("12_3rpmm")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48.515, 201.765)
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_top = 140.0
+offset_right = 96.0
+offset_bottom = 505.0
+grow_horizontal = 1
+grow_vertical = 1
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="BottomPanel" type="PanelContainer" parent="MarginContainer/Main/Vbox"]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_omkrr")
+
+[node name="Description" type="Label" parent="MarginContainer/Main/Vbox/BottomPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9137255, 0.69411767, 0.4117647, 1)
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="PostProcessEffects" type="ColorRect" parent="."]
+unique_name_in_owner = true
+z_index = 50
+material = SubResource("ShaderMaterial_mf8g5")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 0)
+metadata/_edit_lock_ = true
+
+[connection signal="slot_selected" from="MarginContainer/Main/Vbox/TopPanel/MarginContainer/TopContentsContainer/VBoxContainer/EquipmentContainer" to="." method="_on_equipment_container_slot_selected"]
+[connection signal="cancel" from="MarginContainer/Main/Vbox/TopPanel/MarginContainer/TopContentsContainer/MenuItems" to="." method="_on_menu_items_cancel"]
+[connection signal="item_clicked" from="MarginContainer/Main/Vbox/TopPanel/MarginContainer/TopContentsContainer/MenuItems" to="." method="_on_menu_items_item_clicked"]
+[connection signal="item_hovered" from="MarginContainer/Main/Vbox/TopPanel/MarginContainer/TopContentsContainer/MenuItems" to="." method="_on_menu_items_item_hovered"]
+[connection signal="item_selected" from="MarginContainer/Main/Vbox/TopPanel/MarginContainer/TopContentsContainer/MenuItems" to="." method="_on_menu_items_item_selected"]

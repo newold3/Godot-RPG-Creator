@@ -1,0 +1,129 @@
+[gd_scene load_steps=8 format=3 uid="uid://btukkwgj56o14"]
+
+[ext_resource type="Script" uid="uid://djpikdlf6e44n" path="res://Scenes/OtherScenes/credits.gd" id="1_qpxrs"]
+[ext_resource type="Material" uid="uid://dibwjjaro8dtp" path="res://Assets/Shaders/Materials/simple_gradient.tres" id="2_h0rix"]
+[ext_resource type="Texture2D" uid="uid://df8vhv42iqsto" path="res://Assets/Images/GUI/window3_shadow.png" id="3_hvjnl"]
+[ext_resource type="Texture2D" uid="uid://chf3ln3dimbq6" path="res://Assets/Images/GUI/window3_shadow_bottom.png" id="4_50f43"]
+[ext_resource type="Texture2D" uid="uid://duu13dsov6vp5" path="res://Assets/Images/GUI/main_gui.png" id="5_10l3v"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kalcg"]
+resource_local_to_scene = true
+content_margin_left = 5.0
+content_margin_top = 10.0
+content_margin_right = 5.0
+content_margin_bottom = 10.0
+texture = ExtResource("5_10l3v")
+texture_margin_left = 1.9418606
+texture_margin_top = 1.6222343
+texture_margin_right = 1.7997732
+texture_margin_bottom = 1.6695967
+expand_margin_left = 2.0
+expand_margin_right = 2.0
+region_rect = Rect2(1016, 199, 12, 54)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wmyv4"]
+resource_local_to_scene = true
+texture = ExtResource("5_10l3v")
+texture_margin_top = 3.7963386
+texture_margin_bottom = 3.7200608
+region_rect = Rect2(1047, 200, 10, 52)
+
+[node name="CreditsScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_qpxrs")
+rich_gradient_shader = ExtResource("2_h0rix")
+first_message = "[center][img]res://Assets/Images/Other/full_logo.png[/img][/center]
+
+
+
+
+[img]res://Assets/Images/Other/credits_separator_top.png[/img]"
+last_message = "[img]res://Assets/Images/Other/credits_separator_bottom.png[/img]
+
+
+[center][font_size=60]THANKS FOR PLAYING[/font_size]
+
+
+
+[font_size=24]AND SPECIAL THANKS TO [url=\"https://www.youtube.com/@_newold\"]NEWOLD[/url] FOR CREATING[/font_size]
+
+[font_size=40][color=#ffc671][shake rate=20.0 level=5 connected=1]GODOT RPG CREATOR[/shake][/color][/font_size]"
+scene_manipulator = "CreditsScene"
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 120
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 120
+theme_override_constants/margin_bottom = 12
+
+[node name="MessageContainer" type="Control" parent="MarginContainer"]
+unique_name_in_owner = true
+clip_contents = true
+layout_mode = 2
+
+[node name="MarginContainer3" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = -5
+theme_override_constants/margin_top = -5
+theme_override_constants/margin_right = -5
+theme_override_constants/margin_bottom = -9
+
+[node name="FadeUp" type="TextureRect" parent="MarginContainer3"]
+clip_contents = true
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+texture = ExtResource("3_hvjnl")
+expand_mode = 1
+
+[node name="FadeDown" type="TextureRect" parent="MarginContainer3"]
+clip_contents = true
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+size_flags_vertical = 8
+mouse_filter = 2
+texture = ExtResource("4_50f43")
+expand_mode = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(12, 398)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -12.0
+offset_top = -208.0
+offset_bottom = 190.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_styles/background = SubResource("StyleBoxTexture_kalcg")
+theme_override_styles/fill = SubResource("StyleBoxTexture_wmyv4")
+fill_mode = 2
+show_percentage = false
+
+[node name="DragUpdateTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 0.05
+one_shot = true

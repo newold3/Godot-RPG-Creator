@@ -1,0 +1,375 @@
+[gd_scene load_steps=29 format=3 uid="uid://bmdlf4gnofwd0"]
+
+[ext_resource type="Script" uid="uid://ceovd56yy0n2n" path="res://Scripts/debug_scene.gd" id="1_81ui7"]
+[ext_resource type="Texture2D" uid="uid://bvc2gub3sa2wm" path="res://Assets/Images/GUI/window2.png" id="2_ueffu"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="3_cp7oy"]
+[ext_resource type="PackedScene" uid="uid://dxcyqc2dscbvw" path="res://addons/CustomControls/custom_simple_column_item_list.tscn" id="4_r6wuy"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="5_4wq3s"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mb2j1"]
+bg_color = Color(0.168627, 0.0588235, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+expand_margin_left = 3.0
+expand_margin_top = 40.0
+expand_margin_right = 3.0
+expand_margin_bottom = 3.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_desc1"]
+bg_color = Color(0.270588, 0.247059, 0.188235, 0.929412)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+expand_margin_left = 3.0
+expand_margin_top = 40.0
+expand_margin_right = 3.0
+expand_margin_bottom = 3.0
+
+[sub_resource type="Gradient" id="Gradient_vvvrv"]
+colors = PackedColorArray(0.247059, 0.188235, 0.164706, 1, 0.211878, 0.159691, 0.138814, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_v2j78"]
+gradient = SubResource("Gradient_vvvrv")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pxllp"]
+content_margin_left = 12.0
+content_margin_top = 12.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+bg_color = Color(0.246094, 0.186228, 0.163422, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.109375, 0.0392669, 0.00170898, 1)
+border_blend = true
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="Gradient" id="Gradient_otrhk"]
+colors = PackedColorArray(0.168627, 0.0588235, 0, 1, 0.148438, 0.0517805, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_0n3ye"]
+gradient = SubResource("Gradient_otrhk")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.512821, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rf2xa"]
+texture = SubResource("GradientTexture2D_0n3ye")
+
+[sub_resource type="Gradient" id="Gradient_3ve6v"]
+offsets = PackedFloat32Array(0, 0.369535, 1)
+colors = PackedColorArray(0.247059, 0.188235, 0.164706, 1, 0.203125, 0.156084, 0.137268, 1, 0.316406, 0.244014, 0.215057, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ygvtv"]
+gradient = SubResource("Gradient_3ve6v")
+fill_from = Vector2(0.547009, 1)
+fill_to = Vector2(0.559829, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ewqb6"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_ygvtv")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cgt5q"]
+bg_color = Color(0, 0, 0, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_emih4"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hh0t4"]
+atlas = ExtResource("5_4wq3s")
+region = Rect2(0, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jyand"]
+atlas = ExtResource("5_4wq3s")
+region = Rect2(24, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3juw2"]
+atlas = ExtResource("5_4wq3s")
+region = Rect2(0, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yfyof"]
+atlas = ExtResource("5_4wq3s")
+region = Rect2(24, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y81n6"]
+atlas = ExtResource("5_4wq3s")
+region = Rect2(120, 48, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4x7kf"]
+atlas = ExtResource("5_4wq3s")
+region = Rect2(144, 48, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hyywn"]
+atlas = ExtResource("5_4wq3s")
+region = Rect2(168, 48, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mlgt4"]
+atlas = ExtResource("5_4wq3s")
+region = Rect2(192, 48, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ry66v"]
+atlas = ExtResource("5_4wq3s")
+region = Rect2(0, 48, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qibq2"]
+atlas = ExtResource("5_4wq3s")
+region = Rect2(24, 48, 24, 24)
+
+[node name="DebugScene" type="CanvasLayer"]
+layer = 127
+script = ExtResource("1_81ui7")
+window_focused_style = SubResource("StyleBoxFlat_mb2j1")
+window_unfocused_style = SubResource("StyleBoxFlat_desc1")
+fill_texture = SubResource("GradientTexture2D_v2j78")
+
+[node name="MainContainer" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="ColorRect" parent="MainContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.168627, 0.0588235, 0, 1)
+
+[node name="BackgroundDecoration" type="NinePatchRect" parent="MainContainer"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_ueffu")
+patch_margin_left = 30
+patch_margin_top = 24
+patch_margin_right = 30
+patch_margin_bottom = 24
+
+[node name="MarginContainer" type="MarginContainer" parent="MainContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MainContainer/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pxllp")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="TabContainer" type="VBoxContainer" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CloseButton" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer" instance=ExtResource("3_cp7oy")]
+modulate = Color(0.820313, 0.608375, 0.493469, 1)
+layout_mode = 2
+focus_mode = 1
+theme_override_colors/font_hover_color = Color(25, 25, 25, 1)
+theme_override_colors/font_color = Color(66.478, 89.772, 28.409, 1)
+theme_override_colors/font_pressed_color = Color(23.295, 22.159, 24.432, 1)
+text = "Close"
+
+[node name="PanelContainer2" type="PanelContainer" parent="MainContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_pxllp")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer"]
+layout_mode = 2
+text = "DEBUG"
+horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BackgroundDecoration" type="NinePatchRect" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("2_ueffu")
+patch_margin_left = 30
+patch_margin_top = 24
+patch_margin_right = 30
+patch_margin_bottom = 24
+
+[node name="MarginContainer" type="MarginContainer" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="ClippingArea" type="ColorRect" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer"]
+clip_children = 1
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="DataList" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer" instance=ExtResource("4_r6wuy")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+focus_mode = 1
+odd_line_color = Color(0.4375, 0.336182, 0.295654, 1)
+event_line_color = Color(0.371094, 0.282473, 0.24498, 1)
+top_bar_style = SubResource("StyleBoxTexture_rf2xa")
+columns_text_colors = PackedColorArray(1, 1, 1, 1, 0.72549, 0.992157, 0.772549, 1)
+cursor_style = SubResource("StyleBoxTexture_ewqb6")
+panel_style = SubResource("StyleBoxFlat_cgt5q")
+columns = 2
+names = PackedStringArray("ID", "Current Value")
+sizes = PackedInt32Array(400, 0)
+text_margin_left = 20
+enable_multiselection = true
+
+[node name="FunctionButtonContainer" type="Control" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("CanvasItemMaterial_emih4")
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/FunctionButtonContainer"]
+layout_mode = 0
+offset_right = 24.0
+offset_bottom = 24.0
+mouse_filter = 2
+theme_override_constants/separation = 2
+
+[node name="AddValue" type="TextureButton" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/FunctionButtonContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Increases the value by 1"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_hh0t4")
+texture_hover = SubResource("AtlasTexture_jyand")
+
+[node name="SubtractValue" type="TextureButton" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/FunctionButtonContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Decreases the value by 1"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_3juw2")
+texture_hover = SubResource("AtlasTexture_yfyof")
+
+[node name="ToggleValue" type="TextureButton" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/FunctionButtonContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "toggle value between true and false"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_y81n6")
+texture_hover = SubResource("AtlasTexture_4x7kf")
+
+[node name="EditValue" type="TextureButton" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/FunctionButtonContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Manually edit the value using a dialog box"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_hyywn")
+texture_hover = SubResource("AtlasTexture_mlgt4")
+
+[node name="RemoveValue" type="TextureButton" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/FunctionButtonContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Remove this self switch from the list"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_ry66v")
+texture_hover = SubResource("AtlasTexture_qibq2")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -33.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Control" type="Control" parent="MainContainer/HBoxContainer"]
+custom_minimum_size = Vector2(195, 0)
+layout_mode = 2
+
+[node name="BottomLabelInfo" type="Label" parent="MainContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 33)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Use 🢀 Left or 🢂 Right To change the value. Or double click to enter value manually"
+horizontal_alignment = 1
+
+[connection signal="pressed" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/CloseButton" to="." method="_on_close_button_pressed"]
+[connection signal="item_activated" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/DataList" to="." method="_on_data_list_item_activated"]
+[connection signal="pressed" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/FunctionButtonContainer/HBoxContainer/AddValue" to="." method="_on_add_value_pressed"]
+[connection signal="pressed" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/FunctionButtonContainer/HBoxContainer/SubtractValue" to="." method="_on_subtract_value_pressed"]
+[connection signal="pressed" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/FunctionButtonContainer/HBoxContainer/ToggleValue" to="." method="_on_toggle_value_pressed"]
+[connection signal="pressed" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/FunctionButtonContainer/HBoxContainer/EditValue" to="." method="_on_edit_value_pressed"]
+[connection signal="pressed" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/FunctionButtonContainer/HBoxContainer/RemoveValue" to="." method="_on_remove_value_pressed"]

@@ -1,0 +1,218 @@
+[gd_scene load_steps=18 format=3 uid="uid://dybbovykpw12m"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_3t2pw"]
+[ext_resource type="Script" uid="uid://dbefvxaccecwe" path="res://addons/CustomControls/Dialogs/show_name_box.gd" id="2_7gih3"]
+[ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="2_t6c1m"]
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="3_8x53q"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="4_kn0ra"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="5_75tbk"]
+[ext_resource type="Texture2D" uid="uid://xl88b63otgpi" path="res://addons/CustomControls/Images/button1_background.png" id="6_it63o"]
+[ext_resource type="Texture2D" uid="uid://dqnnp323vr1vo" path="res://addons/CustomControls/Images/button1_background_hover.png" id="7_by82o"]
+[ext_resource type="Texture2D" uid="uid://beg6i1p118qd" path="res://addons/CustomControls/Images/button1_background_selected.png" id="8_a5hc4"]
+[ext_resource type="Texture2D" uid="uid://bkfn4ru5noaaa" path="res://addons/CustomControls/Images/button1_background_disabled.png" id="9_gf8rr"]
+
+[sub_resource type="Gradient" id="Gradient_hiqe6"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_xdgl5"]
+gradient = SubResource("Gradient_hiqe6")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_iq6rm"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qijis"]
+texture = ExtResource("9_gf8rr")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_51ifi"]
+texture = ExtResource("7_by82o")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_u2ax6"]
+texture = ExtResource("8_a5hc4")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8ect6"]
+texture = ExtResource("6_it63o")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[node name="ShowNameBox" type="Window"]
+title = "Show Name Box"
+position = Vector2i(0, 36)
+size = Vector2i(500, 332)
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+min_size = Vector2i(0, 281)
+theme = ExtResource("1_3t2pw")
+script = ExtResource("2_7gih3")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_xdgl5")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="CheckBox1" type="CheckBox" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Display a custom name in the text box."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_pressed = true
+button_group = SubResource("ButtonGroup_iq6rm")
+text = "Use Custom name..."
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Name:"
+
+[node name="Name" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("2_t6c1m")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Choose which name to display in the text box."
+editable = false
+selecting_enabled = false
+
+[node name="CheckBox2" type="CheckBox" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Display the name of a character in the text box."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_iq6rm")
+text = "Or use Characer name..."
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="CharacterID" parent="MarginContainer/VBoxContainer/HBoxContainer4" instance=ExtResource("3_8x53q")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+disabled = true
+text = "Select character ID"
+
+[node name="CheckBox3" type="CheckBox" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Display the name of a character in the text box."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_iq6rm")
+text = "Or use Enemy name..."
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="EnemyID" parent="MarginContainer/VBoxContainer/HBoxContainer5" instance=ExtResource("3_8x53q")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+disabled = true
+text = "Select enemy ID"
+
+[node name="BoxPosition" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/BoxPosition"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BoxPosition"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BoxPosition/HBoxContainer3"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Box Position:"
+
+[node name="Position" parent="MarginContainer/VBoxContainer/BoxPosition/HBoxContainer3" instance=ExtResource("4_kn0ra")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Choose which text box to display the name in."
+selected = 0
+item_count = 2
+popup/item_0/text = "Left"
+popup/item_1/text = "Right"
+popup/item_1/id = 1
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_75tbk")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+theme_override_styles/disabled = SubResource("StyleBoxTexture_qijis")
+theme_override_styles/hover = SubResource("StyleBoxTexture_51ifi")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_u2ax6")
+theme_override_styles/normal = SubResource("StyleBoxTexture_8ect6")
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_75tbk")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+theme_override_styles/disabled = SubResource("StyleBoxTexture_qijis")
+theme_override_styles/hover = SubResource("StyleBoxTexture_51ifi")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_u2ax6")
+theme_override_styles/normal = SubResource("StyleBoxTexture_8ect6")
+text = "CANCEL"
+
+[connection signal="toggled" from="MarginContainer/VBoxContainer/CheckBox1" to="." method="_on_check_box_1_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/CheckBox2" to="." method="_on_check_box_2_toggled"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer4/CharacterID" to="." method="_on_character_id_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/CheckBox3" to="." method="_on_check_box_3_toggled"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer5/EnemyID" to="." method="_on_enemy_id_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

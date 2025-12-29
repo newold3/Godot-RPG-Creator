@@ -1,0 +1,53 @@
+[gd_scene load_steps=6 format=3 uid="uid://bbd8rv6w7vjb3"]
+
+[ext_resource type="Script" uid="uid://f7yoj1k1ft16" path="res://addons/CustomControls/custom_color_button.gd" id="1_4lhn8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q8xat"]
+resource_local_to_scene = true
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 21.0
+content_margin_bottom = 4.0
+bg_color = Color(0.184314, 0.196078, 0.203922, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ggt8f"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.94902, 0.627451, 0.0117647, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8acbp"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iwgg4"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[node name="CustomColorButton" type="Button"]
+custom_minimum_size = Vector2(26, 26)
+offset_right = 26.0
+offset_bottom = 26.0
+mouse_default_cursor_shape = 2
+theme_override_styles/disabled = SubResource("StyleBoxFlat_q8xat")
+theme_override_styles/hover = SubResource("StyleBoxFlat_ggt8f")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_8acbp")
+theme_override_styles/normal = SubResource("StyleBoxFlat_iwgg4")
+toggle_mode = true
+script = ExtResource("1_4lhn8")

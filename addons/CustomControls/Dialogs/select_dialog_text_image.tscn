@@ -1,0 +1,630 @@
+[gd_scene load_steps=22 format=3 uid="uid://crv00irbonpyn"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_1u7n8"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="1_klj1w"]
+[ext_resource type="Script" uid="uid://bw5444uvhhw12" path="res://addons/CustomControls/Dialogs/select_dialog_text_image.gd" id="2_al7op"]
+[ext_resource type="Script" uid="uid://d0kowhkcjb7kv" path="res://addons/CustomControls/custom_option_button.gd" id="3_oqe5u"]
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="3_rwmya"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="4_a4bvc"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="6_wc6ge"]
+
+[sub_resource type="Gradient" id="Gradient_abbgl"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_quppr"]
+gradient = SubResource("Gradient_abbgl")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_86k6f"]
+atlas = ExtResource("6_wc6ge")
+region = Rect2(168, 192, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_47ri7"]
+atlas = ExtResource("6_wc6ge")
+region = Rect2(144, 192, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_51q05"]
+atlas = ExtResource("6_wc6ge")
+region = Rect2(168, 168, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b0y8e"]
+atlas = ExtResource("6_wc6ge")
+region = Rect2(120, 192, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xok0q"]
+atlas = ExtResource("6_wc6ge")
+region = Rect2(96, 192, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wuhcm"]
+atlas = ExtResource("6_wc6ge")
+region = Rect2(72, 192, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rj3t0"]
+atlas = ExtResource("6_wc6ge")
+region = Rect2(216, 168, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cpa13"]
+atlas = ExtResource("6_wc6ge")
+region = Rect2(96, 144, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y3goc"]
+atlas = ExtResource("6_wc6ge")
+region = Rect2(48, 72, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7y7wr"]
+atlas = ExtResource("6_wc6ge")
+region = Rect2(120, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jg1bq"]
+atlas = ExtResource("6_wc6ge")
+region = Rect2(144, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wdi45"]
+atlas = ExtResource("6_wc6ge")
+region = Rect2(168, 0, 24, 24)
+
+[node name="SelectDialogTextImage" type="Window"]
+oversampling_override = 1.0
+title = "Select Text Image"
+position = Vector2i(0, 36)
+size = Vector2i(918, 207)
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+min_size = Vector2i(0, 145)
+theme = ExtResource("1_1u7n8")
+script = ExtResource("2_al7op")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_quppr")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="CopyParameters" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Copy the current configuration to the clipboard"
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_86k6f")
+texture_hover = SubResource("AtlasTexture_47ri7")
+texture_disabled = SubResource("AtlasTexture_51q05")
+
+[node name="PasteParameters" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Paste a configuration of previously saved configuration from the clipboard"
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = SubResource("AtlasTexture_b0y8e")
+texture_hover = SubResource("AtlasTexture_xok0q")
+texture_disabled = SubResource("AtlasTexture_wuhcm")
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+text = "Image Type:"
+
+[node name="ImageType" type="OptionButton" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Select the type of image to insert:
+
+[ul] [Face]: Displays a face to the right or left of the text window.
+ [Character]: Displays an image at the bottom of the text window (as a character).
+ [Inline Image]: Displays an image in the text window.[/ul]
+"
+selected = 0
+item_count = 3
+popup/item_0/text = "Face"
+popup/item_0/id = 0
+popup/item_1/text = "Background Character Image"
+popup/item_1/id = 1
+popup/item_2/text = "Inline Image"
+popup/item_2/id = 2
+script = ExtResource("3_oqe5u")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+text = "Image Path:"
+
+[node name="Filename" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("3_rwmya")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Click to select an image
+"
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+text = "Select Image File"
+
+[node name="ExtraControls0" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls0"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ExtraControls0/HBoxContainer4"]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+text = "Start Position:"
+
+[node name="FacePosition" type="OptionButton" parent="MarginContainer/VBoxContainer/ExtraControls0/HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Select the position of the face (can be to the \"left\" or \"right\" of the text window)."
+selected = 0
+item_count = 2
+popup/item_0/text = "Left"
+popup/item_0/id = 0
+popup/item_1/text = "Right"
+popup/item_1/id = 2
+script = ExtResource("3_oqe5u")
+
+[node name="ExtraControls1" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls1"]
+layout_mode = 2
+
+[node name="SetDefaultConfig" parent="MarginContainer/VBoxContainer/ExtraControls1/HBoxContainer" instance=ExtResource("1_klj1w")]
+unique_name_in_owner = true
+modulate = Color(0.6975663, 0.9621759, 0.9999996, 1)
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+tooltip_text = "Save current settings as default for this image.
+
+[Note]: When selecting an image, if you have a saved default configuration, this dialog will automatically configure itself with that configuration."
+text = "Set As Default"
+icon = SubResource("AtlasTexture_rj3t0")
+icon_alignment = 2
+
+[node name="EraseDefaultConfig" parent="MarginContainer/VBoxContainer/ExtraControls1/HBoxContainer" instance=ExtResource("1_klj1w")]
+unique_name_in_owner = true
+modulate = Color(0.99999946, 0.85537183, 0.85426146, 1)
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+tooltip_text = "Delete the default configuration for this image from the database."
+text = "Erase As Default"
+icon = SubResource("AtlasTexture_cpa13")
+icon_alignment = 2
+
+[node name="SelectPositionAndSize" parent="MarginContainer/VBoxContainer/ExtraControls1/HBoxContainer" instance=ExtResource("1_klj1w")]
+unique_name_in_owner = true
+modulate = Color(0.93690866, 0.9902237, 0.99999994, 1)
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Use a dialog box in which you can position and resize the image visually using the mouse."
+text = "Visual Configuration"
+icon = SubResource("AtlasTexture_y3goc")
+icon_alignment = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls1"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ExtraControls1/HBoxContainer2"]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+text = "Image ID:"
+
+[node name="ImageID" parent="MarginContainer/VBoxContainer/ExtraControls1/HBoxContainer2" instance=ExtResource("4_a4bvc")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "ID to identify this image (used by the \"animate image\" command to know which image to animate)
+
+\"Caution\": If there is already any image displayed with the provided ID (default is 0), the respective image will be deleted and replaced by this one"
+allow_greater = true
+_custom_value = 0.0
+
+[node name="HorizontalFlip" type="CheckBox" parent="MarginContainer/VBoxContainer/ExtraControls1/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Inverts the image horizontally"
+text = "Flip Horizontal"
+
+[node name="VerticalFlip" type="CheckBox" parent="MarginContainer/VBoxContainer/ExtraControls1/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Inverts the image vertically"
+text = "Flip Vertical"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls1"]
+layout_mode = 2
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls1/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ExtraControls1/VBoxContainer/HBoxContainer4"]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+text = "Start Position:"
+
+[node name="ImagePosition" type="OptionButton" parent="MarginContainer/VBoxContainer/ExtraControls1/VBoxContainer/HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Choose the initial position for the character/background image (you can choose between \"left\", \"centered\" or \"right\")."
+selected = 0
+item_count = 12
+popup/item_0/text = "Left Of Message Box"
+popup/item_0/id = 0
+popup/item_1/text = "Center Of the Message Box"
+popup/item_1/id = 1
+popup/item_2/text = "Right Of the Message Box"
+popup/item_2/id = 2
+popup/item_3/text = "Anchored At the Bottom Left Of the Screen"
+popup/item_3/id = 3
+popup/item_4/text = "Anchored At the Bottom Center Of the Screen"
+popup/item_4/id = 4
+popup/item_5/text = "Anchored At the Bottom Right Of the Screen"
+popup/item_5/id = 5
+popup/item_6/text = "Anchored At the Top Left Of the Screen"
+popup/item_6/id = 6
+popup/item_7/text = "Anchored At the Top Center Of the Screen"
+popup/item_7/id = 7
+popup/item_8/text = "Anchored At the Top Right Of the Screen"
+popup/item_8/id = 8
+popup/item_9/text = "Anchored At the Middle Left Of the Screen"
+popup/item_9/id = 9
+popup/item_10/text = "Anchored At the Middle Right Of the Screen"
+popup/item_10/id = 10
+popup/item_11/text = "Custom"
+popup/item_11/id = 11
+script = ExtResource("3_oqe5u")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls1/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/ExtraControls1/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+text = "Offset"
+
+[node name="OffsetX" parent="MarginContainer/VBoxContainer/ExtraControls1/VBoxContainer/HBoxContainer" instance=ExtResource("4_a4bvc")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Move the image by a fixed offset from its anchor position."
+allow_greater = true
+allow_lesser = true
+prefix = "x: "
+_custom_value = 0.0
+
+[node name="OffsetY" parent="MarginContainer/VBoxContainer/ExtraControls1/VBoxContainer/HBoxContainer" instance=ExtResource("4_a4bvc")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Move the image by a fixed offset from its anchor position."
+allow_greater = true
+allow_lesser = true
+prefix = "y: "
+_custom_value = 0.0
+
+[node name="IdleAnimationContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls1"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Idle" type="Label" parent="MarginContainer/VBoxContainer/ExtraControls1/IdleAnimationContainer"]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "Fade in/out of the image"
+mouse_default_cursor_shape = 2
+text = "Idle Animation:"
+
+[node name="IdleAnimation" type="OptionButton" parent="MarginContainer/VBoxContainer/ExtraControls1/IdleAnimationContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Selects the type of idle animation for this image.
+
+[ul] \"None\": No animation.
+\"Breathing\": The image shows a breathing animation
+ \"Scaredt\": The image shows a scary animation[/ul]"
+mouse_default_cursor_shape = 2
+selected = 0
+item_count = 8
+popup/item_0/text = "None"
+popup/item_0/id = 0
+popup/item_1/text = "Breathing"
+popup/item_1/id = 1
+popup/item_2/text = "Scared"
+popup/item_2/id = 2
+popup/item_3/text = "Bounce"
+popup/item_3/id = 3
+popup/item_4/text = "Head Tilt"
+popup/item_4/id = 4
+popup/item_5/text = "Wobble"
+popup/item_5/id = 5
+popup/item_6/text = "Color Pulse"
+popup/item_6/id = 6
+popup/item_7/text = "Hover"
+popup/item_7/id = 7
+script = ExtResource("3_oqe5u")
+
+[node name="ExtraControls2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls2/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ExtraControls2/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+text = "Width:"
+
+[node name="Width" parent="MarginContainer/VBoxContainer/ExtraControls2/VBoxContainer/HBoxContainer2" instance=ExtResource("4_a4bvc")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Defines the width of the image displayed in the text window (or leave it at 0 to display the actual width of the image)."
+allow_greater = true
+_custom_value = 0.0
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls2/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ExtraControls2/VBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+text = "Height:"
+
+[node name="Height" parent="MarginContainer/VBoxContainer/ExtraControls2/VBoxContainer/HBoxContainer3" instance=ExtResource("4_a4bvc")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Defines the height of the image displayed in the text window (or leave at 0 to adjust the height in relation to the width)."
+allow_greater = true
+_custom_value = 0.0
+
+[node name="ChainSize" type="TextureButton" parent="MarginContainer/VBoxContainer/ExtraControls2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Resizes in proportion when changing height or width"
+mouse_default_cursor_shape = 2
+toggle_mode = true
+button_pressed = true
+texture_normal = SubResource("AtlasTexture_7y7wr")
+texture_pressed = SubResource("AtlasTexture_jg1bq")
+texture_hover = SubResource("AtlasTexture_wdi45")
+
+[node name="ExtraControls3" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls3"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ExtraControls3/HBoxContainer5"]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+text = "Start Transition:"
+
+[node name="CharacterTransitionType" type="OptionButton" parent="MarginContainer/VBoxContainer/ExtraControls3/HBoxContainer5"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Selects the type of transition for the image:
+
+[ul] \"None\": No transition (image is displayed immediately).
+ \"Fade In\": Fades in the image.
+ \"Move Left to Right\": The image moves from the left to its initial position.
+ \"Move Right to Left\": The image moves from the right to its initial position.
+ \"Move to Position Left / Center / Right\": The image moves from its initial position to the designated position.[/ul]"
+mouse_default_cursor_shape = 2
+selected = 1
+item_count = 7
+popup/item_0/text = "None"
+popup/item_0/id = 0
+popup/item_1/text = "Fade In"
+popup/item_1/id = 1
+popup/item_2/text = "Move Left To Right"
+popup/item_2/id = 2
+popup/item_3/text = "Move Right To Left"
+popup/item_3/id = 3
+popup/item_4/text = "Move To Position Left"
+popup/item_4/id = 4
+popup/item_5/text = "Move To Position Center"
+popup/item_5/id = 5
+popup/item_6/text = "Move To Position Right"
+popup/item_6/id = 6
+script = ExtResource("3_oqe5u")
+
+[node name="FaceTransitionType" type="OptionButton" parent="MarginContainer/VBoxContainer/ExtraControls3/HBoxContainer5"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Selects the type of transition for the image:
+
+[ul] \"None\": No transition (image is displayed immediately).
+ \"Fade In\": Fades in the image.
+ \"Zoom In\": The image scale from 0.6 to 1.
+ \"Zoom Out\": The image scale from 1.4 to 1.[/ul]"
+mouse_default_cursor_shape = 2
+selected = 1
+item_count = 4
+popup/item_0/text = "None"
+popup/item_0/id = 0
+popup/item_1/text = "Fade In"
+popup/item_1/id = 1
+popup/item_2/text = "Zoom In"
+popup/item_2/id = 2
+popup/item_3/text = "Zoom Out"
+popup/item_3/id = 3
+script = ExtResource("3_oqe5u")
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/ExtraControls3/HBoxContainer5"]
+layout_mode = 2
+text = "Time:"
+
+[node name="TransitionTime" parent="MarginContainer/VBoxContainer/ExtraControls3/HBoxContainer5" instance=ExtResource("4_a4bvc")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Selects the duration of the start transition effect."
+step = 0.01
+rounded = false
+allow_greater = true
+suffix = " seconds"
+_custom_value = 0.0
+
+[node name="EndTransitionContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls3"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ExtraControls3/EndTransitionContainer"]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+text = "End Transition:"
+
+[node name="CharacterEndTransitionType" type="OptionButton" parent="MarginContainer/VBoxContainer/ExtraControls3/EndTransitionContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Selects the type of transition for the image before being deleted:
+
+[ul] \"None\": No transition (image is deleted immediately).
+ \"Fade Out\": Fades ou the image.
+ \"Move To Left\": The image moves from the initial position to  the left.
+ \"Move To Right\": The image moves from the initial position to  the right.[/ul]"
+mouse_default_cursor_shape = 2
+selected = 1
+item_count = 4
+popup/item_0/text = "None"
+popup/item_0/id = 0
+popup/item_1/text = "Fade Out"
+popup/item_1/id = 1
+popup/item_2/text = "Move To Left"
+popup/item_2/id = 2
+popup/item_3/text = "Move To Right"
+popup/item_3/id = 3
+script = ExtResource("3_oqe5u")
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/ExtraControls3/EndTransitionContainer"]
+layout_mode = 2
+text = "Time:"
+
+[node name="TransitionEndTime" parent="MarginContainer/VBoxContainer/ExtraControls3/EndTransitionContainer" instance=ExtResource("4_a4bvc")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Selects the duration of the end transition effect."
+step = 0.01
+rounded = false
+allow_greater = true
+suffix = " seconds"
+_custom_value = 0.0
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls3"]
+layout_mode = 2
+
+[node name="Wait" type="CheckBox" parent="MarginContainer/VBoxContainer/ExtraControls3/HBoxContainer6"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Text flow stops for the duration of the appear animation."
+mouse_default_cursor_shape = 2
+text = "Wait to finish"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("1_klj1w")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("1_klj1w")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+text = "Cancel"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer4/CopyParameters" to="." method="_on_copy_parameters_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer4/PasteParameters" to="." method="_on_paste_parameters_pressed"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer/ImageType" to="." method="_on_image_type_item_selected"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/Filename" to="." method="_on_filename_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/ExtraControls1/HBoxContainer/SetDefaultConfig" to="." method="_on_set_default_config_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/ExtraControls1/HBoxContainer/EraseDefaultConfig" to="." method="_on_erase_default_config_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/ExtraControls1/HBoxContainer/SelectPositionAndSize" to="." method="_on_select_position_and_size_pressed"]
+[connection signal="value_updated" from="MarginContainer/VBoxContainer/ExtraControls2/VBoxContainer/HBoxContainer2/Width" to="." method="_on_width_value_updated"]
+[connection signal="value_updated" from="MarginContainer/VBoxContainer/ExtraControls2/VBoxContainer/HBoxContainer3/Height" to="." method="_on_height_value_updated"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/ExtraControls2/ChainSize" to="." method="_on_chain_size_toggled"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer3/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer3/CancelButton" to="." method="_on_cancel_button_pressed"]

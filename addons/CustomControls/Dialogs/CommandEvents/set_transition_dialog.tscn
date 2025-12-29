@@ -1,0 +1,300 @@
+[gd_scene load_steps=23 format=3 uid="uid://cldqbl0s6o8d0"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_wq42i"]
+[ext_resource type="Script" uid="uid://cy2hmme0vv7jb" path="res://addons/CustomControls/Dialogs/CommandEvents/set_transition_dialog.gd" id="2_4gn63"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="3_4xwqt"]
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="4_gmin3"]
+[ext_resource type="PackedScene" uid="uid://bbd8rv6w7vjb3" path="res://addons/CustomControls/custom_color_button.tscn" id="6_qmxrh"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="6_xscvs"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="7_b4x48"]
+[ext_resource type="Texture2D" uid="uid://xl88b63otgpi" path="res://addons/CustomControls/Images/button1_background.png" id="8_tj4v3"]
+[ext_resource type="Texture2D" uid="uid://dqnnp323vr1vo" path="res://addons/CustomControls/Images/button1_background_hover.png" id="9_xx1p7"]
+[ext_resource type="Texture2D" uid="uid://beg6i1p118qd" path="res://addons/CustomControls/Images/button1_background_selected.png" id="10_6te8c"]
+[ext_resource type="Texture2D" uid="uid://bkfn4ru5noaaa" path="res://addons/CustomControls/Images/button1_background_disabled.png" id="11_uw5nc"]
+[ext_resource type="PackedScene" uid="uid://cnpdb4o8usbf0" path="res://Scenes/TransitionManager/transition_manager.tscn" id="13_fnoxn"]
+
+[sub_resource type="Gradient" id="Gradient_vvvrv"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_72itl"]
+gradient = SubResource("Gradient_vvvrv")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g7a87"]
+resource_local_to_scene = true
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 21.0
+content_margin_bottom = 4.0
+bg_color = Color(0.184314, 0.196078, 0.203922, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mug7e"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.94902, 0.627451, 0.0117647, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7gwos"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7sykj"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7v466"]
+texture = ExtResource("11_uw5nc")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_turd0"]
+texture = ExtResource("9_xx1p7")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_iiba0"]
+texture = ExtResource("10_6te8c")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vmbjb"]
+texture = ExtResource("8_tj4v3")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[node name="SetTransitionDialog" type="Window"]
+title = "Config Transition"
+position = Vector2i(0, 36)
+size = Vector2i(911, 160)
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+min_size = Vector2i(0, 110)
+theme = ExtResource("1_wq42i")
+script = ExtResource("2_4gn63")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_72itl")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(195, 0)
+layout_mode = 2
+text = "Type:"
+
+[node name="TransitionType" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_4xwqt")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Choose the type of transition executed when changing maps"
+selected = 0
+item_count = 5
+popup/item_0/text = "Instant"
+popup/item_0/id = 0
+popup/item_1/text = "Fade Out-in"
+popup/item_1/id = 1
+popup/item_2/text = "Fade Out to Color"
+popup/item_2/id = 2
+popup/item_3/text = "Transition Shader"
+popup/item_3/id = 3
+popup/item_4/text = "Custom Scene"
+popup/item_4/id = 4
+
+[node name="TransitionDurationContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/TransitionDurationContainer"]
+custom_minimum_size = Vector2(195, 0)
+layout_mode = 2
+text = "Duration:"
+
+[node name="Duration" parent="MarginContainer/HBoxContainer/VBoxContainer/TransitionDurationContainer" instance=ExtResource("6_xscvs")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Duration of transition"
+step = 0.01
+value = 0.4
+allow_greater = true
+suffix = "seconds"
+
+[node name="TransitionImageContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/TransitionImageContainer"]
+custom_minimum_size = Vector2(195, 0)
+layout_mode = 2
+text = "Transition Image:"
+
+[node name="SelectTransition" parent="MarginContainer/HBoxContainer/VBoxContainer/TransitionImageContainer" instance=ExtResource("4_gmin3")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Select the scene that will be used to execute the transition.
+
+[Note]: the scene must be a valid \"GameTransition\" Scene"
+text = "Select an image to perfom transition"
+
+[node name="InvertFadeOut" type="CheckBox" parent="MarginContainer/HBoxContainer/VBoxContainer/TransitionImageContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Invert pattern: Reverses the order in which areas appear or disappear during the transition. This affects the visual pattern of the transition, not its direction."
+mouse_default_cursor_shape = 2
+text = "Invert Fade Out"
+
+[node name="SceneContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/SceneContainer"]
+custom_minimum_size = Vector2(195, 0)
+layout_mode = 2
+text = "Transition Image:"
+
+[node name="SelectScene" parent="MarginContainer/HBoxContainer/VBoxContainer/SceneContainer" instance=ExtResource("4_gmin3")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Select the image that will be used by the shader to execute the transition (usually a grayscale image)."
+text = "Select an image to perfom transition"
+
+[node name="TransitionColorContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/TransitionColorContainer"]
+custom_minimum_size = Vector2(195, 0)
+layout_mode = 2
+text = "Transition Color:"
+
+[node name="SelectColor" parent="MarginContainer/HBoxContainer/VBoxContainer/TransitionColorContainer" instance=ExtResource("6_qmxrh")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Choose the color to which the map will fade to before transporting to the new map"
+theme_override_styles/disabled = SubResource("StyleBoxFlat_g7a87")
+theme_override_styles/hover = SubResource("StyleBoxFlat_mug7e")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_7gwos")
+theme_override_styles/normal = SubResource("StyleBoxFlat_7sykj")
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="OKButton" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("7_b4x48")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+theme_override_styles/disabled = SubResource("StyleBoxTexture_7v466")
+theme_override_styles/hover = SubResource("StyleBoxTexture_turd0")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_iiba0")
+theme_override_styles/normal = SubResource("StyleBoxTexture_vmbjb")
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("7_b4x48")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+theme_override_styles/disabled = SubResource("StyleBoxTexture_7v466")
+theme_override_styles/hover = SubResource("StyleBoxTexture_turd0")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_iiba0")
+theme_override_styles/normal = SubResource("StyleBoxTexture_vmbjb")
+text = "Cancel"
+
+[node name="Preview" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Preview"]
+layout_mode = 2
+text = "PREVIEW TRANSITION"
+horizontal_alignment = 1
+
+[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/Preview"]
+clip_contents = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TransitionManager" parent="MarginContainer/HBoxContainer/Preview/Control" instance=ExtResource("13_fnoxn")]
+unique_name_in_owner = true
+layout_mode = 1
+
+[connection signal="item_selected" from="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/TransitionType" to="." method="_on_transition_type_item_selected"]
+[connection signal="value_changed" from="MarginContainer/HBoxContainer/VBoxContainer/TransitionDurationContainer/Duration" to="." method="_on_duration_value_changed"]
+[connection signal="middle_click_pressed" from="MarginContainer/HBoxContainer/VBoxContainer/TransitionImageContainer/SelectTransition" to="." method="_on_select_transition_middle_click_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/TransitionImageContainer/SelectTransition" to="." method="_on_select_transition_pressed"]
+[connection signal="toggled" from="MarginContainer/HBoxContainer/VBoxContainer/TransitionImageContainer/InvertFadeOut" to="." method="_on_invert_fade_out_toggled"]
+[connection signal="middle_click_pressed" from="MarginContainer/HBoxContainer/VBoxContainer/SceneContainer/SelectScene" to="." method="_on_select_scene_middle_click_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/SceneContainer/SelectScene" to="." method="_on_select_scene_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/TransitionColorContainer/SelectColor" to="." method="_on_select_color_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer3/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer3/CancelButton" to="." method="_on_cancel_button_pressed"]

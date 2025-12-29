@@ -1,0 +1,107 @@
+[gd_scene load_steps=4 format=3 uid="uid://dknch2tbr32yh"]
+
+[ext_resource type="Script" uid="uid://bgbm1aqd7gi60" path="res://addons/tile_bit_tools/controls/tiles_inspector/template_section/templates_section.gd" id="1_i6wsq"]
+[ext_resource type="PackedScene" uid="uid://bxhlehm73ligy" path="res://addons/tile_bit_tools/controls/tiles_inspector/template_section/template_info_panel.tscn" id="5_tlsqj"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t8sf7"]
+
+[node name="TemplatesContainer" type="VBoxContainer"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 26.0
+grow_horizontal = 2
+script = ExtResource("1_i6wsq")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="TagsMenuButton" type="MenuButton" parent="HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Select Tag to Filter..."
+
+[node name="TagsContainer" type="HFlowContainer" parent="." groups=["TBTDynamicContainer"]]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="TemplateSectionPanel" type="PanelContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_t8sf7")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TemplateSectionPanel"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TemplateSectionPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TemplateSectionPanel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Template"
+
+[node name="TemplatesOptionButton" type="OptionButton" parent="TemplateSectionPanel/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+item_count = 4
+selected = 0
+popup/item_0/text = ""
+popup/item_0/id = 999
+popup/item_1/text = "2x2"
+popup/item_1/id = 0
+popup/item_2/text = "3x3 Minimal"
+popup/item_2/id = 1
+popup/item_3/text = "Generic 16 Tiles"
+popup/item_3/id = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="TemplateSectionPanel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TemplateSectionPanel/VBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="TemplateInfoPanel" parent="TemplateSectionPanel/VBoxContainer/MarginContainer/VBoxContainer" instance=ExtResource("5_tlsqj")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="TerrainContainer" type="PanelContainer" parent="TemplateSectionPanel/VBoxContainer/MarginContainer/VBoxContainer" groups=["TBTSubinspectorPropertiesPanel"]]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="TemplateSectionPanel/VBoxContainer/MarginContainer/VBoxContainer/TerrainContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TemplateSectionPanel/VBoxContainer/MarginContainer/VBoxContainer/TerrainContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TemplateSectionPanel/VBoxContainer/MarginContainer/VBoxContainer/TerrainContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TemplateSectionPanel/VBoxContainer/MarginContainer/VBoxContainer/TerrainContainer/MarginContainer/VBoxContainer/HBoxContainer" groups=["TBTPropertyLabel"]]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Terrain Set"
+
+[node name="TerrainSetOptionButton" type="OptionButton" parent="TemplateSectionPanel/VBoxContainer/MarginContainer/VBoxContainer/TerrainContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "No terrain sets found matching template mode. Create a new one in the TileSet."
+disabled = true
+fit_to_longest_item = false
+
+[node name="MarginContainer" type="MarginContainer" parent="TemplateSectionPanel/VBoxContainer/MarginContainer/VBoxContainer/TerrainContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+
+[node name="TerrainPickersContainer" type="VBoxContainer" parent="TemplateSectionPanel/VBoxContainer/MarginContainer/VBoxContainer/TerrainContainer/MarginContainer/VBoxContainer/MarginContainer" groups=["TBTDynamicContainer"]]
+unique_name_in_owner = true
+layout_mode = 2

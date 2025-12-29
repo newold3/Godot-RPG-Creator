@@ -1,0 +1,50 @@
+[gd_resource type="Theme" load_steps=7 format=3 uid="uid://ctpmflgnlpkjg"]
+
+[ext_resource type="Texture2D" uid="uid://duu13dsov6vp5" path="res://Assets/Images/GUI/main_gui.png" id="1_r80g7"]
+[ext_resource type="FontFile" uid="uid://2okej4ay4kdb" path="res://addons/CustomControls/Resources/Fonts/unifont-13.0.01.ttf" id="4_n0btw"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_r80g7"]
+resource_local_to_scene = true
+texture = ExtResource("1_r80g7")
+texture_margin_top = 3.7963386
+texture_margin_bottom = 3.7200608
+region_rect = Rect2(1047, 200, 10, 52)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ex0s0"]
+resource_local_to_scene = true
+texture = ExtResource("1_r80g7")
+texture_margin_top = 7.0
+texture_margin_bottom = 7.0
+region_rect = Rect2(1047, 200, 10, 52)
+modulate_color = Color(1.4, 1.4, 1.4, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kqufd"]
+resource_local_to_scene = true
+texture = ExtResource("1_r80g7")
+texture_margin_top = 3.7219505
+texture_margin_bottom = 3.6437814
+region_rect = Rect2(1076, 200, 10, 52)
+modulate_color = Color(1.4, 1.4, 1.4, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cv2ci"]
+resource_local_to_scene = true
+content_margin_left = 5.0
+content_margin_top = 10.0
+content_margin_right = 5.0
+content_margin_bottom = 10.0
+texture = ExtResource("1_r80g7")
+texture_margin_left = 1.9418606
+texture_margin_top = 1.6222343
+texture_margin_right = 1.7997732
+texture_margin_bottom = 1.6695967
+expand_margin_left = 2.0
+expand_margin_right = 2.0
+region_rect = Rect2(1016, 199, 12, 54)
+
+[resource]
+default_font = ExtResource("4_n0btw")
+default_font_size = 16
+VScrollBar/styles/grabber = SubResource("StyleBoxTexture_r80g7")
+VScrollBar/styles/grabber_highlight = SubResource("StyleBoxTexture_ex0s0")
+VScrollBar/styles/grabber_pressed = SubResource("StyleBoxTexture_kqufd")
+VScrollBar/styles/scroll = SubResource("StyleBoxTexture_cv2ci")

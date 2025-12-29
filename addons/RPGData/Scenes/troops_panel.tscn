@@ -1,0 +1,743 @@
+[gd_scene load_steps=39 format=3 uid="uid://d1h37xmj5hqk8"]
+
+[ext_resource type="Script" uid="uid://cwqmksp0812bd" path="res://addons/RPGData/Scripts/troops_panel.gd" id="1_7r58n"]
+[ext_resource type="PackedScene" uid="uid://pc2xir2w2ox2" path="res://addons/RPGData/Scenes/panel_title.tscn" id="2_fhvip"]
+[ext_resource type="PackedScene" uid="uid://m1iixxkyrur5" path="res://addons/CustomControls/custom_simple_item_list.tscn" id="3_06dc8"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="4_r0kp3"]
+[ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="5_xt4r3"]
+[ext_resource type="Texture2D" uid="uid://boox5y8kclay2" path="res://addons/CustomControls/Images/tab2_button_normal.png" id="6_pv2cb"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="7_acfxu"]
+[ext_resource type="PackedScene" uid="uid://ccipi0sikmjuu" path="res://addons/CustomControls/custom_tab_container.tscn" id="7_bu0r7"]
+[ext_resource type="Script" uid="uid://d0u2rcg7ywbyt" path="res://addons/RPGData/Scripts/scale_container.gd" id="7_wykvf"]
+[ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="7_ya7un"]
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="8_4e7pb"]
+[ext_resource type="PackedScene" uid="uid://dapdbqjly1f2k" path="res://addons/RPGData/Scenes/edit_battler_positions.tscn" id="8_e50m8"]
+[ext_resource type="Script" uid="uid://d0kowhkcjb7kv" path="res://addons/CustomControls/custom_option_button.gd" id="9_ljfnv"]
+[ext_resource type="PackedScene" uid="uid://u75p1b2dn3yq" path="res://addons/CustomControls/event_page_list_editor.tscn" id="9_pb863"]
+[ext_resource type="PackedScene" uid="uid://fp8d7t383dho" path="res://addons/RPGData/Scenes/edit_battler_presets.tscn" id="13_moogn"]
+[ext_resource type="PackedScene" uid="uid://barmev3c3hfbu" path="res://addons/CustomControls/custom_text_edit.tscn" id="13_peiqu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6s3bo"]
+resource_local_to_scene = true
+content_margin_left = 3.0
+content_margin_right = 3.0
+bg_color = Color(1, 1, 1, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kihu1"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="Gradient" id="Gradient_3obsl"]
+offsets = PackedFloat32Array(0, 0.369535, 1)
+colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_mtkxg"]
+gradient = SubResource("Gradient_3obsl")
+fill_from = Vector2(0.547009, 1)
+fill_to = Vector2(0.559829, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rxxl6"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_844mk"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0fgwc"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_moogn"]
+texture = ExtResource("6_pv2cb")
+texture_margin_left = 18.0
+texture_margin_right = 18.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r603h"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Gradient" id="Gradient_3qaa6"]
+colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_cgl0f"]
+gradient = SubResource("Gradient_3qaa6")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_53mn3"]
+texture = SubResource("GradientTexture2D_cgl0f")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u0dbw"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dm8kv"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pv2cb"]
+atlas = ExtResource("7_acfxu")
+region = Rect2(192, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_moogn"]
+atlas = ExtResource("7_acfxu")
+region = Rect2(216, 0, 24, 24)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bkhe2"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Gradient" id="Gradient_ctwx1"]
+colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_tmosm"]
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ppivh"]
+texture = SubResource("GradientTexture2D_tmosm")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wykvf"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qgxvm"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="TroopsPanel" type="HBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 8
+script = ExtResource("1_7r58n")
+
+[node name="LeftColumn" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="PanelTitle" parent="LeftColumn" instance=ExtResource("2_fhvip")]
+layout_mode = 2
+text = "Encounters"
+
+[node name="MainList" parent="LeftColumn" instance=ExtResource("3_06dc8")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/v_separation = -1
+theme_override_styles/focus = SubResource("StyleBoxFlat_6s3bo")
+theme_override_styles/panel = SubResource("StyleBoxFlat_6s3bo")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_kihu1")
+theme_override_styles/selected = SubResource("StyleBoxTexture_rxxl6")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_844mk")
+select_mode = 1
+odd_line_color = Color(0.172549, 0.184314, 0.192157, 1)
+event_line_color = Color(0.145098, 0.156863, 0.164706, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="LeftColumn"]
+layout_mode = 2
+
+[node name="AddDataButton" parent="LeftColumn/HBoxContainer" instance=ExtResource("4_r0kp3")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Add Formation[/title]
+Create a new enemy formation"
+text = "Add
+Formation"
+text_overrun_behavior = 3
+
+[node name="RemoveDataButton" parent="LeftColumn/HBoxContainer" instance=ExtResource("4_r0kp3")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.65)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Remove Formation[/title]
+Remove the selected enemy formation"
+disabled = true
+text = "Delete
+Formation"
+text_overrun_behavior = 3
+
+[node name="RightColumn" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_0fgwc")
+
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="RightColumn/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(16, 0)
+layout_mode = 2
+
+[node name="ConfigDataTabs" parent="RightColumn/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("7_bu0r7")]
+unique_name_in_owner = true
+clip_children = 0
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+default_tabs = Array[String](["General", "Battle Commands", "Other"])
+tab_name_base = ""
+background_color = Color(0, 0, 0, 0)
+tab_selected = null
+stylebox_tab_selected = SubResource("StyleBoxTexture_moogn")
+
+[node name="ControlContainer" parent="RightColumn/MarginContainer/VBoxContainer" instance=ExtResource("5_xt4r3")]
+custom_minimum_size = Vector2(510, 160)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_r603h")
+style1 = SubResource("StyleBoxFlat_r603h")
+style2 = SubResource("StyleBoxTexture_53mn3")
+style3 = SubResource("StyleBoxFlat_u0dbw")
+
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="Tab1" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="General" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dm8kv")
+
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="GeneralSettings" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 62)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Name:"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="NameLineEdit" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer/HBoxContainer" instance=ExtResource("7_ya7un")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+tooltip_text = "[title]Encounter Name[/title]
+Name to identify this enemy group"
+
+[node name="AutoName" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_r0kp3")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+tooltip_text = "Automatically name the enemy group based on the enemies added"
+text = "Auto name"
+text_overrun_behavior = 3
+
+[node name="Background" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_r0kp3")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+tooltip_text = "Replaces the background that will be used in battle."
+text = "Background"
+text_overrun_behavior = 3
+
+[node name="BattleTest" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_r0kp3")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+tooltip_text = "Try a battle with this group of enemies."
+text = "Battle Test"
+text_overrun_behavior = 3
+
+[node name="TroopEditor" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_dm8kv")
+
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/TroopEditor"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="ParameterChanges" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/TroopEditor/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/TroopEditor/MarginContainer/ParameterChanges"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/TroopEditor/MarginContainer/ParameterChanges/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Enemies:"
+
+[node name="Info" type="TextureButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/TroopEditor/MarginContainer/ParameterChanges/HBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "[title]Battle Formation[/title]
+Battle positions for playable characters and enemies. You can zoom with the mouse wheel or move the view by holding the wheel.
+
+[Note]: By holding down CTRL, you can select multiple battlers and move them at once. When more than one battler is selected, buttons for automatic alignment will be displayed."
+focus_mode = 0
+mouse_default_cursor_shape = 16
+texture_normal = SubResource("AtlasTexture_pv2cb")
+texture_hover = SubResource("AtlasTexture_moogn")
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/TroopEditor/MarginContainer/ParameterChanges"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/TroopEditor/MarginContainer/ParameterChanges/HBoxContainer3"]
+layout_mode = 2
+text = "Add Enemy:"
+
+[node name="EnemyList" type="OptionButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/TroopEditor/MarginContainer/ParameterChanges/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "[title]Enemy List[/title]
+list of enemies added to the database"
+mouse_default_cursor_shape = 2
+text_overrun_behavior = 3
+clip_text = true
+script = ExtResource("9_ljfnv")
+
+[node name="AddEnemy" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/TroopEditor/MarginContainer/ParameterChanges/HBoxContainer3" instance=ExtResource("4_r0kp3")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+tooltip_text = "Add the selected enemy to the battlefield"
+text = "Add Enemy"
+text_overrun_behavior = 3
+
+[node name="ColorRect" type="ColorRect" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/TroopEditor/MarginContainer/ParameterChanges"]
+custom_minimum_size = Vector2(256, 128)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color(0, 0, 0, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/TroopEditor/MarginContainer/ParameterChanges/ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="ScaleContainer" type="Container" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/TroopEditor/MarginContainer/ParameterChanges/ColorRect/MarginContainer"]
+clip_contents = true
+layout_mode = 2
+script = ExtResource("7_wykvf")
+
+[node name="EditBattlerPositions" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/TroopEditor/MarginContainer/ParameterChanges/ColorRect/MarginContainer/ScaleContainer" instance=ExtResource("8_e50m8")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="EditBattlerPresets" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/TroopEditor/MarginContainer/ParameterChanges/ColorRect/MarginContainer" instance=ExtResource("13_moogn")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 6
+battler_positions_container = NodePath("../ScaleContainer/EditBattlerPositions")
+
+[node name="Tab2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Commands" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_dm8kv")
+
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Commands"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Commands/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Commands/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Battle Events"
+
+[node name="VBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Commands/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Commands/MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="AddPageButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Commands/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer" instance=ExtResource("4_r0kp3")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+tooltip_text = "[title]New Event Page[/title]
+Add a new page of commands to this formation."
+text = "New
+Event Page"
+text_overrun_behavior = 3
+
+[node name="CopyPageButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Commands/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer" instance=ExtResource("4_r0kp3")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+tooltip_text = "[title]Copy Event Page[/title]
+Copy the current page into the clipboard."
+text = "Copy
+Event Page"
+text_overrun_behavior = 3
+
+[node name="PastePageButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Commands/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer" instance=ExtResource("4_r0kp3")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+tooltip_text = "[title]Paste Event Page[/title]
+Paste a previously copied page into a new page for this formation."
+text = "Paste
+Event Page"
+text_overrun_behavior = 3
+
+[node name="RemovePageButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Commands/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer" instance=ExtResource("4_r0kp3")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+tooltip_text = "[title]Remove Event Page[/title]
+Remove the current page from this formation.
+
+\"Caution\": This action can not be redo."
+text = "Remove
+Event Page"
+text_overrun_behavior = 3
+
+[node name="CleanPageButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Commands/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer" instance=ExtResource("4_r0kp3")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+tooltip_text = "[title]Clean Event Page[/title]
+Remove all commands added to this page.
+
+\"Caution\": This action can not be redo."
+text = "Clean
+Event Page"
+text_overrun_behavior = 3
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Commands/MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="EventPageContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Commands/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer2" instance=ExtResource("7_bu0r7")]
+unique_name_in_owner = true
+clip_children = 0
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+background_color = Color(0.247059, 0.258824, 0.266667, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Commands/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Commands/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer2/HBoxContainer"]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+text = "Trigger:"
+
+[node name="ConditionButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Commands/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer2/HBoxContainer" instance=ExtResource("8_4e7pb")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "[title]Trigger[/title]
+Startup type for this page. In the [Encounter Page initializer] window that appears when the [...] button is pressed, enable the conditions from 7 settings in it, and configure the decision criterion used for each. Unlike map events, if you do not specify any conditions for the battle events, the event page will not be run. Also, if the conditions of multiple event pages are met, All pages will be activated one after another, following the priority order from left to right as they were created.."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Commands/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Commands/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer2/HBoxContainer2"]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+text = "Span:"
+
+[node name="ConditionSpan" type="OptionButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Commands/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer2/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Span[/title]
+Specify the timing to start running an event when an event page is allowed to run."
+mouse_default_cursor_shape = 2
+selected = 0
+item_count = 5
+popup/item_0/text = "Once Per Battle"
+popup/item_0/id = 0
+popup/item_1/text = "Once Per Turn"
+popup/item_1/id = 1
+popup/item_2/text = "Every Time Condition is Met"
+popup/item_2/id = 2
+popup/item_3/text = "Start Battle"
+popup/item_3/id = 3
+popup/item_4/text = "End Battle"
+popup/item_4/id = 4
+script = ExtResource("9_ljfnv")
+
+[node name="IsNonExclusive" type="CheckBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Commands/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer2/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "By default, after evaluating the pages, only the leftmost page whose conditions are met will be processed. When this option is enabled, this page will always be processed if its conditions are met, respecting the priority order. This allows multiple pages to be processed simultaneously if their conditions are fulfilled."
+mouse_default_cursor_shape = 2
+text = "is non exclusive"
+
+[node name="EventPageListEditor" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Commands/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer2" instance=ExtResource("9_pb863")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Tab3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Notes" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_dm8kv")
+
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Notes"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Notes/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Notes/MarginContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Notes:"
+
+[node name="Notes" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Notes/MarginContainer/VBoxContainer2" instance=ExtResource("13_peiqu")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "[title]Notes[/title]
+Used to make notes while making your game."
+wrap_mode = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer"]
+visible = false
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 16
+
+[node name="PanelContainer" parent="RightColumn/MarginContainer/HBoxContainer/VBoxContainer" instance=ExtResource("5_xt4r3")]
+custom_minimum_size = Vector2(510, 160)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_bkhe2")
+style1 = SubResource("StyleBoxFlat_bkhe2")
+style2 = SubResource("StyleBoxTexture_ppivh")
+style3 = SubResource("StyleBoxFlat_wykvf")
+
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/HBoxContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 22
+
+[node name="PanelContainer" type="PanelContainer" parent="RightColumn/MarginContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 240)
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.45
+theme_override_styles/panel = SubResource("StyleBoxFlat_qgxvm")
+
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="HSeparator" type="HSeparator" parent="RightColumn/MarginContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.01
+mouse_default_cursor_shape = 9
+theme_override_constants/separation = 0
+
+[node name="PanelContainer2" type="PanelContainer" parent="RightColumn/MarginContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 365)
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.55
+theme_override_styles/panel = SubResource("StyleBoxFlat_qgxvm")
+
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/PanelContainer2"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="TabBar" type="TabBar" parent="."]
+layout_mode = 2
+
+[connection signal="multi_selected" from="LeftColumn/MainList" to="." method="_on_main_list_multi_selected"]
+[connection signal="pressed" from="LeftColumn/HBoxContainer/AddDataButton" to="." method="_on_add_data_button_pressed"]
+[connection signal="pressed" from="LeftColumn/HBoxContainer/RemoveDataButton" to="." method="_on_remove_data_button_pressed"]
+[connection signal="tab_changed" from="RightColumn/MarginContainer/VBoxContainer/HBoxContainer/ConfigDataTabs" to="." method="_on_config_data_tabs_tab_changed"]
+[connection signal="text_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer/HBoxContainer/NameLineEdit" to="." method="_on_name_line_edit_text_changed"]
+[connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer/HBoxContainer/Background" to="." method="_on_background_button_pressed"]
+[connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/TroopEditor/MarginContainer/ParameterChanges/HBoxContainer3/AddEnemy" to="." method="_on_add_enemy_pressed"]
+[connection signal="battler_is_selected" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/TroopEditor/MarginContainer/ParameterChanges/ColorRect/MarginContainer/ScaleContainer/EditBattlerPositions" to="." method="_on_edit_battler_positions_battler_is_selected"]
+[connection signal="aligment_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/TroopEditor/MarginContainer/ParameterChanges/ColorRect/MarginContainer/EditBattlerPresets" to="." method="_on_edit_battler_presets_aligment_requested"]
+[connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Commands/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer/AddPageButton" to="." method="_on_add_page_button_pressed"]
+[connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Commands/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer/CopyPageButton" to="." method="_on_copy_page_button_pressed"]
+[connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Commands/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer/PastePageButton" to="." method="_on_paste_page_button_pressed"]
+[connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Commands/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer/RemovePageButton" to="." method="_on_remove_page_button_pressed"]
+[connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Commands/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer/CleanPageButton" to="." method="_on_clean_page_button_pressed"]
+[connection signal="tab_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Commands/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer2/EventPageContainer" to="." method="_on_event_page_container_tab_changed"]
+[connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Commands/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer2/HBoxContainer/ConditionButton" to="." method="_on_condition_button_pressed"]
+[connection signal="item_selected" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Commands/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer2/HBoxContainer2/ConditionSpan" to="." method="_on_condition_span_item_selected"]
+[connection signal="toggled" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Commands/MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer2/HBoxContainer2/IsNonExclusive" to="." method="_on_is_non_exclusive_toggled"]
+[connection signal="text_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Notes/MarginContainer/VBoxContainer2/Notes" to="." method="_on_notes_text_changed"]
+[connection signal="gui_input" from="RightColumn/MarginContainer/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HSeparator" to="." method="_on_h_separator_gui_input"]

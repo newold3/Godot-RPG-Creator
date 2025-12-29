@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://8gbgmsgpvibk"]
+
+[ext_resource type="Script" uid="uid://d0dnbc8c5wnxj" path="res://addons/CustomControls/auto_fit_label.gd" id="1_wkwy2"]
+
+[node name="AutoFitLabel" type="Label"]
+offset_right = 25.0
+offset_bottom = 28.0
+pivot_offset = Vector2(12.5, 32)
+theme_override_colors/font_color = Color(0.341176, 0.101961, 0.00784314, 1)
+theme_override_font_sizes/font_size = 8
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+script = ExtResource("1_wkwy2")

@@ -1,0 +1,56 @@
+[gd_scene load_steps=10 format=3 uid="uid://c27jqf82o4t60"]
+
+[ext_resource type="PackedScene" uid="uid://m3vvhpbeu3uy" path="res://Scenes/WeatherScenes/SnowScenes/trail_scene.tscn" id="1_1bw8m"]
+[ext_resource type="Script" uid="uid://65tcuva1hv78" path="res://Scenes/WeatherScenes/SnowScenes/snow_compose_scene.gd" id="1_6i41d"]
+[ext_resource type="PackedScene" uid="uid://b2arh2buftsm1" path="res://Scenes/WeatherScenes/SnowScenes/snow_scene.tscn" id="2_q71wq"]
+[ext_resource type="AudioStream" uid="uid://lw8is4kyp452" path="res://Assets/Sounds/BGS/wind1.ogg" id="4_ldfpy"]
+[ext_resource type="PackedScene" uid="uid://c12tmpb4msfdw" path="res://Scenes/WeatherScenes/SnowScenes/tileable_snow.tscn" id="5_jyh6l"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_kv720"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_1qbv1"]
+viewport_path = NodePath("TrailViewport")
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_hclb4"]
+blend_mode = 1
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_kjp5p"]
+blend_mode = 1
+
+[node name="SnowComposeScene" type="Node2D"]
+z_as_relative = false
+script = ExtResource("1_6i41d")
+modulate_scene = Color(0.52, 0.52, 0.52, 0.60784316)
+
+[node name="TrailScene" parent="." instance=ExtResource("1_1bw8m")]
+unique_name_in_owner = true
+self_modulate = Color(1, 1, 1, 0.477)
+material = SubResource("CanvasItemMaterial_kv720")
+position = Vector2(0, -1)
+texture = SubResource("ViewportTexture_1qbv1")
+
+[node name="SnowScene" parent="." instance=ExtResource("2_q71wq")]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_hclb4")
+
+[node name="TileableSnow" parent="." instance=ExtResource("5_jyh6l")]
+unique_name_in_owner = true
+self_modulate = Color(1, 1, 1, 0.025)
+z_index = 120
+z_as_relative = false
+material = SubResource("CanvasItemMaterial_kjp5p")
+
+[node name="ImpacstGroup" type="Node2D" parent="."]
+unique_name_in_owner = true
+z_index = 1
+z_as_relative = false
+
+[node name="BGSPlayer" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("4_ldfpy")
+pitch_scale = 1.45139
+
+[node name="SEPlayer" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+volume_db = -20.03
+bus = &"SE"

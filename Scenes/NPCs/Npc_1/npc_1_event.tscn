@@ -1,0 +1,1453 @@
+[gd_scene load_steps=131 format=3 uid="uid://c8w0sn1kasx7d"]
+
+[ext_resource type="Script" uid="uid://idsml4dsd377" path="res://Scenes/NPCs/Npc_1/npc_1_event.gd" id="1_5867i"]
+[ext_resource type="Script" uid="uid://cqx1cnfjmgp73" path="res://addons/RPGData/ModulesRPG/rpg_lpc_palette.gd" id="2_g3tmp"]
+[ext_resource type="Script" uid="uid://da56k4g4hqgoa" path="res://addons/RPGData/ModulesRPG/rpg_lpc_body_part.gd" id="3_iho3e"]
+[ext_resource type="Script" uid="uid://50ncamgmjd1c" path="res://addons/RPGData/ModulesRPG/rpg_lpc_body_data.gd" id="4_xcj6b"]
+[ext_resource type="Script" uid="uid://der67xririmwh" path="res://addons/RPGData/ModulesRPG/rpg_lpc_equipment_part.gd" id="5_rijkx"]
+[ext_resource type="Script" uid="uid://um8ybms51wt1" path="res://addons/RPGData/ModulesRPG/rpg_lpc_equipment_data.gd" id="6_dtw3y"]
+[ext_resource type="Script" uid="uid://5xgqhpxuvjtm" path="res://addons/RPGData/ModulesRPG/rpg_lpc_character.gd" id="7_2uwu3"]
+[ext_resource type="Texture2D" uid="uid://ck2rdwb6w6q2d" path="res://Scenes/NPCs/Npc_1/npc_1_character_minimalist.png" id="8_g3tmp"]
+
+[sub_resource type="Resource" id="Resource_g1ya3"]
+script = ExtResource("2_g3tmp")
+blend_color = 4191534335
+colors = PackedInt64Array(0, 0, 29, 639246591, 94, 2571254527, 152, 3431359487, 179, 3869474303, 220, 4191534335, 239, 4226607103)
+
+[sub_resource type="Resource" id="Resource_5kqeh"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_vne8j"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_dn7v3"]
+script = ExtResource("3_iho3e")
+part_id = "add1"
+config_path = "res://addons/rpg_character_creator/Data/character/add1/none.add1"
+palette1 = SubResource("Resource_g1ya3")
+palette2 = SubResource("Resource_5kqeh")
+palette3 = SubResource("Resource_vne8j")
+
+[sub_resource type="Resource" id="Resource_rvq65"]
+script = ExtResource("2_g3tmp")
+blend_color = 4191534335
+colors = PackedInt64Array(0, 0, 29, 639246591, 94, 2571254527, 152, 3431359487, 179, 3869474303, 220, 4191534335, 239, 4226607103)
+
+[sub_resource type="Resource" id="Resource_yju5d"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_bhxv0"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_7qntk"]
+script = ExtResource("3_iho3e")
+part_id = "add2"
+config_path = "res://addons/rpg_character_creator/Data/character/add2/none.add2"
+palette1 = SubResource("Resource_rvq65")
+palette2 = SubResource("Resource_yju5d")
+palette3 = SubResource("Resource_bhxv0")
+
+[sub_resource type="Resource" id="Resource_nihma"]
+script = ExtResource("2_g3tmp")
+blend_color = 4191534335
+colors = PackedInt64Array(0, 0, 29, 639246591, 94, 2571254527, 152, 3431359487, 179, 3869474303, 220, 4191534335, 239, 4226607103)
+
+[sub_resource type="Resource" id="Resource_s1suj"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_kxtbn"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_4wm7w"]
+script = ExtResource("3_iho3e")
+part_id = "add3"
+config_path = "res://addons/rpg_character_creator/Data/character/add3/none.add3"
+palette1 = SubResource("Resource_nihma")
+palette2 = SubResource("Resource_s1suj")
+palette3 = SubResource("Resource_kxtbn")
+
+[sub_resource type="Resource" id="Resource_8colr"]
+script = ExtResource("2_g3tmp")
+blend_color = 4191534335
+colors = PackedInt64Array(0, 0, 29, 639246591, 94, 2571254527, 152, 3431359487, 179, 3869474303, 220, 4191534335, 239, 4226607103)
+
+[sub_resource type="Resource" id="Resource_pcnqj"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_ldtdl"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_52uw2"]
+script = ExtResource("3_iho3e")
+part_id = "body"
+config_path = "res://addons/rpg_character_creator/Data/character/body/human.body"
+front_texture = "res://addons/rpg_character_creator/textures/character/body/humanoid_m1.png"
+palette1 = SubResource("Resource_8colr")
+palette2 = SubResource("Resource_pcnqj")
+palette3 = SubResource("Resource_ldtdl")
+
+[sub_resource type="Resource" id="Resource_t8usc"]
+script = ExtResource("2_g3tmp")
+blend_color = 4191534335
+colors = PackedInt64Array(0, 0, 29, 639246591, 94, 2571254527, 152, 3431359487, 179, 3869474303, 220, 4191534335, 239, 4226607103)
+
+[sub_resource type="Resource" id="Resource_8v0la"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_51lgy"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_6lht7"]
+script = ExtResource("3_iho3e")
+part_id = "ears"
+config_path = "res://addons/rpg_character_creator/Data/character/ears/base.ears"
+front_texture = "res://addons/rpg_character_creator/textures/character/ears/base/human_m.png"
+palette1 = SubResource("Resource_t8usc")
+palette2 = SubResource("Resource_8v0la")
+palette3 = SubResource("Resource_51lgy")
+
+[sub_resource type="Resource" id="Resource_xxd0a"]
+script = ExtResource("2_g3tmp")
+blend_color = 1356131583
+colors = PackedInt64Array(0, 0, 26, 639246591, 56, 691883007, 129, 1367847935, 190, 1356131583, 246, 4076337919)
+
+[sub_resource type="Resource" id="Resource_3wo68"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_j40r2"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_v4hga"]
+script = ExtResource("3_iho3e")
+part_id = "eyes"
+config_path = "res://addons/rpg_character_creator/Data/character/eyes/human.eyes"
+front_texture = "res://addons/rpg_character_creator/textures/character/eyes/human_m.png"
+palette1 = SubResource("Resource_xxd0a")
+palette2 = SubResource("Resource_3wo68")
+palette3 = SubResource("Resource_j40r2")
+
+[sub_resource type="Resource" id="Resource_hwy6u"]
+script = ExtResource("2_g3tmp")
+blend_color = 4191534335
+colors = PackedInt64Array(0, 0, 29, 639246591, 94, 2571254527, 152, 3431359487, 179, 3869474303, 220, 4191534335, 239, 4226607103)
+
+[sub_resource type="Resource" id="Resource_s8nhx"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_45eia"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_iigec"]
+script = ExtResource("3_iho3e")
+part_id = "facial"
+config_path = "res://addons/rpg_character_creator/Data/character/facial/none.facial"
+palette1 = SubResource("Resource_hwy6u")
+palette2 = SubResource("Resource_s8nhx")
+palette3 = SubResource("Resource_45eia")
+
+[sub_resource type="Resource" id="Resource_4wn3f"]
+script = ExtResource("2_g3tmp")
+blend_color = 404232447
+colors = PackedInt64Array(0, 0, 24, 255, 65, 255, 112, 255, 176, 151587327, 249, 404232447, 251, 656877567)
+
+[sub_resource type="Resource" id="Resource_gkti7"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_1odcc"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_731v1"]
+script = ExtResource("3_iho3e")
+part_id = "hair"
+config_path = "res://addons/rpg_character_creator/Data/character/hair/afro.hair"
+alt_config_path = "res://addons/rpg_character_creator/Data/character/hair/short.hair"
+front_texture = "res://addons/rpg_character_creator/textures/character/hair/human/afro_m.png"
+palette1 = SubResource("Resource_4wn3f")
+palette2 = SubResource("Resource_gkti7")
+palette3 = SubResource("Resource_1odcc")
+
+[sub_resource type="Resource" id="Resource_qoyn8"]
+script = ExtResource("2_g3tmp")
+blend_color = 4191534335
+colors = PackedInt64Array(0, 0, 29, 639246591, 94, 2571254527, 152, 3431359487, 179, 3869474303, 220, 4191534335, 239, 4226607103)
+
+[sub_resource type="Resource" id="Resource_etncu"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_c6ifl"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_282p7"]
+script = ExtResource("3_iho3e")
+part_id = "hairadd"
+config_path = "res://addons/rpg_character_creator/Data/character/hairadd/none.hairadd"
+palette1 = SubResource("Resource_qoyn8")
+palette2 = SubResource("Resource_etncu")
+palette3 = SubResource("Resource_c6ifl")
+
+[sub_resource type="Resource" id="Resource_ahcr0"]
+script = ExtResource("2_g3tmp")
+blend_color = 4191534335
+colors = PackedInt64Array(0, 0, 29, 639246591, 94, 2571254527, 152, 3431359487, 179, 3869474303, 220, 4191534335, 239, 4226607103)
+
+[sub_resource type="Resource" id="Resource_japrd"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_6dxcv"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_m38cf"]
+script = ExtResource("3_iho3e")
+part_id = "head"
+config_path = "res://addons/rpg_character_creator/Data/character/head/human.head"
+front_texture = "res://addons/rpg_character_creator/textures/character/head/human_m.png"
+palette1 = SubResource("Resource_ahcr0")
+palette2 = SubResource("Resource_japrd")
+palette3 = SubResource("Resource_6dxcv")
+
+[sub_resource type="Resource" id="Resource_saai2"]
+script = ExtResource("2_g3tmp")
+blend_color = 4191534335
+colors = PackedInt64Array(0, 0, 29, 639246591, 94, 2571254527, 152, 3431359487, 179, 3869474303, 220, 4191534335, 239, 4226607103)
+
+[sub_resource type="Resource" id="Resource_2bahs"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_bnagj"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_p11f3"]
+script = ExtResource("3_iho3e")
+part_id = "horns"
+config_path = "res://addons/rpg_character_creator/Data/character/horns/none.horns"
+palette1 = SubResource("Resource_saai2")
+palette2 = SubResource("Resource_2bahs")
+palette3 = SubResource("Resource_bnagj")
+
+[sub_resource type="Resource" id="Resource_bj4k2"]
+script = ExtResource("2_g3tmp")
+blend_color = 4191534335
+colors = PackedInt64Array(0, 0, 29, 639246591, 94, 2571254527, 152, 3431359487, 179, 3869474303, 220, 4191534335, 239, 4226607103)
+
+[sub_resource type="Resource" id="Resource_an8a5"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_d04lv"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_oc0cg"]
+script = ExtResource("3_iho3e")
+part_id = "nose"
+config_path = "res://addons/rpg_character_creator/Data/character/nose/base.nose"
+palette1 = SubResource("Resource_bj4k2")
+palette2 = SubResource("Resource_an8a5")
+palette3 = SubResource("Resource_d04lv")
+
+[sub_resource type="Resource" id="Resource_qc25j"]
+script = ExtResource("2_g3tmp")
+blend_color = 4191534335
+colors = PackedInt64Array(0, 0, 29, 639246591, 94, 2571254527, 152, 3431359487, 179, 3869474303, 220, 4191534335, 239, 4226607103)
+
+[sub_resource type="Resource" id="Resource_wxp70"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_7hxdk"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_e8hc5"]
+script = ExtResource("3_iho3e")
+part_id = "tail"
+config_path = "res://addons/rpg_character_creator/Data/character/tail/none.tail"
+palette1 = SubResource("Resource_qc25j")
+palette2 = SubResource("Resource_wxp70")
+palette3 = SubResource("Resource_7hxdk")
+
+[sub_resource type="Resource" id="Resource_asrl6"]
+script = ExtResource("2_g3tmp")
+blend_color = 4191534335
+colors = PackedInt64Array(0, 0, 29, 639246591, 94, 2571254527, 152, 3431359487, 179, 3869474303, 220, 4191534335, 239, 4226607103)
+
+[sub_resource type="Resource" id="Resource_xl8w4"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_1vjm2"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_i7rdp"]
+script = ExtResource("3_iho3e")
+part_id = "wings"
+config_path = "res://addons/rpg_character_creator/Data/character/wings/none.wings"
+palette1 = SubResource("Resource_asrl6")
+palette2 = SubResource("Resource_xl8w4")
+palette3 = SubResource("Resource_1vjm2")
+
+[sub_resource type="Resource" id="Resource_1t0kf"]
+script = ExtResource("4_xcj6b")
+body = SubResource("Resource_52uw2")
+head = SubResource("Resource_m38cf")
+eyes = SubResource("Resource_v4hga")
+wings = SubResource("Resource_i7rdp")
+tail = SubResource("Resource_e8hc5")
+horns = SubResource("Resource_p11f3")
+hair = SubResource("Resource_731v1")
+hairadd = SubResource("Resource_282p7")
+ears = SubResource("Resource_6lht7")
+nose = SubResource("Resource_oc0cg")
+facial = SubResource("Resource_iigec")
+add1 = SubResource("Resource_dn7v3")
+add2 = SubResource("Resource_7qntk")
+add3 = SubResource("Resource_4wm7w")
+
+[sub_resource type="Resource" id="Resource_wyx2v"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_1ytut"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_62687"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_kwose"]
+script = ExtResource("5_rijkx")
+config_path = "res://addons/rpg_character_creator/Data/gear/ammo/none.ammo"
+part_id = "ammo"
+body_type = "hm1"
+head_type = "hm1"
+name = "None"
+palette1 = SubResource("Resource_wyx2v")
+palette2 = SubResource("Resource_1ytut")
+palette3 = SubResource("Resource_62687")
+
+[sub_resource type="Resource" id="Resource_ek085"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_n6him"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_80u7y"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_glx2p"]
+script = ExtResource("5_rijkx")
+config_path = "res://addons/rpg_character_creator/Data/gear/back/none.back"
+part_id = "back"
+body_type = "hm1"
+head_type = "hm1"
+name = "None"
+palette1 = SubResource("Resource_ek085")
+palette2 = SubResource("Resource_n6him")
+palette3 = SubResource("Resource_80u7y")
+
+[sub_resource type="Resource" id="Resource_1slea"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_oqyts"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_u7nyi"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_ngamv"]
+script = ExtResource("5_rijkx")
+config_path = "res://addons/rpg_character_creator/Data/gear/belt/none.belt"
+part_id = "belt"
+body_type = "hm1"
+head_type = "hm1"
+name = "None"
+palette1 = SubResource("Resource_1slea")
+palette2 = SubResource("Resource_oqyts")
+palette3 = SubResource("Resource_u7nyi")
+
+[sub_resource type="Resource" id="Resource_wil7b"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_u4ctp"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_g3myh"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_iy438"]
+script = ExtResource("5_rijkx")
+config_path = "res://addons/rpg_character_creator/Data/gear/glasses/none.glasses"
+part_id = "glasses"
+body_type = "hm1"
+head_type = "hm1"
+name = "None"
+palette1 = SubResource("Resource_wil7b")
+palette2 = SubResource("Resource_u4ctp")
+palette3 = SubResource("Resource_g3myh")
+
+[sub_resource type="Resource" id="Resource_c4mgo"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_vo8pj"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_pauak"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_8g87t"]
+script = ExtResource("5_rijkx")
+config_path = "res://addons/rpg_character_creator/Data/gear/gloves/none.gloves"
+part_id = "gloves"
+body_type = "hm1"
+head_type = "hm1"
+name = "None"
+palette1 = SubResource("Resource_c4mgo")
+palette2 = SubResource("Resource_vo8pj")
+palette3 = SubResource("Resource_pauak")
+
+[sub_resource type="Resource" id="Resource_i7plf"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_y2wbi"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_bc87w"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_uu48i"]
+script = ExtResource("5_rijkx")
+config_path = "res://addons/rpg_character_creator/Data/gear/hat/none.hat"
+part_id = "hat"
+body_type = "hm1"
+head_type = "hm1"
+name = "None"
+palette1 = SubResource("Resource_i7plf")
+palette2 = SubResource("Resource_y2wbi")
+palette3 = SubResource("Resource_bc87w")
+
+[sub_resource type="Resource" id="Resource_0gei5"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_i3j2y"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_fbvau"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_8wlel"]
+script = ExtResource("5_rijkx")
+config_path = "res://addons/rpg_character_creator/Data/gear/jacket/none.jacket"
+part_id = "jacket"
+body_type = "hm1"
+head_type = "hm1"
+name = "None"
+palette1 = SubResource("Resource_0gei5")
+palette2 = SubResource("Resource_i3j2y")
+palette3 = SubResource("Resource_fbvau")
+
+[sub_resource type="Resource" id="Resource_kitwd"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_350xe"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_7sxpr"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_dgnga"]
+script = ExtResource("5_rijkx")
+config_path = "res://addons/rpg_character_creator/Data/gear/mainhand/none.mainhand"
+part_id = "mainhand"
+body_type = "hm1"
+head_type = "hm1"
+name = "None"
+palette1 = SubResource("Resource_kitwd")
+palette2 = SubResource("Resource_350xe")
+palette3 = SubResource("Resource_7sxpr")
+
+[sub_resource type="Resource" id="Resource_sbv2t"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_2assj"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_m7dx3"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_rhgq5"]
+script = ExtResource("5_rijkx")
+config_path = "res://addons/rpg_character_creator/Data/gear/mask/none.mask"
+part_id = "mask"
+body_type = "hm1"
+head_type = "hm1"
+name = "None"
+palette1 = SubResource("Resource_sbv2t")
+palette2 = SubResource("Resource_2assj")
+palette3 = SubResource("Resource_m7dx3")
+
+[sub_resource type="Resource" id="Resource_gmdv8"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_k6rve"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_gsjm4"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_1saov"]
+script = ExtResource("5_rijkx")
+config_path = "res://addons/rpg_character_creator/Data/gear/offhand/none.offhand"
+part_id = "offhand"
+body_type = "hm1"
+head_type = "hm1"
+name = "None"
+palette1 = SubResource("Resource_gmdv8")
+palette2 = SubResource("Resource_k6rve")
+palette3 = SubResource("Resource_gsjm4")
+
+[sub_resource type="Resource" id="Resource_mwy6l"]
+script = ExtResource("2_g3tmp")
+blend_color = 993804543
+colors = PackedInt64Array(0, 0, 16, 50397439, 23, 67240191, 27, 134745599, 66, 219157759, 133, 488449023, 161, 606350335, 183, 724316927, 228, 993804543, 255, 1212829183)
+
+[sub_resource type="Resource" id="Resource_32hqk"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_43kqs"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_hber0"]
+script = ExtResource("5_rijkx")
+config_path = "res://addons/rpg_character_creator/Data/gear/pants/pants.pants"
+part_id = "pants"
+body_type = "hm1"
+head_type = "hm1"
+name = "Pants"
+front_texture = "res://addons/rpg_character_creator/textures/gear/pants/pants/pants_m1.png"
+palette1 = SubResource("Resource_mwy6l")
+palette2 = SubResource("Resource_32hqk")
+palette3 = SubResource("Resource_43kqs")
+
+[sub_resource type="Resource" id="Resource_hmemd"]
+script = ExtResource("2_g3tmp")
+blend_color = 993804543
+colors = PackedInt64Array(0, 0, 16, 50397439, 23, 67240191, 27, 134745599, 66, 219157759, 133, 488449023, 161, 606350335, 183, 724316927, 228, 993804543, 255, 1212829183)
+
+[sub_resource type="Resource" id="Resource_us1x8"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_vj2nh"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_q0vkx"]
+script = ExtResource("5_rijkx")
+config_path = "res://addons/rpg_character_creator/Data/gear/shirt/shirt1.shirt"
+part_id = "shirt"
+body_type = "hm1"
+head_type = "hm1"
+name = "Shirt"
+front_texture = "res://addons/rpg_character_creator/textures/gear/shirt/shirt/sleeveless1_m1.png"
+palette1 = SubResource("Resource_hmemd")
+palette2 = SubResource("Resource_us1x8")
+palette3 = SubResource("Resource_vj2nh")
+
+[sub_resource type="Resource" id="Resource_6l1ev"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_rjo1c"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_jwj8j"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_i78ry"]
+script = ExtResource("5_rijkx")
+config_path = "res://addons/rpg_character_creator/Data/gear/shoes/none.shoes"
+part_id = "shoes"
+body_type = "hm1"
+head_type = "hm1"
+name = "None"
+palette1 = SubResource("Resource_6l1ev")
+palette2 = SubResource("Resource_rjo1c")
+palette3 = SubResource("Resource_jwj8j")
+
+[sub_resource type="Resource" id="Resource_0xprv"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_npofk"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_71nhn"]
+script = ExtResource("2_g3tmp")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_o7i0i"]
+script = ExtResource("5_rijkx")
+config_path = "res://addons/rpg_character_creator/Data/gear/suit/none.suit"
+part_id = "suit"
+body_type = "hm1"
+head_type = "hm1"
+name = "None"
+palette1 = SubResource("Resource_0xprv")
+palette2 = SubResource("Resource_npofk")
+palette3 = SubResource("Resource_71nhn")
+
+[sub_resource type="Resource" id="Resource_755sh"]
+script = ExtResource("6_dtw3y")
+mask = SubResource("Resource_rhgq5")
+hat = SubResource("Resource_uu48i")
+glasses = SubResource("Resource_iy438")
+suit = SubResource("Resource_o7i0i")
+jacket = SubResource("Resource_8wlel")
+shirt = SubResource("Resource_q0vkx")
+gloves = SubResource("Resource_8g87t")
+belt = SubResource("Resource_ngamv")
+pants = SubResource("Resource_hber0")
+shoes = SubResource("Resource_i78ry")
+back = SubResource("Resource_glx2p")
+mainhand = SubResource("Resource_dgnga")
+offhand = SubResource("Resource_1saov")
+ammo = SubResource("Resource_kwose")
+
+[sub_resource type="Resource" id="Resource_fqhee"]
+script = ExtResource("7_2uwu3")
+body_type = "hm1"
+head_type = "hm1"
+palette = "default"
+race = "01human"
+gender = "male"
+equipment_parts = SubResource("Resource_755sh")
+body_parts = SubResource("Resource_1t0kf")
+event_preview = "res://Scenes/NPCs/Npc_1/npc_1_event.png"
+scene_path = "res://Scenes/NPCs/Npc_1/npc_1_event.tscn"
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_dpd5q"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iho3e"]
+resource_local_to_scene = true
+atlas = ExtResource("8_g3tmp")
+region = Rect2(0, 192, 192, 192)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_us8f3"]
+radius = 5.0
+height = 10.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rsehv"]
+size = Vector2(26, 26)
+
+[sub_resource type="Animation" id="Animation_qldby"]
+resource_name = "Breathing"
+length = 0.8
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.8),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"_manage_animator"
+}]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("FullBody:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.33333337, 0.8000001),
+"transitions": PackedFloat32Array(0.5, -2, -2),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1, 0.984), Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_368bl"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FullBody:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_w2gn3"]
+_data = {
+&"Breathing": SubResource("Animation_qldby"),
+&"RESET": SubResource("Animation_368bl")
+}
+
+[node name="Npc1" type="CharacterBody2D"]
+z_index = 1
+y_sort_enabled = true
+collision_layer = 4
+collision_mask = 15
+script = ExtResource("1_5867i")
+event_data = SubResource("Resource_fqhee")
+can_move_on_terrains = PackedStringArray("^lava", "^water")
+
+[node name="FullBody" type="Marker2D" parent="."]
+unique_name_in_owner = true
+
+[node name="MainTexture" type="Sprite2D" parent="FullBody"]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_dpd5q")
+position = Vector2(0, -32)
+texture = SubResource("AtlasTexture_iho3e")
+region_rect = Rect2(0, 640, 64, 64)
+region_filter_clip_enabled = true
+
+[node name="CollisionShape" type="CollisionShape2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -7)
+shape = SubResource("CapsuleShape2D_us8f3")
+
+[node name="Bounds" type="Node2D" parent="."]
+
+[node name="Down" type="Marker2D" parent="Bounds"]
+unique_name_in_owner = true
+
+[node name="Up" type="Marker2D" parent="Bounds"]
+unique_name_in_owner = true
+position = Vector2(0, -49)
+
+[node name="Left" type="Marker2D" parent="Bounds"]
+unique_name_in_owner = true
+position = Vector2(-15, -24)
+
+[node name="Right" type="Marker2D" parent="Bounds"]
+unique_name_in_owner = true
+position = Vector2(15, -24)
+
+[node name="Feet" type="Marker2D" parent="Bounds"]
+unique_name_in_owner = true
+
+[node name="Mouth" type="Marker2D" parent="Bounds"]
+unique_name_in_owner = true
+position = Vector2(0, -29)
+
+[node name="ContactArea" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 64
+collision_mask = 64
+metadata/entity = Object(CharacterBody2D,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"light_mask":1,"visibility_layer":1,"z_index":1,"z_as_relative":true,"y_sort_enabled":true,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"position":Vector2(0, 0),"rotation":0.0,"scale":Vector2(1, 1),"skew":0.0,"disable_mode":0,"collision_layer":1,"collision_mask":46,"collision_priority":1.0,"input_pickable":false,"motion_mode":0,"up_direction":Vector2(0, -1),"velocity":Vector2(0, 0),"slide_on_ceiling":true,"max_slides":4,"wall_min_slide_angle":0.2617994,"floor_stop_on_slope":true,"floor_constant_speed":false,"floor_block_on_wall":true,"floor_max_angle":0.7853982,"floor_snap_length":1.0,"platform_on_leave":0,"platform_floor_layers":4294967295,"platform_wall_layers":0,"safe_margin":0.08,"script":Resource("res://Scenes/Players/Player_1/Player_1.gd"),"actor_data":Resource("res://Scenes/Players/Player_1/Player_1_data.tres"),"ctrl_pressed":false,"force_disable_breathing":false,"preview_direction":null,"animations":{
+"player": [{
+"frames": [[0.0, 512.0]],
+"id": "idle_up",
+"loop": true
+}, {
+"frames": [[0.0, 576.0]],
+"id": "idle_left",
+"loop": true
+}, {
+"frames": [[0.0, 640.0]],
+"id": "idle_down",
+"loop": true
+}, {
+"frames": [[0.0, 704.0]],
+"id": "idle_right",
+"loop": true
+}, {
+"frames": [[64.0, 0.0], [128.0, 0.0], [192.0, 0.0], [256.0, 0.0], [320.0, 0.0], [384.0, 0.0]],
+"id": "cast_up",
+"loop": false
+}, {
+"frames": [[64.0, 64.0], [128.0, 64.0], [192.0, 64.0], [256.0, 64.0], [320.0, 64.0], [384.0, 64.0]],
+"id": "cast_left",
+"loop": false
+}, {
+"frames": [[64.0, 128.0], [128.0, 128.0], [192.0, 128.0], [256.0, 128.0], [320.0, 128.0], [384.0, 128.0]],
+"id": "cast_down",
+"loop": false
+}, {
+"frames": [[64.0, 192.0], [128.0, 192.0], [192.0, 192.0], [256.0, 192.0], [320.0, 192.0], [384.0, 192.0]],
+"id": "cast_right",
+"loop": false
+}, {
+"frames": [[192.0, 0.0], [256.0, 0.0], [320.0, 0.0]],
+"id": "start_jump_up",
+"keep_last_frame": true,
+"loop": false
+}, {
+"frames": [[192.0, 64.0], [256.0, 64.0], [320.0, 64.0]],
+"id": "start_jump_left",
+"keep_last_frame": true,
+"loop": false
+}, {
+"frames": [[192.0, 128.0], [256.0, 128.0], [320.0, 128.0]],
+"id": "start_jump_down",
+"keep_last_frame": true,
+"loop": false
+}, {
+"frames": [[192.0, 192.0], [256.0, 192.0], [320.0, 192.0]],
+"id": "start_jump_right",
+"keep_last_frame": true,
+"loop": false
+}, {
+"frames": [[320.0, 0.0], [256.0, 0.0], [192.0, 0.0]],
+"id": "end_jump_up",
+"keep_last_frame": false,
+"loop": false
+}, {
+"frames": [[320.0, 64.0], [256.0, 64.0], [192.0, 64.0]],
+"id": "end_jump_left",
+"keep_last_frame": false,
+"loop": false
+}, {
+"frames": [[320.0, 128.0], [256.0, 128.0], [192.0, 128.0]],
+"id": "end_jump_down",
+"keep_last_frame": false,
+"loop": false
+}, {
+"frames": [[320.0, 192.0], [256.0, 192.0], [192.0, 192.0]],
+"id": "end_jump_right",
+"keep_last_frame": false,
+"loop": false
+}, {
+"action_frame": 6.0,
+"emiter": [10.0, -39.0],
+"frames": [[0.0, 256.0], [64.0, 256.0], [128.0, 256.0], [192.0, 256.0], [256.0, 256.0], [320.0, 256.0], [384.0, 256.0], [448.0, 256.0]],
+"id": "thrust_up",
+"loop": false
+}, {
+"action_frame": 6.0,
+"emiter": [-30.0, -15.0],
+"frames": [[0.0, 320.0], [64.0, 320.0], [128.0, 320.0], [192.0, 320.0], [256.0, 320.0], [320.0, 320.0], [384.0, 320.0], [448.0, 320.0]],
+"id": "thrust_left",
+"loop": false
+}, {
+"action_frame": 6.0,
+"emiter": [-6.0, 4.0],
+"frames": [[0.0, 384.0], [64.0, 384.0], [128.0, 384.0], [192.0, 384.0], [256.0, 384.0], [320.0, 384.0], [384.0, 384.0], [448.0, 384.0]],
+"id": "thrust_down",
+"loop": false
+}, {
+"action_frame": 6.0,
+"emiter": [30.0, -15.0],
+"frames": [[0.0, 448.0], [64.0, 448.0], [128.0, 448.0], [192.0, 448.0], [256.0, 448.0], [320.0, 448.0], [384.0, 448.0], [448.0, 448.0]],
+"id": "thrust_right",
+"loop": false
+}, {
+"frames": [[64.0, 0.0]],
+"id": "holding_reins_up",
+"loop": false
+}, {
+"frames": [[64.0, 64.0]],
+"id": "holding_reins_left",
+"loop": false
+}, {
+"frames": [[64.0, 128.0]],
+"id": "holding_reins_down",
+"loop": false
+}, {
+"frames": [[64.0, 192.0]],
+"id": "holding_reins_right",
+"loop": false
+}, {
+"action_frame": 6.0,
+"emiter": [10.0, -39.0],
+"frames": [[0.0, 256.0], [64.0, 256.0], [256.0, 256.0], [256.0, 256.0], [256.0, 256.0], [256.0, 256.0], [320.0, 256.0]],
+"id": "watering_up",
+"loop": false
+}, {
+"action_frame": 6.0,
+"emiter": [-30.0, -15.0],
+"frames": [[0.0, 320.0], [64.0, 320.0], [256.0, 320.0], [256.0, 320.0], [256.0, 320.0], [256.0, 320.0], [320.0, 320.0]],
+"id": "watering_left",
+"loop": false
+}, {
+"action_frame": 6.0,
+"emiter": [-6.0, 4.0],
+"frames": [[0.0, 384.0], [64.0, 384.0], [256.0, 384.0], [256.0, 384.0], [256.0, 384.0], [256.0, 384.0], [320.0, 384.0]],
+"id": "watering_down",
+"loop": false
+}, {
+"action_frame": 6.0,
+"emiter": [30.0, -15.0],
+"frames": [[0.0, 448.0], [64.0, 448.0], [256.0, 448.0], [256.0, 448.0], [256.0, 448.0], [256.0, 448.0], [320.0, 448.0]],
+"id": "watering_right",
+"loop": false
+}, {
+"frames": [[64.0, 512.0], [128.0, 512.0], [192.0, 512.0], [256.0, 512.0], [320.0, 512.0], [384.0, 512.0], [448.0, 512.0], [512.0, 512.0]],
+"id": "walk_up",
+"loop": true
+}, {
+"frames": [[64.0, 576.0], [128.0, 576.0], [192.0, 576.0], [256.0, 576.0], [320.0, 576.0], [384.0, 576.0], [448.0, 576.0], [512.0, 576.0]],
+"id": "walk_left",
+"loop": true
+}, {
+"frames": [[64.0, 640.0], [128.0, 640.0], [192.0, 640.0], [256.0, 640.0], [320.0, 640.0], [384.0, 640.0], [448.0, 640.0], [512.0, 640.0]],
+"id": "walk_down",
+"loop": true
+}, {
+"frames": [[64.0, 704.0], [128.0, 704.0], [192.0, 704.0], [256.0, 704.0], [320.0, 704.0], [384.0, 704.0], [448.0, 704.0], [512.0, 704.0]],
+"id": "walk_right",
+"loop": true
+}, {
+"action_frame": 3.0,
+"emiter": [2.0, -44.0],
+"frames": [[0.0, 768.0], [64.0, 768.0], [128.0, 768.0], [192.0, 768.0], [256.0, 768.0], [320.0, 768.0]],
+"id": "slash_up",
+"loop": false
+}, {
+"action_frame": 3.0,
+"emiter": [-32.0, -27.0],
+"frames": [[0.0, 832.0], [64.0, 832.0], [128.0, 832.0], [192.0, 832.0], [256.0, 832.0], [320.0, 832.0]],
+"id": "slash_left",
+"loop": false
+}, {
+"action_frame": 3.0,
+"emiter": [2.0, 3.0],
+"frames": [[0.0, 896.0], [64.0, 896.0], [128.0, 896.0], [192.0, 896.0], [256.0, 896.0], [320.0, 896.0]],
+"id": "slash_down",
+"loop": false
+}, {
+"action_frame": 3.0,
+"emiter": [32.0, -28.0],
+"frames": [[0.0, 960.0], [64.0, 960.0], [128.0, 960.0], [192.0, 960.0], [256.0, 960.0], [320.0, 960.0]],
+"id": "slash_right",
+"loop": false
+}, {
+"frames": [[320.0, 768.0], [256.0, 768.0], [64.0, 768.0], [128.0, 768.0]],
+"id": "smash_up",
+"loop": false
+}, {
+"frames": [[320.0, 832.0], [256.0, 832.0], [64.0, 832.0], [128.0, 832.0]],
+"id": "smash_left",
+"loop": false
+}, {
+"frames": [[320.0, 896.0], [256.0, 896.0], [64.0, 896.0], [128.0, 896.0]],
+"id": "smash_down",
+"loop": false
+}, {
+"frames": [[320.0, 960.0], [256.0, 960.0], [64.0, 960.0], [128.0, 960.0]],
+"id": "smash_right",
+"loop": false
+}, {
+"action_frame": 3.0,
+"frames": [[0.0, 768.0], [320.0, 768.0], [256.0, 768.0], [192.0, 768.0], [128.0, 768.0], [64.0, 768.0]],
+"id": "islash_up",
+"loop": false
+}, {
+"action_frame": 3.0,
+"frames": [[0.0, 832.0], [320.0, 832.0], [256.0, 832.0], [192.0, 832.0], [128.0, 832.0], [64.0, 832.0]],
+"id": "islash_left",
+"loop": false
+}, {
+"action_frame": 3.0,
+"frames": [[0.0, 896.0], [320.0, 896.0], [256.0, 896.0], [192.0, 896.0], [128.0, 896.0], [64.0, 896.0]],
+"id": "islash_down",
+"loop": false
+}, {
+"action_frame": 3.0,
+"frames": [[0.0, 960.0], [320.0, 960.0], [256.0, 960.0], [192.0, 960.0], [128.0, 960.0], [64.0, 960.0]],
+"id": "islash_right",
+"loop": false
+}, {
+"action_frame": 8.0,
+"emiter": [-2.0, 0.0],
+"frames": [[64.0, 1024.0], [128.0, 1024.0], [192.0, 1024.0], [256.0, 1024.0], [320.0, 1024.0], [384.0, 1024.0], [448.0, 1024.0], [512.0, 1024.0], [576.0, 1024.0], [640.0, 1024.0], [704.0, 1024.0], [768.0, 1024.0]],
+"id": "shoot_up",
+"loop": false
+}, {
+"action_frame": 8.0,
+"emiter": [0.0, 0.0],
+"frames": [[64.0, 1088.0], [128.0, 1088.0], [192.0, 1088.0], [256.0, 1088.0], [320.0, 1088.0], [384.0, 1088.0], [448.0, 1088.0], [512.0, 1088.0], [576.0, 1088.0], [640.0, 1088.0], [704.0, 1088.0], [768.0, 1088.0]],
+"id": "shoot_left",
+"loop": false
+}, {
+"action_frame": 8.0,
+"emiter": [0.0, 0.0],
+"frames": [[64.0, 1152.0], [128.0, 1152.0], [192.0, 1152.0], [256.0, 1152.0], [320.0, 1152.0], [384.0, 1152.0], [448.0, 1152.0], [512.0, 1152.0], [576.0, 1152.0], [640.0, 1152.0], [704.0, 1152.0], [768.0, 1152.0]],
+"id": "shoot_down",
+"loop": false
+}, {
+"action_frame": 8.0,
+"emiter": [0.0, 0.0],
+"frames": [[64.0, 1216.0], [128.0, 1216.0], [192.0, 1216.0], [256.0, 1216.0], [320.0, 1216.0], [384.0, 1216.0], [448.0, 1216.0], [512.0, 1216.0], [576.0, 1216.0], [640.0, 1216.0], [704.0, 1216.0], [768.0, 1216.0]],
+"id": "shoot_right",
+"loop": false
+}, {
+"frames": [[64.0, 1280.0], [128.0, 1280.0], [192.0, 1280.0], [256.0, 1280.0], [320.0, 1280.0]],
+"id": "hurt_down",
+"loop": false
+}, {
+"frames": [[0.0, 768.0], [64.0, 768.0], [320.0, 768.0], [256.0, 768.0], [192.0, 768.0], [192.0, 768.0], [192.0, 768.0], [128.0, 768.0]],
+"id": "whip_up",
+"loop": false
+}, {
+"frames": [[0.0, 832.0], [64.0, 832.0], [320.0, 832.0], [256.0, 832.0], [192.0, 832.0], [192.0, 832.0], [192.0, 832.0], [128.0, 832.0]],
+"id": "whip_left",
+"loop": false
+}, {
+"frames": [[0.0, 896.0], [64.0, 896.0], [320.0, 896.0], [256.0, 896.0], [192.0, 896.0], [192.0, 896.0], [192.0, 896.0], [128.0, 896.0]],
+"id": "whip_down",
+"loop": false
+}, {
+"frames": [[0.0, 960.0], [64.0, 960.0], [320.0, 960.0], [256.0, 960.0], [192.0, 960.0], [192.0, 960.0], [192.0, 960.0], [128.0, 960.0]],
+"id": "whip_right",
+"loop": false
+}, {
+"frames": [[0.0, 256.0], [192.0, 256.0], [192.0, 256.0], [256.0, 256.0], [256.0, 256.0], [256.0, 256.0], [256.0, 256.0], [256.0, 256.0], [320.0, 256.0], [320.0, 256.0], [256.0, 256.0], [192.0, 256.0], [192.0, 256.0]],
+"id": "fish_full_animation_up",
+"loop": false
+}, {
+"frames": [[0.0, 256.0], [192.0, 256.0], [192.0, 256.0], [256.0, 256.0], [256.0, 256.0]],
+"id": "fish_throw_up",
+"loop": false
+}, {
+"frames": [[256.0, 256.0], [256.0, 256.0], [256.0, 256.0], [320.0, 256.0], [320.0, 256.0]],
+"id": "fish_reel_up",
+"loop": true
+}, {
+"frames": [[256.0, 256.0], [192.0, 256.0], [192.0, 256.0]],
+"id": "fish_land_up",
+"loop": false
+}, {
+"frames": [[0.0, 320.0], [192.0, 320.0], [192.0, 320.0], [256.0, 320.0], [256.0, 320.0], [256.0, 320.0], [256.0, 320.0], [256.0, 320.0], [320.0, 320.0], [320.0, 320.0], [256.0, 320.0], [192.0, 320.0], [192.0, 320.0]],
+"id": "fish_full_animation_left",
+"loop": false
+}, {
+"frames": [[0.0, 320.0], [192.0, 320.0], [192.0, 320.0], [256.0, 320.0], [256.0, 320.0]],
+"id": "fish_throw_left",
+"loop": false
+}, {
+"frames": [[256.0, 320.0], [256.0, 320.0], [256.0, 320.0], [320.0, 320.0], [320.0, 320.0]],
+"id": "fish_reel_left",
+"loop": true
+}, {
+"frames": [[256.0, 320.0], [192.0, 320.0], [192.0, 320.0]],
+"id": "fish_land_left",
+"loop": false
+}, {
+"frames": [[0.0, 384.0], [192.0, 384.0], [192.0, 384.0], [256.0, 384.0], [256.0, 384.0], [256.0, 384.0], [256.0, 384.0], [256.0, 384.0], [320.0, 384.0], [320.0, 384.0], [256.0, 384.0], [192.0, 384.0], [192.0, 384.0]],
+"id": "fish_full_animation_down",
+"loop": false
+}, {
+"frames": [[0.0, 384.0], [192.0, 384.0], [192.0, 384.0], [256.0, 384.0], [256.0, 384.0]],
+"id": "fish_throw_down",
+"loop": false
+}, {
+"frames": [[256.0, 384.0], [256.0, 384.0], [256.0, 384.0], [320.0, 384.0], [320.0, 384.0]],
+"id": "fish_reel_down",
+"loop": true
+}, {
+"frames": [[256.0, 384.0], [192.0, 384.0], [192.0, 384.0]],
+"id": "fish_land_down",
+"loop": false
+}, {
+"frames": [[0.0, 448.0], [192.0, 448.0], [192.0, 448.0], [256.0, 448.0], [256.0, 448.0], [256.0, 448.0], [256.0, 448.0], [256.0, 448.0], [320.0, 448.0], [320.0, 448.0], [256.0, 448.0], [192.0, 448.0], [192.0, 448.0]],
+"id": "fish_full_animation_right",
+"loop": false
+}, {
+"frames": [[0.0, 448.0], [192.0, 448.0], [192.0, 448.0], [256.0, 448.0], [256.0, 448.0]],
+"id": "fish_throw_right",
+"loop": false
+}, {
+"frames": [[256.0, 448.0], [256.0, 448.0], [256.0, 448.0], [320.0, 448.0], [320.0, 448.0]],
+"id": "fish_reel_right",
+"loop": true
+}, {
+"frames": [[256.0, 448.0], [192.0, 448.0], [192.0, 448.0]],
+"id": "fish_land_right",
+"loop": false
+}],
+"weapon": [{
+"frames": [[0.0, 0.0]],
+"id": "idle_up",
+"loop": false
+}, {
+"frames": [[0.0, 192.0]],
+"id": "idle_left",
+"loop": false
+}, {
+"frames": [[0.0, 384.0]],
+"id": "idle_down",
+"loop": false
+}, {
+"frames": [[0.0, 576.0]],
+"id": "idle_right",
+"loop": false
+}, {
+"frames": [[0.0, 0.0]],
+"id": "small_idle_up",
+"loop": false
+}, {
+"frames": [[0.0, 64.0]],
+"id": "small_idle_left",
+"loop": false
+}, {
+"frames": [[0.0, 128.0]],
+"id": "small_idle_down",
+"loop": false
+}, {
+"frames": [[0.0, 192.0]],
+"id": "small_idle_right",
+"loop": false
+}, {
+"action_frame": 3.0,
+"frames": [[0.0, 0.0], [192.0, 0.0], [384.0, 0.0], [576.0, 0.0], [768.0, 0.0], [960.0, 0.0]],
+"id": "islash_up",
+"loop": false
+}, {
+"action_frame": 3.0,
+"frames": [[0.0, 192.0], [192.0, 192.0], [384.0, 192.0], [576.0, 192.0], [768.0, 192.0], [960.0, 192.0]],
+"id": "islash_left",
+"loop": false
+}, {
+"action_frame": 3.0,
+"frames": [[0.0, 384.0], [192.0, 384.0], [384.0, 384.0], [576.0, 384.0], [768.0, 384.0], [960.0, 384.0]],
+"id": "islash_down",
+"loop": false
+}, {
+"action_frame": 3.0,
+"frames": [[0.0, 576.0], [192.0, 576.0], [384.0, 576.0], [576.0, 576.0], [768.0, 576.0], [960.0, 576.0]],
+"id": "islash_right",
+"loop": false
+}, {
+"action_frame": 3.0,
+"frames": [[0.0, 0.0], [192.0, 0.0], [384.0, 0.0], [576.0, 0.0], [768.0, 0.0], [960.0, 0.0]],
+"id": "slash_up",
+"loop": false
+}, {
+"action_frame": 3.0,
+"frames": [[0.0, 192.0], [192.0, 192.0], [384.0, 192.0], [576.0, 192.0], [768.0, 192.0], [960.0, 192.0]],
+"id": "slash_left",
+"loop": false
+}, {
+"action_frame": 3.0,
+"frames": [[0.0, 384.0], [192.0, 384.0], [384.0, 384.0], [576.0, 384.0], [768.0, 384.0], [960.0, 384.0]],
+"id": "slash_down",
+"loop": false
+}, {
+"action_frame": 3.0,
+"frames": [[0.0, 576.0], [192.0, 576.0], [384.0, 576.0], [576.0, 576.0], [768.0, 576.0], [960.0, 576.0]],
+"id": "slash_right",
+"loop": false
+}, {
+"frames": [[0.0, 0.0], [192.0, 0.0], [384.0, 0.0], [576.0, 0.0], [768.0, 0.0], [960.0, 0.0], [1152.0, 0.0], [1344.0, 0.0]],
+"id": "walk_up",
+"loop": false
+}, {
+"frames": [[0.0, 192.0], [192.0, 192.0], [384.0, 192.0], [576.0, 192.0], [768.0, 192.0], [960.0, 192.0], [1152.0, 192.0], [1344.0, 192.0]],
+"id": "walk_left",
+"loop": false
+}, {
+"frames": [[0.0, 384.0], [192.0, 384.0], [384.0, 384.0], [576.0, 384.0], [768.0, 384.0], [960.0, 384.0], [1152.0, 384.0], [1344.0, 384.0]],
+"id": "walk_down",
+"loop": false
+}, {
+"frames": [[0.0, 576.0], [192.0, 576.0], [384.0, 576.0], [576.0, 576.0], [768.0, 576.0], [960.0, 576.0], [1152.0, 576.0], [1344.0, 576.0]],
+"id": "walk_right",
+"loop": false
+}, {
+"frames": [[64.0, 0.0], [128.0, 0.0], [192.0, 0.0], [256.0, 0.0], [320.0, 0.0], [384.0, 0.0], [448.0, 0.0], [512.0, 0.0]],
+"id": "small_walk_up",
+"loop": true
+}, {
+"frames": [[64.0, 64.0], [128.0, 64.0], [192.0, 64.0], [256.0, 64.0], [320.0, 64.0], [384.0, 64.0], [448.0, 64.0], [512.0, 64.0]],
+"id": "small_walk_left",
+"loop": true
+}, {
+"frames": [[64.0, 128.0], [128.0, 128.0], [192.0, 128.0], [256.0, 128.0], [320.0, 128.0], [384.0, 128.0], [448.0, 128.0], [512.0, 128.0]],
+"id": "small_walk_down",
+"loop": true
+}, {
+"frames": [[64.0, 192.0], [128.0, 192.0], [192.0, 192.0], [256.0, 192.0], [320.0, 192.0], [384.0, 192.0], [448.0, 192.0], [512.0, 192.0]],
+"id": "small_walk_right",
+"loop": true
+}, {
+"action_frame": 6.0,
+"frames": [[0.0, 0.0], [192.0, 0.0], [384.0, 0.0], [576.0, 0.0], [768.0, 0.0], [960.0, 0.0], [1152.0, 0.0], [1344.0, 0.0]],
+"id": "thrust_up",
+"loop": false
+}, {
+"action_frame": 6.0,
+"frames": [[0.0, 192.0], [192.0, 192.0], [384.0, 192.0], [576.0, 192.0], [768.0, 192.0], [960.0, 192.0], [1152.0, 192.0], [1344.0, 192.0]],
+"id": "thrust_left",
+"loop": false
+}, {
+"action_frame": 6.0,
+"frames": [[0.0, 384.0], [192.0, 384.0], [384.0, 384.0], [576.0, 384.0], [768.0, 384.0], [960.0, 384.0], [1152.0, 384.0], [1344.0, 384.0]],
+"id": "thrust_down",
+"loop": false
+}, {
+"action_frame": 6.0,
+"frames": [[0.0, 576.0], [192.0, 576.0], [384.0, 576.0], [576.0, 576.0], [768.0, 576.0], [960.0, 576.0], [1152.0, 576.0], [1344.0, 576.0]],
+"id": "thrust_right",
+"loop": false
+}, {
+"action_frame": 6.0,
+"frames": [[0.0, 0.0], [192.0, 0.0], [768.0, 0.0], [768.0, 0.0], [768.0, 0.0], [768.0, 0.0], [960.0, 0.0]],
+"id": "watering_up",
+"loop": false
+}, {
+"action_frame": 6.0,
+"frames": [[0.0, 192.0], [192.0, 192.0], [768.0, 192.0], [768.0, 192.0], [768.0, 192.0], [768.0, 192.0], [960.0, 192.0]],
+"id": "watering_left",
+"loop": false
+}, {
+"action_frame": 6.0,
+"frames": [[0.0, 384.0], [192.0, 384.0], [768.0, 384.0], [768.0, 384.0], [768.0, 384.0], [768.0, 384.0], [960.0, 384.0]],
+"id": "watering_down",
+"loop": false
+}, {
+"action_frame": 6.0,
+"frames": [[0.0, 576.0], [192.0, 576.0], [768.0, 576.0], [768.0, 576.0], [768.0, 576.0], [768.0, 576.0], [960.0, 576.0]],
+"id": "watering_right",
+"loop": false
+}, {
+"frames": [[0.0, 0.0], [192.0, 0.0], [384.0, 0.0], [576.0, 0.0], [768.0, 0.0], [960.0, 0.0], [1152.0, 0.0], [1344.0, 0.0]],
+"id": "whip_up",
+"loop": false
+}, {
+"frames": [[0.0, 192.0], [192.0, 192.0], [384.0, 192.0], [576.0, 192.0], [768.0, 192.0], [960.0, 192.0], [1152.0, 192.0], [1344.0, 192.0]],
+"id": "whip_left",
+"loop": false
+}, {
+"frames": [[0.0, 384.0], [192.0, 384.0], [384.0, 384.0], [576.0, 384.0], [768.0, 384.0], [960.0, 384.0], [1152.0, 384.0], [1344.0, 384.0]],
+"id": "whip_down",
+"loop": false
+}, {
+"frames": [[0.0, 576.0], [192.0, 576.0], [384.0, 576.0], [576.0, 576.0], [768.0, 576.0], [960.0, 576.0], [1152.0, 576.0], [1344.0, 576.0]],
+"id": "whip_right",
+"loop": false
+}, {
+"frames": [[0.0, 0.0], [192.0, 0.0], [384.0, 0.0], [576.0, 0.0]],
+"id": "smash_up",
+"loop": false
+}, {
+"frames": [[0.0, 192.0], [192.0, 192.0], [384.0, 192.0], [576.0, 192.0]],
+"id": "smash_left",
+"loop": false
+}, {
+"frames": [[0.0, 384.0], [192.0, 384.0], [384.0, 384.0], [576.0, 384.0]],
+"id": "smash_down",
+"loop": false
+}, {
+"frames": [[0.0, 576.0], [192.0, 576.0], [384.0, 576.0], [576.0, 576.0]],
+"id": "smash_right",
+"loop": false
+}, {
+"frames": [[0.0, 0.0], [192.0, 0.0], [192.0, 0.0], [384.0, 0.0], [576.0, 0.0], [768.0, 0.0], [960.0, 0.0], [1152.0, 0.0], [1344.0, 0.0], [1344.0, 0.0], [1536.0, 0.0], [1728.0, 0.0], [1920.0, 0.0]],
+"id": "fish_full_animation_up",
+"loop": false
+}, {
+"frames": [[0.0, 0.0], [192.0, 0.0], [192.0, 0.0], [384.0, 0.0], [384.0, 0.0]],
+"id": "fish_throw_up",
+"loop": false
+}, {
+"frames": [[768.0, 0.0], [960.0, 0.0], [1152.0, 0.0], [1344.0, 0.0], [1344.0, 0.0]],
+"id": "fish_reel_up",
+"loop": true
+}, {
+"frames": [[1536.0, 0.0], [1728.0, 0.0], [1920.0, 0.0]],
+"id": "fish_land_up",
+"loop": false
+}, {
+"frames": [[0.0, 192.0], [192.0, 192.0], [192.0, 192.0], [384.0, 192.0], [576.0, 192.0], [768.0, 192.0], [960.0, 192.0], [1152.0, 192.0], [1344.0, 192.0], [1344.0, 192.0], [1536.0, 192.0], [1728.0, 192.0], [1920.0, 192.0]],
+"id": "fish_full_animation_left",
+"loop": false
+}, {
+"frames": [[0.0, 192.0], [192.0, 192.0], [192.0, 192.0], [384.0, 192.0], [384.0, 192.0]],
+"id": "fish_throw_left",
+"loop": false
+}, {
+"frames": [[768.0, 192.0], [960.0, 192.0], [1152.0, 192.0], [1344.0, 192.0], [1344.0, 192.0]],
+"id": "fish_reel_left",
+"loop": true
+}, {
+"frames": [[1536.0, 192.0], [1728.0, 192.0], [1920.0, 192.0]],
+"id": "fish_land_left",
+"loop": false
+}, {
+"frames": [[0.0, 384.0], [192.0, 384.0], [192.0, 384.0], [384.0, 384.0], [576.0, 384.0], [768.0, 384.0], [960.0, 384.0], [1152.0, 384.0], [1344.0, 384.0], [1344.0, 384.0], [1536.0, 384.0], [1728.0, 384.0], [1920.0, 384.0]],
+"id": "fish_full_animation_down",
+"loop": false
+}, {
+"frames": [[0.0, 384.0], [192.0, 384.0], [192.0, 384.0], [384.0, 384.0], [384.0, 384.0]],
+"id": "fish_throw_down",
+"loop": false
+}, {
+"frames": [[768.0, 384.0], [960.0, 384.0], [1152.0, 384.0], [1344.0, 384.0], [1344.0, 384.0]],
+"id": "fish_reel_down",
+"loop": true
+}, {
+"frames": [[1536.0, 384.0], [1728.0, 384.0], [1920.0, 384.0]],
+"id": "fish_land_down",
+"loop": false
+}, {
+"frames": [[0.0, 576.0], [192.0, 576.0], [192.0, 576.0], [384.0, 576.0], [576.0, 576.0], [768.0, 576.0], [960.0, 576.0], [1152.0, 576.0], [1344.0, 576.0], [1344.0, 576.0], [1536.0, 576.0], [1728.0, 576.0], [1920.0, 576.0]],
+"id": "fish_full_animation_right",
+"loop": false
+}, {
+"frames": [[0.0, 576.0], [192.0, 576.0], [192.0, 576.0], [384.0, 576.0], [384.0, 576.0]],
+"id": "fish_throw_right",
+"loop": false
+}, {
+"frames": [[768.0, 576.0], [960.0, 576.0], [1152.0, 576.0], [1344.0, 576.0], [1344.0, 576.0]],
+"id": "fish_reel_right",
+"loop": true
+}, {
+"frames": [[1536.0, 576.0], [1728.0, 576.0], [1920.0, 576.0]],
+"id": "fish_land_right",
+"loop": false
+}]
+},"full_body":null,"wings_back":null,"hands_back":null,"body":null,"hands_front":null,"idle_tween":null,"current_data":Resource("res://Scenes/Players/Player_1/Player_1_data.tres"),"current_weapon_images":{},"can_move_on_terrains":PackedStringArray("^lava", "^water"),"movement_current_mode":1,"movement_speed":100.0,"running_speed":150.0,"is_moving":false,"is_jumping":false,"can_move":true,"is_running":false,"target_position":Vector2(0, 0),"grid_move_duration":Vector2(0, 0),"movement_vector":Vector2(0, 0),"current_map_tile_size":Vector2i(0, 0),"map_offset":Vector2i(0, 0),"cumulative_steps":0.0,"current_direction":8,"last_direction":8,"event_movement_type":0,"event_movement_frequency":10,"event_movement_frame_count":0,"route_commands":null,"route_command_index":0,"update_texture_timer":0.0,"current_frame":-1,"current_animation":"idle","frame_delay":0.0,"frame_delay_max":0.1,"frame_delay_max_running":0.03,"previous_tile":Vector2i(0, 0),"is_attacking":false,"can_attack":true,"is_on_vehicle":false,"current_vehicle":null,"current_weapon_data":{
+"actions": ["slash", "islash", "thrust"],
+"chargen": true,
+"default": false,
+"gear": true,
+"id": "sword1",
+"lootable": true,
+"name": "Sword",
+"primarycolors": ["metal_iron", "metal_steel", "metal_bluesteel"],
+"secondarycolors": ["metal_copper", "metal_bronze", "metal_gold"],
+"sounds": ["sounds/swosh-03.ogg", "sounds/swosh-05.ogg", "sounds/swosh-08.ogg", "sounds/swosh-10.ogg", "sounds/swosh-18.ogg", "sounds/swosh-42.ogg"],
+"tags": ["mainhand", "weapon", "sword", "large"],
+"textures": [{
+"back": "textures/gear/mainhand/sword/sword1_mb.png",
+"body": "hm1",
+"front": "textures/gear/mainhand/sword/sword1_mf.png",
+"spritesheet": "char_base"
+}, {
+"back": "textures/gear/mainhand/sword/sword1_slash_mb.png",
+"body": "hm1",
+"front": "textures/gear/mainhand/sword/sword1_slash_mf.png",
+"spritesheet": "char_large_slash"
+}, {
+"back": "textures/gear/mainhand/sword/sword1_islash_mb.png",
+"body": "hm1",
+"front": "textures/gear/mainhand/sword/sword1_islash_mf.png",
+"spritesheet": "char_large_islash"
+}, {
+"back": "textures/gear/mainhand/sword/sword1_thrust_mb.png",
+"body": "hm1",
+"front": "textures/gear/mainhand/sword/sword1_thrust_mf.png",
+"spritesheet": "char_large_thrust"
+}, {
+"back": "textures/gear/mainhand/sword/sword1_mb.png",
+"body": "hm2",
+"front": "textures/gear/mainhand/sword/sword1_mf.png",
+"spritesheet": "char_base"
+}, {
+"back": "textures/gear/mainhand/sword/sword1_slash_mb.png",
+"body": "hm2",
+"front": "textures/gear/mainhand/sword/sword1_slash_mf.png",
+"spritesheet": "char_large_slash"
+}, {
+"back": "textures/gear/mainhand/sword/sword1_islash_mb.png",
+"body": "hm2",
+"front": "textures/gear/mainhand/sword/sword1_islash_mf.png",
+"spritesheet": "char_large_islash"
+}, {
+"back": "textures/gear/mainhand/sword/sword1_thrust_mb.png",
+"body": "hm2",
+"front": "textures/gear/mainhand/sword/sword1_thrust_mf.png",
+"spritesheet": "char_large_thrust"
+}, {
+"back": "textures/gear/mainhand/sword/sword1_fb.png",
+"body": "hf1",
+"front": "textures/gear/mainhand/sword/sword1_ff.png",
+"spritesheet": "char_base"
+}, {
+"back": "textures/gear/mainhand/sword/sword1_slash_fb.png",
+"body": "hf1",
+"front": "textures/gear/mainhand/sword/sword1_slash_ff.png",
+"spritesheet": "char_large_slash"
+}, {
+"back": "textures/gear/mainhand/sword/sword1_islash_fb.png",
+"body": "hf1",
+"front": "textures/gear/mainhand/sword/sword1_islash_ff.png",
+"spritesheet": "char_large_islash"
+}, {
+"back": "textures/gear/mainhand/sword/sword1_thrust_fb.png",
+"body": "hf1",
+"front": "textures/gear/mainhand/sword/sword1_thrust_ff.png",
+"spritesheet": "char_large_thrust"
+}]
+},"current_virtual_tile":Vector2(0, 0),"collision_disabled":false,"force_locked":false,"activated_this_frame":false,"_last_route_movement":Vector2i(0, 0),"_contact_activation_delay":0.0,"_contact_activation_cooldown":1.0,"_ignore_events_contact":[],"_squared_tile_size":0,"_visual_history":Array[Dictionary]([]),"_max_history_size":300,"_last_recorded_pos":Vector2(0, 0),"_last_recorded_direction":-1,"_record_threshold_squared":16.0,"character_options":null,"movement_tween":null,"contact_area_tween":null,"busy":false,"force_animation_enabled":false,"targets_over_me":[])
+
+
+[node name="AreaShape" type="CollisionShape2D" parent="ContactArea"]
+unique_name_in_owner = true
+position = Vector2(0, -13)
+shape = SubResource("RectangleShape2D_rsehv")
+debug_color = Color(0.7580552, 0.44811207, 0.2082015, 0.41960785)
+
+[node name="MainAnimator" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+&"": SubResource("AnimationLibrary_w2gn3")
+}
+autoplay = "Breathing"
+speed_scale = 0.6

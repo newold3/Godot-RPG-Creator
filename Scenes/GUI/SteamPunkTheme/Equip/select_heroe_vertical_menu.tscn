@@ -1,0 +1,197 @@
+[gd_scene load_steps=9 format=3 uid="uid://by4iopf8kl51b"]
+
+[ext_resource type="Script" uid="uid://bhpjo87yn1t72" path="res://Scenes/GUI/buttons_vertical_menu2.gd" id="1_t2vjr"]
+[ext_resource type="Texture2D" uid="uid://bfgr2ewrp6i0u" path="res://Assets/Images/GUI/party_menu.png" id="2_in1ti"]
+[ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="3_fubyf"]
+[ext_resource type="Script" uid="uid://ruyuvj6u4ulm" path="res://Scenes/GUI/buttons_vertical_menu_container.gd" id="4_sksbm"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3y06e"]
+atlas = ExtResource("2_in1ti")
+region = Rect2(77, 30, 105, 103)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ituw3"]
+content_margin_left = 3.0
+content_margin_top = 3.0
+content_margin_right = 3.0
+content_margin_bottom = 3.0
+draw_center = false
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_blend = true
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8a8cv"]
+content_margin_left = 3.0
+content_margin_top = 3.0
+content_margin_right = 3.0
+content_margin_bottom = 3.0
+draw_center = false
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.8901961, 0.3529412, 0.21960784, 1)
+border_blend = true
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_suvof"]
+content_margin_left = 3.0
+content_margin_top = 3.0
+content_margin_right = 3.0
+content_margin_bottom = 3.0
+bg_color = Color(0.7566, 0.97, 0.7850534, 0.15686275)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.2849759, 0.4661572, 0.15823498, 1)
+border_blend = true
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="ButtonsVerticalMenu" type="MarginContainer"]
+custom_minimum_size = Vector2(96, 201.765)
+size_flags_horizontal = 0
+mouse_filter = 2
+script = ExtResource("1_t2vjr")
+
+[node name="Gear" type="Control" parent="."]
+unique_name_in_owner = true
+show_behind_parent = true
+z_index = 1
+layout_mode = 2
+mouse_filter = 2
+
+[node name="GearTop" type="Control" parent="Gear"]
+unique_name_in_owner = true
+z_index = 10
+layout_mode = 1
+anchors_preset = 0
+offset_left = 82.99999
+offset_top = 14.999992
+offset_right = 82.99999
+offset_bottom = 14.999992
+scale = Vector2(0.1, 0.1)
+mouse_filter = 2
+
+[node name="Part" type="TextureRect" parent="Gear/GearTop"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -234.5
+offset_top = -229.50049
+offset_right = 234.5
+offset_bottom = 229.49951
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(234, 229)
+mouse_filter = 2
+texture = SubResource("AtlasTexture_3y06e")
+
+[node name="GearBottom" type="Control" parent="Gear"]
+unique_name_in_owner = true
+z_index = 10
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 6.9999995
+offset_top = -10.0
+offset_right = 6.9999995
+offset_bottom = -10.0
+grow_vertical = 0
+scale = Vector2(0.1, 0.1)
+mouse_filter = 2
+
+[node name="Part" type="TextureRect" parent="Gear/GearBottom"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -234.5
+offset_top = -229.50049
+offset_right = 234.5
+offset_bottom = 229.49951
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(234, 229)
+mouse_filter = 2
+texture = SubResource("AtlasTexture_3y06e")
+
+[node name="BackgroundBottom" type="NinePatchRect" parent="."]
+layout_mode = 2
+texture = ExtResource("2_in1ti")
+region_rect = Rect2(2190, 22, 301, 109)
+patch_margin_left = 28
+patch_margin_top = 54
+patch_margin_right = 70
+patch_margin_bottom = 34
+
+[node name="Contents" type="MarginContainer" parent="."]
+clip_contents = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 17
+theme_override_constants/margin_right = 7
+theme_override_constants/margin_bottom = 17
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="Contents" node_paths=PackedStringArray("single_target_focus")]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+horizontal_scroll_mode = 0
+script = ExtResource("3_fubyf")
+single_target_focus = NodePath("MarginContainer/ButtonsVerticalMenuContainer/FocusControl")
+use_custom_vertical_scroll = true
+custom_vscroll_size = Vector2(12, 545.495)
+custom_vscroll_offset = Vector2(68, 12.73)
+metadata/_custom_type_script = "uid://cs6g8remlafby"
+
+[node name="MarginContainer" type="MarginContainer" parent="Contents/SmoothScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/margin_left = -16
+theme_override_constants/margin_top = 0
+
+[node name="ButtonsVerticalMenuContainer" type="Control" parent="Contents/SmoothScrollContainer/MarginContainer" node_paths=PackedStringArray("scroll_container")]
+unique_name_in_owner = true
+texture_filter = 5
+custom_minimum_size = Vector2(79.2, 625.2)
+layout_mode = 2
+mouse_filter = 1
+script = ExtResource("4_sksbm")
+button_size = Vector2(48, 48)
+vertical_margin_bottom = 48.0
+horizontal_margin_left = 24.0
+normal_style = SubResource("StyleBoxFlat_ituw3")
+hover_style = SubResource("StyleBoxFlat_8a8cv")
+selected_style = SubResource("StyleBoxFlat_suvof")
+scroll_container = NodePath("../..")
+scroll_offset = Vector2(6, 0)
+
+[node name="BackgroundTop" type="NinePatchRect" parent="."]
+layout_mode = 2
+texture = ExtResource("2_in1ti")
+region_rect = Rect2(1871, 22, 301, 109)
+patch_margin_left = 28
+patch_margin_top = 54
+patch_margin_right = 70
+patch_margin_bottom = 34

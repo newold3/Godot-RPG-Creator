@@ -1,0 +1,191 @@
+[gd_scene load_steps=19 format=3 uid="uid://ds6au1ubaojdu"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_p7knt"]
+[ext_resource type="Script" uid="uid://8g3efhl2qkug" path="res://addons/CustomControls/Dialogs/CommandEvents/execute_script_command_dialog.gd" id="2_bryoq"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="3_js8r3"]
+[ext_resource type="CodeHighlighter" uid="uid://c7mbnjy7jf0hv" path="res://addons/CustomControls/Resources/Other/code_hightlighter.tres" id="3_rna7w"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="4_js8r3"]
+[ext_resource type="Script" uid="uid://cd2kyhn84gf8a" path="res://addons/CustomControls/Dialogs/intelligent_code_edit.gd" id="4_r10de"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="4_td2nw"]
+[ext_resource type="PackedScene" uid="uid://cm2u4auw5aji5" path="res://addons/CustomControls/Dialogs/select_color.tscn" id="8_r10de"]
+
+[sub_resource type="Gradient" id="Gradient_ymbf5"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ourej"]
+gradient = SubResource("Gradient_ymbf5")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r5gwe"]
+atlas = ExtResource("4_td2nw")
+region = Rect2(168, 72, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aih10"]
+atlas = ExtResource("4_td2nw")
+region = Rect2(48, 192, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6jkjw"]
+atlas = ExtResource("4_td2nw")
+region = Rect2(0, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8p48m"]
+atlas = ExtResource("4_td2nw")
+region = Rect2(24, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l8tw1"]
+atlas = ExtResource("4_td2nw")
+region = Rect2(48, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7eunj"]
+atlas = ExtResource("4_td2nw")
+region = Rect2(0, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_woyiu"]
+atlas = ExtResource("4_td2nw")
+region = Rect2(24, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_drelo"]
+atlas = ExtResource("4_td2nw")
+region = Rect2(48, 0, 24, 24)
+
+[node name="ExecuteScriptCommandDialog" type="Window"]
+oversampling_override = 1.0
+title = "Execute Script"
+position = Vector2i(0, 36)
+size = Vector2i(800, 600)
+wrap_controls = true
+transient = true
+exclusive = true
+theme = ExtResource("1_p7knt")
+script = ExtResource("2_bryoq")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_ourej")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Select Preset:"
+
+[node name="PresetButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_js8r3")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Select one of the included presets"
+selected = 0
+item_count = 1
+popup/item_0/text = "Add All Items"
+popup/item_0/id = 0
+
+[node name="ApplyScriptPreset" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Replaces the content of the current script with that of the preset.."
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_r5gwe")
+texture_hover = SubResource("AtlasTexture_aih10")
+
+[node name="RemoveScriptPreset" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Remove the selected preset"
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = SubResource("AtlasTexture_6jkjw")
+texture_hover = SubResource("AtlasTexture_8p48m")
+texture_disabled = SubResource("AtlasTexture_l8tw1")
+
+[node name="SaveScriptPreset" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Add the current content of the script as a preset.
+You must give a unique name to the new preset,
+or it will not be saved if a preset with that name already exists."
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_7eunj")
+texture_hover = SubResource("AtlasTexture_woyiu")
+texture_disabled = SubResource("AtlasTexture_drelo")
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Script:"
+
+[node name="CodeEdit" type="CodeEdit" parent="MarginContainer/VBoxContainer" node_paths=PackedStringArray("color_dialog")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(600, 400)
+layout_mode = 2
+size_flags_vertical = 3
+caret_blink = true
+syntax_highlighter = ExtResource("3_rna7w")
+code_completion_enabled = true
+auto_brace_completion_enabled = true
+auto_brace_completion_highlight_matching = true
+script = ExtResource("4_r10de")
+color_dialog = NodePath("../../../SelectColor")
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("4_js8r3")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("4_js8r3")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+text = "CANCEL"
+
+[node name="SelectColor" parent="." instance=ExtResource("8_r10de")]
+unique_name_in_owner = true
+oversampling_override = 1.0
+size = Vector2i(322, 686)
+visible = false
+exclusive = false
+popup_window = true
+
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer/PresetButton" to="." method="_on_preset_button_item_selected"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/ApplyScriptPreset" to="." method="_on_apply_script_preset_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/RemoveScriptPreset" to="." method="_on_remove_script_preset_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/SaveScriptPreset" to="." method="_on_save_script_preset_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/CancelButton" to="." method="_on_cancel_button_pressed"]

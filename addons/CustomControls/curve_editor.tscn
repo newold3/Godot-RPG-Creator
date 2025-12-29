@@ -1,0 +1,67 @@
+[gd_scene load_steps=4 format=3 uid="uid://d5a3my4t0rsb"]
+
+[ext_resource type="Script" uid="uid://bsq07owqyiorq" path="res://addons/CustomControls/curve_editor.gd" id="1_8bocr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_efoif"]
+bg_color = Color(0.145098, 0.168627, 0.203922, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+border_blend = true
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_ii1pm"]
+
+[node name="CurveEditor" type="Panel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_efoif")
+script = ExtResource("1_8bocr")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer"]
+clip_children = 1
+layout_mode = 2
+mouse_filter = 2
+texture = SubResource("PlaceholderTexture2D_ii1pm")
+
+[node name="Canvas" type="Control" parent="MarginContainer/TextureRect"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="CanvasButtons" type="Control" parent="MarginContainer2"]
+unique_name_in_owner = true
+layout_mode = 2

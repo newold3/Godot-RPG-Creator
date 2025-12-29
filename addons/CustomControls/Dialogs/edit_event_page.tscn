@@ -1,0 +1,1035 @@
+[gd_scene load_steps=42 format=3 uid="uid://da1n7ig83tsok"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_hu3ru"]
+[ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="1_whka3"]
+[ext_resource type="Script" uid="uid://12rs08jva5ax" path="res://addons/CustomControls/Dialogs/edit_event_page.gd" id="1_yrroc"]
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="2_ghqqv"]
+[ext_resource type="PackedScene" uid="uid://duykjs55o5h2m" path="res://addons/CustomControls/custom_image_picker.tscn" id="3_w73pn"]
+[ext_resource type="Script" uid="uid://d0kowhkcjb7kv" path="res://addons/CustomControls/custom_option_button.gd" id="5_csadr"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="5_nl5s3"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="5_qe35c"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="7_kfqxl"]
+[ext_resource type="PackedScene" uid="uid://u75p1b2dn3yq" path="res://addons/CustomControls/event_page_list_editor.tscn" id="8_qgfkt"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="9_f2p3o"]
+[ext_resource type="PackedScene" uid="uid://bbd8rv6w7vjb3" path="res://addons/CustomControls/custom_color_button.tscn" id="9_h2o4p"]
+[ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="12_kcex0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_skjn7"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Gradient" id="Gradient_ctwx1"]
+colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_mo8vl"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ckt7j"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mo8vl")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k7nfs"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rv8m1"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_wp2lu"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_f4uut"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_wp2lu")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k7rfy"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_76ebt"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7dkox"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ih2wo"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_7dkox")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x1sr2"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kcex0"]
+atlas = ExtResource("9_f2p3o")
+region = Rect2(168, 48, 24, 24)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_w08ns"]
+load_path = "res://.godot/imported/buttons.png-c08ce4315629138dcb3fe4a0d034f7bd.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pts3j"]
+atlas = SubResource("CompressedTexture2D_w08ns")
+region = Rect2(192, 48, 24, 24)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pts3j"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w08ns"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kcex0"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.94902, 0.627451, 0.0117647, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f2p3o"]
+resource_local_to_scene = true
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 21.0
+content_margin_bottom = 4.0
+bg_color = Color(0.184314, 0.196078, 0.203922, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1jfjp"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ehb3n"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_f6d66"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_ehb3n")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_plp3g"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ci4gg"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_kirhi"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_m3fpb"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_kirhi")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7ice7"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[node name="EditEventPage" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_hu3ru")
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+script = ExtResource("1_yrroc")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+
+[node name="CustomPanel" parent="HBoxContainer/VBoxContainer" instance=ExtResource("1_whka3")]
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_skjn7")
+style1 = SubResource("StyleBoxFlat_skjn7")
+style2 = SubResource("StyleBoxTexture_ckt7j")
+style3 = SubResource("StyleBoxFlat_k7nfs")
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer/CustomPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Start Page Conditions"
+horizontal_alignment = 1
+uppercase = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Condition1Pressed" type="CheckBox" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+tooltip_text = "[title]Switch Condition[/title]
+Choose a start condition of “switch” to activate this page."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+text = "Switch 1:"
+
+[node name="Condition1Value" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("2_ghqqv")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "[title]Switch[/title]
+Choose the switch that needs to be activated to start this page."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+disabled = true
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(35, 0)
+layout_mode = 2
+text = "Is On"
+horizontal_alignment = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Condition2Pressed" type="CheckBox" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+tooltip_text = "[title]Switch Condition[/title]
+Choose a start condition of “switch” to activate this page."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+text = "Switch 2:"
+
+[node name="Condition2Value" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("2_ghqqv")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "[title]Switch[/title]
+Choose the switch that needs to be activated to start this page."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+disabled = true
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(35, 0)
+layout_mode = 2
+text = "Is On"
+horizontal_alignment = 1
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Condition3Pressed" type="CheckBox" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer5"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+tooltip_text = "[title]Local Switch Condition[/title]
+Choose a start condition of “local switch” to activate this page."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+text = "Local
+Switch:"
+
+[node name="Condition3Value" type="OptionButton" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer5"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "[title]Local Switch[/title]
+Choose the local switch that needs to be activated to start this page."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+disabled = true
+selected = 0
+allow_reselect = true
+item_count = 8
+popup/item_0/text = "A"
+popup/item_0/id = 0
+popup/item_1/text = "B"
+popup/item_1/id = 1
+popup/item_2/text = "C"
+popup/item_2/id = 2
+popup/item_3/text = "D"
+popup/item_3/id = 3
+popup/item_4/text = "E"
+popup/item_4/id = 4
+popup/item_5/text = "F"
+popup/item_5/id = 5
+popup/item_6/text = "G"
+popup/item_6/id = 6
+popup/item_7/text = "H"
+popup/item_7/id = 7
+script = ExtResource("5_csadr")
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer5"]
+custom_minimum_size = Vector2(35, 0)
+layout_mode = 2
+text = "Is On"
+horizontal_alignment = 1
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Condition4Pressed" type="CheckBox" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+tooltip_text = "[title]Variable Condition[/title]
+Choose a start condition of “variable” to activate this page."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+text = "Variable:"
+
+[node name="Condition4Value1" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("2_ghqqv")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "[title]Variable[/title]
+Choose the variable that needs to be checked to activate this page"
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+disabled = true
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(35, 0)
+layout_mode = 2
+text = "Is"
+horizontal_alignment = 1
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer4"]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+
+[node name="Condition4Value2" type="OptionButton" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "[title]Variable Operation[/title]
+Choose the type of comparison to be made to the selected variable"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+disabled = true
+selected = 4
+allow_reselect = true
+item_count = 6
+popup/item_0/text = "<"
+popup/item_0/id = 0
+popup/item_1/text = "<="
+popup/item_1/id = 1
+popup/item_2/text = "=="
+popup/item_2/id = 2
+popup/item_3/text = ">"
+popup/item_3/id = 3
+popup/item_4/text = ">="
+popup/item_4/id = 4
+popup/item_5/text = "!="
+popup/item_5/id = 5
+script = ExtResource("5_csadr")
+
+[node name="Condition4Value3" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer4" instance=ExtResource("5_nl5s3")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Variable Value[/title]
+Choose the value of the variable to be validated to activate this page."
+allow_greater = true
+allow_lesser = true
+editable = false
+_custom_value = 0.0
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer4"]
+custom_minimum_size = Vector2(18, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+horizontal_alignment = 1
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Condition5Pressed" type="CheckBox" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer6"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+tooltip_text = "[title]Exists Item Condition[/title]
+Choose a start condition of “exists item” to activate this page."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+text = "Exists Item:"
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer6"]
+custom_minimum_size = Vector2(35, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+horizontal_alignment = 1
+
+[node name="HBoxContainer8" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Condition5Value1" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer8" instance=ExtResource("2_ghqqv")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "[title]Item[/title]
+Select the item that must be owned by the group to activate this page."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+disabled = true
+
+[node name="Condition5Value2" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer8" instance=ExtResource("7_kfqxl")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "[title]Item Type[/title]
+Select the type of item that must be owned by the group to activate this page."
+selected = 0
+allow_reselect = true
+item_count = 3
+popup/item_0/text = "Item"
+popup/item_0/id = 0
+popup/item_1/text = "Weapon"
+popup/item_1/id = 1
+popup/item_2/text = "Armor"
+popup/item_2/id = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer8"]
+custom_minimum_size = Vector2(35, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+horizontal_alignment = 1
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Condition6Pressed" type="CheckBox" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer7"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+tooltip_text = "[title]Exists Actor Condition[/title]
+Choose a start condition of “exists actor” to activate this page."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+text = "Exists Actor:"
+
+[node name="HBoxContainer9" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Condition6Value" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer9" instance=ExtResource("2_ghqqv")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "[title]Actor[/title]
+Select the character that must be in the group for this page to be activated."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+disabled = true
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer9"]
+custom_minimum_size = Vector2(35, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="CustomPanel2" parent="HBoxContainer/VBoxContainer/HBoxContainer" instance=ExtResource("1_whka3")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_rv8m1")
+style1 = SubResource("StyleBoxFlat_rv8m1")
+style2 = SubResource("StyleBoxTexture_f4uut")
+style3 = SubResource("StyleBoxFlat_k7rfy")
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer/CustomPanel2"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer/CustomPanel2/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer/CustomPanel2/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Graphic"
+horizontal_alignment = 1
+uppercase = true
+
+[node name="CharacterImage" parent="HBoxContainer/VBoxContainer/HBoxContainer/CustomPanel2/MarginContainer/VBoxContainer" instance=ExtResource("3_w73pn")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+tooltip_text = "[title]Event Graphic[/title]
+Choose the scene used to represent this event (usually an LPCEvent scene)."
+clipboard_key = "event_graphic"
+custom_copy_and_paste_enabled = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CustomPanel4" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer" instance=ExtResource("1_whka3")]
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_76ebt")
+style1 = SubResource("StyleBoxFlat_76ebt")
+style2 = SubResource("StyleBoxTexture_ih2wo")
+style3 = SubResource("StyleBoxFlat_x1sr2")
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Launcher"
+horizontal_alignment = 1
+uppercase = true
+
+[node name="Launcher" type="OptionButton" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Page Initiator Type[/title]
+Choose how you want this page to be activated
+
+[ul] \"Action Button\": The event runs when the player presses the action button while facing the event.
+ \"Player Contact\": The event runs when the player walks onto the same tile as the event.
+ \"Event Contact\": The event runs when another event moves onto the same tile. You must define which events can trigger it.
+ \"Auto-Start\": The event starts automatically as soon as its conditions are met. It blocks player input until it finishes.
+ \"Parallel\": The event runs automatically in the background without interrupting player control.
+ \"Caller\": The event runs only when triggered directly by another event or script.
+ \"Any Contact\": The event runs when the player or other event walks onto the same tile as the event.[/ul]
+
+[Note]: When the trigger is set to \"Player Contact\", \"Event Contact\", or \"Any Contact\", if the \"Passable\" option is enabled, contact will occur upon collision; otherwise, contact will occur when occupying the same tile as this event.
+
+[Note 2]: Events with the \"Caller\" trigger will automatically be converted into an EmptyLPCEvent, with no graphics, no collisions, and fully passable."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+selected = 0
+allow_reselect = true
+item_count = 7
+popup/item_0/text = "Action Button"
+popup/item_0/id = 0
+popup/item_1/text = "Player Contact"
+popup/item_1/id = 1
+popup/item_2/text = "Event Contact"
+popup/item_2/id = 2
+popup/item_3/text = "Automatic"
+popup/item_3/id = 3
+popup/item_4/text = "Parallel"
+popup/item_4/id = 4
+popup/item_5/text = "Caller"
+popup/item_5/id = 5
+popup/item_6/text = "Any Contact"
+popup/item_6/id = 6
+script = ExtResource("5_csadr")
+
+[node name="TriggerEventList" type="TextureButton" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 8
+tooltip_text = "Select the events that can trigger this event."
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_kcex0")
+texture_hover = SubResource("AtlasTexture_pts3j")
+
+[node name="HBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "DIRECTION"
+horizontal_alignment = 1
+uppercase = true
+
+[node name="Direction" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer/HBoxContainer" instance=ExtResource("7_kfqxl")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "[title]Event Default Direction[/title]
+Sets the initial direction this event will face"
+selected = 3
+item_count = 4
+popup/item_0/text = "Left"
+popup/item_0/id = 0
+popup/item_1/text = "Right"
+popup/item_1/id = 1
+popup/item_2/text = "Up"
+popup/item_2/id = 2
+popup/item_3/text = "Down"
+popup/item_3/id = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer2/VBoxContainer2"]
+layout_mode = 2
+text = "Z-Index"
+horizontal_alignment = 1
+uppercase = true
+
+[node name="ZIndex" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer2/VBoxContainer2" instance=ExtResource("5_nl5s3")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Z - Index[/title]
+Drawing priority of this event on the screen. (0 = As ground, 1 = As events/environments, players, and vehicles). The higher this value, the greater the priority for the event to be drawn over other elements."
+allow_greater = true
+_custom_value = 0.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer2/VBoxContainer"]
+layout_mode = 2
+text = "Modulate"
+horizontal_alignment = 1
+uppercase = true
+
+[node name="Modulate" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer2/VBoxContainer" instance=ExtResource("9_h2o4p")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 6
+tooltip_text = "Choose the desired color
+
+[Note]: Click center to set the default color (white)."
+theme_override_styles/normal = SubResource("StyleBoxFlat_pts3j")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_w08ns")
+theme_override_styles/hover = SubResource("StyleBoxFlat_kcex0")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_f2p3o")
+
+[node name="HBoxContainer2" type="VBoxContainer" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="CustomPanel3" parent="HBoxContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("1_whka3")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1jfjp")
+style1 = SubResource("StyleBoxFlat_1jfjp")
+style2 = SubResource("StyleBoxTexture_f6d66")
+style3 = SubResource("StyleBoxFlat_plp3g")
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel3"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="HBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel3/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel3/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "EVENT OPTIONS"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel3/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel3/MarginContainer/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="EventOption1" type="CheckBox" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel3/MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "[title]Walking Animation[/title]
+Causes the walking animation to play when the character is walking"
+mouse_default_cursor_shape = 2
+text = "Walking Animation"
+
+[node name="EventOption2" type="CheckBox" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel3/MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "[title]Idle Animation[/title]
+Causes the idle animation to play when the character is at a standstill."
+mouse_default_cursor_shape = 2
+text = "Idle Animation"
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel3/MarginContainer/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="EventOption3" type="CheckBox" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel3/MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "[title]Fixed Direction[/title]
+Prevents looking at the character in any direction other than the one specified in this event."
+mouse_default_cursor_shape = 2
+text = "Fixed Direction"
+
+[node name="EventOption4" type="CheckBox" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel3/MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "[title]Passable[/title]
+Mark this event as traversable. Leave it deactivated so that this event blocks the passage of another event / player / vehicle that tries to pass through it.
+
+[Note]: When the trigger is set to \"Caller\",  the \"Passable\" option is ignored and it will always be passable, since these types of events are always passable."
+mouse_default_cursor_shape = 2
+text = "Passable"
+
+[node name="CustomPanel4" parent="HBoxContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("1_whka3")]
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ci4gg")
+style1 = SubResource("StyleBoxFlat_ci4gg")
+style2 = SubResource("StyleBoxTexture_m3fpb")
+style3 = SubResource("StyleBoxFlat_7ice7")
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Movement"
+horizontal_alignment = 1
+uppercase = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer"]
+custom_minimum_size = Vector2(110, 0)
+layout_mode = 2
+text = "Type"
+
+[node name="MovementType" type="OptionButton" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.01
+tooltip_text = "[title]Movement Type[/title]
+Choose the type of movement for this event"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+selected = 0
+fit_to_longest_item = false
+allow_reselect = true
+item_count = 6
+popup/item_0/text = "Immobile"
+popup/item_0/id = 0
+popup/item_1/text = "Random"
+popup/item_1/id = 1
+popup/item_2/text = "Approach To Player"
+popup/item_2/id = 2
+popup/item_3/text = "Moving Away from Player"
+popup/item_3/id = 3
+popup/item_4/text = "Define"
+popup/item_4/id = 4
+popup/item_5/text = "Follow Event"
+popup/item_5/id = 5
+script = ExtResource("5_csadr")
+
+[node name="Control" type="Control" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer"]
+custom_minimum_size = Vector2(12, 0)
+layout_mode = 2
+
+[node name="MovementRouteButton" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer" instance=ExtResource("5_qe35c")]
+unique_name_in_owner = true
+visible = false
+modulate = Color(1, 1, 1, 0.65)
+custom_minimum_size = Vector2(110, 0)
+layout_mode = 2
+size_flags_horizontal = 7
+tooltip_text = "[title]Movement Route[/title]
+Define a movement pattern for this event."
+disabled = true
+text = "Movement route..."
+
+[node name="SelectTargetEvent" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer" instance=ExtResource("7_kfqxl")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 7
+tooltip_text = "[title]Select Target To Follow[/title]
+Choose the target that this event will follow"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 6
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer2"]
+custom_minimum_size = Vector2(110, 0)
+layout_mode = 2
+text = "Velocity"
+
+[node name="Velocity" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer2" instance=ExtResource("5_nl5s3")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Event Movement Speed[/title]
+Movement speed for this event."
+min_value = 5.0
+value = 5.0
+allow_greater = true
+_custom_value = 0.0
+
+[node name="Label2" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer2"]
+custom_minimum_size = Vector2(110, 0)
+layout_mode = 2
+text = " Frequency"
+
+[node name="Frequency" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer2" instance=ExtResource("5_nl5s3")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+tooltip_text = "Frames per second a character takes to perform a movement action"
+allow_greater = true
+_custom_value = 0.0
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+text = "Page Name"
+
+[node name="PageName" parent="HBoxContainer/VBoxContainer2/HBoxContainer" instance=ExtResource("12_kcex0")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Name given to this page"
+
+[node name="MarkAsQuestPage" type="CheckBox" parent="HBoxContainer/VBoxContainer2/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "By marking this page as a quest page, this page will never be active unless a quest activates it."
+mouse_default_cursor_shape = 2
+text = "Mark as quest Page"
+
+[node name="EventPageListEditor" parent="HBoxContainer/VBoxContainer2" instance=ExtResource("8_qgfkt")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[connection signal="toggled" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer/Condition1Pressed" to="." method="_on_condition_1_pressed_toggled"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer/Condition1Value" to="." method="_on_condition_1_value_pressed"]
+[connection signal="toggled" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer2/Condition2Pressed" to="." method="_on_condition_2_pressed_toggled"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer2/Condition2Value" to="." method="_on_condition_2_value_pressed"]
+[connection signal="toggled" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer5/Condition3Pressed" to="." method="_on_condition_3_pressed_toggled"]
+[connection signal="item_selected" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer5/Condition3Value" to="." method="_on_condition_3_value_item_selected"]
+[connection signal="toggled" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer3/Condition4Pressed" to="." method="_on_condition_4_pressed_toggled"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer3/Condition4Value1" to="." method="_on_condition_4_value_1_pressed"]
+[connection signal="item_selected" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer4/Condition4Value2" to="." method="_on_condition_4_value_2_item_selected"]
+[connection signal="value_changed" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer4/Condition4Value3" to="." method="_on_condition_4_value_3_value_changed"]
+[connection signal="toggled" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer6/Condition5Pressed" to="." method="_on_condition_5_pressed_toggled"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer8/Condition5Value1" to="." method="_on_condition_5_value1_pressed"]
+[connection signal="item_selected" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer8/Condition5Value2" to="." method="_on_condition_5_value_2_item_selected"]
+[connection signal="toggled" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer7/Condition6Pressed" to="." method="_on_condition_6_pressed_toggled"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer9/Condition6Value" to="." method="_on_condition_6_value_pressed"]
+[connection signal="clicked" from="HBoxContainer/VBoxContainer/HBoxContainer/CustomPanel2/MarginContainer/VBoxContainer/CharacterImage" to="." method="_on_character_image_clicked"]
+[connection signal="custom_copy" from="HBoxContainer/VBoxContainer/HBoxContainer/CustomPanel2/MarginContainer/VBoxContainer/CharacterImage" to="." method="_on_character_image_custom_copy"]
+[connection signal="custom_paste" from="HBoxContainer/VBoxContainer/HBoxContainer/CustomPanel2/MarginContainer/VBoxContainer/CharacterImage" to="." method="_on_character_image_custom_paste"]
+[connection signal="remove_requested" from="HBoxContainer/VBoxContainer/HBoxContainer/CustomPanel2/MarginContainer/VBoxContainer/CharacterImage" to="." method="_on_character_image_remove_requested"]
+[connection signal="item_selected" from="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer/VBoxContainer/Launcher" to="." method="_on_launcher_item_selected"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer/TriggerEventList" to="." method="_on_trigger_event_list_pressed"]
+[connection signal="item_selected" from="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer/HBoxContainer/Direction" to="." method="_on_direction_item_selected"]
+[connection signal="value_changed" from="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer2/VBoxContainer2/ZIndex" to="." method="_on_z_index_value_changed"]
+[connection signal="middle_clicked" from="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer2/VBoxContainer/Modulate" to="." method="_on_modulate_middle_clicked"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer2/VBoxContainer/Modulate" to="." method="_on_modulate_pressed"]
+[connection signal="toggled" from="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel3/MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer/EventOption1" to="." method="_on_event_option_1_toggled"]
+[connection signal="toggled" from="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel3/MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer/EventOption2" to="." method="_on_event_option_2_toggled"]
+[connection signal="toggled" from="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel3/MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer3/EventOption3" to="." method="_on_event_option_3_toggled"]
+[connection signal="toggled" from="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel3/MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer3/EventOption4" to="." method="_on_event_option_4_toggled"]
+[connection signal="item_selected" from="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer/MovementType" to="." method="_on_movement_type_item_selected"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer/MovementRouteButton" to="." method="_on_movement_route_button_pressed"]
+[connection signal="item_selected" from="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer/SelectTargetEvent" to="." method="_on_select_target_event_item_selected"]
+[connection signal="value_changed" from="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer2/Velocity" to="." method="_on_velocity_value_changed"]
+[connection signal="value_changed" from="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer2/Frequency" to="." method="_on_frequency_value_changed"]
+[connection signal="text_changed" from="HBoxContainer/VBoxContainer2/HBoxContainer/PageName" to="." method="_on_page_name_text_changed"]
+[connection signal="toggled" from="HBoxContainer/VBoxContainer2/HBoxContainer/MarkAsQuestPage" to="." method="_on_mark_as_quest_page_toggled"]
+[connection signal="data_changed" from="HBoxContainer/VBoxContainer2/EventPageListEditor" to="." method="_on_event_page_list_editor_data_changed"]

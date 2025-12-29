@@ -1,0 +1,225 @@
+[gd_scene load_steps=13 format=3 uid="uid://b0e13ikawqdbq"]
+
+[ext_resource type="Texture2D" uid="uid://bfgr2ewrp6i0u" path="res://Assets/Images/GUI/party_menu.png" id="1_0w4o8"]
+[ext_resource type="Script" uid="uid://chonr03sagfoq" path="res://Scenes/GUI/SteamPunkTheme/Equip/stats_container.gd" id="1_b0vl6"]
+[ext_resource type="FontFile" uid="uid://dvh0mi6yu0ywx" path="res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf" id="2_b0vl6"]
+[ext_resource type="Texture2D" uid="uid://ccdytk3ibdol" path="res://Assets/Images/GUI/upgrade_icons.png" id="3_euack"]
+[ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="4_4gljj"]
+[ext_resource type="Script" uid="uid://t8vk4nqomsgr" path="res://Scenes/GUI/SteamPunkTheme/Equip/stats_draw_panel.gd" id="6_euack"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3y06e"]
+atlas = ExtResource("1_0w4o8")
+region = Rect2(77, 30, 105, 103)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yhcol"]
+atlas = ExtResource("3_euack")
+region = Rect2(0, 0, 52, 32)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wdadd"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.41568628, 0.2784314, 0.105882354, 0.5411765)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.6784314, 0.41568628, 0.101960786, 1)
+border_blend = true
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="Gradient" id="Gradient_eugdv"]
+offsets = PackedFloat32Array(0, 0.982)
+colors = PackedColorArray(0.62352943, 0.3882353, 0.11764706, 1, 0.043137256, 0.03137255, 0.02745098, 0.41960785)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ngudq"]
+gradient = SubResource("Gradient_eugdv")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_60vjj"]
+texture = SubResource("GradientTexture2D_ngudq")
+
+[node name="StatsContainer" type="Control"]
+custom_minimum_size = Vector2(320, 350)
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_b0vl6")
+
+[node name="Gear" type="Control" parent="."]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Gear1" type="Control" parent="Gear"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 0
+offset_left = 22.999998
+offset_top = 17.999998
+offset_right = 22.999998
+offset_bottom = 17.999998
+scale = Vector2(0.1, 0.1)
+mouse_filter = 2
+
+[node name="Part" type="TextureRect" parent="Gear/Gear1"]
+z_index = 10
+layout_mode = 1
+offset_left = -309.99997
+offset_top = -279.99997
+offset_right = 159.00003
+offset_bottom = 179.00003
+pivot_offset = Vector2(239.99997, 229.99997)
+mouse_filter = 2
+texture = SubResource("AtlasTexture_3y06e")
+
+[node name="Gear2" type="Control" parent="Gear"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -22.0
+offset_top = 17.999998
+offset_right = -22.0
+offset_bottom = 17.999998
+grow_horizontal = 0
+scale = Vector2(0.1, 0.1)
+mouse_filter = 2
+
+[node name="Part" type="TextureRect" parent="Gear/Gear2"]
+z_index = 10
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -179.99979
+offset_top = -289.99997
+offset_right = 289.0002
+offset_bottom = 169.00003
+grow_horizontal = 0
+pivot_offset = Vector2(240, 230)
+mouse_filter = 2
+texture = SubResource("AtlasTexture_3y06e")
+
+[node name="BackgroundBottom" type="NinePatchRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_0w4o8")
+region_rect = Rect2(2190, 267, 301, 109)
+patch_margin_left = 67
+patch_margin_top = 44
+patch_margin_right = 160
+patch_margin_bottom = 31
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_right = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="TopContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+z_index = 1
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/margin_left = 35
+theme_override_constants/margin_top = 11
+theme_override_constants/margin_right = 35
+theme_override_constants/margin_bottom = 5
+
+[node name="StatsName" type="Label" parent="MarginContainer/VBoxContainer/TopContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.83137256, 0.5764706, 0.3137255, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5764706)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_b0vl6")
+text = "STATS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/TopContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+
+[node name="UpgradeIcon" type="TextureRect" parent="MarginContainer/VBoxContainer/TopContainer/Control"]
+unique_name_in_owner = true
+visible = false
+z_index = 5
+layout_mode = 0
+offset_left = -52.0
+offset_top = -16.0
+offset_bottom = 24.0
+pivot_offset = Vector2(26, 39)
+texture = SubResource("AtlasTexture_yhcol")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_bottom = 10
+
+[node name="BottomContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+scroll_vertical_custom_step = 10.0
+script = ExtResource("4_4gljj")
+use_custom_vertical_scroll = true
+custom_vscroll_size = Vector2(12, 299.11)
+custom_vscroll_offset = Vector2(287.36, -1.445)
+metadata/_custom_type_script = "uid://cs6g8remlafby"
+
+[node name="StatsContainer" type="Control" parent="MarginContainer/VBoxContainer/MarginContainer/BottomContainer" node_paths=PackedStringArray("upgrade_icon")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("6_euack")
+text_color = Color(0.9137255, 0.69411767, 0.4117647, 1)
+outline_size = 6
+font_size = 16
+custom_font = ExtResource("2_b0vl6")
+title_background_style = SubResource("StyleBoxFlat_wdadd")
+stat_separator_style = SubResource("StyleBoxTexture_60vjj")
+upgrade_icon = NodePath("../../../TopContainer/Control/UpgradeIcon")
+
+[node name="BackgroundTop" type="NinePatchRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_0w4o8")
+region_rect = Rect2(1871, 267, 301, 109)
+patch_margin_left = 67
+patch_margin_top = 68
+patch_margin_right = 69
+patch_margin_bottom = 38

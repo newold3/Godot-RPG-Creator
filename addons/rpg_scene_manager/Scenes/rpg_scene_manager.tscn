@@ -1,0 +1,154 @@
+[gd_scene load_steps=17 format=3 uid="uid://dpbbjdt5i04q"]
+
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="1_li6fw"]
+[ext_resource type="Script" uid="uid://drjfhmodxtg4o" path="res://addons/rpg_scene_manager/Scripts/rpg_scene_manager.gd" id="1_mnt6d"]
+[ext_resource type="Texture2D" uid="uid://d4cjqcmunai5u" path="res://addons/CustomControls/Images/item_selected_icon.png" id="3_7el25"]
+[ext_resource type="Texture2D" uid="uid://f0vjtj8a80t0" path="res://addons/CustomControls/Images/empty_1x1.png" id="4_vmdad"]
+[ext_resource type="Texture2D" uid="uid://utqjihdl3j8j" path="res://addons/rpg_scene_manager/Assets/Images/icon.png" id="5_wm65y"]
+[ext_resource type="Texture2D" uid="uid://daohf8pvmdk62" path="res://addons/rpg_scene_manager/Assets/Images/map.png" id="6_kmhwe"]
+
+[sub_resource type="Gradient" id="Gradient_88iys"]
+offsets = PackedFloat32Array(0, 0.369535, 1)
+colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ygvtv"]
+gradient = SubResource("Gradient_88iys")
+fill_from = Vector2(0.547009, 1)
+fill_to = Vector2(0.559829, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_c7djj"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_ygvtv")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4vt02"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.172549, 0.184314, 0.192157, 1)
+border_width_left = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="Theme" id="Theme_hs60y"]
+PopupMenu/icons/radio_checked = ExtResource("3_7el25")
+PopupMenu/icons/radio_checked_disabled = ExtResource("4_vmdad")
+PopupMenu/icons/radio_unchecked = ExtResource("4_vmdad")
+PopupMenu/icons/radio_unchecked_disabled = ExtResource("4_vmdad")
+PopupMenu/styles/hover = SubResource("StyleBoxTexture_c7djj")
+PopupMenu/styles/panel = SubResource("StyleBoxFlat_4vt02")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fxctw"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+corner_detail = 5
+expand_margin_left = 2.0
+expand_margin_right = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hhnn4"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.32668, 0.234234, 0.151569, 0.6)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+corner_detail = 5
+expand_margin_left = 2.0
+expand_margin_right = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k6bi2"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.241156, 0.241156, 0.241156, 0.6)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+corner_detail = 5
+expand_margin_left = 2.0
+expand_margin_right = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qaa5b"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.156863, 0.156863, 0.156863, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+corner_detail = 5
+expand_margin_left = 2.0
+expand_margin_right = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b0rcy"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.234374, 0.660021, 0.780186, 0.6)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+corner_detail = 5
+expand_margin_left = 2.0
+expand_margin_right = 2.0
+
+[node name="RPGSceneManager" type="MarginContainer"]
+offset_right = 203.0
+offset_bottom = 31.0
+script = ExtResource("1_mnt6d")
+
+[node name="MainButton" parent="." instance=ExtResource("1_li6fw")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "[title]RPG Scene Manager[/title]
+Quick access to editing scenes or creating new maps"
+theme = SubResource("Theme_hs60y")
+theme_override_styles/normal = SubResource("StyleBoxFlat_fxctw")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_hhnn4")
+theme_override_styles/hover = SubResource("StyleBoxFlat_k6bi2")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_qaa5b")
+theme_override_styles/focus = SubResource("StyleBoxFlat_b0rcy")
+selected = 0
+item_count = 8
+popup/item_0/text = "Rpg Scene Manager"
+popup/item_0/icon = ExtResource("5_wm65y")
+popup/item_0/id = 0
+popup/item_0/disabled = true
+popup/item_1/text = "Create A Rpg Map"
+popup/item_1/icon = ExtResource("6_kmhwe")
+popup/item_1/id = 1
+popup/item_2/text = "Edit A Rpg Map"
+popup/item_2/id = 2
+popup/item_3/text = "Edit Title Scene"
+popup/item_3/id = 3
+popup/item_4/text = "Edit Load Game Scene"
+popup/item_4/id = 4
+popup/item_5/text = "Edit Save Game Scene"
+popup/item_5/id = 5
+popup/item_6/text = "Edit Credits Scene"
+popup/item_6/id = 6
+popup/item_7/text = "Edit Menu Scene"
+popup/item_7/id = 7
+can_select_item_with_button_wheel = false

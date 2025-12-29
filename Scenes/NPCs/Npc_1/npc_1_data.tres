@@ -1,0 +1,680 @@
+[gd_resource type="Resource" script_class="RPGLPCCharacter" load_steps=121 format=3 uid="uid://cucoxssmn53ac"]
+
+[ext_resource type="Script" uid="uid://cqx1cnfjmgp73" path="res://addons/RPGData/ModulesRPG/rpg_lpc_palette.gd" id="1_64u5j"]
+[ext_resource type="Script" uid="uid://da56k4g4hqgoa" path="res://addons/RPGData/ModulesRPG/rpg_lpc_body_part.gd" id="2_rscj3"]
+[ext_resource type="Script" uid="uid://50ncamgmjd1c" path="res://addons/RPGData/ModulesRPG/rpg_lpc_body_data.gd" id="3_5ssdi"]
+[ext_resource type="Script" uid="uid://der67xririmwh" path="res://addons/RPGData/ModulesRPG/rpg_lpc_equipment_part.gd" id="4_6u6gx"]
+[ext_resource type="Script" uid="uid://um8ybms51wt1" path="res://addons/RPGData/ModulesRPG/rpg_lpc_equipment_data.gd" id="5_hbylj"]
+[ext_resource type="Script" uid="uid://5xgqhpxuvjtm" path="res://addons/RPGData/ModulesRPG/rpg_lpc_character.gd" id="6_rckql"]
+
+[sub_resource type="Resource" id="Resource_g1ya3"]
+script = ExtResource("1_64u5j")
+blend_color = 4191534335
+colors = PackedInt64Array(0, 0, 29, 639246591, 94, 2571254527, 152, 3431359487, 179, 3869474303, 220, 4191534335, 239, 4226607103)
+
+[sub_resource type="Resource" id="Resource_5kqeh"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_vne8j"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_dn7v3"]
+script = ExtResource("2_rscj3")
+part_id = "add1"
+config_path = "res://addons/rpg_character_creator/Data/character/add1/none.add1"
+palette1 = SubResource("Resource_g1ya3")
+palette2 = SubResource("Resource_5kqeh")
+palette3 = SubResource("Resource_vne8j")
+
+[sub_resource type="Resource" id="Resource_rvq65"]
+script = ExtResource("1_64u5j")
+blend_color = 4191534335
+colors = PackedInt64Array(0, 0, 29, 639246591, 94, 2571254527, 152, 3431359487, 179, 3869474303, 220, 4191534335, 239, 4226607103)
+
+[sub_resource type="Resource" id="Resource_yju5d"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_bhxv0"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_7qntk"]
+script = ExtResource("2_rscj3")
+part_id = "add2"
+config_path = "res://addons/rpg_character_creator/Data/character/add2/none.add2"
+palette1 = SubResource("Resource_rvq65")
+palette2 = SubResource("Resource_yju5d")
+palette3 = SubResource("Resource_bhxv0")
+
+[sub_resource type="Resource" id="Resource_nihma"]
+script = ExtResource("1_64u5j")
+blend_color = 4191534335
+colors = PackedInt64Array(0, 0, 29, 639246591, 94, 2571254527, 152, 3431359487, 179, 3869474303, 220, 4191534335, 239, 4226607103)
+
+[sub_resource type="Resource" id="Resource_s1suj"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_kxtbn"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_4wm7w"]
+script = ExtResource("2_rscj3")
+part_id = "add3"
+config_path = "res://addons/rpg_character_creator/Data/character/add3/none.add3"
+palette1 = SubResource("Resource_nihma")
+palette2 = SubResource("Resource_s1suj")
+palette3 = SubResource("Resource_kxtbn")
+
+[sub_resource type="Resource" id="Resource_8colr"]
+script = ExtResource("1_64u5j")
+blend_color = 4191534335
+colors = PackedInt64Array(0, 0, 29, 639246591, 94, 2571254527, 152, 3431359487, 179, 3869474303, 220, 4191534335, 239, 4226607103)
+
+[sub_resource type="Resource" id="Resource_pcnqj"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_ldtdl"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_52uw2"]
+script = ExtResource("2_rscj3")
+part_id = "body"
+config_path = "res://addons/rpg_character_creator/Data/character/body/human.body"
+front_texture = "res://addons/rpg_character_creator/textures/character/body/humanoid_m1.png"
+palette1 = SubResource("Resource_8colr")
+palette2 = SubResource("Resource_pcnqj")
+palette3 = SubResource("Resource_ldtdl")
+
+[sub_resource type="Resource" id="Resource_t8usc"]
+script = ExtResource("1_64u5j")
+blend_color = 4191534335
+colors = PackedInt64Array(0, 0, 29, 639246591, 94, 2571254527, 152, 3431359487, 179, 3869474303, 220, 4191534335, 239, 4226607103)
+
+[sub_resource type="Resource" id="Resource_8v0la"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_51lgy"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_6lht7"]
+script = ExtResource("2_rscj3")
+part_id = "ears"
+config_path = "res://addons/rpg_character_creator/Data/character/ears/base.ears"
+front_texture = "res://addons/rpg_character_creator/textures/character/ears/base/human_m.png"
+palette1 = SubResource("Resource_t8usc")
+palette2 = SubResource("Resource_8v0la")
+palette3 = SubResource("Resource_51lgy")
+
+[sub_resource type="Resource" id="Resource_xxd0a"]
+script = ExtResource("1_64u5j")
+blend_color = 1356131583
+colors = PackedInt64Array(0, 0, 26, 639246591, 56, 691883007, 129, 1367847935, 190, 1356131583, 246, 4076337919)
+
+[sub_resource type="Resource" id="Resource_3wo68"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_j40r2"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_v4hga"]
+script = ExtResource("2_rscj3")
+part_id = "eyes"
+config_path = "res://addons/rpg_character_creator/Data/character/eyes/human.eyes"
+front_texture = "res://addons/rpg_character_creator/textures/character/eyes/human_m.png"
+palette1 = SubResource("Resource_xxd0a")
+palette2 = SubResource("Resource_3wo68")
+palette3 = SubResource("Resource_j40r2")
+
+[sub_resource type="Resource" id="Resource_hwy6u"]
+script = ExtResource("1_64u5j")
+blend_color = 4191534335
+colors = PackedInt64Array(0, 0, 29, 639246591, 94, 2571254527, 152, 3431359487, 179, 3869474303, 220, 4191534335, 239, 4226607103)
+
+[sub_resource type="Resource" id="Resource_s8nhx"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_45eia"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_iigec"]
+script = ExtResource("2_rscj3")
+part_id = "facial"
+config_path = "res://addons/rpg_character_creator/Data/character/facial/none.facial"
+palette1 = SubResource("Resource_hwy6u")
+palette2 = SubResource("Resource_s8nhx")
+palette3 = SubResource("Resource_45eia")
+
+[sub_resource type="Resource" id="Resource_4wn3f"]
+script = ExtResource("1_64u5j")
+blend_color = 404232447
+colors = PackedInt64Array(0, 0, 24, 255, 65, 255, 112, 255, 176, 151587327, 249, 404232447, 251, 656877567)
+
+[sub_resource type="Resource" id="Resource_gkti7"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_1odcc"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_731v1"]
+script = ExtResource("2_rscj3")
+part_id = "hair"
+config_path = "res://addons/rpg_character_creator/Data/character/hair/afro.hair"
+alt_config_path = "res://addons/rpg_character_creator/Data/character/hair/short.hair"
+front_texture = "res://addons/rpg_character_creator/textures/character/hair/human/afro_m.png"
+palette1 = SubResource("Resource_4wn3f")
+palette2 = SubResource("Resource_gkti7")
+palette3 = SubResource("Resource_1odcc")
+
+[sub_resource type="Resource" id="Resource_qoyn8"]
+script = ExtResource("1_64u5j")
+blend_color = 4191534335
+colors = PackedInt64Array(0, 0, 29, 639246591, 94, 2571254527, 152, 3431359487, 179, 3869474303, 220, 4191534335, 239, 4226607103)
+
+[sub_resource type="Resource" id="Resource_etncu"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_c6ifl"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_282p7"]
+script = ExtResource("2_rscj3")
+part_id = "hairadd"
+config_path = "res://addons/rpg_character_creator/Data/character/hairadd/none.hairadd"
+palette1 = SubResource("Resource_qoyn8")
+palette2 = SubResource("Resource_etncu")
+palette3 = SubResource("Resource_c6ifl")
+
+[sub_resource type="Resource" id="Resource_ahcr0"]
+script = ExtResource("1_64u5j")
+blend_color = 4191534335
+colors = PackedInt64Array(0, 0, 29, 639246591, 94, 2571254527, 152, 3431359487, 179, 3869474303, 220, 4191534335, 239, 4226607103)
+
+[sub_resource type="Resource" id="Resource_japrd"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_6dxcv"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_m38cf"]
+script = ExtResource("2_rscj3")
+part_id = "head"
+config_path = "res://addons/rpg_character_creator/Data/character/head/human.head"
+front_texture = "res://addons/rpg_character_creator/textures/character/head/human_m.png"
+palette1 = SubResource("Resource_ahcr0")
+palette2 = SubResource("Resource_japrd")
+palette3 = SubResource("Resource_6dxcv")
+
+[sub_resource type="Resource" id="Resource_saai2"]
+script = ExtResource("1_64u5j")
+blend_color = 4191534335
+colors = PackedInt64Array(0, 0, 29, 639246591, 94, 2571254527, 152, 3431359487, 179, 3869474303, 220, 4191534335, 239, 4226607103)
+
+[sub_resource type="Resource" id="Resource_2bahs"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_bnagj"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_p11f3"]
+script = ExtResource("2_rscj3")
+part_id = "horns"
+config_path = "res://addons/rpg_character_creator/Data/character/horns/none.horns"
+palette1 = SubResource("Resource_saai2")
+palette2 = SubResource("Resource_2bahs")
+palette3 = SubResource("Resource_bnagj")
+
+[sub_resource type="Resource" id="Resource_bj4k2"]
+script = ExtResource("1_64u5j")
+blend_color = 4191534335
+colors = PackedInt64Array(0, 0, 29, 639246591, 94, 2571254527, 152, 3431359487, 179, 3869474303, 220, 4191534335, 239, 4226607103)
+
+[sub_resource type="Resource" id="Resource_an8a5"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_d04lv"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_oc0cg"]
+script = ExtResource("2_rscj3")
+part_id = "nose"
+config_path = "res://addons/rpg_character_creator/Data/character/nose/base.nose"
+palette1 = SubResource("Resource_bj4k2")
+palette2 = SubResource("Resource_an8a5")
+palette3 = SubResource("Resource_d04lv")
+
+[sub_resource type="Resource" id="Resource_qc25j"]
+script = ExtResource("1_64u5j")
+blend_color = 4191534335
+colors = PackedInt64Array(0, 0, 29, 639246591, 94, 2571254527, 152, 3431359487, 179, 3869474303, 220, 4191534335, 239, 4226607103)
+
+[sub_resource type="Resource" id="Resource_wxp70"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_7hxdk"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_e8hc5"]
+script = ExtResource("2_rscj3")
+part_id = "tail"
+config_path = "res://addons/rpg_character_creator/Data/character/tail/none.tail"
+palette1 = SubResource("Resource_qc25j")
+palette2 = SubResource("Resource_wxp70")
+palette3 = SubResource("Resource_7hxdk")
+
+[sub_resource type="Resource" id="Resource_asrl6"]
+script = ExtResource("1_64u5j")
+blend_color = 4191534335
+colors = PackedInt64Array(0, 0, 29, 639246591, 94, 2571254527, 152, 3431359487, 179, 3869474303, 220, 4191534335, 239, 4226607103)
+
+[sub_resource type="Resource" id="Resource_xl8w4"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_1vjm2"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_i7rdp"]
+script = ExtResource("2_rscj3")
+part_id = "wings"
+config_path = "res://addons/rpg_character_creator/Data/character/wings/none.wings"
+palette1 = SubResource("Resource_asrl6")
+palette2 = SubResource("Resource_xl8w4")
+palette3 = SubResource("Resource_1vjm2")
+
+[sub_resource type="Resource" id="Resource_1t0kf"]
+script = ExtResource("3_5ssdi")
+body = SubResource("Resource_52uw2")
+head = SubResource("Resource_m38cf")
+eyes = SubResource("Resource_v4hga")
+wings = SubResource("Resource_i7rdp")
+tail = SubResource("Resource_e8hc5")
+horns = SubResource("Resource_p11f3")
+hair = SubResource("Resource_731v1")
+hairadd = SubResource("Resource_282p7")
+ears = SubResource("Resource_6lht7")
+nose = SubResource("Resource_oc0cg")
+facial = SubResource("Resource_iigec")
+add1 = SubResource("Resource_dn7v3")
+add2 = SubResource("Resource_7qntk")
+add3 = SubResource("Resource_4wm7w")
+
+[sub_resource type="Resource" id="Resource_wyx2v"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_1ytut"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_62687"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_kwose"]
+script = ExtResource("4_6u6gx")
+config_path = "res://addons/rpg_character_creator/Data/gear/ammo/none.ammo"
+part_id = "ammo"
+body_type = "hm1"
+head_type = "hm1"
+name = "None"
+palette1 = SubResource("Resource_wyx2v")
+palette2 = SubResource("Resource_1ytut")
+palette3 = SubResource("Resource_62687")
+
+[sub_resource type="Resource" id="Resource_ek085"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_n6him"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_80u7y"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_glx2p"]
+script = ExtResource("4_6u6gx")
+config_path = "res://addons/rpg_character_creator/Data/gear/back/none.back"
+part_id = "back"
+body_type = "hm1"
+head_type = "hm1"
+name = "None"
+palette1 = SubResource("Resource_ek085")
+palette2 = SubResource("Resource_n6him")
+palette3 = SubResource("Resource_80u7y")
+
+[sub_resource type="Resource" id="Resource_1slea"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_oqyts"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_u7nyi"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_ngamv"]
+script = ExtResource("4_6u6gx")
+config_path = "res://addons/rpg_character_creator/Data/gear/belt/none.belt"
+part_id = "belt"
+body_type = "hm1"
+head_type = "hm1"
+name = "None"
+palette1 = SubResource("Resource_1slea")
+palette2 = SubResource("Resource_oqyts")
+palette3 = SubResource("Resource_u7nyi")
+
+[sub_resource type="Resource" id="Resource_wil7b"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_u4ctp"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_g3myh"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_iy438"]
+script = ExtResource("4_6u6gx")
+config_path = "res://addons/rpg_character_creator/Data/gear/glasses/none.glasses"
+part_id = "glasses"
+body_type = "hm1"
+head_type = "hm1"
+name = "None"
+palette1 = SubResource("Resource_wil7b")
+palette2 = SubResource("Resource_u4ctp")
+palette3 = SubResource("Resource_g3myh")
+
+[sub_resource type="Resource" id="Resource_c4mgo"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_vo8pj"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_pauak"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_8g87t"]
+script = ExtResource("4_6u6gx")
+config_path = "res://addons/rpg_character_creator/Data/gear/gloves/none.gloves"
+part_id = "gloves"
+body_type = "hm1"
+head_type = "hm1"
+name = "None"
+palette1 = SubResource("Resource_c4mgo")
+palette2 = SubResource("Resource_vo8pj")
+palette3 = SubResource("Resource_pauak")
+
+[sub_resource type="Resource" id="Resource_i7plf"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_y2wbi"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_bc87w"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_uu48i"]
+script = ExtResource("4_6u6gx")
+config_path = "res://addons/rpg_character_creator/Data/gear/hat/none.hat"
+part_id = "hat"
+body_type = "hm1"
+head_type = "hm1"
+name = "None"
+palette1 = SubResource("Resource_i7plf")
+palette2 = SubResource("Resource_y2wbi")
+palette3 = SubResource("Resource_bc87w")
+
+[sub_resource type="Resource" id="Resource_0gei5"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_i3j2y"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_fbvau"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_8wlel"]
+script = ExtResource("4_6u6gx")
+config_path = "res://addons/rpg_character_creator/Data/gear/jacket/none.jacket"
+part_id = "jacket"
+body_type = "hm1"
+head_type = "hm1"
+name = "None"
+palette1 = SubResource("Resource_0gei5")
+palette2 = SubResource("Resource_i3j2y")
+palette3 = SubResource("Resource_fbvau")
+
+[sub_resource type="Resource" id="Resource_kitwd"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_350xe"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_7sxpr"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_dgnga"]
+script = ExtResource("4_6u6gx")
+config_path = "res://addons/rpg_character_creator/Data/gear/mainhand/none.mainhand"
+part_id = "mainhand"
+body_type = "hm1"
+head_type = "hm1"
+name = "None"
+palette1 = SubResource("Resource_kitwd")
+palette2 = SubResource("Resource_350xe")
+palette3 = SubResource("Resource_7sxpr")
+
+[sub_resource type="Resource" id="Resource_sbv2t"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_2assj"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_m7dx3"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_rhgq5"]
+script = ExtResource("4_6u6gx")
+config_path = "res://addons/rpg_character_creator/Data/gear/mask/none.mask"
+part_id = "mask"
+body_type = "hm1"
+head_type = "hm1"
+name = "None"
+palette1 = SubResource("Resource_sbv2t")
+palette2 = SubResource("Resource_2assj")
+palette3 = SubResource("Resource_m7dx3")
+
+[sub_resource type="Resource" id="Resource_gmdv8"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_k6rve"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_gsjm4"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_1saov"]
+script = ExtResource("4_6u6gx")
+config_path = "res://addons/rpg_character_creator/Data/gear/offhand/none.offhand"
+part_id = "offhand"
+body_type = "hm1"
+head_type = "hm1"
+name = "None"
+palette1 = SubResource("Resource_gmdv8")
+palette2 = SubResource("Resource_k6rve")
+palette3 = SubResource("Resource_gsjm4")
+
+[sub_resource type="Resource" id="Resource_mwy6l"]
+script = ExtResource("1_64u5j")
+blend_color = 993804543
+colors = PackedInt64Array(0, 0, 16, 50397439, 23, 67240191, 27, 134745599, 66, 219157759, 133, 488449023, 161, 606350335, 183, 724316927, 228, 993804543, 255, 1212829183)
+
+[sub_resource type="Resource" id="Resource_32hqk"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_43kqs"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_hber0"]
+script = ExtResource("4_6u6gx")
+config_path = "res://addons/rpg_character_creator/Data/gear/pants/pants.pants"
+part_id = "pants"
+body_type = "hm1"
+head_type = "hm1"
+name = "Pants"
+front_texture = "res://addons/rpg_character_creator/textures/gear/pants/pants/pants_m1.png"
+palette1 = SubResource("Resource_mwy6l")
+palette2 = SubResource("Resource_32hqk")
+palette3 = SubResource("Resource_43kqs")
+
+[sub_resource type="Resource" id="Resource_hmemd"]
+script = ExtResource("1_64u5j")
+blend_color = 993804543
+colors = PackedInt64Array(0, 0, 16, 50397439, 23, 67240191, 27, 134745599, 66, 219157759, 133, 488449023, 161, 606350335, 183, 724316927, 228, 993804543, 255, 1212829183)
+
+[sub_resource type="Resource" id="Resource_us1x8"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_vj2nh"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_q0vkx"]
+script = ExtResource("4_6u6gx")
+config_path = "res://addons/rpg_character_creator/Data/gear/shirt/shirt1.shirt"
+part_id = "shirt"
+body_type = "hm1"
+head_type = "hm1"
+name = "Shirt"
+front_texture = "res://addons/rpg_character_creator/textures/gear/shirt/shirt/sleeveless1_m1.png"
+palette1 = SubResource("Resource_hmemd")
+palette2 = SubResource("Resource_us1x8")
+palette3 = SubResource("Resource_vj2nh")
+
+[sub_resource type="Resource" id="Resource_6l1ev"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_rjo1c"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_jwj8j"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_i78ry"]
+script = ExtResource("4_6u6gx")
+config_path = "res://addons/rpg_character_creator/Data/gear/shoes/none.shoes"
+part_id = "shoes"
+body_type = "hm1"
+head_type = "hm1"
+name = "None"
+palette1 = SubResource("Resource_6l1ev")
+palette2 = SubResource("Resource_rjo1c")
+palette3 = SubResource("Resource_jwj8j")
+
+[sub_resource type="Resource" id="Resource_0xprv"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_npofk"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_71nhn"]
+script = ExtResource("1_64u5j")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_o7i0i"]
+script = ExtResource("4_6u6gx")
+config_path = "res://addons/rpg_character_creator/Data/gear/suit/none.suit"
+part_id = "suit"
+body_type = "hm1"
+head_type = "hm1"
+name = "None"
+palette1 = SubResource("Resource_0xprv")
+palette2 = SubResource("Resource_npofk")
+palette3 = SubResource("Resource_71nhn")
+
+[sub_resource type="Resource" id="Resource_755sh"]
+script = ExtResource("5_hbylj")
+mask = SubResource("Resource_rhgq5")
+hat = SubResource("Resource_uu48i")
+glasses = SubResource("Resource_iy438")
+suit = SubResource("Resource_o7i0i")
+jacket = SubResource("Resource_8wlel")
+shirt = SubResource("Resource_q0vkx")
+gloves = SubResource("Resource_8g87t")
+belt = SubResource("Resource_ngamv")
+pants = SubResource("Resource_hber0")
+shoes = SubResource("Resource_i78ry")
+back = SubResource("Resource_glx2p")
+mainhand = SubResource("Resource_dgnga")
+offhand = SubResource("Resource_1saov")
+ammo = SubResource("Resource_kwose")
+
+[resource]
+script = ExtResource("6_rckql")
+body_type = "hm1"
+head_type = "hm1"
+palette = "default"
+race = "01human"
+gender = "male"
+equipment_parts = SubResource("Resource_755sh")
+body_parts = SubResource("Resource_1t0kf")
+event_preview = "res://Scenes/NPCs/Npc_1/npc_1_event.png"
+scene_path = "res://Scenes/NPCs/Npc_1/npc_1_event.tscn"

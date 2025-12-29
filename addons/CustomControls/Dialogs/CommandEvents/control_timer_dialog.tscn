@@ -1,0 +1,467 @@
+[gd_scene load_steps=37 format=3 uid="uid://bik8ncg81w3wf"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_wxa5k"]
+[ext_resource type="Script" uid="uid://bfgqp7mp1lq14" path="res://addons/CustomControls/Dialogs/CommandEvents/control_timer_dialog.gd" id="2_g01ha"]
+[ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="3_q16mf"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="4_o0ke6"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="4_oxeb5"]
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="4_t6exs"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="5_8hpxl"]
+[ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="5_voy5w"]
+[ext_resource type="Texture2D" uid="uid://xl88b63otgpi" path="res://addons/CustomControls/Images/button1_background.png" id="6_uhyam"]
+[ext_resource type="Texture2D" uid="uid://dqnnp323vr1vo" path="res://addons/CustomControls/Images/button1_background_hover.png" id="7_r4tsg"]
+[ext_resource type="Texture2D" uid="uid://beg6i1p118qd" path="res://addons/CustomControls/Images/button1_background_selected.png" id="8_snps7"]
+[ext_resource type="Texture2D" uid="uid://bkfn4ru5noaaa" path="res://addons/CustomControls/Images/button1_background_disabled.png" id="9_a6j43"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_mv5b2"]
+
+[sub_resource type="Gradient" id="Gradient_7iubx"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ogwiw"]
+gradient = SubResource("Gradient_7iubx")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h1pyb"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Gradient" id="Gradient_ctwx1"]
+colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_t6exs"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_voy5w"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_t6exs")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oxeb5"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_ykwm8"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ihl75"]
+atlas = ExtResource("4_oxeb5")
+region = Rect2(120, 168, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lrbtf"]
+atlas = ExtResource("4_oxeb5")
+region = Rect2(144, 168, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gv8wv"]
+atlas = ExtResource("4_oxeb5")
+region = Rect2(168, 96, 24, 24)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ihl75"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_lrbtf"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gv8wv"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_lrbtf")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vjm8j"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_umt67"]
+texture = ExtResource("9_a6j43")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8632l"]
+texture = ExtResource("7_r4tsg")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xnmr8"]
+texture = ExtResource("8_snps7")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_s0hl2"]
+texture = ExtResource("6_uhyam")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_56t2m"]
+texture = ExtResource("9_a6j43")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_el6ll"]
+texture = ExtResource("7_r4tsg")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ep53t"]
+texture = ExtResource("8_snps7")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qu15e"]
+texture = ExtResource("6_uhyam")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[node name="ControlTimerDialog" type="Window"]
+title = "Control Timer"
+position = Vector2i(0, 36)
+size = Vector2i(448, 421)
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_wxa5k")
+script = ExtResource("2_g01ha")
+
+[node name="Background" type="TextureRect" parent="."]
+material = SubResource("CanvasItemMaterial_mv5b2")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_ogwiw")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Item" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_q16mf")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_h1pyb")
+style1 = SubResource("StyleBoxFlat_h1pyb")
+style2 = SubResource("StyleBoxTexture_voy5w")
+style3 = SubResource("StyleBoxFlat_oxeb5")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Item"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Operation"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Start" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Start a timer with the specified time
+
+[Note]: The timer will temporarily stop (will not be calculated) while the menu is displayed. To branch a process using the time left on the timer, use the [Conditional Branch] event command.
+
+[Note 2]: The timer will remain on the screen even if it has already finished. To delete it, use the “Stop” option in this dialog box, indicating the ID of the timer you want to delete (0 by default)."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_pressed = true
+button_group = SubResource("ButtonGroup_ykwm8")
+text = "Start"
+
+[node name="Stop" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Stop and delete an active timer"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_ykwm8")
+text = "Stop"
+
+[node name="AddTimer" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Adds the specified time to the current timer duration."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_ykwm8")
+text = "Add Time   "
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Pause" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Pause a timer started earlier (you will need to resume it later)"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_ykwm8")
+text = "Pause"
+
+[node name="Resume" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Continues a previously paused timer."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_ykwm8")
+text = "Resume"
+
+[node name="SubtractsTimer" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Subtracts the specified time from the current timer duration."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_ykwm8")
+text = "Remove Time"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Configuration"
+
+[node name="ExtraConfig" type="TextureButton" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/Label2"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -24.0
+offset_top = -12.0
+offset_bottom = 12.0
+grow_horizontal = 0
+grow_vertical = 2
+tooltip_text = "Opens a dialog box with advanced settings for this timer."
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_ihl75")
+texture_hover = SubResource("AtlasTexture_lrbtf")
+texture_disabled = SubResource("AtlasTexture_gv8wv")
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer4"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Timer ID:"
+
+[node name="TimerID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer4" instance=ExtResource("4_o0ke6")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Unique ID to identify this timer. If there is already an active timer with the same ID, that timer will be destroyed and replaced by this one."
+allow_greater = true
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Timer Scene: "
+
+[node name="TimerScene" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("4_t6exs")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Select the scene that will be displayed when this timer is processed."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+text = "Select Timer Scene"
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer5"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Timer Title:"
+
+[node name="TimerTitle" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer5" instance=ExtResource("5_voy5w")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Text that will be displayed above the timer"
+
+[node name="Operation" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_q16mf")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ihl75")
+style1 = SubResource("StyleBoxFlat_ihl75")
+style2 = SubResource("StyleBoxTexture_gv8wv")
+style3 = SubResource("StyleBoxFlat_vjm8j")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Operation"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Operation/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Time"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Minutes" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_o0ke6")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Specify the time limit (minutes)"
+allow_greater = true
+suffix = " min"
+
+[node name="Seconds" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_o0ke6")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Specify the time limit (seconds)"
+max_value = 59.0
+value = 30.0
+suffix = " sec"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_8hpxl")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+theme_override_styles/disabled = SubResource("StyleBoxTexture_umt67")
+theme_override_styles/hover = SubResource("StyleBoxTexture_8632l")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_xnmr8")
+theme_override_styles/normal = SubResource("StyleBoxTexture_s0hl2")
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_8hpxl")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+theme_override_styles/disabled = SubResource("StyleBoxTexture_56t2m")
+theme_override_styles/hover = SubResource("StyleBoxTexture_el6ll")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_ep53t")
+theme_override_styles/normal = SubResource("StyleBoxTexture_qu15e")
+text = "CANCEL"
+
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer/Start" to="." method="_on_start_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer/Stop" to="." method="_on_stop_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer/AddTimer" to="." method="_on_add_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer2/Pause" to="." method="_on_pause_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer2/Resume" to="." method="_on_resume_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer2/SubtractsTimer" to="." method="_on_remove_toggled"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/Label2/ExtraConfig" to="." method="_on_extra_config_pressed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer4/TimerID" to="." method="_on_timer_id_value_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer3/TimerScene" to="." method="_on_timer_scene_pressed"]
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer5/TimerTitle" to="." method="_on_timer_title_text_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer/Minutes" to="." method="_on_minutes_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer/Seconds" to="." method="_on_seconds_value_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

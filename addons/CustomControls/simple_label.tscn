@@ -1,0 +1,81 @@
+[gd_scene load_steps=7 format=3 uid="uid://ct4bwnuyf6l4f"]
+
+[ext_resource type="Script" uid="uid://cdja8gmy5fyuw" path="res://addons/CustomControls/simple_label.gd" id="1_54lyr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tjm0d"]
+resource_local_to_scene = true
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+
+[sub_resource type="Gradient" id="Gradient_na841"]
+colors = PackedColorArray(0.171875, 0.171875, 0.171875, 1, 0.699219, 0.699219, 0.699219, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_h0yhu"]
+gradient = SubResource("Gradient_na841")
+fill_from = Vector2(0.487179, 1)
+fill_to = Vector2(0.547009, 0.034188)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_f41dm"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_h0yhu")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aje6q"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 6
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+shadow_size = 4
+shadow_offset = Vector2(0, 4.18)
+
+[node name="SimpleLabel" type="Panel"]
+clip_children = 2
+custom_minimum_size = Vector2(0, 52)
+offset_right = 80.0
+offset_bottom = 52.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_tjm0d")
+script = ExtResource("1_54lyr")
+mask = SubResource("StyleBoxFlat_tjm0d")
+fill = SubResource("StyleBoxTexture_f41dm")
+border = SubResource("StyleBoxFlat_aje6q")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_f41dm")
+
+[node name="Panel2" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_aje6q")
+
+[node name="DialogTitle" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_shadow_color = Color(0.231373, 0.231373, 0.231373, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 8
+theme_override_constants/shadow_outline_size = 3
+theme_override_font_sizes/font_size = 27
+text = "TITLE"
+horizontal_alignment = 1
+vertical_alignment = 1

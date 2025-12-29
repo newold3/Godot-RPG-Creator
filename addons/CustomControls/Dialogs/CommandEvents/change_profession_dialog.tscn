@@ -1,0 +1,261 @@
+[gd_scene load_steps=22 format=3 uid="uid://bmmq33hvjat5i"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_n46ak"]
+[ext_resource type="Script" uid="uid://dy6bd7efsyxkw" path="res://addons/CustomControls/Dialogs/CommandEvents/change_profession_dialog.gd" id="2_n46ak"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="3_8eokf"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="4_bm8um"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="5_sy0xf"]
+[ext_resource type="Texture2D" uid="uid://bkfn4ru5noaaa" path="res://addons/CustomControls/Images/button1_background_disabled.png" id="6_5qa2l"]
+[ext_resource type="Texture2D" uid="uid://dqnnp323vr1vo" path="res://addons/CustomControls/Images/button1_background_hover.png" id="7_8ca8h"]
+[ext_resource type="Texture2D" uid="uid://beg6i1p118qd" path="res://addons/CustomControls/Images/button1_background_selected.png" id="8_ssjbi"]
+[ext_resource type="Texture2D" uid="uid://xl88b63otgpi" path="res://addons/CustomControls/Images/button1_background.png" id="9_2q232"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_u11f1"]
+
+[sub_resource type="Gradient" id="Gradient_u5yrp"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_6yyp3"]
+gradient = SubResource("Gradient_u5yrp")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_n46ak"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qiqap"]
+texture = ExtResource("6_5qa2l")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7qdgr"]
+texture = ExtResource("7_8ca8h")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mjylh"]
+texture = ExtResource("8_ssjbi")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_subod"]
+texture = ExtResource("9_2q232")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hfo07"]
+texture = ExtResource("6_5qa2l")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4sujn"]
+texture = ExtResource("7_8ca8h")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5stfh"]
+texture = ExtResource("8_ssjbi")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_maa40"]
+texture = ExtResource("9_2q232")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[node name="ChangeProfessionDialog" type="Window"]
+title = "Change Profession"
+position = Vector2i(0, 36)
+size = Vector2i(480, 304)
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_n46ak")
+script = ExtResource("2_n46ak")
+
+[node name="Background" type="TextureRect" parent="."]
+material = SubResource("CanvasItemMaterial_u11f1")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_6yyp3")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Profession:"
+
+[node name="ProfessionOptions" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_8eokf")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "[title]Professions[/title]
+List of available professions"
+text_overrun_behavior = 3
+selected = 0
+fit_to_longest_item = false
+item_count = 7
+popup/item_0/text = "1: Collector"
+popup/item_0/id = 0
+popup/item_1/text = "2: "
+popup/item_1/id = 1
+popup/item_2/text = "3: "
+popup/item_2/id = 2
+popup/item_3/text = "4: cuatro"
+popup/item_3/id = 3
+popup/item_4/text = "5: seis"
+popup/item_4/id = 4
+popup/item_5/text = "6: "
+popup/item_5/id = 5
+popup/item_6/text = "7: "
+popup/item_6/id = 6
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Action:"
+
+[node name="ActionOptions" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_8eokf")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "[title]Action[/title]
+Allows you to delete a profession or add/change the level of another."
+text_overrun_behavior = 3
+selected = 1
+fit_to_longest_item = false
+item_count = 2
+popup/item_0/text = "Remove Profession"
+popup/item_0/id = 0
+popup/item_1/text = "Add Profession"
+popup/item_1/id = 1
+
+[node name="AddExtraContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/AddExtraContainer"]
+layout_mode = 2
+
+[node name="PreserveLevel" type="CheckBox" parent="MarginContainer/VBoxContainer/AddExtraContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "When adding this profession, its current level will be retained."
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_n46ak")
+text = "Preserve Level: "
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/AddExtraContainer"]
+layout_mode = 2
+
+[node name="ChangeLevel" type="CheckBox" parent="MarginContainer/VBoxContainer/AddExtraContainer/HBoxContainer3"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "When adding this profession, its level will be set to this new value.
+
+[Note]: If the profession has already been added, its level will be updated to this value."
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_n46ak")
+text = "Change Level: "
+
+[node name="Level" parent="MarginContainer/VBoxContainer/AddExtraContainer/HBoxContainer3" instance=ExtResource("4_bm8um")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Change Profession Level[/title]
+When adding this profession, its level will be set to this new value.
+
+[Note]: If the profession has already been added, its level will be updated to this value."
+min_value = 1.0
+value = 1.0
+
+[node name="MaxLevels" type="Label" parent="MarginContainer/VBoxContainer/AddExtraContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.572988, 0.572988, 0.572988, 1)
+
+[node name="RemoveExtraContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ResetProfession" type="CheckBox" parent="MarginContainer/VBoxContainer/RemoveExtraContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Reset Level Profession[/title]
+By removing this profession, its level will be reset to 1 if this option is checked."
+mouse_default_cursor_shape = 2
+text = "Reset Profession Level"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_sy0xf")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+theme_override_styles/disabled = SubResource("StyleBoxTexture_qiqap")
+theme_override_styles/hover = SubResource("StyleBoxTexture_7qdgr")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_mjylh")
+theme_override_styles/normal = SubResource("StyleBoxTexture_subod")
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_sy0xf")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+theme_override_styles/disabled = SubResource("StyleBoxTexture_hfo07")
+theme_override_styles/hover = SubResource("StyleBoxTexture_4sujn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_5stfh")
+theme_override_styles/normal = SubResource("StyleBoxTexture_maa40")
+text = "CANCEL"
+
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/ProfessionOptions" to="." method="_on_profession_options_item_selected"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/ActionOptions" to="." method="_on_action_options_item_selected"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/AddExtraContainer/HBoxContainer/PreserveLevel" to="." method="_on_preserve_level_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/AddExtraContainer/HBoxContainer3/ChangeLevel" to="." method="_on_change_level_toggled"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/CancelButton" to="." method="_on_cancel_button_pressed"]

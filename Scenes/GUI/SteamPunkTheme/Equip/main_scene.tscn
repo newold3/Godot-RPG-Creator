@@ -1,0 +1,98 @@
+[gd_scene load_steps=6 format=3 uid="uid://b1muctyibds38"]
+
+[ext_resource type="PackedScene" uid="uid://ckrmqq6qvlduj" path="res://Scenes/GUI/SteamPunkTheme/base_window_for_scenes.tscn" id="1_3fq4p"]
+[ext_resource type="Theme" uid="uid://ctpmflgnlpkjg" path="res://Assets/Themes/in_game_theme2.tres" id="2_yhcol"]
+[ext_resource type="PackedScene" uid="uid://3p2o203smp6v" path="res://Scenes/GUI/SteamPunkTheme/Equip/equip_scene.tscn" id="3_fr7ih"]
+[ext_resource type="FontFile" uid="uid://dvh0mi6yu0ywx" path="res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf" id="4_pcybh"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_hwlor"]
+viewport_path = NodePath("SceneMainContainer/BottomLayer/SubViewport")
+
+[node name="MainEquipScene" instance=ExtResource("1_3fq4p")]
+theme = ExtResource("2_yhcol")
+scene_title = "Equipment"
+timer_to_emit_end_signal = 0.12
+move_in_direction = 3
+move_in_duration = 0.5
+move_out_ease_type = 2
+move_out_trans_type = 1
+move_out_duration = 0.35
+zoom_out_enabled = false
+fade_out_enabled = false
+ready_to_process_delay = 0.18
+
+[node name="Background" parent="SceneMainContainer/BottomLayer" index="1"]
+texture = SubResource("ViewportTexture_hwlor")
+metadata/_edit_lock_ = true
+
+[node name="ParticleContainer" parent="SceneMainContainer/BottomLayer" index="2"]
+metadata/_edit_lock_ = true
+metadata/_edit_group_ = true
+
+[node name="BackgroundDecorationContainer" parent="SceneMainContainer/BottomLayer" index="3"]
+metadata/_edit_lock_ = true
+metadata/_edit_group_ = true
+
+[node name="MainContainer" parent="SceneMainContainer" index="1"]
+mouse_filter = 2
+
+[node name="MainSceneContainer" parent="SceneMainContainer/MainContainer/ContentsContainer" index="0"]
+vertical_scroll_mode = 0
+
+[node name="EquipScene" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer" index="0" instance=ExtResource("3_fr7ih")]
+layout_mode = 2
+menu_items_start_position = Vector2(420, 0)
+menu_items_end_position = Vector2(-48, 0)
+
+[node name="HelpLabel" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene/HelpTop" index="0"]
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5764706)
+
+[node name="ButtonsVerticalMenu" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene/HBoxContainer/MainSelectHeroPanel" index="0"]
+z_index = 3
+
+[node name="ActorName" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene/HBoxContainer/ActorPanel/MainActorPanel/ActorContainer/MainActorContainer" index="0"]
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5764706)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("4_pcybh")
+
+[node name="Stats" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene/HBoxContainer/MainStatsContainer" index="0"]
+theme_override_constants/margin_bottom = -42
+
+[node name="MenuItems" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene/SecondaryMenu" index="0"]
+custom_minimum_size = Vector2(416, 400)
+offset_bottom = 400.0
+
+[node name="TopContainer" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene/SecondaryMenu/MenuItems" index="2"]
+theme_override_constants/margin_left = 58
+theme_override_constants/margin_right = 62
+
+[node name="Contents" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene/SecondaryMenu/MenuItems" index="3"]
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_right = 53
+theme_override_constants/margin_bottom = 78
+
+[node name="TopFrame" parent="SceneMainContainer/MainContainer" index="1"]
+z_index = 20
+
+[node name="Title" parent="SceneMainContainer/MainContainer" index="2"]
+z_index = 100
+
+[node name="TitleContainer" parent="SceneMainContainer/MainContainer/Title" index="0"]
+title = "Equipment"
+
+[node name="ToolTipLayers" parent="SceneMainContainer" index="4"]
+mouse_filter = 2
+
+[connection signal="animation_in_finished" from="." to="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene" method="_setup_initial_selection"]
+[connection signal="starting_end" from="." to="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene" method="end"]
+[connection signal="back_pressed" from="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene" to="." method="destroy"]
+[connection signal="update_description" from="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene" to="SceneMainContainer/ToolTipLayers/BottomTooltipLabel" method="set_text"]
+
+[editable path="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene"]
+[editable path="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene/HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu"]
+[editable path="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene/HBoxContainer/ActorPanel/MainActorPanel/ActorContainer/MainActorContainer"]
+[editable path="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene/HBoxContainer/MainStatsContainer/Stats/StatsContainer"]
+[editable path="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene/SecondaryMenu/MenuItems"]

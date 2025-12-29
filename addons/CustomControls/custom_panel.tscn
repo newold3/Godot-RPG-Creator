@@ -1,0 +1,67 @@
+[gd_scene load_steps=7 format=3 uid="uid://bwgf6rhx3a6cq"]
+
+[ext_resource type="Script" uid="uid://ckd84b2k4avaf" path="res://addons/CustomControls/custom_panel.gd" id="1_msn5m"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r4to5"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Gradient" id="Gradient_ctwx1"]
+colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_5lwj2"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_c37ns"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_5lwj2")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bndyk"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[node name="CustomPanel" type="PanelContainer"]
+clip_children = 2
+offset_right = 180.0
+offset_bottom = 191.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_r4to5")
+script = ExtResource("1_msn5m")
+style1 = SubResource("StyleBoxFlat_r4to5")
+style2 = SubResource("StyleBoxTexture_c37ns")
+style3 = SubResource("StyleBoxFlat_bndyk")
+
+[node name="Panel1" type="Panel" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_c37ns")
+
+[node name="Panel2" type="Panel" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bndyk")

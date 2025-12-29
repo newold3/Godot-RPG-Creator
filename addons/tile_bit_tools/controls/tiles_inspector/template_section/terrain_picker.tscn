@@ -1,0 +1,33 @@
+[gd_scene load_steps=2 format=3 uid="uid://1s77a4hdeubd"]
+
+[ext_resource type="Script" uid="uid://t21ktg2tcv0a" path="res://addons/tile_bit_tools/controls/tiles_inspector/template_section/terrain_picker.gd" id="1_wswd4"]
+
+[node name="TerrainPicker" type="HBoxContainer"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 26.0
+grow_horizontal = 2
+script = ExtResource("1_wswd4")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="TerrainLabel" type="Label" parent="HBoxContainer" groups=["TBTPropertyLabel"]]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Terrain 1"
+
+[node name="TerrainColorRect" type="ColorRect" parent="HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="TerrainOptionButton" type="OptionButton" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3

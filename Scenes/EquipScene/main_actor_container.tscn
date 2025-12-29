@@ -1,0 +1,56 @@
+[gd_scene load_steps=4 format=3 uid="uid://csroyvefl3r0e"]
+
+[ext_resource type="Script" uid="uid://0jh0mw7s6bju" path="res://Scenes/EquipScene/main_actor_container.gd" id="1_0w7pr"]
+[ext_resource type="Texture2D" uid="uid://bfgr2ewrp6i0u" path="res://Assets/Images/GUI/party_menu.png" id="4_0w7pr"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0lwnk"]
+atlas = ExtResource("4_0w7pr")
+region = Rect2(1530, 268, 257, 21)
+
+[node name="MainActorContainer" type="VBoxContainer"]
+offset_right = 172.0
+offset_bottom = 363.0
+theme_override_constants/separation = 0
+script = ExtResource("1_0w7pr")
+
+[node name="MarginContainer2" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = -11
+
+[node name="BottomDecoration" type="TextureRect" parent="MarginContainer2"]
+custom_minimum_size = Vector2(0, 11)
+layout_mode = 2
+texture = SubResource("AtlasTexture_0lwnk")
+expand_mode = 1
+flip_v = true
+
+[node name="ActorName" type="Label" parent="."]
+z_index = 10
+custom_minimum_size = Vector2(0, 38.795)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.946486, 0.649324, 0.304752, 1)
+text = "NAME"
+horizontal_alignment = 1
+
+[node name="Control" type="Control" parent="."]
+custom_minimum_size = Vector2(172, 340)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="ActorImage" type="TextureRect" parent="Control"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(221.184, 505.952)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -110.592
+offset_right = 110.592
+offset_bottom = 505.952
+grow_horizontal = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+expand_mode = 1
+stretch_mode = 6

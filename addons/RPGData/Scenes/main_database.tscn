@@ -1,0 +1,386 @@
+[gd_scene load_steps=14 format=3 uid="uid://0mvvughxedtu"]
+
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="1_bal0x"]
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_ssdv3"]
+[ext_resource type="Script" uid="uid://lwxn8apgbd2s" path="res://addons/RPGData/Scripts/main_database.gd" id="2_h42ug"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="3_me0x1"]
+
+[sub_resource type="Gradient" id="Gradient_pcm1h"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_jqf22"]
+gradient = SubResource("Gradient_pcm1h")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yt8he"]
+atlas = ExtResource("3_me0x1")
+region = Rect2(120, 168, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r5toj"]
+atlas = ExtResource("3_me0x1")
+region = Rect2(144, 168, 24, 24)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_8uuv8"]
+load_path = "res://.godot/imported/button1_background_selected.png-d7a0e032c2f1d60baf0aa42faaf76520.ctex"
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_356kg"]
+texture = SubResource("CompressedTexture2D_8uuv8")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+modulate_color = Color(1.384, 1.718, 1.882, 1)
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_me0x1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dydhv"]
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sy4tq"]
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.372549, 0.372549, 0.372549, 1)
+
+[node name="MainDatabase" type="Control"]
+custom_minimum_size = Vector2(1480, 850)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1480.0
+offset_bottom = 850.0
+theme = ExtResource("1_ssdv3")
+script = ExtResource("2_h42ug")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_jqf22")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 40
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/HBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_constants/margin_top = -42
+theme_override_constants/margin_right = 10
+
+[node name="Options" type="TextureButton" parent="MarginContainer/HBoxContainer/MarginContainer/MarginContainer2"]
+layout_mode = 2
+size_flags_vertical = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_yt8he")
+texture_hover = SubResource("AtlasTexture_r5toj")
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/MarginContainer/MarginContainer2/Options"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "   File"
+
+[node name="OptionsMenu" type="PopupMenu" parent="MarginContainer/HBoxContainer/MarginContainer/MarginContainer2/Options"]
+unique_name_in_owner = true
+oversampling_override = 1.0
+position = Vector2i(32, 32)
+size = Vector2i(229, 120)
+item_count = 9
+item_0/text = "Save (Ctrl+S)"
+item_0/id = 0
+item_1/id = 1
+item_1/separator = true
+item_2/text = "New Database"
+item_2/id = 2
+item_3/text = "Load Database"
+item_3/id = 3
+item_4/id = 4
+item_4/separator = true
+item_5/text = "Export To Json File"
+item_5/id = 5
+item_6/text = "Load From Json File"
+item_6/id = 6
+item_7/id = 7
+item_7/separator = true
+item_8/text = "Export Database"
+item_8/id = 8
+
+[node name="LeftMenu" type="VBoxContainer" parent="MarginContainer/HBoxContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="CustomButton1" parent="MarginContainer/HBoxContainer/MarginContainer/LeftMenu" instance=ExtResource("1_bal0x")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+tooltip_text = "[title]Heroes[/title]
+List of characters added to the database"
+theme_override_styles/pressed = SubResource("StyleBoxTexture_356kg")
+toggle_mode = true
+button_pressed = true
+button_group = SubResource("ButtonGroup_me0x1")
+text = "Heroes"
+
+[node name="CustomButton2" parent="MarginContainer/HBoxContainer/MarginContainer/LeftMenu" instance=ExtResource("1_bal0x")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+tooltip_text = "[title]Classes[/title]
+List of classes added to the database"
+theme_override_styles/pressed = SubResource("StyleBoxTexture_356kg")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_me0x1")
+text = "Classes"
+
+[node name="CustomButton19" parent="MarginContainer/HBoxContainer/MarginContainer/LeftMenu" instance=ExtResource("1_bal0x")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+tooltip_text = "[title]Professions[/title]
+List of professions added to the database"
+theme_override_styles/pressed = SubResource("StyleBoxTexture_356kg")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_me0x1")
+text = "Professions"
+
+[node name="CustomButton3" parent="MarginContainer/HBoxContainer/MarginContainer/LeftMenu" instance=ExtResource("1_bal0x")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+tooltip_text = "[title]Techniques[/title]
+List of techniques added to the database"
+theme_override_styles/pressed = SubResource("StyleBoxTexture_356kg")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_me0x1")
+text = "Techniques"
+
+[node name="CustomButton4" parent="MarginContainer/HBoxContainer/MarginContainer/LeftMenu" instance=ExtResource("1_bal0x")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+tooltip_text = "[title]Items[/title]
+List of items added to the database"
+theme_override_styles/pressed = SubResource("StyleBoxTexture_356kg")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_me0x1")
+text = "Items"
+
+[node name="CustomButton5" parent="MarginContainer/HBoxContainer/MarginContainer/LeftMenu" instance=ExtResource("1_bal0x")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+tooltip_text = "[title]Weapons[/title]
+List of weapons added to the database"
+theme_override_styles/pressed = SubResource("StyleBoxTexture_356kg")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_me0x1")
+text = "Weapons"
+
+[node name="CustomButton6" parent="MarginContainer/HBoxContainer/MarginContainer/LeftMenu" instance=ExtResource("1_bal0x")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+tooltip_text = "[title]Armors[/title]
+List of armors added to the database"
+theme_override_styles/pressed = SubResource("StyleBoxTexture_356kg")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_me0x1")
+text = "Armors"
+
+[node name="CustomButton7" parent="MarginContainer/HBoxContainer/MarginContainer/LeftMenu" instance=ExtResource("1_bal0x")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+tooltip_text = "[title]Enemies[/title]
+List of Enemies added to the database"
+theme_override_styles/pressed = SubResource("StyleBoxTexture_356kg")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_me0x1")
+text = "Enemies"
+
+[node name="CustomButton8" parent="MarginContainer/HBoxContainer/MarginContainer/LeftMenu" instance=ExtResource("1_bal0x")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+tooltip_text = "[title]Encounters[/title]
+List of enemy formations added to the database"
+theme_override_styles/pressed = SubResource("StyleBoxTexture_356kg")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_me0x1")
+text = "Encounters"
+
+[node name="CustomButton9" parent="MarginContainer/HBoxContainer/MarginContainer/LeftMenu" instance=ExtResource("1_bal0x")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+tooltip_text = "[title]Conditions[/title]
+List of conditions added to the database"
+theme_override_styles/pressed = SubResource("StyleBoxTexture_356kg")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_me0x1")
+text = "Conditions"
+
+[node name="CustomButton10" parent="MarginContainer/HBoxContainer/MarginContainer/LeftMenu" instance=ExtResource("1_bal0x")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+tooltip_text = "[title]Animations[/title]
+List of animations added to the database"
+theme_override_styles/pressed = SubResource("StyleBoxTexture_356kg")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_me0x1")
+text = "Animations"
+
+[node name="CustomButton11" parent="MarginContainer/HBoxContainer/MarginContainer/LeftMenu" instance=ExtResource("1_bal0x")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+tooltip_text = "[title]Global Events[/title]
+List of global events added to the database"
+theme_override_styles/pressed = SubResource("StyleBoxTexture_356kg")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_me0x1")
+text = "Global Events"
+
+[node name="CustomButton12" parent="MarginContainer/HBoxContainer/MarginContainer/LeftMenu" instance=ExtResource("1_bal0x")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+tooltip_text = "[title]Types[/title]
+List of types added to the database"
+theme_override_styles/pressed = SubResource("StyleBoxTexture_356kg")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_me0x1")
+text = "Types"
+
+[node name="CustomButton13" parent="MarginContainer/HBoxContainer/MarginContainer/LeftMenu" instance=ExtResource("1_bal0x")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+tooltip_text = "[title]Terms[/title]
+List of terms added to the database"
+theme_override_styles/pressed = SubResource("StyleBoxTexture_356kg")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_me0x1")
+text = "Terms"
+
+[node name="CustomButton14" parent="MarginContainer/HBoxContainer/MarginContainer/LeftMenu" instance=ExtResource("1_bal0x")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+tooltip_text = "[title]System[/title]
+List of characters added to the database"
+theme_override_styles/pressed = SubResource("StyleBoxTexture_356kg")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_me0x1")
+text = "Settings"
+
+[node name="CustomButton17" parent="MarginContainer/HBoxContainer/MarginContainer/LeftMenu" instance=ExtResource("1_bal0x")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+tooltip_text = "[title]Talkers[/title]
+List of talkers added to the database
+
+[Note:] Talkers can be used in the text dialogue command to quickly set up the dialogue for that talker (text color, name, portrait, etc.)"
+theme_override_styles/pressed = SubResource("StyleBoxTexture_356kg")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_me0x1")
+text = "Talkers"
+
+[node name="CustomButton18" parent="MarginContainer/HBoxContainer/MarginContainer/LeftMenu" instance=ExtResource("1_bal0x")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+tooltip_text = "[title]Quests[/title]
+List of quests added to the database"
+theme_override_styles/pressed = SubResource("StyleBoxTexture_356kg")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_me0x1")
+text = "Quests"
+
+[node name="CustomButton15" parent="MarginContainer/HBoxContainer/MarginContainer/LeftMenu" instance=ExtResource("1_bal0x")]
+unique_name_in_owner = true
+modulate = Color(0.536621, 1, 0.1875, 1)
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_vertical = 10
+tooltip_text = "[title]Apply[/title]
+Save the changes made to the database (you can press “Enter” to get the same result)."
+theme_override_styles/pressed = SubResource("StyleBoxTexture_356kg")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_me0x1")
+text = "Apply Canges"
+
+[node name="CustomButton16" parent="MarginContainer/HBoxContainer/MarginContainer/LeftMenu" instance=ExtResource("1_bal0x")]
+unique_name_in_owner = true
+modulate = Color(0.957031, 0.530853, 0.530853, 1)
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+tooltip_text = "[title]Cancel Without Save[/title]
+Closes the database without saving changes. A confirmation window will appear, asking if you want to save your changes (press “Escape” to get the same result)."
+theme_override_styles/pressed = SubResource("StyleBoxTexture_356kg")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_me0x1")
+text = "Cancel"
+
+[node name="RightPanel" type="Panel" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_dydhv")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/RightPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_right = 1
+theme_override_constants/margin_bottom = 1
+
+[node name="Panel" type="PanelContainer" parent="MarginContainer/HBoxContainer/RightPanel/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_sy4tq")
+
+[node name="PanelContents" type="MarginContainer" parent="MarginContainer/HBoxContainer/RightPanel/MarginContainer/Panel"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[connection signal="pressed" from="MarginContainer/HBoxContainer/MarginContainer/MarginContainer2/Options" to="." method="_on_options_pressed"]
+[connection signal="index_pressed" from="MarginContainer/HBoxContainer/MarginContainer/MarginContainer2/Options/OptionsMenu" to="." method="_on_options_menu_index_pressed"]

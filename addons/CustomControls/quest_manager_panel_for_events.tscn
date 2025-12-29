@@ -1,0 +1,146 @@
+[gd_scene load_steps=17 format=3 uid="uid://bg11fd6hmeg30"]
+
+[ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="1_flnkl"]
+[ext_resource type="Script" uid="uid://bk28wcn045uuk" path="res://addons/CustomControls/quest_manager_panel_for_events.gd" id="1_q65kd"]
+[ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="3_6vpv7"]
+[ext_resource type="PackedScene" uid="uid://dxcyqc2dscbvw" path="res://addons/CustomControls/custom_simple_column_item_list.tscn" id="3_qvw3r"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_asfg1"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Gradient" id="Gradient_ctwx1"]
+colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_l7i8v"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_d6ss7"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_l7i8v")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f0bo5"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Gradient" id="Gradient_6vpv7"]
+colors = PackedColorArray(0.333333, 0.352941, 0.360784, 1, 0.380392, 0.4, 0.407843, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_6nd8c"]
+gradient = SubResource("Gradient_6vpv7")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_s31ys"]
+texture = SubResource("GradientTexture2D_6nd8c")
+
+[sub_resource type="Gradient" id="Gradient_l8n8h"]
+offsets = PackedFloat32Array(0, 0.369535, 1)
+colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_cc2pl"]
+gradient = SubResource("Gradient_l8n8h")
+fill_from = Vector2(0.547009, 1)
+fill_to = Vector2(0.559829, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qvw3r"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_cc2pl")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_evp0g"]
+bg_color = Color(0, 0, 0, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+
+[node name="QuestManagerPanel" type="MarginContainer"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+script = ExtResource("1_q65kd")
+
+[node name="CustomPanel" parent="." instance=ExtResource("1_flnkl")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_asfg1")
+style1 = SubResource("StyleBoxFlat_asfg1")
+style2 = SubResource("StyleBoxTexture_d6ss7")
+style3 = SubResource("StyleBoxFlat_f0bo5")
+
+[node name="MarginContainer" type="MarginContainer" parent="CustomPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CustomPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CustomPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Available quests"
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="CustomPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("3_6vpv7")
+metadata/_custom_type_script = "uid://cs6g8remlafby"
+
+[node name="QuestList" parent="CustomPanel/MarginContainer/VBoxContainer/SmoothScrollContainer" instance=ExtResource("3_qvw3r")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 573)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
+event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
+min_size = Vector2(1112, 573)
+top_bar_style = SubResource("StyleBoxTexture_s31ys")
+cursor_style = SubResource("StyleBoxTexture_qvw3r")
+panel_style = SubResource("StyleBoxFlat_evp0g")
+names = PackedStringArray("Quests List")
+sizes = PackedInt32Array(80)
+placeholder_text = "Add new quest..."
+enable_multiselection = true
+itemlist_tooltip = "[title]Quest List[/title]
+List of quests that this event can offer"
+
+[connection signal="copy_requested" from="CustomPanel/MarginContainer/VBoxContainer/SmoothScrollContainer/QuestList" to="." method="_on_quest_list_copy_requested"]
+[connection signal="cut_requested" from="CustomPanel/MarginContainer/VBoxContainer/SmoothScrollContainer/QuestList" to="." method="_on_quest_list_cut_requested"]
+[connection signal="delete_pressed" from="CustomPanel/MarginContainer/VBoxContainer/SmoothScrollContainer/QuestList" to="." method="_on_quest_list_delete_pressed"]
+[connection signal="duplicate_requested" from="CustomPanel/MarginContainer/VBoxContainer/SmoothScrollContainer/QuestList" to="." method="_on_quest_list_duplicate_requested"]
+[connection signal="item_activated" from="CustomPanel/MarginContainer/VBoxContainer/SmoothScrollContainer/QuestList" to="." method="_on_quest_list_item_activated"]
+[connection signal="paste_requested" from="CustomPanel/MarginContainer/VBoxContainer/SmoothScrollContainer/QuestList" to="." method="_on_quest_list_paste_requested"]

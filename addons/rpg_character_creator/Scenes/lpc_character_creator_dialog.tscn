@@ -1,0 +1,273 @@
+[gd_scene load_steps=27 format=3 uid="uid://71nknyfc6ldi"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_s1crn"]
+[ext_resource type="Script" uid="uid://b6b7j5oppyogg" path="res://addons/rpg_character_creator/Scripts/lpc_character_creator_dialog.gd" id="1_tcbu7"]
+[ext_resource type="PackedScene" uid="uid://dwupjod8sfjgd" path="res://addons/rpg_character_creator/Scenes/main_panel.tscn" id="3_7cjrd"]
+[ext_resource type="Texture2D" uid="uid://bnfb7u5j2x4pq" path="res://addons/CustomControls/Images/loading_icon.png" id="4_kpth6"]
+
+[sub_resource type="Gradient" id="Gradient_tgvw3"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_1scyp"]
+gradient = SubResource("Gradient_tgvw3")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_v4te5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4dl5w"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wkjry"]
+atlas = ExtResource("4_kpth6")
+region = Rect2(600, 300, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_goxh6"]
+atlas = ExtResource("4_kpth6")
+region = Rect2(0, 0, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uwjbp"]
+atlas = ExtResource("4_kpth6")
+region = Rect2(300, 0, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qe788"]
+atlas = ExtResource("4_kpth6")
+region = Rect2(600, 0, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n0ojs"]
+atlas = ExtResource("4_kpth6")
+region = Rect2(900, 0, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o15lp"]
+atlas = ExtResource("4_kpth6")
+region = Rect2(0, 300, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jbx63"]
+atlas = ExtResource("4_kpth6")
+region = Rect2(300, 300, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dbb1o"]
+atlas = ExtResource("4_kpth6")
+region = Rect2(900, 300, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g0vwv"]
+atlas = ExtResource("4_kpth6")
+region = Rect2(0, 600, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p71ux"]
+atlas = ExtResource("4_kpth6")
+region = Rect2(300, 600, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_enu6e"]
+atlas = ExtResource("4_kpth6")
+region = Rect2(600, 600, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2eurm"]
+atlas = ExtResource("4_kpth6")
+region = Rect2(900, 600, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_km4c5"]
+atlas = ExtResource("4_kpth6")
+region = Rect2(0, 900, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o8kil"]
+atlas = ExtResource("4_kpth6")
+region = Rect2(300, 900, 300, 300)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_nel5g"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wkjry")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_goxh6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uwjbp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qe788")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n0ojs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o15lp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jbx63")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dbb1o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g0vwv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p71ux")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_enu6e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2eurm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_km4c5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o8kil")
+}],
+"loop": true,
+"name": &"default",
+"speed": 15.0
+}]
+
+[sub_resource type="Animation" id="Animation_r62er"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("RichTextLabel:visible_characters")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [11]
+}
+
+[sub_resource type="Animation" id="Animation_xv26p"]
+resource_name = "saving"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("RichTextLabel:visible_characters")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [11, 12, 13, 14, 13, 12]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_40sw1"]
+_data = {
+&"RESET": SubResource("Animation_r62er"),
+&"saving": SubResource("Animation_xv26p")
+}
+
+[node name="LPCCharacterCreatorDialog" type="Window" groups=["lpc_character_creator_main_dialog"]]
+canvas_item_default_texture_filter = 3
+oversampling_override = 1.0
+title = "LPC Character And Equipment Creator"
+position = Vector2i(0, 36)
+size = Vector2i(1300, 880)
+min_size = Vector2i(1300, 880)
+theme = ExtResource("1_s1crn")
+script = ExtResource("1_tcbu7")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_1scyp")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="CharacterCreatorMainPanel" parent="MarginContainer" instance=ExtResource("3_7cjrd")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="SavingContainer" type="CanvasLayer" parent="MarginContainer"]
+unique_name_in_owner = true
+process_mode = 3
+layer = 100
+visible = false
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/SavingContainer"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -116.5
+offset_top = -123.0
+offset_right = 116.5
+offset_bottom = -72.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/normal_font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxEmpty_v4te5")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_4dl5w")
+text = "Saving data..."
+autowrap_mode = 0
+visible_characters = 11
+visible_ratio = 0.78571427
+
+[node name="ProgressBar" type="ProgressBar" parent="MarginContainer/SavingContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(220, 0)
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -131.795
+offset_top = -156.69
+offset_right = 88.205
+offset_bottom = -129.69
+grow_horizontal = 2
+grow_vertical = 0
+step = 1.0
+value = 100.0
+show_percentage = false
+
+[node name="Control" type="Control" parent="MarginContainer/SavingContainer"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_top = 120.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="MarginContainer/SavingContainer/Control"]
+unique_name_in_owner = true
+position = Vector2(-17.485, 0)
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_nel5g")
+autoplay = "default"
+frame_progress = 0.040396925
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="MarginContainer/SavingContainer"]
+unique_name_in_owner = true
+libraries = {
+&"": SubResource("AnimationLibrary_40sw1")
+}
+autoplay = "saving"
+
+[node name="BlockMouse" type="Control" parent="MarginContainer/SavingContainer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

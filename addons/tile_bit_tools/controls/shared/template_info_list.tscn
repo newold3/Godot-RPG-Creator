@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://bscknm10ko78t"]
+
+[ext_resource type="Script" uid="uid://rj27xj500axj" path="res://addons/tile_bit_tools/controls/shared/template_info_list.gd" id="1_6r84n"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_n7nl4"]
+
+[node name="TemplateInfoList" type="ItemList"]
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_n7nl4")
+auto_height = true
+item_count = 2
+item_0/text = "Tiles: 15"
+item_0/selectable = false
+item_1/text = "Terrains: 2"
+item_1/selectable = false
+script = ExtResource("1_6r84n")

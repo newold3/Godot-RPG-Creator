@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=3 uid="uid://bawafq08jue4j"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kwkeb"]
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.513233, 0.513233, 0.513233, 1)
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_21dn8"]
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.961654, 0.777786, 0.148507, 1)
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[node name="FavoriteButton2" type="Button"]
+size_flags_horizontal = 0
+size_flags_vertical = 0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_kwkeb")
+theme_override_styles/hover = SubResource("StyleBoxFlat_21dn8")

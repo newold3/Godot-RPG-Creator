@@ -1,0 +1,65 @@
+[gd_scene load_steps=6 format=3 uid="uid://dytkm5727u3up"]
+
+[ext_resource type="Script" uid="uid://cq20osysqqius" path="res://addons/CustomControls/rich_check_box.gd" id="1_83d1q"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_83d1q"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7y5ie"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_03nfc"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4bjwi"]
+
+[node name="MakeLocalEvent" type="CheckBox"]
+size_flags_horizontal = 3
+tooltip_text = "This parameter only has an effect if the command is placed in an event running in parallel. When the command is local, the game flow doesn't stop; instead, its behavior changes by pausing the execution of the following commands in that event for a set amount of time. This is useful, for example, if you want something to happen at regular intervals, such as in a day/night cycle system."
+mouse_default_cursor_shape = 2
+script = ExtResource("1_83d1q")
+hover_color = Color(1, 0.498039, 0.313726, 0.705882)
+selected_color = Color(0.678431, 1, 0.184314, 0.705882)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 30
+
+[node name="MainLabel" type="RichTextLabel" parent="MarginContainer"]
+unique_name_in_owner = true
+clip_children = 2
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/fill = SubResource("StyleBoxEmpty_83d1q")
+theme_override_styles/background = SubResource("StyleBoxEmpty_7y5ie")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_03nfc")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_4bjwi")
+bbcode_enabled = true
+text = "Make local when event is \"[color=red]parallel[/color]\""
+
+[node name="SelectedColor" type="ColorRect" parent="MarginContainer/MainLabel"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.678431, 1, 0.184314, 0.705882)
+
+[node name="LabelHoverColor" type="ColorRect" parent="MarginContainer/MainLabel"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0.498039, 0.313726, 0.705882)

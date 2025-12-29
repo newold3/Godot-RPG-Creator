@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://cofg1pl0w2ydl"]
+
+[ext_resource type="Shader" uid="uid://c5c4nc1ddpd6g" path="res://Assets/Shaders/blur_radial.gdshader" id="1_q78ph"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mai8y"]
+shader = ExtResource("1_q78ph")
+shader_parameter/radius = Vector2(3, 3)
+shader_parameter/blur_start = 0.095
+shader_parameter/blur_end = 1.0
+shader_parameter/max_blur = 3.846
+shader_parameter/mix_amount = 0.0
+shader_parameter/color_over = Color(0, 0, 0, 0)
+
+[node name="Blur" type="ColorRect"]
+material = SubResource("ShaderMaterial_mai8y")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

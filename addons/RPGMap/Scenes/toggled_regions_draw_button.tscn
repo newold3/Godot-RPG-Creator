@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://cgod4cioncm04"]
+
+[ext_resource type="Theme" uid="uid://b4gu77yogv7hw" path="res://addons/CustomControls/Resources/Themes/editor_buitton_themes.tres" id="1_13qdo"]
+[ext_resource type="Texture2D" uid="uid://hydvbyqe7gk8" path="res://addons/RPGMap/Assets/Images/eye.png" id="2_g3017"]
+
+[node name="ToggledRegionsDrawButton" type="Button"]
+offset_right = 109.0
+offset_bottom = 31.0
+mouse_default_cursor_shape = 2
+theme = ExtResource("1_13qdo")
+toggle_mode = true
+text = "View Regions"
+icon = ExtResource("2_g3017")

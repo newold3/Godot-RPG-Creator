@@ -1,0 +1,241 @@
+[gd_scene load_steps=13 format=3 uid="uid://mvu5debmsa2t"]
+
+[ext_resource type="Script" uid="uid://bd0typj5bxm1g" path="res://Scenes/OtherScenes/icon_gear_container.gd" id="1_qegpi"]
+[ext_resource type="Texture2D" uid="uid://bttv2a7yritf7" path="res://Assets/Images/GUI/decoration1.png" id="1_wxh02"]
+[ext_resource type="Texture2D" uid="uid://c8guerd3v0l6t" path="res://Assets/Images/SceneMenu/part8.png" id="2_qegpi"]
+[ext_resource type="Texture2D" uid="uid://c0tm1bap38jnl" path="res://Assets/Images/SceneMenu/part1.png" id="3_f7i4k"]
+[ext_resource type="Texture2D" uid="uid://b6tpatjk8rhhi" path="res://Assets/Images/SceneMenu/part2.png" id="4_7scgd"]
+[ext_resource type="FontFile" uid="uid://dvh0mi6yu0ywx" path="res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf" id="4_f7i4k"]
+[ext_resource type="Texture2D" uid="uid://da3ecapq4ekxp" path="res://Assets/Images/SceneMenu/part3.png" id="5_kht18"]
+[ext_resource type="Texture2D" uid="uid://cm23puluy4pxh" path="res://Assets/Images/SceneMenu/part4.png" id="6_pres3"]
+[ext_resource type="Texture2D" uid="uid://b0mo5iykdxq0l" path="res://Assets/Images/SceneMenu/part5.png" id="7_wd2hv"]
+[ext_resource type="Texture2D" uid="uid://ct0ki5xyiptwg" path="res://Assets/Images/SceneMenu/part6.png" id="8_pvrgy"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wx8ql"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.27451, 0.184314, 0.0823529, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_chs0y"]
+bg_color = Color(0.611765, 0.588235, 0.666667, 1)
+draw_center = false
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+
+[node name="IconGearContainer" type="Control"]
+clip_contents = true
+custom_minimum_size = Vector2(427, 125)
+layout_mode = 3
+anchors_preset = 0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+script = ExtResource("1_qegpi")
+
+[node name="GearMainContainer" type="Control" parent="."]
+unique_name_in_owner = true
+anchors_preset = 0
+mouse_filter = 2
+
+[node name="TitleContainer" type="PanelContainer" parent="GearMainContainer"]
+unique_name_in_owner = true
+clip_children = 2
+layout_mode = 0
+offset_left = 81.49
+offset_right = 398.49
+offset_bottom = 93.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_wx8ql")
+
+[node name="ColorRect" type="ColorRect" parent="GearMainContainer/TitleContainer"]
+custom_minimum_size = Vector2(317, 93)
+layout_mode = 2
+size_flags_vertical = 8
+mouse_filter = 2
+color = Color(0.45, 0.3123, 0.207, 0.85098)
+
+[node name="TextureRect" type="TextureRect" parent="GearMainContainer/TitleContainer"]
+modulate = Color(1, 1, 1, 0.552941)
+texture_repeat = 2
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("1_wxh02")
+stretch_mode = 1
+
+[node name="Background1" type="TextureRect" parent="GearMainContainer/TitleContainer"]
+modulate = Color(1, 1, 1, 0.313726)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("2_qegpi")
+expand_mode = 1
+
+[node name="Panel" type="Panel" parent="GearMainContainer/TitleContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_chs0y")
+
+[node name="SceneTitle" type="Label" parent="GearMainContainer/TitleContainer/Panel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 1
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5764706)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("4_f7i4k")
+theme_override_font_sizes/font_size = 38
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GearGear" type="Control" parent="GearMainContainer"]
+unique_name_in_owner = true
+anchors_preset = 0
+offset_left = -33.0
+offset_top = -72.0
+offset_right = 153.0
+offset_bottom = 122.0
+rotation = 1.64577
+pivot_offset = Vector2(93, 97)
+mouse_filter = 2
+
+[node name="FrontPart1" type="TextureRect" parent="GearMainContainer/GearGear"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -459.5
+offset_top = -452.0
+offset_right = 459.5
+offset_bottom = 452.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -0.375246
+scale = Vector2(0.2, 0.2)
+pivot_offset = Vector2(459, 452)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+texture = ExtResource("3_f7i4k")
+
+[node name="FrontPart2" type="TextureRect" parent="GearMainContainer/GearGear"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -459.5
+offset_top = -452.0
+offset_right = 459.5
+offset_bottom = 452.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.2, 0.2)
+pivot_offset = Vector2(459, 452)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+texture = ExtResource("4_7scgd")
+
+[node name="FrontPart3" type="TextureRect" parent="GearMainContainer/GearGear"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -372.5
+offset_top = -365.0
+offset_right = 372.5
+offset_bottom = 365.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.2, 0.2)
+pivot_offset = Vector2(372, 365)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+texture = ExtResource("5_kht18")
+
+[node name="FrontPart4" type="TextureRect" parent="GearMainContainer/GearGear"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -307.5
+offset_top = -304.0
+offset_right = 307.5
+offset_bottom = 304.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.2, 0.2)
+pivot_offset = Vector2(307, 304)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+texture = ExtResource("6_pres3")
+
+[node name="FrontPart5" type="TextureRect" parent="GearMainContainer/GearGear"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -234.5
+offset_top = -229.5
+offset_right = 234.5
+offset_bottom = 229.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.2, 0.2)
+pivot_offset = Vector2(234, 229)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+texture = ExtResource("7_wd2hv")
+
+[node name="FrontPart6" type="TextureRect" parent="GearMainContainer/GearGear"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -117.5
+offset_top = -118.0
+offset_right = 117.5
+offset_bottom = 118.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.2, 0.2)
+pivot_offset = Vector2(117, 118)
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+texture = ExtResource("8_pvrgy")

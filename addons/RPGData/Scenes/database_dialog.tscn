@@ -1,0 +1,38 @@
+[gd_scene load_steps=4 format=3 uid="uid://b28cdr6jk0mjt"]
+
+[ext_resource type="PackedScene" uid="uid://0mvvughxedtu" path="res://addons/RPGData/Scenes/main_database.tscn" id="1_7bafh"]
+[ext_resource type="Theme" uid="uid://dlgit3j4ygo54" path="res://addons/RPGData/Assets/Themes/database_theme.tres" id="1_k0xje"]
+[ext_resource type="Script" uid="uid://dihon3jg22qmi" path="res://addons/RPGData/Scripts/database_dialog.gd" id="2_fg3k0"]
+
+[node name="DatabaseDialog" type="Window" groups=["main_database"]]
+process_priority = 20
+process_physics_priority = 20
+oversampling_override = 1.0
+title = "Database"
+position = Vector2i(0, 36)
+size = Vector2i(1680, 1024)
+transient = true
+transient_to_focused = true
+exclusive = true
+min_size = Vector2i(1600, 1024)
+theme = ExtResource("1_k0xje")
+script = ExtResource("2_fg3k0")
+
+[node name="MainDatabase" parent="." instance=ExtResource("1_7bafh")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Timer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 60.0
+
+[connection signal="cancel" from="MainDatabase" to="." method="_on_main_database_cancel"]
+[connection signal="saved" from="MainDatabase" to="." method="_on_main_database_saved"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -1,0 +1,382 @@
+[gd_scene load_steps=28 format=3 uid="uid://u75p1b2dn3yq"]
+
+[ext_resource type="Script" uid="uid://d1qbe60rp3rd0" path="res://addons/CustomControls/event_page_list_editor.gd" id="1_qgd1y"]
+[ext_resource type="PackedScene" uid="uid://7bb05tatss36" path="res://addons/CustomControls/custom_edit_item_list.tscn" id="2_8pm0n"]
+[ext_resource type="Theme" uid="uid://citmmiift6gmg" path="res://addons/CustomControls/Resources/Themes/event_editor_default_theme.tres" id="2_w3fgj"]
+[ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="3_3hynw"]
+[ext_resource type="Script" uid="uid://cqdfwtgdb7is6" path="res://addons/CustomControls/code_script.gd" id="3_xuggb"]
+[ext_resource type="Script" uid="uid://cq8wt1ftsmf0v" path="res://addons/CustomControls/formatter.gd" id="4_21dn8"]
+[ext_resource type="Texture2D" uid="uid://dwcnj2mbl2v2y" path="res://addons/CustomControls/Images/magnifying_glass.png" id="4_fqmnf"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="5_a58qb"]
+[ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="8_pjfad"]
+[ext_resource type="Texture2D" uid="uid://cxgtc7fff3htb" path="res://addons/CustomControls/Images/collapsable_button.png" id="9_kwkeb"]
+[ext_resource type="PackedScene" uid="uid://cq3w1n33om8lf" path="res://addons/CustomControls/favorite_button_command_container.tscn" id="9_oqr0o"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7mjtw"]
+atlas = ExtResource("5_a58qb")
+region = Rect2(120, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ld3bn"]
+atlas = ExtResource("5_a58qb")
+region = Rect2(144, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r7sb2"]
+atlas = ExtResource("5_a58qb")
+region = Rect2(48, 72, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qcaeu"]
+atlas = ExtResource("5_a58qb")
+region = Rect2(48, 96, 24, 24)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_oqr0o"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_21dn8"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kwkeb"]
+
+[sub_resource type="Gradient" id="Gradient_fe4wr"]
+offsets = PackedFloat32Array(0, 0.0181818, 0.0436364, 0.938318, 0.970093, 1)
+colors = PackedColorArray(0.141998, 0.152944, 0.183594, 1, 0.247059, 0.266667, 0.321569, 1, 0.247059, 0.266667, 0.321569, 1, 0.233383, 0.352612, 0.519531, 1, 0.233383, 0.352612, 0.519531, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7k76c"]
+gradient = SubResource("Gradient_fe4wr")
+fill_from = Vector2(0.5, 0)
+fill_to = Vector2(0.5, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_06hq5"]
+texture = SubResource("GradientTexture2D_7k76c")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j1vdx"]
+bg_color = Color(0.207843, 0.207843, 0.207843, 0.635294)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.368627, 0.454902, 0.545098, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y4omh"]
+bg_color = Color(0.423529, 0.423529, 0.423529, 0.34902)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.550262, 0.828809, 0.964844, 1)
+border_blend = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pjfad"]
+atlas = ExtResource("9_kwkeb")
+region = Rect2(0, 0, 19, 19)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oqr0o"]
+atlas = ExtResource("9_kwkeb")
+region = Rect2(19, 0, 19, 19)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3rpwi"]
+atlas = ExtResource("9_kwkeb")
+region = Rect2(0, 19, 19, 19)
+
+[sub_resource type="GDScript" id="GDScript_kwkeb"]
+script/source = "@tool
+extends Tree
+
+
+@export var code_format: Node
+
+
+func get_formated_command(command: RPGEventCommand, font: Font, font_size: int, align: HorizontalAlignment, v_separation: int, index: int) -> Dictionary:
+	
+	if code_format:
+		return code_format.get_formatted_code(command, font, font_size, align, v_separation, index)
+	
+	return {}
+
+
+func build_tree(commands: Array[RPGEventCommand]) -> void:
+	clear()
+	
+	var font = get(\"theme_override_fonts/font\")
+	if !font:
+		font = get_theme_default_font()
+	var font_size = get(\"theme_override_font_sizes/font_size\")
+	if !font_size:
+		font_size = get_theme_default_font_size()
+	var align = HORIZONTAL_ALIGNMENT_LEFT
+	var v_separation = get(\"theme_override_constants/v_separation\")
+	if v_separation == null:
+		v_separation = 0
+	
+	# Crear root item
+	var root = create_item()
+	hide_root = true
+	
+	# Stack para mantener track de los items padre por nivel de indent
+	var parent_stack: Array[TreeItem] = [root]
+	for i in range(commands.size()):
+		var command = commands[i]
+		
+		# Ajustar el stack de padres según el indent actual
+		# El stack debe tener tantos elementos como indent + 1
+		while parent_stack.size() > command.indent + 1:
+			parent_stack.pop_back()
+		
+		# Obtener el padre correcto
+		var parent = parent_stack.back()
+		
+		# Crear el nuevo item
+		var item = create_item(parent)
+		
+		# Configurar el item
+		setup_tree_item(item, command, i, font, font_size, align, v_separation)
+		
+		# Si este comando puede tener hijos (basado en el siguiente comando)
+		# lo agregamos al stack para ser usado como padre
+		if i + 1 < commands.size() and commands[i + 1].indent > command.indent:
+			parent_stack.append(item)
+
+
+func setup_tree_item(item: TreeItem, command: RPGEventCommand, index: int, font: Font, font_size: int, align: int, v_separation: int ) -> void:
+	# Guardar referencia al comando y su índice
+	item.set_metadata(0, {\"command\": command, \"index\": index})
+	
+	var item_formatted = get_formated_command(command, font, font_size, align, v_separation, index)
+	# Configurar texto basado en el código del comando
+	var text = \"\"
+	var texts = item_formatted.phrases[0].texts
+	for o in texts:
+		text += o.text
+	var command_text = str(command)
+	item.set_text(0, text)
+	
+	# Configurar ícono si es necesario
+	var icon = null
+	if icon:
+		item.set_icon(0, icon)
+	
+	# Configurar color o estilo según el tipo de comando
+	var color = Color(item_formatted.phrases[0].texts[0].color)
+	if color != Color.WHITE:
+		item.set_custom_color(0, color)
+	
+	# Configurar si es expandible
+	item.set_collapsed(!command.is_expanded)
+"
+
+[node name="EventPageListEditor" type="Control" node_paths=PackedStringArray("code_script")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_qgd1y")
+main_theme = ExtResource("2_w3fgj")
+code_script = NodePath("CodeScript")
+
+[node name="CodeScript" type="Node" parent="."]
+script = ExtResource("3_xuggb")
+
+[node name="Formatter" type="Node" parent="."]
+script = ExtResource("4_21dn8")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+text = "Find command:"
+
+[node name="Filter" parent="VBoxContainer/HBoxContainer" instance=ExtResource("3_3hynw")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Search for any command in the list that matches this pattern. Use F3 to navigate through all found commands. (You can search by both command name and the content shown in this editor)"
+right_icon = ExtResource("4_fqmnf")
+
+[node name="FindPreviousCommand" type="TextureButton" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Finds the previous command that matches the search pattern [color=red](Shift + F3)[/color]"
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_7mjtw")
+texture_pressed = SubResource("AtlasTexture_ld3bn")
+
+[node name="FindNextCommand" type="TextureButton" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Finds the next command that matches the search pattern [color=red](F3)[/color]"
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_r7sb2")
+texture_pressed = SubResource("AtlasTexture_qcaeu")
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="FastCommands" type="HBoxContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+mouse_filter = 0
+
+[node name="Label" type="Label" parent="VBoxContainer/FastCommands"]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+size_flags_vertical = 0
+text = "Fast Commands:"
+
+[node name="FavoriteButtonScrollContainer" type="ScrollContainer" parent="VBoxContainer/FastCommands"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 41)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 0
+script = ExtResource("8_pjfad")
+metadata/_custom_type_script = "uid://cs6g8remlafby"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/FastCommands/FavoriteButtonScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 22
+theme_override_constants/margin_bottom = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/FastCommands/FavoriteButtonScrollContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FavoriteButtonContainer" parent="VBoxContainer/FastCommands/FavoriteButtonScrollContainer/MarginContainer/VBoxContainer" instance=ExtResource("9_oqr0o")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 0
+
+[node name="HSeparator2" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="EventListContainer" type="ScrollContainer" parent="VBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+clip_children = 2
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer/EventListContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/VBoxContainer/EventListContainer/MarginContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_oqr0o")
+
+[node name="EventPageList" parent="VBoxContainer/VBoxContainer/EventListContainer/MarginContainer/PanelContainer" node_paths=PackedStringArray("code_format") instance=ExtResource("2_8pm0n")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1152, 543)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+tooltip_text = "[title]Page Commands[/title]
+List of commands that will be called when activating this page."
+focus_neighbor_top = NodePath(".")
+focus_neighbor_bottom = NodePath(".")
+focus_next = NodePath(".")
+focus_previous = NodePath(".")
+theme_override_styles/hovered_selected = SubResource("StyleBoxEmpty_21dn8")
+theme_override_styles/hovered_selected_focus = SubResource("StyleBoxEmpty_kwkeb")
+odd_line_color = Color(0.172549, 0.184314, 0.192157, 1)
+event_line_color = Color(0.145098, 0.156863, 0.164706, 1)
+code_format = NodePath("../../../../../../Formatter")
+enabled_action_cursor_texture = SubResource("StyleBoxTexture_06hq5")
+no_editable_cursor_texture = SubResource("StyleBoxFlat_j1vdx")
+disabled_action_cursor = SubResource("StyleBoxFlat_y4omh")
+default_text = "▶"
+default_no_editable_text = "▷"
+scroll_container = NodePath("../../..")
+
+[node name="CollabsableCommands" type="TextureButton" parent="VBoxContainer/VBoxContainer/EventListContainer/MarginContainer/PanelContainer/EventPageList"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_right = 19.0
+offset_bottom = 19.0
+mouse_default_cursor_shape = 2
+toggle_mode = true
+texture_normal = SubResource("AtlasTexture_pjfad")
+texture_pressed = SubResource("AtlasTexture_oqr0o")
+texture_hover = SubResource("AtlasTexture_3rpwi")
+
+[node name="Tree" type="Tree" parent="VBoxContainer/VBoxContainer/EventListContainer/MarginContainer" node_paths=PackedStringArray("code_format")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+script = SubResource("GDScript_kwkeb")
+code_format = NodePath("../../../../../Formatter")
+
+[node name="RightMenu" type="PopupMenu" parent="."]
+unique_name_in_owner = true
+size = Vector2i(231, 286)
+item_count = 13
+item_0/text = "Create new Command"
+item_0/id = 0
+item_1/text = "Edit Command Selected"
+item_1/id = 1
+item_2/id = 2
+item_2/separator = true
+item_3/text = "Copy"
+item_3/id = 3
+item_4/text = "Cut"
+item_4/id = 4
+item_5/text = "Duplicate"
+item_5/id = 5
+item_6/text = "Paste"
+item_6/id = 6
+item_7/text = "Delete"
+item_7/id = 7
+item_8/id = 8
+item_8/separator = true
+item_9/text = "Ignore Commands Selected"
+item_9/id = 9
+item_10/id = 10
+item_10/separator = true
+item_11/text = "Preview Selected Command/s"
+item_11/id = 11
+item_12/text = "Preview Page Commands"
+item_12/id = 12
+
+[connection signal="gui_input" from="VBoxContainer/HBoxContainer/Filter" to="." method="_on_filter_gui_input"]
+[connection signal="text_changed" from="VBoxContainer/HBoxContainer/Filter" to="." method="_on_filter_text_changed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/FindPreviousCommand" to="." method="_on_find_previous_command_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/FindNextCommand" to="." method="_on_find_next_command_pressed"]
+[connection signal="item_rect_changed" from="VBoxContainer/FastCommands/FavoriteButtonScrollContainer/MarginContainer/VBoxContainer/FavoriteButtonContainer" to="." method="_on_favorite_button_container_item_rect_changed"]
+[connection signal="change_position_requested" from="VBoxContainer/VBoxContainer/EventListContainer/MarginContainer/PanelContainer/EventPageList" to="." method="_on_event_page_list_change_position_requested"]
+[connection signal="copy_requested" from="VBoxContainer/VBoxContainer/EventListContainer/MarginContainer/PanelContainer/EventPageList" to="." method="_on_event_page_list_copy_requested"]
+[connection signal="cut_requested" from="VBoxContainer/VBoxContainer/EventListContainer/MarginContainer/PanelContainer/EventPageList" to="." method="_on_event_page_list_cut_requested"]
+[connection signal="delete_pressed" from="VBoxContainer/VBoxContainer/EventListContainer/MarginContainer/PanelContainer/EventPageList" to="." method="_on_event_page_list_delete_pressed"]
+[connection signal="duplicate_requested" from="VBoxContainer/VBoxContainer/EventListContainer/MarginContainer/PanelContainer/EventPageList" to="." method="_on_event_page_list_duplicate_requested"]
+[connection signal="item_activated" from="VBoxContainer/VBoxContainer/EventListContainer/MarginContainer/PanelContainer/EventPageList" to="." method="_on_event_page_list_item_activated"]
+[connection signal="mouse_entered" from="VBoxContainer/VBoxContainer/EventListContainer/MarginContainer/PanelContainer/EventPageList" to="." method="_on_event_page_list_mouse_entered"]
+[connection signal="multi_selected" from="VBoxContainer/VBoxContainer/EventListContainer/MarginContainer/PanelContainer/EventPageList" to="." method="_on_event_page_list_multi_selected"]
+[connection signal="paste_requested" from="VBoxContainer/VBoxContainer/EventListContainer/MarginContainer/PanelContainer/EventPageList" to="." method="_on_event_page_list_paste_requested"]
+[connection signal="right_click" from="VBoxContainer/VBoxContainer/EventListContainer/MarginContainer/PanelContainer/EventPageList" to="." method="_on_event_page_list_right_click"]
+[connection signal="toggled" from="VBoxContainer/VBoxContainer/EventListContainer/MarginContainer/PanelContainer/EventPageList/CollabsableCommands" to="." method="_on_collabsable_commands_toggled"]
+[connection signal="index_pressed" from="RightMenu" to="." method="_on_right_menu_index_pressed"]

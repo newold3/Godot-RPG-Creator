@@ -1,0 +1,361 @@
+[gd_scene load_steps=20 format=3 uid="uid://bjs5ko4skou1v"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_smr4b"]
+[ext_resource type="Script" uid="uid://cn2b6jcax7ivh" path="res://addons/CustomControls/Dialogs/fit_rect_in_screen_dialog.gd" id="2_smr4b"]
+[ext_resource type="PackedScene" uid="uid://bm23t6tab872q" path="res://addons/CustomControls/editable_rect_control.tscn" id="3_dvecd"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="3_mv5t1"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="4_fktbf"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="4_mv5t1"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="4_wj5nw"]
+
+[sub_resource type="Gradient" id="Gradient_vvvrv"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_fg0k8"]
+gradient = SubResource("Gradient_vvvrv")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wj5nw"]
+atlas = ExtResource("3_mv5t1")
+region = Rect2(192, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fktbf"]
+atlas = ExtResource("3_mv5t1")
+region = Rect2(216, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rxbv6"]
+atlas = ExtResource("3_mv5t1")
+region = Rect2(168, 72, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7t0nw"]
+atlas = ExtResource("3_mv5t1")
+region = Rect2(48, 192, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_82pgu"]
+atlas = ExtResource("3_mv5t1")
+region = Rect2(0, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_56aqc"]
+atlas = ExtResource("3_mv5t1")
+region = Rect2(24, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s1ar6"]
+atlas = ExtResource("3_mv5t1")
+region = Rect2(0, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o2uk8"]
+atlas = ExtResource("3_mv5t1")
+region = Rect2(24, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_one3p"]
+atlas = ExtResource("3_mv5t1")
+region = Rect2(48, 24, 24, 24)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mv5t1"]
+bg_color = Color(0.21176471, 0.23921569, 0.2901961, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[node name="FitRectInScreen" type="Window"]
+oversampling_override = 1.0
+title = "Fit Rect In Screen"
+position = Vector2i(0, 36)
+size = Vector2i(1181, 832)
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_smr4b")
+script = ExtResource("2_smr4b")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_fg0k8")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="TopContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TopContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TopContainer/HBoxContainer3"]
+layout_mode = 2
+text = "Set position and size:"
+
+[node name="FlipHorizontal" type="CheckBox" parent="MarginContainer/VBoxContainer/TopContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
+tooltip_text = "Flip the texture horizontally"
+mouse_default_cursor_shape = 2
+text = "Flip Horizontal"
+
+[node name="FlipVertical" type="CheckBox" parent="MarginContainer/VBoxContainer/TopContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+tooltip_text = "Flip the texture vertically."
+mouse_default_cursor_shape = 2
+text = "Flip Vertical"
+
+[node name="EnableAspectRatio" type="CheckBox" parent="MarginContainer/VBoxContainer/TopContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+tooltip_text = "Enables or disables the use of aspect ratio when adjusting the size of the rectangle."
+mouse_default_cursor_shape = 2
+text = "Enable Aspect Ratio"
+
+[node name="Info" type="TextureButton" parent="MarginContainer/VBoxContainer/TopContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Adjust the rectangle to fit the screen by moving it with the mouse or resizing it by dragging its handles or using the mouse wheel. You can also configure other parameters directly, such as flip and aspect ratio."
+mouse_default_cursor_shape = 16
+texture_normal = SubResource("AtlasTexture_wj5nw")
+texture_hover = SubResource("AtlasTexture_fktbf")
+
+[node name="HBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TopContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TopContainer/HBoxContainer2"]
+layout_mode = 2
+alignment = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/TopContainer/HBoxContainer2/HBoxContainer"]
+layout_mode = 2
+text = "Left:"
+
+[node name="MarginLeft" parent="MarginContainer/VBoxContainer/TopContainer/HBoxContainer2/HBoxContainer" instance=ExtResource("4_fktbf")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+tooltip_text = "The selected preset will use these values to fine-tune the final position and size of the preset."
+value = 10.0
+allow_greater = true
+allow_lesser = true
+_custom_value = 10.0
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/TopContainer/HBoxContainer2/HBoxContainer"]
+layout_mode = 2
+text = "Top:"
+
+[node name="MarginTop" parent="MarginContainer/VBoxContainer/TopContainer/HBoxContainer2/HBoxContainer" instance=ExtResource("4_fktbf")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+tooltip_text = "The selected preset will use these values to fine-tune the final position and size of the preset."
+value = 10.0
+allow_greater = true
+allow_lesser = true
+_custom_value = 10.0
+
+[node name="Label4" type="Label" parent="MarginContainer/VBoxContainer/TopContainer/HBoxContainer2/HBoxContainer"]
+layout_mode = 2
+text = "Right:"
+
+[node name="MarginRight" parent="MarginContainer/VBoxContainer/TopContainer/HBoxContainer2/HBoxContainer" instance=ExtResource("4_fktbf")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+tooltip_text = "The selected preset will use these values to fine-tune the final position and size of the preset."
+value = 10.0
+allow_greater = true
+allow_lesser = true
+_custom_value = 10.0
+
+[node name="Label5" type="Label" parent="MarginContainer/VBoxContainer/TopContainer/HBoxContainer2/HBoxContainer"]
+layout_mode = 2
+text = "Bottom:"
+
+[node name="MarginBottom" parent="MarginContainer/VBoxContainer/TopContainer/HBoxContainer2/HBoxContainer" instance=ExtResource("4_fktbf")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+tooltip_text = "The selected preset will use these values to fine-tune the final position and size of the preset."
+value = 10.0
+allow_greater = true
+allow_lesser = true
+_custom_value = 10.0
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/VBoxContainer/TopContainer/HBoxContainer2/HBoxContainer"]
+layout_mode = 2
+
+[node name="Label7" type="Label" parent="MarginContainer/VBoxContainer/TopContainer/HBoxContainer2/HBoxContainer"]
+layout_mode = 2
+text = "Width:"
+
+[node name="Width" parent="MarginContainer/VBoxContainer/TopContainer/HBoxContainer2/HBoxContainer" instance=ExtResource("4_fktbf")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+tooltip_text = "The selected preset will use these values to fine-tune the final position and size of the preset."
+min_value = 1.0
+max_value = 1000.0
+value = 240.0
+allow_greater = true
+_custom_value = 240.0
+
+[node name="Label8" type="Label" parent="MarginContainer/VBoxContainer/TopContainer/HBoxContainer2/HBoxContainer"]
+layout_mode = 2
+text = "Height:"
+
+[node name="Height" parent="MarginContainer/VBoxContainer/TopContainer/HBoxContainer2/HBoxContainer" instance=ExtResource("4_fktbf")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+tooltip_text = "The selected preset will use these values to fine-tune the final position and size of the preset."
+min_value = 1.0
+max_value = 1000.0
+value = 320.0
+allow_greater = true
+_custom_value = 320.0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TopContainer/HBoxContainer2"]
+layout_mode = 2
+alignment = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TopContainer/HBoxContainer2/HBoxContainer2"]
+layout_mode = 2
+text = "Presets:"
+
+[node name="Presets" parent="MarginContainer/VBoxContainer/TopContainer/HBoxContainer2/HBoxContainer2" instance=ExtResource("4_mv5t1")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+tooltip_text = "Select a preset from the list for quick configuration.
+
+[Note]: The margins and sizes assigned to the upper controls will be used to fine-tune the preset."
+selected = 0
+item_count = 10
+popup/item_0/text = "Top Left"
+popup/item_0/id = 0
+popup/item_1/text = "Top Center"
+popup/item_1/id = 1
+popup/item_2/text = "Top Right"
+popup/item_2/id = 2
+popup/item_3/text = "Mid Left"
+popup/item_3/id = 3
+popup/item_4/text = "Mid Center"
+popup/item_4/id = 4
+popup/item_5/text = "Mid Right"
+popup/item_5/id = 5
+popup/item_6/text = "Bottom Left"
+popup/item_6/id = 6
+popup/item_7/text = "Bottom Mid"
+popup/item_7/id = 7
+popup/item_8/text = "Bottom Right"
+popup/item_8/id = 8
+popup/item_9/text = "Custom Presets"
+popup/item_9/id = -1
+popup/item_9/separator = true
+
+[node name="ApplyPreset" type="TextureButton" parent="MarginContainer/VBoxContainer/TopContainer/HBoxContainer2/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Apply the selected preset."
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_rxbv6")
+texture_hover = SubResource("AtlasTexture_7t0nw")
+
+[node name="AddPreset" type="TextureButton" parent="MarginContainer/VBoxContainer/TopContainer/HBoxContainer2/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Save the preset to the preset list. Unlike the default presets, these presets will not use the top controls to fine-tune the final result; instead, they will apply the configuration the image had when the preset was saved."
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_82pgu")
+texture_hover = SubResource("AtlasTexture_56aqc")
+
+[node name="RemovePreset" type="TextureButton" parent="MarginContainer/VBoxContainer/TopContainer/HBoxContainer2/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Remove the selected preset from the list.
+
+[Note]: default presets cannot be deleted; only presets added using the Save Preset button can be removed."
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = SubResource("AtlasTexture_s1ar6")
+texture_hover = SubResource("AtlasTexture_o2uk8")
+texture_disabled = SubResource("AtlasTexture_one3p")
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Contents" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_mv5t1")
+
+[node name="MainControl" parent="MarginContainer/VBoxContainer/Contents" instance=ExtResource("3_dvecd")]
+unique_name_in_owner = true
+clip_contents = true
+custom_minimum_size = Vector2(1152, 640)
+layout_mode = 2
+rect_position = Vector2(100, 100)
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wj5nw")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wj5nw")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+text = "Cancel"
+
+[connection signal="toggled" from="MarginContainer/VBoxContainer/TopContainer/HBoxContainer3/FlipHorizontal" to="." method="_on_flip_horizontal_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/TopContainer/HBoxContainer3/FlipVertical" to="." method="_on_flip_vertical_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/TopContainer/HBoxContainer3/EnableAspectRatio" to="." method="_on_enable_aspect_ratio_toggled"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/TopContainer/HBoxContainer2/HBoxContainer2/Presets" to="." method="_on_presets_item_selected"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/TopContainer/HBoxContainer2/HBoxContainer2/ApplyPreset" to="." method="_on_apply_preset_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/TopContainer/HBoxContainer2/HBoxContainer2/AddPreset" to="." method="_on_add_preset_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/TopContainer/HBoxContainer2/HBoxContainer2/RemovePreset" to="." method="_on_remove_preset_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

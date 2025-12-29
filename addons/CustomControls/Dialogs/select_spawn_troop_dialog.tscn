@@ -1,0 +1,288 @@
+[gd_scene load_steps=31 format=3 uid="uid://b33ggwil4iawi"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_3dk1v"]
+[ext_resource type="Script" uid="uid://cl4aep4oeor50" path="res://addons/CustomControls/Dialogs/select_spawn_troop_dialog.gd" id="2_tm4bq"]
+[ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="3_erxf1"]
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="4_yvgsb"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="5_hpqtg"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="6_44gsk"]
+[ext_resource type="Texture2D" uid="uid://bkfn4ru5noaaa" path="res://addons/CustomControls/Images/button1_background_disabled.png" id="7_ekyii"]
+[ext_resource type="Texture2D" uid="uid://dqnnp323vr1vo" path="res://addons/CustomControls/Images/button1_background_hover.png" id="8_ggvwc"]
+[ext_resource type="Texture2D" uid="uid://beg6i1p118qd" path="res://addons/CustomControls/Images/button1_background_selected.png" id="9_n60cm"]
+[ext_resource type="Texture2D" uid="uid://xl88b63otgpi" path="res://addons/CustomControls/Images/button1_background.png" id="10_cq43s"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_msgrb"]
+
+[sub_resource type="Gradient" id="Gradient_u5yrp"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_yfkk6"]
+gradient = SubResource("Gradient_u5yrp")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8m7xy"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Gradient" id="Gradient_ctwx1"]
+colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_krcus"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vqx47"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_krcus")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0iqtr"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4lguu"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_wdopj"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yfrcm"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_wdopj")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e7jkm"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tobx2"]
+texture = ExtResource("7_ekyii")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ij408"]
+texture = ExtResource("8_ggvwc")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_amguh"]
+texture = ExtResource("9_n60cm")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_n1bjj"]
+texture = ExtResource("10_cq43s")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hgs25"]
+texture = ExtResource("7_ekyii")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_c7emk"]
+texture = ExtResource("8_ggvwc")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4f1bg"]
+texture = ExtResource("9_n60cm")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_eglp3"]
+texture = ExtResource("10_cq43s")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[node name="SelectSpawnTroopDialog" type="Window"]
+title = "Select Troop"
+position = Vector2i(0, 36)
+size = Vector2i(448, 245)
+transient = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_3dk1v")
+script = ExtResource("2_tm4bq")
+
+[node name="Background" type="TextureRect" parent="."]
+material = SubResource("CanvasItemMaterial_msgrb")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_yfkk6")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Troop" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_erxf1")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_8m7xy")
+style1 = SubResource("StyleBoxFlat_8m7xy")
+style2 = SubResource("StyleBoxTexture_vqx47")
+style3 = SubResource("StyleBoxFlat_0iqtr")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Troop"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Troop/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Troop/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Troop"
+
+[node name="ItemID" parent="MarginContainer/VBoxContainer/Troop/MarginContainer/VBoxContainer" instance=ExtResource("4_yvgsb")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Select Troop[/title]
+Select the desired troop from the list of troops available in the database to configure it as part of this region."
+text = "Select a Troop"
+
+[node name="Troop2" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_erxf1")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_4lguu")
+style1 = SubResource("StyleBoxFlat_4lguu")
+style2 = SubResource("StyleBoxTexture_yfrcm")
+style3 = SubResource("StyleBoxFlat_e7jkm")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Troop2"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Troop2/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Troop2/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Occasion"
+
+[node name="Occasion" parent="MarginContainer/VBoxContainer/Troop2/MarginContainer/VBoxContainer" instance=ExtResource("5_hpqtg")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Sets the value related to the occasion or probability of the selected troops being activated in the scene"
+step = 0.01
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("6_44gsk")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+theme_override_styles/disabled = SubResource("StyleBoxTexture_tobx2")
+theme_override_styles/hover = SubResource("StyleBoxTexture_ij408")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_amguh")
+theme_override_styles/normal = SubResource("StyleBoxTexture_n1bjj")
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("6_44gsk")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+theme_override_styles/disabled = SubResource("StyleBoxTexture_hgs25")
+theme_override_styles/hover = SubResource("StyleBoxTexture_c7emk")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_4f1bg")
+theme_override_styles/normal = SubResource("StyleBoxTexture_eglp3")
+text = "CANCEL"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Troop/MarginContainer/VBoxContainer/ItemID" to="." method="_on_item_id_pressed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/Troop2/MarginContainer/VBoxContainer/Occasion" to="." method="_on_occasion_value_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

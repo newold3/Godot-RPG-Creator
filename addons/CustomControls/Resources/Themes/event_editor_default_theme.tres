@@ -1,0 +1,55 @@
+[gd_resource type="Theme" load_steps=6 format=3 uid="uid://citmmiift6gmg"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y4omh"]
+bg_color = Color(0.423529, 0.423529, 0.423529, 0.34902)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.550262, 0.828809, 0.964844, 1)
+border_blend = true
+
+[sub_resource type="Gradient" id="Gradient_fe4wr"]
+offsets = PackedFloat32Array(0, 0.0181818, 0.0436364, 0.938318, 0.970093, 1)
+colors = PackedColorArray(0.141998, 0.152944, 0.183594, 1, 0.247059, 0.266667, 0.321569, 1, 0.247059, 0.266667, 0.321569, 1, 0.233383, 0.352612, 0.519531, 1, 0.233383, 0.352612, 0.519531, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7k76c"]
+gradient = SubResource("Gradient_fe4wr")
+fill_from = Vector2(0.5, 0)
+fill_to = Vector2(0.5, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_06hq5"]
+texture = SubResource("GradientTexture2D_7k76c")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j1vdx"]
+bg_color = Color(0.207843, 0.207843, 0.207843, 0.635294)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.368627, 0.454902, 0.545098, 1)
+
+[resource]
+EventEditor/colors/event_line_color = Color(0.145098, 0.156863, 0.164706, 1)
+EventEditor/colors/odd_line_color = Color(0.172549, 0.184314, 0.192157, 1)
+EventEditor/colors/text_selected_color = Color(1, 1, 1, 1)
+EventEditor/styles/disabled_action_cursor = SubResource("StyleBoxFlat_y4omh")
+EventEditor/styles/enabled_action_cursor_texture = SubResource("StyleBoxTexture_06hq5")
+EventEditor/styles/no_editable_cursor_texture = SubResource("StyleBoxFlat_j1vdx")
+Parameters/colors/color1 = Color(1, 1, 1, 1)
+Parameters/colors/color10 = Color(0.746094, 0.565763, 0.457565, 1)
+Parameters/colors/color100 = Color(0.651523, 0.895436, 0.772442, 1)
+Parameters/colors/color11 = Color(0.902344, 0.867096, 0, 1)
+Parameters/colors/color12 = Color(1, 0, 0, 1)
+Parameters/colors/color13 = Color(0.565398, 0.741233, 0.515031, 1)
+Parameters/colors/color14 = Color(0.470937, 0.640298, 0.421751, 1)
+Parameters/colors/color15 = Color(0.794975, 0.363619, 0.722598, 1)
+Parameters/colors/color2 = Color(0.929412, 0.690196, 0.905882, 1)
+Parameters/colors/color3 = Color(0.777344, 0.777344, 0.777344, 1)
+Parameters/colors/color4 = Color(0.686275, 0.901961, 1, 1)
+Parameters/colors/color5 = Color(1, 0.498039, 0.152941, 1)
+Parameters/colors/color500 = Color(1, 0.492546, 0.359048, 1)
+Parameters/colors/color6 = Color(0.929412, 0.223529, 0.45098, 1)
+Parameters/colors/color7 = Color(0.335983, 0.63974, 0.886719, 1)
+Parameters/colors/color8 = Color(0.522705, 1, 0.28125, 1)
+Parameters/colors/color9 = Color(0.652316, 0.433136, 0.972656, 1)

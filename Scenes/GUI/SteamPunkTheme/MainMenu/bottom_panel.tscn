@@ -1,0 +1,402 @@
+[gd_scene load_steps=13 format=3 uid="uid://bpskwto2as5rb"]
+
+[ext_resource type="Texture2D" uid="uid://bfgr2ewrp6i0u" path="res://Assets/Images/GUI/party_menu.png" id="1_1byn1"]
+[ext_resource type="Script" uid="uid://ckruqmbpvkp1p" path="res://Scenes/GUI/SteamPunkTheme/MainMenu/bottom_panel.gd" id="1_y34wx"]
+[ext_resource type="FontFile" uid="uid://dvh0mi6yu0ywx" path="res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf" id="2_31t1a"]
+[ext_resource type="Script" uid="uid://bhkluedefy5rg" path="res://Scripts/auto_scroll_container.gd" id="3_2hqxu"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2kikc"]
+atlas = ExtResource("1_1byn1")
+region = Rect2(1246, 218, 68, 297)
+
+[sub_resource type="LabelSettings" id="LabelSettings_dbonj"]
+font = ExtResource("2_31t1a")
+font_size = 22
+font_color = Color(1, 0.7176471, 0, 1)
+outline_size = 1
+outline_color = Color(0.99215686, 0.93333334, 0.5803922, 1)
+stacked_outline_count = 1
+stacked_outline_0/size = 5
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2hqxu"]
+atlas = ExtResource("1_1byn1")
+region = Rect2(1521, 190, 187, 3)
+
+[sub_resource type="LabelSettings" id="LabelSettings_uggeo"]
+font = ExtResource("2_31t1a")
+font_size = 22
+font_color = Color(0.7490196, 1, 0, 1)
+outline_size = 3
+outline_color = Color(0.45332462, 0.6690013, 0.30449036, 1)
+stacked_outline_count = 1
+stacked_outline_0/size = 4
+stacked_outline_0/color = Color(0, 0.07016479, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_xb5wn"]
+font = ExtResource("2_31t1a")
+font_size = 22
+font_color = Color(0.9607843, 0.9607843, 0.8627451, 1)
+outline_size = 6
+outline_color = Color(0, 0.3799709, 0.37997088, 1)
+stacked_outline_count = 1
+stacked_outline_0/size = 1
+stacked_outline_0/color = Color(0, 0.019842263, 0.3559271, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_31t1a"]
+atlas = ExtResource("1_1byn1")
+region = Rect2(45, 572, 47, 44)
+
+[sub_resource type="LabelSettings" id="LabelSettings_1byn1"]
+font = ExtResource("2_31t1a")
+font_size = 22
+font_color = Color(0.9607843, 0.9607843, 0.8627451, 1)
+outline_size = 3
+outline_color = Color(0.76, 0.57265997, 0.5396, 0.21176471)
+stacked_outline_count = 1
+stacked_outline_0/size = 4
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1byn1"]
+atlas = ExtResource("1_1byn1")
+region = Rect2(1642, 125, 11, 11)
+
+[node name="BottomMainMenu" type="Control"]
+clip_contents = true
+layout_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -524.00146
+offset_top = -64.0
+offset_right = 478.99854
+offset_bottom = 27.0
+grow_horizontal = 2
+grow_vertical = 0
+pivot_offset = Vector2(165, 180)
+script = ExtResource("1_y34wx")
+
+[node name="MainContainer" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 5.0
+offset_bottom = 5.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="MarginContainer" parent="MainContainer"]
+custom_minimum_size = Vector2(951, 53)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -475.5
+offset_top = -53.0
+offset_right = 475.5
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/margin_top = -43
+theme_override_constants/margin_bottom = 40
+
+[node name="Basckground" type="NinePatchRect" parent="MainContainer/Background"]
+layout_mode = 2
+texture = ExtResource("1_1byn1")
+region_rect = Rect2(1615, 72, 74, 34)
+patch_margin_left = 22
+patch_margin_top = 11
+patch_margin_right = 22
+patch_margin_bottom = 13
+
+[node name="DecorationLeft" type="TextureRect" parent="MainContainer/Background/Basckground"]
+show_behind_parent = true
+layout_mode = 0
+offset_left = -14.0
+offset_top = -8.0
+offset_right = 4.0
+offset_bottom = 32.0
+pivot_offset = Vector2(29, 131)
+texture = SubResource("AtlasTexture_2kikc")
+expand_mode = 1
+flip_h = true
+flip_v = true
+
+[node name="DecorationRight" type="TextureRect" parent="MainContainer/Background/Basckground"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -6.0
+offset_top = -7.0
+offset_right = 12.0
+offset_bottom = 33.0
+grow_horizontal = 0
+pivot_offset = Vector2(-930, 130)
+texture = SubResource("AtlasTexture_2kikc")
+expand_mode = 1
+flip_v = true
+
+[node name="Contents" type="MarginContainer" parent="MainContainer"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 9.0
+offset_right = -10.0
+offset_bottom = 99.0
+grow_horizontal = 2
+theme_override_constants/margin_left = 29
+theme_override_constants/margin_top = -51
+theme_override_constants/margin_right = 28
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/Contents"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Left" type="MarginContainer" parent="MainContainer/Contents/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/Contents/HBoxContainer/Left"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+size_flags_stretch_ratio = 0.35
+alignment = 1
+
+[node name="GoldIcon" type="TextureRect" parent="MainContainer/Contents/HBoxContainer/Left/HBoxContainer"]
+unique_name_in_owner = true
+texture_filter = 1
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_vertical = 4
+expand_mode = 1
+stretch_mode = 5
+
+[node name="GoldNumber" type="Label" parent="MainContainer/Contents/HBoxContainer/Left/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_dbonj")
+
+[node name="GoldLabel" type="Label" parent="MainContainer/Contents/HBoxContainer/Left/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "G"
+label_settings = SubResource("LabelSettings_dbonj")
+
+[node name="Separator" type="Control" parent="MainContainer/Contents/HBoxContainer/Left/HBoxContainer"]
+custom_minimum_size = Vector2(8, 0)
+layout_mode = 2
+
+[node name="MapNameAutoScrollContainer" type="Container" parent="MainContainer/Contents/HBoxContainer/Left/HBoxContainer"]
+unique_name_in_owner = true
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("3_2hqxu")
+scroll_direction = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/Contents/HBoxContainer/Left/HBoxContainer/MapNameAutoScrollContainer"]
+layout_mode = 2
+alignment = 1
+metadata/current_size = Vector2(379, 30)
+metadata/current_size_flags = {
+"h": 1,
+"v": 1
+}
+metadata/base_position = Vector2(0, 0)
+
+[node name="Control" type="Control" parent="MainContainer/Contents/HBoxContainer/Left/HBoxContainer/MapNameAutoScrollContainer/HBoxContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="MainContainer/Contents/HBoxContainer/Left/HBoxContainer/MapNameAutoScrollContainer/HBoxContainer/Control"]
+custom_minimum_size = Vector2(0, 3)
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_2hqxu")
+expand_mode = 1
+
+[node name="MapName" type="Label" parent="MainContainer/Contents/HBoxContainer/Left/HBoxContainer/MapNameAutoScrollContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "MAP NAME"
+label_settings = SubResource("LabelSettings_uggeo")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/current_size = Vector2(88, 23)
+metadata/current_size_flags = {
+"h": 1,
+"v": 4
+}
+metadata/base_position = Vector2(0, 3.5)
+
+[node name="Control2" type="Control" parent="MainContainer/Contents/HBoxContainer/Left/HBoxContainer/MapNameAutoScrollContainer/HBoxContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="MainContainer/Contents/HBoxContainer/Left/HBoxContainer/MapNameAutoScrollContainer/HBoxContainer/Control2"]
+custom_minimum_size = Vector2(0, 3)
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_2hqxu")
+expand_mode = 1
+flip_h = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainContainer/Contents/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = -3
+
+[node name="Separator" type="NinePatchRect" parent="MainContainer/Contents/HBoxContainer/MarginContainer"]
+custom_minimum_size = Vector2(8, 57.925)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("1_1byn1")
+region_rect = Rect2(15, 387, 33, 45)
+patch_margin_top = 5
+patch_margin_bottom = 5
+
+[node name="Right" type="MarginContainer" parent="MainContainer/Contents/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/Contents/HBoxContainer/Right"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+size_flags_stretch_ratio = 0.35
+alignment = 1
+
+[node name="ChapterNameAutoScrollContainer" type="Container" parent="MainContainer/Contents/HBoxContainer/Right/HBoxContainer"]
+unique_name_in_owner = true
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("3_2hqxu")
+scroll_direction = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/Contents/HBoxContainer/Right/HBoxContainer/ChapterNameAutoScrollContainer"]
+layout_mode = 2
+alignment = 1
+metadata/current_size = Vector2(308, 30)
+metadata/current_size_flags = {
+"h": 1,
+"v": 1
+}
+metadata/base_position = Vector2(0, 0)
+
+[node name="Control" type="Control" parent="MainContainer/Contents/HBoxContainer/Right/HBoxContainer/ChapterNameAutoScrollContainer/HBoxContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="MainContainer/Contents/HBoxContainer/Right/HBoxContainer/ChapterNameAutoScrollContainer/HBoxContainer/Control"]
+custom_minimum_size = Vector2(0, 3)
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_2hqxu")
+expand_mode = 1
+
+[node name="ChapterName" type="Label" parent="MainContainer/Contents/HBoxContainer/Right/HBoxContainer/ChapterNameAutoScrollContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "CHAPTER NAME"
+label_settings = SubResource("LabelSettings_xb5wn")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/current_size = Vector2(88, 23)
+metadata/current_size_flags = {
+"h": 1,
+"v": 4
+}
+metadata/base_position = Vector2(0, 3.5)
+
+[node name="Control2" type="Control" parent="MainContainer/Contents/HBoxContainer/Right/HBoxContainer/ChapterNameAutoScrollContainer/HBoxContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="MainContainer/Contents/HBoxContainer/Right/HBoxContainer/ChapterNameAutoScrollContainer/HBoxContainer/Control2"]
+custom_minimum_size = Vector2(0, 3)
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_2hqxu")
+expand_mode = 1
+flip_h = true
+
+[node name="TimeIcon" type="TextureRect" parent="MainContainer/Contents/HBoxContainer/Right/HBoxContainer"]
+texture_filter = 1
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_vertical = 4
+texture = SubResource("AtlasTexture_31t1a")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="GameTimeValue" type="Label" parent="MainContainer/Contents/HBoxContainer/Right/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "12H : 30M "
+label_settings = SubResource("LabelSettings_1byn1")
+
+[node name="DecorationTopLeft" type="TextureRect" parent="MainContainer"]
+layout_mode = 1
+offset_left = 26.001465
+offset_top = -5.0
+offset_right = 37.001465
+offset_bottom = 6.0
+size_flags_horizontal = 0
+size_flags_vertical = 4
+texture = SubResource("AtlasTexture_1byn1")
+
+[node name="DecorationTopRight" type="TextureRect" parent="MainContainer"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -38.0
+offset_top = -5.0
+offset_right = -27.0
+offset_bottom = 6.0
+grow_horizontal = 0
+size_flags_horizontal = 0
+size_flags_vertical = 4
+texture = SubResource("AtlasTexture_1byn1")
+flip_h = true

@@ -1,0 +1,50 @@
+[gd_scene load_steps=8 format=3 uid="uid://bx6k2su2g3pj"]
+
+[ext_resource type="Script" uid="uid://5hcle8mhnw8w" path="res://addons/tile_bit_tools/controls/tbt_plugin_control/tbt_plugin_control.gd" id="1_6xv2q"]
+[ext_resource type="Script" uid="uid://owkts80rgcn3" path="res://addons/tile_bit_tools/controls/tbt_plugin_control/template_manager.gd" id="2_aj7pp"]
+[ext_resource type="PackedScene" uid="uid://job5gqt1xbrh" path="res://addons/tile_bit_tools/controls/tbt_plugin_control/popups/save_template_dialog.tscn" id="3_p4ion"]
+[ext_resource type="PackedScene" uid="uid://cyxr6y64lkue6" path="res://addons/tile_bit_tools/controls/tbt_plugin_control/popups/edit_template_dialog.tscn" id="4_qymya"]
+[ext_resource type="Script" uid="uid://b5oqby5gbc5br" path="res://addons/tile_bit_tools/controls/tbt_plugin_control/tiles_manager.gd" id="5_v5epd"]
+[ext_resource type="Script" uid="uid://bxgdwx73kuya7" path="res://addons/tile_bit_tools/controls/tbt_plugin_control/theme_updater.gd" id="6_mie0u"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3by6e"]
+content_margin_left = 24.0
+content_margin_top = 24.0
+content_margin_right = 24.0
+content_margin_bottom = 24.0
+bg_color = Color(0.21, 0.24, 0.29, 1)
+border_width_top = 48
+border_color = Color(0.21, 0.24, 0.29, 1)
+corner_detail = 5
+expand_margin_top = 48.0
+shadow_color = Color(0, 0, 0, 0.3)
+shadow_size = 8
+anti_aliasing = false
+
+[node name="TBTPlugin" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_6xv2q")
+
+[node name="TemplateManager" type="Node" parent="."]
+script = ExtResource("2_aj7pp")
+
+[node name="TilesManager" type="Node" parent="."]
+script = ExtResource("5_v5epd")
+
+[node name="ThemeUpdater" type="Control" parent="."]
+anchors_preset = 0
+script = ExtResource("6_mie0u")
+
+[node name="SaveDialogContainer" type="Control" parent="."]
+anchors_preset = 0
+
+[node name="SaveTemplateDialog" parent="SaveDialogContainer" instance=ExtResource("3_p4ion")]
+visible = false
+theme_override_styles/embedded_border = SubResource("StyleBoxFlat_3by6e")
+
+[node name="EditDialogContainer" type="Control" parent="."]
+anchors_preset = 0
+
+[node name="EditTemplateDialog" parent="EditDialogContainer" instance=ExtResource("4_qymya")]
+theme_override_styles/embedded_border = SubResource("StyleBoxFlat_3by6e")

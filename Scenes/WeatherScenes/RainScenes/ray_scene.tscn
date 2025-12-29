@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://c7ffx4d3r5ff2"]
+
+[ext_resource type="Script" uid="uid://fy2h2pd2tobs" path="res://Scenes/WeatherScenes/default_weather_script.gd" id="1_50fra"]
+
+[sub_resource type="Gradient" id="Gradient_vbvn4"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(1, 1, 1, 0.458824)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_4d5eq"]
+gradient = SubResource("Gradient_vbvn4")
+width = 1152
+height = 648
+
+[node name="RayScene" type="Sprite2D"]
+centered = false
+script = ExtResource("1_50fra")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+unique_name_in_owner = true
+transparent_bg = true
+size = Vector2i(1152, 640)
+
+[node name="MainSprite" type="Sprite2D" parent="SubViewport"]
+unique_name_in_owner = true
+texture = SubResource("GradientTexture2D_4d5eq")
+centered = false

@@ -1,0 +1,532 @@
+[gd_scene load_steps=20 format=3 uid="uid://c8ca1gmcbbb86"]
+
+[ext_resource type="Texture2D" uid="uid://duu13dsov6vp5" path="res://Assets/Images/GUI/main_gui.png" id="1_b6kvl"]
+[ext_resource type="Texture2D" uid="uid://bfgr2ewrp6i0u" path="res://Assets/Images/GUI/party_menu.png" id="2_4ah3h"]
+[ext_resource type="Script" uid="uid://su8issw8cg3s" path="res://Scenes/GUI/SteamPunkTheme/SaveLoad/panel_scene.gd" id="2_tj3jl"]
+[ext_resource type="PackedScene" uid="uid://b8w1hsyuscqit" path="res://Scenes/GUI/magic_label.tscn" id="3_tj3jl"]
+[ext_resource type="Texture2D" uid="uid://ctljrqn00k7g2" path="res://Assets/Resourcers/Gradients/light_yellow.tres" id="5_x3our"]
+[ext_resource type="Texture2D" uid="uid://bif6k76ngqhic" path="res://Assets/Images/Other/gold_icon.png" id="8_nq44c"]
+[ext_resource type="Shader" uid="uid://byvruuuuqrdn8" path="res://Assets/Shaders/simple_gradient.gdshader" id="9_ie2hq"]
+[ext_resource type="FontFile" uid="uid://dvh0mi6yu0ywx" path="res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf" id="10_wd31h"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mby50"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ho65x"]
+atlas = ExtResource("2_4ah3h")
+region = Rect2(1871, 518, 302, 107)
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_t6sup"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_an46y"]
+atlas = ExtResource("1_b6kvl")
+region = Rect2(43, 575, 214, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_brgku"]
+atlas = ExtResource("1_b6kvl")
+region = Rect2(363, 559, 33, 33)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_omr7l"]
+atlas = ExtResource("1_b6kvl")
+region = Rect2(315, 545, 8, 110)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vjcfd"]
+atlas = ExtResource("1_b6kvl")
+region = Rect2(271, 576, 11, 8)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_a1nji"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w6ka3"]
+atlas = ExtResource("1_b6kvl")
+region = Rect2(193, 273, 118, 127)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_x3our"]
+resource_local_to_scene = true
+shader = ExtResource("9_ie2hq")
+shader_parameter/gradient_texture = ExtResource("5_x3our")
+shader_parameter/use_text_gradient = true
+shader_parameter/size = Vector2(69, 25)
+shader_parameter/use_pixelate_gradient = true
+shader_parameter/pixel_scale = 3.202000104595
+shader_parameter/brightness = 0.999999977648
+
+[sub_resource type="LabelSettings" id="LabelSettings_kta0e"]
+resource_local_to_scene = true
+font = ExtResource("10_wd31h")
+font_size = 14
+outline_size = 4
+outline_color = Color(1, 0.36249995, 0.14999998, 1)
+stacked_outline_count = 4
+stacked_outline_0/size = 3
+stacked_outline_0/color = Color(0.23, 0.23, 0.23, 1)
+stacked_outline_1/size = 3
+stacked_outline_1/color = Color(0.3729816, 0.17604151, 0.020792797, 1)
+stacked_outline_2/size = 6
+stacked_outline_2/color = Color(0.18874526, 0.059626155, 6.016344e-08, 1)
+stacked_outline_3/size = 8
+
+[node name="SaveLoadPanel" type="NinePatchRect"]
+custom_minimum_size = Vector2(0, 150)
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 150.0
+grow_horizontal = 2
+focus_mode = 1
+mouse_filter = 0
+mouse_default_cursor_shape = 2
+texture = ExtResource("1_b6kvl")
+region_rect = Rect2(436, 94, 110, 132)
+patch_margin_left = 31
+patch_margin_top = 21
+patch_margin_right = 31
+patch_margin_bottom = 28
+script = ExtResource("2_tj3jl")
+
+[node name="ContentsContainer" type="MarginContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(0, 75)
+mouse_filter = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="ContentsContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 20
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ContentsContainer/MarginContainer2"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Column1" type="PanelContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_mby50")
+
+[node name="MapFrame" type="TextureRect" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column1"]
+z_index = 1
+custom_minimum_size = Vector2(164, 0)
+layout_mode = 2
+mouse_filter = 2
+texture = SubResource("AtlasTexture_ho65x")
+expand_mode = 1
+
+[node name="Polygon2D" type="Polygon2D" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column1/MapFrame"]
+show_behind_parent = true
+clip_children = 1
+polygon = PackedVector2Array(4, 4, 158, 4, 162, 11, 163, 21, 163, 93, 161, 105, 152, 105, 8, 106, 2, 103, 1, 13)
+uv = PackedVector2Array(4, 4, 158, 4, 162, 11, 163, 21, 162, 96, 160, 103, 148, 103, 4, 103, 1, 94, 1, 13)
+
+[node name="Map" type="TextureRect" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column1/MapFrame/Polygon2D"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(164, 108)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 164.0
+offset_bottom = 108.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("PlaceholderTexture2D_t6sup")
+expand_mode = 1
+
+[node name="Separator1" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer"]
+custom_minimum_size = Vector2(18, 0)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Column2" type="PanelContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_mby50")
+
+[node name="MarginContainer" type="MarginContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = -20
+theme_override_constants/margin_right = -8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Top" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 31)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Separator1" type="TextureRect" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/MarginContainer/VBoxContainer"]
+texture_repeat = 2
+layout_mode = 2
+mouse_filter = 2
+texture = SubResource("AtlasTexture_an46y")
+stretch_mode = 1
+
+[node name="Mid" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Separator2" type="TextureRect" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/MarginContainer/VBoxContainer"]
+texture_repeat = 2
+layout_mode = 2
+mouse_filter = 2
+texture = SubResource("AtlasTexture_an46y")
+stretch_mode = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Separator1" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/HBoxContainer/VBoxContainer2"]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="ChapterName" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/HBoxContainer/VBoxContainer2" instance=ExtResource("3_tj3jl")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+mouse_filter = 2
+label_text = "Title"
+text_gradient = ExtResource("5_x3our")
+horizontal_align = 0
+
+[node name="Separator2" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/HBoxContainer/VBoxContainer2"]
+custom_minimum_size = Vector2(0, 28)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
+
+[node name="ClockIcon" type="TextureRect" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/HBoxContainer/VBoxContainer2/HBoxContainer"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+mouse_filter = 2
+texture = SubResource("AtlasTexture_brgku")
+expand_mode = 1
+stretch_mode = 3
+
+[node name="Timer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/HBoxContainer/VBoxContainer2/HBoxContainer" instance=ExtResource("3_tj3jl")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+label_text = "00H:00M:00S"
+text_gradient = ExtResource("5_x3our")
+horizontal_align = 0
+
+[node name="Separator" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/HBoxContainer"]
+custom_minimum_size = Vector2(12, 0)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Column3" type="PanelContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_mby50")
+
+[node name="MarginContainer" type="MarginContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column3"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_top = -3
+theme_override_constants/margin_bottom = -8
+
+[node name="TextureRect" type="TextureRect" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column3/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+texture = SubResource("AtlasTexture_omr7l")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column3"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Separator1" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column3/VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Decoration1" type="TextureRect" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column3/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+texture = SubResource("AtlasTexture_vjcfd")
+
+[node name="Separator2" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column3/VBoxContainer"]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Decoration2" type="TextureRect" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column3/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+texture = SubResource("AtlasTexture_vjcfd")
+
+[node name="Separator3" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column3/VBoxContainer"]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Decoration3" type="TextureRect" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column3/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+texture = SubResource("AtlasTexture_vjcfd")
+
+[node name="Column4" type="PanelContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer"]
+custom_minimum_size = Vector2(252, 0)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_mby50")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/margin_top = 65
+theme_override_constants/margin_right = -3
+
+[node name="Separator1" type="TextureRect" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/VBoxContainer/MarginContainer"]
+texture_repeat = 2
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+texture = SubResource("AtlasTexture_an46y")
+stretch_mode = 1
+
+[node name="Separator" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TimerContainer" type="PanelContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_a1nji")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Separator1" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/HBoxContainer"]
+custom_minimum_size = Vector2(6, 0)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="HeroContainer" type="HBoxContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/HBoxContainer/VBoxContainer2"]
+unique_name_in_owner = true
+modulate = Color(0.86898494, 0.8689849, 0.8689849, 1)
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+mouse_filter = 2
+alignment = 2
+
+[node name="Separator" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/HBoxContainer/VBoxContainer2"]
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TimerContainer" type="HBoxContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/separation = 10
+alignment = 2
+
+[node name="Gold" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/HBoxContainer/VBoxContainer2/TimerContainer" instance=ExtResource("3_tj3jl")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+label_text = "0"
+text_gradient = ExtResource("5_x3our")
+horizontal_align = 2
+
+[node name="ClockIcon" type="TextureRect" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/HBoxContainer/VBoxContainer2/TimerContainer"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("8_nq44c")
+expand_mode = 1
+stretch_mode = 3
+
+[node name="Separator2" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/HBoxContainer"]
+custom_minimum_size = Vector2(12, 0)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="NoDataContainer" type="MarginContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 48
+theme_override_constants/margin_bottom = 24
+
+[node name="Control" type="Control" parent="NoDataContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="ChapterName" parent="NoDataContainer/Control" instance=ExtResource("3_tj3jl")]
+modulate = Color(1, 1, 1, 0.24705882)
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = -28.0
+offset_right = 956.0
+offset_bottom = 92.0
+grow_horizontal = 1
+grow_vertical = 1
+mouse_filter = 2
+label_text = "NO DATA"
+text_gradient = ExtResource("5_x3our")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -24.0
+offset_top = -31.0
+offset_right = 24.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/margin_bottom = -17
+metadata/_edit_lock_ = true
+metadata/_edit_group_ = true
+
+[node name="Gear" type="TextureRect" parent="MarginContainer"]
+unique_name_in_owner = true
+z_index = 1
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+mouse_filter = 2
+texture = SubResource("AtlasTexture_w6ka3")
+expand_mode = 1
+
+[node name="SlotPosition" type="Control" parent="."]
+unique_name_in_owner = true
+anchors_preset = 0
+mouse_filter = 2
+
+[node name="Slot" type="NinePatchRect" parent="."]
+unique_name_in_owner = true
+z_index = 2
+layout_mode = 1
+offset_top = 6.0
+offset_right = 84.0
+offset_bottom = 46.0
+texture = ExtResource("1_b6kvl")
+region_rect = Rect2(866, 562, 44, 54)
+patch_margin_left = 35
+patch_margin_top = 10
+patch_margin_right = 36
+patch_margin_bottom = 9
+
+[node name="MarginContainer" type="MarginContainer" parent="Slot"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 7
+theme_override_constants/margin_top = 11
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 11
+
+[node name="MarginContainer2" type="MarginContainer" parent="Slot/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 11
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 11
+theme_override_constants/margin_bottom = 13
+
+[node name="SlotName" parent="Slot/MarginContainer/MarginContainer2" instance=ExtResource("3_tj3jl")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(69, 25)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+label_text = "AUTO SAVE"
+text_gradient = ExtResource("5_x3our")
+
+[node name="ButtonName" parent="Slot/MarginContainer/MarginContainer2/SlotName" index="0"]
+material = SubResource("ShaderMaterial_x3our")
+offset_right = 69.0
+offset_bottom = 25.0
+pivot_offset = Vector2(34.5, 12.5)
+theme_override_font_sizes/font_size = 14
+text = "AUTO SAVE"
+min_font_size = 1
+
+[node name="Outline" parent="Slot/MarginContainer/MarginContainer2/SlotName/ButtonName" index="0"]
+offset_right = 69.0
+offset_bottom = 25.0
+pivot_offset = Vector2(34.5, 12.5)
+theme_override_font_sizes/font_size = 14
+text = "AUTO SAVE"
+label_settings = SubResource("LabelSettings_kta0e")
+
+[node name="Cursor" type="NinePatchRect" parent="."]
+unique_name_in_owner = true
+visible = false
+modulate = Color(1, 1, 1, 0.8223774)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_b6kvl")
+region_rect = Rect2(737, 536, 110, 132)
+patch_margin_left = 18
+patch_margin_top = 18
+patch_margin_right = 17
+patch_margin_bottom = 20
+
+[editable path="Slot/MarginContainer/MarginContainer2/SlotName"]

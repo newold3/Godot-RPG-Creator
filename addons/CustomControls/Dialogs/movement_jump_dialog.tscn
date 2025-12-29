@@ -1,0 +1,291 @@
+[gd_scene load_steps=26 format=3 uid="uid://dbv5hldy3r5dq"]
+
+[ext_resource type="Script" uid="uid://b8sf2x73gw1o" path="res://addons/CustomControls/Dialogs/movement_jump_dialog.gd" id="1_snilr"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="2_aqu6e"]
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="3_bfrnl"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="3_bvqg3"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="4_6a4wd"]
+[ext_resource type="Texture2D" uid="uid://bkfn4ru5noaaa" path="res://addons/CustomControls/Images/button1_background_disabled.png" id="4_yefml"]
+[ext_resource type="Texture2D" uid="uid://dqnnp323vr1vo" path="res://addons/CustomControls/Images/button1_background_hover.png" id="5_q2p51"]
+[ext_resource type="Texture2D" uid="uid://beg6i1p118qd" path="res://addons/CustomControls/Images/button1_background_selected.png" id="6_0uw0i"]
+[ext_resource type="Texture2D" uid="uid://xl88b63otgpi" path="res://addons/CustomControls/Images/button1_background.png" id="7_4i67j"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_u11f1"]
+
+[sub_resource type="Gradient" id="Gradient_u5yrp"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_6yyp3"]
+gradient = SubResource("Gradient_u5yrp")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ci7ec"]
+atlas = ExtResource("4_6a4wd")
+region = Rect2(48, 72, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f87ss"]
+atlas = ExtResource("4_6a4wd")
+region = Rect2(48, 96, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bfrnl"]
+atlas = ExtResource("4_6a4wd")
+region = Rect2(0, 216, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6a4wd"]
+atlas = ExtResource("4_6a4wd")
+region = Rect2(24, 216, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ms2cw"]
+atlas = ExtResource("4_6a4wd")
+region = Rect2(216, 96, 24, 24)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qiqap"]
+texture = ExtResource("4_yefml")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7qdgr"]
+texture = ExtResource("5_q2p51")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mjylh"]
+texture = ExtResource("6_0uw0i")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_subod"]
+texture = ExtResource("7_4i67j")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hfo07"]
+texture = ExtResource("4_yefml")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4sujn"]
+texture = ExtResource("5_q2p51")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5stfh"]
+texture = ExtResource("6_0uw0i")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_maa40"]
+texture = ExtResource("7_4i67j")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[node name="MovementJumpDialog" type="Window"]
+title = "Jump To"
+position = Vector2i(0, 36)
+size = Vector2i(640, 180)
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+script = ExtResource("1_snilr")
+
+[node name="Background" type="TextureRect" parent="."]
+material = SubResource("CanvasItemMaterial_u11f1")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_6yyp3")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "X:  "
+
+[node name="X" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("2_aqu6e")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Jump from the character's current position as many horizontal tiles as specified here.
+
+[Note]: Positive values will result in a movement of X tiles to the right, and negative values in a movement of X tiles to the left."
+allow_greater = true
+allow_lesser = true
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Y:  "
+
+[node name="Y" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("2_aqu6e")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Jump from the character's current position as many vertical tiles as specified here.
+
+[Note]: Positive values will result in a movement of Y tiles downward, and negative values in a movement of Y tiles upward."
+allow_greater = true
+allow_lesser = true
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FXContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer4/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4/VBoxContainer/FXContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Start jump FX:"
+
+[node name="StartFx" parent="MarginContainer/VBoxContainer/HBoxContainer4/VBoxContainer/FXContainer" instance=ExtResource("3_bfrnl")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Selects the \"sound\" that will be played when this action is executed.
+
+[Note]: Middle click to erase FX"
+text = "Select an fx"
+
+[node name="PlayButton" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer4/VBoxContainer/FXContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "[title]Play Audio[/title]
+Plays the audio specified in filename."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_ci7ec")
+texture_hover = SubResource("AtlasTexture_f87ss")
+
+[node name="FXContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer4/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4/VBoxContainer/FXContainer2"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "End jump FX:"
+
+[node name="EndFx" parent="MarginContainer/VBoxContainer/HBoxContainer4/VBoxContainer/FXContainer2" instance=ExtResource("3_bfrnl")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Selects the \"sound\" that will be played when this action is executed.
+
+[Note]: Middle click to erase FX"
+text = "Select an fx"
+
+[node name="PlayButton" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer4/VBoxContainer/FXContainer2"]
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "[title]Play Audio[/title]
+Plays the audio specified in filename."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_ci7ec")
+texture_hover = SubResource("AtlasTexture_f87ss")
+
+[node name="MakeDefaultJumpFxs" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Converts the selected sounds to default sounds for the current session. Any new jump commands created will have these sounds selected by default.
+
+[Note]: If the star is red, it means that the selected sounds match the ones saved as default values."
+mouse_default_cursor_shape = 2
+toggle_mode = true
+texture_normal = SubResource("AtlasTexture_bfrnl")
+texture_pressed = SubResource("AtlasTexture_6a4wd")
+texture_hover = SubResource("AtlasTexture_ms2cw")
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("3_bvqg3")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+theme_override_styles/disabled = SubResource("StyleBoxTexture_qiqap")
+theme_override_styles/hover = SubResource("StyleBoxTexture_7qdgr")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_mjylh")
+theme_override_styles/normal = SubResource("StyleBoxTexture_subod")
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("3_bvqg3")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+theme_override_styles/disabled = SubResource("StyleBoxTexture_hfo07")
+theme_override_styles/hover = SubResource("StyleBoxTexture_4sujn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_5stfh")
+theme_override_styles/normal = SubResource("StyleBoxTexture_maa40")
+text = "CANCEL"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+
+[connection signal="middle_click_pressed" from="MarginContainer/VBoxContainer/HBoxContainer4/VBoxContainer/FXContainer/StartFx" to="." method="_on_start_fx_middle_click_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer4/VBoxContainer/FXContainer/StartFx" to="." method="_on_start_fx_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer4/VBoxContainer/FXContainer/PlayButton" to="." method="_on_play_button_pressed" binds= [0]]
+[connection signal="middle_click_pressed" from="MarginContainer/VBoxContainer/HBoxContainer4/VBoxContainer/FXContainer2/EndFx" to="." method="_on_end_fx_middle_click_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer4/VBoxContainer/FXContainer2/EndFx" to="." method="_on_end_fx_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer4/VBoxContainer/FXContainer2/PlayButton" to="." method="_on_play_button_pressed" binds= [1]]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/HBoxContainer4/MakeDefaultJumpFxs" to="." method="_on_make_default_jump_fxs_toggled"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/CancelButton" to="." method="_on_cancel_button_pressed"]

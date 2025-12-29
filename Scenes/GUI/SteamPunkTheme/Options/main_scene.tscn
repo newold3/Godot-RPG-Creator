@@ -1,0 +1,389 @@
+[gd_scene load_steps=28 format=3 uid="uid://blg3j1imwfeog"]
+
+[ext_resource type="Theme" uid="uid://ctpmflgnlpkjg" path="res://Assets/Themes/in_game_theme2.tres" id="1_7w535"]
+[ext_resource type="Script" uid="uid://c70281lpw3v0q" path="res://Scenes/GUI/base_animatable_window.gd" id="2_3l877"]
+[ext_resource type="Texture2D" uid="uid://du5ul2f1bik77" path="res://Assets/Images/GUI/main_background.png" id="3_thond"]
+[ext_resource type="VideoStream" uid="uid://bbbient0hh724" path="res://Assets/Videos/steampunk_loop.ogv" id="4_2v5ym"]
+[ext_resource type="Script" uid="uid://4in2twhppcmd" path="res://Scenes/GUI/auto_video_start.gd" id="5_snj7y"]
+[ext_resource type="Shader" uid="uid://b6j6rqcd377px" path="res://Assets/Shaders/tunnel.gdshader" id="6_cf2cn"]
+[ext_resource type="Texture2D" uid="uid://d24112ogy8wc6" path="res://Assets/Images/GUI/window2_background2.png" id="7_k52og"]
+[ext_resource type="Texture2D" uid="uid://dmx2v3ccts2ne" path="res://Assets/Images/Particles/simple_particle1.png" id="8_vsa2j"]
+[ext_resource type="Texture2D" uid="uid://duu13dsov6vp5" path="res://Assets/Images/GUI/main_gui.png" id="9_fmap8"]
+[ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="10_lcxnp"]
+[ext_resource type="PackedScene" uid="uid://ci04emvcqy7ts" path="res://Scenes/GUI/SteamPunkTheme/Options/options_scene.tscn" id="11_02shx"]
+[ext_resource type="Shader" uid="uid://ba78odfkakk1o" path="res://Assets/Shaders/realistic_crt.gdshader" id="12_rws8x"]
+[ext_resource type="PackedScene" uid="uid://c6iv6fidh4be8" path="res://Scenes/GUI/SteamPunkTheme/CommonScenes/menu_title_container.tscn" id="13_0ypiy"]
+[ext_resource type="Script" uid="uid://capl3nbl7whnu" path="res://Scenes/GUI/custom_draw_button.gd" id="14_wahvc"]
+[ext_resource type="FontFile" uid="uid://dvh0mi6yu0ywx" path="res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf" id="15_rb32g"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uf41i"]
+shader = ExtResource("6_cf2cn")
+shader_parameter/resolution = Vector2(512, 512)
+shader_parameter/tex = ExtResource("7_k52og")
+shader_parameter/speed = 0.6
+shader_parameter/stretch = 1.0
+shader_parameter/zoom = 0.9
+shader_parameter/final_alpha = 0.5
+shader_parameter/shape_base_model = 1
+shader_parameter/shape_target_model = 0
+shader_parameter/shape_mix_strength = 0.4
+shader_parameter/rotation_speed = 0.301001
+shader_parameter/star_points = 3
+shader_parameter/polygon_sides = 19
+shader_parameter/use_pulse_animation = false
+shader_parameter/pulse_frequency = 1.94
+shader_parameter/pulse_amplitude = 0.97
+shader_parameter/brightness = 0.7
+
+[sub_resource type="Curve" id="Curve_asak7"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.354244, 0.206815), 0.0, 0.0, 0, 0, Vector2(0.516605, 1), 0.0, 0.0, 0, 0, Vector2(0.734317, 0.732171), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 5
+
+[sub_resource type="CurveTexture" id="CurveTexture_asak7"]
+curve = SubResource("Curve_asak7")
+
+[sub_resource type="Curve" id="Curve_pco8h"]
+_data = [Vector2(0.0147601, 0), 0.0, 0.0, 0, 0, Vector2(0.0941176, 0.319897), -0.974762, -0.974762, 0, 0, Vector2(0.99999, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_uf41i"]
+curve = SubResource("Curve_pco8h")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_frhsu"]
+particle_flag_rotate_y = true
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(450, 249.235, 1)
+angle_min = -114.3
+angle_max = 159.4
+velocity_pivot = Vector3(3.63, -63.455, 0)
+direction = Vector3(8.24, 17.32, 0)
+spread = 180.0
+initial_velocity_max = 100.0
+angular_velocity_min = -1.60933e-05
+angular_velocity_max = 254.12
+gravity = Vector3(0, -3, 0)
+linear_accel_min = -2.23517e-06
+linear_accel_max = 61.76
+scale_max = 8.0
+scale_curve = SubResource("CurveTexture_uf41i")
+alpha_curve = SubResource("CurveTexture_asak7")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f0lb0"]
+atlas = ExtResource("9_fmap8")
+region = Rect2(689, 319, 35, 35)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6hbqa"]
+shader = ExtResource("12_rws8x")
+shader_parameter/resolution = Vector2(1152, 648)
+shader_parameter/scan_line_amount = 0.319
+shader_parameter/warp_amount = 0.154
+shader_parameter/noise_amount = 0.03
+shader_parameter/interference_amount = 0.2
+shader_parameter/grille_amount = 0.1
+shader_parameter/grille_size = 1.0
+shader_parameter/vignette_amount = 0.762
+shader_parameter/vignette_intensity = 0.276
+shader_parameter/aberation_amount = 0.0
+shader_parameter/roll_line_amount = 0.046
+shader_parameter/roll_speed = 1.0
+shader_parameter/scan_line_strength = -8.832
+shader_parameter/pixel_strength = -2.0
+shader_parameter/final_alpha = 1.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_775h8"]
+atlas = ExtResource("9_fmap8")
+region = Rect2(387, 285, 104, 104)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3mno1"]
+atlas = ExtResource("9_fmap8")
+region = Rect2(504, 285, 104, 104)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6hbqa"]
+atlas = ExtResource("9_fmap8")
+region = Rect2(504, 285, 104, 104)
+
+[sub_resource type="LabelSettings" id="LabelSettings_eyll5"]
+font = ExtResource("15_rb32g")
+font_size = 22
+font_color = Color(1, 0.7764706, 0.44313726, 1)
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+stacked_outline_count = 2
+stacked_outline_0/size = 1
+stacked_outline_0/color = Color(0.21230483, 0.21230483, 0.21230483, 1)
+stacked_outline_1/size = 4
+
+[node name="GameOptionsScene" type="Control"]
+clip_contents = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -0.00024414063
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(575.9999, 320)
+theme = ExtResource("1_7w535")
+script = ExtResource("2_3l877")
+scene_title = "OPTIONS"
+move_in_direction = 2
+move_in_trans_type = 5
+move_in_duration = 0.35
+move_out_direction = 3
+move_out_ease_type = 0
+move_out_trans_type = 5
+move_out_duration = 0.2
+zoom_in_start = 1.2
+zoom_in_trans_type = 5
+zoom_in_duration = 0.2
+zoom_out_end = 0.91
+zoom_out_ease_type = 0
+zoom_out_trans_type = 5
+auto_play_on_start = true
+metadata/_custom_type_script = "uid://c70281lpw3v0q"
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_thond")
+expand_mode = 1
+
+[node name="VideoBackground" type="VideoStreamPlayer" parent="."]
+modulate = Color(0.15543266, 0.022490876, 0.005312801, 1)
+layout_mode = 0
+offset_left = -40.0
+offset_right = 1192.0
+offset_bottom = 655.0
+stream = ExtResource("4_2v5ym")
+autoplay = true
+expand = true
+loop = true
+script = ExtResource("5_snj7y")
+
+[node name="BackgroundEffect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_uf41i")
+layout_mode = 0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 1148.0
+offset_bottom = 636.0
+color = Color(1, 1, 1, 0)
+
+[node name="ParticleContainer" type="Control" parent="."]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 13.0
+offset_top = 15.0
+offset_right = -13.0
+offset_bottom = -14.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="ParticleContainer"]
+z_index = 1
+position = Vector2(483, 287.5)
+amount = 200
+texture = ExtResource("8_vsa2j")
+lifetime = 8.0
+preprocess = 8.0
+speed_scale = 0.1
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_frhsu")
+
+[node name="BackgroundDecorationContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 18
+
+[node name="BackgroundDecorationTopLeft" type="TextureRect" parent="BackgroundDecorationContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = SubResource("AtlasTexture_f0lb0")
+
+[node name="BackgroundDecorationTopRight" type="TextureRect" parent="BackgroundDecorationContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+texture = SubResource("AtlasTexture_f0lb0")
+
+[node name="BackgroundDecorationBottomLeft" type="TextureRect" parent="BackgroundDecorationContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+texture = SubResource("AtlasTexture_f0lb0")
+
+[node name="BackgroundDecorationBottomRight" type="TextureRect" parent="BackgroundDecorationContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+texture = SubResource("AtlasTexture_f0lb0")
+
+[node name="MainContainer" type="MarginContainer" parent="."]
+z_index = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 64
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 64
+
+[node name="ContentsContainer" type="MarginContainer" parent="MainContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="MainContainer/ContentsContainer"]
+layout_mode = 2
+vertical_scroll_mode = 4
+script = ExtResource("10_lcxnp")
+use_custom_vertical_scroll = true
+custom_vscroll_size = Vector2(12, 420)
+custom_vscroll_offset = Vector2(1033, 22.32)
+metadata/_custom_type_script = "uid://cs6g8remlafby"
+
+[node name="OptionsScene" parent="MainContainer/ContentsContainer/SmoothScrollContainer" node_paths=PackedStringArray("back_button", "tooltip_label", "clip_container") instance=ExtResource("11_02shx")]
+layout_mode = 2
+back_button = NodePath("../../../../BackButton")
+tooltip_label = NodePath("../../../../MarginContainer/TooltipLabel")
+clip_container = NodePath("../..")
+early_tree_exited_timer = 0.45
+
+[node name="CRTEffect" type="ColorRect" parent="MainContainer/ContentsContainer"]
+modulate = Color(0.763958, 0.893715, 0.952629, 1)
+material = SubResource("ShaderMaterial_6hbqa")
+layout_mode = 2
+mouse_filter = 2
+metadata/_edit_lock_ = true
+
+[node name="TopFrame" type="NinePatchRect" parent="MainContainer"]
+layout_mode = 2
+texture = ExtResource("9_fmap8")
+region_rect = Rect2(89, 69, 212, 153)
+patch_margin_left = 68
+patch_margin_top = 61
+patch_margin_right = 68
+patch_margin_bottom = 61
+metadata/_edit_lock_ = true
+
+[node name="Title" type="Control" parent="MainContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="TitleContainer" parent="MainContainer/Title" instance=ExtResource("13_0ypiy")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -5.0
+offset_right = 160.0
+offset_bottom = 35.0
+grow_horizontal = 2
+grow_vertical = 2
+title = "OPTIONS"
+initial_position = Vector2(-160, -90)
+end_position = Vector2(-160, -5)
+
+[node name="BackButton" type="Control" parent="."]
+unique_name_in_owner = true
+z_index = 5
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -96.0
+offset_top = -116.0
+offset_right = -32.0
+offset_bottom = -52.0
+grow_horizontal = 0
+grow_vertical = 0
+pivot_offset = Vector2(32, 32)
+size_flags_horizontal = 0
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath(".")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath(".")
+focus_next = NodePath(".")
+focus_previous = NodePath(".")
+focus_mode = 1
+mouse_default_cursor_shape = 2
+script = ExtResource("14_wahvc")
+normal_texture = SubResource("AtlasTexture_775h8")
+normal_hover_texture = SubResource("AtlasTexture_3mno1")
+pressed_texture = SubResource("AtlasTexture_3mno1")
+pressed_hover_texture = SubResource("AtlasTexture_6hbqa")
+content_justification = 1
+min_texture_size_no_pressed = Vector2(86, 86)
+min_texture_size_pressed = Vector2(86, 86)
+manage_mouse_click = false
+on_hover_animation = 4
+on_hover_selected_animation = 4
+on_pressed_animation = 11
+preview_animation = 11
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 80
+theme_override_constants/margin_top = 580
+theme_override_constants/margin_right = 115
+theme_override_constants/margin_bottom = 20
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
+
+[node name="TooltipLabel" type="Label" parent="MarginContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 0.7764706, 0.44313726, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5764706)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("15_rb32g")
+theme_override_font_sizes/font_size = 22
+label_settings = SubResource("LabelSettings_eyll5")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="animation_out_finished" from="." to="." method="queue_free"]
+[connection signal="early_tree_exited" from="MainContainer/ContentsContainer/SmoothScrollContainer/OptionsScene" to="." method="emit_signal_early_tree_exited"]
+[connection signal="end" from="MainContainer/ContentsContainer/SmoothScrollContainer/OptionsScene" to="." method="animate_out"]
+[connection signal="starting_end" from="MainContainer/ContentsContainer/SmoothScrollContainer/OptionsScene" to="MainContainer/Title/TitleContainer" method="end"]

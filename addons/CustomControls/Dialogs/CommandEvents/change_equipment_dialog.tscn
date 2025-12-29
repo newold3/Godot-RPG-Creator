@@ -1,0 +1,217 @@
+[gd_scene load_steps=16 format=3 uid="uid://dw5ls2vmm4kng"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_idwuj"]
+[ext_resource type="Script" uid="uid://qemkpt8etbq1" path="res://addons/CustomControls/Dialogs/CommandEvents/change_equipment_dialog.gd" id="2_vwwrn"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="4_b86cx"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="5_ngqqp"]
+[ext_resource type="Texture2D" uid="uid://xl88b63otgpi" path="res://addons/CustomControls/Images/button1_background.png" id="6_sv4x6"]
+[ext_resource type="Texture2D" uid="uid://dqnnp323vr1vo" path="res://addons/CustomControls/Images/button1_background_hover.png" id="7_snbpg"]
+[ext_resource type="Texture2D" uid="uid://beg6i1p118qd" path="res://addons/CustomControls/Images/button1_background_selected.png" id="8_f0wev"]
+[ext_resource type="Texture2D" uid="uid://bkfn4ru5noaaa" path="res://addons/CustomControls/Images/button1_background_disabled.png" id="9_3nn78"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_erns2"]
+
+[sub_resource type="Gradient" id="Gradient_1r81o"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_2105m"]
+gradient = SubResource("Gradient_1r81o")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jfd0k"]
+texture = ExtResource("6_sv4x6")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3ldxg"]
+texture = ExtResource("8_f0wev")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cr2q0"]
+texture = ExtResource("7_snbpg")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nv5ev"]
+texture = ExtResource("9_3nn78")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[node name="ChangeEquipmentDialog" type="Window"]
+oversampling_override = 1.0
+title = "Change Equipment"
+position = Vector2i(0, 36)
+size = Vector2i(448, 270)
+transient = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_idwuj")
+script = ExtResource("2_vwwrn")
+
+[node name="Background" type="TextureRect" parent="."]
+material = SubResource("CanvasItemMaterial_erns2")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_2105m")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Actor:"
+
+[node name="ActorOptions" parent="MarginContainer/VBoxContainer" instance=ExtResource("4_b86cx")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "[title]Actor[/title]
+Character whose equipment will be changed."
+text_overrun_behavior = 3
+selected = 0
+fit_to_longest_item = false
+item_count = 5
+popup/item_0/text = "1: Aiden"
+popup/item_0/id = 0
+popup/item_1/text = "2: Elara"
+popup/item_1/id = 1
+popup/item_2/text = "3: Thorne"
+popup/item_2/id = 2
+popup/item_3/text = "4: Lyra"
+popup/item_3/id = 3
+popup/item_4/text = "5: Gideon"
+popup/item_4/id = 4
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Equipment Slot:"
+
+[node name="EquipmentTypeOptions" parent="MarginContainer/VBoxContainer" instance=ExtResource("4_b86cx")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "[title]Equipment Slot[/title]
+Type of equipment to be modified."
+text_overrun_behavior = 3
+selected = 0
+fit_to_longest_item = false
+item_count = 8
+popup/item_0/text = "1: Weapon"
+popup/item_0/id = 0
+popup/item_1/text = "2: Shield"
+popup/item_1/id = 1
+popup/item_2/text = "3: Head"
+popup/item_2/id = 2
+popup/item_3/text = "4: Body"
+popup/item_3/id = 3
+popup/item_4/text = "5: Gloves"
+popup/item_4/id = 4
+popup/item_5/text = "6: Pants"
+popup/item_5/id = 5
+popup/item_6/text = "7: Boots"
+popup/item_6/id = 6
+popup/item_7/text = "8: Accesory"
+popup/item_7/id = 7
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Equippable Item:"
+
+[node name="ItemOptions" parent="MarginContainer/VBoxContainer" instance=ExtResource("4_b86cx")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "[title]Equippable Item[/title]
+Item that will be equipped in the selected slot.
+
+[Note]: The selected character must be able to equip this item. If this item is of the “none” type, the item can be equipped by anyone."
+text_overrun_behavior = 3
+selected = 0
+fit_to_longest_item = false
+item_count = 12
+popup/item_0/text = "None"
+popup/item_0/id = 0
+popup/item_1/text = "Crystal Ball"
+popup/item_1/id = 1
+popup/item_2/text = "Initiate's Claw"
+popup/item_2/id = 2
+popup/item_3/text = "Apprentice Rod"
+popup/item_3/id = 3
+popup/item_4/text = "Training Flail"
+popup/item_4/id = 4
+popup/item_5/text = "Training Lance"
+popup/item_5/id = 5
+popup/item_6/text = "Practice Bow"
+popup/item_6/id = 6
+popup/item_7/text = "Logger's Friend"
+popup/item_7/id = 7
+popup/item_8/text = "Merchant's Friend"
+popup/item_8/id = 8
+popup/item_9/text = "Leather Whip"
+popup/item_9/id = 9
+popup/item_10/text = "Iron Will"
+popup/item_10/id = 10
+popup/item_11/text = "Militia Crossbow"
+popup/item_11/id = 11
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_ngqqp")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+theme_override_styles/normal = SubResource("StyleBoxTexture_jfd0k")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_3ldxg")
+theme_override_styles/hover = SubResource("StyleBoxTexture_cr2q0")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_nv5ev")
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_ngqqp")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+theme_override_styles/normal = SubResource("StyleBoxTexture_jfd0k")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_3ldxg")
+theme_override_styles/hover = SubResource("StyleBoxTexture_cr2q0")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_nv5ev")
+text = "CANCEL"
+
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/EquipmentTypeOptions" to="." method="_on_equipment_type_options_item_selected"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

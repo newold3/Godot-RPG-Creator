@@ -1,0 +1,60 @@
+[gd_scene load_steps=8 format=3 uid="uid://x2wevuepen3r"]
+
+[ext_resource type="PackedScene" uid="uid://ckrmqq6qvlduj" path="res://Scenes/GUI/SteamPunkTheme/base_window_for_scenes.tscn" id="1_imucp"]
+[ext_resource type="PackedScene" uid="uid://btukkwgj56o14" path="res://Scenes/OtherScenes/credits.tscn" id="2_kwcvy"]
+[ext_resource type="Shader" uid="uid://byvruuuuqrdn8" path="res://Assets/Shaders/simple_gradient.gdshader" id="3_o6qh8"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_pibqg"]
+viewport_path = NodePath("SceneMainContainer/BottomLayer/SubViewport")
+
+[sub_resource type="Gradient" id="Gradient_7pgcd"]
+offsets = PackedFloat32Array(0, 0.480132, 1)
+colors = PackedColorArray(0.400572, 0.989488, 0.704254, 1, 0.0856886, 0.234656, 0.163843, 1, 0.125463, 0.303639, 0.184808, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_nayjj"]
+gradient = SubResource("Gradient_7pgcd")
+fill_from = Vector2(0.5, 0.474)
+fill_to = Vector2(0.5, 0.897436)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pibqg"]
+resource_local_to_scene = true
+shader = ExtResource("3_o6qh8")
+shader_parameter/gradient_texture = SubResource("GradientTexture2D_nayjj")
+shader_parameter/use_text_gradient = true
+shader_parameter/size = Vector2(0, 0)
+shader_parameter/use_pixelate_gradient = true
+shader_parameter/pixel_scale = 12.0
+shader_parameter/brightness = 1.0
+
+[node name="BaseAnimatableWindow" instance=ExtResource("1_imucp")]
+
+[node name="Background" parent="SceneMainContainer/BottomLayer" index="1"]
+texture = SubResource("ViewportTexture_pibqg")
+
+[node name="GPUParticles2D" parent="SceneMainContainer/BottomLayer/ParticleContainer" index="0"]
+position = Vector2(545, 296)
+
+[node name="CreditsScene" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer" index="0" node_paths=PackedStringArray("back_button") instance=ExtResource("2_kwcvy")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+rich_gradient_shader = SubResource("ShaderMaterial_pibqg")
+back_button = NodePath("../../../../BackButton")
+early_tree_exited_timer = 0.45
+
+[node name="Title" parent="SceneMainContainer/MainContainer" index="2"]
+mouse_filter = 2
+
+[node name="TitleContainer" parent="SceneMainContainer/MainContainer/Title" index="0"]
+mouse_filter = 2
+title = "CREDITS"
+
+[node name="BackButton" parent="SceneMainContainer" index="3"]
+on_hover_selected_animation = 4
+
+[node name="ToolTipLayers" parent="SceneMainContainer" index="4"]
+mouse_filter = 2
+
+[connection signal="early_tree_exited" from="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/CreditsScene" to="." method="emit_signal_early_tree_exited"]
+[connection signal="end" from="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/CreditsScene" to="." method="animate_out"]
+[connection signal="starting_end" from="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/CreditsScene" to="SceneMainContainer/MainContainer/Title/TitleContainer" method="end"]

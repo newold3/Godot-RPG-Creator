@@ -1,0 +1,80 @@
+[gd_scene load_steps=6 format=3 uid="uid://c8j4gm2va2bbr"]
+
+[ext_resource type="Script" uid="uid://byu3y88ykmvs2" path="res://Scenes/GUI/SteamPunkTheme/MainMenu/party_menu.gd" id="1_h5wlt"]
+[ext_resource type="Theme" uid="uid://ctpmflgnlpkjg" path="res://Assets/Themes/in_game_theme2.tres" id="1_mq5s8"]
+[ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="3_ls1jh"]
+[ext_resource type="PackedScene" uid="uid://dw4la7k3nennr" path="res://Scenes/GUI/SteamPunkTheme/MainMenu/hero_panel.tscn" id="4_b2wum"]
+
+[sub_resource type="Curve" id="Curve_jn3jj"]
+_data = [Vector2(0, 0), 0.0, 1.4, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[node name="PartyMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("1_mq5s8")
+script = ExtResource("1_h5wlt")
+
+[node name="MainContainer" type="ScrollContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+script = ExtResource("3_ls1jh")
+curve = SubResource("Curve_jn3jj")
+instant_scroll_duration = 0.25
+use_custom_vertical_scroll = true
+custom_vscroll_size = Vector2(12, 606.37)
+custom_vscroll_offset = Vector2(1033, 22.32)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="MainContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_right = 10
+
+[node name="HeroPanelContainer" type="VBoxContainer" parent="MainContainer/VBoxContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/separation = 18
+
+[node name="HeroPanel" parent="MainContainer/VBoxContainer/MarginContainer/HeroPanelContainer" instance=ExtResource("4_b2wum")]
+layout_mode = 2
+
+[node name="HeroPanel2" parent="MainContainer/VBoxContainer/MarginContainer/HeroPanelContainer" instance=ExtResource("4_b2wum")]
+layout_mode = 2
+
+[node name="HeroPanel3" parent="MainContainer/VBoxContainer/MarginContainer/HeroPanelContainer" instance=ExtResource("4_b2wum")]
+layout_mode = 2
+
+[node name="HeroPanel4" parent="MainContainer/VBoxContainer/MarginContainer/HeroPanelContainer" instance=ExtResource("4_b2wum")]
+layout_mode = 2
+
+[node name="HeroPanel5" parent="MainContainer/VBoxContainer/MarginContainer/HeroPanelContainer" instance=ExtResource("4_b2wum")]
+layout_mode = 2
+
+[node name="VerticalExtraSize" type="Control" parent="MainContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+mouse_filter = 2

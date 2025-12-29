@@ -1,0 +1,467 @@
+[gd_scene load_steps=37 format=3 uid="uid://bsxuuc0k0r88d"]
+
+[ext_resource type="PackedScene" uid="uid://pc2xir2w2ox2" path="res://addons/RPGData/Scenes/panel_title.tscn" id="1_fdgky"]
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_upq1t"]
+[ext_resource type="Script" uid="uid://drmus0gpqwmv" path="res://addons/CustomControls/Dialogs/select_animation_dialog.gd" id="1_x18nt"]
+[ext_resource type="PackedScene" uid="uid://m1iixxkyrur5" path="res://addons/CustomControls/custom_simple_item_list.tscn" id="2_dgyex"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="3_q5klu"]
+[ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="3_wjxsi"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="4_708xm"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="5_577u8"]
+[ext_resource type="Texture2D" uid="uid://bnfb7u5j2x4pq" path="res://addons/CustomControls/Images/loading_icon.png" id="8_ouqjl"]
+
+[sub_resource type="Gradient" id="Gradient_1hthp"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7jhxa"]
+gradient = SubResource("Gradient_1hthp")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mf6lk"]
+atlas = ExtResource("4_708xm")
+region = Rect2(96, 144, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_na4nj"]
+atlas = ExtResource("4_708xm")
+region = Rect2(96, 168, 24, 24)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0bcoq"]
+resource_local_to_scene = true
+content_margin_left = 3.0
+content_margin_right = 3.0
+bg_color = Color(1, 1, 1, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pftt0"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="Gradient" id="Gradient_3quc6"]
+offsets = PackedFloat32Array(0, 0.369535, 1)
+colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_mtkxg"]
+gradient = SubResource("Gradient_3quc6")
+fill_from = Vector2(0.547009, 1)
+fill_to = Vector2(0.559829, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_p3wem"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_w3kxn"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="GDScript" id="GDScript_v27am"]
+script/source = "@tool
+extends EffekseerEmitter2D
+
+func _process(delta: float) -> void:
+	# Forces EffekseerEmitter2D to update in tool mode
+	queue_redraw()
+"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wkjry"]
+atlas = ExtResource("8_ouqjl")
+region = Rect2(600, 300, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_goxh6"]
+atlas = ExtResource("8_ouqjl")
+region = Rect2(0, 0, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uwjbp"]
+atlas = ExtResource("8_ouqjl")
+region = Rect2(300, 0, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qe788"]
+atlas = ExtResource("8_ouqjl")
+region = Rect2(600, 0, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n0ojs"]
+atlas = ExtResource("8_ouqjl")
+region = Rect2(900, 0, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o15lp"]
+atlas = ExtResource("8_ouqjl")
+region = Rect2(0, 300, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jbx63"]
+atlas = ExtResource("8_ouqjl")
+region = Rect2(300, 300, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dbb1o"]
+atlas = ExtResource("8_ouqjl")
+region = Rect2(900, 300, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g0vwv"]
+atlas = ExtResource("8_ouqjl")
+region = Rect2(0, 600, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p71ux"]
+atlas = ExtResource("8_ouqjl")
+region = Rect2(300, 600, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_enu6e"]
+atlas = ExtResource("8_ouqjl")
+region = Rect2(600, 600, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2eurm"]
+atlas = ExtResource("8_ouqjl")
+region = Rect2(900, 600, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_km4c5"]
+atlas = ExtResource("8_ouqjl")
+region = Rect2(0, 900, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o8kil"]
+atlas = ExtResource("8_ouqjl")
+region = Rect2(300, 900, 300, 300)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_bm6gw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wkjry")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_goxh6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uwjbp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qe788")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n0ojs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o15lp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jbx63")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dbb1o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g0vwv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p71ux")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_enu6e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2eurm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_km4c5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o8kil")
+}],
+"loop": true,
+"name": &"default",
+"speed": 15.0
+}]
+
+[sub_resource type="GDScript" id="GDScript_sxqn7"]
+script/source = "@tool
+extends AnimatedSprite2D
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	play(\"default\")
+
+
+func _process(delta: float) -> void:
+	queue_redraw()
+"
+
+[node name="SelectAnimationDialog" type="Window"]
+title = "Select Animation"
+position = Vector2i(0, 36)
+size = Vector2i(750, 480)
+transient = true
+exclusive = true
+min_size = Vector2i(750, 480)
+theme = ExtResource("1_upq1t")
+script = ExtResource("1_x18nt")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_7jhxa")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.45
+
+[node name="PanelTitle" parent="MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer" instance=ExtResource("1_fdgky")]
+layout_mode = 2
+text = "Animations"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Filter:"
+
+[node name="Filter" parent="MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer/HBoxContainer" instance=ExtResource("3_wjxsi")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Actor Name[/title]
+Enter a text to filter the list of animations."
+
+[node name="ClearFilterButton" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "[title[Clear Filter[/filter]
+Clears the entered text filter."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_mf6lk")
+texture_hover = SubResource("AtlasTexture_na4nj")
+
+[node name="MainList" parent="MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer" instance=ExtResource("2_dgyex")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "[title]Animations List[/title]
+Contains the list of animations."
+theme_override_constants/v_separation = -1
+theme_override_styles/focus = SubResource("StyleBoxFlat_0bcoq")
+theme_override_styles/panel = SubResource("StyleBoxFlat_0bcoq")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_pftt0")
+theme_override_styles/selected = SubResource("StyleBoxTexture_p3wem")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_w3kxn")
+odd_line_color = Color(0.172549, 0.184314, 0.192157, 1)
+event_line_color = Color(0.145098, 0.156863, 0.164706, 1)
+
+[node name="UpdatingCache" type="ColorRect" parent="MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer/MainList"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.501961)
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer/MainList/UpdatingCache"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "UPDATING
+CACHE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+text = "Scale:"
+
+[node name="ScaleSpinBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/HBoxContainer" instance=ExtResource("5_577u8")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Animation Scale[/title]
+Change the scale of the animation.
+
+[Tip]: You can use the mouse wheel to zoom by placing the mouse on the animation canvas. Holding down the \"Control\" key while using the wheel will change the speed of the animation."
+min_value = 0.1
+max_value = 500.0
+step = 0.1
+value = 125.0
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+text = "Animation Speed:"
+
+[node name="AnimationSpeedSpinBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/HBoxContainer" instance=ExtResource("5_577u8")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Animation Speed[/title]
+Changes the animation playback speed."
+min_value = 0.1
+max_value = 5.0
+step = 0.01
+value = 1.0
+
+[node name="AnimationsBackground" type="ColorRect" parent="MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer2"]
+clip_children = 2
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color(0, 0, 0, 1)
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/AnimationsBackground"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="EffekseerEmitter2D" type="EffekseerEmitter2D" parent="MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/AnimationsBackground/Control"]
+unique_name_in_owner = true
+process_mode = 3
+scale = Vector2(125, 125)
+script = SubResource("GDScript_v27am")
+
+[node name="SceneAnimations" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/AnimationsBackground/Control"]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+
+[node name="UpdatingCache2" type="ColorRect" parent="MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/AnimationsBackground/Control"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.501961)
+
+[node name="Loading" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/AnimationsBackground/Control/UpdatingCache2"]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/AnimationsBackground/Control/UpdatingCache2/Loading"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.403922)
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/AnimationsBackground/Control/UpdatingCache2/Loading/ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/AnimationsBackground/Control/UpdatingCache2/Loading/ColorRect/Control"]
+unique_name_in_owner = true
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_bm6gw")
+autoplay = "default"
+frame_progress = 0.551615
+script = SubResource("GDScript_sxqn7")
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/AnimationsBackground/Control/UpdatingCache2/Loading/ColorRect/Control"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -160.0
+offset_top = 31.95
+offset_right = 160.0
+offset_bottom = 57.9501
+grow_horizontal = 2
+grow_vertical = 0
+text = "One moment please, looking for files"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_q5klu")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_q5klu")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+text = "Cancel"
+
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer/HBoxContainer/Filter" to="." method="_on_filter_text_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer/HBoxContainer/ClearFilterButton" to="." method="_on_clear_filter_button_pressed"]
+[connection signal="item_activated" from="MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer/MainList" to="." method="_on_main_list_item_activated"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer/MainList" to="." method="_on_main_list_item_selected"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/HBoxContainer/ScaleSpinBox" to="." method="_on_scale_spin_box_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/HBoxContainer/AnimationSpeedSpinBox" to="." method="_on_animation_speed_spin_box_value_changed"]
+[connection signal="gui_input" from="MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/AnimationsBackground" to="." method="_on_animations_background_gui_input"]
+[connection signal="finished" from="MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/AnimationsBackground/Control/EffekseerEmitter2D" to="." method="_on_effekseer_emitter_2d_finished"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

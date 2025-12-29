@@ -1,0 +1,235 @@
+[gd_scene load_steps=26 format=3 uid="uid://du3ba85wapl8t"]
+
+[ext_resource type="Script" uid="uid://vblwqlxpcifn" path="res://addons/RPGData/Scripts/terms_panel.gd" id="1_ggf3v"]
+[ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="2_5xcjv"]
+[ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="3_soxgs"]
+[ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="3_u3vo0"]
+[ext_resource type="Texture2D" uid="uid://dwcnj2mbl2v2y" path="res://addons/CustomControls/Images/magnifying_glass.png" id="4_0qk3h"]
+[ext_resource type="PackedScene" uid="uid://dxcyqc2dscbvw" path="res://addons/CustomControls/custom_simple_column_item_list.tscn" id="4_n0dqb"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="5_pfj2n"]
+
+[sub_resource type="Gradient" id="Gradient_aj5s8"]
+offsets = PackedFloat32Array(0, 0.374126, 1)
+colors = PackedColorArray(0.396078, 0, 0, 1, 0.230469, 0.00810242, 0.00810242, 1, 0.396078, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_wm4d8"]
+gradient = SubResource("Gradient_aj5s8")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_moko2"]
+texture = SubResource("GradientTexture2D_wm4d8")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0fgwc"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0vmlt"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Gradient" id="Gradient_ctwx1"]
+colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_xvsyn"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pdijf"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_xvsyn")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w8bh8"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c424u"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="Curve" id="Curve_gwuns"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 1.4, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_rnk21"]
+colors = PackedColorArray(0.333333, 0.352941, 0.360784, 1, 0.380392, 0.4, 0.407843, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_6h5ai"]
+gradient = SubResource("Gradient_rnk21")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4hkyf"]
+texture = SubResource("GradientTexture2D_6h5ai")
+
+[sub_resource type="Gradient" id="Gradient_8k375"]
+offsets = PackedFloat32Array(0, 0.369535, 1)
+colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_v6eua"]
+gradient = SubResource("Gradient_8k375")
+fill_from = Vector2(0.547009, 1)
+fill_to = Vector2(0.559829, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pfj2n"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_v6eua")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_27vw3"]
+bg_color = Color(0, 0, 0, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+
+[node name="TermsPanel" type="HBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 8
+script = ExtResource("1_ggf3v")
+terms_title_style = SubResource("StyleBoxTexture_moko2")
+
+[node name="MainColumn" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_0fgwc")
+
+[node name="MarginContainer" type="MarginContainer" parent="MainColumn"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="CustomPanel" parent="MainColumn/MarginContainer" instance=ExtResource("2_5xcjv")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_0vmlt")
+style1 = SubResource("StyleBoxFlat_0vmlt")
+style2 = SubResource("StyleBoxTexture_pdijf")
+style3 = SubResource("StyleBoxFlat_w8bh8")
+
+[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/CustomPanel"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="PanelContainer" type="PanelContainer" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_c424u")
+
+[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Filter:"
+
+[node name="Filter" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_soxgs")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+right_icon = ExtResource("4_0qk3h")
+
+[node name="FastSelection" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_pfj2n")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "[title]Diagonal Movement Mode[/title]
+Character will prioritize vertical or horizontal direction when moving diagonally or maintain direction before starting to move diagonally"
+
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Term List:"
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("3_u3vo0")
+curve = SubResource("Curve_gwuns")
+
+[node name="TermList" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/SmoothScrollContainer" instance=ExtResource("4_n0dqb")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
+event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
+top_bar_style = SubResource("StyleBoxTexture_4hkyf")
+cursor_style = SubResource("StyleBoxTexture_pfj2n")
+panel_style = SubResource("StyleBoxFlat_27vw3")
+columns = 2
+names = PackedStringArray("Type", "Text")
+sizes = PackedInt32Array(300, 0)
+placeholder_text = "Add User Message..."
+enable_multiselection = true
+deselect_when_lost_focus = true
+itemlist_tooltip = "[title]Term List[/title]
+List of Words / Phrases Used in Different Parts of the Game"
+
+[connection signal="gui_input" from="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Filter" to="." method="_on_filter_gui_input"]
+[connection signal="text_changed" from="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Filter" to="." method="_on_filter_text_changed"]
+[connection signal="item_selected" from="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/FastSelection" to="." method="_on_fast_selection_item_selected"]
+[connection signal="delete_pressed" from="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/SmoothScrollContainer/TermList" to="." method="_on_term_list_delete_pressed"]
+[connection signal="item_activated" from="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/SmoothScrollContainer/TermList" to="." method="_on_term_list_item_activated"]

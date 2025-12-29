@@ -1,0 +1,3885 @@
+[gd_scene load_steps=1211 format=3 uid="uid://k67oy71ms1gr"]
+
+[ext_resource type="Script" uid="uid://b3s26mqepn4g1" path="res://Scenes/DialogTemplates/dialog_2.gd" id="1_jr68p"]
+[ext_resource type="Texture2D" uid="uid://c6e2fpc4odlxb" path="res://Assets/Images/Other/dialog_skin3_background2.png" id="2_1h2jf"]
+[ext_resource type="Texture2D" uid="uid://c6wvfq54y4rvs" path="res://Assets/Images/Other/dialog_skin3.png" id="4_ibhxx"]
+[ext_resource type="Script" uid="uid://d35nuhq2h2las" path="res://addons/CustomControls/Resources/RichTextEffects/ColorMod.gd" id="5_hvoys"]
+[ext_resource type="Script" uid="uid://brxpkqd4scuuk" path="res://addons/CustomControls/Resources/RichTextEffects/Cuss.gd" id="6_ibhxx"]
+[ext_resource type="Texture2D" uid="uid://cbf7lmadauhf2" path="res://Assets/Images/Other/dialog_skin3_name_box.png" id="7_g05o1"]
+[ext_resource type="Script" uid="uid://d0rdiy48vo4kb" path="res://addons/CustomControls/Resources/RichTextEffects/ghost.gd" id="7_hgap5"]
+[ext_resource type="Script" uid="uid://wlvhpgoqeeac" path="res://addons/CustomControls/Resources/RichTextEffects/Heart.gd" id="8_fkq5o"]
+[ext_resource type="Script" uid="uid://cq5sn2f8csx84" path="res://addons/CustomControls/Resources/RichTextEffects/Jump.gd" id="9_40utf"]
+[ext_resource type="Script" uid="uid://ct3xyr2mvr3y" path="res://addons/CustomControls/Resources/RichTextEffects/L33T.gd" id="10_jithr"]
+[ext_resource type="Script" uid="uid://cpf2gv4ymksw8" path="res://addons/CustomControls/Resources/RichTextEffects/Nervous.gd" id="11_s6v8s"]
+[ext_resource type="Script" uid="uid://dn7p1k5t6fwbj" path="res://addons/CustomControls/Resources/RichTextEffects/Number.gd" id="12_26f5c"]
+[ext_resource type="Script" uid="uid://df311ymgk4drn" path="res://addons/CustomControls/Resources/RichTextEffects/Rain.gd" id="13_0tlgo"]
+[ext_resource type="Script" uid="uid://bgiieuiehu4eo" path="res://addons/CustomControls/Resources/RichTextEffects/Sparkle.gd" id="14_0f481"]
+[ext_resource type="Script" uid="uid://mi6qjc28vviy" path="res://addons/CustomControls/Resources/RichTextEffects/UwU.gd" id="15_wmg55"]
+[ext_resource type="Script" uid="uid://b5xanxibidtwu" path="res://addons/CustomControls/Resources/RichTextEffects/Woo.gd" id="16_cn5dj"]
+[ext_resource type="Script" uid="uid://ccq80qsnp6xmj" path="res://addons/CustomControls/Resources/RichTextEffects/lenguage_learning.gd" id="17_n3auf"]
+[ext_resource type="Script" uid="uid://bem5k8epu3wk4" path="res://addons/CustomControls/Resources/RichTextEffects/Transitions/Bounce.gd" id="18_w6qkt"]
+[ext_resource type="Script" uid="uid://p6ct0soamxxb" path="res://addons/CustomControls/Resources/RichTextEffects/Transitions/Console.gd" id="19_n1in5"]
+[ext_resource type="Script" uid="uid://cflymkqho0mfj" path="res://addons/CustomControls/Resources/RichTextEffects/Transitions/Embers.gd" id="20_f1acx"]
+[ext_resource type="Script" uid="uid://ce7qbjib1dwy2" path="res://addons/CustomControls/Resources/RichTextEffects/Transitions/Prickle.gd" id="21_xwmwy"]
+[ext_resource type="Script" uid="uid://cd6dfhje3akmu" path="res://addons/CustomControls/Resources/RichTextEffects/Transitions/Redacted.gd" id="22_nrcem"]
+[ext_resource type="Script" uid="uid://db4miyaf78vpo" path="res://addons/CustomControls/Resources/RichTextEffects/Transitions/WFC.gd" id="23_lmtcl"]
+[ext_resource type="Script" uid="uid://dqg0mmilwhyjf" path="res://addons/CustomControls/Resources/RichTextEffects/Transitions/Word.gd" id="24_kth2y"]
+[ext_resource type="Script" uid="uid://d2nj4h454ello" path="res://addons/CustomControls/Resources/RichTextEffects/Transitions/Glitch.gd" id="25_jfycg"]
+[ext_resource type="Script" uid="uid://d0vpfn66juhqj" path="res://addons/CustomControls/Resources/RichTextEffects/Transitions/Energize.gd" id="26_b1m8q"]
+[ext_resource type="Script" uid="uid://7r4y8mg1qg31" path="res://addons/CustomControls/Resources/RichTextEffects/Transitions/Fade.gd" id="27_36h7t"]
+[ext_resource type="AudioStream" uid="uid://c3u4nydr45dly" path="res://Assets/Sounds/typewrite2.ogg" id="29_rbp0b"]
+[ext_resource type="Texture2D" uid="uid://dhnyxa22lq1oy" path="res://Assets/Images/Other/dialog_advance_icon2.png" id="30_jr68p"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0aoe3"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jkrir"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hvoys"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_twlh8"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cjjty"]
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_v7mjh"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_h3od3"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_lncbq"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_i85bu"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_6ofbp"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_4scho"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_n3xau"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_n1fqf"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_68dkx"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_wc7fy"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ppdtp"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_0257d"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_i2dau"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vaeaq"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_j8tyo"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_y1ygs"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_nk00i"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_o4o4r"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_hq2x7"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_suu4t"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_e7x4x"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_i8ehg"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ydjsn"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_jidpv"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_qgsvh"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_w4rnd"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_u7mdx"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_b1fan"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_sl38e"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_6bexc"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_gw16h"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_r30pr"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_pgs0n"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ucn3t"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_kv83p"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_3mkn3"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_bdlv8"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_8ayn2"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_wf4ku"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_tw8oq"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_bd0ck"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_o7eui"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_wuufn"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_1e52u"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vr2nq"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_7ltaa"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vmpq1"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_0nvd0"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_rwsqh"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_x1chu"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_quf7k"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_rkfx0"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_bqfih"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_bocif"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_5gmgb"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_eqcwd"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_kr7nd"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_c61kb"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_oq0hn"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_gfb77"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_51c80"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_7i034"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_g3asq"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_qs6m3"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_haxtw"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_q3ve1"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_jqgkv"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_irjfm"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_uqroe"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_35hlk"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_uf5rp"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_auxb7"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_8l5sb"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_t7mx3"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_esa7o"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_n1iue"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_2x7fv"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ua8ay"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_se1ie"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_uedif"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vwbjv"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_d5ky7"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_sgyud"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_78jm2"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_5v7cj"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_jihk5"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ms2s7"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_yesoa"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_5r1dy"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_gcwyh"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_45pst"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_03lcj"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_01k3j"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_peuwu"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_03b5t"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_f7ysj"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_8s5ww"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_e57fy"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_1xgyv"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_k8u7l"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_66uva"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ryij4"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_45mac"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_w0tmv"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_jyxvl"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_wb74i"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_s0opa"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_gp1kg"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_pfhro"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_0yove"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_m4mo3"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vrmgd"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_032ic"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_v63pa"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_8blhc"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_kh4fm"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_p6ap7"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_okhti"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_awl8e"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_jk5xj"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ci5vi"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_awm2m"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_yjuq7"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_8imon"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_tpeum"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_rml1k"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_k8s81"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vgspm"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_v8ew4"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_s7x01"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_4j55l"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_rayp0"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_1104q"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_15jue"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_wwy2w"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_sxmgk"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_5yeh2"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_wodkg"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_jfkp2"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_kictq"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_aa84a"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vif3r"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_yfw54"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_tg37i"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_148lr"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_hwes6"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_oci1n"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_onrl0"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_geruq"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_47us2"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_t4u6n"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_j6bav"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ntf3q"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_3yiye"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_8n5mm"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_n357a"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_gfvbf"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ys22y"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_bkv5h"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_7iusi"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_3v48m"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_1vi74"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_q7kjt"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_nytng"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ytat2"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_e0i0r"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_cjidf"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ha8bo"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_223hw"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_rjj55"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_cpfyn"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_73tpp"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_hpxdh"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ulean"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_04fvu"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_dllw1"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_w2flv"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_epn7l"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_cyvmk"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_2v2mf"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_74ik2"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_l4uls"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_bhdxk"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ey367"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ep43p"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_mdcbk"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_7q8r3"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_welgq"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_x4nbu"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_23xcp"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_mtrgr"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_w5grn"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_x7umm"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_c58rk"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vhvjf"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_kmbw3"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_juigd"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_kindo"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vtwtw"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_fw8nb"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_cejin"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_kbpiq"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_1wtcf"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_fs47l"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_0pq3a"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ptg3y"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_t1iur"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_lbs0l"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_me0qv"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_sxosm"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_b2hwr"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_xndac"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_cv6mf"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_fvoh0"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vnlcf"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_hflck"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_s78yc"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_gpgcx"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_tjjgs"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_iaf3q"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ioejb"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_o3qgk"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_stkag"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_58vmr"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_42h0b"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_de5ad"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_dy5gi"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_i60yh"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_lk8kt"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_plirc"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ljh82"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_s8li6"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_txfs7"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_7uyiv"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_hygrc"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_28in0"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_i2lg7"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_3wair"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_b5x56"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_lkm8y"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_fvukt"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_4fy0d"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_4x2af"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_0ixje"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_r22ox"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_a1rei"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_qdl34"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_5lkh4"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_0c8w0"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ngyfq"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_3s2tg"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_mll5q"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_at0wp"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_uf25j"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_k7o47"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_cybhx"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_37cjt"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vis6h"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ya0mu"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_klg21"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_j7mnj"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_es636"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_q2svh"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_k1tb6"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vtgjf"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_sod7r"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_qxs2q"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ob6fe"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_28a2v"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vurd2"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_5a4c3"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_wqraq"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_cvbii"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_jpxdu"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_1u3dp"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_fbof7"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_qnqws"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_jrikr"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vgn2v"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_x3d60"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_lnej5"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vp6ao"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_tr65b"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_a3s7k"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_pjtse"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_s6vjb"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_qv2xi"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_y2bg2"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_pe3u1"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_q6my8"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_2yvsq"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_p6uxm"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_rbqvt"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_jgkc2"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ogxhg"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_mxb5l"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_74p36"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_mspdd"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ftdxx"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ffts1"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_03oaj"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ak0hv"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_frxqv"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_jag2r"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ywg40"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_h6afe"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_idb6e"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_3t4yr"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_idgvq"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_4ccdu"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_dtexf"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_1xckg"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_uua8i"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ce0bo"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_5xnmv"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_snvaf"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_0y5hp"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_t1ded"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_0elf7"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ad0hx"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_rlxt8"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_hei0m"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_bgjrt"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_r0ek3"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vduhd"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_w6eui"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_voe3e"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_nfipj"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_4iauw"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_uoenm"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_uox6p"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_p4la2"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_5sth1"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_jwnnj"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_sjk8m"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_qxmau"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_d0vjc"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_skt4h"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_so0fo"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_0d70q"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_n16rg"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_phpvp"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_7g2vl"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vpf1j"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_d286l"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_4p7f2"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_f48o0"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_34l5a"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_txgfk"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_tr3mv"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_q2xjp"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_h2i3t"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_blvht"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_qhjxl"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_imsvt"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_mkkgf"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_63tue"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_33txp"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_m204u"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_4y1o7"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_bunnl"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_0ul2n"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_p65sh"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_qyj10"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_jikoc"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_5rtta"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_abntp"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_v8uw1"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_8n2bo"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_njjve"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_285tb"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_hcy0l"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ryw6c"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_wj35k"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_4qbal"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_lujpq"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_8mpm6"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_wifk2"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_tvg1v"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_mdwwl"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_fmjbv"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_hhat8"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_dnsy5"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_woj44"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_rkgjn"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_coaew"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ifeg5"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_tybis"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_i5cxy"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ib8ad"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ssbhj"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_keewe"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_qk020"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_57fq7"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_hwc15"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_fe8fw"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_f0vg3"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_3ob27"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_651vl"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_v4i2l"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_o1c41"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_wfhhf"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ligvw"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_wiwx5"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_g0k5d"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_skvoi"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_y18w8"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_8udjq"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_wku1j"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_k6bnu"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ypc6y"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_hgybu"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_7n74s"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_efjdd"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_1qh7i"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_6yajc"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_3p4dj"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_hv8pk"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_oxrbk"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ubaj7"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_7oc0o"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_2ui8w"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_py0f2"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_laps7"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_rxkd8"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_m30xm"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_64idf"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_amtt0"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_u71o7"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_f5hgb"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_u325a"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_7a0f2"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ja1p8"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_qkyhm"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_qqb70"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_t6e8b"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_5kbjb"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ydnuv"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_a5riv"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_a2k35"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_i4wn2"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_toy1k"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_rgrsv"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_xid2u"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_0xbmq"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_stuuw"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_v8evs"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_gdlu5"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_1t6m0"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_hdb2h"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_8iojl"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_x6lir"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_0uuy1"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_c5enr"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_x552u"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vdl8u"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_no6p1"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_gmai7"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_2dpip"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ln3c2"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_boa37"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ogf03"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_5lspy"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_8yb67"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ys5rg"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_8iktm"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_u3li7"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vukli"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_8jcm8"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_6k8qp"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_2k2xd"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_eofew"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_u3tt4"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_wmnff"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_7p1vp"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_pgtjs"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_gqpa8"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_hb42e"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_4tl32"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_in65d"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_af67l"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_snmf0"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_qbhf1"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_w8xmy"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_a7ky3"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_5p3nu"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_1h3oa"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ojtoy"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_0yjk8"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_0efi6"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vusdc"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_8av0r"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_nxqc8"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_hvw7b"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ai06x"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vkmim"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_y7xq6"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ps1ud"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_a3yuf"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_jssmo"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_imbww"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_4l5fj"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_nx6sg"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_e7yb5"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_nw0ty"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_1xfqy"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_id7a7"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_snexw"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_e3j35"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_g6j7l"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_rngpi"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_q2rbm"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_kimo2"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_2rkw1"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_s5ghc"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_jf72v"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ypi78"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_a0xeu"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_kvv80"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_0s7i6"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_qri7g"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_l2mjm"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_pqb0k"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_bosdb"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_30rx7"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_njsj5"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_xxjdh"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_b405s"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_bbfny"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_oq35i"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ogjdo"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_cvaqf"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_4liuv"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_rbdhs"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_w0uxh"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_sjoc0"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_u8fi8"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_mhk24"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_3a7ve"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_dsl4p"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_3wcqb"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_2x3jv"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_rg8oy"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ww8ol"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_6utor"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_w7fpx"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_5k3y6"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_7byps"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_v0k0i"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_n3phd"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_26fs0"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_v3l5u"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_mnmj6"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_jrbes"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_mfyaw"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_5hfm0"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_k202f"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ep05f"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_1l4p5"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_lrc71"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_oovlh"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_v57wg"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_5s88k"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_3fh7t"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_txnbo"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_yh2v2"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_csi1v"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_kcle7"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ri1js"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_3nd1b"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_d66b2"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_14abo"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_1vr3o"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_iv1ir"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_pt58h"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vrdme"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_p24ik"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ky4ny"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_jcp5f"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_onh0u"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_uvpqk"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_sy804"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_bswwo"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_6mfx3"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ns027"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_3wpsd"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_mlihh"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_rk487"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_12jhk"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_xwj55"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_lo16q"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_i7183"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_dt5o5"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_kojfr"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_g5taf"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_xdnm5"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_dte8l"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_7o2rp"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ltsr6"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_6oxg8"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_q84dp"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_f23yb"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_lf6pl"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_xvhbn"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ypnha"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_35ecg"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_uteb2"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_yhyi5"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vnk5s"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_xd8ph"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ni2ai"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_k5b3k"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_r1bd0"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_g47ri"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_tn5gk"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_3f0ic"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_1vei1"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_erh6e"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_36uvf"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_xqua2"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_6l7ic"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ruidq"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_todhb"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_inj3v"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_kvc4x"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_yplsd"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_xc8gy"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_nlo53"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ahrmu"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ldt38"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_tw4eg"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_mtupx"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_3nf8o"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_f8b13"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_nxgk3"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_liepm"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_l2yd6"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_78sb7"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_kl6vh"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_tlys8"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_6kvlf"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_5o3o1"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_wculw"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_gqrfc"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_pv2js"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_8dtkd"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_j0pig"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_wmada"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_nhil8"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_4e18t"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_7h3ed"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_qwca4"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_554c5"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_jd55p"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_mhbqd"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_qsnib"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_gc5d0"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ded3j"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_5hb21"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_m536r"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_yow5i"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ibchn"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_nah58"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_gvqfo"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_trxj0"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_w5fhs"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_n3aib"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_iu0yl"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_t7elh"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_q7g5w"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_bgguk"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ml1d1"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_sjbs3"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_x1xfo"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_xis6o"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_gej6b"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_a1t6p"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ulgeg"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_yy6k5"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_xpxc8"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_5cc4i"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_u1p8p"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_uxavt"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_6msew"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_lf8b2"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_wsux4"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_7adcb"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_p3hld"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_0fdtg"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_2ggtl"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_qxbke"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_pv4th"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_p0erb"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_rt8ks"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_v52hr"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_wini2"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_xaa6s"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_payby"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_o3lqk"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_4euga"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_guw6n"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_21lxu"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_6juhh"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vgxjs"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_lmygi"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_t2eo0"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_gbj00"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_jlrsm"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_kp2e5"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_no6ya"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_dg5qp"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ph5ao"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_x0uno"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_t3teg"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_1aw4a"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_4d043"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_60iye"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_4085o"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_rvl7f"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_i4yfg"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_bufmh"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_odscb"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_acuw6"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_hh4e6"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_jow51"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_nud42"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_nl5t5"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_0f16m"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_gp46t"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ras8j"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_a2edr"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_3xluh"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_mss8w"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_r10o4"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_5fs7y"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_kbbcu"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_k4w3u"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_6tnti"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_j4ecw"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_1hvqa"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_725ba"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_xlq85"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_3a6us"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_u8rqr"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_514t6"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ivsq3"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_0kdwp"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_kcvgg"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_r25ba"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_fwrdc"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_mdsld"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_c8ywk"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_q34ka"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_npxsj"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_u5jt1"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_lmidy"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_cgoip"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_61qgb"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_rl8kx"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vdnog"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_rqfl4"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_wy35q"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_8dk8d"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_a7k1m"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_b1vs3"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_xe6xx"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_211vl"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_27cos"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_8xdqu"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_kth7x"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vfr1m"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_jpwou"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_30r1l"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_tofn8"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_f8s0x"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_mgo1o"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_6set8"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_t0r1n"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_m77iy"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_i6bpx"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_od4em"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_lj6re"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_y4j8e"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_7b3cd"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_svqkq"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_gt40c"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_8el4s"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_n3gci"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_chpvj"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_2t8e4"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_r36bp"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ijy6p"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_nihbm"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_om8tq"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_60s0b"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_y4dyo"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_gt64x"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_cgydf"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_8kaqu"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_hhalc"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_d8ett"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_kpdxh"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_mwy8r"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_n7jve"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_pfa2i"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_673ub"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ttxxw"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_mxvic"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_2k0xu"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_q3j0k"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_crpxd"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_det0f"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_73x33"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_2l25p"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_h3ynm"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_7docu"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vtlyi"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_a0gic"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_2ypeg"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ja6r5"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_2js8g"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_2mu1i"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_dgm0j"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_yxqok"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_gplnm"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_7lhff"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_4snop"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_qu2qq"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_qkuw5"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_n6wkt"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_dm47k"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_pmong"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_hydf1"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_xemq8"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_k7paj"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_r4yho"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_0nuyw"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_bn8jp"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_4gt01"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_w4bbu"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_4f7b1"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_47ee2"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_qirfl"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ea4ao"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_lgfoi"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ki8kl"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_p3y2w"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_uysjq"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_c1y7y"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vikkm"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_n1hvu"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_gjfql"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_khwkr"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_wup21"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_nm1s0"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_stst2"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_kqdmi"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_kbowg"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_0yrq2"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_5lmgy"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_t6atv"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_3lacm"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_o021f"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_k7oku"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_2ojbw"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_iavov"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_sbcgo"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_wydb5"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_7ndfm"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_8ooo8"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ev602"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_mfn51"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_5mlib"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_rheym"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_4ow2x"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_4byjh"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_7itgl"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_yotol"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_5k0ru"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_e7j7v"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_r854f"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_20b2o"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_y00q7"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_4ukir"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_8ongg"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ckw37"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_trfo6"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_3x58h"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ls630"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_uxciy"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_p4evt"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vcem5"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_emawn"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_b5x7v"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_g5b5t"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_4f5qo"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vjnha"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_wuygd"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_sfquq"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_wldcf"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_28doq"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_2peo1"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_lfb7c"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_26eey"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_wd70u"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ruhsv"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_cjs4y"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_yx6bl"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_m62pg"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_6nyq0"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_qb18b"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_s42mk"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_moue7"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vvc15"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_pnv8i"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_itwnt"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_01tnl"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_gjgs7"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_r3ejv"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_bfbv3"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_mu72r"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_1rpfk"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_e67wa"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_x5b84"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_m7h4x"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_us7u2"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_v0c6s"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_1nqq3"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_2wob6"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_uujjk"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_hglka"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_c8qdx"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_sa63w"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_7j8au"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_6h08l"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_wuqlu"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_v2edb"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_e5v46"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_2375c"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_88orh"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_u8c5d"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_wjyl7"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_rk10s"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_i0xw7"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_bqwhj"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_p1g6m"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_603pn"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_qrs58"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_i165c"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_esfu3"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_tosay"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_8d3nh"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_n5822"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_yx80k"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_2kgn4"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_sp3xt"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_p80hv"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_1s1b0"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ja117"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_s2en2"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_i2cl0"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_onj35"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_20n3c"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_qge7d"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_wq5wv"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_irfla"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_hgap5"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_fkq5o"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_40utf"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_jithr"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_s6v8s"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_26f5c"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_0tlgo"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_0f481"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_wmg55"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_cn5dj"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_n3auf"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_w6qkt"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_n1in5"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_f1acx"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_xwmwy"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_nrcem"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_lmtcl"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_kth2y"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_jfycg"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_b1m8q"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_36h7t"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_v1ed3"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_rbp0b"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ibhxx"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_slre4"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_grq4x"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_rrbmj"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_dfib8"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_dyh5m"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_k8ab3"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_x8iti"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ltmeo"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_mw68k"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_bpa4y"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_aysd1"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_5kg05"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_16ghp"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_rudud"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_oddoh"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_apxp5"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_qkc5c"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_k0mps"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_177np"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_4jg88"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_cud3e"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_l375h"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_hvoys"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_w7ls1"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_lwv11"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_6rjdt"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_chf5d"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_gw1no"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ec0qs"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_mpat2"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_f36c3"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_i2x02"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_e7rik"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_cgtwt"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_cs4qe"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_jtk2b"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_miylj"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_hskrx"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_bl7ae"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_cwo3w"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_t0fed"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ebsg8"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ad4j0"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_a7phj"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_t8jib"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_jr68p"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_g05o1"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_1xbdn"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_o2och"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_hvha0"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ssxv4"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_t3pnd"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_mawtw"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_xj1so"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_b4q0a"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_nbbp4"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_7sanq"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_nicad"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_qxgdy"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_6tf1d"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_8v5lv"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_k8mim"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_blmxv"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_uyh86"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_326me"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_x8rik"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_d4dax"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_to7ho"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_g76m6"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_qsl3w"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_l8gxf"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_i8heo"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_lxxls"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_qa2uu"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_wp4wy"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_3iih3"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ve2rd"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_3bkhw"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_78qvr"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_m26ov"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_61wet"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_nquw8"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_yof4y"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_bxau4"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_3jrai"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_t3f6b"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_xkb8i"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_trxlk"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_qwg7k"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_d86ll"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_j0014"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_v4ino"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_8oo6n"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_4p4n0"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_sgeni"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_3v7tu"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_x3u2f"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_v7088"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_qgwdw"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_rnpmj"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_anky0"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_8qnyi"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_x8ud0"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_7c3pw"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_r6h24"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_bsqxs"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_oqs68"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_sc7r2"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_mlijd"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_7l1fk"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_5g17f"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vsqpb"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vt6xr"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_m5er7"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_1s1hv"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_2lsl5"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_h53e7"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_5e7yb"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_pm2mb"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_v7vna"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_7705x"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_o63o2"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_afybe"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_3waax"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_q3a7t"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_xormv"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ld6sf"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_0ijq7"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_dyong"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_j4r0b"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_134gb"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_yofl4"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ul5ev"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_xmc5o"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_8whce"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_fmlgp"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_t8ac7"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_1uoq3"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_nk6n0"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_33t8u"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_lgwms"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_tapwt"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vww85"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_t7kvp"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vyymy"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ey8vu"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_gay65"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_erlgh"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ennw7"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_co105"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_gysp8"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_7sjol"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_trh6j"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_brn0s"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_cj4p3"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_xx5ne"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_xovvo"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_eih0s"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_y4nuc"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_0ks0k"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_1h2jf"]
+script = ExtResource("5_hvoys")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_lhk17"]
+script = ExtResource("6_ibhxx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_h6bmk"]
+script = ExtResource("7_hgap5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_2rgjd"]
+script = ExtResource("8_fkq5o")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_b816y"]
+script = ExtResource("9_40utf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_txcna"]
+script = ExtResource("10_jithr")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vyxv2"]
+script = ExtResource("11_s6v8s")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_2ckom"]
+script = ExtResource("12_26f5c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_wh85w"]
+script = ExtResource("13_0tlgo")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vb2q2"]
+script = ExtResource("14_0f481")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_4mstq"]
+script = ExtResource("15_wmg55")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_7qxck"]
+script = ExtResource("16_cn5dj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_bxdtj"]
+script = ExtResource("17_n3auf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_8vq7m"]
+script = ExtResource("18_w6qkt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_8gs48"]
+script = ExtResource("19_n1in5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_1l5i1"]
+script = ExtResource("20_f1acx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_5fh31"]
+script = ExtResource("21_xwmwy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_1kjnr"]
+script = ExtResource("22_nrcem")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_tk1ei"]
+script = ExtResource("23_lmtcl")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_hl7dd"]
+script = ExtResource("24_kth2y")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_5k5ut"]
+script = ExtResource("25_jfycg")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ormsj"]
+script = ExtResource("26_b1m8q")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_20nij"]
+script = ExtResource("27_36h7t")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ibhxx"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_m3qel"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("30_jr68p")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="GDScript" id="GDScript_c8yyc"]
+script/source = "@tool
+extends AnimatedSprite2D
+
+@export var amplitude: float = 50
+@export var period : float = 2
+
+
+func _ready() -> void:
+	play(\"default\")
+
+
+func _process(_delta: float) -> void:
+	var t = Time.get_ticks_msec() / 1000.0
+	var y = amplitude * sin(2 * PI * t / period)
+	position.y = y
+"
+
+[node name="Dialog2" type="PanelContainer"]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -53.0
+offset_top = -98.0
+offset_right = 53.0
+offset_bottom = -38.0
+grow_horizontal = 2
+grow_vertical = 0
+pivot_offset = Vector2(53, 30)
+size_flags_horizontal = 4
+size_flags_vertical = 10
+theme_override_styles/panel = SubResource("StyleBoxEmpty_0aoe3")
+script = ExtResource("1_jr68p")
+minimun_dialog_height = 20
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 0
+
+[node name="CharacterMainContainer" type="MarginContainer" parent="CanvasLayer"]
+unique_name_in_owner = true
+show_behind_parent = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1132.0
+offset_bottom = -620.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="CharacterContainer" type="Control" parent="CanvasLayer/CharacterMainContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MainMargin" type="MarginContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="BackgroundContainer" type="MarginContainer" parent="MainMargin"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="BackgroundInnerMask" type="NinePatchRect" parent="MainMargin/BackgroundContainer"]
+layout_mode = 2
+texture = ExtResource("2_1h2jf")
+patch_margin_left = 53
+patch_margin_top = 32
+patch_margin_right = 53
+patch_margin_bottom = 28
+
+[node name="BackgroundBorder" type="NinePatchRect" parent="MainMargin/BackgroundContainer"]
+layout_mode = 2
+texture = ExtResource("4_ibhxx")
+patch_margin_left = 53
+patch_margin_top = 32
+patch_margin_right = 53
+patch_margin_bottom = 28
+
+[node name="NameContainer" type="MarginContainer" parent="MainMargin"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = -22
+theme_override_constants/margin_top = -75
+theme_override_constants/margin_right = -20
+
+[node name="NameLeftContainer" type="PanelContainer" parent="MainMargin/NameContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_jkrir")
+metadata/_edit_group_ = true
+
+[node name="MarginContainer2" type="MarginContainer" parent="MainMargin/NameContainer/NameLeftContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 52
+theme_override_constants/margin_top = 53
+theme_override_constants/margin_right = 30
+
+[node name="NameLeftBackground" type="NinePatchRect" parent="MainMargin/NameContainer/NameLeftContainer/MarginContainer2"]
+unique_name_in_owner = true
+show_behind_parent = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+texture = ExtResource("7_g05o1")
+patch_margin_left = 27
+patch_margin_top = 20
+patch_margin_right = 27
+patch_margin_bottom = 20
+
+[node name="MarginContainer" type="MarginContainer" parent="MainMargin/NameContainer/NameLeftContainer/MarginContainer2"]
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="NameLeft" type="Label" parent="MainMargin/NameContainer/NameLeftContainer/MarginContainer2/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_alignment = 1
+
+[node name="NameRightContainer" type="PanelContainer" parent="MainMargin/NameContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_jkrir")
+metadata/_edit_group_ = true
+
+[node name="MarginContainer2" type="MarginContainer" parent="MainMargin/NameContainer/NameRightContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 33
+theme_override_constants/margin_top = 53
+theme_override_constants/margin_right = 50
+
+[node name="NameRightBackground" type="NinePatchRect" parent="MainMargin/NameContainer/NameRightContainer/MarginContainer2"]
+unique_name_in_owner = true
+show_behind_parent = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+texture = ExtResource("7_g05o1")
+patch_margin_left = 27
+patch_margin_top = 20
+patch_margin_right = 27
+patch_margin_bottom = 20
+
+[node name="MarginContainer" type="MarginContainer" parent="MainMargin/NameContainer/NameRightContainer/MarginContainer2"]
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="NameRight" type="Label" parent="MainMargin/NameContainer/NameRightContainer/MarginContainer2/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_alignment = 1
+
+[node name="DialogMainContainer" type="MarginContainer" parent="MainMargin"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainMargin/DialogMainContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MainMargin/DialogMainContainer/HBoxContainer"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = -3
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 10
+
+[node name="FaceLeftFrame" type="PanelContainer" parent="MainMargin/DialogMainContainer/HBoxContainer/MarginContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_hvoys")
+
+[node name="LeftIconFace" type="TextureRect" parent="MainMargin/DialogMainContainer/HBoxContainer/MarginContainer/FaceLeftFrame"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MessageContainer" type="MarginContainer" parent="MainMargin/DialogMainContainer/HBoxContainer"]
+unique_name_in_owner = true
+z_index = 1
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Message" type="RichTextLabel" parent="MainMargin/DialogMainContainer/HBoxContainer/MessageContainer"]
+unique_name_in_owner = true
+process_priority = 12
+clip_children = 2
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.576471)
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/shadow_offset_x = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_twlh8")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_cjjty")
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+custom_effects = [SubResource("RichTextEffect_v7mjh"), SubResource("RichTextEffect_h3od3"), SubResource("RichTextEffect_lncbq"), SubResource("RichTextEffect_i85bu"), SubResource("RichTextEffect_6ofbp"), SubResource("RichTextEffect_4scho"), SubResource("RichTextEffect_n3xau"), SubResource("RichTextEffect_n1fqf"), SubResource("RichTextEffect_68dkx"), SubResource("RichTextEffect_wc7fy"), SubResource("RichTextEffect_ppdtp"), SubResource("RichTextEffect_0257d"), SubResource("RichTextEffect_i2dau"), SubResource("RichTextEffect_vaeaq"), SubResource("RichTextEffect_j8tyo"), SubResource("RichTextEffect_y1ygs"), SubResource("RichTextEffect_nk00i"), SubResource("RichTextEffect_o4o4r"), SubResource("RichTextEffect_hq2x7"), SubResource("RichTextEffect_suu4t"), SubResource("RichTextEffect_e7x4x"), SubResource("RichTextEffect_i8ehg"), SubResource("RichTextEffect_ydjsn"), SubResource("RichTextEffect_jidpv"), SubResource("RichTextEffect_qgsvh"), SubResource("RichTextEffect_w4rnd"), SubResource("RichTextEffect_u7mdx"), SubResource("RichTextEffect_b1fan"), SubResource("RichTextEffect_sl38e"), SubResource("RichTextEffect_6bexc"), SubResource("RichTextEffect_gw16h"), SubResource("RichTextEffect_r30pr"), SubResource("RichTextEffect_pgs0n"), SubResource("RichTextEffect_ucn3t"), SubResource("RichTextEffect_kv83p"), SubResource("RichTextEffect_3mkn3"), SubResource("RichTextEffect_bdlv8"), SubResource("RichTextEffect_8ayn2"), SubResource("RichTextEffect_wf4ku"), SubResource("RichTextEffect_tw8oq"), SubResource("RichTextEffect_bd0ck"), SubResource("RichTextEffect_o7eui"), SubResource("RichTextEffect_wuufn"), SubResource("RichTextEffect_1e52u"), SubResource("RichTextEffect_vr2nq"), SubResource("RichTextEffect_7ltaa"), SubResource("RichTextEffect_vmpq1"), SubResource("RichTextEffect_0nvd0"), SubResource("RichTextEffect_rwsqh"), SubResource("RichTextEffect_x1chu"), SubResource("RichTextEffect_quf7k"), SubResource("RichTextEffect_rkfx0"), SubResource("RichTextEffect_bqfih"), SubResource("RichTextEffect_bocif"), SubResource("RichTextEffect_5gmgb"), SubResource("RichTextEffect_eqcwd"), SubResource("RichTextEffect_kr7nd"), SubResource("RichTextEffect_c61kb"), SubResource("RichTextEffect_oq0hn"), SubResource("RichTextEffect_gfb77"), SubResource("RichTextEffect_51c80"), SubResource("RichTextEffect_7i034"), SubResource("RichTextEffect_g3asq"), SubResource("RichTextEffect_qs6m3"), SubResource("RichTextEffect_haxtw"), SubResource("RichTextEffect_q3ve1"), SubResource("RichTextEffect_jqgkv"), SubResource("RichTextEffect_irjfm"), SubResource("RichTextEffect_uqroe"), SubResource("RichTextEffect_35hlk"), SubResource("RichTextEffect_uf5rp"), SubResource("RichTextEffect_auxb7"), SubResource("RichTextEffect_8l5sb"), SubResource("RichTextEffect_t7mx3"), SubResource("RichTextEffect_esa7o"), SubResource("RichTextEffect_n1iue"), SubResource("RichTextEffect_2x7fv"), SubResource("RichTextEffect_ua8ay"), SubResource("RichTextEffect_se1ie"), SubResource("RichTextEffect_uedif"), SubResource("RichTextEffect_vwbjv"), SubResource("RichTextEffect_d5ky7"), SubResource("RichTextEffect_sgyud"), SubResource("RichTextEffect_78jm2"), SubResource("RichTextEffect_5v7cj"), SubResource("RichTextEffect_jihk5"), SubResource("RichTextEffect_ms2s7"), SubResource("RichTextEffect_yesoa"), SubResource("RichTextEffect_5r1dy"), SubResource("RichTextEffect_gcwyh"), SubResource("RichTextEffect_45pst"), SubResource("RichTextEffect_03lcj"), SubResource("RichTextEffect_01k3j"), SubResource("RichTextEffect_peuwu"), SubResource("RichTextEffect_03b5t"), SubResource("RichTextEffect_f7ysj"), SubResource("RichTextEffect_8s5ww"), SubResource("RichTextEffect_e57fy"), SubResource("RichTextEffect_1xgyv"), SubResource("RichTextEffect_k8u7l"), SubResource("RichTextEffect_66uva"), SubResource("RichTextEffect_ryij4"), SubResource("RichTextEffect_45mac"), SubResource("RichTextEffect_w0tmv"), SubResource("RichTextEffect_jyxvl"), SubResource("RichTextEffect_wb74i"), SubResource("RichTextEffect_s0opa"), SubResource("RichTextEffect_gp1kg"), SubResource("RichTextEffect_pfhro"), SubResource("RichTextEffect_0yove"), SubResource("RichTextEffect_m4mo3"), SubResource("RichTextEffect_vrmgd"), SubResource("RichTextEffect_032ic"), SubResource("RichTextEffect_v63pa"), SubResource("RichTextEffect_8blhc"), SubResource("RichTextEffect_kh4fm"), SubResource("RichTextEffect_p6ap7"), SubResource("RichTextEffect_okhti"), SubResource("RichTextEffect_awl8e"), SubResource("RichTextEffect_jk5xj"), SubResource("RichTextEffect_ci5vi"), SubResource("RichTextEffect_awm2m"), SubResource("RichTextEffect_yjuq7"), SubResource("RichTextEffect_8imon"), SubResource("RichTextEffect_tpeum"), SubResource("RichTextEffect_rml1k"), SubResource("RichTextEffect_k8s81"), SubResource("RichTextEffect_vgspm"), SubResource("RichTextEffect_v8ew4"), SubResource("RichTextEffect_s7x01"), SubResource("RichTextEffect_4j55l"), SubResource("RichTextEffect_rayp0"), SubResource("RichTextEffect_1104q"), SubResource("RichTextEffect_15jue"), SubResource("RichTextEffect_wwy2w"), SubResource("RichTextEffect_sxmgk"), SubResource("RichTextEffect_5yeh2"), SubResource("RichTextEffect_wodkg"), SubResource("RichTextEffect_jfkp2"), SubResource("RichTextEffect_kictq"), SubResource("RichTextEffect_aa84a"), SubResource("RichTextEffect_vif3r"), SubResource("RichTextEffect_yfw54"), SubResource("RichTextEffect_tg37i"), SubResource("RichTextEffect_148lr"), SubResource("RichTextEffect_hwes6"), SubResource("RichTextEffect_oci1n"), SubResource("RichTextEffect_onrl0"), SubResource("RichTextEffect_geruq"), SubResource("RichTextEffect_47us2"), SubResource("RichTextEffect_t4u6n"), SubResource("RichTextEffect_j6bav"), SubResource("RichTextEffect_ntf3q"), SubResource("RichTextEffect_3yiye"), SubResource("RichTextEffect_8n5mm"), SubResource("RichTextEffect_n357a"), SubResource("RichTextEffect_gfvbf"), SubResource("RichTextEffect_ys22y"), SubResource("RichTextEffect_bkv5h"), SubResource("RichTextEffect_7iusi"), SubResource("RichTextEffect_3v48m"), SubResource("RichTextEffect_1vi74"), SubResource("RichTextEffect_q7kjt"), SubResource("RichTextEffect_nytng"), SubResource("RichTextEffect_ytat2"), SubResource("RichTextEffect_e0i0r"), SubResource("RichTextEffect_cjidf"), SubResource("RichTextEffect_ha8bo"), SubResource("RichTextEffect_223hw"), SubResource("RichTextEffect_rjj55"), SubResource("RichTextEffect_cpfyn"), SubResource("RichTextEffect_73tpp"), SubResource("RichTextEffect_hpxdh"), SubResource("RichTextEffect_ulean"), SubResource("RichTextEffect_04fvu"), SubResource("RichTextEffect_dllw1"), SubResource("RichTextEffect_w2flv"), SubResource("RichTextEffect_epn7l"), SubResource("RichTextEffect_cyvmk"), SubResource("RichTextEffect_2v2mf"), SubResource("RichTextEffect_74ik2"), SubResource("RichTextEffect_l4uls"), SubResource("RichTextEffect_bhdxk"), SubResource("RichTextEffect_ey367"), SubResource("RichTextEffect_ep43p"), SubResource("RichTextEffect_mdcbk"), SubResource("RichTextEffect_7q8r3"), SubResource("RichTextEffect_welgq"), SubResource("RichTextEffect_x4nbu"), SubResource("RichTextEffect_23xcp"), SubResource("RichTextEffect_mtrgr"), SubResource("RichTextEffect_w5grn"), SubResource("RichTextEffect_x7umm"), SubResource("RichTextEffect_c58rk"), SubResource("RichTextEffect_vhvjf"), SubResource("RichTextEffect_kmbw3"), SubResource("RichTextEffect_juigd"), SubResource("RichTextEffect_kindo"), SubResource("RichTextEffect_vtwtw"), SubResource("RichTextEffect_fw8nb"), SubResource("RichTextEffect_cejin"), SubResource("RichTextEffect_kbpiq"), SubResource("RichTextEffect_1wtcf"), SubResource("RichTextEffect_fs47l"), SubResource("RichTextEffect_0pq3a"), SubResource("RichTextEffect_ptg3y"), SubResource("RichTextEffect_t1iur"), SubResource("RichTextEffect_lbs0l"), SubResource("RichTextEffect_me0qv"), SubResource("RichTextEffect_sxosm"), SubResource("RichTextEffect_b2hwr"), SubResource("RichTextEffect_xndac"), SubResource("RichTextEffect_cv6mf"), SubResource("RichTextEffect_fvoh0"), SubResource("RichTextEffect_vnlcf"), SubResource("RichTextEffect_hflck"), SubResource("RichTextEffect_s78yc"), SubResource("RichTextEffect_gpgcx"), SubResource("RichTextEffect_tjjgs"), SubResource("RichTextEffect_iaf3q"), SubResource("RichTextEffect_ioejb"), SubResource("RichTextEffect_o3qgk"), SubResource("RichTextEffect_stkag"), SubResource("RichTextEffect_58vmr"), SubResource("RichTextEffect_42h0b"), SubResource("RichTextEffect_de5ad"), SubResource("RichTextEffect_dy5gi"), SubResource("RichTextEffect_i60yh"), SubResource("RichTextEffect_lk8kt"), SubResource("RichTextEffect_plirc"), SubResource("RichTextEffect_ljh82"), SubResource("RichTextEffect_s8li6"), SubResource("RichTextEffect_txfs7"), SubResource("RichTextEffect_7uyiv"), SubResource("RichTextEffect_hygrc"), SubResource("RichTextEffect_28in0"), SubResource("RichTextEffect_i2lg7"), SubResource("RichTextEffect_3wair"), SubResource("RichTextEffect_b5x56"), SubResource("RichTextEffect_lkm8y"), SubResource("RichTextEffect_fvukt"), SubResource("RichTextEffect_4fy0d"), SubResource("RichTextEffect_4x2af"), SubResource("RichTextEffect_0ixje"), SubResource("RichTextEffect_r22ox"), SubResource("RichTextEffect_a1rei"), SubResource("RichTextEffect_qdl34"), SubResource("RichTextEffect_5lkh4"), SubResource("RichTextEffect_0c8w0"), SubResource("RichTextEffect_ngyfq"), SubResource("RichTextEffect_3s2tg"), SubResource("RichTextEffect_mll5q"), SubResource("RichTextEffect_at0wp"), SubResource("RichTextEffect_uf25j"), SubResource("RichTextEffect_k7o47"), SubResource("RichTextEffect_cybhx"), SubResource("RichTextEffect_37cjt"), SubResource("RichTextEffect_vis6h"), SubResource("RichTextEffect_ya0mu"), SubResource("RichTextEffect_klg21"), SubResource("RichTextEffect_j7mnj"), SubResource("RichTextEffect_es636"), SubResource("RichTextEffect_q2svh"), SubResource("RichTextEffect_k1tb6"), SubResource("RichTextEffect_vtgjf"), SubResource("RichTextEffect_sod7r"), SubResource("RichTextEffect_qxs2q"), SubResource("RichTextEffect_ob6fe"), SubResource("RichTextEffect_28a2v"), SubResource("RichTextEffect_vurd2"), SubResource("RichTextEffect_5a4c3"), SubResource("RichTextEffect_wqraq"), SubResource("RichTextEffect_cvbii"), SubResource("RichTextEffect_jpxdu"), SubResource("RichTextEffect_1u3dp"), SubResource("RichTextEffect_fbof7"), SubResource("RichTextEffect_qnqws"), SubResource("RichTextEffect_jrikr"), SubResource("RichTextEffect_vgn2v"), SubResource("RichTextEffect_x3d60"), SubResource("RichTextEffect_lnej5"), SubResource("RichTextEffect_vp6ao"), SubResource("RichTextEffect_tr65b"), SubResource("RichTextEffect_a3s7k"), SubResource("RichTextEffect_pjtse"), SubResource("RichTextEffect_s6vjb"), SubResource("RichTextEffect_qv2xi"), SubResource("RichTextEffect_y2bg2"), SubResource("RichTextEffect_pe3u1"), SubResource("RichTextEffect_q6my8"), SubResource("RichTextEffect_2yvsq"), SubResource("RichTextEffect_p6uxm"), SubResource("RichTextEffect_rbqvt"), SubResource("RichTextEffect_jgkc2"), SubResource("RichTextEffect_ogxhg"), SubResource("RichTextEffect_mxb5l"), SubResource("RichTextEffect_74p36"), SubResource("RichTextEffect_mspdd"), SubResource("RichTextEffect_ftdxx"), SubResource("RichTextEffect_ffts1"), SubResource("RichTextEffect_03oaj"), SubResource("RichTextEffect_ak0hv"), SubResource("RichTextEffect_frxqv"), SubResource("RichTextEffect_jag2r"), SubResource("RichTextEffect_ywg40"), SubResource("RichTextEffect_h6afe"), SubResource("RichTextEffect_idb6e"), SubResource("RichTextEffect_3t4yr"), SubResource("RichTextEffect_idgvq"), SubResource("RichTextEffect_4ccdu"), SubResource("RichTextEffect_dtexf"), SubResource("RichTextEffect_1xckg"), SubResource("RichTextEffect_uua8i"), SubResource("RichTextEffect_ce0bo"), SubResource("RichTextEffect_5xnmv"), SubResource("RichTextEffect_snvaf"), SubResource("RichTextEffect_0y5hp"), SubResource("RichTextEffect_t1ded"), SubResource("RichTextEffect_0elf7"), SubResource("RichTextEffect_ad0hx"), SubResource("RichTextEffect_rlxt8"), SubResource("RichTextEffect_hei0m"), SubResource("RichTextEffect_bgjrt"), SubResource("RichTextEffect_r0ek3"), SubResource("RichTextEffect_vduhd"), SubResource("RichTextEffect_w6eui"), SubResource("RichTextEffect_voe3e"), SubResource("RichTextEffect_nfipj"), SubResource("RichTextEffect_4iauw"), SubResource("RichTextEffect_uoenm"), SubResource("RichTextEffect_uox6p"), SubResource("RichTextEffect_p4la2"), SubResource("RichTextEffect_5sth1"), SubResource("RichTextEffect_jwnnj"), SubResource("RichTextEffect_sjk8m"), SubResource("RichTextEffect_qxmau"), SubResource("RichTextEffect_d0vjc"), SubResource("RichTextEffect_skt4h"), SubResource("RichTextEffect_so0fo"), SubResource("RichTextEffect_0d70q"), SubResource("RichTextEffect_n16rg"), SubResource("RichTextEffect_phpvp"), SubResource("RichTextEffect_7g2vl"), SubResource("RichTextEffect_vpf1j"), SubResource("RichTextEffect_d286l"), SubResource("RichTextEffect_4p7f2"), SubResource("RichTextEffect_f48o0"), SubResource("RichTextEffect_34l5a"), SubResource("RichTextEffect_txgfk"), SubResource("RichTextEffect_tr3mv"), SubResource("RichTextEffect_q2xjp"), SubResource("RichTextEffect_h2i3t"), SubResource("RichTextEffect_blvht"), SubResource("RichTextEffect_qhjxl"), SubResource("RichTextEffect_imsvt"), SubResource("RichTextEffect_mkkgf"), SubResource("RichTextEffect_63tue"), SubResource("RichTextEffect_33txp"), SubResource("RichTextEffect_m204u"), SubResource("RichTextEffect_4y1o7"), SubResource("RichTextEffect_bunnl"), SubResource("RichTextEffect_0ul2n"), SubResource("RichTextEffect_p65sh"), SubResource("RichTextEffect_qyj10"), SubResource("RichTextEffect_jikoc"), SubResource("RichTextEffect_5rtta"), SubResource("RichTextEffect_abntp"), SubResource("RichTextEffect_v8uw1"), SubResource("RichTextEffect_8n2bo"), SubResource("RichTextEffect_njjve"), SubResource("RichTextEffect_285tb"), SubResource("RichTextEffect_hcy0l"), SubResource("RichTextEffect_ryw6c"), SubResource("RichTextEffect_wj35k"), SubResource("RichTextEffect_4qbal"), SubResource("RichTextEffect_lujpq"), SubResource("RichTextEffect_8mpm6"), SubResource("RichTextEffect_wifk2"), SubResource("RichTextEffect_tvg1v"), SubResource("RichTextEffect_mdwwl"), SubResource("RichTextEffect_fmjbv"), SubResource("RichTextEffect_hhat8"), SubResource("RichTextEffect_dnsy5"), SubResource("RichTextEffect_woj44"), SubResource("RichTextEffect_rkgjn"), SubResource("RichTextEffect_coaew"), SubResource("RichTextEffect_ifeg5"), SubResource("RichTextEffect_tybis"), SubResource("RichTextEffect_i5cxy"), SubResource("RichTextEffect_ib8ad"), SubResource("RichTextEffect_ssbhj"), SubResource("RichTextEffect_keewe"), SubResource("RichTextEffect_qk020"), SubResource("RichTextEffect_57fq7"), SubResource("RichTextEffect_hwc15"), SubResource("RichTextEffect_fe8fw"), SubResource("RichTextEffect_f0vg3"), SubResource("RichTextEffect_3ob27"), SubResource("RichTextEffect_651vl"), SubResource("RichTextEffect_v4i2l"), SubResource("RichTextEffect_o1c41"), SubResource("RichTextEffect_wfhhf"), SubResource("RichTextEffect_ligvw"), SubResource("RichTextEffect_wiwx5"), SubResource("RichTextEffect_g0k5d"), SubResource("RichTextEffect_skvoi"), SubResource("RichTextEffect_y18w8"), SubResource("RichTextEffect_8udjq"), SubResource("RichTextEffect_wku1j"), SubResource("RichTextEffect_k6bnu"), SubResource("RichTextEffect_ypc6y"), SubResource("RichTextEffect_hgybu"), SubResource("RichTextEffect_7n74s"), SubResource("RichTextEffect_efjdd"), SubResource("RichTextEffect_1qh7i"), SubResource("RichTextEffect_6yajc"), SubResource("RichTextEffect_3p4dj"), SubResource("RichTextEffect_hv8pk"), SubResource("RichTextEffect_oxrbk"), SubResource("RichTextEffect_ubaj7"), SubResource("RichTextEffect_7oc0o"), SubResource("RichTextEffect_2ui8w"), SubResource("RichTextEffect_py0f2"), SubResource("RichTextEffect_laps7"), SubResource("RichTextEffect_rxkd8"), SubResource("RichTextEffect_m30xm"), SubResource("RichTextEffect_64idf"), SubResource("RichTextEffect_amtt0"), SubResource("RichTextEffect_u71o7"), SubResource("RichTextEffect_f5hgb"), SubResource("RichTextEffect_u325a"), SubResource("RichTextEffect_7a0f2"), SubResource("RichTextEffect_ja1p8"), SubResource("RichTextEffect_qkyhm"), SubResource("RichTextEffect_qqb70"), SubResource("RichTextEffect_t6e8b"), SubResource("RichTextEffect_5kbjb"), SubResource("RichTextEffect_ydnuv"), SubResource("RichTextEffect_a5riv"), SubResource("RichTextEffect_a2k35"), SubResource("RichTextEffect_i4wn2"), SubResource("RichTextEffect_toy1k"), SubResource("RichTextEffect_rgrsv"), SubResource("RichTextEffect_xid2u"), SubResource("RichTextEffect_0xbmq"), SubResource("RichTextEffect_stuuw"), SubResource("RichTextEffect_v8evs"), SubResource("RichTextEffect_gdlu5"), SubResource("RichTextEffect_1t6m0"), SubResource("RichTextEffect_hdb2h"), SubResource("RichTextEffect_8iojl"), SubResource("RichTextEffect_x6lir"), SubResource("RichTextEffect_0uuy1"), SubResource("RichTextEffect_c5enr"), SubResource("RichTextEffect_x552u"), SubResource("RichTextEffect_vdl8u"), SubResource("RichTextEffect_no6p1"), SubResource("RichTextEffect_gmai7"), SubResource("RichTextEffect_2dpip"), SubResource("RichTextEffect_ln3c2"), SubResource("RichTextEffect_boa37"), SubResource("RichTextEffect_ogf03"), SubResource("RichTextEffect_5lspy"), SubResource("RichTextEffect_8yb67"), SubResource("RichTextEffect_ys5rg"), SubResource("RichTextEffect_8iktm"), SubResource("RichTextEffect_u3li7"), SubResource("RichTextEffect_vukli"), SubResource("RichTextEffect_8jcm8"), SubResource("RichTextEffect_6k8qp"), SubResource("RichTextEffect_2k2xd"), SubResource("RichTextEffect_eofew"), SubResource("RichTextEffect_u3tt4"), SubResource("RichTextEffect_wmnff"), SubResource("RichTextEffect_7p1vp"), SubResource("RichTextEffect_pgtjs"), SubResource("RichTextEffect_gqpa8"), SubResource("RichTextEffect_hb42e"), SubResource("RichTextEffect_4tl32"), SubResource("RichTextEffect_in65d"), SubResource("RichTextEffect_af67l"), SubResource("RichTextEffect_snmf0"), SubResource("RichTextEffect_qbhf1"), SubResource("RichTextEffect_w8xmy"), SubResource("RichTextEffect_a7ky3"), SubResource("RichTextEffect_5p3nu"), SubResource("RichTextEffect_1h3oa"), SubResource("RichTextEffect_ojtoy"), SubResource("RichTextEffect_0yjk8"), SubResource("RichTextEffect_0efi6"), SubResource("RichTextEffect_vusdc"), SubResource("RichTextEffect_8av0r"), SubResource("RichTextEffect_nxqc8"), SubResource("RichTextEffect_hvw7b"), SubResource("RichTextEffect_ai06x"), SubResource("RichTextEffect_vkmim"), SubResource("RichTextEffect_y7xq6"), SubResource("RichTextEffect_ps1ud"), SubResource("RichTextEffect_a3yuf"), SubResource("RichTextEffect_jssmo"), SubResource("RichTextEffect_imbww"), SubResource("RichTextEffect_4l5fj"), SubResource("RichTextEffect_nx6sg"), SubResource("RichTextEffect_e7yb5"), SubResource("RichTextEffect_nw0ty"), SubResource("RichTextEffect_1xfqy"), SubResource("RichTextEffect_id7a7"), SubResource("RichTextEffect_snexw"), SubResource("RichTextEffect_e3j35"), SubResource("RichTextEffect_g6j7l"), SubResource("RichTextEffect_rngpi"), SubResource("RichTextEffect_q2rbm"), SubResource("RichTextEffect_kimo2"), SubResource("RichTextEffect_2rkw1"), SubResource("RichTextEffect_s5ghc"), SubResource("RichTextEffect_jf72v"), SubResource("RichTextEffect_ypi78"), SubResource("RichTextEffect_a0xeu"), SubResource("RichTextEffect_kvv80"), SubResource("RichTextEffect_0s7i6"), SubResource("RichTextEffect_qri7g"), SubResource("RichTextEffect_l2mjm"), SubResource("RichTextEffect_pqb0k"), SubResource("RichTextEffect_bosdb"), SubResource("RichTextEffect_30rx7"), SubResource("RichTextEffect_njsj5"), SubResource("RichTextEffect_xxjdh"), SubResource("RichTextEffect_b405s"), SubResource("RichTextEffect_bbfny"), SubResource("RichTextEffect_oq35i"), SubResource("RichTextEffect_ogjdo"), SubResource("RichTextEffect_cvaqf"), SubResource("RichTextEffect_4liuv"), SubResource("RichTextEffect_rbdhs"), SubResource("RichTextEffect_w0uxh"), SubResource("RichTextEffect_sjoc0"), SubResource("RichTextEffect_u8fi8"), SubResource("RichTextEffect_mhk24"), SubResource("RichTextEffect_3a7ve"), SubResource("RichTextEffect_dsl4p"), SubResource("RichTextEffect_3wcqb"), SubResource("RichTextEffect_2x3jv"), SubResource("RichTextEffect_rg8oy"), SubResource("RichTextEffect_ww8ol"), SubResource("RichTextEffect_6utor"), SubResource("RichTextEffect_w7fpx"), SubResource("RichTextEffect_5k3y6"), SubResource("RichTextEffect_7byps"), SubResource("RichTextEffect_v0k0i"), SubResource("RichTextEffect_n3phd"), SubResource("RichTextEffect_26fs0"), SubResource("RichTextEffect_v3l5u"), SubResource("RichTextEffect_mnmj6"), SubResource("RichTextEffect_jrbes"), SubResource("RichTextEffect_mfyaw"), SubResource("RichTextEffect_5hfm0"), SubResource("RichTextEffect_k202f"), SubResource("RichTextEffect_ep05f"), SubResource("RichTextEffect_1l4p5"), SubResource("RichTextEffect_lrc71"), SubResource("RichTextEffect_oovlh"), SubResource("RichTextEffect_v57wg"), SubResource("RichTextEffect_5s88k"), SubResource("RichTextEffect_3fh7t"), SubResource("RichTextEffect_txnbo"), SubResource("RichTextEffect_yh2v2"), SubResource("RichTextEffect_csi1v"), SubResource("RichTextEffect_kcle7"), SubResource("RichTextEffect_ri1js"), SubResource("RichTextEffect_3nd1b"), SubResource("RichTextEffect_d66b2"), SubResource("RichTextEffect_14abo"), SubResource("RichTextEffect_1vr3o"), SubResource("RichTextEffect_iv1ir"), SubResource("RichTextEffect_pt58h"), SubResource("RichTextEffect_vrdme"), SubResource("RichTextEffect_p24ik"), SubResource("RichTextEffect_ky4ny"), SubResource("RichTextEffect_jcp5f"), SubResource("RichTextEffect_onh0u"), SubResource("RichTextEffect_uvpqk"), SubResource("RichTextEffect_sy804"), SubResource("RichTextEffect_bswwo"), SubResource("RichTextEffect_6mfx3"), SubResource("RichTextEffect_ns027"), SubResource("RichTextEffect_3wpsd"), SubResource("RichTextEffect_mlihh"), SubResource("RichTextEffect_rk487"), SubResource("RichTextEffect_12jhk"), SubResource("RichTextEffect_xwj55"), SubResource("RichTextEffect_lo16q"), SubResource("RichTextEffect_i7183"), SubResource("RichTextEffect_dt5o5"), SubResource("RichTextEffect_kojfr"), SubResource("RichTextEffect_g5taf"), SubResource("RichTextEffect_xdnm5"), SubResource("RichTextEffect_dte8l"), SubResource("RichTextEffect_7o2rp"), SubResource("RichTextEffect_ltsr6"), SubResource("RichTextEffect_6oxg8"), SubResource("RichTextEffect_q84dp"), SubResource("RichTextEffect_f23yb"), SubResource("RichTextEffect_lf6pl"), SubResource("RichTextEffect_xvhbn"), SubResource("RichTextEffect_ypnha"), SubResource("RichTextEffect_35ecg"), SubResource("RichTextEffect_uteb2"), SubResource("RichTextEffect_yhyi5"), SubResource("RichTextEffect_vnk5s"), SubResource("RichTextEffect_xd8ph"), SubResource("RichTextEffect_ni2ai"), SubResource("RichTextEffect_k5b3k"), SubResource("RichTextEffect_r1bd0"), SubResource("RichTextEffect_g47ri"), SubResource("RichTextEffect_tn5gk"), SubResource("RichTextEffect_3f0ic"), SubResource("RichTextEffect_1vei1"), SubResource("RichTextEffect_erh6e"), SubResource("RichTextEffect_36uvf"), SubResource("RichTextEffect_xqua2"), SubResource("RichTextEffect_6l7ic"), SubResource("RichTextEffect_ruidq"), SubResource("RichTextEffect_todhb"), SubResource("RichTextEffect_inj3v"), SubResource("RichTextEffect_kvc4x"), SubResource("RichTextEffect_yplsd"), SubResource("RichTextEffect_xc8gy"), SubResource("RichTextEffect_nlo53"), SubResource("RichTextEffect_ahrmu"), SubResource("RichTextEffect_ldt38"), SubResource("RichTextEffect_tw4eg"), SubResource("RichTextEffect_mtupx"), SubResource("RichTextEffect_3nf8o"), SubResource("RichTextEffect_f8b13"), SubResource("RichTextEffect_nxgk3"), SubResource("RichTextEffect_liepm"), SubResource("RichTextEffect_l2yd6"), SubResource("RichTextEffect_78sb7"), SubResource("RichTextEffect_kl6vh"), SubResource("RichTextEffect_tlys8"), SubResource("RichTextEffect_6kvlf"), SubResource("RichTextEffect_5o3o1"), SubResource("RichTextEffect_wculw"), SubResource("RichTextEffect_gqrfc"), SubResource("RichTextEffect_pv2js"), SubResource("RichTextEffect_8dtkd"), SubResource("RichTextEffect_j0pig"), SubResource("RichTextEffect_wmada"), SubResource("RichTextEffect_nhil8"), SubResource("RichTextEffect_4e18t"), SubResource("RichTextEffect_7h3ed"), SubResource("RichTextEffect_qwca4"), SubResource("RichTextEffect_554c5"), SubResource("RichTextEffect_jd55p"), SubResource("RichTextEffect_mhbqd"), SubResource("RichTextEffect_qsnib"), SubResource("RichTextEffect_gc5d0"), SubResource("RichTextEffect_ded3j"), SubResource("RichTextEffect_5hb21"), SubResource("RichTextEffect_m536r"), SubResource("RichTextEffect_yow5i"), SubResource("RichTextEffect_ibchn"), SubResource("RichTextEffect_nah58"), SubResource("RichTextEffect_gvqfo"), SubResource("RichTextEffect_trxj0"), SubResource("RichTextEffect_w5fhs"), SubResource("RichTextEffect_n3aib"), SubResource("RichTextEffect_iu0yl"), SubResource("RichTextEffect_t7elh"), SubResource("RichTextEffect_q7g5w"), SubResource("RichTextEffect_bgguk"), SubResource("RichTextEffect_ml1d1"), SubResource("RichTextEffect_sjbs3"), SubResource("RichTextEffect_x1xfo"), SubResource("RichTextEffect_xis6o"), SubResource("RichTextEffect_gej6b"), SubResource("RichTextEffect_a1t6p"), SubResource("RichTextEffect_ulgeg"), SubResource("RichTextEffect_yy6k5"), SubResource("RichTextEffect_xpxc8"), SubResource("RichTextEffect_5cc4i"), SubResource("RichTextEffect_u1p8p"), SubResource("RichTextEffect_uxavt"), SubResource("RichTextEffect_6msew"), SubResource("RichTextEffect_lf8b2"), SubResource("RichTextEffect_wsux4"), SubResource("RichTextEffect_7adcb"), SubResource("RichTextEffect_p3hld"), SubResource("RichTextEffect_0fdtg"), SubResource("RichTextEffect_2ggtl"), SubResource("RichTextEffect_qxbke"), SubResource("RichTextEffect_pv4th"), SubResource("RichTextEffect_p0erb"), SubResource("RichTextEffect_rt8ks"), SubResource("RichTextEffect_v52hr"), SubResource("RichTextEffect_wini2"), SubResource("RichTextEffect_xaa6s"), SubResource("RichTextEffect_payby"), SubResource("RichTextEffect_o3lqk"), SubResource("RichTextEffect_4euga"), SubResource("RichTextEffect_guw6n"), SubResource("RichTextEffect_21lxu"), SubResource("RichTextEffect_6juhh"), SubResource("RichTextEffect_vgxjs"), SubResource("RichTextEffect_lmygi"), SubResource("RichTextEffect_t2eo0"), SubResource("RichTextEffect_gbj00"), SubResource("RichTextEffect_jlrsm"), SubResource("RichTextEffect_kp2e5"), SubResource("RichTextEffect_no6ya"), SubResource("RichTextEffect_dg5qp"), SubResource("RichTextEffect_ph5ao"), SubResource("RichTextEffect_x0uno"), SubResource("RichTextEffect_t3teg"), SubResource("RichTextEffect_1aw4a"), SubResource("RichTextEffect_4d043"), SubResource("RichTextEffect_60iye"), SubResource("RichTextEffect_4085o"), SubResource("RichTextEffect_rvl7f"), SubResource("RichTextEffect_i4yfg"), SubResource("RichTextEffect_bufmh"), SubResource("RichTextEffect_odscb"), SubResource("RichTextEffect_acuw6"), SubResource("RichTextEffect_hh4e6"), SubResource("RichTextEffect_jow51"), SubResource("RichTextEffect_nud42"), SubResource("RichTextEffect_nl5t5"), SubResource("RichTextEffect_0f16m"), SubResource("RichTextEffect_gp46t"), SubResource("RichTextEffect_ras8j"), SubResource("RichTextEffect_a2edr"), SubResource("RichTextEffect_3xluh"), SubResource("RichTextEffect_mss8w"), SubResource("RichTextEffect_r10o4"), SubResource("RichTextEffect_5fs7y"), SubResource("RichTextEffect_kbbcu"), SubResource("RichTextEffect_k4w3u"), SubResource("RichTextEffect_6tnti"), SubResource("RichTextEffect_j4ecw"), SubResource("RichTextEffect_1hvqa"), SubResource("RichTextEffect_725ba"), SubResource("RichTextEffect_xlq85"), SubResource("RichTextEffect_3a6us"), SubResource("RichTextEffect_u8rqr"), SubResource("RichTextEffect_514t6"), SubResource("RichTextEffect_ivsq3"), SubResource("RichTextEffect_0kdwp"), SubResource("RichTextEffect_kcvgg"), SubResource("RichTextEffect_r25ba"), SubResource("RichTextEffect_fwrdc"), SubResource("RichTextEffect_mdsld"), SubResource("RichTextEffect_c8ywk"), SubResource("RichTextEffect_q34ka"), SubResource("RichTextEffect_npxsj"), SubResource("RichTextEffect_u5jt1"), SubResource("RichTextEffect_lmidy"), SubResource("RichTextEffect_cgoip"), SubResource("RichTextEffect_61qgb"), SubResource("RichTextEffect_rl8kx"), SubResource("RichTextEffect_vdnog"), SubResource("RichTextEffect_rqfl4"), SubResource("RichTextEffect_wy35q"), SubResource("RichTextEffect_8dk8d"), SubResource("RichTextEffect_a7k1m"), SubResource("RichTextEffect_b1vs3"), SubResource("RichTextEffect_xe6xx"), SubResource("RichTextEffect_211vl"), SubResource("RichTextEffect_27cos"), SubResource("RichTextEffect_8xdqu"), SubResource("RichTextEffect_kth7x"), SubResource("RichTextEffect_vfr1m"), SubResource("RichTextEffect_jpwou"), SubResource("RichTextEffect_30r1l"), SubResource("RichTextEffect_tofn8"), SubResource("RichTextEffect_f8s0x"), SubResource("RichTextEffect_mgo1o"), SubResource("RichTextEffect_6set8"), SubResource("RichTextEffect_t0r1n"), SubResource("RichTextEffect_m77iy"), SubResource("RichTextEffect_i6bpx"), SubResource("RichTextEffect_od4em"), SubResource("RichTextEffect_lj6re"), SubResource("RichTextEffect_y4j8e"), SubResource("RichTextEffect_7b3cd"), SubResource("RichTextEffect_svqkq"), SubResource("RichTextEffect_gt40c"), SubResource("RichTextEffect_8el4s"), SubResource("RichTextEffect_n3gci"), SubResource("RichTextEffect_chpvj"), SubResource("RichTextEffect_2t8e4"), SubResource("RichTextEffect_r36bp"), SubResource("RichTextEffect_ijy6p"), SubResource("RichTextEffect_nihbm"), SubResource("RichTextEffect_om8tq"), SubResource("RichTextEffect_60s0b"), SubResource("RichTextEffect_y4dyo"), SubResource("RichTextEffect_gt64x"), SubResource("RichTextEffect_cgydf"), SubResource("RichTextEffect_8kaqu"), SubResource("RichTextEffect_hhalc"), SubResource("RichTextEffect_d8ett"), SubResource("RichTextEffect_kpdxh"), SubResource("RichTextEffect_mwy8r"), SubResource("RichTextEffect_n7jve"), SubResource("RichTextEffect_pfa2i"), SubResource("RichTextEffect_673ub"), SubResource("RichTextEffect_ttxxw"), SubResource("RichTextEffect_mxvic"), SubResource("RichTextEffect_2k0xu"), SubResource("RichTextEffect_q3j0k"), SubResource("RichTextEffect_crpxd"), SubResource("RichTextEffect_det0f"), SubResource("RichTextEffect_73x33"), SubResource("RichTextEffect_2l25p"), SubResource("RichTextEffect_h3ynm"), SubResource("RichTextEffect_7docu"), SubResource("RichTextEffect_vtlyi"), SubResource("RichTextEffect_a0gic"), SubResource("RichTextEffect_2ypeg"), SubResource("RichTextEffect_ja6r5"), SubResource("RichTextEffect_2js8g"), SubResource("RichTextEffect_2mu1i"), SubResource("RichTextEffect_dgm0j"), SubResource("RichTextEffect_yxqok"), SubResource("RichTextEffect_gplnm"), SubResource("RichTextEffect_7lhff"), SubResource("RichTextEffect_4snop"), SubResource("RichTextEffect_qu2qq"), SubResource("RichTextEffect_qkuw5"), SubResource("RichTextEffect_n6wkt"), SubResource("RichTextEffect_dm47k"), SubResource("RichTextEffect_pmong"), SubResource("RichTextEffect_hydf1"), SubResource("RichTextEffect_xemq8"), SubResource("RichTextEffect_k7paj"), SubResource("RichTextEffect_r4yho"), SubResource("RichTextEffect_0nuyw"), SubResource("RichTextEffect_bn8jp"), SubResource("RichTextEffect_4gt01"), SubResource("RichTextEffect_w4bbu"), SubResource("RichTextEffect_4f7b1"), SubResource("RichTextEffect_47ee2"), SubResource("RichTextEffect_qirfl"), SubResource("RichTextEffect_ea4ao"), SubResource("RichTextEffect_lgfoi"), SubResource("RichTextEffect_ki8kl"), SubResource("RichTextEffect_p3y2w"), SubResource("RichTextEffect_uysjq"), SubResource("RichTextEffect_c1y7y"), SubResource("RichTextEffect_vikkm"), SubResource("RichTextEffect_n1hvu"), SubResource("RichTextEffect_gjfql"), SubResource("RichTextEffect_khwkr"), SubResource("RichTextEffect_wup21"), SubResource("RichTextEffect_nm1s0"), SubResource("RichTextEffect_stst2"), SubResource("RichTextEffect_kqdmi"), SubResource("RichTextEffect_kbowg"), SubResource("RichTextEffect_0yrq2"), SubResource("RichTextEffect_5lmgy"), SubResource("RichTextEffect_t6atv"), SubResource("RichTextEffect_3lacm"), SubResource("RichTextEffect_o021f"), SubResource("RichTextEffect_k7oku"), SubResource("RichTextEffect_2ojbw"), SubResource("RichTextEffect_iavov"), SubResource("RichTextEffect_sbcgo"), SubResource("RichTextEffect_wydb5"), SubResource("RichTextEffect_7ndfm"), SubResource("RichTextEffect_8ooo8"), SubResource("RichTextEffect_ev602"), SubResource("RichTextEffect_mfn51"), SubResource("RichTextEffect_5mlib"), SubResource("RichTextEffect_rheym"), SubResource("RichTextEffect_4ow2x"), SubResource("RichTextEffect_4byjh"), SubResource("RichTextEffect_7itgl"), SubResource("RichTextEffect_yotol"), SubResource("RichTextEffect_5k0ru"), SubResource("RichTextEffect_e7j7v"), SubResource("RichTextEffect_r854f"), SubResource("RichTextEffect_20b2o"), SubResource("RichTextEffect_y00q7"), SubResource("RichTextEffect_4ukir"), SubResource("RichTextEffect_8ongg"), SubResource("RichTextEffect_ckw37"), SubResource("RichTextEffect_trfo6"), SubResource("RichTextEffect_3x58h"), SubResource("RichTextEffect_ls630"), SubResource("RichTextEffect_uxciy"), SubResource("RichTextEffect_p4evt"), SubResource("RichTextEffect_vcem5"), SubResource("RichTextEffect_emawn"), SubResource("RichTextEffect_b5x7v"), SubResource("RichTextEffect_g5b5t"), SubResource("RichTextEffect_4f5qo"), SubResource("RichTextEffect_vjnha"), SubResource("RichTextEffect_wuygd"), SubResource("RichTextEffect_sfquq"), SubResource("RichTextEffect_wldcf"), SubResource("RichTextEffect_28doq"), SubResource("RichTextEffect_2peo1"), SubResource("RichTextEffect_lfb7c"), SubResource("RichTextEffect_26eey"), SubResource("RichTextEffect_wd70u"), SubResource("RichTextEffect_ruhsv"), SubResource("RichTextEffect_cjs4y"), SubResource("RichTextEffect_yx6bl"), SubResource("RichTextEffect_m62pg"), SubResource("RichTextEffect_6nyq0"), SubResource("RichTextEffect_qb18b"), SubResource("RichTextEffect_s42mk"), SubResource("RichTextEffect_moue7"), SubResource("RichTextEffect_vvc15"), SubResource("RichTextEffect_pnv8i"), SubResource("RichTextEffect_itwnt"), SubResource("RichTextEffect_01tnl"), SubResource("RichTextEffect_gjgs7"), SubResource("RichTextEffect_r3ejv"), SubResource("RichTextEffect_bfbv3"), SubResource("RichTextEffect_mu72r"), SubResource("RichTextEffect_1rpfk"), SubResource("RichTextEffect_e67wa"), SubResource("RichTextEffect_x5b84"), SubResource("RichTextEffect_m7h4x"), SubResource("RichTextEffect_us7u2"), SubResource("RichTextEffect_v0c6s"), SubResource("RichTextEffect_1nqq3"), SubResource("RichTextEffect_2wob6"), SubResource("RichTextEffect_uujjk"), SubResource("RichTextEffect_hglka"), SubResource("RichTextEffect_c8qdx"), SubResource("RichTextEffect_sa63w"), SubResource("RichTextEffect_7j8au"), SubResource("RichTextEffect_6h08l"), SubResource("RichTextEffect_wuqlu"), SubResource("RichTextEffect_v2edb"), SubResource("RichTextEffect_e5v46"), SubResource("RichTextEffect_2375c"), SubResource("RichTextEffect_88orh"), SubResource("RichTextEffect_u8c5d"), SubResource("RichTextEffect_wjyl7"), SubResource("RichTextEffect_rk10s"), SubResource("RichTextEffect_i0xw7"), SubResource("RichTextEffect_bqwhj"), SubResource("RichTextEffect_p1g6m"), SubResource("RichTextEffect_603pn"), SubResource("RichTextEffect_qrs58"), SubResource("RichTextEffect_i165c"), SubResource("RichTextEffect_esfu3"), SubResource("RichTextEffect_tosay"), SubResource("RichTextEffect_8d3nh"), SubResource("RichTextEffect_n5822"), SubResource("RichTextEffect_yx80k"), SubResource("RichTextEffect_2kgn4"), SubResource("RichTextEffect_sp3xt"), SubResource("RichTextEffect_p80hv"), SubResource("RichTextEffect_1s1b0"), SubResource("RichTextEffect_ja117"), SubResource("RichTextEffect_s2en2"), SubResource("RichTextEffect_i2cl0"), SubResource("RichTextEffect_onj35"), SubResource("RichTextEffect_20n3c"), SubResource("RichTextEffect_qge7d"), SubResource("RichTextEffect_wq5wv"), SubResource("RichTextEffect_irfla"), SubResource("RichTextEffect_hgap5"), SubResource("RichTextEffect_fkq5o"), SubResource("RichTextEffect_40utf"), SubResource("RichTextEffect_jithr"), SubResource("RichTextEffect_s6v8s"), SubResource("RichTextEffect_26f5c"), SubResource("RichTextEffect_0tlgo"), SubResource("RichTextEffect_0f481"), SubResource("RichTextEffect_wmg55"), SubResource("RichTextEffect_cn5dj"), SubResource("RichTextEffect_n3auf"), SubResource("RichTextEffect_w6qkt"), SubResource("RichTextEffect_n1in5"), SubResource("RichTextEffect_f1acx"), SubResource("RichTextEffect_xwmwy"), SubResource("RichTextEffect_nrcem"), SubResource("RichTextEffect_lmtcl"), SubResource("RichTextEffect_kth2y"), SubResource("RichTextEffect_jfycg"), SubResource("RichTextEffect_b1m8q"), SubResource("RichTextEffect_36h7t"), SubResource("RichTextEffect_v1ed3"), SubResource("RichTextEffect_rbp0b"), SubResource("RichTextEffect_ibhxx"), SubResource("RichTextEffect_slre4"), SubResource("RichTextEffect_grq4x"), SubResource("RichTextEffect_rrbmj"), SubResource("RichTextEffect_dfib8"), SubResource("RichTextEffect_dyh5m"), SubResource("RichTextEffect_k8ab3"), SubResource("RichTextEffect_x8iti"), SubResource("RichTextEffect_ltmeo"), SubResource("RichTextEffect_mw68k"), SubResource("RichTextEffect_bpa4y"), SubResource("RichTextEffect_aysd1"), SubResource("RichTextEffect_5kg05"), SubResource("RichTextEffect_16ghp"), SubResource("RichTextEffect_rudud"), SubResource("RichTextEffect_oddoh"), SubResource("RichTextEffect_apxp5"), SubResource("RichTextEffect_qkc5c"), SubResource("RichTextEffect_k0mps"), SubResource("RichTextEffect_177np"), SubResource("RichTextEffect_4jg88"), SubResource("RichTextEffect_cud3e"), SubResource("RichTextEffect_l375h"), SubResource("RichTextEffect_hvoys"), SubResource("RichTextEffect_w7ls1"), SubResource("RichTextEffect_lwv11"), SubResource("RichTextEffect_6rjdt"), SubResource("RichTextEffect_chf5d"), SubResource("RichTextEffect_gw1no"), SubResource("RichTextEffect_ec0qs"), SubResource("RichTextEffect_mpat2"), SubResource("RichTextEffect_f36c3"), SubResource("RichTextEffect_i2x02"), SubResource("RichTextEffect_e7rik"), SubResource("RichTextEffect_cgtwt"), SubResource("RichTextEffect_cs4qe"), SubResource("RichTextEffect_jtk2b"), SubResource("RichTextEffect_miylj"), SubResource("RichTextEffect_hskrx"), SubResource("RichTextEffect_bl7ae"), SubResource("RichTextEffect_cwo3w"), SubResource("RichTextEffect_t0fed"), SubResource("RichTextEffect_ebsg8"), SubResource("RichTextEffect_ad4j0"), SubResource("RichTextEffect_a7phj"), SubResource("RichTextEffect_t8jib"), SubResource("RichTextEffect_jr68p"), SubResource("RichTextEffect_g05o1"), SubResource("RichTextEffect_1xbdn"), SubResource("RichTextEffect_o2och"), SubResource("RichTextEffect_hvha0"), SubResource("RichTextEffect_ssxv4"), SubResource("RichTextEffect_t3pnd"), SubResource("RichTextEffect_mawtw"), SubResource("RichTextEffect_xj1so"), SubResource("RichTextEffect_b4q0a"), SubResource("RichTextEffect_nbbp4"), SubResource("RichTextEffect_7sanq"), SubResource("RichTextEffect_nicad"), SubResource("RichTextEffect_qxgdy"), SubResource("RichTextEffect_6tf1d"), SubResource("RichTextEffect_8v5lv"), SubResource("RichTextEffect_k8mim"), SubResource("RichTextEffect_blmxv"), SubResource("RichTextEffect_uyh86"), SubResource("RichTextEffect_326me"), SubResource("RichTextEffect_x8rik"), SubResource("RichTextEffect_d4dax"), SubResource("RichTextEffect_to7ho"), SubResource("RichTextEffect_g76m6"), SubResource("RichTextEffect_qsl3w"), SubResource("RichTextEffect_l8gxf"), SubResource("RichTextEffect_i8heo"), SubResource("RichTextEffect_lxxls"), SubResource("RichTextEffect_qa2uu"), SubResource("RichTextEffect_wp4wy"), SubResource("RichTextEffect_3iih3"), SubResource("RichTextEffect_ve2rd"), SubResource("RichTextEffect_3bkhw"), SubResource("RichTextEffect_78qvr"), SubResource("RichTextEffect_m26ov"), SubResource("RichTextEffect_61wet"), SubResource("RichTextEffect_nquw8"), SubResource("RichTextEffect_yof4y"), SubResource("RichTextEffect_bxau4"), SubResource("RichTextEffect_3jrai"), SubResource("RichTextEffect_t3f6b"), SubResource("RichTextEffect_xkb8i"), SubResource("RichTextEffect_trxlk"), SubResource("RichTextEffect_qwg7k"), SubResource("RichTextEffect_d86ll"), SubResource("RichTextEffect_j0014"), SubResource("RichTextEffect_v4ino"), SubResource("RichTextEffect_8oo6n"), SubResource("RichTextEffect_4p4n0"), SubResource("RichTextEffect_sgeni"), SubResource("RichTextEffect_3v7tu"), SubResource("RichTextEffect_x3u2f"), SubResource("RichTextEffect_v7088"), SubResource("RichTextEffect_qgwdw"), SubResource("RichTextEffect_rnpmj"), SubResource("RichTextEffect_anky0"), SubResource("RichTextEffect_8qnyi"), SubResource("RichTextEffect_x8ud0"), SubResource("RichTextEffect_7c3pw"), SubResource("RichTextEffect_r6h24"), SubResource("RichTextEffect_bsqxs"), SubResource("RichTextEffect_oqs68"), SubResource("RichTextEffect_sc7r2"), SubResource("RichTextEffect_mlijd"), SubResource("RichTextEffect_7l1fk"), SubResource("RichTextEffect_5g17f"), SubResource("RichTextEffect_vsqpb"), SubResource("RichTextEffect_vt6xr"), SubResource("RichTextEffect_m5er7"), SubResource("RichTextEffect_1s1hv"), SubResource("RichTextEffect_2lsl5"), SubResource("RichTextEffect_h53e7"), SubResource("RichTextEffect_5e7yb"), SubResource("RichTextEffect_pm2mb"), SubResource("RichTextEffect_v7vna"), SubResource("RichTextEffect_7705x"), SubResource("RichTextEffect_o63o2"), SubResource("RichTextEffect_afybe"), SubResource("RichTextEffect_3waax"), SubResource("RichTextEffect_q3a7t"), SubResource("RichTextEffect_xormv"), SubResource("RichTextEffect_ld6sf"), SubResource("RichTextEffect_0ijq7"), SubResource("RichTextEffect_dyong"), SubResource("RichTextEffect_j4r0b"), SubResource("RichTextEffect_134gb"), SubResource("RichTextEffect_yofl4"), SubResource("RichTextEffect_ul5ev"), SubResource("RichTextEffect_xmc5o"), SubResource("RichTextEffect_8whce"), SubResource("RichTextEffect_fmlgp"), SubResource("RichTextEffect_t8ac7"), SubResource("RichTextEffect_1uoq3"), SubResource("RichTextEffect_nk6n0"), SubResource("RichTextEffect_33t8u"), SubResource("RichTextEffect_lgwms"), SubResource("RichTextEffect_tapwt"), SubResource("RichTextEffect_vww85"), SubResource("RichTextEffect_t7kvp"), SubResource("RichTextEffect_vyymy"), SubResource("RichTextEffect_ey8vu"), SubResource("RichTextEffect_gay65"), SubResource("RichTextEffect_erlgh"), SubResource("RichTextEffect_ennw7"), SubResource("RichTextEffect_co105"), SubResource("RichTextEffect_gysp8"), SubResource("RichTextEffect_7sjol"), SubResource("RichTextEffect_trh6j"), SubResource("RichTextEffect_brn0s"), SubResource("RichTextEffect_cj4p3"), SubResource("RichTextEffect_xx5ne"), SubResource("RichTextEffect_xovvo"), SubResource("RichTextEffect_eih0s"), SubResource("RichTextEffect_y4nuc"), SubResource("RichTextEffect_0ks0k"), SubResource("RichTextEffect_1h2jf"), SubResource("RichTextEffect_lhk17"), SubResource("RichTextEffect_h6bmk"), SubResource("RichTextEffect_2rgjd"), SubResource("RichTextEffect_b816y"), SubResource("RichTextEffect_txcna"), SubResource("RichTextEffect_vyxv2"), SubResource("RichTextEffect_2ckom"), SubResource("RichTextEffect_wh85w"), SubResource("RichTextEffect_vb2q2"), SubResource("RichTextEffect_4mstq"), SubResource("RichTextEffect_7qxck"), SubResource("RichTextEffect_bxdtj"), SubResource("RichTextEffect_8vq7m"), SubResource("RichTextEffect_8gs48"), SubResource("RichTextEffect_1l5i1"), SubResource("RichTextEffect_5fh31"), SubResource("RichTextEffect_1kjnr"), SubResource("RichTextEffect_tk1ei"), SubResource("RichTextEffect_hl7dd"), SubResource("RichTextEffect_5k5ut"), SubResource("RichTextEffect_ormsj"), SubResource("RichTextEffect_20nij")]
+visible_characters = 0
+
+[node name="MarginContainer2" type="MarginContainer" parent="MainMargin/DialogMainContainer/HBoxContainer"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = -5
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = -2
+theme_override_constants/margin_bottom = 10
+
+[node name="FaceRightFrame" type="PanelContainer" parent="MainMargin/DialogMainContainer/HBoxContainer/MarginContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_ibhxx")
+
+[node name="RightIconFace" type="TextureRect" parent="MainMargin/DialogMainContainer/HBoxContainer/MarginContainer2/FaceRightFrame"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+flip_h = true
+
+[node name="AdvanceCursorContainer" type="MarginContainer" parent="MainMargin"]
+unique_name_in_owner = true
+visible = false
+z_index = 100
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+mouse_filter = 2
+
+[node name="Control" type="Control" parent="MainMargin/AdvanceCursorContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="MainMargin/AdvanceCursorContainer/Control"]
+position = Vector2(0, 0.86428)
+sprite_frames = SubResource("SpriteFrames_m3qel")
+autoplay = "default"
+speed_scale = 6.0
+script = SubResource("GDScript_c8yyc")
+amplitude = 5.0
+period = 1.085
+
+[node name="TypeWritePlayer" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("29_rbp0b")
+pitch_scale = 0.864064
+
+[connection signal="item_rect_changed" from="MainMargin/DialogMainContainer/HBoxContainer/MessageContainer/Message" to="." method="_on_message_item_rect_changed"]

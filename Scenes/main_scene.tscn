@@ -1,0 +1,258 @@
+[gd_scene load_steps=16 format=3 uid="uid://bkhjucbiesdpr"]
+
+[ext_resource type="Script" uid="uid://ukntx504oiny" path="res://Scripts/main_scene.gd" id="1_rt5xa"]
+[ext_resource type="Script" uid="uid://cddnniwjpmq2t" path="res://Scripts/main_camera.gd" id="2_03j2t"]
+[ext_resource type="Script" uid="uid://cwyf5x1gw40f6" path="res://addons/RPGMap/Scripts/keot_system.gd" id="2_76v2p"]
+[ext_resource type="PackedScene" uid="uid://c35rmx4jfk0n" path="res://addons/rpg_character_creator/Other/character_baker.tscn" id="2_drdnd"]
+[ext_resource type="Script" uid="uid://5rdkpgt6uqnc" path="res://addons/RPGData/Scripts/Interpreter/main_interpreter.gd" id="2_j1x1n"]
+[ext_resource type="PackedScene" uid="uid://v4ufvixoj8c" path="res://Scenes/ShadowCompose/shadow_compose.tscn" id="4_0ic7e"]
+[ext_resource type="PackedScene" uid="uid://cwxq3ll0bhw0f" path="res://Scenes/DialogTemplates/base_dialog.tscn" id="4_re3ur"]
+[ext_resource type="Script" uid="uid://cj4kiemdnbi7n" path="res://Scenes/ShadowCompose/shadow_component.gd" id="6_huasi"]
+[ext_resource type="Shader" uid="uid://bvum8hbbud2xd" path="res://Assets/Shaders/simple_modulation.gdshader" id="6_m1efj"]
+[ext_resource type="PackedScene" uid="uid://cnpdb4o8usbf0" path="res://Scenes/TransitionManager/transition_manager.tscn" id="7_cyd8t"]
+[ext_resource type="PackedScene" uid="uid://dj44lomm46fuq" path="res://Scenes/OtherScenes/animate_items.tscn" id="8_huasi"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_rbbkg"]
+frequency = 0.0011
+
+[sub_resource type="Resource" id="Resource_maf8m"]
+resource_local_to_scene = true
+script = ExtResource("6_huasi")
+dynamic_skew = -0.840179252261254
+elongation = Vector2(1, 0.5423088)
+shadow_transform = 2.56841
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mai8y"]
+shader = ExtResource("6_m1efj")
+shader_parameter/modulate = Color(1, 1, 1, 0)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_huasi"]
+
+[node name="MainScene" type="Node2D" node_paths=PackedStringArray("transition_manager") groups=["start_scene_main"]]
+texture_filter = 5
+script = ExtResource("1_rt5xa")
+transition_manager = NodePath("TransitionCanvas/TransitionManager")
+
+[node name="CharacterBaker" parent="." instance=ExtResource("2_drdnd")]
+unique_name_in_owner = true
+
+[node name="KeotSystem" type="Area2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("2_76v2p")
+
+[node name="Interpreter" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("2_j1x1n")
+
+[node name="MainSubViewportContainer" type="SubViewportContainer" parent="."]
+unique_name_in_owner = true
+offset_right = 1152.0
+offset_bottom = 640.0
+focus_mode = 0
+
+[node name="MainGameViewport" type="SubViewport" parent="MainSubViewportContainer" groups=["main_game_viewport"]]
+unique_name_in_owner = true
+transparent_bg = true
+handle_input_locally = false
+canvas_item_default_texture_filter = 0
+size = Vector2i(1152, 640)
+render_target_update_mode = 4
+
+[node name="BackgroundColorContainer" type="CanvasLayer" parent="MainSubViewportContainer/MainGameViewport"]
+layer = -100
+
+[node name="BackgroundColor" type="ColorRect" parent="MainSubViewportContainer/MainGameViewport/BackgroundColorContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="MainCamera" type="Camera2D" parent="MainSubViewportContainer/MainGameViewport" groups=["camera"]]
+unique_name_in_owner = true
+zoom = Vector2(2, 2)
+drag_left_margin = 0.45
+drag_top_margin = 0.45
+drag_right_margin = 0.45
+drag_bottom_margin = 0.45
+editor_draw_limits = true
+editor_draw_drag_margin = true
+script = ExtResource("2_03j2t")
+smooth_speed = 2.0
+noise = SubResource("FastNoiseLite_rbbkg")
+zoom_speed = 2.0
+
+[node name="MainModulate" type="CanvasModulate" parent="MainSubViewportContainer/MainGameViewport"]
+unique_name_in_owner = true
+
+[node name="MapContainer" type="Parallax2D" parent="MainSubViewportContainer/MainGameViewport/MainModulate"]
+unique_name_in_owner = true
+texture_repeat = 2
+repeat_times = 4
+ignore_camera_scroll = true
+
+[node name="ShadowContainer" type="Node2D" parent="MainSubViewportContainer/MainGameViewport/MainModulate/MapContainer" groups=["dynamic_shadow_container"]]
+unique_name_in_owner = true
+
+[node name="DynamicShadows" parent="MainSubViewportContainer/MainGameViewport/MainModulate/MapContainer/ShadowContainer" instance=ExtResource("4_0ic7e")]
+unique_name_in_owner = true
+shadow_component = SubResource("Resource_maf8m")
+
+[node name="ImageContainer" type="Node2D" parent="MainSubViewportContainer/MainGameViewport/MainModulate/MapContainer"]
+unique_name_in_owner = true
+
+[node name="ScreenEffectCanvas" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+follow_viewport_enabled = true
+
+[node name="MainSceneAndImageContainer" type="Node2D" parent="ScreenEffectCanvas"]
+
+[node name="SceneContainer" type="Node2D" parent="ScreenEffectCanvas/MainSceneAndImageContainer"]
+unique_name_in_owner = true
+
+[node name="WeatherCanvas" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+layer = 10
+
+[node name="WeatherModulate" type="ColorRect" parent="WeatherCanvas"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_mai8y")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 0)
+
+[node name="VideoCanvas" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+layer = 99
+
+[node name="VideoContainer" type="MarginContainer" parent="VideoCanvas"]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="OptionsCanvas" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+layer = 100
+visible = false
+
+[node name="TransitionCanvas" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+layer = 115
+
+[node name="Flash" type="ColorRect" parent="TransitionCanvas"]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_huasi")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 0)
+
+[node name="TransitionManager" parent="TransitionCanvas" instance=ExtResource("7_cyd8t")]
+unique_name_in_owner = true
+
+[node name="SecondaryTransition" type="ColorRect" parent="TransitionCanvas"]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0)
+
+[node name="MessageCanvas" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+layer = 120
+visible = false
+
+[node name="MessageCharacterImages" type="Control" parent="MessageCanvas"]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Control" type="VBoxContainer" parent="MessageCanvas"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dialog" parent="MessageCanvas/Control" node_paths=PackedStringArray("character_container") instance=ExtResource("4_re3ur")]
+unique_name_in_owner = true
+layout_mode = 2
+character_container = NodePath("../../MessageCharacterImages")
+
+[node name="OverMessageCanvas" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+layer = 121
+
+[node name="AnimateItems" parent="OverMessageCanvas" instance=ExtResource("8_huasi")]
+unique_name_in_owner = true
+icon_size = Vector2(22, 22)
+move_duration = 0.5
+bounce_distance = 5.0
+vertical_spacing = -10.0
+horizontal_offset = -2.0
+spawn_delay = 0.15
+
+[node name="GUICanvas" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+layer = 125
+
+[node name="AudioPlayerContainer" type="Node" parent="."]
+
+[node name="BGMPlayer1" type="AudioStreamPlayer" parent="AudioPlayerContainer"]
+unique_name_in_owner = true
+bus = &"BGM"
+
+[node name="BGMPlayer2" type="AudioStreamPlayer" parent="AudioPlayerContainer"]
+unique_name_in_owner = true
+bus = &"BGM"
+
+[node name="MEPlayer" type="AudioStreamPlayer" parent="AudioPlayerContainer"]
+unique_name_in_owner = true
+bus = &"BGM"
+
+[node name="BGSPlayer1" type="AudioStreamPlayer" parent="AudioPlayerContainer"]
+unique_name_in_owner = true
+bus = &"Ambient"
+
+[node name="BGSPlayer2" type="AudioStreamPlayer" parent="AudioPlayerContainer"]
+unique_name_in_owner = true
+bus = &"Ambient"
+
+[node name="SEPlayer1" type="AudioStreamPlayer" parent="AudioPlayerContainer"]
+unique_name_in_owner = true
+bus = &"SE"
+
+[node name="SEPlayer2" type="AudioStreamPlayer" parent="AudioPlayerContainer"]
+unique_name_in_owner = true
+bus = &"SE"
+
+[node name="SEPlayer3" type="AudioStreamPlayer" parent="AudioPlayerContainer"]
+unique_name_in_owner = true
+bus = &"SE"
+
+[node name="SEPlayer4" type="AudioStreamPlayer" parent="AudioPlayerContainer"]
+unique_name_in_owner = true
+bus = &"SE"
+
+[node name="SEPlayer5" type="AudioStreamPlayer" parent="AudioPlayerContainer"]
+unique_name_in_owner = true
+bus = &"SE"

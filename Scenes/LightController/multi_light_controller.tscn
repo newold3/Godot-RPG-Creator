@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://chpoci3hxse07"]
+
+[ext_resource type="Shader" uid="uid://cby2ed5sc5cld" path="res://Assets/Shaders/progressive_multi_holes.gdshader" id="1_l1jer"]
+[ext_resource type="Script" uid="uid://c38f1ccr53nwq" path="res://Scenes/LightController/multi_light_controller.gd" id="1_rmvxr"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gp6kf"]
+shader = ExtResource("1_l1jer")
+shader_parameter/global_progress = 1.0
+shader_parameter/cover_color = Color(0, 0, 0, 1)
+shader_parameter/edge_softness = 0.073
+shader_parameter/flicker_intensity = 0.045
+shader_parameter/flicker_speed = 1.721
+shader_parameter/circle_irregularity = 0.02
+shader_parameter/num_lights = 1
+shader_parameter/light_positions = PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+shader_parameter/light_radii = PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+shader_parameter/light_intensities = PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+shader_parameter/hole_position = Vector2(0.5, 0.5)
+shader_parameter/hole_radius = 0.2
+
+[node name="MultiLightController" type="ColorRect"]
+material = SubResource("ShaderMaterial_gp6kf")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_rmvxr")

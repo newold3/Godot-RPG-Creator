@@ -1,0 +1,471 @@
+[gd_scene load_steps=52 format=3 uid="uid://f3dvroy0ce3d"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_6ke1q"]
+[ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="1_acjup"]
+[ext_resource type="Script" path="res://addons/CustomControls/Dialogs/advanced_text_editor_dialog.gd" id="2_1tk32"]
+[ext_resource type="Texture2D" uid="uid://pe2oldjfk6uf" path="res://addons/CustomControls/Images/buttons2.png" id="2_s8pxw"]
+[ext_resource type="PackedScene" uid="uid://barmev3c3hfbu" path="res://addons/CustomControls/custom_text_edit.tscn" id="5_2pvr4"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="5_t2i2e"]
+
+[sub_resource type="Gradient" id="Gradient_5c2xr"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7hdl3"]
+gradient = SubResource("Gradient_5c2xr")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gxwyh"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(150, 50, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8deuu"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(150, 150, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x130w"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(200, 50, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hxc8k"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(200, 150, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sprwd"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(0, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5mw7p"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(0, 100, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rvv4l"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(50, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c6rxc"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(50, 100, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4ks3y"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(100, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lsxmd"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(100, 100, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cwaak"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(150, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cngi0"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(150, 100, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nfst7"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(0, 50, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_khopc"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(0, 150, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8naf5"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(50, 50, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bye05"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(50, 150, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kun81"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(100, 50, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uifr6"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(100, 150, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x363a"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(400, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_31qmn"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(400, 100, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_14ccc"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(450, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hail5"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(450, 100, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_whw0m"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(200, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ivq3v"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(200, 100, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q0ywf"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(250, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p3chv"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(250, 100, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b243w"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(300, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lew4g"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(300, 100, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_56qlc"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(350, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kmrtp"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(350, 100, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0axw3"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(250, 50, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0sbfd"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(250, 150, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8ajqw"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(300, 50, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2wtxb"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(300, 150, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7s6td"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(350, 50, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_drw81"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(350, 150, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3bejx"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(400, 50, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4uive"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(400, 150, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2253c"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(450, 50, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yk7c3"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(450, 150, 50, 50)
+
+[sub_resource type="CodeHighlighter" id="CodeHighlighter_hifp8"]
+color_regions = {
+"[ ]": Color(1, 0, 0, 1)
+}
+
+[sub_resource type="InputEventAction" id="InputEventAction_2dh51"]
+action = &"ui_cancel"
+pressed = true
+
+[sub_resource type="Shortcut" id="Shortcut_wtf8v"]
+events = [SubResource("InputEventAction_2dh51")]
+
+[node name="AdvancedTextEditorDialog" type="Window"]
+title = "Advanced Text Editor"
+position = Vector2i(0, 36)
+size = Vector2i(640, 500)
+transient = true
+exclusive = true
+min_size = Vector2i(640, 500)
+theme = ExtResource("1_6ke1q")
+script = ExtResource("2_1tk32")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_7hdl3")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="CustomPanel" parent="MarginContainer/VBoxContainer" instance=ExtResource("1_acjup")]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/CustomPanel"]
+z_index = 1
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="FontName" type="TextureButton" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Select font"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_gxwyh")
+texture_hover = SubResource("AtlasTexture_8deuu")
+
+[node name="FontSize" type="TextureButton" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Select Font Size"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_x130w")
+texture_hover = SubResource("AtlasTexture_hxc8k")
+
+[node name="Bold" type="TextureButton" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Activates bold text"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_sprwd")
+texture_hover = SubResource("AtlasTexture_5mw7p")
+
+[node name="Italic" type="TextureButton" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Activates italic text"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_rvv4l")
+texture_hover = SubResource("AtlasTexture_c6rxc")
+
+[node name="Underline" type="TextureButton" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Activates underline text"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_4ks3y")
+texture_hover = SubResource("AtlasTexture_lsxmd")
+
+[node name="Strikethrough" type="TextureButton" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Activates strikethrough text"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_cwaak")
+texture_hover = SubResource("AtlasTexture_cngi0")
+
+[node name="TextColor" type="TextureButton" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Change the text color"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_nfst7")
+texture_hover = SubResource("AtlasTexture_khopc")
+
+[node name="BackgroundTextColor" type="TextureButton" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Change the background color of the text"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_8naf5")
+texture_hover = SubResource("AtlasTexture_bye05")
+
+[node name="Emote" type="TextureButton" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Add an emote"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_kun81")
+texture_hover = SubResource("AtlasTexture_uifr6")
+
+[node name="Image" type="TextureButton" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Add an image"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_x363a")
+texture_hover = SubResource("AtlasTexture_31qmn")
+
+[node name="Sound" type="TextureButton" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "add a sound"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_14ccc")
+texture_hover = SubResource("AtlasTexture_hail5")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="LeftAlign" type="TextureButton" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Left alignment aligns text along the left margin for a clean appearance."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_whw0m")
+texture_hover = SubResource("AtlasTexture_ivq3v")
+
+[node name="CenterAlign" type="TextureButton" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Center alignment centers text between the left and right margins for balance."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_q0ywf")
+texture_hover = SubResource("AtlasTexture_p3chv")
+
+[node name="RightAlign" type="TextureButton" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Right alignment aligns text along the right margin for a tidy layout."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_b243w")
+texture_hover = SubResource("AtlasTexture_lew4g")
+
+[node name="JustifiedText" type="TextureButton" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Justified alignment evenly aligns text along both left and right margins for a polished appearance."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_56qlc")
+texture_hover = SubResource("AtlasTexture_kmrtp")
+
+[node name="FX" type="TextureButton" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Choose one of the available effects to animate the text"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_0axw3")
+texture_hover = SubResource("AtlasTexture_0sbfd")
+
+[node name="PauseText" type="TextureButton" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Choose one of the available modes for pausing the text"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_8ajqw")
+texture_hover = SubResource("AtlasTexture_2wtxb")
+
+[node name="ShowWholeLine" type="TextureButton" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Choose whether to display the current line of text in full or to stop this effect"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_7s6td")
+texture_hover = SubResource("AtlasTexture_drw81")
+
+[node name="DontWaitPlayerInput" type="TextureButton" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Do not wait for input after displaying text"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_3bejx")
+texture_hover = SubResource("AtlasTexture_4uive")
+
+[node name="Others" type="TextureButton" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Choose from a list of commands to add the text"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_2253c")
+texture_hover = SubResource("AtlasTexture_yk7c3")
+
+[node name="TextEdit" parent="MarginContainer/VBoxContainer" instance=ExtResource("5_2pvr4")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+placeholder_text = "write anything..."
+editable = true
+caret_multiple = false
+syntax_highlighter = SubResource("CodeHighlighter_hifp8")
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_t2i2e")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_t2i2e")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+shortcut = SubResource("Shortcut_wtf8v")
+text = "CANCEL"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer/Bold" to="." method="_on_bold_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer/Italic" to="." method="_on_italic_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer/Underline" to="." method="_on_underline_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer/Strikethrough" to="." method="_on_strike_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer/Emote" to="." method="_on_emote_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer2/LeftAlign" to="." method="_on_left_align_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer2/CenterAlign" to="." method="_on_center_align_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer2/RightAlign" to="." method="_on_right_align_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer2/JustifiedText" to="." method="_on_justified_text_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

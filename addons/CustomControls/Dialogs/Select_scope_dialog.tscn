@@ -1,0 +1,217 @@
+[gd_scene load_steps=11 format=3 uid="uid://bvo324x1fkoln"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_la1xc"]
+[ext_resource type="Script" uid="uid://pgtb25gv5ds7" path="res://addons/CustomControls/Dialogs/Select_scope_dialog.gd" id="2_crfe0"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="3_7a0fp"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="3_nb7ff"]
+
+[sub_resource type="Gradient" id="Gradient_wky55"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_2idcj"]
+gradient = SubResource("Gradient_wky55")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2f6il"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.211765, 0.227451, 0.235294, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_yhruy"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_2mqov"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_u3x0h"]
+
+[node name="SelectScopeDialog" type="Window"]
+title = "Scope"
+size = Vector2i(591, 289)
+transient = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_la1xc")
+script = ExtResource("2_crfe0")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_2idcj")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LeftPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_2f6il")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/LeftPanel"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/LeftPanel/VBoxContainer"]
+layout_mode = 2
+text = "Side:"
+
+[node name="CheckBox1" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/LeftPanel/VBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_yhruy")
+text = "None"
+
+[node name="CheckBox2" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/LeftPanel/VBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_yhruy")
+text = "Enemy"
+
+[node name="CheckBox3" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/LeftPanel/VBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_yhruy")
+text = "Ally"
+
+[node name="CheckBox4" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/LeftPanel/VBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_yhruy")
+text = "Enemy & Ally"
+
+[node name="CheckBox5" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/LeftPanel/VBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_yhruy")
+text = "User"
+
+[node name="MidPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_2f6il")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidPanel"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidPanel/VBoxContainer"]
+layout_mode = 2
+text = "Number:"
+
+[node name="CheckBox1" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidPanel/VBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_2mqov")
+text = "One"
+
+[node name="CheckBox2" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidPanel/VBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_2mqov")
+text = "All"
+
+[node name="CheckBox3" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidPanel/VBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_2mqov")
+text = "Random"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidPanel/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="RandomSpinBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidPanel/VBoxContainer/HBoxContainer" instance=ExtResource("3_nb7ff")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 1.0
+value = 1.0
+
+[node name="RightPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_2f6il")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightPanel"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightPanel/VBoxContainer"]
+layout_mode = 2
+text = "Status:"
+
+[node name="CheckBox1" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightPanel/VBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_u3x0h")
+text = "Alive"
+
+[node name="CheckBox2" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightPanel/VBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_u3x0h")
+text = "Dead"
+
+[node name="CheckBox3" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightPanel/VBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_u3x0h")
+text = "Unconditional"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_7a0fp")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_7a0fp")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "CANCEL"
+
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/MidPanel/VBoxContainer/HBoxContainer/RandomSpinBox" to="." method="_on_random_spin_box_value_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

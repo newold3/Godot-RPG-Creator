@@ -1,0 +1,1181 @@
+[gd_scene load_steps=55 format=3 uid="uid://dqlaqr4qv6k6w"]
+
+[ext_resource type="Script" uid="uid://beqd1ss8nfs54" path="res://addons/CustomControls/Dialogs/text_effects_dialog.gd" id="1_qjbha"]
+[ext_resource type="Script" uid="uid://d0kowhkcjb7kv" path="res://addons/CustomControls/custom_option_button.gd" id="2_wmsk4"]
+[ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="3_na14g"]
+[ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="4_askgu"]
+[ext_resource type="Script" uid="uid://d0rdiy48vo4kb" path="res://addons/CustomControls/Resources/RichTextEffects/ghost.gd" id="5_cgsah"]
+[ext_resource type="Script" uid="uid://d35nuhq2h2las" path="res://addons/CustomControls/Resources/RichTextEffects/ColorMod.gd" id="6_n4mx7"]
+[ext_resource type="Script" uid="uid://brxpkqd4scuuk" path="res://addons/CustomControls/Resources/RichTextEffects/Cuss.gd" id="7_idwac"]
+[ext_resource type="Script" uid="uid://wlvhpgoqeeac" path="res://addons/CustomControls/Resources/RichTextEffects/Heart.gd" id="8_tqjm4"]
+[ext_resource type="Script" uid="uid://cq5sn2f8csx84" path="res://addons/CustomControls/Resources/RichTextEffects/Jump.gd" id="9_x6v06"]
+[ext_resource type="Script" uid="uid://ct3xyr2mvr3y" path="res://addons/CustomControls/Resources/RichTextEffects/L33T.gd" id="10_nvpyx"]
+[ext_resource type="Script" uid="uid://cpf2gv4ymksw8" path="res://addons/CustomControls/Resources/RichTextEffects/Nervous.gd" id="11_oxpwq"]
+[ext_resource type="Script" uid="uid://dn7p1k5t6fwbj" path="res://addons/CustomControls/Resources/RichTextEffects/Number.gd" id="12_vwep4"]
+[ext_resource type="Script" uid="uid://df311ymgk4drn" path="res://addons/CustomControls/Resources/RichTextEffects/Rain.gd" id="13_gqwch"]
+[ext_resource type="Script" uid="uid://bgiieuiehu4eo" path="res://addons/CustomControls/Resources/RichTextEffects/Sparkle.gd" id="14_ctsk1"]
+[ext_resource type="Script" uid="uid://mi6qjc28vviy" path="res://addons/CustomControls/Resources/RichTextEffects/UwU.gd" id="15_jbes5"]
+[ext_resource type="Script" uid="uid://b5xanxibidtwu" path="res://addons/CustomControls/Resources/RichTextEffects/Woo.gd" id="16_2bwyt"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="17_6frsy"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="18_6qqsk"]
+[ext_resource type="Script" uid="uid://ccq80qsnp6xmj" path="res://addons/CustomControls/Resources/RichTextEffects/lenguage_learning.gd" id="18_q7uva"]
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="19_m0edi"]
+[ext_resource type="Texture2D" uid="uid://bkfn4ru5noaaa" path="res://addons/CustomControls/Images/button1_background_disabled.png" id="19_mm60l"]
+[ext_resource type="Texture2D" uid="uid://dqnnp323vr1vo" path="res://addons/CustomControls/Images/button1_background_hover.png" id="20_t22ud"]
+[ext_resource type="Texture2D" uid="uid://beg6i1p118qd" path="res://addons/CustomControls/Images/button1_background_selected.png" id="21_aukj8"]
+[ext_resource type="Texture2D" uid="uid://xl88b63otgpi" path="res://addons/CustomControls/Images/button1_background.png" id="22_pi2ia"]
+
+[sub_resource type="Gradient" id="Gradient_2v5c8"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_gkv6v"]
+gradient = SubResource("Gradient_2v5c8")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vvviy"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Gradient" id="Gradient_c3get"]
+colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_hqeqk"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_c3get")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_q7uva"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_hqeqk")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m0edi"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sk8wg"]
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_q7uva"]
+script = ExtResource("5_cgsah")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_m0edi"]
+script = ExtResource("6_n4mx7")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_sk8wg"]
+script = ExtResource("7_idwac")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_0i1et"]
+script = ExtResource("8_tqjm4")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_3vdce"]
+script = ExtResource("9_x6v06")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_10dty"]
+script = ExtResource("10_nvpyx")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_7y5gp"]
+script = ExtResource("11_oxpwq")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_4flbe"]
+script = ExtResource("12_vwep4")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_xhobm"]
+script = ExtResource("13_gqwch")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_4bxw2"]
+script = ExtResource("14_ctsk1")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_2hrxg"]
+script = ExtResource("15_jbes5")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_lhqae"]
+script = ExtResource("16_2bwyt")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_5o26g"]
+script = ExtResource("18_q7uva")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0i1et"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_r6q2m"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_c3get")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3vdce"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_r6q2m")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_10dty"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_5fwks"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7y5gp"]
+texture = ExtResource("19_mm60l")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4flbe"]
+texture = ExtResource("20_t22ud")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xhobm"]
+texture = ExtResource("21_aukj8")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4bxw2"]
+texture = ExtResource("22_pi2ia")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[node name="TextEffectsDialog" type="Window"]
+position = Vector2i(0, 36)
+size = Vector2i(500, 482)
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+script = ExtResource("1_qjbha")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_gkv6v")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="EffectSelection" type="OptionButton" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+selected = 0
+item_count = 19
+popup/item_0/text = "Pulse"
+popup/item_0/id = 0
+popup/item_1/text = "Wave"
+popup/item_1/id = 1
+popup/item_2/text = "Tornado"
+popup/item_2/id = 2
+popup/item_3/text = "Shake"
+popup/item_3/id = 3
+popup/item_4/text = "Fade"
+popup/item_4/id = 4
+popup/item_5/text = "Rainbow"
+popup/item_5/id = 5
+popup/item_6/text = "Ghost"
+popup/item_6/id = 6
+popup/item_7/text = "Color Mod"
+popup/item_7/id = 7
+popup/item_8/text = "Cuss"
+popup/item_8/id = 8
+popup/item_9/text = "Heart"
+popup/item_9/id = 9
+popup/item_10/text = "Jump"
+popup/item_10/id = 10
+popup/item_11/text = "l 33t"
+popup/item_11/id = 11
+popup/item_12/text = "Nervous"
+popup/item_12/id = 12
+popup/item_13/text = "Number"
+popup/item_13/id = 13
+popup/item_14/text = "Rain"
+popup/item_14/id = 14
+popup/item_15/text = "Sparkle"
+popup/item_15/id = 15
+popup/item_16/text = "Uwu"
+popup/item_16/id = 16
+popup/item_17/text = "Woo"
+popup/item_17/id = 17
+popup/item_18/text = "Learn"
+popup/item_18/id = 18
+script = ExtResource("2_wmsk4")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Preview Text: "
+
+[node name="PreviewText" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("3_na14g")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Preview of the selected effect"
+
+[node name="CustomPanel2" parent="MarginContainer/VBoxContainer" instance=ExtResource("4_askgu")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_vvviy")
+style1 = SubResource("StyleBoxFlat_vvviy")
+style2 = SubResource("StyleBoxTexture_q7uva")
+style3 = SubResource("StyleBoxFlat_m0edi")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/CustomPanel2"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 0
+
+[node name="TestRich" type="RichTextLabel" parent="MarginContainer/VBoxContainer/CustomPanel2/MarginContainer"]
+unique_name_in_owner = true
+z_index = 1
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_font_sizes/normal_font_size = 26
+theme_override_styles/normal = SubResource("StyleBoxEmpty_sk8wg")
+bbcode_enabled = true
+text = "[center][pulse freq=1.0 color=#e64040ff ease=2.0]Preview of the selected effect[/pulse][/center]"
+scroll_active = false
+custom_effects = [SubResource("RichTextEffect_q7uva"), SubResource("RichTextEffect_m0edi"), SubResource("RichTextEffect_sk8wg"), SubResource("RichTextEffect_0i1et"), SubResource("RichTextEffect_3vdce"), SubResource("RichTextEffect_10dty"), SubResource("RichTextEffect_7y5gp"), SubResource("RichTextEffect_4flbe"), SubResource("RichTextEffect_xhobm"), SubResource("RichTextEffect_4bxw2"), SubResource("RichTextEffect_2hrxg"), SubResource("RichTextEffect_lhqae"), SubResource("RichTextEffect_5o26g")]
+
+[node name="ParameterLine" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="ParameterContainer" parent="MarginContainer/VBoxContainer" instance=ExtResource("4_askgu")]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_0i1et")
+style1 = SubResource("StyleBoxFlat_0i1et")
+style2 = SubResource("StyleBoxTexture_3vdce")
+style3 = SubResource("StyleBoxFlat_10dty")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/ParameterContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="EffectContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ParametersTitle" type="Label" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.75, 0, 1)
+text = "Parameters:"
+
+[node name="Pulse" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Pulse"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Pulse/HBoxContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Frecuency:"
+
+[node name="PulseFrequency" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Pulse/HBoxContainer" instance=ExtResource("17_6frsy")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.01
+step = 0.01
+value = 1.0
+allow_greater = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Pulse"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Pulse/HBoxContainer2"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Color:"
+
+[node name="PulseColor" type="ColorPickerButton" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Pulse/HBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 31)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+color = Color(0.902344, 0.250259, 0.250259, 1)
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Pulse"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Pulse/HBoxContainer3"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Ease:"
+
+[node name="PulseEase" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Pulse/HBoxContainer3" instance=ExtResource("17_6frsy")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.01
+step = 0.01
+value = 2.0
+allow_greater = true
+
+[node name="Wave" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Wave"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Wave/HBoxContainer2"]
+visible = false
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Amplitude:"
+
+[node name="WaveAmplitude" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Wave/HBoxContainer2" instance=ExtResource("17_6frsy")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.01
+step = 0.01
+value = 50.0
+allow_greater = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Wave"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Wave/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Frecuency:"
+
+[node name="WaveFrequency" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Wave/HBoxContainer" instance=ExtResource("17_6frsy")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.01
+step = 0.01
+value = 5.0
+allow_greater = true
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Wave"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Wave/HBoxContainer3"]
+visible = false
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Connected:"
+
+[node name="WaveConnected" type="OptionButton" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Wave/HBoxContainer3"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+selected = 0
+item_count = 2
+popup/item_0/text = "False"
+popup/item_0/id = 0
+popup/item_1/text = "True"
+popup/item_1/id = 1
+script = ExtResource("2_wmsk4")
+
+[node name="Tornado" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Tornado"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Tornado/HBoxContainer2"]
+visible = false
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Radius:"
+
+[node name="TornadoRadius" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Tornado/HBoxContainer2" instance=ExtResource("17_6frsy")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.01
+step = 0.01
+value = 10.0
+allow_greater = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Tornado"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Tornado/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Frecuency:"
+
+[node name="TornadoFrequency" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Tornado/HBoxContainer" instance=ExtResource("17_6frsy")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.01
+step = 0.01
+value = 1.0
+allow_greater = true
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Tornado"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Tornado/HBoxContainer3"]
+visible = false
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Connected:"
+
+[node name="TornadoConnected" type="OptionButton" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Tornado/HBoxContainer3"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+selected = 0
+item_count = 2
+popup/item_0/text = "False"
+popup/item_0/id = 0
+popup/item_1/text = "True"
+popup/item_1/id = 1
+script = ExtResource("2_wmsk4")
+
+[node name="Shake" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Shake"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Shake/HBoxContainer2"]
+visible = false
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Rate:"
+
+[node name="ShakeRate" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Shake/HBoxContainer2" instance=ExtResource("17_6frsy")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.01
+step = 0.01
+value = 20.0
+allow_greater = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Shake"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Shake/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Level:"
+
+[node name="ShakeLevel" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Shake/HBoxContainer" instance=ExtResource("17_6frsy")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.01
+step = 0.01
+value = 5.0
+allow_greater = true
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Shake"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Shake/HBoxContainer3"]
+visible = false
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Connected:"
+
+[node name="ShakeConnected" type="OptionButton" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Shake/HBoxContainer3"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+selected = 0
+item_count = 2
+popup/item_0/text = "False"
+popup/item_0/id = 0
+popup/item_1/text = "True"
+popup/item_1/id = 1
+script = ExtResource("2_wmsk4")
+
+[node name="Fade" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Fade"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Fade/HBoxContainer2"]
+visible = false
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Start:"
+
+[node name="FadeStart" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Fade/HBoxContainer2" instance=ExtResource("17_6frsy")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.01
+value = 0.01
+allow_greater = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Fade"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Fade/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Length:"
+
+[node name="FadeLength" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Fade/HBoxContainer" instance=ExtResource("17_6frsy")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.01
+value = 14.01
+allow_greater = true
+
+[node name="Rainbow" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Rainbow"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Rainbow/HBoxContainer2"]
+visible = false
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Saturation:"
+
+[node name="RainbowSaturation" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Rainbow/HBoxContainer2" instance=ExtResource("17_6frsy")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.01
+step = 0.01
+value = 0.8
+allow_greater = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Rainbow"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Rainbow/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Frequency:"
+
+[node name="RainbowFrequency" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Rainbow/HBoxContainer" instance=ExtResource("17_6frsy")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.01
+step = 0.01
+value = 1.0
+allow_greater = true
+allow_lesser = true
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Rainbow"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Rainbow/HBoxContainer3"]
+visible = false
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Value:"
+
+[node name="RainbowValue" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Rainbow/HBoxContainer3" instance=ExtResource("17_6frsy")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 5.0
+step = 0.01
+value = 0.8
+
+[node name="Ghost" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Ghost"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Ghost/HBoxContainer2"]
+visible = false
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Frecuency:"
+
+[node name="GhostFrecuency" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Ghost/HBoxContainer2" instance=ExtResource("17_6frsy")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.01
+step = 0.01
+value = 5.0
+allow_greater = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Ghost"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Ghost/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Span:"
+
+[node name="GhostSpan" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Ghost/HBoxContainer" instance=ExtResource("17_6frsy")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.01
+step = 0.01
+value = 10.0
+allow_greater = true
+
+[node name="ColorMod" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/ColorMod"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/ColorMod/HBoxContainer2"]
+visible = false
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Color:"
+
+[node name="ColorModColor" type="ColorPickerButton" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/ColorMod/HBoxContainer2"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 31)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+color = Color(0.11084, 0.886719, 0.850349, 1)
+
+[node name="Cuss" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Heart" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Heart"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Heart/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Scale:"
+
+[node name="HeartScale" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Heart/HBoxContainer" instance=ExtResource("17_6frsy")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.01
+step = 0.01
+value = 16.0
+allow_greater = true
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Heart"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Heart/HBoxContainer3"]
+visible = false
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Frequency:"
+
+[node name="HeartFrequency" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Heart/HBoxContainer3" instance=ExtResource("17_6frsy")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.01
+step = 0.01
+value = 2.0
+allow_greater = true
+
+[node name="Jump" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Jump"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Jump/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Angle:"
+
+[node name="JumpAngle" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Jump/HBoxContainer" instance=ExtResource("17_6frsy")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.01
+step = 0.01
+value = 3.14
+allow_greater = true
+
+[node name="L33T" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Nervous" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Nervous"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Nervous/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Scale:"
+
+[node name="NervousScale" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Nervous/HBoxContainer" instance=ExtResource("17_6frsy")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.01
+step = 0.01
+value = 1.0
+allow_greater = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Nervous"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Nervous/HBoxContainer2"]
+visible = false
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Frecuency:"
+
+[node name="NervousFrequency" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Nervous/HBoxContainer2" instance=ExtResource("17_6frsy")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.01
+step = 0.01
+value = 8.0
+allow_greater = true
+
+[node name="Number" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Number"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Number/HBoxContainer2"]
+visible = false
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Color:"
+
+[node name="NumberColor" type="ColorPickerButton" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Number/HBoxContainer2"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 31)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+color = Color(0.340195, 0.957031, 0.0598145, 1)
+
+[node name="Rain" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Sparkle" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Sparkle"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Sparkle/HBoxContainer3"]
+visible = false
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Frecuency:"
+
+[node name="SparkleFrequency" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Sparkle/HBoxContainer3" instance=ExtResource("17_6frsy")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.01
+step = 0.01
+value = 2.0
+allow_greater = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Sparkle"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Sparkle/HBoxContainer2"]
+visible = false
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Color 1:"
+
+[node name="SparkleColor1" type="ColorPickerButton" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Sparkle/HBoxContainer2"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 31)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+color = Color(1, 0, 0, 1)
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Sparkle"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Sparkle/HBoxContainer4"]
+visible = false
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Color 2:"
+
+[node name="SparkleColor2" type="ColorPickerButton" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Sparkle/HBoxContainer4"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 31)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+color = Color(0.242188, 1, 0, 1)
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Sparkle"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Sparkle/HBoxContainer5"]
+visible = false
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Color 3:"
+
+[node name="SparkleColor3" type="ColorPickerButton" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Sparkle/HBoxContainer5"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 31)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+color = Color(0, 0.179688, 1, 1)
+
+[node name="UwU" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Woo" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Woo"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Woo/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Scale:"
+
+[node name="WooScale" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Woo/HBoxContainer" instance=ExtResource("17_6frsy")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.01
+step = 0.01
+value = 1.0
+allow_greater = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Woo"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Woo/HBoxContainer2"]
+visible = false
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Frecuency:"
+
+[node name="WooFrequency" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Woo/HBoxContainer2" instance=ExtResource("17_6frsy")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.01
+step = 0.01
+value = 8.0
+allow_greater = true
+
+[node name="Learn" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Learn"]
+visible = false
+layout_mode = 2
+
+[node name="LearnExactValueCheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Learn/HBoxContainer"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+tooltip_text = "[title]Learn Value[/title]
+Use a specific value."
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_5fwks")
+text = "Exact Value:"
+
+[node name="LearnExactValue" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Learn/HBoxContainer" instance=ExtResource("17_6frsy")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Learn Value[/title]
+Represents the learning value (from 0 to 1). The higher the value, the easier this text will be to read. "
+max_value = 1.0
+step = 0.01
+value = 0.4
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Learn"]
+visible = false
+layout_mode = 2
+
+[node name="LearnVariableValueCheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Learn/HBoxContainer2"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+tooltip_text = "[title]Learn Value[/title]
+Use a text variable value.
+
+[Note]: Use text variables to store floating point values, as numeric variables only support integers."
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_5fwks")
+text = "Var Value:"
+
+[node name="LearnVariableValue" parent="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Learn/HBoxContainer2" instance=ExtResource("19_m0edi")]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "[title]Learn Value[/title]
+Selected text variable whose value will be converted to a floating point value and used as the learning level."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+
+[node name="HSeparator3" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.75, 0, 1)
+text = "Effect Description:"
+
+[node name="Description" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+size_flags_vertical = 0
+text = "Pulse creates an animated pulsing effect that multiplies each character's opacity and color. It can be used to bring attention to specific text."
+autowrap_mode = 3
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("18_6qqsk")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+theme_override_styles/disabled = SubResource("StyleBoxTexture_7y5gp")
+theme_override_styles/hover = SubResource("StyleBoxTexture_4flbe")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_xhobm")
+theme_override_styles/normal = SubResource("StyleBoxTexture_4bxw2")
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("18_6qqsk")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+theme_override_styles/disabled = SubResource("StyleBoxTexture_7y5gp")
+theme_override_styles/hover = SubResource("StyleBoxTexture_4flbe")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_xhobm")
+theme_override_styles/normal = SubResource("StyleBoxTexture_4bxw2")
+text = "CANCEL"
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.02
+autostart = true
+
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/EffectSelection" to="." method="_on_effect_selection_item_selected"]
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/PreviewText" to="." method="_on_preview_text_text_changed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Learn/HBoxContainer/LearnExactValueCheckBox" to="." method="_on_learn_exact_value_check_box_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Learn/HBoxContainer2/LearnVariableValueCheckBox" to="." method="_on_learn_variable_value_check_box_toggled"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Learn/HBoxContainer2/LearnVariableValue" to="." method="_on_learn_variable_value_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

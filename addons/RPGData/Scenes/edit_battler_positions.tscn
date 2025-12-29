@@ -1,0 +1,118 @@
+[gd_scene load_steps=7 format=3 uid="uid://dapdbqjly1f2k"]
+
+[ext_resource type="Texture2D" uid="uid://dd2evgsvnv1bw" path="res://Assets/Images/Backgrounds/BattleBackgrounds/river_bed.png" id="1_ntmcr"]
+[ext_resource type="Script" uid="uid://dfkfha0cyarei" path="res://addons/RPGData/Scenes/edit_battler_positions.gd" id="1_u3ufy"]
+[ext_resource type="PackedScene" uid="uid://ntiekwd3ncp0" path="res://addons/RPGData/Scenes/battler_position.tscn" id="2_u3ufy"]
+[ext_resource type="Texture2D" uid="uid://cythqtge3ts4k" path="res://addons/RPGData/Assets/Images/unknown_actor_4_directions.png" id="4_mx7ld"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_52whh"]
+atlas = ExtResource("4_mx7ld")
+region = Rect2(0, 0, 38, 51)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u3ufy"]
+bg_color = Color(0.737255, 0.576471, 0.101961, 0.0862745)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="EditBattlerPositions" type="Control"]
+custom_minimum_size = Vector2(1110, 624)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 2
+script = ExtResource("1_u3ufy")
+
+[node name="Background" type="TextureRect" parent="."]
+show_behind_parent = true
+custom_minimum_size = Vector2(1110, 624)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("1_ntmcr")
+expand_mode = 1
+
+[node name="BattlerContainer" type="Control" parent="."]
+unique_name_in_owner = true
+show_behind_parent = true
+y_sort_enabled = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="BattlerPosition1" parent="BattlerContainer" instance=ExtResource("2_u3ufy")]
+offset_left = 810.0
+offset_top = 254.0
+offset_right = 880.0
+offset_bottom = 346.0
+hide_close_button = true
+
+[node name="BattlerPosition2" parent="BattlerContainer" instance=ExtResource("2_u3ufy")]
+offset_left = 820.0
+offset_top = 370.0
+offset_right = 890.0
+offset_bottom = 462.0
+battler_name = "Party Member 2"
+hide_close_button = true
+
+[node name="BattlerPosition3" parent="BattlerContainer" instance=ExtResource("2_u3ufy")]
+offset_left = 830.0
+offset_top = 486.0
+offset_right = 900.0
+offset_bottom = 578.0
+battler_name = "Party Member 3"
+hide_close_button = true
+
+[node name="BattlerPosition4" parent="BattlerContainer" instance=ExtResource("2_u3ufy")]
+offset_left = 930.0
+offset_top = 270.0
+offset_right = 1000.0
+offset_bottom = 362.0
+battler_name = "Party Member 4"
+main_texture = SubResource("AtlasTexture_52whh")
+hide_close_button = true
+
+[node name="BattlerPosition5" parent="BattlerContainer" instance=ExtResource("2_u3ufy")]
+offset_left = 940.0
+offset_top = 386.0
+offset_right = 1010.0
+offset_bottom = 478.0
+battler_name = "Party Member 5"
+hide_close_button = true
+
+[node name="BattlerPosition6" parent="BattlerContainer" instance=ExtResource("2_u3ufy")]
+offset_left = 950.0
+offset_top = 502.0
+offset_right = 1020.0
+offset_bottom = 594.0
+battler_name = "Party Member 6"
+hide_close_button = true
+
+[node name="Selector" type="Panel" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_left = -40.0
+offset_top = 28.0
+offset_right = -40.0
+offset_bottom = 33.0
+mouse_default_cursor_shape = 13
+theme_override_styles/panel = SubResource("StyleBoxFlat_u3ufy")

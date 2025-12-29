@@ -1,0 +1,228 @@
+[gd_scene load_steps=11 format=3 uid="uid://bmrg358vj720"]
+
+[ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="1_3mekj"]
+[ext_resource type="Script" uid="uid://ddcp4e5phofqo" path="res://Scenes/GUI/buttons_vertical_menu.gd" id="1_tmtgg"]
+[ext_resource type="Script" uid="uid://ruyuvj6u4ulm" path="res://Scenes/GUI/buttons_vertical_menu_container.gd" id="3_ituw3"]
+[ext_resource type="Texture2D" uid="uid://dntvanomr6m2o" path="res://Assets/Images/GUI/frame5.png" id="5_suvof"]
+[ext_resource type="Texture2D" uid="uid://b0mo5iykdxq0l" path="res://Assets/Images/SceneMenu/part5.png" id="6_k4hpw"]
+[ext_resource type="Texture2D" uid="uid://ct0ki5xyiptwg" path="res://Assets/Images/SceneMenu/part6.png" id="7_1kff4"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8a8cv"]
+content_margin_left = 12.0
+content_margin_top = 0.0
+content_margin_right = 12.0
+content_margin_bottom = 0.0
+texture = ExtResource("5_suvof")
+texture_margin_left = 37.0
+texture_margin_top = 11.0
+texture_margin_right = 37.0
+texture_margin_bottom = 11.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ituw3"]
+content_margin_left = 3.0
+content_margin_top = 3.0
+content_margin_right = 3.0
+content_margin_bottom = 3.0
+draw_center = false
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_blend = true
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8a8cv"]
+content_margin_left = 3.0
+content_margin_top = 3.0
+content_margin_right = 3.0
+content_margin_bottom = 3.0
+draw_center = false
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.8901961, 0.3529412, 0.21960784, 1)
+border_blend = true
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_suvof"]
+content_margin_left = 3.0
+content_margin_top = 3.0
+content_margin_right = 3.0
+content_margin_bottom = 3.0
+bg_color = Color(0.7566, 0.97, 0.7850534, 0.15686275)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.2849759, 0.4661572, 0.15823498, 1)
+border_blend = true
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="ButtonsVerticalMenu" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1076.0
+offset_bottom = -302.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_8a8cv")
+script = ExtResource("1_tmtgg")
+button_size = Vector2(48, 48)
+
+[node name="MarginContainer2" type="MarginContainer" parent="."]
+clip_contents = true
+layout_mode = 2
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="BackgroundClip" type="Control" parent="MarginContainer2"]
+clip_contents = true
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer2/BackgroundClip"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="MarginContainer2/BackgroundClip/MarginContainer" node_paths=PackedStringArray("single_target_focus")]
+unique_name_in_owner = true
+clip_contents = false
+layout_mode = 2
+follow_focus = true
+horizontal_scroll_mode = 0
+script = ExtResource("1_3mekj")
+single_target_focus = NodePath("ButtonsVerticalMenuContainer/FocusControl")
+metadata/_custom_type_script = "uid://cs6g8remlafby"
+
+[node name="ButtonsVerticalMenuContainer" type="Control" parent="MarginContainer2/BackgroundClip/MarginContainer/SmoothScrollContainer"]
+unique_name_in_owner = true
+texture_filter = 5
+custom_minimum_size = Vector2(55.2, 577.2)
+layout_mode = 2
+size_flags_horizontal = 6
+mouse_filter = 1
+script = ExtResource("3_ituw3")
+button_size = Vector2(48, 48)
+normal_style = SubResource("StyleBoxFlat_ituw3")
+hover_style = SubResource("StyleBoxFlat_8a8cv")
+selected_style = SubResource("StyleBoxFlat_suvof")
+
+[node name="Gear" type="Control" parent="."]
+unique_name_in_owner = true
+show_behind_parent = true
+z_index = 1
+layout_mode = 2
+mouse_filter = 2
+
+[node name="GearTop" type="Control" parent="Gear"]
+unique_name_in_owner = true
+z_index = 10
+layout_mode = 1
+anchors_preset = 0
+offset_left = -19.0
+offset_top = 21.999996
+offset_right = -19.0
+offset_bottom = 21.999996
+scale = Vector2(0.1, 0.1)
+mouse_filter = 2
+
+[node name="Part1" type="TextureRect" parent="Gear/GearTop"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -234.5
+offset_top = -229.5
+offset_right = 234.5
+offset_bottom = 229.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("6_k4hpw")
+
+[node name="Part2" type="TextureRect" parent="Gear/GearTop"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -117.5
+offset_top = -120.5
+offset_right = 117.5
+offset_bottom = 120.5
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -6.28319
+pivot_offset = Vector2(117, 120)
+mouse_filter = 2
+texture = ExtResource("7_1kff4")
+
+[node name="GearBottom" type="Control" parent="Gear"]
+unique_name_in_owner = true
+z_index = 10
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = -19.000008
+offset_top = -22.99997
+offset_right = -19.000008
+offset_bottom = -22.99997
+grow_vertical = 0
+scale = Vector2(0.1, 0.1)
+mouse_filter = 2
+
+[node name="Part1" type="TextureRect" parent="Gear/GearBottom"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -234.5
+offset_top = -229.5
+offset_right = 234.5
+offset_bottom = 229.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("6_k4hpw")
+
+[node name="Part2" type="TextureRect" parent="Gear/GearBottom"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -117.5
+offset_top = -120.5
+offset_right = 117.5
+offset_bottom = 120.5
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -6.28319
+pivot_offset = Vector2(117, 120)
+mouse_filter = 2
+texture = ExtResource("7_1kff4")

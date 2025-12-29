@@ -1,0 +1,86 @@
+[gd_scene load_steps=8 format=3 uid="uid://bn6avb2v08c10"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_6w7jn"]
+[ext_resource type="Script" uid="uid://04tajwcit7v0" path="res://addons/CustomControls/Dialogs/message_preview_dialog.gd" id="2_wr5r4"]
+[ext_resource type="PackedScene" uid="uid://cwxq3ll0bhw0f" path="res://Scenes/DialogTemplates/base_dialog.tscn" id="3_vo4gu"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_7x356"]
+
+[sub_resource type="Gradient" id="Gradient_jlmua"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_3l4b8"]
+gradient = SubResource("Gradient_jlmua")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xkt14"]
+content_margin_left = 10.0
+content_margin_right = 10.0
+
+[node name="MessagePreviewDialog" type="Window"]
+oversampling_override = 1.0
+title = "Message Preview"
+position = Vector2i(0, 36)
+size = Vector2i(1152, 640)
+transient_to_focused = true
+unresizable = true
+always_on_top = true
+max_size = Vector2i(1152, 640)
+theme = ExtResource("1_6w7jn")
+script = ExtResource("2_wr5r4")
+
+[node name="Background" type="TextureRect" parent="."]
+material = SubResource("CanvasItemMaterial_7x356")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_3l4b8")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Control" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_xkt14")
+
+[node name="Background" type="ColorRect" parent="MarginContainer/VBoxContainer/Control"]
+custom_minimum_size = Vector2(1152, 640)
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.11372549, 0.13333334, 0.16078432, 1)
+
+[node name="CaracterContainer" type="Control" parent="MarginContainer/VBoxContainer/Control"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Dialog" parent="MarginContainer/VBoxContainer/Control" node_paths=PackedStringArray("character_container") instance=ExtResource("3_vo4gu")]
+unique_name_in_owner = true
+layout_mode = 2
+character_container = NodePath("../CaracterContainer")
+
+[node name="Timer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 0.15
+
+[connection signal="size_changed" from="." to="." method="_on_size_changed"]
+[connection signal="item_rect_changed" from="MarginContainer" to="." method="_on_margin_container_item_rect_changed"]
+[connection signal="item_rect_changed" from="MarginContainer/VBoxContainer/Control/Dialog" to="." method="_on_margin_container_item_rect_changed"]
+[connection signal="message_started" from="MarginContainer/VBoxContainer/Control/Dialog" to="." method="_on_dialog_message_started"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

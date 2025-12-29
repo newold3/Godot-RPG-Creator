@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://bxw22jqbsg6m3"]
+
+[ext_resource type="Script" uid="uid://6kdoj4y01vo8" path="res://addons/tile_bit_tools/controls/bit_data_draw/bit_data_draw.gd" id="1_2rdsg"]
+[ext_resource type="Script" uid="uid://snaod3dxo4gb" path="res://addons/tile_bit_tools/controls/bit_data_draw/bit_data_draw_node.gd" id="1_jpipc"]
+
+[node name="DrawViewport" type="SubViewport"]
+disable_3d = true
+gui_disable_input = true
+gui_snap_controls_to_pixels = false
+size = Vector2i(64, 96)
+render_target_update_mode = 1
+script = ExtResource("1_jpipc")
+
+[node name="BitDataDraw" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_2rdsg")

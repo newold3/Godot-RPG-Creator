@@ -1,0 +1,523 @@
+[gd_scene load_steps=11 format=3 uid="uid://c6t81kip1lmqd"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_b4vmk"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="2_5hn8r"]
+[ext_resource type="Script" uid="uid://bdt8yojcd7p2c" path="res://addons/CustomControls/Dialogs/troop_conditions_dialog.gd" id="2_88vb6"]
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="3_0j4bw"]
+[ext_resource type="Script" uid="uid://d0kowhkcjb7kv" path="res://addons/CustomControls/custom_option_button.gd" id="4_8uixx"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="4_epbce"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="6_m3pp5"]
+
+[sub_resource type="Gradient" id="Gradient_gg6yh"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_spwoe"]
+gradient = SubResource("Gradient_gg6yh")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_enen1"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.211765, 0.227451, 0.235294, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[node name="TroopConditionsDialog" type="Window"]
+title = "Encounter Page initializer"
+position = Vector2i(0, 36)
+size = Vector2i(900, 359)
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_b4vmk")
+script = ExtResource("2_88vb6")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_spwoe")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Panel" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_enen1")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Panel"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Conditions:"
+
+[node name="HBoxContainer1" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="TurnEndingCondition" type="CheckBox" parent="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer1"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+tooltip_text = "[title]Turn End[/title]
+The turn end will be used as a condition."
+mouse_default_cursor_shape = 2
+text = "Turn End"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="TurnValidCondition" type="CheckBox" parent="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+tooltip_text = "[title]Turn[/title]
+The number of turns that have passed from the start of battle will be used as a condition. Specify the number of turns from the start of battle in the field on the left and the interval between turns on the right."
+mouse_default_cursor_shape = 2
+text = "Turn"
+
+[node name="TurnValue1" parent="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer2" instance=ExtResource("2_5hn8r")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Turn[/title]
+The number of turns that have passed from the start of battle will be used as a condition. Specify the number of turns from the start of battle in the field on the left and the interval between turns on the right."
+mouse_filter = 2
+max_value = 99999.0
+rounded = true
+editable = false
+disabled = true
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = " + "
+
+[node name="TurnValue2" parent="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer2" instance=ExtResource("2_5hn8r")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Turn[/title]
+The number of turns that have passed from the start of battle will be used as a condition. Specify the number of turns from the start of battle in the field on the left and the interval between turns on the right."
+mouse_filter = 2
+max_value = 99999.0
+rounded = true
+editable = false
+disabled = true
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "* X"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="EnemyValidCondition" type="CheckBox" parent="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+tooltip_text = "[title]Enemy Param[/title]
+Use one of the enemy parameters (HP, MP, Attack, Defense...) when they meet the condition specified as a start condition for this event page."
+mouse_default_cursor_shape = 2
+text = "Enemy Param"
+
+[node name="EnemyParamValue1" type="OptionButton" parent="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Enemy Param[/title]
+Use one of the enemy parameters (HP, MP, Attack, Defense...) when they meet the condition specified as a start condition for this event page."
+mouse_default_cursor_shape = 2
+disabled = true
+text_overrun_behavior = 3
+script = ExtResource("4_8uixx")
+
+[node name="EnemyParamValue2" type="OptionButton" parent="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Enemy Param[/title]
+Use one of the enemy parameters (HP, MP, Attack, Defense...) when they meet the condition specified as a start condition for this event page."
+mouse_default_cursor_shape = 2
+disabled = true
+text_overrun_behavior = 3
+selected = 2
+item_count = 8
+popup/item_0/text = "HP"
+popup/item_0/id = 0
+popup/item_1/text = "MP"
+popup/item_1/id = 1
+popup/item_2/text = "Attack"
+popup/item_2/id = 2
+popup/item_3/text = "Defense"
+popup/item_3/id = 3
+popup/item_4/text = "Magical Attack"
+popup/item_4/id = 4
+popup/item_5/text = "Magical Defense"
+popup/item_5/id = 5
+popup/item_6/text = "Agility"
+popup/item_6/id = 6
+popup/item_7/text = "Luck"
+popup/item_7/id = 7
+script = ExtResource("4_8uixx")
+
+[node name="EnemyParamValue3" type="OptionButton" parent="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+layout_mode = 2
+tooltip_text = "[title]Enemy Param[/title]
+Use one of the enemy parameters (HP, MP, Attack, Defense...) when they meet the condition specified as a start condition for this event page."
+mouse_default_cursor_shape = 2
+disabled = true
+selected = 0
+item_count = 6
+popup/item_0/text = "<"
+popup/item_0/id = 0
+popup/item_1/text = "<="
+popup/item_1/id = 1
+popup/item_2/text = ">"
+popup/item_2/id = 2
+popup/item_3/text = ">="
+popup/item_3/id = 3
+popup/item_4/text = "!="
+popup/item_4/id = 4
+popup/item_5/text = "=="
+popup/item_5/id = 5
+script = ExtResource("4_8uixx")
+
+[node name="EnemyParamValue4" parent="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer3" instance=ExtResource("2_5hn8r")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Enemy Param[/title]
+Use one of the enemy parameters (HP, MP, Attack, Defense...) when they meet the condition specified as a start condition for this event page."
+mouse_filter = 2
+rounded = true
+editable = false
+disabled = true
+
+[node name="EnemyPercent" type="CheckBox" parent="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "[title]Enemy Param[/title]
+Use one of the enemy parameters (HP, MP, Attack, Defense...) when they meet the condition specified as a start condition for this event page."
+mouse_default_cursor_shape = 2
+disabled = true
+text = "%"
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="CharacterValidCondition" type="CheckBox" parent="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer4"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+tooltip_text = "[title]Character Param[/title]
+Use one of the character parameters (HP, MP, Attack, Defense...) when they meet the condition specified as a start condition for this event page."
+mouse_default_cursor_shape = 2
+text = "Character Param"
+
+[node name="CharacterParamValue1" type="OptionButton" parent="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer4"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Character Param[/title]
+Use one of the character parameters (HP, MP, Attack, Defense...) when they meet the condition specified as a start condition for this event page."
+mouse_default_cursor_shape = 2
+disabled = true
+text_overrun_behavior = 3
+selected = 0
+item_count = 5
+popup/item_0/text = "1: Aiden"
+popup/item_0/id = 0
+popup/item_1/text = "2: Elara"
+popup/item_1/id = 1
+popup/item_2/text = "3: Thorne"
+popup/item_2/id = 2
+popup/item_3/text = "4: Lyra"
+popup/item_3/id = 3
+popup/item_4/text = "5: Gideon"
+popup/item_4/id = 4
+script = ExtResource("4_8uixx")
+
+[node name="CharacterParamValue2" type="OptionButton" parent="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer4"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Character Param[/title]
+Use one of the character parameters (HP, MP, Attack, Defense...) when they meet the condition specified as a start condition for this event page."
+mouse_default_cursor_shape = 2
+disabled = true
+text_overrun_behavior = 3
+selected = 0
+item_count = 8
+popup/item_0/text = "HP"
+popup/item_0/id = 0
+popup/item_1/text = "MP"
+popup/item_1/id = 1
+popup/item_2/text = "Attack"
+popup/item_2/id = 2
+popup/item_3/text = "Defense"
+popup/item_3/id = 3
+popup/item_4/text = "Magical Attack"
+popup/item_4/id = 4
+popup/item_5/text = "Magical Defense"
+popup/item_5/id = 5
+popup/item_6/text = "Agility"
+popup/item_6/id = 6
+popup/item_7/text = "Luck"
+popup/item_7/id = 7
+script = ExtResource("4_8uixx")
+
+[node name="CharacterParamValue3" type="OptionButton" parent="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer4"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+layout_mode = 2
+tooltip_text = "[title]Character Param[/title]
+Use one of the character parameters (HP, MP, Attack, Defense...) when they meet the condition specified as a start condition for this event page."
+mouse_default_cursor_shape = 2
+disabled = true
+selected = 0
+item_count = 6
+popup/item_0/text = "<"
+popup/item_0/id = 0
+popup/item_1/text = "<="
+popup/item_1/id = 1
+popup/item_2/text = ">"
+popup/item_2/id = 2
+popup/item_3/text = ">="
+popup/item_3/id = 3
+popup/item_4/text = "!="
+popup/item_4/id = 4
+popup/item_5/text = "=="
+popup/item_5/id = 5
+script = ExtResource("4_8uixx")
+
+[node name="CharacterParamValue4" parent="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer4" instance=ExtResource("2_5hn8r")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Character Param[/title]
+Use one of the character parameters (HP, MP, Attack, Defense...) when they meet the condition specified as a start condition for this event page."
+mouse_filter = 2
+rounded = true
+editable = false
+disabled = true
+
+[node name="CharacterPercent" type="CheckBox" parent="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "[title]Character Param[/title]
+Use one of the character parameters (HP, MP, Attack, Defense...) when they meet the condition specified as a start condition for this event page."
+mouse_default_cursor_shape = 2
+disabled = true
+text = "%"
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="SwitchValidCondition" type="CheckBox" parent="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer5"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+tooltip_text = "[title]Switch[/title]
+The specified switch being set to ON/OFF will be used as a condition."
+mouse_default_cursor_shape = 2
+text = "Switch"
+
+[node name="SwitchButton" parent="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer5" instance=ExtResource("3_0j4bw")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "[title]Switch[/title]
+The specified switch being set to ON/OFF will be used as a condition."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+disabled = true
+text = "001: "
+
+[node name="SwitchValue" type="OptionButton" parent="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer5"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+custom_minimum_size = Vector2(168, 0)
+layout_mode = 2
+tooltip_text = "[title]Switch[/title]
+The specified switch being set to ON/OFF will be used as a condition."
+mouse_default_cursor_shape = 2
+disabled = true
+selected = 0
+item_count = 2
+popup/item_0/text = "Enabled"
+popup/item_0/id = 0
+popup/item_1/text = "Disabled"
+popup/item_1/id = 1
+script = ExtResource("4_8uixx")
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="VariableValidCondition" type="CheckBox" parent="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer6"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+tooltip_text = "[title]Variable[/title]
+Uses the specified variable when it meets the specified condition as a start condition for this event page."
+mouse_default_cursor_shape = 2
+text = "Select Variable"
+
+[node name="VariableButton" parent="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer6" instance=ExtResource("3_0j4bw")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "[title]Variable[/title]
+Uses the specified variable when it meets the specified condition as a start condition for this event page."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+disabled = true
+text = "001: 1"
+
+[node name="VariableOperation" type="OptionButton" parent="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer6"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+layout_mode = 2
+tooltip_text = "[title]Variable[/title]
+Uses the specified variable when it meets the specified condition as a start condition for this event page."
+mouse_default_cursor_shape = 2
+disabled = true
+selected = 0
+item_count = 6
+popup/item_0/text = "<"
+popup/item_0/id = 0
+popup/item_1/text = "<="
+popup/item_1/id = 1
+popup/item_2/text = ">"
+popup/item_2/id = 2
+popup/item_3/text = ">="
+popup/item_3/id = 3
+popup/item_4/text = "!="
+popup/item_4/id = 4
+popup/item_5/text = "=="
+popup/item_5/id = 5
+script = ExtResource("4_8uixx")
+
+[node name="VariableValue" parent="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer6" instance=ExtResource("2_5hn8r")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.2
+tooltip_text = "[title]Variable[/title]
+Uses the specified variable when it meets the specified condition as a start condition for this event page."
+mouse_filter = 2
+rounded = true
+allow_greater = true
+allow_lesser = true
+editable = false
+disabled = true
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="SignalValidCondition" type="CheckBox" parent="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer7"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+tooltip_text = "[title]Signal[/title]
+Uses the specified signal as a start condition for this event page.
+
+(You can define signals in the \"System\" tab)."
+mouse_default_cursor_shape = 2
+text = "Select Signal"
+
+[node name="SignalValue" parent="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer7" instance=ExtResource("6_m3pp5")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Signal[/title]
+Uses the specified signal as a start condition for this event page.
+
+(You can define signals in the \"System\" tab)."
+disabled = true
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_epbce")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_epbce")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "CANCEL"
+
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer1/TurnEndingCondition" to="." method="_on_turn_ending_condition_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer2/TurnValidCondition" to="." method="_on_turn_valid_condition_toggled"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer2/TurnValue1" to="." method="_on_turn_value_1_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer2/TurnValue2" to="." method="_on_turn_value_2_value_changed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer3/EnemyValidCondition" to="." method="_on_enemy_valid_condition_toggled"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer3/EnemyParamValue1" to="." method="_on_enemy_param_value_1_item_selected"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer3/EnemyParamValue2" to="." method="_on_enemy_param_value_2_item_selected"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer3/EnemyParamValue3" to="." method="_on_enemy_param_value_3_item_selected"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer3/EnemyParamValue4" to="." method="_on_enemy_param_value_4_value_changed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer3/EnemyPercent" to="." method="_on_enemy_percent_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer4/CharacterValidCondition" to="." method="_on_character_valid_condition_toggled"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer4/CharacterParamValue1" to="." method="_on_character_param_value_1_item_selected"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer4/CharacterParamValue2" to="." method="_on_character_param_value_2_item_selected"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer4/CharacterParamValue3" to="." method="_on_character_param_value_3_item_selected"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer4/CharacterParamValue4" to="." method="_on_character_param_value_4_value_changed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer4/CharacterPercent" to="." method="_on_character_percent_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer5/SwitchValidCondition" to="." method="_on_switch_valid_condition_toggled"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer5/SwitchButton" to="." method="_on_switch_button_pressed"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer5/SwitchValue" to="." method="_on_switch_value_item_selected"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer6/VariableValidCondition" to="." method="_on_variable_valid_condition_toggled"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer6/VariableButton" to="." method="_on_variable_button_pressed"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer6/VariableOperation" to="." method="_on_variable_operation_item_selected"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer6/VariableValue" to="." method="_on_variable_value_value_changed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer7/SignalValidCondition" to="." method="_on_signal_valid_condition_toggled"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer7/SignalValue" to="." method="_on_signal_value_item_selected"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

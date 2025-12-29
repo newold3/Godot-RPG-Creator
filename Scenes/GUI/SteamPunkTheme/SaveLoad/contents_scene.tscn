@@ -1,0 +1,47 @@
+[gd_scene load_steps=3 format=3 uid="uid://bw3al7secu0pg"]
+
+[ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="1_cc46t"]
+[ext_resource type="Script" uid="uid://b4637gh71re0n" path="res://Scenes/GUI/SteamPunkTheme/SaveLoad/contents_scene.gd" id="1_rbc8t"]
+
+[node name="MainMenuScene" type="MarginContainer"]
+clip_contents = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 36
+theme_override_constants/margin_top = -14
+theme_override_constants/margin_right = 36
+theme_override_constants/margin_bottom = 28
+script = ExtResource("1_rbc8t")
+
+[node name="SlotContainer" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MainScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 2
+script = ExtResource("1_cc46t")
+custom_vscroll_size = Vector2(12, 406.8)
+custom_vscroll_offset = Vector2(993.44, 42.115)
+metadata/_custom_type_script = "uid://cs6g8remlafby"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 18
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MainScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PanelContainer" type="VBoxContainer" parent="MainScrollContainer/VBoxContainer/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 22

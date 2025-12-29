@@ -1,0 +1,50 @@
+[gd_scene load_steps=6 format=3 uid="uid://bdt1ce51rimxq"]
+
+[ext_resource type="Script" uid="uid://6mv6coc4r331" path="res://Scenes/GUI/tabs.gd" id="1_ccxm1"]
+[ext_resource type="FontFile" uid="uid://d4c6c2u86nvso" path="res://Assets/Fonts/Cinzel-Bold.ttf" id="2_8tvmw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8tvmw"]
+bg_color = Color(0.470076, 0.470076, 0.470076, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p2pmk"]
+bg_color = Color(0.584839, 0.443765, 0.196186, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iaea4"]
+bg_color = Color(0.830809, 0.576017, 0.197711, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+
+[node name="Tabs" type="Control"]
+clip_contents = true
+custom_minimum_size = Vector2(269, 40)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 269.0
+offset_bottom = 40.0
+script = ExtResource("1_ccxm1")
+tab_names = PackedStringArray("BUY", "SELL", "CANCEL")
+font = ExtResource("2_8tvmw")
+unselected_stylebox = SubResource("StyleBoxFlat_8tvmw")
+selected_stylebox = SubResource("StyleBoxFlat_p2pmk")
+hover_stylebox = SubResource("StyleBoxFlat_iaea4")
+disabled_tabs = PackedInt32Array()
+hidden_tabs = PackedInt32Array()

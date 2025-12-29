@@ -1,0 +1,111 @@
+[gd_scene load_steps=9 format=3 uid="uid://bmwe6qhl3g537"]
+
+[ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="1_8hxbp"]
+[ext_resource type="Script" uid="uid://cqjtb4il1u5s1" path="res://Scenes/ShopScene/equipment_preview.gd" id="1_h7tcc"]
+[ext_resource type="PackedScene" uid="uid://bpysgunskrt1m" path="res://Scenes/ShopScene/actor_preview_panel.tscn" id="2_4j624"]
+[ext_resource type="Texture2D" uid="uid://bhohn3al7f571" path="res://Assets/Images/SceneShop/stats_icon.png" id="2_8hxbp"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u2w6m"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.211765, 0.121569, 0.0588235, 0.415686)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s5ufm"]
+content_margin_left = 12.0
+content_margin_right = 18.0
+bg_color = Color(0.211765, 0.121569, 0.0588235, 0.788235)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h7tcc"]
+
+[sub_resource type="Curve" id="Curve_wdmd8"]
+_data = [Vector2(0, 0), 0.0, 1.4, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[node name="EquipmentPreview" type="PanelContainer"]
+custom_minimum_size = Vector2(270, 260)
+offset_right = 270.0
+offset_bottom = 260.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_u2w6m")
+script = ExtResource("1_h7tcc")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 26)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_s5ufm")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/PanelContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="ItemIcon" type="TextureRect" parent="VBoxContainer/PanelContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(15, 15)
+layout_mode = 2
+size_flags_vertical = 4
+texture = SubResource("AtlasTexture_h7tcc")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ItemName" type="Label" parent="VBoxContainer/PanelContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+vertical_alignment = 1
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="StatsIcon" type="TextureRect" parent="VBoxContainer/PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(15, 15)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("2_8hxbp")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 12
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="VBoxContainer/MarginContainer"]
+layout_mode = 2
+script = ExtResource("1_8hxbp")
+curve = SubResource("Curve_wdmd8")
+metadata/_custom_type_script = "uid://cs6g8remlafby"
+
+[node name="ActorsContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer/SmoothScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ActorPanel" parent="VBoxContainer/MarginContainer/SmoothScrollContainer/ActorsContainer" instance=ExtResource("2_4j624")]
+layout_mode = 2

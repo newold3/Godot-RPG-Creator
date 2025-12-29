@@ -1,0 +1,1766 @@
+[gd_scene load_steps=61 format=3 uid="uid://00hf4yeln6ru"]
+
+[ext_resource type="Theme" uid="uid://cp5rfiijsw4j4" path="res://Assets/Themes/in_game_theme.tres" id="1_h6fqd"]
+[ext_resource type="Texture2D" uid="uid://gd73b6khch0n" path="res://Assets/Images/SceneShop/shop_background.png" id="1_v7frn"]
+[ext_resource type="Script" uid="uid://dhwx6v5n3b5o2" path="res://Scenes/ShopScene/scene_shop.gd" id="2_ii445"]
+[ext_resource type="Texture2D" uid="uid://djfdhpxae0li2" path="res://Assets/Images/GUI/frame4.png" id="3_jj1na"]
+[ext_resource type="Texture2D" uid="uid://bcuprqlh7m5ec" path="res://Assets/Images/GUI/frame1b.png" id="4_h6fqd"]
+[ext_resource type="Texture2D" uid="uid://dol4ssk15msk" path="res://Assets/Images/SceneShop/shopkeeper4.png" id="4_y7084"]
+[ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="5_11esi"]
+[ext_resource type="Texture2D" uid="uid://bwyjc5wd8yrg5" path="res://Assets/Images/Particles/dust1.png" id="5_i4m40"]
+[ext_resource type="PackedScene" uid="uid://bdt1ce51rimxq" path="res://Scenes/GUI/tabs.tscn" id="6_wdmd8"]
+[ext_resource type="Texture2D" uid="uid://c0d0oixei6mhn" path="res://Assets/Images/GUI/tab_disabled.png" id="7_ksmw5"]
+[ext_resource type="Texture2D" uid="uid://tisyc345a4ha" path="res://Assets/Images/GUI/tab_hover_unselected.png" id="8_i4m40"]
+[ext_resource type="Texture2D" uid="uid://d13x21kgwbcen" path="res://Assets/Images/GUI/tab_normal.png" id="8_wsyuf"]
+[ext_resource type="Texture2D" uid="uid://c8hitxav1px8y" path="res://Assets/Images/GUI/frame1_top.png" id="9_jj1na"]
+[ext_resource type="Texture2D" uid="uid://b1xoovwjoejed" path="res://Assets/Images/GUI/tab_hover.png" id="9_yog7p"]
+[ext_resource type="Texture2D" uid="uid://bf6s5g3mj34q7" path="res://Assets/Images/SceneShop/door_handle.png" id="10_h6fqd"]
+[ext_resource type="Texture2D" uid="uid://bif6k76ngqhic" path="res://Assets/Images/Other/gold_icon.png" id="10_ii445"]
+[ext_resource type="PackedScene" uid="uid://cthvqbv7cn8ut" path="res://Scenes/GUI/tabs_with_scroll.tscn" id="11_y7084"]
+[ext_resource type="AudioStream" uid="uid://oqq3ivehljq5" path="res://Assets/Sounds/SE/open_shop_door.ogg" id="12_11esi"]
+[ext_resource type="Texture2D" uid="uid://c12eqlw305lb2" path="res://Assets/Images/GUI/frame1c.png" id="12_u2w6m"]
+[ext_resource type="Texture2D" uid="uid://ca3w7iyl4cq1t" path="res://Assets/Images/GUI/frame1_mask.png" id="13_yog7p"]
+[ext_resource type="Texture2D" uid="uid://cq7troqiaogmw" path="res://Assets/Images/GUI/arrow_left_normal.png" id="14_rd57o"]
+[ext_resource type="Texture2D" uid="uid://bsqbwum1dw013" path="res://Assets/Images/GUI/arrow_left_hover.png" id="15_i4m40"]
+[ext_resource type="Texture2D" uid="uid://b1778h8i7eni" path="res://Assets/Images/GUI/arrow_left_disabled.png" id="16_jvymp"]
+[ext_resource type="Texture2D" uid="uid://bkjqr5m7xhycd" path="res://Assets/Images/GUI/arrow_right_normal.png" id="17_d0csi"]
+[ext_resource type="Texture2D" uid="uid://biwk4gweqfecj" path="res://Assets/Images/GUI/arrow_right_hover.png" id="18_u2w6m"]
+[ext_resource type="AudioStream" uid="uid://bjd4dogqrguxy" path="res://Assets/Sounds/SE/close_shop_door.ogg" id="18_wsyuf"]
+[ext_resource type="Texture2D" uid="uid://4qw6c4l5oc26" path="res://Assets/Images/GUI/arrow_right_disabled.png" id="19_s5ufm"]
+[ext_resource type="Shader" uid="uid://dkvs3wfnpqp4w" path="res://Assets/Shaders/post_processing_effects.gdshader" id="20_y7084"]
+[ext_resource type="Texture2D" uid="uid://hii1l5etavlf" path="res://Assets/Images/GUI/tab_normal_inverted_selected.png" id="25_1q6jm"]
+[ext_resource type="PackedScene" uid="uid://b7ca1nfrm7wmc" path="res://Scenes/ShopScene/transaction_confirm.tscn" id="25_jvymp"]
+[ext_resource type="Texture2D" uid="uid://cw2w0kcob72m1" path="res://Assets/Images/GUI/tab_normal_inverted_hover.png" id="26_1q6jm"]
+[ext_resource type="Texture2D" uid="uid://dyvoqh4678yu7" path="res://Assets/Images/GUI/tab_normal_inverted.png" id="26_s5ufm"]
+[ext_resource type="PackedScene" uid="uid://poo3tgpmsv8d" path="res://Scenes/ShopScene/message_confirm.tscn" id="28_d0csi"]
+[ext_resource type="PackedScene" uid="uid://bmwe6qhl3g537" path="res://Scenes/ShopScene/equipment_preview.tscn" id="32_s5ufm"]
+
+[sub_resource type="Curve" id="Curve_s5ufm"]
+_limits = [0.0, 1.1, 0.0, 1.0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.603412, 1.02412), 0.719063, 0.0, 0, 0, Vector2(0.701493, 1.00928), -0.265927, -0.265927, 0, 0, Vector2(1, 1), -0.281352, 0.0, 0, 0]
+point_count = 4
+metadata/_snap_count = 6
+
+[sub_resource type="Shader" id="Shader_rd57o"]
+code = "shader_type canvas_item;
+
+// Uniforms para textura y animación
+uniform sampler2D particle_texture : hint_default_black;
+uniform ivec2 sprite_frames = ivec2(1, 1);
+uniform float animation_speed : hint_range(0.1, 10.0) = 1.0;
+
+// Uniforms para configuración de partículas
+uniform int particle_type : hint_enum(\"Dust\", \"Embers\", \"Sparkles\", \"Smoke\", \"Coins\") = 0;
+uniform int particle_count : hint_range(50, 1000) = 150;
+uniform float particle_speed : hint_range(0.1, 5.0, 0.001) = 1.0;
+uniform float particle_size : hint_range(0.01, 5.0, 0.001) = 2.0;
+uniform float min_size_scale : hint_range(0.01, 2.0, 0.01) = 0.5;
+uniform float max_size_scale : hint_range(0.01, 5.0, 0.01) = 3.0;
+
+// Nuevos uniforms para capas de profundidad
+uniform int depth_layers : hint_range(2, 5) = 3;
+uniform float depth_size_multiplier : hint_range(0.1, 1.0) = 0.3;
+uniform float depth_speed_multiplier : hint_range(0.1, 1.0) = 0.6;
+uniform float depth_alpha_multiplier : hint_range(0.1, 1.0) = 0.7;
+uniform float layer_separation : hint_range(0.1, 2.0) = 0.8;
+
+// Uniforms para colores
+uniform vec4 primary_color : source_color = vec4(1.0, 0.84, 0.0, 1.0); // Dorado
+uniform vec4 secondary_color : source_color = vec4(1.0, 0.55, 0.2, 1.0); // Naranja
+uniform vec4 tertiary_color : source_color = vec4(1.0, 1.0, 1.0, 1.0); // Blanco
+
+// Uniforms para comportamiento
+uniform float time_scale : hint_range(0.1, 5.0) = 1.0;
+uniform vec2 wind_direction = vec2(0.0, 0.0);
+uniform float wind_strength : hint_range(0.0, 2.0) = 0.5;
+
+// Función de ruido pseudo-aleatoria mejorada
+float random(vec2 st) {
+    return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
+}
+
+// Función hash para mejor distribución
+float hash(float n) {
+    return fract(sin(n) * 43758.5453123);
+}
+
+// Función para obtener el frame de sprite correcto
+vec2 get_sprite_uv(vec2 local_uv, int frame_index) {
+    int total_frames = sprite_frames.x * sprite_frames.y;
+    if (total_frames <= 1) {
+        return local_uv; // Si no hay frames, usar UV completa
+    }
+    
+    frame_index = frame_index % total_frames;
+    
+    int frame_x = frame_index % sprite_frames.x;
+    int frame_y = frame_index / sprite_frames.x;
+    
+    vec2 frame_size = vec2(1.0) / vec2(sprite_frames);
+    vec2 frame_offset = vec2(float(frame_x), float(frame_y)) * frame_size;
+    
+    return frame_offset + local_uv * frame_size;
+}
+
+// Función para calcular las propiedades de una capa
+struct LayerProperties {
+    float size_scale;
+    float speed_scale;
+    float alpha_scale;
+    float time_offset;
+    int particle_count;
+};
+
+LayerProperties get_layer_properties(int layer_index) {
+    LayerProperties props;
+    float layer_factor = float(layer_index) / float(depth_layers - 1);
+    
+    // Las capas más cercanas (menor índice) son más grandes
+    // Las capas más alejadas (mayor índice) son más pequeñas
+    props.size_scale = 1.0 + layer_factor * 2.0; // Capa 0: 1.0, última capa: 3.0
+    props.speed_scale = 1.0 - layer_factor * (1.0 - depth_speed_multiplier);
+    props.alpha_scale = 1.0 - layer_factor * (1.0 - depth_alpha_multiplier);
+    props.time_offset = layer_factor * layer_separation;
+    
+    // Menos partículas en capas cercanas, más en capas lejanas
+    float particle_distribution = 1.0 + layer_factor * 1.5; // Capa 0: 1.0, última: 2.5
+    props.particle_count = int(float(particle_count) * particle_distribution / float(depth_layers * 2));
+    
+    return props;
+}
+
+// Función para calcular posición de partícula con capas y movimiento oscilatorio
+vec2 calculate_particle_position(int particle_id, int layer_index, float time) {
+    LayerProperties layer_props = get_layer_properties(layer_index);
+    
+    float fid = float(particle_id);
+    vec2 seed = vec2(fid * 0.1234 + float(layer_index) * 0.987, fid * 0.5678 + float(layer_index) * 0.432);
+    
+    float speed_multiplier = particle_speed * time_scale * layer_props.speed_scale;
+    float life_duration = 8.0 + random(seed) * 4.0;
+    float adjusted_time = time + layer_props.time_offset;
+    float life_time = mod(adjusted_time * speed_multiplier + fid * 0.1, life_duration);
+    
+    vec2 start_pos = vec2(random(seed), random(seed + vec2(1.0, 0.0)));
+    vec2 base_velocity = vec2(0.0);
+    
+    // Configurar velocidad base según tipo de partícula
+    if (particle_type == 0) { // Dust
+        base_velocity = vec2(
+            (random(seed + vec2(2.0, 0.0)) - 0.5) * 0.05,
+            (random(seed + vec2(3.0, 0.0)) - 0.5) * 0.05
+        );
+    } else if (particle_type == 1) { // Embers
+        start_pos.y = 1.1 + random(seed) * 0.2;
+        base_velocity = vec2(
+            (random(seed + vec2(2.0, 0.0)) - 0.5) * 0.1,
+            -0.3 - random(seed + vec2(3.0, 0.0)) * 0.3
+        );
+    } else if (particle_type == 2) { // Sparkles
+        base_velocity = vec2(
+            (random(seed + vec2(2.0, 0.0)) - 0.5) * 0.15,
+            (random(seed + vec2(3.0, 0.0)) - 0.5) * 0.15
+        );
+    } else if (particle_type == 3) { // Smoke
+        base_velocity = vec2(
+            (random(seed + vec2(2.0, 0.0)) - 0.5) * 0.08,
+            -0.08 - random(seed + vec2(3.0, 0.0)) * 0.12
+        );
+    } else if (particle_type == 4) { // Coins
+        start_pos.y = -0.1 - random(seed) * 0.2;
+        base_velocity = vec2(
+            (random(seed + vec2(2.0, 0.0)) - 0.5) * 0.05,
+            0.2 + random(seed + vec2(3.0, 0.0)) * 0.2
+        );
+    }
+    
+    // Añadir movimiento oscilatorio
+    float oscillation_freq_x = 0.5 + random(seed + vec2(4.0, 0.0)) * 1.0; // Frecuencia 0.5-1.5
+    float oscillation_freq_y = 0.3 + random(seed + vec2(5.0, 0.0)) * 0.8; // Frecuencia 0.3-1.1
+    float oscillation_amp_x = 0.02 + random(seed + vec2(6.0, 0.0)) * 0.08; // Amplitud 0.02-0.1
+    float oscillation_amp_y = 0.015 + random(seed + vec2(7.0, 0.0)) * 0.06; // Amplitud 0.015-0.075
+    
+    vec2 oscillation = vec2(
+        sin(adjusted_time * oscillation_freq_x + fid) * oscillation_amp_x,
+        cos(adjusted_time * oscillation_freq_y + fid * 1.3) * oscillation_amp_y
+    );
+    
+    // Aplicar viento con escala de capa
+    vec2 wind_effect = wind_direction * wind_strength * 0.05 * layer_props.speed_scale;
+    
+    // Calcular posición final con movimiento base + oscilación
+    vec2 pos = start_pos + (base_velocity + wind_effect) * life_time + oscillation;
+    
+    // Wraparound horizontal
+    pos.x = mod(pos.x + 1.0, 1.0);
+    
+    return pos;
+}
+
+// Función para calcular alpha de partícula con capas
+float calculate_particle_alpha(int particle_id, int layer_index, float time, vec2 pos) {
+    LayerProperties layer_props = get_layer_properties(layer_index);
+    
+    float fid = float(particle_id);
+    vec2 seed = vec2(fid * 0.1234 + float(layer_index) * 0.987, fid * 0.5678 + float(layer_index) * 0.432);
+    
+    float speed_multiplier = particle_speed * time_scale * layer_props.speed_scale;
+    float life_duration = 8.0 + random(seed) * 4.0;
+    float adjusted_time = time + layer_props.time_offset;
+    float life_time = mod(adjusted_time * speed_multiplier + fid * 0.1, life_duration);
+    float life_progress = life_time / life_duration;
+    
+    // Fade in/out suave
+    float alpha = 1.0;
+    if (life_progress < 0.2) {
+        alpha = smoothstep(0.0, 0.2, life_progress);
+    } else if (life_progress > 0.7) {
+        alpha = smoothstep(1.0, 0.7, life_progress);
+    }
+    
+    // Verificar si está en pantalla
+    if (pos.x < -0.05 || pos.x > 1.05 || pos.y < -0.05 || pos.y > 1.05) {
+        alpha = 0.0;
+    }
+    
+    // Aplicar escala de alpha de la capa
+    alpha *= layer_props.alpha_scale;
+    
+    return alpha * (0.4 + random(seed) * 0.4);
+}
+
+// Función para obtener color de partícula con variación por capa
+vec4 get_particle_color(int type, int particle_id, int layer_index, float time) {
+    float fid = float(particle_id);
+    vec2 seed = vec2(fid * 0.1234 + float(layer_index) * 0.987, fid * 0.5678 + float(layer_index) * 0.432);
+    float variation = random(seed);
+    
+    // Las capas más alejadas tienen colores ligeramente más desaturados
+    float layer_factor = float(layer_index) / float(depth_layers - 1);
+    float desaturation = layer_factor * 0.3; // Máximo 30% de desaturación
+    
+    vec4 base_color;
+    
+    if (type == 0) { // Dust - Dorado
+        base_color = mix(primary_color, secondary_color, variation * 0.3);
+    } else if (type == 1) { // Embers - Naranja/Rojo
+        vec4 ember_color = vec4(1.0, 0.2, 0.0, secondary_color.a);
+        base_color = mix(secondary_color, ember_color, variation * 0.5);
+    } else if (type == 2) { // Sparkles - Blanco/Dorado
+        base_color = mix(tertiary_color, primary_color, variation * 0.4);
+    } else if (type == 3) { // Smoke - Gris
+        vec4 smoke_base = vec4(0.8, 0.8, 0.8, 0.6);
+        base_color = smoke_base * (0.5 + variation * 0.5);
+    } else if (type == 4) { // Coins - Dorado
+        base_color = primary_color;
+    } else {
+        base_color = primary_color;
+    }
+    
+    // Aplicar desaturación para capas más alejadas
+    float luminance = dot(base_color.rgb, vec3(0.299, 0.587, 0.114));
+    base_color.rgb = mix(base_color.rgb, vec3(luminance), desaturation);
+    
+    return base_color;
+}
+
+void fragment() {
+    vec2 uv = UV;
+    vec4 final_color = vec4(0.0);
+    float time = TIME * time_scale;
+    
+    // Procesar cada capa desde la más alejada hasta la más cercana
+    for (int layer = depth_layers - 1; layer >= 0; layer--) {
+        LayerProperties layer_props = get_layer_properties(layer);
+        
+        // Procesar partículas de esta capa (cada capa tiene diferente cantidad)
+        for (int i = 0; i < layer_props.particle_count; i++) {
+            int particle_id = layer * 1000 + i; // Usar offset grande para evitar colisiones
+            
+            vec2 particle_pos = calculate_particle_position(particle_id, layer, time);
+            
+            // Calcular distancia desde UV actual a posición de partícula
+            vec2 diff = uv - particle_pos;
+            float distance = length(diff);
+            
+            // Tamaño de partícula con clara diferenciación por capas
+            float fid = float(particle_id);
+            float size_variation = min_size_scale + random(vec2(fid * 0.1234, fid * 0.5678)) * (max_size_scale - min_size_scale);
+            
+            // Aplicar escalado de capa: capas cercanas más grandes, lejanas más pequeñas
+            float base_size = particle_size * 0.015 * size_variation;
+            float size = base_size;
+            
+            // Aplicar factor de capa invertido para que capa 0 sea más grande
+            float layer_factor = float(layer) / float(depth_layers - 1);
+            if (layer == 0) {
+                size *= 2.5; // Capa más cercana: muy grande
+            } else if (layer == 1 && depth_layers > 2) {
+                size *= 1.8; // Segunda capa: grande
+            } else if (layer == depth_layers - 1) {
+                size *= 0.3; // Capa más lejana: muy pequeña
+            } else {
+                size *= (1.5 - layer_factor * 0.8); // Capas intermedias: escalado gradual
+            }
+            
+            if (distance < size) {
+                // Calcular UV local para la partícula
+                vec2 local_uv = (diff / size) * 0.5 + 0.5;
+                
+                // Asegurar que local_uv esté en rango [0,1]
+                if (local_uv.x >= 0.0 && local_uv.x <= 1.0 && 
+                    local_uv.y >= 0.0 && local_uv.y <= 1.0) {
+                    
+                    // Calcular frame de animación correctamente
+                    float frame_time = time * animation_speed + fid * 0.1;
+                    int total_frames = sprite_frames.x * sprite_frames.y;
+                    int frame_index = 0;
+                    
+                    if (total_frames > 1) {
+                        frame_index = int(floor(frame_time)) % total_frames;
+                    }
+                    
+                    vec2 sprite_uv = get_sprite_uv(local_uv, frame_index);
+                    
+                    // Obtener color de textura
+                    vec4 tex_color = texture(particle_texture, sprite_uv);
+                    
+                    // Solo procesar si la textura tiene alpha
+                    if (tex_color.a > 0.01) {
+                        // Obtener color de partícula con variación por capa
+                        vec4 particle_color = get_particle_color(particle_type, particle_id, layer, time);
+                        
+                        // Aplicar color de partícula respetando su transparencia
+                        tex_color.rgb *= particle_color.rgb;
+                        tex_color.a *= particle_color.a;
+                        
+                        // Calcular alpha adicional
+                        float additional_alpha = calculate_particle_alpha(particle_id, layer, time, particle_pos);
+                        
+                        // Aplicar falloff circular suave
+                        float falloff = 1.0 - smoothstep(0.7, 1.0, distance / size);
+                        additional_alpha *= falloff;
+                        
+                        // Aplicar alpha adicional
+                        tex_color.a *= additional_alpha;
+                        
+                        // Combinar con color final usando alpha blending
+                        // Las capas más alejadas se mezclan de manera más sutil
+                        float blend_factor = 1.0 - layer_factor * 0.3;
+                        final_color.rgb += tex_color.rgb * tex_color.a * blend_factor;
+                        final_color.a = max(final_color.a, tex_color.a);
+                    }
+                }
+            }
+        }
+    }
+    
+    COLOR = final_color;
+}"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_i4m40"]
+load_path = "res://.godot/imported/dust1.png-f45e79a2b79bc1ecf6733b98aa1e7c2f.ctex"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d0csi"]
+shader = SubResource("Shader_rd57o")
+shader_parameter/particle_texture = SubResource("CompressedTexture2D_i4m40")
+shader_parameter/sprite_frames = Vector2i(3, 1)
+shader_parameter/animation_speed = 1.0
+shader_parameter/particle_type = 0
+shader_parameter/particle_count = 500
+shader_parameter/particle_speed = 0.1
+shader_parameter/particle_size = 0.22
+shader_parameter/min_size_scale = 0.06
+shader_parameter/max_size_scale = 0.43
+shader_parameter/depth_layers = 5
+shader_parameter/depth_size_multiplier = 0.243
+shader_parameter/depth_speed_multiplier = 0.566
+shader_parameter/depth_alpha_multiplier = 0.585
+shader_parameter/layer_separation = 0.957
+shader_parameter/primary_color = Color(1, 0.529412, 0.345098, 1)
+shader_parameter/secondary_color = Color(1, 0.671137, 0.454949, 0.854902)
+shader_parameter/tertiary_color = Color(0.921569, 0.541176, 0, 0.819608)
+shader_parameter/time_scale = 0.193
+shader_parameter/wind_direction = Vector2(-6.63, -2.985)
+shader_parameter/wind_strength = 0.154
+
+[sub_resource type="Shader" id="Shader_u2w6m"]
+code = "shader_type canvas_item;
+
+// Uniforms para textura y animación
+uniform sampler2D particle_texture : hint_default_black;
+uniform ivec2 sprite_frames = ivec2(1, 1);
+uniform float animation_speed : hint_range(0.1, 10.0) = 1.0;
+
+// Uniforms para configuración de partículas
+uniform int particle_type : hint_enum(\"Dust\", \"Embers\", \"Sparkles\", \"Smoke\", \"Coins\") = 0;
+uniform int particle_count : hint_range(50, 1000) = 150;
+uniform float particle_speed : hint_range(0.1, 5.0, 0.001) = 1.0;
+uniform float particle_size : hint_range(0.01, 5.0, 0.001) = 2.0;
+uniform float min_size_scale : hint_range(0.01, 2.0, 0.01) = 0.5;
+uniform float max_size_scale : hint_range(0.01, 5.0, 0.01) = 3.0;
+
+// Nuevos uniforms para capas de profundidad
+uniform int depth_layers : hint_range(2, 5) = 3;
+uniform float depth_size_multiplier : hint_range(0.1, 1.0) = 0.3;
+uniform float depth_speed_multiplier : hint_range(0.1, 1.0) = 0.6;
+uniform float depth_alpha_multiplier : hint_range(0.1, 1.0) = 0.7;
+uniform float layer_separation : hint_range(0.1, 2.0) = 0.8;
+
+// Uniforms para colores
+uniform vec4 primary_color : source_color = vec4(1.0, 0.84, 0.0, 1.0); // Dorado
+uniform vec4 secondary_color : source_color = vec4(1.0, 0.55, 0.2, 1.0); // Naranja
+uniform vec4 tertiary_color : source_color = vec4(1.0, 1.0, 1.0, 1.0); // Blanco
+
+// Uniforms para comportamiento
+uniform float time_scale : hint_range(0.1, 5.0) = 1.0;
+uniform vec2 wind_direction = vec2(0.0, 0.0);
+uniform float wind_strength : hint_range(0.0, 2.0) = 0.5;
+
+// Función de ruido pseudo-aleatoria mejorada
+float random(vec2 st) {
+    return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
+}
+
+// Función hash para mejor distribución
+float hash(float n) {
+    return fract(sin(n) * 43758.5453123);
+}
+
+// Función para obtener el frame de sprite correcto
+vec2 get_sprite_uv(vec2 local_uv, int frame_index) {
+    int total_frames = sprite_frames.x * sprite_frames.y;
+    if (total_frames <= 1) {
+        return local_uv; // Si no hay frames, usar UV completa
+    }
+
+    frame_index = frame_index % total_frames;
+
+    int frame_x = frame_index % sprite_frames.x;
+    int frame_y = frame_index / sprite_frames.x;
+
+    vec2 frame_size = vec2(1.0) / vec2(sprite_frames);
+    vec2 frame_offset = vec2(float(frame_x), float(frame_y)) * frame_size;
+
+    return frame_offset + local_uv * frame_size;
+}
+
+// Función para interpolar entre dos frames
+vec4 get_interpolated_frame(vec2 local_uv, float frame_time) {
+    int total_frames = sprite_frames.x * sprite_frames.y;
+    if (total_frames <= 1) {
+        return texture(particle_texture, local_uv);
+    }
+
+    // Obtener el frame actual y el siguiente
+    int current_frame = int(floor(frame_time)) % total_frames;
+    int next_frame = (current_frame + 1) % total_frames;
+
+    // Calcular el factor de interpolación (0.0 a 1.0)
+    float interpolation_factor = fract(frame_time);
+
+    // Obtener las UVs para ambos frames
+    vec2 current_uv = get_sprite_uv(local_uv, current_frame);
+    vec2 next_uv = get_sprite_uv(local_uv, next_frame);
+
+    // Muestrear ambos frames
+    vec4 current_color = texture(particle_texture, current_uv);
+    vec4 next_color = texture(particle_texture, next_uv);
+
+    // Interpolar entre los dos frames
+    // Usamos mix para interpolar tanto el color como el alpha
+    vec4 interpolated_color = mix(current_color, next_color, interpolation_factor);
+
+    // Para un efecto más suave, podemos usar smoothstep en lugar de linear
+    // float smooth_factor = smoothstep(0.0, 1.0, interpolation_factor);
+    // vec4 interpolated_color = mix(current_color, next_color, smooth_factor);
+
+    return interpolated_color;
+}
+
+// Función para calcular las propiedades de una capa
+struct LayerProperties {
+    float size_scale;
+    float speed_scale;
+    float alpha_scale;
+    float time_offset;
+    int particle_count;
+};
+
+LayerProperties get_layer_properties(int layer_index) {
+    LayerProperties props;
+    float layer_factor = float(layer_index) / float(depth_layers - 1);
+
+    // Las capas más cercanas (menor índice) son más grandes
+    // Las capas más alejadas (mayor índice) son más pequeñas
+    props.size_scale = 1.0 + layer_factor * 2.0; // Capa 0: 1.0, última capa: 3.0
+    props.speed_scale = 1.0 - layer_factor * (1.0 - depth_speed_multiplier);
+    props.alpha_scale = 1.0 - layer_factor * (1.0 - depth_alpha_multiplier);
+    props.time_offset = layer_factor * layer_separation;
+
+    // Menos partículas en capas cercanas, más en capas lejanas
+    float particle_distribution = 1.0 + layer_factor * 1.5; // Capa 0: 1.0, última: 2.5
+    props.particle_count = int(float(particle_count) * particle_distribution / float(depth_layers * 2));
+
+    return props;
+}
+
+// Función para calcular posición de partícula con capas y movimiento oscilatorio
+vec2 calculate_particle_position(int particle_id, int layer_index, float time) {
+    LayerProperties layer_props = get_layer_properties(layer_index);
+
+    float fid = float(particle_id);
+    vec2 seed = vec2(fid * 0.1234 + float(layer_index) * 0.987, fid * 0.5678 + float(layer_index) * 0.432);
+
+    float speed_multiplier = particle_speed * time_scale * layer_props.speed_scale;
+    float life_duration = 8.0 + random(seed) * 4.0;
+    float adjusted_time = time + layer_props.time_offset;
+    float life_time = mod(adjusted_time * speed_multiplier + fid * 0.1, life_duration);
+
+    vec2 start_pos = vec2(random(seed), random(seed + vec2(1.0, 0.0)));
+    vec2 base_velocity = vec2(0.0);
+
+    // Configurar velocidad base según tipo de partícula
+    if (particle_type == 0) { // Dust
+        base_velocity = vec2(
+            (random(seed + vec2(2.0, 0.0)) - 0.5) * 0.05,
+            (random(seed + vec2(3.0, 0.0)) - 0.5) * 0.05
+        );
+    } else if (particle_type == 1) { // Embers
+        start_pos.y = 1.1 + random(seed) * 0.2;
+        base_velocity = vec2(
+            (random(seed + vec2(2.0, 0.0)) - 0.5) * 0.1,
+            -0.3 - random(seed + vec2(3.0, 0.0)) * 0.3
+        );
+    } else if (particle_type == 2) { // Sparkles
+        base_velocity = vec2(
+            (random(seed + vec2(2.0, 0.0)) - 0.5) * 0.15,
+            (random(seed + vec2(3.0, 0.0)) - 0.5) * 0.15
+        );
+    } else if (particle_type == 3) { // Smoke
+        base_velocity = vec2(
+            (random(seed + vec2(2.0, 0.0)) - 0.5) * 0.08,
+            -0.08 - random(seed + vec2(3.0, 0.0)) * 0.12
+        );
+    } else if (particle_type == 4) { // Coins
+        start_pos.y = -0.1 - random(seed) * 0.2;
+        base_velocity = vec2(
+            (random(seed + vec2(2.0, 0.0)) - 0.5) * 0.05,
+            0.2 + random(seed + vec2(3.0, 0.0)) * 0.2
+        );
+    }
+
+    // Añadir movimiento oscilatorio
+    float oscillation_freq_x = 0.5 + random(seed + vec2(4.0, 0.0)) * 1.0; // Frecuencia 0.5-1.5
+    float oscillation_freq_y = 0.3 + random(seed + vec2(5.0, 0.0)) * 0.8; // Frecuencia 0.3-1.1
+    float oscillation_amp_x = 0.02 + random(seed + vec2(6.0, 0.0)) * 0.08; // Amplitud 0.02-0.1
+    float oscillation_amp_y = 0.015 + random(seed + vec2(7.0, 0.0)) * 0.06; // Amplitud 0.015-0.075
+
+    vec2 oscillation = vec2(
+        sin(adjusted_time * oscillation_freq_x + fid) * oscillation_amp_x,
+        cos(adjusted_time * oscillation_freq_y + fid * 1.3) * oscillation_amp_y
+    );
+
+    // Aplicar viento con escala de capa
+    vec2 wind_effect = wind_direction * wind_strength * 0.05 * layer_props.speed_scale;
+
+    // Calcular posición final con movimiento base + oscilación
+    vec2 pos = start_pos + (base_velocity + wind_effect) * life_time + oscillation;
+
+    // Wraparound horizontal
+    pos.x = mod(pos.x + 1.0, 1.0);
+
+    return pos;
+}
+
+// Función para calcular alpha de partícula con capas
+float calculate_particle_alpha(int particle_id, int layer_index, float time, vec2 pos) {
+    LayerProperties layer_props = get_layer_properties(layer_index);
+
+    float fid = float(particle_id);
+    vec2 seed = vec2(fid * 0.1234 + float(layer_index) * 0.987, fid * 0.5678 + float(layer_index) * 0.432);
+
+    float speed_multiplier = particle_speed * time_scale * layer_props.speed_scale;
+    float life_duration = 8.0 + random(seed) * 4.0;
+    float adjusted_time = time + layer_props.time_offset;
+    float life_time = mod(adjusted_time * speed_multiplier + fid * 0.1, life_duration);
+    float life_progress = life_time / life_duration;
+
+    // Fade in/out suave
+    float alpha = 1.0;
+    if (life_progress < 0.2) {
+        alpha = smoothstep(0.0, 0.2, life_progress);
+    } else if (life_progress > 0.7) {
+        alpha = smoothstep(1.0, 0.7, life_progress);
+    }
+
+    // Verificar si está en pantalla
+    if (pos.x < -0.05 || pos.x > 1.05 || pos.y < -0.05 || pos.y > 1.05) {
+        alpha = 0.0;
+    }
+
+    // Aplicar escala de alpha de la capa
+    alpha *= layer_props.alpha_scale;
+
+    return alpha * (0.4 + random(seed) * 0.4);
+}
+
+// Función para obtener color de partícula con variación por capa
+vec4 get_particle_color(int type, int particle_id, int layer_index, float time) {
+    float fid = float(particle_id);
+    vec2 seed = vec2(fid * 0.1234 + float(layer_index) * 0.987, fid * 0.5678 + float(layer_index) * 0.432);
+    float variation = random(seed);
+
+    // Las capas más alejadas tienen colores ligeramente más desaturados
+    float layer_factor = float(layer_index) / float(depth_layers - 1);
+    float desaturation = layer_factor * 0.3; // Máximo 30% de desaturación
+
+    vec4 base_color;
+
+    if (type == 0) { // Dust - Dorado
+        base_color = mix(primary_color, secondary_color, variation * 0.3);
+    } else if (type == 1) { // Embers - Naranja/Rojo
+        vec4 ember_color = vec4(1.0, 0.2, 0.0, secondary_color.a);
+        base_color = mix(secondary_color, ember_color, variation * 0.5);
+    } else if (type == 2) { // Sparkles - Blanco/Dorado
+        base_color = mix(tertiary_color, primary_color, variation * 0.4);
+    } else if (type == 3) { // Smoke - Gris
+        vec4 smoke_base = vec4(0.8, 0.8, 0.8, 0.6);
+        base_color = smoke_base * (0.5 + variation * 0.5);
+    } else if (type == 4) { // Coins - Dorado
+        base_color = primary_color;
+    } else {
+        base_color = primary_color;
+    }
+
+    // Aplicar desaturación para capas más alejadas
+    float luminance = dot(base_color.rgb, vec3(0.299, 0.587, 0.114));
+    base_color.rgb = mix(base_color.rgb, vec3(luminance), desaturation);
+
+    return base_color;
+}
+
+void fragment() {
+    vec2 uv = UV;
+    vec4 final_color = vec4(0.0);
+    float time = TIME * time_scale;
+
+    // Procesar cada capa desde la más alejada hasta la más cercana
+    for (int layer = depth_layers - 1; layer >= 0; layer--) {
+        LayerProperties layer_props = get_layer_properties(layer);
+
+        // Procesar partículas de esta capa (cada capa tiene diferente cantidad)
+        for (int i = 0; i < layer_props.particle_count; i++) {
+            int particle_id = layer * 1000 + i; // Usar offset grande para evitar colisiones
+
+            vec2 particle_pos = calculate_particle_position(particle_id, layer, time);
+
+            // Calcular distancia desde UV actual a posición de partícula
+            vec2 diff = uv - particle_pos;
+            float distance = length(diff);
+
+            // Tamaño de partícula con clara diferenciación por capas
+            float fid = float(particle_id);
+            float size_variation = min_size_scale + random(vec2(fid * 0.1234, fid * 0.5678)) * (max_size_scale - min_size_scale);
+
+            // Aplicar escalado de capa: capas cercanas más grandes, lejanas más pequeñas
+            float base_size = particle_size * 0.015 * size_variation;
+            float size = base_size;
+
+            // Aplicar factor de capa invertido para que capa 0 sea más grande
+            float layer_factor = float(layer) / float(depth_layers - 1);
+            if (layer == 0) {
+                size *= 2.5; // Capa más cercana: muy grande
+            } else if (layer == 1 && depth_layers > 2) {
+                size *= 1.8; // Segunda capa: grande
+            } else if (layer == depth_layers - 1) {
+                size *= 0.3; // Capa más lejana: muy pequeña
+            } else {
+                size *= (1.5 - layer_factor * 0.8); // Capas intermedias: escalado gradual
+            }
+
+            if (distance < size) {
+                // Calcular UV local para la partícula
+                vec2 local_uv = (diff / size) * 0.5 + 0.5;
+
+                // Asegurar que local_uv esté en rango [0,1]
+                if (local_uv.x >= 0.0 && local_uv.x <= 1.0 &&
+                    local_uv.y >= 0.0 && local_uv.y <= 1.0) {
+
+                    // Calcular frame de animación con tiempo continuo para interpolación
+                    float frame_time = time * animation_speed + fid * 0.1;
+
+                    // Obtener color de textura interpolado entre frames
+                    vec4 tex_color = get_interpolated_frame(local_uv, frame_time);
+
+                    // Solo procesar si la textura tiene alpha
+                    if (tex_color.a > 0.01) {
+                        // Obtener color de partícula con variación por capa
+                        vec4 particle_color = get_particle_color(particle_type, particle_id, layer, time);
+
+                        // Aplicar color de partícula respetando su transparencia
+                        tex_color.rgb *= particle_color.rgb;
+                        tex_color.a *= particle_color.a;
+
+                        // Calcular alpha adicional
+                        float additional_alpha = calculate_particle_alpha(particle_id, layer, time, particle_pos);
+
+                        // Aplicar falloff circular suave
+                        float falloff = 1.0 - smoothstep(0.7, 1.0, distance / size);
+                        additional_alpha *= falloff;
+
+                        // Aplicar alpha adicional
+                        tex_color.a *= additional_alpha;
+
+                        // Combinar con color final usando alpha blending
+                        // Las capas más alejadas se mezclan de manera más sutil
+                        float blend_factor = 1.0 - layer_factor * 0.3;
+                        final_color.rgb += tex_color.rgb * tex_color.a * blend_factor;
+                        final_color.a = max(final_color.a, tex_color.a);
+                    }
+                }
+            }
+        }
+    }
+
+    COLOR = final_color;
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jvymp"]
+shader = SubResource("Shader_u2w6m")
+shader_parameter/particle_texture = ExtResource("5_i4m40")
+shader_parameter/sprite_frames = Vector2i(3, 1)
+shader_parameter/animation_speed = 1.0
+shader_parameter/particle_type = 0
+shader_parameter/particle_count = 50
+shader_parameter/particle_speed = 0.1
+shader_parameter/particle_size = 0.296
+shader_parameter/min_size_scale = 0.06
+shader_parameter/max_size_scale = 0.79
+shader_parameter/depth_layers = 5
+shader_parameter/depth_size_multiplier = 0.243
+shader_parameter/depth_speed_multiplier = 0.566
+shader_parameter/depth_alpha_multiplier = 0.585
+shader_parameter/layer_separation = 0.957
+shader_parameter/primary_color = Color(1, 0.529412, 0.345098, 1)
+shader_parameter/secondary_color = Color(1, 0.671137, 0.454949, 0.854902)
+shader_parameter/tertiary_color = Color(0.921569, 0.541176, 0, 0.819608)
+shader_parameter/time_scale = 0.38
+shader_parameter/wind_direction = Vector2(-6.63, -2.985)
+shader_parameter/wind_strength = 0.154
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kfvmh"]
+content_margin_top = 10.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jvymp"]
+texture = ExtResource("8_i4m40")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_y7084"]
+texture = ExtResource("7_ksmw5")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1bk43"]
+texture = ExtResource("8_wsyuf")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jcwd8"]
+texture = ExtResource("9_yog7p")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_u2w6m"]
+content_margin_bottom = 6.0
+texture = ExtResource("12_u2w6m")
+texture_margin_left = 9.0
+texture_margin_top = 6.0
+texture_margin_right = 12.0
+
+[sub_resource type="Gradient" id="Gradient_qujrq"]
+offsets = PackedFloat32Array(0, 0.21223, 0.55036, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.321569, 0.196078, 0.105882, 1, 0.72549, 0.482353, 0.176471, 1, 0.348413, 0.227888, 0.141261, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ca5lp"]
+gradient = SubResource("Gradient_qujrq")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="Curve" id="Curve_wdmd8"]
+_data = [Vector2(0, 0), 0.0, 1.4, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8tdwe"]
+texture = ExtResource("26_s5ufm")
+texture_margin_left = 24.0
+texture_margin_top = 6.0
+texture_margin_right = 24.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1o86r"]
+texture = ExtResource("26_1q6jm")
+texture_margin_left = 24.0
+texture_margin_top = 6.0
+texture_margin_right = 24.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_650j3"]
+texture = ExtResource("26_1q6jm")
+texture_margin_left = 24.0
+texture_margin_top = 6.0
+texture_margin_right = 24.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_181j8"]
+texture = ExtResource("25_1q6jm")
+texture_margin_left = 24.0
+texture_margin_top = 6.0
+texture_margin_right = 24.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="Animation" id="Animation_1q6jm"]
+resource_name = "End"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../ShopKeeper:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.4),
+"transitions": PackedFloat32Array(0.31864, 2.63902),
+"update": 0,
+"values": [Vector2(800, 83), Vector2(1100, 83)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../ItemsContainer/TopMask/Top:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.4),
+"transitions": PackedFloat32Array(0.164939, 1),
+"update": 0,
+"values": [Vector2(0, -406.711), Vector2(0, -2)]
+}
+tracks/2/type = "audio"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../AudioStreamPlayer")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("18_wsyuf")
+}],
+"times": PackedFloat32Array(0.0333333)
+}
+tracks/2/use_blend = true
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../PlayerGoldContainer:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1, 0.133333, 0.166667, 0.2, 0.233333, 0.266667, 0.3, 0.333333, 0.366667, 0.4, 0.433333, 0.466667, 0.5, 0.533333, 0.566667, 0.6, 0.633333, 0.666667, 0.7, 0.733333, 0.766667, 0.8, 0.833333, 0.866667, 0.9, 0.933333, 0.966667, 1, 1.03333, 1.06667, 1.1, 1.13333, 1.16667, 1.2, 1.23333, 1.26667, 1.3, 1.33333, 1.36667, 1.4, 1.43333, 1.46667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0.9), Color(1, 1, 1, 0.8), Color(1, 1, 1, 0.7), Color(1, 1, 1, 0.6), Color(1, 1, 1, 0.5), Color(1, 1, 1, 0.399999), Color(1, 1, 1, 0.299999), Color(1, 1, 1, 0.199999), Color(1, 1, 1, 0.0999991), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 0)]
+}
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("..")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(1.06667),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"_remove_scene"
+}]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("../ItemsContainer/TopMask:scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0.7, 0.833333, 0.9),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1, 1.01), Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_181j8"]
+resource_name = "RESET"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../ShopKeeper:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(800, 83)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../ShopTitleContainer:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(507.5, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../ItemsContainer/TopMask/Top:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -2)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../PlayerGoldContainer:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../ItemsContainer/TopMask:scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_s5ufm"]
+resource_name = "Start"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../ShopKeeper:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.7, 1.1, 1.36667),
+"transitions": PackedFloat32Array(1, 0.125, 1),
+"update": 0,
+"values": [Vector2(1056, 83), Vector2(785, 83), Vector2(800, 83)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../ShopTitleContainer:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.1333),
+"transitions": PackedFloat32Array(0.277393, 1),
+"update": 0,
+"values": [Vector2(507.5, -72), Vector2(507.5, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../ItemsContainer/TopMask/Top:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.3333, 0.4667, 1.0667),
+"transitions": PackedFloat32Array(0.378929, 1, 1),
+"update": 0,
+"values": [Vector2(0, -2), Vector2(0, -2), Vector2(0, -410)]
+}
+tracks/3/type = "audio"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../AudioStreamPlayer")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("12_11esi")
+}],
+"times": PackedFloat32Array(0.2)
+}
+tracks/3/use_blend = true
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../PlayerGoldContainer:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.966667, 1.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("../ItemsContainer/TopMask:scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.266667, 0.466667, 0.6),
+"transitions": PackedFloat32Array(1, 0.258817, 0.196146, 0.277392),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1, 1), Vector2(1, 1.02), Vector2(1, 1)]
+}
+tracks/6/type = "method"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("..")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [&"shop_initialized"],
+"method": &"emit_signal"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8tdwe"]
+_data = {
+&"End": SubResource("Animation_1q6jm"),
+&"RESET": SubResource("Animation_181j8"),
+&"Start": SubResource("Animation_s5ufm")
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jvymp"]
+bg_color = Color(0, 0, 0, 0.286275)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1q6jm"]
+content_margin_left = 16.0
+content_margin_top = 4.0
+content_margin_right = 16.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0, 0, 0.592157)
+corner_radius_top_left = 32
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1bk43"]
+shader = ExtResource("20_y7084")
+shader_parameter/enable_grayscale = false
+shader_parameter/enable_sepia = true
+shader_parameter/sepia_strength = 0.206
+shader_parameter/enable_grain = false
+shader_parameter/grain_amount = 0.23
+shader_parameter/grain_speed = 0.74
+shader_parameter/enable_cartoon = false
+shader_parameter/cartoon_levels = 5.518
+shader_parameter/enable_posterize = false
+shader_parameter/posterize_levels = 8.0
+shader_parameter/enable_vignette = false
+shader_parameter/vignette_intensity = 0.555
+shader_parameter/vignette_smoothness = 0.1
+shader_parameter/enable_chromatic_aberration = false
+shader_parameter/aberration_strength = 0.01
+shader_parameter/enable_scanlines = false
+shader_parameter/scanlines_count = 300.0
+shader_parameter/scanlines_intensity = 0.5
+shader_parameter/enable_pixelate = false
+shader_parameter/pixel_size = 8
+shader_parameter/enable_blur = false
+shader_parameter/blur_amount = 0.003
+shader_parameter/enable_sharpen = true
+shader_parameter/sharpen_amount = 0.065
+shader_parameter/sharpen_offset = 0.001
+shader_parameter/enable_invert = false
+shader_parameter/enable_night_vision = false
+shader_parameter/night_vision_color = Color(0.1, 1, 0.2, 1)
+shader_parameter/night_vision_noise = 0.3
+shader_parameter/enable_thermal_vision = false
+shader_parameter/thermal_intensity = 1.0
+shader_parameter/thermal_sensitivity = 1.0
+shader_parameter/thermal_offset = 0.0
+shader_parameter/enable_warp = true
+shader_parameter/warp_amount = 0.0400002
+shader_parameter/enable_film_grain = false
+shader_parameter/film_grain_amount = 0.5
+shader_parameter/film_grain_size = 1.0
+shader_parameter/film_grain_speed = 0.3
+shader_parameter/film_grain_rotation = 1.57
+shader_parameter/enable_distortion = false
+shader_parameter/distortion_strength = 0.0
+shader_parameter/enable_color_shift = false
+shader_parameter/color_shift_amount = 0.5
+shader_parameter/color_shift_speed = 1.0
+shader_parameter/enable_bloom = false
+shader_parameter/bloom_intensity = 1.0
+shader_parameter/bloom_threshold = 0.8
+shader_parameter/bloom_radius = 0.005
+shader_parameter/enable_desaturate = false
+shader_parameter/desaturate_amount = 0.7
+shader_parameter/enable_fisheye = false
+shader_parameter/fisheye_strength = 0.0
+shader_parameter/enable_colorize = false
+shader_parameter/colorize_color = Color(1, 0.5, 0.2, 1)
+shader_parameter/colorize_intensity = 0.5
+shader_parameter/colorize_brightness = 1.0
+
+[node name="SceneShop1" type="Control"]
+clip_contents = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.03162
+offset_right = 3.03162
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_h6fqd")
+script = ExtResource("2_ii445")
+end_animation = 2
+preview_equipment_animation_curve = SubResource("Curve_s5ufm")
+
+[node name="Background" type="TextureRect" parent="."]
+unique_name_in_owner = true
+modulate = Color(0.775063, 0.775063, 0.775063, 1)
+texture_repeat = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+texture = ExtResource("1_v7frn")
+stretch_mode = 1
+
+[node name="BackgroundParticlesBack" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_d0csi")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ShopKeeper" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 800.0
+offset_top = 83.0
+offset_right = 1219.3334
+offset_bottom = 712.0
+texture = ExtResource("4_y7084")
+expand_mode = 3
+
+[node name="BackgroundParticlesTop" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_jvymp")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ShopTitleContainer" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -68.5
+offset_right = 148.5
+offset_bottom = 57.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_kfvmh")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="ShopTitleContainer"]
+layout_mode = 2
+texture = ExtResource("3_jj1na")
+patch_margin_left = 7
+patch_margin_top = 6
+patch_margin_right = 5
+patch_margin_bottom = 5
+
+[node name="MarginContainer" type="MarginContainer" parent="ShopTitleContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 60
+theme_override_constants/margin_top = -2
+theme_override_constants/margin_right = 60
+theme_override_constants/margin_bottom = -1
+
+[node name="ShopNameLabel" type="Label" parent="ShopTitleContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 11
+theme_override_font_sizes/font_size = 36
+text = "SHOP"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Tabs" parent="." instance=ExtResource("6_wdmd8")]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 67.0
+offset_top = 78.0
+offset_right = 336.0
+offset_bottom = 118.0
+main_panel_focused_stylebox = SubResource("StyleBoxTexture_jvymp")
+unselected_stylebox = SubResource("StyleBoxTexture_y7084")
+selected_stylebox = SubResource("StyleBoxTexture_1bk43")
+hover_stylebox = SubResource("StyleBoxTexture_jcwd8")
+selected_text_color = Color(1, 1, 1, 1)
+hover_text_color = Color(1, 1, 1, 1)
+unselected_offset_y = 4
+hand_manipulator = "shop_main_tabs"
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 0
+offset_left = 507.968
+offset_top = 80.0
+offset_right = 842.968
+offset_bottom = 133.0
+
+[node name="CurrentQuantity" type="Label" parent="MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_colors/font_color = Color(0.709804, 0.690196, 0.654902, 1)
+theme_override_constants/outline_size = 8
+theme_override_styles/normal = SubResource("StyleBoxTexture_u2w6m")
+text = "STEP: x1"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="ItemsContainer" type="Control" parent="."]
+unique_name_in_owner = true
+anchors_preset = 0
+offset_left = 55.0
+offset_top = 117.0
+offset_right = 857.0
+offset_bottom = 517.0
+
+[node name="ShopFrameBottom" type="NinePatchRect" parent="ItemsContainer"]
+z_index = 20
+custom_minimum_size = Vector2(720, 370)
+layout_mode = 0
+offset_top = 2.0
+offset_right = 802.0
+offset_bottom = 400.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_h6fqd")
+patch_margin_left = 17
+patch_margin_top = 15
+patch_margin_right = 17
+patch_margin_bottom = 15
+
+[node name="MarginContainer" type="MarginContainer" parent="ItemsContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ItemsContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TabsWithScroll" parent="ItemsContainer/MarginContainer/VBoxContainer" instance=ExtResource("11_y7084")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HSeparator" type="TextureRect" parent="ItemsContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 3)
+layout_mode = 2
+texture = SubResource("GradientTexture2D_ca5lp")
+expand_mode = 1
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="ItemsContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+vertical_scroll_mode = 2
+script = ExtResource("5_11esi")
+curve = SubResource("Curve_wdmd8")
+metadata/_custom_type_script = "uid://cs6g8remlafby"
+
+[node name="MarginContainer" type="MarginContainer" parent="ItemsContainer/MarginContainer/VBoxContainer/SmoothScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_right = 6
+
+[node name="Sizer" type="Control" parent="ItemsContainer/MarginContainer/VBoxContainer/SmoothScrollContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ItemContainer" type="GridContainer" parent="ItemsContainer/MarginContainer/VBoxContainer/SmoothScrollContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+columns = 2
+
+[node name="SoldOutContainer" type="Control" parent="ItemsContainer/MarginContainer/VBoxContainer/SmoothScrollContainer/MarginContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="ItemsContainer/MarginContainer/VBoxContainer/SmoothScrollContainer/MarginContainer/SoldOutContainer"]
+modulate = Color(1, 1, 1, 0.352941)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -317.5
+offset_top = -87.5
+offset_right = 317.5
+offset_bottom = 132.955
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -0.0994838
+size_flags_horizontal = 6
+size_flags_vertical = 6
+theme_override_font_sizes/font_size = 128
+text = "SOLD OUT"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="InventoryEmptyContainer" type="Control" parent="ItemsContainer/MarginContainer/VBoxContainer/SmoothScrollContainer/MarginContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+
+[node name="InventoryEmptyLabel" type="Label" parent="ItemsContainer/MarginContainer/VBoxContainer/SmoothScrollContainer/MarginContainer/InventoryEmptyContainer"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.352941)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -317.5
+offset_top = -87.5
+offset_right = 317.5
+offset_bottom = 132.955
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -0.0994838
+size_flags_horizontal = 6
+size_flags_vertical = 6
+theme_override_font_sizes/font_size = 50
+text = "You don't have
+anything this shop wants"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ShopNavigationContainer" type="VBoxContainer" parent="ItemsContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HSeparator2" type="TextureRect" parent="ItemsContainer/MarginContainer/VBoxContainer/ShopNavigationContainer"]
+custom_minimum_size = Vector2(0, 3)
+layout_mode = 2
+texture = SubResource("GradientTexture2D_ca5lp")
+expand_mode = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ItemsContainer/MarginContainer/VBoxContainer/ShopNavigationContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="MovePageToLeft" type="TextureButton" parent="ItemsContainer/MarginContainer/VBoxContainer/ShopNavigationContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(28, 0)
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 1
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = ExtResource("14_rd57o")
+texture_hover = ExtResource("15_i4m40")
+texture_disabled = ExtResource("16_jvymp")
+stretch_mode = 5
+
+[node name="PageLabel" type="Label" parent="ItemsContainer/MarginContainer/VBoxContainer/ShopNavigationContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Current page 0 / 0"
+
+[node name="MovePageToRight" type="TextureButton" parent="ItemsContainer/MarginContainer/VBoxContainer/ShopNavigationContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(28, 0)
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 1
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = ExtResource("17_d0csi")
+texture_hover = ExtResource("18_u2w6m")
+texture_disabled = ExtResource("19_s5ufm")
+stretch_mode = 5
+
+[node name="TopMask" type="NinePatchRect" parent="ItemsContainer"]
+unique_name_in_owner = true
+clip_children = 1
+z_index = 10
+z_as_relative = false
+clip_contents = true
+layout_mode = 0
+offset_top = 2.0
+offset_right = 802.0
+offset_bottom = 400.0
+pivot_offset = Vector2(401, 0)
+texture = ExtResource("13_yog7p")
+patch_margin_left = 17
+patch_margin_top = 15
+patch_margin_right = 17
+patch_margin_bottom = 15
+metadata/_edit_lock_ = true
+
+[node name="Top" type="NinePatchRect" parent="ItemsContainer/TopMask"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(720, 370)
+layout_mode = 0
+offset_top = -2.0
+offset_right = 802.0
+offset_bottom = 396.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("9_jj1na")
+patch_margin_left = 17
+patch_margin_top = 15
+patch_margin_right = 17
+patch_margin_bottom = 15
+metadata/_edit_lock_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="ItemsContainer/TopMask/Top"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -13.5
+offset_top = -24.0
+offset_right = 13.5
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/margin_bottom = 15
+metadata/_edit_lock_ = true
+
+[node name="DoorHandle" type="TextureRect" parent="ItemsContainer/TopMask/Top/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource("10_h6fqd")
+metadata/_edit_lock_ = true
+
+[node name="ShopFrame" type="NinePatchRect" parent="ItemsContainer"]
+z_index = 20
+custom_minimum_size = Vector2(720, 370)
+layout_mode = 0
+offset_top = 2.0
+offset_right = 802.0
+offset_bottom = 400.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_h6fqd")
+draw_center = false
+patch_margin_left = 17
+patch_margin_top = 15
+patch_margin_right = 17
+patch_margin_bottom = 15
+metadata/_edit_lock_ = true
+
+[node name="TransactionContainer" type="MarginContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+modulate = Color(1, 1, 1, 0)
+z_index = 200
+layout_mode = 0
+offset_left = 587.0
+offset_top = 506.0
+offset_right = 850.0
+offset_bottom = 536.0
+size_flags_horizontal = 8
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = -11
+theme_override_constants/margin_right = 12
+
+[node name="CompleteTransaction" type="Button" parent="TransactionContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 1
+mouse_filter = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_focus_color = Color(0.992909, 0.77061, 0.599156, 1)
+theme_override_colors/font_hover_color = Color(0.992157, 0.772549, 0.6, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.980626, 0.665466, 0.401953, 1)
+theme_override_colors/font_outline_color = Color(0.238529, 0.0441922, 0.00345348, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxTexture_8tdwe")
+theme_override_styles/hover = SubResource("StyleBoxTexture_1o86r")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_650j3")
+theme_override_styles/focus = SubResource("StyleBoxTexture_181j8")
+text = "COMPLETE TRANSACTION"
+
+[node name="TransactionConfirm" parent="." instance=ExtResource("25_jvymp")]
+unique_name_in_owner = true
+visible = false
+z_index = 1000
+layout_mode = 1
+hand_manipulator = "confirm_transaction"
+
+[node name="PlayerGoldContainer" type="MarginContainer" parent="."]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -53.0
+offset_right = 170.0
+grow_vertical = 0
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = -100
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PlayerGoldContainer"]
+layout_mode = 2
+
+[node name="CurrentGold" type="Label" parent="PlayerGoldContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.921917, 0.728592, 0.254443, 1)
+theme_override_constants/outline_size = 12
+theme_override_font_sizes/font_size = 38
+text = "12.351"
+
+[node name="GoldIcon" type="TextureRect" parent="PlayerGoldContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(42, 42)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("10_ii445")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Control" type="Control" parent="PlayerGoldContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="CurrentGoldTransation" type="Label" parent="PlayerGoldContainer/HBoxContainer/Control"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_left = -15.032
+offset_top = 50.0
+offset_right = 244.968
+offset_bottom = 103.0
+rotation = 0.0158483
+scale = Vector2(0.77, 0.77)
+pivot_offset = Vector2(129.305, 30.2976)
+theme_override_colors/font_color = Color(0.776281, 0, 0.247965, 1)
+theme_override_constants/outline_size = 12
+theme_override_font_sizes/font_size = 38
+
+[node name="CancelConfirmMessage" parent="." instance=ExtResource("28_d0csi")]
+unique_name_in_owner = true
+visible = false
+z_index = 4096
+layout_mode = 1
+hand_manipulator = "shop_confirm_message"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+bus = &"SE"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+root_node = NodePath(".")
+libraries = {
+&"": SubResource("AnimationLibrary_8tdwe")
+}
+
+[node name="BottomHelp" type="Label" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -27.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.952941, 0.666667, 0.341176, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 12
+theme_override_font_sizes/font_size = 19
+theme_override_styles/normal = SubResource("StyleBoxFlat_jvymp")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EquipmentPreview" parent="." instance=ExtResource("32_s5ufm")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -292.0
+offset_top = -300.0
+offset_right = -5.0
+offset_bottom = -40.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="Fader" type="ColorRect" parent="."]
+modulate = Color(1, 1, 1, 0)
+z_index = 10
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+metadata/_edit_lock_ = true
+
+[node name="InsufficientGold" type="ColorRect" parent="."]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+z_index = 100
+layout_mode = 0
+offset_left = 122.968
+offset_top = 530.0
+offset_right = 606.968
+offset_bottom = 595.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.588235)
+
+[node name="Label" type="Label" parent="InsufficientGold"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 18
+text = "Insufficient Gold to complete the transaction"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ResctockContainer" type="MarginContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -207.032
+offset_top = -5.0
+offset_right = 0.968384
+offset_bottom = 46.0
+grow_horizontal = 0
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+
+[node name="ResctockContainerPanel" type="PanelContainer" parent="ResctockContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1q6jm")
+
+[node name="RestockTimer" type="Label" parent="ResctockContainer/ResctockContainerPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.756863, 0.717647, 0.65098, 1)
+text = "Restock in 5m 16s"
+horizontal_alignment = 1
+
+[node name="PostProcessEffects" type="ColorRect" parent="."]
+unique_name_in_owner = true
+z_index = 4096
+material = SubResource("ShaderMaterial_1bk43")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 0)
+metadata/_edit_lock_ = true
+
+[connection signal="request_focus_bottom_control" from="Tabs" to="." method="_on_tabs_request_focus_bottom_control"]
+[connection signal="tab_clicked" from="Tabs" to="." method="_on_tabs_tab_clicked"]
+[connection signal="request_focus_bottom_control" from="ItemsContainer/MarginContainer/VBoxContainer/TabsWithScroll" to="." method="_on_tabs_with_scroll_request_focus_bottom_control"]
+[connection signal="request_focus_top_control" from="ItemsContainer/MarginContainer/VBoxContainer/TabsWithScroll" to="." method="_on_tabs_with_scroll_request_focus_top_control"]
+[connection signal="tab_clicked" from="ItemsContainer/MarginContainer/VBoxContainer/TabsWithScroll" to="." method="_on_tabs_with_scroll_tab_clicked"]
+[connection signal="focus_entered" from="ItemsContainer/MarginContainer/VBoxContainer/ShopNavigationContainer/HBoxContainer/MovePageToLeft" to="." method="_on_move_page_to_left_focus_entered"]
+[connection signal="focus_entered" from="ItemsContainer/MarginContainer/VBoxContainer/ShopNavigationContainer/HBoxContainer/MovePageToRight" to="." method="_on_move_page_to_right_focus_entered"]
+[connection signal="focus_entered" from="TransactionContainer/CompleteTransaction" to="." method="_on_complete_transaction_focus_entered"]
+[connection signal="cancel_pressed" from="TransactionConfirm" to="." method="_on_transaction_confirm_cancel_pressed"]
+[connection signal="ok_pressed" from="TransactionConfirm" to="." method="_on_transaction_confirm_ok_pressed"]
+[connection signal="cancel_requested" from="CancelConfirmMessage" to="." method="_on_cancel_confirm_message_cancel_requested"]
+[connection signal="ok_requested" from="CancelConfirmMessage" to="." method="_on_cancel_confirm_message_ok_requested"]

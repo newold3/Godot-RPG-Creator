@@ -1,0 +1,73 @@
+[gd_scene load_steps=11 format=3 uid="uid://4h3msrllvlgp"]
+
+[ext_resource type="Script" uid="uid://dirbyr7q6he5t" path="res://Scenes/MainInventory/inventory_scene.gd" id="1_5ktdb"]
+[ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="1_5yytg"]
+[ext_resource type="Texture2D" uid="uid://dapq7sswgi4mm" path="res://Assets/Images/GUI/button3_normal.png" id="2_g60qj"]
+[ext_resource type="Texture2D" uid="uid://cx87bivxaj3ya" path="res://Assets/Images/GUI/button3_hover.png" id="2_t0hjd"]
+[ext_resource type="Texture2D" uid="uid://bb40le2eqcrwl" path="res://Assets/Images/GUI/button3_selected.png" id="4_n1b6w"]
+[ext_resource type="Texture2D" uid="uid://r8fdkfmejng2" path="res://Assets/Images/GUI/decoration2.png" id="5_sd2d0"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8cjdu"]
+texture = ExtResource("2_g60qj")
+texture_margin_left = 23.0
+texture_margin_top = 3.0
+texture_margin_right = 23.0
+texture_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hcjcm"]
+texture = ExtResource("2_t0hjd")
+texture_margin_left = 23.0
+texture_margin_top = 3.0
+texture_margin_right = 23.0
+texture_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_eglvh"]
+texture = ExtResource("4_n1b6w")
+texture_margin_left = 23.0
+texture_margin_top = 3.0
+texture_margin_right = 23.0
+texture_margin_bottom = 8.0
+
+[sub_resource type="Curve" id="Curve_ueuhp"]
+_data = [Vector2(0, 0.119121), 0.0, 0.0, 0, 0, Vector2(1, 1), 1.4, 0.0, 0, 0]
+point_count = 2
+
+[node name="InventoryScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5ktdb")
+background_normal = SubResource("StyleBoxTexture_8cjdu")
+background_hover = SubResource("StyleBoxTexture_hcjcm")
+background_selected = SubResource("StyleBoxTexture_eglvh")
+background_tube = ExtResource("5_sd2d0")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+follow_focus = true
+script = ExtResource("1_5yytg")
+scroll_duration = 6.0
+curve = SubResource("Curve_ueuhp")
+
+[node name="Canvas" type="Control" parent="ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="ContextMenu" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 1.0
+offset_bottom = 23.0
+focus_mode = 2

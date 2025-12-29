@@ -1,0 +1,67 @@
+[gd_scene load_steps=10 format=3 uid="uid://dxcyqc2dscbvw"]
+
+[ext_resource type="Script" uid="uid://cen40u84x3odv" path="res://addons/CustomControls/custom_simple_column_item_list.gd" id="1_8itpf"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_34kou"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xajxi"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7ult3"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d53r5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rwqh1"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_c3eyc"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t61ea"]
+
+[sub_resource type="GDScript" id="GDScript_737d7"]
+script/source = "@tool
+extends ItemList
+
+signal tooltip_changed()
+
+func get_class() -> String:
+	return \"SpecialItemList\"
+
+
+func get_custom_tooltip() -> String:
+	return get_parent().get_custom_tooltip()
+"
+
+[node name="CustomSimpleColumnItemList" type="VBoxContainer"]
+offset_right = 1148.0
+offset_bottom = 23.0
+theme_override_constants/separation = 0
+script = ExtResource("1_8itpf")
+names = PackedStringArray("")
+sizes = PackedInt32Array(0)
+
+[node name="TopMenu" type="Control" parent="."]
+unique_name_in_owner = true
+show_behind_parent = true
+custom_minimum_size = Vector2(0, 23)
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="ItemList" type="ItemList" parent="."]
+unique_name_in_owner = true
+show_behind_parent = true
+layout_mode = 2
+size_flags_vertical = 3
+focus_neighbor_top = NodePath(".")
+focus_neighbor_bottom = NodePath(".")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hovered_color = Color(0.878431, 0.392157, 0.0392157, 1)
+theme_override_constants/v_separation = 0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_34kou")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_xajxi")
+theme_override_styles/hovered = SubResource("StyleBoxEmpty_7ult3")
+theme_override_styles/selected = SubResource("StyleBoxEmpty_d53r5")
+theme_override_styles/selected_focus = SubResource("StyleBoxEmpty_rwqh1")
+theme_override_styles/cursor_unfocused = SubResource("StyleBoxEmpty_c3eyc")
+theme_override_styles/cursor = SubResource("StyleBoxEmpty_t61ea")
+script = SubResource("GDScript_737d7")
+
+[connection signal="item_rect_changed" from="ItemList" to="." method="_on_item_list_item_rect_changed"]

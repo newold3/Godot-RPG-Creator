@@ -1,0 +1,43 @@
+[gd_scene load_steps=9 format=3 uid="uid://dkqh00867nu1l"]
+
+[ext_resource type="Script" uid="uid://cu2m36bucror1" path="res://Scenes/GUI/option_slider.gd" id="1_0j68i"]
+[ext_resource type="Texture2D" uid="uid://dprvwjhyd6o6c" path="res://Assets/Images/GUI/check_box_selected.png" id="2_f4ouv"]
+[ext_resource type="Texture2D" uid="uid://cn114rixsnpho" path="res://Assets/Images/GUI/check_box_normal.png" id="3_n7qjt"]
+[ext_resource type="Texture2D" uid="uid://g1tilyu3qr6b" path="res://Assets/Images/GUI/check_box_normal_hover.png" id="4_mx1rv"]
+[ext_resource type="Texture2D" uid="uid://b8svlah471bj6" path="res://Assets/Images/GUI/check_box_selected_hover.png" id="5_ceqxq"]
+[ext_resource type="Texture2D" uid="uid://bb40le2eqcrwl" path="res://Assets/Images/GUI/button3_selected.png" id="6_w10ju"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_g27d2"]
+texture = ExtResource("6_w10ju")
+texture_margin_left = 14.0
+texture_margin_right = 14.0
+modulate_color = Color(0.316558, 0.581822, 0.446717, 1)
+
+[sub_resource type="Curve" id="Curve_8bumk"]
+_limits = [-80.0, 0.0, 0.0, 1.0]
+_data = [Vector2(0.0141509, -80), 0.0, 243.071, 0, 0, Vector2(0.497642, -30.3373), 100.492, 100.492, 0, 0, Vector2(0.997642, 0), 37.2193, 0.0, 0, 0]
+point_count = 3
+
+[node name="OptionCheckBox" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+mouse_default_cursor_shape = 2
+script = ExtResource("1_0j68i")
+slider_button_focused = ExtResource("2_f4ouv")
+slider_button_no_focused = ExtResource("3_n7qjt")
+slider_button_no_focused_hightlight = ExtResource("4_mx1rv")
+slider_button_hightlight = ExtResource("5_ceqxq")
+slider_panel = SubResource("StyleBoxTexture_g27d2")
+slider_button_size = 50
+slider_panel_height = 21
+vertical_extra_margin = 6
+mod_value_curve = SubResource("Curve_8bumk")
+
+[node name="SlideButton" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 2

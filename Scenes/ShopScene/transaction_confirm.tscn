@@ -1,0 +1,315 @@
+[gd_scene load_steps=15 format=3 uid="uid://b7ca1nfrm7wmc"]
+
+[ext_resource type="Script" uid="uid://bn0u0sswu4xah" path="res://Scenes/ShopScene/transaction_confirm.gd" id="1_nre3j"]
+[ext_resource type="Texture2D" uid="uid://6vyn0ludxt80" path="res://Assets/Images/GUI/frame2b.png" id="1_vb3qr"]
+[ext_resource type="Texture2D" uid="uid://dm36t7nyff4n" path="res://Assets/Images/SceneShop/transaction_panel_decoration1.png" id="3_2v5wv"]
+[ext_resource type="Texture2D" uid="uid://ccwmu1s8fphqs" path="res://Assets/Images/SceneShop/separator2.png" id="3_oaj6i"]
+[ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="4_2v5wv"]
+[ext_resource type="Script" uid="uid://crn63rjrar1gu" path="res://Scenes/ShopScene/transaction_list.gd" id="7_oaj6i"]
+
+[sub_resource type="Gradient" id="Gradient_nre3j"]
+offsets = PackedFloat32Array(0, 0.670623, 1)
+colors = PackedColorArray(0, 0, 0, 0.694118, 0, 0, 0, 0.694118, 0, 0, 0, 0.133333)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_oaj6i"]
+gradient = SubResource("Gradient_nre3j")
+width = 1152
+height = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nre3j"]
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0, 0, 0.347)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oaj6i"]
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0, 0, 0.347)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+
+[sub_resource type="Curve" id="Curve_wdmd8"]
+_data = [Vector2(0, 0), 0.0, 1.4, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s5ufm"]
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_11esi"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ii445"]
+
+[node name="TransactionConfirm" type="Control"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_nre3j")
+
+[node name="ColorRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_oaj6i")
+
+[node name="Back" type="NinePatchRect" parent="."]
+unique_name_in_owner = true
+z_index = 20
+custom_minimum_size = Vector2(720, 320)
+layout_mode = 1
+offset_left = -905.0
+offset_top = 81.0
+offset_right = -16.0
+offset_bottom = 531.0
+texture = ExtResource("1_vb3qr")
+patch_margin_left = 17
+patch_margin_top = 16
+patch_margin_right = 17
+patch_margin_bottom = 8
+
+[node name="MarginContainer" type="MarginContainer" parent="Back"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 22
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 22
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Back/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="Back/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+theme_override_constants/margin_left = -17
+theme_override_constants/margin_top = -2
+theme_override_constants/margin_right = -17
+theme_override_constants/margin_bottom = 0
+
+[node name="ColorRect" type="ColorRect" parent="Back/MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+color = Color(0, 0, 0, 0.231)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Back/MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="DecorationLeft" type="TextureRect" parent="Back/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+modulate = Color(1, 1, 1, 0.137255)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_2v5wv")
+
+[node name="TransactionListLabel" type="Label" parent="Back/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 11
+theme_override_font_sizes/font_size = 22
+text = "Transaction List"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DecorationRight" type="TextureRect" parent="Back/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+modulate = Color(1, 1, 1, 0.138)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+texture = ExtResource("3_2v5wv")
+flip_h = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Back/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Back/MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="BuyListLabel" type="Label" parent="Back/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 11
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_nre3j")
+text = "Buy List"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Separator" type="TextureRect" parent="Back/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+visible = false
+modulate = Color(14.451, 10.982, 4.046, 0.445)
+custom_minimum_size = Vector2(6, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("3_oaj6i")
+stretch_mode = 1
+
+[node name="SellListLabel" type="Label" parent="Back/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 11
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_oaj6i")
+text = "Sell List"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CharacterEditorPaletteButton" type="HBoxContainer" parent="Back/MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="BuyList" type="ItemList" parent="Back/MarginContainer/VBoxContainer/VBoxContainer/CharacterEditorPaletteButton" node_paths=PackedStringArray("scroll_container")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(405, 0)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 5
+focus_mode = 0
+select_mode = 1
+script = ExtResource("7_oaj6i")
+scroll_container = NodePath("../../SmoothScrollContainer")
+
+[node name="SellList" type="ItemList" parent="Back/MarginContainer/VBoxContainer/VBoxContainer/CharacterEditorPaletteButton" node_paths=PackedStringArray("scroll_container")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(405, 0)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 5
+focus_mode = 0
+script = ExtResource("7_oaj6i")
+scroll_container = NodePath("../../SmoothScrollContainer")
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="Back/MarginContainer/VBoxContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("4_2v5wv")
+curve = SubResource("Curve_wdmd8")
+metadata/_custom_type_script = "uid://cs6g8remlafby"
+
+[node name="Control" type="Control" parent="Back/MarginContainer/VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Back/MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Back/MarginContainer/VBoxContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = -17
+theme_override_constants/margin_right = -16
+theme_override_constants/margin_bottom = -12
+
+[node name="ColorRect" type="ColorRect" parent="Back/MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/MarginContainer"]
+layout_mode = 2
+color = Color(0, 0, 0, 0.231)
+
+[node name="HSeparator4" type="HSeparator" parent="Back/MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/MarginContainer"]
+modulate = Color(0.509804, 0.32549, 0.0823529, 1)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Back/MarginContainer/VBoxContainer/VBoxContainer/MarginContainer"]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+alignment = 2
+
+[node name="ConfirmQuestion" type="RichTextLabel" parent="Back/MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+bbcode_enabled = true
+text = "Total [color=red]0[/color]. Confirm Transaction?"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="CompleteTransaction" type="Button" parent="Back/MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 1
+mouse_default_cursor_shape = 2
+theme_override_colors/font_hover_pressed_color = Color(0.945098, 0.564706, 0.211765, 1)
+theme_override_colors/font_hover_color = Color(0.945612, 0.564587, 0.210209, 1)
+theme_override_colors/font_focus_color = Color(0.917647, 0.596078, 0.298039, 1)
+theme_override_styles/focus = SubResource("StyleBoxFlat_s5ufm")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_11esi")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_ii445")
+text = "COMPLETE TRANSACTION"
+
+[node name="CancelTransaction" type="Button" parent="Back/MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 1
+mouse_default_cursor_shape = 2
+theme_override_colors/font_hover_pressed_color = Color(0.945098, 0.564706, 0.211765, 1)
+theme_override_colors/font_hover_color = Color(0.945612, 0.564587, 0.210209, 1)
+theme_override_colors/font_focus_color = Color(0.945098, 0.564706, 0.211765, 1)
+theme_override_styles/focus = SubResource("StyleBoxFlat_s5ufm")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_11esi")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_ii445")
+text = "CANCEL"
+
+[node name="MarginContainer" type="MarginContainer" parent="Back/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 67
+theme_override_constants/margin_bottom = 43
+metadata/_edit_lock_ = true
+
+[node name="Separator" type="VSeparator" parent="Back/MarginContainer/MarginContainer"]
+modulate = Color(0.509804, 0.32549, 0.0823529, 1)
+custom_minimum_size = Vector2(6, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[connection signal="focus_entered" from="Back/MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer2/CompleteTransaction" to="." method="_on_complete_transaction_focus_entered"]
+[connection signal="pressed" from="Back/MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer2/CompleteTransaction" to="." method="_on_complete_transaction_pressed" binds= [true]]
+[connection signal="focus_entered" from="Back/MarginContainer/VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer2/CancelTransaction" to="." method="_on_cancel_transaction_focus_entered"]

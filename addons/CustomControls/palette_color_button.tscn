@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://yiyqq8htse4j"]
+
+[sub_resource type="Gradient" id="Gradient_dh7ci"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.964844, 0.0414581, 0.0414581, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_86ibb"]
+gradient = SubResource("Gradient_dh7ci")
+width = 1
+
+[node name="PaletteColorButton" type="Button"]
+custom_minimum_size = Vector2(32, 32)
+focus_mode = 0
+mouse_default_cursor_shape = 2
+icon = SubResource("GradientTexture1D_86ibb")
+expand_icon = true

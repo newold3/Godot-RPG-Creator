@@ -1,0 +1,191 @@
+[gd_scene load_steps=3 format=3 uid="uid://job5gqt1xbrh"]
+
+[ext_resource type="Script" uid="uid://cultgj7kkao7w" path="res://addons/tile_bit_tools/controls/tbt_plugin_control/popups/save_template_dialog.gd" id="1_7pdu0"]
+[ext_resource type="PackedScene" uid="uid://bscknm10ko78t" path="res://addons/tile_bit_tools/controls/shared/template_info_list.tscn" id="2_uh1kq"]
+
+[node name="SaveTemplateDialog" type="Window" groups=["TBTDialogWindow"]]
+initial_position = 2
+title = "Save Terrain Template"
+size = Vector2i(600, 513)
+wrap_controls = true
+transient = true
+exclusive = true
+transparent = true
+max_size = Vector2i(1920, 1009)
+content_scale_mode = 2
+content_scale_aspect = 4
+script = ExtResource("1_7pdu0")
+
+[node name="BackgroundPanel" type="PanelContainer" parent="." groups=["TBTDialogPanelBackground"]]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="BackgroundPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="BackgroundPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="ForegroundPanel" type="PanelContainer" parent="BackgroundPanel/MarginContainer/VBoxContainer" groups=["TBTDialogPanelForeground"]]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="BackgroundPanel/MarginContainer/VBoxContainer/ForegroundPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="BackgroundPanel/MarginContainer/VBoxContainer/ForegroundPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TopPanel" type="PanelContainer" parent="BackgroundPanel/MarginContainer/VBoxContainer/ForegroundPanel/MarginContainer/VBoxContainer" groups=["TBTDialogPanelSection"]]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="BackgroundPanel/MarginContainer/VBoxContainer/ForegroundPanel/MarginContainer/VBoxContainer/TopPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="BackgroundPanel/MarginContainer/VBoxContainer/ForegroundPanel/MarginContainer/VBoxContainer/TopPanel/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TemplateInfoList" parent="BackgroundPanel/MarginContainer/VBoxContainer/ForegroundPanel/MarginContainer/VBoxContainer/TopPanel/MarginContainer/HBoxContainer4" instance=ExtResource("2_uh1kq")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="PanelContainer" type="PanelContainer" parent="BackgroundPanel/MarginContainer/VBoxContainer/ForegroundPanel/MarginContainer/VBoxContainer/TopPanel/MarginContainer/HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="PreviewRect" type="TextureRect" parent="BackgroundPanel/MarginContainer/VBoxContainer/ForegroundPanel/MarginContainer/VBoxContainer/TopPanel/MarginContainer/HBoxContainer4/PanelContainer"]
+unique_name_in_owner = true
+texture_filter = 1
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+stretch_mode = 5
+
+[node name="BottomPanel" type="PanelContainer" parent="BackgroundPanel/MarginContainer/VBoxContainer/ForegroundPanel/MarginContainer/VBoxContainer" groups=["TBTDialogPanelSection"]]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="BackgroundPanel/MarginContainer/VBoxContainer/ForegroundPanel/MarginContainer/VBoxContainer/BottomPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="BackgroundPanel/MarginContainer/VBoxContainer/ForegroundPanel/MarginContainer/VBoxContainer/BottomPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BackgroundPanel/MarginContainer/VBoxContainer/ForegroundPanel/MarginContainer/VBoxContainer/BottomPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="BackgroundPanel/MarginContainer/VBoxContainer/ForegroundPanel/MarginContainer/VBoxContainer/BottomPanel/MarginContainer/VBoxContainer/HBoxContainer" groups=["TBTPropertyLabel"]]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Name"
+
+[node name="NameEdit" type="LineEdit" parent="BackgroundPanel/MarginContainer/VBoxContainer/ForegroundPanel/MarginContainer/VBoxContainer/BottomPanel/MarginContainer/VBoxContainer/HBoxContainer" groups=["TBTEditFont", "TBTLineEdit"]]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+text = "User Template"
+caret_blink = true
+caret_blink_interval = 0.5
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="BackgroundPanel/MarginContainer/VBoxContainer/ForegroundPanel/MarginContainer/VBoxContainer/BottomPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="BackgroundPanel/MarginContainer/VBoxContainer/ForegroundPanel/MarginContainer/VBoxContainer/BottomPanel/MarginContainer/VBoxContainer/HBoxContainer2" groups=["TBTPropertyLabel"]]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+text = "Description"
+
+[node name="DescriptionEdit" type="TextEdit" parent="BackgroundPanel/MarginContainer/VBoxContainer/ForegroundPanel/MarginContainer/VBoxContainer/BottomPanel/MarginContainer/VBoxContainer/HBoxContainer2" groups=["TBTEditFont", "TBTTextEdit"]]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+wrap_mode = 1
+
+[node name="HBoxContainer8" type="HBoxContainer" parent="BackgroundPanel/MarginContainer/VBoxContainer/ForegroundPanel/MarginContainer/VBoxContainer/BottomPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="BackgroundPanel/MarginContainer/VBoxContainer/ForegroundPanel/MarginContainer/VBoxContainer/BottomPanel/MarginContainer/VBoxContainer/HBoxContainer8" groups=["TBTPropertyLabel"]]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Custom tags is a comma-separated list"
+mouse_filter = 0
+text = "Custom Tags"
+
+[node name="TagsEdit" type="LineEdit" parent="BackgroundPanel/MarginContainer/VBoxContainer/ForegroundPanel/MarginContainer/VBoxContainer/BottomPanel/MarginContainer/VBoxContainer/HBoxContainer8" groups=["TBTEditFont", "TBTTextEdit"]]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="BackgroundPanel/MarginContainer/VBoxContainer/ForegroundPanel/MarginContainer/VBoxContainer/BottomPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="BackgroundPanel/MarginContainer/VBoxContainer/ForegroundPanel/MarginContainer/VBoxContainer/BottomPanel/MarginContainer/VBoxContainer/HBoxContainer6" groups=["TBTPropertyLabel"]]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Save Folder"
+
+[node name="FolderOptionButton" type="OptionButton" parent="BackgroundPanel/MarginContainer/VBoxContainer/ForegroundPanel/MarginContainer/VBoxContainer/BottomPanel/MarginContainer/VBoxContainer/HBoxContainer6" groups=["TBTOptionButton", "TBTPropertyLabel"]]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+shortcut_in_tooltip = false
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="BackgroundPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="BackgroundPanel/MarginContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 48
+
+[node name="SaveButton" type="Button" parent="BackgroundPanel/MarginContainer/VBoxContainer/HBoxContainer3/MarginContainer" groups=["TBTTextButton"]]
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Save"
+
+[node name="MarginContainer2" type="MarginContainer" parent="BackgroundPanel/MarginContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_right = 48
+
+[node name="CancelButton" type="Button" parent="BackgroundPanel/MarginContainer/VBoxContainer/HBoxContainer3/MarginContainer2" groups=["TBTTextButton"]]
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Cancel"
+
+[connection signal="pressed" from="BackgroundPanel/MarginContainer/VBoxContainer/HBoxContainer3/MarginContainer/SaveButton" to="." method="_on_save_button_pressed"]
+[connection signal="pressed" from="BackgroundPanel/MarginContainer/VBoxContainer/HBoxContainer3/MarginContainer2/CancelButton" to="." method="_on_cancel_button_pressed"]

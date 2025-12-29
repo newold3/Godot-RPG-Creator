@@ -1,0 +1,66 @@
+[gd_scene load_steps=4 format=3 uid="uid://cytaey5habpud"]
+
+[ext_resource type="Script" uid="uid://d3hsyfia6f1pf" path="res://Scenes/GUI/SteamPunkTheme/MainMenu/scene_contents.gd" id="1_dqosw"]
+[ext_resource type="PackedScene" uid="uid://be6h27ee3aauh" path="res://Scenes/GUI/SteamPunkTheme/MainMenu/left_buttons.tscn" id="1_tksxq"]
+[ext_resource type="PackedScene" uid="uid://c8j4gm2va2bbr" path="res://Scenes/GUI/SteamPunkTheme/MainMenu/party_menu.tscn" id="2_dqosw"]
+
+[node name="MainMenuScene" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 36
+theme_override_constants/margin_top = 36
+script = ExtResource("1_dqosw")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MainMenuItems" parent="HBoxContainer" instance=ExtResource("1_tksxq")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(356, 0)
+layout_mode = 2
+mouse_filter = 0
+theme_override_constants/margin_top = 25
+initial_selection_delay = 0.26
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
+custom_minimum_size = Vector2(560, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_constants/margin_top = -10
+theme_override_constants/margin_right = 5
+
+[node name="PartyMenu" parent="HBoxContainer/MarginContainer" instance=ExtResource("2_dqosw")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MainContainer" parent="HBoxContainer/MarginContainer/PartyMenu" index="0"]
+offset_bottom = -34.0
+pivot_offset = Vector2(853, 191)
+vertical_scroll_mode = 4
+custom_vscroll_size = Vector2(12, 421.585)
+custom_vscroll_offset = Vector2(548, 27.18)
+
+[node name="VerticalExtraSizeTop" type="Control" parent="HBoxContainer/MarginContainer/PartyMenu/MainContainer/VBoxContainer" index="0"]
+custom_minimum_size = Vector2(0, 28)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MarginContainer" parent="HBoxContainer/MarginContainer/PartyMenu/MainContainer/VBoxContainer" index="1"]
+theme_override_constants/margin_right = 20
+
+[connection signal="button_hovered" from="HBoxContainer/MainMenuItems" to="." method="_on_main_menu_items_button_hovered"]
+[connection signal="clicked" from="HBoxContainer/MainMenuItems" to="." method="_select_action_from_main_buttons"]
+[connection signal="finish" from="HBoxContainer/MainMenuItems" to="." method="_on_main_menu_items_finish"]
+[connection signal="cancel" from="HBoxContainer/MarginContainer/PartyMenu" to="." method="_cancel_party_menu"]
+[connection signal="clicked" from="HBoxContainer/MarginContainer/PartyMenu" to="." method="_on_party_menu_clicked"]
+
+[editable path="HBoxContainer/MarginContainer/PartyMenu"]

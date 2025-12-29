@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bc4sgkdq7tsdp"]
+
+[ext_resource type="Texture2D" uid="uid://baukys18epmo5" path="res://Assets/Images/GUI/hand_right_cursor.png" id="1_lwsjp"]
+[ext_resource type="Script" uid="uid://cy48435a55tqp" path="res://Scenes/GUI/hand_cursor.gd" id="1_oi02j"]
+
+[node name="HandCursor" type="CanvasLayer"]
+layer = 128
+script = ExtResource("1_oi02j")
+
+[node name="Cursor" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+z_index = 4096
+z_as_relative = false
+texture = ExtResource("1_lwsjp")

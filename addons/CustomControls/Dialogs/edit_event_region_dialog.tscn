@@ -1,0 +1,519 @@
+[gd_scene load_steps=26 format=3 uid="uid://c4yx10j8ff5ar"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_3hk1m"]
+[ext_resource type="Script" uid="uid://c7atfaxs8j4cp" path="res://addons/CustomControls/Dialogs/edit_event_region_dialog.gd" id="2_rrv1p"]
+[ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="3_rrv1p"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="4_hiljt"]
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="5_hiljt"]
+[ext_resource type="PackedScene" uid="uid://bbd8rv6w7vjb3" path="res://addons/CustomControls/custom_color_button.tscn" id="5_uyq3c"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="7_brmjq"]
+[ext_resource type="PackedScene" uid="uid://m1iixxkyrur5" path="res://addons/CustomControls/custom_simple_item_list.tscn" id="7_hiljt"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="7_rrv1p"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="9_2xlkw"]
+
+[sub_resource type="Gradient" id="Gradient_gxhcl"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_hnlyc"]
+gradient = SubResource("Gradient_gxhcl")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q7fc0"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o11jp"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vgh04"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.94902, 0.627451, 0.0117647, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cjqjr"]
+resource_local_to_scene = true
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 21.0
+content_margin_bottom = 4.0
+bg_color = Color(0.184314, 0.196078, 0.203922, 1)
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_hiljt"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hiljt"]
+atlas = ExtResource("7_rrv1p")
+region = Rect2(192, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uyq3c"]
+atlas = ExtResource("7_rrv1p")
+region = Rect2(216, 0, 24, 24)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_brmjq"]
+resource_local_to_scene = true
+content_margin_left = 3.0
+content_margin_right = 3.0
+bg_color = Color(1, 1, 1, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t1kh6"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="Gradient" id="Gradient_rwm38"]
+offsets = PackedFloat32Array(0, 0.369535, 1)
+colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_rrv1p"]
+gradient = SubResource("Gradient_rwm38")
+fill_from = Vector2(0.547009, 1)
+fill_to = Vector2(0.559829, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vmu8d"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_rrv1p")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_k233s"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_rrv1p")
+
+[node name="EditEventRegionDialog" type="Window"]
+oversampling_override = 1.0
+title = "Edit Event Region"
+position = Vector2i(0, 36)
+size = Vector2i(680, 811)
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_3hk1m")
+script = ExtResource("2_rrv1p")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_hnlyc")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 18
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Name:"
+
+[node name="Name" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_rrv1p")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Name to identify this region"
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer3"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer3/HBoxContainer6"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Activation:"
+
+[node name="ActivationMode" parent="MarginContainer/VBoxContainer/VBoxContainer3/HBoxContainer6" instance=ExtResource("9_2xlkw")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "You can choose whether you want this area to always be active on the map or to be activated only when a specific switch is turned on."
+selected = 0
+item_count = 2
+popup/item_0/text = "Always Active"
+popup/item_0/id = 0
+popup/item_1/text = "Activatable By Switch"
+popup/item_1/id = 1
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer3"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer3/HBoxContainer7"]
+layout_mode = 2
+text = "Switch ID:"
+
+[node name="SwitchID" parent="MarginContainer/VBoxContainer/VBoxContainer3/HBoxContainer7" instance=ExtResource("5_hiljt")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "[title]Switch[/title]
+Select the switch that must be turned on for this area to be active."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+disabled = true
+text = "Select Swicth"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Position:"
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "X:"
+
+[node name="PositionX" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("4_hiljt")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Indicates the X position of the tile where this region is located."
+allow_greater = true
+allow_lesser = true
+
+[node name="Separator" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(16, 0)
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Y:"
+
+[node name="PositionY" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("4_hiljt")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Indicates the Y position of the tile where this region is located."
+allow_greater = true
+allow_lesser = true
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Size:"
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "X:"
+
+[node name="SizeX" parent="MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("4_hiljt")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Indicates the number of horizontal tiles measured by this region."
+min_value = 1.0
+value = 1.0
+allow_greater = true
+
+[node name="Separator" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(16, 0)
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "Y:"
+
+[node name="SizeY" parent="MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("4_hiljt")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Indicates the number of vertical tiles measured by this region."
+min_value = 1.0
+value = 1.0
+allow_greater = true
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Color:"
+
+[node name="ColorButton" parent="MarginContainer/VBoxContainer/HBoxContainer4" instance=ExtResource("5_uyq3c")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Region Color[/title]
+Color of the region used for drawing on the map in the editor"
+theme_override_styles/normal = SubResource("StyleBoxFlat_q7fc0")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_o11jp")
+theme_override_styles/hover = SubResource("StyleBoxFlat_vgh04")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_cjqjr")
+
+[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Damage/Heal amount: "
+
+[node name="DamageAmount" parent="MarginContainer/VBoxContainer/VBoxContainer" instance=ExtResource("4_hiljt")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Damage / Heal Amount[/title]
+Enter a value other than 0 to damage the player (a value greater than 0) or heal the player (a value less than 0).
+[Note]: The entire party will receive the damage or healing. If \"Death by walking damage\" is enabled in the system settings in the database, the character can die if all party members' HP is reduced to 0."
+allow_greater = true
+allow_lesser = true
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Ticks: "
+
+[node name="DamageFrequency" parent="MarginContainer/VBoxContainer/VBoxContainer" instance=ExtResource("4_hiljt")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Damages/Heals every x seconds"
+min_value = 0.01
+step = 0.01
+value = 0.01
+rounded = false
+allow_greater = true
+
+[node name="VBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="CanEntry" type="CheckBox" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "[title]Block Passage[/title]
+Activating this option will make this area behave like a solid block, preventing traversal.
+
+[Note]: If \"Block entry?\" is enabled, this area will not trigger events when entering or leaving it."
+mouse_default_cursor_shape = 2
+text = "Block entry?"
+
+[node name="HSeparator3" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="UseCommonEvent" type="CheckBox" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Use \"common events\" as triggers."
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_hiljt")
+text = "Use Common Events"
+
+[node name="CommonEventContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CommonEventContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/CommonEventContainer/HBoxContainer6"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Entry common event:"
+
+[node name="EntryCommonEvent" parent="MarginContainer/VBoxContainer/CommonEventContainer/HBoxContainer6" instance=ExtResource("9_2xlkw")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "[title]Entry Common Event[/title]
+Select the common event that will play when a trigger enters this area."
+
+[node name="HBoxContainer8" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CommonEventContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/CommonEventContainer/HBoxContainer8"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Exit common event:"
+
+[node name="ExitCommonEvent" parent="MarginContainer/VBoxContainer/CommonEventContainer/HBoxContainer8" instance=ExtResource("9_2xlkw")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "[title]Exit Common Event[/title]
+Select the common event that will play when a trigger leaves this area."
+
+[node name="UseCallerEvent" type="CheckBox" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Use \"caller events\" as triggers."
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_hiljt")
+text = "Use Caller Events"
+
+[node name="CallerEventContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HBoxContainer9" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CallerEventContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/CallerEventContainer/HBoxContainer9"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Entry caller event:"
+
+[node name="EntryCallerEvent" parent="MarginContainer/VBoxContainer/CallerEventContainer/HBoxContainer9" instance=ExtResource("9_2xlkw")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "[title]Entry Caller Event[/title]
+Select the event that will be initialized when entering this area.
+
+[Note]: If the current page of the selected event does not have its trigger set to \"Caller\", the event initialization will be ignored."
+
+[node name="HBoxContainer10" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CallerEventContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/CallerEventContainer/HBoxContainer10"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Exit caller event:"
+
+[node name="ExitCallerEvent" parent="MarginContainer/VBoxContainer/CallerEventContainer/HBoxContainer10" instance=ExtResource("9_2xlkw")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "[title]Exit Caller Event[/title]
+Select the event that will be initialized when exiting this area.
+
+[Note]: If the current page of the selected event does not have its trigger set to \"Caller\", the event initialization will be ignored."
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer7"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Tiggers:"
+vertical_alignment = 1
+
+[node name="Info" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer7"]
+layout_mode = 2
+size_flags_horizontal = 10
+tooltip_text = "[title]Triggers[/title]
+Indicates who can trigger events when entering or leaving this area.
+
+To select multiple triggers, you can hold down \"Control\" or \"Shift\" and \"left click\" to select more than one trigger."
+mouse_default_cursor_shape = 16
+texture_normal = SubResource("AtlasTexture_hiljt")
+texture_hover = SubResource("AtlasTexture_uyq3c")
+
+[node name="TriggerList" parent="MarginContainer/VBoxContainer" instance=ExtResource("7_hiljt")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/v_separation = -1
+theme_override_styles/panel = SubResource("StyleBoxFlat_brmjq")
+theme_override_styles/focus = SubResource("StyleBoxFlat_brmjq")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_t1kh6")
+theme_override_styles/selected = SubResource("StyleBoxTexture_vmu8d")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_k233s")
+select_mode = 1
+odd_line_color = Color(0.172549, 0.184314, 0.192157, 1)
+event_line_color = Color(0.145098, 0.156863, 0.164706, 1)
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer5" instance=ExtResource("7_brmjq")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer5" instance=ExtResource("7_brmjq")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "CANCEL"
+
+[node name="ApplyButton" parent="MarginContainer/VBoxContainer/HBoxContainer5" instance=ExtResource("7_brmjq")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.65)
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+disabled = true
+text = "APPLY"
+
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/HBoxContainer/Name" to="." method="_on_name_text_changed"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/VBoxContainer3/HBoxContainer6/ActivationMode" to="." method="_on_activation_mode_item_selected"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer3/HBoxContainer7/SwitchID" to="." method="_on_switch_id_pressed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/PositionX" to="." method="_on_position_x_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/PositionY" to="." method="_on_position_y_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer3/SizeX" to="." method="_on_size_x_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer3/SizeY" to="." method="_on_size_y_value_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer4/ColorButton" to="." method="_on_color_button_pressed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/VBoxContainer/DamageAmount" to="." method="_on_damage_amount_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/VBoxContainer/DamageFrequency" to="." method="_on_damage_frequency_value_changed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/CanEntry" to="." method="_on_can_entry_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/UseCommonEvent" to="." method="_on_use_common_event_toggled"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/CommonEventContainer/HBoxContainer6/EntryCommonEvent" to="." method="_on_entry_common_event_item_selected"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/CommonEventContainer/HBoxContainer8/ExitCommonEvent" to="." method="_on_exit_common_event_item_selected"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/UseCallerEvent" to="." method="_on_use_caller_event_toggled"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/CallerEventContainer/HBoxContainer9/EntryCallerEvent" to="." method="_on_entry_caller_event_item_selected"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/CallerEventContainer/HBoxContainer10/ExitCallerEvent" to="." method="_on_exit_caller_event_item_selected"]
+[connection signal="multi_selected" from="MarginContainer/VBoxContainer/TriggerList" to="." method="_on_trigger_list_multi_selected"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer5/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer5/CancelButton" to="." method="_on_cancel_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer5/ApplyButton" to="." method="_on_apply_button_pressed"]

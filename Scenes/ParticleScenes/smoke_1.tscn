@@ -1,0 +1,64 @@
+[gd_scene load_steps=11 format=3 uid="uid://cuj4amehob67d"]
+
+[ext_resource type="Texture2D" uid="uid://btc0ajprot5r" path="res://Assets/EffekEffects/MAGICALxSPIRAL/Texture/smoke_01.png" id="1_0wo5b"]
+[ext_resource type="Script" uid="uid://b1m7vwkaelnsa" path="res://Scenes/ParticleScenes/default_particles_script.gd" id="2_il66u"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_0cgt8"]
+blend_mode = 1
+particles_animation = true
+particles_anim_h_frames = 4
+particles_anim_v_frames = 4
+particles_anim_loop = false
+
+[sub_resource type="Curve" id="Curve_xqpur"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.210683, 1), 0.0, 0.0, 0, 0, Vector2(0.810089, 0.827503), -1.00227, -1.00227, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_2qtqf"]
+curve = SubResource("Curve_xqpur")
+
+[sub_resource type="Gradient" id="Gradient_83nli"]
+offsets = PackedFloat32Array(0, 0.19305, 0.626761, 1)
+colors = PackedColorArray(1, 1, 1, 0, 0.585938, 0.585938, 0.585938, 1, 0.383, 0.383, 0.383, 0.471, 0.0117188, 0.0117188, 0.0117188, 0.444015)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_da2c3"]
+gradient = SubResource("Gradient_83nli")
+
+[sub_resource type="Curve" id="Curve_rlvxv"]
+_data = [Vector2(0.00816327, 0.23854), 0.0, 0.0, 0, 0, Vector2(0.275964, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_72ubp"]
+curve = SubResource("Curve_rlvxv")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_0y6vi"]
+resource_local_to_scene = true
+particle_flag_align_y = true
+particle_flag_disable_z = true
+angle_min = 1.07288e-05
+angle_max = 61.7
+direction = Vector3(0, -1, 0)
+spread = 40.0
+initial_velocity_min = 34.12
+initial_velocity_max = 84.47
+gravity = Vector3(0, 0, 0)
+damping_max = 78.165
+scale_max = 1.2
+scale_curve = SubResource("CurveTexture_72ubp")
+color_ramp = SubResource("GradientTexture1D_da2c3")
+alpha_curve = SubResource("CurveTexture_2qtqf")
+
+[node name="Smoke1" type="GPUParticles2D"]
+z_index = 1
+z_as_relative = false
+material = SubResource("CanvasItemMaterial_0cgt8")
+emitting = false
+amount = 45
+texture = ExtResource("1_0wo5b")
+lifetime = 3.0
+one_shot = true
+explosiveness = 1.0
+randomness = 1.0
+visibility_rect = Rect2(-10000, -10000, 20000, 20000)
+process_material = SubResource("ParticleProcessMaterial_0y6vi")
+script = ExtResource("2_il66u")

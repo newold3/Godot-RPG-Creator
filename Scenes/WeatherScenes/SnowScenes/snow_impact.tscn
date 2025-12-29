@@ -1,0 +1,54 @@
+[gd_scene load_steps=8 format=3 uid="uid://bbhf2da6o2mbr"]
+
+[ext_resource type="Texture2D" uid="uid://c6o85mk21ixvk" path="res://Assets/EffekEffects/tktk02/Parts/SnowCrystals_S.png" id="1_sv3vj"]
+[ext_resource type="Script" uid="uid://qxfe2uxflfrr" path="res://Scenes/WeatherScenes/SnowScenes/snow_impact.gd" id="2_lewp6"]
+
+[sub_resource type="Curve" id="Curve_rmo36"]
+_data = [Vector2(0.0364583, 0), 0.0, 0.0, 0, 0, Vector2(0.291667, 0.435294), 0.0, 0.0, 0, 0, Vector2(0.880208, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_mmwgr"]
+curve = SubResource("Curve_rmo36")
+
+[sub_resource type="Curve" id="Curve_eynnp"]
+_data = [Vector2(0, 0.117647), 0.0, 0.0, 0, 0, Vector2(0.28125, 0.211765), 0.0, 0.0, 0, 0, Vector2(0.520833, 0.0705882), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_ftnln"]
+curve = SubResource("Curve_eynnp")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_6tx73"]
+particle_flag_disable_z = true
+angle_min = 1.07288e-05
+angle_max = 181.9
+direction = Vector3(0, -1, 0)
+spread = 180.0
+initial_velocity_min = 5.0
+initial_velocity_max = 30.0
+angular_velocity_min = -1.60933e-05
+angular_velocity_max = 469.9
+gravity = Vector3(0, 20, 0)
+linear_accel_min = -2.23517e-06
+linear_accel_max = 50.52
+radial_accel_min = -2.11
+radial_accel_max = -2.11
+tangential_accel_min = -2.23517e-06
+tangential_accel_max = 26.5
+damping_min = 3.158
+damping_max = 56.843
+scale_curve = SubResource("CurveTexture_ftnln")
+alpha_curve = SubResource("CurveTexture_mmwgr")
+
+[node name="SnowImpact" type="GPUParticles2D"]
+z_index = 50
+z_as_relative = false
+emitting = false
+amount = 32
+process_material = SubResource("ParticleProcessMaterial_6tx73")
+texture = ExtResource("1_sv3vj")
+lifetime = 3.2
+one_shot = true
+explosiveness = 1.0
+randomness = 1.0
+local_coords = true
+script = ExtResource("2_lewp6")

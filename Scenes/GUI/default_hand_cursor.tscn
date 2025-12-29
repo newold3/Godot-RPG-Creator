@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://bcnklsvxiex24"]
+
+[ext_resource type="Script" uid="uid://b1vlfkgpe0rcj" path="res://Scenes/GUI/default_hand_cursor.gd" id="1_ohafc"]
+[ext_resource type="Texture2D" uid="uid://baukys18epmo5" path="res://Assets/Images/GUI/hand_right_cursor.png" id="2_7qjag"]
+
+[node name="DefaultHandCursor" type="CanvasLayer"]
+layer = 128
+script = ExtResource("1_ohafc")
+
+[node name="Cursor" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+self_modulate = Color(1, 1, 1, 0)
+z_index = 4096
+z_as_relative = false
+position = Vector2(-196, -215)
+texture = ExtResource("2_7qjag")

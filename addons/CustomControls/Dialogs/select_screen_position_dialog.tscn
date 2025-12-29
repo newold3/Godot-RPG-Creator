@@ -1,0 +1,163 @@
+[gd_scene load_steps=7 format=3 uid="uid://choc7lkrd26ie"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_3ek18"]
+[ext_resource type="Script" uid="uid://b55h1b0d8bqy0" path="res://addons/CustomControls/Dialogs/select_screen_position_dialog.gd" id="2_5k4bs"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="2_m7g7q"]
+[ext_resource type="Texture2D" uid="uid://pmjiwc5hb6gg" path="res://Assets/Images/Backgrounds/BattleBackgrounds/test.png" id="3_m7g7q"]
+
+[sub_resource type="Gradient" id="Gradient_vvvrv"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_qpcmd"]
+gradient = SubResource("Gradient_vvvrv")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[node name="SelectScreenPositionDialog" type="Window"]
+oversampling_override = 1.0
+title = "Select Screen Position"
+position = Vector2i(0, 36)
+size = Vector2i(1176, 750)
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_3ek18")
+script = ExtResource("2_5k4bs")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_qpcmd")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="UseGrid" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "Use Grid"
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Grid Size:"
+
+[node name="GridSize" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("2_m7g7q")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+tooltip_text = "Applies a percentage of the damage or healing from this skill instantly when this command is executed. In a sequence, the total combined value applied to the target will not exceed 100%
+
+[Note]: The target's defenses will be used to compute the damage or healing."
+mouse_filter = 2
+min_value = 1.0
+max_value = 500.0
+value = 50.0
+editable = false
+disabled = true
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Pixels"
+
+[node name="VSeparator2" type="VSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Time:"
+
+[node name="Time" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("2_m7g7q")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+tooltip_text = "Applies a percentage of the damage or healing from this skill instantly when this command is executed. In a sequence, the total combined value applied to the target will not exceed 100%
+
+[Note]: The target's defenses will be used to compute the damage or healing."
+step = 0.01
+rounded = false
+allow_greater = true
+
+[node name="Label4" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "seconds"
+
+[node name="PositionLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_colors/font_outline_color = Color(0.506875, 0.0614538, 0.291123, 0.12549)
+theme_override_constants/outline_size = 22
+text = "Position:"
+
+[node name="CanvasContainer" type="Control" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(1152, 648)
+layout_mode = 2
+
+[node name="CanvasBackground" type="TextureRect" parent="MarginContainer/VBoxContainer/CanvasContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_m7g7q")
+expand_mode = 1
+
+[node name="Canvas1" type="Control" parent="MarginContainer/VBoxContainer/CanvasContainer"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+
+[node name="Canvas2" type="Control" parent="MarginContainer/VBoxContainer/CanvasContainer"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Click on canvas to select the position under the cursor"
+horizontal_alignment = 1
+
+[connection signal="toggled" from="MarginContainer/VBoxContainer/HBoxContainer/UseGrid" to="." method="_on_use_grid_toggled"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer/GridSize" to="." method="_on_grid_size_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer/Time" to="." method="_on_time_value_changed"]

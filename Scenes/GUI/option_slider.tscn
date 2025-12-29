@@ -1,0 +1,96 @@
+[gd_scene load_steps=14 format=3 uid="uid://bg6k5nxoyrikr"]
+
+[ext_resource type="Script" uid="uid://cu2m36bucror1" path="res://Scenes/GUI/option_slider.gd" id="1_kydf6"]
+[ext_resource type="Texture2D" uid="uid://duu13dsov6vp5" path="res://Assets/Images/GUI/main_gui.png" id="2_24747"]
+[ext_resource type="Script" uid="uid://capl3nbl7whnu" path="res://Scenes/GUI/custom_draw_button.gd" id="3_7aeo1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7aeo1"]
+atlas = ExtResource("2_24747")
+region = Rect2(662, 120, 38, 38)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wlkom"]
+atlas = ExtResource("2_24747")
+region = Rect2(757, 49, 38, 38)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wju0m"]
+atlas = ExtResource("2_24747")
+region = Rect2(713, 174, 44, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nnb14"]
+atlas = ExtResource("2_24747")
+region = Rect2(637, 174, 44, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p3fi2"]
+atlas = ExtResource("2_24747")
+region = Rect2(444, 580, 276, 35)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_y4ngd"]
+texture = SubResource("AtlasTexture_p3fi2")
+texture_margin_left = 12.0
+texture_margin_top = 2.0
+texture_margin_right = 12.0
+texture_margin_bottom = 2.0
+
+[sub_resource type="Curve" id="Curve_8bumk"]
+_limits = [-80.0, 0.0, 0.0, 1.0]
+_data = [Vector2(0.0141509, -80), 0.0, 243.071, 0, 0, Vector2(0.497642, -30.3373), 100.492, 100.492, 0, 0, Vector2(0.997642, 0), 37.2193, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y4ngd"]
+atlas = ExtResource("2_24747")
+region = Rect2(758, 120, 38, 38)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wkgk8"]
+atlas = ExtResource("2_24747")
+region = Rect2(820, 50, 38, 38)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0wawj"]
+atlas = ExtResource("2_24747")
+region = Rect2(757, 49, 38, 38)
+
+[node name="OptionCheckBox" type="Control"]
+custom_minimum_size = Vector2(0, 62)
+layout_mode = 3
+anchors_preset = 0
+offset_bottom = 62.0
+mouse_default_cursor_shape = 2
+script = ExtResource("1_kydf6")
+slider_button_focused = SubResource("AtlasTexture_7aeo1")
+slider_button_no_focused = SubResource("AtlasTexture_wlkom")
+slider_button_no_focused_hightlight = SubResource("AtlasTexture_wju0m")
+slider_button_hightlight = SubResource("AtlasTexture_nnb14")
+slider_panel = SubResource("StyleBoxTexture_y4ngd")
+slider_button_size = 50
+slider_panel_height = 21
+vertical_extra_margin = 6
+mod_value_curve = SubResource("Curve_8bumk")
+
+[node name="SlideButton" type="Control" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 0
+offset_left = -25.0
+offset_top = 6.0
+offset_right = 25.0
+offset_bottom = 56.0
+pivot_offset = Vector2(25, 25)
+size_flags_horizontal = 0
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath(".")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath(".")
+focus_next = NodePath(".")
+focus_previous = NodePath(".")
+focus_mode = 1
+mouse_default_cursor_shape = 2
+script = ExtResource("3_7aeo1")
+normal_texture = SubResource("AtlasTexture_y4ngd")
+normal_hover_texture = SubResource("AtlasTexture_wkgk8")
+selected_focus_texture = SubResource("AtlasTexture_0wawj")
+content_justification = 1
+min_texture_size_no_pressed = Vector2(50, 50)
+min_texture_size_pressed = Vector2(50, 50)
+grow_scale = 1.01
+on_select_animation = 11
+on_hover_animation = 11

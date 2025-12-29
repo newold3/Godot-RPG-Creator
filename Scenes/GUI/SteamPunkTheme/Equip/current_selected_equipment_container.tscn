@@ -1,0 +1,210 @@
+[gd_scene load_steps=13 format=3 uid="uid://dhayhpqxdxhub"]
+
+[ext_resource type="Texture2D" uid="uid://bfgr2ewrp6i0u" path="res://Assets/Images/GUI/party_menu.png" id="1_osdqm"]
+[ext_resource type="Script" uid="uid://cvthv851oh5va" path="res://Scenes/GUI/SteamPunkTheme/Equip/current_selected_equipment_container.gd" id="1_wo3pd"]
+[ext_resource type="Texture2D" uid="uid://bm0yrsmhngopc" path="res://icon.png" id="2_wo3pd"]
+[ext_resource type="FontFile" uid="uid://dvh0mi6yu0ywx" path="res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf" id="3_8ufd5"]
+[ext_resource type="Texture2D" uid="uid://d2mtvqpdf5ddj" path="res://Assets/Images/GUI/progress_bar2_bottom.png" id="4_00fjg"]
+[ext_resource type="Texture2D" uid="uid://d1jr8epauirfx" path="res://Assets/Images/GUI/progress_bar2_top.png" id="5_r5pri"]
+[ext_resource type="FontFile" uid="uid://2okej4ay4kdb" path="res://addons/CustomControls/Resources/Fonts/unifont-13.0.01.ttf" id="6_ek4ao"]
+[ext_resource type="Texture2D" uid="uid://bvvwxc4baoir1" path="res://Assets/Images/GUI/star.png" id="7_awsy1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yturb"]
+atlas = ExtResource("1_osdqm")
+region = Rect2(207, 182, 228, 286)
+
+[sub_resource type="LabelSettings" id="LabelSettings_iea16"]
+font = ExtResource("6_ek4ao")
+font_color = Color(0.9137255, 0.69411767, 0.4117647, 1)
+outline_size = 8
+outline_color = Color(0, 0, 0, 1)
+stacked_outline_count = 1
+stacked_outline_0/size = 2
+stacked_outline_0/color = Color(0.81, 0.81, 0.81, 0.14117648)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0sjct"]
+content_margin_left = 10.0
+content_margin_top = 3.0
+content_margin_right = 10.0
+content_margin_bottom = 3.0
+texture = ExtResource("7_awsy1")
+
+[sub_resource type="LabelSettings" id="LabelSettings_5yolf"]
+font = ExtResource("6_ek4ao")
+font_size = 26
+font_color = Color(0.9137255, 0.69411767, 0.4117647, 1)
+outline_size = 6
+outline_color = Color(0, 0, 0, 1)
+
+[node name="CurrentSelectedEquipmentContainer" type="Control"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_wo3pd")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_bottom = -39
+
+[node name="NinePatchRect" type="NinePatchRect" parent="MarginContainer"]
+layout_mode = 2
+texture = ExtResource("1_osdqm")
+region_rect = Rect2(2190, 518, 302, 107)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 13
+theme_override_constants/margin_top = 25
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/MarginContainer"]
+custom_minimum_size = Vector2(58, 42)
+layout_mode = 2
+texture = SubResource("AtlasTexture_yturb")
+expand_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/MarginContainer/TextureRect"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 4
+
+[node name="Icon" type="TextureRect" parent="MarginContainer/HBoxContainer/MarginContainer/TextureRect/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("2_wo3pd")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = -66
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 18
+
+[node name="ItemName" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9137255, 0.69411767, 0.4117647, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5764706)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("3_8ufd5")
+theme_override_font_sizes/font_size = 18
+text = "-"
+horizontal_alignment = 1
+vertical_alignment = 1
+text_overrun_behavior = 2
+uppercase = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_right = 65
+
+[node name="ProgressBarContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CurrentLevel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/ProgressBarContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_colors/font_color = Color(0.9137255, 0.69411767, 0.4117647, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5764706)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("3_8ufd5")
+theme_override_font_sizes/font_size = 22
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="ProgressBar" type="TextureProgressBar" parent="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/ProgressBarContainer"]
+unique_name_in_owner = true
+texture_filter = 1
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+max_value = 1.0
+step = 0.001
+value = 1.0
+nine_patch_stretch = true
+stretch_margin_left = 13
+stretch_margin_right = 13
+texture_under = ExtResource("4_00fjg")
+texture_progress = ExtResource("5_r5pri")
+
+[node name="MaximunLevel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/ProgressBarContainer/ProgressBar"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -52.0
+offset_top = -12.5
+offset_right = 52.0
+offset_bottom = 10.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.9137255, 0.69411767, 0.4117647, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5764706)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("3_8ufd5")
+text = "MAXIMUN LEVEL"
+label_settings = SubResource("LabelSettings_iea16")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MaxLevel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/ProgressBarContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_colors/font_color = Color(0.9137255, 0.69411767, 0.4117647, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5764706)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("3_8ufd5")
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("StyleBoxTexture_0sjct")
+text = "1"
+label_settings = SubResource("LabelSettings_5yolf")
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true

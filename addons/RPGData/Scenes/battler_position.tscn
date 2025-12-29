@@ -1,0 +1,257 @@
+[gd_scene load_steps=19 format=3 uid="uid://ntiekwd3ncp0"]
+
+[ext_resource type="Script" uid="uid://dckm34c2a0fnp" path="res://addons/RPGData/Scenes/battler_position.gd" id="1_40dwm"]
+[ext_resource type="Texture2D" uid="uid://g2xg66cfuf5j" path="res://addons/RPGData/Assets/Images/battler_buttons.png" id="1_pwnjj"]
+[ext_resource type="Texture2D" uid="uid://s3lsu44c73nq" path="res://addons/RPGData/Assets/Images/unknown_actor.png" id="2_40dwm"]
+[ext_resource type="Texture2D" uid="uid://ykjs5474fuqm" path="res://addons/RPGData/Assets/Images/eyes_button.png" id="4_qqrgo"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qqrgo"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qqrgo"]
+resource_local_to_scene = true
+bg_color = Color(0, 0.0156863, 0.223529, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_clvqp"]
+atlas = ExtResource("1_pwnjj")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m7ya2"]
+atlas = ExtResource("1_pwnjj")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_062ef"]
+atlas = ExtResource("4_qqrgo")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ix3d8"]
+atlas = ExtResource("4_qqrgo")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aia16"]
+atlas = ExtResource("4_qqrgo")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p4c6x"]
+atlas = ExtResource("1_pwnjj")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oy3pl"]
+atlas = ExtResource("1_pwnjj")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_062ef"]
+resource_local_to_scene = true
+content_margin_left = 3.0
+content_margin_top = 3.0
+content_margin_right = 3.0
+content_margin_bottom = 3.0
+bg_color = Color(0, 0.0156863, 0.223529, 0.28)
+border_width_left = 1
+border_width_right = 1
+border_color = Color(0, 0.0156863, 0.223529, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_40dwm"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.892758, 0.800962, 0.399051, 1)
+border_blend = true
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ix3d8"]
+resource_local_to_scene = true
+content_margin_left = 3.0
+content_margin_right = 3.0
+bg_color = Color(0, 0.0156863, 0.223529, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_clvqp"]
+resource_local_to_scene = true
+bg_color = Color(1, 0.752941, 0.411765, 0.321569)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m7ya2"]
+resource_local_to_scene = true
+bg_color = Color(1, 0.752941, 0.411765, 0.321569)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+
+[node name="BattlerPosition" type="Control"]
+y_sort_enabled = true
+layout_mode = 3
+anchors_preset = 0
+offset_right = 70.0
+offset_bottom = 92.0
+focus_mode = 2
+mouse_default_cursor_shape = 13
+script = ExtResource("1_40dwm")
+battler_name = "Party Member 1"
+main_texture = ExtResource("2_40dwm")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+offset_right = 70.0
+offset_bottom = 92.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_qqrgo")
+
+[node name="MainContainer" type="VBoxContainer" parent="PanelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Panel1" type="Panel" parent="PanelContainer/MainContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qqrgo")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/MainContainer/Panel1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MainContainer/Panel1/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="BattlerDirection" type="TextureButton" parent="PanelContainer/MainContainer/Panel1/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+tooltip_text = "Change the direction in which this battler will look (left, right, up, down)."
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_clvqp")
+texture_hover = SubResource("AtlasTexture_m7ya2")
+
+[node name="StartupVisibility" type="TextureButton" parent="PanelContainer/MainContainer/Panel1/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+tooltip_text = "At the start of the battle, the battler will be hidden (it cannot do anything in this state). If this option is enabled."
+mouse_default_cursor_shape = 2
+toggle_mode = true
+texture_normal = SubResource("AtlasTexture_062ef")
+texture_pressed = SubResource("AtlasTexture_ix3d8")
+texture_hover = SubResource("AtlasTexture_aia16")
+
+[node name="EraseBattler" type="TextureButton" parent="PanelContainer/MainContainer/Panel1/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 0
+tooltip_text = "Eliminate this battler from the battlefield"
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_p4c6x")
+texture_hover = SubResource("AtlasTexture_oy3pl")
+
+[node name="Panel2" type="PanelContainer" parent="PanelContainer/MainContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_062ef")
+
+[node name="Image" type="TextureRect" parent="PanelContainer/MainContainer/Panel2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("2_40dwm")
+stretch_mode = 5
+
+[node name="CurrentPosition" type="Control" parent="PanelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+mouse_filter = 2
+
+[node name="Selector" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_40dwm")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -57.0
+offset_right = 58.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 23
+theme_override_constants/margin_bottom = -19
+
+[node name="Panel3" type="PanelContainer" parent="MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ix3d8")
+
+[node name="Name" type="Label" parent="MarginContainer/Panel3"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Party Member 1"
+
+[node name="Selection1" type="Panel" parent="MarginContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_clvqp")
+
+[node name="Selection2" type="Panel" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_m7ya2")
+
+[connection signal="pressed" from="PanelContainer/MainContainer/Panel1/MarginContainer/HBoxContainer/BattlerDirection" to="." method="_on_flip_button_pressed"]
+[connection signal="toggled" from="PanelContainer/MainContainer/Panel1/MarginContainer/HBoxContainer/StartupVisibility" to="." method="_on_visibility_button_toggled"]
+[connection signal="pressed" from="PanelContainer/MainContainer/Panel1/MarginContainer/HBoxContainer/EraseBattler" to="." method="_on_close_button_pressed"]

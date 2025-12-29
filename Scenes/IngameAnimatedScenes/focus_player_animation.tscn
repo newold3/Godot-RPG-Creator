@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://davqgmherym8w"]
+
+[ext_resource type="Shader" uid="uid://51uq0qoqt5en" path="res://Assets/Shaders/progressive_hole.gdshader" id="1_0np5c"]
+[ext_resource type="Script" uid="uid://c8xjed7oxa6ka" path="res://Scenes/IngameAnimatedScenes/focus_player_animation.gd" id="2_oqgd0"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oqgd0"]
+shader = ExtResource("1_0np5c")
+shader_parameter/progress = 0.0
+shader_parameter/cover_color = Color(0, 0, 0, 1)
+shader_parameter/hole_position = Vector2(0.5, 0.5)
+shader_parameter/edge_softness = 0.073
+shader_parameter/flicker_intensity = 0.045
+shader_parameter/flicker_speed = 1.721
+shader_parameter/circle_irregularity = 0.02
+
+[node name="FocusPlayerAnimation" type="ColorRect"]
+material = SubResource("ShaderMaterial_oqgd0")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_oqgd0")

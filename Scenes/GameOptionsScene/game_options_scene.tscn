@@ -1,0 +1,721 @@
+[gd_scene load_steps=47 format=3 uid="uid://diyrko1565o5k"]
+
+[ext_resource type="Theme" uid="uid://ctpmflgnlpkjg" path="res://Assets/Themes/in_game_theme2.tres" id="1_3k5aj"]
+[ext_resource type="Script" uid="uid://bf4nqf0c3eyu1" path="res://Scripts/game_options_scene.gd" id="1_78see"]
+[ext_resource type="Texture2D" uid="uid://bw3vuu3ip3mbq" path="res://Assets/Images/GUI/window2_background.png" id="2_vh78v"]
+[ext_resource type="Texture2D" uid="uid://bvc2gub3sa2wm" path="res://Assets/Images/GUI/window2.png" id="3_an2ia"]
+[ext_resource type="Script" uid="uid://bvspnkrl7fdgc" path="res://Scripts/simple_focusable_control.gd" id="3_nt046"]
+[ext_resource type="Texture2D" uid="uid://d24112ogy8wc6" path="res://Assets/Images/GUI/window2_background2.png" id="4_48a6h"]
+[ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="5_x5rk6"]
+[ext_resource type="Texture2D" uid="uid://c8fnc6igy6ooh" path="res://Assets/Images/Other/digit_separator.png" id="5_yjw3b"]
+[ext_resource type="Shader" uid="uid://ba78odfkakk1o" path="res://Assets/Shaders/realistic_crt.gdshader" id="7_6cnoa"]
+[ext_resource type="PackedScene" uid="uid://b7m43ah5yoxk6" path="res://Scenes/GameOptionsScene/option_check_box.tscn" id="7_sihcp"]
+[ext_resource type="PackedScene" uid="uid://bg6k5nxoyrikr" path="res://Scenes/GUI/option_slider.tscn" id="8_7mdvw"]
+[ext_resource type="PackedScene" uid="uid://llqjaxoxheax" path="res://Scenes/GUI/button_gui1.tscn" id="8_wl5j7"]
+[ext_resource type="Texture2D" uid="uid://bwq4bq6gp1v0d" path="res://Assets/Images/GUI/exit_button_normal.png" id="9_03kpi"]
+[ext_resource type="Texture2D" uid="uid://brx1sgcyg0bub" path="res://Assets/Images/GUI/exit_button_hover.png" id="10_36bsb"]
+[ext_resource type="Texture2D" uid="uid://cn114rixsnpho" path="res://Assets/Images/GUI/check_box_normal.png" id="10_46ga8"]
+[ext_resource type="PackedScene" uid="uid://dj2hqj4x1ve7p" path="res://Scenes/GUI/item_selector.tscn" id="10_84xr0"]
+[ext_resource type="Script" uid="uid://4av1kvvbeqa7" path="res://Scenes/GameOptionsScene/simple_item.gd" id="12_e2s55"]
+[ext_resource type="Texture2D" uid="uid://bb40le2eqcrwl" path="res://Assets/Images/GUI/button3_selected.png" id="13_x5pp8"]
+[ext_resource type="Texture2D" uid="uid://dglbc1p7jey14" path="res://Assets/Images/GUI/exit_button_hover_animation.png" id="18_3d1xn"]
+
+[sub_resource type="Resource" id="Resource_lcmow"]
+script = ExtResource("3_nt046")
+control = NodePath("Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer/FullScreen")
+tooltip = "Options Fullscreen Help"
+
+[sub_resource type="Resource" id="Resource_5pqny"]
+script = ExtResource("3_nt046")
+control = NodePath("Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer6/VSync")
+tooltip = "Options Vsync Help"
+
+[sub_resource type="Resource" id="Resource_owcbk"]
+script = ExtResource("3_nt046")
+control = NodePath("Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer13/FpsSelector")
+tooltip = "Options Max_fps Help"
+
+[sub_resource type="Resource" id="Resource_arlw5"]
+script = ExtResource("3_nt046")
+control = NodePath("Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer9/Brightness")
+tooltip = "Options Brightness Help"
+
+[sub_resource type="Resource" id="Resource_1q28p"]
+script = ExtResource("3_nt046")
+control = NodePath("Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer11/TextSpeed")
+tooltip = "Options Text Speed Help"
+
+[sub_resource type="Resource" id="Resource_qfwlr"]
+script = ExtResource("3_nt046")
+control = NodePath("Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer3/MasterVolume")
+tooltip = "Options Master Volume Help"
+
+[sub_resource type="Resource" id="Resource_oo4pg"]
+script = ExtResource("3_nt046")
+control = NodePath("Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer4/MusicVolume")
+tooltip = "Options Music Volume Help"
+
+[sub_resource type="Resource" id="Resource_c7rev"]
+script = ExtResource("3_nt046")
+control = NodePath("Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer5/SeVolume")
+tooltip = "Options Sound Fx Volume Help"
+
+[sub_resource type="Resource" id="Resource_xxvjh"]
+script = ExtResource("3_nt046")
+control = NodePath("Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer7/MeVolume")
+tooltip = "Options Ambient Volume Help"
+
+[sub_resource type="Resource" id="Resource_ko76o"]
+script = ExtResource("3_nt046")
+control = NodePath("Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer12/LanguageSelector")
+tooltip = "Options Language Help"
+
+[sub_resource type="Resource" id="Resource_yupe5"]
+script = ExtResource("3_nt046")
+control = NodePath("Main/BackButton")
+tooltip = "Options Exit Help"
+
+[sub_resource type="Curve" id="Curve_pm4ls"]
+_data = [Vector2(0, 0), 0.0, 1.4, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jlvtg"]
+atlas = ExtResource("5_yjw3b")
+region = Rect2(0, 0, 214, 46)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a5qr5"]
+atlas = ExtResource("5_yjw3b")
+region = Rect2(214, 0, 214, 46)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qi4bo"]
+resource_local_to_scene = true
+texture = ExtResource("10_46ga8")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rf7vr"]
+resource_local_to_scene = true
+texture = ExtResource("10_46ga8")
+
+[sub_resource type="Resource" id="Resource_eeobh"]
+script = ExtResource("12_e2s55")
+name = "Unlimited FPS"
+value = "0"
+
+[sub_resource type="Resource" id="Resource_ms875"]
+script = ExtResource("12_e2s55")
+name = "24 FPS"
+value = "24"
+
+[sub_resource type="Resource" id="Resource_ch1ra"]
+script = ExtResource("12_e2s55")
+name = "30 FPS"
+value = "30"
+
+[sub_resource type="Resource" id="Resource_12u6i"]
+script = ExtResource("12_e2s55")
+name = "60 FPS"
+value = "60"
+
+[sub_resource type="Resource" id="Resource_t2lmn"]
+script = ExtResource("12_e2s55")
+name = "120 FPS"
+value = "120"
+
+[sub_resource type="Resource" id="Resource_f1hy8"]
+script = ExtResource("12_e2s55")
+name = "144 FPS"
+value = "144"
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_g4xxq"]
+texture = ExtResource("13_x5pp8")
+texture_margin_left = 23.0
+texture_margin_top = 3.0
+texture_margin_right = 23.0
+texture_margin_bottom = 8.0
+modulate_color = Color(0.345098, 0.619608, 0.482353, 1)
+
+[sub_resource type="Curve" id="Curve_o5uj4"]
+_limits = [0.25, 2.0, 0.0, 1.0]
+_data = [Vector2(0, 0.25), 0.0, 0.0, 0, 0, Vector2(1, 2), 2.45, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_qjsw2"]
+_limits = [0.0, 5.0, 0.0, 1.0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 5), 7.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Resource" id="Resource_dmoys"]
+script = ExtResource("12_e2s55")
+name = "English"
+value = "en"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5a1gu"]
+shader = ExtResource("7_6cnoa")
+shader_parameter/resolution = Vector2(1152, 648)
+shader_parameter/scan_line_amount = 0.319
+shader_parameter/warp_amount = 0.154
+shader_parameter/noise_amount = 0.03
+shader_parameter/interference_amount = 0.2
+shader_parameter/grille_amount = 0.1
+shader_parameter/grille_size = 1.0
+shader_parameter/vignette_amount = 0.762
+shader_parameter/vignette_intensity = 0.276
+shader_parameter/aberation_amount = 0.0
+shader_parameter/roll_line_amount = 0.046
+shader_parameter/roll_speed = 1.0
+shader_parameter/scan_line_strength = -8.832
+shader_parameter/pixel_strength = -2.0
+shader_parameter/final_alpha = 1.0
+
+[node name="GameOptionsScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_3k5aj")
+script = ExtResource("1_78see")
+current_buttons = Array[ExtResource("3_nt046")]([SubResource("Resource_lcmow"), SubResource("Resource_5pqny"), SubResource("Resource_owcbk"), SubResource("Resource_arlw5"), SubResource("Resource_1q28p"), SubResource("Resource_qfwlr"), SubResource("Resource_oo4pg"), SubResource("Resource_c7rev"), SubResource("Resource_xxvjh"), SubResource("Resource_ko76o"), SubResource("Resource_yupe5")])
+end_animation = 6
+tween_speed_scale = 1.8
+scene_manipulator = "GameOptions"
+
+[node name="Background" type="TextureRect" parent="."]
+unique_name_in_owner = true
+modulate = Color(1, 1, 0.998, 1)
+texture_repeat = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_vh78v")
+stretch_mode = 1
+
+[node name="Main" type="NinePatchRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -490.0
+offset_top = -287.5
+offset_right = 490.0
+offset_bottom = 287.5
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(490, 287)
+patch_margin_left = 64
+patch_margin_top = 24
+patch_margin_right = 64
+patch_margin_bottom = 24
+
+[node name="Contents" type="Control" parent="Main"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(490, 287.5)
+mouse_filter = 2
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Main/Contents"]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(490, 287.5)
+texture = ExtResource("3_an2ia")
+patch_margin_left = 64
+patch_margin_top = 24
+patch_margin_right = 64
+patch_margin_bottom = 24
+
+[node name="MarginContainer2" type="MarginContainer" parent="Main/Contents"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="TextureRect" type="TextureRect" parent="Main/Contents/MarginContainer2"]
+layout_mode = 2
+texture = ExtResource("4_48a6h")
+
+[node name="MarginContainer" type="MarginContainer" parent="Main/Contents"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 48
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 12
+
+[node name="MainContainer" type="ScrollContainer" parent="Main/Contents/MarginContainer" groups=["top_container"]]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+follow_focus = true
+horizontal_scroll_mode = 0
+script = ExtResource("5_x5rk6")
+curve = SubResource("Curve_pm4ls")
+
+[node name="MarginContainer" type="MarginContainer" parent="Main/Contents/MarginContainer/MainContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 56
+theme_override_constants/margin_bottom = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="DecorationLabel" type="TextureRect" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+modulate = Color(0.588054, 0.72175, 0.324556, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+texture = SubResource("AtlasTexture_jlvtg")
+
+[node name="SectionNameScreen" type="Label" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "   SCREEN   "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DecorationRight" type="TextureRect" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+modulate = Color(0.588054, 0.72175, 0.324556, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+texture = SubResource("AtlasTexture_a5qr5")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "FULL SCREEN:"
+
+[node name="FullScreen" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("7_sihcp")]
+unique_name_in_owner = true
+layout_mode = 2
+check_box_unselected = SubResource("StyleBoxTexture_qi4bo")
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer6"]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "V-SYNC:"
+
+[node name="VSync" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer6" instance=ExtResource("7_sihcp")]
+unique_name_in_owner = true
+layout_mode = 2
+check_box_unselected = SubResource("StyleBoxTexture_rf7vr")
+
+[node name="HBoxContainer13" type="HBoxContainer" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer13"]
+custom_minimum_size = Vector2(240, 74)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "MAX FPS"
+vertical_alignment = 1
+
+[node name="FpsSelector" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer13" instance=ExtResource("10_84xr0")]
+unique_name_in_owner = true
+clip_contents = true
+custom_minimum_size = Vector2(360, 48)
+layout_mode = 2
+size_flags_vertical = 4
+items = Array[ExtResource("12_e2s55")]([SubResource("Resource_eeobh"), SubResource("Resource_ms875"), SubResource("Resource_ch1ra"), SubResource("Resource_12u6i"), SubResource("Resource_t2lmn"), SubResource("Resource_f1hy8")])
+background_style_selected = SubResource("StyleBoxTexture_g4xxq")
+background_style_unselected = SubResource("StyleBoxTexture_g4xxq")
+background_style_highlight = SubResource("StyleBoxTexture_g4xxq")
+scroll_speed = 10.0
+selected_index = 3
+
+[node name="HBoxContainer9" type="HBoxContainer" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer9"]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "BRIGHTNESS:"
+
+[node name="Brightness" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer9" instance=ExtResource("8_7mdvw")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mod_value_curve = SubResource("Curve_o5uj4")
+key_step = 0.01
+
+[node name="BrightnessLabel" type="Label" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer9"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "x 1.0"
+horizontal_alignment = 2
+
+[node name="HBoxContainer11" type="HBoxContainer" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer11"]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "TEXT SPEED:"
+
+[node name="TextSpeed" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer11" instance=ExtResource("8_7mdvw")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mod_value_curve = SubResource("Curve_qjsw2")
+key_step = 0.01
+
+[node name="TextSpeedLabel" type="Label" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer11"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "x 1.0"
+horizontal_alignment = 2
+
+[node name="HBoxContainer8" type="HBoxContainer" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="DecorationLabel" type="TextureRect" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer8"]
+modulate = Color(0.588054, 0.72175, 0.324556, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+texture = SubResource("AtlasTexture_jlvtg")
+
+[node name="SectionNameSounds" type="Label" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer8"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "   SOUNDS   "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DecorationRight" type="TextureRect" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer8"]
+modulate = Color(0.588054, 0.72175, 0.324556, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+texture = SubResource("AtlasTexture_a5qr5")
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "MASTER VOLUME:"
+
+[node name="MasterVolume" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("8_7mdvw")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+key_step = 0.05
+
+[node name="MasterVolumeLabel" type="Label" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "0.0"
+horizontal_alignment = 2
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer4"]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "MUSIC VOLUME:"
+
+[node name="MusicVolume" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer4" instance=ExtResource("8_7mdvw")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+key_step = 0.05
+
+[node name="MusicVolumeLabel" type="Label" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer4"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "0.0"
+horizontal_alignment = 2
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer5"]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "SOUND FX VOLUME:"
+
+[node name="SeVolume" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer5" instance=ExtResource("8_7mdvw")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+key_step = 0.05
+
+[node name="SeVolumeLabel" type="Label" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer5"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "0.0"
+horizontal_alignment = 2
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer7"]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "AMBIENT VOLUME:"
+
+[node name="MeVolume" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer7" instance=ExtResource("8_7mdvw")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+key_step = 0.05
+
+[node name="MeVolumeLabel" type="Label" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer7"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "0.0"
+horizontal_alignment = 2
+
+[node name="HBoxContainer10" type="HBoxContainer" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="DecorationLabel" type="TextureRect" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer10"]
+modulate = Color(0.588054, 0.72175, 0.324556, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+texture = SubResource("AtlasTexture_jlvtg")
+
+[node name="SectionNameLanguage" type="Label" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer10"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "   LANGUAGE   "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DecorationRight" type="TextureRect" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer10"]
+modulate = Color(0.588054, 0.72175, 0.324556, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+texture = SubResource("AtlasTexture_a5qr5")
+
+[node name="HBoxContainer12" type="HBoxContainer" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer12"]
+custom_minimum_size = Vector2(240, 74)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "LANGUAGE:"
+vertical_alignment = 1
+
+[node name="LanguageSelector" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer12" instance=ExtResource("10_84xr0")]
+unique_name_in_owner = true
+clip_contents = true
+custom_minimum_size = Vector2(360, 48)
+layout_mode = 2
+size_flags_vertical = 4
+items = Array[ExtResource("12_e2s55")]([SubResource("Resource_dmoys")])
+background_style_selected = SubResource("StyleBoxTexture_g4xxq")
+background_style_unselected = SubResource("StyleBoxTexture_g4xxq")
+background_style_highlight = SubResource("StyleBoxTexture_g4xxq")
+
+[node name="FinalMargin" type="Control" parent="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 68)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Main/Contents/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = -112
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = -112
+theme_override_constants/margin_bottom = -48
+metadata/_edit_lock_ = true
+
+[node name="TooltipContainer" type="ColorRect" parent="Main/Contents/MarginContainer/MarginContainer"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+size_flags_vertical = 8
+mouse_filter = 2
+color = Color(0, 0, 0, 0.568627)
+
+[node name="TooltipLabel" type="Label" parent="Main/Contents/MarginContainer/MarginContainer/TooltipContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -17.0
+offset_right = 120.0
+offset_bottom = 17.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.294975, 0.349576, 0.418382, 1)
+theme_override_font_sizes/font_size = 20
+text = "help"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Title" type="NinePatchRect" parent="Main/Contents"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -156.5
+offset_top = -35.0
+offset_right = 156.5
+offset_bottom = 42.0
+grow_horizontal = 2
+pivot_offset = Vector2(490, 287.5)
+texture = ExtResource("3_an2ia")
+patch_margin_left = 64
+patch_margin_top = 24
+patch_margin_right = 64
+patch_margin_bottom = 24
+
+[node name="MarginContainer2" type="MarginContainer" parent="Main/Contents/Title"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="TextureRect" type="TextureRect" parent="Main/Contents/Title/MarginContainer2"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("4_48a6h")
+expand_mode = 1
+
+[node name="OptionsTitle" type="Label" parent="Main/Contents/Title"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 48
+text = "OPTIONS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CRTEffect" type="ColorRect" parent="Main/Contents"]
+modulate = Color(0.763958, 0.893715, 0.952629, 1)
+material = SubResource("ShaderMaterial_5a1gu")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+metadata/_edit_lock_ = true
+
+[node name="BackButton" parent="Main" instance=ExtResource("8_wl5j7")]
+unique_name_in_owner = true
+texture_filter = 2
+custom_minimum_size = Vector2(66, 66)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = -45.0
+offset_right = 74.0
+offset_bottom = 21.0
+grow_horizontal = 0
+grow_vertical = 0
+pivot_offset = Vector2(33, 33)
+focus_neighbor_left = NodePath("/root/@EditorNode@20438/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@62/@VBoxContainer@63/@EditorMainScreen@103/MainScreen/@CanvasItemEditor@10871/@VSplitContainer@10516/@HSplitContainer@10518/@HSplitContainer@10520/@Control@10521/@SubViewportContainer@10522/@SubViewport@10523/GameOptionsScene/Main/BackButton")
+focus_neighbor_top = NodePath("/root/@EditorNode@20438/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@62/@VBoxContainer@63/@EditorMainScreen@103/MainScreen/@CanvasItemEditor@10871/@VSplitContainer@10516/@HSplitContainer@10518/@HSplitContainer@10520/@Control@10521/@SubViewportContainer@10522/@SubViewport@10523/GameOptionsScene/Main/BackButton")
+focus_neighbor_right = NodePath("/root/@EditorNode@20438/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@62/@VBoxContainer@63/@EditorMainScreen@103/MainScreen/@CanvasItemEditor@10871/@VSplitContainer@10516/@HSplitContainer@10518/@HSplitContainer@10520/@Control@10521/@SubViewportContainer@10522/@SubViewport@10523/GameOptionsScene/Main/BackButton")
+focus_neighbor_bottom = NodePath("/root/@EditorNode@20438/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@62/@VBoxContainer@63/@EditorMainScreen@103/MainScreen/@CanvasItemEditor@10871/@VSplitContainer@10516/@HSplitContainer@10518/@HSplitContainer@10520/@Control@10521/@SubViewportContainer@10522/@SubViewport@10523/GameOptionsScene/Main/BackButton")
+focus_next = NodePath("/root/@EditorNode@20438/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@62/@VBoxContainer@63/@EditorMainScreen@103/MainScreen/@CanvasItemEditor@10871/@VSplitContainer@10516/@HSplitContainer@10518/@HSplitContainer@10520/@Control@10521/@SubViewportContainer@10522/@SubViewport@10523/GameOptionsScene/Main/BackButton")
+focus_previous = NodePath("/root/@EditorNode@20438/@Panel@14/@VBoxContainer@15/DockHSplitLeftL/DockHSplitLeftR/DockHSplitMain/@VBoxContainer@26/DockVSplitCenter/@VSplitContainer@62/@VBoxContainer@63/@EditorMainScreen@103/MainScreen/@CanvasItemEditor@10871/@VSplitContainer@10516/@HSplitContainer@10518/@HSplitContainer@10520/@Control@10521/@SubViewportContainer@10522/@SubViewport@10523/GameOptionsScene/Main/BackButton")
+max_font_size = 37
+max_scale_on_hover = Vector2(1.01, 1.01)
+ninepatch_texture_normal = ExtResource("9_03kpi")
+ninepatch_texture_selected = ExtResource("10_36bsb")
+ninepatch_texture_disabled = null
+hover_effect_texture = ExtResource("18_3d1xn")
+
+[connection signal="pressed" from="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer/FullScreen" to="." method="_on_full_screen_pressed"]
+[connection signal="pressed" from="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer6/VSync" to="." method="_on_v_sync_pressed"]
+[connection signal="item_changed" from="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer13/FpsSelector" to="." method="_on_fps_selector_item_changed"]
+[connection signal="changed" from="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer9/Brightness" to="." method="_on_brightness_changed"]
+[connection signal="changed" from="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer11/TextSpeed" to="." method="_on_text_speed_changed"]
+[connection signal="changed" from="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer3/MasterVolume" to="." method="_on_master_volume_changed"]
+[connection signal="changed" from="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer4/MusicVolume" to="." method="_on_music_volume_changed"]
+[connection signal="changed" from="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer5/SeVolume" to="." method="_on_se_volume_changed"]
+[connection signal="changed" from="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer7/MeVolume" to="." method="_on_me_volume_changed"]
+[connection signal="item_changed" from="Main/Contents/MarginContainer/MainContainer/MarginContainer/VBoxContainer/HBoxContainer12/LanguageSelector" to="." method="_on_language_selector_item_changed"]
+[connection signal="begin_click" from="Main/BackButton" to="." method="_on_back_button_begin_click"]
+[connection signal="end_click" from="Main/BackButton" to="." method="_on_back_button_end_click"]

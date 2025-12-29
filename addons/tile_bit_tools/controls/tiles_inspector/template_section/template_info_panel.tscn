@@ -1,0 +1,105 @@
+[gd_scene load_steps=7 format=3 uid="uid://bxhlehm73ligy"]
+
+[ext_resource type="Script" uid="uid://c8cgq7br75w41" path="res://addons/tile_bit_tools/controls/tiles_inspector/template_section/template_info_panel.gd" id="1_arkoa"]
+[ext_resource type="PackedScene" uid="uid://bscknm10ko78t" path="res://addons/tile_bit_tools/controls/shared/template_info_list.tscn" id="2_jg88n"]
+[ext_resource type="Script" uid="uid://olsr5lg5bmli" path="res://addons/tile_bit_tools/controls/shared/icon_button.gd" id="5_7b1jd"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kuq0c"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kei5m"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_v7bmg"]
+
+[node name="TemplateInfoPanel" type="PanelContainer" groups=["TBTSubinspectorOverlayPanel"]]
+visible = false
+custom_minimum_size = Vector2(0, 48)
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 92.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+script = ExtResource("1_arkoa")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TemplateInfoList" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("2_jg88n")]
+layout_mode = 2
+
+[node name="TemplateRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 2
+size_flags_horizontal = 3
+expand_mode = 1
+stretch_mode = 5
+
+[node name="DescriptionContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer" groups=["TBTInspectorMessagePanel"]]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_kuq0c")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/DescriptionContainer"]
+layout_mode = 2
+
+[node name="ExpandButton" type="Button" parent="MarginContainer/VBoxContainer/DescriptionContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/focus = SubResource("StyleBoxEmpty_kei5m")
+toggle_mode = true
+flat = true
+
+[node name="DescriptionLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer/DescriptionContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxEmpty_v7bmg")
+bbcode_enabled = true
+text = "Description of the template. Description of the template. Description of the template. Description of the template. Description of the template. Description of the template. Description of the template. Description of the template. Description of the template. Description of the template. Description of the template. "
+scroll_active = false
+
+[node name="Buttons" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+alignment = 2
+
+[node name="ExampleButton" type="Button" parent="MarginContainer/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Open example files folder"
+script = ExtResource("5_7b1jd")
+editor_name = "Image"
+
+[node name="EditButton" type="Button" parent="MarginContainer/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Edit User Template"
+script = ExtResource("5_7b1jd")
+editor_name = "Edit"
+
+[node name="RemoveButton" type="Button" parent="MarginContainer/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Delete User Template"
+script = ExtResource("5_7b1jd")
+editor_name = "Remove"
+
+[connection signal="toggled" from="MarginContainer/VBoxContainer/DescriptionContainer/HBoxContainer2/ExpandButton" to="." method="_on_expand_button_toggled"]
+[connection signal="pressed" from="MarginContainer/Buttons/ExampleButton" to="." method="_on_example_button_pressed"]
+[connection signal="pressed" from="MarginContainer/Buttons/EditButton" to="." method="_on_edit_button_pressed"]
+[connection signal="pressed" from="MarginContainer/Buttons/RemoveButton" to="." method="_on_remove_button_pressed"]

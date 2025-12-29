@@ -1,0 +1,67 @@
+[gd_scene load_steps=8 format=3 uid="uid://m1iixxkyrur5"]
+
+[ext_resource type="Script" uid="uid://d3ibrph0ga0j6" path="res://addons/CustomControls/custom_simple_item_list.gd" id="1_t1ae3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4nmea"]
+resource_local_to_scene = true
+content_margin_left = 3.0
+content_margin_right = 3.0
+bg_color = Color(1, 1, 1, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3bcek"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="Gradient" id="Gradient_3obsl"]
+offsets = PackedFloat32Array(0, 0.369535, 1)
+colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_mtkxg"]
+gradient = SubResource("Gradient_3obsl")
+fill_from = Vector2(0.547009, 1)
+fill_to = Vector2(0.559829, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pqj7n"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_togv4"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[node name="CustomSimpleItemList" type="ItemList"]
+offset_right = 194.0
+offset_bottom = 76.0
+focus_neighbor_top = NodePath(".")
+focus_neighbor_bottom = NodePath(".")
+theme_override_colors/font_hovered_color = Color(0.878431, 0.392157, 0.0392157, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/v_separation = 2
+theme_override_styles/focus = SubResource("StyleBoxFlat_4nmea")
+theme_override_styles/panel = SubResource("StyleBoxFlat_4nmea")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_3bcek")
+theme_override_styles/selected = SubResource("StyleBoxTexture_pqj7n")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_togv4")
+script = ExtResource("1_t1ae3")
+odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
+event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
+
+[node name="BackControl" type="Control" parent="."]
+unique_name_in_owner = true
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 0
+offset_right = 194.0
+offset_bottom = 76.0
+mouse_filter = 2
+metadata/_edit_lock_ = true

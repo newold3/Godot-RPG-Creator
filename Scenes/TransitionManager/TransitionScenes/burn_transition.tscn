@@ -1,0 +1,42 @@
+[gd_scene load_steps=6 format=3 uid="uid://rh4ceg4vdkid"]
+
+[ext_resource type="Shader" uid="uid://dxfxa1u021r5d" path="res://Assets/Shaders/burn_2d.gdshader" id="1_7vg8x"]
+[ext_resource type="Script" uid="uid://c21iedfgy412h" path="res://Scenes/TransitionManager/TransitionScenes/burn_transition.gd" id="1_p4lx6"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_7lxvh"]
+noise_type = 3
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_6nrx3"]
+seamless = true
+noise = SubResource("FastNoiseLite_7lxvh")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8ve8t"]
+shader = ExtResource("1_7vg8x")
+shader_parameter/dissolve_value = 0.0
+shader_parameter/burn_texture = SubResource("NoiseTexture2D_6nrx3")
+shader_parameter/layer_1 = Color(0.2, 0.2, 0.2, 1)
+shader_parameter/size_1 = 0.05
+shader_parameter/layer_2 = Color(1, 0, 0, 1)
+shader_parameter/size_2 = 0.05
+shader_parameter/final_color = Color(0, 0, 0, 1)
+shader_parameter/size_3 = 0.05
+
+[node name="BurnTransition" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_p4lx6")
+
+[node name="Effect" type="ColorRect" parent="."]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_8ve8t")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)

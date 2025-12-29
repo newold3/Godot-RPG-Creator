@@ -1,0 +1,2931 @@
+[gd_scene load_steps=76 format=3 uid="uid://dnxpu2qtk5csu"]
+
+[ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="1_l6a2h"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="2_kiwgy"]
+[ext_resource type="Script" uid="uid://6ypddg325xpa" path="res://addons/rpg_character_creator/Scripts/character_creator_main_panel.gd" id="2_qi5rx"]
+[ext_resource type="PackedScene" uid="uid://basqbpqkskggi" path="res://addons/CustomControls/lock_button2.tscn" id="3_0fuf8"]
+[ext_resource type="Shader" uid="uid://c0rcvcbe0qvjh" path="res://Assets/Shaders/colorize.gdshader" id="4_q0rni"]
+[ext_resource type="PackedScene" uid="uid://brsxpnry24tbh" path="res://addons/CustomControls/custom_help_button.tscn" id="8_k8d8s"]
+[ext_resource type="Texture2D" uid="uid://c1co7gsx6wth7" path="res://addons/CustomControls/Images/palette_icon.png" id="8_osbbw"]
+[ext_resource type="Texture2D" uid="uid://bfvirbwko5v4o" path="res://addons/CustomControls/Images/palette_icon_hover.png" id="9_qp75i"]
+[ext_resource type="Shader" uid="uid://fvoxwt0jrass" path="res://Assets/Shaders/simple_idle_animation.gdshader" id="13_d7yli"]
+[ext_resource type="Texture2D" uid="uid://dmceyhk7mt4eh" path="res://addons/rpg_character_creator/GUI/pennomi.png" id="14_nd10n"]
+[ext_resource type="AudioStream" uid="uid://csfo37s67xtl3" path="res://addons/rpg_character_creator/sounds/swosh-40.ogg" id="16_22ti7"]
+[ext_resource type="PackedScene" uid="uid://d1qmnpkoxy3hj" path="res://addons/CustomControls/Dialogs/palette_dialog.tscn" id="17_4sj4o"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="17_6e32a"]
+
+[sub_resource type="ImageTexture" id="ImageTexture_qsfj8"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6tuea"]
+resource_local_to_scene = true
+atlas = SubResource("ImageTexture_qsfj8")
+region = Rect2(0, 650, 64, 30)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7sruh"]
+shader = ExtResource("4_q0rni")
+shader_parameter/palette1 = []
+shader_parameter/palette2 = []
+shader_parameter/palette3 = []
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ImageTexture" id="ImageTexture_k3yeh"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qtmeg"]
+resource_local_to_scene = true
+atlas = SubResource("ImageTexture_k3yeh")
+region = Rect2(0, 0, 5, 26)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rqyqf"]
+shader = ExtResource("4_q0rni")
+shader_parameter/palette1 = []
+shader_parameter/palette2 = []
+shader_parameter/palette3 = []
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_17kdy"]
+shader = ExtResource("4_q0rni")
+shader_parameter/palette1 = []
+shader_parameter/palette2 = []
+shader_parameter/palette3 = []
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nwur3"]
+shader = ExtResource("4_q0rni")
+shader_parameter/palette1 = PackedColorArray(0.15, 0.15, 0.15, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.316667, 0.223333, 0.266667, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.656667, 0.323333, 0.406667, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.843333, 0.61, 0.536667, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 0.666667, 0.566667, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.97, 0.816667, 0.733333, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.943333, 0.943333, 0.943333, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/palette2 = []
+shader_parameter/palette3 = []
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tqmkk"]
+shader = ExtResource("4_q0rni")
+shader_parameter/palette1 = []
+shader_parameter/palette2 = []
+shader_parameter/palette3 = []
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u1dc3"]
+shader = ExtResource("4_q0rni")
+shader_parameter/palette1 = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.196078, 0.0862745, 0.137255, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.12549, 0.27451, 0.0313726, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.235294, 0.431373, 0.0784314, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.415686, 0.658824, 0.0196078, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.415686, 0.658824, 0.0196078, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.556863, 0.745098, 0.333333, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/palette2 = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.196078, 0.0862745, 0.137255, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.372549, 0.196078, 0.0784314, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.556863, 0.333333, 0.333333, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45098, 0.341176, 0.231373, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.815686, 0.541176, 0.454902, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.960784, 0.72549, 0.607843, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/palette3 = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.294118, 0.156863, 0.215686, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.556863, 0.333333, 0.333333, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.768627, 0.619608, 0.45098, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.768627, 0.619608, 0.45098, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.74902, 0.505882, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.890196, 0.780392, 0.670588, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5jsi1"]
+shader = ExtResource("4_q0rni")
+shader_parameter/palette1 = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.196078, 0.0862745, 0.137255, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.596078, 0.203922, 0.301961, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.815686, 0.541176, 0.454902, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.882353, 0.607843, 0.490196, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.964706, 0.784314, 0.686275, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.933333, 0.933333, 0.933333, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/palette2 = []
+shader_parameter/palette3 = []
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_23el0"]
+shader = ExtResource("4_q0rni")
+shader_parameter/palette1 = []
+shader_parameter/palette2 = []
+shader_parameter/palette3 = []
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uuxqb"]
+shader = ExtResource("4_q0rni")
+shader_parameter/palette1 = []
+shader_parameter/palette2 = []
+shader_parameter/palette3 = []
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_koep7"]
+shader = ExtResource("4_q0rni")
+shader_parameter/palette1 = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0666667, 0.0666667, 0.0666667, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0666667, 0.0666667, 0.0666667, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.196078, 0.0862745, 0.137255, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.196078, 0.0862745, 0.137255, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0.2, 0.2, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.266667, 0.266667, 0.266667, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.333333, 0.333333, 0.333333, 1)
+shader_parameter/palette2 = []
+shader_parameter/palette3 = []
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pbm46"]
+shader = ExtResource("4_q0rni")
+shader_parameter/palette1 = []
+shader_parameter/palette2 = []
+shader_parameter/palette3 = []
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qjgfp"]
+shader = ExtResource("4_q0rni")
+shader_parameter/palette1 = []
+shader_parameter/palette2 = []
+shader_parameter/palette3 = []
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oo0av"]
+shader = ExtResource("4_q0rni")
+shader_parameter/palette1 = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0666667, 0.0666667, 0.0666667, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0666667, 0.0666667, 0.0666667, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.196078, 0.0862745, 0.137255, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.196078, 0.0862745, 0.137255, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0.2, 0.2, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.266667, 0.266667, 0.266667, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.333333, 0.333333, 0.333333, 1)
+shader_parameter/palette2 = []
+shader_parameter/palette3 = []
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_862py"]
+shader = ExtResource("4_q0rni")
+shader_parameter/palette1 = []
+shader_parameter/palette2 = []
+shader_parameter/palette3 = []
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_e6kah"]
+shader = ExtResource("4_q0rni")
+shader_parameter/palette1 = PackedColorArray()
+shader_parameter/palette2 = []
+shader_parameter/palette3 = []
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = false
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fattp"]
+shader = ExtResource("4_q0rni")
+shader_parameter/palette1 = []
+shader_parameter/palette2 = []
+shader_parameter/palette3 = []
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u4qmn"]
+shader = ExtResource("4_q0rni")
+shader_parameter/palette1 = []
+shader_parameter/palette2 = []
+shader_parameter/palette3 = []
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h6bp8"]
+shader = ExtResource("4_q0rni")
+shader_parameter/palette1 = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.196078, 0.0862745, 0.137255, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.231373, 0.231373, 0.341176, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.341176, 0.560784, 0.780392, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.352941, 0.772549, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.933333, 0.933333, 0.933333, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/palette2 = []
+shader_parameter/palette3 = []
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wphyk"]
+shader = ExtResource("4_q0rni")
+shader_parameter/palette1 = []
+shader_parameter/palette2 = []
+shader_parameter/palette3 = []
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_80x6l"]
+shader = ExtResource("4_q0rni")
+shader_parameter/palette1 = []
+shader_parameter/palette2 = []
+shader_parameter/palette3 = []
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6oaft"]
+shader = ExtResource("4_q0rni")
+shader_parameter/palette1 = []
+shader_parameter/palette2 = []
+shader_parameter/palette3 = []
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h7pvq"]
+shader = ExtResource("4_q0rni")
+shader_parameter/palette1 = []
+shader_parameter/palette2 = []
+shader_parameter/palette3 = []
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xvnm7"]
+shader = ExtResource("4_q0rni")
+shader_parameter/palette1 = []
+shader_parameter/palette2 = []
+shader_parameter/palette3 = []
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_27m3w"]
+shader = ExtResource("4_q0rni")
+shader_parameter/palette1 = []
+shader_parameter/palette2 = []
+shader_parameter/palette3 = []
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jplyd"]
+shader = ExtResource("4_q0rni")
+shader_parameter/palette1 = []
+shader_parameter/palette2 = []
+shader_parameter/palette3 = []
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yqh2l"]
+shader = ExtResource("4_q0rni")
+shader_parameter/palette1 = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.196078, 0.0862745, 0.137255, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.596078, 0.203922, 0.301961, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.815686, 0.541176, 0.454902, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.882353, 0.607843, 0.490196, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.964706, 0.784314, 0.686275, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.933333, 0.933333, 0.933333, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/palette2 = []
+shader_parameter/palette3 = []
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2kch2"]
+shader = ExtResource("4_q0rni")
+shader_parameter/palette1 = []
+shader_parameter/palette2 = []
+shader_parameter/palette3 = []
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tcjo3"]
+shader = ExtResource("13_d7yli")
+shader_parameter/enable_breathing = true
+shader_parameter/amplitude = 0.05
+shader_parameter/speed = 7.0
+shader_parameter/pivot = Vector2(0.5, 0.75)
+
+[sub_resource type="ImageTexture" id="ImageTexture_y6kfa"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_urc7j"]
+resource_local_to_scene = true
+atlas = SubResource("ImageTexture_y6kfa")
+region = Rect2(0, 640, 64, 64)
+
+[sub_resource type="ImageTexture" id="ImageTexture_gby81"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5w4mc"]
+resource_local_to_scene = true
+atlas = SubResource("ImageTexture_gby81")
+region = Rect2(0, 640, 64, 64)
+
+[sub_resource type="ImageTexture" id="ImageTexture_redla"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_05en4"]
+resource_local_to_scene = true
+atlas = SubResource("ImageTexture_redla")
+region = Rect2(0, 640, 64, 64)
+
+[sub_resource type="ImageTexture" id="ImageTexture_or82r"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rwvy5"]
+resource_local_to_scene = true
+atlas = SubResource("ImageTexture_or82r")
+region = Rect2(0, 640, 64, 64)
+
+[sub_resource type="ImageTexture" id="ImageTexture_3q4as"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vluma"]
+resource_local_to_scene = true
+atlas = SubResource("ImageTexture_3q4as")
+region = Rect2(0, 640, 64, 64)
+
+[sub_resource type="ImageTexture" id="ImageTexture_w3156"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pmuc7"]
+resource_local_to_scene = true
+atlas = SubResource("ImageTexture_w3156")
+region = Rect2(0, 640, 64, 64)
+
+[sub_resource type="ImageTexture" id="ImageTexture_1qd6c"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nlsl5"]
+resource_local_to_scene = true
+atlas = SubResource("ImageTexture_1qd6c")
+region = Rect2(0, 640, 64, 64)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ucmtg"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Gradient" id="Gradient_ctwx1"]
+colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_fvmle"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0g6so"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_fvmle")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ftyei"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2wcyy"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0, 0, 0, 0.258824)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u81bc"]
+content_margin_left = 32.0
+content_margin_top = 4.0
+content_margin_right = 32.0
+content_margin_bottom = 4.0
+bg_color = Color(0.270588, 0.270588, 0.270588, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u5u2x"]
+atlas = ExtResource("14_nd10n")
+region = Rect2(68.8922, 0.918444, 18.0039, 19.4095)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_148di"]
+atlas = ExtResource("14_nd10n")
+region = Rect2(111.971, 224.377, 12.0266, 12.9725)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gkhc5"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0, 0, 0, 0.258824)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ucmtg"]
+shader = ExtResource("13_d7yli")
+shader_parameter/enable_breathing = true
+shader_parameter/amplitude = 0.003
+shader_parameter/speed = 2.683
+shader_parameter/pivot = Vector2(0.5, 0.38)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pjp0e"]
+atlas = ExtResource("17_6e32a")
+region = Rect2(216, 168, 24, 24)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0ntva"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0, 0, 0, 0.258824)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g63yk"]
+content_margin_left = 32.0
+content_margin_top = 4.0
+content_margin_right = 32.0
+content_margin_bottom = 4.0
+bg_color = Color(0.270588, 0.270588, 0.270588, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oqi45"]
+atlas = ExtResource("14_nd10n")
+region = Rect2(68.8922, 0.918444, 18.0039, 19.4095)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ahfl8"]
+atlas = ExtResource("14_nd10n")
+region = Rect2(111.971, 224.377, 12.0266, 12.9725)
+
+[node name="CharacterCreatorMainPanel" type="MarginContainer"]
+offset_right = 1269.0
+offset_bottom = 724.0
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+script = ExtResource("2_qi5rx")
+debug_draw = false
+
+[node name="OtherTextures" type="Control" parent="."]
+visible = false
+layout_mode = 2
+
+[node name="FaceTexture" type="TextureRect" parent="OtherTextures"]
+unique_name_in_owner = true
+z_index = 100
+texture_filter = 5
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 0
+offset_right = 64.0
+offset_bottom = 64.0
+texture = SubResource("AtlasTexture_6tuea")
+stretch_mode = 6
+
+[node name="AmmoFinalMix" type="SubViewport" parent="."]
+unique_name_in_owner = true
+process_mode = 3
+disable_3d = true
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(5, 26)
+render_target_update_mode = 4
+
+[node name="AmmoTexture" type="TextureRect" parent="AmmoFinalMix"]
+unique_name_in_owner = true
+z_index = 100
+texture_filter = 5
+material = SubResource("ShaderMaterial_7sruh")
+offset_right = 5.0
+offset_bottom = 26.0
+texture = SubResource("AtlasTexture_qtmeg")
+stretch_mode = 6
+
+[node name="MainhandBackViewport" type="SubViewport" parent="."]
+transparent_bg = true
+handle_input_locally = false
+canvas_item_default_texture_filter = 0
+size = Vector2i(832, 1344)
+
+[node name="MainhandBackTexture" type="TextureRect" parent="MainhandBackViewport"]
+unique_name_in_owner = true
+texture_repeat = 1
+material = SubResource("ShaderMaterial_rqyqf")
+offset_right = 832.0
+offset_bottom = 1344.0
+
+[node name="OffhandBackViewport" type="SubViewport" parent="."]
+transparent_bg = true
+handle_input_locally = false
+canvas_item_default_texture_filter = 0
+size = Vector2i(832, 1344)
+
+[node name="OffhandBackTexture" type="TextureRect" parent="OffhandBackViewport"]
+unique_name_in_owner = true
+visible = false
+texture_repeat = 1
+material = SubResource("ShaderMaterial_17kdy")
+offset_right = 1728.0
+offset_bottom = 768.0
+
+[node name="AmmoBackViewport" type="SubViewport" parent="."]
+transparent_bg = true
+handle_input_locally = false
+canvas_item_default_texture_filter = 0
+size = Vector2i(832, 1344)
+
+[node name="AmmoBackTexture" type="TextureRect" parent="AmmoBackViewport"]
+unique_name_in_owner = true
+texture_repeat = 1
+material = SubResource("ShaderMaterial_7sruh")
+offset_right = 832.0
+offset_bottom = 1344.0
+
+[node name="BodyFirstPassViewport" type="SubViewport" parent="."]
+unique_name_in_owner = true
+transparent_bg = true
+handle_input_locally = false
+canvas_item_default_texture_filter = 0
+size = Vector2i(832, 1344)
+
+[node name="BackTexture2" type="TextureRect" parent="BodyFirstPassViewport"]
+unique_name_in_owner = true
+visible = false
+texture_repeat = 1
+material = SubResource("ShaderMaterial_nwur3")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+
+[node name="TailTextureBack" type="TextureRect" parent="BodyFirstPassViewport"]
+unique_name_in_owner = true
+texture_repeat = 1
+material = SubResource("ShaderMaterial_tqmkk")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+
+[node name="WingsTextureBack" type="TextureRect" parent="BodyFirstPassViewport"]
+unique_name_in_owner = true
+texture_repeat = 1
+material = SubResource("ShaderMaterial_u1dc3")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+
+[node name="BodyTexture" type="TextureRect" parent="BodyFirstPassViewport"]
+unique_name_in_owner = true
+texture_repeat = 1
+material = SubResource("ShaderMaterial_5jsi1")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+
+[node name="Add2Texture" type="TextureRect" parent="BodyFirstPassViewport"]
+unique_name_in_owner = true
+texture_repeat = 1
+material = SubResource("ShaderMaterial_23el0")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+
+[node name="SuitTexture" type="TextureRect" parent="BodyFirstPassViewport"]
+unique_name_in_owner = true
+texture_repeat = 1
+material = SubResource("ShaderMaterial_uuxqb")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+
+[node name="PantsTexture" type="TextureRect" parent="BodyFirstPassViewport"]
+unique_name_in_owner = true
+texture_repeat = 1
+material = SubResource("ShaderMaterial_koep7")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+
+[node name="ShoesTexture" type="TextureRect" parent="BodyFirstPassViewport"]
+unique_name_in_owner = true
+texture_repeat = 1
+material = SubResource("ShaderMaterial_pbm46")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+
+[node name="GlovesTexture" type="TextureRect" parent="BodyFirstPassViewport"]
+unique_name_in_owner = true
+texture_repeat = 1
+material = SubResource("ShaderMaterial_qjgfp")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+
+[node name="ShirtTexture" type="TextureRect" parent="BodyFirstPassViewport"]
+unique_name_in_owner = true
+texture_repeat = 1
+material = SubResource("ShaderMaterial_oo0av")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+
+[node name="BeltTexture" type="TextureRect" parent="BodyFirstPassViewport"]
+unique_name_in_owner = true
+texture_repeat = 1
+material = SubResource("ShaderMaterial_862py")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+
+[node name="BodySecondPassViewport" type="SubViewport" parent="."]
+unique_name_in_owner = true
+transparent_bg = true
+handle_input_locally = false
+canvas_item_default_texture_filter = 0
+size = Vector2i(832, 1344)
+
+[node name="BodyFirstPassTexture" type="TextureRect" parent="BodySecondPassViewport"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_e6kah")
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Add3Texture" type="TextureRect" parent="BodySecondPassViewport"]
+unique_name_in_owner = true
+texture_repeat = 1
+material = SubResource("ShaderMaterial_fattp")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+
+[node name="JacketTexture" type="TextureRect" parent="BodySecondPassViewport"]
+unique_name_in_owner = true
+texture_repeat = 1
+material = SubResource("ShaderMaterial_u4qmn")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+
+[node name="HeadTexture" type="TextureRect" parent="BodySecondPassViewport"]
+unique_name_in_owner = true
+texture_repeat = 1
+material = SubResource("ShaderMaterial_5jsi1")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+
+[node name="EyesTexture" type="TextureRect" parent="BodySecondPassViewport"]
+unique_name_in_owner = true
+texture_repeat = 1
+material = SubResource("ShaderMaterial_h6bp8")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+
+[node name="FacialTexture" type="TextureRect" parent="BodySecondPassViewport"]
+unique_name_in_owner = true
+texture_repeat = 1
+material = SubResource("ShaderMaterial_wphyk")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+
+[node name="EarsTexture" type="TextureRect" parent="BodySecondPassViewport"]
+unique_name_in_owner = true
+texture_repeat = 1
+material = SubResource("ShaderMaterial_5jsi1")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="NoseTexture" type="TextureRect" parent="BodySecondPassViewport"]
+unique_name_in_owner = true
+texture_repeat = 1
+material = SubResource("ShaderMaterial_5jsi1")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+
+[node name="Add1Texture" type="TextureRect" parent="BodySecondPassViewport"]
+unique_name_in_owner = true
+texture_repeat = 1
+material = SubResource("ShaderMaterial_80x6l")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+
+[node name="MaskTexture" type="TextureRect" parent="BodySecondPassViewport"]
+unique_name_in_owner = true
+texture_repeat = 1
+material = SubResource("ShaderMaterial_6oaft")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+
+[node name="GlassesTexture" type="TextureRect" parent="BodySecondPassViewport"]
+unique_name_in_owner = true
+texture_repeat = 1
+material = SubResource("ShaderMaterial_h7pvq")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+
+[node name="HairTexture" type="TextureRect" parent="BodySecondPassViewport"]
+unique_name_in_owner = true
+texture_repeat = 1
+material = SubResource("ShaderMaterial_xvnm7")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+
+[node name="HatTexture" type="TextureRect" parent="BodySecondPassViewport"]
+unique_name_in_owner = true
+texture_repeat = 1
+material = SubResource("ShaderMaterial_27m3w")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+
+[node name="TailTexture" type="TextureRect" parent="BodySecondPassViewport"]
+unique_name_in_owner = true
+texture_repeat = 1
+material = SubResource("ShaderMaterial_tqmkk")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+
+[node name="BackTexture1" type="TextureRect" parent="BodySecondPassViewport"]
+unique_name_in_owner = true
+texture_repeat = 1
+material = SubResource("ShaderMaterial_jplyd")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+
+[node name="WingsTextureFront" type="TextureRect" parent="BodySecondPassViewport"]
+unique_name_in_owner = true
+texture_repeat = 1
+material = SubResource("ShaderMaterial_yqh2l")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+
+[node name="HornsTexture" type="TextureRect" parent="BodySecondPassViewport"]
+unique_name_in_owner = true
+texture_repeat = 1
+material = SubResource("ShaderMaterial_2kch2")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+
+[node name="HairAddTexture" type="TextureRect" parent="BodySecondPassViewport"]
+unique_name_in_owner = true
+texture_repeat = 1
+material = SubResource("ShaderMaterial_tqmkk")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+
+[node name="MainhandFrontViewport" type="SubViewport" parent="."]
+transparent_bg = true
+handle_input_locally = false
+canvas_item_default_texture_filter = 0
+size = Vector2i(832, 1344)
+
+[node name="MainhandFrontTexture" type="TextureRect" parent="MainhandFrontViewport"]
+unique_name_in_owner = true
+texture_repeat = 1
+material = SubResource("ShaderMaterial_rqyqf")
+offset_right = 832.0
+offset_bottom = 1344.0
+
+[node name="AmmoFrontViewport" type="SubViewport" parent="."]
+transparent_bg = true
+handle_input_locally = false
+canvas_item_default_texture_filter = 0
+size = Vector2i(832, 1344)
+
+[node name="AmmoFrontTexture" type="TextureRect" parent="AmmoFrontViewport"]
+unique_name_in_owner = true
+texture_repeat = 1
+material = SubResource("ShaderMaterial_7sruh")
+offset_right = 832.0
+offset_bottom = 1344.0
+
+[node name="OffhandFrontViewport" type="SubViewport" parent="."]
+disable_3d = true
+transparent_bg = true
+handle_input_locally = false
+canvas_item_default_texture_filter = 0
+size = Vector2i(832, 1344)
+
+[node name="OffhandFrontTexture" type="TextureRect" parent="OffhandFrontViewport"]
+unique_name_in_owner = true
+visible = false
+texture_repeat = 1
+material = SubResource("ShaderMaterial_17kdy")
+offset_right = 1728.0
+offset_bottom = 768.0
+
+[node name="FinalMixViewport" type="SubViewport" parent="."]
+process_mode = 3
+disable_3d = true
+transparent_bg = true
+handle_input_locally = false
+snap_2d_transforms_to_pixel = true
+snap_2d_vertices_to_pixel = true
+canvas_item_default_texture_filter = 3
+size = Vector2i(192, 192)
+
+[node name="Control" type="Control" parent="FinalMixViewport"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 192.0
+offset_bottom = 192.0
+
+[node name="CurrentCharacter" type="TextureRect" parent="FinalMixViewport/Control"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_tcjo3")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(32, 32)
+size_flags_horizontal = 4
+size_flags_vertical = 6
+texture = SubResource("AtlasTexture_urc7j")
+
+[node name="WeaponBack" type="TextureRect" parent="FinalMixViewport/Control/CurrentCharacter"]
+unique_name_in_owner = true
+show_behind_parent = true
+material = SubResource("ShaderMaterial_tcjo3")
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 1
+offset_right = 64.0
+offset_bottom = 64.0
+pivot_offset = Vector2(32, 32)
+mouse_filter = 2
+texture = SubResource("AtlasTexture_5w4mc")
+metadata/_edit_lock_ = true
+
+[node name="WeaponFront" type="TextureRect" parent="FinalMixViewport/Control/CurrentCharacter"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_tcjo3")
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(32, 32)
+mouse_filter = 2
+texture = SubResource("AtlasTexture_05en4")
+metadata/_edit_lock_ = true
+
+[node name="OffhandBack" type="TextureRect" parent="FinalMixViewport/Control/CurrentCharacter"]
+unique_name_in_owner = true
+show_behind_parent = true
+material = SubResource("ShaderMaterial_tcjo3")
+layout_mode = 0
+offset_right = 64.0
+offset_bottom = 64.0
+texture = SubResource("AtlasTexture_rwvy5")
+
+[node name="OffhandFront" type="TextureRect" parent="FinalMixViewport/Control/CurrentCharacter"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_tcjo3")
+layout_mode = 0
+offset_right = 64.0
+offset_bottom = 64.0
+texture = SubResource("AtlasTexture_vluma")
+
+[node name="AmmoBack" type="TextureRect" parent="FinalMixViewport/Control/CurrentCharacter"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 0
+offset_right = 64.0
+offset_bottom = 64.0
+pivot_offset = Vector2(32, 32)
+texture = SubResource("AtlasTexture_pmuc7")
+
+[node name="AmmoFront" type="TextureRect" parent="FinalMixViewport/Control/CurrentCharacter"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 0
+offset_right = 64.0
+offset_bottom = 64.0
+pivot_offset = Vector2(32, 32)
+texture = SubResource("AtlasTexture_nlsl5")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Race:"
+
+[node name="Races" type="OptionButton" parent="VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+
+[node name="Label4" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Default Palette:"
+
+[node name="Palettes" type="OptionButton" parent="VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+
+[node name="HSlider" type="HSlider" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.01
+
+[node name="HelpButton" parent="VBoxContainer/HBoxContainer" instance=ExtResource("8_k8d8s")]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+tooltip_text = "[title]Help[/title]
+The following keys can be used:
+
+[ul]
+Keys \"UP,\" \"DOWN,\" \"LEFT,\" \"RIGHT\": Keep any of these keys pressed to display the walking animation of the character in the direction pressed.
+Keys \"1,\" \"2,\" \"3,\" \"4,\" \"5\": Display one of the available attack animations.
+Key \"SPACE\": Displays the attack animation for the equipped weapon.
+Mouse \"Wheel Up\"/\"Wheel Down\": Scroll through selectable parts to quickly choose the previous/next item.
+Mouse \"Middle Button\": Reset the selected part to the default (item 0).
+[/ul]"
+
+[node name="CustomPanel" parent="VBoxContainer" instance=ExtResource("1_l6a2h")]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_ucmtg")
+style1 = SubResource("StyleBoxFlat_ucmtg")
+style2 = SubResource("StyleBoxTexture_0g6so")
+style3 = SubResource("StyleBoxFlat_ftyei")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/CustomPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer"]
+z_index = 20
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_2wcyy")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_2wcyy")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_u81bc")
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+text = "BODY"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Gender:"
+
+[node name="Gender" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+
+[node name="Control" type="Control" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(22, 22)
+layout_mode = 2
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+tooltip_text = "[title]Lock Item[/title]
+Locks this part so that it does not change when the random button is pressed.
+
+[Note]: If this part is not supported by the character's body or head type, it will be replaced by a compatible part."
+focus_mode = 0
+
+[node name="HBoxContainer12" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer12"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Body:"
+
+[node name="Body" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer12"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer12"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "[title]Edit Part Colors[/title]
+Edit the colors of this part of the character."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = {
+"data": [{
+"color": 4.14035e+09,
+"colors": [0.0, 0.0, 29.0, 8.40312e+08, 94.0, 2.55356e+09, 152.0, 3.49873e+09, 179.0, 3.78506e+09, 220.0, 4.14035e+09, 239.0, 4.00864e+09],
+"id": "human_skin_light",
+"name": "Light"
+}, {
+"color": 4.29074e+09,
+"colors": [0.0, 0.0, 29.0, 8.40312e+08, 94.0, 2.68927e+09, 152.0, 3.49873e+09, 179.0, 4.28902e+09, 220.0, 4.29074e+09, 239.0, 4.14035e+09],
+"id": "human_skin_peach",
+"name": "Peach"
+}, {
+"color": 3.49873e+09,
+"colors": [0.0, 0.0, 29.0, 8.40312e+08, 94.0, 1.4635e+09, 152.0, 2.38796e+09, 179.0, 2.69126e+09, 220.0, 3.49873e+09, 239.0, 3.41695e+09],
+"id": "human_skin_olive",
+"name": "Olive"
+}, {
+"color": 3.21279e+09,
+"colors": [0.0, 0.0, 29.0, 8.40312e+08, 94.0, 1.42738e+09, 152.0, 1.4635e+09, 179.0, 1.93366e+09, 220.0, 3.21279e+09, 239.0, 3.21279e+09],
+"id": "human_skin_brown",
+"name": "Brown"
+}, {
+"color": 1.4635e+09,
+"colors": [0.0, 0.0, 29.0, 8.40312e+08, 94.0, 2.86331e+08, 152.0, 8.40312e+08, 179.0, 9.92813e+08, 220.0, 1.4635e+09, 239.0, 1.93366e+09],
+"id": "human_skin_black",
+"name": "Black"
+}],
+"palette": {
+"current_gradient": PackedColorArray(0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.196078, 0.0862745, 0.137255, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.596078, 0.203922, 0.301961, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.815686, 0.541176, 0.454902, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.882353, 0.607843, 0.490196, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.964706, 0.784314, 0.686275, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.933333, 0.933333, 0.933333, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1),
+"custom_colors": {
+"color": 4.14035e+09,
+"colors": [0.0, 0.0, 29.0, 8.40312e+08, 94.0, 2.55356e+09, 152.0, 3.49873e+09, 179.0, 3.78506e+09, 220.0, 4.14035e+09, 239.0, 4.00864e+09],
+"id": "human_skin_light",
+"name": "Light"
+},
+"item_selected": 0,
+"lightness": 0.0
+},
+"target": Object(TextureRect,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":1,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":1,"material":SubResource("ShaderMaterial_5jsi1"),"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(832, 1344),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":832.0,"offset_bottom":1344.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":1,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","texture":Resource("res://addons/rpg_character_creator/textures/character/body/humanoid_m1.png"),"expand_mode":0,"stretch_mode":0,"flip_h":false,"flip_v":false,"script":null)
+
+}
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer12" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+tooltip_text = "[title]Lock Item[/title]
+Locks this part so that it does not change when the random button is pressed.
+
+[Note]: If this part is not supported by the character's body or head type, it will be replaced by a compatible part."
+focus_mode = 0
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer5"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Eyes:"
+
+[node name="Eyes" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer5"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+disabled = true
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "[title]Edit Part Colors[/title]
+Edit the colors of this part of the character."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = {
+"data": [{
+"color": 1.52293e+09,
+"colors": [0.0, 0.0, 26.0, 8.40312e+08, 56.0, 9.93745e+08, 129.0, 1.46904e+09, 190.0, 1.52293e+09, 246.0, 4.00864e+09],
+"id": "human_eyes_blue",
+"name": "Blue"
+}, {
+"color": 1.9351e+09,
+"colors": [0.0, 0.0, 26.0, 8.40312e+08, 56.0, 8.40312e+08, 129.0, 1.9351e+09, 190.0, 1.9351e+09, 246.0, 4.00864e+09],
+"id": "human_eyes_brown",
+"name": "Brown"
+}, {
+"color": 2.79554e+09,
+"colors": [0.0, 0.0, 26.0, 8.40312e+08, 56.0, 1.14532e+09, 129.0, 2.29065e+09, 190.0, 2.79554e+09, 246.0, 4.00864e+09],
+"id": "human_eyes_gray",
+"name": "Gray"
+}, {
+"color": 2.61622e+09,
+"colors": [0.0, 0.0, 26.0, 8.40312e+08, 56.0, 1.09479e+09, 129.0, 1.0695e+09, 190.0, 2.61622e+09, 246.0, 4.00864e+09],
+"id": "human_eyes_green",
+"name": "Green"
+}],
+"palette": {
+"current_gradient": PackedColorArray(0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.196078, 0.0862745, 0.137255, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.231373, 0.231373, 0.341176, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.341176, 0.560784, 0.780392, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.352941, 0.772549, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.933333, 0.933333, 0.933333, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1),
+"custom_colors": {
+"color": 1.52293e+09,
+"colors": [0.0, 0.0, 26.0, 8.40312e+08, 56.0, 9.93745e+08, 129.0, 1.46904e+09, 190.0, 1.52293e+09, 246.0, 4.00864e+09],
+"id": "human_eyes_blue",
+"name": "Blue"
+},
+"item_selected": 0,
+"lightness": 0.0
+},
+"target": Object(TextureRect,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":1,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":1,"material":SubResource("ShaderMaterial_h6bp8"),"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(832, 1344),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":832.0,"offset_bottom":1344.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":1,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","texture":Resource("res://addons/rpg_character_creator/textures/character/eyes/human_m.png"),"expand_mode":0,"stretch_mode":0,"flip_h":false,"flip_v":false,"script":null)
+
+}
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer5" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+tooltip_text = "[title]Lock Item[/title]
+Locks this part so that it does not change when the random button is pressed.
+
+[Note]: If this part is not supported by the character's body or head type, it will be replaced by a compatible part."
+focus_mode = 0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Wings:"
+
+[node name="Wings" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+disabled = true
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
+modulate = Color(1, 1, 1, 0.4)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "[title]Edit Part Colors[/title]
+Edit the colors of this part of the character."
+focus_mode = 0
+mouse_filter = 2
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+tooltip_text = "[title]Lock Item[/title]
+Locks this part so that it does not change when the random button is pressed.
+
+[Note]: If this part is not supported by the character's body or head type, it will be replaced by a compatible part."
+focus_mode = 0
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Tail:"
+
+[node name="Tail" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+disabled = true
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3"]
+modulate = Color(1, 1, 1, 0.4)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "[title]Edit Part Colors[/title]
+Edit the colors of this part of the character."
+focus_mode = 0
+mouse_filter = 2
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+tooltip_text = "[title]Lock Item[/title]
+Locks this part so that it does not change when the random button is pressed.
+
+[Note]: If this part is not supported by the character's body or head type, it will be replaced by a compatible part."
+focus_mode = 0
+
+[node name="HBoxContainer13" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer13"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Horns:"
+
+[node name="Horns" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer13"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer13"]
+modulate = Color(1, 1, 1, 0.4)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "[title]Edit Part Colors[/title]
+Edit the colors of this part of the character."
+focus_mode = 0
+mouse_filter = 2
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer13" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+tooltip_text = "[title]Lock Item[/title]
+Locks this part so that it does not change when the random button is pressed.
+
+[Note]: If this part is not supported by the character's body or head type, it will be replaced by a compatible part."
+focus_mode = 0
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Hair:"
+
+[node name="Hair" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4"]
+modulate = Color(1, 1, 1, 0.4)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "[title]Edit Part Colors[/title]
+Edit the colors of this part of the character."
+focus_mode = 0
+mouse_filter = 2
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+tooltip_text = "[title]Lock Item[/title]
+Locks this part so that it does not change when the random button is pressed.
+
+[Note]: If this part is not supported by the character's body or head type, it will be replaced by a compatible part."
+focus_mode = 0
+
+[node name="HBoxContainer14" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer14"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Hair Addon:"
+
+[node name="Hairadd" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer14"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer14"]
+modulate = Color(1, 1, 1, 0.4)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "[title]Edit Part Colors[/title]
+Edit the colors of this part of the character."
+focus_mode = 0
+mouse_filter = 2
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer14" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+tooltip_text = "[title]Lock Item[/title]
+Locks this part so that it does not change when the random button is pressed.
+
+[Note]: If this part is not supported by the character's body or head type, it will be replaced by a compatible part."
+focus_mode = 0
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer6"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Ears:"
+
+[node name="Ears" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer6"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer6" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+tooltip_text = "[title]Lock Item[/title]
+Locks this part so that it does not change when the random button is pressed.
+
+[Note]: If this part is not supported by the character's body or head type, it will be replaced by a compatible part."
+focus_mode = 0
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer7"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Nose:"
+
+[node name="Nose" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer7"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer7" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+tooltip_text = "[title]Lock Item[/title]
+Locks this part so that it does not change when the random button is pressed.
+
+[Note]: If this part is not supported by the character's body or head type, it will be replaced by a compatible part."
+focus_mode = 0
+
+[node name="HBoxContainer8" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer8"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Facial Hair:"
+
+[node name="Facial" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer8"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer8"]
+modulate = Color(1, 1, 1, 0.4)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "[title]Edit Part Colors[/title]
+Edit the colors of this part of the character."
+focus_mode = 0
+mouse_filter = 2
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer8" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+tooltip_text = "[title]Lock Item[/title]
+Locks this part so that it does not change when the random button is pressed.
+
+[Note]: If this part is not supported by the character's body or head type, it will be replaced by a compatible part."
+focus_mode = 0
+
+[node name="HBoxContainer9" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer9"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Body Addon 1:"
+
+[node name="Add1" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer9"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer9"]
+modulate = Color(1, 1, 1, 0.4)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "[title]Edit Part Colors[/title]
+Edit the colors of this part of the character."
+focus_mode = 0
+mouse_filter = 2
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer9" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+tooltip_text = "[title]Lock Item[/title]
+Locks this part so that it does not change when the random button is pressed.
+
+[Note]: If this part is not supported by the character's body or head type, it will be replaced by a compatible part."
+focus_mode = 0
+
+[node name="HBoxContainer10" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer10"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Body Addon 2:"
+
+[node name="Add2" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer10"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer10"]
+modulate = Color(1, 1, 1, 0.4)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "[title]Edit Part Colors[/title]
+Edit the colors of this part of the character."
+focus_mode = 0
+mouse_filter = 2
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer10" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+tooltip_text = "[title]Lock Item[/title]
+Locks this part so that it does not change when the random button is pressed.
+
+[Note]: If this part is not supported by the character's body or head type, it will be replaced by a compatible part."
+focus_mode = 0
+
+[node name="HBoxContainer11" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer11"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Body Addon 3:"
+
+[node name="Add3" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer11"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer11"]
+modulate = Color(1, 1, 1, 0.4)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "[title]Edit Part Colors[/title]
+Edit the colors of this part of the character."
+focus_mode = 0
+mouse_filter = 2
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer11" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+tooltip_text = "[title]Lock Item[/title]
+Locks this part so that it does not change when the random button is pressed.
+
+[Note]: If this part is not supported by the character's body or head type, it will be replaced by a compatible part."
+focus_mode = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="RandomBody" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/HBoxContainer" instance=ExtResource("2_kiwgy")]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+tooltip_text = "Randomly choose the body parts for this character."
+text = "Random "
+icon = SubResource("AtlasTexture_u5u2x")
+expand_icon = true
+
+[node name="ClearBody" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/HBoxContainer" instance=ExtResource("2_kiwgy")]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+tooltip_text = "Remove all added body parts from this character and leave a base character.
+
+[Note]: The equipment will not be changed."
+text = "Clear Body"
+icon = SubResource("AtlasTexture_148di")
+expand_icon = true
+
+[node name="PanelContainer2" type="PanelContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_gkhc5")
+
+[node name="ProyectilesBack" type="Control" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="CharacterContainer" type="VBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer2/CharacterContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_u81bc")
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer2/CharacterContainer/PanelContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+text = "CURRENT CHARACTER"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer2/CharacterContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+
+[node name="FinalCharacter" type="TextureRect" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer2/CharacterContainer/Control"]
+unique_name_in_owner = true
+z_index = 110
+material = SubResource("ShaderMaterial_ucmtg")
+layout_mode = 1
+offset_left = -96.0
+offset_top = -96.0
+offset_right = 96.0
+offset_bottom = 96.0
+scale = Vector2(4, 4)
+pivot_offset = Vector2(96, 96)
+size_flags_horizontal = 4
+size_flags_vertical = 6
+mouse_filter = 2
+metadata/_edit_lock_ = true
+
+[node name="ProyectileTop" type="Control" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer2/CharacterContainer/Control/FinalCharacter"]
+unique_name_in_owner = true
+anchors_preset = 0
+offset_left = 64.0
+offset_top = 64.0
+offset_right = 64.0
+offset_bottom = 64.0
+
+[node name="CreateCharacterAndEquipment" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer2/CharacterContainer" instance=ExtResource("2_kiwgy")]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+text = "Save Actor / Equipment"
+icon = SubResource("AtlasTexture_pjp0e")
+expand_icon = true
+
+[node name="PanelContainer3" type="PanelContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer"]
+z_index = 20
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_0ntva")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_0ntva")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_g63yk")
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+text = "GEAR"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Mask:"
+
+[node name="Mask" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+modulate = Color(1, 1, 1, 0.4)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "[title]Edit Part Colors[/title]
+Edit the colors of this part of the character."
+focus_mode = 0
+mouse_filter = 2
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+tooltip_text = "[title]Lock Item[/title]
+Locks this part so that it does not change when the random button is pressed.
+
+[Note]: If this part is not supported by the character's body or head type, it will be replaced by a compatible part."
+focus_mode = 0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Hat:"
+
+[node name="Hat" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
+modulate = Color(1, 1, 1, 0.4)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "[title]Edit Part Colors[/title]
+Edit the colors of this part of the character."
+focus_mode = 0
+mouse_filter = 2
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+tooltip_text = "[title]Lock Item[/title]
+Locks this part so that it does not change when the random button is pressed.
+
+[Note]: If this part is not supported by the character's body or head type, it will be replaced by a compatible part."
+focus_mode = 0
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Facial:"
+
+[node name="Glasses" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3"]
+modulate = Color(1, 1, 1, 0.4)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "[title]Edit Part Colors[/title]
+Edit the colors of this part of the character."
+focus_mode = 0
+mouse_filter = 2
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+tooltip_text = "[title]Lock Item[/title]
+Locks this part so that it does not change when the random button is pressed.
+
+[Note]: If this part is not supported by the character's body or head type, it will be replaced by a compatible part."
+focus_mode = 0
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Suit:"
+
+[node name="Suit" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4"]
+modulate = Color(1, 1, 1, 0.4)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "[title]Edit Part Colors[/title]
+Edit the colors of this part of the character."
+focus_mode = 0
+mouse_filter = 2
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+tooltip_text = "[title]Lock Item[/title]
+Locks this part so that it does not change when the random button is pressed.
+
+[Note]: If this part is not supported by the character's body or head type, it will be replaced by a compatible part."
+focus_mode = 0
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer6"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Shirt:"
+
+[node name="Shirt" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer6"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer6"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "[title]Edit Part Colors[/title]
+Edit the colors of this part of the character."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = {
+"data": [{
+"color": 1.14532e+09,
+"colors": [0.0, 0.0, 16.0, 255.0, 23.0, 255.0, 27.0, 2.86331e+08, 66.0, 2.86331e+08, 133.0, 8.40312e+08, 161.0, 8.40312e+08, 183.0, 8.58994e+08, 228.0, 1.14532e+09, 255.0, 1.43166e+09],
+"id": "cloth_black1",
+"name": "Black"
+}, {
+"color": 2.55295e+08,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 255.0, 66.0, 2.53308e+08, 133.0, 2.52662e+08, 161.0, 2.52662e+08, 183.0, 2.52662e+08, 228.0, 2.55295e+08, 255.0, 1.09722e+06],
+"id": "cloth_blue1",
+"name": "Blue"
+}, {
+"color": 1.06114e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 2.86331e+08, 66.0, 2.53308e+08, 133.0, 5.22141e+08, 161.0, 9.93745e+08, 183.0, 9.93745e+08, 228.0, 1.06114e+09, 255.0, 1.26653e+09],
+"id": "cloth_blue2",
+"name": "Light Blue"
+}, {
+"color": 2.53308e+08,
+"colors": [0.0, 0.0, 16.0, 255.0, 23.0, 255.0, 27.0, 255.0, 66.0, 2.86331e+08, 133.0, 255.0, 161.0, 2.86331e+08, 183.0, 2.53308e+08, 228.0, 2.53308e+08, 255.0, 32767.0],
+"id": "cloth_blue3",
+"name": "Dark Blue"
+}, {
+"color": 5.22141e+08,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 2.86331e+08, 66.0, 2.86331e+08, 133.0, 2.53308e+08, 161.0, 5.22141e+08, 183.0, 5.22141e+08, 228.0, 5.22141e+08, 255.0, 9.93745e+08],
+"id": "cloth_blue4",
+"name": "Navy"
+}, {
+"color": 3.35452e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 2.86331e+08, 66.0, 8.58994e+08, 133.0, 1.22955e+09, 161.0, 1.93663e+09, 183.0, 2.83075e+09, 228.0, 3.35452e+09, 255.0, 4.29497e+09],
+"id": "cloth_blue5",
+"name": "Sky"
+}, {
+"color": 2.40856e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 2.86331e+08, 66.0, 5.22141e+08, 133.0, 1.46351e+09, 161.0, 1.93512e+09, 183.0, 1.93512e+09, 228.0, 2.40856e+09, 255.0, 2.4104e+09],
+"id": "cloth_blue6",
+"name": "Blue 6"
+}, {
+"color": 1.77195e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 2.86331e+08, 66.0, 9.93745e+08, 133.0, 1.22955e+09, 161.0, 1.46719e+09, 183.0, 1.46719e+09, 228.0, 1.77195e+09, 255.0, 2.4104e+09],
+"id": "cloth_blue7",
+"name": "Pale Blue"
+}, {
+"color": 1.4635e+09,
+"colors": [0.0, 0.0, 16.0, 255.0, 23.0, 255.0, 27.0, 2.86331e+08, 66.0, 2.86331e+08, 133.0, 8.40312e+08, 161.0, 9.92813e+08, 183.0, 9.92813e+08, 228.0, 1.4635e+09, 255.0, 1.93366e+09],
+"id": "cloth_brown1",
+"name": "Brown"
+}, {
+"color": 1.93366e+09,
+"colors": [0.0, 0.0, 16.0, 255.0, 23.0, 255.0, 27.0, 2.86331e+08, 66.0, 8.40312e+08, 133.0, 1.42738e+09, 161.0, 1.59712e+09, 183.0, 1.93366e+09, 228.0, 1.93366e+09, 255.0, 3.21279e+09],
+"id": "cloth_brown2",
+"name": "Walnut"
+}, {
+"color": 1.9351e+09,
+"colors": [0.0, 0.0, 16.0, 255.0, 23.0, 255.0, 27.0, 2.86331e+08, 66.0, 8.40312e+08, 133.0, 9.92813e+08, 161.0, 1.59712e+09, 183.0, 1.93366e+09, 228.0, 1.9351e+09, 255.0, 2.4067e+09],
+"id": "cloth_brown3",
+"name": "Leather"
+}, {
+"color": 3.41695e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 2.86331e+08, 66.0, 8.40312e+08, 133.0, 1.93366e+09, 161.0, 2.38796e+09, 183.0, 3.22912e+09, 228.0, 3.41695e+09, 255.0, 3.82151e+09],
+"id": "cloth_brown4",
+"name": "Tan"
+}, {
+"color": 2.00432e+09,
+"colors": [0.0, 0.0, 16.0, 255.0, 23.0, 255.0, 27.0, 2.86331e+08, 66.0, 8.40312e+08, 133.0, 1.14532e+09, 161.0, 9.93745e+08, 183.0, 1.43166e+09, 228.0, 2.00432e+09, 255.0, 2.86331e+09],
+"id": "cloth_gray1",
+"name": "Gray"
+}, {
+"color": 2.00432e+09,
+"colors": [0.0, 0.0, 16.0, 255.0, 23.0, 255.0, 27.0, 2.86331e+08, 66.0, 2.86331e+08, 133.0, 8.40312e+08, 161.0, 8.40312e+08, 183.0, 1.43166e+09, 228.0, 2.00432e+09, 255.0, 2.29065e+09],
+"id": "cloth_gray2",
+"name": "Gray2"
+}, {
+"color": 2.07359e+08,
+"colors": [0.0, 0.0, 16.0, 255.0, 23.0, 255.0, 27.0, 2.86331e+08, 66.0, 2.86331e+08, 133.0, 4.21401e+08, 161.0, 4.21401e+08, 183.0, 4.21401e+08, 228.0, 2.07359e+08, 255.0, 2.07359e+08],
+"id": "cloth_green1",
+"name": "Green"
+}, {
+"color": 5.41461e+08,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 4.21401e+08, 66.0, 4.21401e+08, 133.0, 5.41461e+08, 161.0, 2.07359e+08, 183.0, 2.07359e+08, 228.0, 5.41461e+08, 255.0, 1.01385e+09],
+"id": "cloth_green2",
+"name": "Light Green 1"
+}, {
+"color": 1.01385e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 2.53308e+08, 66.0, 2.53308e+08, 133.0, 5.9246e+08, 161.0, 5.9246e+08, 183.0, 5.9246e+08, 228.0, 1.01385e+09, 255.0, 1.4846e+09],
+"id": "cloth_green3",
+"name": "Light Green 2"
+}, {
+"color": 1.94062e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 2.86331e+08, 66.0, 5.06275e+08, 133.0, 1.09479e+09, 161.0, 1.01385e+09, 183.0, 1.4846e+09, 228.0, 1.94062e+09, 255.0, 2.41222e+09],
+"id": "cloth_green4",
+"name": "Sara Green"
+}, {
+"color": 2.40489e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 2.53308e+08, 66.0, 5.22141e+08, 133.0, 1.46351e+09, 161.0, 1.46536e+09, 183.0, 1.93512e+09, 228.0, 2.40489e+09, 255.0, 3.11335e+09],
+"id": "cloth_lavender1",
+"name": "Lavender"
+}, {
+"color": 2.55356e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 2.53308e+08, 66.0, 5.22141e+08, 133.0, 1.26093e+09, 161.0, 1.46351e+09, 183.0, 1.67906e+09, 228.0, 2.55356e+09, 255.0, 2.87647e+09],
+"id": "cloth_magenta1",
+"name": "Magenta"
+}, {
+"color": 4.28651e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 8.40312e+08, 66.0, 1.42738e+09, 133.0, 2.68927e+09, 161.0, 3.20859e+09, 183.0, 3.66464e+09, 228.0, 4.28651e+09, 255.0, 4.13959e+09],
+"id": "cloth_orange1",
+"name": "Orange"
+}, {
+"color": 4.28668e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 2.53308e+08, 66.0, 8.58994e+08, 133.0, 1.91683e+09, 161.0, 2.40488e+09, 183.0, 3.27749e+09, 228.0, 4.28668e+09, 255.0, 4.28668e+09],
+"id": "cloth_pink1",
+"name": "Pink"
+}, {
+"color": 1.61171e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 2.53308e+08, 66.0, 8.39534e+08, 133.0, 1.09054e+09, 161.0, 1.09054e+09, 183.0, 1.51155e+09, 228.0, 1.61171e+09, 255.0, 2.26825e+09],
+"id": "cloth_purple1",
+"name": "Purple 1"
+}, {
+"color": 1.51155e+09,
+"colors": [0.0, 0.0, 16.0, 255.0, 23.0, 255.0, 27.0, 2.86331e+08, 66.0, 2.53308e+08, 133.0, 8.39534e+08, 161.0, 8.39534e+08, 183.0, 1.09054e+09, 228.0, 1.51155e+09, 255.0, 1.91683e+09],
+"id": "cloth_purple2",
+"name": "Purple 2"
+}, {
+"color": 2.76955e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 1.07532e+09, 66.0, 1.07532e+09, 133.0, 1.64574e+09, 161.0, 2.13071e+09, 183.0, 2.13071e+09, 228.0, 2.76955e+09, 255.0, 2.76955e+09],
+"id": "cloth_red1",
+"name": "Red"
+}, {
+"color": 2.76955e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 1.07532e+09, 66.0, 1.07532e+09, 133.0, 1.64574e+09, 161.0, 1.64574e+09, 183.0, 2.13071e+09, 228.0, 2.76955e+09, 255.0, 3.17196e+09],
+"id": "cloth_red2",
+"name": "Light Red"
+}, {
+"color": 1.59712e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 2.86331e+08, 66.0, 8.40312e+08, 133.0, 8.40312e+08, 161.0, 1.42772e+09, 183.0, 1.42738e+09, 228.0, 1.59712e+09, 255.0, 2.13071e+09],
+"id": "cloth_red3",
+"name": "Maroon"
+}, {
+"color": 1.06953e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 2.86331e+08, 66.0, 5.22141e+08, 133.0, 2.55295e+08, 161.0, 4.88986e+06, 183.0, 3.11984e+08, 228.0, 1.06953e+09, 255.0, 1.06953e+09],
+"id": "cloth_teal1",
+"name": "Teal"
+}, {
+"color": 1.46719e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 6.74498e+08, 66.0, 5.06275e+08, 133.0, 5.9246e+08, 161.0, 9.95573e+08, 183.0, 5.9246e+08, 228.0, 1.46719e+09, 255.0, 2.12367e+09],
+"id": "cloth_teal2",
+"name": "Dark Teal"
+}, {
+"color": 3.99178e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 2.86331e+08, 66.0, 1.14532e+09, 133.0, 2.29065e+09, 161.0, 2.79554e+09, 183.0, 3.35174e+09, 228.0, 3.99178e+09, 255.0, 4.29497e+09],
+"id": "cloth_white1",
+"name": "White"
+}, {
+"color": 3.14964e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 2.86331e+08, 66.0, 1.14532e+09, 133.0, 2.00432e+09, 161.0, 2.29065e+09, 183.0, 2.29065e+09, 228.0, 3.14964e+09, 255.0, 3.72231e+09],
+"id": "cloth_white2",
+"name": "White Dirty"
+}, {
+"color": 2.98117e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 6.74498e+08, 66.0, 6.74498e+08, 133.0, 1.65059e+09, 161.0, 2.13903e+09, 183.0, 2.13903e+09, 228.0, 2.98117e+09, 255.0, 4.29215e+09],
+"id": "cloth_yellow1",
+"name": "Yellow 1"
+}, {
+"color": 4.13959e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 2.86331e+08, 66.0, 1.59712e+09, 133.0, 3.0258e+09, 161.0, 3.66464e+09, 183.0, 3.61726e+09, 228.0, 4.13959e+09, 255.0, 4.29354e+09],
+"id": "cloth_yellow2",
+"name": "Yellow 2"
+}],
+"palette": {
+"current_gradient": PackedColorArray(0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0666667, 0.0666667, 0.0666667, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0666667, 0.0666667, 0.0666667, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.196078, 0.0862745, 0.137255, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.196078, 0.0862745, 0.137255, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0.2, 0.2, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.266667, 0.266667, 0.266667, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.333333, 0.333333, 0.333333, 1),
+"custom_colors": {
+"color": 1.14532e+09,
+"colors": [0.0, 0.0, 16.0, 255.0, 23.0, 255.0, 27.0, 2.86331e+08, 66.0, 2.86331e+08, 133.0, 8.40312e+08, 161.0, 8.40312e+08, 183.0, 8.58994e+08, 228.0, 1.14532e+09, 255.0, 1.43166e+09],
+"id": "cloth_black1",
+"name": "Black"
+},
+"item_selected": 0,
+"lightness": 0.0
+},
+"target": Object(TextureRect,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":1,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":1,"material":SubResource("ShaderMaterial_oo0av"),"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(832, 1344),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":832.0,"offset_bottom":1344.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":1,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","texture":Resource("res://addons/rpg_character_creator/textures/gear/shirt/shirt/sleeveless1_m1.png"),"expand_mode":0,"stretch_mode":0,"flip_h":false,"flip_v":false,"script":null)
+
+}
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer6" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+tooltip_text = "[title]Lock Item[/title]
+Locks this part so that it does not change when the random button is pressed.
+
+[Note]: If this part is not supported by the character's body or head type, it will be replaced by a compatible part."
+focus_mode = 0
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer5"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Coverall:"
+
+[node name="Jacket" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer5"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer5"]
+modulate = Color(1, 1, 1, 0.4)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "[title]Edit Part Colors[/title]
+Edit the colors of this part of the character."
+focus_mode = 0
+mouse_filter = 2
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer5" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+tooltip_text = "[title]Lock Item[/title]
+Locks this part so that it does not change when the random button is pressed.
+
+[Note]: If this part is not supported by the character's body or head type, it will be replaced by a compatible part."
+focus_mode = 0
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer7"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Gloves:"
+
+[node name="Gloves" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer7"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer7"]
+modulate = Color(1, 1, 1, 0.4)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "[title]Edit Part Colors[/title]
+Edit the colors of this part of the character."
+focus_mode = 0
+mouse_filter = 2
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer7" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+tooltip_text = "[title]Lock Item[/title]
+Locks this part so that it does not change when the random button is pressed.
+
+[Note]: If this part is not supported by the character's body or head type, it will be replaced by a compatible part."
+focus_mode = 0
+
+[node name="HBoxContainer8" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer8"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Belt:"
+
+[node name="Belt" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer8"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer8"]
+modulate = Color(1, 1, 1, 0.4)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "[title]Edit Part Colors[/title]
+Edit the colors of this part of the character."
+focus_mode = 0
+mouse_filter = 2
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer8" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+tooltip_text = "[title]Lock Item[/title]
+Locks this part so that it does not change when the random button is pressed.
+
+[Note]: If this part is not supported by the character's body or head type, it will be replaced by a compatible part."
+focus_mode = 0
+
+[node name="HBoxContainer9" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer9"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Pants:"
+
+[node name="Pants" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer9"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer9"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "[title]Edit Part Colors[/title]
+Edit the colors of this part of the character."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = {
+"data": [{
+"color": 1.14532e+09,
+"colors": [0.0, 0.0, 16.0, 255.0, 23.0, 255.0, 27.0, 2.86331e+08, 66.0, 2.86331e+08, 133.0, 8.40312e+08, 161.0, 8.40312e+08, 183.0, 8.58994e+08, 228.0, 1.14532e+09, 255.0, 1.43166e+09],
+"id": "cloth_black1",
+"name": "Black"
+}, {
+"color": 2.55295e+08,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 255.0, 66.0, 2.53308e+08, 133.0, 2.52662e+08, 161.0, 2.52662e+08, 183.0, 2.52662e+08, 228.0, 2.55295e+08, 255.0, 1.09722e+06],
+"id": "cloth_blue1",
+"name": "Blue"
+}, {
+"color": 1.06114e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 2.86331e+08, 66.0, 2.53308e+08, 133.0, 5.22141e+08, 161.0, 9.93745e+08, 183.0, 9.93745e+08, 228.0, 1.06114e+09, 255.0, 1.26653e+09],
+"id": "cloth_blue2",
+"name": "Light Blue"
+}, {
+"color": 2.53308e+08,
+"colors": [0.0, 0.0, 16.0, 255.0, 23.0, 255.0, 27.0, 255.0, 66.0, 2.86331e+08, 133.0, 255.0, 161.0, 2.86331e+08, 183.0, 2.53308e+08, 228.0, 2.53308e+08, 255.0, 32767.0],
+"id": "cloth_blue3",
+"name": "Dark Blue"
+}, {
+"color": 5.22141e+08,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 2.86331e+08, 66.0, 2.86331e+08, 133.0, 2.53308e+08, 161.0, 5.22141e+08, 183.0, 5.22141e+08, 228.0, 5.22141e+08, 255.0, 9.93745e+08],
+"id": "cloth_blue4",
+"name": "Navy"
+}, {
+"color": 3.35452e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 2.86331e+08, 66.0, 8.58994e+08, 133.0, 1.22955e+09, 161.0, 1.93663e+09, 183.0, 2.83075e+09, 228.0, 3.35452e+09, 255.0, 4.29497e+09],
+"id": "cloth_blue5",
+"name": "Sky"
+}, {
+"color": 2.40856e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 2.86331e+08, 66.0, 5.22141e+08, 133.0, 1.46351e+09, 161.0, 1.93512e+09, 183.0, 1.93512e+09, 228.0, 2.40856e+09, 255.0, 2.4104e+09],
+"id": "cloth_blue6",
+"name": "Blue 6"
+}, {
+"color": 1.77195e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 2.86331e+08, 66.0, 9.93745e+08, 133.0, 1.22955e+09, 161.0, 1.46719e+09, 183.0, 1.46719e+09, 228.0, 1.77195e+09, 255.0, 2.4104e+09],
+"id": "cloth_blue7",
+"name": "Pale Blue"
+}, {
+"color": 1.4635e+09,
+"colors": [0.0, 0.0, 16.0, 255.0, 23.0, 255.0, 27.0, 2.86331e+08, 66.0, 2.86331e+08, 133.0, 8.40312e+08, 161.0, 9.92813e+08, 183.0, 9.92813e+08, 228.0, 1.4635e+09, 255.0, 1.93366e+09],
+"id": "cloth_brown1",
+"name": "Brown"
+}, {
+"color": 1.93366e+09,
+"colors": [0.0, 0.0, 16.0, 255.0, 23.0, 255.0, 27.0, 2.86331e+08, 66.0, 8.40312e+08, 133.0, 1.42738e+09, 161.0, 1.59712e+09, 183.0, 1.93366e+09, 228.0, 1.93366e+09, 255.0, 3.21279e+09],
+"id": "cloth_brown2",
+"name": "Walnut"
+}, {
+"color": 1.9351e+09,
+"colors": [0.0, 0.0, 16.0, 255.0, 23.0, 255.0, 27.0, 2.86331e+08, 66.0, 8.40312e+08, 133.0, 9.92813e+08, 161.0, 1.59712e+09, 183.0, 1.93366e+09, 228.0, 1.9351e+09, 255.0, 2.4067e+09],
+"id": "cloth_brown3",
+"name": "Leather"
+}, {
+"color": 3.41695e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 2.86331e+08, 66.0, 8.40312e+08, 133.0, 1.93366e+09, 161.0, 2.38796e+09, 183.0, 3.22912e+09, 228.0, 3.41695e+09, 255.0, 3.82151e+09],
+"id": "cloth_brown4",
+"name": "Tan"
+}, {
+"color": 2.00432e+09,
+"colors": [0.0, 0.0, 16.0, 255.0, 23.0, 255.0, 27.0, 2.86331e+08, 66.0, 8.40312e+08, 133.0, 1.14532e+09, 161.0, 9.93745e+08, 183.0, 1.43166e+09, 228.0, 2.00432e+09, 255.0, 2.86331e+09],
+"id": "cloth_gray1",
+"name": "Gray"
+}, {
+"color": 2.00432e+09,
+"colors": [0.0, 0.0, 16.0, 255.0, 23.0, 255.0, 27.0, 2.86331e+08, 66.0, 2.86331e+08, 133.0, 8.40312e+08, 161.0, 8.40312e+08, 183.0, 1.43166e+09, 228.0, 2.00432e+09, 255.0, 2.29065e+09],
+"id": "cloth_gray2",
+"name": "Gray2"
+}, {
+"color": 2.07359e+08,
+"colors": [0.0, 0.0, 16.0, 255.0, 23.0, 255.0, 27.0, 2.86331e+08, 66.0, 2.86331e+08, 133.0, 4.21401e+08, 161.0, 4.21401e+08, 183.0, 4.21401e+08, 228.0, 2.07359e+08, 255.0, 2.07359e+08],
+"id": "cloth_green1",
+"name": "Green"
+}, {
+"color": 5.41461e+08,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 4.21401e+08, 66.0, 4.21401e+08, 133.0, 5.41461e+08, 161.0, 2.07359e+08, 183.0, 2.07359e+08, 228.0, 5.41461e+08, 255.0, 1.01385e+09],
+"id": "cloth_green2",
+"name": "Light Green 1"
+}, {
+"color": 1.01385e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 2.53308e+08, 66.0, 2.53308e+08, 133.0, 5.9246e+08, 161.0, 5.9246e+08, 183.0, 5.9246e+08, 228.0, 1.01385e+09, 255.0, 1.4846e+09],
+"id": "cloth_green3",
+"name": "Light Green 2"
+}, {
+"color": 1.94062e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 2.86331e+08, 66.0, 5.06275e+08, 133.0, 1.09479e+09, 161.0, 1.01385e+09, 183.0, 1.4846e+09, 228.0, 1.94062e+09, 255.0, 2.41222e+09],
+"id": "cloth_green4",
+"name": "Sara Green"
+}, {
+"color": 2.40489e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 2.53308e+08, 66.0, 5.22141e+08, 133.0, 1.46351e+09, 161.0, 1.46536e+09, 183.0, 1.93512e+09, 228.0, 2.40489e+09, 255.0, 3.11335e+09],
+"id": "cloth_lavender1",
+"name": "Lavender"
+}, {
+"color": 2.55356e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 2.53308e+08, 66.0, 5.22141e+08, 133.0, 1.26093e+09, 161.0, 1.46351e+09, 183.0, 1.67906e+09, 228.0, 2.55356e+09, 255.0, 2.87647e+09],
+"id": "cloth_magenta1",
+"name": "Magenta"
+}, {
+"color": 4.28651e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 8.40312e+08, 66.0, 1.42738e+09, 133.0, 2.68927e+09, 161.0, 3.20859e+09, 183.0, 3.66464e+09, 228.0, 4.28651e+09, 255.0, 4.13959e+09],
+"id": "cloth_orange1",
+"name": "Orange"
+}, {
+"color": 4.28668e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 2.53308e+08, 66.0, 8.58994e+08, 133.0, 1.91683e+09, 161.0, 2.40488e+09, 183.0, 3.27749e+09, 228.0, 4.28668e+09, 255.0, 4.28668e+09],
+"id": "cloth_pink1",
+"name": "Pink"
+}, {
+"color": 1.61171e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 2.53308e+08, 66.0, 8.39534e+08, 133.0, 1.09054e+09, 161.0, 1.09054e+09, 183.0, 1.51155e+09, 228.0, 1.61171e+09, 255.0, 2.26825e+09],
+"id": "cloth_purple1",
+"name": "Purple 1"
+}, {
+"color": 1.51155e+09,
+"colors": [0.0, 0.0, 16.0, 255.0, 23.0, 255.0, 27.0, 2.86331e+08, 66.0, 2.53308e+08, 133.0, 8.39534e+08, 161.0, 8.39534e+08, 183.0, 1.09054e+09, 228.0, 1.51155e+09, 255.0, 1.91683e+09],
+"id": "cloth_purple2",
+"name": "Purple 2"
+}, {
+"color": 2.76955e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 1.07532e+09, 66.0, 1.07532e+09, 133.0, 1.64574e+09, 161.0, 2.13071e+09, 183.0, 2.13071e+09, 228.0, 2.76955e+09, 255.0, 2.76955e+09],
+"id": "cloth_red1",
+"name": "Red"
+}, {
+"color": 2.76955e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 1.07532e+09, 66.0, 1.07532e+09, 133.0, 1.64574e+09, 161.0, 1.64574e+09, 183.0, 2.13071e+09, 228.0, 2.76955e+09, 255.0, 3.17196e+09],
+"id": "cloth_red2",
+"name": "Light Red"
+}, {
+"color": 1.59712e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 2.86331e+08, 66.0, 8.40312e+08, 133.0, 8.40312e+08, 161.0, 1.42772e+09, 183.0, 1.42738e+09, 228.0, 1.59712e+09, 255.0, 2.13071e+09],
+"id": "cloth_red3",
+"name": "Maroon"
+}, {
+"color": 1.06953e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 2.86331e+08, 66.0, 5.22141e+08, 133.0, 2.55295e+08, 161.0, 4.88986e+06, 183.0, 3.11984e+08, 228.0, 1.06953e+09, 255.0, 1.06953e+09],
+"id": "cloth_teal1",
+"name": "Teal"
+}, {
+"color": 1.46719e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 6.74498e+08, 66.0, 5.06275e+08, 133.0, 5.9246e+08, 161.0, 9.95573e+08, 183.0, 5.9246e+08, 228.0, 1.46719e+09, 255.0, 2.12367e+09],
+"id": "cloth_teal2",
+"name": "Dark Teal"
+}, {
+"color": 3.99178e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 2.86331e+08, 66.0, 1.14532e+09, 133.0, 2.29065e+09, 161.0, 2.79554e+09, 183.0, 3.35174e+09, 228.0, 3.99178e+09, 255.0, 4.29497e+09],
+"id": "cloth_white1",
+"name": "White"
+}, {
+"color": 3.14964e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 2.86331e+08, 66.0, 1.14532e+09, 133.0, 2.00432e+09, 161.0, 2.29065e+09, 183.0, 2.29065e+09, 228.0, 3.14964e+09, 255.0, 3.72231e+09],
+"id": "cloth_white2",
+"name": "White Dirty"
+}, {
+"color": 2.98117e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 6.74498e+08, 66.0, 6.74498e+08, 133.0, 1.65059e+09, 161.0, 2.13903e+09, 183.0, 2.13903e+09, 228.0, 2.98117e+09, 255.0, 4.29215e+09],
+"id": "cloth_yellow1",
+"name": "Yellow 1"
+}, {
+"color": 4.13959e+09,
+"colors": [0.0, 0.0, 16.0, 2.86331e+08, 23.0, 2.86331e+08, 27.0, 2.86331e+08, 66.0, 1.59712e+09, 133.0, 3.0258e+09, 161.0, 3.66464e+09, 183.0, 3.61726e+09, 228.0, 4.13959e+09, 255.0, 4.29354e+09],
+"id": "cloth_yellow2",
+"name": "Yellow 2"
+}],
+"palette": {
+"current_gradient": PackedColorArray(0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0666667, 0.0666667, 0.0666667, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0666667, 0.0666667, 0.0666667, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.196078, 0.0862745, 0.137255, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.196078, 0.0862745, 0.137255, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0.2, 0.2, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.266667, 0.266667, 0.266667, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.333333, 0.333333, 0.333333, 1),
+"custom_colors": {
+"color": 1.14532e+09,
+"colors": [0.0, 0.0, 16.0, 255.0, 23.0, 255.0, 27.0, 2.86331e+08, 66.0, 2.86331e+08, 133.0, 8.40312e+08, 161.0, 8.40312e+08, 183.0, 8.58994e+08, 228.0, 1.14532e+09, 255.0, 1.43166e+09],
+"id": "cloth_black1",
+"name": "Black"
+},
+"item_selected": 0,
+"lightness": 0.0
+},
+"target": Object(TextureRect,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":1,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":1,"material":SubResource("ShaderMaterial_koep7"),"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(832, 1344),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":832.0,"offset_bottom":1344.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":1,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","texture":Resource("res://addons/rpg_character_creator/textures/gear/pants/pants/pants_m1.png"),"expand_mode":0,"stretch_mode":0,"flip_h":false,"flip_v":false,"script":null)
+
+}
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer9" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+tooltip_text = "[title]Lock Item[/title]
+Locks this part so that it does not change when the random button is pressed.
+
+[Note]: If this part is not supported by the character's body or head type, it will be replaced by a compatible part."
+focus_mode = 0
+
+[node name="HBoxContainer10" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer10"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Shoes:"
+
+[node name="Shoes" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer10"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer10"]
+modulate = Color(1, 1, 1, 0.4)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "[title]Edit Part Colors[/title]
+Edit the colors of this part of the character."
+focus_mode = 0
+mouse_filter = 2
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer10" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+tooltip_text = "[title]Lock Item[/title]
+Locks this part so that it does not change when the random button is pressed.
+
+[Note]: If this part is not supported by the character's body or head type, it will be replaced by a compatible part."
+focus_mode = 0
+
+[node name="HBoxContainer11" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer11"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Back:"
+
+[node name="Back" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer11"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer11"]
+modulate = Color(1, 1, 1, 0.4)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "[title]Edit Part Colors[/title]
+Edit the colors of this part of the character."
+focus_mode = 0
+mouse_filter = 2
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer11" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+tooltip_text = "[title]Lock Item[/title]
+Locks this part so that it does not change when the random button is pressed.
+
+[Note]: If this part is not supported by the character's body or head type, it will be replaced by a compatible part."
+focus_mode = 0
+
+[node name="HBoxContainer12" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer12"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Mainhand:"
+
+[node name="Mainhand" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer12"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer12"]
+modulate = Color(1, 1, 1, 0.4)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "[title]Edit Part Colors[/title]
+Edit the colors of this part of the character."
+focus_mode = 0
+mouse_filter = 2
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer12" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+tooltip_text = "[title]Lock Item[/title]
+Locks this part so that it does not change when the random button is pressed.
+
+[Note]: If this part is not supported by the character's body or head type, it will be replaced by a compatible part."
+focus_mode = 0
+
+[node name="HBoxContainer13" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer13"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Ammo:"
+
+[node name="Ammo" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer13"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+disabled = true
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer13"]
+modulate = Color(1, 1, 1, 0.4)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "[title]Edit Part Colors[/title]
+Edit the colors of this part of the character."
+focus_mode = 0
+mouse_filter = 2
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer13" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+tooltip_text = "[title]Lock Item[/title]
+Locks this part so that it does not change when the random button is pressed.
+
+[Note]: If this part is not supported by the character's body or head type, it will be replaced by a compatible part."
+focus_mode = 0
+
+[node name="HBoxContainer14" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer14"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Offhand:"
+
+[node name="Offhand" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer14"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer14"]
+modulate = Color(1, 1, 1, 0.4)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "[title]Edit Part Colors[/title]
+Edit the colors of this part of the character."
+focus_mode = 0
+mouse_filter = 2
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer14" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+tooltip_text = "[title]Lock Item[/title]
+Locks this part so that it does not change when the random button is pressed.
+
+[Note]: If this part is not supported by the character's body or head type, it will be replaced by a compatible part."
+focus_mode = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="RandomGear" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer" instance=ExtResource("2_kiwgy")]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 10
+tooltip_text = "Choose randomly the parts of this character's equipment."
+text = "Random "
+icon = SubResource("AtlasTexture_oqi45")
+expand_icon = true
+
+[node name="ClearGear" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer" instance=ExtResource("2_kiwgy")]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 10
+tooltip_text = "Removes all equipment added to this character.
+
+[Note]: Body parts will not be changed."
+text = "Clear Gear
+"
+icon = SubResource("AtlasTexture_ahfl8")
+expand_icon = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Control2" type="Control" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+mouse_filter = 2
+
+[node name="PaletteDialog" parent="Control" instance=ExtResource("17_4sj4o")]
+unique_name_in_owner = true
+title = "Body: Regular"
+position = Vector2i(0, 380)
+size = Vector2i(1200, 524)
+visible = false
+transient_to_focused = true
+unresizable = true
+
+[node name="FXPlayer" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("16_22ti7")
+
+[node name="Proyectiles" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+layer = 0
+
+[connection signal="item_selected" from="VBoxContainer/HBoxContainer/Races" to="." method="_on_races_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/HBoxContainer/Palettes" to="." method="_on_palettes_item_selected"]
+[connection signal="value_changed" from="VBoxContainer/HBoxContainer/HSlider" to="." method="_on_h_slider_value_changed"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/Gender" to="." method="_on_gender_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer12/Body" to="." method="_on_body_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer5/Eyes" to="." method="_on_eyes_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2/Wings" to="." method="_on_wings_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3/Tail" to="." method="_on_tail_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer13/Horns" to="." method="_on_horns_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4/Hair" to="." method="_on_hair_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer14/Hairadd" to="." method="_on_hair_addon_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer6/Ears" to="." method="_on_ears_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer7/Nose" to="." method="_on_nose_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer8/Facial" to="." method="_on_facial_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer9/Add1" to="." method="_on_add_1_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer10/Add2" to="." method="_on_add_2_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer11/Add3" to="." method="_on_add_3_item_selected"]
+[connection signal="pressed" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/RandomBody" to="." method="_on_random_body_pressed"]
+[connection signal="pressed" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/ClearBody" to="." method="clear_body_parts"]
+[connection signal="pressed" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer2/CharacterContainer/CreateCharacterAndEquipment" to="." method="_on_create_character_and_equipment_pressed"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/Mask" to="." method="_on_mask_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2/Hat" to="." method="_on_hat_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3/Glasses" to="." method="_on_glasses_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4/Suit" to="." method="_on_suit_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer6/Shirt" to="." method="_on_shirt_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer5/Jacket" to="." method="_on_jacket_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer7/Gloves" to="." method="_on_gloves_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer8/Belt" to="." method="_on_belt_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer9/Pants" to="." method="_on_pants_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer10/Shoes" to="." method="_on_shoes_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer11/Back" to="." method="_on_back_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer12/Mainhand" to="." method="_on_mainhand_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer13/Ammo" to="." method="_on_ammo_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer14/Offhand" to="." method="_on_offhand_item_selected"]
+[connection signal="pressed" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer/RandomGear" to="." method="_on_random_gear_pressed"]
+[connection signal="pressed" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/HBoxContainer/ClearGear" to="." method="clear_gear_parts"]

@@ -1,0 +1,197 @@
+[gd_scene load_steps=20 format=3 uid="uid://lsry7y0a05jd"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_xse88"]
+[ext_resource type="Script" uid="uid://d3uekv450mgxu" path="res://addons/CustomControls/Dialogs/weapon_and_armor_craft_dialog.gd" id="2_37idj"]
+[ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="3_yhv3m"]
+[ext_resource type="PackedScene" uid="uid://dxcyqc2dscbvw" path="res://addons/CustomControls/custom_simple_column_item_list.tscn" id="5_oc7nq"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="6_27r3r"]
+
+[sub_resource type="Gradient" id="Gradient_4u2ec"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_bji8c"]
+gradient = SubResource("Gradient_4u2ec")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qlauc"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Gradient" id="Gradient_ctwx1"]
+colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_xkjm5"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qp440"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_xkjm5")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ok73p"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Gradient" id="Gradient_mfn6p"]
+colors = PackedColorArray(0.333333, 0.352941, 0.360784, 1, 0.380392, 0.4, 0.407843, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ot2ar"]
+gradient = SubResource("Gradient_mfn6p")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4vw55"]
+texture = SubResource("GradientTexture2D_ot2ar")
+
+[sub_resource type="Gradient" id="Gradient_4l6wd"]
+offsets = PackedFloat32Array(0, 0.369535, 1)
+colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_h70kq"]
+gradient = SubResource("Gradient_4l6wd")
+fill_from = Vector2(0.547009, 1)
+fill_to = Vector2(0.559829, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fmnar"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_h70kq")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_spyke"]
+bg_color = Color(0, 0, 0, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+
+[node name="WeaponAndArmorCraftDialog" type="Window"]
+title = "Craft Materials"
+position = Vector2i(0, 36)
+size = Vector2i(800, 495)
+transient = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_xse88")
+script = ExtResource("2_37idj")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_bji8c")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="CustomPanel" parent="MarginContainer" instance=ExtResource("3_yhv3m")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qlauc")
+style1 = SubResource("StyleBoxFlat_qlauc")
+style2 = SubResource("StyleBoxTexture_qp440")
+style3 = SubResource("StyleBoxFlat_ok73p")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/CustomPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/CustomPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/CustomPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Materials:"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/CustomPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MaterialList" parent="MarginContainer/CustomPanel/MarginContainer/VBoxContainer/ScrollContainer" instance=ExtResource("5_oc7nq")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
+event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
+top_bar_style = SubResource("StyleBoxTexture_4vw55")
+cursor_style = SubResource("StyleBoxTexture_fmnar")
+panel_style = SubResource("StyleBoxFlat_spyke")
+columns = 2
+names = PackedStringArray("Material", "Quantity")
+sizes = PackedInt32Array(240, 0)
+text_margin_left = 4
+placeholder_text = "select material..."
+enable_multiselection = true
+itemlist_tooltip = "Materials required for the construction of this object / Materials obtained after dismantling this object"
+items_tooltip = PackedStringArray("[title]Cost[/title]\nCost in gold to perform this craft action.")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/CustomPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+alignment = 2
+
+[node name="OKButton" parent="MarginContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("6_27r3r")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+text = "OK"
+text_overrun_behavior = 3
+
+[node name="CancelButton" parent="MarginContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("6_27r3r")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+text = "Cancel"
+text_overrun_behavior = 3
+
+[connection signal="copy_requested" from="MarginContainer/CustomPanel/MarginContainer/VBoxContainer/ScrollContainer/MaterialList" to="." method="_on_material_list_copy_requested"]
+[connection signal="cut_requested" from="MarginContainer/CustomPanel/MarginContainer/VBoxContainer/ScrollContainer/MaterialList" to="." method="_on_material_list_cut_requested"]
+[connection signal="delete_pressed" from="MarginContainer/CustomPanel/MarginContainer/VBoxContainer/ScrollContainer/MaterialList" to="." method="_on_material_list_delete_pressed"]
+[connection signal="item_activated" from="MarginContainer/CustomPanel/MarginContainer/VBoxContainer/ScrollContainer/MaterialList" to="." method="_on_material_list_item_activated"]
+[connection signal="paste_requested" from="MarginContainer/CustomPanel/MarginContainer/VBoxContainer/ScrollContainer/MaterialList" to="." method="_on_material_list_paste_requested"]
+[connection signal="pressed" from="MarginContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

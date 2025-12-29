@@ -1,0 +1,460 @@
+[gd_scene load_steps=9 format=3 uid="uid://db3i8ygbnxe26"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_483ik"]
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="2_swdjj"]
+[ext_resource type="Script" uid="uid://2ltyafv27dm3" path="res://addons/CustomControls/Dialogs/confirm_create_character_dialog.gd" id="2_yiaj8"]
+[ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="3_vioeh"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="4_7f8c6"]
+
+[sub_resource type="Gradient" id="Gradient_qyib2"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_4end4"]
+gradient = SubResource("Gradient_qyib2")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_edyka"]
+
+[node name="ConfirmCreateCharacterDialog" type="Window"]
+oversampling_override = 1.0
+title = "Creation Character"
+position = Vector2i(0, 36)
+size = Vector2i(722, 420)
+wrap_controls = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_483ik")
+script = ExtResource("2_yiaj8")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_4end4")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="TopOptions" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TopOptions"]
+layout_mode = 2
+text = "Save character and previews in folder:"
+
+[node name="CharacterFolder" parent="MarginContainer/VBoxContainer/TopOptions" instance=ExtResource("2_swdjj")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "[title]Directory of storage[/title]
+Choose the directory where the files are to be saved, by default the directory \"Data/Characters/\" is selected."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+text = "Scenes/NPCs/"
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/TopOptions"]
+layout_mode = 2
+text = "Character Name:"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TopOptions"]
+layout_mode = 2
+
+[node name="CharacterName" parent="MarginContainer/VBoxContainer/TopOptions/HBoxContainer" instance=ExtResource("3_vioeh")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Assign a name to this character. The save files will be a combination of this name plus the file type (name_actor, name_face_preview, name_character_preview, and name_battler_preview)."
+
+[node name="CheckBox0" type="CheckBox" parent="MarginContainer/VBoxContainer/TopOptions/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "[title]Create Sub-Folder[/title]
+Create a sub-folder in the selected folder to save the character and preview images. The sub-folder will have the same name as the character."
+text = "Create Sub-Folder"
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Options:"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="OptionsContainer" type="GridContainer" parent="MarginContainer/VBoxContainer/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+columns = 2
+
+[node name="CheckBox1" type="CheckBox" parent="MarginContainer/VBoxContainer/VBoxContainer2/OptionsContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Character Creation[/title]
+Create a character file ready to be used in your game.
+
+[Note]: The character is a scene of type \"LPCCharacter\" plus a configuration resource of type \"RPGLPCCharacter\" containing the configuration necessary to display the character as created in the Character Editor.
+
+The name of the scene will be the \"name of the character\" plus \".tscn\"
+The name of the resource will be the \"name of the character\" plus \"_data.tres\""
+mouse_default_cursor_shape = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_edyka")
+button_pressed = true
+text = "Create the Character"
+
+[node name="CheckBox2" type="CheckBox" parent="MarginContainer/VBoxContainer/VBoxContainer2/OptionsContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Face Preview[/title]
+Creates a preview image of the character's face
+
+The name of this preview will be the \"name of the character\" plus \"_face.png\""
+mouse_default_cursor_shape = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_edyka")
+button_pressed = true
+text = "Create Face Preview"
+
+[node name="CheckBox3" type="CheckBox" parent="MarginContainer/VBoxContainer/VBoxContainer2/OptionsContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Weapon Visibility[/title]
+The character is always shown with his weapon visible."
+mouse_default_cursor_shape = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_edyka")
+text = "Always show the weapon."
+
+[node name="CheckBox4" type="CheckBox" parent="MarginContainer/VBoxContainer/VBoxContainer2/OptionsContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Character Preview[/title]
+Creates a preview image of the character. If \"Always shown the weapon\" is disabled, the preview will show the character without weapons.
+
+The name of this preview will be the \"name of the character\" plus \"_character.png\""
+mouse_default_cursor_shape = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_edyka")
+button_pressed = true
+text = "Create Character Preview"
+
+[node name="CheckBox5" type="CheckBox" parent="MarginContainer/VBoxContainer/VBoxContainer2/OptionsContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Inmutable Character[/title]
+Mark this character as immutable, meaning that his appearance will never change regardless of the equipment he wears.
+
+\"Note\": Weapons will be displayed as long as the equipped weapon is compatible with this character's texture."
+mouse_default_cursor_shape = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_edyka")
+text = "Make Inmutable Character"
+
+[node name="CheckBox6" type="CheckBox" parent="MarginContainer/VBoxContainer/VBoxContainer2/OptionsContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Battler Preview[/title]
+Creates a preview image of the character. This preview will show the character with all the equipment, including weapons with which he has been created.
+
+The name of this preview will be the \"name of the character\" plus \"_battler.png\""
+mouse_default_cursor_shape = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_edyka")
+button_pressed = true
+text = "Create Battler Preview"
+
+[node name="CheckBox23" type="CheckBox" parent="MarginContainer/VBoxContainer/VBoxContainer2/OptionsContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Create Event[/title]
+Create a character file ready to be used in your game.
+
+[Note]: The character is a scene of type \"LPCEvent\" plus a configuration resource of type \"RPGLPCCharacter\" containing the configuration necessary to display the character as created in the Character Editor.
+
+The name of the scene will be the \"name of the character\" plus \".tscn\"
+The name of the resource will be the \"name of the character\" plus \"_data.tres\""
+mouse_default_cursor_shape = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_edyka")
+text = "Create Non Playable Character"
+
+[node name="CheckBox24" type="CheckBox" parent="MarginContainer/VBoxContainer/VBoxContainer2/OptionsContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Use Generic Event[/title]
+When \"Use Limit Graphics\" is selected, a generic LPC character (with only idle and walking animations) will be used to create the event (Non Playable Character). This generates a simplified LPC character with a single texture containing idle and walking animations, with all parts merged into one. This is ideal for creating lightweight generic characters compared to full LPC characters.
+
+This setting only applies to events (non playable characters scene)—you can choose to use either reduced or full graphics. For  followers, the generic version is always used.
+
+[Note]: When creating any character, a new texture is saved that includes idle and walking animations in all four directions, with all parts merged and colored."
+mouse_default_cursor_shape = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_edyka")
+button_pressed = true
+text = "Use Limit Graphics"
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="CheckBox7" type="CheckBox" parent="MarginContainer/VBoxContainer/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "[title]Create Equipment parts[/title]
+Allows you to generate each piece of equipment added to this character as individual pieces. These parts can be assigned to weapons and armor created in the database and will be displayed on any compatible character that equips one of these items. If a character was created as immutable, it will only show the weapons it may have equipped, but the rest of the equipment will show the default equipment that was designed for that character.
+
+[Note]: The generated equipment parts will be a resource of type \"RPGLPCEquipmentPart\" containing the necessary configuration to generate the equipment as it was created in the editor."
+mouse_default_cursor_shape = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_edyka")
+text = "Create individual equipment parts"
+
+[node name="BottomOptions" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BottomOptions"]
+layout_mode = 2
+text = "Save equipment parts in folder:"
+
+[node name="EquipmentFolder" parent="MarginContainer/VBoxContainer/BottomOptions" instance=ExtResource("2_swdjj")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "[title]Directory of equipment storage[/title]
+Choose the directory where the equipment are to be saved, by default the directory \"Data/Equipment/\" is selected.
+
+The name of each piece of equipment will be \"equipment_type\" plus \"_equipment_name\" plus \"_id\" plus \".tres\"."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+text = "Data/Equipment/"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BottomOptions"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BottomOptions/HBoxContainer"]
+custom_minimum_size = Vector2(78.305, 0)
+layout_mode = 2
+text = "Save
+this
+parts"
+horizontal_alignment = 1
+
+[node name="FlowContainer" type="GridContainer" parent="MarginContainer/VBoxContainer/BottomOptions/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 5
+
+[node name="CheckBox8" type="CheckBox" parent="MarginContainer/VBoxContainer/BottomOptions/HBoxContainer/FlowContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_edyka")
+button_pressed = true
+text = "Mask"
+
+[node name="CheckBox9" type="CheckBox" parent="MarginContainer/VBoxContainer/BottomOptions/HBoxContainer/FlowContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_edyka")
+button_pressed = true
+text = "hat"
+
+[node name="CheckBox10" type="CheckBox" parent="MarginContainer/VBoxContainer/BottomOptions/HBoxContainer/FlowContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_edyka")
+button_pressed = true
+text = "Glasses"
+
+[node name="CheckBox11" type="CheckBox" parent="MarginContainer/VBoxContainer/BottomOptions/HBoxContainer/FlowContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_edyka")
+button_pressed = true
+text = "Suit"
+
+[node name="CheckBox12" type="CheckBox" parent="MarginContainer/VBoxContainer/BottomOptions/HBoxContainer/FlowContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_edyka")
+button_pressed = true
+text = "Jacket"
+
+[node name="CheckBox13" type="CheckBox" parent="MarginContainer/VBoxContainer/BottomOptions/HBoxContainer/FlowContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_edyka")
+button_pressed = true
+text = "Shirt"
+
+[node name="CheckBox14" type="CheckBox" parent="MarginContainer/VBoxContainer/BottomOptions/HBoxContainer/FlowContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_edyka")
+button_pressed = true
+text = "Gloves"
+
+[node name="CheckBox15" type="CheckBox" parent="MarginContainer/VBoxContainer/BottomOptions/HBoxContainer/FlowContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_edyka")
+button_pressed = true
+text = "Belt"
+
+[node name="CheckBox16" type="CheckBox" parent="MarginContainer/VBoxContainer/BottomOptions/HBoxContainer/FlowContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_edyka")
+button_pressed = true
+text = "Pants"
+
+[node name="CheckBox17" type="CheckBox" parent="MarginContainer/VBoxContainer/BottomOptions/HBoxContainer/FlowContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_edyka")
+button_pressed = true
+text = "Shoes"
+
+[node name="CheckBox18" type="CheckBox" parent="MarginContainer/VBoxContainer/BottomOptions/HBoxContainer/FlowContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_edyka")
+button_pressed = true
+text = "Back"
+
+[node name="CheckBox19" type="CheckBox" parent="MarginContainer/VBoxContainer/BottomOptions/HBoxContainer/FlowContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_edyka")
+button_pressed = true
+text = "Mainhand"
+
+[node name="CheckBox20" type="CheckBox" parent="MarginContainer/VBoxContainer/BottomOptions/HBoxContainer/FlowContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_edyka")
+button_pressed = true
+text = "Offhand"
+
+[node name="CheckBox21" type="CheckBox" parent="MarginContainer/VBoxContainer/BottomOptions/HBoxContainer/FlowContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_edyka")
+button_pressed = true
+text = "Ammo"
+
+[node name="CheckBox22" type="CheckBox" parent="MarginContainer/VBoxContainer/BottomOptions/HBoxContainer/FlowContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_edyka")
+button_pressed = true
+text = "All?"
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/BottomOptions"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_7f8c6")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_7f8c6")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+text = "Cancel"
+
+[connection signal="button_down" from="MarginContainer/VBoxContainer/TopOptions/CharacterFolder" to="." method="_on_character_folder_button_down"]
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/TopOptions/HBoxContainer/CharacterName" to="." method="_on_character_name_text_changed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/TopOptions/HBoxContainer/CheckBox0" to="." method="_on_check_box_0_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/VBoxContainer2/OptionsContainer/CheckBox1" to="." method="_on_check_box_1_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/VBoxContainer2/OptionsContainer/CheckBox2" to="." method="_on_check_box_2_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/VBoxContainer2/OptionsContainer/CheckBox3" to="." method="_on_check_box_3_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/VBoxContainer2/OptionsContainer/CheckBox4" to="." method="_on_check_box_4_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/VBoxContainer2/OptionsContainer/CheckBox5" to="." method="_on_check_box_5_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/VBoxContainer2/OptionsContainer/CheckBox6" to="." method="_on_check_box_6_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/VBoxContainer2/OptionsContainer/CheckBox23" to="." method="_on_check_box_23_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/VBoxContainer2/OptionsContainer/CheckBox24" to="." method="_on_check_box_24_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/VBoxContainer2/CheckBox7" to="." method="_on_check_box_7_toggled"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/BottomOptions/EquipmentFolder" to="." method="_on_equipment_folder_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/BottomOptions/HBoxContainer/FlowContainer/CheckBox8" to="." method="_on_save_equipment_part_toggled" binds= ["mask"]]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/BottomOptions/HBoxContainer/FlowContainer/CheckBox9" to="." method="_on_save_equipment_part_toggled" binds= ["hat"]]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/BottomOptions/HBoxContainer/FlowContainer/CheckBox10" to="." method="_on_save_equipment_part_toggled" binds= ["glasses"]]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/BottomOptions/HBoxContainer/FlowContainer/CheckBox11" to="." method="_on_save_equipment_part_toggled" binds= ["suit"]]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/BottomOptions/HBoxContainer/FlowContainer/CheckBox12" to="." method="_on_save_equipment_part_toggled" binds= ["jacket"]]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/BottomOptions/HBoxContainer/FlowContainer/CheckBox13" to="." method="_on_save_equipment_part_toggled" binds= ["shirt"]]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/BottomOptions/HBoxContainer/FlowContainer/CheckBox14" to="." method="_on_save_equipment_part_toggled" binds= ["gloves"]]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/BottomOptions/HBoxContainer/FlowContainer/CheckBox15" to="." method="_on_save_equipment_part_toggled" binds= ["belt"]]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/BottomOptions/HBoxContainer/FlowContainer/CheckBox16" to="." method="_on_save_equipment_part_toggled" binds= ["pants"]]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/BottomOptions/HBoxContainer/FlowContainer/CheckBox17" to="." method="_on_save_equipment_part_toggled" binds= ["shoes"]]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/BottomOptions/HBoxContainer/FlowContainer/CheckBox18" to="." method="_on_save_equipment_part_toggled" binds= ["back"]]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/BottomOptions/HBoxContainer/FlowContainer/CheckBox19" to="." method="_on_save_equipment_part_toggled" binds= ["mainhand"]]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/BottomOptions/HBoxContainer/FlowContainer/CheckBox20" to="." method="_on_save_equipment_part_toggled" binds= ["offhand"]]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/BottomOptions/HBoxContainer/FlowContainer/CheckBox21" to="." method="_on_save_equipment_part_toggled" binds= ["ammo"]]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/BottomOptions/HBoxContainer/FlowContainer/CheckBox22" to="." method="_on_check_box_all_toggled"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

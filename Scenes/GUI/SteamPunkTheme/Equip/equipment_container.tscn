@@ -1,0 +1,155 @@
+[gd_scene load_steps=8 format=3 uid="uid://bhe278c8ompu1"]
+
+[ext_resource type="Texture2D" uid="uid://bfgr2ewrp6i0u" path="res://Assets/Images/GUI/party_menu.png" id="1_ao2n7"]
+[ext_resource type="Script" uid="uid://s8wjl5mkpvl3" path="res://Scenes/GUI/SteamPunkTheme/Equip/equipment_container.gd" id="1_vxi5n"]
+[ext_resource type="FontFile" uid="uid://dvh0mi6yu0ywx" path="res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf" id="2_vxi5n"]
+[ext_resource type="Texture2D" uid="uid://ccdytk3ibdol" path="res://Assets/Images/GUI/upgrade_icons.png" id="3_7d07p"]
+[ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="4_3j23f"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vru3e"]
+atlas = ExtResource("1_ao2n7")
+region = Rect2(77, 30, 105, 103)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_31j8u"]
+atlas = ExtResource("3_7d07p")
+region = Rect2(0, 0, 52, 32)
+
+[node name="EquipmentContainer" type="Control"]
+custom_minimum_size = Vector2(320, 320)
+layout_mode = 3
+anchors_preset = 0
+size_flags_vertical = 3
+script = ExtResource("1_vxi5n")
+
+[node name="Gear" type="Control" parent="."]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="GearTopLeft" type="Control" parent="Gear"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 0
+offset_left = 22.999998
+offset_top = 17.999998
+offset_right = 22.999998
+offset_bottom = 17.999998
+scale = Vector2(0.1, 0.1)
+mouse_filter = 2
+
+[node name="Part" type="TextureRect" parent="Gear/GearTopLeft"]
+z_index = 10
+layout_mode = 1
+offset_left = -309.99997
+offset_top = -279.99997
+offset_right = 159.00003
+offset_bottom = 179.00003
+pivot_offset = Vector2(234, 229)
+mouse_filter = 2
+texture = SubResource("AtlasTexture_vru3e")
+
+[node name="BackgroundBottom" type="NinePatchRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_ao2n7")
+region_rect = Rect2(2191, 139, 301, 109)
+patch_margin_left = 67
+patch_margin_top = 44
+patch_margin_right = 160
+patch_margin_bottom = 31
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_right = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="TopContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+z_index = 1
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/margin_left = 35
+theme_override_constants/margin_top = 11
+theme_override_constants/margin_right = 35
+theme_override_constants/margin_bottom = 5
+
+[node name="StatsName" type="Label" parent="MarginContainer/VBoxContainer/TopContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.83137256, 0.5764706, 0.3137255, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5764706)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_vxi5n")
+text = "EQUIPMENT"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/TopContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+
+[node name="UpgradeIcon" type="TextureRect" parent="MarginContainer/VBoxContainer/TopContainer/Control"]
+unique_name_in_owner = true
+visible = false
+z_index = 5
+layout_mode = 0
+offset_left = -52.0
+offset_top = -16.0
+offset_bottom = 24.0
+pivot_offset = Vector2(26, 39)
+texture = SubResource("AtlasTexture_31j8u")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_bottom = 10
+
+[node name="BottomContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+scroll_vertical_custom_step = 10.0
+script = ExtResource("4_3j23f")
+metadata/_custom_type_script = "uid://cs6g8remlafby"
+
+[node name="EquipButtonContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer/BottomContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="BackgroundTop" type="NinePatchRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_ao2n7")
+region_rect = Rect2(1872, 139, 301, 109)
+patch_margin_left = 67
+patch_margin_top = 44
+patch_margin_right = 160
+patch_margin_bottom = 31

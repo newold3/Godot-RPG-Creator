@@ -1,0 +1,146 @@
+[gd_scene load_steps=12 format=3 uid="uid://b37tl2hhs6avo"]
+
+[ext_resource type="Texture2D" uid="uid://d4krfboycghn2" path="res://Assets/Images/Icons/icon_pack3.png" id="1_t1vcu"]
+[ext_resource type="Script" uid="uid://bt4spfcvxp3b7" path="res://Scenes/ExtractionScenes/default_extraction_scene.gd" id="1_uvmr6"]
+[ext_resource type="FontFile" uid="uid://2okej4ay4kdb" path="res://addons/CustomControls/Resources/Fonts/unifont-13.0.01.ttf" id="3_eetwj"]
+[ext_resource type="PackedScene" uid="uid://ds5ne5xu5oufd" path="res://Scenes/ParticleScenes/extraction_particles.tscn" id="4_a7lg0"]
+[ext_resource type="Material" uid="uid://bwlkuvg1hauua" path="res://Assets/Resourcers/material_to_ignore_canvas_modulate.tres" id="4_xm6yr"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_uvmr6"]
+viewport_path = NodePath("ViewportTextures")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_eetwj"]
+viewport_path = NodePath("ViewportTextures")
+
+[sub_resource type="Curve" id="Curve_uvmr6"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.330612, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.0244123), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_eetwj"]
+curve = SubResource("Curve_uvmr6")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_a7lg0"]
+particle_flag_disable_z = true
+angle_min = -187.3
+angle_max = -70.2
+inherit_velocity_ratio = 0.471
+direction = Vector3(0, -1, 0)
+spread = 41.143
+initial_velocity_max = 40.0
+gravity = Vector3(0, 25, 0)
+damping_max = 22.764
+alpha_curve = SubResource("CurveTexture_eetwj")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uvmr6"]
+size = Vector2(20, 5)
+
+[node name="DefaultExtractionScene" type="StaticBody2D" node_paths=PackedStringArray("main_node", "depleted_node", "particle_node", "extraction_particles", "name_label", "collision_shape")]
+z_index = 1
+y_sort_enabled = true
+collision_layer = 2
+collision_mask = 29
+script = ExtResource("1_uvmr6")
+main_node = NodePath("Foot/MainNode")
+depleted_node = NodePath("ViewportTextures/DepletedNode")
+particle_node = NodePath("MarkParticles")
+extraction_particles = NodePath("ExtractionParticles")
+name_label = NodePath("ItemName")
+collision_shape = NodePath("CollisionShape2D")
+
+[node name="ViewportTextures" type="SubViewport" parent="."]
+unique_name_in_owner = true
+transparent_bg = true
+size = Vector2i(200, 200)
+
+[node name="DepletedNode" type="Sprite2D" parent="ViewportTextures"]
+visible = false
+position = Vector2(85, 85)
+texture = ExtResource("1_t1vcu")
+centered = false
+region_enabled = true
+region_rect = Rect2(478, 103, 30, 30)
+
+[node name="Shadow" type="SubViewport" parent="."]
+unique_name_in_owner = true
+transparent_bg = true
+size = Vector2i(200, 200)
+
+[node name="FinalShadow" type="Sprite2D" parent="Shadow"]
+unique_name_in_owner = true
+modulate = Color(0, 0, 0, 1)
+position = Vector2(100, 101)
+texture = SubResource("ViewportTexture_uvmr6")
+centered = false
+offset = Vector2(-100, -113)
+
+[node name="Foot" type="Marker2D" parent="."]
+unique_name_in_owner = true
+
+[node name="MainNode" type="Sprite2D" parent="Foot"]
+unique_name_in_owner = true
+position = Vector2(0, -12)
+texture = ExtResource("1_t1vcu")
+region_enabled = true
+region_rect = Rect2(478, 103, 30, 30)
+
+[node name="FinalSprite" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+visible = false
+position = Vector2(0, -12)
+texture = SubResource("ViewportTexture_eetwj")
+
+[node name="MarkParticles" type="GPUParticles2D" parent="."]
+position = Vector2(0, -15)
+explosiveness = 0.27
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_a7lg0")
+
+[node name="ExtractionParticles" parent="." instance=ExtResource("4_a7lg0")]
+unique_name_in_owner = true
+position = Vector2(1, -15)
+emitting = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -3.5)
+shape = SubResource("RectangleShape2D_uvmr6")
+
+[node name="Edges" type="Node2D" parent="."]
+
+[node name="Top" type="Marker2D" parent="Edges"]
+unique_name_in_owner = true
+position = Vector2(0, -19)
+
+[node name="Bottom" type="Marker2D" parent="Edges"]
+unique_name_in_owner = true
+position = Vector2(0, -4)
+
+[node name="Left" type="Marker2D" parent="Edges"]
+unique_name_in_owner = true
+position = Vector2(-8, -11)
+
+[node name="Right" type="Marker2D" parent="Edges"]
+unique_name_in_owner = true
+position = Vector2(6, -11)
+
+[node name="ItemName" type="Label" parent="."]
+unique_name_in_owner = true
+z_index = 100
+z_as_relative = false
+material = ExtResource("4_xm6yr")
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -60.0
+offset_top = -64.0
+offset_right = 60.0
+offset_bottom = -41.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("3_eetwj")
+theme_override_font_sizes/font_size = 15
+text = "Default item"
+horizontal_alignment = 1
+vertical_alignment = 1

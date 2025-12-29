@@ -1,0 +1,288 @@
+[gd_scene load_steps=16 format=3 uid="uid://dahv4htuw8myv"]
+
+[ext_resource type="Script" uid="uid://fcgm6kyxmobr" path="res://Scenes/EquipScene/stats_container.gd" id="1_wdadd"]
+[ext_resource type="Texture2D" uid="uid://dntvanomr6m2o" path="res://Assets/Images/GUI/frame5.png" id="2_u4f6g"]
+[ext_resource type="FontFile" uid="uid://dvh0mi6yu0ywx" path="res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf" id="2_wdadd"]
+[ext_resource type="Texture2D" uid="uid://b0mo5iykdxq0l" path="res://Assets/Images/SceneMenu/part5.png" id="3_7gvx3"]
+[ext_resource type="Texture2D" uid="uid://dbfc4jvhg1dl6" path="res://Assets/Images/GUI/frame5c_double.png" id="3_wdadd"]
+[ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="4_eugdv"]
+[ext_resource type="Texture2D" uid="uid://ct0ki5xyiptwg" path="res://Assets/Images/SceneMenu/part6.png" id="4_wdadd"]
+[ext_resource type="Texture2D" uid="uid://ccdytk3ibdol" path="res://Assets/Images/GUI/upgrade_icons.png" id="6_eugdv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wdadd"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.41568628, 0.2784314, 0.105882354, 0.5411765)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.6784314, 0.41568628, 0.101960786, 1)
+border_blend = true
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="Gradient" id="Gradient_eugdv"]
+offsets = PackedFloat32Array(0, 0.982)
+colors = PackedColorArray(0.62352943, 0.3882353, 0.11764706, 1, 0.043137256, 0.03137255, 0.02745098, 0.41960785)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ngudq"]
+gradient = SubResource("Gradient_eugdv")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_60vjj"]
+texture = SubResource("GradientTexture2D_ngudq")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_g2o7d"]
+content_margin_left = 42.0
+content_margin_bottom = 6.0
+texture = ExtResource("3_wdadd")
+texture_margin_left = 12.0
+texture_margin_top = 6.0
+texture_margin_right = 12.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ngudq"]
+atlas = ExtResource("6_eugdv")
+region = Rect2(0, 0, 52, 32)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_epx7a"]
+content_margin_left = 12.0
+content_margin_top = 11.0
+content_margin_right = 12.0
+content_margin_bottom = 11.0
+texture = ExtResource("2_u4f6g")
+texture_margin_left = 37.0
+texture_margin_top = 11.0
+texture_margin_right = 37.0
+texture_margin_bottom = 11.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="StatsContainer" type="Control"]
+clip_contents = true
+layout_mode = 3
+anchors_preset = 0
+offset_right = 343.0
+offset_bottom = 391.0
+pivot_offset = Vector2(169, 390)
+script = ExtResource("1_wdadd")
+text_color = Color(0.9137255, 0.69411767, 0.4117647, 1)
+font_size = 16
+custom_font = ExtResource("2_wdadd")
+show_comparison = false
+title_background_style = SubResource("StyleBoxFlat_wdadd")
+stat_separator_style = SubResource("StyleBoxTexture_60vjj")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="Top" type="MarginContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+theme_override_constants/margin_top = 0
+
+[node name="Gear" type="Control" parent="VBoxContainer/Top"]
+unique_name_in_owner = true
+show_behind_parent = true
+z_index = 1
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Gear1" type="Control" parent="VBoxContainer/Top/Gear"]
+unique_name_in_owner = true
+z_index = 10
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -153.0
+offset_top = 18.0
+offset_right = -153.0
+offset_bottom = 18.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.08, 0.08)
+mouse_filter = 2
+
+[node name="Part1" type="TextureRect" parent="VBoxContainer/Top/Gear/Gear1"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -234.5
+offset_top = -229.5
+offset_right = 234.5
+offset_bottom = 229.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_7gvx3")
+
+[node name="Part2" type="TextureRect" parent="VBoxContainer/Top/Gear/Gear1"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -117.5
+offset_top = -120.5
+offset_right = 117.5
+offset_bottom = 120.5
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -6.28319
+pivot_offset = Vector2(117, 120)
+mouse_filter = 2
+texture = ExtResource("4_wdadd")
+
+[node name="Gear2" type="Control" parent="VBoxContainer/Top/Gear"]
+unique_name_in_owner = true
+z_index = 10
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 152.0
+offset_top = 18.0
+offset_right = 152.0
+offset_bottom = 18.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.08, 0.08)
+mouse_filter = 2
+
+[node name="Part1" type="TextureRect" parent="VBoxContainer/Top/Gear/Gear2"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -234.5
+offset_top = -229.5
+offset_right = 234.5
+offset_bottom = 229.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_7gvx3")
+
+[node name="Part2" type="TextureRect" parent="VBoxContainer/Top/Gear/Gear2"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -117.5
+offset_top = -120.5
+offset_right = 117.5
+offset_bottom = 120.5
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -6.28319
+pivot_offset = Vector2(117, 120)
+mouse_filter = 2
+texture = ExtResource("4_wdadd")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Top"]
+layout_mode = 2
+theme_override_constants/margin_top = 8
+
+[node name="MainStatsContainer" type="Control" parent="VBoxContainer/Top/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="StatsDisplacementContainer" type="VBoxContainer" parent="VBoxContainer/Top/MarginContainer/MainStatsContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(341, 41)
+theme_override_constants/separation = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Top/MarginContainer/MainStatsContainer/StatsDisplacementContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/margin_left = 29
+theme_override_constants/margin_right = 29
+
+[node name="StatsName" type="Label" parent="VBoxContainer/Top/MarginContainer/MainStatsContainer/StatsDisplacementContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.709804, 0.690196, 0.654902, 1)
+theme_override_constants/outline_size = 8
+theme_override_styles/normal = SubResource("StyleBoxTexture_g2o7d")
+text = "STATS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="VBoxContainer/Top/MarginContainer/MainStatsContainer/StatsDisplacementContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+
+[node name="UpgradeIcon" type="TextureRect" parent="VBoxContainer/Top/MarginContainer/MainStatsContainer/StatsDisplacementContainer/MarginContainer/Control"]
+unique_name_in_owner = true
+visible = false
+z_index = 5
+layout_mode = 0
+offset_left = -52.0
+offset_top = -16.0
+offset_bottom = 24.0
+pivot_offset = Vector2(26, 39)
+texture = SubResource("AtlasTexture_ngudq")
+
+[node name="Control" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="StatsPanel" type="PanelContainer" parent="VBoxContainer/Control"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 356.03)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -0.01499939
+offset_bottom = 0.015014648
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(167, 2.0149994)
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_epx7a")
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="VBoxContainer/Control/StatsPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+scroll_vertical_custom_step = 10.0
+script = ExtResource("4_eugdv")
+metadata/_custom_type_script = "uid://cs6g8remlafby"
+
+[node name="StatsContainer" type="Control" parent="VBoxContainer/Control/StatsPanel/SmoothScrollContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3

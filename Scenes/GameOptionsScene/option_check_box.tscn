@@ -1,0 +1,19 @@
+[gd_scene load_steps=6 format=3 uid="uid://b7m43ah5yoxk6"]
+
+[ext_resource type="Script" uid="uid://cqhj0v4uj2chv" path="res://Scripts/option_check_box.gd" id="1_jwbs4"]
+[ext_resource type="StyleBox" uid="uid://dqeeyj5yrbgfi" path="res://Scenes/GameOptionsScene/check_box_unselected.tres" id="2_xp4n0"]
+[ext_resource type="StyleBox" uid="uid://241pr84c1k0b" path="res://Scenes/GameOptionsScene/check_box_unselected_hover.tres" id="3_r55mt"]
+[ext_resource type="StyleBox" uid="uid://bda42wgbl1urg" path="res://Scenes/GameOptionsScene/check_box_selected.tres" id="4_fel0r"]
+[ext_resource type="StyleBox" uid="uid://chg7ncussor4l" path="res://Scenes/GameOptionsScene/option_selected_hover.tres" id="5_hh47u"]
+
+[node name="OptionCheckBox" type="Control"]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 3
+anchors_preset = 0
+focus_mode = 2
+mouse_default_cursor_shape = 2
+script = ExtResource("1_jwbs4")
+check_box_unselected = ExtResource("2_xp4n0")
+check_box_unselected_hover = ExtResource("3_r55mt")
+check_box_selected = ExtResource("4_fel0r")
+check_box_selected_hover = ExtResource("5_hh47u")

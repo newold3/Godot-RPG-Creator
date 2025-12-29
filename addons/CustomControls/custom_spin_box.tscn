@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://bj48rsidmna6s"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_jhlc2"]
+[ext_resource type="Script" uid="uid://cqkn2f1mnnhu2" path="res://addons/CustomControls/custom_spin_box.gd" id="1_thl3e"]
+
+[node name="CustomSpinBox" type="SpinBox"]
+offset_right = 83.0625
+offset_bottom = 31.0
+theme = ExtResource("1_jhlc2")
+rounded = true
+script = ExtResource("1_thl3e")

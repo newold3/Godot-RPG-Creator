@@ -1,0 +1,1485 @@
+[gd_scene load_steps=129 format=3 uid="uid://bv8l50rafbltd"]
+
+[ext_resource type="Script" uid="uid://cammkekka7iqp" path="res://Scenes/Players/Darian/Darian.gd" id="1_av1t6"]
+[ext_resource type="Script" uid="uid://cqx1cnfjmgp73" path="res://addons/RPGData/ModulesRPG/rpg_lpc_palette.gd" id="2_xrug5"]
+[ext_resource type="Script" uid="uid://da56k4g4hqgoa" path="res://addons/RPGData/ModulesRPG/rpg_lpc_body_part.gd" id="3_sl4eg"]
+[ext_resource type="Script" uid="uid://50ncamgmjd1c" path="res://addons/RPGData/ModulesRPG/rpg_lpc_body_data.gd" id="4_1848t"]
+[ext_resource type="Script" uid="uid://der67xririmwh" path="res://addons/RPGData/ModulesRPG/rpg_lpc_equipment_part.gd" id="5_xe12o"]
+[ext_resource type="Script" uid="uid://um8ybms51wt1" path="res://addons/RPGData/ModulesRPG/rpg_lpc_equipment_data.gd" id="6_760sy"]
+[ext_resource type="Script" uid="uid://5xgqhpxuvjtm" path="res://addons/RPGData/ModulesRPG/rpg_lpc_character.gd" id="7_th2lu"]
+
+[sub_resource type="Resource" id="Resource_agi1j"]
+script = ExtResource("2_xrug5")
+blend_color = 2670209279
+colors = PackedInt64Array(0, 0, 28, 370546431, 44, 1060254463, 70, 1280068863, 86, 2372561663, 89, 1785293055, 93, 1499027967, 95, 2340257279, 101, 2593823487, 103, 1852731135, 132, 2155905279, 144, 3199644927, 153, 2509608447, 171, 3856653823, 174, 2728567551, 180, 3014898687, 191, 3941264127, 200, 3857049087, 202, 3200171775, 230, 3671775999)
+
+[sub_resource type="Resource" id="Resource_qf2ml"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_jrlx8"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_6p0ud"]
+script = ExtResource("3_sl4eg")
+part_id = "add1"
+config_path = "res://addons/rpg_character_creator/Data/character/add1/bloodyeye.add1"
+front_texture = "res://addons/rpg_character_creator/textures/character/add1/bloody/bloodyeye_m1.png"
+palette1 = SubResource("Resource_agi1j")
+palette2 = SubResource("Resource_qf2ml")
+palette3 = SubResource("Resource_jrlx8")
+
+[sub_resource type="Resource" id="Resource_gilke"]
+script = ExtResource("2_xrug5")
+blend_color = 4191534335
+colors = PackedInt64Array(0, 0, 29, 639246591, 94, 2571254527, 152, 3431359487, 179, 3869474303, 220, 4191534335, 239, 4226607103)
+
+[sub_resource type="Resource" id="Resource_s2812"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_2b1u4"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_r18bu"]
+script = ExtResource("3_sl4eg")
+part_id = "add2"
+config_path = "res://addons/rpg_character_creator/Data/character/add2/none.add2"
+palette1 = SubResource("Resource_gilke")
+palette2 = SubResource("Resource_s2812")
+palette3 = SubResource("Resource_2b1u4")
+
+[sub_resource type="Resource" id="Resource_0gmrd"]
+script = ExtResource("2_xrug5")
+blend_color = 4191534335
+colors = PackedInt64Array(0, 0, 29, 639246591, 94, 2571254527, 152, 3431359487, 179, 3869474303, 220, 4191534335, 239, 4226607103)
+
+[sub_resource type="Resource" id="Resource_t7bs1"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_kl1nx"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_j8214"]
+script = ExtResource("3_sl4eg")
+part_id = "add3"
+config_path = "res://addons/rpg_character_creator/Data/character/add3/none.add3"
+palette1 = SubResource("Resource_0gmrd")
+palette2 = SubResource("Resource_t7bs1")
+palette3 = SubResource("Resource_kl1nx")
+
+[sub_resource type="Resource" id="Resource_2cud3"]
+script = ExtResource("2_xrug5")
+blend_color = 4191534335
+colors = PackedInt64Array(0, 0, 29, 639246591, 94, 2571254527, 152, 3431359487, 179, 3869474303, 220, 4191534335, 239, 4226607103)
+
+[sub_resource type="Resource" id="Resource_ipvry"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_ebs3w"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_hvk2f"]
+script = ExtResource("3_sl4eg")
+part_id = "body"
+config_path = "res://addons/rpg_character_creator/Data/character/body/human.body"
+front_texture = "res://addons/rpg_character_creator/textures/character/body/humanoid_m1.png"
+palette1 = SubResource("Resource_2cud3")
+palette2 = SubResource("Resource_ipvry")
+palette3 = SubResource("Resource_ebs3w")
+
+[sub_resource type="Resource" id="Resource_5520k"]
+script = ExtResource("2_xrug5")
+blend_color = 4191534335
+colors = PackedInt64Array(0, 0, 29, 639246591, 94, 2571254527, 152, 3431359487, 179, 3869474303, 220, 4191534335, 239, 4226607103)
+
+[sub_resource type="Resource" id="Resource_8fjyw"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_hlbon"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_5t0h2"]
+script = ExtResource("3_sl4eg")
+part_id = "ears"
+config_path = "res://addons/rpg_character_creator/Data/character/ears/base.ears"
+front_texture = "res://addons/rpg_character_creator/textures/character/ears/base/human_m.png"
+palette1 = SubResource("Resource_5520k")
+palette2 = SubResource("Resource_8fjyw")
+palette3 = SubResource("Resource_hlbon")
+
+[sub_resource type="Resource" id="Resource_r0oq5"]
+script = ExtResource("2_xrug5")
+blend_color = 1356131583
+colors = PackedInt64Array(0, 0, 26, 639246591, 56, 691883007, 129, 1367847935, 190, 1356131583, 246, 4076337919)
+
+[sub_resource type="Resource" id="Resource_vhsng"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_3up75"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_kf5yn"]
+script = ExtResource("3_sl4eg")
+part_id = "eyes"
+config_path = "res://addons/rpg_character_creator/Data/character/eyes/human.eyes"
+front_texture = "res://addons/rpg_character_creator/textures/character/eyes/human_m.png"
+palette1 = SubResource("Resource_r0oq5")
+palette2 = SubResource("Resource_vhsng")
+palette3 = SubResource("Resource_3up75")
+
+[sub_resource type="Resource" id="Resource_3lai6"]
+script = ExtResource("2_xrug5")
+blend_color = 4191534335
+colors = PackedInt64Array(0, 0, 29, 639246591, 94, 2571254527, 152, 3431359487, 179, 3869474303, 220, 4191534335, 239, 4226607103)
+
+[sub_resource type="Resource" id="Resource_clq3n"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_5w7pr"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_i2g0r"]
+script = ExtResource("3_sl4eg")
+part_id = "facial"
+config_path = "res://addons/rpg_character_creator/Data/character/facial/none.facial"
+palette1 = SubResource("Resource_3lai6")
+palette2 = SubResource("Resource_clq3n")
+palette3 = SubResource("Resource_5w7pr")
+
+[sub_resource type="Resource" id="Resource_v1ie7"]
+script = ExtResource("2_xrug5")
+blend_color = 1330597887
+colors = PackedInt64Array(0, 0, 24, 387389439, 65, 842150655, 112, 1061109759, 176, 1381126911, 249, 1717987071, 251, 2829625599)
+
+[sub_resource type="Resource" id="Resource_gcknn"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_v4qmh"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_oer2t"]
+script = ExtResource("3_sl4eg")
+part_id = "hair"
+config_path = "res://addons/rpg_character_creator/Data/character/hair/idol.hair"
+alt_config_path = "res://addons/rpg_character_creator/Data/character/hair/short.hair"
+front_texture = "res://addons/rpg_character_creator/textures/character/hair/human/idol_m.png"
+palette1 = SubResource("Resource_v1ie7")
+palette2 = SubResource("Resource_gcknn")
+palette3 = SubResource("Resource_v4qmh")
+
+[sub_resource type="Resource" id="Resource_wy7fo"]
+script = ExtResource("2_xrug5")
+blend_color = 4191534335
+colors = PackedInt64Array(0, 0, 29, 639246591, 94, 2571254527, 152, 3431359487, 179, 3869474303, 220, 4191534335, 239, 4226607103)
+
+[sub_resource type="Resource" id="Resource_ho86c"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_oujq2"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_gbx3p"]
+script = ExtResource("3_sl4eg")
+part_id = "hairadd"
+config_path = "res://addons/rpg_character_creator/Data/character/hairadd/none.hairadd"
+palette1 = SubResource("Resource_wy7fo")
+palette2 = SubResource("Resource_ho86c")
+palette3 = SubResource("Resource_oujq2")
+
+[sub_resource type="Resource" id="Resource_ah5uo"]
+script = ExtResource("2_xrug5")
+blend_color = 4191534335
+colors = PackedInt64Array(0, 0, 29, 639246591, 94, 2571254527, 152, 3431359487, 179, 3869474303, 220, 4191534335, 239, 4226607103)
+
+[sub_resource type="Resource" id="Resource_qw6jl"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_qtulx"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_mch67"]
+script = ExtResource("3_sl4eg")
+part_id = "head"
+config_path = "res://addons/rpg_character_creator/Data/character/head/human.head"
+front_texture = "res://addons/rpg_character_creator/textures/character/head/human_m.png"
+palette1 = SubResource("Resource_ah5uo")
+palette2 = SubResource("Resource_qw6jl")
+palette3 = SubResource("Resource_qtulx")
+
+[sub_resource type="Resource" id="Resource_b4b2o"]
+script = ExtResource("2_xrug5")
+blend_color = 4191534335
+colors = PackedInt64Array(0, 0, 29, 639246591, 94, 2571254527, 152, 3431359487, 179, 3869474303, 220, 4191534335, 239, 4226607103)
+
+[sub_resource type="Resource" id="Resource_enbxm"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_rsv4b"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_a1gao"]
+script = ExtResource("3_sl4eg")
+part_id = "horns"
+config_path = "res://addons/rpg_character_creator/Data/character/horns/none.horns"
+palette1 = SubResource("Resource_b4b2o")
+palette2 = SubResource("Resource_enbxm")
+palette3 = SubResource("Resource_rsv4b")
+
+[sub_resource type="Resource" id="Resource_hrtfe"]
+script = ExtResource("2_xrug5")
+blend_color = 4191534335
+colors = PackedInt64Array(0, 0, 29, 639246591, 94, 2571254527, 152, 3431359487, 179, 3869474303, 220, 4191534335, 239, 4226607103)
+
+[sub_resource type="Resource" id="Resource_4u0fp"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_gmq2p"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_pyaem"]
+script = ExtResource("3_sl4eg")
+part_id = "nose"
+config_path = "res://addons/rpg_character_creator/Data/character/nose/base.nose"
+palette1 = SubResource("Resource_hrtfe")
+palette2 = SubResource("Resource_4u0fp")
+palette3 = SubResource("Resource_gmq2p")
+
+[sub_resource type="Resource" id="Resource_ubqet"]
+script = ExtResource("2_xrug5")
+blend_color = 4191534335
+colors = PackedInt64Array(0, 0, 29, 639246591, 94, 2571254527, 152, 3431359487, 179, 3869474303, 220, 4191534335, 239, 4226607103)
+
+[sub_resource type="Resource" id="Resource_hs4ao"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_4e4ge"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_m0mjm"]
+script = ExtResource("3_sl4eg")
+part_id = "tail"
+config_path = "res://addons/rpg_character_creator/Data/character/tail/none.tail"
+palette1 = SubResource("Resource_ubqet")
+palette2 = SubResource("Resource_hs4ao")
+palette3 = SubResource("Resource_4e4ge")
+
+[sub_resource type="Resource" id="Resource_qin7v"]
+script = ExtResource("2_xrug5")
+blend_color = 4191534335
+colors = PackedInt64Array(0, 0, 29, 639246591, 94, 2571254527, 152, 3431359487, 179, 3869474303, 220, 4191534335, 239, 4226607103)
+
+[sub_resource type="Resource" id="Resource_0hj8e"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_muhod"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_8bhnm"]
+script = ExtResource("3_sl4eg")
+part_id = "wings"
+config_path = "res://addons/rpg_character_creator/Data/character/wings/none.wings"
+palette1 = SubResource("Resource_qin7v")
+palette2 = SubResource("Resource_0hj8e")
+palette3 = SubResource("Resource_muhod")
+
+[sub_resource type="Resource" id="Resource_11a7x"]
+script = ExtResource("4_1848t")
+body = SubResource("Resource_hvk2f")
+head = SubResource("Resource_mch67")
+eyes = SubResource("Resource_kf5yn")
+wings = SubResource("Resource_8bhnm")
+tail = SubResource("Resource_m0mjm")
+horns = SubResource("Resource_a1gao")
+hair = SubResource("Resource_oer2t")
+hairadd = SubResource("Resource_gbx3p")
+ears = SubResource("Resource_5t0h2")
+nose = SubResource("Resource_pyaem")
+facial = SubResource("Resource_i2g0r")
+add1 = SubResource("Resource_6p0ud")
+add2 = SubResource("Resource_r18bu")
+add3 = SubResource("Resource_j8214")
+
+[sub_resource type="Resource" id="Resource_5qgy4"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_sdt3j"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_s4jp4"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_6wqxg"]
+script = ExtResource("5_xe12o")
+config_path = "res://addons/rpg_character_creator/Data/gear/ammo/none.ammo"
+part_id = "ammo"
+body_type = "hm1"
+head_type = "hm1"
+name = "None"
+palette1 = SubResource("Resource_5qgy4")
+palette2 = SubResource("Resource_sdt3j")
+palette3 = SubResource("Resource_s4jp4")
+
+[sub_resource type="Resource" id="Resource_b4us6"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_2nvic"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_cmskc"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_oscjm"]
+script = ExtResource("5_xe12o")
+config_path = "res://addons/rpg_character_creator/Data/gear/back/none.back"
+part_id = "back"
+body_type = "hm1"
+head_type = "hm1"
+name = "None"
+palette1 = SubResource("Resource_b4us6")
+palette2 = SubResource("Resource_2nvic")
+palette3 = SubResource("Resource_cmskc")
+
+[sub_resource type="Resource" id="Resource_g37l5"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_lawi3"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_1io8f"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_1il17"]
+script = ExtResource("5_xe12o")
+config_path = "res://addons/rpg_character_creator/Data/gear/belt/none.belt"
+part_id = "belt"
+body_type = "hm1"
+head_type = "hm1"
+name = "None"
+palette1 = SubResource("Resource_g37l5")
+palette2 = SubResource("Resource_lawi3")
+palette3 = SubResource("Resource_1io8f")
+
+[sub_resource type="Resource" id="Resource_hi7at"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_eiiit"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_64rmn"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_x34nj"]
+script = ExtResource("5_xe12o")
+config_path = "res://addons/rpg_character_creator/Data/gear/glasses/none.glasses"
+part_id = "glasses"
+body_type = "hm1"
+head_type = "hm1"
+name = "None"
+palette1 = SubResource("Resource_hi7at")
+palette2 = SubResource("Resource_eiiit")
+palette3 = SubResource("Resource_64rmn")
+
+[sub_resource type="Resource" id="Resource_pfmhd"]
+script = ExtResource("2_xrug5")
+blend_color = 2256437247
+colors = PackedInt64Array(0, 0, 21, 487792383, 50, 774190079, 78, 1296719359, 91, 1582453503, 114, 1919647487, 135, 2256437247, 173, 2979633407, 199, 3300237311, 247, 3857106943, 254, 4294967295)
+
+[sub_resource type="Resource" id="Resource_or7as"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_jl6vv"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_533i2"]
+script = ExtResource("5_xe12o")
+config_path = "res://addons/rpg_character_creator/Data/gear/gloves/gloves2.gloves"
+part_id = "gloves"
+body_type = "hm1"
+head_type = "hm1"
+name = "Plate Gloves"
+front_texture = "res://addons/rpg_character_creator/textures/gear/gloves/gloves/plate_m1.png"
+palette1 = SubResource("Resource_pfmhd")
+palette2 = SubResource("Resource_or7as")
+palette3 = SubResource("Resource_jl6vv")
+
+[sub_resource type="Resource" id="Resource_eynw4"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_xtllx"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_f2xjm"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_w8o4c"]
+script = ExtResource("5_xe12o")
+config_path = "res://addons/rpg_character_creator/Data/gear/hat/none.hat"
+part_id = "hat"
+body_type = "hm1"
+head_type = "hm1"
+name = "None"
+palette1 = SubResource("Resource_eynw4")
+palette2 = SubResource("Resource_xtllx")
+palette3 = SubResource("Resource_f2xjm")
+
+[sub_resource type="Resource" id="Resource_okk2c"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_vucsr"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_tvve0"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_5fdfr"]
+script = ExtResource("5_xe12o")
+config_path = "res://addons/rpg_character_creator/Data/gear/jacket/none.jacket"
+part_id = "jacket"
+body_type = "hm1"
+head_type = "hm1"
+name = "None"
+palette1 = SubResource("Resource_okk2c")
+palette2 = SubResource("Resource_vucsr")
+palette3 = SubResource("Resource_tvve0")
+
+[sub_resource type="Resource" id="Resource_403dm"]
+script = ExtResource("2_xrug5")
+blend_color = 1751212799
+colors = PackedInt64Array(0, 0, 21, 370087935, 50, 605890559, 78, 993609983, 91, 1228881919, 114, 1481859583, 135, 1751212799, 173, 2306242047, 199, 2542566399, 247, 2981272319, 254, 3318072831)
+
+[sub_resource type="Resource" id="Resource_c5y1u"]
+script = ExtResource("2_xrug5")
+blend_color = 993804543
+colors = PackedInt64Array(0, 0, 16, 50397439, 23, 67240191, 27, 134745599, 66, 219157759, 133, 488449023, 161, 606350335, 183, 724316927, 228, 993804543, 255, 1212829183)
+
+[sub_resource type="Resource" id="Resource_1fulp"]
+script = ExtResource("2_xrug5")
+blend_color = 2583691519
+colors = PackedInt64Array(0, 0, 16, 285212927, 23, 402653439, 27, 956301567, 66, 889192703, 133, 1577058559, 161, 1962934527, 183, 2231369983, 228, 2583691519, 255, 3003121919)
+
+[sub_resource type="Resource" id="Resource_ot7gi"]
+script = ExtResource("5_xe12o")
+config_path = "res://addons/rpg_character_creator/Data/gear/mainhand/sword2.mainhand"
+part_id = "mainhand"
+body_type = "hm1"
+head_type = "hm1"
+name = "Sword"
+front_texture = "res://addons/rpg_character_creator/textures/gear/mainhand/sword/sword2_mf.png"
+back_texture = "res://addons/rpg_character_creator/textures/gear/mainhand/sword/sword2_mb.png"
+palette1 = SubResource("Resource_403dm")
+palette2 = SubResource("Resource_c5y1u")
+palette3 = SubResource("Resource_1fulp")
+
+[sub_resource type="Resource" id="Resource_osv2i"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_4ep1t"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_c8qgt"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_4aa1n"]
+script = ExtResource("5_xe12o")
+config_path = "res://addons/rpg_character_creator/Data/gear/mask/none.mask"
+part_id = "mask"
+body_type = "hm1"
+head_type = "hm1"
+name = "None"
+palette1 = SubResource("Resource_osv2i")
+palette2 = SubResource("Resource_4ep1t")
+palette3 = SubResource("Resource_c8qgt")
+
+[sub_resource type="Resource" id="Resource_jjej6"]
+script = ExtResource("2_xrug5")
+blend_color = 858532095
+colors = PackedInt64Array(0, 0, 71, 437786879, 103, 555555583, 133, 639704831, 165, 858532095, 183, 993276159)
+
+[sub_resource type="Resource" id="Resource_ev2ke"]
+script = ExtResource("2_xrug5")
+blend_color = 3513208575
+colors = PackedInt64Array(0, 0, 21, 856954623, 50, 1731146751, 78, 2439078911, 91, 2775213055, 114, 3164051199, 135, 3517554943, 173, 4208512511, 199, 4293646335, 247, 4294967295, 254, 4294967295)
+
+[sub_resource type="Resource" id="Resource_rbmjv"]
+script = ExtResource("2_xrug5")
+blend_color = 1968188927
+colors = PackedInt64Array(0, 0, 16, 134612223, 23, 269158399, 27, 487526143, 66, 605621759, 133, 1261114367, 161, 1631000831, 183, 1883448831, 228, 1968188927, 255, 2590980095)
+
+[sub_resource type="Resource" id="Resource_7ota8"]
+script = ExtResource("5_xe12o")
+config_path = "res://addons/rpg_character_creator/Data/gear/offhand/round_rdy.offhand"
+part_id = "offhand"
+body_type = "hm1"
+head_type = "hm1"
+name = "Round"
+front_texture = "res://addons/rpg_character_creator/textures/gear/offhand/round/round_mf_rdy.png"
+back_texture = "res://addons/rpg_character_creator/textures/gear/offhand/round/round_mb_rdy.png"
+palette1 = SubResource("Resource_jjej6")
+palette2 = SubResource("Resource_ev2ke")
+palette3 = SubResource("Resource_rbmjv")
+
+[sub_resource type="Resource" id="Resource_jgd0h"]
+script = ExtResource("2_xrug5")
+blend_color = 2256437247
+colors = PackedInt64Array(0, 0, 21, 487792383, 50, 774190079, 78, 1296719359, 91, 1582453503, 114, 1919647487, 135, 2256437247, 173, 2979633407, 199, 3300237311, 247, 3857106943, 254, 4294967295)
+
+[sub_resource type="Resource" id="Resource_6x4ty"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_88rh4"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_42mg5"]
+script = ExtResource("5_xe12o")
+config_path = "res://addons/rpg_character_creator/Data/gear/pants/plate.pants"
+part_id = "pants"
+body_type = "hm1"
+head_type = "hm1"
+name = "Plate"
+front_texture = "res://addons/rpg_character_creator/textures/gear/pants/plate/plate_m1.png"
+palette1 = SubResource("Resource_jgd0h")
+palette2 = SubResource("Resource_6x4ty")
+palette3 = SubResource("Resource_88rh4")
+
+[sub_resource type="Resource" id="Resource_yfvhn"]
+script = ExtResource("2_xrug5")
+blend_color = 1751212799
+colors = PackedInt64Array(0, 0, 21, 370087935, 50, 605890559, 78, 993609983, 91, 1228881919, 114, 1481859583, 135, 1751212799, 173, 2306242047, 199, 2542566399, 247, 2981272319, 254, 3318072831)
+
+[sub_resource type="Resource" id="Resource_ogyy6"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_buxjv"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_esnfn"]
+script = ExtResource("5_xe12o")
+config_path = "res://addons/rpg_character_creator/Data/gear/shirt/plate3.shirt"
+part_id = "shirt"
+body_type = "hm1"
+head_type = "hm1"
+name = "Plate 3"
+front_texture = "res://addons/rpg_character_creator/textures/gear/shirt/plate/plate3_m1.png"
+palette1 = SubResource("Resource_yfvhn")
+palette2 = SubResource("Resource_ogyy6")
+palette3 = SubResource("Resource_buxjv")
+
+[sub_resource type="Resource" id="Resource_823qu"]
+script = ExtResource("2_xrug5")
+blend_color = 2256437247
+colors = PackedInt64Array(0, 0, 21, 487792383, 50, 774190079, 78, 1296719359, 91, 1582453503, 114, 1919647487, 135, 2256437247, 173, 2979633407, 199, 3300237311, 247, 3857106943, 254, 4294967295)
+
+[sub_resource type="Resource" id="Resource_6x14p"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_855rn"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_mfawq"]
+script = ExtResource("5_xe12o")
+config_path = "res://addons/rpg_character_creator/Data/gear/shoes/plate.shoes"
+part_id = "shoes"
+body_type = "hm1"
+head_type = "hm1"
+name = "Plate"
+front_texture = "res://addons/rpg_character_creator/textures/gear/shoes/plate/plate_m1.png"
+palette1 = SubResource("Resource_823qu")
+palette2 = SubResource("Resource_6x14p")
+palette3 = SubResource("Resource_855rn")
+
+[sub_resource type="Resource" id="Resource_08u75"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_d2o83"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_eyngs"]
+script = ExtResource("2_xrug5")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_bknbd"]
+script = ExtResource("5_xe12o")
+config_path = "res://addons/rpg_character_creator/Data/gear/suit/none.suit"
+part_id = "suit"
+body_type = "hm1"
+head_type = "hm1"
+name = "None"
+palette1 = SubResource("Resource_08u75")
+palette2 = SubResource("Resource_d2o83")
+palette3 = SubResource("Resource_eyngs")
+
+[sub_resource type="Resource" id="Resource_skblc"]
+script = ExtResource("6_760sy")
+mask = SubResource("Resource_4aa1n")
+hat = SubResource("Resource_w8o4c")
+glasses = SubResource("Resource_x34nj")
+suit = SubResource("Resource_bknbd")
+jacket = SubResource("Resource_5fdfr")
+shirt = SubResource("Resource_esnfn")
+gloves = SubResource("Resource_533i2")
+belt = SubResource("Resource_1il17")
+pants = SubResource("Resource_42mg5")
+shoes = SubResource("Resource_mfawq")
+back = SubResource("Resource_oscjm")
+mainhand = SubResource("Resource_ot7gi")
+offhand = SubResource("Resource_7ota8")
+ammo = SubResource("Resource_6wqxg")
+
+[sub_resource type="Resource" id="Resource_5lj6t"]
+script = ExtResource("7_th2lu")
+body_type = "hm1"
+head_type = "hm1"
+palette = "default"
+race = "01human"
+gender = "male"
+equipment_parts = SubResource("Resource_skblc")
+body_parts = SubResource("Resource_11a7x")
+face_preview = "res://Scenes/Players/Darian/Darian/Darian_face.png"
+character_preview = "res://Scenes/Players/Darian/Darian/Darian_character.png"
+battler_preview = "res://Scenes/Players/Darian/Darian/Darian_battler.png"
+scene_path = "res://Scenes/Players/Darian/Darian/Darian.tscn"
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_xbtvb"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4ncqf"]
+radius = 5.0
+height = 10.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fk01f"]
+size = Vector2(26, 26)
+
+[sub_resource type="Animation" id="Animation_qldby"]
+resource_name = "Breathing"
+length = 0.8
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.8),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"_manage_animator"
+}]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("FullBody:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.33333337, 0.8000001),
+"transitions": PackedFloat32Array(0.5, -2, -2),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1, 0.984), Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_368bl"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FullBody:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_w2gn3"]
+_data = {
+&"Breathing": SubResource("Animation_qldby"),
+&"RESET": SubResource("Animation_368bl")
+}
+
+[node name="Darian" type="CharacterBody2D" groups=["player"]]
+z_index = 1
+y_sort_enabled = true
+collision_mask = 14
+script = ExtResource("1_av1t6")
+actor_data = SubResource("Resource_5lj6t")
+can_move_on_terrains = PackedStringArray("^lava", "^water")
+
+[node name="FullBody" type="Marker2D" parent="."]
+unique_name_in_owner = true
+
+[node name="WingsBack" type="Sprite2D" parent="FullBody"]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_xbtvb")
+position = Vector2(0, -32)
+region_enabled = true
+region_rect = Rect2(0, 640, 64, 64)
+region_filter_clip_enabled = true
+
+[node name="HandsBack" type="Sprite2D" parent="FullBody"]
+unique_name_in_owner = true
+position = Vector2(0, -32)
+region_enabled = true
+region_rect = Rect2(0, 384, 192, 192)
+region_filter_clip_enabled = true
+
+[node name="Body" type="Sprite2D" parent="FullBody"]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_xbtvb")
+position = Vector2(0, -32)
+region_enabled = true
+region_rect = Rect2(0, 640, 64, 64)
+region_filter_clip_enabled = true
+
+[node name="HandsFront" type="Sprite2D" parent="FullBody"]
+unique_name_in_owner = true
+position = Vector2(0, -32)
+region_enabled = true
+region_rect = Rect2(0, 384, 192, 192)
+region_filter_clip_enabled = true
+
+[node name="CollisionShape" type="CollisionShape2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -7)
+shape = SubResource("CapsuleShape2D_4ncqf")
+
+[node name="Bounds" type="Node2D" parent="."]
+
+[node name="Down" type="Marker2D" parent="Bounds"]
+unique_name_in_owner = true
+
+[node name="Up" type="Marker2D" parent="Bounds"]
+unique_name_in_owner = true
+position = Vector2(0, -49)
+
+[node name="Left" type="Marker2D" parent="Bounds"]
+unique_name_in_owner = true
+position = Vector2(-15, -24)
+
+[node name="Right" type="Marker2D" parent="Bounds"]
+unique_name_in_owner = true
+position = Vector2(15, -24)
+
+[node name="Feet" type="Marker2D" parent="Bounds"]
+unique_name_in_owner = true
+
+[node name="Mouth" type="Marker2D" parent="Bounds"]
+unique_name_in_owner = true
+position = Vector2(0, -29)
+
+[node name="ContactArea" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 64
+collision_mask = 64
+metadata/entity = Object(CharacterBody2D,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"light_mask":1,"visibility_layer":1,"z_index":1,"z_as_relative":true,"y_sort_enabled":true,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"position":Vector2(0, 0),"rotation":0.0,"scale":Vector2(1, 1),"skew":0.0,"disable_mode":0,"collision_layer":1,"collision_mask":46,"collision_priority":1.0,"input_pickable":false,"motion_mode":0,"up_direction":Vector2(0, -1),"velocity":Vector2(0, 0),"slide_on_ceiling":true,"max_slides":4,"wall_min_slide_angle":0.2617994,"floor_stop_on_slope":true,"floor_constant_speed":false,"floor_block_on_wall":true,"floor_max_angle":0.7853982,"floor_snap_length":1.0,"platform_on_leave":0,"platform_floor_layers":4294967295,"platform_wall_layers":0,"safe_margin":0.08,"script":Resource("res://Scenes/Players/Player_1/Player_1.gd"),"actor_data":Resource("res://Scenes/Players/Player_1/Player_1_data.tres"),"ctrl_pressed":false,"force_disable_breathing":false,"preview_direction":null,"animations":{
+"player": [{
+"frames": [[0.0, 512.0]],
+"id": "idle_up",
+"loop": true
+}, {
+"frames": [[0.0, 576.0]],
+"id": "idle_left",
+"loop": true
+}, {
+"frames": [[0.0, 640.0]],
+"id": "idle_down",
+"loop": true
+}, {
+"frames": [[0.0, 704.0]],
+"id": "idle_right",
+"loop": true
+}, {
+"frames": [[64.0, 0.0], [128.0, 0.0], [192.0, 0.0], [256.0, 0.0], [320.0, 0.0], [384.0, 0.0]],
+"id": "cast_up",
+"loop": false
+}, {
+"frames": [[64.0, 64.0], [128.0, 64.0], [192.0, 64.0], [256.0, 64.0], [320.0, 64.0], [384.0, 64.0]],
+"id": "cast_left",
+"loop": false
+}, {
+"frames": [[64.0, 128.0], [128.0, 128.0], [192.0, 128.0], [256.0, 128.0], [320.0, 128.0], [384.0, 128.0]],
+"id": "cast_down",
+"loop": false
+}, {
+"frames": [[64.0, 192.0], [128.0, 192.0], [192.0, 192.0], [256.0, 192.0], [320.0, 192.0], [384.0, 192.0]],
+"id": "cast_right",
+"loop": false
+}, {
+"frames": [[192.0, 0.0], [256.0, 0.0], [320.0, 0.0]],
+"id": "start_jump_up",
+"keep_last_frame": true,
+"loop": false
+}, {
+"frames": [[192.0, 64.0], [256.0, 64.0], [320.0, 64.0]],
+"id": "start_jump_left",
+"keep_last_frame": true,
+"loop": false
+}, {
+"frames": [[192.0, 128.0], [256.0, 128.0], [320.0, 128.0]],
+"id": "start_jump_down",
+"keep_last_frame": true,
+"loop": false
+}, {
+"frames": [[192.0, 192.0], [256.0, 192.0], [320.0, 192.0]],
+"id": "start_jump_right",
+"keep_last_frame": true,
+"loop": false
+}, {
+"frames": [[320.0, 0.0], [256.0, 0.0], [192.0, 0.0]],
+"id": "end_jump_up",
+"keep_last_frame": false,
+"loop": false
+}, {
+"frames": [[320.0, 64.0], [256.0, 64.0], [192.0, 64.0]],
+"id": "end_jump_left",
+"keep_last_frame": false,
+"loop": false
+}, {
+"frames": [[320.0, 128.0], [256.0, 128.0], [192.0, 128.0]],
+"id": "end_jump_down",
+"keep_last_frame": false,
+"loop": false
+}, {
+"frames": [[320.0, 192.0], [256.0, 192.0], [192.0, 192.0]],
+"id": "end_jump_right",
+"keep_last_frame": false,
+"loop": false
+}, {
+"action_frame": 6.0,
+"emiter": [10.0, -39.0],
+"frames": [[0.0, 256.0], [64.0, 256.0], [128.0, 256.0], [192.0, 256.0], [256.0, 256.0], [320.0, 256.0], [384.0, 256.0], [448.0, 256.0]],
+"id": "thrust_up",
+"loop": false
+}, {
+"action_frame": 6.0,
+"emiter": [-30.0, -15.0],
+"frames": [[0.0, 320.0], [64.0, 320.0], [128.0, 320.0], [192.0, 320.0], [256.0, 320.0], [320.0, 320.0], [384.0, 320.0], [448.0, 320.0]],
+"id": "thrust_left",
+"loop": false
+}, {
+"action_frame": 6.0,
+"emiter": [-6.0, 4.0],
+"frames": [[0.0, 384.0], [64.0, 384.0], [128.0, 384.0], [192.0, 384.0], [256.0, 384.0], [320.0, 384.0], [384.0, 384.0], [448.0, 384.0]],
+"id": "thrust_down",
+"loop": false
+}, {
+"action_frame": 6.0,
+"emiter": [30.0, -15.0],
+"frames": [[0.0, 448.0], [64.0, 448.0], [128.0, 448.0], [192.0, 448.0], [256.0, 448.0], [320.0, 448.0], [384.0, 448.0], [448.0, 448.0]],
+"id": "thrust_right",
+"loop": false
+}, {
+"frames": [[64.0, 0.0]],
+"id": "holding_reins_up",
+"loop": false
+}, {
+"frames": [[64.0, 64.0]],
+"id": "holding_reins_left",
+"loop": false
+}, {
+"frames": [[64.0, 128.0]],
+"id": "holding_reins_down",
+"loop": false
+}, {
+"frames": [[64.0, 192.0]],
+"id": "holding_reins_right",
+"loop": false
+}, {
+"action_frame": 6.0,
+"emiter": [10.0, -39.0],
+"frames": [[0.0, 256.0], [64.0, 256.0], [256.0, 256.0], [256.0, 256.0], [256.0, 256.0], [256.0, 256.0], [320.0, 256.0]],
+"id": "watering_up",
+"loop": false
+}, {
+"action_frame": 6.0,
+"emiter": [-30.0, -15.0],
+"frames": [[0.0, 320.0], [64.0, 320.0], [256.0, 320.0], [256.0, 320.0], [256.0, 320.0], [256.0, 320.0], [320.0, 320.0]],
+"id": "watering_left",
+"loop": false
+}, {
+"action_frame": 6.0,
+"emiter": [-6.0, 4.0],
+"frames": [[0.0, 384.0], [64.0, 384.0], [256.0, 384.0], [256.0, 384.0], [256.0, 384.0], [256.0, 384.0], [320.0, 384.0]],
+"id": "watering_down",
+"loop": false
+}, {
+"action_frame": 6.0,
+"emiter": [30.0, -15.0],
+"frames": [[0.0, 448.0], [64.0, 448.0], [256.0, 448.0], [256.0, 448.0], [256.0, 448.0], [256.0, 448.0], [320.0, 448.0]],
+"id": "watering_right",
+"loop": false
+}, {
+"frames": [[64.0, 512.0], [128.0, 512.0], [192.0, 512.0], [256.0, 512.0], [320.0, 512.0], [384.0, 512.0], [448.0, 512.0], [512.0, 512.0]],
+"id": "walk_up",
+"loop": true
+}, {
+"frames": [[64.0, 576.0], [128.0, 576.0], [192.0, 576.0], [256.0, 576.0], [320.0, 576.0], [384.0, 576.0], [448.0, 576.0], [512.0, 576.0]],
+"id": "walk_left",
+"loop": true
+}, {
+"frames": [[64.0, 640.0], [128.0, 640.0], [192.0, 640.0], [256.0, 640.0], [320.0, 640.0], [384.0, 640.0], [448.0, 640.0], [512.0, 640.0]],
+"id": "walk_down",
+"loop": true
+}, {
+"frames": [[64.0, 704.0], [128.0, 704.0], [192.0, 704.0], [256.0, 704.0], [320.0, 704.0], [384.0, 704.0], [448.0, 704.0], [512.0, 704.0]],
+"id": "walk_right",
+"loop": true
+}, {
+"action_frame": 3.0,
+"emiter": [2.0, -44.0],
+"frames": [[0.0, 768.0], [64.0, 768.0], [128.0, 768.0], [192.0, 768.0], [256.0, 768.0], [320.0, 768.0]],
+"id": "slash_up",
+"loop": false
+}, {
+"action_frame": 3.0,
+"emiter": [-32.0, -27.0],
+"frames": [[0.0, 832.0], [64.0, 832.0], [128.0, 832.0], [192.0, 832.0], [256.0, 832.0], [320.0, 832.0]],
+"id": "slash_left",
+"loop": false
+}, {
+"action_frame": 3.0,
+"emiter": [2.0, 3.0],
+"frames": [[0.0, 896.0], [64.0, 896.0], [128.0, 896.0], [192.0, 896.0], [256.0, 896.0], [320.0, 896.0]],
+"id": "slash_down",
+"loop": false
+}, {
+"action_frame": 3.0,
+"emiter": [32.0, -28.0],
+"frames": [[0.0, 960.0], [64.0, 960.0], [128.0, 960.0], [192.0, 960.0], [256.0, 960.0], [320.0, 960.0]],
+"id": "slash_right",
+"loop": false
+}, {
+"frames": [[320.0, 768.0], [256.0, 768.0], [64.0, 768.0], [128.0, 768.0]],
+"id": "smash_up",
+"loop": false
+}, {
+"frames": [[320.0, 832.0], [256.0, 832.0], [64.0, 832.0], [128.0, 832.0]],
+"id": "smash_left",
+"loop": false
+}, {
+"frames": [[320.0, 896.0], [256.0, 896.0], [64.0, 896.0], [128.0, 896.0]],
+"id": "smash_down",
+"loop": false
+}, {
+"frames": [[320.0, 960.0], [256.0, 960.0], [64.0, 960.0], [128.0, 960.0]],
+"id": "smash_right",
+"loop": false
+}, {
+"action_frame": 3.0,
+"frames": [[0.0, 768.0], [320.0, 768.0], [256.0, 768.0], [192.0, 768.0], [128.0, 768.0], [64.0, 768.0]],
+"id": "islash_up",
+"loop": false
+}, {
+"action_frame": 3.0,
+"frames": [[0.0, 832.0], [320.0, 832.0], [256.0, 832.0], [192.0, 832.0], [128.0, 832.0], [64.0, 832.0]],
+"id": "islash_left",
+"loop": false
+}, {
+"action_frame": 3.0,
+"frames": [[0.0, 896.0], [320.0, 896.0], [256.0, 896.0], [192.0, 896.0], [128.0, 896.0], [64.0, 896.0]],
+"id": "islash_down",
+"loop": false
+}, {
+"action_frame": 3.0,
+"frames": [[0.0, 960.0], [320.0, 960.0], [256.0, 960.0], [192.0, 960.0], [128.0, 960.0], [64.0, 960.0]],
+"id": "islash_right",
+"loop": false
+}, {
+"action_frame": 8.0,
+"emiter": [-2.0, 0.0],
+"frames": [[64.0, 1024.0], [128.0, 1024.0], [192.0, 1024.0], [256.0, 1024.0], [320.0, 1024.0], [384.0, 1024.0], [448.0, 1024.0], [512.0, 1024.0], [576.0, 1024.0], [640.0, 1024.0], [704.0, 1024.0], [768.0, 1024.0]],
+"id": "shoot_up",
+"loop": false
+}, {
+"action_frame": 8.0,
+"emiter": [0.0, 0.0],
+"frames": [[64.0, 1088.0], [128.0, 1088.0], [192.0, 1088.0], [256.0, 1088.0], [320.0, 1088.0], [384.0, 1088.0], [448.0, 1088.0], [512.0, 1088.0], [576.0, 1088.0], [640.0, 1088.0], [704.0, 1088.0], [768.0, 1088.0]],
+"id": "shoot_left",
+"loop": false
+}, {
+"action_frame": 8.0,
+"emiter": [0.0, 0.0],
+"frames": [[64.0, 1152.0], [128.0, 1152.0], [192.0, 1152.0], [256.0, 1152.0], [320.0, 1152.0], [384.0, 1152.0], [448.0, 1152.0], [512.0, 1152.0], [576.0, 1152.0], [640.0, 1152.0], [704.0, 1152.0], [768.0, 1152.0]],
+"id": "shoot_down",
+"loop": false
+}, {
+"action_frame": 8.0,
+"emiter": [0.0, 0.0],
+"frames": [[64.0, 1216.0], [128.0, 1216.0], [192.0, 1216.0], [256.0, 1216.0], [320.0, 1216.0], [384.0, 1216.0], [448.0, 1216.0], [512.0, 1216.0], [576.0, 1216.0], [640.0, 1216.0], [704.0, 1216.0], [768.0, 1216.0]],
+"id": "shoot_right",
+"loop": false
+}, {
+"frames": [[64.0, 1280.0], [128.0, 1280.0], [192.0, 1280.0], [256.0, 1280.0], [320.0, 1280.0]],
+"id": "hurt_down",
+"loop": false
+}, {
+"frames": [[0.0, 768.0], [64.0, 768.0], [320.0, 768.0], [256.0, 768.0], [192.0, 768.0], [192.0, 768.0], [192.0, 768.0], [128.0, 768.0]],
+"id": "whip_up",
+"loop": false
+}, {
+"frames": [[0.0, 832.0], [64.0, 832.0], [320.0, 832.0], [256.0, 832.0], [192.0, 832.0], [192.0, 832.0], [192.0, 832.0], [128.0, 832.0]],
+"id": "whip_left",
+"loop": false
+}, {
+"frames": [[0.0, 896.0], [64.0, 896.0], [320.0, 896.0], [256.0, 896.0], [192.0, 896.0], [192.0, 896.0], [192.0, 896.0], [128.0, 896.0]],
+"id": "whip_down",
+"loop": false
+}, {
+"frames": [[0.0, 960.0], [64.0, 960.0], [320.0, 960.0], [256.0, 960.0], [192.0, 960.0], [192.0, 960.0], [192.0, 960.0], [128.0, 960.0]],
+"id": "whip_right",
+"loop": false
+}, {
+"frames": [[0.0, 256.0], [192.0, 256.0], [192.0, 256.0], [256.0, 256.0], [256.0, 256.0], [256.0, 256.0], [256.0, 256.0], [256.0, 256.0], [320.0, 256.0], [320.0, 256.0], [256.0, 256.0], [192.0, 256.0], [192.0, 256.0]],
+"id": "fish_full_animation_up",
+"loop": false
+}, {
+"frames": [[0.0, 256.0], [192.0, 256.0], [192.0, 256.0], [256.0, 256.0], [256.0, 256.0]],
+"id": "fish_throw_up",
+"loop": false
+}, {
+"frames": [[256.0, 256.0], [256.0, 256.0], [256.0, 256.0], [320.0, 256.0], [320.0, 256.0]],
+"id": "fish_reel_up",
+"loop": true
+}, {
+"frames": [[256.0, 256.0], [192.0, 256.0], [192.0, 256.0]],
+"id": "fish_land_up",
+"loop": false
+}, {
+"frames": [[0.0, 320.0], [192.0, 320.0], [192.0, 320.0], [256.0, 320.0], [256.0, 320.0], [256.0, 320.0], [256.0, 320.0], [256.0, 320.0], [320.0, 320.0], [320.0, 320.0], [256.0, 320.0], [192.0, 320.0], [192.0, 320.0]],
+"id": "fish_full_animation_left",
+"loop": false
+}, {
+"frames": [[0.0, 320.0], [192.0, 320.0], [192.0, 320.0], [256.0, 320.0], [256.0, 320.0]],
+"id": "fish_throw_left",
+"loop": false
+}, {
+"frames": [[256.0, 320.0], [256.0, 320.0], [256.0, 320.0], [320.0, 320.0], [320.0, 320.0]],
+"id": "fish_reel_left",
+"loop": true
+}, {
+"frames": [[256.0, 320.0], [192.0, 320.0], [192.0, 320.0]],
+"id": "fish_land_left",
+"loop": false
+}, {
+"frames": [[0.0, 384.0], [192.0, 384.0], [192.0, 384.0], [256.0, 384.0], [256.0, 384.0], [256.0, 384.0], [256.0, 384.0], [256.0, 384.0], [320.0, 384.0], [320.0, 384.0], [256.0, 384.0], [192.0, 384.0], [192.0, 384.0]],
+"id": "fish_full_animation_down",
+"loop": false
+}, {
+"frames": [[0.0, 384.0], [192.0, 384.0], [192.0, 384.0], [256.0, 384.0], [256.0, 384.0]],
+"id": "fish_throw_down",
+"loop": false
+}, {
+"frames": [[256.0, 384.0], [256.0, 384.0], [256.0, 384.0], [320.0, 384.0], [320.0, 384.0]],
+"id": "fish_reel_down",
+"loop": true
+}, {
+"frames": [[256.0, 384.0], [192.0, 384.0], [192.0, 384.0]],
+"id": "fish_land_down",
+"loop": false
+}, {
+"frames": [[0.0, 448.0], [192.0, 448.0], [192.0, 448.0], [256.0, 448.0], [256.0, 448.0], [256.0, 448.0], [256.0, 448.0], [256.0, 448.0], [320.0, 448.0], [320.0, 448.0], [256.0, 448.0], [192.0, 448.0], [192.0, 448.0]],
+"id": "fish_full_animation_right",
+"loop": false
+}, {
+"frames": [[0.0, 448.0], [192.0, 448.0], [192.0, 448.0], [256.0, 448.0], [256.0, 448.0]],
+"id": "fish_throw_right",
+"loop": false
+}, {
+"frames": [[256.0, 448.0], [256.0, 448.0], [256.0, 448.0], [320.0, 448.0], [320.0, 448.0]],
+"id": "fish_reel_right",
+"loop": true
+}, {
+"frames": [[256.0, 448.0], [192.0, 448.0], [192.0, 448.0]],
+"id": "fish_land_right",
+"loop": false
+}],
+"weapon": [{
+"frames": [[0.0, 0.0]],
+"id": "idle_up",
+"loop": false
+}, {
+"frames": [[0.0, 192.0]],
+"id": "idle_left",
+"loop": false
+}, {
+"frames": [[0.0, 384.0]],
+"id": "idle_down",
+"loop": false
+}, {
+"frames": [[0.0, 576.0]],
+"id": "idle_right",
+"loop": false
+}, {
+"frames": [[0.0, 0.0]],
+"id": "small_idle_up",
+"loop": false
+}, {
+"frames": [[0.0, 64.0]],
+"id": "small_idle_left",
+"loop": false
+}, {
+"frames": [[0.0, 128.0]],
+"id": "small_idle_down",
+"loop": false
+}, {
+"frames": [[0.0, 192.0]],
+"id": "small_idle_right",
+"loop": false
+}, {
+"action_frame": 3.0,
+"frames": [[0.0, 0.0], [192.0, 0.0], [384.0, 0.0], [576.0, 0.0], [768.0, 0.0], [960.0, 0.0]],
+"id": "islash_up",
+"loop": false
+}, {
+"action_frame": 3.0,
+"frames": [[0.0, 192.0], [192.0, 192.0], [384.0, 192.0], [576.0, 192.0], [768.0, 192.0], [960.0, 192.0]],
+"id": "islash_left",
+"loop": false
+}, {
+"action_frame": 3.0,
+"frames": [[0.0, 384.0], [192.0, 384.0], [384.0, 384.0], [576.0, 384.0], [768.0, 384.0], [960.0, 384.0]],
+"id": "islash_down",
+"loop": false
+}, {
+"action_frame": 3.0,
+"frames": [[0.0, 576.0], [192.0, 576.0], [384.0, 576.0], [576.0, 576.0], [768.0, 576.0], [960.0, 576.0]],
+"id": "islash_right",
+"loop": false
+}, {
+"action_frame": 3.0,
+"frames": [[0.0, 0.0], [192.0, 0.0], [384.0, 0.0], [576.0, 0.0], [768.0, 0.0], [960.0, 0.0]],
+"id": "slash_up",
+"loop": false
+}, {
+"action_frame": 3.0,
+"frames": [[0.0, 192.0], [192.0, 192.0], [384.0, 192.0], [576.0, 192.0], [768.0, 192.0], [960.0, 192.0]],
+"id": "slash_left",
+"loop": false
+}, {
+"action_frame": 3.0,
+"frames": [[0.0, 384.0], [192.0, 384.0], [384.0, 384.0], [576.0, 384.0], [768.0, 384.0], [960.0, 384.0]],
+"id": "slash_down",
+"loop": false
+}, {
+"action_frame": 3.0,
+"frames": [[0.0, 576.0], [192.0, 576.0], [384.0, 576.0], [576.0, 576.0], [768.0, 576.0], [960.0, 576.0]],
+"id": "slash_right",
+"loop": false
+}, {
+"frames": [[0.0, 0.0], [192.0, 0.0], [384.0, 0.0], [576.0, 0.0], [768.0, 0.0], [960.0, 0.0], [1152.0, 0.0], [1344.0, 0.0]],
+"id": "walk_up",
+"loop": false
+}, {
+"frames": [[0.0, 192.0], [192.0, 192.0], [384.0, 192.0], [576.0, 192.0], [768.0, 192.0], [960.0, 192.0], [1152.0, 192.0], [1344.0, 192.0]],
+"id": "walk_left",
+"loop": false
+}, {
+"frames": [[0.0, 384.0], [192.0, 384.0], [384.0, 384.0], [576.0, 384.0], [768.0, 384.0], [960.0, 384.0], [1152.0, 384.0], [1344.0, 384.0]],
+"id": "walk_down",
+"loop": false
+}, {
+"frames": [[0.0, 576.0], [192.0, 576.0], [384.0, 576.0], [576.0, 576.0], [768.0, 576.0], [960.0, 576.0], [1152.0, 576.0], [1344.0, 576.0]],
+"id": "walk_right",
+"loop": false
+}, {
+"frames": [[64.0, 0.0], [128.0, 0.0], [192.0, 0.0], [256.0, 0.0], [320.0, 0.0], [384.0, 0.0], [448.0, 0.0], [512.0, 0.0]],
+"id": "small_walk_up",
+"loop": true
+}, {
+"frames": [[64.0, 64.0], [128.0, 64.0], [192.0, 64.0], [256.0, 64.0], [320.0, 64.0], [384.0, 64.0], [448.0, 64.0], [512.0, 64.0]],
+"id": "small_walk_left",
+"loop": true
+}, {
+"frames": [[64.0, 128.0], [128.0, 128.0], [192.0, 128.0], [256.0, 128.0], [320.0, 128.0], [384.0, 128.0], [448.0, 128.0], [512.0, 128.0]],
+"id": "small_walk_down",
+"loop": true
+}, {
+"frames": [[64.0, 192.0], [128.0, 192.0], [192.0, 192.0], [256.0, 192.0], [320.0, 192.0], [384.0, 192.0], [448.0, 192.0], [512.0, 192.0]],
+"id": "small_walk_right",
+"loop": true
+}, {
+"action_frame": 6.0,
+"frames": [[0.0, 0.0], [192.0, 0.0], [384.0, 0.0], [576.0, 0.0], [768.0, 0.0], [960.0, 0.0], [1152.0, 0.0], [1344.0, 0.0]],
+"id": "thrust_up",
+"loop": false
+}, {
+"action_frame": 6.0,
+"frames": [[0.0, 192.0], [192.0, 192.0], [384.0, 192.0], [576.0, 192.0], [768.0, 192.0], [960.0, 192.0], [1152.0, 192.0], [1344.0, 192.0]],
+"id": "thrust_left",
+"loop": false
+}, {
+"action_frame": 6.0,
+"frames": [[0.0, 384.0], [192.0, 384.0], [384.0, 384.0], [576.0, 384.0], [768.0, 384.0], [960.0, 384.0], [1152.0, 384.0], [1344.0, 384.0]],
+"id": "thrust_down",
+"loop": false
+}, {
+"action_frame": 6.0,
+"frames": [[0.0, 576.0], [192.0, 576.0], [384.0, 576.0], [576.0, 576.0], [768.0, 576.0], [960.0, 576.0], [1152.0, 576.0], [1344.0, 576.0]],
+"id": "thrust_right",
+"loop": false
+}, {
+"action_frame": 6.0,
+"frames": [[0.0, 0.0], [192.0, 0.0], [768.0, 0.0], [768.0, 0.0], [768.0, 0.0], [768.0, 0.0], [960.0, 0.0]],
+"id": "watering_up",
+"loop": false
+}, {
+"action_frame": 6.0,
+"frames": [[0.0, 192.0], [192.0, 192.0], [768.0, 192.0], [768.0, 192.0], [768.0, 192.0], [768.0, 192.0], [960.0, 192.0]],
+"id": "watering_left",
+"loop": false
+}, {
+"action_frame": 6.0,
+"frames": [[0.0, 384.0], [192.0, 384.0], [768.0, 384.0], [768.0, 384.0], [768.0, 384.0], [768.0, 384.0], [960.0, 384.0]],
+"id": "watering_down",
+"loop": false
+}, {
+"action_frame": 6.0,
+"frames": [[0.0, 576.0], [192.0, 576.0], [768.0, 576.0], [768.0, 576.0], [768.0, 576.0], [768.0, 576.0], [960.0, 576.0]],
+"id": "watering_right",
+"loop": false
+}, {
+"frames": [[0.0, 0.0], [192.0, 0.0], [384.0, 0.0], [576.0, 0.0], [768.0, 0.0], [960.0, 0.0], [1152.0, 0.0], [1344.0, 0.0]],
+"id": "whip_up",
+"loop": false
+}, {
+"frames": [[0.0, 192.0], [192.0, 192.0], [384.0, 192.0], [576.0, 192.0], [768.0, 192.0], [960.0, 192.0], [1152.0, 192.0], [1344.0, 192.0]],
+"id": "whip_left",
+"loop": false
+}, {
+"frames": [[0.0, 384.0], [192.0, 384.0], [384.0, 384.0], [576.0, 384.0], [768.0, 384.0], [960.0, 384.0], [1152.0, 384.0], [1344.0, 384.0]],
+"id": "whip_down",
+"loop": false
+}, {
+"frames": [[0.0, 576.0], [192.0, 576.0], [384.0, 576.0], [576.0, 576.0], [768.0, 576.0], [960.0, 576.0], [1152.0, 576.0], [1344.0, 576.0]],
+"id": "whip_right",
+"loop": false
+}, {
+"frames": [[0.0, 0.0], [192.0, 0.0], [384.0, 0.0], [576.0, 0.0]],
+"id": "smash_up",
+"loop": false
+}, {
+"frames": [[0.0, 192.0], [192.0, 192.0], [384.0, 192.0], [576.0, 192.0]],
+"id": "smash_left",
+"loop": false
+}, {
+"frames": [[0.0, 384.0], [192.0, 384.0], [384.0, 384.0], [576.0, 384.0]],
+"id": "smash_down",
+"loop": false
+}, {
+"frames": [[0.0, 576.0], [192.0, 576.0], [384.0, 576.0], [576.0, 576.0]],
+"id": "smash_right",
+"loop": false
+}, {
+"frames": [[0.0, 0.0], [192.0, 0.0], [192.0, 0.0], [384.0, 0.0], [576.0, 0.0], [768.0, 0.0], [960.0, 0.0], [1152.0, 0.0], [1344.0, 0.0], [1344.0, 0.0], [1536.0, 0.0], [1728.0, 0.0], [1920.0, 0.0]],
+"id": "fish_full_animation_up",
+"loop": false
+}, {
+"frames": [[0.0, 0.0], [192.0, 0.0], [192.0, 0.0], [384.0, 0.0], [384.0, 0.0]],
+"id": "fish_throw_up",
+"loop": false
+}, {
+"frames": [[768.0, 0.0], [960.0, 0.0], [1152.0, 0.0], [1344.0, 0.0], [1344.0, 0.0]],
+"id": "fish_reel_up",
+"loop": true
+}, {
+"frames": [[1536.0, 0.0], [1728.0, 0.0], [1920.0, 0.0]],
+"id": "fish_land_up",
+"loop": false
+}, {
+"frames": [[0.0, 192.0], [192.0, 192.0], [192.0, 192.0], [384.0, 192.0], [576.0, 192.0], [768.0, 192.0], [960.0, 192.0], [1152.0, 192.0], [1344.0, 192.0], [1344.0, 192.0], [1536.0, 192.0], [1728.0, 192.0], [1920.0, 192.0]],
+"id": "fish_full_animation_left",
+"loop": false
+}, {
+"frames": [[0.0, 192.0], [192.0, 192.0], [192.0, 192.0], [384.0, 192.0], [384.0, 192.0]],
+"id": "fish_throw_left",
+"loop": false
+}, {
+"frames": [[768.0, 192.0], [960.0, 192.0], [1152.0, 192.0], [1344.0, 192.0], [1344.0, 192.0]],
+"id": "fish_reel_left",
+"loop": true
+}, {
+"frames": [[1536.0, 192.0], [1728.0, 192.0], [1920.0, 192.0]],
+"id": "fish_land_left",
+"loop": false
+}, {
+"frames": [[0.0, 384.0], [192.0, 384.0], [192.0, 384.0], [384.0, 384.0], [576.0, 384.0], [768.0, 384.0], [960.0, 384.0], [1152.0, 384.0], [1344.0, 384.0], [1344.0, 384.0], [1536.0, 384.0], [1728.0, 384.0], [1920.0, 384.0]],
+"id": "fish_full_animation_down",
+"loop": false
+}, {
+"frames": [[0.0, 384.0], [192.0, 384.0], [192.0, 384.0], [384.0, 384.0], [384.0, 384.0]],
+"id": "fish_throw_down",
+"loop": false
+}, {
+"frames": [[768.0, 384.0], [960.0, 384.0], [1152.0, 384.0], [1344.0, 384.0], [1344.0, 384.0]],
+"id": "fish_reel_down",
+"loop": true
+}, {
+"frames": [[1536.0, 384.0], [1728.0, 384.0], [1920.0, 384.0]],
+"id": "fish_land_down",
+"loop": false
+}, {
+"frames": [[0.0, 576.0], [192.0, 576.0], [192.0, 576.0], [384.0, 576.0], [576.0, 576.0], [768.0, 576.0], [960.0, 576.0], [1152.0, 576.0], [1344.0, 576.0], [1344.0, 576.0], [1536.0, 576.0], [1728.0, 576.0], [1920.0, 576.0]],
+"id": "fish_full_animation_right",
+"loop": false
+}, {
+"frames": [[0.0, 576.0], [192.0, 576.0], [192.0, 576.0], [384.0, 576.0], [384.0, 576.0]],
+"id": "fish_throw_right",
+"loop": false
+}, {
+"frames": [[768.0, 576.0], [960.0, 576.0], [1152.0, 576.0], [1344.0, 576.0], [1344.0, 576.0]],
+"id": "fish_reel_right",
+"loop": true
+}, {
+"frames": [[1536.0, 576.0], [1728.0, 576.0], [1920.0, 576.0]],
+"id": "fish_land_right",
+"loop": false
+}]
+},"full_body":null,"wings_back":null,"hands_back":null,"body":null,"hands_front":null,"idle_tween":null,"current_data":Resource("res://Scenes/Players/Player_1/Player_1_data.tres"),"current_weapon_images":{},"can_move_on_terrains":PackedStringArray("^lava", "^water"),"movement_current_mode":1,"movement_speed":100.0,"running_speed":150.0,"is_moving":false,"is_jumping":false,"can_move":true,"is_running":false,"target_position":Vector2(0, 0),"grid_move_duration":Vector2(0, 0),"movement_vector":Vector2(0, 0),"current_map_tile_size":Vector2i(0, 0),"map_offset":Vector2i(0, 0),"cumulative_steps":0.0,"current_direction":8,"last_direction":8,"event_movement_type":0,"event_movement_frequency":10,"event_movement_frame_count":0,"route_commands":null,"route_command_index":0,"update_texture_timer":0.0,"current_frame":-1,"current_animation":"idle","frame_delay":0.0,"frame_delay_max":0.1,"frame_delay_max_running":0.03,"previous_tile":Vector2i(0, 0),"is_attacking":false,"can_attack":true,"is_on_vehicle":false,"current_vehicle":null,"current_weapon_data":{
+"actions": ["slash", "islash", "thrust"],
+"chargen": true,
+"default": false,
+"gear": true,
+"id": "sword1",
+"lootable": true,
+"name": "Sword",
+"primarycolors": ["metal_iron", "metal_steel", "metal_bluesteel"],
+"secondarycolors": ["metal_copper", "metal_bronze", "metal_gold"],
+"sounds": ["sounds/swosh-03.ogg", "sounds/swosh-05.ogg", "sounds/swosh-08.ogg", "sounds/swosh-10.ogg", "sounds/swosh-18.ogg", "sounds/swosh-42.ogg"],
+"tags": ["mainhand", "weapon", "sword", "large"],
+"textures": [{
+"back": "textures/gear/mainhand/sword/sword1_mb.png",
+"body": "hm1",
+"front": "textures/gear/mainhand/sword/sword1_mf.png",
+"spritesheet": "char_base"
+}, {
+"back": "textures/gear/mainhand/sword/sword1_slash_mb.png",
+"body": "hm1",
+"front": "textures/gear/mainhand/sword/sword1_slash_mf.png",
+"spritesheet": "char_large_slash"
+}, {
+"back": "textures/gear/mainhand/sword/sword1_islash_mb.png",
+"body": "hm1",
+"front": "textures/gear/mainhand/sword/sword1_islash_mf.png",
+"spritesheet": "char_large_islash"
+}, {
+"back": "textures/gear/mainhand/sword/sword1_thrust_mb.png",
+"body": "hm1",
+"front": "textures/gear/mainhand/sword/sword1_thrust_mf.png",
+"spritesheet": "char_large_thrust"
+}, {
+"back": "textures/gear/mainhand/sword/sword1_mb.png",
+"body": "hm2",
+"front": "textures/gear/mainhand/sword/sword1_mf.png",
+"spritesheet": "char_base"
+}, {
+"back": "textures/gear/mainhand/sword/sword1_slash_mb.png",
+"body": "hm2",
+"front": "textures/gear/mainhand/sword/sword1_slash_mf.png",
+"spritesheet": "char_large_slash"
+}, {
+"back": "textures/gear/mainhand/sword/sword1_islash_mb.png",
+"body": "hm2",
+"front": "textures/gear/mainhand/sword/sword1_islash_mf.png",
+"spritesheet": "char_large_islash"
+}, {
+"back": "textures/gear/mainhand/sword/sword1_thrust_mb.png",
+"body": "hm2",
+"front": "textures/gear/mainhand/sword/sword1_thrust_mf.png",
+"spritesheet": "char_large_thrust"
+}, {
+"back": "textures/gear/mainhand/sword/sword1_fb.png",
+"body": "hf1",
+"front": "textures/gear/mainhand/sword/sword1_ff.png",
+"spritesheet": "char_base"
+}, {
+"back": "textures/gear/mainhand/sword/sword1_slash_fb.png",
+"body": "hf1",
+"front": "textures/gear/mainhand/sword/sword1_slash_ff.png",
+"spritesheet": "char_large_slash"
+}, {
+"back": "textures/gear/mainhand/sword/sword1_islash_fb.png",
+"body": "hf1",
+"front": "textures/gear/mainhand/sword/sword1_islash_ff.png",
+"spritesheet": "char_large_islash"
+}, {
+"back": "textures/gear/mainhand/sword/sword1_thrust_fb.png",
+"body": "hf1",
+"front": "textures/gear/mainhand/sword/sword1_thrust_ff.png",
+"spritesheet": "char_large_thrust"
+}]
+},"current_virtual_tile":Vector2(0, 0),"collision_disabled":false,"force_locked":false,"activated_this_frame":false,"_last_route_movement":Vector2i(0, 0),"_contact_activation_delay":0.0,"_contact_activation_cooldown":1.0,"_ignore_events_contact":[],"_squared_tile_size":0,"_visual_history":Array[Dictionary]([]),"_max_history_size":300,"_last_recorded_pos":Vector2(0, 0),"_last_recorded_direction":-1,"_record_threshold_squared":16.0,"character_options":null,"movement_tween":null,"contact_area_tween":null,"busy":false,"force_animation_enabled":false,"targets_over_me":[])
+
+
+[node name="AreaShape" type="CollisionShape2D" parent="ContactArea"]
+unique_name_in_owner = true
+position = Vector2(0, -13)
+shape = SubResource("RectangleShape2D_fk01f")
+debug_color = Color(0.7580552, 0.44811207, 0.2082015, 0.41960785)
+
+[node name="MainAnimator" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+&"": SubResource("AnimationLibrary_w2gn3")
+}
+autoplay = "Breathing"
+speed_scale = 0.6

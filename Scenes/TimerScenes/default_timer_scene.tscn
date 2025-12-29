@@ -1,0 +1,166 @@
+[gd_scene load_steps=15 format=3 uid="uid://3mgc5qwjhdcb"]
+
+[ext_resource type="Script" uid="uid://o3sn2dd4mjse" path="res://Scenes/TimerScenes/main_timer_scene.gd" id="1_7a7p8"]
+[ext_resource type="Shader" uid="uid://byvruuuuqrdn8" path="res://Assets/Shaders/simple_gradient.gdshader" id="2_id8gn"]
+[ext_resource type="FontFile" uid="uid://d4c6c2u86nvso" path="res://Assets/Fonts/Cinzel-Bold.ttf" id="2_wfbql"]
+[ext_resource type="AudioStream" uid="uid://bvhi6arqihxca" path="res://addons/rpg_character_creator/sounds/swosh-01.ogg" id="3_mv5fr"]
+[ext_resource type="AudioStream" uid="uid://chmajh2ejdbjt" path="res://addons/rpg_character_creator/sounds/spell1.ogg" id="3_p6ftf"]
+[ext_resource type="AudioStream" uid="uid://do1v0tp7ins2u" path="res://addons/rpg_character_creator/sounds/rock_breaking.ogg" id="4_21cx3"]
+[ext_resource type="AudioStream" uid="uid://b4ddqd2my35rl" path="res://addons/rpg_character_creator/sounds/swosh-36.ogg" id="6_21cx3"]
+
+[sub_resource type="Gradient" id="Gradient_wfbql"]
+colors = PackedColorArray(0, 0, 0, 0.117647, 0, 0, 0, 0.0470588)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_mv5fr"]
+gradient = SubResource("Gradient_wfbql")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="Gradient" id="Gradient_mv5fr"]
+offsets = PackedFloat32Array(0, 0.41841, 0.878661)
+colors = PackedColorArray(0.948636, 0.960633, 0.989448, 1, 0.286975, 0.649192, 0.632591, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_21cx3"]
+gradient = SubResource("Gradient_mv5fr")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="Curve" id="Curve_4tkxd"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1e-05, 0), 0.0, 0.0, 0, 0, Vector2(0.996324, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_wfbql"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.996324, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wfbql"]
+shader = ExtResource("2_id8gn")
+shader_parameter/gradient_texture = SubResource("GradientTexture2D_21cx3")
+shader_parameter/use_text_gradient = true
+shader_parameter/size = Vector2(275, 65)
+shader_parameter/use_pixelate_gradient = true
+shader_parameter/pixel_scale = 8.0
+
+[node name="DefaultTimerScene" type="Control"]
+z_index = 4096
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(576, 320)
+size_flags_horizontal = 3
+size_flags_vertical = 0
+mouse_filter = 2
+script = ExtResource("1_7a7p8")
+timer_name = "Hola"
+timer_name_align = 2
+timer_name_modulate = Color(0.613897, 0.663969, 0.836518, 1)
+timer_name_modulate_mix_strength = 0.42
+play_timer_in_editor = false
+custom_position = Vector2(40, 40)
+margin_horizontal = 20.0
+margin_vertical = 2.0
+background_texture = SubResource("GradientTexture2D_mv5fr")
+text_font = ExtResource("2_wfbql")
+timer_text_size = 48
+text_gradient = SubResource("GradientTexture2D_21cx3")
+text_outline_size = 8
+text_outline_color = Color(0.029699, 0.00777122, 0.018184, 1)
+timer_format = "HHh : MMm : SSs"
+start_fx = ExtResource("3_p6ftf")
+timeout_fx = ExtResource("4_21cx3")
+warning_fx = ExtResource("3_mv5fr")
+tick_fx = ExtResource("6_21cx3")
+warning_curve = SubResource("Curve_4tkxd")
+blink_speed_curve = SubResource("Curve_wfbql")
+
+[node name="Background" type="TextureRect" parent="."]
+unique_name_in_owner = true
+process_mode = 4
+layout_mode = 1
+offset_right = 1152.0
+offset_bottom = 107.0
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_mv5fr")
+expand_mode = 1
+
+[node name="TimerContainer" type="Control" parent="Background"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TimerTitleBack" type="Label" parent="Background"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 428.0
+offset_top = 4.5
+offset_right = 724.0
+offset_bottom = 37.5
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_wfbql")
+theme_override_font_sizes/font_size = 24
+text = "Hola"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TimerTitle" type="Label" parent="Background"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_wfbql")
+instance_shader_parameters/mix_amount = 0.42
+instance_shader_parameters/modulate = Color(0.613897, 0.663969, 0.836518, 1)
+layout_mode = 2
+offset_left = 428.0
+offset_top = 4.5
+offset_right = 724.0
+offset_bottom = 37.5
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("2_wfbql")
+theme_override_font_sizes/font_size = 24
+text = "Hola"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TimerLabelBack" type="Label" parent="Background"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 428.0
+offset_top = 40.0
+offset_right = 724.0
+offset_bottom = 105.0
+theme_override_colors/font_outline_color = Color(0.029699, 0.00777122, 0.018184, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_wfbql")
+theme_override_font_sizes/font_size = 48
+text = "0h : 0m : 0s"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/original_color = Color(0.029699, 0.00777122, 0.018184, 1)
+
+[node name="TimerLabel" type="Label" parent="Background"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_wfbql")
+instance_shader_parameters/mix_amount = 0.0
+instance_shader_parameters/modulate = Color(1, 1, 1, 0.755319)
+layout_mode = 2
+offset_left = 428.0
+offset_top = 40.0
+offset_right = 724.0
+offset_bottom = 105.0
+theme_override_colors/font_outline_color = Color(0.029699, 0.00777122, 0.018184, 1)
+theme_override_constants/outline_size = 0
+theme_override_fonts/font = ExtResource("2_wfbql")
+theme_override_font_sizes/font_size = 48
+text = "0h : 0m : 0s"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/original_color = Color(1, 1, 1, 0.755319)

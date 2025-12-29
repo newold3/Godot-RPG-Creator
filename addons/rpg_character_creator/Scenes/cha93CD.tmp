@@ -1,0 +1,2834 @@
+[gd_scene load_steps=87 format=3 uid="uid://dnxpu2qtk5csu"]
+
+[ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="1_l6a2h"]
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_m0yu1"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="2_kiwgy"]
+[ext_resource type="Script" path="res://addons/rpg_character_creator/Scripts/character_creator_main_panel.gd" id="2_qi5rx"]
+[ext_resource type="PackedScene" uid="uid://basqbpqkskggi" path="res://addons/CustomControls/lock_button2.tscn" id="3_0fuf8"]
+[ext_resource type="Texture2D" uid="uid://bmkq31l4tl7lc" path="res://addons/rpg_character_creator/textures/character/body/humanoid_m1.png" id="5_omr0i"]
+[ext_resource type="Shader" path="res://Assets/Shaders/colorize_extended.gdshader" id="5_yhfxv"]
+[ext_resource type="Texture2D" uid="uid://mvs45d06wqes" path="res://addons/rpg_character_creator/textures/character/head/human_m.png" id="6_sgpyj"]
+[ext_resource type="Texture2D" uid="uid://ckpelhkrh54po" path="res://addons/rpg_character_creator/textures/character/eyes/human_m.png" id="7_a2j3w"]
+[ext_resource type="Texture2D" uid="uid://u5waua3clmv0" path="res://addons/CustomControls/Images/palette_icon.png" id="8_osbbw"]
+[ext_resource type="Texture2D" uid="uid://cy561gmvrv1qf" path="res://addons/CustomControls/Images/palette_icon_hover.png" id="9_qp75i"]
+[ext_resource type="Texture2D" uid="uid://d0482ulebdl0t" path="res://addons/rpg_character_creator/textures/gear/mainhand/spear/spear2_walk_mb.png" id="10_jhj08"]
+[ext_resource type="Shader" path="res://Assets/Shaders/simple_idle_animation.gdshader" id="13_d7yli"]
+[ext_resource type="PackedScene" uid="uid://d1qmnpkoxy3hj" path="res://addons/CustomControls/Dialogs/palette_dialog.tscn" id="17_4sj4o"]
+
+[sub_resource type="Image" id="Image_eylqq"]
+data = {
+"data": PackedByteArray(0, 0, 0, 26, 26, 26, 141, 53, 53, 182, 118, 77, 203, 138, 97, 216, 186, 163, 216, 195, 186),
+"format": "RGB8",
+"height": 1,
+"mipmaps": false,
+"width": 7
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_yh3by"]
+image = SubResource("Image_eylqq")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d4hra"]
+shader = ExtResource("5_yhfxv")
+shader_parameter/palette1_darkness = 0.9
+shader_parameter/palette1_lightness = 1.0
+shader_parameter/palette2_darkness = 0.9
+shader_parameter/palette2_lightness = 1.0
+shader_parameter/palette3_darkness = 0.9
+shader_parameter/palette3_lightness = 1.0
+shader_parameter/palette1 = SubResource("ImageTexture_yh3by")
+
+[sub_resource type="Image" id="Image_qu43f"]
+data = {
+"data": PackedByteArray(0, 0, 0, 26, 26, 26, 141, 53, 53, 182, 118, 77, 203, 138, 97, 216, 186, 163, 216, 195, 186),
+"format": "RGB8",
+"height": 1,
+"mipmaps": false,
+"width": 7
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_seuss"]
+image = SubResource("Image_qu43f")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4g6v1"]
+shader = ExtResource("5_yhfxv")
+shader_parameter/palette1_darkness = 0.9
+shader_parameter/palette1_lightness = 1.0
+shader_parameter/palette2_darkness = 0.9
+shader_parameter/palette2_lightness = 1.0
+shader_parameter/palette3_darkness = 0.9
+shader_parameter/palette3_lightness = 1.0
+shader_parameter/palette1 = SubResource("ImageTexture_seuss")
+
+[sub_resource type="Image" id="Image_q0gw6"]
+data = {
+"data": PackedByteArray(0, 0, 0, 26, 26, 26, 141, 53, 53, 182, 118, 77, 203, 138, 97, 216, 186, 163, 216, 195, 186),
+"format": "RGB8",
+"height": 1,
+"mipmaps": false,
+"width": 7
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_gnwrj"]
+image = SubResource("Image_q0gw6")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fj82h"]
+shader = ExtResource("5_yhfxv")
+shader_parameter/palette1_darkness = 0.9
+shader_parameter/palette1_lightness = 1.0
+shader_parameter/palette2_darkness = 0.9
+shader_parameter/palette2_lightness = 1.0
+shader_parameter/palette3_darkness = 0.9
+shader_parameter/palette3_lightness = 1.0
+shader_parameter/palette1 = SubResource("ImageTexture_gnwrj")
+
+[sub_resource type="Image" id="Image_ffhsp"]
+data = {
+"data": PackedByteArray(0, 0, 0, 26, 26, 26, 141, 53, 53, 182, 118, 77, 203, 138, 97, 216, 186, 163, 216, 195, 186),
+"format": "RGB8",
+"height": 1,
+"mipmaps": false,
+"width": 7
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_cxg6f"]
+image = SubResource("Image_ffhsp")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5jsi1"]
+shader = ExtResource("5_yhfxv")
+shader_parameter/palette1_darkness = 0.9
+shader_parameter/palette1_lightness = 1.0
+shader_parameter/palette2_darkness = 0.9
+shader_parameter/palette2_lightness = 1.0
+shader_parameter/palette3_darkness = 0.9
+shader_parameter/palette3_lightness = 1.0
+shader_parameter/palette1 = SubResource("ImageTexture_cxg6f")
+
+[sub_resource type="Image" id="Image_y8kqb"]
+data = {
+"data": PackedByteArray(0, 0, 0, 26, 26, 26, 141, 53, 53, 182, 118, 77, 203, 138, 97, 216, 186, 163, 216, 195, 186),
+"format": "RGB8",
+"height": 1,
+"mipmaps": false,
+"width": 7
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_ag7bm"]
+image = SubResource("Image_y8kqb")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kluvu"]
+shader = ExtResource("5_yhfxv")
+shader_parameter/palette1_darkness = 0.9
+shader_parameter/palette1_lightness = 1.0
+shader_parameter/palette2_darkness = 0.9
+shader_parameter/palette2_lightness = 1.0
+shader_parameter/palette3_darkness = 0.9
+shader_parameter/palette3_lightness = 1.0
+shader_parameter/palette1 = SubResource("ImageTexture_ag7bm")
+
+[sub_resource type="Image" id="Image_3y4uh"]
+data = {
+"data": PackedByteArray(0, 0, 0, 26, 26, 26, 141, 53, 53, 182, 118, 77, 203, 138, 97, 216, 186, 163, 216, 195, 186),
+"format": "RGB8",
+"height": 1,
+"mipmaps": false,
+"width": 7
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_0p4m6"]
+image = SubResource("Image_3y4uh")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sd4s1"]
+shader = ExtResource("5_yhfxv")
+shader_parameter/palette1_darkness = 0.9
+shader_parameter/palette1_lightness = 1.0
+shader_parameter/palette2_darkness = 0.9
+shader_parameter/palette2_lightness = 1.0
+shader_parameter/palette3_darkness = 0.9
+shader_parameter/palette3_lightness = 1.0
+shader_parameter/palette1 = SubResource("ImageTexture_0p4m6")
+
+[sub_resource type="Image" id="Image_lf2mx"]
+data = {
+"data": PackedByteArray(0, 0, 0, 26, 26, 26, 141, 53, 53, 182, 118, 77, 203, 138, 97, 216, 186, 163, 216, 195, 186),
+"format": "RGB8",
+"height": 1,
+"mipmaps": false,
+"width": 7
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_fyv5t"]
+image = SubResource("Image_lf2mx")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1xvye"]
+shader = ExtResource("5_yhfxv")
+shader_parameter/palette1_darkness = 0.9
+shader_parameter/palette1_lightness = 1.0
+shader_parameter/palette2_darkness = 0.9
+shader_parameter/palette2_lightness = 1.0
+shader_parameter/palette3_darkness = 0.9
+shader_parameter/palette3_lightness = 1.0
+shader_parameter/palette1 = SubResource("ImageTexture_fyv5t")
+
+[sub_resource type="Image" id="Image_3gs85"]
+data = {
+"data": PackedByteArray(0, 0, 0, 26, 26, 26, 141, 53, 53, 182, 118, 77, 203, 138, 97, 216, 186, 163, 216, 195, 186),
+"format": "RGB8",
+"height": 1,
+"mipmaps": false,
+"width": 7
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_yck02"]
+image = SubResource("Image_3gs85")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_23pkl"]
+shader = ExtResource("5_yhfxv")
+shader_parameter/palette1_darkness = 0.9
+shader_parameter/palette1_lightness = 1.0
+shader_parameter/palette2_darkness = 0.9
+shader_parameter/palette2_lightness = 1.0
+shader_parameter/palette3_darkness = 0.9
+shader_parameter/palette3_lightness = 1.0
+shader_parameter/palette1 = SubResource("ImageTexture_yck02")
+
+[sub_resource type="Image" id="Image_0pb4d"]
+data = {
+"data": PackedByteArray(0, 0, 0, 26, 26, 26, 141, 53, 53, 182, 118, 77, 203, 138, 97, 216, 186, 163, 216, 195, 186),
+"format": "RGB8",
+"height": 1,
+"mipmaps": false,
+"width": 7
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_84fjs"]
+image = SubResource("Image_0pb4d")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4n6ec"]
+shader = ExtResource("5_yhfxv")
+shader_parameter/palette1_darkness = 0.9
+shader_parameter/palette1_lightness = 1.0
+shader_parameter/palette2_darkness = 0.9
+shader_parameter/palette2_lightness = 1.0
+shader_parameter/palette3_darkness = 0.9
+shader_parameter/palette3_lightness = 1.0
+shader_parameter/palette1 = SubResource("ImageTexture_84fjs")
+
+[sub_resource type="Image" id="Image_587e1"]
+data = {
+"data": PackedByteArray(0, 0, 0, 26, 26, 26, 39, 39, 78, 56, 152, 152, 73, 181, 216, 209, 209, 209),
+"format": "RGB8",
+"height": 1,
+"mipmaps": false,
+"width": 6
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_eybbo"]
+image = SubResource("Image_587e1")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ydjps"]
+shader = ExtResource("5_yhfxv")
+shader_parameter/palette1_darkness = 0.9
+shader_parameter/palette1_lightness = 1.0
+shader_parameter/palette2_darkness = 0.9
+shader_parameter/palette2_lightness = 1.0
+shader_parameter/palette3_darkness = 0.9
+shader_parameter/palette3_lightness = 1.0
+shader_parameter/palette1 = SubResource("ImageTexture_eybbo")
+
+[sub_resource type="Image" id="Image_qh4ti"]
+data = {
+"data": PackedByteArray(0, 0, 0, 26, 26, 26, 141, 53, 53, 182, 118, 77, 203, 138, 97, 216, 186, 163, 216, 195, 186),
+"format": "RGB8",
+"height": 1,
+"mipmaps": false,
+"width": 7
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_kr6hy"]
+image = SubResource("Image_qh4ti")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2ykbm"]
+shader = ExtResource("5_yhfxv")
+shader_parameter/palette1_darkness = 0.9
+shader_parameter/palette1_lightness = 1.0
+shader_parameter/palette2_darkness = 0.9
+shader_parameter/palette2_lightness = 1.0
+shader_parameter/palette3_darkness = 0.9
+shader_parameter/palette3_lightness = 1.0
+shader_parameter/palette1 = SubResource("ImageTexture_kr6hy")
+
+[sub_resource type="Image" id="Image_7lw7y"]
+data = {
+"data": PackedByteArray(0, 0, 0, 26, 26, 26, 141, 53, 53, 182, 118, 77, 203, 138, 97, 216, 186, 163, 216, 195, 186),
+"format": "RGB8",
+"height": 1,
+"mipmaps": false,
+"width": 7
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_v6f88"]
+image = SubResource("Image_7lw7y")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hmvvo"]
+shader = ExtResource("5_yhfxv")
+shader_parameter/palette1_darkness = 0.9
+shader_parameter/palette1_lightness = 1.0
+shader_parameter/palette2_darkness = 0.9
+shader_parameter/palette2_lightness = 1.0
+shader_parameter/palette3_darkness = 0.9
+shader_parameter/palette3_lightness = 1.0
+shader_parameter/palette1 = SubResource("ImageTexture_v6f88")
+
+[sub_resource type="Image" id="Image_wy441"]
+data = {
+"data": PackedByteArray(0, 0, 0, 26, 26, 26, 141, 53, 53, 182, 118, 77, 203, 138, 97, 216, 186, 163, 216, 195, 186),
+"format": "RGB8",
+"height": 1,
+"mipmaps": false,
+"width": 7
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_fn6dt"]
+image = SubResource("Image_wy441")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6ooo6"]
+shader = ExtResource("5_yhfxv")
+shader_parameter/palette1_darkness = 0.9
+shader_parameter/palette1_lightness = 1.0
+shader_parameter/palette2_darkness = 0.9
+shader_parameter/palette2_lightness = 1.0
+shader_parameter/palette3_darkness = 0.9
+shader_parameter/palette3_lightness = 1.0
+shader_parameter/palette1 = SubResource("ImageTexture_fn6dt")
+
+[sub_resource type="Image" id="Image_5cpkq"]
+data = {
+"data": PackedByteArray(0, 0, 0, 26, 26, 26, 141, 53, 53, 182, 118, 77, 203, 138, 97, 216, 186, 163, 216, 195, 186),
+"format": "RGB8",
+"height": 1,
+"mipmaps": false,
+"width": 7
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_j6p4y"]
+image = SubResource("Image_5cpkq")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yma4b"]
+shader = ExtResource("5_yhfxv")
+shader_parameter/palette1_darkness = 0.9
+shader_parameter/palette1_lightness = 1.0
+shader_parameter/palette2_darkness = 0.9
+shader_parameter/palette2_lightness = 1.0
+shader_parameter/palette3_darkness = 0.9
+shader_parameter/palette3_lightness = 1.0
+shader_parameter/palette1 = SubResource("ImageTexture_j6p4y")
+
+[sub_resource type="Image" id="Image_v24c6"]
+data = {
+"data": PackedByteArray(0, 0, 0, 26, 26, 26, 141, 53, 53, 182, 118, 77, 203, 138, 97, 216, 186, 163, 216, 195, 186),
+"format": "RGB8",
+"height": 1,
+"mipmaps": false,
+"width": 7
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_nfnxk"]
+image = SubResource("Image_v24c6")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2jdjf"]
+shader = ExtResource("5_yhfxv")
+shader_parameter/palette1_darkness = 0.9
+shader_parameter/palette1_lightness = 1.0
+shader_parameter/palette2_darkness = 0.9
+shader_parameter/palette2_lightness = 1.0
+shader_parameter/palette3_darkness = 0.9
+shader_parameter/palette3_lightness = 1.0
+shader_parameter/palette1 = SubResource("ImageTexture_nfnxk")
+
+[sub_resource type="Image" id="Image_a00cb"]
+data = {
+"data": PackedByteArray(0, 0, 0, 26, 26, 26, 141, 53, 53, 182, 118, 77, 203, 138, 97, 216, 186, 163, 216, 195, 186),
+"format": "RGB8",
+"height": 1,
+"mipmaps": false,
+"width": 7
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_oru4f"]
+image = SubResource("Image_a00cb")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_n138m"]
+shader = ExtResource("5_yhfxv")
+shader_parameter/palette1_darkness = 0.9
+shader_parameter/palette1_lightness = 1.0
+shader_parameter/palette2_darkness = 0.9
+shader_parameter/palette2_lightness = 1.0
+shader_parameter/palette3_darkness = 0.9
+shader_parameter/palette3_lightness = 1.0
+shader_parameter/palette1 = SubResource("ImageTexture_oru4f")
+
+[sub_resource type="Image" id="Image_r54hv"]
+data = {
+"data": PackedByteArray(0, 0, 0, 26, 26, 26, 141, 53, 53, 182, 118, 77, 203, 138, 97, 216, 186, 163, 216, 195, 186),
+"format": "RGB8",
+"height": 1,
+"mipmaps": false,
+"width": 7
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_k14nj"]
+image = SubResource("Image_r54hv")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3ss5w"]
+shader = ExtResource("5_yhfxv")
+shader_parameter/palette1_darkness = 0.9
+shader_parameter/palette1_lightness = 1.0
+shader_parameter/palette2_darkness = 0.9
+shader_parameter/palette2_lightness = 1.0
+shader_parameter/palette3_darkness = 0.9
+shader_parameter/palette3_lightness = 1.0
+shader_parameter/palette1 = SubResource("ImageTexture_k14nj")
+
+[sub_resource type="Image" id="Image_lxplw"]
+data = {
+"data": PackedByteArray(0, 0, 0, 26, 26, 26, 141, 53, 53, 182, 118, 77, 203, 138, 97, 216, 186, 163, 216, 195, 186),
+"format": "RGB8",
+"height": 1,
+"mipmaps": false,
+"width": 7
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_ki5lx"]
+image = SubResource("Image_lxplw")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ekqvo"]
+shader = ExtResource("5_yhfxv")
+shader_parameter/palette1_darkness = 0.9
+shader_parameter/palette1_lightness = 1.0
+shader_parameter/palette2_darkness = 0.9
+shader_parameter/palette2_lightness = 1.0
+shader_parameter/palette3_darkness = 0.9
+shader_parameter/palette3_lightness = 1.0
+shader_parameter/palette1 = SubResource("ImageTexture_ki5lx")
+
+[sub_resource type="Image" id="Image_cnsqv"]
+data = {
+"data": PackedByteArray(0, 0, 0, 26, 26, 26, 141, 53, 53, 182, 118, 77, 203, 138, 97, 216, 186, 163, 216, 195, 186),
+"format": "RGB8",
+"height": 1,
+"mipmaps": false,
+"width": 7
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_12dgb"]
+image = SubResource("Image_cnsqv")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gi7kq"]
+shader = ExtResource("5_yhfxv")
+shader_parameter/palette1_darkness = 0.9
+shader_parameter/palette1_lightness = 1.0
+shader_parameter/palette2_darkness = 0.9
+shader_parameter/palette2_lightness = 1.0
+shader_parameter/palette3_darkness = 0.9
+shader_parameter/palette3_lightness = 1.0
+shader_parameter/palette1 = SubResource("ImageTexture_12dgb")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2wcyy"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0, 0, 0, 0.258824)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u81bc"]
+content_margin_left = 32.0
+content_margin_top = 4.0
+content_margin_right = 32.0
+content_margin_bottom = 4.0
+bg_color = Color(0.270588, 0.270588, 0.270588, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="Image" id="Image_podqa"]
+data = {
+"data": PackedByteArray(0, 0, 0, 26, 26, 26, 141, 53, 53, 182, 118, 77, 203, 138, 97, 216, 186, 163, 216, 195, 186),
+"format": "RGB8",
+"height": 1,
+"mipmaps": false,
+"width": 7
+}
+
+[sub_resource type="Image" id="Image_fup22"]
+data = {
+"data": PackedByteArray(0, 0, 0, 26, 26, 26, 39, 39, 78, 56, 152, 152, 73, 181, 216, 209, 209, 209),
+"format": "RGB8",
+"height": 1,
+"mipmaps": false,
+"width": 6
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gkhc5"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0, 0, 0, 0.258824)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tcjo3"]
+shader = ExtResource("13_d7yli")
+shader_parameter/enabled = true
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_va0oa"]
+viewport_path = NodePath("BodyAndGearViewport")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_urc7j"]
+resource_local_to_scene = true
+atlas = SubResource("ViewportTexture_va0oa")
+region = Rect2(0, 576, 64, 64)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_quaky"]
+viewport_path = NodePath("MainhandBackViewport")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xnmed"]
+resource_local_to_scene = true
+atlas = SubResource("ViewportTexture_quaky")
+region = Rect2(0, 0, 196, 196)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_s1dvv"]
+viewport_path = NodePath("MainhandFrontViewport")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6v50h"]
+resource_local_to_scene = true
+atlas = SubResource("ViewportTexture_s1dvv")
+region = Rect2(0, 3, 196, 196)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_l1kbb"]
+viewport_path = NodePath("BodyAndGearViewport")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_01a8k"]
+viewport_path = NodePath("MainhandFrontViewport")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_mfwl4"]
+viewport_path = NodePath("MainhandBackViewport")
+
+[node name="CharacterCreatorMainPanel" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_m0yu1")
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+script = ExtResource("2_qi5rx")
+debug_draw = false
+
+[node name="BodyAndGearViewport" type="SubViewport" parent="."]
+transparent_bg = true
+size = Vector2i(832, 1344)
+
+[node name="WingsTextureBack" type="TextureRect" parent="BodyAndGearViewport"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_d4hra")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+expand_mode = 1
+
+[node name="WingsTextureFront" type="TextureRect" parent="BodyAndGearViewport"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_d4hra")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+expand_mode = 1
+
+[node name="MainhandBaseBackTexture" type="TextureRect" parent="BodyAndGearViewport"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_4g6v1")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+expand_mode = 1
+
+[node name="BackTexture2" type="TextureRect" parent="BodyAndGearViewport"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_fj82h")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+expand_mode = 1
+
+[node name="BodyTexture" type="TextureRect" parent="BodyAndGearViewport"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_5jsi1")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("5_omr0i")
+expand_mode = 1
+
+[node name="HeadTexture" type="TextureRect" parent="BodyAndGearViewport"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_5jsi1")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("6_sgpyj")
+expand_mode = 1
+
+[node name="EarsTexture" type="TextureRect" parent="BodyAndGearViewport"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_5jsi1")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 40.0
+offset_bottom = 40.0
+expand_mode = 1
+
+[node name="SuitTexture" type="TextureRect" parent="BodyAndGearViewport"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_kluvu")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+expand_mode = 1
+
+[node name="ShirtTexture" type="TextureRect" parent="BodyAndGearViewport"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_sd4s1")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+expand_mode = 1
+
+[node name="PantsTexture" type="TextureRect" parent="BodyAndGearViewport"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_1xvye")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+expand_mode = 1
+
+[node name="BeltTexture" type="TextureRect" parent="BodyAndGearViewport"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_23pkl")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+expand_mode = 1
+
+[node name="JacketTexture" type="TextureRect" parent="BodyAndGearViewport"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_4n6ec")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+expand_mode = 1
+
+[node name="BackTexture1" type="TextureRect" parent="BodyAndGearViewport"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_fj82h")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+expand_mode = 1
+
+[node name="GlovesTexture" type="TextureRect" parent="BodyAndGearViewport"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_23pkl")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+expand_mode = 1
+
+[node name="ShoesTexture" type="TextureRect" parent="BodyAndGearViewport"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_23pkl")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+expand_mode = 1
+
+[node name="NoseTexture" type="TextureRect" parent="BodyAndGearViewport"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_5jsi1")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 40.0
+offset_bottom = 40.0
+expand_mode = 1
+
+[node name="EyesTexture" type="TextureRect" parent="BodyAndGearViewport"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_ydjps")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("7_a2j3w")
+expand_mode = 1
+
+[node name="GlassesTexture" type="TextureRect" parent="BodyAndGearViewport"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_2ykbm")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+expand_mode = 1
+
+[node name="FacialTexture" type="TextureRect" parent="BodyAndGearViewport"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_hmvvo")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 40.0
+offset_bottom = 40.0
+expand_mode = 1
+
+[node name="MaskTexture" type="TextureRect" parent="BodyAndGearViewport"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_6ooo6")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+expand_mode = 1
+
+[node name="HairTexture" type="TextureRect" parent="BodyAndGearViewport"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_yma4b")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+expand_mode = 1
+
+[node name="HatTexture" type="TextureRect" parent="BodyAndGearViewport"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_2jdjf")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+expand_mode = 1
+
+[node name="TailTexture" type="TextureRect" parent="BodyAndGearViewport"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_n138m")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+expand_mode = 1
+
+[node name="Add1Texture" type="TextureRect" parent="BodyAndGearViewport"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_3ss5w")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+expand_mode = 1
+
+[node name="Add2Texture" type="TextureRect" parent="BodyAndGearViewport"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_ekqvo")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+expand_mode = 1
+
+[node name="Add3Texture" type="TextureRect" parent="BodyAndGearViewport"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_gi7kq")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+expand_mode = 1
+
+[node name="MainhandBaseFrontTexture" type="TextureRect" parent="BodyAndGearViewport"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_4g6v1")
+custom_minimum_size = Vector2(832, 1344)
+offset_right = 832.0
+offset_bottom = 1344.0
+expand_mode = 1
+
+[node name="MainhandFrontViewport" type="SubViewport" parent="."]
+transparent_bg = true
+size = Vector2i(1728, 768)
+
+[node name="MainhandWalkFront" type="TextureRect" parent="MainhandFrontViewport"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_4g6v1")
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MainhandThrustFront" type="TextureRect" parent="MainhandFrontViewport"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_4g6v1")
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MainhandHurtFront" type="TextureRect" parent="MainhandFrontViewport"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_4g6v1")
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Icon" type="Sprite2D" parent="MainhandFrontViewport"]
+visible = false
+texture = ExtResource("10_jhj08")
+centered = false
+
+[node name="MainhandBackViewport" type="SubViewport" parent="."]
+transparent_bg = true
+size = Vector2i(1728, 768)
+
+[node name="MainhandWalkBack" type="TextureRect" parent="MainhandBackViewport"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_4g6v1")
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MainhandThrustBack" type="TextureRect" parent="MainhandBackViewport"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_4g6v1")
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MainhandHurtBack" type="TextureRect" parent="MainhandBackViewport"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_4g6v1")
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Race:"
+
+[node name="Races" type="OptionButton" parent="VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+item_count = 24
+selected = 9
+popup/item_0/text = "Alien"
+popup/item_0/id = 0
+popup/item_1/text = "Boarman"
+popup/item_1/id = 1
+popup/item_2/text = "Cyclops"
+popup/item_2/id = 2
+popup/item_3/text = "Dark Elf"
+popup/item_3/id = 3
+popup/item_4/text = "Demon"
+popup/item_4/id = 4
+popup/item_5/text = "Drake"
+popup/item_5/id = 5
+popup/item_6/text = "Faun"
+popup/item_6/id = 6
+popup/item_7/text = "Frankenstein"
+popup/item_7/id = 7
+popup/item_8/text = "Goblin"
+popup/item_8/id = 8
+popup/item_9/text = "Human"
+popup/item_9/id = 9
+popup/item_10/text = "Lizard"
+popup/item_10/id = 10
+popup/item_11/text = "Minotaur"
+popup/item_11/id = 11
+popup/item_12/text = "Mouse"
+popup/item_12/id = 12
+popup/item_13/text = "Orc"
+popup/item_13/id = 13
+popup/item_14/text = "Pig"
+popup/item_14/id = 14
+popup/item_15/text = "Rabbit"
+popup/item_15/id = 15
+popup/item_16/text = "Rat"
+popup/item_16/id = 16
+popup/item_17/text = "Sheep"
+popup/item_17/id = 17
+popup/item_18/text = "Skeleton"
+popup/item_18/id = 18
+popup/item_19/text = "Troll"
+popup/item_19/id = 19
+popup/item_20/text = "Vampire"
+popup/item_20/id = 20
+popup/item_21/text = "Wartotaur"
+popup/item_21/id = 21
+popup/item_22/text = "Wolf"
+popup/item_22/id = 22
+popup/item_23/text = "Zombie"
+popup/item_23/id = 23
+
+[node name="Label4" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Default Palette:"
+
+[node name="Palettes" type="OptionButton" parent="VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+item_count = 5
+selected = 0
+popup/item_0/text = "Aurora"
+popup/item_0/id = 0
+popup/item_1/text = "Default"
+popup/item_1/id = 1
+popup/item_2/text = "Duel"
+popup/item_2/id = 2
+popup/item_3/text = "LPC 512"
+popup/item_3/id = 3
+popup/item_4/text = "Sonic Robo Blast 2"
+popup/item_4/id = 4
+
+[node name="CustomPanel" parent="VBoxContainer" instance=ExtResource("1_l6a2h")]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/CustomPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer"]
+z_index = 20
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_2wcyy")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_2wcyy")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_u81bc")
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+text = "BODY"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Gender:"
+
+[node name="Gender" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+item_count = 2
+selected = 1
+popup/item_0/text = "female"
+popup/item_0/id = 0
+popup/item_1/text = "male"
+popup/item_1/id = 1
+
+[node name="Control" type="Control" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(22, 22)
+layout_mode = 2
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+
+[node name="HBoxContainer12" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer12"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Body:"
+
+[node name="Body" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer12"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+item_count = 7
+selected = 6
+popup/item_0/text = "Child"
+popup/item_0/id = 0
+popup/item_1/text = "Elderly"
+popup/item_1/id = 1
+popup/item_2/text = "Gaunt"
+popup/item_2/id = 2
+popup/item_3/text = "Musc. Elderly"
+popup/item_3/id = 3
+popup/item_4/text = "Musc. Gaunt"
+popup/item_4/id = 4
+popup/item_5/text = "Muscular"
+popup/item_5/id = 5
+popup/item_6/text = "Regular"
+popup/item_6/id = 6
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer12"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = {
+"data": [{
+"color": 4.29259e+09,
+"colors": [0.0, 0.0, 29.0, 5.22134e+08, 94.0, 2.80594e+09, 152.0, 3.61623e+09, 179.0, 4.02047e+09, 220.0, 4.29259e+09, 239.0, 4.29332e+09],
+"id": "human_skin_light",
+"name": "Light"
+}, {
+"color": 4.29153e+09,
+"colors": [0.0, 0.0, 29.0, 5.22134e+08, 94.0, 2.80594e+09, 152.0, 3.61623e+09, 179.0, 3.81835e+09, 220.0, 4.29153e+09, 239.0, 4.29495e+09],
+"id": "human_skin_peach",
+"name": "Peach"
+}, {
+"color": 3.61623e+09,
+"colors": [0.0, 0.0, 29.0, 5.22134e+08, 94.0, 1.46415e+09, 152.0, 2.1209e+09, 179.0, 2.8762e+09, 220.0, 3.61623e+09, 239.0, 3.21543e+09],
+"id": "human_skin_olive",
+"name": "Olive"
+}, {
+"color": 2.74171e+09,
+"colors": [0.0, 0.0, 29.0, 5.22134e+08, 94.0, 1.2619e+09, 152.0, 1.56521e+09, 179.0, 2.27064e+09, 220.0, 2.74171e+09, 239.0, 3.21253e+09],
+"id": "human_skin_brown",
+"name": "Brown"
+}, {
+"color": 1.59824e+09,
+"colors": [0.0, 0.0, 29.0, 5.22134e+08, 94.0, 2.52645e+08, 152.0, 6.56878e+08, 179.0, 7.91622e+08, 220.0, 1.59824e+09, 239.0, 1.79983e+09],
+"id": "human_skin_black",
+"name": "Black"
+}],
+"palette": {
+"darkness_amount": 0.9,
+"gradient": SubResource("Image_podqa"),
+"item_selected": 0,
+"lightness_amount": 1.0
+},
+"target": Object(TextureRect,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":SubResource("ShaderMaterial_5jsi1"),"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(832, 1344),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":40.0,"offset_bottom":40.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"auto_translate":true,"localize_numeral_system":true,"tooltip_text":"","focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":1,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","texture":ExtResource("5_omr0i"),"expand_mode":1,"stretch_mode":0,"flip_h":false,"flip_v":false,"script":null)
+
+}
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer12" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer5"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Eyes:"
+
+[node name="Eyes" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer5"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+disabled = true
+item_count = 1
+selected = 0
+popup/item_0/text = "Human"
+popup/item_0/id = 0
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = {
+"data": [{
+"color": 1.47364e+09,
+"colors": [0.0, 0.0, 26.0, 5.22134e+08, 56.0, 7.7479e+08, 129.0, 1.11907e+09, 190.0, 1.47364e+09, 246.0, 4.14338e+09],
+"id": "human_eyes_blue",
+"name": "Blue"
+}, {
+"color": 2.00168e+09,
+"colors": [0.0, 0.0, 26.0, 5.22134e+08, 56.0, 7.23718e+08, 129.0, 1.56521e+09, 190.0, 2.00168e+09, 246.0, 4.14338e+09],
+"id": "human_eyes_brown",
+"name": "Brown"
+}, {
+"color": 2.67804e+09,
+"colors": [0.0, 0.0, 26.0, 5.22134e+08, 56.0, 1.06111e+09, 129.0, 2.67658e+09, 190.0, 2.67804e+09, 246.0, 4.14338e+09],
+"id": "human_eyes_gray",
+"name": "Gray"
+}, {
+"color": 1.8948e+09,
+"colors": [0.0, 0.0, 26.0, 5.22134e+08, 56.0, 8.42997e+08, 129.0, 1.52255e+09, 190.0, 1.8948e+09, 246.0, 4.14338e+09],
+"id": "human_eyes_green",
+"name": "Green"
+}],
+"palette": {
+"darkness_amount": 0.9,
+"gradient": SubResource("Image_fup22"),
+"item_selected": 0,
+"lightness_amount": 1.0
+},
+"target": Object(TextureRect,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":SubResource("ShaderMaterial_ydjps"),"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(832, 1344),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":40.0,"offset_bottom":40.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"auto_translate":true,"localize_numeral_system":true,"tooltip_text":"","focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":1,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","texture":ExtResource("7_a2j3w"),"expand_mode":1,"stretch_mode":0,"flip_h":false,"flip_v":false,"script":null)
+
+}
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer5" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Wings:"
+
+[node name="Wings" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+disabled = true
+item_count = 1
+selected = 0
+popup/item_0/text = "none"
+popup/item_0/id = 0
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Tail:"
+
+[node name="Tail" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+disabled = true
+item_count = 1
+selected = 0
+popup/item_0/text = "none"
+popup/item_0/id = 0
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Hair:"
+
+[node name="Hair" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+item_count = 78
+selected = 0
+popup/item_0/text = "None"
+popup/item_0/id = 0
+popup/item_1/text = "Bangs"
+popup/item_1/id = 1
+popup/item_2/text = "Long Bangs 1"
+popup/item_2/id = 2
+popup/item_3/text = "Long Bangs 2"
+popup/item_3/id = 3
+popup/item_4/text = "Short Bangs"
+popup/item_4/id = 4
+popup/item_5/text = "Bangs Bun"
+popup/item_5/id = 5
+popup/item_6/text = "Balding"
+popup/item_6/id = 6
+popup/item_7/text = "Bedhead"
+popup/item_7/id = 7
+popup/item_8/text = "Bob"
+popup/item_8/id = 8
+popup/item_9/text = "Bob Long"
+popup/item_9/id = 9
+popup/item_10/text = "Bob Side Parted"
+popup/item_10/id = 10
+popup/item_11/text = "Braid 1"
+popup/item_11/id = 11
+popup/item_12/text = "Braid 2"
+popup/item_12/id = 12
+popup/item_13/text = "Half Up"
+popup/item_13/id = 13
+popup/item_14/text = "Bunches"
+popup/item_14/id = 14
+popup/item_15/text = "Pigtails 1"
+popup/item_15/id = 15
+popup/item_16/text = "Pigtails 2"
+popup/item_16/id = 16
+popup/item_17/text = "Buzzcut"
+popup/item_17/id = 17
+popup/item_18/text = "Natural"
+popup/item_18/id = 18
+popup/item_19/text = "Cornrows"
+popup/item_19/id = 19
+popup/item_20/text = "Dreadlocks1 Long"
+popup/item_20/id = 20
+popup/item_21/text = "Dreadlocks1 Short"
+popup/item_21/id = 21
+popup/item_22/text = "Twists"
+popup/item_22/id = 22
+popup/item_23/text = "Twists Fade"
+popup/item_23/id = 23
+popup/item_24/text = "Cowlick 1"
+popup/item_24/id = 24
+popup/item_25/text = "Cowlick 2"
+popup/item_25/id = 25
+popup/item_26/text = "Curly"
+popup/item_26/id = 26
+popup/item_27/text = "Curly Long"
+popup/item_27/id = 27
+popup/item_28/text = "Curtains"
+popup/item_28/id = 28
+popup/item_29/text = "Curtains Long"
+popup/item_29/id = 29
+popup/item_30/text = "High & Tight"
+popup/item_30/id = 30
+popup/item_31/text = "Flat Top"
+popup/item_31/id = 31
+popup/item_32/text = "Flat Top Fade"
+popup/item_32/id = 32
+popup/item_33/text = "Long Hawk"
+popup/item_33/id = 33
+popup/item_34/text = "Mohawk"
+popup/item_34/id = 34
+popup/item_35/text = "Short Hawk"
+popup/item_35/id = 35
+popup/item_36/text = "Idol"
+popup/item_36/id = 36
+popup/item_37/text = "Jewfro"
+popup/item_37/id = 37
+popup/item_38/text = "Afro"
+popup/item_38/id = 38
+popup/item_39/text = "Long Knot 1"
+popup/item_39/id = 39
+popup/item_40/text = "Long Knot 2"
+popup/item_40/id = 40
+popup/item_41/text = "Short Knot"
+popup/item_41/id = 41
+popup/item_42/text = "Long"
+popup/item_42/id = 42
+popup/item_43/text = "Extra Long"
+popup/item_43/id = 43
+popup/item_44/text = "Long Straight"
+popup/item_44/id = 44
+popup/item_45/text = "Long Tied"
+popup/item_45/id = 45
+popup/item_46/text = "Long Parted"
+popup/item_46/id = 46
+popup/item_47/text = "Long Band"
+popup/item_47/id = 47
+popup/item_48/text = "Loose"
+popup/item_48/id = 48
+popup/item_49/text = "Messy 1"
+popup/item_49/id = 49
+popup/item_50/text = "Messy 2"
+popup/item_50/id = 50
+popup/item_51/text = "Messy 3"
+popup/item_51/id = 51
+popup/item_52/text = "Messy Long 1"
+popup/item_52/id = 52
+popup/item_53/text = "Messy Long 2"
+popup/item_53/id = 53
+popup/item_54/text = "Mop"
+popup/item_54/id = 54
+popup/item_55/text = "Halfmessy"
+popup/item_55/id = 55
+popup/item_56/text = "Page"
+popup/item_56/id = 56
+popup/item_57/text = "Parted 1"
+popup/item_57/id = 57
+popup/item_58/text = "Parted 2"
+popup/item_58/id = 58
+popup/item_59/text = "Pixie"
+popup/item_59/id = 59
+popup/item_60/text = "Plain"
+popup/item_60/id = 60
+popup/item_61/text = "Ponytail 1"
+popup/item_61/id = 61
+popup/item_62/text = "Ponytail 2"
+popup/item_62/id = 62
+popup/item_63/text = "Princess"
+popup/item_63/id = 63
+popup/item_64/text = "Sara"
+popup/item_64/id = 64
+popup/item_65/text = "Sara (Jewel)"
+popup/item_65/id = 65
+popup/item_66/text = "Left Shoulder"
+popup/item_66/id = 66
+popup/item_67/text = "Right Shoulder"
+popup/item_67/id = 67
+popup/item_68/text = "Single"
+popup/item_68/id = 68
+popup/item_69/text = "Spiked 1"
+popup/item_69/id = 69
+popup/item_70/text = "Spiked 2"
+popup/item_70/id = 70
+popup/item_71/text = "Porcupine"
+popup/item_71/id = 71
+popup/item_72/text = "Liberty"
+popup/item_72/id = 72
+popup/item_73/text = "Saiyan"
+popup/item_73/id = 73
+popup/item_74/text = "Super Saiyan"
+popup/item_74/id = 74
+popup/item_75/text = "Swoop"
+popup/item_75/id = 75
+popup/item_76/text = "Unkempt"
+popup/item_76/id = 76
+popup/item_77/text = "Wavy"
+popup/item_77/id = 77
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer6"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Ears:"
+
+[node name="Ears" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer6"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+item_count = 2
+selected = 0
+popup/item_0/text = "Base"
+popup/item_0/id = 0
+popup/item_1/text = "Big"
+popup/item_1/id = 1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer6" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer7"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Nose:"
+
+[node name="Nose" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer7"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+item_count = 5
+selected = 0
+popup/item_0/text = "Base"
+popup/item_0/id = 0
+popup/item_1/text = "Big"
+popup/item_1/id = 1
+popup/item_2/text = "Button"
+popup/item_2/id = 2
+popup/item_3/text = "Straight"
+popup/item_3/id = 3
+popup/item_4/text = "Elderly"
+popup/item_4/id = 4
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer7" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+
+[node name="HBoxContainer8" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer8"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Facial Hair:"
+
+[node name="Facial" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer8"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+item_count = 5
+selected = 0
+popup/item_0/text = "None"
+popup/item_0/id = 0
+popup/item_1/text = "Beard"
+popup/item_1/id = 1
+popup/item_2/text = "Winter"
+popup/item_2/id = 2
+popup/item_3/text = "Mustache"
+popup/item_3/id = 3
+popup/item_4/text = "Big Mustache"
+popup/item_4/id = 4
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer8"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer8" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+
+[node name="HBoxContainer9" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer9"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Body Addon 1:"
+
+[node name="Add1" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer9"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+item_count = 4
+selected = 0
+popup/item_0/text = "None"
+popup/item_0/id = 0
+popup/item_1/text = "Bloody Mouth"
+popup/item_1/id = 1
+popup/item_2/text = "Bloody Eye"
+popup/item_2/id = 2
+popup/item_3/text = "Bloody Face"
+popup/item_3/id = 3
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer9"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer9" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+
+[node name="HBoxContainer10" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer10"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Body Addon 2:"
+
+[node name="Add2" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer10"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+item_count = 4
+selected = 0
+popup/item_0/text = "None"
+popup/item_0/id = 0
+popup/item_1/text = "Bloody Arm"
+popup/item_1/id = 1
+popup/item_2/text = "Bloody Ribs"
+popup/item_2/id = 2
+popup/item_3/text = "Bloody Torso"
+popup/item_3/id = 3
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer10"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer10" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+
+[node name="HBoxContainer11" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer11"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Body Addon 2:"
+
+[node name="Add3" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer11"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+item_count = 4
+selected = 0
+popup/item_0/text = "None"
+popup/item_0/id = 0
+popup/item_1/text = "Hook"
+popup/item_1/id = 1
+popup/item_2/text = "Peg Leg"
+popup/item_2/id = 2
+popup/item_3/text = "Peg Leg + Hook"
+popup/item_3/id = 3
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer11"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer11" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+
+[node name="RandomBody" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer" instance=ExtResource("2_kiwgy")]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+size_flags_vertical = 10
+text = "Random"
+
+[node name="PanelContainer2" type="PanelContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_gkhc5")
+
+[node name="CharacterContainer" type="VBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer2/CharacterContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_u81bc")
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer2/CharacterContainer/PanelContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+text = "CURRENT CHARACTER"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer2/CharacterContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+
+[node name="CurrentCharacter" type="TextureRect" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer2/CharacterContainer/Control"]
+unique_name_in_owner = true
+z_index = 5
+material = SubResource("ShaderMaterial_tcjo3")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -31.0
+offset_right = 32.0
+offset_bottom = 33.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(4, 4)
+pivot_offset = Vector2(32, 32)
+size_flags_horizontal = 4
+size_flags_vertical = 6
+texture = SubResource("AtlasTexture_urc7j")
+metadata/_edit_group_ = true
+
+[node name="WeaponBack" type="TextureRect" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer2/CharacterContainer/Control/CurrentCharacter"]
+unique_name_in_owner = true
+z_as_relative = false
+layout_mode = 1
+offset_left = 32.0
+offset_top = 32.0
+offset_right = 228.0
+offset_bottom = 228.0
+mouse_filter = 2
+texture = SubResource("AtlasTexture_xnmed")
+
+[node name="WeaponFront" type="TextureRect" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer2/CharacterContainer/Control/CurrentCharacter"]
+unique_name_in_owner = true
+z_index = 10
+z_as_relative = false
+layout_mode = 1
+offset_left = 32.0
+offset_top = 32.0
+offset_right = 228.0
+offset_bottom = 228.0
+mouse_filter = 2
+texture = SubResource("AtlasTexture_6v50h")
+
+[node name="PanelContainer3" type="PanelContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer"]
+z_index = 20
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_2wcyy")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_2wcyy")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_u81bc")
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+text = "GEAR"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Mask:"
+
+[node name="Mask" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+item_count = 2
+selected = 0
+popup/item_0/text = "none"
+popup/item_0/id = 0
+popup/item_1/text = "Bandages"
+popup/item_1/id = 1
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Hat:"
+
+[node name="Hat" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+item_count = 120
+selected = 0
+popup/item_0/text = "none"
+popup/item_0/id = 0
+popup/item_1/text = "Bandana"
+popup/item_1/id = 1
+popup/item_2/text = "Bandana 2"
+popup/item_2/id = 2
+popup/item_3/text = "Bandana 3"
+popup/item_3/id = 3
+popup/item_4/text = "Bandana 4"
+popup/item_4/id = 4
+popup/item_5/text = "Bicorne Athwart"
+popup/item_5/id = 5
+popup/item_6/text = "Bicorne Athwart Commodore"
+popup/item_6/id = 6
+popup/item_7/text = "Bicorne Athwart Pirate"
+popup/item_7/id = 7
+popup/item_8/text = "Bicorne Athwart Admiral"
+popup/item_8/id = 8
+popup/item_9/text = "Bicorne Athwart Admiral Cockade"
+popup/item_9/id = 9
+popup/item_10/text = "Bicorne Foreaft"
+popup/item_10/id = 10
+popup/item_11/text = "Bicorne Foreaft Commodore"
+popup/item_11/id = 11
+popup/item_12/text = "Bonnie 1"
+popup/item_12/id = 12
+popup/item_13/text = "Bonnie 2"
+popup/item_13/id = 13
+popup/item_14/text = "Cavalier 1"
+popup/item_14/id = 14
+popup/item_15/text = "Cavalier 2"
+popup/item_15/id = 15
+popup/item_16/text = "Crown"
+popup/item_16/id = 16
+popup/item_17/text = "Bowler"
+popup/item_17/id = 17
+popup/item_18/text = "Top Hat"
+popup/item_18/id = 18
+popup/item_19/text = "Headband"
+popup/item_19/id = 19
+popup/item_20/text = "Mail"
+popup/item_20/id = 20
+popup/item_21/text = "Kettle"
+popup/item_21/id = 21
+popup/item_22/text = "Barbarian"
+popup/item_22/id = 22
+popup/item_23/text = "Barbarian"
+popup/item_23/id = 23
+popup/item_24/text = "Barbarian (Nasal)"
+popup/item_24/id = 24
+popup/item_25/text = "Barbarian (Nasal)"
+popup/item_25/id = 25
+popup/item_26/text = "Barbarian (Viking)"
+popup/item_26/id = 26
+popup/item_27/text = "Barbarian (Viking)"
+popup/item_27/id = 27
+popup/item_28/text = "Spangenhelm"
+popup/item_28/id = 28
+popup/item_29/text = "Spangenhelm"
+popup/item_29/id = 29
+popup/item_30/text = "Spangenhelm"
+popup/item_30/id = 30
+popup/item_31/text = "Spangenhelm (Viking)"
+popup/item_31/id = 31
+popup/item_32/text = "Spangenhelm (Viking)"
+popup/item_32/id = 32
+popup/item_33/text = "Spangenhelm (Viking)"
+popup/item_33/id = 33
+popup/item_34/text = "Nasal"
+popup/item_34/id = 34
+popup/item_35/text = "Nasal"
+popup/item_35/id = 35
+popup/item_36/text = "Morion"
+popup/item_36/id = 36
+popup/item_37/text = "Morion"
+popup/item_37/id = 37
+popup/item_38/text = "Morion"
+popup/item_38/id = 38
+popup/item_39/text = "Morion"
+popup/item_39/id = 39
+popup/item_40/text = "Morion"
+popup/item_40/id = 40
+popup/item_41/text = "Morion"
+popup/item_41/id = 41
+popup/item_42/text = "Pointed"
+popup/item_42/id = 42
+popup/item_43/text = "Pointed"
+popup/item_43/id = 43
+popup/item_44/text = "Pointed"
+popup/item_44/id = 44
+popup/item_45/text = "Norman"
+popup/item_45/id = 45
+popup/item_46/text = "Norman"
+popup/item_46/id = 46
+popup/item_47/text = "Norman"
+popup/item_47/id = 47
+popup/item_48/text = "Bascinet (Pigface)"
+popup/item_48/id = 48
+popup/item_49/text = "Bascinet (Pigface)"
+popup/item_49/id = 49
+popup/item_50/text = "Bascinet (Pigface)"
+popup/item_50/id = 50
+popup/item_51/text = "Bascinet (Pigface)"
+popup/item_51/id = 51
+popup/item_52/text = "Bascinet (Pigface)"
+popup/item_52/id = 52
+popup/item_53/text = "Bascinet (Pigface)"
+popup/item_53/id = 53
+popup/item_54/text = "Bascinet (Round)"
+popup/item_54/id = 54
+popup/item_55/text = "Bascinet (Round)"
+popup/item_55/id = 55
+popup/item_56/text = "Bascinet (Round)"
+popup/item_56/id = 56
+popup/item_57/text = "Bascinet (Round)"
+popup/item_57/id = 57
+popup/item_58/text = "Bascinet (Round)"
+popup/item_58/id = 58
+popup/item_59/text = "Bascinet (Round)"
+popup/item_59/id = 59
+popup/item_60/text = "Legion"
+popup/item_60/id = 60
+popup/item_61/text = "Legion"
+popup/item_61/id = 61
+popup/item_62/text = "Legion"
+popup/item_62/id = 62
+popup/item_63/text = "Centurion"
+popup/item_63/id = 63
+popup/item_64/text = "Centurion"
+popup/item_64/id = 64
+popup/item_65/text = "Armet"
+popup/item_65/id = 65
+popup/item_66/text = "Armet"
+popup/item_66/id = 66
+popup/item_67/text = "Armet"
+popup/item_67/id = 67
+popup/item_68/text = "Armet"
+popup/item_68/id = 68
+popup/item_69/text = "Armet"
+popup/item_69/id = 69
+popup/item_70/text = "Armet"
+popup/item_70/id = 70
+popup/item_71/text = "Armet"
+popup/item_71/id = 71
+popup/item_72/text = "Armet"
+popup/item_72/id = 72
+popup/item_73/text = "Armet"
+popup/item_73/id = 73
+popup/item_74/text = "Armet"
+popup/item_74/id = 74
+popup/item_75/text = "Grated"
+popup/item_75/id = 75
+popup/item_76/text = "Grated"
+popup/item_76/id = 76
+popup/item_77/text = "Grated"
+popup/item_77/id = 77
+popup/item_78/text = "Grated"
+popup/item_78/id = 78
+popup/item_79/text = "Barbuta"
+popup/item_79/id = 79
+popup/item_80/text = "Barbuta"
+popup/item_80/id = 80
+popup/item_81/text = "Barbuta"
+popup/item_81/id = 81
+popup/item_82/text = "Barbuta"
+popup/item_82/id = 82
+popup/item_83/text = "Barbuta"
+popup/item_83/id = 83
+popup/item_84/text = "Barbuta"
+popup/item_84/id = 84
+popup/item_85/text = "Barbuta"
+popup/item_85/id = 85
+popup/item_86/text = "Horned"
+popup/item_86/id = 86
+popup/item_87/text = "Maximus"
+popup/item_87/id = 87
+popup/item_88/text = "Maximus"
+popup/item_88/id = 88
+popup/item_89/text = "Flattop"
+popup/item_89/id = 89
+popup/item_90/text = "Greathelm"
+popup/item_90/id = 90
+popup/item_91/text = "Greathelm"
+popup/item_91/id = 91
+popup/item_92/text = "Greathelm"
+popup/item_92/id = 92
+popup/item_93/text = "Sugarloaf"
+popup/item_93/id = 93
+popup/item_94/text = "Sugarloaf"
+popup/item_94/id = 94
+popup/item_95/text = "Sugarloaf"
+popup/item_95/id = 95
+popup/item_96/text = "Sugarloaf"
+popup/item_96/id = 96
+popup/item_97/text = "Sugarloaf"
+popup/item_97/id = 97
+popup/item_98/text = "Sugarloaf"
+popup/item_98/id = 98
+popup/item_99/text = "Xeon"
+popup/item_99/id = 99
+popup/item_100/text = "Xeon"
+popup/item_100/id = 100
+popup/item_101/text = "Xeon"
+popup/item_101/id = 101
+popup/item_102/text = "Xeon"
+popup/item_102/id = 102
+popup/item_103/text = "Hijab"
+popup/item_103/id = 103
+popup/item_104/text = "Hood"
+popup/item_104/id = 104
+popup/item_105/text = "Kerchief"
+popup/item_105/id = 105
+popup/item_106/text = "Leather"
+popup/item_106/id = 106
+popup/item_107/text = "Elf"
+popup/item_107/id = 107
+popup/item_108/text = "Santa"
+popup/item_108/id = 108
+popup/item_109/text = "Tricorne Stitched"
+popup/item_109/id = 109
+popup/item_110/text = "Tricorne Tatched"
+popup/item_110/id = 110
+popup/item_111/text = "Tricorne"
+popup/item_111/id = 111
+popup/item_112/text = "Tricorne Lieutenant"
+popup/item_112/id = 112
+popup/item_113/text = "Tricorne Captain"
+popup/item_113/id = 113
+popup/item_114/text = "Tricorne Pirate Captain"
+popup/item_114/id = 114
+popup/item_115/text = "Tricorne Pirate Captain Skull"
+popup/item_115/id = 115
+popup/item_116/text = "Wizard"
+popup/item_116/id = 116
+popup/item_117/text = "Wizard 2"
+popup/item_117/id = 117
+popup/item_118/text = "Wizard 3"
+popup/item_118/id = 118
+popup/item_119/text = "Wizard"
+popup/item_119/id = 119
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Facial:"
+
+[node name="Glasses" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+item_count = 8
+selected = 0
+popup/item_0/text = "none"
+popup/item_0/id = 0
+popup/item_1/text = "Eyepatch 1"
+popup/item_1/id = 1
+popup/item_2/text = "Eyepatch 2"
+popup/item_2/id = 2
+popup/item_3/text = "Formal Glasses"
+popup/item_3/id = 3
+popup/item_4/text = "Sun Glasses"
+popup/item_4/id = 4
+popup/item_5/text = "Mask"
+popup/item_5/id = 5
+popup/item_6/text = "Monocle"
+popup/item_6/id = 6
+popup/item_7/text = "Scarf"
+popup/item_7/id = 7
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Suit:"
+
+[node name="Suit" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+item_count = 2
+selected = 0
+popup/item_0/text = "none"
+popup/item_0/id = 0
+popup/item_1/text = "Bandages"
+popup/item_1/id = 1
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer6"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Shirt:"
+
+[node name="Shirt" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer6"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+item_count = 37
+selected = 0
+popup/item_0/text = "none"
+popup/item_0/id = 0
+popup/item_1/text = "Bow"
+popup/item_1/id = 1
+popup/item_2/text = "Formal"
+popup/item_2/id = 2
+popup/item_3/text = "Formal (bow)"
+popup/item_3/id = 3
+popup/item_4/text = "Formal (tie)"
+popup/item_4/id = 4
+popup/item_5/text = "Formal (cravat)"
+popup/item_5/id = 5
+popup/item_6/text = "Formal (jabot)"
+popup/item_6/id = 6
+popup/item_7/text = "Formal"
+popup/item_7/id = 7
+popup/item_8/text = "Leather 1"
+popup/item_8/id = 8
+popup/item_9/text = "Leather 2"
+popup/item_9/id = 9
+popup/item_10/text = "Legion 1"
+popup/item_10/id = 10
+popup/item_11/text = "Legion 2"
+popup/item_11/id = 11
+popup/item_12/text = "Mail"
+popup/item_12/id = 12
+popup/item_13/text = "Plate 1"
+popup/item_13/id = 13
+popup/item_14/text = "Plate 2"
+popup/item_14/id = 14
+popup/item_15/text = "Plate 3"
+popup/item_15/id = 15
+popup/item_16/text = "Plate Arms"
+popup/item_16/id = 16
+popup/item_17/text = "Shirt"
+popup/item_17/id = 17
+popup/item_18/text = "Shirt (bow)"
+popup/item_18/id = 18
+popup/item_19/text = "Shirt (tie)"
+popup/item_19/id = 19
+popup/item_20/text = "Shirt (cravat)"
+popup/item_20/id = 20
+popup/item_21/text = "Shirt (jabot)"
+popup/item_21/id = 21
+popup/item_22/text = "Shirt Laced"
+popup/item_22/id = 22
+popup/item_23/text = "Shirt Stripes"
+popup/item_23/id = 23
+popup/item_24/text = "Longsleeved"
+popup/item_24/id = 24
+popup/item_25/text = "Longsleeved (bow)"
+popup/item_25/id = 25
+popup/item_26/text = "Longsleeved (tie)"
+popup/item_26/id = 26
+popup/item_27/text = "Longsleeved (cravat)"
+popup/item_27/id = 27
+popup/item_28/text = "Longsleeved (jabot)"
+popup/item_28/id = 28
+popup/item_29/text = "Longsleeved Laced"
+popup/item_29/id = 29
+popup/item_30/text = "Shortsleeved"
+popup/item_30/id = 30
+popup/item_31/text = "Tie"
+popup/item_31/id = 31
+popup/item_32/text = "Vest"
+popup/item_32/id = 32
+popup/item_33/text = "Vest (bow)"
+popup/item_33/id = 33
+popup/item_34/text = "Vest"
+popup/item_34/id = 34
+popup/item_35/text = "Vest (open)"
+popup/item_35/id = 35
+popup/item_36/text = "Vest (bow)"
+popup/item_36/id = 36
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer6"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer6" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer5"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Coverall:"
+
+[node name="Jacket" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer5"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+item_count = 25
+selected = 0
+popup/item_0/text = "none"
+popup/item_0/id = 0
+popup/item_1/text = "Apron"
+popup/item_1/id = 1
+popup/item_2/text = "Bauldron"
+popup/item_2/id = 2
+popup/item_3/text = "Jacket 1"
+popup/item_3/id = 3
+popup/item_4/text = "Jacket"
+popup/item_4/id = 4
+popup/item_5/text = "Jacket 2"
+popup/item_5/id = 5
+popup/item_6/text = "Jacket 3"
+popup/item_6/id = 6
+popup/item_7/text = "Jacket 4"
+popup/item_7/id = 7
+popup/item_8/text = "Jacket 5"
+popup/item_8/id = 8
+popup/item_9/text = "Jacket 6"
+popup/item_9/id = 9
+popup/item_10/text = "Jacket 7"
+popup/item_10/id = 10
+popup/item_11/text = "Jacket 8"
+popup/item_11/id = 11
+popup/item_12/text = "Frock 1"
+popup/item_12/id = 12
+popup/item_13/text = "Frock 2"
+popup/item_13/id = 13
+popup/item_14/text = "Frock 3"
+popup/item_14/id = 14
+popup/item_15/text = "Frock 4"
+popup/item_15/id = 15
+popup/item_16/text = "Frock 5"
+popup/item_16/id = 16
+popup/item_17/text = "Frock 6"
+popup/item_17/id = 17
+popup/item_18/text = "Frock 7"
+popup/item_18/id = 18
+popup/item_19/text = "Iverness"
+popup/item_19/id = 19
+popup/item_20/text = "Overalls"
+popup/item_20/id = 20
+popup/item_21/text = "Santa"
+popup/item_21/id = 21
+popup/item_22/text = "Skirt"
+popup/item_22/id = 22
+popup/item_23/text = "Tabard"
+popup/item_23/id = 23
+popup/item_24/text = "Trenchcoat"
+popup/item_24/id = 24
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer5" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer7"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Gloves:"
+
+[node name="Gloves" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer7"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+item_count = 4
+selected = 0
+popup/item_0/text = "none"
+popup/item_0/id = 0
+popup/item_1/text = "Cloth Bracers"
+popup/item_1/id = 1
+popup/item_2/text = "Plate Bracers"
+popup/item_2/id = 2
+popup/item_3/text = "Plate Gloves"
+popup/item_3/id = 3
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer7"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer7" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+
+[node name="HBoxContainer8" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer8"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Belt:"
+
+[node name="Belt" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer8"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+item_count = 9
+selected = 0
+popup/item_0/text = "none"
+popup/item_0/id = 0
+popup/item_1/text = "Raised"
+popup/item_1/id = 1
+popup/item_2/text = "Double"
+popup/item_2/id = 2
+popup/item_3/text = "Formal"
+popup/item_3/id = 3
+popup/item_4/text = "Leather"
+popup/item_4/id = 4
+popup/item_5/text = "Loose"
+popup/item_5/id = 5
+popup/item_6/text = "Rope"
+popup/item_6/id = 6
+popup/item_7/text = "Sash Narrow"
+popup/item_7/id = 7
+popup/item_8/text = "Sash"
+popup/item_8/id = 8
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer8"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer8" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+
+[node name="HBoxContainer9" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer9"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Pants:"
+
+[node name="Pants" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer9"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+item_count = 6
+selected = 0
+popup/item_0/text = "none"
+popup/item_0/id = 0
+popup/item_1/text = "Formal"
+popup/item_1/id = 1
+popup/item_2/text = "Legion Skirt"
+popup/item_2/id = 2
+popup/item_3/text = "Loose"
+popup/item_3/id = 3
+popup/item_4/text = "Pants"
+popup/item_4/id = 4
+popup/item_5/text = "Plate"
+popup/item_5/id = 5
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer9"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer9" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+
+[node name="HBoxContainer10" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer10"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Shoes:"
+
+[node name="Shoes" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer10"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+item_count = 7
+selected = 0
+popup/item_0/text = "none"
+popup/item_0/id = 0
+popup/item_1/text = "Long Boots"
+popup/item_1/id = 1
+popup/item_2/text = "Plate"
+popup/item_2/id = 2
+popup/item_3/text = "Sandals"
+popup/item_3/id = 3
+popup/item_4/text = "Slippers"
+popup/item_4/id = 4
+popup/item_5/text = "Ghillies"
+popup/item_5/id = 5
+popup/item_6/text = "Shoes"
+popup/item_6/id = 6
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer10"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer10" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+
+[node name="HBoxContainer11" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer11"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Back:"
+
+[node name="Back" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer11"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+item_count = 12
+selected = 0
+popup/item_0/text = "none"
+popup/item_0/id = 0
+popup/item_1/text = "Backpack"
+popup/item_1/id = 1
+popup/item_2/text = "Backpack"
+popup/item_2/id = 2
+popup/item_3/text = "Cape"
+popup/item_3/id = 3
+popup/item_4/text = "Cape"
+popup/item_4/id = 4
+popup/item_5/text = "Cape"
+popup/item_5/id = 5
+popup/item_6/text = "Torn Cape"
+popup/item_6/id = 6
+popup/item_7/text = "Torn Cape"
+popup/item_7/id = 7
+popup/item_8/text = "Torn Cape"
+popup/item_8/id = 8
+popup/item_9/text = "Trimmed Cape"
+popup/item_9/id = 9
+popup/item_10/text = "Trimmed Cape"
+popup/item_10/id = 10
+popup/item_11/text = "Trimmed Cape"
+popup/item_11/id = 11
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer11"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer11" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+
+[node name="HBoxContainer12" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer12"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Mainhand:"
+
+[node name="Mainhand" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer12"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+item_count = 49
+selected = 0
+popup/item_0/text = "none"
+popup/item_0/id = 0
+popup/item_1/text = "Axe"
+popup/item_1/id = 1
+popup/item_2/text = "Boomerang"
+popup/item_2/id = 2
+popup/item_3/text = "Bow"
+popup/item_3/id = 3
+popup/item_4/text = "Recurve Bow"
+popup/item_4/id = 4
+popup/item_5/text = "Great Bow"
+popup/item_5/id = 5
+popup/item_6/text = "Crossbow"
+popup/item_6/id = 6
+popup/item_7/text = "Cane"
+popup/item_7/id = 7
+popup/item_8/text = "Club"
+popup/item_8/id = 8
+popup/item_9/text = "Dagger"
+popup/item_9/id = 9
+popup/item_10/text = "Long Knife"
+popup/item_10/id = 10
+popup/item_11/text = "Fishing Pole"
+popup/item_11/id = 11
+popup/item_12/text = "Flail"
+popup/item_12/id = 12
+popup/item_13/text = "Halberd"
+popup/item_13/id = 13
+popup/item_14/text = "Hammer"
+popup/item_14/id = 14
+popup/item_15/text = "Hoe"
+popup/item_15/id = 15
+popup/item_16/text = "Mace"
+popup/item_16/id = 16
+popup/item_17/text = "Pickaxe"
+popup/item_17/id = 17
+popup/item_18/text = "Scythe"
+popup/item_18/id = 18
+popup/item_19/text = "Shovel"
+popup/item_19/id = 19
+popup/item_20/text = "Shovel"
+popup/item_20/id = 20
+popup/item_21/text = "Slingshot"
+popup/item_21/id = 21
+popup/item_22/text = "Spear"
+popup/item_22/id = 22
+popup/item_23/text = "Spear"
+popup/item_23/id = 23
+popup/item_24/text = "Spear"
+popup/item_24/id = 24
+popup/item_25/text = "Spear"
+popup/item_25/id = 25
+popup/item_26/text = "Long Spear"
+popup/item_26/id = 26
+popup/item_27/text = "Dragon Spear"
+popup/item_27/id = 27
+popup/item_28/text = "Trident"
+popup/item_28/id = 28
+popup/item_29/text = "Staff"
+popup/item_29/id = 29
+popup/item_30/text = "Staff"
+popup/item_30/id = 30
+popup/item_31/text = "Staff"
+popup/item_31/id = 31
+popup/item_32/text = "Staff"
+popup/item_32/id = 32
+popup/item_33/text = "Staff"
+popup/item_33/id = 33
+popup/item_34/text = "Staff"
+popup/item_34/id = 34
+popup/item_35/text = "Sword"
+popup/item_35/id = 35
+popup/item_36/text = "Sword"
+popup/item_36/id = 36
+popup/item_37/text = "Sword"
+popup/item_37/id = 37
+popup/item_38/text = "Sword"
+popup/item_38/id = 38
+popup/item_39/text = "Rapier"
+popup/item_39/id = 39
+popup/item_40/text = "Saber"
+popup/item_40/id = 40
+popup/item_41/text = "Scimitar"
+popup/item_41/id = 41
+popup/item_42/text = "Katana"
+popup/item_42/id = 42
+popup/item_43/text = "Glowsword"
+popup/item_43/id = 43
+popup/item_44/text = "Wooden Wand"
+popup/item_44/id = 44
+popup/item_45/text = "Metal Wand"
+popup/item_45/id = 45
+popup/item_46/text = "War Axe"
+popup/item_46/id = 46
+popup/item_47/text = "Watering Can"
+popup/item_47/id = 47
+popup/item_48/text = "Whip"
+popup/item_48/id = 48
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer12"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+metadata/primarycolors = -1
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer12" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+
+[node name="HBoxContainer13" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer13"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Ammo:"
+
+[node name="Ammo" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer13"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer13"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer13" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+
+[node name="HBoxContainer14" type="HBoxContainer" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer14"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Offhand:"
+
+[node name="Offhand" type="OptionButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer14"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.576471, 0.576471, 0.576471, 1)
+disabled = true
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer14"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("8_osbbw")
+texture_hover = ExtResource("9_qp75i")
+
+[node name="LockButton" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer14" instance=ExtResource("3_0fuf8")]
+layout_mode = 2
+
+[node name="RandomBody" parent="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer" instance=ExtResource("2_kiwgy")]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+size_flags_vertical = 10
+text = "Random"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="CustomButton" parent="VBoxContainer/HBoxContainer2" instance=ExtResource("2_kiwgy")]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+text = "create character"
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+
+[node name="PaletteDialog" parent="Control" instance=ExtResource("17_4sj4o")]
+unique_name_in_owner = true
+position = Vector2i(0, 380)
+visible = false
+
+[node name="TextureTest" type="TextureRect" parent="Control"]
+layout_mode = 0
+offset_left = -1300.0
+offset_top = -334.5
+offset_right = -468.0
+offset_bottom = 1009.5
+mouse_filter = 2
+texture = SubResource("ViewportTexture_l1kbb")
+metadata/_edit_lock_ = true
+
+[node name="TextureRect" type="TextureRect" parent="Control"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 41.0
+offset_right = 1768.0
+offset_bottom = 809.0
+mouse_filter = 2
+texture = SubResource("ViewportTexture_01a8k")
+metadata/_edit_lock_ = true
+
+[node name="TextureRect2" type="TextureRect" parent="Control"]
+layout_mode = 0
+offset_left = -3700.0
+offset_top = 373.5
+offset_right = -1972.0
+offset_bottom = 1141.5
+mouse_filter = 2
+texture = SubResource("ViewportTexture_mfwl4")
+metadata/_edit_lock_ = true
+
+[node name="SubViewport" type="SubViewport" parent="."]
+
+[connection signal="item_selected" from="VBoxContainer/HBoxContainer/Races" to="." method="_on_races_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/HBoxContainer/Palettes" to="." method="_on_palettes_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/Gender" to="." method="_on_gender_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer12/Body" to="." method="_on_body_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer5/Eyes" to="." method="_on_eyes_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2/Wings" to="." method="_on_wings_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3/Tail" to="." method="_on_tail_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4/Hair" to="." method="_on_hair_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer6/Ears" to="." method="_on_ears_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer7/Nose" to="." method="_on_nose_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer8/Facial" to="." method="_on_facial_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer9/Add1" to="." method="_on_add_1_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer10/Add2" to="." method="_on_add_2_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer11/Add3" to="." method="_on_add_3_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/Mask" to="." method="_on_mask_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2/Hat" to="." method="_on_hat_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3/Glasses" to="." method="_on_glasses_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4/Suit" to="." method="_on_suit_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer6/Shirt" to="." method="_on_shirt_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer5/Jacket" to="." method="_on_jacket_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer7/Gloves" to="." method="_on_gloves_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer8/Belt" to="." method="_on_belt_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer9/Pants" to="." method="_on_pants_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer10/Shoes" to="." method="_on_shoes_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer11/Back" to="." method="_on_back_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/PanelContainer3/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer12/Mainhand" to="." method="_on_mainhand_item_selected"]

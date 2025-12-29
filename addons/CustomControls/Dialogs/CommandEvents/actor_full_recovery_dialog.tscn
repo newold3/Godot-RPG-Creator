@@ -1,0 +1,203 @@
+[gd_scene load_steps=15 format=3 uid="uid://cy123petcjoy8"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_b0ggb"]
+[ext_resource type="Script" uid="uid://dla380vy4hr5v" path="res://addons/CustomControls/Dialogs/CommandEvents/actor_full_recovery_dialog.gd" id="2_836kn"]
+[ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="3_y7smd"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="4_4og0r"]
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="5_nid8d"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="6_q2y7s"]
+
+[sub_resource type="Gradient" id="Gradient_7ascj"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ourej"]
+gradient = SubResource("Gradient_7ascj")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gx64l"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Gradient" id="Gradient_ctwx1"]
+colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_4tv8e"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4q1b8"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_4tv8e")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k7tel"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_x53ls"]
+
+[node name="ActorFullRecoveryDialog" type="Window"]
+title = "Full Recovery"
+position = Vector2i(0, 36)
+size = Vector2i(400, 190)
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_b0ggb")
+script = ExtResource("2_836kn")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_ourej")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="ContentsPanel1" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_y7smd")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_gx64l")
+style1 = SubResource("StyleBoxFlat_gx64l")
+style2 = SubResource("StyleBoxTexture_4q1b8")
+style3 = SubResource("StyleBoxFlat_k7tel")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/ContentsPanel1"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ContentsPanel1/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ContentsPanel1/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Actor"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ContentsPanel1/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Fixed" type="CheckBox" parent="MarginContainer/VBoxContainer/ContentsPanel1/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+tooltip_text = "Directly specifies the actor to be targeted."
+mouse_default_cursor_shape = 2
+button_pressed = true
+button_group = SubResource("ButtonGroup_x53ls")
+text = "Fixed"
+
+[node name="FixedValue" parent="MarginContainer/VBoxContainer/ContentsPanel1/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_4og0r")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Directly specifies the actor to be targeted."
+selected = 0
+item_count = 6
+popup/item_0/text = "Entire Party"
+popup/item_0/id = 0
+popup/item_1/text = "1: Aiden"
+popup/item_1/id = 1
+popup/item_2/text = "2: Elara"
+popup/item_2/id = 2
+popup/item_3/text = "3: Thorne"
+popup/item_3/id = 3
+popup/item_4/text = "4: Lyra"
+popup/item_4/id = 4
+popup/item_5/text = "5: Gideon"
+popup/item_5/id = 5
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ContentsPanel1/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Variable" type="CheckBox" parent="MarginContainer/VBoxContainer/ContentsPanel1/MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+tooltip_text = "Uses the variable value as character ID."
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_x53ls")
+text = "Variable"
+
+[node name="VariableValue" parent="MarginContainer/VBoxContainer/ContentsPanel1/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_nid8d")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Uses the variable value as character ID."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+disabled = true
+text = "1: "
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("6_q2y7s")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("6_q2y7s")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+text = "CANCEL"
+
+[connection signal="toggled" from="MarginContainer/VBoxContainer/ContentsPanel1/MarginContainer/VBoxContainer/HBoxContainer/Fixed" to="." method="_on_fixed_toggled"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/ContentsPanel1/MarginContainer/VBoxContainer/HBoxContainer/FixedValue" to="." method="_on_fixed_value_item_selected"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/ContentsPanel1/MarginContainer/VBoxContainer/HBoxContainer2/Variable" to="." method="_on_variable_toggled"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/ContentsPanel1/MarginContainer/VBoxContainer/HBoxContainer2/VariableValue" to="." method="_on_variable_value_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/CancelButton" to="." method="_on_cancel_button_pressed"]

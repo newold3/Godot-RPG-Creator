@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=3 uid="uid://tjkw137hht6"]
+
+[ext_resource type="Texture2D" uid="uid://cao2k1icy784r" path="res://addons/CustomControls/Images/curve_editor_button.png" id="1_6m2wj"]
+[ext_resource type="Script" uid="uid://bak023rtybny7" path="res://addons/CustomControls/curve_editor_button.gd" id="2_nflgv"]
+[ext_resource type="Texture2D" uid="uid://l2aioaqyn6qx" path="res://addons/CustomControls/Images/curve_editor_button_right.png" id="3_plv0m"]
+[ext_resource type="Texture2D" uid="uid://2tvdq0i74qsu" path="res://addons/CustomControls/Images/curve_editor_button_left.png" id="4_l7l3x"]
+
+[node name="CurveEditorButton" type="TextureButton"]
+self_modulate = Color(0.9375, 0.0842285, 0.0842285, 1)
+offset_right = 20.0
+offset_bottom = 20.0
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("1_6m2wj")
+script = ExtResource("2_nflgv")
+
+[node name="RightTangent" type="TextureButton" parent="."]
+unique_name_in_owner = true
+visible = false
+modulate = Color(0.63, 22.49, 0.13, 1)
+self_modulate = Color(0.0528717, 0.683339, 0.902344, 1)
+layout_mode = 0
+offset_left = 30.0
+offset_right = 50.0
+offset_bottom = 20.0
+pivot_offset = Vector2(10, 10)
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("3_plv0m")
+
+[node name="LeftTangent" type="TextureButton" parent="."]
+unique_name_in_owner = true
+visible = false
+self_modulate = Color(0.0528717, 0.683339, 0.902344, 1)
+layout_mode = 0
+offset_left = -30.0
+offset_right = -10.0
+offset_bottom = 20.0
+pivot_offset = Vector2(10, 10)
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("4_l7l3x")

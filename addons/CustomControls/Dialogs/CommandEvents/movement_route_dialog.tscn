@@ -1,0 +1,690 @@
+[gd_scene load_steps=26 format=3 uid="uid://fusxbq0ugpo3"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_33ofo"]
+[ext_resource type="Script" uid="uid://05nmwi42uwh8" path="res://addons/CustomControls/Dialogs/CommandEvents/movement_route_dialog.gd" id="2_1yw4j"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="2_ljxif"]
+[ext_resource type="PackedScene" uid="uid://dxcyqc2dscbvw" path="res://addons/CustomControls/custom_simple_column_item_list.tscn" id="3_fcyk8"]
+[ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="4_17t46"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="5_fawjf"]
+[ext_resource type="Texture2D" uid="uid://o2igtqruxlrd" path="res://addons/CustomControls/Images/turn_arrow.png" id="7_6mm4s"]
+[ext_resource type="Texture2D" uid="uid://bb83n0q7rxrdi" path="res://addons/CustomControls/Images/random_direction.png" id="8_m611g"]
+
+[sub_resource type="Gradient" id="Gradient_vvvrv"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_kykq1"]
+gradient = SubResource("Gradient_vvvrv")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="Gradient" id="Gradient_sfoll"]
+colors = PackedColorArray(0.333333, 0.352941, 0.360784, 1, 0.380392, 0.4, 0.407843, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_0n3ye"]
+gradient = SubResource("Gradient_sfoll")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_d8o6k"]
+texture = SubResource("GradientTexture2D_0n3ye")
+
+[sub_resource type="Gradient" id="Gradient_fb0tl"]
+offsets = PackedFloat32Array(0, 0.369535, 1)
+colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ygvtv"]
+gradient = SubResource("Gradient_fb0tl")
+fill_from = Vector2(0.547009, 1)
+fill_to = Vector2(0.559829, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0lpvs"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_ygvtv")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_id7ae"]
+bg_color = Color(0, 0, 0, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x42pq"]
+resource_local_to_scene = true
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Gradient" id="Gradient_ctwx1"]
+colors = PackedColorArray(0.145098, 0.156863, 0.164706, 1, 0.172549, 0.184314, 0.192157, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_5lwj2"]
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.5, 0.996)
+fill_to = Vector2(0.5, 0.056)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2qv2g"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_5lwj2")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x6leb"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+expand_margin_left = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ocsdp"]
+resource_local_to_scene = true
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cgbd8"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_5lwj2")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q5527"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+expand_margin_left = 2.0
+
+[node name="MovementRouteDialog" type="Window"]
+title = "Movement Route"
+position = Vector2i(0, 36)
+size = Vector2i(1104, 748)
+transient_to_focused = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_33ofo")
+script = ExtResource("2_1yw4j")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_kykq1")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="ColumnLeft" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Target" parent="MarginContainer/HBoxContainer/ColumnLeft" instance=ExtResource("2_ljxif")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "[title]Target Selector[/title]
+Choose which character or event will follow the movement route. Options typically include \"This Event\", the player, or specific events on the map."
+disabled = true
+selected = 0
+item_count = 1
+popup/item_0/text = "This Event"
+popup/item_0/id = 0
+
+[node name="CommandList" parent="MarginContainer/HBoxContainer/ColumnLeft" instance=ExtResource("3_fcyk8")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
+event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
+top_bar_style = SubResource("StyleBoxTexture_d8o6k")
+columns_text_colors = PackedColorArray(0.72549, 0.992157, 0.772549, 1)
+cursor_style = SubResource("StyleBoxTexture_0lpvs")
+panel_style = SubResource("StyleBoxFlat_id7ae")
+names = PackedStringArray("Route Commands")
+sizes = PackedInt32Array(240)
+min_column_size = 18
+text_margin_left = 5
+enable_multiselection = true
+itemlist_tooltip = "[title]Troop List[/title]
+List of enemies that may appear in this region.
+
+[Dobleclick to edit / add new troop, Delete key to erase any troop]"
+
+[node name="CustomPanel" parent="MarginContainer/HBoxContainer/ColumnLeft" instance=ExtResource("4_17t46")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_x42pq")
+style1 = SubResource("StyleBoxFlat_x42pq")
+style2 = SubResource("StyleBoxTexture_2qv2g")
+style3 = SubResource("StyleBoxFlat_x6leb")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/ColumnLeft/CustomPanel"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ColumnLeft/CustomPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ColumnLeft/CustomPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.960938, 0.759765, 0.22522, 1)
+text = "Route Options:"
+
+[node name="RouteOption1" type="CheckBox" parent="MarginContainer/HBoxContainer/ColumnLeft/CustomPanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "[title]Enable Loop[/title]
+If checked, the movement route will repeat indefinitely until manually interrupted or the event ends."
+mouse_default_cursor_shape = 2
+text = "Enable Loop"
+
+[node name="RouteOption2" type="CheckBox" parent="MarginContainer/HBoxContainer/ColumnLeft/CustomPanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "[title]Skip If Stuck[/title]
+If enabled, the event will skip over movement commands it can't complete (e.g., blocked paths) instead of getting stuck."
+mouse_default_cursor_shape = 2
+text = "Skip if stuck"
+
+[node name="RouteOption3" type="CheckBox" parent="MarginContainer/HBoxContainer/ColumnLeft/CustomPanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "[title]Await Movement End[/title]
+This parameter is used by the interpreter to delay the execution of the commands following this one if wait is activated.
+
+[Note]: When \"Await movement end\" is enabled, the route cannot repeat and must skip blocked movements to avoid interpreter lock."
+mouse_default_cursor_shape = 2
+text = "Await movement end"
+
+[node name="ColumnRight" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CustomPanel" parent="MarginContainer/HBoxContainer/ColumnRight" instance=ExtResource("4_17t46")]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_ocsdp")
+style1 = SubResource("StyleBoxFlat_ocsdp")
+style2 = SubResource("StyleBoxTexture_cgbd8")
+style3 = SubResource("StyleBoxFlat_q5527")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.960938, 0.759765, 0.22522, 1)
+text = "Movement Commands:"
+
+[node name="MovementCommandButtonContainer" type="GridContainer" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+columns = 3
+
+[node name="Button1" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Move Down ↓[/title]
+Move the event one tile downward."
+text = "Move Down 🢃"
+
+[node name="Button2" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Look At Down ↓[/title]
+Make the event face downward."
+text = "Look At Down 🢃"
+
+[node name="Button3" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Walking Animation ON[/title]
+Enable walking animation while the event is moving."
+text = "Walking Animation ON"
+
+[node name="Button4" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Move Left ←[/title]
+Move the event one tile to the left."
+text = "Move Left 🢀"
+
+[node name="Button5" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Look At Left ←[/title]
+Make the event face to the left."
+text = "Look At Left 🢀"
+
+[node name="Button6" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Walking Animation OFF[/title]
+Disable walking animation even when the event is moving."
+text = "Walking Animation OFF"
+
+[node name="Button7" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Move Right →[/title]
+Move the event one tile to the right."
+text = "Move Right 🢂"
+
+[node name="Button8" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Look At Right →[/title]
+Make the event face to the right."
+text = "Look At Right 🢂"
+
+[node name="Button9" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Idle Animation ON[/title]
+Enable idle animation when the event is stationary."
+text = "Idle Animation ON"
+
+[node name="Button10" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Move Up ↑[/title]
+Move the event one tile upward."
+text = "Move Up 🢁"
+
+[node name="Button11" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Look At Up ↑[/title]
+Make the event face upward."
+text = "Look At Up 🢁"
+
+[node name="Button12" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Idle Animation OFF[/title]
+Disable idle animation when the event is not moving."
+text = "Idle Animation OFF"
+
+[node name="Button13" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Move Southwest ↙[/title]
+Move the event one tile diagonally to the bottom-left."
+text = "Move Southwest 🢇"
+
+[node name="Button14" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Turn 90° To The Left ↺[/title]
+Rotate the event 90 degrees counterclockwise."
+text = "Turn 90º To The Left 🢀"
+
+[node name="Button15" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Fix Direction ON[/title]
+Prevent the event from changing its direction."
+text = "Fix Direction ON"
+
+[node name="Button16" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Move Southeast ↘[/title]
+Move the event one tile diagonally to the bottom-right."
+text = "Move Southeast 🢆"
+
+[node name="Button17" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Turn 90° To The Right ↻[/title]
+Rotate the event 90 degrees clockwise."
+text = "Turn 90º To The Right 🢂"
+
+[node name="Button18" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Fix Direction OFF[/title]
+Allow the event to change its direction freely."
+text = "Fix Direction OFF"
+
+[node name="Button19" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Move Northwest ↖[/title]
+Move the event one tile diagonally to the top-left."
+text = "Move Northwest 🢄"
+
+[node name="Button20" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Turn 180° ↶[/title]
+Make the event turn around (180-degree rotation)."
+text = "
+"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer/Button20"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer/Button20/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Turn 180º"
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer/Button20/HBoxContainer"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("7_6mm4s")
+expand_mode = 1
+
+[node name="Button21" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Walk Through ON[/title]
+Let the event pass through all objects and characters."
+text = "Walk Through ON"
+
+[node name="Button22" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Move Northeast ↗[/title]
+Move the event one tile diagonally to the top-right."
+text = "Move Northeast 🢅"
+
+[node name="Button23" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Turn 90° ↔ (Random)[/title]
+Randomly rotate the event 90 degrees either left or right."
+text = "Turn 90º 🢀/🢂 (Random)"
+
+[node name="Button24" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Walk Through OFF[/title]
+Prevent the event from walking through other objects and characters."
+text = "Walk Through OFF"
+
+[node name="Button25" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Random Movement[/title]
+Make the event move in a random direction."
+text = "Random Movement"
+
+[node name="Button26" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Look At Random ✛[/title]
+Face the event in a random direction."
+text = ""
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer/Button26"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer/Button26/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Look At Random"
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer/Button26/HBoxContainer"]
+custom_minimum_size = Vector2(22, 22)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("8_m611g")
+expand_mode = 1
+
+[node name="Button27" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Invisible ON[/title]
+Make the event invisible during gameplay."
+text = "Invisible ON"
+
+[node name="Button28" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Move Towards The Player[/title]
+Move the event one step closer to the player's current position."
+text = "Move Towards The Player"
+
+[node name="Button29" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Look At Player[/title]
+Make the event face toward the player."
+text = "Look At Player"
+
+[node name="Button30" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Invisible OFF[/title]
+Make the event visible again."
+text = "Invisible OFF"
+
+[node name="Button31" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Move Away From The Player[/title]
+Move the event one step away from the player."
+text = "Move Away From The Player"
+
+[node name="Button32" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Look Opposite The Player[/title]
+Make the event face in the direction opposite to the player."
+text = "Look Opposite The Player"
+
+[node name="Button33" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Change Graphic[/title]
+Change the event’s appearance to a different sprite."
+text = "Change Graphic..."
+
+[node name="Button34" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]One Step Ahead[/title]
+Move the event one step in its current facing direction."
+text = "One Step Ahead"
+
+[node name="Button35" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Switch On[/title]
+Turn a specified switch ON."
+text = "Switch ON..."
+
+[node name="Button36" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Change Opacity[/title]
+Change how transparent the event appears."
+text = "Change Opacity..."
+
+[node name="Button37" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]One Step Backward[/title]
+Move the event one step in the opposite direction of where it is facing, without changing its current direction."
+text = "One Step Backward"
+
+[node name="Button38" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Switch Off[/title]
+Turn a specified switch OFF."
+text = "Switch Off..."
+
+[node name="Button39" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Change Blend Mode[/title]
+Modify how the event blends with the background (normal, additive, etc.)."
+text = "Change Blend Mode..."
+
+[node name="Button40" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Jump[/title]
+Make the event jump a specified number of tiles horizontally and vertically."
+text = "Jump..."
+
+[node name="Button41" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Change Speed[/title]
+Set the event’s movement speed."
+text = "Change Speed..."
+
+[node name="Button42" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Play SE[/title]
+Play a sound effect."
+text = "Play SE..."
+
+[node name="Button43" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Wait[/title]
+Pause the event’s movement for a set number of frames."
+text = "Wait..."
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer/Button43"]
+custom_minimum_size = Vector2(288.535, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 2
+mouse_filter = 2
+theme_override_constants/margin_top = 78
+
+[node name="Button46" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer/Button43/MarginContainer" instance=ExtResource("5_fawjf")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+tooltip_text = "[title]Change Z-Index[/title]
+Change the drawing priority of the event to control whether it appears above or below other objects."
+text = "Change Z-Index"
+
+[node name="Button44" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Change Movement Delay[/title]
+Adjust the event’s wait time between movement steps."
+text = "Change Movement Delay.."
+
+[node name="Button45" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/MovementCommandButtonContainer" instance=ExtResource("5_fawjf")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Script[/title]
+Execute a custom script for advanced behavior."
+text = "Script..."
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="OKButton" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_fawjf")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_fawjf")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+text = "CANCEL"
+
+[connection signal="item_selected" from="MarginContainer/HBoxContainer/ColumnLeft/Target" to="." method="_on_target_item_selected"]
+[connection signal="copy_requested" from="MarginContainer/HBoxContainer/ColumnLeft/CommandList" to="." method="_on_command_list_copy_requested"]
+[connection signal="cut_requested" from="MarginContainer/HBoxContainer/ColumnLeft/CommandList" to="." method="_on_command_list_cut_requested"]
+[connection signal="delete_pressed" from="MarginContainer/HBoxContainer/ColumnLeft/CommandList" to="." method="_on_command_list_delete_pressed"]
+[connection signal="duplicate_requested" from="MarginContainer/HBoxContainer/ColumnLeft/CommandList" to="." method="_on_command_list_duplicate_requested"]
+[connection signal="item_activated" from="MarginContainer/HBoxContainer/ColumnLeft/CommandList" to="." method="_on_command_list_item_activated"]
+[connection signal="paste_requested" from="MarginContainer/HBoxContainer/ColumnLeft/CommandList" to="." method="_on_command_list_paste_requested"]
+[connection signal="toggled" from="MarginContainer/HBoxContainer/ColumnLeft/CustomPanel/MarginContainer/VBoxContainer/RouteOption1" to="." method="_on_route_option_1_toggled"]
+[connection signal="toggled" from="MarginContainer/HBoxContainer/ColumnLeft/CustomPanel/MarginContainer/VBoxContainer/RouteOption2" to="." method="_on_route_option_2_toggled"]
+[connection signal="toggled" from="MarginContainer/HBoxContainer/ColumnLeft/CustomPanel/MarginContainer/VBoxContainer/RouteOption3" to="." method="_on_route_option_3_toggled"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer2/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/ColumnRight/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer2/CancelButton" to="." method="_on_cancel_button_pressed"]

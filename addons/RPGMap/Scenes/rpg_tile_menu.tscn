@@ -1,0 +1,113 @@
+[gd_scene load_steps=11 format=3 uid="uid://bkaflcm7mwq38"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_g1oub"]
+[ext_resource type="Script" uid="uid://cp1pq6pi8eoae" path="res://addons/RPGMap/Scenes/presets_script.gd" id="1_m0s8o"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="2_g1oub"]
+
+[sub_resource type="Gradient" id="Gradient_iphf6"]
+colors = PackedColorArray(0.211765, 0.239216, 0.290196, 1, 0.113725, 0.133333, 0.160784, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_wk24y"]
+gradient = SubResource("Gradient_iphf6")
+fill_from = Vector2(0.521368, 0.192308)
+fill_to = Vector2(0.529915, 0.995726)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ockyd"]
+texture = SubResource("GradientTexture2D_wk24y")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pfads"]
+atlas = ExtResource("2_g1oub")
+region = Rect2(0, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wwh7y"]
+atlas = ExtResource("2_g1oub")
+region = Rect2(24, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g1oub"]
+atlas = ExtResource("2_g1oub")
+region = Rect2(168, 48, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ouwbv"]
+atlas = ExtResource("2_g1oub")
+region = Rect2(192, 48, 24, 24)
+
+[node name="RPGTileMenu" type="PopupMenu"]
+oversampling_override = 1.0
+size = Vector2i(150, 174)
+visible = true
+unfocusable = true
+theme = ExtResource("1_g1oub")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_disabled_color = Color(0.52549, 0.52549, 0.52549, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_styles/hover = SubResource("StyleBoxTexture_ockyd")
+item_count = 7
+item_0/text = "Edit Tile"
+item_0/id = 0
+item_1/id = 1
+item_1/separator = true
+item_2/text = "Cut Tile"
+item_2/id = 2
+item_3/text = "Copy Tile"
+item_3/id = 3
+item_4/text = "Paste Tile"
+item_4/id = 4
+item_5/text = "Remove Tile"
+item_5/id = 5
+item_6/id = 6
+item_6/separator = true
+
+[node name="Submenu1" type="PopupMenu" parent="."]
+unique_name_in_owner = true
+size = Vector2i(247, 147)
+item_count = 6
+item_0/text = "Player"
+item_0/id = 0
+item_1/text = "Land Transport"
+item_1/id = 1
+item_2/text = "Sea Transport"
+item_2/id = 2
+item_3/text = "Air Transport"
+item_3/id = 3
+item_4/id = 4
+item_4/separator = true
+item_5/text = "Paste From Clipboard"
+item_5/id = 5
+
+[node name="Submenu2" type="PopupMenu" parent="." node_paths=PackedStringArray("main_node", "remove_button", "edit_button")]
+unique_name_in_owner = true
+oversampling_override = 1.0
+size = Vector2i(150, 120)
+min_size = Vector2i(120, 120)
+max_size = Vector2i(32768, 240)
+script = ExtResource("1_m0s8o")
+main_node = NodePath("..")
+remove_button = NodePath("EraseButton")
+edit_button = NodePath("EditButton")
+
+[node name="EraseButton" type="TextureButton" parent="Submenu2"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(20, 20)
+offset_right = 20.0
+offset_bottom = 20.0
+tooltip_text = "Erase the selected preset."
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_pfads")
+texture_hover = SubResource("AtlasTexture_wwh7y")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="EditButton" type="TextureButton" parent="Submenu2"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(20, 20)
+offset_right = 20.0
+offset_bottom = 20.0
+tooltip_text = "Edit the selected preset name."
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_g1oub")
+texture_hover = SubResource("AtlasTexture_ouwbv")
+ignore_texture_size = true
+stretch_mode = 0

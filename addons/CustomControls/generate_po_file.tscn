@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=3 uid="uid://dkm7amihtai4m"]
+
+[ext_resource type="Script" uid="uid://m7hustfj33lh" path="res://addons/CustomControls/generate_po_file.gd" id="1_4bql0"]
+
+[node name="GeneratePoFile" type="Node"]
+script = ExtResource("1_4bql0")
+scene_text_regexs = [{
+"is_array": false,
+"name": "Scene (text): ",
+"regex": "(?m)^text\\s*=\\s*\"((?:[^\"\\\\]|\\\\.)*)\""
+}, {
+"is_array": false,
+"name": "Scene (tooltip): ",
+"regex": "(?m)^tooltip_text\\s*=\\s*\"((?:[^\"\\\\]|\\\\.)*)\""
+}, {
+"is_array": false,
+"name": "Scene (popup item): ",
+"regex": "(?m)^popup/item_\\\\d+/text\\\\s*=\\\\s*\"((?:[^\"\\\\\\\\]|\\\\\\\\.)*)\""
+}, {
+"is_array": false,
+"name": "Scene (itemlist_tooltip): ",
+"regex": "(?m)^tooltip_text\\\\s*=\\\\s*\"([^\"]*)\""
+}, {
+"is_array": false,
+"name": "Scene (names): ",
+"regex": "(?m)^names\\\\s*=\\\\s*PackedStringArray\\\\(\\\\s*(.+?)\\\\s*\\\\)"
+}]

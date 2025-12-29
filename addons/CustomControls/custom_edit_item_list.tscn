@@ -1,0 +1,77 @@
+[gd_scene load_steps=10 format=3 uid="uid://7bb05tatss36"]
+
+[ext_resource type="Script" uid="uid://bj72de2rkskfb" path="res://addons/CustomControls/custom_edit_item_list.gd" id="1_m12x0"]
+
+[sub_resource type="Theme" id="Theme_cfnmo"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1r7vf"]
+
+[sub_resource type="Gradient" id="Gradient_fe4wr"]
+offsets = PackedFloat32Array(0, 0.0181818, 0.0436364, 0.938318, 0.970093, 1)
+colors = PackedColorArray(0.141998, 0.152944, 0.183594, 1, 0.247059, 0.266667, 0.321569, 1, 0.247059, 0.266667, 0.321569, 1, 0.233383, 0.352612, 0.519531, 1, 0.233383, 0.352612, 0.519531, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_lixgw"]
+gradient = SubResource("Gradient_fe4wr")
+fill_from = Vector2(0.5, 0)
+fill_to = Vector2(0.5, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_83nq2"]
+texture = SubResource("GradientTexture2D_lixgw")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_55t1c"]
+bg_color = Color(0.4544, 0.64, 0.6245333, 0.20784314)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.43452507, 0.39130002, 0.91, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j1vdx"]
+bg_color = Color(0.207843, 0.207843, 0.207843, 0.635294)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.368627, 0.454902, 0.545098, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ik2mg"]
+bg_color = Color(0.9, 0.036000017, 0.23759983, 0.10980392)
+border_width_left = 8
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.96144634, 0.0006858632, 0.00037445725, 1)
+border_blend = true
+
+[node name="CustomEditItemList" type="ItemList"]
+theme = SubResource("Theme_cfnmo")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hovered_color = Color(0.109804, 0.580392, 0.92549, 1)
+theme_override_colors/font_selected_color = Color(0.839216, 0.466667, 0.0705882, 1)
+theme_override_constants/h_separation = 0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_1r7vf")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_1r7vf")
+theme_override_styles/hovered = SubResource("StyleBoxEmpty_1r7vf")
+theme_override_styles/selected = SubResource("StyleBoxEmpty_1r7vf")
+theme_override_styles/selected_focus = SubResource("StyleBoxEmpty_1r7vf")
+theme_override_styles/cursor_unfocused = SubResource("StyleBoxEmpty_1r7vf")
+theme_override_styles/cursor = SubResource("StyleBoxEmpty_1r7vf")
+select_mode = 1
+allow_reselect = true
+auto_height = true
+script = ExtResource("1_m12x0")
+enabled_action_cursor_texture = SubResource("StyleBoxTexture_83nq2")
+no_editable_cursor_texture = SubResource("StyleBoxFlat_55t1c")
+disabled_action_cursor = SubResource("StyleBoxFlat_j1vdx")
+ignored_command = SubResource("StyleBoxFlat_ik2mg")
+default_text_offset_y = 10
+disable_text_color = Color(0.94048876, 0.6644985, 0.58842635, 1)
+main_container = NodePath(".")
+
+[node name="BackControl" type="Control" parent="."]
+unique_name_in_owner = true
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 0
+mouse_filter = 2
+metadata/_edit_lock_ = true

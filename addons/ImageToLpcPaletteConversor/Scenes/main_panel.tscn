@@ -1,0 +1,447 @@
+[gd_scene load_steps=22 format=3 uid="uid://cgpof6xaxm1ae"]
+
+[ext_resource type="Script" uid="uid://ckbet0lk4fa5m" path="res://addons/ImageToLpcPaletteConversor/Scenes/main_panel.gd" id="1_c32xt"]
+[ext_resource type="Shader" uid="uid://byvruuuuqrdn8" path="res://Assets/Shaders/simple_gradient.gdshader" id="1_wpils"]
+[ext_resource type="Texture2D" uid="uid://cruarf80pk0hj" path="res://addons/ImageToLpcPaletteConversor/Images/upload_icon.png" id="2_2khqp"]
+[ext_resource type="Texture2D" uid="uid://kiacx0awjfo5" path="res://addons/ImageToLpcPaletteConversor/Images/arrow_right.png" id="2_4yqni"]
+[ext_resource type="Script" uid="uid://diy4pfwokcmqe" path="res://addons/ImageToLpcPaletteConversor/Scripts/palette_conversor.gd" id="2_aiba5"]
+[ext_resource type="Script" uid="uid://i6ff7nvtp1ae" path="res://addons/ImageToLpcPaletteConversor/Scripts/container_drop_data.gd" id="2_apjak"]
+[ext_resource type="Texture2D" uid="uid://d352myo35ker7" path="res://addons/ImageToLpcPaletteConversor/Images/loading_icon_empty.png" id="4_apjak"]
+[ext_resource type="Texture2D" uid="uid://dhg8w6vd8wt4h" path="res://addons/ImageToLpcPaletteConversor/Images/loading_icon_fill.png" id="5_c32xt"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="8_nbxuw"]
+
+[sub_resource type="Gradient" id="Gradient_4yqni"]
+offsets = PackedFloat32Array(0, 0.406926, 0.835498, 1)
+colors = PackedColorArray(0.154319, 0.174329, 0.206517, 1, 0.996236, 0.920108, 0.84922, 1, 1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_tw2ov"]
+gradient = SubResource("Gradient_4yqni")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_b5s1q"]
+shader = ExtResource("1_wpils")
+shader_parameter/gradient_texture = SubResource("GradientTexture2D_tw2ov")
+shader_parameter/use_text_gradient = true
+shader_parameter/size = Vector2(835, 67)
+shader_parameter/pixel_scale = 8.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wpils"]
+draw_center = false
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2khqp"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_c32xt"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aiba5"]
+content_margin_left = 4.0
+content_margin_top = 1.0
+content_margin_right = 4.0
+content_margin_bottom = 1.0
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.771801, 0.401807, 0.183707, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1avnp"]
+content_margin_left = 4.0
+content_margin_top = 1.0
+content_margin_right = 4.0
+content_margin_bottom = 1.0
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.771801, 0.401807, 0.183707, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6g2de"]
+content_margin_left = 4.0
+content_margin_top = 1.0
+content_margin_right = 4.0
+content_margin_bottom = 1.0
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.129412, 0.14902, 0.180392, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8n5o0"]
+content_margin_left = 4.0
+content_margin_top = 1.0
+content_margin_right = 4.0
+content_margin_bottom = 1.0
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.129412, 0.14902, 0.180392, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_apjak"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nbxuw"]
+
+[node name="MainPanel" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+script = ExtResource("1_c32xt")
+
+[node name="PaletteConverter" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("2_aiba5")
+color_palette = PackedColorArray(0, 0, 0, 1, 0.0588235, 0.0705882, 0.0941176, 1, 0.145098, 0.121569, 0.145098, 1, 0.219608, 0.168627, 0.2, 1, 0.321569, 0.254902, 0.294118, 1, 0.356863, 0.309804, 0.333333, 1, 0.435294, 0.392157, 0.392157, 1, 0.584314, 0.501961, 0.501961, 1, 0.678431, 0.596078, 0.556863, 1, 0.768627, 0.709804, 0.623529, 1, 0.847059, 0.831373, 0.752941, 1, 0.890196, 0.905882, 0.827451, 1, 0.105882, 0.0980392, 0.168627, 1, 0.160784, 0.145098, 0.227451, 1, 0.203922, 0.188235, 0.262745, 1, 0.294118, 0.294118, 0.376471, 1, 0.34902, 0.368627, 0.439216, 1, 0.415686, 0.458824, 0.529412, 1, 0.505882, 0.564706, 0.592157, 1, 0.658824, 0.701961, 0.721569, 1, 0.780392, 0.811765, 0.8, 1, 1, 1, 1, 1, 0.282353, 0.254902, 0.321569, 1, 0.447059, 0.419608, 0.494118, 1, 0.52549, 0.494118, 0.498039, 1, 0.164706, 0.0901961, 0.133333, 1, 0.921569, 0.929412, 0.913725, 1, 0.6, 0.258824, 0.235294, 1, 0.8, 0.52549, 0.396078, 1, 0.894118, 0.643137, 0.486275, 1, 0.976471, 0.835294, 0.729412, 1, 0.980392, 0.92549, 0.905882, 1, 0.101961, 0.0705882, 0.0745098, 1, 0.180392, 0.121569, 0.109804, 1, 0.266667, 0.145098, 0.152941, 1, 0.376471, 0.203922, 0.160784, 1, 0.419608, 0.235294, 0.180392, 1, 0.498039, 0.298039, 0.192157, 1, 0.392157, 0.254902, 0.2, 1, 0.588235, 0.356863, 0.219608, 1, 0.682353, 0.419608, 0.247059, 1, 0.752941, 0.478431, 0.294118, 1, 0.580392, 0.419608, 0.266667, 1, 0.635294, 0.47451, 0.294118, 1, 0.678431, 0.517647, 0.309804, 1, 0.74902, 0.615686, 0.356863, 1, 0.8, 0.686275, 0.392157, 1, 0.545098, 0.47451, 0.286275, 1, 0.243137, 0.0666667, 0.101961, 1, 0.34902, 0.0823529, 0.0823529, 1, 0.415686, 0.113725, 0.0862745, 1, 0.482353, 0.12549, 0.0313726, 1, 0.392157, 0.14902, 0, 1, 0.780392, 0.203922, 0.105882, 1, 0.584314, 0.219608, 0.109804, 1, 0.709804, 0.286275, 0.211765, 1, 0.803922, 0.329412, 0.239216, 1, 0.74902, 0.25098, 0, 1, 0.898039, 0.376471, 0.0627451, 1, 1, 0.541176, 0, 1, 0.764706, 0.317647, 0.101961, 1, 0.921569, 0.443137, 0.152941, 1, 0.913725, 0.352941, 0.301961, 1, 0.92549, 0.454902, 0.337255, 1, 1, 0.54902, 0.407843, 1, 1, 0.694118, 0.52549, 1, 0.368627, 0.2, 0.286275, 1, 0.568627, 0.301961, 0.407843, 1, 0.631373, 0.384314, 0.419608, 1, 0.682353, 0.466667, 0.0666667, 1, 0.745098, 0.588235, 0.580392, 1, 0.85098, 0.678431, 0.662745, 1, 0.282353, 0.0980392, 0.270588, 1, 0.47451, 0.164706, 0.32549, 1, 0.741176, 0.317647, 0.411765, 1, 0.937255, 0.454902, 0.494118, 1, 0.968627, 0.560784, 0.541176, 1, 1, 0.678431, 0.592157, 1, 0.368627, 0.12549, 0.262745, 1, 0.666667, 0.227451, 0.415686, 1, 0.298039, 0.231373, 0.392157, 1, 0.396078, 0.341176, 0.537255, 1, 0.486275, 0.431373, 0.65098, 1, 0.596078, 0.560784, 0.729412, 1, 0.172549, 0.141176, 0.321569, 1, 0.231373, 0.258824, 0.564706, 1, 0.388235, 0.439216, 0.780392, 1, 0.513726, 0.541176, 0.819608, 1, 0.643137, 0.690196, 0.862745, 1, 0.823529, 0.847059, 0.937255, 1, 0.0627451, 0.0627451, 0.145098, 1, 0.0941176, 0.0941176, 0.258824, 1, 0.113725, 0.145098, 0.376471, 1, 0.160784, 0.223529, 0.509804, 1, 0.196078, 0.309804, 0.603922, 1, 0.258824, 0.45098, 0.788235, 1, 0.345098, 0.552941, 0.886275, 1, 0.419608, 0.701961, 0.960784, 1, 0.309804, 0.537255, 0.615686, 1, 0.423529, 0.639216, 0.701961, 1, 0.541176, 0.752941, 0.788235, 1, 0.643137, 0.866667, 0.858824, 1, 0.741176, 0.901961, 0.898039, 1, 0.85098, 0.941176, 0.941176, 1, 0.0509804, 0.156863, 0.243137, 1, 0.0901961, 0.227451, 0.333333, 1, 0.0901961, 0.270588, 0.384314, 1, 0.0941176, 0.313726, 0.435294, 1, 0.113725, 0.376471, 0.482353, 1, 0.129412, 0.439216, 0.529412, 1, 0.164706, 0.521569, 0.596078, 1, 0.227451, 0.686275, 0.792157, 1, 0.423529, 0.862745, 0.929412, 1, 0.0980392, 0.2, 0.176471, 1, 0.192157, 0.509804, 0.160784, 1, 0.270588, 0.384314, 0.219608, 1, 0.372549, 0.529412, 0.301961, 1, 0.545098, 0.384314, 0.470588, 1, 0.678431, 0.796078, 0.65098, 1, 0.756863, 0.854902, 0.760784, 1, 0.403922, 0.470588, 0.192157, 1, 0.631373, 0.627451, 0.239216, 1, 0.780392, 0.776471, 0.352941, 1, 0.815686, 0.854902, 0.568627, 1, 0.85098, 0.945098, 0.847059, 1, 0.109804, 0.270588, 0.145098, 1, 0.145098, 0.337255, 0.180392, 1, 0.188235, 0.392157, 0.184314, 1, 0.231373, 0.45098, 0.184314, 1, 0.27451, 0.509804, 0.196078, 1, 0.243137, 0.380392, 0.0823529, 1, 0.317647, 0.462745, 0.0627451, 1, 0.352941, 0.603922, 0.164706, 1, 0.486275, 0.721569, 0.184314, 1, 0.658824, 0.792157, 0.345098, 1, 0.592157, 0.54902, 0.00784314, 1, 0.737255, 0.647059, 0.109804, 1, 0.858824, 0.741176, 0, 1, 0.941176, 0.878431, 0.34902, 1, 0.956863, 0.894118, 0.552941, 1, 0.992157, 0.960784, 0.8, 1, 0.513726, 0.388235, 0.192157, 1, 0.686275, 0.541176, 0.207843, 1, 0.74902, 0.65098, 0.247059, 1, 0.992157, 0.815686, 0.509804, 1, 0.47451, 0.254902, 0.0901961, 1, 0.631373, 0.376471, 0.0941176, 1, 0.819608, 0.580392, 0.156863, 1, 0.952941, 0.764706, 0.372549, 1, 0.811765, 0.435294, 0.188235, 1, 0.878431, 0.611765, 0.298039, 1, 0.972549, 0.737255, 0.462745, 1, 0.933333, 0.8, 0.54902, 1, 0.956863, 0.843137, 0.627451, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="VBoxContainer"]
+material = SubResource("ShaderMaterial_b5s1q")
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "IMAGE TO LPC PALETTE CONVERSOR"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="LeftPanel" type="Panel" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(400, 400)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_wpils")
+
+[node name="BrowseContainer" type="MarginContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/LeftPanel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+script = ExtResource("2_apjak")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/LeftPanel/BrowseContainer"]
+layout_mode = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/LeftPanel/BrowseContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+mouse_filter = 2
+texture = ExtResource("2_2khqp")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/LeftPanel/BrowseContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_styles/background = SubResource("StyleBoxEmpty_2khqp")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_c32xt")
+bbcode_enabled = true
+text = "[center][b]Drag&Drop[/b] Image here
+
+or"
+fit_content = true
+
+[node name="SelectImageButton" type="Button" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/LeftPanel/BrowseContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+tooltip_text = "[title]Select Image[/title]
+Select an image using the Image Dialog"
+focus_mode = 0
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_aiba5")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1avnp")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_6g2de")
+theme_override_styles/normal = SubResource("StyleBoxFlat_8n5o0")
+text = "Browse Images"
+
+[node name="MainTextureContainer" type="MarginContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/LeftPanel"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+script = ExtResource("2_apjak")
+
+[node name="MainTexture" type="TextureRect" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/LeftPanel/MainTextureContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+expand_mode = 1
+
+[node name="SelectImageButton" type="Button" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/LeftPanel/MainTextureContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+tooltip_text = "[title]Select Image[/title]
+Select an image using the Image Dialog"
+focus_mode = 0
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_aiba5")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1avnp")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_6g2de")
+theme_override_styles/normal = SubResource("StyleBoxFlat_8n5o0")
+text = "Browse Images"
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_4yqni")
+
+[node name="RightPanel" type="Panel" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(400, 400)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_wpils")
+
+[node name="ProgressConversorContainer" type="MarginContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/RightPanel"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/RightPanel/ProgressConversorContainer"]
+layout_mode = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="Label" type="RichTextLabel" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/RightPanel/ProgressConversorContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_styles/background = SubResource("StyleBoxEmpty_apjak")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_nbxuw")
+bbcode_enabled = true
+text = "[b][pulse freq=2.0]Converting...[/pulse][/b]"
+fit_content = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ProgressBar" type="TextureProgressBar" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/RightPanel/ProgressConversorContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+max_value = 1.0
+step = 0.01
+fill_mode = 4
+texture_under = ExtResource("4_apjak")
+texture_progress = ExtResource("5_c32xt")
+
+[node name="ConvertedTextureContainer" type="MarginContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/RightPanel"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="ConvertedTexture" type="TextureRect" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/RightPanel/ConvertedTextureContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+expand_mode = 1
+
+[node name="HBoxContainer2" type="VBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Conversion Mode"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ConversionMode" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("8_nbxuw")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+tooltip_text = "[ul] \"EUCLIDEAN_RGB\": Simple Euclidean distance in RGB space - fastest but least perceptually accurate
+ \"WEIGHTED_RGB\": RGB distance with perceptual weights favoring green channel - good speed/quality balance
+ \"OKLAB\": Modern perceptually uniform color space - better than standard LAB for most cases
+ \"LCH\": LAB in cylindrical coordinates - better for highly saturated colors and hue transitions
+ \"LAB\": Standard CIE LAB color space - perceptually uniform but slower than RGB methods
+ \"DELTA_E_76\": CIE76 Delta E standard - industry standard for color difference measurement
+ \"DELTA_E_94\": CIE94 Delta E with improved weighting - most perceptually accurate for complex color matching
+ \"PERCEPTUAL_HYBRID\": Multi-stage method combining spatial search + RGB filtering + OKLab refinement - best quality but slowest[/ul]"
+selected = 4
+item_count = 8
+popup/item_0/text = "Euclidean Rgb"
+popup/item_0/id = 0
+popup/item_1/text = "Weighted Rgb"
+popup/item_1/id = 1
+popup/item_2/text = "Oklab"
+popup/item_2/id = 2
+popup/item_3/text = "Lch"
+popup/item_3/id = 3
+popup/item_4/text = "Lab"
+popup/item_4/id = 4
+popup/item_5/text = "Delta E 76"
+popup/item_5/id = 5
+popup/item_6/text = "Delta E 94"
+popup/item_6/id = 6
+popup/item_7/text = "Perceptual Hybrid"
+popup/item_7/id = 7
+
+[node name="ConvertPaletteButton" type="Button" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 0
+tooltip_text = "[title]Convert Image[/title]
+Converts the palette of the selected image to an LPC graphics-compatible palette"
+focus_mode = 0
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 26
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_aiba5")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1avnp")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_6g2de")
+theme_override_styles/normal = SubResource("StyleBoxFlat_8n5o0")
+text = "CONVERT IMAGE"
+
+[node name="HSeparator2" type="HSeparator" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 10
+alignment = 1
+
+[node name="SavePath" type="LineEdit" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+caret_blink = true
+
+[node name="SaveImageButton" type="Button" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+tooltip_text = "[title]Save Image[/title]
+Save the image in the path selected"
+focus_mode = 0
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 26
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_aiba5")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1avnp")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_6g2de")
+theme_override_styles/normal = SubResource("StyleBoxFlat_8n5o0")
+text = "Save Image"
+
+[node name="RestoreImageButton" type="Button" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+tooltip_text = "[title]Restore Image[/title]
+Re-Save the original image"
+focus_mode = 0
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 26
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_aiba5")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1avnp")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_6g2de")
+theme_override_styles/normal = SubResource("StyleBoxFlat_8n5o0")
+text = "Restore Image"
+
+[connection signal="pressed" from="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/LeftPanel/BrowseContainer/VBoxContainer/SelectImageButton" to="." method="_on_select_image_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/LeftPanel/MainTextureContainer/SelectImageButton" to="." method="_on_select_image_button_pressed"]
+[connection signal="item_selected" from="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/ConversionMode" to="." method="_on_conversion_mode_item_selected"]
+[connection signal="pressed" from="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/ConvertPaletteButton" to="." method="_on_convert_palette_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/HBoxContainer/SaveImageButton" to="." method="_on_save_image_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/HBoxContainer/RestoreImageButton" to="." method="_on_restore_image_button_pressed"]

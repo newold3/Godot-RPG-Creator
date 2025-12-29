@@ -1,0 +1,73 @@
+[gd_scene load_steps=7 format=3 uid="uid://bpkccvkafldfq"]
+
+[ext_resource type="Texture2D" uid="uid://k427d0tgpa8n" path="res://addons/CustomControls/Images/loading_file_icon.png" id="1_a1cou"]
+[ext_resource type="Script" uid="uid://dugycnkaq5bfj" path="res://addons/CustomControls/file_selector.gd" id="1_v5bhg"]
+[ext_resource type="Texture2D" uid="uid://csb2tgq18e4gw" path="res://addons/CustomControls/Images/heart_button_disabled.png" id="3_o57rg"]
+[ext_resource type="Texture2D" uid="uid://c0ihfakdhxqjp" path="res://addons/CustomControls/Images/heart_button_normal.png" id="4_s48dc"]
+[ext_resource type="Texture2D" uid="uid://ckghhsxc3n6f1" path="res://addons/CustomControls/Images/heart_button_hover.png" id="5_71sxk"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ardcy"]
+
+[node name="FileSelector" type="MarginContainer"]
+offset_right = 128.0
+offset_bottom = 158.0
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+script = ExtResource("1_v5bhg")
+
+[node name="VboxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Icon" type="TextureRect" parent="VboxContainer"]
+unique_name_in_owner = true
+texture_filter = 3
+custom_minimum_size = Vector2(124, 124)
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+texture = ExtResource("1_a1cou")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="RichTextLabel" parent="VboxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/normal_font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxEmpty_ardcy")
+bbcode_enabled = true
+text = "[center]Filename[/center]"
+fit_content = true
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_top = -4
+theme_override_constants/margin_bottom = -4
+
+[node name="Cursor" type="ColorRect" parent="MarginContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.898039, 0.631373, 0, 0.152941)
+
+[node name="FavoriteButton" type="TextureButton" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+mouse_default_cursor_shape = 2
+toggle_mode = true
+texture_normal = ExtResource("3_o57rg")
+texture_pressed = ExtResource("4_s48dc")
+texture_hover = ExtResource("5_71sxk")
+
+[connection signal="toggled" from="FavoriteButton" to="." method="_on_favorite_button_toggled"]

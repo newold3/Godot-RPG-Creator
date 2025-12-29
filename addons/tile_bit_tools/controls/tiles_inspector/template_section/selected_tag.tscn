@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3 uid="uid://bco7r2se8g2hn"]
+
+[ext_resource type="Script" uid="uid://crfqcsh3wvftd" path="res://addons/tile_bit_tools/controls/tiles_inspector/template_section/selected_tag.gd" id="1_n8esd"]
+[ext_resource type="Script" uid="uid://olsr5lg5bmli" path="res://addons/tile_bit_tools/controls/shared/icon_button.gd" id="2_gjwm3"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4fhay"]
+
+[node name="SelectedTag" type="PanelContainer"]
+script = ExtResource("1_n8esd")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="IconRect" type="TextureRect" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 3
+
+[node name="Label" type="Label" parent="HBoxContainer" groups=["TBTSubPropertyLabel"]]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Mode: Corners and Sides"
+
+[node name="RemoveButton" type="Button" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_4fhay")
+flat = true
+script = ExtResource("2_gjwm3")
+editor_name = "Close"

@@ -1,0 +1,130 @@
+[gd_scene load_steps=14 format=3 uid="uid://6s1knypiyyop"]
+
+[ext_resource type="Script" uid="uid://brj8seyqmd7eo" path="res://addons/CustomControls/Dialogs/fast_damage_formula.gd" id="1_lrnlt"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="2_3nsjc"]
+[ext_resource type="PackedScene" uid="uid://dxcyqc2dscbvw" path="res://addons/CustomControls/custom_simple_column_item_list.tscn" id="2_r1gjy"]
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="3_uc6pt"]
+
+[sub_resource type="Gradient" id="Gradient_wpaku"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_6rhsu"]
+gradient = SubResource("Gradient_wpaku")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="Gradient" id="Gradient_ruucs"]
+colors = PackedColorArray(0.333333, 0.352941, 0.360784, 1, 0.380392, 0.4, 0.407843, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_02g67"]
+gradient = SubResource("Gradient_ruucs")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1m525"]
+texture = SubResource("GradientTexture2D_02g67")
+
+[sub_resource type="Gradient" id="Gradient_nvw4e"]
+offsets = PackedFloat32Array(0, 0.369535, 1)
+colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_8lpm5"]
+gradient = SubResource("Gradient_nvw4e")
+fill_from = Vector2(0.547009, 1)
+fill_to = Vector2(0.559829, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3iwwi"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_8lpm5")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a8wli"]
+bg_color = Color(0, 0, 0, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+
+[node name="FastDamageFormula" type="Window"]
+oversampling_override = 1.0
+title = "Fast Damage Formula"
+position = Vector2i(0, 36)
+size = Vector2i(900, 400)
+transient = true
+exclusive = true
+unresizable = true
+script = ExtResource("1_lrnlt")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_6rhsu")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="FormulaList" parent="MarginContainer/VBoxContainer" instance=ExtResource("2_r1gjy")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(758, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("3_uc6pt")
+odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
+event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
+top_bar_style = SubResource("StyleBoxTexture_1m525")
+columns_text_colors = PackedColorArray(1, 1, 1, 1, 0.301961, 0.764706, 0.992157, 1)
+cursor_style = SubResource("StyleBoxTexture_3iwwi")
+panel_style = SubResource("StyleBoxFlat_a8wli")
+columns = 2
+names = PackedStringArray("Name", "Formula")
+sizes = PackedInt32Array(500, 0)
+items = Array[PackedStringArray]([PackedStringArray("Physical Damage", "a.atk - b.def"), PackedStringArray("Strong Physical Damage", "a.atk * 3 - b.def"), PackedStringArray("Weak Physical Damage", "a.atk * 0.4 - b.def"), PackedStringArray("Magical Damage", "a.matk - b.mdf"), PackedStringArray("Strong Magical Damage", "a.matk * 3 - b.mdf"), PackedStringArray("Weak Magical Damage", "a.matk * 0.4 - b.mdf"), PackedStringArray("Accuracy", "a.agi - b.agi"), PackedStringArray("Critical Hit Chance", "a.luk - b.luk"), PackedStringArray("Attacker\'s HP Difference", "a.mhp - a.hp"), PackedStringArray("Attacker\'s MP Difference", "a.mmp - a.mp"), PackedStringArray("Physical Damage after Evasion", "(a.atk - b.def) * (1 - b.agi/100)"), PackedStringArray("Magical Damage after Resistance", "(a.matk - b.mdf) * (1 - b.mdf/100)"), PackedStringArray("Evasion Probability", "a.agi * (1 - b.agi/100)"), PackedStringArray("Magic Resistance Probability", "a.mdf * (1 - b.mdf/100)"), PackedStringArray("Physical Attack Damage based on Attacker\'s Health", "a.atk * (a.hp / a.mhp)"), PackedStringArray("Magical Attack Damage based on Attacker\'s Health", "a.matk * (a.hp / a.mhp)")])
+itemlist_tooltip = "[title]Formula List[/title]
+Contains a list of predefined formulas."
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("2_3nsjc")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("2_3nsjc")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+text = "Cancel"
+
+[connection signal="item_activated" from="MarginContainer/VBoxContainer/FormulaList" to="." method="_on_formula_list_item_activated"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/FormulaList" to="." method="_on_formula_list_item_selected"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

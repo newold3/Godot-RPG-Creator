@@ -1,0 +1,890 @@
+[gd_scene load_steps=33 format=3 uid="uid://dw4la7k3nennr"]
+
+[ext_resource type="Script" uid="uid://bufr30r24ixhe" path="res://Scenes/GUI/SteamPunkTheme/MainMenu/hero_panel.gd" id="1_use6n"]
+[ext_resource type="Texture2D" uid="uid://c8guerd3v0l6t" path="res://Assets/Images/SceneMenu/part8.png" id="2_iuciu"]
+[ext_resource type="FontFile" uid="uid://dvh0mi6yu0ywx" path="res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf" id="7_eh0sd"]
+[ext_resource type="Shader" uid="uid://dxjc8yq6x2dvg" path="res://Assets/Shaders/gray_scale_with_mask.gdshader" id="14_x5bo0"]
+[ext_resource type="Texture2D" uid="uid://bfgr2ewrp6i0u" path="res://Assets/Images/GUI/party_menu.png" id="15_f4mn4"]
+[ext_resource type="Shader" uid="uid://dt3neudcthwwu" path="res://Assets/Shaders/metalball_with_momevent.gdshader" id="16_fs03s"]
+[ext_resource type="Script" uid="uid://bycxoxc6lc3is" path="res://Scenes/GUI/bar_control_child_width.gd" id="18_hsxhh"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qrphq"]
+atlas = ExtResource("15_f4mn4")
+region = Rect2(77, 30, 105, 103)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4it6h"]
+atlas = ExtResource("15_f4mn4")
+region = Rect2(231, 10, 105, 103)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_773xp"]
+atlas = ExtResource("15_f4mn4")
+region = Rect2(77, 30, 105, 103)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eh0sd"]
+atlas = ExtResource("15_f4mn4")
+region = Rect2(1017, 512, 56, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hsxhh"]
+atlas = ExtResource("15_f4mn4")
+region = Rect2(959, 293, 58, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gcrb0"]
+atlas = ExtResource("15_f4mn4")
+region = Rect2(206, 182, 230, 286)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f4mn4"]
+atlas = ExtResource("15_f4mn4")
+region = Rect2(77, 223, 20, 134)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g4x2k"]
+shader = ExtResource("16_fs03s")
+shader_parameter/resolution = Vector2(600, 400)
+shader_parameter/speed = 0.35999999195328
+shader_parameter/spawn_spread = 7.86
+shader_parameter/min_life = 2.0
+shader_parameter/max_life = 6.0
+shader_parameter/noise_strength = 0.10999999754128
+shader_parameter/noise_frequency = 4.20000005513444
+shader_parameter/final_alpha = 0.20999999530608
+shader_parameter/clamped = false
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fs03s"]
+atlas = ExtResource("15_f4mn4")
+region = Rect2(498, 368, 39, 9)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7laf4"]
+atlas = ExtResource("15_f4mn4")
+region = Rect2(438, 13, 156, 228)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tpt2p"]
+resource_local_to_scene = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t5m22"]
+atlas = ExtResource("15_f4mn4")
+region = Rect2(109, 492, 65, 60)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dtfhn"]
+atlas = ExtResource("15_f4mn4")
+region = Rect2(588, 519, 354, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mne06"]
+atlas = ExtResource("15_f4mn4")
+region = Rect2(228, 522, 346, 29)
+margin = Rect2(5, 4, 10, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g4x2k"]
+atlas = ExtResource("15_f4mn4")
+region = Rect2(669, 433, 19, 41)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nbiu1"]
+atlas = ExtResource("15_f4mn4")
+region = Rect2(15, 491, 58, 62)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qt6w4"]
+atlas = ExtResource("15_f4mn4")
+region = Rect2(588, 565, 354, 35)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wjuls"]
+atlas = ExtResource("15_f4mn4")
+region = Rect2(228, 568, 346, 29)
+margin = Rect2(5, 4, 10, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y8dlr"]
+atlas = ExtResource("15_f4mn4")
+region = Rect2(1042, 299, 33, 49)
+
+[sub_resource type="LabelSettings" id="LabelSettings_xgsh2"]
+font = ExtResource("7_eh0sd")
+outline_size = 5
+outline_color = Color(0.6313726, 0.4745098, 0.27058825, 1)
+stacked_outline_count = 2
+stacked_outline_0/size = 1
+stacked_outline_0/color = Color(0.79595864, 0.75158876, 0, 1)
+stacked_outline_1/size = 6
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ajjem"]
+resource_local_to_scene = true
+atlas = ExtResource("15_f4mn4")
+region = Rect2(1129, 433, 97, 70)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_ajjem"]
+viewport_path = NodePath("MaskViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_eh0sd"]
+resource_local_to_scene = true
+shader = ExtResource("14_x5bo0")
+shader_parameter/mask = SubResource("ViewportTexture_ajjem")
+shader_parameter/intensity = 0.70999998413008
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_t2glj"]
+viewport_path = NodePath("MainViewport")
+
+[sub_resource type="GDScript" id="GDScript_ajjem"]
+script/source = "extends TextureRect
+
+
+func select():
+	grab_focus()
+"
+
+[node name="HeroPanel" type="Control"]
+custom_minimum_size = Vector2(550, 160)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 550.0
+offset_bottom = 160.0
+size_flags_horizontal = 10
+focus_mode = 1
+mouse_default_cursor_shape = 2
+script = ExtResource("1_use6n")
+initial_animation_delay = 0.04
+
+[node name="MaskViewport" type="SubViewport" parent="."]
+transparent_bg = true
+size = Vector2i(573, 160)
+
+[node name="Mask" type="Polygon2D" parent="MaskViewport"]
+scale = Vector2(1.04, 1)
+polygon = PackedVector2Array(43, 5, 13, 5, 12, 8, 8, 13, 7, 15, 4, 15, 6, 144, 9, 147, 12, 149, 12, 151, 26, 152, 25, 156, 28, 154, 29, 151, 43, 151, 44, 154, 113, 155, 115, 150, 129, 150, 131, 152, 319, 151, 321, 153, 535, 153, 535, 150, 541, 150, 543, 147, 544, 145, 547, 145, 547, 80, 546, 28, 534, 17, 521, 15, 515, 9, 488, 8, 487, 6)
+
+[node name="MainViewport" type="SubViewport" parent="."]
+transparent_bg = true
+size = Vector2i(551, 180)
+
+[node name="Control" type="Control" parent="MainViewport"]
+custom_minimum_size = Vector2(551, 163)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+
+[node name="MainLayout" type="Control" parent="MainViewport/Control"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 9.22
+offset_right = 9.219971
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="BackgroundShadow" type="NinePatchRect" parent="MainViewport/Control/MainLayout"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("15_f4mn4")
+region_rect = Rect2(582, 271, 305, 113)
+patch_margin_left = 30
+patch_margin_top = 43
+patch_margin_right = 53
+patch_margin_bottom = 26
+
+[node name="Background" type="NinePatchRect" parent="MainViewport/Control/MainLayout"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("15_f4mn4")
+region_rect = Rect2(653, 137, 301, 109)
+patch_margin_left = 24
+patch_margin_top = 77
+patch_margin_right = 76
+patch_margin_bottom = 59
+
+[node name="Gears" type="Control" parent="MainViewport/Control/MainLayout"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Control" type="Control" parent="MainViewport/Control/MainLayout/Gears"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Mask" type="Polygon2D" parent="MainViewport/Control/MainLayout/Gears/Control"]
+clip_children = 1
+position = Vector2(5, -15)
+polygon = PackedVector2Array(540, 63, 432, 63, 431, 160, 431, 165, 474, 165, 479, 163, 488, 164, 492, 160, 502, 159, 516, 159, 517, 161, 520, 158, 525, 159, 528, 162, 529, 165, 534, 165, 537, 163, 537, 160, 540, 161)
+
+[node name="Gear6" type="TextureRect" parent="MainViewport/Control/MainLayout/Gears/Control/Mask"]
+unique_name_in_owner = true
+modulate = Color(0.77, 0.77, 0.77, 1)
+offset_left = 509.0
+offset_top = 52.0
+offset_right = 547.0
+offset_bottom = 89.0
+pivot_offset = Vector2(19, 18)
+texture = SubResource("AtlasTexture_qrphq")
+expand_mode = 1
+
+[node name="Gear5" type="TextureRect" parent="MainViewport/Control/MainLayout/Gears/Control/Mask"]
+unique_name_in_owner = true
+modulate = Color(0.77, 0.77, 0.77, 1)
+offset_left = 522.0
+offset_top = 89.0
+offset_right = 545.0
+offset_bottom = 112.0
+pivot_offset = Vector2(11.5, 11.5)
+texture = SubResource("AtlasTexture_4it6h")
+expand_mode = 1
+
+[node name="Gear4" type="TextureRect" parent="MainViewport/Control/MainLayout/Gears/Control/Mask"]
+unique_name_in_owner = true
+modulate = Color(0.77, 0.77, 0.77, 1)
+offset_left = 503.0
+offset_top = 116.0
+offset_right = 561.0
+offset_bottom = 173.0
+pivot_offset = Vector2(29.5, 28.5)
+texture = SubResource("AtlasTexture_qrphq")
+expand_mode = 1
+
+[node name="Gear3" type="TextureRect" parent="MainViewport/Control/MainLayout/Gears"]
+unique_name_in_owner = true
+layout_mode = 1
+offset_left = 2.9999995
+offset_top = 1.9999995
+offset_right = 47.0
+offset_bottom = 45.0
+scale = Vector2(0.8106438, 0.8106438)
+pivot_offset = Vector2(22, 21)
+mouse_filter = 2
+texture = SubResource("AtlasTexture_773xp")
+expand_mode = 1
+
+[node name="TopFrame" type="NinePatchRect" parent="MainViewport/Control/MainLayout"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("15_f4mn4")
+region_rect = Rect2(664, 7, 301, 109)
+patch_margin_left = 24
+patch_margin_top = 77
+patch_margin_right = 76
+patch_margin_bottom = 59
+metadata/_edit_lock_ = true
+
+[node name="CursorNormal" type="NinePatchRect" parent="MainViewport/Control/MainLayout"]
+unique_name_in_owner = true
+visible = false
+modulate = Color(0.87522435, 0.36340213, 0.382199, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("15_f4mn4")
+region_rect = Rect2(993, 82, 299, 107)
+patch_margin_left = 24
+patch_margin_top = 77
+patch_margin_right = 76
+patch_margin_bottom = 59
+
+[node name="CursorExtra" type="NinePatchRect" parent="MainViewport/Control/MainLayout/CursorNormal"]
+z_index = 1
+layout_mode = 0
+offset_left = 26.0
+offset_top = 140.0
+offset_right = 132.0
+offset_bottom = 170.0
+texture = ExtResource("15_f4mn4")
+region_rect = Rect2(1051, 217, 68, 41)
+patch_margin_left = 4
+patch_margin_top = 23
+patch_margin_right = 3
+patch_margin_bottom = 7
+
+[node name="CursorForceSelected" type="NinePatchRect" parent="MainViewport/Control/MainLayout"]
+unique_name_in_owner = true
+visible = false
+modulate = Color(0.96259046, 1, 0.5468543, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("15_f4mn4")
+region_rect = Rect2(993, 82, 299, 107)
+patch_margin_left = 24
+patch_margin_top = 77
+patch_margin_right = 76
+patch_margin_bottom = 59
+
+[node name="CursorExtra" type="NinePatchRect" parent="MainViewport/Control/MainLayout/CursorForceSelected"]
+z_index = 1
+layout_mode = 0
+offset_left = 26.0
+offset_top = 140.0
+offset_right = 132.0
+offset_bottom = 170.0
+texture = ExtResource("15_f4mn4")
+region_rect = Rect2(1051, 217, 68, 41)
+patch_margin_left = 4
+patch_margin_top = 23
+patch_margin_right = 3
+patch_margin_bottom = 7
+
+[node name="CursorHover" type="NinePatchRect" parent="MainViewport/Control/MainLayout"]
+unique_name_in_owner = true
+visible = false
+modulate = Color(0.98504657, 0.7112516, 0.51977134, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("15_f4mn4")
+region_rect = Rect2(993, 82, 299, 107)
+patch_margin_left = 24
+patch_margin_top = 77
+patch_margin_right = 76
+patch_margin_bottom = 59
+
+[node name="CursorExtra" type="NinePatchRect" parent="MainViewport/Control/MainLayout/CursorHover"]
+z_index = 1
+layout_mode = 0
+offset_left = 26.0
+offset_top = 140.0
+offset_right = 132.0
+offset_bottom = 170.0
+texture = ExtResource("15_f4mn4")
+region_rect = Rect2(1051, 217, 68, 41)
+patch_margin_left = 4
+patch_margin_top = 23
+patch_margin_right = 3
+patch_margin_bottom = 7
+
+[node name="Gear7" type="TextureRect" parent="MainViewport/Control/MainLayout"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -43.0
+offset_top = -4.0
+offset_right = 1.0
+offset_bottom = 39.0
+grow_horizontal = 0
+pivot_offset = Vector2(22, 21)
+mouse_filter = 2
+texture = SubResource("AtlasTexture_4it6h")
+expand_mode = 1
+
+[node name="TopContainer" type="MarginContainer" parent="MainViewport/Control/MainLayout"]
+layout_mode = 0
+offset_left = 46.0
+offset_right = 507.0
+offset_bottom = 41.0
+mouse_filter = 2
+theme_override_constants/margin_top = 7
+
+[node name="Contents" type="HBoxContainer" parent="MainViewport/Control/MainLayout/TopContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Lock" type="TextureRect" parent="MainViewport/Control/MainLayout/TopContainer/Contents"]
+unique_name_in_owner = true
+visible = false
+z_index = 12
+texture_filter = 5
+custom_minimum_size = Vector2(18, 18)
+layout_mode = 2
+size_flags_vertical = 4
+texture = SubResource("AtlasTexture_eh0sd")
+expand_mode = 1
+
+[node name="Name" type="Label" parent="MainViewport/Control/MainLayout/TopContainer/Contents"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/outline_size = 12
+theme_override_font_sizes/font_size = 24
+text = "Name"
+
+[node name="Separator" type="Label" parent="MainViewport/Control/MainLayout/TopContainer/Contents"]
+layout_mode = 2
+theme_override_constants/outline_size = 12
+theme_override_font_sizes/font_size = 24
+text = " - "
+
+[node name="Class" type="Label" parent="MainViewport/Control/MainLayout/TopContainer/Contents"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/outline_size = 12
+theme_override_font_sizes/font_size = 24
+text = "Class"
+
+[node name="LevelIcon" type="TextureRect" parent="MainViewport/Control/MainLayout/TopContainer/Contents"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+mouse_filter = 2
+texture = SubResource("AtlasTexture_hsxhh")
+expand_mode = 1
+
+[node name="LevelLabel" type="Label" parent="MainViewport/Control/MainLayout/TopContainer/Contents"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/outline_size = 12
+theme_override_font_sizes/font_size = 24
+text = "Level:"
+
+[node name="LevelAmountLabel" type="Label" parent="MainViewport/Control/MainLayout/TopContainer/Contents"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/outline_size = 12
+theme_override_font_sizes/font_size = 24
+text = "1"
+
+[node name="HeroPanel" type="TextureRect" parent="MainViewport/Control/MainLayout"]
+layout_mode = 0
+offset_left = 26.0
+offset_top = 51.0
+offset_right = 132.0
+offset_bottom = 163.0
+mouse_filter = 2
+texture = SubResource("AtlasTexture_gcrb0")
+expand_mode = 1
+
+[node name="ColumnLeft" type="TextureRect" parent="MainViewport/Control/MainLayout/HeroPanel"]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 38.0
+offset_right = 16.0
+offset_bottom = 88.0
+mouse_filter = 2
+texture = SubResource("AtlasTexture_f4mn4")
+expand_mode = 1
+
+[node name="Effect" type="ColorRect" parent="MainViewport/Control/MainLayout/HeroPanel/ColumnLeft"]
+material = SubResource("ShaderMaterial_g4x2k")
+instance_shader_parameters/anim_offset = 0.494000023465
+instance_shader_parameters/direction = Vector2(0, -1)
+instance_shader_parameters/emitter_pos = Vector2(0, 3.265)
+instance_shader_parameters/inst_color_a = Color(0.93702656, 0.586211, 0.34236544, 1)
+instance_shader_parameters/inst_color_b = Color(0.99099976, 0.9081924, 0.7054681, 1)
+instance_shader_parameters/inst_color_c = Color(0.98698217, 0.95626265, 0.47713518, 1)
+instance_shader_parameters/max_balls = 16
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Decoration" type="TextureRect" parent="MainViewport/Control/MainLayout/HeroPanel/ColumnLeft"]
+layout_mode = 0
+offset_left = -4.0
+offset_top = 10.0
+offset_right = 14.0
+offset_bottom = 13.0
+mouse_filter = 2
+texture = SubResource("AtlasTexture_fs03s")
+expand_mode = 1
+
+[node name="ColumnRight" type="TextureRect" parent="MainViewport/Control/MainLayout/HeroPanel"]
+layout_mode = 0
+offset_left = 100.0
+offset_top = 38.0
+offset_right = 110.0
+offset_bottom = 88.0
+scale = Vector2(-1, 1)
+mouse_filter = 2
+texture = SubResource("AtlasTexture_f4mn4")
+expand_mode = 1
+
+[node name="Effect" type="ColorRect" parent="MainViewport/Control/MainLayout/HeroPanel/ColumnRight"]
+material = SubResource("ShaderMaterial_g4x2k")
+instance_shader_parameters/direction = Vector2(0, -1)
+instance_shader_parameters/emitter_pos = Vector2(0, 3.265)
+instance_shader_parameters/inst_color_a = Color(0.93702656, 0.586211, 0.34236544, 1)
+instance_shader_parameters/inst_color_b = Color(0.99099976, 0.9081924, 0.7054681, 1)
+instance_shader_parameters/inst_color_c = Color(0.98698217, 0.95626265, 0.47713518, 1)
+instance_shader_parameters/max_balls = 16
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Decoration" type="TextureRect" parent="MainViewport/Control/MainLayout/HeroPanel/ColumnRight"]
+layout_mode = 0
+offset_left = -4.0
+offset_top = 10.0
+offset_right = 14.0
+offset_bottom = 13.0
+mouse_filter = 2
+texture = SubResource("AtlasTexture_fs03s")
+expand_mode = 1
+
+[node name="ContentsMargin" type="MarginContainer" parent="MainViewport/Control/MainLayout/HeroPanel"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Control" type="Control" parent="MainViewport/Control/MainLayout/HeroPanel/ContentsMargin"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Mask" type="TextureRect" parent="MainViewport/Control/MainLayout/HeroPanel/ContentsMargin/Control"]
+clip_children = 1
+layout_mode = 0
+offset_left = 14.0
+offset_top = 3.0
+offset_right = 91.0
+offset_bottom = 96.0
+mouse_filter = 2
+texture = SubResource("AtlasTexture_7laf4")
+expand_mode = 1
+
+[node name="HeroFace" type="TextureRect" parent="MainViewport/Control/MainLayout/HeroPanel/ContentsMargin/Control/Mask"]
+unique_name_in_owner = true
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("AtlasTexture_tpt2p")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="MidContainer" type="VBoxContainer" parent="MainViewport/Control/MainLayout"]
+layout_mode = 0
+offset_left = 144.0
+offset_top = 67.0
+offset_right = 386.0
+offset_bottom = 151.0
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MainViewport/Control/MainLayout/MidContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+
+[node name="HPContainer" type="HBoxContainer" parent="MainViewport/Control/MainLayout/MidContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = -19
+
+[node name="Icon" type="TextureRect" parent="MainViewport/Control/MainLayout/MidContainer/MarginContainer/HPContainer"]
+z_index = 1
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+texture = SubResource("AtlasTexture_t5m22")
+expand_mode = 1
+
+[node name="HPBar" type="TextureProgressBar" parent="MainViewport/Control/MainLayout/MidContainer/MarginContainer/HPContainer" node_paths=PackedStringArray("child")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(186, 20)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+mouse_filter = 2
+value = 100.0
+nine_patch_stretch = true
+texture_under = SubResource("AtlasTexture_dtfhn")
+texture_progress = SubResource("AtlasTexture_mne06")
+script = ExtResource("18_hsxhh")
+child = NodePath("HPBarEffect")
+
+[node name="MarginContainer" type="MarginContainer" parent="MainViewport/Control/MainLayout/MidContainer/MarginContainer/HPContainer/HPBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Background1" type="TextureRect" parent="MainViewport/Control/MainLayout/MidContainer/MarginContainer/HPContainer/HPBar/MarginContainer"]
+modulate = Color(1, 1, 1, 0.12549)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("2_iuciu")
+expand_mode = 1
+
+[node name="HPLabel" type="RichTextLabel" parent="MainViewport/Control/MainLayout/MidContainer/MarginContainer/HPContainer/HPBar/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/normal_font_size = 14
+bbcode_enabled = true
+text = "[center]0 / 0 HP"
+fit_content = true
+
+[node name="HPBarEffect" type="ColorRect" parent="MainViewport/Control/MainLayout/MidContainer/MarginContainer/HPContainer/HPBar"]
+material = SubResource("ShaderMaterial_g4x2k")
+instance_shader_parameters/anim_offset = 0.0
+instance_shader_parameters/direction = Vector2(1, 0)
+instance_shader_parameters/emitter_pos = Vector2(-2.31, 0.125)
+layout_mode = 0
+offset_right = 186.0
+offset_bottom = 18.0
+mouse_filter = 2
+
+[node name="BarDecoration" type="TextureRect" parent="MainViewport/Control/MainLayout/MidContainer/MarginContainer/HPContainer/HPBar"]
+layout_mode = 0
+offset_left = 179.0
+offset_right = 219.0
+offset_bottom = 46.663612
+scale = Vector2(0.42859954, 0.42859954)
+mouse_filter = 2
+texture = SubResource("AtlasTexture_g4x2k")
+
+[node name="Control" type="Control" parent="MainViewport/Control/MainLayout/MidContainer/MarginContainer/HPContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="ManaContainer" type="HBoxContainer" parent="MainViewport/Control/MainLayout/MidContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = -16
+
+[node name="Icon" type="TextureRect" parent="MainViewport/Control/MainLayout/MidContainer/ManaContainer"]
+z_index = 1
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+texture = SubResource("AtlasTexture_nbiu1")
+expand_mode = 1
+
+[node name="MPBar" type="TextureProgressBar" parent="MainViewport/Control/MainLayout/MidContainer/ManaContainer" node_paths=PackedStringArray("child")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(186, 20)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+mouse_filter = 2
+value = 100.0
+nine_patch_stretch = true
+texture_under = SubResource("AtlasTexture_qt6w4")
+texture_progress = SubResource("AtlasTexture_wjuls")
+tint_under = Color(0.184314, 0, 0.862745, 1)
+tint_progress = Color(0.209923, 0.660057, 0.730906, 1)
+script = ExtResource("18_hsxhh")
+child = NodePath("MpBarEffect")
+
+[node name="MarginContainer" type="MarginContainer" parent="MainViewport/Control/MainLayout/MidContainer/ManaContainer/MPBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Background1" type="TextureRect" parent="MainViewport/Control/MainLayout/MidContainer/ManaContainer/MPBar/MarginContainer"]
+modulate = Color(1, 1, 1, 0.12549)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("2_iuciu")
+expand_mode = 1
+
+[node name="MPLabel" type="RichTextLabel" parent="MainViewport/Control/MainLayout/MidContainer/ManaContainer/MPBar/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/normal_font_size = 14
+bbcode_enabled = true
+text = "[center]0 / 0 MP"
+fit_content = true
+
+[node name="MpBarEffect" type="ColorRect" parent="MainViewport/Control/MainLayout/MidContainer/ManaContainer/MPBar"]
+material = SubResource("ShaderMaterial_g4x2k")
+instance_shader_parameters/anim_offset = 0.238000011305
+instance_shader_parameters/direction = Vector2(1, 0)
+instance_shader_parameters/emitter_pos = Vector2(-2.31, 0.125)
+layout_mode = 0
+offset_right = 182.0
+offset_bottom = 18.0
+mouse_filter = 2
+
+[node name="BarDecoration" type="TextureRect" parent="MainViewport/Control/MainLayout/MidContainer/ManaContainer/MPBar"]
+layout_mode = 0
+offset_left = 179.0
+offset_right = 219.0
+offset_bottom = 46.663612
+scale = Vector2(0.42859954, 0.42859954)
+mouse_filter = 2
+texture = SubResource("AtlasTexture_g4x2k")
+
+[node name="MarginContainer" type="MarginContainer" parent="MainViewport/Control/MainLayout"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -84.0
+offset_top = -50.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/margin_top = -10
+theme_override_constants/margin_right = 35
+
+[node name="RightContainer" type="VBoxContainer" parent="MainViewport/Control/MainLayout/MarginContainer"]
+z_index = 20
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 3
+
+[node name="NextLabel" type="Label" parent="MainViewport/Control/MainLayout/MarginContainer/RightContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/outline_size = 12
+theme_override_font_sizes/font_size = 16
+text = "NEXT:"
+horizontal_alignment = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainViewport/Control/MainLayout/MarginContainer/RightContainer"]
+layout_mode = 2
+mouse_filter = 2
+alignment = 2
+
+[node name="ExperienceIcon" type="TextureRect" parent="MainViewport/Control/MainLayout/MarginContainer/RightContainer/HBoxContainer"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+mouse_filter = 2
+texture = SubResource("AtlasTexture_y8dlr")
+expand_mode = 1
+
+[node name="NextExperienceLabel" type="Label" parent="MainViewport/Control/MainLayout/MarginContainer/RightContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.6309812, 0.47528082, 0.27245867, 1)
+theme_override_constants/outline_size = 12
+theme_override_font_sizes/font_size = 16
+text = "259.812"
+label_settings = SubResource("LabelSettings_xgsh2")
+horizontal_alignment = 2
+
+[node name="PartyIndicator" type="TextureRect" parent="MainViewport/Control/MainLayout"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 1
+offset_left = 8.92
+offset_top = 43.345
+offset_right = 48.92
+offset_bottom = 83.345
+texture = SubResource("AtlasTexture_ajjem")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="GreyScaleContainer" type="ColorRect" parent="MainViewport/Control/MainLayout"]
+unique_name_in_owner = true
+z_index = 50
+material = SubResource("ShaderMaterial_eh0sd")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="HeroPanel" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+mouse_default_cursor_shape = 2
+texture = SubResource("ViewportTexture_t2glj")
+script = SubResource("GDScript_ajjem")
+
+[node name="Gear8" type="TextureRect" parent="HeroPanel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -34.0
+offset_top = -4.0
+offset_right = 10.0
+offset_bottom = 39.0
+grow_horizontal = 0
+pivot_offset = Vector2(22, 21)
+mouse_filter = 2
+texture = SubResource("AtlasTexture_4it6h")
+expand_mode = 1
+
+[node name="Gear2" type="TextureRect" parent="HeroPanel"]
+unique_name_in_owner = true
+z_index = 1
+layout_mode = 0
+offset_left = 2.22
+offset_top = 94.525
+offset_right = 34.22
+offset_bottom = 125.525
+pivot_offset = Vector2(16, 15)
+mouse_filter = 2
+texture = SubResource("AtlasTexture_4it6h")
+expand_mode = 1
+
+[node name="Gear1" type="TextureRect" parent="HeroPanel"]
+unique_name_in_owner = true
+z_index = 1
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -57.0
+offset_right = 52.0
+offset_bottom = -6.0001526
+grow_vertical = 0
+pivot_offset = Vector2(26, 25)
+mouse_filter = 2
+texture = SubResource("AtlasTexture_qrphq")
+expand_mode = 1

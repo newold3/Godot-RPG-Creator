@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://bealtmarqhbfs"]
+
+[ext_resource type="Script" uid="uid://d0kowhkcjb7kv" path="res://addons/CustomControls/custom_option_button.gd" id="1_cma45"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n25m3"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 21.0
+content_margin_bottom = 4.0
+bg_color = Color(0.184314, 0.196078, 0.203922, 1)
+
+[node name="CustomOptionButton" type="OptionButton"]
+offset_right = 45.0
+offset_bottom = 20.0
+mouse_default_cursor_shape = 2
+theme_override_styles/disabled = SubResource("StyleBoxFlat_n25m3")
+script = ExtResource("1_cma45")

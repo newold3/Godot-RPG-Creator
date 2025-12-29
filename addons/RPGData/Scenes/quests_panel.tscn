@@ -1,0 +1,971 @@
+[gd_scene load_steps=37 format=3 uid="uid://w8ape5i8xe31"]
+
+[ext_resource type="Script" uid="uid://dx2r4ir8eopx5" path="res://addons/RPGData/Scripts/quests_panel.gd" id="1_s8r6n"]
+[ext_resource type="PackedScene" uid="uid://pc2xir2w2ox2" path="res://addons/RPGData/Scenes/panel_title.tscn" id="2_00kan"]
+[ext_resource type="PackedScene" uid="uid://m1iixxkyrur5" path="res://addons/CustomControls/custom_simple_item_list.tscn" id="3_7p6uj"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="4_g5gtk"]
+[ext_resource type="PackedScene" uid="uid://ccipi0sikmjuu" path="res://addons/CustomControls/custom_tab_container.tscn" id="5_d6503"]
+[ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="5_ehwfu"]
+[ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="6_d6503"]
+[ext_resource type="Texture2D" uid="uid://boox5y8kclay2" path="res://addons/CustomControls/Images/tab2_button_normal.png" id="6_jqm7p"]
+[ext_resource type="PackedScene" uid="uid://barmev3c3hfbu" path="res://addons/CustomControls/custom_text_edit.tscn" id="7_1yuwc"]
+[ext_resource type="PackedScene" uid="uid://duykjs55o5h2m" path="res://addons/CustomControls/custom_image_picker.tscn" id="7_xlkk8"]
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="8_t8mp3"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="9_g5gtk"]
+[ext_resource type="Script" uid="uid://d0kowhkcjb7kv" path="res://addons/CustomControls/custom_option_button.gd" id="9_jqm7p"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="9_s8r6n"]
+[ext_resource type="PackedScene" uid="uid://dxcyqc2dscbvw" path="res://addons/CustomControls/custom_simple_column_item_list.tscn" id="12_ehwfu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6s3bo"]
+resource_local_to_scene = true
+content_margin_left = 3.0
+content_margin_right = 3.0
+bg_color = Color(1, 1, 1, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kihu1"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="Gradient" id="Gradient_3obsl"]
+offsets = PackedFloat32Array(0, 0.369535, 1)
+colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_mtkxg"]
+gradient = SubResource("Gradient_3obsl")
+fill_from = Vector2(0.547009, 1)
+fill_to = Vector2(0.559829, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rxxl6"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_844mk"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0fgwc"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_t8mp3"]
+texture = ExtResource("6_jqm7p")
+texture_margin_left = 18.0
+texture_margin_right = 18.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xjgju"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Gradient" id="Gradient_enlbb"]
+colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_mnij0"]
+gradient = SubResource("Gradient_enlbb")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_78j0j"]
+texture = SubResource("GradientTexture2D_mnij0")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yyhdx"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sugbj"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="Gradient" id="Gradient_d6503"]
+colors = PackedColorArray(0.333333, 0.352941, 0.360784, 1, 0.380392, 0.4, 0.407843, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_6h5ai"]
+gradient = SubResource("Gradient_d6503")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jqm7p"]
+texture = SubResource("GradientTexture2D_6h5ai")
+
+[sub_resource type="Gradient" id="Gradient_t8mp3"]
+offsets = PackedFloat32Array(0, 0.369535, 1)
+colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_v6eua"]
+gradient = SubResource("Gradient_t8mp3")
+fill_from = Vector2(0.547009, 1)
+fill_to = Vector2(0.559829, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xjgju"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_v6eua")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_enlbb"]
+bg_color = Color(0, 0, 0, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+
+[node name="QuestsPanel" type="HBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 8
+script = ExtResource("1_s8r6n")
+
+[node name="LeftColumn" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="PanelTitle" parent="LeftColumn" instance=ExtResource("2_00kan")]
+layout_mode = 2
+text = "QUESTS"
+
+[node name="MainList" parent="LeftColumn" instance=ExtResource("3_7p6uj")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/v_separation = -1
+theme_override_styles/panel = SubResource("StyleBoxFlat_6s3bo")
+theme_override_styles/focus = SubResource("StyleBoxFlat_6s3bo")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_kihu1")
+theme_override_styles/selected = SubResource("StyleBoxTexture_rxxl6")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_844mk")
+select_mode = 1
+odd_line_color = Color(0.172549, 0.184314, 0.192157, 1)
+event_line_color = Color(0.145098, 0.156863, 0.164706, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="LeftColumn"]
+layout_mode = 2
+
+[node name="AddDataButton" parent="LeftColumn/HBoxContainer" instance=ExtResource("4_g5gtk")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Add Quest[/title]
+Create a new quest"
+text = "Add
+Quest"
+text_overrun_behavior = 3
+
+[node name="RemoveDataButton" parent="LeftColumn/HBoxContainer" instance=ExtResource("4_g5gtk")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.65)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Remove Quest[/title]
+Remove the selected quest"
+disabled = true
+text = "Delete
+Quest"
+text_overrun_behavior = 3
+
+[node name="RightColumn" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_0fgwc")
+
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="RightColumn/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(16, 0)
+layout_mode = 2
+
+[node name="ConfigDataTabs" parent="RightColumn/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_d6503")]
+unique_name_in_owner = true
+clip_children = 0
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+default_tabs = Array[String](["General", "Rewards", "Other"])
+tab_name_base = ""
+background_color = Color(0, 0, 0, 0)
+tab_selected = null
+stylebox_tab_selected = SubResource("StyleBoxTexture_t8mp3")
+
+[node name="ControlContainer" parent="RightColumn/MarginContainer/VBoxContainer" instance=ExtResource("5_ehwfu")]
+custom_minimum_size = Vector2(510, 160)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_xjgju")
+style1 = SubResource("StyleBoxFlat_xjgju")
+style2 = SubResource("StyleBoxTexture_78j0j")
+style3 = SubResource("StyleBoxFlat_yyhdx")
+
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="Tab1" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Group1" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_sugbj")
+
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Group1"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="GeneralSettings" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Group1/MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Group1/MarginContainer/GeneralSettings"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Group1/MarginContainer/GeneralSettings/VBoxContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Name:"
+
+[node name="NameLineEdit" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Group1/MarginContainer/GeneralSettings/VBoxContainer" instance=ExtResource("6_d6503")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+tooltip_text = "[title]Quest Name[/title]
+Name of the quest."
+
+[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Group1/MarginContainer/GeneralSettings"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Group1/MarginContainer/GeneralSettings/HBoxContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Category:"
+
+[node name="CategoryLineEdit" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Group1/MarginContainer/GeneralSettings/HBoxContainer" instance=ExtResource("6_d6503")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+tooltip_text = "[title]Quest Category[/title]
+Name of the category of the quest."
+
+[node name="SelectCategory" type="OptionButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Group1/MarginContainer/GeneralSettings/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 31)
+layout_mode = 2
+size_flags_vertical = 0
+tooltip_text = "Display the list of categories used in the different quests."
+mouse_default_cursor_shape = 2
+selected = 0
+item_count = 1
+popup/item_0/text = "Select Category"
+popup/item_0/id = 0
+script = ExtResource("9_jqm7p")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Group1/MarginContainer/GeneralSettings/HBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Group1/MarginContainer/GeneralSettings/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Min Level:"
+
+[node name="MinLevelSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Group1/MarginContainer/GeneralSettings/HBoxContainer/HBoxContainer" instance=ExtResource("9_g5gtk")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+tooltip_text = "[title]Minimun Level Required[/title]
+Minimum party level required to start this quest"
+min_value = 1.0
+value = 1.0
+allow_greater = true
+
+[node name="VBoxContainer4" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Group1/MarginContainer/GeneralSettings"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="StartUnlocked" type="CheckBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Group1/MarginContainer/GeneralSettings/VBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Flag to indicate that this quest is unlocked from the beginning."
+mouse_default_cursor_shape = 2
+text = "Start Unlocked"
+
+[node name="IsRepeatable" type="CheckBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Group1/MarginContainer/GeneralSettings/VBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Flag to indicate that this quest is repeatable."
+mouse_default_cursor_shape = 2
+text = "Repeatable?"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Group1/MarginContainer/GeneralSettings"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Group1/MarginContainer/GeneralSettings/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Group1/MarginContainer/GeneralSettings/HBoxContainer2/HBoxContainer3"]
+layout_mode = 2
+text = "Description:"
+
+[node name="Description" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Group1/MarginContainer/GeneralSettings/HBoxContainer2/HBoxContainer3" instance=ExtResource("7_1yuwc")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "Displays a detailed description of this quest to the player."
+wrap_mode = 1
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Group1/MarginContainer/GeneralSettings"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Group1/MarginContainer/GeneralSettings/HBoxContainer3"]
+layout_mode = 2
+text = "Time Limit:"
+
+[node name="TimeLimit" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Group1/MarginContainer/GeneralSettings/HBoxContainer3" instance=ExtResource("9_g5gtk")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Time limit to complete the quest. A value of 0 means there is no time limit to complete the quest.
+This time is used to automatically finish the quest (terminating it as failed)."
+allow_greater = true
+
+[node name="VBoxContainer3" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Group1/MarginContainer/GeneralSettings"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Group1/MarginContainer/GeneralSettings/VBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Mission" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_sugbj")
+
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Mission:"
+
+[node name="VBoxContainer3" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer3"]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+text = "Prerequisites:"
+
+[node name="Prerequisites" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer3" instance=ExtResource("8_t8mp3")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "List of quest IDs that must be completed first
+
+[Left Click]: Add Quests, [Middle Click]: Remove All Quest
+
+[Note]: The list of missions defined here must be completed first in order for this mission to begin. This mission will only appear once all prerequisite missions have been completed and this mission is unlocked."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+text = "Select Quests"
+
+[node name="VBoxContainer4" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer4"]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+text = "Auto Start Quests:"
+
+[node name="AutoStartQuests" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer4" instance=ExtResource("8_t8mp3")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "List of missions that auto-start together with this mission.
+This mission will not be completed until all the missions in the list, including this one, are finished.
+
+[Left Click]: Add Quests, [Middle Click]: Remove All Quest
+
+[Note]: These missions are considered missions with several objectives. For example, if you want the mission to have two objectives, add one objective to this mission, then create other missions with additional objectives. Attach these other quests to the main one using \"Auto Start Quest\". Once all objectives are completed, the final reward will be the one specified in the main quest, and any rewards from the attached quests will be ignored."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+text = "Select Quests"
+
+[node name="VBoxContainer5" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer5"]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+text = "Chain Quest:"
+
+[node name="ChainQuest" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer5" instance=ExtResource("8_t8mp3")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+tooltip_text = "Immediately start the selected mission after completing it.
+
+[Left Click]: Add Quests, [Middle Click]: Remove Quest
+
+[Note]: Missions that have a chain mission assigned to them are referred to as Chain Missions."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+text = "Select Chain Quest"
+
+[node name="VBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+text = "Type:"
+
+[node name="TypeOptions" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer" instance=ExtResource("9_s8r6n")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Quest Mode[/title]
+Type of quest:
+[ul] \"TALK_TO_NPC\": Talk to a specific npc
+ \"GATHER_ITEM\": Gather a set number of items throughout the world
+ \"BOUNTY_HUNTS\": Track down and eliminate specific targets
+ \"FIND_LOCATION\": Enter a specific location (These quests are completed immediately upon entering the location (or re-entering it)). 
+ \"USER_QUEST\": User quests are only completed when indicated by a command in a common event/event.[/ul]"
+selected = 0
+item_count = 5
+popup/item_0/text = "Talk To Npc"
+popup/item_0/id = 0
+popup/item_1/text = "Gather Item"
+popup/item_1/id = 1
+popup/item_2/text = "Bounty Hunts"
+popup/item_2/id = 2
+popup/item_3/text = "Find Location"
+popup/item_3/id = 3
+popup/item_4/text = "User Quest"
+popup/item_4/id = 4
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ParametersLabel" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.840674, 1, 0.824239, 1)
+text = "Parameters:"
+
+[node name="ObjetiveContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="ObjetiveParam1" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer/ObjetiveParam1"]
+layout_mode = 2
+text = "Item Type:"
+
+[node name="ItemTypeOptions" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer/ObjetiveParam1" instance=ExtResource("9_s8r6n")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Choose the target item  (items, weapons or armor). The required amount of this item must be acquired to complete this objective."
+selected = 0
+item_count = 3
+popup/item_0/text = "Item"
+popup/item_0/id = 0
+popup/item_1/text = "Weapon"
+popup/item_1/id = 1
+popup/item_2/text = "Armor"
+popup/item_2/id = 2
+
+[node name="ObjetiveParam2" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer/ObjetiveParam2"]
+layout_mode = 2
+text = "Target:"
+
+[node name="EnemyID" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer/ObjetiveParam2" instance=ExtResource("8_t8mp3")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Select the target enemy for this quest. That enemy must be killed as many times as indicated"
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+text = "Select Enemy"
+
+[node name="Label2" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer/ObjetiveParam2"]
+layout_mode = 2
+text = "Quantity:"
+
+[node name="EnemyQuantity" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer/ObjetiveParam2" instance=ExtResource("9_g5gtk")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Number of enemies to kill to fulfill this objective."
+min_value = 1.0
+value = 1.0
+allow_greater = true
+
+[node name="ObjetiveParam3" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer/ObjetiveParam3"]
+layout_mode = 2
+text = "Item ID:"
+
+[node name="ItemID" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer/ObjetiveParam3" instance=ExtResource("8_t8mp3")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Select the required item for this objective"
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+text = "Select ID"
+
+[node name="Label2" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer/ObjetiveParam3"]
+layout_mode = 2
+text = "Quantity:"
+
+[node name="Quantity" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer/ObjetiveParam3" instance=ExtResource("9_g5gtk")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Quantity of the item required to complete this mission.
+
+[Note]: Weapons and armor only count the ones available in the inventory, not the equipped ones."
+min_value = 1.0
+value = 1.0
+allow_greater = true
+
+[node name="Preserve" type="CheckBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer/ObjetiveParam3"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "When completing the mission, if this option is checked, the required items will be kept in the player's inventory; otherwise, the items will be removed from the player's inventory."
+mouse_default_cursor_shape = 2
+text = "Preserve items?"
+
+[node name="ObjetiveParam4" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer/ObjetiveParam4"]
+layout_mode = 2
+text = "Max Progress:"
+
+[node name="MaxProgress" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer/ObjetiveParam4" instance=ExtResource("9_g5gtk")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+step = 0.01
+rounded = false
+allow_greater = true
+
+[node name="ObjetiveParam5" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer/ObjetiveParam5"]
+layout_mode = 2
+text = "Target Event:"
+
+[node name="TargetEvent" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer/ObjetiveParam5" instance=ExtResource("8_t8mp3")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Choose the required event/NPC that must be spoken to in order to complete this objective."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+text = "Select Event"
+
+[node name="ObjetiveParam6" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer/ObjetiveParam6"]
+layout_mode = 2
+text = "Map Location:"
+
+[node name="TargetMap" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer/ObjetiveParam6" instance=ExtResource("8_t8mp3")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Choose the map to be visited to complete this objective"
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+text = "Select Map"
+
+[node name="ObjetiveParam7" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer/ObjetiveParam7"]
+layout_mode = 2
+text = "Global Event:"
+
+[node name="GlobalEvent" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer/ObjetiveParam7" instance=ExtResource("8_t8mp3")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "When this quest is completed, the specified global event will be called if one has been added.
+
+[Note]: Middle Click to erase the global event."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+text = "Select Global Event"
+
+[node name="Tab2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Group1" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_sugbj")
+
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Group1"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Group1/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 22
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Group1/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Rewards"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Group1/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Group1/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Gold:"
+
+[node name="Gold" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Group1/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("9_g5gtk")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Amount of gold received for completing this quest"
+allow_greater = true
+
+[node name="Label2" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Group1/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Experience:"
+
+[node name="Experience" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Group1/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("9_g5gtk")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Amount of experience received for completing this quest"
+allow_greater = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Group1/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Group1/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Group1/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Quests Unlocked:"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Group1/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="QuestUnlocked" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Group1/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer" instance=ExtResource("8_t8mp3")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "List of quests that will be unlocked upon completion of this quest.
+
+[Left Click]: Add Quests, [Middle Click]: Remove All Quest"
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+text = "Select Quests"
+
+[node name="Group2" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_sugbj")
+
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Group2"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="ScrollContainer" type="ScrollContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Group2/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RewardList" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Group2/MarginContainer/ScrollContainer" instance=ExtResource("12_ehwfu")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 23)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
+event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
+top_bar_style = SubResource("StyleBoxTexture_jqm7p")
+cursor_style = SubResource("StyleBoxTexture_xjgju")
+panel_style = SubResource("StyleBoxFlat_enlbb")
+columns = 2
+names = PackedStringArray("Item", "Quantity")
+sizes = PackedInt32Array(660, 0)
+placeholder_text = "Select reward..."
+enable_multiselection = true
+itemlist_tooltip = "[title]Items Gained[/title]
+List of items and equipment given upon completion of this quest."
+
+[node name="Tab3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Icons" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_sugbj")
+
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Icons"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Icons/MarginContainer"]
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Icons/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Mission Icons: "
+
+[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Icons/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Icons/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = " Available:"
+
+[node name="MissionAvailable" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Icons/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("7_xlkk8")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+tooltip_text = "Icon shown above an NPC when a quest is available."
+
+[node name="Label2" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Icons/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "   In Progress:"
+
+[node name="MissionProgress" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Icons/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("7_xlkk8")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+tooltip_text = "Icon shown above an NPC when a quest is in progress."
+
+[node name="Label3" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Icons/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "   Is Completed:"
+
+[node name="MissionCompleted" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Icons/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("7_xlkk8")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+tooltip_text = "Icon shown above an NPC when a quest is ready for completion."
+
+[node name="Notes" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_sugbj")
+
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Notes"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Notes/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Notes/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Notes:"
+
+[node name="Notes" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Notes/MarginContainer/VBoxContainer" instance=ExtResource("7_1yuwc")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 80)
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "[title]Notes[/title]
+Used to make notes while making your game."
+wrap_mode = 1
+
+[connection signal="multi_selected" from="LeftColumn/MainList" to="." method="_on_main_list_multi_selected"]
+[connection signal="pressed" from="LeftColumn/HBoxContainer/AddDataButton" to="." method="_on_add_data_button_pressed"]
+[connection signal="pressed" from="LeftColumn/HBoxContainer/RemoveDataButton" to="." method="_on_remove_data_button_pressed"]
+[connection signal="tab_changed" from="RightColumn/MarginContainer/VBoxContainer/HBoxContainer/ConfigDataTabs" to="." method="_on_config_data_tabs_tab_changed"]
+[connection signal="text_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Group1/MarginContainer/GeneralSettings/VBoxContainer/NameLineEdit" to="." method="_on_name_line_edit_text_changed"]
+[connection signal="text_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Group1/MarginContainer/GeneralSettings/HBoxContainer/CategoryLineEdit" to="." method="_on_category_line_edit_text_changed"]
+[connection signal="item_selected" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Group1/MarginContainer/GeneralSettings/HBoxContainer/SelectCategory" to="." method="_on_select_category_item_selected"]
+[connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Group1/MarginContainer/GeneralSettings/HBoxContainer/HBoxContainer/MinLevelSpinBox" to="." method="_on_max_level_spin_box_value_changed"]
+[connection signal="toggled" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Group1/MarginContainer/GeneralSettings/VBoxContainer4/StartUnlocked" to="." method="_on_start_unlocked_toggled"]
+[connection signal="toggled" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Group1/MarginContainer/GeneralSettings/VBoxContainer4/IsRepeatable" to="." method="_on_is_repeatable_toggled"]
+[connection signal="text_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Group1/MarginContainer/GeneralSettings/HBoxContainer2/HBoxContainer3/Description" to="." method="_on_description_text_changed"]
+[connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Group1/MarginContainer/GeneralSettings/HBoxContainer3/TimeLimit" to="." method="_on_time_limit_value_changed"]
+[connection signal="middle_click_pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer3/Prerequisites" to="." method="_on_prerequisites_middle_click_pressed"]
+[connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer3/Prerequisites" to="." method="_on_prerequisites_pressed"]
+[connection signal="middle_click_pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer4/AutoStartQuests" to="." method="_on_auto_start_quests_middle_click_pressed"]
+[connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer4/AutoStartQuests" to="." method="_on_auto_start_quests_pressed"]
+[connection signal="middle_click_pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer5/ChainQuest" to="." method="_on_chain_quest_middle_click_pressed"]
+[connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer5/ChainQuest" to="." method="_on_chain_quest_pressed"]
+[connection signal="item_selected" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer/TypeOptions" to="." method="_on_type_options_item_selected"]
+[connection signal="item_selected" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer/ObjetiveParam1/ItemTypeOptions" to="." method="_on_item_type_options_item_selected"]
+[connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer/ObjetiveParam2/EnemyID" to="." method="_on_enemy_id_pressed"]
+[connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer/ObjetiveParam2/EnemyQuantity" to="." method="_on_enemy_quantity_value_changed"]
+[connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer/ObjetiveParam3/ItemID" to="." method="_on_item_id_pressed"]
+[connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer/ObjetiveParam3/Quantity" to="." method="_on_quantity_value_changed"]
+[connection signal="toggled" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer/ObjetiveParam3/Preserve" to="." method="_on_preserve_toggled"]
+[connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer/ObjetiveParam5/TargetEvent" to="." method="_on_target_event_pressed"]
+[connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer/ObjetiveParam6/TargetMap" to="." method="_on_target_map_pressed"]
+[connection signal="middle_click_pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer/ObjetiveParam7/GlobalEvent" to="." method="_on_global_event_middle_click_pressed"]
+[connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer/ObjetiveParam7/GlobalEvent" to="." method="_on_global_event_pressed"]
+[connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Group1/MarginContainer/VBoxContainer/HBoxContainer2/Gold" to="." method="_on_gold_value_changed"]
+[connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Group1/MarginContainer/VBoxContainer/HBoxContainer2/Experience" to="." method="_on_experience_value_changed"]
+[connection signal="middle_click_pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Group1/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/QuestUnlocked" to="." method="_on_quest_unlocked_middle_click_pressed"]
+[connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Group1/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/HBoxContainer/QuestUnlocked" to="." method="_on_quest_unlocked_pressed"]
+[connection signal="copy_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Group2/MarginContainer/ScrollContainer/RewardList" to="." method="_on_reward_list_copy_requested"]
+[connection signal="cut_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Group2/MarginContainer/ScrollContainer/RewardList" to="." method="_on_reward_list_cut_requested"]
+[connection signal="delete_pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Group2/MarginContainer/ScrollContainer/RewardList" to="." method="_on_reward_list_delete_pressed"]
+[connection signal="item_activated" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Group2/MarginContainer/ScrollContainer/RewardList" to="." method="_on_reward_list_item_activated"]
+[connection signal="paste_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Group2/MarginContainer/ScrollContainer/RewardList" to="." method="_on_reward_list_paste_requested"]
+[connection signal="clicked" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Icons/MarginContainer/VBoxContainer/HBoxContainer/MissionAvailable" to="." method="_on_mission_available_clicked"]
+[connection signal="paste_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Icons/MarginContainer/VBoxContainer/HBoxContainer/MissionAvailable" to="." method="_on_mission_available_paste_requested"]
+[connection signal="remove_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Icons/MarginContainer/VBoxContainer/HBoxContainer/MissionAvailable" to="." method="_on_mission_available_remove_requested"]
+[connection signal="clicked" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Icons/MarginContainer/VBoxContainer/HBoxContainer/MissionProgress" to="." method="_on_mission_progress_clicked"]
+[connection signal="paste_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Icons/MarginContainer/VBoxContainer/HBoxContainer/MissionProgress" to="." method="_on_mission_progress_paste_requested"]
+[connection signal="remove_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Icons/MarginContainer/VBoxContainer/HBoxContainer/MissionProgress" to="." method="_on_mission_progress_remove_requested"]
+[connection signal="clicked" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Icons/MarginContainer/VBoxContainer/HBoxContainer/MissionCompleted" to="." method="_on_mission_completed_clicked"]
+[connection signal="paste_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Icons/MarginContainer/VBoxContainer/HBoxContainer/MissionCompleted" to="." method="_on_mission_completed_paste_requested"]
+[connection signal="remove_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Icons/MarginContainer/VBoxContainer/HBoxContainer/MissionCompleted" to="." method="_on_mission_completed_remove_requested"]
+[connection signal="text_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Notes/MarginContainer/VBoxContainer/Notes" to="." method="_on_notes_text_changed"]

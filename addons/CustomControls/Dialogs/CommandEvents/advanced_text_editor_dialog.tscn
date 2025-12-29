@@ -1,0 +1,1335 @@
+[gd_scene load_steps=104 format=3 uid="uid://f3dvroy0ce3d"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_6ke1q"]
+[ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="1_acjup"]
+[ext_resource type="Script" uid="uid://dhfpvmdo7tsvw" path="res://addons/CustomControls/Dialogs/CommandEvents/advanced_text_editor_dialog.gd" id="2_1tk32"]
+[ext_resource type="Texture2D" uid="uid://pe2oldjfk6uf" path="res://addons/CustomControls/Images/buttons2.png" id="2_s8pxw"]
+[ext_resource type="PackedScene" uid="uid://barmev3c3hfbu" path="res://addons/CustomControls/custom_text_edit.tscn" id="5_2pvr4"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="5_t2i2e"]
+[ext_resource type="PackedScene" uid="uid://duykjs55o5h2m" path="res://addons/CustomControls/custom_image_picker.tscn" id="6_76v3n"]
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="7_154nb"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="8_vhr1d"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="9_16841"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="10_5v5mo"]
+
+[sub_resource type="Gradient" id="Gradient_dputo"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7hdl3"]
+gradient = SubResource("Gradient_dputo")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_15lj3"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Gradient" id="Gradient_ctwx1"]
+colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_44nyg"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1vd02"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_44nyg")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8i8up"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gxwyh"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(150, 50, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8deuu"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(150, 150, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x130w"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(200, 50, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hxc8k"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(200, 150, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sprwd"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(0, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5mw7p"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(0, 100, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rvv4l"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(50, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c6rxc"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(50, 100, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4ks3y"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(100, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lsxmd"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(100, 100, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cwaak"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(150, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cngi0"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(150, 100, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nfst7"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(0, 50, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_khopc"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(0, 150, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8naf5"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(50, 50, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bye05"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(50, 150, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ss8pt"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(0, 300, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8y3bg"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(50, 300, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e763o"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(200, 300, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8685o"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(250, 300, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h6em7"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(100, 300, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sgrno"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(150, 300, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f5f5i"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(0, 350, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7wx46"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(50, 350, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x363a"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(400, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_31qmn"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(400, 100, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7l8vw"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(0, 200, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ktrag"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(50, 200, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rhh8n"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(100, 200, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slf52"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(150, 200, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ra2wn"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(0, 250, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aswk6"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(50, 250, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_be7gg"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(100, 250, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e6xee"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(150, 250, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_14ccc"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(450, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hail5"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(450, 100, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kun81"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(100, 50, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uifr6"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(100, 150, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3w5m0"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(200, 250, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4q5g8"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(250, 250, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0axw3"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(250, 50, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0sbfd"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(250, 150, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2253c"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(450, 50, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yk7c3"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(450, 150, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_whw0m"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(200, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ivq3v"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(200, 100, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q0ywf"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(250, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p3chv"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(250, 100, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b243w"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(300, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lew4g"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(300, 100, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_56qlc"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(350, 0, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kmrtp"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(350, 100, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8ajqw"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(300, 50, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2wtxb"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(300, 150, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7s6td"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(350, 50, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_drw81"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(350, 150, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3bejx"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(400, 50, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4uive"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(400, 150, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qnlcj"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(300, 250, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_refvn"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(350, 250, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ml5iy"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(300, 300, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gsuex"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(350, 300, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yty5h"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(400, 300, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qvsmu"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(450, 300, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_st73b"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(200, 200, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mm1xp"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(300, 200, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_esmfc"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(250, 200, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xw4y7"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(400, 250, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x0rdl"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(450, 200, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lyd8b"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(450, 250, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ftd5p"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(350, 200, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3438f"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(400, 200, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rdg4x"]
+atlas = ExtResource("10_5v5mo")
+region = Rect2(192, 0, 24, 24)
+
+[sub_resource type="CodeHighlighter" id="CodeHighlighter_hifp8"]
+number_color = Color(1, 0.854902, 0.996078, 1)
+symbol_color = Color(1, 1, 1, 1)
+function_color = Color(1, 1, 1, 1)
+member_variable_color = Color(1, 1, 1, 1)
+color_regions = {
+"[ ]": Color(0.32156864, 0.95686275, 0, 0.96862745)
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cgv1w"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ibo3p"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lebf0"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_ibo3p")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7xlph"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_crnyd"]
+atlas = ExtResource("10_5v5mo")
+region = Rect2(120, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i3der"]
+atlas = ExtResource("10_5v5mo")
+region = Rect2(144, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1y020"]
+atlas = ExtResource("10_5v5mo")
+region = Rect2(168, 0, 24, 24)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nj0p3"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7dyc4"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_f1diu"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_7dyc4")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cedvw"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[node name="AdvancedTextEditorDialog" type="Window"]
+process_priority = 10
+oversampling_override = 1.0
+title = "Advanced Text Editor"
+position = Vector2i(0, 36)
+size = Vector2i(1579, 1009)
+exclusive = true
+min_size = Vector2i(900, 700)
+theme = ExtResource("1_6ke1q")
+script = ExtResource("2_1tk32")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_7hdl3")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = -12
+theme_override_constants/margin_top = -12
+theme_override_constants/margin_right = -12
+
+[node name="TopButtonContainer" parent="MarginContainer/VBoxContainer/MarginContainer" instance=ExtResource("1_acjup")]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_15lj3")
+style1 = SubResource("StyleBoxFlat_15lj3")
+style2 = SubResource("StyleBoxTexture_1vd02")
+style3 = SubResource("StyleBoxFlat_8i8up")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer"]
+z_index = 1
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="HFlowContainer" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer"]
+custom_minimum_size = Vector2(688, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FontName" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Select font"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_gxwyh")
+texture_hover = SubResource("AtlasTexture_8deuu")
+
+[node name="FontSize" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Select Font Size"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_x130w")
+texture_hover = SubResource("AtlasTexture_hxc8k")
+
+[node name="Bold" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Activates bold text"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_sprwd")
+texture_hover = SubResource("AtlasTexture_5mw7p")
+
+[node name="Italic" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Activates italic text"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_rvv4l")
+texture_hover = SubResource("AtlasTexture_c6rxc")
+
+[node name="Underline" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Activates underline text"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_4ks3y")
+texture_hover = SubResource("AtlasTexture_lsxmd")
+
+[node name="Strikethrough" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Activates strikethrough text"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_cwaak")
+texture_hover = SubResource("AtlasTexture_cngi0")
+
+[node name="TextColor" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Change the text color"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_nfst7")
+texture_hover = SubResource("AtlasTexture_khopc")
+
+[node name="BackgroundTextColor" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Change the background color of the text"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_8naf5")
+texture_hover = SubResource("AtlasTexture_bye05")
+
+[node name="EnterSpeaker" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Makes a speaker added to the database appear. The dialog is configured with respect to the configuration of this new character.
+
+[Note]: The images assigned to this character and text box are not deleted at the end of speaking this character. If you need to delete or hide them you can use the designated bbcode commands or use the bbcode command [b][hide_speaker index=n][/b."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_ss8pt")
+texture_hover = SubResource("AtlasTexture_8y3bg")
+
+[node name="ExitSpeaker" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "removes a previously added speaker from the dialog"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_e763o")
+texture_hover = SubResource("AtlasTexture_8685o")
+
+[node name="ChangeBlipFx" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Changes the blip sound heard when displaying each letter of the text."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_h6em7")
+texture_hover = SubResource("AtlasTexture_sgrno")
+
+[node name="ChangeSpeakerActive" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Highlight the character speaking in the indicated position (left or right) and dim the one in the other position (affects both the face and the name in the indicated position)."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_f5f5i")
+texture_hover = SubResource("AtlasTexture_7wx46")
+
+[node name="Image" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "The image can be a face, an image to be displayed inline with the text, or a background image (e.g. a character)."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_x363a")
+texture_hover = SubResource("AtlasTexture_31qmn")
+
+[node name="ImageEffect" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Applies an animation to a face or background image"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_7l8vw")
+texture_hover = SubResource("AtlasTexture_ktrag")
+
+[node name="RemoveImage" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Remove face or background/character image"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_rhh8n")
+texture_hover = SubResource("AtlasTexture_slf52")
+
+[node name="ShowNameBox" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Displays a name in a box (Can be to the right or left of the dialog)"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_ra2wn")
+texture_hover = SubResource("AtlasTexture_aswk6")
+
+[node name="RemoveNameBox" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Hides a name box."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_be7gg")
+texture_hover = SubResource("AtlasTexture_e6xee")
+
+[node name="Sound" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Play a sound"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_14ccc")
+texture_hover = SubResource("AtlasTexture_hail5")
+
+[node name="Emote" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Add an emote"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_kun81")
+texture_hover = SubResource("AtlasTexture_uifr6")
+
+[node name="ShakeMessage" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Apply a shake effect to the message (e.g. to simulate shouting)."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_3w5m0")
+texture_hover = SubResource("AtlasTexture_4q5g8")
+
+[node name="FX" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Choose one of the available effects to animate the text"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_0axw3")
+texture_hover = SubResource("AtlasTexture_0sbfd")
+
+[node name="Others" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Choose from a list of commands to add the text"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_2253c")
+texture_hover = SubResource("AtlasTexture_yk7c3")
+
+[node name="LeftAlign" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Left alignment aligns text along the left margin for a clean appearance."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_whw0m")
+texture_hover = SubResource("AtlasTexture_ivq3v")
+
+[node name="CenterAlign" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Center alignment centers text between the left and right margins for balance."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_q0ywf")
+texture_hover = SubResource("AtlasTexture_p3chv")
+
+[node name="RightAlign" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Right alignment aligns text along the right margin for a tidy layout."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_b243w")
+texture_hover = SubResource("AtlasTexture_lew4g")
+
+[node name="JustifiedText" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Justified alignment evenly aligns text along both left and right margins for a polished appearance."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_56qlc")
+texture_hover = SubResource("AtlasTexture_kmrtp")
+
+[node name="PauseText" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Choose one of the available modes for pausing the text"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_8ajqw")
+texture_hover = SubResource("AtlasTexture_2wtxb")
+
+[node name="ShowWholeLine" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Choose whether to display the current line of text in full or to stop this effect"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_7s6td")
+texture_hover = SubResource("AtlasTexture_drw81")
+
+[node name="DontWaitPlayerInput" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Do not wait for input after displaying text"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_3bejx")
+texture_hover = SubResource("AtlasTexture_4uive")
+
+[node name="NewParagraph" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Add a new paragraph"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_qnlcj")
+texture_hover = SubResource("AtlasTexture_refvn")
+
+[node name="ResetConfig" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Reset font, colors and letter-by-letter sounds"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_ml5iy")
+texture_hover = SubResource("AtlasTexture_gsuex")
+
+[node name="PauseDialog" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Pause the dialogue: This action freezes the dialogue on the screen. The game can continue running while the dialogue remains frozen, and the interpreter will keep processing commands. If the interpreter encounters a new dialogue box, it will remove the frozen message and display the new one. If it encounters a \"resume dialogue\" command, it will unfreeze the current dialogue and halt the game's progression until the dialogue ends or is frozen again."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_yty5h")
+texture_hover = SubResource("AtlasTexture_qvsmu")
+
+[node name="HighlightCommands" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Makes commands more/less visible."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+toggle_mode = true
+texture_normal = SubResource("AtlasTexture_st73b")
+texture_pressed = SubResource("AtlasTexture_mm1xp")
+texture_hover = SubResource("AtlasTexture_esmfc")
+
+[node name="WordWrapText" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "\"Wrap text\" automatically adjusts text layout to fit within a defined space while maintaining readability and aesthetics."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+toggle_mode = true
+button_pressed = true
+texture_normal = SubResource("AtlasTexture_xw4y7")
+texture_pressed = SubResource("AtlasTexture_x0rdl")
+texture_hover = SubResource("AtlasTexture_lyd8b")
+
+[node name="PreviewText" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Displays a preview of the dialog
+
+The dialogue uses the settings from the most recent configuration
+command found before this dialogue command. If no configuration
+is found before it, the last used configuration will be applied."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_ftd5p")
+texture_hover = SubResource("AtlasTexture_3438f")
+
+[node name="PreviewScrollText" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Displays a preview of the dialog"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_ftd5p")
+texture_hover = SubResource("AtlasTexture_3438f")
+
+[node name="DisplayAsFloatingDialog" type="CheckBox" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
+tooltip_text = "Show this message as a floating dialog above the speaker. It will not block gameplay or require player input to continue. Transitions automatically between paragraphs and closes itself after the last one.
+
+[Note]: Some commands (e.g., \"Enter Speaker\" or \"Image-Related\") are ignored. To delay closing or transitioning, use \"Pause Text\" command at the end of the message or paragraph. In addition, the message waits for the time defined in the message settings between each paragraph."
+mouse_default_cursor_shape = 2
+text = "Display as floating dialog"
+
+[node name="Target" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" instance=ExtResource("8_vhr1d")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Target on which the message will be displayed
+
+[Note]: If a target other than \"This Event\" is selected, the message will be displayed over the selected event using its position in the map's event list as its index, instead of using its ID."
+selected = 0
+item_count = 2
+popup/item_0/text = "This Event"
+popup/item_0/id = 0
+popup/item_1/id = 1
+popup/item_1/separator = true
+
+[node name="InstantText" type="CheckBox" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+tooltip_text = "This option will make the message ignore the text letter by letter and display the current paragraph all at once."
+mouse_default_cursor_shape = 2
+text = "Instant Text"
+
+[node name="NowaitForInput" type="CheckBox" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+tooltip_text = "This option makes the message proceed without waiting for user interaction to change paragraphs or end the message. When using this option, it’s helpful to use the \"wait\" command to insert pauses in the dialogue before moving to a new paragraph or ending the message.
+
+[Note]: You can use a BBCode command to enable or disable this option throughout the message."
+mouse_default_cursor_shape = 2
+text = "No Wait For Input"
+
+[node name="Help" type="TextureRect" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "⚬ ESCAPE: Exit without saving changes
+⚬ CTRL + ENTER: Close the dialog and save changes
+⚬ DOUBLE CLICK: Double-clicking on a text command (green text)
+  opens the dialog to edit that command"
+mouse_filter = 0
+mouse_default_cursor_shape = 16
+texture = SubResource("AtlasTexture_rdg4x")
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = -4
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 0
+
+[node name="MainTextEditContainer" type="Control" parent="MarginContainer/VBoxContainer/MarginContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="TextEdit" parent="MarginContainer/VBoxContainer/MarginContainer2/MainTextEditContainer" instance=ExtResource("5_2pvr4")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 18
+placeholder_text = "write text..."
+editable = true
+wrap_mode = 1
+syntax_highlighter = SubResource("CodeHighlighter_hifp8")
+show_expand_icon = false
+
+[node name="BottomButtonContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/margin_left = -12
+theme_override_constants/margin_top = -4
+theme_override_constants/margin_right = -12
+theme_override_constants/margin_bottom = -12
+
+[node name="InitialConfigContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer" instance=ExtResource("1_acjup")]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_cgv1w")
+style1 = SubResource("StyleBoxFlat_cgv1w")
+style2 = SubResource("StyleBoxTexture_lebf0")
+style3 = SubResource("StyleBoxFlat_7xlph")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.683386, 0.996094, 0.680923, 1)
+text = "Initial Config:"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Face:"
+
+[node name="InitialFace" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("6_76v3n")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_vertical = 6
+tooltip_text = "The face to be displayed at the beginning of the message.
+
+Mouse wheel click to erase de current image.
+
+[Note]:Leave empty so as not to show any face at the beginning."
+
+[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(105, 0)
+layout_mode = 2
+text = "Name:"
+
+[node name="InitialName" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer" instance=ExtResource("7_154nb")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "The name of the speaker to be displayed at the beginning of the message
+
+Mouse wheel click to erase de current name.
+
+[Note]:Leave empty so as not to show any speaker name at the beginning.
+"
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(105, 0)
+layout_mode = 2
+text = "Position:"
+
+[node name="InitialPosition" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("8_vhr1d")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "[title]Initial Face And Name osition[/title]
+The initial position of the name and face.
+
+[ul] \"Left\": The face and name are initially positioned to the left.
+
+ \"Right\": The face and name are positioned to the right initially.[/ul]"
+selected = 0
+item_count = 2
+popup/item_0/text = "Left"
+popup/item_0/id = 0
+popup/item_1/text = "Right"
+popup/item_1/id = 1
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer2/HBoxContainer"]
+custom_minimum_size = Vector2(95, 0)
+layout_mode = 2
+text = " Width:"
+
+[node name="Width" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer2/HBoxContainer" instance=ExtResource("9_16841")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Defines the width of the image displayed in the text window (or leave it at 0 to display the actual width of the image)."
+allow_greater = true
+_custom_value = 0.0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer2/HBoxContainer2"]
+custom_minimum_size = Vector2(95, 0)
+layout_mode = 2
+text = " Height:"
+
+[node name="Height" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer2/HBoxContainer2" instance=ExtResource("9_16841")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Defines the height of the image displayed in the text window (or leave at 0 to adjust the height in relation to the width)."
+allow_greater = true
+_custom_value = 0.0
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_top = -11
+
+[node name="ChainSize" type="TextureButton" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Resizes in proportion when changing height or width"
+mouse_default_cursor_shape = 2
+toggle_mode = true
+button_pressed = true
+texture_normal = SubResource("AtlasTexture_crnyd")
+texture_pressed = SubResource("AtlasTexture_i3der")
+texture_hover = SubResource("AtlasTexture_1y020")
+
+[node name="ScrollConfigContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer" instance=ExtResource("1_acjup")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_nj0p3")
+style1 = SubResource("StyleBoxFlat_nj0p3")
+style2 = SubResource("StyleBoxTexture_f1diu")
+style3 = SubResource("StyleBoxFlat_cedvw")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.683386, 0.996094, 0.680923, 1)
+text = "Config:"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer2"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Scroll Speed:"
+
+[node name="ScrollSpeed" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer2" instance=ExtResource("9_16841")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Scroll at whitch text scrolls"
+min_value = 1.0
+value = 1.0
+allow_greater = true
+_custom_value = 0.0
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer2"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Scroll Scene:"
+
+[node name="ScenePath" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer2" instance=ExtResource("7_154nb")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Indicate the scene to be used to display the text. The scene must be of the 'ScrollText' type.
+
+Click the middle button to use the default scene."
+text = "Default"
+
+[node name="HBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer"]
+custom_minimum_size = Vector2(205, 0)
+layout_mode = 2
+text = " Scroll Direction:"
+
+[node name="ScrollType" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer" instance=ExtResource("8_vhr1d")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Indicate how the text will scroll (from bottom to top or vice versa)."
+selected = 0
+item_count = 2
+popup/item_0/text = "Bottom To Top"
+popup/item_0/id = 0
+popup/item_1/text = "Top To Bottom"
+popup/item_1/id = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(205, 0)
+layout_mode = 2
+text = " Fast Forward:"
+
+[node name="FastForward" type="CheckBox" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Enable the fast-scrolling feature when the OK button is pressed"
+mouse_default_cursor_shape = 2
+text = "Enabled"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(205, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Speed Multiplier:  "
+
+[node name="MultiplySpeed" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer/HBoxContainer" instance=ExtResource("9_16841")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+tooltip_text = "While the selection key is held down the text will move at
+a speed increased by the factor indicated here."
+mouse_filter = 2
+min_value = 1.2
+step = 0.01
+value = 1.2
+rounded = false
+editable = false
+prefix = "x "
+disabled = true
+_custom_value = 0.0
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+alignment = 2
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_t2i2e")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows.
+
+[Note]: You can press the Enter key with the control key held down to accept the changes in this dialog and exit this dialog quickly."
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_t2i2e")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+text = "CANCEL"
+
+[node name="Timer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 0.3
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/FontName" to="." method="_on_font_name_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/FontSize" to="." method="_on_font_size_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/Bold" to="." method="_on_bold_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/Italic" to="." method="_on_italic_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/Underline" to="." method="_on_underline_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/Strikethrough" to="." method="_on_strike_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/TextColor" to="." method="_on_text_color_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/BackgroundTextColor" to="." method="_on_background_text_color_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/EnterSpeaker" to="." method="click_on_command_show_speaker_dialog"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/ExitSpeaker" to="." method="click_on_command_hide_speaker_dialog"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/ChangeBlipFx" to="." method="_on_change_blip_fx_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/ChangeSpeakerActive" to="." method="_on_change_speaker_active_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/Image" to="." method="_on_image_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/ImageEffect" to="." method="_on_image_effect_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/RemoveImage" to="." method="_on_remove_image_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/ShowNameBox" to="." method="_on_show_name_box_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/RemoveNameBox" to="." method="_on_remove_name_box_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/Sound" to="." method="_on_sound_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/Emote" to="." method="_on_emote_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/ShakeMessage" to="." method="_on_shake_message_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/FX" to="." method="_on_fx_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/Others" to="." method="_on_others_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/LeftAlign" to="." method="_on_left_align_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/CenterAlign" to="." method="_on_center_align_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/RightAlign" to="." method="_on_right_align_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/JustifiedText" to="." method="_on_justified_text_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/PauseText" to="." method="_on_pause_text_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/ShowWholeLine" to="." method="_on_show_whole_line_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/DontWaitPlayerInput" to="." method="_on_dont_wait_player_input_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/NewParagraph" to="." method="_on_new_paragraph_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/ResetConfig" to="." method="_on_reset_config_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/PauseDialog" to="." method="_on_pause_dialog_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/HighlightCommands" to="." method="_on_highlight_commands_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/WordWrapText" to="." method="_on_word_warp_text_toggled"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/PreviewText" to="." method="_on_preview_text_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/PreviewScrollText" to="." method="_on_preview_scroll_text_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/DisplayAsFloatingDialog" to="." method="_on_display_as_floating_dialog_toggled"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/Target" to="." method="_on_targets_item_selected"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/InstantText" to="." method="_on_instant_text_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/NowaitForInput" to="." method="_on_nowait_for_input_toggled"]
+[connection signal="gui_input" from="MarginContainer/VBoxContainer/MarginContainer2/MainTextEditContainer/TextEdit" to="." method="_on_text_edit_gui_input"]
+[connection signal="clicked" from="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/InitialFace" to="." method="_on_initial_face_clicked"]
+[connection signal="remove_requested" from="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/InitialFace" to="." method="_on_initial_face_remove_requested"]
+[connection signal="middle_click_pressed" from="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer/InitialName" to="." method="_on_initial_name_middle_click_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer/InitialName" to="." method="_on_initial_name_pressed"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer2/InitialPosition" to="." method="_on_initial_position_item_selected"]
+[connection signal="value_updated" from="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer2/HBoxContainer/Width" to="." method="_on_width_value_updated"]
+[connection signal="value_updated" from="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer2/HBoxContainer2/Height" to="." method="_on_height_value_updated"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/ChainSize" to="." method="_on_chain_size_toggled"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer2/ScrollSpeed" to="." method="_on_scroll_speed_value_changed"]
+[connection signal="middle_click_pressed" from="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer2/ScenePath" to="." method="_on_scene_path_middle_click_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer2/ScenePath" to="." method="_on_scene_path_pressed"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer/ScrollType" to="." method="_on_scroll_type_item_selected"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer/HBoxContainer2/FastForward" to="." method="_on_fast_forward_toggled"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer/HBoxContainer/MultiplySpeed" to="." method="_on_multiply_speed_value_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
