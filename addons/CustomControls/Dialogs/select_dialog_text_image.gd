@@ -120,6 +120,12 @@ func set_data(img: Dictionary) -> void:
 	else:
 		%EraseDefaultConfig.set_disabled(true)
 	
+	if "character_linked_to" in img:
+		var character_linked_to = clamp(img.character_linked_to, 0, %CharacterLinkedTo.get_item_count() - 1)
+		%CharacterLinkedTo.select(character_linked_to)
+	else:
+		%CharacterLinkedTo.select(0)
+	
 	busy = false
 
 
@@ -160,7 +166,8 @@ func _on_ok_button_pressed() -> void:
 		"trans_time": %TransitionTime.value,
 		"trans_wait": 1 if %Wait.is_pressed() else 0,
 		"flip_h": 1 if %HorizontalFlip.is_pressed() else 0,
-		"flip_v": 1 if %VerticalFlip.is_pressed() else 0
+		"flip_v": 1 if %VerticalFlip.is_pressed() else 0,
+		"character_linked_to": %CharacterLinkedTo.get_selected_id()
 	}
 	if ResourceLoader.exists(img.path.path):
 		var file = ResourceLoader.load(img.path.path)
@@ -298,7 +305,8 @@ func _on_copy_parameters_pressed() -> void:
 		"trans_time": %TransitionTime.value,
 		"trans_wait": 1 if %Wait.is_pressed() else 0,
 		"flip_h": 1 if %HorizontalFlip.is_pressed() else 0,
-		"flip_v": 1 if %VerticalFlip.is_pressed() else 0
+		"flip_v": 1 if %VerticalFlip.is_pressed() else 0,
+		"character_linked_to": %CharacterLinkedTo.get_selected_id()
 	}
 	
 	StaticEditorVars.CLIPBOARD.text_image_configuration = img

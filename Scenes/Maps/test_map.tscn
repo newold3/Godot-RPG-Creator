@@ -17,10 +17,10 @@
 [ext_resource type="Script" uid="uid://dex58yidnaamn" path="res://addons/RPGData/ModulesRPG/rpg_relationship.gd" id="12_yak7x"]
 [ext_resource type="Script" uid="uid://dvbel4d37a2dd" path="res://addons/RPGData/ModulesRPG/rpg_event.gd" id="13_11apb"]
 
-[sub_resource type="Resource" id="Resource_didij"]
+[sub_resource type="Resource" id="Resource_i3lja"]
 script = ExtResource("4_htxeb")
 
-[sub_resource type="Resource" id="Resource_htxeb"]
+[sub_resource type="Resource" id="Resource_udsps"]
 script = ExtResource("5_fiyda")
 code = 65
 parameters = {
@@ -29,21 +29,19 @@ parameters = {
 &"remove": false,
 &"wait": false
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_fiyda"]
+[sub_resource type="Resource" id="Resource_xosb5"]
 script = ExtResource("5_fiyda")
 code = 33
 parameters = {
 &"duration": 1.5,
 &"is_local": false
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_ewx0n"]
+[sub_resource type="Resource" id="Resource_54pvn"]
 script = ExtResource("6_ewx0n")
 
-[sub_resource type="Resource" id="Resource_aukdg"]
+[sub_resource type="Resource" id="Resource_otpcx"]
 script = ExtResource("5_fiyda")
 code = 2
 parameters = {
@@ -51,527 +49,462 @@ parameters = {
 "type": 0,
 "value": "?????"
 },
-&"face": SubResource("Resource_ewx0n"),
+&"face": SubResource("Resource_54pvn"),
 &"height": 0.0,
 &"is_floating_dialog": false,
 &"position": 1,
 &"width": 0.0
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_pssmi"]
+[sub_resource type="Resource" id="Resource_m0d5v"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "Do you find the darkness oppressive?"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_uohsy"]
+[sub_resource type="Resource" id="Resource_mppu7"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[wait type=0 seconds=1][p]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_urkqk"]
+[sub_resource type="Resource" id="Resource_vu4kc"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[face path=\"res://Assets/Images/LPCImages/Portraits/dadarian_face.png\" region=0,341,342,341 trans_type=1 trans_time=0 trans_wait=0]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_dhmk3"]
+[sub_resource type="Resource" id="Resource_bvf2a"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[showbox type=1 val=\"1\" pos=0]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_yak7x"]
+[sub_resource type="Resource" id="Resource_6yorc"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[highlight_character mode=0 pos=0]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_11apb"]
+[sub_resource type="Resource" id="Resource_fdakd"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "I can’t see the path. I can't see anything."
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_n6hqn"]
+[sub_resource type="Resource" id="Resource_f6s5d"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[p]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_squlj"]
+[sub_resource type="Resource" id="Resource_v05bk"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[highlight_character mode=0 pos=1]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_6w4q5"]
+[sub_resource type="Resource" id="Resource_2rv46"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
-"line": "[character path=\"res://Assets/Images/LPCImages/FullBody/unknown_ente.png\" position=\"custom\" trans_type=3 trans_time=1.50 trans_wait=1 size=319.0x640.0 image_offset=798x-1 trans_type_end=1]"
+"line": "[character path=\"res://Assets/Images/LPCImages/FullBody/unknown_ente.png\" position=\"custom\" trans_type=3 trans_time=1.50 trans_wait=1 size=319.0x640.0 image_offset=798x-1 trans_type_end=1 character_linked_to=2]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_hqcv1"]
+[sub_resource type="Resource" id="Resource_y6gbo"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[showbox type=0 val=\"?????\" pos=1]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_210bu"]
+[sub_resource type="Resource" id="Resource_e3wx2"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "That is because the Base Layer is empty. The world hasn't been painted yet."
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_sa3ic"]
+[sub_resource type="Resource" id="Resource_lgv4j"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[p]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_j1v7j"]
+[sub_resource type="Resource" id="Resource_b20as"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
-"line": "[character path=\"res://Assets/Images/LPCImages/FullBody/dadarian_posture3.png\" id=1 position=\"custom\" trans_type=1 trans_time=0.50 trans_wait=1 size=283.0x569.0 image_offset=151x90 trans_type_end=1]"
+"line": "[character path=\"res://Assets/Images/LPCImages/FullBody/dadarian_posture3.png\" id=1 position=\"custom\" trans_type=1 trans_time=0.50 trans_wait=1 size=283.0x569.0 image_offset=151x90 trans_type_end=1 character_linked_to=1]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_1bs0q"]
+[sub_resource type="Resource" id="Resource_p0w0k"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[face path=\"res://Assets/Images/LPCImages/Portraits/dadarian_face.png\" region=0,682,342,341 trans_type=1 trans_time=0 trans_wait=0]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_2s5q5"]
+[sub_resource type="Resource" id="Resource_c7dqm"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[imgfx type=1 id=1 idle_animation=3]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_a2jyw"]
+[sub_resource type="Resource" id="Resource_6ddem"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[highlight_character mode=0 pos=0]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_bk7r0"]
+[sub_resource type="Resource" id="Resource_tknqc"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "Is this a prison?"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_amqfu"]
+[sub_resource type="Resource" id="Resource_pww3d"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[p]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_wa0qo"]
+[sub_resource type="Resource" id="Resource_hyodt"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[highlight_character mode=0 pos=1]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_x7k3o"]
+[sub_resource type="Resource" id="Resource_8d0ud"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "Quite the opposite. Prisons are built by corporations, walled off by"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_4r7f8"]
+[sub_resource type="Resource" id="Resource_c3gni"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "copyrights and closed code. This place? This is a sanctuary."
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_qiwtu"]
+[sub_resource type="Resource" id="Resource_0l24q"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[p]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_b2lnm"]
+[sub_resource type="Resource" id="Resource_ddwjt"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[highlight_character mode=0 pos=0]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_7mnof"]
+[sub_resource type="Resource" id="Resource_00o04"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[face path=\"res://Assets/Images/LPCImages/Portraits/dadarian_face.png\" region=0,0,342,341 trans_type=1 trans_time=0 trans_wait=0]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_err6k"]
+[sub_resource type="Resource" id="Resource_tgxl6"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
-"line": "[character path=\"res://Assets/Images/LPCImages/FullBody/dadarian_posture1.png\" id=1 position=\"custom\" trans_type=1 trans_time=0.50 trans_wait=1 size=283.0x569.0 image_offset=151x90 trans_type_end=1]"
+"line": "[character path=\"res://Assets/Images/LPCImages/FullBody/dadarian_posture1.png\" id=1 position=\"custom\" trans_type=1 trans_time=0.50 trans_wait=1 size=283.0x569.0 image_offset=151x90 trans_type_end=1 character_linked_to=1]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_xd84v"]
+[sub_resource type="Resource" id="Resource_e08ly"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[imgfx type=1 id=1 idle_animation=2]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_jcyen"]
+[sub_resource type="Resource" id="Resource_c6ycl"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "A sanctuary of nothingness?"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_vjmuk"]
+[sub_resource type="Resource" id="Resource_oua1v"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[p]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_3a48r"]
+[sub_resource type="Resource" id="Resource_nt8f1"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[highlight_character mode=0 pos=1]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_wyktd"]
+[sub_resource type="Resource" id="Resource_5c6p4"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "A sanctuary of potential."
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_n6f4h"]
+[sub_resource type="Resource" id="Resource_epskt"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "This reality runs on an engine built to be given away."
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_8u8le"]
+[sub_resource type="Resource" id="Resource_fpugh"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "They call it the \"[color=#f20e0eff]MIT Covenant[/color]\"."
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_f4mlh"]
+[sub_resource type="Resource" id="Resource_tj1ys"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[p]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_yffyc"]
+[sub_resource type="Resource" id="Resource_8s05o"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[highlight_character mode=0 pos=0]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_4ivrs"]
+[sub_resource type="Resource" id="Resource_bi0c2"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[shake rate=20 level=5 connected=0]MIT[/shake]? Sounds like a spell."
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_xflcw"]
+[sub_resource type="Resource" id="Resource_8k1bg"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[p]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_a6isu"]
+[sub_resource type="Resource" id="Resource_kbl5u"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[highlight_character mode=0 pos=1]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_t211t"]
+[sub_resource type="Resource" id="Resource_cxrmk"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "It’s a promise. It means no one owns the horizon."
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_vox0t"]
+[sub_resource type="Resource" id="Resource_n2n0v"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "No one owns the logic that governs the tides or the sun."
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_u158e"]
+[sub_resource type="Resource" id="Resource_xaqmg"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "It was forged in solitude so that anyone—even you—could"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_1q6pl"]
+[sub_resource type="Resource" id="Resource_guh6o"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "take it and build a kingdom without paying a tithe."
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_2dv5r"]
+[sub_resource type="Resource" id="Resource_4mv46"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[p]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_qcaub"]
+[sub_resource type="Resource" id="Resource_y6nhb"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[highlight_character mode=0 pos=0]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_lmxvo"]
+[sub_resource type="Resource" id="Resource_mg7jm"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "So... I can change this?"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_sas7n"]
+[sub_resource type="Resource" id="Resource_p8uxl"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[p]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_877qh"]
+[sub_resource type="Resource" id="Resource_ik3hy"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[highlight_character mode=0 pos=1]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_xlu3a"]
+[sub_resource type="Resource" id="Resource_c7oc2"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "You can rewrite the physics."
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_1xebb"]
+[sub_resource type="Resource" id="Resource_hyo3o"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "You can shatter the hierarchy."
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_vihoy"]
+[sub_resource type="Resource" id="Resource_850m1"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "But first, you must learn to observe the changes."
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_brrwd"]
+[sub_resource type="Resource" id="Resource_hhio5"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[p]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_o7tmb"]
+[sub_resource type="Resource" id="Resource_md2m7"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[highlight_character mode=0 pos=0]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_qqimu"]
+[sub_resource type="Resource" id="Resource_apcmq"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "What changes?"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_nxaxr"]
+[sub_resource type="Resource" id="Resource_wa2g7"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[p]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_ylihp"]
+[sub_resource type="Resource" id="Resource_iarn2"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[highlight_character mode=0 pos=1]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_2vnqm"]
+[sub_resource type="Resource" id="Resource_12lnd"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "The Weather Priority is shifting. The variables are aligning."
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_83rae"]
+[sub_resource type="Resource" id="Resource_wp5be"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[p]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_jh1l8"]
+[sub_resource type="Resource" id="Resource_0sq6r"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[highlight_character mode=0 pos=0]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_soub8"]
+[sub_resource type="Resource" id="Resource_y1ngj"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "I don't feel anything."
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_hndss"]
+[sub_resource type="Resource" id="Resource_i1mnv"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[p]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_slv0a"]
+[sub_resource type="Resource" id="Resource_cg0aq"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[highlight_character mode=0 pos=1]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_tnuir"]
+[sub_resource type="Resource" id="Resource_l770y"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "You will. The weight of the rain is about to override the void."
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_joioc"]
+[sub_resource type="Resource" id="Resource_b0ns3"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[p]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_tdn8e"]
+[sub_resource type="Resource" id="Resource_d6l5l"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[no_wait_input enabled=1 time=1]"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_b8uqv"]
+[sub_resource type="Resource" id="Resource_xaydv"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "Three[p]two[p]one"
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_d8jsx"]
+[sub_resource type="Resource" id="Resource_bqmor"]
 script = ExtResource("5_fiyda")
 code = 65
 parameters = {
@@ -580,9 +513,8 @@ parameters = {
 &"remove": true,
 &"wait": false
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_33ive"]
+[sub_resource type="Resource" id="Resource_dcx4u"]
 script = ExtResource("5_fiyda")
 code = 68
 parameters = {
@@ -590,49 +522,47 @@ parameters = {
 &"scene": "res://Scenes/WeatherScenes/RainScenes/rain_compose_scene.tscn",
 &"type": 0
 }
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_28m88"]
+[sub_resource type="Resource" id="Resource_3pw1c"]
 script = ExtResource("5_fiyda")
 code = 94
-ignore_command = true
 
-[sub_resource type="Resource" id="Resource_mka21"]
+[sub_resource type="Resource" id="Resource_gnx7h"]
 script = ExtResource("5_fiyda")
 
-[sub_resource type="Resource" id="Resource_pej2v"]
+[sub_resource type="Resource" id="Resource_mwk4m"]
 script = ExtResource("8_didij")
 skippable = true
 
-[sub_resource type="Resource" id="Resource_npp1l"]
+[sub_resource type="Resource" id="Resource_uqj4g"]
 script = ExtResource("9_uohsy")
 
-[sub_resource type="Resource" id="Resource_mlg3a"]
+[sub_resource type="Resource" id="Resource_ov42u"]
 script = ExtResource("3_nd5sh")
-list = Array[ExtResource("5_fiyda")]([SubResource("Resource_htxeb"), SubResource("Resource_fiyda"), SubResource("Resource_aukdg"), SubResource("Resource_pssmi"), SubResource("Resource_uohsy"), SubResource("Resource_urkqk"), SubResource("Resource_dhmk3"), SubResource("Resource_yak7x"), SubResource("Resource_11apb"), SubResource("Resource_n6hqn"), SubResource("Resource_squlj"), SubResource("Resource_6w4q5"), SubResource("Resource_hqcv1"), SubResource("Resource_210bu"), SubResource("Resource_sa3ic"), SubResource("Resource_j1v7j"), SubResource("Resource_1bs0q"), SubResource("Resource_2s5q5"), SubResource("Resource_a2jyw"), SubResource("Resource_bk7r0"), SubResource("Resource_amqfu"), SubResource("Resource_wa0qo"), SubResource("Resource_x7k3o"), SubResource("Resource_4r7f8"), SubResource("Resource_qiwtu"), SubResource("Resource_b2lnm"), SubResource("Resource_7mnof"), SubResource("Resource_err6k"), SubResource("Resource_xd84v"), SubResource("Resource_jcyen"), SubResource("Resource_vjmuk"), SubResource("Resource_3a48r"), SubResource("Resource_wyktd"), SubResource("Resource_n6f4h"), SubResource("Resource_8u8le"), SubResource("Resource_f4mlh"), SubResource("Resource_yffyc"), SubResource("Resource_4ivrs"), SubResource("Resource_xflcw"), SubResource("Resource_a6isu"), SubResource("Resource_t211t"), SubResource("Resource_vox0t"), SubResource("Resource_u158e"), SubResource("Resource_1q6pl"), SubResource("Resource_2dv5r"), SubResource("Resource_qcaub"), SubResource("Resource_lmxvo"), SubResource("Resource_sas7n"), SubResource("Resource_877qh"), SubResource("Resource_xlu3a"), SubResource("Resource_1xebb"), SubResource("Resource_vihoy"), SubResource("Resource_brrwd"), SubResource("Resource_o7tmb"), SubResource("Resource_qqimu"), SubResource("Resource_nxaxr"), SubResource("Resource_ylihp"), SubResource("Resource_2vnqm"), SubResource("Resource_83rae"), SubResource("Resource_jh1l8"), SubResource("Resource_soub8"), SubResource("Resource_hndss"), SubResource("Resource_slv0a"), SubResource("Resource_tnuir"), SubResource("Resource_joioc"), SubResource("Resource_tdn8e"), SubResource("Resource_b8uqv"), SubResource("Resource_d8jsx"), SubResource("Resource_33ive"), SubResource("Resource_28m88"), SubResource("Resource_mka21")])
-condition = SubResource("Resource_didij")
-movement_route = SubResource("Resource_pej2v")
-options = SubResource("Resource_npp1l")
+list = Array[ExtResource("5_fiyda")]([SubResource("Resource_udsps"), SubResource("Resource_xosb5"), SubResource("Resource_otpcx"), SubResource("Resource_m0d5v"), SubResource("Resource_mppu7"), SubResource("Resource_vu4kc"), SubResource("Resource_bvf2a"), SubResource("Resource_6yorc"), SubResource("Resource_fdakd"), SubResource("Resource_f6s5d"), SubResource("Resource_v05bk"), SubResource("Resource_2rv46"), SubResource("Resource_y6gbo"), SubResource("Resource_e3wx2"), SubResource("Resource_lgv4j"), SubResource("Resource_b20as"), SubResource("Resource_p0w0k"), SubResource("Resource_c7dqm"), SubResource("Resource_6ddem"), SubResource("Resource_tknqc"), SubResource("Resource_pww3d"), SubResource("Resource_hyodt"), SubResource("Resource_8d0ud"), SubResource("Resource_c3gni"), SubResource("Resource_0l24q"), SubResource("Resource_ddwjt"), SubResource("Resource_00o04"), SubResource("Resource_tgxl6"), SubResource("Resource_e08ly"), SubResource("Resource_c6ycl"), SubResource("Resource_oua1v"), SubResource("Resource_nt8f1"), SubResource("Resource_5c6p4"), SubResource("Resource_epskt"), SubResource("Resource_fpugh"), SubResource("Resource_tj1ys"), SubResource("Resource_8s05o"), SubResource("Resource_bi0c2"), SubResource("Resource_8k1bg"), SubResource("Resource_kbl5u"), SubResource("Resource_cxrmk"), SubResource("Resource_n2n0v"), SubResource("Resource_xaqmg"), SubResource("Resource_guh6o"), SubResource("Resource_4mv46"), SubResource("Resource_y6nhb"), SubResource("Resource_mg7jm"), SubResource("Resource_p8uxl"), SubResource("Resource_ik3hy"), SubResource("Resource_c7oc2"), SubResource("Resource_hyo3o"), SubResource("Resource_850m1"), SubResource("Resource_hhio5"), SubResource("Resource_md2m7"), SubResource("Resource_apcmq"), SubResource("Resource_wa2g7"), SubResource("Resource_iarn2"), SubResource("Resource_12lnd"), SubResource("Resource_wp5be"), SubResource("Resource_0sq6r"), SubResource("Resource_y1ngj"), SubResource("Resource_i1mnv"), SubResource("Resource_cg0aq"), SubResource("Resource_l770y"), SubResource("Resource_b0ns3"), SubResource("Resource_d6l5l"), SubResource("Resource_xaydv"), SubResource("Resource_bqmor"), SubResource("Resource_dcx4u"), SubResource("Resource_3pw1c"), SubResource("Resource_gnx7h")])
+condition = SubResource("Resource_i3lja")
+movement_route = SubResource("Resource_mwk4m")
+options = SubResource("Resource_uqj4g")
 launcher = 3
 event_trigger_list = PackedInt32Array()
 
-[sub_resource type="Resource" id="Resource_h5oid"]
+[sub_resource type="Resource" id="Resource_hlnrr"]
 script = ExtResource("11_dhmk3")
 
-[sub_resource type="Resource" id="Resource_ytote"]
+[sub_resource type="Resource" id="Resource_abbut"]
 script = ExtResource("12_yak7x")
-levels = Array[ExtResource("11_dhmk3")]([SubResource("Resource_h5oid")])
+levels = Array[ExtResource("11_dhmk3")]([SubResource("Resource_hlnrr")])
 
-[sub_resource type="Resource" id="Resource_8vxlm"]
+[sub_resource type="Resource" id="Resource_52txu"]
 script = ExtResource("13_11apb")
 name = "EV0001"
 id = 2
-pages = Array[ExtResource("3_nd5sh")]([SubResource("Resource_mlg3a")])
-relationship = SubResource("Resource_ytote")
+pages = Array[ExtResource("3_nd5sh")]([SubResource("Resource_ov42u")])
+relationship = SubResource("Resource_abbut")
 
 [sub_resource type="Resource" id="Resource_xn408"]
 script = ExtResource("3_kxphi")
-events = Array[ExtResource("13_11apb")]([SubResource("Resource_8vxlm")])
+events = Array[ExtResource("13_11apb")]([SubResource("Resource_52txu")])
 
 [node name="TestMap" type="Node2D"]
 y_sort_enabled = true
@@ -640,24 +570,33 @@ script = ExtResource("1_didij")
 grid_gradient = ExtResource("2_kukki")
 events = SubResource("Resource_xn408")
 internal_id = 2651459344452080
+current_edit_button_pressed = 0
 
 [node name="GroundBase" type="TileMapLayer" parent="."]
 unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.21)
 tile_map_data = PackedByteArray("AAAAAAAAAQAOACAAAAABAAAAAQAOACAAAAABAAEAAQAOACAAAAACAAEAAQAOACAAAAADAAEAAQAOACAAAAAEAAEAAQAUACAAAAAFAAEAAQAOACAAAAAFAAIAAQAUACIAAAAGAAIAAQAOACAAAAAHAAIAAQAOACAAAAAIAAIAAQAOACAAAAAJAAIAAQAOACAAAAAJAAMAAQAOACAAAAAKAAMAAQAOACAAAAALAAMAAQAOACAAAAAMAAMAAQAOACAAAAANAAMAAQAOACAAAAANAAQAAQAUACEAAAAOAAQAAQAUACAAAAAPAAQAAQAOACAAAAAQAAQAAQAOACAAAAARAAQAAQAOACAAAAASAAQAAQAOACAAAAASAAUAAQAOACAAAAATAAUAAQAOACAAAAAUAAUAAQAOACAAAAAVAAUAAQAUACIAAAAWAAUAAQAUACIAAAAWAAYAAQAOACAAAAAXAAYAAQAOACAAAAAYAAYAAQAOACAAAAAZAAYAAQAOACAAAAAZAAUAAQAOACAAAAAaAAUAAQAUACAAAAAbAAUAAQAOACAAAAAbAAQAAQAUACEAAAAbAAMAAQAOACAAAAAbAAIAAQAOACAAAAAbAAEAAQAUACAAAAAaAAEAAQAOACAAAAAZAAEAAQAUACEAAAAYAAEAAQAUACIAAAAXAAEAAQAUACEAAAAWAAAAAQAOACAAAAAVAAAAAQAOACAAAAAUAAAAAQAOACAAAAATAAAAAQAUACQAAAASAAAAAQAOACAAAAARAAAAAQAOACAAAAAQAAAAAQAOACAAAAAPAAAAAQAUACIAAAAOAAAAAQAOACAAAAANAAAAAQAOACAAAAAMAAAAAQAUACAAAAALAAAAAQAUACIAAAAKAAAAAQAOACAAAAAJAAAAAQAUACAAAAAIAAAAAQAOACAAAAAHAAAAAQAOACAAAAAGAAAAAQAUACIAAAAFAAAAAQAOACAAAAAEAAAAAQAOACAAAAADAAAAAQAOACAAAAACAAAAAQAOACAAAAAGAAEAAQAUACAAAAAHAAEAAQAUACEAAAAIAAEAAQAOACAAAAAJAAEAAQAOACAAAAAKAAEAAQAUACAAAAALAAEAAQAOACAAAAAMAAEAAQAUACEAAAANAAEAAQAOACAAAAAOAAEAAQAOACAAAAAPAAEAAQAUACAAAAAQAAEAAQAOACAAAAARAAEAAQAOACAAAAASAAEAAQAUACAAAAATAAEAAQAUACEAAAAUAAEAAQAOACAAAAAVAAEAAQAOACAAAAAWAAEAAQAOACAAAAAYAAIAAQAOACAAAAAZAAIAAQAUACEAAAAaAAIAAQAOACAAAAAXAAIAAQAOACAAAAAWAAIAAQAOACAAAAAVAAIAAQAUACIAAAAUAAIAAQAOACAAAAATAAIAAQAOACAAAAASAAIAAQAOACAAAAARAAIAAQAOACAAAAAQAAIAAQAOACAAAAAPAAIAAQAOACAAAAAOAAIAAQAOACAAAAANAAIAAQAUACIAAAAMAAIAAQAOACAAAAAKAAIAAQAUACIAAAALAAIAAQAOACAAAAATAAMAAQAOACAAAAAVAAMAAQAOACAAAAAUAAMAAQAOACAAAAAWAAMAAQAUACAAAAAXAAMAAQAOACAAAAAYAAMAAQAOACAAAAAZAAMAAQAOACAAAAAaAAMAAQAUACIAAAAZAAQAAQAOACAAAAAYAAUAAQAOACAAAAAXAAUAAQAOACAAAAAWAAQAAQAUACIAAAAVAAQAAQAOACAAAAAUAAQAAQAOACAAAAATAAQAAQAUACQAAAASAAMAAQAOACAAAAARAAMAAQAOACAAAAAQAAMAAQAOACAAAAAPAAMAAQAOACAAAAAOAAMAAQAUACIAAAAXAAQAAQAOACAAAAAYAAQAAQAOACAAAAAaAAQAAQAUACAAAAAjABMAAQAOACAAAAAjABIAAQAOACAAAAAjABEAAQAOACAAAAAjABAAAQAOACAAAAAjAA8AAQAOACAAAAAjAA4AAQAOACAAAAAjAA0AAQAOACAAAAAjAAwAAQAUACIAAAAjAAsAAQAUACQAAAAjAAoAAQAOACAAAAAjAAkAAQAOACAAAAAjAAgAAQAUACIAAAAjAAcAAQAOACAAAAAjAAYAAQAOACAAAAAjAAUAAQAUACEAAAAjAAQAAQAUACQAAAAjAAMAAQAUACIAAAAjAAIAAQAOACAAAAAjAAEAAQAOACAAAAAjAAAAAQAOACAAAAAiABMAAQAOACAAAAAiABIAAQAOACAAAAAiABEAAQAOACAAAAAiABAAAQAUACIAAAAiAA8AAQAOACAAAAAiAA4AAQAUACQAAAAiAA0AAQAOACAAAAAiAAwAAQAOACAAAAAiAAsAAQAOACAAAAAiAAoAAQAUACAAAAAiAAkAAQAOACAAAAAiAAgAAQAOACAAAAAiAAcAAQAUACIAAAAiAAYAAQAUACQAAAAiAAUAAQAOACAAAAAiAAQAAQAOACAAAAAiAAMAAQAOACAAAAAiAAIAAQAUACIAAAAiAAEAAQAUACQAAAAiAAAAAQAUACIAAAAhABMAAQAOACAAAAAhABIAAQAOACAAAAAhABEAAQAOACAAAAAhABAAAQAOACAAAAAhAA8AAQAUACQAAAAhAA4AAQAOACAAAAAhAA0AAQAOACAAAAAhAAwAAQAOACAAAAAhAAsAAQAOACAAAAAhAAoAAQAUACQAAAAhAAkAAQAOACAAAAAhAAgAAQAUACAAAAAhAAcAAQAOACAAAAAhAAYAAQAOACAAAAAhAAUAAQAOACAAAAAhAAQAAQAUACQAAAAhAAMAAQAOACAAAAAhAAIAAQAUACAAAAAhAAEAAQAUACAAAAAhAAAAAQAOACAAAAAgABMAAQAOACAAAAAgABIAAQAUACAAAAAgABEAAQAOACAAAAAgABAAAQAOACAAAAAgAA8AAQAOACAAAAAgAA4AAQAOACAAAAAgAA0AAQAOACAAAAAgAAwAAQAOACAAAAAgAAsAAQAOACAAAAAgAAoAAQAOACAAAAAgAAkAAQAOACAAAAAgAAgAAQAUACIAAAAgAAcAAQAUACIAAAAgAAYAAQAOACAAAAAgAAUAAQAOACAAAAAgAAQAAQAOACAAAAAgAAMAAQAUACAAAAAgAAIAAQAOACAAAAAgAAEAAQAOACAAAAAgAAAAAQAUACQAAAAfABMAAQAUACIAAAAfABIAAQAOACAAAAAfABEAAQAOACAAAAAfABAAAQAOACAAAAAfAA8AAQAOACAAAAAfAA4AAQAUACEAAAAfAA0AAQAOACAAAAAfAAwAAQAOACAAAAAfAAsAAQAOACAAAAAfAAoAAQAOACAAAAAfAAkAAQAOACAAAAAfAAgAAQAOACAAAAAfAAcAAQAUACEAAAAfAAYAAQAOACAAAAAfAAUAAQAUACQAAAAfAAQAAQAOACAAAAAfAAMAAQAOACAAAAAfAAIAAQAOACAAAAAfAAEAAQAUACAAAAAfAAAAAQAOACAAAAAeABMAAQAOACAAAAAeABIAAQAOACAAAAAeABEAAQAUACQAAAAeABAAAQAOACAAAAAeAA8AAQAOACAAAAAeAA4AAQAOACAAAAAeAA0AAQAOACAAAAAeAAwAAQAUACAAAAAeAAsAAQAOACAAAAAeAAoAAQAOACAAAAAeAAkAAQAOACAAAAAeAAgAAQAOACAAAAAeAAcAAQAOACAAAAAeAAYAAQAUACEAAAAeAAUAAQAOACAAAAAeAAQAAQAOACAAAAAeAAMAAQAOACAAAAAeAAIAAQAOACAAAAAeAAEAAQAOACAAAAAeAAAAAQAOACAAAAAdABMAAQAOACAAAAAdABIAAQAOACAAAAAdABEAAQAUACIAAAAdABAAAQAUACEAAAAdAA8AAQAOACAAAAAdAA4AAQAOACAAAAAdAA0AAQAOACAAAAAdAAwAAQAOACAAAAAdAAsAAQAUACQAAAAdAAoAAQAOACAAAAAdAAkAAQAUACEAAAAdAAgAAQAUACEAAAAdAAcAAQAOACAAAAAdAAYAAQAUACEAAAAdAAUAAQAOACAAAAAdAAQAAQAUACAAAAAdAAMAAQAOACAAAAAdAAIAAQAUACQAAAAdAAEAAQAOACAAAAAdAAAAAQAOACAAAAAcABMAAQAUACIAAAAcABIAAQAUACQAAAAcABEAAQAOACAAAAAcABAAAQAOACAAAAAcAA8AAQAOACAAAAAcAA4AAQAOACAAAAAcAA0AAQAUACAAAAAcAAwAAQAOACAAAAAcAAsAAQAOACAAAAAcAAoAAQAOACAAAAAcAAkAAQAOACAAAAAcAAgAAQAUACIAAAAcAAcAAQAOACAAAAAcAAYAAQAOACAAAAAcAAUAAQAOACAAAAAcAAQAAQAOACAAAAAcAAMAAQAOACAAAAAcAAIAAQAOACAAAAAcAAEAAQAOACAAAAAcAAAAAQAOACAAAAAbABMAAQAOACAAAAAbABIAAQAOACAAAAAbABEAAQAOACAAAAAbABAAAQAUACIAAAAbAA8AAQAOACAAAAAbAA4AAQAOACAAAAAbAA0AAQAOACAAAAAbAAwAAQAUACAAAAAbAAsAAQAOACAAAAAbAAoAAQAOACAAAAAbAAkAAQAUACQAAAAbAAgAAQAUACQAAAAbAAcAAQAOACAAAAAbAAYAAQAOACAAAAAbAAAAAQAOACAAAAAaABMAAQAUACAAAAAaABIAAQAOACAAAAAaABEAAQAUACEAAAAaABAAAQAOACAAAAAaAA8AAQAOACAAAAAaAA4AAQAOACAAAAAaAA0AAQAUACQAAAAaAAwAAQAUACAAAAAaAAsAAQAUACEAAAAaAAoAAQAUACIAAAAaAAkAAQAUACIAAAAaAAgAAQAOACAAAAAaAAcAAQAOACAAAAAaAAYAAQAOACAAAAAaAAAAAQAUACAAAAAZABMAAQAOACAAAAAZABIAAQAUACEAAAAZABEAAQAOACAAAAAZABAAAQAOACAAAAAZAA8AAQAOACAAAAAZAA4AAQAOACAAAAAZAA0AAQAOACAAAAAZAAwAAQAUACEAAAAZAAsAAQAUACAAAAAZAAoAAQAOACAAAAAZAAkAAQAOACAAAAAZAAgAAQAUACAAAAAZAAcAAQAOACAAAAAZAAAAAQAOACAAAAAYABMAAQAUACEAAAAYABIAAQAUACEAAAAYABEAAQAUACEAAAAYABAAAQAUACQAAAAYAA8AAQAUACAAAAAYAA4AAQAUACAAAAAYAA0AAQAUACQAAAAYAAwAAQAOACAAAAAYAAsAAQAOACAAAAAYAAoAAQAUACIAAAAYAAkAAQAOACAAAAAYAAgAAQAUACIAAAAYAAcAAQAOACAAAAAYAAAAAQAOACAAAAAXABMAAQAOACAAAAAXABIAAQAOACAAAAAXABEAAQAOACAAAAAXABAAAQAOACAAAAAXAA8AAQAOACAAAAAXAA4AAQAOACAAAAAXAA0AAQAOACAAAAAXAAwAAQAOACAAAAAXAAsAAQAOACAAAAAXAAoAAQAOACAAAAAXAAkAAQAOACAAAAAXAAgAAQAUACEAAAAXAAcAAQAUACEAAAAXAAAAAQAUACQAAAAWABMAAQAUACIAAAAWABIAAQAOACAAAAAWABEAAQAUACQAAAAWABAAAQAOACAAAAAWAA8AAQAUACIAAAAWAA4AAQAOACAAAAAWAA0AAQAOACAAAAAWAAwAAQAOACAAAAAWAAsAAQAUACIAAAAWAAoAAQAUACAAAAAWAAkAAQAOACAAAAAWAAgAAQAOACAAAAAWAAcAAQAUACEAAAAVABMAAQAOACAAAAAVABIAAQAUACQAAAAVABEAAQAOACAAAAAVABAAAQAOACAAAAAVAA8AAQAOACAAAAAVAA4AAQAOACAAAAAVAA0AAQAOACAAAAAVAAwAAQAOACAAAAAVAAsAAQAOACAAAAAVAAoAAQAUACIAAAAVAAkAAQAUACAAAAAVAAgAAQAUACQAAAAVAAcAAQAOACAAAAAVAAYAAQAUACIAAAAUABMAAQAUACAAAAAUABIAAQAOACAAAAAUABEAAQAOACAAAAAUABAAAQAUACIAAAAUAA8AAQAOACAAAAAUAA4AAQAOACAAAAAUAA0AAQAUACQAAAAUAAwAAQAUACIAAAAUAAsAAQAOACAAAAAUAAoAAQAUACEAAAAUAAkAAQAOACAAAAAUAAgAAQAUACEAAAAUAAcAAQAUACEAAAAUAAYAAQAUACIAAAATABMAAQAOACAAAAATABIAAQAOACAAAAATABEAAQAUACIAAAATABAAAQAOACAAAAATAA8AAQAOACAAAAATAA4AAQAOACAAAAATAA0AAQAOACAAAAATAAwAAQAOACAAAAATAAsAAQAUACIAAAATAAoAAQAOACAAAAATAAkAAQAUACAAAAATAAgAAQAUACQAAAATAAcAAQAUACAAAAATAAYAAQAOACAAAAASABMAAQAOACAAAAASABIAAQAUACIAAAASABEAAQAUACAAAAASABAAAQAUACEAAAASAA8AAQAOACAAAAASAA4AAQAOACAAAAASAA0AAQAOACAAAAASAAwAAQAOACAAAAASAAsAAQAOACAAAAASAAoAAQAOACAAAAASAAkAAQAOACAAAAASAAgAAQAUACQAAAASAAcAAQAOACAAAAASAAYAAQAUACEAAAARABMAAQAUACAAAAARABIAAQAOACAAAAARABEAAQAOACAAAAARABAAAQAOACAAAAARAA8AAQAOACAAAAARAA4AAQAUACAAAAARAA0AAQAUACAAAAARAAwAAQAUACAAAAARAAsAAQAOACAAAAARAAoAAQAOACAAAAARAAkAAQAOACAAAAARAAgAAQAOACAAAAARAAcAAQAOACAAAAARAAYAAQAOACAAAAARAAUAAQAOACAAAAAQABMAAQAUACQAAAAQABIAAQAOACAAAAAQABEAAQAOACAAAAAQABAAAQAOACAAAAAQAA8AAQAOACAAAAAQAA4AAQAOACAAAAAQAA0AAQAOACAAAAAQAAwAAQAOACAAAAAQAAsAAQAOACAAAAAQAAoAAQAOACAAAAAQAAkAAQAOACAAAAAQAAgAAQAOACAAAAAQAAcAAQAUACIAAAAQAAYAAQAOACAAAAAQAAUAAQAOACAAAAAPABMAAQAOACAAAAAPABIAAQAOACAAAAAPABEAAQAUACEAAAAPABAAAQAOACAAAAAPAA8AAQAUACQAAAAPAA4AAQAOACAAAAAPAA0AAQAOACAAAAAPAAwAAQAOACAAAAAPAAsAAQAUACEAAAAPAAoAAQAOACAAAAAPAAkAAQAOACAAAAAPAAgAAQAOACAAAAAPAAcAAQAUACQAAAAPAAYAAQAUACEAAAAPAAUAAQAOACAAAAAOABMAAQAOACAAAAAOABIAAQAUACIAAAAOABEAAQAUACQAAAAOABAAAQAUACIAAAAOAA8AAQAOACAAAAAOAA4AAQAUACIAAAAOAA0AAQAOACAAAAAOAAwAAQAUACQAAAAOAAsAAQAOACAAAAAOAAoAAQAUACEAAAAOAAkAAQAOACAAAAAOAAgAAQAOACAAAAAOAAcAAQAOACAAAAAOAAYAAQAOACAAAAAOAAUAAQAOACAAAAANABMAAQAUACEAAAANABIAAQAOACAAAAANABEAAQAOACAAAAANABAAAQAOACAAAAANAA8AAQAOACAAAAANAA4AAQAOACAAAAANAA0AAQAUACIAAAANAAwAAQAOACAAAAANAAsAAQAOACAAAAANAAoAAQAUACEAAAANAAkAAQAUACEAAAANAAgAAQAOACAAAAANAAcAAQAOACAAAAANAAYAAQAUACIAAAANAAUAAQAOACAAAAAMABMAAQAOACAAAAAMABIAAQAUACIAAAAMABEAAQAOACAAAAAMABAAAQAUACAAAAAMAA8AAQAUACEAAAAMAA4AAQAOACAAAAAMAA0AAQAOACAAAAAMAAwAAQAOACAAAAAMAAsAAQAOACAAAAAMAAoAAQAOACAAAAAMAAkAAQAUACQAAAAMAAgAAQAOACAAAAAMAAcAAQAOACAAAAAMAAYAAQAOACAAAAAMAAUAAQAOACAAAAAMAAQAAQAOACAAAAALABMAAQAUACAAAAALABIAAQAOACAAAAALABEAAQAOACAAAAALABAAAQAUACAAAAALAA8AAQAUACQAAAALAA4AAQAOACAAAAALAA0AAQAOACAAAAALAAwAAQAUACEAAAALAAsAAQAUACIAAAALAAoAAQAOACAAAAALAAkAAQAOACAAAAALAAgAAQAOACAAAAALAAcAAQAOACAAAAALAAYAAQAOACAAAAALAAUAAQAOACAAAAALAAQAAQAUACIAAAAKABMAAQAOACAAAAAKABIAAQAUACQAAAAKABEAAQAUACQAAAAKABAAAQAOACAAAAAKAA8AAQAOACAAAAAKAA4AAQAOACAAAAAKAA0AAQAOACAAAAAKAAwAAQAUACQAAAAKAAsAAQAUACAAAAAKAAoAAQAUACAAAAAKAAkAAQAOACAAAAAKAAgAAQAUACEAAAAKAAcAAQAOACAAAAAKAAYAAQAOACAAAAAKAAUAAQAOACAAAAAKAAQAAQAOACAAAAAJABMAAQAOACAAAAAJABIAAQAOACAAAAAJABEAAQAUACQAAAAJABAAAQAUACIAAAAJAA8AAQAOACAAAAAJAA4AAQAOACAAAAAJAA0AAQAUACAAAAAJAAwAAQAOACAAAAAJAAsAAQAOACAAAAAJAAoAAQAOACAAAAAJAAkAAQAUACIAAAAJAAgAAQAUACQAAAAJAAcAAQAOACAAAAAJAAYAAQAUACQAAAAJAAUAAQAOACAAAAAJAAQAAQAOACAAAAAIABMAAQAOACAAAAAIABIAAQAOACAAAAAIABEAAQAOACAAAAAIABAAAQAUACAAAAAIAA8AAQAOACAAAAAIAA4AAQAOACAAAAAIAA0AAQAOACAAAAAIAAwAAQAOACAAAAAIAAsAAQAUACEAAAAIAAoAAQAUACAAAAAIAAkAAQAUACIAAAAIAAgAAQAOACAAAAAIAAcAAQAOACAAAAAIAAYAAQAOACAAAAAIAAUAAQAOACAAAAAIAAQAAQAOACAAAAAIAAMAAQAUACEAAAAHABMAAQAOACAAAAAHABIAAQAOACAAAAAHABEAAQAOACAAAAAHABAAAQAOACAAAAAHAA8AAQAOACAAAAAHAA4AAQAOACAAAAAHAA0AAQAOACAAAAAHAAwAAQAOACAAAAAHAAsAAQAOACAAAAAHAAoAAQAOACAAAAAHAAkAAQAOACAAAAAHAAgAAQAOACAAAAAHAAcAAQAOACAAAAAHAAYAAQAOACAAAAAHAAUAAQAUACAAAAAHAAQAAQAOACAAAAAHAAMAAQAUACQAAAAGABMAAQAOACAAAAAGABIAAQAUACAAAAAGABEAAQAOACAAAAAGABAAAQAUACAAAAAGAA8AAQAUACQAAAAGAA4AAQAOACAAAAAGAA0AAQAUACAAAAAGAAwAAQAOACAAAAAGAAsAAQAUACQAAAAGAAoAAQAUACQAAAAGAAkAAQAUACEAAAAGAAgAAQAOACAAAAAGAAcAAQAOACAAAAAGAAYAAQAOACAAAAAGAAUAAQAOACAAAAAGAAQAAQAOACAAAAAGAAMAAQAOACAAAAAFABMAAQAOACAAAAAFABIAAQAUACIAAAAFABEAAQAOACAAAAAFABAAAQAOACAAAAAFAA8AAQAUACEAAAAFAA4AAQAOACAAAAAFAA0AAQAOACAAAAAFAAwAAQAOACAAAAAFAAsAAQAOACAAAAAFAAoAAQAUACAAAAAFAAkAAQAUACQAAAAFAAgAAQAUACIAAAAFAAcAAQAOACAAAAAFAAYAAQAOACAAAAAFAAUAAQAOACAAAAAFAAQAAQAOACAAAAAFAAMAAQAOACAAAAAEABMAAQAOACAAAAAEABIAAQAOACAAAAAEABEAAQAOACAAAAAEABAAAQAOACAAAAAEAA8AAQAOACAAAAAEAA4AAQAUACQAAAAEAA0AAQAUACQAAAAEAAwAAQAUACAAAAAEAAsAAQAOACAAAAAEAAoAAQAOACAAAAAEAAkAAQAOACAAAAAEAAgAAQAOACAAAAAEAAcAAQAOACAAAAAEAAYAAQAUACAAAAAEAAUAAQAOACAAAAAEAAQAAQAOACAAAAAEAAMAAQAOACAAAAAEAAIAAQAOACAAAAADABMAAQAOACAAAAADABIAAQAOACAAAAADABEAAQAOACAAAAADABAAAQAUACEAAAADAA8AAQAOACAAAAADAA4AAQAOACAAAAADAA0AAQAOACAAAAADAAwAAQAOACAAAAADAAsAAQAOACAAAAADAAoAAQAUACAAAAADAAkAAQAOACAAAAADAAgAAQAOACAAAAADAAcAAQAOACAAAAADAAYAAQAOACAAAAADAAUAAQAOACAAAAADAAQAAQAOACAAAAADAAMAAQAOACAAAAADAAIAAQAOACAAAAACABMAAQAOACAAAAACABIAAQAUACEAAAACABEAAQAOACAAAAACABAAAQAUACQAAAACAA8AAQAOACAAAAACAA4AAQAUACQAAAACAA0AAQAOACAAAAACAAwAAQAUACQAAAACAAsAAQAOACAAAAACAAoAAQAOACAAAAACAAkAAQAUACIAAAACAAgAAQAUACEAAAACAAcAAQAUACIAAAACAAYAAQAOACAAAAACAAUAAQAOACAAAAACAAQAAQAUACAAAAACAAMAAQAUACAAAAACAAIAAQAOACAAAAABABMAAQAOACAAAAABABIAAQAOACAAAAABABEAAQAOACAAAAABABAAAQAOACAAAAABAA8AAQAOACAAAAABAA4AAQAOACAAAAABAA0AAQAOACAAAAABAAwAAQAUACQAAAABAAsAAQAOACAAAAABAAoAAQAOACAAAAABAAkAAQAOACAAAAABAAgAAQAUACAAAAABAAcAAQAOACAAAAABAAYAAQAUACEAAAABAAUAAQAUACIAAAABAAQAAQAOACAAAAABAAMAAQAOACAAAAABAAIAAQAOACAAAAAAABMAAQAOACAAAAAAABIAAQAUACQAAAAAABEAAQAUACQAAAAAABAAAQAOACAAAAAAAA8AAQAUACIAAAAAAA4AAQAOACAAAAAAAA0AAQAOACAAAAAAAAwAAQAOACAAAAAAAAsAAQAUACAAAAAAAAoAAQAOACAAAAAAAAkAAQAOACAAAAAAAAgAAQAUACIAAAAAAAcAAQAUACAAAAAAAAYAAQAUACQAAAAAAAUAAQAOACAAAAAAAAQAAQAUACAAAAAAAAMAAQAOACAAAAAAAAIAAQAUACIAAAAAAAEAAQAOACAAAAA=")
 tile_set = ExtResource("4_j28jb")
+metadata/original_opacity = 1.0
 
 [node name="GroundDetail" type="TileMapLayer" parent="."]
 unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.21)
 tile_set = ExtResource("5_xj7ls")
+metadata/original_opacity = 1.0
 
 [node name="Environment" type="TileMapLayer" parent="."]
 unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.21)
 z_index = 1
 y_sort_enabled = true
 tile_map_data = PackedByteArray("AAABAAIAAAAcABMAAAABAAMAAAAcABQAAAACAAIAAAAcABMAAAACAAMAAAAcABQAAAADAAAAAAAcABMAAAADAAEAAAAcABQAAAAEAAAAAAAcABMAAAAEAAEAAAAcABQAAAAEAAwAAAAcABMAAAAEAA0AAAAcABQAAAAFAAAAAAAcABMAAAAFAAEAAAAcABQAAAAFAAwAAAAcABMAAAAFAA0AAAAcABQAAAAFAA4AAAAcABMAAAAFAA8AAAAcABQAAAAGAAAAAAAcABMAAAAGAAEAAAAcABQAAAAGAA4AAAAcABMAAAAGAA8AAAAcABQAAAAHAA4AAAAcABMAAAAHAA8AAAAcABQAAAAIAAcAAAAcABMAAAAIAAgAAAAcABQAAAAIAAwAAAAcABMAAAAIAA0AAAAcABQAAAAIAA4AAAAcABMAAAAIAA8AAAAcABQAAAAJAAcAAAAcABMAAAAJAAgAAAAcABQAAAAJAAwAAAAcABMAAAAJAA0AAAAcABQAAAAKAAcAAAAcABMAAAAKAAgAAAAcABQAAAAKAAwAAAAcABMAAAAKAA0AAAAcABQAAAALAAUAAAAcABMAAAALAAYAAAAcABQAAAALAAcAAAAcABMAAAALAAgAAAAcABQAAAALAAwAAAAcABMAAAALAA0AAAAcABQAAAAMAAUAAAAcABMAAAAMAAYAAAAcABQAAAANAAUAAAAcABMAAAANAAYAAAAcABQAAAAOAAUAAAAcABMAAAAOAAYAAAAcABQAAAAPAAUAAAAcABMAAAAPAAYAAAAcABQAAAAPAA4AAAAcABMAAAAPAA8AAAAcABQAAAAQAAMAAAAcABMAAAAQAAQAAAAcABQAAAAQAA4AAAAcABMAAAAQAA8AAAAcABQAAAARAA4AAAAcABMAAAARAA8AAAAcABQAAAASAA4AAAAcABMAAAASAA8AAAAcABQAAAATAAwAAAAcABMAAAATAA0AAAAcABQAAAATAA4AAAAcABMAAAATAA8AAAAcABQAAAAUAAwAAAAcABMAAAAUAA0AAAAcABQAAAAVAAcAAAAcABMAAAAVAAgAAAAcABQAAAAWAAcAAAAcABMAAAAWAAgAAAAcABQAAAAXAAcAAAAcABMAAAAXAAgAAAAcABQAAAAYAAcAAAAcABMAAAAYAAgAAAAcABQAAAAYAAkAAAAcABMAAAAYAAoAAAAcABQAAAAZAAkAAAAcABMAAAAZAAoAAAAcABQAAAAaAAkAAAAcABMAAAAaAAoAAAAcABQAAAAaAAsAAAAcABMAAAAaAAwAAAAcABQAAAAbAAsAAAAcABMAAAAbAAwAAAAcABQAAAAdAAIAAAAcABMAAAAdAAMAAAAcABQAAAAdABEAAAAcABMAAAAdABIAAAAcABQAAAAeAAIAAAAcABMAAAAeAAMAAAAcABQAAAAeABEAAAAcABMAAAAeABIAAAAcABQAAAAfAAIAAAAcABMAAAAfAAMAAAAcABQAAAAfAA8AAAAcABMAAAAfABAAAAAcABQAAAAfABEAAAAcABMAAAAfABIAAAAcABQAAAAgAAIAAAAcABMAAAAgAAMAAAAcABQAAAAgAAQAAAAcABMAAAAgAAUAAAAcABQAAAAgAA0AAAAcABMAAAAgAA4AAAAcABQAAAAgAA8AAAAcABMAAAAgABAAAAAcABQAAAAhAAsAAAAcABMAAAAhAAwAAAAcABQAAAAhAA0AAAAcABMAAAAhAA4AAAAcABQAAAA=")
 tile_set = ExtResource("5_xj7ls")
+metadata/original_opacity = 1.0
 
 [node name="Overlay" type="TileMapLayer" parent="."]
 unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.21)
 z_index = 1
 tile_set = ExtResource("5_xj7ls")
+metadata/original_opacity = 1.0
