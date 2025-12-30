@@ -69,6 +69,16 @@ Here is the development plan. I have reorganized the priorities to ensure a stab
 
 ---
 
+## 🛠️ Development Methodology & Assets
+
+As a solo developer who is not a professional artist, I have adopted a pragmatic approach to ensure the tool is feature-rich and legally safe for distribution:
+
+* **🎨 Assets:** The core visual style is based on **LPC (Liberated Pixel Cup)** standards. However, finding high-quality free assets that explicitly allow **redistribution** (shipping them inside a game engine/tool) is challenging. When a suitable open-license asset is unavailable, I generate a base using AI and then manually fix, polish, and integrate it using Photoshop.
+* **💻 Code:** I write all the game logic and systems myself. AI tools are used strictly for **documentation** (generating comments), formatting, or refactoring code that I have already written and tested.
+* **✨ Shaders:** The visual effects are a mix of community resources (e.g., GodotShaders) and supervised AI generation.
+
+---
+
 ## 🐛 Bug Reporting & Feedback
 
 Your help is essential! As a solo developer (@Newold), I cannot test every possible combination.
