@@ -48,6 +48,27 @@ What you will find in this Alpha version:
 
 ---
 
+## 🚀 Roadmap & Upcoming Features
+
+Here is the development plan. I have reorganized the priorities to ensure a stable core before adding complex mechanics like combat.
+
+### 🔥 Immediate Priority (Current Focus)
+* **Steampunk UI Completion:** My main goal right now is to finish and polish all the menus in the Steampunk theme (Shops, Themed Dialogues, Item Menu, Skill Menu, and Status Menu).
+* **Missing Event Commands:** Implementation of the remaining logic and event commands (excluding Battle-specific commands).
+
+### 🚧 Upcoming Features (Mid-term)
+* **Simplified UI Templates:** Development of a standard, simplified version of the menus. The current Steampunk theme uses complex animations and custom scripts; this alternative will be easier to edit and customize for users with less experience.
+* **Event Systems:** Integration of the Event Quest System and a Relationship/Reputation system.
+* **Vehicles:** Creation of the gameplay scene for the **Water Vehicle**.
+
+### 🔮 Scheduled for Final Phase (Late Alpha)
+* **Advanced Battle System:** The logic and visual implementation of the Battle System (Turn-Based/ATB) will be one of the last features to be added.
+* **Final Content Polish:** The final configuration of the Database, Tilesets, and Animations will be addressed towards the end of development to ensure they match all implemented systems.
+
+> *Ongoing tasks include continuous bug fixing, code refactoring, and polishing of existing scenes.*
+
+---
+
 ## 🐛 Bug Reporting & Feedback
 
 Your help is essential! As a solo developer (@Newold), I cannot test every possible combination.
