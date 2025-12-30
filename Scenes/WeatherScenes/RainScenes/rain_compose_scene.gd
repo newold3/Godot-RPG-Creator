@@ -126,6 +126,7 @@ func rumble() -> void:
 	if player.is_playing():
 		await player.finished
 		await get_tree().create_timer(randf_range(0.1, 0.4)).timeout
+		if not is_instance_valid(self) or not is_inside_tree(): return
 	
 	if !is_started:
 		return

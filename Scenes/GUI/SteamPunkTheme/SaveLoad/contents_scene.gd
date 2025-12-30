@@ -137,6 +137,7 @@ func _on_back_button_pressed() -> void:
 		if "animation_finished" in back_button:
 			await back_button.animation_finished
 			await get_tree().create_timer(0.1).timeout
+			if not is_instance_valid(self) or not is_inside_tree(): return
 
 
 func _config_hand_in_slot() -> void:
@@ -304,6 +305,7 @@ func _load_game() -> void:
 	if current_button and not current_button.is_disabled:
 		current_button.highlight()
 		await get_tree().create_timer(0.1).timeout
+		if not is_instance_valid(self) or not is_inside_tree(): return
 		GameManager.play_fx("load")
 		GameManager.load_game(current_button.slot_id)
 	else:
@@ -363,4 +365,5 @@ func _end() -> void:
 	GameManager.set_cursor_manipulator(GameManager.MANIPULATOR_MODES.NONE)
 	partial_destroy.emit()
 	await get_tree().create_timer(0.25).timeout
+	if not is_instance_valid(self) or not is_inside_tree(): return
 	destroy.emit()

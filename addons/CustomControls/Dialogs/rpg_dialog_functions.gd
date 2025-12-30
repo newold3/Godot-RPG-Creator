@@ -10,7 +10,7 @@ var busy: bool = false
 var initial_delay: float
 
 var audio_player: AudioStreamPlayer
-var play_audio_when_focus_inactive_window: bool = true # Play buzzer fx when click in inactive window
+var play_audio_when_focus_inactive_window: bool = true
 
 var buzzer_tween: Tween
 
@@ -49,13 +49,13 @@ func _find_game_embbedded_menu() -> PopupMenu:
 			var s = popup.get_signal_connection_list("id_pressed")[0]
 			if str(s.callable) == "GameView::_embed_options_menu_menu_id_pressed":
 				return popup
-			
 	
 	return null
 
 
+## Checks if the window instance is valid, is a Window node, and has a valid ID.
 func _is_valid_window(window) -> bool:
-	return window and is_instance_valid(window) and window is Window and window.get_window_id() != -1
+	return is_instance_valid(window) and window is Window and window.get_window_id() != -1
 
 
 func preview_commands_in_action(commands: Array[RPGEventCommand]) -> void:
@@ -110,9 +110,11 @@ func restore_embbedded_game_window() -> void:
 func enable_dialog() -> void:
 	if current_dialog_is_disabled and _current_dialogs:
 		var last_dialog = _current_dialogs[-1]
-		last_dialog.exclusive = current_dialog_exclusive
+		if _is_valid_window(last_dialog):
+			last_dialog.exclusive = current_dialog_exclusive
 		for dialog in _current_dialogs:
-			open_dialog(dialog)
+			if _is_valid_window(dialog):
+				open_dialog(dialog)
 
 	current_dialog_is_disabled = false
 	_current_dialogs.clear()
@@ -125,11 +127,12 @@ func disable_dialog() -> void:
 	_current_dialogs = current_opened_dialogs.duplicate()
 	
 	var dialog = current_opened_dialogs[-1]
-	if dialog.visibility_changed.is_connected(dialog_visibility_changed):
-		dialog.visibility_changed.disconnect(dialog_visibility_changed.bind(dialog))
-	current_dialog_exclusive = dialog.exclusive
-	dialog.exclusive = false
-	dialog.visible = false
+	if _is_valid_window(dialog):
+		if dialog.visibility_changed.is_connected(dialog_visibility_changed):
+			dialog.visibility_changed.disconnect(dialog_visibility_changed.bind(dialog))
+		current_dialog_exclusive = dialog.exclusive
+		dialog.exclusive = false
+		dialog.visible = false
 	current_dialog_is_disabled = true
 
 
@@ -139,10 +142,16 @@ func _process(delta: float) -> void:
 		if current_dialog_is_disabled:
 			if not EditorInterface.is_playing_scene():
 				finish_preview_commands_in_action()
-				
-		if not current_opened_dialogs.is_empty() and current_opened_dialogs[-1].is_input_disabled():
-			current_opened_dialogs[-1].set_disable_input.call_deferred(false)
-		elif main_window.is_input_disabled():
+		
+		# CRITICAL FIX: Validate BEFORE accessing methods to prevent 0xc0000005
+		if not current_opened_dialogs.is_empty():
+			var last_dialog = current_opened_dialogs[-1]
+			if not _is_valid_window(last_dialog):
+				current_opened_dialogs.erase(last_dialog)
+			elif last_dialog.is_input_disabled():
+				last_dialog.set_disable_input.call_deferred(false)
+		
+		elif _is_valid_window(main_window) and main_window.is_input_disabled():
 			main_window.set_disable_input.call_deferred(false)
 		
 	if initial_delay > 0.0:
@@ -165,15 +174,18 @@ func select_last_dialog() -> void:
 		current_opened_dialogs.erase(dialog)
 		
 	if current_opened_dialogs.size() > 0:
-		current_opened_dialogs[-1].set_disable_input.call_deferred(false)
-		current_opened_dialogs[-1].grab_focus()
+		var last_dialog = current_opened_dialogs[-1]
+		if _is_valid_window(last_dialog):
+			last_dialog.set_disable_input.call_deferred(false)
+			last_dialog.grab_focus.call_deferred()
 	else:
 		var main_dialog = get_window()
-		main_dialog.set_disable_input.call_deferred(false)
-		main_dialog.grab_focus()
+		if _is_valid_window(main_dialog):
+			main_dialog.set_disable_input.call_deferred(false)
+			main_dialog.grab_focus.call_deferred()
 
 
-func show_file_dialog(callback: Callable, base_types: Array[StringName] = []) -> void: # use integrated quick dialog
+func show_file_dialog(callback: Callable, base_types: Array[StringName] = []) -> void:
 	if Engine.is_editor_hint():
 		if RPGSYSTEM.editor_interface:
 			RPGSYSTEM.editor_interface.popup_quick_open(callback, base_types)
@@ -199,7 +211,7 @@ func open_dialog(path: Variant, mode: OPEN_MODE = OPEN_MODE.CENTERED_ON_MOUSE, d
 		dialog.exclusive = true
 
 	var dialog_parent = get_viewport()
-	if current_opened_dialogs.size() > 0:
+	if current_opened_dialogs.size() > 0 and _is_valid_window(current_opened_dialogs[-1]):
 		dialog_parent = current_opened_dialogs[-1]
 		
 	if enable_transition:
@@ -228,12 +240,10 @@ func show_dialog(dialog: Window, mode: OPEN_MODE = OPEN_MODE.CENTERED_ON_MOUSE, 
 		current_opened_dialogs.erase(dialog)
 		
 	if not dialog.is_inside_tree():
-		if current_opened_dialogs.size() > 0:
+		if current_opened_dialogs.size() > 0 and _is_valid_window(current_opened_dialogs[-1]):
 			current_opened_dialogs[-1].add_child(dialog)
 		else:
 			get_viewport().add_child(dialog)
-	
-	#dialog.get_parent().unfocusable = true
 	
 	if dialog_size:
 		dialog.set_deferred("size", dialog_size)
@@ -281,9 +291,12 @@ func show_dialog(dialog: Window, mode: OPEN_MODE = OPEN_MODE.CENTERED_ON_MOUSE, 
 		dialog.position = p
 
 	if current_opened_dialogs.size() > 0:
-		current_opened_dialogs[-1].set_disable_input.call_deferred(true)
+		var last_dialog = current_opened_dialogs[-1]
+		if _is_valid_window(last_dialog):
+			last_dialog.set_disable_input.call_deferred(true)
 	else:
 		get_viewport().set_disable_input.call_deferred(true)
+		
 	current_opened_dialogs.append(dialog)
 	initial_delay = 0.1
 	_update_file_cache_activity()
@@ -292,36 +305,14 @@ func show_dialog(dialog: Window, mode: OPEN_MODE = OPEN_MODE.CENTERED_ON_MOUSE, 
 		dialog.grab_focus.call_deferred()
 
 	busy = false
-	
-	#prints("Añadido dialogo ", dialog, "lista de dialogos abiertos = ", current_opened_dialogs)
 
 
 func _check_window_focus() -> void:
 	return # May cause engine bricking; currently disabled.
-	if current_opened_dialogs.size() > 0 and not current_opened_dialogs[-1].has_focus():
-		var window = current_opened_dialogs[-1]
-		var pos = current_opened_dialogs[-1].get_mouse_position()
-		var rect = Rect2i(Vector2i.ZERO, window.size)
-		if rect.has_point(pos):
-			var active_popup_id = DisplayServer.window_get_active_popup()
-			if not active_popup_id > 0:
-				#var uid = DisplayServer.window_get_attached_instance_id(active_popup_id)
-				#var obj = instance_from_id(uid)
-				window.grab_focus()
 
 
 func _on_dialog_mouse_entered(dialog: Window, force_focus: bool = false) -> void:
 	return # May cause engine bricking; currently disabled.
-	var active_popup : int = DisplayServer.window_get_active_popup()
-	if active_popup != -1:
-		return
-	
-	if CustomColorDialog.instance and CustomColorDialog.is_opened:
-		CustomColorDialog.instance.grab_focus()
-		return
-		
-	if (force_focus or current_opened_dialogs.size() > 0 and current_opened_dialogs[-1] == dialog and not dialog.has_focus()):
-		dialog.grab_focus()
 
 
 func show_dialog_center_in_mouse(dialog: Window) -> void:
@@ -375,7 +366,9 @@ func _on_dialog_grab_focus(dialog) -> void:
 			t.tween_property(current_dialog, "position", position, 0.1)
 			current_dialog.set_meta("shake_tween", t)
 		
-		current_opened_dialogs[-1].grab_focus()
+		var last_dialog = current_opened_dialogs[-1]
+		if _is_valid_window(last_dialog):
+			last_dialog.grab_focus.call_deferred()
 		
 		if play_audio_when_focus_inactive_window:
 			play_buzzer_fx(dialog)
@@ -415,7 +408,6 @@ func dialog_visibility_changed(dialog: Window) -> void:
 func _on_dialog_tree_exiting(dialog: Window) -> void:
 	if current_opened_dialogs.has(dialog):
 		current_opened_dialogs.erase(dialog)
-		#prints("Saliendo del dialogo ", dialog, "lista de dialogos abiertos = ", current_opened_dialogs)
 		select_last_dialog()
 	_update_file_cache_activity()
 
@@ -449,7 +441,7 @@ func _on_dialog_window_input(event: InputEvent, dialog: Window) -> void:
 			elif event.keycode == KEY_F and event.is_ctrl_pressed() and event.is_alt_pressed():
 				for i in range(current_opened_dialogs.size() - 1, -1, -1):
 					var d = current_opened_dialogs[i]
-					if "_on_cancel_button_pressed" in d:
+					if _is_valid_window(d) and "_on_cancel_button_pressed" in d:
 						d._on_cancel_button_pressed()
 
 

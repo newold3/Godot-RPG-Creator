@@ -260,7 +260,9 @@ func _on_back_button_pressed() -> void:
 		back_button.select()
 		if "animation_finished" in back_button:
 			await back_button.animation_finished
+			if not is_instance_valid(self) or not is_inside_tree(): return
 			await get_tree().create_timer(0.1).timeout
+			if not is_instance_valid(self) or not is_inside_tree(): return
 		
 	end.emit()
 

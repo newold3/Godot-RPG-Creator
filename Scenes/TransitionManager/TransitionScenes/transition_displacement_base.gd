@@ -48,7 +48,7 @@ func end() -> void:
 	main_tween.tween_callback(end_animation)
 	
 	await get_tree().create_timer(transition_time).timeout # Wait to finish animation before remeve scene
-
+	if not is_instance_valid(self) or not is_inside_tree(): return
 	super() # queue free
 
 

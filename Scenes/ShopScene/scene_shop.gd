@@ -318,6 +318,7 @@ func start() -> void:
 	animation_tween.tween_property(mat, "shader_parameter/warp_amount", 0.04, 0.35)
 	
 	await get_tree().create_timer(0.15).timeout
+	if not is_instance_valid(self) or not is_inside_tree(): return
 	
 	%AnimationPlayer.play("Start")
 	_update_page(0)

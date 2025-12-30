@@ -99,6 +99,7 @@ func start() -> void:
 	create_glass_shards()
 	
 	await get_tree().create_timer(0.06).timeout # Allow time for the scene to load viewports
+	if not is_instance_valid(self) or not is_inside_tree(): return
 
 	%Background.color = transition_color
 	$FinalTexture.texture = %Pass2.get_texture()

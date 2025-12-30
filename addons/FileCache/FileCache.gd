@@ -90,6 +90,7 @@ func _rebuild_known_files() -> void:
 ## Called when the scene tree is ready and marks the cache as fully initialized.
 func _ready() -> void:
 	await get_tree().create_timer(0.1).timeout
+	if not is_instance_valid(self) or not is_inside_tree(): return
 	_initial_setup.call_deferred()
 
 
@@ -504,6 +505,7 @@ func save() -> void:
 	save_options()
 	if !cache_setted:
 		await get_tree().create_timer(0.1).timeout
+		if not is_instance_valid(self) or not is_inside_tree(): return
 	var f = FileAccess.open(CACHE_FILE_PATH, FileAccess.WRITE)
 	f.store_var(cache)
 	f.close()

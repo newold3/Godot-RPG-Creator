@@ -86,6 +86,7 @@ func start(obj: Node, launcher_mode: RPGEventPage.LAUNCHER_MODE) -> bool:
 		var delay = (current_frame_time - Time.get_ticks_msec()) / 1000.0
 		if delay < 0.1:
 			await get_tree().create_timer(0.1 - delay).timeout
+			if not is_instance_valid(self) or not is_inside_tree(): return false
 
 		busy = false
 	

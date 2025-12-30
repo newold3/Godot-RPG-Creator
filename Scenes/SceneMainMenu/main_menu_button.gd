@@ -77,6 +77,7 @@ func _ready() -> void:
 		
 		if initial_animation_delay > 0:
 			await get_tree().create_timer(initial_animation_delay).timeout
+			if not is_instance_valid(self) or not is_inside_tree(): return
 		
 		animation_player.play("Start")
 		

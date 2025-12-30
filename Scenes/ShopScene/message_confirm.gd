@@ -100,6 +100,7 @@ func hide_message() -> void:
 	is_enabled = false
 	
 	await get_tree().create_timer(0.2).timeout
+	if not is_instance_valid(self) or not is_inside_tree(): return
 		
 	main_tween = create_tween()
 	main_tween.set_parallel(true)

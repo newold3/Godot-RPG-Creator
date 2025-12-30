@@ -18,7 +18,7 @@ var TOOLTIP_COLORS = PackedColorArray([
 ])
 
 ## Currently active tooltip window instance
-var current_tooltip
+var current_tooltip: Window
 
 ## Node that is currently showing a tooltip
 var current_node_showing_tooltip: Node
@@ -31,7 +31,7 @@ var tooltip_tween: Tween
 
 var busy: bool = false # Externally controlled by some scripts
 
-var tooltip_list: Array = []
+var tooltip_list: Array[Window] = []
 var tooltip_count: int = 0
 
 var tooltip_regex: Dictionary = {}
@@ -51,9 +51,9 @@ func _ready() -> void:
 	set_process_input(true)
 	
 	tooltip_regex = {
-		"filter1": RegEx.new(), # Título
-		"filter2": RegEx.new(), # Colores
-		"filter3": RegEx.new(), # Números
+		"filter1": RegEx.new(), # Title
+		"filter2": RegEx.new(), # Colors
+		"filter3": RegEx.new(), # Numbers
 		"filter4": RegEx.new()  # Quotes
 	}
 	
@@ -66,10 +66,14 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if _delay_to_show_tooltip_timer > 0.0:
 		_delay_to_show_tooltip_timer -= delta
-		if _delay_to_show_tooltip_timer <= 0.0 and _current_tooltip_to_show and is_instance_valid(_current_tooltip_to_show) and _current_tooltip_to_show.is_visible_in_tree():
-			var w = _current_tooltip_to_show.get_window()
-			if w.has_focus():
-				_on_node_mouse_entered(_current_tooltip_to_show, false)
+		if _delay_to_show_tooltip_timer <= 0.0:
+			if is_instance_valid(_current_tooltip_to_show) and _current_tooltip_to_show.is_visible_in_tree():
+				var w = _current_tooltip_to_show.get_window()
+				if is_instance_valid(w) and w.has_focus():
+					_on_node_mouse_entered(_current_tooltip_to_show, false)
+			else:
+				# Reset if invalid
+				_current_tooltip_to_show = null
 
 
 func _on_destroy_all_tooltips() -> void:
@@ -135,8 +139,10 @@ func _on_node_added(node: Node) -> void:
 				if node is SpinBox:
 					if not tooltip.begins_with("[title]"):
 						tooltip = "[title]%s[/title]%s" % [node.name.to_pascal_case(), tooltip]
-					node.get_line_edit().tooltip_text = tooltip
-					replace_all_tooltips_with_custom(node.get_line_edit())
+					var line_edit = node.get_line_edit()
+					if is_instance_valid(line_edit):
+						line_edit.tooltip_text = tooltip
+						replace_all_tooltips_with_custom(line_edit)
 			elif node.has_meta("current_tooltip") and node.get_meta("current_tooltip").length() > 0:
 				if node.mouse_entered.is_connected(_show_custom_tooltip_text_for_node):
 					node.mouse_entered.disconnect(_show_custom_tooltip_text_for_node)
@@ -167,8 +173,10 @@ func plugin_replace_all_tooltips_with_custom(node: Node) -> void:
 			if node is SpinBox:
 				if not tooltip.begins_with("[title]"):
 					tooltip = "[title]%s[/title]%s" % [node.name.to_pascal_case(), tooltip]
-				node.get_line_edit().tooltip_text = tooltip
-				plugin_replace_all_tooltips_with_custom(node.get_line_edit())
+				var line_edit = node.get_line_edit()
+				if is_instance_valid(line_edit):
+					line_edit.tooltip_text = tooltip
+					plugin_replace_all_tooltips_with_custom(line_edit)
 				return
 		elif node.has_meta("current_tooltip") and node.get_meta("current_tooltip").length() > 0:
 			if node.mouse_entered.is_connected(_show_custom_tooltip_text_for_node):
@@ -197,7 +205,7 @@ func restore_all_tooltips_for(node: Node) -> void:
 func _show_custom_tooltip_text_for_node(node: Node) -> void:
 	if not is_instance_valid(node): return
 	var w = node.get_window()
-	if not w.has_focus(): return
+	if not is_instance_valid(w) or not w.has_focus(): return
 	
 	if no_tooltips_enabled or FileCache.options.get("force_no_tooltips_enabled", false): return
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT): return
@@ -210,11 +218,11 @@ func _show_custom_tooltip_text_for_node(node: Node) -> void:
 			if contents.length() == 0:
 				return
 			if node.has_signal("tooltip_changed"):
-				if node.tooltip_changed.is_connected(_show_custom_tooltip_text_for_node):
-					node.tooltip_changed.disconnect(_show_custom_tooltip_text_for_node)
-				node.tooltip_changed.connect(_show_custom_tooltip_text_for_node.bind(node))
+				if not node.tooltip_changed.is_connected(_show_custom_tooltip_text_for_node):
+					node.tooltip_changed.connect(_show_custom_tooltip_text_for_node.bind(node))
 		else:
 			contents = node.get_meta("current_tooltip")
+			
 		if tooltip_tween:
 			tooltip_tween.kill()
 
@@ -224,8 +232,6 @@ func _show_custom_tooltip_text_for_node(node: Node) -> void:
 
 
 func show_tooltip(title: String, contents: String, parent_node) -> void:
-	#if current_tooltip:
-		#current_tooltip.end()
 	call_deferred("_create_tooltip", title, contents, parent_node)
 
 
@@ -238,15 +244,25 @@ func _create_tooltip(title: String, contents: String, parent_node) -> void:
 	if not is_instance_valid(parent_node):
 		return
 	
+	# Prevent duplicate tooltips for same node
 	if parent_node.has_meta("current_tooltip_node"):
 		var existing = parent_node.get_meta("current_tooltip_node")
 		if is_instance_valid(existing):
 			return
+		else:
+			# Cleanup dead reference
+			parent_node.remove_meta("current_tooltip_node")
 	
 	var tooltip: Window
 	var is_new_tooltip: bool = false
 	
-	# --- Tooltip Pooling Logic ---
+	# --- Robust Pooling Logic ---
+	# First, clean invalid entries from list
+	for i in range(tooltip_list.size() - 1, -1, -1):
+		if not is_instance_valid(tooltip_list[i]):
+			tooltip_list.remove_at(i)
+			tooltip_count = max(0, tooltip_count - 1)
+	
 	if tooltip_count < MAX_TOOLTIPS:
 		tooltip = CUSTOM_TOOLTIP.instantiate()
 		tooltip.inactive_tooltip.connect(_on_tooltip_inactive)
@@ -254,24 +270,17 @@ func _create_tooltip(title: String, contents: String, parent_node) -> void:
 		tooltip_count += 1
 		is_new_tooltip = true
 	else:
-		var found: bool = false
+		# Search in valid pool
 		for i in range(tooltip_list.size() - 1, -1, -1):
 			var t = tooltip_list[i]
-			
-			# SECURITY CHECK: If 't' is freed (dead), remove it and continue
-			if not is_instance_valid(t):
-				tooltip_list.remove_at(i)
-				tooltip_count -= 1
-				continue
-				
 			if t.get_meta("is_in_pool", false):
 				tooltip = t
 				tooltip_list.erase(t)
 				tooltip.set_meta("is_in_pool", false)
-				found = true
 				break
 		
-		if not found:
+		# If pool was full but no available tooltips (all busy), make a temporary overflow one
+		if not tooltip:
 			tooltip = CUSTOM_TOOLTIP.instantiate()
 			tooltip.inactive_tooltip.connect(_on_tooltip_inactive)
 			tooltip.set_meta("is_in_pool", false)
@@ -284,7 +293,6 @@ func _create_tooltip(title: String, contents: String, parent_node) -> void:
 		tooltip.busy = true
 	
 	tooltip.size = Vector2i.ONE
-	tooltip.parent_node = parent_node
 	
 	# --- Formatting Cache & RegEx Logic ---
 	
@@ -350,7 +358,7 @@ func _create_tooltip(title: String, contents: String, parent_node) -> void:
 	tooltip.visible = false
 	tooltip.position = get_window().get_mouse_position()
 
-	# Defer all final setup to avoid race conditions
+	# Defer final setup to avoid race conditions
 	call_deferred(
 		"_finalize_tooltip_setup", 
 		tooltip, 
@@ -360,6 +368,7 @@ func _create_tooltip(title: String, contents: String, parent_node) -> void:
 		is_new_tooltip
 	)
 
+
 func _finalize_tooltip_setup(
 	tooltip: Window, 
 	parent_node: Node, 
@@ -368,19 +377,20 @@ func _finalize_tooltip_setup(
 	is_new: bool
 ) -> void:
 	
-	if not is_instance_valid(parent_node) or not is_instance_valid(tooltip):
-		# If the tooltip is valid but parent isn't, try to salvage it or let it die
-		if is_instance_valid(tooltip) and not tooltip.get_meta("is_in_pool", false):
-			tooltip.queue_free() # Better to kill it than leave it orphaned
+	# Validate EVERYTHING again since we are deferred
+	if not is_instance_valid(tooltip):
+		return
+		
+	if not is_instance_valid(parent_node) or not parent_node.is_inside_tree():
+		# If the parent died, we must kill the tooltip if it was new, 
+		# or ideally return it to pool (but freeing is safer to avoid state corruption)
+		tooltip.queue_free()
 		return
 
 	if not tooltip.tree_exiting.is_connected(_on_tooltip_tree_exiting):
 		tooltip.tree_exiting.connect(_on_tooltip_tree_exiting.bind(tooltip))
 
-	if is_new:
-		parent_node.add_child(tooltip)
-	else:
-		# Check if it already has a parent to avoid errors
+	if tooltip.get_parent() != parent_node:
 		if tooltip.get_parent():
 			tooltip.reparent(parent_node)
 		else:
@@ -396,36 +406,41 @@ func _finalize_tooltip_setup(
 	current_node_showing_tooltip = parent_node
 
 
-
 func _on_tooltip_inactive(tooltip: Window) -> void:
+	if not is_instance_valid(tooltip): return
 	
-	_remove_tooltip_for(tooltip.get_parent(), tooltip)
+	var parent = tooltip.get_parent()
+	if is_instance_valid(parent):
+		_remove_tooltip_for(parent, tooltip)
+	
 	tooltip.visible = false
 	
-	if is_instance_valid(tooltip):
+	# Safe reparent to manager to keep it alive
+	if tooltip.get_parent() != self:
 		tooltip.reparent(self)
 	
 	tooltip.position = Vector2i(-1000000, -1000000)
-	
-	# Marcar como disponible en el pool
 	tooltip.set_meta("is_in_pool", true)
 	
-	# Agregar al pool si no está ya
+	# Add to pool if valid and not duplicate
 	if not tooltip in tooltip_list and tooltip_list.size() < MAX_TOOLTIPS:
 		tooltip_list.append(tooltip)
-	elif is_instance_valid(tooltip):
+	elif tooltip not in tooltip_list:
+		# If pool is full, just kill the extra tooltip
 		tooltip.queue_free()
 
 
 ## Remove tooltip reference and disconnect signals when tooltip is destroyed
 func _remove_tooltip_for(node: Node, original_tooltip) -> void:
-	if node.has_meta("current_tooltip_node"):
+	if is_instance_valid(node) and node.has_meta("current_tooltip_node"):
 		var tooltip = node.get_meta("current_tooltip_node")
 		if tooltip == original_tooltip:
 			node.remove_meta("current_tooltip_node")
-			destroy_all_tooltips.disconnect(tooltip.end)
-			current_tooltip = null
-			current_node_showing_tooltip = null
+			if destroy_all_tooltips.is_connected(tooltip.end):
+				destroy_all_tooltips.disconnect(tooltip.end)
+			if current_tooltip == tooltip:
+				current_tooltip = null
+				current_node_showing_tooltip = null
 
 
 ## Handle mouse entering a node to set up tooltip behavior based on dialog state
@@ -464,17 +479,13 @@ func _on_node_mouse_exited(node: Node) -> void:
 		_delay_to_show_tooltip_timer = 0.0
 
 
-## CRITICAL FIX: Cleanup handler for when a tooltip is destroyed forcefully 
-## (e.g., when its parent dialog is closed via queue_free)
+## CRITICAL FIX: Cleanup handler for when a tooltip is destroyed forcefully
 func _on_tooltip_tree_exiting(tooltip_instance: Window) -> void:
-	# 1. Remove from active reference immediately
 	if current_tooltip == tooltip_instance:
 		current_tooltip = null
-		if tooltip_tween: 
+		if tooltip_tween:
 			tooltip_tween.kill()
 	
-	# 2. Remove from the pool list to prevent accessing freed memory later
 	if tooltip_instance in tooltip_list:
 		tooltip_list.erase(tooltip_instance)
-		# Decrement count so we can instantiate a replacement later
 		tooltip_count = max(0, tooltip_count - 1)

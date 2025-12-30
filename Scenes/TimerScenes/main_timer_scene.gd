@@ -541,6 +541,7 @@ func _on_timer_timeout() -> void:
 		pass
 	else:
 		await get_tree().create_timer(2.5).timeout
+		if not is_instance_valid(self) or not is_inside_tree(): return
 		start(_in_editor_timer)
 
 func _play_warning_feedback() -> void:

@@ -22,7 +22,9 @@ func _ready() -> void:
 			func(_anim):
 				await get_tree().create_timer(pause_before_stop).timeout
 				$AnimationPlayer.play("Stop")
+				if not is_instance_valid(self) or not is_inside_tree(): return
 				await $AnimationPlayer.animation_finished
+				if not is_instance_valid(self) or not is_inside_tree(): return
 				queue_free()
 		, CONNECT_ONE_SHOT
 		)

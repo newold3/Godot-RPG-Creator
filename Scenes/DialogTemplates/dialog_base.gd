@@ -451,6 +451,7 @@ func _show_wait_form_input_cursor() -> void:
 	if is_floating:
 		if not is_inside_tree(): return
 		await get_tree().create_timer(paragraph_delay).timeout
+		if not is_instance_valid(self) or not is_inside_tree(): return
 		if floating_initialize:
 			resume()
 			_on_resume_dialog()
@@ -464,6 +465,7 @@ func _show_wait_form_input_cursor() -> void:
 			
 			busy = true 
 			await get_tree().create_timer(wait_time).timeout
+			if not is_instance_valid(self) or not is_inside_tree(): return
 			
 			if is_inside_tree():
 				perform_resume_dialog.emit()
@@ -476,6 +478,7 @@ func _show_wait_form_input_cursor() -> void:
 		else:
 			if not is_inside_tree(): return
 			await get_tree().create_timer(wait_for_input_time).timeout
+			if not is_instance_valid(self) or not is_inside_tree(): return
 			perform_resume_dialog.emit()
 
 
@@ -2294,6 +2297,7 @@ func start_command_imgfx(command: SpecialEffectCommand) -> void:
 				busy = true
 				if not is_inside_tree(): return
 				await get_tree().create_timer(duration).timeout
+				if not is_instance_valid(self) or not is_inside_tree(): return
 				busy = false
 			
 			if command.parameters.type == 1 and "idle_animation" in command.parameters:
@@ -2385,6 +2389,7 @@ func start_command_wait(command: SpecialEffectCommand) -> void:
 		if not is_inside_tree(): return
 		command_waiting_enabled = true
 		await get_tree().create_timer(seconds).timeout
+		if not is_instance_valid(self) or not is_inside_tree(): return
 		busy = false
 		command_waiting_enabled = false
 	else:
@@ -2455,6 +2460,7 @@ func start_command_dialog_shake(command: SpecialEffectCommand) -> void:
 		busy = true
 		if not is_inside_tree(): return
 		await get_tree().create_timer(duration).timeout
+		if not is_instance_valid(self) or not is_inside_tree(): return
 		busy = false
 
 
@@ -2499,6 +2505,7 @@ func start_command_add_speaker_end(command: SpecialEffectCommand) -> void:
 			busy = true
 			if not is_inside_tree(): return
 			await get_tree().create_timer(speaker.wait_on_finish).timeout
+			if not is_instance_valid(self) or not is_inside_tree(): return
 			busy = false
 
 

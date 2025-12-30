@@ -397,6 +397,7 @@ func _preview_play_animation():
 		return
 	_play_animation(preview_animation)
 	await get_tree().create_timer(1.0).timeout
+	if not is_instance_valid(self) or not is_inside_tree(): return
 	_reset_to_normal()
 
 # Public API

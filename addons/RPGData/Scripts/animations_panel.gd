@@ -506,6 +506,7 @@ func _on_animation_finished() -> void:
 	
 	busy2 = true
 	await get_tree().create_timer(0.06).timeout
+	if not is_instance_valid(self) or not is_inside_tree(): return
 	busy2 = false
 	
 	%PlayAnimationButton.set_disabled(false)

@@ -41,6 +41,7 @@ func restart() -> void:
 	_disabled()
 	start()
 	await get_tree().create_timer(initial_selection_delay).timeout
+	if not is_instance_valid(self) or not is_inside_tree(): return
 	_enabled()
 	select_button()
 	var manipulator = GameManager.get_cursor_manipulator()

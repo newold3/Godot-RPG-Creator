@@ -75,13 +75,17 @@ func _on_timer_timeout() -> void:
 	if current_transition_mode != -1:
 		if current_transition_mode == 0:
 			await get_tree().create_timer(0.5).timeout
+			if not is_instance_valid(self) or not is_inside_tree(): return
 			await start(in_editor_texture_in)
+			if not is_instance_valid(self) or not is_inside_tree(): return
 		else:
 			await end(in_editor_texture_out)
+			if not is_instance_valid(self) or not is_inside_tree(): return
 	else:
 		await get_tree().process_frame
 	
 	await get_tree().create_timer(0.15).timeout
+	if not is_instance_valid(self) or not is_inside_tree(): return
 	
 	current_transition_mode = wrapi(current_transition_mode + 1, 0, 2)
 	if is_instance_valid(current_timer) and current_timer.is_inside_tree():

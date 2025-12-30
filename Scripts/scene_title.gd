@@ -353,6 +353,7 @@ func _on_button_1_click() -> void:
 	if GameManager.main_scene:
 		GameManager.hide_cursor(false, scene_manipulator)
 		await get_tree().create_timer(0.35).timeout
+		if not is_instance_valid(self) or not is_inside_tree(): return
 
 		GameManager.main_scene.setup_new_game()
 	else:
@@ -397,6 +398,7 @@ func _on_button_4_begin_click() -> void:
 	_set_button_selected(button_4, 3, 0)
 	_update_button_selection()
 	await get_tree().create_timer(0.35).timeout
+	if not is_instance_valid(self) or not is_inside_tree(): return
 
 	if GameManager.main_scene:
 		GameManager.main_scene.change_scene("res://Scenes/EndScene/scene_end.tscn")

@@ -402,6 +402,7 @@ func _on_digit_button_value_updated(direction: int) -> void:
 	t.tween_property(target, "position:y", target.position.y, 0.1)
 	
 	await get_tree().create_timer(0.1).timeout
+	if not is_instance_valid(self) or not is_inside_tree(): return
 	
 	target.toggle_mode = false
 	target.set_pressed_no_signal(false)
