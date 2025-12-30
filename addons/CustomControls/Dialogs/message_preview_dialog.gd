@@ -16,7 +16,7 @@ var main_dialog
 func _ready() -> void:
 	main_dialog = %Dialog
 	main_dialog.is_editor_prevew = true
-	close_requested.connect(queue_free)
+	close_requested.connect(queue_free, CONNECT_DEFERRED)
 	main_dialog.all_messages_finished.connect(_repeat_message)
 	focus_entered.connect(
 		func():

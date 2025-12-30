@@ -1,4 +1,4 @@
-[gd_scene load_steps=104 format=3 uid="uid://f3dvroy0ce3d"]
+[gd_scene load_steps=106 format=3 uid="uid://f3dvroy0ce3d"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_6ke1q"]
 [ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="1_acjup"]
@@ -295,9 +295,17 @@ region = Rect2(400, 150, 50, 50)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qnlcj"]
 atlas = ExtResource("2_s8pxw")
-region = Rect2(300, 250, 50, 50)
+region = Rect2(100, 350, 50, 50)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_refvn"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(150, 350, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_icrmr"]
+atlas = ExtResource("2_s8pxw")
+region = Rect2(300, 250, 50, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jqunv"]
 atlas = ExtResource("2_s8pxw")
 region = Rect2(350, 250, 50, 50)
 
@@ -454,7 +462,7 @@ corner_radius_bottom_left = 12
 process_priority = 10
 oversampling_override = 1.0
 title = "Advanced Text Editor"
-position = Vector2i(0, 36)
+position = Vector2i(55, 36)
 size = Vector2i(1579, 1009)
 exclusive = true
 min_size = Vector2i(900, 700)
@@ -798,6 +806,16 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_qnlcj")
 texture_hover = SubResource("AtlasTexture_refvn")
+
+[node name="NewLine" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Add a new line"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_icrmr")
+texture_hover = SubResource("AtlasTexture_jqunv")
 
 [node name="ResetConfig" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
@@ -1305,6 +1323,7 @@ wait_time = 0.3
 [connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/ShowWholeLine" to="." method="_on_show_whole_line_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/DontWaitPlayerInput" to="." method="_on_dont_wait_player_input_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/NewParagraph" to="." method="_on_new_paragraph_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/NewLine" to="." method="_on_new_line_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/ResetConfig" to="." method="_on_reset_config_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/PauseDialog" to="." method="_on_pause_dialog_pressed"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/HighlightCommands" to="." method="_on_highlight_commands_toggled"]

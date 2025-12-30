@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://crv00irbonpyn"]
+[gd_scene load_steps=23 format=3 uid="uid://crv00irbonpyn"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_1u7n8"]
 [ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="1_klj1w"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="3_rwmya"]
 [ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="4_a4bvc"]
 [ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="6_wc6ge"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="7_47ri7"]
 
 [sub_resource type="Gradient" id="Gradient_abbgl"]
 colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
@@ -244,6 +245,28 @@ tooltip_text = "Use a dialog box in which you can position and resize the image 
 text = "Visual Configuration"
 icon = SubResource("AtlasTexture_y3goc")
 icon_alignment = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls1"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ExtraControls1/HBoxContainer3"]
+layout_mode = 2
+text = "Link Character To:"
+
+[node name="CharacterLinkedTo" parent="MarginContainer/VBoxContainer/ExtraControls1/HBoxContainer3" instance=ExtResource("7_47ri7")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Link this character to the character speaking on the left or right side.
+This ensures that when the highlight-speaking-character command is used, this image is dimmed if the speaking character is not in the specified position, or highlighted if it is in the same position."
+selected = 0
+item_count = 3
+popup/item_0/text = "None"
+popup/item_0/id = 0
+popup/item_1/text = "Character Left"
+popup/item_1/id = 1
+popup/item_2/text = "Character Right"
+popup/item_2/id = 2
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls1"]
 layout_mode = 2

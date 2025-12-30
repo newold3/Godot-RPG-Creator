@@ -91,7 +91,7 @@ func _ready() -> void:
 func _on_focus_entered() -> void:
 	if preview_message_dialog and is_instance_valid(preview_message_dialog) and preview_message_dialog.mode == Window.MODE_MINIMIZED and not busy:
 		busy = true
-		preview_message_dialog.queue_free()
+		preview_message_dialog.queue_free.call_deferred()
 		await get_tree().process_frame
 		%PreviewConfig.pressed.emit()
 		await get_tree().process_frame
@@ -270,6 +270,11 @@ func _on_ok_button_pressed() -> void:
 		command_changed.emit(commands)
 	else:
 		fast_text_changed.emit(%TextEdit.text.strip_edges())
+		
+	if preview_message_dialog and is_instance_valid(preview_message_dialog):
+		preview_message_dialog.queue_free()
+		await get_tree().process_frame
+		
 	queue_free()
 
 
@@ -605,6 +610,8 @@ func click_on_command_image(command: Dictionary) -> void:
 				img.trans_time = float(m.get_string(2))
 			elif m.get_string(0).to_lower().begins_with("trans_wait="):
 				img.trans_wait = int(m.get_string(2))
+			elif m.get_string(0).to_lower().begins_with("character_linked_to="):
+				img.character_linked_to = int(m.get_string(2))
 			elif m.get_string(0).to_lower().begins_with("size="):
 				var value = m.get_string(2)
 				if value.find("x") != -1:
@@ -1174,7 +1181,8 @@ func _on_image_selected(img: Dictionary) -> void:
 			var arg12 = "" if img.flip_v == 0 else " flip_v=1"
 			var arg13 = "" if img.trans_type_end == 0 else " trans_type_end=%s" % img.trans_type_end
 			var arg15 = "" if img.trans_end_time == 0 else " trans_end_time=%s" % img.trans_end_time
-			bbcode = "[character %s%s%s%s%s%s%s%s%s%s%s%s%s]" % [arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10,arg11, arg12, arg13]
+			var arg16 = "" if img.character_linked_to == 0 else " character_linked_to=%s" % img.character_linked_to
+			bbcode = "[character %s%s%s%s%s%s%s%s%s%s%s%s%s%s%s]" % [arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10,arg11, arg12, arg13, arg15, arg16]
 		else: # Inline Image
 			var icon: RPGIcon = img.path
 			var arg1 = icon.path
@@ -1509,11 +1517,17 @@ func _on_preview_text_pressed() -> void:
 		add_child(preview_message_dialog)
 		preview_message_dialog.position = position - Vector2i(preview_message_dialog.size.x, 0)
 		preview_message_dialog.position.x = max(10, preview_message_dialog.position.x)
-		preview_message_dialog.hide()
-		preview_message_dialog.show()
+		#preview_message_dialog.hide()
+		#await get_tree().process_frame
+		#preview_message_dialog.show()
+		if not preview_message_dialog.visible:
+			preview_message_dialog.show()
 	else:
-		preview_message_dialog.hide()
-		preview_message_dialog.show()
+		if not preview_message_dialog.visible:
+			preview_message_dialog.show()
+		#preview_message_dialog.hide()
+		#await get_tree().process_frame
+		#preview_message_dialog.show()
 	
 	
 	
@@ -1775,6 +1789,8 @@ func _on_timer_timeout() -> void:
 	var node = %TextEdit
 	if preview_message_dialog and node:
 		var text = node.text
+		if text == old_text: 
+			return
 		old_text = text
 		if dialog_mode == 0:
 			preview_message_dialog.set_text(text, message_initial_config)
@@ -1898,3 +1914,7 @@ func _on_change_speaker_active_pressed(command: Dictionary = {}) -> void:
 
 func _on_nowait_for_input_toggled(toggled_on: bool) -> void:
 	message_initial_config.no_wait_for_input = toggled_on
+
+
+func _on_new_line_pressed() -> void:
+	insert_or_replace_text("[newline]")

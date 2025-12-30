@@ -29,6 +29,7 @@ class BackgroundImage:
 	var end_animation: int
 	var end_animation_time: float
 	var current_offset: Vector2
+	var character_linked_to: int = 0
 	
 	var end_animation_displacement_horizontal: float = 256
 	
@@ -37,7 +38,7 @@ class BackgroundImage:
 	signal deleted()
 	
 	@warning_ignore("shadowed_variable")
-	func _init(id: int = 0, image: TextureRect = null, start_position: int = 0, idle_animation: int = 0, end_animation: int = 0, end_animation_time: float = 0.0, current_offset: Vector2 = Vector2.ZERO) -> void:
+	func _init(id: int = 0, image: TextureRect = null, start_position: int = 0, idle_animation: int = 0, end_animation: int = 0, end_animation_time: float = 0.0, current_offset: Vector2 = Vector2.ZERO, character_linked_to: int = 0) -> void:
 		self.id = id
 		self.image = image
 		self.start_position = start_position
@@ -45,6 +46,7 @@ class BackgroundImage:
 		self.end_animation = end_animation
 		self.end_animation_time = end_animation_time
 		self.current_offset = current_offset
+		self.character_linked_to = character_linked_to
 	
 
 	
@@ -150,7 +152,7 @@ class BackgroundImage:
 		deleted.emit()
 	
 	func _to_string() -> String:
-		return "<image %s start_position=%s idle_animation=%s>" % [id, start_position, idle_animation]
+		return "<image %s start_position=%s idle_animation=%s character_linked_to=%s>" % [id, start_position, idle_animation, character_linked_to]
 
 
 class TagInfo:
@@ -1340,6 +1342,7 @@ func get_speaker_commands(speaker_id: int) -> String:
 			new_text += get_image_or_face_command(speaker.face)
 			
 			# Command Character
+			speaker.character.character_linked_to = val + 1
 			new_text += get_image_or_face_command(speaker.character)
 			
 			# Letter-By-Letter Sound
@@ -1417,6 +1420,8 @@ func get_image_or_face_command(img: Dictionary) -> String:
 	var d11 = img.get("is_speaker", false)
 	var d12 = img.get("image_offset", Vector2i.ZERO)
 	var d13 = "" 
+	# 0 = no link, 1 = link to character left, 2 = link to character right
+	var d14 = img.get("character_linked_to", 0)
 	if d0 is RPGIcon:
 		if d0.region:
 			d13 = " region=\"%s,%s,%s,%s\"" % [
@@ -1457,7 +1462,8 @@ func get_image_or_face_command(img: Dictionary) -> String:
 			var arg9 = "" if d10 == 0 else " idle_animation=%s" % d10
 			var arg10 = "" if d11 == false else " is_character=%s" % d11
 			var arg11 = "" if d12 == Vector2i.ZERO else " image_offset=%s" % "%sx%s" % [d12.x, d12.y]
-			bbcode = "[character %s%s%s%s%s%s%s%s%s%s%s]" % [arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11]
+			var arg12 = " character_linked_to=%s" % d14 if d14 != 0 else ""
+			bbcode = "[character %s%s%s%s%s%s%s%s%s%s%s%s]" % [arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12]
 	
 	return bbcode
 
@@ -1904,7 +1910,8 @@ func start_command_character(command: SpecialEffectCommand) -> void:
 
 		var trans_end = command.parameters.get("trans_type_end", 0)
 		var trans_end_time = command.parameters.get("trans_end_time", 0)
-		current_bg = BackgroundImage.new(id, t, start_position, idle_animation, trans_end, trans_end_time, current_offset )
+		var character_linked_to = command.parameters.get("character_linked_to", 0)
+		current_bg = BackgroundImage.new(id, t, start_position, idle_animation, trans_end, trans_end_time, current_offset, character_linked_to)
 		current_bg.deleted.connect(
 			func():
 				images.erase(current_bg)
@@ -2164,6 +2171,20 @@ func start_command_highlight_character(command: SpecialEffectCommand) -> void:
 	highlight_character_tween.tween_property(name_right, "self_modulate", modulation_right, 0.35)
 	highlight_character_tween.tween_property(name_right_background, "self_modulate", modulation_right, 0.35)
 	highlight_character_tween.tween_property(face_right, "self_modulate", modulation_right, 0.35)
+	
+	for image in images:
+		if image.character_linked_to == 0:
+			continue
+
+		var target_color = Color.WHITE
+
+		if image.character_linked_to == 1:
+			target_color = modulation_left
+		elif image.character_linked_to == 2:
+			target_color = modulation_right
+			
+		highlight_character_tween.tween_property(image.image, "self_modulate", target_color, 0.35)
+
 
 
 func start_command_image_remove(command: SpecialEffectCommand) -> void:
