@@ -55,7 +55,7 @@ func setup_logo() -> void:
 	var title_font_size = test_size
 	var subtitle_font_size = title_font_size / 2.0
 	
-	# Crear labels para cada letra del título
+	# Create labels for each letter of the title
 	var center_x = viewport_size.x / 2
 	var center_y = viewport_size.y / 2
 	
@@ -70,19 +70,19 @@ func setup_logo() -> void:
 		new_label.text = title[i]
 		new_label.set("theme_override_font_sizes/font_size", title_font_size)
 		new_label.visible = false
-		new_label.position = Vector2(center_x - new_label.size.x/2, center_y - new_label.size.y/2)
-		new_label.pivot_offset = Vector2(new_label.size.x/2, new_label.size.y/2)  # Importante para el zoom
+		new_label.position = Vector2(center_x - new_label.size.x / 2, center_y - new_label.size.y / 2)
+		new_label.pivot_offset = Vector2(new_label.size.x / 2, new_label.size.y / 2) # Important for zoom
 		title_labels.append(new_label)
 	
-	# Configurar subtítulo
+	# Configure subtitle
 	subtitle_label.text = sub_title
 	subtitle_label.set("theme_override_font_sizes/font_size", subtitle_font_size)
 	subtitle_label.visible = false
 	var font = label_template.get("theme_override_fonts/font")
 	var posy = font.get_string_size(" ", HORIZONTAL_ALIGNMENT_CENTER, -1, title_font_size).y
 	subtitle_label.position = Vector2(
-		center_x - subtitle_label.size.x/2,
-		center_y - subtitle_label.size.y/2 - posy
+		center_x - subtitle_label.size.x / 2,
+		center_y - subtitle_label.size.y / 2 - posy
 	)
 	
 	start_animation()
@@ -123,10 +123,10 @@ func start_animation():
 	tween.tween_interval(0.15)
 	tween.tween_callback(%AudioStreamPlayer.play)
 	
-	# Configuramos la primera letra
+	# Configure first letter
 	title_labels[0].visible = true
 	title_labels[0].modulate.a = 0
-	title_labels[0].scale = Vector2(0, 0)  # Comienza 10 veces más grande
+	title_labels[0].scale = Vector2(0, 0) # Starts 10 times larger
 	
 	tween.set_parallel(true)
 	
@@ -147,16 +147,16 @@ func start_animation():
 		2.6
 	).set_delay(0.1)
 	
-	# Animamos la primera letra con fade in y zoom out
+	# Animate first letter with fade in and zoom out
 	tween.tween_property(title_labels[0], "scale", Vector2(2.5, 2.5), 0.2).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
 	tween.tween_property(title_labels[0], "scale", Vector2(1, 1), 0.2).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK).set_delay(0.2)
 	
-	# Fade in subtítulo
+	# Fade in subtitle
 	subtitle_label.visible = true
 	subtitle_label.modulate.a = 0
 	tween.tween_property(subtitle_label, "modulate:a", 1.0, 0.8).set_delay(0.3)
 	
-	# Calcular posición final de las letras
+	# Calculate final position of letters
 	var total_width = 0
 	for label in title_labels:
 		total_width += label.size.x
@@ -164,7 +164,7 @@ func start_animation():
 	var start_x = (get_viewport_rect().size.x - total_width) / 2
 	var current_x = start_x
 	
-	# Animar resto de letras
+	# Animate rest of letters
 	for i in range(title_labels.size()):
 		var label = title_labels[i]
 		label.visible = true
@@ -174,7 +174,7 @@ func start_animation():
 		tween.tween_property(label, "position:x", current_x, 0.3).set_delay(0.5)
 		current_x += label.size.x
 	
-	# Fade out de todo
+	# Fade out everything
 	for label in title_labels:
 		tween.tween_property(label, "modulate:a", 0.0, 1.1).set_delay(2.5)
 	tween.tween_property(subtitle_label, "modulate:a", 0.0, 1.1).set_delay(2.5)

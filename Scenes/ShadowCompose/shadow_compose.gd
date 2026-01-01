@@ -1,7 +1,7 @@
 @tool
 extends Node2D
 
-@export var shadow_component: ShadowComponent :
+@export var shadow_component: ShadowComponent:
 	set(value):
 		if shadow_component and shadow_component.shadow_updated.is_connected(update):
 			shadow_component.shadow_updated.disconnect(update)
@@ -16,7 +16,7 @@ extends Node2D
 				update()
 
 
-@export var shadow_data: Array :
+@export var shadow_data: Array:
 	set(value):
 		value.sort_custom(
 			func(a: Dictionary, b: Dictionary):
@@ -63,8 +63,8 @@ func synchronizes_cameras() -> void:
 		var viewport_size = get_viewport_rect().size
 
 		var adjusted_position = camera_center - (viewport_size * 0.5 / camera_zoom)
-		%Canvas1.position = -adjusted_position
-		%Canvas2.position = -adjusted_position
+		%Canvas1.position = - adjusted_position
+		%Canvas2.position = - adjusted_position
 		%Shadows.global_position = adjusted_position
 
 
@@ -269,7 +269,7 @@ func set_drawing_textures() -> void:
 		shadow_color.a *= visibility
 		mat.set_shader_parameter("overlay_color", shadow_color)
 		var sk = using_data[start_id + "dynamic_skew"]
-		var sun_angle = -sk * PI
+		var sun_angle = - sk * PI
 		var sun_direction := Vector2(sin(sun_angle), cos(sun_angle)).normalized()
 		mat.set_shader_parameter("shadow_direction", sun_direction)
 
@@ -439,7 +439,7 @@ func set_drawing_textures() -> void:
 				current_drawing_shadows.masks.append({
 					"main_texture": data.get("main_texture", null),
 					"texture": sprite.texture,
-					"position": sprite.global_position - Vector2(GameManager.current_map.tile_size), # Pasamos la posición corregida
+					"position": sprite.global_position - Vector2(GameManager.current_map.tile_size), # Pass corrected position
 					"sprite_scale": sprite.scale,
 					"color": mask_color,
 					"region": region
@@ -460,7 +460,7 @@ func set_drawing_textures() -> void:
 			var height = st.get_height()
 
 			# Base points (Feet)
-			var p1_x = -half_width
+			var p1_x = - half_width
 			var p2_x = half_width
 			
 			var p1 = Vector2(p1_x, 0)
@@ -537,7 +537,7 @@ func set_drawing_textures() -> void:
 			
 			var mask_pos = data.position
 			if data_offset != Vector2.ZERO:
-				mask_pos -= data_offset # Corregir offset si el objeto lo tiene
+				mask_pos -= data_offset # Correct offset if object has it
 
 			current_drawing_shadows.masks.append({
 				"main_texture": data.get("main_texture", null),

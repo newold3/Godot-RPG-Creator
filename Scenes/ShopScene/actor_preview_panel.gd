@@ -88,13 +88,13 @@ func set_item_to_compare(item_type: int, item_id, item_level: int) -> void:
 			actor_image.get_material().set_shader_parameter("grayscale", false)
 			modulate = Color.WHITE
 		
-			# 1. Stats actuales
+			# 1. Current stats
 			var current_stats = _get_current_actor_stats()
 			
-			# 2. Simular cambio de equipment
+			# 2. Simulate equipment change
 			var new_stats = _simulate_equipment_change(item_type, item_id, item_level)
 			
-			# 3. Actualizar labels con diferencias
+			# 3. Update labels with differences
 			_update_preview_labels(current_stats, new_stats)
 
 func _get_current_actor_stats() -> Dictionary:
@@ -107,17 +107,17 @@ func _get_current_actor_stats() -> Dictionary:
 	return stats
 
 func _simulate_equipment_change(item_type: int, item_id: int, item_level: int) -> Dictionary:
-	# Backup del equipment actual
+	# Backup current equipment
 	var equipment_type_id = 0 if item_type == 1 else _get_armor_slot_for_item(item_id)
 	var old_equipment = actor.current_gear[equipment_type_id]
 	
-	# Cambiar temporalmente el equipment
+	# Temporarily change equipment
 	actor._set_equip(equipment_type_id, item_id, item_level)
 	
-	# Obtener nuevos stats (el actor recalcula automáticamente con todos los traits)
+	# Get new stats (actor recalculates automatically with all traits)
 	var new_stats = _get_current_actor_stats()
 	
-	# Restaurar equipment original
+	# Restore original equipment
 	if old_equipment:
 		actor._set_equip(equipment_type_id, old_equipment.id, old_equipment.current_level)
 	else:
@@ -126,11 +126,11 @@ func _simulate_equipment_change(item_type: int, item_id: int, item_level: int) -
 	return new_stats
 
 func _get_armor_slot_for_item(armor_id: int) -> int:
-	# Necesitas implementar esta función para determinar en qué slot va la armadura
+	# You need to implement this function to determine which slot the armor goes into
 	if armor_id > 0 and RPGSYSTEM.database.armors.size() > armor_id:
 		var armor_data: RPGArmor = RPGSYSTEM.database.armors[armor_id]
-		return armor_data.equipment_type  # Asumiendo que tienes este campo
-	return 1  # Default slot
+		return armor_data.equipment_type # Assuming you have this field
+	return 1 # Default slot
 
 
 func _set_disabled_label_text() -> void:
@@ -153,7 +153,7 @@ func _update_preview_labels(current_stats: Dictionary, new_stats: Dictionary):
 		weights = {
 			"HP": 1.5,
 			"MP": 1.0,
-			"ATK": 2.0,   
+			"ATK": 2.0,
 			"DEF": 1.8,
 			"MATK": 1.5,
 			"MDEF": 1.2,
@@ -205,13 +205,13 @@ func _update_preview_labels(current_stats: Dictionary, new_stats: Dictionary):
 	if is_hp_critical:
 		current_is_better = 1
 	elif abs(score_difference) <= tolerance:
-		current_is_better = -1  # Equal
+		current_is_better = -1 # Equal
 	elif score_difference > 0:
-		current_is_better = 0   # New is better
+		current_is_better = 0 # New is better
 	else:
-		current_is_better = 1   # Current is better
+		current_is_better = 1 # Current is better
 	
 	match current_is_better:
-		-1: main_arrow.texture.region.position = Vector2(30, 0)  # Equal
-		0: main_arrow.texture.region.position = Vector2(0, 0)    # New is better
-		1: main_arrow.texture.region.position = Vector2(15, 0)   # Current is better
+		-1: main_arrow.texture.region.position = Vector2(30, 0) # Equal
+		0: main_arrow.texture.region.position = Vector2(0, 0) # New is better
+		1: main_arrow.texture.region.position = Vector2(15, 0) # Current is better

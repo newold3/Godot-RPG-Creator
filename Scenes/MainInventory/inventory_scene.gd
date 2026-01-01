@@ -10,7 +10,7 @@ extends Control
 @export var text_color: Color = Color(0.99, 0.997, 1)
 
 
-# Configuración de visualización
+# Visualization configuration
 const ICON_SIZE = Vector2(48, 48)
 const ITEM_PADDING = Vector2(8, 8)
 const HOVER_SCALE = 1.05
@@ -20,30 +20,30 @@ const ANIMATION_SPEED = 0.2
 var font: Font
 var font_size = 16
 
-# Valores calculados
+# Calculated values
 var item_height: int = 0
 var item_base_width: int = 0
 var columns: int = 1
 var total_rows: int = 0
 var text_real_height: int = 0
 
-# Estado de animación
+# Animation state
 var cursor_alpha = 0.0
 var cursor_time = 0.0
 var hover_scales = {}
 var active_tweens = {}
 var is_enabled: bool = false
 
-# Caché de recursos
+# Resource cache
 var texture_cache = {}
 var text_widths = {}
 
-# Estado de interacción
+# Interaction state
 var hovered_cell: int = -1
 var selected_cell: int = -1
 var dragging_item = null
 
-# Datos de inventario
+# Inventory data
 var inventory_items = []
 
 @onready var scroll_container: SmoothScrollContainer = %ScrollContainer
@@ -51,7 +51,7 @@ var inventory_items = []
 @onready var context_menu: Label = %ContextMenu
 
 
-func generar_nombre_aleatorio(min_len:int, max_len:int) -> String:
+func generar_nombre_aleatorio(min_len: int, max_len: int) -> String:
 	var caracteres = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 	var longitud = randi_range(min_len, max_len)
 	var nombre = ""
@@ -76,7 +76,7 @@ func _ready():
 			calculate_grid_dimensions()
 			canvas.queue_redraw()
 	)
-	# Datos de ejemplo
+	# Example data
 	for i in range(21):
 		inventory_items.append({
 			"item_id": "potion",
@@ -103,12 +103,12 @@ func get_item_count() -> int:
 func _process(delta):
 	if not is_enabled: return
 	
-	# Actualizar el parpadeo del cursor
+	# Update cursor blink
 	cursor_time += delta
 	cursor_alpha = 0.5 + 0.5 * sin(cursor_time * PI * 2 / CURSOR_BLINK_SPEED)
 	canvas.queue_redraw()
 	
-	# Actualizar posicion de context
+	# Update context position
 	update_context_menu_position()
 
 
@@ -130,7 +130,7 @@ func select_item(id: int) -> void:
 
 func precalculate_dimensions():
 	var max_text_width = 0
-	text_real_height = int(font.get_ascent() - font.get_descent()) #font.get_string_size(" ", HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).y
+	text_real_height = int(font.get_ascent() - font.get_descent()) # font.get_string_size(" ", HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).y
 	var max_text_height = max(ICON_SIZE.y, text_real_height)
 	
 	for item in inventory_items:
@@ -177,46 +177,46 @@ func _on_canvas_draw():
 
 
 func draw_item(index: int, item: Dictionary, pos: Vector2):
-	# Obtener la escala para este ítem (por defecto 1.0)
+	# Get scale for this item (default 1.0)
 	var sc = hover_scales.get(index, 1.0)
-	# Calcular el desplazamiento para centrar el ítem escalado dentro de su celda
+	# Calculate offset to center scaled item within its cell
 	var center_offset = (Vector2(item_base_width - ITEM_PADDING.x * 2, item_height - ITEM_PADDING.y * 2) * sc - Vector2(item_base_width - ITEM_PADDING.x * 2, item_height - ITEM_PADDING.y * 2)) / 2
-	var transform_pos = pos + ITEM_PADDING - center_offset  # Añadir padding y centrar
+	var transform_pos = pos + ITEM_PADDING - center_offset # Añadir padding y centrar
 	
-	# Dibujar el fondo del ítem
+	# Draw item background
 	var item_rect = Rect2(Vector2.ZERO, Vector2(item_base_width - ITEM_PADDING.x * 2, item_height - ITEM_PADDING.y * 2))
 	
-	# draw back tube sin zoom
+	# draw back tube without zoom
 	if background_tube:
-		# Restaurar transformación para dibujar el tubo sin escala
+		# Restore transform to draw tube without scale
 		canvas.draw_set_transform(Vector2.ZERO, 0, Vector2.ONE)
 		
 		var tube_rect = Rect2()
-		# Calcular el ancho del tubo hasta el siguiente ítem o el borde
+		# Calculate tube width to next item or edge
 		var tube_width = 0
 		var col = index % int(columns)
 		if col == columns - 1 or index == inventory_items.size() - 1:
-			# Si es la última columna, extender hasta el borde del scroll_container
+			# If last column, extend to scroll_container edge
 			tube_width = scroll_container.size.x - (pos.x + item_rect.size.x)
 		else:
-			# Si no es la última columna o ultimo item, extender hasta el siguiente ítem
+			# If not last column or last item, extend to next item
 			tube_width = item_base_width - item_rect.size.x
 		
-		# Hacer el tubo más ancho extendiéndolo hacia la derecha
-		tube_rect.size.x = item_rect.size.x + tube_width  # Extender hasta el siguiente ítem o borde
-		tube_rect.size.y = item_rect.size.y * 0.6  # 60% del alto del item
+		# Make tube wider extending to the right
+		tube_rect.size.x = item_rect.size.x + tube_width # Extender hasta el siguiente ítem o borde
+		tube_rect.size.y = item_rect.size.y * 0.6 # 60% del alto del item
 		
-		# Centrar verticalmente el tubo y posicionarlo
-		tube_rect.position = pos + Vector2(10, 0)  # Comenzar desde el inicio del ítem + 10 px a la derecha
-		tube_rect.position.y += (item_rect.size.y - tube_rect.size.y) / 2  # Centrar verticalmente
+		# Center tube vertically and position it
+		tube_rect.position = pos + Vector2(10, 0) # Comenzar desde el inicio del ítem + 10 px a la derecha
+		tube_rect.position.y += (item_rect.size.y - tube_rect.size.y) / 2 # Centrar verticalmente
 		
-		# Dibujar el tubo
+		# Draw tube
 		canvas.draw_texture_rect(background_tube, tube_rect, false)
 	
-	# Aplicar transformación al resto de elementos (para zoom/escala)
+	# Apply transform to rest of elements (for zoom/scale)
 	canvas.draw_set_transform(transform_pos, 0, Vector2(sc, sc))
 	
-	# Aplicar padding en el fondo
+	# Apply background padding
 	if background_normal:
 		canvas.draw_style_box(background_normal, item_rect)
 		
@@ -232,26 +232,26 @@ func draw_item(index: int, item: Dictionary, pos: Vector2):
 		canvas.draw_style_box(style, item_rect)
 	
 	
-	# Calcular las posiciones de los elementos dentro del ítem
+	# Calculate element positions within item
 	var p = Vector2(ITEM_PADDING.x, item_rect.size.y * 0.5 - ICON_SIZE.y * 0.5)
-	# Icono a la izquierda con padding
+	# Icon to the left with padding
 	var icon_rect = Rect2(p, ICON_SIZE)
-	# Texto a la derecha del ícono
+	# Text to the right of icon
 	var text_pos = Vector2(
 		ICON_SIZE.x + ITEM_PADDING.x,
 		float((item_height - font_size) / 2.0 + text_real_height / 2.0)
 	)
-	# Texto de la cantidad
+	# Quantity text
 	var quantity_text = "%d" % item.quantity
-	# Cantidad a la derecha
+	# Quantity to the right
 	var quantity_pos = Vector2(
 		item_base_width - ITEM_PADDING.x * 3 - font.get_string_size(quantity_text).x,
 		float((item_height - font_size) / 2.0 + text_real_height / 2.0)
 	)
-	# Dibujar ícono
+	# Draw icon
 	if texture_cache.has(item.icon_path):
 		canvas.draw_texture_rect(texture_cache[item.icon_path], icon_rect, false)
-	# Dibujar texto (nombre del ítem)
+	# Draw text (item name)
 	var full_text = item.item_name
 	var outline_size = %ContextMenu.get("theme_override_constants/outline_size")
 	var outline_color = %ContextMenu.get("theme_override_colors/font_outline_color")
@@ -264,11 +264,11 @@ func draw_item(index: int, item: Dictionary, pos: Vector2):
 	canvas.draw_string(font, text_pos + shadow_offset, full_text, align, -1, font_size, shadow_color) # Shadow
 	canvas.draw_string_outline(font, text_pos, full_text, align, -1, font_size, outline_size, outline_color) # Border
 	canvas.draw_string(font, text_pos, full_text, align, -1, font_size, text_color) # text
-	# Dibujar cantidad (alineada a la derecha)
+	# Draw quantity (right aligned)
 	canvas.draw_string(font, quantity_pos + shadow_offset, quantity_text, align, -1, font_size, shadow_color) # Shadow
 	canvas.draw_string_outline(font, quantity_pos, quantity_text, align, -1, font_size, outline_size, outline_color) # Border
 	canvas.draw_string(font, quantity_pos, quantity_text, align, -1, font_size, text_color) # text
-	# Restaurar transformación al estado original
+	# Restore transform to original state
 	canvas.draw_set_transform(Vector2.ZERO, 0, Vector2.ONE)
 
 
@@ -293,10 +293,9 @@ func _gui_input(event):
 
 
 func _input(_event: InputEvent) -> void:
-	
 	if not is_enabled: return
 	if GameManager.is_key_pressed(["ui_up", "ui_down", "ui_left", "ui_right"], true):
-		var callable =  func():
+		var callable = func():
 			var direction: String = GameManager.get_last_key_pressed()
 			var index: int = selected_cell
 			var items_amount: int = get_item_count()
@@ -312,7 +311,7 @@ func _input(_event: InputEvent) -> void:
 					"ui_up":
 						index -= columns
 						if index < 0:
-							index = min(items_amount - 1, (total_rows-1) * columns + current_column) 
+							index = min(items_amount - 1, (total_rows - 1) * columns + current_column)
 					"ui_down":
 						index += columns
 						if index > items_amount - 1:
@@ -339,35 +338,35 @@ func process_animate_hover_scale(value: float, index: int) -> void:
 
 
 func get_cell_at_position(_global_pos: Vector2) -> int:
-	# Convertir la posición global del mouse a coordenadas locales del canvas
+	# Convert global mouse position to local canvas coordinates
 	var local_pos = canvas.get_local_mouse_position()
 
-	# Obtener el desplazamiento del scroll
+	# Get scroll offset
 	var offsetx = scroll_container.get_h_scroll_bar().value * scroll_container.get_h_scroll_bar().step
 	var offsety = scroll_container.get_v_scroll_bar().value * scroll_container.get_v_scroll_bar().step
 	var scroll_offset = Vector2(offsetx, offsety)
 
-	# Ajustar la posición con el offset del scroll
+	# Adjust position with scroll offset
 	var adjusted_pos = local_pos + scroll_offset
 	
 	var grid_width = columns * item_base_width
 	var grid_height = ceil(float(inventory_items.size()) / columns) * item_height
 	if adjusted_pos.x < 0 or adjusted_pos.x >= grid_width or adjusted_pos.y < 0 or adjusted_pos.y >= grid_height:
-		return -1  # Fuera de los límites del grid
+		return -1 # Outside grid limits
 
-	# Calcular fila y columna
+	# Calculate row and column
 	var row = floor(adjusted_pos.y / item_height)
 	var col = floor(adjusted_pos.x / item_base_width)
 
-	# Calcular el índice del ítem
+	# Calculate item index
 	var index = row * columns + col
 
-	# Verificar que el índice sea válido
+	# Verify index is valid
 	if index >= 0 and index < inventory_items.size():
 		var item_pos = Vector2(col * item_base_width, row * item_height)
 		var item_rect = Rect2(item_pos, Vector2(item_base_width, item_height))
 
-		# Comprobar si el punto está dentro del rectángulo del ítem
+		# Check if point is within item rectangle
 		if item_rect.has_point(adjusted_pos):
 			return index
 
@@ -383,10 +382,10 @@ func set_vertical_scrollbar_value():
 		
 		# Calculate item's absolute position
 		var item_rect = Rect2(
-			col * item_base_width,  # x position
-			row * item_height,      # y position
-			item_base_width,        # width
-			item_height             # height
+			col * item_base_width, # x position
+			row * item_height, # y position
+			item_base_width, # width
+			item_height # height
 		)
 		
 		# Get vertical scrollbar
@@ -403,12 +402,12 @@ func update_context_menu_position():
 			GameManager.hand_cursor.visible = true
 		else:
 			GameManager.hand_cursor.visible = false
-		# Obtener la fila y columna del ítem seleccionado
+		# Get row and column of selected item
 		@warning_ignore("integer_division")
 		var row = int(selected_cell / columns)
 		var col = int(selected_cell % columns)
 		
-		# Calcular la posición del ítem en el canvas
+		# Calculate item position on canvas
 		var item_pos = Vector2(
 			col * item_base_width,
 			row * item_height
@@ -416,62 +415,62 @@ func update_context_menu_position():
 		
 		context_menu.size = Vector2(item_base_width, item_height)
 		
-		# Obtener el desplazamiento del scroll
+		# Get scroll offset
 		var scroll_offset = Vector2(
 			scroll_container.get_h_scroll_bar().value,
 			scroll_container.get_v_scroll_bar().value
 		)
 		
-		# Ajustar la posición del ítem con el desplazamiento del scroll
+		# Adjust item position with scroll offset
 		var adjusted_item_pos = item_pos - scroll_offset
 		
-		# Calcular la posición del context_menu
+		# Calculate context_menu position
 		#var context_menu_pos = Vector2(
 			#adjusted_item_pos.x - context_menu.size.x - ITEM_PADDING.x,  # A la izquierda del ítem
 			#adjusted_item_pos.y + (item_height - context_menu.size.y) / 2  # Centrado verticalmente
 		#)
 		var context_menu_pos = Vector2(
-			adjusted_item_pos.x,  # A la izquierda del ítem
-			adjusted_item_pos.y  # Centrado verticalmente
+			adjusted_item_pos.x, # A la izquierda del ítem
+			adjusted_item_pos.y # Centrado verticalmente
 		)
 		
-		# Asegurarse de que el context_menu no se salga de la pantalla
+		# Ensure context_menu doesn't go off screen
 		context_menu_pos.x = max(context_menu_pos.x, 0)
 		context_menu_pos.y = max(context_menu_pos.y, 0)
 		
-		# Establecer la posición del context_menu
+		# Set context_menu position
 		context_menu.position = context_menu_pos
 
 
 func is_item_visible_on_parent() -> bool:
-	# Verificar si hay un ítem seleccionado
+	# Check if an item is selected
 	if selected_cell == -1:
 		return false
 
-	# Obtener la fila y columna del ítem seleccionado
+	# Get row and column of selected item
 	@warning_ignore("integer_division")
 	var row = int(selected_cell / columns)
 	var col = int(selected_cell % columns)
 
-	# Calcular el rectángulo del ítem en coordenadas locales del canvas
+	# Calculate item rectangle in local canvas coordinates
 	var item_rect = Rect2(
 		Vector2(col * item_base_width, row * item_height),
 		Vector2(item_base_width, item_height)
 	)
 
-	# Obtener el desplazamiento del scroll
+	# Get scroll offset
 	var scroll_offset = Vector2(
 		scroll_container.get_h_scroll_bar().value,
 		scroll_container.get_v_scroll_bar().value
 	)
 
-	# Ajustar la posición del ítem con el desplazamiento del scroll
+	# Adjust item position with scroll offset
 	var adjusted_item_rect = Rect2(
 		item_rect.position - scroll_offset,
 		item_rect.size
 	)
 
-	# Verificar si el ítem está completamente fuera del área visible
+	# Verify if item is completely outside visible area
 	var margin = 28
 	var is_item_visible = (
 		adjusted_item_rect.end.x > margin and
@@ -498,7 +497,7 @@ func remove_item(item_id: String, amount: int = 1) -> bool:
 func add_item(item: Dictionary) -> bool:
 	inventory_items.append(item)
 
-	# Cachear los recursos del nuevo ítem
+	# Cache new item resources
 	if not texture_cache.has(item.icon_path):
 		texture_cache[item.icon_path] = load(item.icon_path)
 

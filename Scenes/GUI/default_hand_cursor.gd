@@ -3,7 +3,7 @@ class_name MainHandCursor
 extends CanvasLayer
 
 
-enum HandPosition { NONE=-1, LEFT, RIGHT, UP, DOWN}
+enum HandPosition {NONE = -1, LEFT, RIGHT, UP, DOWN}
 
 var hand_tween: Tween
 var mouse_timer: Timer
@@ -23,7 +23,7 @@ const L_MOVEMENT_THRESHOLD = 250.0
 var current_hand_position: HandPosition = HandPosition.LEFT
 var hide_hand_when_mouse_over_focused: bool = true
 
-var manipulator: String : set = _set_manipulator # Current scene controlling the cursor (using a reference ID)
+var manipulator: String: set = _set_manipulator # Current scene controlling the cursor (using a reference ID)
 
 var is_hidden: bool = true
 var is_force_hidden: bool = false
@@ -156,17 +156,17 @@ func _update_hand_position(delta: float, force_position: bool = false) -> void:
 					target_scale = Vector2(-1, 1)
 
 			if not force_position:
-				# Velocidad adaptativa: más rápido cuando está lejos
+				# Adaptive speed: faster when far away
 				var distance_to_target = cursor.global_position.distance_to(target_position)
 				var pos_speed = HAND_POSITION_LERP_SPEED
 				if distance_to_target > 300.0:
-					pos_speed = HAND_POSITION_LERP_SPEED * 2.5 # Más rápido a larga distancia
+					pos_speed = HAND_POSITION_LERP_SPEED * 2.5 # Faster at long distance
 				
-				# El factor de suavizado correcto e independiente de los FPS
+				# Correct smoothing factor independent of FPS
 				var pos_weight = 1.0 - exp(-delta * pos_speed)
 				var rot_weight = 1.0 - exp(-delta * HAND_ROTATION_LERP_SPEED)
 				
-				# Interpolar suavemente hacia la posición objetivo
+				# Smoothly interpolate to target position
 				cursor.global_position = lerp(cursor.global_position, target_position + hand_offset, pos_weight)
 				cursor.rotation = lerp_angle(cursor.rotation, target_rotation, rot_weight)
 				cursor.scale = lerp(cursor.scale, target_scale, rot_weight)
@@ -184,7 +184,7 @@ func _update_hand_position(delta: float, force_position: bool = false) -> void:
 
 
 #region Public Methods
-func show_cursor(hand_position : HandPosition = HandPosition.LEFT, manipulator_context: Variant = null, default_offset: Vector2 = Vector2.ZERO) -> void:
+func show_cursor(hand_position: HandPosition = HandPosition.LEFT, manipulator_context: Variant = null, default_offset: Vector2 = Vector2.ZERO) -> void:
 	if is_permanently_hidden: return
 	
 	pause_reposition = false

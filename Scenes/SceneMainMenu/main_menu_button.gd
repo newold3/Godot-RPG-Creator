@@ -2,7 +2,7 @@
 class_name MainMenuButton
 extends Control
 
-@export var button_text: String :
+@export var button_text: String:
 	set(value):
 		button_text = value
 		
@@ -10,12 +10,12 @@ extends Control
 			button_label.text = button_text
 
 
-@export var initial_animation_delay: float = 0.0 :
+@export var initial_animation_delay: float = 0.0:
 	set(value):
 		initial_animation_delay = abs(value)
 
-@export var is_toggle_button: bool = false : set = set_toggle_mode
-@export var is_untoggleable : bool = true
+@export var is_toggle_button: bool = false: set = set_toggle_mode
+@export var is_untoggleable: bool = true
 @export var button_group: ControlBaseItemGroup
 
 
@@ -89,40 +89,40 @@ func _ready() -> void:
 func _on_focus_entered() -> void:
 	if busy2: return
 	
-	# Incrementar generación para invalidar focus_exited anteriores
+	# Increment generation to invalidate previous focus_exited
 	exit_generation += 1
 	
-	# Incrementar generación de focus
+	# Increment focus generation
 	focus_generation += 1
 	var current_generation = focus_generation
 	
-	# Esperar a que termine el busy anterior
+	# Wait for previous busy to finish
 	while busy:
 		if not is_inside_tree():
 			return
 		await get_tree().process_frame
 		
-		# Verificar si esta llamada fue invalidada
+		# Check if this call was invalidated
 		if current_generation != focus_generation:
 			return
 	
 	if not is_selected:
 		select()
 	
-	# Verificar una última vez antes de empezar la animación
+	# Check one last time before starting animation
 	if current_generation != focus_generation:
 		return
 	
 	busy = true
 	
-	# Completar tween anterior si existe
+	# Complete previous tween if exists
 	if main_tween:
 		main_tween.custom_step(999)
 		if not is_inside_tree():
 			return
 		await get_tree().process_frame
 		
-		# Verificar nuevamente después del await
+		# Check again after await
 		if current_generation != focus_generation:
 			busy = false
 			return
@@ -159,7 +159,7 @@ func _on_focus_entered() -> void:
 func _on_focus_exited() -> void:
 	if busy2: return
 	
-	# Incrementar generación de exit para invalidar focus_entered
+	# Increment exit generation to invalidate focus_entered
 	focus_generation += 1
 	exit_generation += 1
 	var current_generation = exit_generation
@@ -173,20 +173,20 @@ func _on_focus_exited() -> void:
 		else:
 			return
 		
-		# Verificar si fue invalidada
+		# Check if invalidated
 		if current_generation != exit_generation:
 			return
 	
 	deselect()
 	
-	# Completar tween anterior si existe
+	# Complete previous tween if exists
 	if main_tween:
 		main_tween.custom_step(999)
 		if not is_inside_tree():
 			return
 		await get_tree().process_frame
 		
-		# Verificar nuevamente
+		# Check again
 		if current_generation != exit_generation:
 			return
 	
@@ -207,7 +207,7 @@ func _on_focus_exited() -> void:
 	
 	await t.finished
 	
-	# Verificar si no fue invalidada antes de emitir
+	# Check if not invalidated before emitting
 	if current_generation == exit_generation:
 		animation_completed.emit()
 
@@ -342,7 +342,6 @@ func select() -> void:
 
 func perform_click() -> void:
 	#if busy: return
-	
 	busy = true
 	
 	if main_tween:
@@ -354,7 +353,7 @@ func perform_click() -> void:
 	var old_x = position.x
 	var t = create_tween()
 	t.set_parallel(true)
-	t.tween_property(self, "position:x",old_x + 10, 0.1).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_IN_OUT)
+	t.tween_property(self, "position:x", old_x + 10, 0.1).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_IN_OUT)
 	t.tween_property(gear_1, "rotation", gear_1.rotation + deg_to_rad(360), 0.1).set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_OUT)
 	t.tween_property(gear_2, "rotation", gear_2.rotation + deg_to_rad(-360), 0.1).set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_OUT)
 	t.tween_property(gear_3, "rotation", gear_3.rotation + deg_to_rad(360), 0.1).set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_OUT)
@@ -362,7 +361,7 @@ func perform_click() -> void:
 	t.set_parallel(false)
 	t.tween_interval(0.01)
 	t.set_parallel(true)
-	t.tween_property(self, "position:x",old_x, 0.2).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
+	t.tween_property(self, "position:x", old_x, 0.2).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
 	t.tween_property(gear_1, "rotation", gear_1.rotation, 0.2).set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_OUT)
 	t.tween_property(gear_2, "rotation", gear_2.rotation, 0.2).set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_OUT)
 	t.tween_property(gear_3, "rotation", gear_3.rotation, 0.2).set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_OUT)

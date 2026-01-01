@@ -67,7 +67,7 @@ func _process(delta: float) -> void:
 	if _delay_to_show_tooltip_timer > 0.0:
 		_delay_to_show_tooltip_timer -= delta
 		if _delay_to_show_tooltip_timer <= 0.0:
-			if is_instance_valid(_current_tooltip_to_show) and _current_tooltip_to_show.is_visible_in_tree():
+			if is_instance_valid(_current_tooltip_to_show) and _current_tooltip_to_show.is_inside_tree() and _current_tooltip_to_show.is_visible_in_tree():
 				var w = _current_tooltip_to_show.get_window()
 				if is_instance_valid(w) and w.has_focus():
 					_on_node_mouse_entered(_current_tooltip_to_show, false)
@@ -273,11 +273,14 @@ func _create_tooltip(title: String, contents: String, parent_node) -> void:
 		# Search in valid pool
 		for i in range(tooltip_list.size() - 1, -1, -1):
 			var t = tooltip_list[i]
-			if t.get_meta("is_in_pool", false):
-				tooltip = t
-				tooltip_list.erase(t)
-				tooltip.set_meta("is_in_pool", false)
-				break
+			if is_instance_valid(t):
+				if t.get_meta("is_in_pool", false):
+					tooltip = t
+					tooltip_list.erase(t)
+					tooltip.set_meta("is_in_pool", false)
+					break
+			else:
+				tooltip_list.remove_at(i)
 		
 		# If pool was full but no available tooltips (all busy), make a temporary overflow one
 		if not tooltip:
@@ -380,11 +383,12 @@ func _finalize_tooltip_setup(
 	# Validate EVERYTHING again since we are deferred
 	if not is_instance_valid(tooltip):
 		return
-		
-	if not is_instance_valid(parent_node) or not parent_node.is_inside_tree():
-		# If the parent died, we must kill the tooltip if it was new, 
-		# or ideally return it to pool (but freeing is safer to avoid state corruption)
-		tooltip.queue_free()
+	
+	if not is_instance_valid(parent_node) or not parent_node.is_inside_tree() or parent_node.is_queued_for_deletion():
+		tooltip.visible = false
+		tooltip.set_meta("is_in_pool", true)
+		if not tooltip in tooltip_list:
+			tooltip_list.append(tooltip) # Return to pool instead of killing if possible
 		return
 
 	if not tooltip.tree_exiting.is_connected(_on_tooltip_tree_exiting):

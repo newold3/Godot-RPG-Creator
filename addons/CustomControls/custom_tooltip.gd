@@ -237,8 +237,10 @@ func end() -> void:
 
 ## The tooltip requests to be removed from the scene.
 func _remove_tooltip() -> void:
-	if "gui_input" in get_parent() and get_parent().gui_input.is_connected(_on_parent_gui_input):
-		get_parent().gui_input.disconnect(_on_parent_gui_input)
+	var parent = get_parent()
+	if parent and is_instance_valid(parent):
+		if "gui_input" in parent and parent.gui_input.is_connected(_on_parent_gui_input):
+			parent.gui_input.disconnect(_on_parent_gui_input)
 	%Title.text = ""
 	%Contents.text = ""
 	is_enabled = false

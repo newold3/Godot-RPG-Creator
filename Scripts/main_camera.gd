@@ -91,7 +91,7 @@ func add_trauma(amount: float, time: float) -> void:
 		"time": time
 	}
 
-# Nueva función para obtener la posición más cercana de un target (virtual o física)
+# New function to get the closest position of a target (virtual or physical)
 func get_target_closest_position(target_node: Node2D, reference_pos: Vector2) -> Vector2:
 	"""Get the closest position of a target (virtual or physical) relative to a reference position"""
 	if not target_node.has_method("get_current_virtual_tile_position"):
@@ -103,13 +103,13 @@ func get_target_closest_position(target_node: Node2D, reference_pos: Vector2) ->
 	var virtual_distance = reference_pos.distance_squared_to(virtual_pos)
 	var physical_distance = reference_pos.distance_squared_to(physical_pos)
 	
-	# Usar la posición que esté más cerca de la referencia
+	# Use the position that is closest to the reference
 	if virtual_distance <= physical_distance:
 		return virtual_pos
 	else:
 		return physical_pos
 
-# Función auxiliar para obtener posición virtual sin comparación
+# Helper function to get virtual position without comparison
 func get_target_virtual_position(target_node: Node2D) -> Vector2:
 	"""Get the virtual position of a target if it has the method, otherwise return global_position"""
 	if target_node.has_method("get_current_virtual_tile_position"):
@@ -153,12 +153,12 @@ func fast_reposition() -> void:
 			var current_target_pos = get_multi_target_position()
 			global_position = apply_camera_limits(current_target_pos)
 			handle_multi_target_zoom()
-			zoom = target_zoom  # Aplicar zoom instantáneamente
+			zoom = target_zoom # Apply zoom instantly
 	elif target:
 		# Single target mode: use virtual position if available
 		var target_pos = get_target_virtual_position(target)
 		global_position = apply_camera_limits(target_pos)
-	# Asegurar que zoom se aplica instantáneamente (si hay zoom a aplicar)
+	# Ensure zoom is applied instantly (if there is zoom to apply)
 	if zoom != target_zoom:
 		zoom = target_zoom
 
@@ -191,7 +191,7 @@ func _process(delta: float) -> void:
 	else:
 		return
 	
-	# Handle zoom smoothing (CORREGIDO)
+	# Handle zoom smoothing
 	if zoom.distance_to(target_zoom) > 0.01:
 		var zoom_weight = 1.0 - exp(-delta * zoom_speed)
 		zoom = zoom.lerp(target_zoom, zoom_weight)
@@ -209,7 +209,7 @@ func _process(delta: float) -> void:
 			if trauma.time <= 0.0:
 				traumas.erase(key)
 		
-		if max_trauma: 
+		if max_trauma:
 			max_trauma_power = lerp(max_trauma_power, max_trauma.amount, 0.2)
 			shake_time = max_trauma.time
 			if max_trauma_power > 0:
@@ -282,7 +282,7 @@ func get_targets_bounds(valid_targets: Array[Dictionary]) -> Rect2:
 		var priority = target_data["priority"]
 		
 		# Expand bounds more for higher priority targets
-		var expansion = priority * 10.0  # Adjust this multiplier as needed
+		var expansion = priority * 10.0 # Adjust this multiplier as needed
 		
 		min_pos.x = min(min_pos.x, closest_pos.x - expansion)
 		min_pos.y = min(min_pos.y, closest_pos.y - expansion)
@@ -348,8 +348,8 @@ func get_valid_targets() -> Array[Dictionary]:
 	var valid_targets: Array[Dictionary] = []
 	
 	for target_data in targets:
-		if (target_data.has("target") and target_data.has("priority") and 
-			is_instance_valid(target_data["target"]) and 
+		if (target_data.has("target") and target_data.has("priority") and
+			is_instance_valid(target_data["target"]) and
 			target_data["target"].visible):
 			valid_targets.append(target_data)
 	
@@ -371,13 +371,13 @@ func handle_single_target_movement(target_pos: Vector2, target_node: Node2D, del
 	
 	var desired_position = camera_pos
 	
-	if (target_screen_pos.x < margin_left or 
-		target_screen_pos.x > margin_right or 
-		target_screen_pos.y < margin_top or 
+	if (target_screen_pos.x < margin_left or
+		target_screen_pos.x > margin_right or
+		target_screen_pos.y < margin_top or
 		target_screen_pos.y > margin_bottom):
 		desired_position = target_pos
 	
-	# Smoothly move the camera with limits applied (CORREGIDO)
+	# Smoothly move the camera with limits applied
 	var pos_weight = 1.0 - exp(-delta * smooth_speed)
 	var new_position = global_position.lerp(desired_position, pos_weight)
 	global_position = apply_camera_limits(new_position)

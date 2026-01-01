@@ -1,12 +1,12 @@
 extends CanvasLayer
 
-# Sprite que contiene la textura de niebla
+# Sprite containing the fog texture
 @onready var fog_sprite: Sprite2D = %MainSprite
 
-# Array de puntos de niebla (time, direction, x, y)
+# Array of fog points (time, direction, x, y)
 var fog_points: Array[Vector4] = []
 
-# Nodos que generan "agujeros" en la niebla
+# Nodes that generate "holes" in the fog
 var targets: Array = []
 
 func _ready():
@@ -14,7 +14,7 @@ func _ready():
 	add_player()
 
 
-# Crear la textura de niebla
+# Create fog texture
 func create_fog_of_war_texture() -> void:
 	var map: RPGMap = get_tree().get_first_node_in_group("rpgmap")
 	
@@ -22,20 +22,20 @@ func create_fog_of_war_texture() -> void:
 		var viewport_size: Vector2 = get_viewport().size
 		var used_rect: Rect2 = map.get_used_rect(false)
 
-		# Crear textura de niebla del tamaño del mapa
+		# Create fog texture of map size
 		var fog_texture = Image.create(
-			viewport_size.x, 
-			viewport_size.y, 
-			false, 
+			viewport_size.x,
+			viewport_size.y,
+			false,
 			Image.FORMAT_RGBA8
 		)
 		
-		# Rellenar de negro
+		# Fill with black
 		fog_texture.fill(Color(0, 0, 0, 1))
 
 		var image_texture = ImageTexture.create_from_image(fog_texture)
 
-		# Configurar sprite de niebla
+		# Configure fog sprite
 		fog_sprite.texture = image_texture
 		fog_sprite.position = used_rect.position
 		var gs = Vector2(used_rect.size) / image_texture.get_size()
@@ -48,7 +48,7 @@ func create_fog_of_war_texture() -> void:
 			mat.set_shader_parameter("scale", Vector2(1.0 / gs.x, 1.0 / gs.y))
 
 
-# Añadir jugadores al sistema de agujeros
+# Add players to the hole system
 func add_player() -> void:
 	var nodes = get_tree().get_nodes_in_group("player")
 	for node in nodes:
@@ -60,27 +60,27 @@ func _process(delta):
 		add_player()
 		return
 
-	# Actualizar tiempos en fog_points
+	# Update times in fog_points
 	for i in range(fog_points.size() - 1, -1, -1):
 		var point = fog_points[i]
 		point.x += delta
 
-		# Eliminar puntos que han terminado su animación
+		# Remove points that finished their animation
 		if point.x > 1.0 and point.y == 0.0:
 			fog_points.remove_at(i)
 		else:
 			fog_points[i] = point
 
-	# Calcular posiciones actuales de los targets
+	# Calculate current target positions
 	var fog_sprite_size = fog_sprite.texture.get_size()
 	var current_target_positions = targets.map(
-		func(t): 
-			# Calcular la posición global exacta
+		func(t):
+			# Calculate exact global position
 			var global_pos = Vector2i(t.global_position - fog_sprite.global_position)
 			return global_pos
 	)
 	
-	# Añadir nuevos puntos
+	# Add new points
 	for pos in current_target_positions:
 		var found = false
 		for point in fog_points:
@@ -90,7 +90,7 @@ func _process(delta):
 		if not found:
 			fog_points.insert(0, Vector4(0, 1.0, pos.x, pos.y))
 	
-	# Marcar puntos que ya no tienen targets (similar a tu código existente)
+	# Mark points that no longer have targets (similar to your existing code)
 	for i in range(fog_points.size() - 1, -1, -1):
 		var point = fog_points[i]
 		var pos_exists = false
@@ -99,10 +99,10 @@ func _process(delta):
 				pos_exists = true
 				break
 		if not pos_exists and point.y == 1.0:
-			fog_points[i].y = 0.0 # Comenzar desvanecimiento
-			fog_points[i].x = 0.0 # Reiniciar tiempo
+			fog_points[i].y = 0.0 # Start fading
+			fog_points[i].x = 0.0 # Reset time
 	
-	# Pasar parámetros al shader
+	# Pass parameters to shader
 
 	var mat: ShaderMaterial = fog_sprite.get_material()
 	if mat:
@@ -114,11 +114,11 @@ func _process(delta):
 			)
 		)
 
-# Añadir un target manualmente
+# Add a target manually
 func add_target(target: Node2D):
 	if not target in targets:
 		targets.append(target)
 
-# Remover un target manualmente
+# Remove a target manually
 func remove_target(target: Node2D):
 	targets.erase(target)

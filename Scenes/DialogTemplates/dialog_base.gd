@@ -4,7 +4,6 @@ extends PanelContainer
 
 
 class SpecialEffectCommand:
-	
 	var name: String = ""
 	var parameters: Dictionary = {}
 	var start: int = 0
@@ -21,7 +20,6 @@ class SpecialEffectCommand:
 
 
 class BackgroundImage:
-	
 	var id: int = 0
 	var image: TextureRect
 	var start_position: int
@@ -49,7 +47,6 @@ class BackgroundImage:
 		self.character_linked_to = character_linked_to
 	
 
-	
 	func start_idle_animation() -> void:
 		if not is_instance_valid(self) or is_queued_for_deletion() or not image: return
 		
@@ -156,11 +153,11 @@ class BackgroundImage:
 
 
 class TagInfo:
-	var type: String     # Tipo de etiqueta sin el /
-	var start: int       # Posición de inicio
-	var length: int      # Longitud total de la etiqueta
-	var is_closing: bool # Si es etiqueta de cierre
-	var full_tag: String # Etiqueta completa
+	var type: String # Tag type without /
+	var start: int # Start position
+	var length: int # Total tag length
+	var is_closing: bool # If closing tag
+	var full_tag: String # Full tag
 	
 	func _init(t: String, s: int, l: int, c: bool, f: String):
 		type = t
@@ -175,7 +172,7 @@ class TagInfo:
 		]
 
 # The message will be tested with the text of the variable “test_dialog_box” after 0.5 seconds...
-@export_multiline var test_dialog_box: String = "" :
+@export_multiline var test_dialog_box: String = "":
 	set(value):
 		test_dialog_box = value
 		if Engine.is_editor_hint() and is_node_ready():
@@ -292,8 +289,8 @@ var floating_initialize: bool = false
 var instant_text_enabled: bool = false
 
 # Start Transition Variables
-@export var reverse:bool = false
-@export var all_at_once:bool = false
+@export var reverse: bool = false
+@export var all_at_once: bool = false
 
 var start_transition_id: int = 0
 var start_transition_parameters: Dictionary = {}
@@ -304,15 +301,15 @@ var command_waiting_enabled: bool = false
 
 var highlight_character_tween: Tween
 
-var time: float :
+var time: float:
 	get():
 		if !is_inside_tree():
 			return 0
 		else:
 			if max_characters > 0:
-				return(float(current_character) / float(max_characters))
+				return (float(current_character) / float(max_characters))
 			else:
-				return(0)
+				return (0)
 		
 
 # Reference self for use in transition effects.
@@ -361,9 +358,9 @@ func get_real_size() -> Vector2:
 	var h = size.y
 	if character_container:
 		var minx = INF
-		var maxx = -INF
+		var maxx = - INF
 		var miny = INF
-		var maxy = -INF
+		var maxy = - INF
 		for img in character_container.get_children():
 			minx = min(img.position.x, minx)
 			maxx = max(img.position.x + img.size.x, maxx)
@@ -465,7 +462,7 @@ func _show_wait_form_input_cursor() -> void:
 			
 			var wait_time = wait_for_input_time if wait_for_input_time > 0 else 1.0
 			
-			busy = true 
+			busy = true
 			await get_tree().create_timer(wait_time).timeout
 			if not is_instance_valid(self) or not is_inside_tree(): return
 			
@@ -618,7 +615,7 @@ func parse_text(text: String) -> String:
 		"character", "face", "imgfx", "img_remove", "showbox", "hidebox", "sound", "wait",
 		"no_wait_input", "variable", "actor", "party", "gold", "class", "item", "weapon",
 		"profession_name", "profession_level",
-		"armor", "enemy", "state",  "show_whole_line", "dialog_shake", "blip", "highlight_character",
+		"armor", "enemy", "state", "show_whole_line", "dialog_shake", "blip", "highlight_character",
 		"speaker", "speaker_end", "speaker_entry", "speaker_entry_end", "speaker_exit", "freeze"
 	]
 	var offset = 0
@@ -637,7 +634,7 @@ func parse_text(text: String) -> String:
 				var obj_value: String = ""
 				var args: Dictionary = parse_args(m.get_string(1))
 				match command_name:
-					"variable": 
+					"variable":
 						if args.has("id"):
 							var id = int(args.id)
 							var data = RPGSYSTEM.system.variables
@@ -763,7 +760,7 @@ func _get_icon(icon: Variant, encoded_format: String) -> String:
 		elif icon.region.has_area():
 			icon_command = "[img %s]%s[/img]" % [icon_region, icon_path]
 		else:
-			icon_command = "[img]%s[/img]" %  icon_path
+			icon_command = "[img]%s[/img]" % icon_path
 
 	return icon_command
 
@@ -842,7 +839,7 @@ func reset() -> void:
 	delay_for_input = 0.0
 	wait_for_user_option_selected_enabled = false
 	wait_for_input_enabled = true
-	wait_for_input_time  = 0.0
+	wait_for_input_time = 0.0
 
 	for obj in images.duplicate():
 		obj.kill()
@@ -886,7 +883,7 @@ func reset() -> void:
 
 func soft_reset() -> void:
 	wait_for_input_enabled = true
-	wait_for_input_time  = 0.0
+	wait_for_input_time = 0.0
 	message.modulate.a = 1.0
 	%AdvanceCursorContainer.visible = false
 	current_character = 0
@@ -1061,7 +1058,7 @@ func set_position_over_node() -> void:
 			p = up_node.get_global_transform_with_canvas().origin
 		else:
 			p = anchor_node.get_global_transform_with_canvas().origin
-		position = p - Vector2(size.x * 0.5,  size.y) * scale
+		position = p - Vector2(size.x * 0.5, size.y) * scale
 
 
 func get_parameters(index: int, _parameters: Dictionary) -> Dictionary:
@@ -1073,8 +1070,8 @@ func get_parameters(index: int, _parameters: Dictionary) -> Dictionary:
 		1:
 			parameters.intensity = _parameters.get("intensity", 8.0)
 		2:
-			parameters.cursor = _parameters.get("cursor",  "┃")
-			parameters.use_text_color = _parameters.get("use_text_color",  false)
+			parameters.cursor = _parameters.get("cursor", "┃")
+			parameters.use_text_color = _parameters.get("use_text_color", false)
 			parameters.color = _parameters.get("color", Color.GREEN_YELLOW)
 		3:
 			parameters.ember = _parameters.get("ember", ".")
@@ -1116,7 +1113,7 @@ func clear_text() -> void:
 
 func _get_initial_config_commands() -> String:
 	var commands = ""
-	var pos_val = initial_config.get("position", 0) 
+	var pos_val = initial_config.get("position", 0)
 	
 	var face_data = initial_config.get("face")
 	if face_data:
@@ -1149,7 +1146,7 @@ func _get_initial_config_commands() -> String:
 
 func setup_text(text: String, use_soft_reset: bool = false, is_additional_text: bool = false) -> void:
 	if not is_inside_tree() or is_queued_for_deletion(): return
-	if not instant_text_enabled:  busy_until_resume = true
+	if not instant_text_enabled: busy_until_resume = true
 	
 	if !use_soft_reset:
 		reset()
@@ -1204,7 +1201,7 @@ func setup_text(text: String, use_soft_reset: bool = false, is_additional_text: 
 			var letter_line = message.get_character_line(i)
 			if letter_line != current_line and letter_line != -1:
 				current_line = letter_line
-				if text_parsed[i-1] != "\n":
+				if text_parsed[i - 1] != "\n":
 					indexes.append(i)
 		for i in range(indexes.size() - 1, -1, -1):
 			# Search the original text for the correct position, adding an offset
@@ -1368,7 +1365,6 @@ func get_hide_speaker_commands(speaker_id: int) -> String:
 	if RPGSYSTEM.database.speakers.size() > speaker_id:
 		var speaker: RPGSpeaker = RPGSYSTEM.database.speakers[speaker_id]
 		if speaker:
-			
 			# end speaker command
 			# this command is called to delete the color that has been
 			# saved in the cache variable when entering the character
@@ -1419,7 +1415,7 @@ func get_image_or_face_command(img: Dictionary) -> String:
 	var d10 = img.get("idle_animation", 0)
 	var d11 = img.get("is_speaker", false)
 	var d12 = img.get("image_offset", Vector2i.ZERO)
-	var d13 = "" 
+	var d13 = ""
 	# 0 = no link, 1 = link to character left, 2 = link to character right
 	var d14 = img.get("character_linked_to", 0)
 	if d0 is RPGIcon:
@@ -1451,7 +1447,7 @@ func get_image_or_face_command(img: Dictionary) -> String:
 				"left", "center", "right",
 				"bottom_left_screen", "bottom_center_screen", "bottom_right_screen",
 				"top_left_screen", "top_center_screen", "top_right_screen",
-				"left_screen",  "right_screen", "custom"
+				"left_screen", "right_screen", "custom"
 				][d9]
 			var arg3 = "" if d9 == 0 else " position=\"%s\"" % dir
 			var arg4 = "" if d1 == 0 else " trans_type=%s" % d1
@@ -1489,12 +1485,12 @@ func balance_bbcode_paragraphs():
 	var i = 0
 	var regex_open = RegEx.new()
 	var regex_close = RegEx.new()
-	regex_open.compile(r"\[(\w+)(=*[^\]]+)?\]")  # Capturar etiquetas abiertas
-	regex_close.compile(r"\[\/(\w+)\]")         # Capturar etiquetas cerradas
+	regex_open.compile(r"\[(\w+)(=*[^\]]+)?\]") # Capturar etiquetas abiertas
+	regex_close.compile(r"\[\/(\w+)\]") # Capturar etiquetas cerradas
 	while i < paragraphs.size():
 		var paragraph = paragraphs[i]
 
-		var open_stack = []  # Etiquetas abiertas sin cerrar
+		var open_stack = [] # Etiquetas abiertas sin cerrar
 
 		# Detectar etiquetas abiertas
 		for match in regex_open.search_all(paragraph):
@@ -1536,14 +1532,14 @@ func balance_bbcode_paragraphs():
 func fix_tags(text: String) -> String:
 	#print("Dirty text: ", text)
 	# Lista de etiquetas válidas
-	var valid_tags = ["font", "font_size", "s", "u", "i", "b", "color", "bgcolor", "pulse", 
+	var valid_tags = ["font", "font_size", "s", "u", "i", "b", "color", "bgcolor", "pulse",
 					 "woo", "uwu", "sparkle", "rain", "number", "nervous", "l33t", "jump",
 					 "heart", "cuss", "colormod", "ghost", "rainbow", "fade", "shake",
 					 "tornado", "wave", "transition_fade", "fill", "right", "center", "left"]
 	
-	var stack = []               # Pila para etiquetas abiertas
-	var result = text           # Texto resultante
-	var offset = 0             # Offset para ajustar posiciones después de modificaciones
+	var stack = [] # Pila para etiquetas abiertas
+	var result = text # Texto resultante
+	var offset = 0 # Offset para ajustar posiciones después de modificaciones
 	
 	# Regex para capturar etiquetas
 	var regex = RegEx.new()
@@ -1674,7 +1670,7 @@ func get_final_text(text: String) -> String:
 		3:
 			var a = start_transition_parameters.get("ember", ".")
 			var b = (start_transition_parameters.get("color", Color.RED)).to_html()
-			var c = start_transition_parameters.get("scale",  16.0)
+			var c = start_transition_parameters.get("scale", 16.0)
 			final_text = "[embers id=embers length=%s ember=%s color=%s scale=%s]%s[/embers]" % [length, a, b, c, final_text]
 		4:
 			var a = start_transition_parameters.get("pow", 2.0)
@@ -1721,7 +1717,6 @@ func show_open_animation() -> void:
 	await get_tree().process_frame
 	
 	if current_animation != "none":
-		
 		var t = start_animation_duration
 		tweens.message = create_tween()
 		var trans_type = [
@@ -1750,7 +1745,7 @@ func show_open_animation() -> void:
 			
 		if ["Move Left To Right", "Move Left To Right + Fade-In"].has(current_animation):
 			var current_position_x = node.position.x
-			node.position.x = -node.size.x
+			node.position.x = - node.size.x
 			tweens.message.tween_property(node, "position:x", current_position_x, t)
 			
 		if ["Move Right To Left", "Move Right To Left + Fade-In"].has(current_animation):
@@ -1792,7 +1787,6 @@ func show_close_animation() -> void:
 	var current_animation = animations[clamp(end_animation_id, 0, animations.size() - 1)]
 	
 	if current_animation != "none":
-		
 		closing.emit()
 		
 		var node = self
@@ -1937,7 +1931,7 @@ func start_command_character(command: SpecialEffectCommand) -> void:
 					
 				3: # Move Right To Left (Entrada desde la derecha - fuera de pantalla)
 					# Usamos el ancho del viewport para asegurar que sale de pantalla
-					t.position.x = get_viewport_rect().size.x 
+					t.position.x = get_viewport_rect().size.x
 					tween.tween_property(t, "position:x", target_pos_x, animation_time).from(get_viewport_rect().size.x)
 					
 				4: # Move To Left Position (Animación interna)
@@ -1960,7 +1954,7 @@ func start_command_character(command: SpecialEffectCommand) -> void:
 			tween.tween_callback(current_bg.start_idle_animation)
 			
 			# Asegurar posición Y correcta si se guardó meta (importante para floats)
-			if t.has_meta("start_position"): 
+			if t.has_meta("start_position"):
 				t.position.y = t.get_meta("start_position").y
 				
 			if wait:
@@ -2186,7 +2180,6 @@ func start_command_highlight_character(command: SpecialEffectCommand) -> void:
 		highlight_character_tween.tween_property(image.image, "self_modulate", target_color, 0.35)
 
 
-
 func start_command_image_remove(command: SpecialEffectCommand) -> void:
 	if is_floating: return
 	if "type" in command.parameters:
@@ -2280,7 +2273,7 @@ func start_command_imgfx(command: SpecialEffectCommand) -> void:
 					1: # Fade Out
 						t.tween_property(obj, "modulate:a", 0.0, duration)
 					2: # Move To Left Position
-						var p = -obj.custom_minimum_size.x * 0.5
+						var p = - obj.custom_minimum_size.x * 0.5
 						t.tween_property(obj, "position:x", p, duration)
 						t.tween_callback(obj.set_anchors_preset.bind(Control.PRESET_BOTTOM_LEFT))
 					3: # Move To Center Position
@@ -2610,7 +2603,7 @@ func show_next_character() -> void:
 				if current_character > command.start:
 					await start_special_command(command)
 					
-					if busy: 
+					if busy:
 						command_executed_and_paused = true
 						break
 			
@@ -2674,7 +2667,7 @@ func set_main_margin(left_value: int, right_value: int, top_value: int, bottom_v
 
 # char_index: Character position requesting a time value.
 # allow_all_together: used internally by some transitions.
-func get_t(char_index:int, allow_all_together:bool = true, length:float = 16.0) -> float:
+func get_t(char_index: int, allow_all_together: bool = true, length: float = 16.0) -> float:
 	@warning_ignore("shadowed_variable")
 	var time: float = 0
 	var max_time: float = 0

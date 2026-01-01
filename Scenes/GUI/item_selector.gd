@@ -1,25 +1,25 @@
 extends HBoxContainer
 
-@export var items: Array[SimpleItem] = []  # Array of items (SimpleItem -> Resource -> name and value)
+@export var items: Array[SimpleItem] = [] # Array of items (SimpleItem -> Resource -> name and value)
 @export var background_style_selected: StyleBox
 @export var background_style_unselected: StyleBox
 @export var background_style_highlight: StyleBox
 @export var item_selected_color: Color = Color.WHITE
 @export var item_unselected_color: Color = Color(0.374, 0.374, 0.374)
 @export var item_highlight_color: Color = Color.WHITE
-@export var smoothing_factor: float = 8.0  # Velocidad de scroll
-@export var item_width: int = 200  # Ancho de cada item
-@export var item_spacing: int = 50  # Espacio entre items
-@export var selected_index: int = 0  # Índice del item seleccionado
+@export var smoothing_factor: float = 8.0 # Scroll speed
+@export var item_width: int = 200 # Width of each item
+@export var item_spacing: int = 50 # Space between items
+@export var selected_index: int = 0 # Selected item index
 @export var text_offset: int = 0
 @export var slide_fx: AudioStream
-@export var  focus_on_hover: bool = true
+@export var focus_on_hover: bool = true
 
 var main_tween: Tween
 
-# Configuración del menú
+# Menu configuration
 
-# Variables de control
+# Control variables
 var target_position: float = 0
 var current_position: float = 0
 var is_dragging = false
@@ -77,7 +77,7 @@ func _ready():
 		)
 		arrow.set_disabled(items.size() <= 1)
 	
-	# Inicializar posición
+	# Initialize position
 	current_position = 0
 	target_position = 0
 	
@@ -108,7 +108,7 @@ func set_value(value: Variant) -> void:
 
 func _force_selected_position() -> void:
 	var item_full_width = item_width + item_spacing
-	target_position = -selected_index * item_full_width
+	target_position = - selected_index * item_full_width
 	current_position = target_position
 	canvas.queue_redraw()
 
@@ -126,13 +126,13 @@ func select() -> void:
 
 
 func _process(delta):
-	# Suavizar el movimiento
+	# Smooth movement
 	if current_position != target_position:
-		if abs(current_position - target_position) > 0.1: # Usamos un umbral pequeño para evitar cálculos innecesarios
+		if abs(current_position - target_position) > 0.1: # Use a small threshold to avoid unnecessary calculations
 			var weight = 1.0 - exp(-delta * smoothing_factor)
 			current_position = lerp(current_position, target_position, weight)
 			
-			# Esta parte para "anclar" la posición final sigue siendo una buena idea
+			# This part to "anchor" the final position is still a good idea
 			if abs(current_position - target_position) < 3:
 				current_position = target_position
 				end_scroll.emit()
@@ -149,11 +149,11 @@ func _process(delta):
 func _get_visible_item_range() -> Dictionary:
 	var item_full_width = item_width + item_spacing
 	
-	# Calcular el rango visible en el viewport
-	var left_edge = -current_position - canvas.size.x/2 - item_full_width
-	var right_edge = -current_position + canvas.size.x/2 + item_full_width
+	# Calculate visible range in viewport
+	var left_edge = - current_position - canvas.size.x / 2 - item_full_width
+	var right_edge = - current_position + canvas.size.x / 2 + item_full_width
 	
-	# Calcular los índices virtuales del primer y último item visible
+	# Calculate virtual indices of first and last visible item
 	var first_virtual_index = floor(left_edge / item_full_width)
 	var last_virtual_index = ceil(right_edge / item_full_width)
 	
@@ -172,16 +172,16 @@ func _get_real_index(virtual_index: int) -> int:
 
 func get_selected_item_closest_to_center() -> int:
 	var item_full_width = item_width + item_spacing
-	var center_pos = -current_position
+	var center_pos = - current_position
 	
-	# Encontrar el índice virtual más cercano al centro
+	# Find virtual index closest to center
 	var nearest_virtual_index = round(center_pos / item_full_width)
 	
-	# Calcular cuántos items completos hay que moverse para llegar al selected_index
+	# Calculate how many full items to move to reach selected_index
 	var current_real_index = _get_real_index(nearest_virtual_index)
 	var steps_to_selected = selected_index - current_real_index
 	
-	# Ajustar los pasos si es más corto ir en la dirección opuesta
+	# Adjust steps if shorter to go in opposite direction
 	if abs(steps_to_selected) > items.size() / 2.0:
 		if steps_to_selected > 0:
 			steps_to_selected -= items.size()
@@ -343,20 +343,20 @@ func _check_button_pressed():
 func _move_to_next_item(direction: int):
 	if items.size() <= 1: return
 	
-	# Calcular el nuevo índice seleccionado
+	# Calculate new selected index
 	var new_index = selected_index + direction
 	
-	# Asegurarse de que el índice esté dentro del rango de ítems reales
+	# Ensure index is within real items range
 	new_index = wrapi(new_index, 0, items.size())
 	
-	# Calcular la distancia necesaria para mover los ítems
+	# Calculate distance needed to move items
 	var item_full_width = item_width + item_spacing
 	var distance = direction * item_full_width
 	
-	# Actualizar la posición objetivo
+	# Update target position
 	target_position -= distance
 	
-	# Actualizar el índice seleccionado
+	# Update selected index
 	selected_index = new_index
 	item_changed.emit(items[selected_index].value)
 	start_scroll.emit()
@@ -366,9 +366,9 @@ func _move_to_next_item(direction: int):
 
 func _snap_to_nearest():
 	var item_full_width = item_width + item_spacing
-	var center_pos = -current_position
+	var center_pos = - current_position
 	
-	# Encontrar el item virtual más cercano al centro
+	# Find virtual item closest to center
 	var nearest_virtual_index = round(center_pos / item_full_width)
 	selected_index = _get_real_index(nearest_virtual_index)
 	
@@ -378,9 +378,8 @@ func _snap_to_nearest():
 func _move_to_selected():
 	var item_full_width = item_width + item_spacing
 	
-	# Calcular la posición objetivo para centrar el ítem seleccionado
-	target_position = -selected_index * item_full_width
-
+	# Calculate target position to center selected item
+	target_position = - selected_index * item_full_width
 
 
 func _on_previous_item_pressed() -> void:
