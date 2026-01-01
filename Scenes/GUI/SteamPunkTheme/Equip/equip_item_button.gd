@@ -43,12 +43,12 @@ var item_name: String = ""
 
 @export var custom_font: Font
 
-@export var disabled: bool : set = set_disabled
-@export var is_toggle_button: bool = false : set = set_toggle_mode
-@export var is_untoggleable : bool = true
+@export var disabled: bool: set = set_disabled
+@export var is_toggle_button: bool = false: set = set_toggle_mode
+@export var is_untoggleable: bool = true
 @export var button_group: EquipItemButtonGroup
 
-@export var update_all: bool :
+@export var update_all: bool:
 	set(value):
 		queue_redraw()
 
@@ -94,7 +94,6 @@ func _on_focus_exited() -> void:
 			for button in buttons:
 				button.set_selected(button == button_selected)
 			
-
 
 func _gui_input(event: InputEvent) -> void:
 	if disabled: return
@@ -217,7 +216,7 @@ func _draw() -> void:
 
 	if slot_name != "":
 		var text_pos := Vector2(current_x, y_center + font_size * 0.3)
-		draw_string_outline(font, text_pos, slot_text, HORIZONTAL_ALIGNMENT_LEFT, slot_width, font_size, outline_size,  outline_color)
+		draw_string_outline(font, text_pos, slot_text, HORIZONTAL_ALIGNMENT_LEFT, slot_width, font_size, outline_size, outline_color)
 		draw_string(font, text_pos, slot_text, HORIZONTAL_ALIGNMENT_LEFT, slot_width, font_size, slot_text_color)
 
 	# ITEM
@@ -232,7 +231,7 @@ func _draw() -> void:
 	if item_name != "":
 		var item_text := trim_text_to_width(item_name, font, item_text_max_width)
 		var text_pos := Vector2(current_x, y_center + font_size * 0.3)
-		draw_string_outline(font, text_pos, item_text, HORIZONTAL_ALIGNMENT_LEFT, item_text_max_width, font_size, outline_size,  outline_color)
+		draw_string_outline(font, text_pos, item_text, HORIZONTAL_ALIGNMENT_LEFT, item_text_max_width, font_size, outline_size, outline_color)
 		draw_string(font, text_pos, item_text, HORIZONTAL_ALIGNMENT_LEFT, item_text_max_width, font_size, item_text_color)
 
 	draw_bottom_line()
@@ -242,15 +241,15 @@ func trim_text_to_width(text: String, font: Font, max_width: float, suffix: Stri
 	var full_text := text + suffix
 	var full_width := font.get_string_size(full_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
 
-	# Si texto completo + sufijo cabe, devolver directamente
+	# If full text + suffix fits, return directly
 	if full_width <= max_width:
 		return full_text
 
-	# Si no cabe, recortar texto para que quepa texto recortado + "…" + sufijo
+	# If it doesn't fit, trim text to fit trimmed text + "…" + suffix
 	var trimmed := text
 	var ellipsis := "…"
 
-	# Reducir texto hasta que texto recortado + ellipsis + sufijo quepan
+	# Reduce text until trimmed text + ellipsis + suffix fit
 	while trimmed.length() > 0:
 		trimmed = trimmed.substr(0, trimmed.length() - 1)
 		var trial_text = trimmed.strip_edges() + ellipsis + suffix
@@ -258,7 +257,7 @@ func trim_text_to_width(text: String, font: Font, max_width: float, suffix: Stri
 		if trial_width <= max_width:
 			return trial_text
 
-	# Si ni siquiera "…"+suffix cabe, devolver solo sufijo recortado para que quepa (opcional)
+	# If even "…"+suffix doesn't fit, return only trimmed suffix to fit (optional)
 	var fallback := suffix
 	while fallback.length() > 0 and font.get_string_size(fallback, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x > max_width:
 		fallback = fallback.substr(0, fallback.length() - 1)

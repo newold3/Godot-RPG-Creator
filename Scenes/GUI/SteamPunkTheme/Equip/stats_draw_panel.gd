@@ -1,6 +1,6 @@
 extends Control
 
-# Propiedades de configuración visual
+# Visual configuration properties
 @export var increase_color: Color = Color.GREEN
 @export var decrease_color: Color = Color.RED
 @export var no_change_color: Color = Color.WHITE
@@ -27,7 +27,7 @@ extends Control
 
 @export var upgrade_icon: TextureRect
 
-# Datos internos
+# Internal data
 var current_actor: GameActor
 var current_stats: Dictionary = {}
 var stats_data: Array[Dictionary] = []
@@ -59,7 +59,7 @@ func _on_stats_gui_input(event: InputEvent) -> void:
 		var current_y: float = 0
 		var found_stat = {}
 		
-		# Buscar en qué estadística está el ratón
+		# Find which stat the mouse is over
 		for data in stats_data:
 			var item_height = data.height + line_spacing
 			
@@ -71,7 +71,7 @@ func _on_stats_gui_input(event: InputEvent) -> void:
 			
 			current_y += item_height
 		
-		# Actualizar el stat hover solo si cambió
+		# Update stat hover only if changed
 		if found_stat != hovered_stat:
 			hovered_stat = found_stat
 			_on_hover_stat_changed()
@@ -83,7 +83,7 @@ func _on_mouse_exited() -> void:
 
 
 func _on_hover_stat_changed() -> void:
-	# Aquí se pueden agregar efectos, cursor o tooltips
+	# Here you can add effects, cursor or tooltips
 	pass
 
 
@@ -91,16 +91,16 @@ func create_stats_data() -> void:
 	for key in stats_structure:
 		stats_structure[key].clear()
 	
-	# Agregar estadísticas principales
+	# Add main stats
 	var items = RPGSYSTEM.database.types.main_parameters
 	for i in range(0, 8, 1):
 		stats_structure["Main Stats"].append(items[i])
 	
-	# Agregar estadísticas secundarias
+	# Add secondary stats
 	for i in range(8, items.size(), 1):
 		stats_structure["Other Stats"].append(items[i])
 	
-	# Agregar estadísticas de usuario
+	# Add user stats
 	if not RPGSYSTEM.database.types.user_parameters.is_empty():
 		for user_parameter in RPGSYSTEM.database.types.user_parameters:
 			stats_structure["Secondary Stats"].append(user_parameter.name)
@@ -109,10 +109,10 @@ func create_stats_data() -> void:
 	
 	stats_data.clear()
 	
-	# Crear datos para las estadísticas principales y secundarias
+	# Create data for main and secondary stats
 	var is_first_section = true
 	for section_name in stats_structure:
-		# Espaciado entre secciones (excepto la primera)
+		# Spacing between sections (except the first)
 		if not is_first_section:
 			stats_data.append({
 				"type": "spacer",
@@ -120,14 +120,14 @@ func create_stats_data() -> void:
 			})
 		is_first_section = false
 		
-		# Título de sección
+		# Section title
 		stats_data.append({
 			"type": "title",
 			"text": section_name,
 			"height": title_font_size + margin_vertical * 2
 		})
 		
-		# Espaciado después del título
+		# Spacing after title
 		stats_data.append({
 			"type": "spacer",
 			"height": 4
@@ -139,7 +139,7 @@ func create_stats_data() -> void:
 			else RPGSYSTEM.database.types.icons.main_parameters_icons if section_name == "Other Stats" \
 			else null
 		
-		# Agregar estadísticas de la sección
+		# Add section stats
 		for stat in stats_structure[section_name]:
 			var is_percent = stat in stats_structure["Other Stats"]
 			var tex = null
@@ -166,7 +166,7 @@ func create_stats_data() -> void:
 				"height": max(font_size + margin_vertical * 2, icon_size.y + margin_vertical * 2)
 			})
 	
-	# Crear datos para las estadísticas de elementos
+	# Create data for element stats
 	_add_element_stats()
 	
 	_calculate_minimum_size()
@@ -183,26 +183,26 @@ func _add_element_stats() -> void:
 	for j in rates.size():
 		var rate = rates[j]
 		
-		# Espaciado entre secciones
+		# Spacing between sections
 		stats_data.append({
 			"type": "spacer",
 			"height": section_spacing
 		})
 		
-		# Título de la sección de elementos
+		# Element section title
 		stats_data.append({
 			"type": "title",
 			"text": RPGSYSTEM.database.terms.search_message(rate),
 			"height": title_font_size + margin_vertical * 2
 		})
 		
-		# Espaciado después del título
+		# Spacing after title
 		stats_data.append({
 			"type": "spacer",
 			"height": 4
 		})
 		
-		# Estadísticas de elementos
+		# Element stats
 		for i in elements.size():
 			var current_element: String = elements[i]
 			var current_icon: RPGIcon = icons[i] if i < icons.size() else null
@@ -246,15 +246,15 @@ func _calculate_minimum_size() -> void:
 func _calculate_stat_width(font: Font, data: Dictionary) -> float:
 	var width: float = margin_left + margin_right
 	
-	# Icono
+	# Icon
 	if data.icon:
 		width += icon_size.x + spacing
 	
-	# Nombre de la estadística
+	# Stat name
 	if data.name != "":
 		width += font.get_string_size(data.name, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x + spacing
 	
-	# Valores simulados para el cálculo
+	# Simulated values for calculation
 	var sample_current = "999"
 	var sample_new = "999"
 	if data.is_percent:
@@ -291,18 +291,18 @@ func _on_stats_draw() -> void:
 
 
 func _draw_title(font: Font, title_text: String, y_pos: float, height: float) -> void:
-	# Dibujar fondo del título si hay StyleBox
+	# Draw title background if there is StyleBox
 	if title_background_style:
 		var title_rect = Rect2(0, y_pos, size.x - 4, height)
 		title_background_style.draw(get_canvas_item(), title_rect)
 	
 	var text_pos = Vector2(margin_left, y_pos + height * 0.5 + title_font_size * 0.3)
-	draw_string_outline(font, text_pos, title_text, HORIZONTAL_ALIGNMENT_LEFT, -1, title_font_size,  outline_size, outline_color)
+	draw_string_outline(font, text_pos, title_text, HORIZONTAL_ALIGNMENT_LEFT, -1, title_font_size, outline_size, outline_color)
 	draw_string(font, text_pos, title_text, HORIZONTAL_ALIGNMENT_LEFT, -1, title_font_size, title_color)
 
 
 func _draw_stat(font: Font, data: Dictionary, y_pos: float, height: float) -> void:
-	# Dibujar separador entre estadísticas si hay StyleBox
+	# Draw separator between stats if there is StyleBox
 	if stat_separator_style:
 		var separator_rect = Rect2(margin_left, y_pos + height, size.x - margin_left - margin_right, 1)
 		stat_separator_style.draw(get_canvas_item(), separator_rect)
@@ -310,7 +310,7 @@ func _draw_stat(font: Font, data: Dictionary, y_pos: float, height: float) -> vo
 	var current_x: float = margin_left
 	var y_center: float = y_pos + height * 0.5
 	
-	# Dibujar icono
+	# Draw icon
 	if data.icon:
 		var icon_rect = Rect2(
 			Vector2(current_x, y_center - icon_size.y * 0.5),
@@ -319,16 +319,16 @@ func _draw_stat(font: Font, data: Dictionary, y_pos: float, height: float) -> vo
 		draw_texture_rect(data.icon, icon_rect, false)
 		current_x += icon_size.x + spacing
 	
-	# Dibujar nombre de la estadística
+	# Draw stat name
 	if data.name != "":
 		var text_pos = Vector2(current_x, y_center + font_size * 0.3)
-		draw_string_outline(font, text_pos, data.name, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size,  outline_size, outline_color)
+		draw_string_outline(font, text_pos, data.name, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, outline_size, outline_color)
 		draw_string(font, text_pos, data.name, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, text_color)
 		
 		var text_width = font.get_string_size(data.name, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
 		current_x += text_width + spacing
 	
-	# Obtener valores actuales
+	# Get current values
 	var current_value = 0
 	var new_value = 0
 	
@@ -336,12 +336,12 @@ func _draw_stat(font: Font, data: Dictionary, y_pos: float, height: float) -> vo
 		current_value = current_stats[data.key][0]
 		new_value = current_stats[data.key][1]
 	
-	# Formatear valores
+	# Format values
 	var suffix = "%" if data.is_percent else ""
 	var current_text = GameManager.get_number_formatted(current_value, 0, "", suffix) if GameManager else str(current_value) + suffix
 	var new_text = GameManager.get_number_formatted(new_value, 0, "", suffix) if GameManager else str(new_value) + suffix
 	
-	# Calcular diferencia
+	# Calculate difference
 	var difference = new_value - current_value
 	var difference_text = ""
 	if show_comparison and difference != 0:
@@ -349,7 +349,7 @@ func _draw_stat(font: Font, data: Dictionary, y_pos: float, height: float) -> vo
 		var diff_value = GameManager.get_number_formatted(difference, 0, "", suffix) if GameManager else str(difference) + suffix
 		difference_text = " (" + s + diff_value + ")"
 	
-	# Calcular ancho de valores
+	# Calculate values width
 	var values_width = font.get_string_size(current_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
 	if show_comparison:
 		values_width += font.get_string_size(arrow_symbol, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
@@ -357,38 +357,38 @@ func _draw_stat(font: Font, data: Dictionary, y_pos: float, height: float) -> vo
 		if difference_text != "":
 			values_width += font.get_string_size(difference_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
 	
-	# Posicionar valores (alineados a la derecha)
+	# Position values (right aligned)
 	var values_start_x = size.x - margin_right - values_width
 	if values_start_x < current_x:
 		values_start_x = current_x
 	
-	# Dibujar valor actual
+	# Draw current value
 	var current_value_pos = Vector2(values_start_x, y_center + font_size * 0.3)
-	draw_string_outline(font, current_value_pos, current_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size,  outline_size, outline_color)
+	draw_string_outline(font, current_value_pos, current_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, outline_size, outline_color)
 	draw_string(font, current_value_pos, current_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, text_color)
 	
-	# Dibujar comparación si está habilitada
+	# Draw comparison if enabled
 	if show_comparison:
 		values_start_x += font.get_string_size(current_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
 		
-		# Dibujar flecha
+		# Draw arrow
 		var arrow_pos = Vector2(values_start_x, y_center + font_size * 0.3)
-		draw_string_outline(font, arrow_pos, arrow_symbol, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size,  outline_size, outline_color)
+		draw_string_outline(font, arrow_pos, arrow_symbol, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, outline_size, outline_color)
 		draw_string(font, arrow_pos, arrow_symbol, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, text_color)
 		
 		values_start_x += font.get_string_size(arrow_symbol, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
 		
-		# Dibujar nuevo valor con color apropiado
+		# Draw new value with appropriate color
 		var new_value_color = _get_value_color(current_value, new_value)
 		var new_value_pos = Vector2(values_start_x, y_center + font_size * 0.3)
-		draw_string_outline(font, new_value_pos, new_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size,  outline_size, outline_color)
+		draw_string_outline(font, new_value_pos, new_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, outline_size, outline_color)
 		draw_string(font, new_value_pos, new_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, new_value_color)
 		
-		# Dibujar diferencia si existe
+		# Draw difference if exists
 		if difference_text != "":
 			values_start_x += font.get_string_size(new_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
 			var difference_pos = Vector2(values_start_x, y_center + font_size * 0.3)
-			draw_string_outline(font, difference_pos, difference_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size,  outline_size, outline_color)
+			draw_string_outline(font, difference_pos, difference_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, outline_size, outline_color)
 			draw_string(font, difference_pos, difference_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, new_value_color)
 
 
@@ -417,7 +417,7 @@ func set_actor(actor: GameActor, _comparison_item: Dictionary = {}) -> void:
 		else:
 			copy_actor._set_equip(_comparison_item.slot_id, -1, 0)
 	
-	# Cargar estadísticas principales y secundarias
+	# Load main and secondary stats
 	for section_name in stats_structure:
 		for i in stats_structure[section_name].size():
 			var stat = stats_structure[section_name][i]
@@ -431,7 +431,7 @@ func set_actor(actor: GameActor, _comparison_item: Dictionary = {}) -> void:
 				var value2 = copy_actor.get_user_parameter(i)
 				current_stats[stat] = [value1, value2]
 	
-	# Cargar estadísticas de elementos
+	# Load element stats
 	if RPGSYSTEM and RPGSYSTEM.database and RPGSYSTEM.database.types:
 		var elements = RPGSYSTEM.database.types.element_types
 		for element in elements:
@@ -442,7 +442,7 @@ func set_actor(actor: GameActor, _comparison_item: Dictionary = {}) -> void:
 			current_stats[element + "_0"] = [attack_rate_value, copy_attack_rate_value]
 			current_stats[element + "_1"] = [defense_rate_value, copy_defense_rate_value]
 	
-	# Evaluar comparación de equipo
+	# Evaluate equipment comparison
 	_evaluate_equipment_comparison()
 	
 	GameManager.cancel_actors_initialize = false

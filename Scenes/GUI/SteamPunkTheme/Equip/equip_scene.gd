@@ -31,7 +31,7 @@ func start() -> void:
 	buttons_vertical_menu.start()
 	equipment_container.start()
 	
-	if  main_tween:
+	if main_tween:
 		main_tween.kill()
 
 	main_tween = create_tween()
@@ -155,7 +155,7 @@ func _process_start_change_equip(slot_id: int) -> void:
 	for item in equippable_items:
 		@warning_ignore("incompatible_ternary")
 		var real_data = RPGSYSTEM.database.weapons if button_selected == 0 else RPGSYSTEM.database.armors
-		var color_data = RPGSYSTEM.database.types.weapon_rarity_color_types if button_selected == 0 else  RPGSYSTEM.database.types.armor_rarity_color_types
+		var color_data = RPGSYSTEM.database.types.weapon_rarity_color_types if button_selected == 0 else RPGSYSTEM.database.types.armor_rarity_color_types
 		
 		for level in item.levels:
 			var current_item = item.levels[level].item
@@ -192,20 +192,20 @@ func _process_start_change_equip(slot_id: int) -> void:
 	GameManager.play_fx("ok")
 	
 	formatted_items.sort_custom(func(a, b):
-		# 1. Nuevos primero
+		# 1. New first
 		if a.is_new_item != b.is_new_item:
 			return a.is_new_item and not b.is_new_item
 
-		# 2. Orden alfabético por nombre
+		# 2. Alphabetical order by name
 		var cmp = a.name.naturalnocasecmp_to(b.name)
 		if cmp != 0:
 			return cmp < 0
 
-		# 3. Mismo nombre → nivel descendente
+		# 3. Same name -> descending level
 		return a.level > b.level
 	)
 	
-	# Añadir remove item al inicio
+	# Add remove item at the beginning
 	var remove_item = {
 		"name": "- " + tr("Remove equip") + " -",
 		"icon": preload("uid://cy1pny48ukkqg"),
@@ -291,7 +291,7 @@ func _show_menu() -> void:
 		
 	var gears = stats_container.get_gears()
 	for gear in gears:
-		t.tween_property(gear, "rotation", - PI / 4, 0.5).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT).set_delay(0.18)
+		t.tween_property(gear, "rotation", -PI / 4, 0.5).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT).set_delay(0.18)
 	t.tween_property(stats_container, "position:x", stats_container.get_meta("original_position").x - 40, 0.2).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT).set_delay(0.18)
 	t.tween_callback(
 		func():

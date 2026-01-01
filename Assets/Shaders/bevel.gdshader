@@ -30,31 +30,31 @@ float get_surrounding_alpha(sampler2D tex, vec2 uv, float radius, vec2 pixel_siz
 void fragment() {
     vec4 original_color = texture(TEXTURE, UV);
     
-    // Si el píxel es transparente, descartarlo
+    // If the pixel is transparent, discard it
     if (original_color.a < 0.01) {
         COLOR = vec4(0.0);
     }
 	else{
-	    // Muestreamos el ruido con movimiento
+	    // Sample noise with movement
 	    vec2 noise_uv = UV * noise_scale + vec2(TIME * noise_time_scale);
 	    float noise = texture(NOISE_TEXTURE, noise_uv).r * 2.0 - 1.0;
 	    
-	    // Detectamos transparencia en los alrededores
+	    // Detect transparency in the surroundings
 	    float surrounding_alpha = get_surrounding_alpha(TEXTURE, UV, edge_detection_radius, TEXTURE_PIXEL_SIZE);
 	    
-	    // Calculamos el bevel con influencia del ruido
+	    // Calculate the bevel with noise influence
 	    float alpha_diff = original_color.a - surrounding_alpha;
 	    float bevel = smoothstep(0.0, bevel_width, alpha_diff + noise * noise_strength);
 	    
-	    // Efecto de profundidad con ruido
+	    // Depth effect with noise
 	    float depth = 1.0 - (1.0 - bevel) * depth_intensity;
 	    depth += noise * noise_strength * depth_intensity;
 	    
-	    // Oscurecimiento central con ruido
+	    // Central darkening with noise
 	    float center_darkness = 1.0 - darkness * (1.0 - surrounding_alpha);
 	    center_darkness += noise * noise_strength * 0.5;
 	    
-	    // Color final con todos los efectos
+	    // Final color with all effects
 	    vec3 final_color = original_color.rgb * depth * center_darkness;
 	    
 	    COLOR = vec4(final_color, original_color.a);

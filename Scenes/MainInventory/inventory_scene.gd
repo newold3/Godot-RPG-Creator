@@ -181,7 +181,7 @@ func draw_item(index: int, item: Dictionary, pos: Vector2):
 	var sc = hover_scales.get(index, 1.0)
 	# Calculate offset to center scaled item within its cell
 	var center_offset = (Vector2(item_base_width - ITEM_PADDING.x * 2, item_height - ITEM_PADDING.y * 2) * sc - Vector2(item_base_width - ITEM_PADDING.x * 2, item_height - ITEM_PADDING.y * 2)) / 2
-	var transform_pos = pos + ITEM_PADDING - center_offset # Añadir padding y centrar
+	var transform_pos = pos + ITEM_PADDING - center_offset # Add padding and center
 	
 	# Draw item background
 	var item_rect = Rect2(Vector2.ZERO, Vector2(item_base_width - ITEM_PADDING.x * 2, item_height - ITEM_PADDING.y * 2))
@@ -203,12 +203,12 @@ func draw_item(index: int, item: Dictionary, pos: Vector2):
 			tube_width = item_base_width - item_rect.size.x
 		
 		# Make tube wider extending to the right
-		tube_rect.size.x = item_rect.size.x + tube_width # Extender hasta el siguiente ítem o borde
-		tube_rect.size.y = item_rect.size.y * 0.6 # 60% del alto del item
+		tube_rect.size.x = item_rect.size.x + tube_width # Extend to the next item or edge
+		tube_rect.size.y = item_rect.size.y * 0.6 # 60% of item height
 		
 		# Center tube vertically and position it
-		tube_rect.position = pos + Vector2(10, 0) # Comenzar desde el inicio del ítem + 10 px a la derecha
-		tube_rect.position.y += (item_rect.size.y - tube_rect.size.y) / 2 # Centrar verticalmente
+		tube_rect.position = pos + Vector2(10, 0) # Start from item start + 10 px to the right
+		tube_rect.position.y += (item_rect.size.y - tube_rect.size.y) / 2 # Center vertically
 		
 		# Draw tube
 		canvas.draw_texture_rect(background_tube, tube_rect, false)
@@ -430,8 +430,8 @@ func update_context_menu_position():
 			#adjusted_item_pos.y + (item_height - context_menu.size.y) / 2  # Centrado verticalmente
 		#)
 		var context_menu_pos = Vector2(
-			adjusted_item_pos.x, # A la izquierda del ítem
-			adjusted_item_pos.y # Centrado verticalmente
+			adjusted_item_pos.x, # To the left of the item
+			adjusted_item_pos.y # Centered vertically
 		)
 		
 		# Ensure context_menu doesn't go off screen
