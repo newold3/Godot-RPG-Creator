@@ -12,8 +12,8 @@ uniform float min_speed = 20.0;
 uniform float max_speed = 80.0;
 uniform float base_wiggle = 1.0;
 
-// Nuevo parámetro para controlar la compensación
-uniform float wiggle_compensation_factor = 1.0; // Valor por defecto 1.0 (ajustable desde el editor)
+// New parameter to control compensation
+uniform float wiggle_compensation_factor = 1.0; // Default value 1.0 (adjustable from editor)
 
 uniform float min_lifespan = 6.0;
 uniform float max_lifespan = 20.0;
@@ -22,7 +22,7 @@ uniform float fade_in_time = 1.0;
 uniform float fade_out_time = 1.0;
 
 uniform float fish_scale_min = 0.1;
-uniform float fish_scale_max = 6.0; // Escala máxima de 6 como mencionaste
+uniform float fish_scale_max = 6.0; // Max scale of 6 as you mentioned
 
 uniform vec4 fish_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
 
@@ -84,10 +84,10 @@ void fragment() {
         vec2 fish_pos_raw = start_pos + dir * speed * local_time;
         vec2 fish_pos = mod(fish_pos_raw, scaled_screen_size);
 
-        // COMPENSACIÓN MEJORADA DE WIGGLE
-        // Calculamos la compensación basada en la escala y el factor de control
-        float normalized_scale = scale / fish_scale_max; // Normalizamos la escala (0-1)
-        float compensation_curve = pow(normalized_scale, 2.5); // Curva más agresiva para escalas grandes
+        // IMPROVED WIGGLE COMPENSATION
+        // Calculate compensation based on scale and control factor
+        float normalized_scale = scale / fish_scale_max; // Normalize scale (0-1)
+        float compensation_curve = pow(normalized_scale, 2.5); // More aggressive curve for large scales
         float wiggle_compensation = 1.0 / (1.0 + compensation_curve * wiggle_compensation_factor * 3.0);
         float compensated_wiggle = base_wiggle * wiggle_compensation;
 
@@ -109,8 +109,8 @@ void fragment() {
 
                 vec2 sprite_uv = fish_uv + vec2(0.5);
 
-                // Aplicamos el wiggle compensado
-                float amp = compensated_wiggle * mix(10.0, 15.0, rand(id * 5.1)) * min(scale, 3.0); // Limitamos la influencia de la escala
+                // Apply compensated wiggle
+                float amp = compensated_wiggle * mix(10.0, 15.0, rand(id * 5.1)) * min(scale, 3.0); // Limit scale influence
                 float freq = mix(4.0, 8.0, rand(id * 6.6));
                 float wave_speed = mix(1.0, 3.0, rand(id * 7.7));
                 float wave = sin(sprite_uv.x * freq + local_time * wave_speed) * (amp / frame_size.y);

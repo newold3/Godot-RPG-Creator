@@ -18,12 +18,12 @@ uniform float noise_frequency: hint_range(0.5, 5.0, 0.1) = 2.0;
 uniform float final_alpha: hint_range(0.0, 2.0, 0.01) = 1.0;
 uniform bool clamped = false;
 
-// Hash mejorado para obtener valores más variados
+// Improved hash for more varied values
 float hash(float n) {
     return fract(sin(n * 43758.5453123) * 43758.5453123);
 }
 
-// Ruido Perlin-like en 1D usando derivadas
+// Perlin-like 1D noise using derivatives
 float noise(float x) {
     float i = floor(x);
     float f = fract(x);
@@ -33,7 +33,7 @@ float noise(float x) {
     return mix(a, b, u);
 }
 
-// Ruido 2D combinando dos ruidos 1D
+// 2D noise combining two 1D noises
 vec2 noise2d(vec2 p) {
     return vec2(
         noise(p.x * noise_frequency + p.y * 0.3),
@@ -57,7 +57,7 @@ void fragment() {
     for (int i = 0; i < max_balls; i++) {
         float fi = float(i);
         
-        // Valores random para esta metaball
+        // Random values for this metaball
         float rnd1 = hash(fi * 11.3);
         float rnd2 = hash(fi * 31.7);
         float rnd3 = hash(fi * 91.9);
@@ -67,29 +67,29 @@ void fragment() {
         float life = mix(min_life, max_life, rnd2);
         float delay = rnd3 * life;
         
-        // Tiempo normalizado (0 a 1) con desplazamiento por instancia
+        // Normalized time (0 to 1) with instance offset
         float t = mod(TIME * speed + delay + anim_offset * 10.0, life) / life;
         
-        // Fade in progresivo al nacer (primeros 20%) y fade out al morir (últimos 15%)
+        // Progressive fade in at birth (first 20%) and fade out at death (last 15%)
         float fade_in = smoothstep(0.0, 0.2, t);
         float fade_out = smoothstep(1.0, 0.85, t);
         float fade = fade_in * fade_out;
         
-        // Posición inicial siempre en el emisor
+        // Initial position always at emitter
         vec2 start = emitter_pos;
         
-        // Movimiento base desde el emisor
+        // Base movement from emitter
         vec2 base_pos = start + dir * (t * 4.0);
         
-        // Variación suave del movimiento usando Perlin noise (sin saltos)
+        // Smooth movement variation using Perlin noise (no jumps)
         float noise_x = noise(TIME * speed * 0.5 + fi * 2.1);
         float noise_y = noise(TIME * speed * 0.5 + fi * 3.7);
         
-        // Suavizar la variación para evitar saltos bruscos
+        // Smooth variation to avoid abrupt jumps
         vec2 direction_variation = normalize(vec2(noise_x - 0.5, noise_y - 0.5)) * 0.15;
         base_pos += direction_variation * (t * 4.0);
         
-        // Pequeñas oscilaciones laterales suaves y continuas
+        // Small smooth and continuous lateral oscillations
         vec2 lateral_offset = vec2(
             sin(TIME * speed * 1.2 + fi * 1.23) * 0.06,
             cos(TIME * speed * 0.9 + fi * 4.56) * 0.06
@@ -99,7 +99,7 @@ void fragment() {
         
         float influence = ball(uv - pos, radius) * fade;
         
-        // Color basado en índice
+        // Color based on index
         vec3 ball_color;
         int color_index = i % 3;
         if (color_index == 0) {

@@ -24,36 +24,36 @@ uniform vec2 scale = vec2(1.0);
 void fragment() {
     vec2 global_uv = UV / scale;
 
-    // Aplicamos el escalado a las coordenadas globales
+    // Apply scaling to global coordinates
     vec2 scaled_uv = global_uv * noiseScale;
 
-    // Obtenemos las coordenadas UV para cada textura con desplazamiento
+    // Get UV coordinates for each texture with displacement
     vec2 uv1 = scaled_uv - TIME * timescale * scrollDirection1;
     vec2 uv2 = scaled_uv - TIME * timescale * scrollDirection2;
     vec2 uv3 = scaled_uv - TIME * timescale * scrollDirection3;
     vec2 hole_uv = scaled_uv - TIME * timescale * holeScrollDirection;
 
-    // Usamos fract para asegurar que las UVs se repitan correctamente (wrapping)
+    // Use fract to ensure UVs repeat correctly (wrapping)
     uv1 = fract(uv1);
     uv2 = fract(uv2);
     uv3 = fract(uv3);
     hole_uv = fract(hole_uv);
 
-    // Muestreamos las texturas de ruido
+    // Sample noise textures
     float noise1 = texture(noise_texture1, uv1).r;
     float noise2 = texture(noise_texture2, uv2).r;
     float noise3 = texture(noise_texture3, uv3).r;
     float hole_value = texture(hole_texture, hole_uv).r;
 
-    // Combinamos los ruidos con sus pesos
+    // Combine noises with their weights
     float density = (noise1 * noise_weight1 +
                     noise2 * noise_weight2 +
                     noise3 * noise_weight3) / (noise_weight1 + noise_weight2 + noise_weight3);
 
-    // Modificamos la densidad con la textura de huecos
+    // Modify density with hole texture
     density *= hole_value;
 
-    // Aplicamos el umbral con suavizado
+    // Apply threshold with smoothing
     float alpha;
     if (density < density_threshold - edge_softness) {
         alpha = 0.0;

@@ -5,7 +5,7 @@ uniform sampler2D mask_texture   : hint_default_transparent;
 
 uniform vec4 overlay_color : source_color = vec4(0.0, 0.0, 0.0, 0.5);
 
-// --- HEIGHTMAP / DESPLAZAMIENTO ---
+// --- HEIGHTMAP / DISPLACEMENT ---
 uniform float height_strength = 0.01;
 uniform vec2 shadow_direction = vec2(0.0, -1.0);
 
@@ -29,7 +29,7 @@ void fragment() {
 	bool should_discard = false;
 
 	// ------------------------------------------------
-	// LÓGICA DE PROFUNDIDAD (SIN TOCAR)
+	// DEPTH LOGIC (DO NOT TOUCH)
 	// ------------------------------------------------
 	if (mask_alpha > 0.09) {
 
@@ -62,24 +62,24 @@ void fragment() {
 	}
 
 	// ------------------------------------------------
-	// DESPLAZAMIENTO POR CONTACTO (NO MODULA COLOR)
+	// CONTACT DISPLACEMENT (DOES NOT MODULATE COLOR)
 	// ------------------------------------------------
 
 	vec2 final_uv = UV;
 
-	// Solo desplazamos si hay contacto con la máscara
+	// Only displace if there is contact with the mask
 	if (mask_alpha > 0.09) {
 
-		// Altura desde la máscara
+		// Height from mask
 		float height = mask_tex.r;
 
-		// Offset suave y controlado
+		// Smooth and controlled offset
 		vec2 offset = shadow_direction * height * height_strength;
 
 		final_uv += offset;
 	}
 
-	// Re-sampleamos SOLO para saber si hay sombra
+	// Re-sample ONLY to check for shadow
 	float displaced_alpha = texture(shadow_texture, final_uv).a;
 
 	if (displaced_alpha < 0.01) {
@@ -87,7 +87,7 @@ void fragment() {
 	}
 
 	// ------------------------------------------------
-	// COLOR FINAL FIJO
+	// FIXED FINAL COLOR
 	// ------------------------------------------------
 
 	COLOR = overlay_color;

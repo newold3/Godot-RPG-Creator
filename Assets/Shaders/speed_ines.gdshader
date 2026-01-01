@@ -37,17 +37,17 @@ vec2 rotate_uv(vec2 uv, vec2 pivot, float rotation) {
     ) + pivot;
 }
 
-// Función para aplicar desenfoque gaussiano al fondo
+// Function to apply Gaussian blur to background
 vec4 gaussian_blur_background(vec2 uv, float blur_size) {
     if (blur_size <= 0.0) return texture(SCREEN_TEXTURE, uv);
     
     vec4 color = vec4(0.0);
     float total_weight = 0.0;
     
-    // Calcular el tamaño del texel
+    // Calculate texel size
     vec2 texel_size = vec2(ivec2(1) / textureSize(SCREEN_TEXTURE, 0));
     
-    // Kernel de desenfoque 5x5
+    // 5x5 blur kernel
     for(int x = -2; x <= 2; x++) {
         for(int y = -2; y <= 2; y++) {
             vec2 offset = vec2(float(x), float(y)) * blur_size * texel_size;
@@ -65,21 +65,21 @@ void fragment(){
 	vec2 dir = UV - center;
 	float angle = atan(dir.y, dir.x);
 	
-	// Calcular el índice del triángulo basado en el ángulo
+	// Calculate triangle index based on angle
 	float triangle_index = floor((angle + PI) / (2.0 * PI) * line_count * 50.0);
 	
-	// Crear delay único para cada triángulo usando hash simple
+	// Create unique delay for each triangle using simple hash
 	float triangle_delay = fract(sin(triangle_index * 12.9898) * 43758.5453);
 	
-	// Animación de estiramiento/encogimiento con delay por triángulo (SIN rotación)
-	float stretch_phase = TIME * animation_speed * 0.3 + triangle_delay * 6.28318; // 2*PI para distribución completa
-	float stretch_factor = 0.8 + 0.4 * sin(stretch_phase); // oscila entre 0.4 y 1.2
+	// Stretch/shrink animation with delay per triangle (NO rotation)
+	float stretch_phase = TIME * animation_speed * 0.3 + triangle_delay * 6.28318; // 2*PI for full distribution
+	float stretch_factor = 0.8 + 0.4 * sin(stretch_phase); // oscillates between 0.4 and 1.2
 	stretch_factor = mix(1.0, stretch_factor, height_animation);
 	
-	// Rotación independiente y continua de toda la figura
-	float rotation_angle = TIME * rotation_speed * 0.5; // Rotación continua
+	// Independent and continuous rotation of the whole figure
+	float rotation_angle = TIME * rotation_speed * 0.5; // Continuous rotation
 	
-	// Coordenadas polares con rotación continua aplicada
+	// Polar coordinates with continuous rotation applied
 	vec2 polar_uv = polar_coordinates(
 		rotate_uv(UV, center, rotation_angle), 
 		center, 
@@ -89,7 +89,7 @@ void fragment(){
 	
 	vec3 lines = texture(noise, polar_uv).rgb;
 	
-	// Máscara base con factor de estiramiento aplicado
+	// Base mask with stretch factor applied
 	float mask_value = length(UV - center);
 	float dynamic_mask_edge = mask_edge * stretch_factor;
 	float dynamic_mask_size = mask_size * stretch_factor;
@@ -97,19 +97,19 @@ void fragment(){
 	float mask = inv_lerp(dynamic_mask_size, dynamic_mask_edge, mask_value);
 	float result = 1.0 - (mask * line_density);
 	
-	// Crear el patrón de líneas principal
+	// Create main line pattern
 	float line_result = smoothstep(result, result + line_faloff, lines.r);
 	
-	// Crear bordes para los triángulos/líneas
+	// Create edges for triangles/lines
 	float border_thickness = 0.05;
 	float border_result = smoothstep(result - border_thickness, result - border_thickness + line_faloff, lines.r);
-	border_result -= line_result; // Solo los bordes
+	border_result -= line_result; // Only edges
 	
-	// Crear efecto de profundidad basado en la distancia al centro
+	// Create depth effect based on distance to center
 	float depth_factor = smoothstep(mask_size, mask_edge, mask_value);
 	float depth_result = line_result * depth_factor;
 	
-	// Obtener el fondo con o sin blur
+	// Get background with or without blur
 	vec4 background;
 	if (blur_strength > 0.0) {
 		background = gaussian_blur_background(SCREEN_UV, blur_strength);
@@ -117,19 +117,19 @@ void fragment(){
 		background = texture(SCREEN_TEXTURE, SCREEN_UV);
 	}
 	
-	// Mezclar colores de los triángulos
+	// Mix triangle colors
 	vec3 triangle_color = vec3(0.0);
 	float triangle_alpha = 0.0;
 	
-	// Aplicar color de profundidad (interior de los triángulos)
+	// Apply depth color (inside triangles)
 	triangle_color += depth_color.rgb * depth_result;
 	triangle_alpha += depth_color.a * depth_result;
 	
-	// Aplicar color de borde (bordes de los triángulos)
+	// Apply border color (triangle edges)
 	triangle_color += border_color.rgb * border_result;
 	triangle_alpha += border_color.a * border_result;
 	
-	// Combinar fondo con triángulos
+	// Combine background with triangles
 	COLOR.rgb = mix(background.rgb, triangle_color, triangle_alpha);
 	COLOR.a = background.a * final_alpha;
 }

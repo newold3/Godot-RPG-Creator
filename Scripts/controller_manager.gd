@@ -2,11 +2,11 @@ extends Node
 
 class KeyBase:
 	var base_node: Node
-	var unique_id: String                # Unique ID to register this key
-	var initial_delay: float = 0.25      # Time to wait before first repeat (seconds)
-	var echo_interval: float = 1.15      # Time between repeated calls after initial delay (seconds)
-	var current_delay: float = 0         # Counter for current delay time
-	var initialize: bool = true          # Flag to indicate that the key has just been added
+	var unique_id: String # Unique ID to register this key
+	var initial_delay: float = 0.25 # Time to wait before first repeat (seconds)
+	var echo_interval: float = 1.15 # Time between repeated calls after initial delay (seconds)
+	var current_delay: float = 0 # Counter for current delay time
+	var initialize: bool = true # Flag to indicate that the key has just been added
 	var registered_frame: int = -1
 	
 	# Update the delay timer based on elapsed time
@@ -31,7 +31,7 @@ class KeyBase:
 
 ## RegisterKey class to handle key input with repeat functionality
 class RegisterKey extends KeyBase:
-	var keycode: int                     # The input action name
+	var keycode: int # The input action name
 	
 	# Initialize the RegisterKey with a unique ID and keycode
 	func _init(p_base_node: Node, p_unique_id: String, p_keycode: int, p_initial_delay: float, p_echo_interval: float) -> void:
@@ -45,9 +45,9 @@ class RegisterKey extends KeyBase:
 
 ## Class to handle analog triggers with repeat functionality
 class TriggerState extends KeyBase:
-	var axis: int                        # The trigger axis (JOY_AXIS_TRIGGER_LEFT or JOY_AXIS_TRIGGER_RIGHT)
-	var threshold: float = 0.1           # Threshold to consider the trigger pressed
-	var current_value: float = 0.0       # Current axis value
+	var axis: int # The trigger axis (JOY_AXIS_TRIGGER_LEFT or JOY_AXIS_TRIGGER_RIGHT)
+	var threshold: float = 0.1 # Threshold to consider the trigger pressed
+	var current_value: float = 0.0 # Current axis value
 	
 	func _init(p_base_node: Node, p_axis: int, p_initial_delay: float, p_echo_interval: float) -> void:
 		base_node = p_base_node
@@ -73,8 +73,8 @@ class TriggerState extends KeyBase:
 
 ## Class to handle analog stick directions with repeat functionality
 class StickDirection extends KeyBase:
-	var direction: String = ""           # Current active direction
-	var stick_name: String = ""          # Name identifier for the stick (left/right)
+	var direction: String = "" # Current active direction
+	var stick_name: String = "" # Name identifier for the stick (left/right)
 	
 	func _init(p_base_node: Node, p_stick_name: String = "left") -> void:
 		base_node = p_base_node
@@ -93,20 +93,20 @@ class StickDirection extends KeyBase:
 		current_delay = 0
 
 
-var key_states = {                       # Dictionary to store all current input states
+var key_states = { # Dictionary to store all current input states
 	"keys": {},
 	"mouse_buttons": {},
 	"joy_buttons": {}
 }
-var joy_axis_values = {}                           # Joystick axis values
-var action_states = {}                             # Dictionary to store action states
-var stick_left_direction = null                    # Left analog stick direction handler
-var stick_right_direction = null                   # Right analog stick direction handler
-var trigger_left_state = null                      # Left trigger state handler
-var trigger_right_state = null                     # Right trigger state handler
-var initial_key_delay: float = 0.15                # Global initial delay
-var echo_key_delay: float = 0.1                    # Global echo delay
-var last_action_registered: RegisterKey =  null    # Last action registered
+var joy_axis_values = {} # Joystick axis values
+var action_states = {} # Dictionary to store action states
+var stick_left_direction = null # Left analog stick direction handler
+var stick_right_direction = null # Right analog stick direction handler
+var trigger_left_state = null # Left trigger state handler
+var trigger_right_state = null # Right trigger state handler
+var initial_key_delay: float = 0.15 # Global initial delay
+var echo_key_delay: float = 0.1 # Global echo delay
+var last_action_registered: RegisterKey = null # Last action registered
 var close_neighbor_script
 var current_controller: CONTROLLER_TYPE
 var controller_info: Dictionary = {}
@@ -117,21 +117,21 @@ var last_checked_frame: int = -1
 var cache = {}
 
 ## Input configuration for special actions
-const  CONFIRM_INPUTS = {
-	"keys": [KEY_ENTER, KEY_SPACE, KEY_Z],         # Keyboard keys for confirm
-	"mouse": [MOUSE_BUTTON_LEFT],                  # Mouse buttons for confirm
-	"joy": [JOY_BUTTON_A, JOY_BUTTON_X]            # Gamepad buttons for confirm
+const CONFIRM_INPUTS = {
+	"keys": [KEY_ENTER, KEY_SPACE, KEY_Z], # Keyboard keys for confirm
+	"mouse": [MOUSE_BUTTON_LEFT], # Mouse buttons for confirm
+	"joy": [JOY_BUTTON_A, JOY_BUTTON_X] # Gamepad buttons for confirm
 }
-const  CANCEL_INPUTS = {
+const CANCEL_INPUTS = {
 	"keys": [KEY_ESCAPE, KEY_BACKSPACE, KEY_X,
-			KEY_KP_0],                             # Keyboard keys for cancel
-	"mouse": [MOUSE_BUTTON_RIGHT],                 # Mouse buttons for cancel
-	"joy": [JOY_BUTTON_B, JOY_BUTTON_Y]            # Gamepad buttons for cancel
+			KEY_KP_0], # Keyboard keys for cancel
+	"mouse": [MOUSE_BUTTON_RIGHT], # Mouse buttons for cancel
+	"joy": [JOY_BUTTON_B, JOY_BUTTON_Y] # Gamepad buttons for cancel
 }
-const  ERASE_LETTER_INPUTS = {
-	"keys": [KEY_BACKSPACE],                       # Keyboard keys for erase action
-	"mouse": [MOUSE_BUTTON_RIGHT],                 # Mouse buttons for erase action
-	"joy": [JOY_BUTTON_B]                          # Gamepad buttons for erase action
+const ERASE_LETTER_INPUTS = {
+	"keys": [KEY_BACKSPACE], # Keyboard keys for erase action
+	"mouse": [MOUSE_BUTTON_RIGHT], # Mouse buttons for erase action
+	"joy": [JOY_BUTTON_B] # Gamepad buttons for erase action
 }
 enum CONTROLLER_TYPE {Keyboard, Mouse, Joypad}
 
@@ -148,26 +148,26 @@ func _ready() -> void:
 
 ## initiale key states
 func clear() -> void:
-	key_states.keys.clear()                              # Keyboard keys
-	key_states.mouse_buttons.clear()                     # Mouse buttons
-	key_states.joy_buttons.clear()                       # Joystick/gamepad buttons
+	key_states.keys.clear() # Keyboard keys
+	key_states.mouse_buttons.clear() # Mouse buttons
+	key_states.joy_buttons.clear() # Joystick/gamepad buttons
 	action_states.clear()
-	joy_axis_values[JOY_AXIS_LEFT_X] = 0.0               # Left stick horizontal
-	joy_axis_values[JOY_AXIS_LEFT_Y] = 0.0               # Left stick vertical
-	joy_axis_values[JOY_AXIS_RIGHT_X] = 0.0              # Right stick horizontal
-	joy_axis_values[JOY_AXIS_RIGHT_Y] = 0.0              # Right stick vertical
-	joy_axis_values[JOY_AXIS_TRIGGER_LEFT] = 0.0         # Left trigger
-	joy_axis_values[JOY_AXIS_TRIGGER_RIGHT] = 0.0        # Right trigger
+	joy_axis_values[JOY_AXIS_LEFT_X] = 0.0 # Left stick horizontal
+	joy_axis_values[JOY_AXIS_LEFT_Y] = 0.0 # Left stick vertical
+	joy_axis_values[JOY_AXIS_RIGHT_X] = 0.0 # Right stick horizontal
+	joy_axis_values[JOY_AXIS_RIGHT_Y] = 0.0 # Right stick vertical
+	joy_axis_values[JOY_AXIS_TRIGGER_LEFT] = 0.0 # Left trigger
+	joy_axis_values[JOY_AXIS_TRIGGER_RIGHT] = 0.0 # Right trigger
 	
 	if stick_left_direction:
 		stick_left_direction.clear()
 	else:
-		stick_left_direction = StickDirection.new(self, "left")   # Assign a new StickDirection for left stick
+		stick_left_direction = StickDirection.new(self, "left") # Assign a new StickDirection for left stick
 	
 	if stick_right_direction:
 		stick_right_direction.clear()
 	else:
-		stick_right_direction = StickDirection.new(self, "right")  # Assign a new StickDirection for right stick
+		stick_right_direction = StickDirection.new(self, "right") # Assign a new StickDirection for right stick
 	
 	# Initialize trigger states
 	trigger_left_state = TriggerState.new(self, JOY_AXIS_TRIGGER_LEFT, initial_key_delay, echo_key_delay)
@@ -304,7 +304,7 @@ func is_confirm_pressed(ignore_mouse_left: bool = false, extra_keys: PackedInt32
 	if cache.has(cache_key):
 		return cache[cache_key]
 	
-	if Input.is_key_pressed(KEY_ALT): 
+	if Input.is_key_pressed(KEY_ALT):
 		cache[cache_key] = false
 		return false
 	
@@ -660,7 +660,7 @@ func _process_stick_direction(stick_type: String) -> void:
 		axis_y = joy_axis_values.get(JOY_AXIS_RIGHT_Y, 0.0)
 		stick_handler = stick_right_direction
 	else:
-		return  # Invalid stick type
+		return # Invalid stick type
 	
 	# Calculate the magnitude of the stick movement
 	var magnitude = sqrt(axis_x * axis_x + axis_y * axis_y)
@@ -888,21 +888,20 @@ func get_pressed_direction() -> String:
 	return direction
 	
 
-
 ## Check if a confirm action was JUST pressed (no echo, only initial press)
 func is_confirm_just_pressed(ignore_mouse_left: bool = false, extra_keys: PackedInt32Array = [], mouse_left_require_focusable: bool = true) -> bool:
 	var cache_key = "confirm_just_" + str(ignore_mouse_left) + "_" + str(extra_keys)
 	if cache.has(cache_key):
 		return cache[cache_key]
 	
-	if Input.is_key_pressed(KEY_ALT): 
+	if Input.is_key_pressed(KEY_ALT):
 		cache[cache_key] = false
 		return false
 	
 	var current_frame = Engine.get_physics_frames()
 	var result = false
 	
-	# Check keyboard confirm keys (solo si fue presionado EN ESTE FRAME)
+	# Check keyboard confirm keys (only if pressed THIS FRAME)
 	for key_code in CONFIRM_INPUTS.keys:
 		if key_code in key_states.keys and key_states.keys[key_code].initialize and key_states.keys[key_code].current_delay <= 0:
 			if key_states.keys[key_code].registered_frame == current_frame or key_states.keys[key_code].registered_frame == -1:

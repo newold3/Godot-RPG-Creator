@@ -1,43 +1,43 @@
 shader_type canvas_item;
 
-uniform vec4 fog_points[800]; // Máximo número de puntos
-uniform int active_fog_points; // Número actual de puntos activos
-uniform sampler2D hole_texture; // Textura del agujero
-uniform vec2 scale; // Escala inversa para compensar la transformación
+uniform vec4 fog_points[800]; // Maximum number of points
+uniform int active_fog_points; // Current number of active points
+uniform sampler2D hole_texture; // Hole texture
+uniform vec2 scale; // Inverse scale to compensate for transform
 
 void fragment() {
-    // Coordenadas del fragmento en el espacio del shader
+    // Fragment coordinates in shader space
     vec2 frag_pos = FRAGCOORD.xy * scale;
 
-    // Color inicial del fragmento (la niebla negra por defecto)
+    // Initial fragment color (black fog by default)
     vec4 final_color = vec4(0.0, 0.0, 0.0, 1.0);
 
-    // Obtener el tamaño de la textura del agujero
+    // Get hole texture size
     vec2 hole_texture_size = vec2(textureSize(hole_texture, 0));
 
-    // Iterar por los puntos activos
+    // Iterate through active points
     for (int i = 0; i < active_fog_points; i++) {
         vec4 point = fog_points[i];
         
-        // Extraer las coordenadas y animación
+        // Extract coordinates and animation
         float time = point.x;
-        float mode = point.y; // 0: desaparecer, 1: aparecer
+        float mode = point.y; // 0: disappear, 1: appear
         vec2 position = point.zw;
 
-        // Evaluar la opacidad del agujero basado en el tiempo
+        // Evaluate hole opacity based on time
         float alpha = clamp(mode == 1.0 ? time : 1.0 - time, 0.0, 1.0);
 
-        // Calcular las dimensiones del agujero en el espacio del shader
+        // Calculate hole dimensions in shader space
         vec2 adjusted_hole_size = hole_texture_size * scale * alpha;
 
-        // Coordenadas UV relativas a la textura del agujero
+        // UV coordinates relative to hole texture
         vec2 uv = (frag_pos - position) / adjusted_hole_size + 0.5;
 
-        // Verificar si el fragmento está dentro de la textura del agujero
+        // Check if fragment is inside hole texture
         if (uv.x >= 0.0 && uv.x <= 1.0 && uv.y >= 0.0 && uv.y <= 1.0) {
             vec4 hole_tex = texture(hole_texture, uv);
 
-            // Mezclar la textura del agujero con el color base
+            // Mix hole texture with base color
             if (hole_tex.a > 0.0) {
                 final_color = mix(final_color, vec4(0.0, 0.0, 0.0, 0.0), hole_tex.a * alpha);
             }

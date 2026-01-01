@@ -1,11 +1,11 @@
 shader_type canvas_item;
 
-// Uniforms para textura y animación
+// Uniforms for texture and animation
 uniform sampler2D particle_texture : hint_default_black;
 uniform ivec2 sprite_frames = ivec2(1, 1);
 uniform float animation_speed : hint_range(0.1, 10.0) = 1.0;
 
-// Uniforms para configuración de partículas
+// Uniforms for particle configuration
 uniform int particle_type : hint_enum("Dust", "Embers", "Sparkles", "Smoke", "Coins") = 0;
 uniform int particle_count : hint_range(50, 1000) = 150;
 uniform float particle_speed : hint_range(0.1, 5.0, 0.001) = 1.0;
@@ -13,38 +13,38 @@ uniform float particle_size : hint_range(0.01, 5.0, 0.001) = 2.0;
 uniform float min_size_scale : hint_range(0.01, 2.0, 0.01) = 0.5;
 uniform float max_size_scale : hint_range(0.01, 5.0, 0.01) = 3.0;
 
-// Nuevos uniforms para capas de profundidad
+// New uniforms for depth layers
 uniform int depth_layers : hint_range(2, 5) = 3;
 uniform float depth_size_multiplier : hint_range(0.1, 1.0) = 0.3;
 uniform float depth_speed_multiplier : hint_range(0.1, 1.0) = 0.6;
 uniform float depth_alpha_multiplier : hint_range(0.1, 1.0) = 0.7;
 uniform float layer_separation : hint_range(0.1, 2.0) = 0.8;
 
-// Uniforms para colores
-uniform vec4 primary_color : source_color = vec4(1.0, 0.84, 0.0, 1.0); // Dorado
-uniform vec4 secondary_color : source_color = vec4(1.0, 0.55, 0.2, 1.0); // Naranja
-uniform vec4 tertiary_color : source_color = vec4(1.0, 1.0, 1.0, 1.0); // Blanco
+// Uniforms for colors
+uniform vec4 primary_color : source_color = vec4(1.0, 0.84, 0.0, 1.0); // Gold
+uniform vec4 secondary_color : source_color = vec4(1.0, 0.55, 0.2, 1.0); // Orange
+uniform vec4 tertiary_color : source_color = vec4(1.0, 1.0, 1.0, 1.0); // White
 
-// Uniforms para comportamiento
+// Uniforms for behavior
 uniform float time_scale : hint_range(0.1, 5.0) = 1.0;
 uniform vec2 wind_direction = vec2(0.0, 0.0);
 uniform float wind_strength : hint_range(0.0, 2.0) = 0.5;
 
-// Función de ruido pseudo-aleatoria mejorada
+// Improved pseudo-random noise function
 float random(vec2 st) {
     return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
 }
 
-// Función hash para mejor distribución
+// Hash function for better distribution
 float hash(float n) {
     return fract(sin(n) * 43758.5453123);
 }
 
-// Función para obtener el frame de sprite correcto
+// Function to get correct sprite frame
 vec2 get_sprite_uv(vec2 local_uv, int frame_index) {
     int total_frames = sprite_frames.x * sprite_frames.y;
     if (total_frames <= 1) {
-        return local_uv; // Si no hay frames, usar UV completa
+        return local_uv; // If no frames, use full UV
     }
 
     frame_index = frame_index % total_frames;
@@ -58,7 +58,7 @@ vec2 get_sprite_uv(vec2 local_uv, int frame_index) {
     return frame_offset + local_uv * frame_size;
 }
 
-// Función para calcular las propiedades de una capa
+// Function to calculate layer properties
 struct LayerProperties {
     float size_scale;
     float speed_scale;
@@ -71,21 +71,21 @@ LayerProperties get_layer_properties(int layer_index) {
     LayerProperties props;
     float layer_factor = float(layer_index) / float(depth_layers - 1);
 
-    // Las capas más cercanas (menor índice) son más grandes
-    // Las capas más alejadas (mayor índice) son más pequeñas
-    props.size_scale = 1.0 + layer_factor * 2.0; // Capa 0: 1.0, última capa: 3.0
+    // Closer layers (lower index) are larger
+    // Further layers (higher index) are smaller
+    props.size_scale = 1.0 + layer_factor * 2.0; // Layer 0: 1.0, last layer: 3.0
     props.speed_scale = 1.0 - layer_factor * (1.0 - depth_speed_multiplier);
     props.alpha_scale = 1.0 - layer_factor * (1.0 - depth_alpha_multiplier);
     props.time_offset = layer_factor * layer_separation;
 
-    // Menos partículas en capas cercanas, más en capas lejanas
-    float particle_distribution = 1.0 + layer_factor * 1.5; // Capa 0: 1.0, última: 2.5
+    // Fewer particles in closer layers, more in further layers
+    float particle_distribution = 1.0 + layer_factor * 1.5; // Layer 0: 1.0, last: 2.5
     props.particle_count = int(float(particle_count) * particle_distribution / float(depth_layers * 2));
 
     return props;
 }
 
-// Función para calcular posición de partícula con capas y movimiento oscilatorio
+// Function to calculate particle position with layers and oscillatory movement
 vec2 calculate_particle_position(int particle_id, int layer_index, float time) {
     LayerProperties layer_props = get_layer_properties(layer_index);
 
@@ -100,7 +100,7 @@ vec2 calculate_particle_position(int particle_id, int layer_index, float time) {
     vec2 start_pos = vec2(random(seed), random(seed + vec2(1.0, 0.0)));
     vec2 base_velocity = vec2(0.0);
 
-    // Configurar velocidad base según tipo de partícula
+    // Configure base velocity according to particle type
     if (particle_type == 0) { // Dust
         base_velocity = vec2(
             (random(seed + vec2(2.0, 0.0)) - 0.5) * 0.05,
@@ -130,30 +130,30 @@ vec2 calculate_particle_position(int particle_id, int layer_index, float time) {
         );
     }
 
-    // Añadir movimiento oscilatorio
-    float oscillation_freq_x = 0.5 + random(seed + vec2(4.0, 0.0)) * 1.0; // Frecuencia 0.5-1.5
-    float oscillation_freq_y = 0.3 + random(seed + vec2(5.0, 0.0)) * 0.8; // Frecuencia 0.3-1.1
-    float oscillation_amp_x = 0.02 + random(seed + vec2(6.0, 0.0)) * 0.08; // Amplitud 0.02-0.1
-    float oscillation_amp_y = 0.015 + random(seed + vec2(7.0, 0.0)) * 0.06; // Amplitud 0.015-0.075
+    // Add oscillatory movement
+    float oscillation_freq_x = 0.5 + random(seed + vec2(4.0, 0.0)) * 1.0; // Frequency 0.5-1.5
+    float oscillation_freq_y = 0.3 + random(seed + vec2(5.0, 0.0)) * 0.8; // Frequency 0.3-1.1
+    float oscillation_amp_x = 0.02 + random(seed + vec2(6.0, 0.0)) * 0.08; // Amplitude 0.02-0.1
+    float oscillation_amp_y = 0.015 + random(seed + vec2(7.0, 0.0)) * 0.06; // Amplitude 0.015-0.075
 
     vec2 oscillation = vec2(
         sin(adjusted_time * oscillation_freq_x + fid) * oscillation_amp_x,
         cos(adjusted_time * oscillation_freq_y + fid * 1.3) * oscillation_amp_y
     );
 
-    // Aplicar viento con escala de capa
+    // Apply wind with layer scale
     vec2 wind_effect = wind_direction * wind_strength * 0.05 * layer_props.speed_scale;
 
-    // Calcular posición final con movimiento base + oscilación
+    // Calculate final position with base movement + oscillation
     vec2 pos = start_pos + (base_velocity + wind_effect) * life_time + oscillation;
 
-    // Wraparound horizontal
+    // Horizontal wraparound
     pos.x = mod(pos.x + 1.0, 1.0);
 
     return pos;
 }
 
-// Función para calcular alpha de partícula con capas
+// Function to calculate particle alpha with layers
 float calculate_particle_alpha(int particle_id, int layer_index, float time, vec2 pos) {
     LayerProperties layer_props = get_layer_properties(layer_index);
 
@@ -166,7 +166,7 @@ float calculate_particle_alpha(int particle_id, int layer_index, float time, vec
     float life_time = mod(adjusted_time * speed_multiplier + fid * 0.1, life_duration);
     float life_progress = life_time / life_duration;
 
-    // Fade in/out suave
+    // Smooth fade in/out
     float alpha = 1.0;
     if (life_progress < 0.2) {
         alpha = smoothstep(0.0, 0.2, life_progress);
@@ -174,46 +174,46 @@ float calculate_particle_alpha(int particle_id, int layer_index, float time, vec
         alpha = smoothstep(1.0, 0.7, life_progress);
     }
 
-    // Verificar si está en pantalla
+    // Check if on screen
     if (pos.x < -0.05 || pos.x > 1.05 || pos.y < -0.05 || pos.y > 1.05) {
         alpha = 0.0;
     }
 
-    // Aplicar escala de alpha de la capa
+    // Apply layer alpha scale
     alpha *= layer_props.alpha_scale;
 
     return alpha * (0.4 + random(seed) * 0.4);
 }
 
-// Función para obtener color de partícula con variación por capa
+// Function to get particle color with variation by layer
 vec4 get_particle_color(int type, int particle_id, int layer_index, float time) {
     float fid = float(particle_id);
     vec2 seed = vec2(fid * 0.1234 + float(layer_index) * 0.987, fid * 0.5678 + float(layer_index) * 0.432);
     float variation = random(seed);
 
-    // Las capas más alejadas tienen colores ligeramente más desaturados
+    // Further layers have slightly more desaturated colors
     float layer_factor = float(layer_index) / float(depth_layers - 1);
-    float desaturation = layer_factor * 0.3; // Máximo 30% de desaturación
+    float desaturation = layer_factor * 0.3; // Max 30% desaturation
 
     vec4 base_color;
 
-    if (type == 0) { // Dust - Dorado
+    if (type == 0) { // Dust - Gold
         base_color = mix(primary_color, secondary_color, variation * 0.3);
-    } else if (type == 1) { // Embers - Naranja/Rojo
+    } else if (type == 1) { // Embers - Orange/Red
         vec4 ember_color = vec4(1.0, 0.2, 0.0, secondary_color.a);
         base_color = mix(secondary_color, ember_color, variation * 0.5);
-    } else if (type == 2) { // Sparkles - Blanco/Dorado
+    } else if (type == 2) { // Sparkles - White/Gold
         base_color = mix(tertiary_color, primary_color, variation * 0.4);
-    } else if (type == 3) { // Smoke - Gris
+    } else if (type == 3) { // Smoke - Gray
         vec4 smoke_base = vec4(0.8, 0.8, 0.8, 0.6);
         base_color = smoke_base * (0.5 + variation * 0.5);
-    } else if (type == 4) { // Coins - Dorado
+    } else if (type == 4) { // Coins - Gold
         base_color = primary_color;
     } else {
         base_color = primary_color;
     }
 
-    // Aplicar desaturación para capas más alejadas
+    // Apply desaturation for further layers
     float luminance = dot(base_color.rgb, vec3(0.299, 0.587, 0.114));
     base_color.rgb = mix(base_color.rgb, vec3(luminance), desaturation);
 
@@ -225,49 +225,49 @@ void fragment() {
     vec4 final_color = vec4(0.0);
     float time = TIME * time_scale;
 
-    // Procesar cada capa desde la más alejada hasta la más cercana
+    // Process each layer from furthest to nearest
     for (int layer = depth_layers - 1; layer >= 0; layer--) {
         LayerProperties layer_props = get_layer_properties(layer);
 
-        // Procesar partículas de esta capa (cada capa tiene diferente cantidad)
+        // Process particles for this layer (each layer has different amount)
         for (int i = 0; i < layer_props.particle_count; i++) {
-            int particle_id = layer * 1000 + i; // Usar offset grande para evitar colisiones
+            int particle_id = layer * 1000 + i; // Use large offset to avoid collisions
 
             vec2 particle_pos = calculate_particle_position(particle_id, layer, time);
 
-            // Calcular distancia desde UV actual a posición de partícula
+            // Calculate distance from current UV to particle position
             vec2 diff = uv - particle_pos;
             float distance = length(diff);
 
-            // Tamaño de partícula con clara diferenciación por capas
+            // Particle size with clear differentiation by layers
             float fid = float(particle_id);
             float size_variation = min_size_scale + random(vec2(fid * 0.1234, fid * 0.5678)) * (max_size_scale - min_size_scale);
 
-            // Aplicar escalado de capa: capas cercanas más grandes, lejanas más pequeñas
+            // Apply layer scaling: closer layers larger, further smaller
             float base_size = particle_size * 0.015 * size_variation;
             float size = base_size;
 
-            // Aplicar factor de capa invertido para que capa 0 sea más grande
+            // Apply inverted layer factor so layer 0 is larger
             float layer_factor = float(layer) / float(depth_layers - 1);
             if (layer == 0) {
-                size *= 2.5; // Capa más cercana: muy grande
+                size *= 2.5; // Closest layer: very large
             } else if (layer == 1 && depth_layers > 2) {
-                size *= 1.8; // Segunda capa: grande
+                size *= 1.8; // Second layer: large
             } else if (layer == depth_layers - 1) {
-                size *= 0.3; // Capa más lejana: muy pequeña
+                size *= 0.3; // Furthest layer: very small
             } else {
-                size *= (1.5 - layer_factor * 0.8); // Capas intermedias: escalado gradual
+                size *= (1.5 - layer_factor * 0.8); // Intermediate layers: gradual scaling
             }
 
             if (distance < size) {
-                // Calcular UV local para la partícula
+                // Calculate local UV for particle
                 vec2 local_uv = (diff / size) * 0.5 + 0.5;
 
-                // Asegurar que local_uv esté en rango [0,1]
+                // Ensure local_uv is in range [0,1]
                 if (local_uv.x >= 0.0 && local_uv.x <= 1.0 &&
                     local_uv.y >= 0.0 && local_uv.y <= 1.0) {
 
-                    // Calcular frame de animación correctamente
+                    // Calculate animation frame correctly
                     float frame_time = time * animation_speed + fid * 0.1;
                     int total_frames = sprite_frames.x * sprite_frames.y;
                     int frame_index = 0;
@@ -278,30 +278,30 @@ void fragment() {
 
                     vec2 sprite_uv = get_sprite_uv(local_uv, frame_index);
 
-                    // Obtener color de textura
+                    // Get texture color
                     vec4 tex_color = texture(particle_texture, sprite_uv);
 
-                    // Solo procesar si la textura tiene alpha
+                    // Only process if texture has alpha
                     if (tex_color.a > 0.01) {
-                        // Obtener color de partícula con variación por capa
+                        // Get particle color with variation by layer
                         vec4 particle_color = get_particle_color(particle_type, particle_id, layer, time);
 
-                        // Aplicar color de partícula respetando su transparencia
+                        // Apply particle color respecting its transparency
                         tex_color.rgb *= particle_color.rgb;
                         tex_color.a *= particle_color.a;
 
-                        // Calcular alpha adicional
+                        // Calculate additional alpha
                         float additional_alpha = calculate_particle_alpha(particle_id, layer, time, particle_pos);
 
-                        // Aplicar falloff circular suave
+                        // Apply smooth circular falloff
                         float falloff = 1.0 - smoothstep(0.7, 1.0, distance / size);
                         additional_alpha *= falloff;
 
-                        // Aplicar alpha adicional
+                        // Apply additional alpha
                         tex_color.a *= additional_alpha;
 
-                        // Combinar con color final usando alpha blending
-                        // Las capas más alejadas se mezclan de manera más sutil
+                        // Combine with final color using alpha blending
+                        // Further layers blend more subtly
                         float blend_factor = 1.0 - layer_factor * 0.3;
                         final_color.rgb += tex_color.rgb * tex_color.a * blend_factor;
                         final_color.a = max(final_color.a, tex_color.a);

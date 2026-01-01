@@ -840,7 +840,7 @@ func resume() -> void:
 		if tick_timer:
 			tick_timer.set_paused(false)
 		
-		# Reactivar efectos si es necesario
+		# Reactivate effects if necessary
 		if warning_triggered and current_time <= warning_start_time:
 			_play_warning_feedback()
 		if blink_animation_triggered and enable_blink_animation and current_time <= blink_animation_start_time:

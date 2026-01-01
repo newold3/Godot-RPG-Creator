@@ -1,17 +1,17 @@
 shader_type canvas_item;
 
-// Tipo de curvatura
+// Curvature type
 uniform int curve_type : hint_enum("None", "Arc", "Arc Down", "Arc Up", "Wave", "Bridge Down", "Bridge Up") = 0;
 
-// Parámetros de deformación
-uniform float bend : hint_range(-100.0, 100.0) = 0.0; // Curvatura tipo Photoshop
-uniform float horizontal_distortion : hint_range(-100.0, 100.0) = 0.0; // Estiramiento/compresión horizontal
-uniform float vertical_distortion : hint_range(-100.0, 100.0) = 0.0; // Estiramiento/compresión vertical
+// Deformation parameters
+uniform float bend : hint_range(-100.0, 100.0) = 0.0; // Photoshop-style curvature
+uniform float horizontal_distortion : hint_range(-100.0, 100.0) = 0.0; // Horizontal stretch/compression
+uniform float vertical_distortion : hint_range(-100.0, 100.0) = 0.0; // Vertical stretch/compression
 
-// Esferizar
+// Spherize
 uniform float spherize_amount : hint_range(-1.0, 1.0) = 0.0;
 
-// Centro del efecto (normalizado 0.0 a 1.0)
+// Effect center (normalized 0.0 to 1.0)
 uniform vec2 center = vec2(0.5, 0.5);
 
 void fragment() {
@@ -22,13 +22,13 @@ void fragment() {
     float normalized_h_dist = horizontal_distortion / 100.0;
     float normalized_v_dist = vertical_distortion / 100.0;
 
-    // Desplazamientos
+    // Displacements
     float dx = uv.x - center.x;
     float dy = uv.y - center.y;
 
     if (curve_type != 0) {
         if (curve_type == 1) { // Arc
-            offset.y = normalized_bend * (dx * dx) * 2.5; // Más fuerte que otros
+            offset.y = normalized_bend * (dx * dx) * 2.5; // Stronger than others
         }
         else if (curve_type == 2) { // Arc Down
             offset.y = -normalized_bend * (dx * dx) * 1.5;
@@ -49,11 +49,11 @@ void fragment() {
         }
     }
 
-    // Distorsión horizontal/vertical
+    // Horizontal/vertical distortion
     offset.x += normalized_h_dist * dx * abs(dx);
     offset.y += normalized_v_dist * dy * abs(dy);
 
-    // Esferizar
+    // Spherize
     if (spherize_amount != 0.0) {
         float r = distance(uv, center);
         if (r > 0.0) {
@@ -65,10 +65,10 @@ void fragment() {
 
     vec2 final_uv = uv + offset;
 
-    // Muestreamos la textura final
+    // Sample final texture
     vec4 color = texture(TEXTURE, final_uv);
 
-    // Si UV está fuera, ponemos transparencia
+    // If UV is outside, set transparency
     if (final_uv.x < 0.0 || final_uv.x > 1.0 || final_uv.y < 0.0 || final_uv.y > 1.0) {
         COLOR = vec4(0.0, 0.0, 0.0, 0.0);
     } else {

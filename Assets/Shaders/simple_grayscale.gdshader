@@ -8,9 +8,9 @@ void fragment() {
     vec4 color = texture(TEXTURE, UV);
 
     if (grayscale) {
-        // Método luminancia estándar para grayscale
+        // Standard luminance method for grayscale
         float gray = dot(color.rgb, vec3(0.299, 0.587, 0.114));
-        // Aplicar ajuste de brillo al grayscale
+        // Apply brightness adjustment to grayscale
         gray = clamp(gray + brightness, 0.0, 1.0);
         COLOR = vec4(gray, gray, gray, color.a);
     } else {
