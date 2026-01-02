@@ -18,6 +18,8 @@ func _ready() -> void:
 	
 	%MainButton.get_popup().set_item_submenu_node(2, edit_maps_menu)
 
+	CustomTooltipManager.plugin_replace_all_tooltips_with_custom.call_deferred(self)
+
 
 func _update_map_list() -> void:
 	edit_maps_menu.clear()

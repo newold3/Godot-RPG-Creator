@@ -190,7 +190,7 @@ func _on_main_list_multi_selected(index: int, selected: bool) -> void:
 		%RightColumn.propagate_call("set_disabled", [false])
 		%RightColumn.propagate_call("set_editable", [true])
 	
-	_update_data_fields()
+	_update_data_fields.call_deferred()
 
 
 func _on_main_list_item_selected(index: int) -> void:

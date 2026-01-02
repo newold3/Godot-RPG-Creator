@@ -75,44 +75,61 @@ class BackgroundImage:
 			idle_animation_tween.tween_property(image, "position:x", image.position.x + 3, 0.05)
 			idle_animation_tween.tween_property(image, "position:x", image.position.x, 0.05)
 			idle_animation_tween.tween_property(image, "scale:y", 1.0, 0.05)
-		elif idle_animation == 3: # Bounce
+		elif idle_animation == 3: # Floating / Levitate
+			# Ideally, pivot should be center for purely visual float, but bottom works if we only tween position
+			idle_animation_tween = image.create_tween()
+			idle_animation_tween.set_loops()
+			idle_animation_tween.set_trans(Tween.TRANS_SINE)
+			idle_animation_tween.set_ease(Tween.EASE_IN_OUT)
+			# Moves up slightly then returns down
+			var float_offset: float = 8.0
+			idle_animation_tween.tween_property(image, "position:y", image.position.y - float_offset, 1.0)
+			idle_animation_tween.tween_property(image, "position:y", image.position.y, 1.0)
+		elif idle_animation == 4: # Pulsing / Heartbeat
+			image.pivot_offset = Vector2(image.custom_minimum_size.x * 0.5, image.custom_minimum_size.y * 0.5) # Center pivot for even scaling
+			idle_animation_tween = image.create_tween()
+			idle_animation_tween.set_loops()
+			idle_animation_tween.set_trans(Tween.TRANS_SINE)
+			idle_animation_tween.set_ease(Tween.EASE_IN_OUT)
+			idle_animation_tween.tween_property(image, "scale", Vector2(1.05, 1.05), 0.6)
+			idle_animation_tween.tween_property(image, "scale", Vector2.ONE, 0.6)
+		elif idle_animation == 5: # Wobble / Sway
+			image.pivot_offset = Vector2(image.custom_minimum_size.x * 0.5, image.custom_minimum_size.y) # Pivot at bottom
+			idle_animation_tween = image.create_tween()
+			idle_animation_tween.set_loops()
+			idle_animation_tween.set_trans(Tween.TRANS_SINE)
+			idle_animation_tween.set_ease(Tween.EASE_IN_OUT)
+			idle_animation_tween.tween_property(image, "rotation_degrees", 4.0, 1.0)
+			idle_animation_tween.tween_property(image, "rotation_degrees", -4.0, 1.0)
+		elif idle_animation == 6: # Ghost / Transparency
+			idle_animation_tween = image.create_tween()
+			idle_animation_tween.set_loops()
+			idle_animation_tween.set_trans(Tween.TRANS_SINE)
+			idle_animation_tween.set_ease(Tween.EASE_IN_OUT)
+			idle_animation_tween.tween_property(image, "modulate:a", 0.4, 1.5)
+			idle_animation_tween.tween_property(image, "modulate:a", 1.0, 1.5)
+		elif idle_animation == 7: # Rage / Vibration
+			image.pivot_offset = Vector2(image.custom_minimum_size.x * 0.5, image.custom_minimum_size.y * 0.5)
+			idle_animation_tween = image.create_tween()
+			idle_animation_tween.set_loops()
+			idle_animation_tween.set_trans(Tween.TRANS_LINEAR)
+			var base_pos: Vector2 = image.position
+			var shake: float = 2.0
+			idle_animation_tween.tween_property(image, "position", base_pos + Vector2(shake, -shake), 0.05)
+			idle_animation_tween.tween_property(image, "position", base_pos + Vector2(-shake, shake), 0.05)
+			idle_animation_tween.tween_property(image, "position", base_pos + Vector2(-shake, -shake), 0.05)
+			idle_animation_tween.tween_property(image, "position", base_pos + Vector2(shake, shake), 0.05)
+			idle_animation_tween.tween_property(image, "position", base_pos, 0.05)
+		elif idle_animation == 8: # Squash & Stretch (Bouncy)
 			image.pivot_offset = Vector2(image.custom_minimum_size.x * 0.5, image.custom_minimum_size.y)
 			idle_animation_tween = image.create_tween()
 			idle_animation_tween.set_loops()
-			idle_animation_tween.set_ease(Tween.EASE_OUT)
-			idle_animation_tween.set_trans(Tween.TRANS_BOUNCE)
-			idle_animation_tween.tween_property(image, "position:y", image.position.y - 2, 0.3)
-			idle_animation_tween.tween_property(image, "position:y", image.position.y, 0.3)
-		elif idle_animation == 4: # Head Tilt
-			image.pivot_offset = Vector2(image.custom_minimum_size.x * 0.5, image.custom_minimum_size.y)
-			idle_animation_tween = image.create_tween()
-			idle_animation_tween.set_loops()
-			idle_animation_tween.set_ease(Tween.EASE_IN_OUT)
 			idle_animation_tween.set_trans(Tween.TRANS_SINE)
-			idle_animation_tween.tween_property(image, "rotation", deg_to_rad(3), 0.5)
-			idle_animation_tween.tween_property(image, "rotation", deg_to_rad(-3), 0.5)
-		elif idle_animation == 5: # Wobble
-			image.pivot_offset = Vector2(image.custom_minimum_size.x * 0.5, image.custom_minimum_size.y)
-			idle_animation_tween = image.create_tween()
-			idle_animation_tween.set_loops()
 			idle_animation_tween.set_ease(Tween.EASE_IN_OUT)
-			idle_animation_tween.set_trans(Tween.TRANS_SINE)
-			idle_animation_tween.tween_property(image, "position:x", image.position.x - 1, 0.2)
-			idle_animation_tween.tween_property(image, "position:x", image.position.x + 1, 0.2)
-		elif idle_animation == 6: # Color Pulse
-			idle_animation_tween = image.create_tween()
-			idle_animation_tween.set_loops()
-			idle_animation_tween.set_ease(Tween.EASE_IN_OUT)
-			idle_animation_tween.set_trans(Tween.TRANS_SINE)
-			idle_animation_tween.tween_property(image, "modulate:a", 0.9, 0.5)
-			idle_animation_tween.tween_property(image, "modulate:a", 1.0, 0.5)
-		elif idle_animation == 7: # Hover
-			idle_animation_tween = image.create_tween()
-			idle_animation_tween.set_loops()
-			idle_animation_tween.set_ease(Tween.EASE_IN_OUT)
-			idle_animation_tween.set_trans(Tween.TRANS_SINE)
-			idle_animation_tween.tween_property(image, "position:y", image.position.y - 3, 0.6)
-			idle_animation_tween.tween_property(image, "position:y", image.position.y, 0.6)
+			# Flatten down and get wider
+			idle_animation_tween.tween_property(image, "scale", Vector2(1.1, 0.9), 0.4)
+			# Stretch up and get thinner
+			idle_animation_tween.tween_property(image, "scale", Vector2(0.9, 1.1), 0.4)
 	
 	func end_idle_animation() -> void:
 		if idle_animation_tween:
@@ -2414,10 +2431,10 @@ func start_command_wait(command: SpecialEffectCommand) -> void:
 func start_command_no_wait_input(command: SpecialEffectCommand) -> void:
 	if is_floating: return
 	var enabled = bool(int(command.parameters.enabled)) if "enabled" in command.parameters else false
-	var time = float(command.parameters.time) if "time" in command.parameters else 0.0
+	var _time = float(command.parameters.time) if "time" in command.parameters else 0.0
 	force_no_wait_for_input = enabled
 	wait_for_input_enabled = !enabled
-	wait_for_input_time = time
+	wait_for_input_time = _time
 	command.completed = true
 
 
