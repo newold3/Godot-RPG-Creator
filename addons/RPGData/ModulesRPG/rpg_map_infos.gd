@@ -137,11 +137,3 @@ func update_file_path(old_file: String, new_file: String) -> void:
 
 func save() -> void:
 	DatabaseLoader.save_map_infos()
-	#var dir = DatabaseLoader.get_data_folder_path()
-	#var file = "map_info.res"
-	#var path = "%s/%s" % [dir, file]
-	#if ResourceLoader.exists(path):
-		#ResourceSaver.save(self, path)
-	#else:
-		#DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(dir))
-		#ResourceSaver.save(self, path)

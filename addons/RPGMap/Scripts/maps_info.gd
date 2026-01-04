@@ -11,7 +11,7 @@ func _ready() -> void:
 func load_maps_info() -> void:
 	map_infos = DatabaseLoader.load_map_infos()
 	
-	if map_infos.map_infos == null:
+	if map_infos == null:
 		map_infos = MapInfos.new()
 
 
@@ -103,4 +103,5 @@ func update_file_path(old_file: String, new_file: String) -> void:
 
 
 func _exit_tree() -> void:
-	map_infos.save()
+	if map_infos:
+		map_infos.save()
