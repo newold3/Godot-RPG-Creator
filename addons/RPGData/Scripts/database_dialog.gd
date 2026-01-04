@@ -77,17 +77,18 @@ func _on_timer_timeout() -> void:
 
 
 func save() -> void:
-	var data_folder_path = "res://Data"
-	var absolute_data_folder_path = ProjectSettings.globalize_path(data_folder_path)
-	if !DirAccess.dir_exists_absolute(absolute_data_folder_path):
-		DirAccess.make_dir_recursive_absolute(absolute_data_folder_path)
-
-	var file = "database.res"
-	var database_path = data_folder_path.path_join(file)
-	RPGSYSTEM.database.take_over_path(database_path)
-	ResourceSaver.save(RPGSYSTEM.database, database_path, ResourceSaver.FLAG_COMPRESS)
-	
-	DirAccess.remove_absolute(MainDatabasePanel.BACKUP_PATH)
+	DatabaseLoader.save_database()
+	#var data_folder_path = DatabaseLoader.get_data_folder_path()
+	#var absolute_data_folder_path = ProjectSettings.globalize_path(data_folder_path)
+	#if !DirAccess.dir_exists_absolute(absolute_data_folder_path):
+		#DirAccess.make_dir_recursive_absolute(absolute_data_folder_path)
+#
+	#var file = "database.res"
+	#var database_path = data_folder_path.path_join(file)
+	#RPGSYSTEM.database.take_over_path(database_path)
+	#ResourceSaver.save(RPGSYSTEM.database, database_path, ResourceSaver.FLAG_COMPRESS)
+	#
+	#DirAccess.remove_absolute(MainDatabasePanel.BACKUP_PATH)
 
 
 func _on_main_database_saved() -> void:
