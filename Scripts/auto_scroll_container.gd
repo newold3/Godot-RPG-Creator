@@ -10,13 +10,13 @@ enum SCROLL_DIRECTION {VERTICAL, HORIZONTAL, BOTH}
 @export var pause_on_mouse_hover: bool = true
 
 @export_category("Speed Settings")
-@export var min_scroll_speed: float = 12.0  # px/s
-@export var max_scroll_speed: float = 40.0  # px/s
+@export var min_scroll_speed: float = 12.0 # px/s
+@export var max_scroll_speed: float = 40.0 # px/s
 @export var target_cycle_time: float = 10.0 # total seconds
 @export var reverse_duration: float = 0.5 # total seconds
 
 @export_category("Margins")
-@export var scroll_margin: float = 5.0 # margen extra para el scroll
+@export var scroll_margin: float = 5.0 # extra margin for scroll
 
 @export_category("Delays")
 @export var initial_delay: float = 2.0
@@ -108,7 +108,7 @@ func _layout_children() -> void:
 		if child is Control:
 			var base_pos = Vector2.ZERO
 			
-			# Posicionamiento horizontal basado en size_flags_horizontal
+			# Horizontal positioning based on size_flags_horizontal
 			if child.size_flags_horizontal & SIZE_FILL:
 				child.size.x = size.x
 				base_pos.x = 0
@@ -121,7 +121,7 @@ func _layout_children() -> void:
 				if scroll_direction == SCROLL_DIRECTION.HORIZONTAL or scroll_direction == SCROLL_DIRECTION.BOTH:
 					current_x += child.size.x
 			
-			# Posicionamiento vertical basado en size_flags_vertical
+			# Vertical positioning based on size_flags_vertical
 			if child.size_flags_vertical & SIZE_FILL:
 				child.size.y = size.y
 				base_pos.y = 0
@@ -136,7 +136,7 @@ func _layout_children() -> void:
 			
 			child.set_meta("base_position", base_pos)
 			
-			# Aplicar scroll actual
+			# Apply current scroll
 			var final_pos = base_pos
 			if has_auto_scroll_vertical and (scroll_direction == SCROLL_DIRECTION.VERTICAL or scroll_direction == SCROLL_DIRECTION.BOTH):
 				final_pos.y -= current_scroll_vertical
@@ -164,19 +164,19 @@ func _process(delta: float) -> void:
 			return
 		
 		if scroll_mode == SCROLL_MODE.NORMAL:
-			# Scroll vertical
+			# Vertical scroll
 			if has_auto_scroll_vertical and (scroll_direction == SCROLL_DIRECTION.VERTICAL or scroll_direction == SCROLL_DIRECTION.BOTH):
 				current_scroll_vertical += scroll_speed * delta
 				if current_scroll_vertical >= max_scroll_vertical:
 					current_scroll_vertical = max_scroll_vertical
 			
-			# Scroll horizontal
+			# Horizontal scroll
 			if has_auto_scroll_horizontal and (scroll_direction == SCROLL_DIRECTION.HORIZONTAL or scroll_direction == SCROLL_DIRECTION.BOTH):
 				current_scroll_horizontal += scroll_speed * delta
 				if current_scroll_horizontal >= max_scroll_horizontal:
 					current_scroll_horizontal = max_scroll_horizontal
 			
-			# Verificar si alguno llegó al final
+			# Check if any reached the end
 			var vertical_at_end = !has_auto_scroll_vertical or (scroll_direction != SCROLL_DIRECTION.VERTICAL and scroll_direction != SCROLL_DIRECTION.BOTH) or current_scroll_vertical >= max_scroll_vertical
 			var horizontal_at_end = !has_auto_scroll_horizontal or (scroll_direction != SCROLL_DIRECTION.HORIZONTAL and scroll_direction != SCROLL_DIRECTION.BOTH) or current_scroll_horizontal >= max_scroll_horizontal
 			
@@ -184,19 +184,19 @@ func _process(delta: float) -> void:
 				is_waiting = true
 				scroll_mode = SCROLL_MODE.REVERSE
 		else:
-			# Scroll reverso vertical
+			# Reverse vertical scroll
 			if has_auto_scroll_vertical and (scroll_direction == SCROLL_DIRECTION.VERTICAL or scroll_direction == SCROLL_DIRECTION.BOTH):
 				current_scroll_vertical -= reverse_scroll_speed * delta
 				if current_scroll_vertical <= 0:
 					current_scroll_vertical = 0
 			
-			# Scroll reverso horizontal
+			# Reverse horizontal scroll
 			if has_auto_scroll_horizontal and (scroll_direction == SCROLL_DIRECTION.HORIZONTAL or scroll_direction == SCROLL_DIRECTION.BOTH):
 				current_scroll_horizontal -= reverse_scroll_speed * delta
 				if current_scroll_horizontal <= 0:
 					current_scroll_horizontal = 0
 			
-			# Verificar si ambos llegaron al inicio
+			# Check if both reached the start
 			var vertical_at_start = !has_auto_scroll_vertical or (scroll_direction != SCROLL_DIRECTION.VERTICAL and scroll_direction != SCROLL_DIRECTION.BOTH) or current_scroll_vertical <= 0
 			var horizontal_at_start = !has_auto_scroll_horizontal or (scroll_direction != SCROLL_DIRECTION.HORIZONTAL and scroll_direction != SCROLL_DIRECTION.BOTH) or current_scroll_horizontal <= 0
 			
@@ -296,7 +296,7 @@ func _on_gui_input(event: InputEvent) -> void:
 	
 	var has_any_scroll = has_auto_scroll_vertical or has_auto_scroll_horizontal
 	if has_any_scroll and event is InputEventMouseButton and event.is_pressed():
-		# Para scroll horizontal, la rueda arriba/abajo hace scroll horizontal
+		# For horizontal scroll, wheel up/down does horizontal scroll
 		if scroll_direction == SCROLL_DIRECTION.HORIZONTAL:
 			if event.button_index == MOUSE_BUTTON_WHEEL_UP:
 				if has_auto_scroll_horizontal:
@@ -310,7 +310,7 @@ func _on_gui_input(event: InputEvent) -> void:
 				_apply_scroll_to_children()
 				get_viewport().set_input_as_handled()
 		else:
-			# Para scroll vertical o ambos, comportamiento normal
+			# For vertical scroll or both, normal behavior
 			if event.button_index == MOUSE_BUTTON_WHEEL_UP:
 				if has_auto_scroll_vertical:
 					current_scroll_vertical = max(0, current_scroll_vertical - 50)

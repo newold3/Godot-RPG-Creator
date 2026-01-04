@@ -17,7 +17,7 @@ void fragment() {
 	vec2 uv = -UV;
 	vec2 resolution = 1.0 / TEXTURE_PIXEL_SIZE;
 
-	// Aplicamos el factor de escala a las coordenadas de los copos
+	// Apply scale factor to snowflake coordinates
 	uv /= snowflake_scale;
 	uv.x *= resolution.x / resolution.y;
 

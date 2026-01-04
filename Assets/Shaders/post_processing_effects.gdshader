@@ -1,9 +1,9 @@
 shader_type canvas_item;
 
-// Textura de pantalla
+// Screen texture
 uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear_mipmap_anisotropic;
 
-// === Parámetros por efecto ===
+// === Parameters by effect ===
 group_uniforms GrayscaleParameters;
 uniform bool enable_grayscale = false;
 
@@ -124,7 +124,7 @@ vec3 hsv2rgb(vec3 c) {
     return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
 }
 
-// Función de curvatura warp
+// Warp curvature function
 vec2 warp(vec2 uv){
 	vec2 delta = uv - 0.5;
 	float delta2 = dot(delta.xy, delta.xy);
@@ -133,11 +133,11 @@ vec2 warp(vec2 uv){
 
 	vec2 warped;
 	if (warp_amount >= 0.0) {
-		// Curvatura hacia afuera (convexo) - comportamiento original
+		// Outward curvature (convex) - original behavior
 		warped = uv + delta * delta_offset;
 		return (warped - 0.5) / mix(1.0, 1.2, warp_amount/5.0) + 0.5;
 	} else {
-		// Curvatura hacia adentro (cóncavo) - hundir hacia el centro
+		// Inward curvature (concave) - sink towards center
 		warped = uv - delta * delta_offset;
 		return warped;
 	}

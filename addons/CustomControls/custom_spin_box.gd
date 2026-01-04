@@ -76,10 +76,10 @@ func _ready() -> void:
 	else:
 		rounded = false
 	
-	changed.connect(_on_changed)
-	
 	await get_tree().process_frame
-	_on_text_changed(lineedit.text)
+	
+	changed.connect(_on_changed)
+	_on_text_changed.call_deferred(lineedit.text)
 
 
 func _on_changed() -> void:

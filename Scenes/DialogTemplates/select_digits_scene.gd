@@ -7,13 +7,13 @@ func get_class() -> String:
 
 @export var first_button: PanelContainer
 
-@export var title_color: Color = Color.WHITE :
+@export var title_color: Color = Color.WHITE:
 	set(value):
 		title_color = value
 		if is_node_ready():
 			%Title.set("theme_override_colors/font_color", title_color)
 
-@export var number_selected_color: Color = Color("#00cc00") :
+@export var number_selected_color: Color = Color("#00cc00"):
 	set(value):
 		number_selected_color = value
 		if is_node_ready():
@@ -319,7 +319,7 @@ func play_fx(fx_data: Dictionary) -> void:
 
 
 func get_number_length(number: String) -> int:
-	# Cuenta solo dígitos, ignorando separadores
+	# Counts only digits, ignoring separators
 	var count = 0
 	for digit in number:
 		if digit.is_valid_int():
@@ -356,7 +356,7 @@ func format_number(number: String) -> String:
 	if int(number) == 0:
 		final_string[-1] = "0"
 	
-	return(final_string)
+	return (final_string)
 
 
 func _on_button_pressed(digit: int) -> void:
@@ -388,7 +388,7 @@ func _on_button_pressed(digit: int) -> void:
 	play_fx(select_fx)
 
 
-func _on_button_back_pressed(_id : int = -1) -> void:
+func _on_button_back_pressed(_id: int = -1) -> void:
 	_find_button_and_animate_with_text(%DigitContainer, 10) # Animate back button
 	current_number = current_number.substr(0, current_number.length() - 1)
 	%Digits.text = format_number(current_number)

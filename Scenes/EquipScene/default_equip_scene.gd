@@ -148,7 +148,7 @@ func _process_start_change_equip(slot_id: int) -> void:
 	for item in equippable_items:
 		@warning_ignore("incompatible_ternary")
 		var real_data = RPGSYSTEM.database.weapons if button_selected == 0 else RPGSYSTEM.database.armors
-		var color_data = RPGSYSTEM.database.types.weapon_rarity_color_types if button_selected == 0 else  RPGSYSTEM.database.types.armor_rarity_color_types
+		var color_data = RPGSYSTEM.database.types.weapon_rarity_color_types if button_selected == 0 else RPGSYSTEM.database.types.armor_rarity_color_types
 		
 		for level in item.levels:
 			var current_item = item.levels[level].item
@@ -182,20 +182,20 @@ func _process_start_change_equip(slot_id: int) -> void:
 	GameManager.play_fx("ok")
 	
 	formatted_items.sort_custom(func(a, b):
-		# 1. Nuevos primero
+		# 1. New items first
 		if a.is_new_item != b.is_new_item:
 			return a.is_new_item and not b.is_new_item
 
-		# 2. Orden alfabético por nombre
+		# 2. Alphabetical order by name
 		var cmp = a.name.naturalnocasecmp_to(b.name)
 		if cmp != 0:
 			return cmp < 0
 
-		# 3. Mismo nombre → nivel descendente
+		# 3. Same name -> descending level
 		return a.level > b.level
 	)
 	
-	# Añadir remove item al inicio
+	# Add remove item at start
 	var remove_item = {
 		"name": "- " + tr("Remove equip") + " -",
 		"icon": preload("uid://cy1pny48ukkqg"),
@@ -219,16 +219,16 @@ func _show_menu() -> void:
 	GameManager.force_hide_cursor()
 	var gears = %StatsContainer.get_gears()
 	var gears2 = %MenuItems.get_gears()
-	gears2[0].rotation = PI/2
-	gears2[1].rotation = PI/2
+	gears2[0].rotation = PI / 2
+	gears2[1].rotation = PI / 2
 	var t = create_tween()
 	t.set_parallel(true)
 	t.tween_property(%MenuItems, "position", menu_items_end_position - Vector2(3, 0), 0.2).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	t.tween_property(gears2[0], "rotation", 0.0, 0.4)
 	t.tween_property(gears2[1], "rotation", 0.0, 0.4)
 	t.tween_property(%StatsContainer, "position:x", %StatsContainer.position.x - 12, 0.08).set_delay(0.16)
-	t.tween_property(gears[0], "rotation", -PI/2, 0.1).set_delay(0.16)
-	t.tween_property(gears[1], "rotation", -PI/2, 0.1).set_delay(0.16)
+	t.tween_property(gears[0], "rotation", -PI / 2, 0.1).set_delay(0.16)
+	t.tween_property(gears[1], "rotation", -PI / 2, 0.1).set_delay(0.16)
 	t.tween_property(%StatsContainer, "position:x", %StatsContainer.position.x, 0.11).set_delay(0.26)
 	t.tween_property(gears[0], "rotation", 0, 0.2).set_delay(0.26)
 	t.tween_property(gears[1], "rotation", 0, 0.2).set_delay(0.26)
@@ -296,7 +296,7 @@ func _on_actors_menu_button_selected(_actor_index: int) -> void:
 
 
 func start() -> void:
-	super()
+	super ()
 	
 	icon_gear_container.start()
 	
@@ -316,7 +316,7 @@ func start() -> void:
 
 
 func end() -> void:
-	super()
+	super ()
 	icon_gear_container.end()
 	stats_container.end()
 	equipment_container.end()

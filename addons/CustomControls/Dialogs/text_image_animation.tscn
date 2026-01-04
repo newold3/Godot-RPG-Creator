@@ -16,22 +16,14 @@ gradient = SubResource("Gradient_p6kln")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m1kb1"]
-resource_local_to_scene = true
-content_margin_left = 8.0
-content_margin_top = 4.0
-content_margin_right = 21.0
-content_margin_bottom = 4.0
-bg_color = Color(0.184314, 0.196078, 0.203922, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2l1gw"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d8hvb"]
 resource_local_to_scene = true
 bg_color = Color(1, 1, 1, 1)
 border_width_left = 4
 border_width_top = 4
 border_width_right = 4
-border_width_bottom = 4
-border_color = Color(0.94902, 0.627451, 0.0117647, 1)
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
 border_blend = true
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ku34b"]
@@ -44,17 +36,26 @@ border_width_bottom = 4
 border_color = Color(0, 0, 0, 1)
 border_blend = true
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d8hvb"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2l1gw"]
 resource_local_to_scene = true
 bg_color = Color(1, 1, 1, 1)
 border_width_left = 4
 border_width_top = 4
 border_width_right = 4
-border_width_bottom = 3
-border_color = Color(0, 0, 0, 1)
+border_width_bottom = 4
+border_color = Color(0.94902, 0.627451, 0.0117647, 1)
 border_blend = true
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m1kb1"]
+resource_local_to_scene = true
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 21.0
+content_margin_bottom = 4.0
+bg_color = Color(0.184314, 0.196078, 0.203922, 1)
+
 [node name="TextImageAnimation" type="Window"]
+oversampling_override = 1.0
 title = "Text Image Animation"
 position = Vector2i(0, 36)
 size = Vector2i(720, 511)
@@ -114,6 +115,8 @@ popup/item_0/id = 0
 popup/item_1/text = "Background Character Image"
 popup/item_1/id = 1
 script = ExtResource("3_5xs34")
+metadata/original_focus_mode = 2
+metadata/original_mouse_filer = 0
 
 [node name="ImageID" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
@@ -134,6 +137,7 @@ tooltip_text = "ID to identify the background image/character to be animated (De
 
 \"Caution\": If no image with the given ID is currently added, this effect will be discarded."
 allow_greater = true
+_custom_value = 0.0
 
 [node name="FacePositionContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
@@ -156,6 +160,8 @@ popup/item_0/text = "Left"
 popup/item_0/id = 0
 popup/item_1/text = "Right"
 popup/item_1/id = 1
+metadata/original_focus_mode = 2
+metadata/original_mouse_filer = 0
 
 [node name="IdleAnimationContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
@@ -182,7 +188,7 @@ tooltip_text = "Selects the type of idle animation for this image.
  \"Scaredt\": The image shows a scary animation[/ul]"
 mouse_default_cursor_shape = 2
 selected = 0
-item_count = 4
+item_count = 10
 popup/item_0/text = "Keep Current Animation"
 popup/item_0/id = 0
 popup/item_1/text = "None"
@@ -191,7 +197,21 @@ popup/item_2/text = "Breathing"
 popup/item_2/id = 2
 popup/item_3/text = "Scared"
 popup/item_3/id = 3
+popup/item_4/text = "Levitate"
+popup/item_4/id = 4
+popup/item_5/text = "Pulsing"
+popup/item_5/id = 5
+popup/item_6/text = "Wobble"
+popup/item_6/id = 6
+popup/item_7/text = "Ghost"
+popup/item_7/id = 7
+popup/item_8/text = "Rage"
+popup/item_8/id = 8
+popup/item_9/text = "Squash & Stretch"
+popup/item_9/id = 9
 script = ExtResource("3_5xs34")
+metadata/original_focus_mode = 2
+metadata/original_mouse_filer = 0
 
 [node name="Wait" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -230,8 +250,9 @@ size_flags_horizontal = 3
 size_flags_vertical = 4
 tooltip_text = "Specifies the number of seconds this animation will last"
 step = 0.01
-value = 0.15
+rounded = false
 allow_greater = true
+_custom_value = 0.0
 
 [node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer8"]
 layout_mode = 2
@@ -268,6 +289,7 @@ allow_greater = true
 allow_lesser = true
 editable = false
 disabled = true
+_custom_value = 0.0
 
 [node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
@@ -284,6 +306,7 @@ allow_greater = true
 allow_lesser = true
 editable = false
 disabled = true
+_custom_value = 0.0
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -307,10 +330,12 @@ mouse_filter = 2
 min_value = -360.0
 max_value = 360.0
 step = 0.01
+rounded = false
 allow_greater = true
 allow_lesser = true
 editable = false
 disabled = true
+_custom_value = 0.0
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4"]
 layout_mode = 2
@@ -336,10 +361,12 @@ size_flags_vertical = 4
 tooltip_text = "Scales the image using the value defined here from its current scale."
 mouse_filter = 2
 step = 0.01
+rounded = false
 allow_greater = true
 allow_lesser = true
 editable = false
 disabled = true
+_custom_value = 0.0
 
 [node name="HBoxContainer7" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -359,10 +386,10 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Modulates the image with this color"
 focus_mode = 0
-theme_override_styles/disabled = SubResource("StyleBoxFlat_m1kb1")
-theme_override_styles/hover = SubResource("StyleBoxFlat_2l1gw")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_ku34b")
 theme_override_styles/normal = SubResource("StyleBoxFlat_d8hvb")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ku34b")
+theme_override_styles/hover = SubResource("StyleBoxFlat_2l1gw")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_m1kb1")
 disabled = true
 
 [node name="HBoxContainer9" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
@@ -390,10 +417,12 @@ tooltip_text = "Controls how far the image is offset from the origin"
 mouse_filter = 2
 min_value = 0.01
 step = 0.01
-value = 1.1
+value = 0.01
+rounded = false
 allow_greater = true
 editable = false
 disabled = true
+_custom_value = 0.0
 
 [node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer9"]
 layout_mode = 2
@@ -408,10 +437,12 @@ tooltip_text = "Controls the frequency with which the target is agitated"
 mouse_filter = 2
 min_value = 0.01
 step = 0.01
-value = 10.0
+value = 0.01
+rounded = false
 allow_greater = true
 editable = false
 disabled = true
+_custom_value = 0.0
 
 [node name="TransitionContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
@@ -439,6 +470,8 @@ tooltip_text = "Selects the type of transition for the image:
  \"Fade Out\": Makes the image disappear.
  \"Move to Position Left / Center / Right\": The image moves from its initial position to the designated position.
  \"Horizontal Flip\": Flips the image horizontally[/ul]"
+focus_mode = 0
+mouse_filter = 2
 mouse_default_cursor_shape = 2
 disabled = true
 selected = 0
@@ -447,23 +480,25 @@ popup/item_0/text = "None"
 popup/item_0/id = 0
 popup/item_1/text = "Fade Out"
 popup/item_1/id = 1
-popup/item_2/text = "Move to Position Left"
+popup/item_2/text = "Move To Position Left"
 popup/item_2/id = 2
-popup/item_3/text = "Move to Position Center"
+popup/item_3/text = "Move To Position Center"
 popup/item_3/id = 3
-popup/item_4/text = "Move to Position Right"
+popup/item_4/text = "Move To Position Right"
 popup/item_4/id = 4
 popup/item_5/text = "Horizontal Flip"
 popup/item_5/id = 5
 popup/item_6/text = "Jump"
 popup/item_6/id = 6
-popup/item_7/text = "Zoom in-Out"
+popup/item_7/text = "Zoom In Out"
 popup/item_7/id = 7
-popup/item_8/text = "Zoom Out-in"
+popup/item_8/text = "Zoom Out In"
 popup/item_8/id = 8
-popup/item_9/text = "Fade in"
+popup/item_9/text = "Fade In"
 popup/item_9/id = 9
 script = ExtResource("3_5xs34")
+metadata/original_focus_mode = 2
+metadata/original_mouse_filer = 0
 
 [node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -492,14 +527,16 @@ layout_mode = 2
 size_flags_horizontal = 3
 selected = 0
 item_count = 4
-popup/item_0/text = "Ease in"
+popup/item_0/text = "Ease In"
 popup/item_0/id = 0
 popup/item_1/text = "Ease Out"
 popup/item_1/id = 1
-popup/item_2/text = "Ease in OUT"
+popup/item_2/text = "Ease In Out"
 popup/item_2/id = 2
-popup/item_3/text = "Ease Out in"
+popup/item_3/text = "Ease Out In"
 popup/item_3/id = 3
+metadata/original_focus_mode = 2
+metadata/original_mouse_filer = 0
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer6"]
 layout_mode = 2
@@ -539,6 +576,8 @@ popup/item_10/text = "Trans Back"
 popup/item_10/id = 10
 popup/item_11/text = "Trans Spring"
 popup/item_11/id = 11
+metadata/original_focus_mode = 2
+metadata/original_mouse_filer = 0
 
 [node name="HSeparator3" type="HSeparator" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2

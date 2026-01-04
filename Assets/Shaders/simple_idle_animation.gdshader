@@ -3,42 +3,42 @@ shader_type canvas_item;
 uniform bool enable_breathing = true;
 uniform bool force_disable_breathing = false;
 uniform float amplitude : hint_range(0.0, 0.2, 0.001) = 0.01;
-uniform float breath_cycle : hint_range(0.5, 6.0) = 3.0; // Duración total del ciclo (más bajo = más rápido)
-uniform float inhale_speed : hint_range(0.01, 20.0, 0.01) = 0.6; // Proporción de inhalación dentro del ciclo (0-1)
-uniform float exhale_speed : hint_range(0.01, 20.0, 0.01) = 1.2; // Proporción de exhalación dentro del ciclo (0-1)
-uniform float pause_duration : hint_range(0.0, 2.0) = 0.5; // Pausa entre respiraciones
+uniform float breath_cycle : hint_range(0.5, 6.0) = 3.0; // Total cycle duration (lower = faster)
+uniform float inhale_speed : hint_range(0.01, 20.0, 0.01) = 0.6; // Inhalation proportion within cycle (0-1)
+uniform float exhale_speed : hint_range(0.01, 20.0, 0.01) = 1.2; // Exhalation proportion within cycle (0-1)
+uniform float pause_duration : hint_range(0.0, 2.0) = 0.5; // Pause between breaths
 uniform float random_offset = 0.0;
 uniform float pivot = 0.75;
 uniform vec4 blend_color: source_color = vec4(1.0);
 uniform int blend_mode: hint_enum("Mix", "Add", "Subtract", "Multiply", "Premultiplied Alpha") = 0;
 uniform sampler2D SCREEN_TEXTURE: hint_screen_texture, filter_nearest;
 
-// Función para crear un ciclo de respiración natural
+// Function to create a natural breathing cycle
 float breathing_cycle(float time) {
-    // Normalizar el tiempo dentro del ciclo
+    // Normalize time within cycle
     float cycle_time = mod(time, breath_cycle);
     float total_active = inhale_speed + exhale_speed;
     float cycle_normalized = cycle_time / total_active;
 
-    // Fase de inhalación
+    // Inhalation phase
     if (cycle_time < inhale_speed) {
         float t = cycle_time / inhale_speed;
-        // Inhalación rápida con easing
+        // Fast inhalation with easing
         return sin(t * 3.14159 / 2.0); // Ease-out
     }
-    // Fase de exhalación
+    // Exhalation phase
     else if (cycle_time < (inhale_speed + exhale_speed)) {
         float t = (cycle_time - inhale_speed) / exhale_speed;
-        // Exhalación lenta y controlada
+        // Slow and controlled exhalation
         return mix(1.0, 0.0, t * t); // Ease-in quadratic
     }
-    // Pausa (sin movimiento)
+    // Pause (no movement)
     else {
         return 0.0;
     }
 }
 
-// Función suavizada con easing
+// Smoothed function with easing
 float ease_in_out_cubic(float t) {
     return t < 0.5 ? 4.0 * t * t * t : 1.0 - pow(-2.0 * t + 2.0, 3.0) / 2.0;
 }
@@ -49,13 +49,13 @@ void fragment() {
 
     if (enable_breathing && !force_disable_breathing) {
         if (uv_displacement.y < pivot) {
-            // Obtener el ciclo de respiración
+            // Get breathing cycle
             float breath = breathing_cycle(TIME + random_offset);
 
-            // Aplicar amplitud con suavizado
+            // Apply amplitude with smoothing
             float factor = breath * amplitude;
 
-            // Desplazar UV
+            // Displace UV
             uv_displacement.y = pivot + (uv.y - pivot) * (1.0 + factor);
         }
     }

@@ -136,9 +136,9 @@ func item_has_parent_selected(indexes: PackedInt32Array, command: RPGEventComman
 	match command.code:
 		3: parent_code = 2
 	
-	for i in range(indexes.size() -1, -1, -1):
+	for i in range(indexes.size() - 1, -1, -1):
 		if indexes[i] > index: continue
-		var other : RPGEventCommand = current_data[i]
+		var other: RPGEventCommand = current_data[i]
 		if other.parent_code == parent_code and other.indent == indent:
 			return true
 	
@@ -239,7 +239,7 @@ func _on_create_new_command(button_code: int, from_dialog: Window = null) -> voi
 		%EventPageList.select(current_index)
 		%EventListContainer.scroll_vertical = %EventListContainer.get_v_scroll_bar().max_value
 	
-	var code_info = command_codes.get(button_code, {"command_code" : button_code, "dialog": ""})
+	var code_info = command_codes.get(button_code, {"command_code": button_code, "dialog": ""})
 	_show_dialog_command(from_dialog, code_info)
 
 
@@ -516,7 +516,7 @@ func get_current_dialog_config(data: Dictionary) -> Dictionary:
 	var dialog_config = {}
 	
 	var main_dialog_command: RPGEventCommand = data.commands[0]
-	for i:int in range(0, current_data.size(), 1):
+	for i: int in range(0, current_data.size(), 1):
 		if current_data[i] == main_dialog_command:
 			break
 		
@@ -653,7 +653,7 @@ func _show_movement_route_dialog(parent: Window, movement_route: RPGMovementRout
 
 
 func _create_movement_route_dialog(movement_route: RPGMovementRoute) -> void:
-	for i in range (movement_route.list.size() - 1, -1, -1):
+	for i in range(movement_route.list.size() - 1, -1, -1):
 		var command = RPGEventCommand.new()
 		command.code = 58
 		command.indent = current_indent
@@ -787,7 +787,6 @@ func _on_event_page_list_cut_requested(indexes: PackedInt32Array) -> void:
 	update_data()
 	
 
-
 func _on_event_page_list_delete_pressed(indexes: PackedInt32Array, need_scan_indexes: bool = true, remove_all_indexes: bool = false) -> void:
 	var event_list = %EventPageList
 	var list = current_data
@@ -836,7 +835,6 @@ func _on_event_page_list_delete_pressed(indexes: PackedInt32Array, need_scan_ind
 		data_changed.emit()
 	else:
 		current_index = bak_index
-
 
 
 func _on_event_page_ignore_commands(indexes: PackedInt32Array) -> void:
@@ -1096,7 +1094,6 @@ func _on_event_page_list_paste_requested(index: int) -> void:
 #endregion
 
 
-
 func _on_event_page_list_multi_selected(index: int, selected: bool) -> void:
 	if busy2: return
 	var collapsable_button = %CollabsableCommands
@@ -1169,10 +1166,9 @@ func _on_find_previous_command_pressed(reverse_enabled: bool = true, p_current_i
 					select(i, false)
 					return
 	
-	if  reverse_enabled:
+	if reverse_enabled:
 		_on_find_previous_command_pressed(false, %EventPageList.data.size() - 1)
 		
-
 
 func _on_find_next_command_pressed(reverse_enabled: bool = true, p_current_index: int = -1) -> void:
 	var filter = %Filter.text.to_lower()
@@ -1207,7 +1203,7 @@ func select(index: int, initial_delay_on = true) -> void:
 		
 	var vbar = %EventListContainer.get_v_scroll_bar()
 	var item_rect = %EventPageList.get_item_rect(index)
-	var max_offset_y =  0 if !selected_items.size() == 0 else selected_items.size() * item_rect.size.y + item_rect.size.y
+	var max_offset_y = 0 if !selected_items.size() == 0 else selected_items.size() * item_rect.size.y + item_rect.size.y
 	var visible_height = %EventListContainer.size.y
 	
 	var item_global_pos = %EventPageList.get_item_rect(index).position.y

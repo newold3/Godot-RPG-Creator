@@ -1,9 +1,9 @@
 shader_type canvas_item;
 render_mode blend_premul_alpha;
 
-// Textura renderizada del entorno
+// Rendered environment texture
 uniform sampler2D vehicle_texture : hint_default_transparent;
-// Color de la sombra
+// Shadow color
 uniform vec4 shadow_color : source_color;
 uniform vec2 offset = vec2(0);
 

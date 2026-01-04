@@ -76,15 +76,15 @@ bool is_pixel_in_preview(vec2 uv, float current_progress, float final_target_pro
 vec4 draw_preview(vec2 uv, float current_progress, float final_target_progress) {
     if (!show_preview) return vec4(0.0);
 
-    // determinar rango horizontal del preview
+    // determine preview horizontal range
     float start = current_progress;
     float end = final_target_progress;
 
-    // quick reject: fuera del rango preview
+    // quick reject: outside preview range
     if (uv.x < start || uv.x > end) return vec4(0.0);
 
-    // remap uv.x del rango [start, end] a [0,1] para sampling
-    float local_x = (uv.x - start) / max(end - start, 0.0001); // evitar división por 0
+    // remap uv.x from range [start, end] to [0,1] for sampling
+    float local_x = (uv.x - start) / max(end - start, 0.0001); // avoid division by 0
     vec2 sample_uv = vec2(local_x, uv.y);
 
     vec4 color = texture(preview_gradient, sample_uv);

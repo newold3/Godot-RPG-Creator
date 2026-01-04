@@ -28,46 +28,46 @@ func create_glass_shards():
 	var closest_distance = INF
 	var closest_index = 0
 	
-	# Crear un nuevo Polygon2D para cada subpolígono definido en polygons
+	# Create a new Polygon2D for each sub-polygon defined in polygons
 	for n in parent_polygons.size():
 		var polygon_indices = parent_polygons[n]
 		var new_polygon = Polygon2D.new()
 		container.add_child(new_polygon)
 		
-		# Copiar propiedades básicas del padre
+		# Copy basic properties from parent
 		new_polygon.texture = background_image
 		
-		# Crear el nuevo array de vértices basado en los índices
+		# Create new vertex array based on indices
 		var new_vertices = PackedVector2Array()
 		var new_uvs = PackedVector2Array()
 		
-		# Convertir los índices en vértices y UVs reales
+		# Convert indices to real vertices and UVs
 		for index in polygon_indices:
-			# Añadir el vértice correspondiente
+			# Add corresponding vertex
 			new_vertices.push_back(parent_vertices[index])
 			
-			# Añadir el UV correspondiente si existe
+			# Add corresponding UV if it exists
 			if parent_uvs.size() > index:
 				new_uvs.push_back(parent_uvs[index])
 		
-		# Asignar los vértices y UVs al nuevo polígono
+		# Assign vertices and UVs to new polygon
 		new_polygon.polygon = new_vertices
 		if new_uvs.size() > 0:
 			new_polygon.uv = new_uvs
 		
-		# Como este es un fragmento individual, su propiedad polygons
-		# debe contener solo un array con los índices secuenciales
+		# Since this is an individual shard, its polygons property
+		# must contain only one array with sequential indices
 		var new_polygon_indices = PackedInt32Array()
 		for i in range(new_vertices.size()):
 			new_polygon_indices.push_back(i)
 		new_polygon.polygons = [new_polygon_indices]
 		
-		# Calcular y establecer la posición correcta
+		# Calculate and set correct position
 		var local_center = calculate_polygon_center(new_vertices)
 		var global_center = parent_position + local_center
 		new_polygon.position = parent_position + local_center
 		
-		# Ajustar los vértices relativos al nuevo centro
+		# Adjust vertices relative to new center
 		var adjusted_vertices = PackedVector2Array()
 		for vertex in new_vertices:
 			adjusted_vertices.push_back(vertex - local_center)
@@ -86,7 +86,7 @@ func create_glass_shards():
 	all_polygons.insert(0, closest_polygon)
 
 
-# Calcula el centro de un polígono
+# Calculates the center of a polygon
 func calculate_polygon_center(vertices: PackedVector2Array) -> Vector2:
 	var center = Vector2.ZERO
 	for vertex in vertices:
@@ -147,33 +147,33 @@ func start() -> void:
 		var final_scale = Vector2.ONE * randf_range(scale_min, scale_max)
 		
 		# Explosion phase
-		main_tween.tween_property(polygon, "position", 
-			initial_explosion_position, 
+		main_tween.tween_property(polygon, "position",
+			initial_explosion_position,
 			explosion_duration
 		).set_delay(random_delay)
 		
 		# Fall phase
-		main_tween.tween_property(polygon, "position", 
-			final_position, 
+		main_tween.tween_property(polygon, "position",
+			final_position,
 			fall_duration
 		).set_delay(random_delay + explosion_duration)
 		
 		# Rotation
-		main_tween.tween_property(polygon, "rotation", 
-			final_rotation, 
+		main_tween.tween_property(polygon, "rotation",
+			final_rotation,
 			fall_duration
 		).set_delay(random_delay + explosion_duration)
 		
 		# Scale
-		main_tween.tween_property(polygon, "scale", 
-			final_scale, 
+		main_tween.tween_property(polygon, "scale",
+			final_scale,
 			fall_duration
 		).set_delay(random_delay + explosion_duration)
 		
 		# Fade out
 		main_tween.tween_property(polygon, "modulate:a",
-			0.0,  # Final transparency
-			fall_duration * 0.5  # Half the animation time
+			0.0, # Final transparency
+			fall_duration * 0.5 # Half the animation time
 		).set_delay(random_delay + explosion_duration + fall_duration * 0.5)
 	
 	main_tween.tween_callback(
@@ -197,4 +197,4 @@ func end() -> void:
 	
 	await main_tween.finished # Wait to finish animation before remove scene
 	
-	super() # queue free
+	super () # queue free

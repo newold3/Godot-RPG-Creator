@@ -16,25 +16,25 @@ uniform float additional_rain_speed : hint_range(0.1, 1.0) = 0.5;
 uniform float time_scale : hint_range(0.1, 50.0) = 0.6;
 uniform bool snow_mode = false;
 
-// Nuevo uniform para controlar la dirección de la lluvia
-uniform vec2 rain_direction = vec2(0.2, -1.0); // Controla la inclinación y caída de la lluvia
+// New uniform to control rain direction
+uniform vec2 rain_direction = vec2(0.2, -1.0); // Controls rain tilt and fall
 
 uniform vec2 scale = vec2(1.0, 1.0);
 
 void fragment() {
     float time = 10000.0 + TIME * time_scale;
 
-    // Ajuste de las coordenadas UV según la escala del sprite
+    // UV coordinate adjustment based on sprite scale
     vec2 uv = UV / scale;
 
-    // Ajuste de la dirección de la lluvia con rain_direction
+    // Rain direction adjustment with rain_direction
     float remainder = mod(uv.x - uv.y * rain_direction.x, 1.0 / rain_amount);
     uv.x = (uv.x - uv.y * rain_direction.x) - remainder;
 
     float rn = fract(sin(uv.x * rain_amount));
     uv.y = fract(uv.y + rn);
 
-    // Modifica la velocidad de caída en función de rain_direction.y
+    // Modifies fall speed based on rain_direction.y
     float adjusted_time = time * (base_rain_speed + additional_rain_speed * rn) * rain_direction.y;
 
     if (!snow_mode) {

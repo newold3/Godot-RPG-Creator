@@ -70,7 +70,7 @@ func calculate_offset_for_index(index: int) -> float:
 	var font = get_theme_default_font()
 	font_size = get_theme_default_font_size()
 	character_height = font.get_string_size("0", HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).y + character_separation
-	return -(index * character_height)
+	return - (index * character_height)
 
 
 func _on_canvas1_draw() -> void:
@@ -79,11 +79,11 @@ func _on_canvas1_draw() -> void:
 	var font = ThemeDB.fallback_font
 	var text_height = font.get_string_size("0", HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).y
 
-	# Cuántos caracteres caben en pantalla + margen
+	# How many characters fit on screen + margin
 	var total_visible = int(size.y / character_height) + 4
 	
-	# Índice flotante basado en el offset actual
-	var float_index = -offset / character_height
+	# Floating index based on current offset
+	var float_index = - offset / character_height
 	var base_index = int(floor(float_index))
 
 	for i in range(-total_visible, total_visible + 1):
@@ -99,7 +99,7 @@ func _on_canvas1_draw() -> void:
 		if draw_y < -character_height or draw_y > size.y + character_height:
 			continue
 
-		# Opacidad dependiendo de la distancia al centro
+		# Opacity depending on distance to center
 		var distance_to_center = abs(visual_y - center_y)
 		var alpha = 1.0 - (distance_to_center / (size.y / 2))
 		alpha = clamp(alpha, 0.2, 1.0)
@@ -141,7 +141,6 @@ func _check_button_pressed() -> void:
 
 func animate_to_offset(new_offset: float, direction: int):
 	#is_animating = true
-	
 	if main_tween:
 		main_tween.kill()
 	
@@ -154,7 +153,7 @@ func animate_to_offset(new_offset: float, direction: int):
 	
 	main_tween.tween_method(move, current_pos, current_pos + movement, animation_time)
 	
-	main_tween.tween_callback(func(): 
+	main_tween.tween_callback(func():
 		#is_animating = false
 		offset = calculate_offset_for_index(current_index)
 		canvas1.queue_redraw()
@@ -180,7 +179,7 @@ func animate_by_direction(direction: int):
 	main_tween.tween_method(move, offset, target_offset, animation_time)
 
 	#main_tween.tween_callback(func():
-		## "Snap" visual offset a múltiplo exacto
+		## "Snap" visual offset to exact multiple
 		#offset = wrapf(target_offset, -character_height * characters.size(), 0)
 		#current_index = get_index_from_offset(offset)
 		#canvas1.queue_redraw()
@@ -195,9 +194,9 @@ func animate_by_direction(direction: int):
 
 
 func _on_animation_finished(direction: int) -> void:
-	var float_index = -offset / character_height
+	var float_index = - offset / character_height
 	var snapped_index = round(float_index)
-	var final_offset = -snapped_index * character_height
+	var final_offset = - snapped_index * character_height
 
 	value_updated.emit(characters[current_index], direction)
 	
@@ -217,9 +216,8 @@ func _on_animation_finished(direction: int) -> void:
 	)
 
 
-
 func get_index_from_offset(off: float) -> int:
-	var float_index = -off / character_height
+	var float_index = - off / character_height
 	var idx = int(round(float_index)) % characters.size()
 	if idx < 0:
 		idx += characters.size()

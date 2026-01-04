@@ -7,35 +7,35 @@ enum TITLE_HORIZONTAL_ALIGN {SAME_AS_TIMER, LEFT, CENTER, RIGHT}
 
 @export_group("Basic Configuration")
 ## Name displayed above the timer
-@export var timer_name: String = "" : set = _set_timer_name
+@export var timer_name: String = "": set = _set_timer_name
 ## Choose horizontal alignment for the title
-@export var timer_name_align: TITLE_HORIZONTAL_ALIGN = TITLE_HORIZONTAL_ALIGN.SAME_AS_TIMER : set = _set_title_alignment
+@export var timer_name_align: TITLE_HORIZONTAL_ALIGN = TITLE_HORIZONTAL_ALIGN.SAME_AS_TIMER: set = _set_title_alignment
 ## Color tint applied to the timer name text
-@export var  timer_name_modulate: Color = Color.WHITE : set = _set_timer_title_color
+@export var timer_name_modulate: Color = Color.WHITE: set = _set_timer_title_color
 ## Strength of the color modulation mix (0.0 = no effect, 1.0 = full effect)
-@export_range(0.0, 1.0, 0.01) var  timer_name_modulate_mix_strength: float = 0.5 : set = _set_timer_name_modulate_mix_strength
-## play or stop de animation in the editor
-@export var play_timer_in_editor: bool = true : set = _set_play_animation_in_the_editor
+@export_range(0.0, 1.0, 0.01) var timer_name_modulate_mix_strength: float = 0.5: set = _set_timer_name_modulate_mix_strength
+## play or stop the animation in the editor
+@export var play_timer_in_editor: bool = true: set = _set_play_animation_in_the_editor
 ## Play or stop sounds in the editor
-@export var play_sounds_in_editor: bool = true : set = _set_play_sounds_in_the_editor
+@export var play_sounds_in_editor: bool = true: set = _set_play_sounds_in_the_editor
 
 
 @export_group("Position")
 ## Position of the timer on screen (predefined locations or custom)
-@export var screen_position: SCREEN_POSITION = SCREEN_POSITION.TOP_CENTER : set = _set_screen_position
+@export var screen_position: SCREEN_POSITION = SCREEN_POSITION.TOP_CENTER: set = _set_screen_position
 ## Custom position when screen_position is set to CUSTOM
-@export var custom_position: Vector2 = Vector2.ZERO : set = _set_custom_position
+@export var custom_position: Vector2 = Vector2.ZERO: set = _set_custom_position
 ## Horizontal margin offset from the screen edge
-@export var margin_horizontal: float = 0.0 : set = _set_margin_horizontal
+@export var margin_horizontal: float = 0.0: set = _set_margin_horizontal
 ## Vertical margin offset from the screen edge
-@export var margin_vertical: float = 0.0 : set = _set_margin_vertical
+@export var margin_vertical: float = 0.0: set = _set_margin_vertical
 
 
 @export_group("Background")
 ## Whether to show the background texture behind the timer
-@export var show_background: bool = true : set = _set_show_background
+@export var show_background: bool = true: set = _set_show_background
 ## Texture used as background for the timer display
-@export var background_texture: Texture2D : set = _set_background_texture
+@export var background_texture: Texture2D: set = _set_background_texture
 ## Width of the background in pixels (Option only available when the timer position is "CUSTOM".)
 @export_range(0, 5000) var background_width: int = 0: set = _set_background_width
 ## Height of the background in pixels (Option only available when the timer position is "CUSTOM".)
@@ -44,43 +44,43 @@ enum TITLE_HORIZONTAL_ALIGN {SAME_AS_TIMER, LEFT, CENTER, RIGHT}
 
 @export_group("Text Style")
 ## Font used for the timer text
-@export var text_font: Font : set = _set_text_font
+@export var text_font: Font: set = _set_text_font
 ## Size of the title text in pixels
-@export var timer_title_text_size: int = 24 : set = _set_timer_title_text_size
+@export var timer_title_text_size: int = 24: set = _set_timer_title_text_size
 ## Size of the timer text in pixels
-@export var timer_text_size: int = 24 : set = _set_timer_text_size
+@export var timer_text_size: int = 24: set = _set_timer_text_size
 ## Gradient texture applied to the timer text
-@export var text_gradient: Texture2D : set = _set_text_gradient
+@export var text_gradient: Texture2D: set = _set_text_gradient
 ## Size of the text outline in pixels (0 = no outline)
-@export_range(0, 32, 1) var text_outline_size: int = 0 : set = _set_text_outline_size
+@export_range(0, 32, 1) var text_outline_size: int = 0: set = _set_text_outline_size
 ## Color of the text outline
-@export var text_outline_color: Color = Color.BLACK : set = _set_text_outline_color
+@export var text_outline_color: Color = Color.BLACK: set = _set_text_outline_color
 
 
 @export_group("Timer Format")
 ## Format for the text: HH ->  hours, MM -> minutes, SS -> seconds, MS -> milliseconds, TS -> Total time in seconds
-@export var timer_format: String = "HH : MM : SS" : set = _set_timer_format
+@export var timer_format: String = "HH : MM : SS": set = _set_timer_format
 
 
 @export_group("Animations And Sounds")
 ## Sound played when the timer starts
-@export var start_fx: AudioStream : set = _set_start_fx
+@export var start_fx: AudioStream: set = _set_start_fx
 ## Sound played when the timer runs out
-@export var timeout_fx: AudioStream : set = _set_timeout_fx
+@export var timeout_fx: AudioStream: set = _set_timeout_fx
 ## Sound played when the timer is ending
-@export var warning_fx: AudioStream : set = _set_warning_fx
+@export var warning_fx: AudioStream: set = _set_warning_fx
 ## Sound played every second while the timer is active (1 tick by second)
-@export var tick_fx: AudioStream : set = _set_tick_fx
+@export var tick_fx: AudioStream: set = _set_tick_fx
 ## Start of warning (in seconds)
-@export var warning_start_time: int = 10 : set = _set_warning_start_time
+@export var warning_start_time: int = 10: set = _set_warning_start_time
 ## Curve representing the interval and intensity of the volume between warning sounds
-@export var warning_curve: Curve : set = _set_warning_curve
+@export var warning_curve: Curve: set = _set_warning_curve
 ## Enables the timer to flash after a specified time.
-@export var enable_blink_animation: bool = true : set = _set_enable_blink_animation
+@export var enable_blink_animation: bool = true: set = _set_enable_blink_animation
 ## Specifies the second at which the flashing will begin.
-@export var blink_animation_start_time: int = 10 : set = _set_blink_animation_start_time
+@export var blink_animation_start_time: int = 10: set = _set_blink_animation_start_time
 ## Curve representing the blink rate
-@export var blink_speed_curve: Curve : set = _set_blink_speed_curve
+@export var blink_speed_curve: Curve: set = _set_blink_speed_curve
 
 
 @onready var timer_title: Label = %TimerTitle
@@ -89,7 +89,7 @@ enum TITLE_HORIZONTAL_ALIGN {SAME_AS_TIMER, LEFT, CENTER, RIGHT}
 @onready var timer_label_back: Label = %TimerLabelBack
 @onready var timer_label: Label = %TimerLabel
 
-# Nuevos nodos para audio y animaciones
+# New nodes for audio and animations
 @onready var audio_player: AudioStreamPlayer
 @onready var warning_audio_player: AudioStreamPlayer
 @onready var tick_audio_player: AudioStreamPlayer
@@ -117,7 +117,7 @@ var default_curve = "res://Scenes/TimerScenes/Resources/default_timer_curve.tres
 var busy: bool = false
 
 func _ready() -> void:
-	# Crear nodos de audio y timers dinámicamente
+	# Create audio and timer nodes dynamically
 	_setup_audio_and_timers()
 	
 	timer_label.item_rect_changed.connect(_update_text_shader_size)
@@ -131,32 +131,32 @@ func _ready() -> void:
 		_update_position()
 
 func _setup_audio_and_timers() -> void:
-	# Crear AudioStreamPlayer para efectos principales
+	# Create AudioStreamPlayer for main effects
 	audio_player = AudioStreamPlayer.new()
 	audio_player.bus = "SE"
 	add_child(audio_player)
 	
-	# Crear AudioStreamPlayer para sonidos de advertencia
+	# Create AudioStreamPlayer for warning sounds
 	warning_audio_player = AudioStreamPlayer.new()
 	warning_audio_player.bus = "SE"
 	add_child(warning_audio_player)
 	
-	# Crear AudioStreamPlayer para ticks de reloj
+	# Create AudioStreamPlayer for clock ticks
 	tick_audio_player = AudioStreamPlayer.new()
 	tick_audio_player.bus = "SE"
 	add_child(tick_audio_player)
 	
-	# Crear Timer para controlar el parpadeo
+	# Create Timer to control blinking
 	blink_timer = Timer.new()
 	add_child(blink_timer)
 	blink_timer.timeout.connect(_on_blink_timer_timeout)
 	
-	# Crear Timer para controlar advertencias repetidas
+	# Create Timer to control repeated warnings
 	warning_timer = Timer.new()
 	add_child(warning_timer)
 	warning_timer.timeout.connect(_on_warning_timer_timeout)
 	
-	# Crear Timer para controlar ticks repetidos
+	# Create Timer to control repeated ticks
 	tick_timer = Timer.new()
 	tick_timer.wait_time = 1.0
 	add_child(tick_timer)
@@ -298,11 +298,11 @@ func _set_screen_position(value: SCREEN_POSITION):
 	
 	if timer_label:
 		var current_position = SCREEN_POSITION.keys()[screen_position].to_lower()
-		var labels : Array
+		var labels: Array
 		if timer_name_align == TITLE_HORIZONTAL_ALIGN.SAME_AS_TIMER:
-			labels = [timer_label,  timer_label_back, timer_title, timer_title_back]
+			labels = [timer_label, timer_label_back, timer_title, timer_title_back]
 		else:
-			labels = [timer_label,  timer_label_back]
+			labels = [timer_label, timer_label_back]
 		var align = HORIZONTAL_ALIGNMENT_CENTER
 		if "left" in current_position:
 			align = HORIZONTAL_ALIGNMENT_LEFT
@@ -327,18 +327,18 @@ func _set_margin_vertical(value: float):
 	margin_vertical = value
 	_update_position()
 
-# Setters para Animations And Sounds
+# Setters for Animations And Sounds
 func _set_start_fx(value: AudioStream) -> void:
 	start_fx = value
-	# No necesita actualización inmediata, se usa cuando se inicia el timer
+	# No immediate update needed, used when timer starts
 
 func _set_timeout_fx(value: AudioStream) -> void:
 	timeout_fx = value
-	# No necesita actualización inmediata, se usa cuando termina el timer
+	# No immediate update needed, used when timer ends
 
 func _set_warning_fx(value: AudioStream) -> void:
 	warning_fx = value
-	# Si hay una advertencia activa, actualizar el stream
+	# If there is an active warning, update the stream
 	if warning_sound_playing and warning_audio_player:
 		warning_audio_player.stream = warning_fx
 
@@ -349,7 +349,7 @@ func _set_tick_fx(value: AudioStream) -> void:
 
 func _set_warning_start_time(value: int) -> void:
 	warning_start_time = value
-	# Si el timer está corriendo, revisar si necesita activar/desactivar advertencia
+	# If timer is running, check if warning needs to be activated/deactivated
 	if is_running and not Engine.is_editor_hint():
 		if current_time <= warning_start_time and not warning_triggered:
 			_play_warning_feedback()
@@ -360,23 +360,23 @@ func _set_warning_start_time(value: int) -> void:
 
 func _set_warning_curve(value: Curve) -> void:
 	warning_curve = value
-	# La curva se aplicará en el próximo ciclo de advertencia
+	# The curve will be applied in the next warning cycle
 
 func _set_enable_blink_animation(value: bool) -> void:
 	enable_blink_animation = value
 	
 	if not value:
-		# Desactivar parpadeo inmediatamente
+		# Disable blinking immediately
 		if blink_timer:
 			blink_timer.stop()
 		_restore_normal_appearance()
 	elif is_running and current_time <= blink_animation_start_time and blink_animation_triggered:
-		# Reactivar parpadeo si debe estar activo
+		# Reactivate blinking if it should be active
 		_start_blink_animation()
 
 func _set_blink_animation_start_time(value: int) -> void:
 	blink_animation_start_time = value
-	# Si el timer está corriendo, revisar si necesita activar/desactivar parpadeo
+	# If timer is running, check if blinking needs to be activated/deactivated
 	if is_running and enable_blink_animation and not Engine.is_editor_hint():
 		if current_time <= blink_animation_start_time and not blink_animation_triggered:
 			_start_blink_animation()
@@ -389,9 +389,9 @@ func _set_blink_animation_start_time(value: int) -> void:
 
 func _set_blink_speed_curve(value: Curve) -> void:
 	blink_speed_curve = value
-	# La curva se aplicará en el próximo ciclo de parpadeo
+	# The curve will be applied in the next blinking cycle
 
-# Métodos auxiliares
+# Helper methods
 func _update_all_properties():
 	_set_show_background(show_background)
 	_set_background_texture(background_texture)
@@ -401,7 +401,7 @@ func _update_all_properties():
 	_set_text_gradient(text_gradient)
 	_set_text_outline_size(text_outline_size)
 	_set_text_outline_color(text_outline_color)
-	# Aplicar propiedades de animaciones y sonidos
+	# Apply animation and sound properties
 	_set_start_fx(start_fx)
 	_set_timeout_fx(timeout_fx)
 	_set_warning_fx(warning_fx)
@@ -510,17 +510,17 @@ func _process(delta: float) -> void:
 	GameManager.update_timer_time(id, current_time)
 	_update_timer_display()
 	
-	# Verificar si el timer ha terminado
+	# Check if timer has finished
 	if current_time <= 0:
 		_on_timer_timeout()
 		return
 	
-	# Activar advertencia de sonido
+	# Activate sound warning
 	if current_time <= warning_start_time and not warning_triggered:
 		_play_warning_feedback()
 		warning_triggered = true
 	
-	# Activar animación de parpadeo
+	# Activate blink animation
 	if enable_blink_animation and current_time <= blink_animation_start_time and not blink_animation_triggered:
 		_start_blink_animation()
 		blink_animation_triggered = true
@@ -554,7 +554,7 @@ func _play_warning_sound() -> void:
 	if not warning_audio_player:
 		return
 
-	# Calcular volumen basado en la curva si está disponible
+	# Calculate volume based on curve if available
 	var volume_db = 0.0
 	if warning_curve:
 		var progress = 1.0 - (current_time / warning_start_time)
@@ -584,16 +584,16 @@ func _play_tick_sound() -> void:
 
 
 func _calculate_interval(min_value: float, max_value: float, curve: Curve) -> float:
-	# Calcular intervalo basado en la curva y el tiempo restante
-	var base_interval = max_value  # Intervalo base inicia en el máximo
+	# Calculate interval based on curve and remaining time
+	var base_interval = max_value # Base interval starts at maximum
 	
 	if curve and warning_start_time > 0:
 		var progress = 1.0 - (current_time / warning_start_time)
 		var curve_value = curve.sample(progress)
-		# Acelerar progresivamente entre max_value y min_value
+		# Accelerate progressively between max_value and min_value
 		base_interval = clamp(max_value - (curve_value * (max_value - min_value)), min_value, max_value)
 	else:
-		# Sin curva, acelerar linealmente basado en el tiempo restante
+		# No curve, accelerate linearly based on remaining time
 		var progress = 1.0 - (current_time / warning_start_time) if warning_start_time > 0 else 0.0
 		base_interval = clamp(max_value - (progress * (max_value - min_value)), min_value, max_value)
 	
@@ -612,8 +612,8 @@ func _start_blink_animation() -> void:
 	if not blink_timer:
 		return
 
-	# Calcular velocidad de parpadeo inicial
-	var blink_interval = 0.5  # Por defecto medio segundo
+	# Calculate initial blink speed
+	var blink_interval = 0.5 # Default half second
 	if blink_speed_curve:
 		blink_interval = _calculate_interval(0.1, 1.0, blink_speed_curve)
 	
@@ -630,7 +630,7 @@ func _on_blink_timer_timeout() -> void:
 	if not enable_blink_animation or current_time <= 0:
 		return
 	
-	# Alternar visibilidad
+	# Toggle visibility
 	is_blinking = !is_blinking
 	_check_meta_colors()
 	var blink_alpha = 0.3
@@ -640,7 +640,7 @@ func _on_blink_timer_timeout() -> void:
 	#timer_label_back.modulate.a = blink_alpha if is_blinking else timer_label_back.get_meta("original_color").a
 	#timer_label.set("instance_shader_parameters/modulate", timer_label_color)
 	
-	# Actualizar velocidad de parpadeo basada en la curva
+	# Update blink speed based on curve
 	if blink_speed_curve and current_time > 0:
 		var blink_interval = _calculate_interval(0.1, 1.0, blink_speed_curve)
 		blink_timer.wait_time = blink_interval
@@ -691,7 +691,7 @@ func _stop_tick_effects() -> void:
 
 
 func _restore_normal_appearance() -> void:
-	# Restaurar apariencia normal
+	# Restore normal appearance
 	if timer_label and timer_label_back and timer_title and timer_title_back:
 		_check_meta_colors()
 		timer_label.set("instance_shader_parameters/modulate", timer_label.get_meta("original_color"))
@@ -702,46 +702,45 @@ func _check_timer_state_after_time_change() -> void:
 	if not is_running:
 		return
 	
-	# Verificar si el timer ha terminado después del cambio
+	# Check if timer has finished after change
 	if current_time <= 0:
 		_on_timer_timeout()
 		return
 	
-	# ============ MANEJO DE WARNING ============
-	# Verificar si debe activar o desactivar warning
+	# ============ WARNING HANDLING ============
+	# Check if warning should be activated or deactivated
 	if current_time <= warning_start_time:
-		# Debe estar activo el warning
+		# Warning should be active
 		if not warning_triggered:
 			_play_warning_feedback()
 			warning_triggered = true
 	else:
-		# Debe estar inactivo el warning
+		# Warning should be inactive
 		if warning_triggered:
 			_stop_warning_effects()
 			warning_triggered = false
 	
-	# ============ MANEJO DE BLINK ANIMATION ============
-	# Verificar si debe activar o desactivar blink animation
+	# ============ BLINK ANIMATION HANDLING ============
+	# Check if blink animation should be activated or deactivated
 	if enable_blink_animation and current_time <= blink_animation_start_time:
-		# Debe estar activo el blink
+		# Blink should be active
 		if not blink_animation_triggered:
 			_start_blink_animation()
 			blink_animation_triggered = true
 	else:
-		# Debe estar inactivo el blink
+		# Blink should be inactive
 		if blink_animation_triggered:
 			if blink_timer:
 				blink_timer.stop()
 			_restore_normal_appearance()
 			blink_animation_triggered = false
 	
-	# Actualizar la visualización del tiempo
+	# Update time display
 	_update_timer_display()
 
 
 #region Public Methods
 func set_config(timer_id: int, timer_new_name: String, config: Dictionary) -> void:
-
 	id = timer_id
 	timer_name = timer_new_name
 	show_background = config.get("show_background", true)
@@ -841,7 +840,7 @@ func resume() -> void:
 		if tick_timer:
 			tick_timer.set_paused(false)
 		
-		# Reactivar efectos si es necesario
+		# Reactivate effects if necessary
 		if warning_triggered and current_time <= warning_start_time:
 			_play_warning_feedback()
 		if blink_animation_triggered and enable_blink_animation and current_time <= blink_animation_start_time:

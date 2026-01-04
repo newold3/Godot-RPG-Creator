@@ -10,20 +10,20 @@ uniform vec4 ripple_color : source_color = vec4(1.0, 1.0, 1.0, 0.4);
 uniform float spawn_rate = 2.0;
 
 void fragment() {
-    // Calculamos la distancia al centro
+    // Calculate distance to center
     vec2 diff = UV - center;
     float dist = length(diff);
     
-    // Calculamos la distancia máxima al borde (90% del camino hasta el borde más cercano)
+    // Calculate max distance to edge (90% of the way to the nearest edge)
     float max_distance = min(min(center.x, 1.0 - center.x), min(center.y, 1.0 - center.y)) * 0.9;
     
-    // Calculamos la alpha basada en la distancia
+    // Calculate alpha based on distance
     float alpha = 1.0 - smoothstep(0.0, max_distance, dist);
     
     float time = TIME * time_factor;
     vec4 final_color = vec4(0.0);
     
-    // Generamos las ondas
+    // Generate ripples
     for(float i = 0.0; i < 5.0; i++) {
         float time_offset = i * (1.0 / spawn_rate);
         float wave_time = mod(time + time_offset, 5.0);
@@ -39,7 +39,7 @@ void fragment() {
         }
     }
     
-    // Aplicamos la alpha basada en la distancia
+    // Apply alpha based on distance
     final_color.a *= alpha;
     
     COLOR = final_color;

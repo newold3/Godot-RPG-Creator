@@ -1,6 +1,6 @@
 shader_type canvas_item;
 
-// Parámetros principales
+// Main parameters
 uniform float progress : hint_range(0, 1) = 0.0;
 uniform int sides : hint_range(3, 50) = 6;
 uniform vec4 color : source_color = vec4(1.0);
@@ -15,7 +15,7 @@ void fragment() {
         discard;
     }
     
-    // 1. AJUSTE DE RELACIÓN DE ASPECTO
+    // 1. ASPECT RATIO ADJUSTMENT
     vec2 aspect_ratio = vec2(1.0);
     if (maintain_aspect_ratio) {
         aspect_ratio = vec2(
@@ -24,11 +24,11 @@ void fragment() {
         );
     }
     
-    // 2. PREPARACIÓN DE COORDENADAS UV
+    // 2. UV COORDINATE PREPARATION
     vec2 uv = (UV - vec2(0.5)) * 2.0;
     uv *= aspect_ratio;
     
-    // 3. ROTACIÓN COMBINADA
+    // 3. COMBINED ROTATION
     float base_rot = radians(start_angle);
     float dynamic_rot = rotate ? progress * TAU * rotation_speed : 0.0;
     mat2 rot_matrix = mat2(
@@ -37,11 +37,11 @@ void fragment() {
     );
     uv = rot_matrix * uv;
     
-    // 4. MANEJO DE MODOS DE ANIMACIÓN
+    // 4. ANIMATION MODE HANDLING
     float progress_effect = invert_animation ? 1.0 : progress;
     uv /= mix(0.001, 1.0, progress_effect);
     
-    // 5. CÁLCULO GEOMÉTRICO DEL POLÍGONO
+    // 5. GEOMETRIC POLYGON CALCULATION
     float n = float(sides);
     float sector_angle = TAU / n;
     float half_angle = sector_angle * 0.5;
@@ -53,12 +53,12 @@ void fragment() {
     float theta_mod = mod(corner_theta + half_angle, sector_angle);
     float max_radius = corner_dist * cos(half_angle - abs(half_angle - theta_mod));
     
-    // 6. CÁLCULO DE RADIO EFECTIVO
+    // 6. EFFECTIVE RADIUS CALCULATION
     float current_angle = atan(uv.y, uv.x);
     current_angle = mod(mod(current_angle, TAU) + half_angle, sector_angle);
     float poly_radius = max_radius / cos(half_angle - abs(half_angle - current_angle));
     
-    // 7. LÓGICA DE RELLENO PARA AMBOS MODOS
+    // 7. FILL LOGIC FOR BOTH MODES
     float dist = length(uv);
     float threshold = invert_animation ? poly_radius * (1.0 - progress) : poly_radius;
     

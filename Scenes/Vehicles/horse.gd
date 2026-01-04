@@ -6,9 +6,8 @@ extends RPGVehicle
 @onready var smoke: GPUParticles2D = %Smoke
 
 
-
 func _ready() -> void:
-	super()
+	super ()
 	%Character.texture = %CharacterViewport.get_texture()
 	%MainCharacter.texture = %FinalCharacter.get_texture()
 	%VehicleFinal.texture = %VehicleViewport.get_texture()
@@ -76,8 +75,8 @@ func _set_player_position(_target_position: Vector2) -> void:
 		t.tween_property(player, "position", _target_position, 0.06)
 		t.tween_property(player, "scale:y", 0.9, 0.05)
 		t.tween_property(player, "scale:y", 1.0, 0.05)
-		await t.finished 
-		GameManager.current_player.z_index =   1
+		await t.finished
+		GameManager.current_player.z_index = 1
 
 
 func _process(delta: float) -> void:
@@ -111,7 +110,7 @@ func _process(delta: float) -> void:
 	
 	
 	if force_movement_enabled:
-		# Cuando está en movimiento forzado, solo manejar la animación de galope
+		# When in forced movement, only handle galloping animation
 		if current_animation.find("Galloping") == -1:
 			var direction_name = get_direction_name()
 			current_animation = "Galloping" + direction_name
@@ -123,7 +122,7 @@ func _process(delta: float) -> void:
 			run_animation()
 		return
 
-	super(delta)
+	super (delta)
 	
 	if (!is_moving and !movement_vector and current_animation.find("Galloping") != -1) or (GameManager.busy and not is_moving):
 		var direction_name = get_direction_name()
@@ -142,7 +141,7 @@ func _process(delta: float) -> void:
 		var _extra_position: Vector2
 		
 		if current_direction == LPCCharacter.DIRECTIONS.LEFT:
-			_extra_position = Vector2(-(extra_dimensions.grow_left + 1) * current_map.tile_size.x, 0)
+			_extra_position = Vector2(- (extra_dimensions.grow_left + 1) * current_map.tile_size.x, 0)
 			%Character.rotation_degrees = 8.8
 			player.current_animation = "holding_reins"
 		elif current_direction == LPCCharacter.DIRECTIONS.RIGHT:
@@ -150,7 +149,7 @@ func _process(delta: float) -> void:
 			%Character.rotation_degrees = -2.8
 			player.current_animation = "holding_reins"
 		if current_direction == LPCCharacter.DIRECTIONS.UP:
-			_extra_position = Vector2(0, -(extra_dimensions.grow_up + 1) * current_map.tile_size.y)
+			_extra_position = Vector2(0, - (extra_dimensions.grow_up + 1) * current_map.tile_size.y)
 			%Character.rotation_degrees = 0
 			player.current_animation = "holding_reins"
 		elif current_direction == LPCCharacter.DIRECTIONS.DOWN:
@@ -182,7 +181,7 @@ func _process(delta: float) -> void:
 func set_extra_dimensions() -> void:
 	var horizontal_extra = 1 if ([LPCCharacter.DIRECTIONS.LEFT, LPCCharacter.DIRECTIONS.RIGHT].has(current_direction)) else 0
 	var vertical_extra = 1 if ([LPCCharacter.DIRECTIONS.UP, LPCCharacter.DIRECTIONS.DOWN].has(current_direction)) else 0
-	extra_dimensions.grow_left = horizontal_extra 
+	extra_dimensions.grow_left = horizontal_extra
 	extra_dimensions.grow_right = horizontal_extra
 	extra_dimensions.grow_up = vertical_extra
 	extra_dimensions.grow_down = 0
@@ -196,18 +195,18 @@ func create_particle() -> void:
 	#var opposite_angle: float
 	#var particle_offset: Vector2 = Vector2.ZERO
 	#
-	## Verificar si hay movimiento diagonal (x e y != 0)
+	## Check if there is diagonal movement (x and y != 0)
 	#if movement_vector.x != 0 and movement_vector.y != 0:
-		## Movimiento diagonal - usar el ángulo del vector
+		## Diagonal movement - use vector angle
 		#opposite_angle = movement_vector.angle() + PI/2
 		#
-		## Offset diagonal basado en la dirección
+		## Diagonal offset based on direction
 		#var normalized_movement = movement_vector.normalized()
 		#particle_offset.x = normalized_movement.x * 20
-		#particle_offset.y = normalized_movement.y * -60  # Negativo porque Y crece hacia abajo
+		#particle_offset.y = normalized_movement.y * -60  # Negative because Y grows downwards
 		#
 	#else:
-		## Movimiento en una sola dirección - usar el match original
+		## Movement in a single direction - use original match
 		#match current_direction:
 			#LPCCharacter.DIRECTIONS.LEFT:
 				#opposite_angle = PI/2
@@ -233,26 +232,26 @@ func create_particle() -> void:
 	#var opposite_angle: float
 	#var particle_offset: Vector2 = Vector2.ZERO
 	#
-	## Determinar dirección basada en movement_vector
+	## Determine direction based on movement_vector
 	#var direction_x = sign(movement_vector.x)
 	#var direction_y = sign(movement_vector.y)
 	#
 	#if direction_x != 0 and direction_y != 0:
-		## Direcciones diagonales
-		#if direction_x > 0 and direction_y > 0:  # Derecha-Abajo
+		## Diagonal directions
+		#if direction_x > 0 and direction_y > 0:  # Right-Down
 			#opposite_angle = -3*PI/4  # -135°
 			#particle_offset = Vector2(15, -45)
-		#elif direction_x > 0 and direction_y < 0:  # Derecha-Arriba
+		#elif direction_x > 0 and direction_y < 0:  # Right-Up
 			#opposite_angle = -PI/4   # -45°
 			#particle_offset = Vector2(15, -45)
-		#elif direction_x < 0 and direction_y > 0:  # Izquierda-Abajo
+		#elif direction_x < 0 and direction_y > 0:  # Left-Down
 			#opposite_angle = 3*PI/4  # 135°
 			#particle_offset = Vector2(-15, -45)
-		#elif direction_x < 0 and direction_y < 0:  # Izquierda-Arriba
+		#elif direction_x < 0 and direction_y < 0:  # Left-Up
 			#opposite_angle = PI/4    # 45°
 			#particle_offset = Vector2(-15, -45)
 	#else:
-		## Direcciones cardinales - tu código original
+		## Cardinal directions - your original code
 		#match current_direction:
 			#LPCCharacter.DIRECTIONS.LEFT:
 				#opposite_angle = PI/2
@@ -281,7 +280,7 @@ func run_animation() -> void:
 	
 	var direction_name = get_direction_name()
 	
-	# Si está en movimiento forzado, mantener siempre la animación de galope
+	# If in forced movement, always keep galloping animation
 	if force_movement_enabled and not force_jump_enabled:
 		current_animation = "Galloping" + direction_name
 		if %AnimationPlayer.current_animation != current_animation:

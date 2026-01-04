@@ -2,7 +2,7 @@ shader_type canvas_item;
 
 uniform sampler2D noise_texture : filter_linear_mipmap, repeat_enable;
 uniform sampler2D foam_noise_texture : filter_linear_mipmap, repeat_enable;
-uniform sampler2D foam_gradient : filter_linear_mipmap, repeat_enable; // Nueva textura para el gradiente del foam
+uniform sampler2D foam_gradient : filter_linear_mipmap, repeat_enable; // New texture for foam gradient
 uniform vec4 water_color : source_color = vec4(0.0, 0.4, 0.8, 1.0);
 uniform float noise_scale = 10.0;
 uniform float noise_speed = 0.1;
@@ -49,7 +49,7 @@ void fragment() {
     vec2 final_displacement = displacement * blue_factor;
     vec4 water_color_final = texture(TEXTURE, UV + final_displacement);
 
-    // Usar la textura gradiente para el color del foam
+    // Use gradient texture for foam color
     vec4 foam_color = texture(foam_gradient, vec2(foam_intensity, 0.5));
 
     vec4 final_color = mix(water_color_final, foam_color, foam_intensity);

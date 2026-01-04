@@ -5,7 +5,7 @@ uniform float radius : hint_range(0.0, 1.0) = 0.5;
 uniform float angle : hint_range(-25.0, 25.0) = 12.0;
 uniform vec2 center = vec2(0.5, 0.5);
 uniform vec4 target_color : source_color = vec4(1.0, 0.0, 0.0, 1.0);
-uniform float scale : hint_range(0.5, 2.0) = 1.0; // Factor de escala para la textura
+uniform float scale : hint_range(0.5, 2.0) = 1.0; // Scale factor for texture
 
 void fragment() {
     vec2 toCenter = UV - center;
@@ -24,7 +24,7 @@ void fragment() {
             toCenter.x * s + toCenter.y * c
         );
         
-        // Aplicar la escala a las coordenadas UV de la textura
+        // Apply scale to texture UV coordinates
         vec2 scaledUV = center + (rotatedUV - center) / scale;
         
         tex_color = texture(TEXTURE, scaledUV);
@@ -32,6 +32,6 @@ void fragment() {
         tex_color = texture(TEXTURE, (UV - center) / scale + center);
     }
     
-    // Interpolación entre el color original y el color objetivo
+    // Interpolation between original and target color
     COLOR = mix(tex_color, target_color, progress);
 }

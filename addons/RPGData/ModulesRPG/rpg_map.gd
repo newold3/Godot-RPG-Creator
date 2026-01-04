@@ -90,7 +90,7 @@ class IngameExtractionEvent:
 			event_region_canvas.modulate = Color(1.0, 1.0, 1.0, canvas_opacity)
 
 ## Copy the map ID to the clipboard
-@export var copy_map_id_into_clipboard: bool = false :
+@export var copy_map_id_into_clipboard: bool = false:
 	set(value):
 		if value:
 			DisplayServer.clipboard_set(str(internal_id))
@@ -103,7 +103,7 @@ class IngameExtractionEvent:
 
 
 ## Changes the current color modulation for this map (Default will be White = No Change)
-@export var map_modulate: Color = Color.WHITE :
+@export var map_modulate: Color = Color.WHITE:
 	set(color):
 		map_modulate = color
 		update_modulate_color()
@@ -129,7 +129,7 @@ class IngameExtractionEvent:
 ## (This will create shadow sprites for each object / character that has shadow,
 ## if you prefer to use godot light and occlusion, disable this option
 ## and set your lights and occlusion manually).
-@export var draw_shadows: bool = true :
+@export var draw_shadows: bool = true:
 	set(value):
 		draw_shadows = value
 		_update_shadows()
@@ -140,7 +140,7 @@ class IngameExtractionEvent:
 ## option will turn off the Day/Night cycle and instead use the fixed shadow component integrated
 ## into the map. In Day/Night mode, you can set the starting time for this map, 
 ## or leave it at -1 to use the current time recorded by the Day/Night system.
-@export var use_dynamic_day_night: bool = true :
+@export var use_dynamic_day_night: bool = true:
 	set(value):
 		use_dynamic_day_night = value
 		if DayNightManager:
@@ -154,7 +154,7 @@ class IngameExtractionEvent:
 
 ## In Day/Night mode, you can set the starting time for this map, 
 ## or leave it at -1 to use the current time recorded by the Day/Night system.
-@export_range(-1, 24, 1) var dynamic_day_night_hour: int = 13 :
+@export_range(-1, 24, 1) var dynamic_day_night_hour: int = 13:
 	set(value):
 		dynamic_day_night_hour = value
 		if DayNightManager:
@@ -163,13 +163,13 @@ class IngameExtractionEvent:
 
 
 ## Set the shadow parameters.
-@export var shadow_parameters: ShadowComponent :
+@export var shadow_parameters: ShadowComponent:
 	set(value):
 		shadow_parameters = value
 		_update_shadows()
 
 ## Preview Shadow in editor
-@export var preview_shadows_in_editor: bool = false :
+@export var preview_shadows_in_editor: bool = false:
 	set(value):
 		preview_shadows_in_editor = value
 		_update_shadows()
@@ -227,11 +227,11 @@ var hexagon_cache = {}
 @export var _baked_keot_data: Dictionary = {}
 @export var events := RPGEvents.new()
 @export var extraction_events: Array[RPGExtractionItem] = []
-@export var regions : Array[EnemySpawnRegion] = []
-@export var event_regions : Array[EventRegion] = []
+@export var regions: Array[EnemySpawnRegion] = []
+@export var event_regions: Array[EventRegion] = []
 @export var internal_id: int
 @export var current_edit_button_pressed: int = -1
-var ingame_event_regions : Array[CollisionShape2D] = []
+var ingame_event_regions: Array[CollisionShape2D] = []
 
 @onready var MAP_LAYERS: Dictionary = {}
 #endregion
@@ -246,7 +246,7 @@ var mask_shadow_viewport: SubViewport
 var shadow_compose: SubViewport
 var shadow_container: CanvasGroup
 var cached_environment_textures: Dictionary = {}
-var shadows : Dictionary = {
+var shadows: Dictionary = {
 	"tiles": {},
 	"vehicles": {},
 	"events": {},
@@ -444,8 +444,8 @@ func _start_game_mode() -> void:
 	var rect = get_used_rect(false)
 	var camera: Camera2D = get_viewport().get_camera_2d()
 	var default_limit_amount = 10000000
-	camera.limit_left = -default_limit_amount
-	camera.limit_top = -default_limit_amount
+	camera.limit_left = - default_limit_amount
+	camera.limit_top = - default_limit_amount
 	camera.limit_right = default_limit_amount
 	camera.limit_bottom = default_limit_amount
 	if camera:
@@ -549,7 +549,7 @@ func _start_game_mode() -> void:
 		if ResourceLoader.exists(_test_commands_file_path) and not GameManager._test_commands_processed:
 			var res: TestCommandEvent = load(_test_commands_file_path)
 			if not res.commands.is_empty():
-				var automatic_event: Array[Dictionary] = [{"obj": null, "commands": res.commands, "id": "_test_commands"}]
+				var automatic_event: Array[Dictionary] = [ {"obj": null, "commands": res.commands, "id": "_test_commands"}]
 				GameInterpreter.start_event(GameManager.current_player, res.commands)
 			GameManager._test_commands_processed = true
 	
@@ -671,7 +671,7 @@ func _on_event_monitor_body_exited(body_rid: RID, body: Node2D, body_shape_index
 				GameInterpreter.start_event(body, commands, true)
 				
 		elif action_type == "enemy_spawn_area" and (body.is_in_group("player") or body.is_in_group("vehicle")): # Process Enemy Spawn Region
-			if current_in_game_enemy_spawn_region and current_in_game_enemy_spawn_region ==  region_data:
+			if current_in_game_enemy_spawn_region and current_in_game_enemy_spawn_region == region_data:
 				current_in_game_enemy_spawn_region = null
 
 
@@ -931,7 +931,6 @@ func _process(delta: float) -> void:
 			cursor_canvas.visible = false
 	
 
-
 func _is_selected_in_editor() -> bool:
 	if Engine.is_editor_hint():
 		var selection = EditorInterface.get_selection()
@@ -945,11 +944,11 @@ func _is_selected_in_editor() -> bool:
 
 
 func _is_mouse_inside_viewport() -> bool:
-	if not Engine.is_editor_hint(): 
+	if not Engine.is_editor_hint():
 		return false
 	
 	var viewport_control = EditorInterface.get_editor_viewport_2d()
-	if not viewport_control: 
+	if not viewport_control:
 		return false
 	
 	var local_mouse = viewport_control.get_mouse_position()
@@ -1125,8 +1124,8 @@ func _load_event(ev: IngameEvent, current_page: RPGEventPage) -> void:
 				new_scene_path = new_character_data.scene_path
 	
 	# Verificar si podemos reutilizar la escena existente
-	var can_reuse_scene = (old_scene_path == new_scene_path and 
-						  old_scene_path != "" and 
+	var can_reuse_scene = (old_scene_path == new_scene_path and
+						  old_scene_path != "" and
 						  current_page.launcher != current_page.LAUNCHER_MODE.CALLER)
 	
 	var scene: Variant
@@ -1172,7 +1171,7 @@ func _load_event(ev: IngameEvent, current_page: RPGEventPage) -> void:
 	_update_scene_properties(scene, ev.lpc_event.current_event, current_page)
 	
 	# Crear nuevo IngameEvent
-	var new_ingame_event = IngameEvent.new(ev.lpc_event.current_event, new_character_data, scene,  internal_id)
+	var new_ingame_event = IngameEvent.new(ev.lpc_event.current_event, new_character_data, scene, internal_id)
 	current_ingame_events[ev.lpc_event.current_event.id] = new_ingame_event
 	
 	# Manejar eventos especiales
@@ -1219,7 +1218,7 @@ func _load_event(ev: IngameEvent, current_page: RPGEventPage) -> void:
 		old_scene.queue_free()
 	
 	if current_page.launcher == RPGEventPage.LAUNCHER_MODE.AUTOMATIC:
-		GameInterpreter.auto_start_automatic_events([{"obj": scene, "commands": current_page.list, "id": interpreter_id}])
+		GameInterpreter.auto_start_automatic_events([ {"obj": scene, "commands": current_page.list, "id": interpreter_id}])
 	elif current_page.launcher == RPGEventPage.LAUNCHER_MODE.PARALLEL:
 		GameInterpreter.register_interpreter(scene, current_page.list, true, interpreter_id)
 
@@ -1242,7 +1241,7 @@ func _create_ingame_event(ev: RPGEvent, page: RPGEventPage) -> IngameEvent:
 		scene = EmptyLPCEvent.new()
 	
 	add_child(scene)
-	if GameManager.game_state and  ev.id in GameManager.game_state.current_events:
+	if GameManager.game_state and ev.id in GameManager.game_state.current_events:
 		var event_data: RPGEventSaveData = GameManager.game_state.current_events[ev.id]
 		set_event_position(scene, event_data.position, event_data.direction, false, true)
 	else:
@@ -1269,7 +1268,7 @@ func _create_ingame_extraction_event(ev: RPGExtractionItem) -> IngameExtractionE
 	
 	if scene:
 		add_child(scene)
-		scene.position =  get_tile_position(Vector2i(ev.x, ev.y))
+		scene.position = get_tile_position(Vector2i(ev.x, ev.y))
 		if not internal_id in GameManager.game_state.extraction_items:
 			GameManager.game_state.extraction_items[internal_id] = {}
 		if not ev.id in GameManager.game_state.extraction_items[internal_id]:
@@ -1347,7 +1346,7 @@ func get_tile_position(tile: Vector2i) -> Vector2:
 	var target_position = map_to_local(start_position)
 	target_position = target_position.snapped(tile_size)
 	
-	return(Vector2(target_position) + event_offset)
+	return (Vector2(target_position) + event_offset)
 
 
 func get_tile_from_position(pos: Vector2) -> Vector2i:
@@ -1363,7 +1362,6 @@ func set_event_direction(target: Variant, direction: LPCCharacter.DIRECTIONS) ->
 
 
 func _setup_common_events() -> void:
-	#TODO
 	pass
 
 
@@ -1432,7 +1430,6 @@ func _bake_keot_data_fast() -> void:
 		for coords in cells:
 			# Aquí usamos las funciones rápidas que pusiste en tu mensaje.
 			# Solo devuelven números (int y Vector2i), no objetos pesados.
-			
 			var id = layer.get_cell_source_id(coords)
 			
 			# 1. ¿Está este ID en nuestra libreta de "Tiles Mágicos"?
@@ -2071,7 +2068,6 @@ func _get_next_event_region_id() -> int:
 	return next_id
 		
 
-
 func paste_event_region_in(pos: Vector2i, region: EventRegion) -> bool:
 	if !Engine.is_editor_hint():
 		return false
@@ -2358,7 +2354,7 @@ func remove_event_region(region: EventRegion) -> void:
 		event_region_canvas.queue_redraw()
 
 
-func set_events(values : RPGEvents) -> void:
+func set_events(values: RPGEvents) -> void:
 	events = values
 
 
@@ -2395,7 +2391,7 @@ func _on_enemy_spawn_canvas_draw() -> void:
 			var align = HORIZONTAL_ALIGNMENT_LEFT
 			var text = region.name
 			if text.is_empty():
-				text = "Spawn Region #%s" % (i+1)
+				text = "Spawn Region #%s" % (i + 1)
 			while text_size > 8 and font.get_string_size(text, align, -1, text_size).x > real_rect.size.x - 22:
 				text_size -= 1
 			var c = Color.WHITE if not force_show_regions else Color(0.80, 0.80, 0.80, 0.45)
@@ -2441,7 +2437,7 @@ func _on_event_region_canvas_draw() -> void:
 			var align = HORIZONTAL_ALIGNMENT_LEFT
 			var text = region.name
 			if text.is_empty():
-				text = "Event Region #%s" % (i+1)
+				text = "Event Region #%s" % (i + 1)
 			while text_size > 8 and font.get_string_size(text, align, -1, text_size).x > real_rect.size.x - 22:
 				text_size -= 1
 			var c = Color.WHITE if not force_show_regions else Color(0.80, 0.80, 0.80, 0.45)
@@ -2787,14 +2783,14 @@ func _validate_property(property):
 	if property.name in properties:
 		if use_dynamic_day_night:
 			if property.name == "shadow_parameters":
-				property.usage = PROPERTY_USAGE_NO_EDITOR 
+				property.usage = PROPERTY_USAGE_NO_EDITOR
 			if property.name == "dynamic_day_night_hour":
 				property.usage = PROPERTY_USAGE_EDITOR
 		else:
 			if property.name == "shadow_parameters":
 				property.usage = PROPERTY_USAGE_EDITOR
 			if property.name == "dynamic_day_night_hour":
-				property.usage = PROPERTY_USAGE_NO_EDITOR 
+				property.usage = PROPERTY_USAGE_NO_EDITOR
 	
 	properties = ["use_dynamic_day_night", "dynamic_day_night_hour", "shadow_parameters", "preview_shadows_in_editor"]
 	if property.name in properties:
@@ -2833,7 +2829,7 @@ func _get_configuration_warnings() -> PackedStringArray:
 func get_custom_data_layer_names() -> PackedStringArray:
 	var layers: PackedStringArray = []
 	
-	var tile_map_layer : TileMapLayer = MAP_LAYERS.ground
+	var tile_map_layer: TileMapLayer = MAP_LAYERS.ground
 	var tileset = tile_map_layer.tile_set
 	var layer_count = tileset.get_custom_data_layers_count()
 	
@@ -2844,7 +2840,7 @@ func get_custom_data_layer_names() -> PackedStringArray:
 
 func get_tile_terrain_name(tile: Vector2i) -> PackedStringArray:
 	var terrain_name: PackedStringArray = []
-	var tile_map_layer : TileMapLayer = MAP_LAYERS.ground
+	var tile_map_layer: TileMapLayer = MAP_LAYERS.ground
 	var tile_data: TileData = tile_map_layer.get_cell_tile_data(tile)
 	if tile_data:
 		var terrain_set = tile_data.terrain_set
@@ -2945,7 +2941,7 @@ func is_tile_passable_from_direction(tile_position: Vector2i, player_direction: 
 
 
 func get_cell_data(tile_position: Vector2i) -> Dictionary:
-	var result = {"keep_events_on_top": false, "layer_z_index": -1}
+	var result = {"keep_events_on_top": false, "layer_z_index": - 1}
 	for map in get_children():
 		if map is TileMapLayer and map.tile_set:
 			var source_id = map.get_cell_source_id(tile_position)
@@ -3013,7 +3009,7 @@ func can_move_over_terrain(tile: Vector2i, terrains: PackedStringArray) -> bool:
 	if Input.is_key_pressed(KEY_CTRL) and OS.is_debug_build() and not moving_event:
 		return true
 
-	var tile_map_layer : TileMapLayer = MAP_LAYERS.ground
+	var tile_map_layer: TileMapLayer = MAP_LAYERS.ground
 	var tile_data: TileData = tile_map_layer.get_cell_tile_data(tile)
 	var all_tags = Array(terrains).map(
 		func(obj: String): return obj.to_lower())

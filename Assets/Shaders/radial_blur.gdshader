@@ -7,23 +7,23 @@
 shader_type canvas_item;
 
 uniform sampler2D SCREEN_TEXTURE : hint_screen_texture;
-// Centro del blur
+// Blur center
 uniform vec2 blur_center = vec2( 0.5, 0.5 );
-// Intensidad del blur
+// Blur intensity
 uniform float blur_power : hint_range( 0.0, 1.0 ) = 0.01;
-// Cantidad de muestras
+// Number of samples
 uniform int sampling_count : hint_range( 1, 64 ) = 6;
 
-// Usaremos la resolución del viewport
+// We will use viewport resolution
 uniform vec2 viewport_resolution;
 
 void fragment()
 {
-    // Relación de aspecto del viewport
+    // Viewport aspect ratio
     vec2 uv = SCREEN_UV;
     vec2 aspect_ratio = viewport_resolution / min(viewport_resolution.x, viewport_resolution.y);
 
-    // Ajuste de la dirección según la relación de aspecto
+    // Direction adjustment based on aspect ratio
     vec2 direction = (uv - blur_center) * aspect_ratio;
 
     vec3 color = vec3(0.0);

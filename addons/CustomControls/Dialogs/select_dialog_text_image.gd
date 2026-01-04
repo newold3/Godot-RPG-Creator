@@ -407,8 +407,8 @@ func _restore_default_config() -> void:
 		var config = data[path]
 		busy = true
 
-		%HorizontalFlip.set_pressed_mo_signal(config.get("horizontal_flip", false))
-		%VerticalFlip.set_pressed_mo_signal(config.get("Vertical_flip", false))
+		%HorizontalFlip.set_pressed_no_signal(config.get("horizontal_flip", false))
+		%VerticalFlip.set_pressed_no_signal(config.get("Vertical_flip", false))
 		%ImagePosition.select(config.get("start_position", 0))
 		
 		var offset = config.get("offset", {"x": 0, "y": 0})

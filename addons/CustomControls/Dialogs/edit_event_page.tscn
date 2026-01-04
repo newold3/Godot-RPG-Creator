@@ -749,8 +749,8 @@ uppercase = true
 [node name="ZIndex" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer2/VBoxContainer2" instance=ExtResource("5_nl5s3")]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
-tooltip_text = "[title]Z - Index[/title]
+tooltip_text = "[title]Z Index[/title]
+
 Drawing priority of this event on the screen. (0 = As ground, 1 = As events/environments, players, and vehicles). The higher this value, the greater the priority for the event to be drawn over other elements."
 allow_greater = true
 _custom_value = 0.0
@@ -945,15 +945,15 @@ text = "Velocity"
 
 [node name="Velocity" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer2" instance=ExtResource("5_nl5s3")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Event Movement Speed[/title]
+
 Movement speed for this event."
 min_value = 5.0
 value = 5.0
 allow_greater = true
-_custom_value = 0.0
+_custom_value = 5.0
 
 [node name="Label2" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer2"]
 custom_minimum_size = Vector2(110, 0)
@@ -962,9 +962,11 @@ text = " Frequency"
 
 [node name="Frequency" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer2" instance=ExtResource("5_nl5s3")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-tooltip_text = "Frames per second a character takes to perform a movement action"
+size_flags_horizontal = 3
+tooltip_text = "[title]Event Movement Frequency[/title]
+
+Movement frequency for this event."
 allow_greater = true
 _custom_value = 0.0
 

@@ -6,20 +6,20 @@ extends RefCounted
 
 # KEY class represents a single key binding with its associated action and behavior
 class KEY:
-	var unique_id: Variant               # Unique ID to register this key (can be deleted using this ID)
-	var key_bind: String                 # The input action name
-	var callable_bind: Callable          # The function to call when key is pressed
-	var initial_delay: float = 0.25      # Time to wait before first repeat (seconds)
-	var echo_interval: float = 0.1       # Time between repeated calls after initial delay (seconds)
-	var current_delay: float = 0         # Counter for current delay time
-	var allow_echo: bool = true          # Whether to repeat the action while key is held
+	var unique_id: Variant # Unique ID to register this key (can be deleted using this ID)
+	var key_bind: String # The input action name
+	var callable_bind: Callable # The function to call when key is pressed
+	var initial_delay: float = 0.25 # Time to wait before first repeat (seconds)
+	var echo_interval: float = 0.1 # Time between repeated calls after initial delay (seconds)
+	var current_delay: float = 0 # Counter for current delay time
+	var allow_echo: bool = true # Whether to repeat the action while key is held
 	var first_check_enabled: bool = true # Whether initial press has been processed
-	var is_valid: bool = true            # Whether this key binding is still active
+	var is_valid: bool = true # Whether this key binding is still active
 
 
 	# Signals
-	signal erase_requested(obj: KEY)     # Emitted when key binding should be removed
-	signal key_pressed(obj: KEY)         # Emitted when key is pressed/repeated
+	signal erase_requested(obj: KEY) # Emitted when key binding should be removed
+	signal key_pressed(obj: KEY) # Emitted when key is pressed/repeated
 
 
 	# Constructor for the KEY class
@@ -79,17 +79,17 @@ class KEY:
 
 
 class ECHO_ACTION:
-	var key_bind: String                 # The input action name
-	var initial_delay: float = 0.25      # Time to wait before first repeat (seconds)
-	var echo_interval: float = 0.1       # Time between repeated calls after initial delay (seconds)
-	var current_delay: float = 0.25      # Counter for current delay time
-	var pressed_enabled: bool = false    # Indicates that the action is ready to be processed.
-	var is_valid: bool = true            # Whether this key binding is still active
+	var key_bind: String # The input action name
+	var initial_delay: float = 0.25 # Time to wait before first repeat (seconds)
+	var echo_interval: float = 0.1 # Time between repeated calls after initial delay (seconds)
+	var current_delay: float = 0.25 # Counter for current delay time
+	var pressed_enabled: bool = false # Indicates that the action is ready to be processed.
+	var is_valid: bool = true # Whether this key binding is still active
 
 
-	signal erase_requested(obj: ECHO_ACTION)     # Emitted when key binding should be removed
+	signal erase_requested(obj: ECHO_ACTION) # Emitted when key binding should be removed
 	@warning_ignore("unused_signal")
-	signal key_pressed(obj: ECHO_ACTION)         # Emitted when key is pressed/repeated
+	signal key_pressed(obj: ECHO_ACTION) # Emitted when key is pressed/repeated
 
 
 	# Constructor for the ECHO_ACTION class
@@ -123,9 +123,9 @@ class ECHO_ACTION:
 
 
 # Main class variables
-var actions: Array[KEY] = []              # List of active key bindings
-var current_action_pressed: String = ""   # Most recently pressed action name
-var echo_actions: Array[ECHO_ACTION] = []  # List of active echo key bindings
+var actions: Array[KEY] = [] # List of active key bindings
+var current_action_pressed: String = "" # Most recently pressed action name
+var echo_actions: Array[ECHO_ACTION] = [] # List of active echo key bindings
 
 
 # Update all registered key bindings
@@ -302,11 +302,11 @@ func get_all_focusable_in_line(node: Node, current: Control, direction: String, 
 			
 			match direction:
 				"up", "down":
-					# Para movimiento vertical, verificar que estén en la misma "línea" horizontal
+					# For vertical movement, check if they are on the same horizontal "line"
 					if abs(ctrl_rect.position.x - current_rect.position.x) < max(ctrl_rect.size.x, current_rect.size.x):
 						candidates.append(ctrl)
 				"left", "right":
-					# Para movimiento horizontal, verificar que estén en la misma "línea" vertical
+					# For horizontal movement, check if they are on the same vertical "line"
 					if abs(ctrl_rect.position.y - current_rect.position.y) < max(ctrl_rect.size.y, current_rect.size.y):
 						candidates.append(ctrl)
 	
@@ -314,21 +314,21 @@ func get_all_focusable_in_line(node: Node, current: Control, direction: String, 
 		get_all_focusable_in_line(child, current, direction, candidates)
 
 func get_closest_focusable_control(current: Control, direction: String, limit_to_parent: bool = false) -> Control:
-	if not current: 
+	if not current:
 		return null
 	
 	var from_pos = current.get_global_rect().position + current.get_global_rect().size / 2
 	var candidates = []
 	var search_root = current.get_tree().root
 	
-	# Si limit_to_parent es true, limitamos la búsqueda al padre del control actual
+	# If limit_to_parent is true, limit search to current control's parent
 	if limit_to_parent and current.get_parent():
 		search_root = current.get_parent()
 	
-	# Primer intento: búsqueda normal en la dirección especificada
+	# First attempt: normal search in specified direction
 	add_focusable_candidates(search_root, from_pos, direction, current, candidates)
 	
-	# Si no encontramos candidatos, hacemos wrap-around
+	# If no candidates found, wrap-around
 	if candidates.size() == 0:
 		var all_candidates = []
 		get_all_focusable_in_line(search_root, current, direction, all_candidates)
@@ -336,28 +336,28 @@ func get_closest_focusable_control(current: Control, direction: String, limit_to
 		if all_candidates.size() > 0:
 			match direction:
 				"up":
-					# Si vamos arriba y no hay nada, seleccionar el control más abajo en la misma línea
+					# If going up and nothing found, select the lowest control on the same line
 					var lowest = all_candidates[0]
 					for ctrl in all_candidates:
 						if ctrl.get_global_rect().position.y > lowest.get_global_rect().position.y:
 							lowest = ctrl
 					return lowest
 				"down":
-					# Si vamos abajo y no hay nada, seleccionar el control más arriba en la misma línea
+					# If going down and nothing found, select the highest control on the same line
 					var highest = all_candidates[0]
 					for ctrl in all_candidates:
 						if ctrl.get_global_rect().position.y < highest.get_global_rect().position.y:
 							highest = ctrl
 					return highest
 				"left":
-					# Si vamos izquierda y no hay nada, seleccionar el control más a la derecha en la misma línea
+					# If going left and nothing found, select the rightmost control on the same line
 					var rightmost = all_candidates[0]
 					for ctrl in all_candidates:
 						if ctrl.get_global_rect().position.x > rightmost.get_global_rect().position.x:
 							rightmost = ctrl
 					return rightmost
 				"right":
-					# Si vamos derecha y no hay nada, seleccionar el control más a la izquierda en la misma línea
+					# If going right and nothing found, select the leftmost control on the same line
 					var leftmost = all_candidates[0]
 					for ctrl in all_candidates:
 						if ctrl.get_global_rect().position.x < leftmost.get_global_rect().position.x:

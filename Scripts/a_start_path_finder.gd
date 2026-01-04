@@ -2,25 +2,25 @@ class_name AStarPathfinder
 extends Node
 
 var game_map: RPGMap
-var node_data: Dictionary = {}  # {nodo_id: {target: Vector2i, history: Array[Vector2i], last_pos: Vector2i, stuck_frames: int}}
+var node_data: Dictionary = {} # {node_id: {target: Vector2i, history: Array[Vector2i], last_pos: Vector2i, stuck_frames: int}}
 var MAX_HISTORY: int = 15
-var STUCK_THRESHOLD: int = 30  # frames sin moverse antes de considerar atascado
+var STUCK_THRESHOLD: int = 30 # frames without moving before considering stuck
 
 func _init(map: Object) -> void:
 	game_map = map
 
-## Retorna el mejor tile vecino hacia el objetivo, o null si no debe moverse
+## Returns the best neighbor tile towards the target, or null if it shouldn't move
 func get_next_tile(moving_node: Node, current_pos: Vector2i, target_pos: Vector2i) -> Variant:
 	if not game_map:
 		return Vector2i.ZERO
 	
 	var node_id = moving_node.get_instance_id()
 	
-	# Si el target cambió, limpia el historial
+	# If target changed, clear history
 	if node_id in node_data and node_data[node_id]["target"] != target_pos:
 		node_data[node_id]["history"].clear()
 	
-	# Inicializa los datos del nodo si no existen
+	# Initialize node data if it doesn't exist
 	if not node_id in node_data:
 		node_data[node_id] = {
 			"target": target_pos,
@@ -31,7 +31,7 @@ func get_next_tile(moving_node: Node, current_pos: Vector2i, target_pos: Vector2
 	else:
 		node_data[node_id]["target"] = target_pos
 	
-	# Si ya está adyacente al objetivo, limpia el historial y no se mueve
+	# If already adjacent to target, clear history and don't move
 	if _is_adjacent(current_pos, target_pos):
 		node_data[node_id]["history"].clear()
 		return null
@@ -39,10 +39,10 @@ func get_next_tile(moving_node: Node, current_pos: Vector2i, target_pos: Vector2
 	var history = node_data[node_id]["history"]
 	var is_stuck = false
 	
-	# Detecta si el nodo está atascado
+	# Detect if node is stuck
 	if current_pos == node_data[node_id]["last_pos"]:
 		node_data[node_id]["stuck_frames"] += 1
-		# Si está atascado demasiado tiempo, limpia el historial para forzar otro camino
+		# If stuck too long, clear history to force another path
 		if node_data[node_id]["stuck_frames"] > STUCK_THRESHOLD:
 			history.clear()
 			node_data[node_id]["stuck_frames"] = 0
@@ -52,38 +52,38 @@ func get_next_tile(moving_node: Node, current_pos: Vector2i, target_pos: Vector2
 	
 	node_data[node_id]["last_pos"] = current_pos
 	
-	# Obtiene los 8 vecinos
+	# Get 8 neighbors
 	var neighbors = _get_8_neighbors(current_pos)
 	var valid_neighbors: Array = []
 	
-	# Filtra vecinos válidos
+	# Filter valid neighbors
 	for neighbor_pos in neighbors:
-		# Si no está atascado, evita el historial
+		# If not stuck, avoid history
 		if not is_stuck and neighbor_pos in history:
 			continue
 		
-		# Verifica si es caminable
+		# Check if walkable
 		if not _is_valid_move(moving_node, neighbor_pos):
 			continue
 		
 		valid_neighbors.append(neighbor_pos)
 	
-	# Si no hay vecinos válidos
+	# If no valid neighbors
 	if valid_neighbors.is_empty():
 		return null
 	
-	# Ordena por distancia al objetivo (menor distancia = mejor)
-	valid_neighbors.sort_custom(func(a, b): 
+	# Sort by distance to target (lower distance = better)
+	valid_neighbors.sort_custom(func(a, b):
 		return _manhattan(a, target_pos) < _manhattan(b, target_pos)
 	)
 	
-	# Retorna el mejor (primero en la lista ordenada)
+	# Return the best (first in sorted list)
 	var best_tile = valid_neighbors[0]
 	
-	# Añade la posición actual al historial
+	# Add current position to history
 	history.append(current_pos)
 	
-	# Limita el tamaño del historial
+	# Limit history size
 	if history.size() > MAX_HISTORY:
 		history.pop_front()
 	
@@ -117,11 +117,11 @@ func _is_valid_move(moving_node: Node, tile_pos: Vector2i) -> bool:
 	
 	tile_pos = game_map.get_wrapped_position(tile_pos)
 	
-	# Verifica si es pasable según la dirección del nodo
+	# Check if passable according to node direction
 	if not game_map.is_passable(tile_pos, moving_node.current_direction, moving_node, true):
 		return false
 	
-	# Verifica si el nodo puede caminar sobre el terreno
+	# Check if node can walk over terrain
 	if not game_map.can_move_over_terrain(tile_pos, moving_node.can_move_on_terrains):
 		return false
 	
@@ -144,9 +144,9 @@ func _manhattan(a: Vector2i, b: Vector2i) -> float:
 
 
 func vector2_to_direction(vec: Vector2i) -> int:
-	# Convierte un Vector2i a una dirección de 4 direcciones
-	if vec == Vector2i(0, -1): return 4    # Norte
-	if vec == Vector2i(1, 0): return 2     # Este
-	if vec == Vector2i(0, 1): return 8     # Sur
-	if vec == Vector2i(-1, 0): return 1    # Oeste
-	return 0  # Desconocido
+	# Converts a Vector2i to a 4-direction direction
+	if vec == Vector2i(0, -1): return 4 # North
+	if vec == Vector2i(1, 0): return 2 # East
+	if vec == Vector2i(0, 1): return 8 # South
+	if vec == Vector2i(-1, 0): return 1 # West
+	return 0 # Unknown

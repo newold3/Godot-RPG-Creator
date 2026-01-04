@@ -1,6 +1,6 @@
 extends Control
 
-# Propiedades de configuración del menú
+# Menu configuration properties
 @export var show_comparison: bool = true: set = set_show_comparison
 @export var margin_left: int = 10
 @export var margin_right: int = 10
@@ -9,12 +9,12 @@ extends Control
 @export var section_spacing: int = 10
 @export var custom_font: Font
 
-# Referencias a componentes de UI
+# UI component references
 @onready var stats_container: Control = %StatsContainer
 @onready var upgrade_icon: TextureRect = %UpgradeIcon
 @onready var smooth_scroll_node: Node = %BottomContainer
 
-# Datos del actor y comparación
+# Actor data and comparison
 var current_actor: GameActor
 var comparison_item: Dictionary = {}
 var comparison_result: int
@@ -89,7 +89,7 @@ func set_actor(actor: GameActor) -> void:
 	
 	current_actor = actor
 	
-	# Delegar los datos al StatsContainer
+	# Delegate data to StatsContainer
 	stats_container.set_actor(actor, comparison_item)
 
 
@@ -99,8 +99,8 @@ func set_equipment_compararison(slot_id: int, item: Variant) -> void:
 			"slot_id": slot_id,
 			"id": item.id if item else -1,
 			"level": item.current_level if item else -1,
-		} 
-		# Recargar el actor con la nueva comparación
+		}
+		# Reload actor with new comparison
 		set_actor(current_actor)
 
 
@@ -109,7 +109,7 @@ func set_show_comparison(_show_comparison: bool) -> void:
 	show_comparison = _show_comparison
 	if not is_inside_tree(): return
 	if show_comparison != last_show_comparison:
-		# Notificar al contenedor que actualize
+		# Notify container to update
 		stats_container.set_show_comparison(show_comparison)
 		upgrade_icon.visible = false
 
@@ -118,6 +118,6 @@ func get_minimum_size() -> Vector2:
 	return stats_container.get_minimum_size()
 
 
-# Getter para acceder a datos del contenedor si es necesario
+# Getter to access container data if necessary
 func get_current_stats() -> Dictionary:
 	return stats_container.get_current_stats()

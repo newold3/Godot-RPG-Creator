@@ -205,10 +205,17 @@ func open_dialog(path: Variant, mode: OPEN_MODE = OPEN_MODE.CENTERED_ON_MOUSE, d
 	TranslationManager.translate(dialog)
 	dialog.set_transparent_background(true)
 	dialog.visible = false
-	if disable_exclusive_flag:
-		dialog.exclusive = false
+	#if disable_exclusive_flag:
+		#dialog.exclusive = false
+	#else:
+		#dialog.exclusive = true
+	dialog.force_native = true
+	if dialog.name in ["DatabaseDialog", "LPCCharacterCreatorDialog", "EditEventDialog"]:
+		dialog.exclusive = true
+		dialog.transient = true
 	else:
 		dialog.exclusive = true
+		dialog.transient = true
 
 	var dialog_parent = get_viewport()
 	if current_opened_dialogs.size() > 0 and _is_valid_window(current_opened_dialogs[-1]):

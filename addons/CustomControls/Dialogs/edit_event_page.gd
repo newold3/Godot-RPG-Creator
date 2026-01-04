@@ -18,6 +18,8 @@ func _ready() -> void:
 	%CharacterImage.clipboard_key = "event_graphic"
 	var parent = get_parent().get_parent().get_parent()
 	%EventPageListEditor.set_current_parent(parent)
+	
+	CustomTooltipManager.plugin_replace_all_tooltips_with_custom.call_deferred(self)
 
 
 func _fill_events(p_current_event: RPGEvent, event_list: Array, selected_id: int) -> void:

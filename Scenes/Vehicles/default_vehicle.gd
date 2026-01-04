@@ -2,7 +2,7 @@
 class_name RPGVehicle
 extends CharacterBody2D
 
-## Vehicle type (This information is used by the “conditional separation” command when the “vehicle being driven” option is selected).
+## Vehicle type (This information is used by the "conditional separation" command when the "vehicle being driven" option is selected).
 @export_enum("Land Vehicle", "Sea Vehicle", "Air Veicle") var vehicle_type: int = 0
 
 ## Allows you to interact with map events while riding in this vehicle
@@ -36,16 +36,16 @@ extends CharacterBody2D
 
 @export_category("Terrain Passability")
 ## Terrains over which this vehicle can move
-## (Use a "*" at the beginning to include any terrain whose name contains the specified terrain name, or use a “^” at the beginning to exclude any terrain whose name contains the specified terrain name. or "all" to include any terrain.)
+## (Use a "*" at the beginning to include any terrain whose name contains the specified terrain name, or use a "^" at the beginning to exclude any terrain whose name contains the specified terrain name. or "all" to include any terrain.)
 @export var can_move_on_terrains: PackedStringArray
 ## Terrains where this vehicle can disembark the player
 ## (Use a "*" at the beginning to include any terrain whose name contains the specified terrain name, or "all" to include any terrain.)
 @export var can_disembark_on_terrains: PackedStringArray
 ## Indicates if the transport can fly (Flying transports ignore all collisions).
-@export var flying_object: bool = false 
+@export var flying_object: bool = false
 
 ## Indicate whether or not this vehicle can be traversed.
-@export var is_passable: bool = false : set = _set_passable
+@export var is_passable: bool = false: set = _set_passable
 
 
 var player: LPCCharacter
@@ -114,7 +114,7 @@ func set_direction(direction: LPCCharacter.DIRECTIONS) -> void:
 func get_direction_name() -> String:
 	for key in LPCCharacter.DIRECTIONS.keys():
 		if LPCCharacter.DIRECTIONS.get(key) == current_direction:
-			return(key.capitalize())
+			return (key.capitalize())
 		
 	return ""
 
@@ -240,7 +240,7 @@ func get_adjacent_event() -> Variant:
 	
 	if current_direction == LPCCharacter.DIRECTIONS.LEFT:
 		var max_distance = extra_dimensions.grow_left + 1
-		for distance in range(max_distance, 0, -1):  # Desde el más lejano hasta 1
+		for distance in range(max_distance, 0, -1): # From furthest to 1
 			var adjacent_tile = Vector2(current_tile.x - distance, current_tile.y)
 			event = current_map.get_in_game_event_in(adjacent_tile)
 			if event:
@@ -248,7 +248,7 @@ func get_adjacent_event() -> Variant:
 				
 	elif current_direction == LPCCharacter.DIRECTIONS.RIGHT:
 		var max_distance = extra_dimensions.grow_right + 1
-		for distance in range(max_distance, 0, -1):  # Desde el más lejano hasta 1
+		for distance in range(max_distance, 0, -1): # From furthest to 1
 			var adjacent_tile = Vector2(current_tile.x + distance, current_tile.y)
 			event = current_map.get_in_game_event_in(adjacent_tile)
 			if event:
@@ -256,7 +256,7 @@ func get_adjacent_event() -> Variant:
 				
 	elif current_direction == LPCCharacter.DIRECTIONS.UP:
 		var max_distance = extra_dimensions.grow_up + 1
-		for distance in range(max_distance, 0, -1):  # Desde el más lejano hasta 1
+		for distance in range(max_distance, 0, -1): # From furthest to 1
 			var adjacent_tile = Vector2(current_tile.x, current_tile.y - distance)
 			event = current_map.get_in_game_event_in(adjacent_tile)
 			if event:
@@ -264,7 +264,7 @@ func get_adjacent_event() -> Variant:
 				
 	elif current_direction == LPCCharacter.DIRECTIONS.DOWN:
 		var max_distance = extra_dimensions.grow_down + 1
-		for distance in range(max_distance, 0, -1):  # Desde el más lejano hasta 1
+		for distance in range(max_distance, 0, -1): # From furthest to 1
 			var adjacent_tile = Vector2(current_tile.x, current_tile.y + distance)
 			event = current_map.get_in_game_event_in(adjacent_tile)
 			if event:
@@ -543,15 +543,15 @@ func get_player_possible_movement(motion: Vector2) -> Vector2i:
 func get_possible_movement(motion: Vector2) -> Vector2i:
 	var result: Vector2i = Vector2i.ZERO
 	
-	# Comprobar si hay movimiento y si puede moverse
+	# Check if there is movement and if it can move
 	if motion.is_zero_approx():
 		return Vector2i.ZERO
 		
-	# Redondear motion
+	# Round motion
 	motion.x = floor(motion.x) if motion.x < 0 else ceil(motion.x)
 	motion.y = floor(motion.y) if motion.y < 0 else ceil(motion.y)
 	
-	# Atajo de depuración
+	# Debug shortcut
 	if Input.is_key_pressed(KEY_CTRL) and OS.is_debug_build():
 		return Vector2i(
 			1 if motion.x != 0 else 0,
@@ -561,7 +561,7 @@ func get_possible_movement(motion: Vector2) -> Vector2i:
 	var real_motion = motion * Vector2(GameManager.current_map.tile_size)
 	var collision: KinematicCollision2D = move_and_collide(real_motion, true)
 	if collision:
-		return(Vector2i.ZERO)
+		return (Vector2i.ZERO)
 		
 	var map = GameManager.current_map
 	if not map:
@@ -571,7 +571,7 @@ func get_possible_movement(motion: Vector2) -> Vector2i:
 	var dx = int(motion.x)
 	var dy = int(motion.y)
 	
-	# Primera comprobación sin tamaño extra
+	# First check without extra size
 	var horizontal_tile = map.get_wrapped_tile(current_tile + Vector2i(dx, 0))
 	var vertical_tile = map.get_wrapped_tile(current_tile + Vector2i(0, dy))
 	var diagonal_tile = map.get_wrapped_tile(current_tile + Vector2i(dx, dy))
@@ -587,11 +587,11 @@ func get_possible_movement(motion: Vector2) -> Vector2i:
 	elif can_move_vertically:
 		result.y = 1
 		
-	# Si no se puede mover el centro, no hay que comprobar más
+	# If center cannot move, no need to check further
 	if result == Vector2i.ZERO:
 		return result
 		
-	# Comprobar si hay dimensiones extra en la dirección del movimiento
+	# Check if there are extra dimensions in the movement direction
 	var has_extra_dimension = (
 		(extra_dimensions.grow_left > 0 and motion.x < 0) or
 		(extra_dimensions.grow_right > 0 and motion.x > 0) or
@@ -600,33 +600,33 @@ func get_possible_movement(motion: Vector2) -> Vector2i:
 	)
 	
 	if has_extra_dimension:
-		# Ahora verificar todos los tiles entre el centro y el extremo
-		if motion.x < 0:  # Movimiento izquierda
+		# Now check all tiles between center and edge
+		if motion.x < 0: # Move left
 			for i in range(1, extra_dimensions.grow_left + 1):
 				var test_tile = current_tile + Vector2i(-i, 0)
 				if get_tile_passability(map.get_wrapped_tile(test_tile + Vector2i(dx, 0)), motion) == Vector2i.ZERO:
 					result.x = 0
 					break
-		elif motion.x > 0:  # Movimiento derecha
+		elif motion.x > 0: # Move right
 			for i in range(1, extra_dimensions.grow_right + 1):
 				var test_tile = current_tile + Vector2i(i, 0)
 				if get_tile_passability(map.get_wrapped_tile(test_tile + Vector2i(dx, 0)), motion) == Vector2i.ZERO:
 					result.x = 0
 					break
-		if motion.y < 0:  # Movimiento arriba
+		if motion.y < 0: # Move up
 			for i in range(1, extra_dimensions.grow_up + 1):
 				var test_tile = current_tile + Vector2i(0, -i)
 				if get_tile_passability(map.get_wrapped_tile(test_tile + Vector2i(0, dy)), motion) == Vector2i.ZERO:
 					result.y = 0
 					break
-		elif motion.y > 0:  # Movimiento abajo
+		elif motion.y > 0: # Move down
 			for i in range(1, extra_dimensions.grow_down + 1):
 				var test_tile = current_tile + Vector2i(0, i)
 				if get_tile_passability(map.get_wrapped_tile(test_tile + Vector2i(0, dy)), motion) == Vector2i.ZERO:
 					result.y = 0
 					break
 		
-		# Para movimientos diagonales, comprobar los extremos adicionales
+		# For diagonal movements, check additional corners
 		if dx != 0 and dy != 0 and result.x != 0 and result.y != 0:
 			var corner_x = current_tile.x + (extra_dimensions.grow_right if dx > 0 else -extra_dimensions.grow_left)
 			var corner_y = current_tile.y + (extra_dimensions.grow_down if dy > 0 else -extra_dimensions.grow_up)
@@ -663,7 +663,7 @@ func get_player() -> LPCCharacter:
 		return player
 	else:
 		var node = get_tree().get_first_node_in_group("player")
-		if node  and node is LPCCharacter:
+		if node and node is LPCCharacter:
 			return node
 	
 	return null
@@ -743,7 +743,7 @@ func _fix_z_ordering() -> void:
 	if not GameManager.current_map:
 		return
 	
-	# 1. RECUPERAR MI Z BASE (NATURAL)
+	# 1. RECOVER MY BASE Z (NATURAL)
 	var my_base_z = z_index
 	if has_meta("_backup_z_index"):
 		my_base_z = get_meta("_backup_z_index")
@@ -755,7 +755,6 @@ func _fix_z_ordering() -> void:
 	var found_floor: bool = false
 	
 	for tile_feet in vehicle_tiles:
-		
 		for i in range(0, tiles_to_check_up + 1):
 			var tile_to_check = tile_feet - Vector2i(0, i)
 			
@@ -766,7 +765,7 @@ func _fix_z_ordering() -> void:
 			
 			var entities = GameManager.current_map.get_events_objects_in(tile_to_check)
 			for entity in entities:
-				if entity == self: continue 
+				if entity == self: continue
 				
 				if entity.has_meta("_current_floor_z"):
 					found_floor = true

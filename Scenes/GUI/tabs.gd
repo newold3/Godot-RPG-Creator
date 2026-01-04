@@ -2,86 +2,86 @@
 extends Control
 class_name CustomTabsControl
 
-# Propiedades exportadas básicas
+# Basic exported properties
 @export_enum("left", "right", "up", "down") var mouse_hand_type: int = 0
-@export var tab_names: PackedStringArray = [] : set = set_tab_names
-@export var tab_icons: Array[Texture2D] = [] : set = set_tab_icons
-@export var icon_position: IconPosition = IconPosition.LEFT : set = set_icon_position
-@export var icon_size: Vector2 = Vector2(16, 16) : set = set_icon_size
-@export var font: Font : set = set_font
-@export var font_size: int = 16 : set = set_font_size
-@export var outline_size: int = 6 : set = set_outline_size
+@export var tab_names: PackedStringArray = []: set = set_tab_names
+@export var tab_icons: Array[Texture2D] = []: set = set_tab_icons
+@export var icon_position: IconPosition = IconPosition.LEFT: set = set_icon_position
+@export var icon_size: Vector2 = Vector2(16, 16): set = set_icon_size
+@export var font: Font: set = set_font
+@export var font_size: int = 16: set = set_font_size
+@export var outline_size: int = 6: set = set_outline_size
 
 enum IconPosition {
 	LEFT,
 	RIGHT
 }
 
-# Colores para los diferentes estados
+# Colors for different states
 @export_group("Tab Colors")
-@export var unselected_color: Color = Color.LIGHT_GRAY : set = set_unselected_color
-@export var selected_color: Color = Color.WHITE : set = set_selected_color
-@export var hover_color: Color = Color.LIGHT_BLUE : set = set_hover_color
-@export var disabled_color: Color = Color.DARK_GRAY : set = set_disabled_color
+@export var unselected_color: Color = Color.LIGHT_GRAY: set = set_unselected_color
+@export var selected_color: Color = Color.WHITE: set = set_selected_color
+@export var hover_color: Color = Color.LIGHT_BLUE: set = set_hover_color
+@export var disabled_color: Color = Color.DARK_GRAY: set = set_disabled_color
 
-# StyleBox para los diferentes estados
+# StyleBox for different states
 @export_group("Tab StyleBoxes")
 @export var main_panel_focused_stylebox: StyleBox
-@export var unselected_stylebox: StyleBox : set = set_unselected_stylebox
-@export var selected_stylebox: StyleBox : set = set_selected_stylebox
-@export var hover_stylebox: StyleBox : set = set_hover_stylebox
-@export var disabled_stylebox: StyleBox : set = set_disabled_stylebox
+@export var unselected_stylebox: StyleBox: set = set_unselected_stylebox
+@export var selected_stylebox: StyleBox: set = set_selected_stylebox
+@export var hover_stylebox: StyleBox: set = set_hover_stylebox
+@export var disabled_stylebox: StyleBox: set = set_disabled_stylebox
 
-# Colores de texto
+# Text colors
 @export_group("Text Colors")
-@export var unselected_text_color: Color = Color.DARK_GRAY : set = set_unselected_text_color
-@export var selected_text_color: Color = Color.BLACK : set = set_selected_text_color
-@export var hover_text_color: Color = Color.BLACK : set = set_hover_text_color
-@export var disabled_text_color: Color = Color.GRAY : set = set_disabled_text_color
-@export var outline_text_color: Color = Color.BLACK : set = set_outline_text_color
+@export var unselected_text_color: Color = Color.DARK_GRAY: set = set_unselected_text_color
+@export var selected_text_color: Color = Color.BLACK: set = set_selected_text_color
+@export var hover_text_color: Color = Color.BLACK: set = set_hover_text_color
+@export var disabled_text_color: Color = Color.GRAY: set = set_disabled_text_color
+@export var outline_text_color: Color = Color.BLACK: set = set_outline_text_color
 
-# Configuración de tabs
+# Tabs configuration
 @export_group("Tab Layout")
-@export var tab_height: int = 40 : set = set_tab_height
-@export var tab_padding: int = 20 : set = set_tab_padding
-@export var tab_spacing: int = 2 : set = set_tab_spacing
-@export var disabled_tabs: PackedInt32Array = [] : set = set_disabled_tabs
-@export var hidden_tabs: PackedInt32Array = [] : set = set_hidden_tabs
+@export var tab_height: int = 40: set = set_tab_height
+@export var tab_padding: int = 20: set = set_tab_padding
+@export var tab_spacing: int = 2: set = set_tab_spacing
+@export var disabled_tabs: PackedInt32Array = []: set = set_disabled_tabs
+@export var hidden_tabs: PackedInt32Array = []: set = set_hidden_tabs
 
-# Configuración de offsets Y (solo para dibujo, no afectan el tamaño del control)
+# Y offsets configuration (only for drawing, do not affect control size)
 @export_group("Tab Positioning")
-@export var selected_offset_y: int = 0 : set = set_selected_offset_y
-@export var unselected_offset_y: int = 5 : set = set_unselected_offset_y
+@export var selected_offset_y: int = 0: set = set_selected_offset_y
+@export var unselected_offset_y: int = 5: set = set_unselected_offset_y
 
-# Configuración de animación
+# Animation configuration
 @export_group("Animation")
-@export var enable_animation: bool = true : set = set_enable_animation
-@export var animation_duration: float = 0.3 : set = set_animation_duration
-@export var animation_easing: Tween.EaseType = Tween.EASE_OUT : set = set_animation_easing
-@export var animation_transition: Tween.TransitionType = Tween.TRANS_CUBIC : set = set_animation_transition
+@export var enable_animation: bool = true: set = set_enable_animation
+@export var animation_duration: float = 0.3: set = set_animation_duration
+@export var animation_easing: Tween.EaseType = Tween.EASE_OUT: set = set_animation_easing
+@export var animation_transition: Tween.TransitionType = Tween.TRANS_CUBIC: set = set_animation_transition
 
-# Configuracion manipulator para el cursor
+# Manipulator configuration for the cursor
 @export_group("")
 @export var hand_manipulator: String
 
-# Variables internas
+# Internal variables
 var selected_tab: int = 0
 var previous_selected_tab: int = -1
 var hovered_tab: int = -1
 var cursor_focused_tab: int = -1
-var tab_rects: Array[Rect2] = []  # Rects base sin offsets
-var tab_animated_offsets: Array[float] = []  # Solo para animación de dibujo
+var tab_rects: Array[Rect2] = [] # Rects base sin offsets
+var tab_animated_offsets: Array[float] = [] # Only for drawing animation
 var tween: Tween
 var focusable_control: Control
 var delay_start: float = 0.0
 var can_draw_focusable_style: bool = true
 
-signal request_focus_top_control() # Señal emitida al pulsar arriba
-signal request_focus_bottom_control() # Señal emitida al pulsar abajo
-signal tab_clicked(tab_id: int) # Señal que se emite cuando se hace click en un tab
-signal tab_preselected(tab_id: int) # Señal que se emite cuando se selecciona un tab
+signal request_focus_top_control() # Signal emitted when pressing up
+signal request_focus_bottom_control() # Signal emitted when pressing down
+signal tab_clicked(tab_id: int) # Signal emitted when a tab is clicked
+signal tab_preselected(tab_id: int) # Signal emitted when a tab is selected
 
-# Setters para actualizar automáticamente
+# Setters for automatic updates
 func set_tab_names(value: PackedStringArray):
 	tab_names = value
 	_update_tabs()
@@ -222,7 +222,7 @@ func _update_tabs():
 		queue_redraw()
 
 func _reinitialize_offsets():
-	# Reinicializar los offsets animados con los nuevos valores
+	# Reinitialize animated offsets with new values
 	for i in range(tab_animated_offsets.size()):
 		if i == selected_tab:
 			tab_animated_offsets[i] = float(selected_offset_y)
@@ -232,7 +232,7 @@ func _reinitialize_offsets():
 func _ready():
 	_initialize_tab_offsets()
 	_setup_tween()
-	# Solo usar tab_height para el tamaño del control
+	# Only use tab_height for control size
 	custom_minimum_size.y = tab_height
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
@@ -288,14 +288,14 @@ func _setup_tween():
 func _calculate_tab_rects():
 	tab_rects.clear()
 	var current_x = 0.0
-	var icon_spacing = 8  # Espacio entre icono y texto
+	var icon_spacing = 8 # Space between icon and text
 	
-	# Asegurar que tenemos offsets para todos los tabs
+	# Ensure we have offsets for all tabs
 	while tab_animated_offsets.size() < tab_names.size():
 		tab_animated_offsets.append(float(unselected_offset_y))
 	
 	for i in range(tab_names.size()):
-		# Si el tab está oculto, añadir un rect vacío pero mantener el índice
+		# If tab is hidden, add an empty rect but keep index
 		if _is_tab_hidden(i):
 			tab_rects.append(Rect2())
 			continue
@@ -306,18 +306,18 @@ func _calculate_tab_rects():
 		var icon_width = 0.0
 		var total_content_width = 0.0
 		
-		# Calcular ancho del texto
+		# Calculate text width
 		if tab_name != "":
 			if font:
 				text_width = font.get_string_size(tab_name, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
 			else:
 				text_width = get_theme_default_font().get_string_size(tab_name, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
 		
-		# Calcular ancho del icono
+		# Calculate icon width
 		if tab_icon:
 			icon_width = icon_size.x
 		
-		# Calcular ancho total del contenido
+		# Calculate total content width
 		if tab_icon and tab_name != "":
 			total_content_width = text_width + icon_width + icon_spacing
 		elif tab_icon:
@@ -326,13 +326,13 @@ func _calculate_tab_rects():
 			total_content_width = text_width
 		
 		var tab_width = total_content_width + (tab_padding * 2)
-		# Los tab_rects se crean en la posición base (Y = 0), los offsets se aplican solo al dibujar
+		# tab_rects are created at base position (Y = 0), offsets are applied only when drawing
 		var tab_rect = Rect2(current_x, 0, tab_width, tab_height)
 		tab_rects.append(tab_rect)
 		
 		current_x += tab_width + tab_spacing
 	
-	# Actualizar solo el ancho mínimo del control (solo tabs visibles)
+	# Update only minimum control width (only visible tabs)
 	custom_minimum_size.x = int(current_x - tab_spacing) if current_x > 0 else 0
 	size.x = custom_minimum_size.x
 
@@ -341,14 +341,14 @@ func _animate_tab_selection(new_selected: int):
 		_set_tab_offsets_immediately(new_selected)
 		return
 	
-	# Crear nuevo tween
+	# Create new tween
 	if tween:
 		tween.kill()
 	tween = create_tween()
 	
 	var animations_count = 0
 	
-	# Animar tab anteriormente seleccionado hacia posición unselected
+	# Animate previously selected tab to unselected position
 	if previous_selected_tab >= 0 and previous_selected_tab < tab_animated_offsets.size():
 		var start_offset = tab_animated_offsets[previous_selected_tab]
 		var end_offset = float(unselected_offset_y)
@@ -362,7 +362,7 @@ func _animate_tab_selection(new_selected: int):
 				animation_duration
 			).set_ease(animation_easing).set_trans(animation_transition)
 	
-	# Animar nuevo tab seleccionado hacia posición selected
+	# Animate new selected tab to selected position
 	if new_selected >= 0 and new_selected < tab_animated_offsets.size():
 		var start_offset = tab_animated_offsets[new_selected]
 		var end_offset = float(selected_offset_y)
@@ -375,7 +375,7 @@ func _animate_tab_selection(new_selected: int):
 				animation_duration
 			).set_ease(animation_easing).set_trans(animation_transition)
 	
-	# Si no hay animaciones, actualizar inmediatamente
+	# If no animations, update immediately
 	if animations_count == 0:
 		_set_tab_offsets_immediately(new_selected)
 
@@ -445,33 +445,33 @@ func _draw():
 	if tab_names.size() == 0:
 		return
 	
-	var icon_spacing = 8  # Espacio entre icono y texto
+	var icon_spacing = 8 # Space between icon and text
 	
 	for i in range(tab_names.size()):
-		# Saltar tabs ocultos
+		# Skip hidden tabs
 		if _is_tab_hidden(i):
 			continue
 			
-		var base_tab_rect = tab_rects[i]  # Rect base sin offset
+		var base_tab_rect = tab_rects[i] # Base rect without offset
 		var tab_name = tab_names[i]
 		var tab_icon = tab_icons[i] if i < tab_icons.size() else null
 		var state = _get_tab_state(i)
 		
-		# Aplicar offset Y solo para el dibujo
+		# Apply Y offset only for drawing
 		var draw_offset_y = int(tab_animated_offsets[i]) if i < tab_animated_offsets.size() else int(unselected_offset_y)
 		var tab_rect = Rect2(
-			base_tab_rect.position.x, 
-			base_tab_rect.position.y + draw_offset_y, 
-			base_tab_rect.size.x, 
+			base_tab_rect.position.x,
+			base_tab_rect.position.y + draw_offset_y,
+			base_tab_rect.size.x,
 			base_tab_rect.size.y
 		)
 		
-		# Obtener estilo según el estado
+		# Get style based on state
 		var stylebox = _get_stylebox_for_state(state)
 		var bg_color = _get_color_for_state(state)
 		var text_color = _get_text_color_for_state(state)
 		
-		# Dibujar StyleBox si está disponible, sino usar color sólido
+		# Draw StyleBox if available, otherwise use solid color
 		if stylebox:
 			if i == hovered_tab:
 				if is_tab_disabled(i):
@@ -484,22 +484,22 @@ func _draw():
 		else:
 			draw_rect(tab_rect, bg_color)
 		
-		# Calcular posiciones de contenido
+		# Calculate content positions
 		var content_start_x = tab_rect.position.x + tab_padding
 		var content_y = tab_rect.position.y + tab_rect.size.y / 2
 
-		# Obtener dimensiones
+		# Get dimensions
 		var text_font = font if font else get_theme_default_font()
 		var text_size = Vector2.ZERO
 		
 		if tab_name != "":
 			text_size = text_font.get_string_size(tab_name, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size)
 		
-		# Dibujar contenido según la posición del icono
+		# Draw content based on icon position
 		if tab_icon and tab_name != "":
-			# Hay tanto icono como texto
+			# Both icon and text exist
 			if icon_position == IconPosition.LEFT:
-				# Icono a la izquierda
+				# Icon to the left
 				var icon_pos = Vector2(content_start_x, content_y - icon_size.y / 2)
 				var text_pos = Vector2(content_start_x + icon_size.x + icon_spacing, content_y / 2 + text_font.get_ascent())
 				
@@ -509,7 +509,7 @@ func _draw():
 					draw_string_outline(text_font, text_pos, tab_name, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, outline_size, outline_text_color)
 				draw_string(text_font, text_pos, tab_name, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, text_color)
 			else:
-				# Icono a la derecha
+				# Icon to the right
 				var text_pos = Vector2(content_start_x, content_y + text_size.y / 2)
 				var icon_pos = Vector2(content_start_x + text_size.x + icon_spacing, content_y - icon_size.y / 2)
 				
@@ -518,14 +518,14 @@ func _draw():
 				draw_string(text_font, text_pos, tab_name, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, text_color)
 				draw_texture(tab_icon, icon_pos)
 		elif tab_icon:
-			# Solo icono
+			# Only icon
 			var icon_pos = Vector2(
 				tab_rect.position.x + (tab_rect.size.x - icon_size.x) / 2,
 				content_y - icon_size.y / 2
 			)
 			draw_texture(tab_icon, icon_pos)
 		elif tab_name != "":
-			# Solo texto
+			# Only text
 			var text_pos = Vector2(
 				tab_rect.position.x + (tab_rect.size.x - text_size.x) / 2,
 				content_y + text_size.y / 2
@@ -574,7 +574,7 @@ func _handle_controller_input() -> void:
 		
 		if direction == "left":
 			new_cursor_tab = cursor_focused_tab
-			# Buscar el tab anterior válido
+			# Find previous valid tab
 			for i in range(tab_rects.size()):
 				#new_cursor_tab = wrapi(new_cursor_tab - 1, 0, tab_rects.size()) # use wrap
 				new_cursor_tab = max(0, new_cursor_tab - 1) # no use wrap
@@ -583,7 +583,7 @@ func _handle_controller_input() -> void:
 			
 		elif direction == "right":
 			new_cursor_tab = cursor_focused_tab
-			# Buscar el tab siguiente válido
+			# Find next valid tab
 			for i in range(tab_rects.size()):
 				#new_cursor_tab = wrapi(new_cursor_tab + 1, 0, tab_rects.size()) # use wrap
 				new_cursor_tab = min(new_cursor_tab + 1, tab_rects.size() - 1) # no use wrap
@@ -598,11 +598,11 @@ func _handle_controller_input() -> void:
 			request_focus_bottom_control.emit()
 			return
 		
-		# Si se movió el cursor, actualizar posición
+		# If cursor moved, update position
 		if new_cursor_tab != -1 and not direction.is_empty() and new_cursor_tab != cursor_focused_tab:
 			pre_select_tab(new_cursor_tab)
 		
-		# Detectar botón de aceptar para seleccionar tab
+		# Detect accept button to select tab
 		elif ControllerManager.is_confirm_pressed(false, [KEY_KP_ENTER]):
 			if cursor_focused_tab != -1 and cursor_focused_tab != selected_tab:
 				previous_selected_tab = selected_tab
@@ -626,7 +626,7 @@ func pre_select_tab(new_cursor_tab: int) -> void:
 
 func _select_control(_tab_selected_index: int) -> void:
 	focusable_control.grab_focus()
-	# Inicializar cursor_focused_tab con el tab seleccionado
+	# Initialize cursor_focused_tab with selected tab
 	cursor_focused_tab = selected_tab
 
 func _update_hand_cursor() -> void:
@@ -641,13 +641,13 @@ func _update_hand_cursor() -> void:
 
 
 func _get_tab_at_position(pos: Vector2) -> int:
-	# Usar los rects base para detectar clicks, no los offseteados
+	# Use base rects to detect clicks, not offset ones
 	for i in range(tab_rects.size()):
-		# Saltar tabs ocultos
+		# Skip hidden tabs
 		if _is_tab_hidden(i):
 			continue
 			
-		# Expandir el área de click para incluir el offset
+		# Expand click area to include offset
 		var click_rect = tab_rects[i]
 		var max_offset = max(abs(selected_offset_y), abs(unselected_offset_y))
 		click_rect = Rect2(
@@ -668,7 +668,7 @@ func _on_mouse_exited():
 		hovered_tab = -1
 		queue_redraw()
 
-# Funciones públicas para controlar los tabs programáticamente
+# Public functions to control tabs programmatically
 func set_selected_tab(tab_id: int, animate: bool = true, emit_signal_enabled: bool = false):
 	if tab_id >= 0 and tab_id < tab_names.size() and not _is_tab_disabled(tab_id):
 		delay_start = 0.03
@@ -707,13 +707,13 @@ func add_tab(tab_name: String, tab_icon: Texture2D = null):
 	new_names.append(tab_name)
 	set_tab_names(new_names)
 	
-	# Añadir icono si se proporciona
+	# Add icon if provided
 	if tab_icon:
 		var new_icons = tab_icons.duplicate()
 		new_icons.append(tab_icon)
 		set_tab_icons(new_icons)
 	
-	# Añadir offset para el nuevo tab
+	# Add offset for new tab
 	tab_animated_offsets.append(float(unselected_offset_y))
 
 func remove_tab(tab_id: int):
@@ -721,17 +721,17 @@ func remove_tab(tab_id: int):
 		var new_names = tab_names.duplicate()
 		new_names.remove_at(tab_id)
 		
-		# Remover icono si existe
+		# Remove icon if exists
 		if tab_id < tab_icons.size():
 			var new_icons = tab_icons.duplicate()
 			new_icons.remove_at(tab_id)
 			set_tab_icons(new_icons)
 		
-		# Remover offset del tab eliminado
+		# Remove offset of deleted tab
 		if tab_id < tab_animated_offsets.size():
 			tab_animated_offsets.remove_at(tab_id)
 		
-		# Ajustar tabs deshabilitados
+		# Adjust disabled tabs
 		var new_disabled = disabled_tabs.duplicate()
 		for i in range(new_disabled.size() - 1, -1, -1):
 			if new_disabled[i] == tab_id:
@@ -739,7 +739,7 @@ func remove_tab(tab_id: int):
 			elif new_disabled[i] > tab_id:
 				new_disabled[i] -= 1
 		
-		# Ajustar el tab seleccionado si es necesario
+		# Adjust selected tab if necessary
 		if selected_tab >= new_names.size():
 			selected_tab = max(0, new_names.size() - 1)
 		elif selected_tab > tab_id:
@@ -781,21 +781,21 @@ func hide_tab(tab_index: int, value: bool):
 	var index = new_hidden.find(tab_index)
 	
 	if value and index == -1:
-		# Ocultar tab
+		# Hide tab
 		new_hidden.append(tab_index)
-		# Si el tab seleccionado se oculta, seleccionar el siguiente visible
+		# If selected tab is hidden, select next visible
 		if selected_tab == tab_index:
 			var next_visible = _get_next_visible_tab(selected_tab)
 			if next_visible != -1:
 				set_selected_tab(next_visible, false)
 	elif not value and index != -1:
-		# Mostrar tab
+		# Show tab
 		new_hidden.remove_at(index)
 	
 	set_hidden_tabs(new_hidden)
 
 func _get_next_visible_tab(from_index: int) -> int:
-	# Buscar el siguiente tab visible
+	# Find next visible tab
 	for i in range(tab_names.size()):
 		var next_index = (from_index + i + 1) % tab_names.size()
 		if not _is_tab_hidden(next_index) and not _is_tab_disabled(next_index):

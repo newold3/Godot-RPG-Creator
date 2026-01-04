@@ -1,5 +1,5 @@
 shader_type canvas_item;
-// Cambiamos a blend_mix para un comportamiento estándar de sombras/transparencias
+// Switch to blend_mix for standard shadow/transparency behavior
 render_mode blend_mix; 
 
 uniform float blur_size : hint_range(0.0, 5.0) = 1.0;
@@ -9,8 +9,8 @@ void fragment() {
 	vec2 pixel_size = TEXTURE_PIXEL_SIZE;
 	float final_alpha = 0.0;
 
-	// Kernel gaussiano 5x5 aplanado y normalizado
-	// La suma de todos estos valores es aprox 1.0
+	// Flattened and normalized 5x5 Gaussian kernel
+	// The sum of all these values is approx 1.0
 	float kernel[25] = float[](
 		0.0037, 0.0146, 0.0256, 0.0146, 0.0037,
 		0.0146, 0.0586, 0.0952, 0.0586, 0.0146,
@@ -20,24 +20,24 @@ void fragment() {
 	);
 
 	int i = 0;
-	// Recorremos el kernel
+	// Iterate through the kernel
 	for(int x = -2; x <= 2; x++) {
 		for(int y = -2; y <= 2; y++) {
-			// Calculamos el offset.
-			// NOTA: Multiplicar por blur_size separa las muestras. 
-			// Si blur_size es muy alto, verás "fantasmas" (banding).
+			// Calculate offset.
+			// NOTE: Multiplying by blur_size separates samples. 
+			// If blur_size is too high, you will see 'ghosting' (banding).
 			vec2 offset = vec2(float(x), float(y)) * pixel_size * blur_size;
 			
-			// Solo nos interesa el Alpha para la sombra
+			// We only care about Alpha for the shadow
 			float a = texture(TEXTURE, UV + offset).a;
 			
-			// Acumulamos el alpha ponderado por el kernel
+			// Accumulate weighted alpha by kernel
 			final_alpha += a * kernel[i];
 			i++;
 		}
 	}
 
-	// Asignamos el color del overlay con el alpha calculado (desenfocado)
-	// Multiplicamos también por el alpha del propio overlay si quieres controlar opacidad global
+	// Assign overlay color with calculated alpha (blurred)
+	// Multiply also by overlay alpha if you want to control global opacity
 	COLOR = vec4(overlay_color.rgb, final_alpha * overlay_color.a);
 }

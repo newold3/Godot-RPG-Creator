@@ -10,21 +10,21 @@ void fragment() {
     vec4 final_color = vec4(0.0);
 
     for (int i = 0; i < copies; i++) {
-        // Calcula el ángulo de manera uniforme, sumando el ángulo de inicio
-        float angle = start_angle + (float(i) / float(copies)) * 6.28318530718; // 2π radianes distribuidos uniformemente
+        // Calculate angle uniformly, adding start angle
+        float angle = start_angle + (float(i) / float(copies)) * 6.28318530718; // 2pi radians distributed uniformly
         vec2 dir = vec2(cos(angle), sin(angle));
 
-        // Calcula el desplazamiento proporcional al progreso
+        // Calculate displacement proportional to progress
         vec2 offset = dir * intensity * progress;
 
-        // Muestra la textura con desplazamiento
+        // Sample texture with displacement
         vec4 tex = texture(TEXTURE, uv + offset);
 
-        // Mezcla aditiva
+        // Additive mix
         final_color += tex;
     }
 
-    // Normaliza el color resultante
+    // Normalize resulting color
     final_color /= float(copies);
 
     COLOR = final_color;

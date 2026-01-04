@@ -3,15 +3,15 @@ var vertical_threshold = 50 # 50 = original
 
 
 func get_closest_focusable_control(current: Control, direction: String, limit_to_parent: bool = false, extra_focusable_controls: Array = []) -> Control:
-	if not current: 
+	if not current:
 		return null
 	
-	# Verificar primero los neighbors explícitos
+	# Check explicit neighbors first
 	var neighbor = get_explicit_neighbor(current, direction)
 	if neighbor and neighbor != current and is_control_focusable(neighbor):
 		return neighbor
 	
-	# Obtener todos los controles focuseables
+	# Get all focusable controls
 	var search_root = current.get_parent() if limit_to_parent else current.get_tree().current_scene
 	if not search_root:
 		return null
@@ -21,20 +21,20 @@ func get_closest_focusable_control(current: Control, direction: String, limit_to
 	if not extra_focusable_controls.is_empty():
 		controls_to_search.append_array(extra_focusable_controls)
 	
-	# Remover el control actual de la lista
+	# Remove current control from list
 	controls_to_search.erase(current)
 	
 	if controls_to_search.is_empty():
 		return null
 	
-	# Buscar el control más cercano en la dirección especificada
+	# Find closest control in specified direction
 	var best_control = find_closest_in_direction(current, controls_to_search, direction)
 	
-	# Si encontramos un control, devolverlo
+	# If control found, return it
 	if best_control:
 		return best_control
 	
-	# Si no hay control en esa dirección, aplicar lógica de wraparound
+	# If no control in that direction, apply wraparound logic
 	return apply_wraparound_logic(current, controls_to_search, direction)
 
 func get_explicit_neighbor(current: Control, direction: String) -> Control:
@@ -85,7 +85,7 @@ func find_closest_in_direction(current: Control, controls: Array, direction: Str
 		
 		match direction:
 			"left":
-				# El control debe estar completamente a la izquierda
+				# Control must be completely to the left
 				if control_rect.end.x <= current_rect.position.x:
 					is_in_direction = true
 					var distance = current_center.distance_to(control_center)
@@ -93,7 +93,7 @@ func find_closest_in_direction(current: Control, controls: Array, direction: Str
 					score = distance / alignment_bonus
 			
 			"right":
-				# El control debe estar completamente a la derecha
+				# Control must be completely to the right
 				if control_rect.position.x >= current_rect.end.x:
 					is_in_direction = true
 					var distance = current_center.distance_to(control_center)
@@ -101,7 +101,7 @@ func find_closest_in_direction(current: Control, controls: Array, direction: Str
 					score = distance / alignment_bonus
 			
 			"up":
-				# El control debe estar completamente arriba
+				# Control must be completely above
 				if control_rect.end.y <= current_rect.position.y:
 					is_in_direction = true
 					var distance = current_center.distance_to(control_center)
@@ -109,7 +109,7 @@ func find_closest_in_direction(current: Control, controls: Array, direction: Str
 					score = distance / alignment_bonus
 			
 			"down":
-				# El control debe estar completamente abajo
+				# Control must be completely below
 				if control_rect.position.y >= current_rect.end.y:
 					is_in_direction = true
 					var distance = current_center.distance_to(control_center)
@@ -129,11 +129,11 @@ func apply_wraparound_logic(current: Control, controls: Array, direction: String
 	
 	match direction:
 		"left":
-			# Ir al control más a la derecha en la fila superior más cercana
+			# Go to the rightmost control in the nearest upper row
 			return find_wraparound_left(current_center, controls)
 		
 		"right":
-			# Ir al control más a la izquierda en la fila inferior más cercana o al mas superior/izquierda
+			# Go to the leftmost control in the nearest lower row or the topmost/leftmost
 			var next_node = find_wraparound_right(current_center, controls)
 			if next_node != current:
 				return next_node
@@ -142,18 +142,18 @@ func apply_wraparound_logic(current: Control, controls: Array, direction: String
 				return next_node
 		
 		"up":
-			# Ir al control más abajo que esté alineado horizontalmente
+			# Go to the lowest control horizontally aligned
 			return find_wraparound_up(current_center, controls)
 		
 		"down":
-			# Ir al control más arriba que esté alineado horizontalmente
+			# Go to the highest control horizontally aligned
 			return find_wraparound_down(current_center, controls)
 	
-	# Fallback: devolver el primer control disponible
+	# Fallback: return the first available control
 	return controls[0] if not controls.is_empty() else null
 
 func find_wraparound_left(current_center: Vector2, controls: Array) -> Control:
-	# Buscar controles que estén en filas superiores
+	# Find controls in upper rows
 	var controls_above = []
 	
 	for control in controls:
@@ -161,29 +161,29 @@ func find_wraparound_left(current_center: Vector2, controls: Array) -> Control:
 		if control_center.y < current_center.y - horizontal_threshold:
 			controls_above.append(control)
 	
-	# Si no hay controles arriba, buscar en la fila más abajo
+	# If no controls above, search in the bottommost row
 	if controls_above.is_empty():
 		return find_bottommost_rightmost_control(controls)
 	
-	# Encontrar la fila más cercana arriba
-	var closest_row_y = -INF
+	# Find the nearest row above
+	var closest_row_y = - INF
 	for control in controls_above:
 		var control_center = control.get_global_rect().get_center()
 		if control_center.y > closest_row_y:
 			closest_row_y = control_center.y
 	
-	# Filtrar controles en esa fila
+	# Filter controls in that row
 	var row_controls = []
 	for control in controls_above:
 		var control_center = control.get_global_rect().get_center()
 		if abs(control_center.y - closest_row_y) <= horizontal_threshold:
 			row_controls.append(control)
 	
-	# Devolver el más a la derecha de esa fila
+	# Return the rightmost of that row
 	return find_rightmost_control(row_controls)
 
 func find_wraparound_right(current_center: Vector2, controls: Array) -> Control:
-	# Buscar controles que estén en filas inferiores
+	# Find controls in lower rows
 	var controls_below = []
 	
 	for control in controls:
@@ -191,31 +191,31 @@ func find_wraparound_right(current_center: Vector2, controls: Array) -> Control:
 		if control_center.y > current_center.y + vertical_threshold:
 			controls_below.append(control)
 	
-	# Si no hay controles abajo, buscar en la fila más arriba
+	# If no controls below, search in the topmost row
 	if controls_below.is_empty():
 		return find_topmost_leftmost_control(controls)
 	
-	# Encontrar la fila más cercana abajo
+	# Find the nearest row below
 	var closest_row_y = INF
 	for control in controls_below:
 		var control_center = control.get_global_rect().get_center()
 		if control_center.y < closest_row_y:
 			closest_row_y = control_center.y
 	
-	# Filtrar controles en esa fila
+	# Filter controls in that row
 	var row_controls = []
 	for control in controls_below:
 		var control_center = control.get_global_rect().get_center()
 		if abs(control_center.y - closest_row_y) <= vertical_threshold:
 			row_controls.append(control)
 	
-	# Devolver el más a la izquierda de esa fila
+	# Return the leftmost of that row
 	return find_leftmost_control(row_controls)
 
 func find_wraparound_up(current_center: Vector2, controls: Array) -> Control:
-	# Buscar el control más abajo que esté alineado o cerca horizontalmente
+	# Find the lowest control aligned or close horizontally
 	var best_control = null
-	var best_y = -INF
+	var best_y = - INF
 	
 	for control in controls:
 		var control_center = control.get_global_rect().get_center()
@@ -225,14 +225,14 @@ func find_wraparound_up(current_center: Vector2, controls: Array) -> Control:
 			best_y = control_center.y
 			best_control = control
 	
-	# Si no encuentra uno alineado, buscar simplemente el más abajo
+	# If none aligned found, simply find the lowest one
 	if not best_control:
 		return find_bottommost_control(controls)
 	
 	return best_control
 
 func find_wraparound_down(current_center: Vector2, controls: Array) -> Control:
-	# Buscar el control más arriba que esté alineado o cerca horizontalmente
+	# Find the highest control aligned or close horizontally
 	var best_control = null
 	var best_y = INF
 	
@@ -244,13 +244,13 @@ func find_wraparound_down(current_center: Vector2, controls: Array) -> Control:
 			best_y = control_center.y
 			best_control = control
 
-	# Si no encuentra uno alineado, buscar simplemente el más arriba
+	# If none aligned found, simply find the highest one
 	if not best_control:
 		return find_topmost_control(controls)
 
 	return best_control
 
-# Funciones auxiliares optimizadas
+# Optimized helper functions
 func find_topmost_control(controls: Array) -> Control:
 	var best_control = null
 	var best_y = INF
@@ -265,7 +265,7 @@ func find_topmost_control(controls: Array) -> Control:
 
 func find_bottommost_control(controls: Array) -> Control:
 	var best_control = null
-	var best_y = -INF
+	var best_y = - INF
 	
 	for control in controls:
 		var y = control.get_global_rect().get_center().y
@@ -289,7 +289,7 @@ func find_leftmost_control(controls: Array) -> Control:
 
 func find_rightmost_control(controls: Array) -> Control:
 	var best_control = null
-	var best_x = -INF
+	var best_x = - INF
 	
 	for control in controls:
 		var x = control.get_global_rect().get_center().x
@@ -305,7 +305,7 @@ func find_topmost_leftmost_control(controls: Array) -> Control:
 	
 	for control in controls:
 		var center = control.get_global_rect().get_center()
-		var score = center.y * 1000 + center.x  # Priorizar Y, luego X
+		var score = center.y * 1000 + center.x # Prioritize Y, then X
 		if score < best_score:
 			best_score = score
 			best_control = control
@@ -314,11 +314,11 @@ func find_topmost_leftmost_control(controls: Array) -> Control:
 
 func find_bottommost_rightmost_control(controls: Array) -> Control:
 	var best_control = null
-	var best_score = -INF
+	var best_score = - INF
 	
 	for control in controls:
 		var center = control.get_global_rect().get_center()
-		var score = center.y * 1000 + center.x  # Priorizar Y, luego X
+		var score = center.y * 1000 + center.x # Prioritize Y, then X
 		if score > best_score:
 			best_score = score
 			best_control = control

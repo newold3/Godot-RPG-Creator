@@ -9,7 +9,7 @@ void fragment() {
 	vec3 color = vec3(0.0);
 	float weight_sum = 0.0;
 	
-	// Gaussian blur con kernel de 9x9
+	// Gaussian blur with 9x9 kernel
 	for(int x = -4; x <= 4; x++) {
 		for(int y = -4; y <= 4; y++) {
 			float distance = float(x * x + y * y);

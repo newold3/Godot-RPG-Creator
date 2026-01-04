@@ -4,7 +4,7 @@ extends Control
 @export_multiline var first_message: String
 @export_multiline var last_message: String
 @export var scene_manipulator: String = ""
-@export var back_button: Control : set = _add_back_button
+@export var back_button: Control: set = _add_back_button
 @export var early_tree_exited_timer: float = 0.15
 
 var slow_speed: float = -45
@@ -228,7 +228,7 @@ func create_next_message(current_messaje: RichTextLabel = null) -> void:
 		_current_index = clamp(_current_index, 0, _credits_array.size() - 1)
 		return
 	
-	# Verificar duplicados con validación de nodos
+	# Check duplicates with node validation
 	for i in range(_message_array.size() - 1, -1, -1):
 		if not is_instance_valid(_message_array[i]):
 			_message_array.remove_at(i)
@@ -236,7 +236,7 @@ func create_next_message(current_messaje: RichTextLabel = null) -> void:
 		if _message_array[i].get_meta("credit_index") == _current_index:
 			return
 	
-	# Verificar límites de generación con validación
+	# Check generation limits with validation
 	if _message_array.size() > 0:
 		if not _reverse_mode:
 			if is_instance_valid(_message_array[-1]) and _message_array[-1].get_meta("credit_index") > _current_index:
@@ -273,7 +273,7 @@ func create_next_message(current_messaje: RichTextLabel = null) -> void:
 	message.meta_hover_started.connect(_on_meta_hover_started.bind(message))
 	message.meta_hover_ended.connect(_on_meta_hover_ended.bind(message))
 	
-	# Validar que message_container sigue siendo válido
+	# Validate that message_container is still valid
 	if not is_instance_valid(message_container):
 		message.queue_free()
 		_generation_locked = false
@@ -285,7 +285,7 @@ func create_next_message(current_messaje: RichTextLabel = null) -> void:
 		
 	await get_tree().process_frame
 	
-	# Verificar que el mensaje no fue liberado durante el await
+	# Check that message was not freed during await
 	if not is_instance_valid(message):
 		_generation_locked = false
 		return
@@ -294,13 +294,13 @@ func create_next_message(current_messaje: RichTextLabel = null) -> void:
 		message.material = rich_gradient_shader.duplicate()
 		message.material.set_shader_parameter("size", message.size)
 	
-	# Validar mensaje de referencia si es necesario
+	# Validate reference message if necessary
 	if not initialized and current_messaje != null and not is_instance_valid(current_messaje):
 		message.queue_free()
 		_generation_locked = false
 		return
 	
-	# Verificar que el mensaje sigue válido antes de posicionarlo
+	# Check that message is still valid before positioning
 	if not is_instance_valid(message):
 		_generation_locked = false
 		return
@@ -333,17 +333,17 @@ func _position_new_message(message: RichTextLabel, reference_message: RichTextLa
 			else:
 				message.position = Vector2(
 					message_container.size.x * 0.5 - message.size.x * 0.5,
-					-message.size.y
+					- message.size.y
 				)
 		else:
 			if not _reverse_mode:
 				message.position = Vector2(
-					reference_message.position.x, 
+					reference_message.position.x,
 					reference_message.position.y + reference_message.size.y + 5
 				)
 			else:
 				message.position = Vector2(
-					reference_message.position.x, 
+					reference_message.position.x,
 					reference_message.position.y - message.size.y - 5
 				)
 
@@ -513,7 +513,7 @@ func _jump_to_credit(target_index: int) -> void:
 
 
 func _rebuild_scene_from_index(target_index: int) -> void:
-	# Crear el mensaje ancla
+	# Create anchor message
 	var anchor_message = await _create_single_message(target_index)
 	if not is_instance_valid(anchor_message):
 		call_deferred("_resume_after_jump")
@@ -526,17 +526,17 @@ func _rebuild_scene_from_index(target_index: int) -> void:
 	)
 	_message_array.append(anchor_message)
 
-	# Poblar hacia abajo desde el ancla
+	# Populate downwards from anchor
 	var next_index = target_index + 1
 	while next_index < _credits_array.size():
-		# Verificar que el último mensaje sigue siendo válido
+		# Check that last message is still valid
 		if _message_array.is_empty() or not is_instance_valid(_message_array[-1]):
 			break
 		
 		var last_msg = _message_array[-1]
 		var new_message = await _create_single_message(next_index)
 		
-		# Verificar que el mensaje se creó correctamente y que last_msg sigue válido
+		# Check that message was created correctly and last_msg is still valid
 		if not is_instance_valid(new_message) or not is_instance_valid(last_msg):
 			if is_instance_valid(new_message):
 				new_message.queue_free()
@@ -554,17 +554,17 @@ func _rebuild_scene_from_index(target_index: int) -> void:
 		_message_array.append(new_message)
 		next_index += 1
 	
-	# Poblar hacia arriba desde el ancla
+	# Populate upwards from anchor
 	var prev_index = target_index - 1
 	while prev_index >= 0:
-		# Verificar que el primer mensaje sigue siendo válido
+		# Check that first message is still valid
 		if _message_array.is_empty() or not is_instance_valid(_message_array[0]):
 			break
 		
 		var first_msg = _message_array[0]
 		var new_message = await _create_single_message(prev_index, true)
 		
-		# Verificar que el mensaje se creó correctamente y que first_msg sigue válido
+		# Check that message was created correctly and first_msg is still valid
 		if not is_instance_valid(new_message) or not is_instance_valid(first_msg):
 			if is_instance_valid(new_message):
 				new_message.queue_free()
@@ -582,7 +582,7 @@ func _rebuild_scene_from_index(target_index: int) -> void:
 		_message_array.insert(0, new_message)
 		prev_index -= 1
 
-	# Verificación final antes de actualizar el índice
+	# Final check before updating index
 	if not _message_array.is_empty() and is_instance_valid(_message_array[-1]):
 		_current_index = _message_array[-1].get_meta("credit_index")
 		_update_progress_bar()
@@ -591,7 +591,7 @@ func _rebuild_scene_from_index(target_index: int) -> void:
 
 
 func _resume_after_jump() -> void:
-	initialized_timer = 0.5 
+	initialized_timer = 0.5
 	busy = false
 
 
@@ -609,7 +609,7 @@ func _config_hand_in_back_button() -> void:
 	GameManager.set_confin_area(Rect2(), manipulator)
 	GameManager.force_show_cursor()
 	if back_button and not back_button.has_focus():
-		back_button.grab_focus() 
+		back_button.grab_focus()
 		GameManager.force_hand_position_over_node(manipulator)
 
 

@@ -602,7 +602,7 @@ func _get_total_used_slots() -> int:
 
 # Helper function to calculate how many slots are needed for a given amount
 func _calculate_slots_needed(amount: int, max_per_stack: int) -> int:
-	if max_per_stack <= 0:  # No stack limit
+	if max_per_stack <= 0: # No stack limit
 		return 1
 	return int(ceil(float(amount) / float(max_per_stack)))
 
@@ -610,7 +610,7 @@ func _calculate_slots_needed(amount: int, max_per_stack: int) -> int:
 # Helper function to split amount into stacks based on max_items_per_stack
 func _split_into_stacks(amount: int, max_per_stack: int) -> Array:
 	var stacks = []
-	if max_per_stack <= 0:  # No stack limit
+	if max_per_stack <= 0: # No stack limit
 		stacks.append(amount)
 		return stacks
 	
@@ -649,20 +649,20 @@ func _add_generic_amount(collection: Dictionary, data: Array, id: int, amount: i
 		var compatible = false
 		var can_stack_more = false
 		
-		if item_type == 0:  # Items
+		if item_type == 0: # Items
 			# Items are compatible if they're not perishable and not equipped
 			compatible = not item.is_perishable
 			if compatible and max_per_stack > 0:
 				can_stack_more = item.quantity < max_per_stack
 			elif compatible:
-				can_stack_more = true  # No stack limit
-		else:  # Weapons/Armor
+				can_stack_more = true # No stack limit
+		else: # Weapons/Armor
 			# Weapons/Armor are compatible if max_levels == 1 and not equipped
 			compatible = real_item.upgrades.max_levels == 1 and not item.equipped
 			if compatible and max_per_stack > 0:
 				can_stack_more = item.quantity < max_per_stack
 			elif compatible:
-				can_stack_more = true  # No stack limit
+				can_stack_more = true # No stack limit
 		
 		if compatible and can_stack_more:
 			var can_add = remaining_amount
@@ -680,7 +680,7 @@ func _add_generic_amount(collection: Dictionary, data: Array, id: int, amount: i
 		
 		# Check if we have inventory space (only if max_inventory > 0)
 		if max_inventory > 0 and available_slots <= 0:
-			return added_amount  # No more space, return what we managed to add
+			return added_amount # No more space, return what we managed to add
 		
 		# Split remaining amount into stacks
 		var stacks = _split_into_stacks(remaining_amount, max_per_stack)
@@ -693,7 +693,7 @@ func _add_generic_amount(collection: Dictionary, data: Array, id: int, amount: i
 		
 		# Create the stacks
 		for stack_amount in stacks:
-			if item_type == 0:  # Items
+			if item_type == 0: # Items
 				if not real_item.perishable.is_enabled():
 					# Non-perishable items can stack
 					var game_item = GameItem.new(id, stack_amount, 0)
@@ -714,13 +714,13 @@ func _add_generic_amount(collection: Dictionary, data: Array, id: int, amount: i
 						game_item.lifetime = real_item.perishable.duration
 						item_list.append(game_item)
 						added_amount += 1
-			else:  # Weapons/Armor
+			else: # Weapons/Armor
 				if real_item.upgrades.max_levels == 1:
 					# Items with max_levels == 1 can stack
 					var game_item
-					if item_type == 1:  # Weapon
+					if item_type == 1: # Weapon
 						game_item = GameWeapon.new(id, stack_amount, 1)
-					else:  # Armor
+					else: # Armor
 						game_item = GameArmor.new(id, stack_amount, 2)
 					game_item.current_level = max(1, min(level, real_item.upgrades.max_levels))
 					item_list.append(game_item)
@@ -735,9 +735,9 @@ func _add_generic_amount(collection: Dictionary, data: Array, id: int, amount: i
 					
 					for i in items_to_create:
 						var game_item
-						if item_type == 1:  # Weapon
+						if item_type == 1: # Weapon
 							game_item = GameWeapon.new(id, 1, 1)
-						else:  # Armor
+						else: # Armor
 							game_item = GameArmor.new(id, 1, 2)
 						game_item.current_level = max(1, min(level, real_item.upgrades.max_levels))
 						item_list.append(game_item)
@@ -865,7 +865,7 @@ func _remove_generic_amount(collection: Dictionary, id: int, amount: int, includ
 						remaining_to_remove -= item.quantity
 						item_list.erase(item)
 					
-					break  # Process one item at a time
+					break # Process one item at a time
 			
 			# If no non-perishable items found, search for perishable with lowest lifetime
 			if not item_found and remaining_to_remove > 0:
@@ -897,7 +897,7 @@ func _remove_generic_amount(collection: Dictionary, id: int, amount: int, includ
 					break
 		else:
 			# Weapons/Armor logic: sort by level and experience, then process unequipped first
-			item_list.sort_custom(func(a, b): 
+			item_list.sort_custom(func(a, b):
 				if a.current_level != b.current_level:
 					return a.current_level < b.current_level
 				return a.current_experience < b.current_experience
@@ -922,7 +922,7 @@ func _remove_generic_amount(collection: Dictionary, id: int, amount: int, includ
 						remaining_to_remove -= item.quantity
 						item_list.erase(item)
 					
-					break  # Process one item at a time
+					break # Process one item at a time
 			
 			# Phase 2: If include_equipment is true and still need to remove items
 			if not item_found and remaining_to_remove > 0 and include_equipment:
@@ -945,7 +945,7 @@ func _remove_generic_amount(collection: Dictionary, id: int, amount: int, includ
 							remaining_to_remove -= item.quantity
 							item_list.erase(item)
 						
-						break  # Process one item at a time
+						break # Process one item at a time
 		
 		# If no item was found, break the loop
 		if not item_found:
@@ -1237,7 +1237,6 @@ func get_real_actor(id: int) -> RPGActor:
 func add_party_member(actor_id: int, initialize: bool) -> void:
 	if game_state and not is_actor_in_group(actor_id):
 		if actor_id > 0 and RPGSYSTEM.database.actors.size() > actor_id:
-			
 			if not actor_id in game_state.current_party:
 				game_state.current_party.append(actor_id)
 
@@ -1259,7 +1258,7 @@ func remove_party_member(actor_id: int) -> void:
 
 func change_formation(actor_id1: int, actor_id2: int) -> void:
 	if game_state and is_actor_in_group(actor_id1) and is_actor_in_group(actor_id2):
-		# Verificar si alguno de los actores está bloqueado
+		# Check if any actor is locked
 		if is_party_member_locked(actor_id1) or is_party_member_locked(actor_id2):
 			return
 		
@@ -1470,14 +1469,14 @@ func manage_extraction_scene(node: Node) -> void:
 			else:
 				alert_message = tr("Your level is too\nhigh to extract") + "\n< [color=red]%s[/color]  >" % data.name
 			var top_node = get_node_or_null("%Top")
-			_show_alert_message(alert_message,  node.global_position if not top_node else top_node.global_position)
+			_show_alert_message(alert_message, node.global_position if not top_node else top_node.global_position)
 			return
 		
 		var level_difference = data.current_level - player_level
 		if level_difference >= 10:
 			alert_message = tr("Cannot extract") + "\n< [color=red]%s[/color] >\n" % data.name + tr("Item level too high")
 			var top_node = get_node_or_null("%Top")
-			_show_alert_message(alert_message,  node.global_position if not top_node else top_node.global_position)
+			_show_alert_message(alert_message, node.global_position if not top_node else top_node.global_position)
 			return
 		
 		#if level_difference < -10:
@@ -1577,7 +1576,7 @@ func add_profession_experience(event_data: RPGExtractionItem, experience: float)
 						level.sub_level = max_sub_levels
 						level.level = profession.levels.size()
 						level["current_level_completed"] = true # mark level as completed
-						experience = 0  # discard remaining exp
+						experience = 0 # discard remaining exp
 			else:
 				# not enough exp to level up, just accumulate
 				level.experience += experience
@@ -1587,7 +1586,6 @@ func add_profession_experience(event_data: RPGExtractionItem, experience: float)
 	if current_profession_level != final_profession_level and current_map:
 		current_map.refresh_extraction_events()
 		
-
 
 func update_timer_time(timer_id: int, value: float) -> void:
 	if not Engine.is_editor_hint():
@@ -1661,11 +1659,11 @@ func _format_compact_number(number: float, decimals: int = 0, force_zero_decimal
 	var abs_number: float = abs(number)
 	
 	var suffixes = [
-		{"value": 1000000000000000.0, "suffix": "Q"},  # (quadrillion)
-		{"value": 1000000000000.0, "suffix": "T"},     # (trillion)
-		{"value": 1000000000.0, "suffix": "B"},        # (billion)
-		{"value": 1000000.0, "suffix": "M"},           # (million)
-		{"value": 1000.0, "suffix": "k"}               # (thousand)
+		{"value": 1000000000000000.0, "suffix": "Q"}, # (quadrillion)
+		{"value": 1000000000000.0, "suffix": "T"}, # (trillion)
+		{"value": 1000000000.0, "suffix": "B"}, # (billion)
+		{"value": 1000000.0, "suffix": "M"}, # (million)
+		{"value": 1000.0, "suffix": "k"} # (thousand)
 	]
 	
 	for suffix_data in suffixes:

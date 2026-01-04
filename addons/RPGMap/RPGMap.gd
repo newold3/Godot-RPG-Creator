@@ -179,7 +179,7 @@ func _enter_tree() -> void:
 
 	event_container_control.enable_plugin()
 	
-	CustomTooltipManager.plugin_replace_all_tooltips_with_custom(event_container_control)
+	CustomTooltipManager.plugin_replace_all_tooltips_with_custom.call_deferred(event_container_control)
 	
 	extraction_event_container_control = preload("res://addons/RPGMap/Scenes/extraction_event_container.tscn").instantiate()
 	extraction_event_container_control.requested_edit_event.connect(_on_extraction_event_container_requested_edit)
@@ -192,7 +192,7 @@ func _enter_tree() -> void:
 
 	extraction_event_container_control.enable_plugin()
 	
-	CustomTooltipManager.plugin_replace_all_tooltips_with_custom(extraction_event_container_control)
+	CustomTooltipManager.plugin_replace_all_tooltips_with_custom.call_deferred(extraction_event_container_control)
 
 	enemy_spawn_container_control = preload("res://addons/RPGMap/Scenes/enemy_spawn_region_container.tscn").instantiate()
 	enemy_spawn_container_control.requested_edit_region.connect(_on_enemy_spawn_region_container_requested_edit)
@@ -205,7 +205,7 @@ func _enter_tree() -> void:
 
 	enemy_spawn_container_control.enable_plugin()
 	
-	CustomTooltipManager.plugin_replace_all_tooltips_with_custom(enemy_spawn_container_control)
+	CustomTooltipManager.plugin_replace_all_tooltips_with_custom.call_deferred(enemy_spawn_container_control)
 
 	event_region_container_control = preload("res://addons/RPGMap/Scenes/event_region_container.tscn").instantiate()
 	event_region_container_control.requested_edit_region.connect(_on_region_event_container_requested_edit)
@@ -218,7 +218,7 @@ func _enter_tree() -> void:
 
 	event_region_container_control.enable_plugin()
 	
-	CustomTooltipManager.plugin_replace_all_tooltips_with_custom(event_region_container_control)
+	CustomTooltipManager.plugin_replace_all_tooltips_with_custom.call_deferred(event_region_container_control)
 
 	var selected_nodes = get_editor_interface().get_selection().get_selected_nodes()
 	if selected_nodes.size() > 0:
@@ -281,7 +281,7 @@ func _enter_tree() -> void:
 	toggled_regions_button.tooltip_text = "[title]Toggled Regions Visibility[/title]\nView regions added to map in the event editor"
 	
 	add_control_to_container(EditorPlugin.CONTAINER_CANVAS_EDITOR_MENU, toggled_regions_button)
-	CustomTooltipManager.plugin_replace_all_tooltips_with_custom(toggled_regions_button)
+	CustomTooltipManager.plugin_replace_all_tooltips_with_custom.call_deferred(toggled_regions_button)
 	toggled_regions_button.visible = false
 
 	add_custom_type("RPGMap", "TileMap", preload("res://addons/RPGData/ModulesRPG/rpg_map.gd"), null)
