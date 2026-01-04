@@ -1,7 +1,7 @@
 @tool
 extends Node
 
-var map_infos: RPGMapsInfo
+var map_infos: Node
 var system: System
 var database: RPGDATA
 var player_animations_data: Dictionary
@@ -21,6 +21,19 @@ func _ready() -> void:
 
 func load_data() -> void:
 	database = DatabaseLoader.load_database()
+	
+	if database == null:
+		print("No Database found. Initializing new RPGDATA.")
+		database = RPGDATA.new()
+		if database.has_method("initialize"):
+			database.initialize()
+	
+	_inject_extra_data()
+
+
+func _inject_extra_data() -> void:
+	if not database: return
+	
 	#var database_path = DatabaseLoader.get_database_path()
 	#if ResourceLoader.exists(database_path):
 		#database = ResourceLoader.load(database_path, "", ResourceLoader.CACHE_MODE_REPLACE)
@@ -85,17 +98,12 @@ func load_data() -> void:
 
 func load_variables_and_switches() -> void:
 	system = DatabaseLoader.load_system()
-	#DatabaseLoader.setup()
-	#var dir = DatabaseLoader.get_data_folder_path()
-	#var file = "system.res"
-	#var path = "%s/%s" % [dir, file]
-	#if ResourceLoader.exists(path):
-		#system = ResourceLoader.load(path)
-	#else:
-		#DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(dir))
-		#system = System.new()
-		#system.build()
-		#ResourceSaver.save(system, path, ResourceSaver.FLAG_COMPRESS)
+	
+	if system == null:
+		print("No System found. Initializing new System.")
+		system = System.new()
+		if system.has_method("build"):
+			system.build()
 
 
 func load_animations() -> void:
@@ -130,22 +138,6 @@ func save(save_system: bool = true, save_database: bool = true) -> void:
 		DatabaseLoader.save_system()
 	if save_database:
 		DatabaseLoader.save_database()
-	#var data_folder_path = DatabaseLoader.get_data_folder_path()
-	#var absolute_data_folder_path = ProjectSettings.globalize_path(data_folder_path)
-	#if !DirAccess.dir_exists_absolute(absolute_data_folder_path):
-		#DirAccess.make_dir_recursive_absolute(absolute_data_folder_path)
-	## Save system
-	#if save_system:
-		#var file = "system.res"
-		#var system_path = data_folder_path.path_join(file)
-		#ResourceSaver.save(system, system_path, ResourceSaver.FLAG_COMPRESS)
-	## Save data
-	#if save_database:
-		#var file = "database.res"
-		#var database_path = data_folder_path.path_join(file)
-		#database.take_over_path(database_path)
-		#ResourceSaver.save(database, database_path, ResourceSaver.FLAG_COMPRESS)
-		#DirAccess.remove_absolute(MainDatabasePanel.BACKUP_PATH)
 
 
 func _exit_tree() -> void:

@@ -109,6 +109,7 @@ static func _save_generic(resource: Resource, filename: String) -> void:
 		# User Mode: Standard ResourceSaver
 		var path = USER_FOLDER + filename + ".res"
 		ResourceSaver.save(resource, path)
+		resource.take_over_path(path)
 
 
 ## Handles loading logic, including fallback creation from Master if User data is missing.

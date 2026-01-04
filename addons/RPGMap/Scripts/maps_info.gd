@@ -10,16 +10,9 @@ func _ready() -> void:
 
 func load_maps_info() -> void:
 	map_infos = DatabaseLoader.load_map_infos()
-	#DatabaseLoader.setup()
-	#var dir = DatabaseLoader.get_data_folder_path()
-	#var file = "map_info.res"
-	#var path = "%s/%s" % [dir, file]
-	#if ResourceLoader.exists(path):
-		#map_infos = ResourceLoader.load(path)
-	#else:
-		#DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(dir))
-		#map_infos = MapInfos.new()
-		#ResourceSaver.save(map_infos, path)
+	
+	if map_infos.map_infos == null:
+		map_infos = MapInfos.new()
 
 
 func fix_maps(data: Array) -> void:
