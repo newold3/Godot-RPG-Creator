@@ -446,6 +446,7 @@ size_flags_vertical = 6
 tooltip_text = "[title]Level Restriction[/title]
 Minimum level required to use this armor"
 allow_greater = true
+_custom_value = 0.0
 
 [node name="VBoxContainer4" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer"]
 layout_mode = 2
@@ -464,6 +465,7 @@ tooltip_text = "If the actor has hp or mp regeneration traits and you are out of
 page = 0.01
 allow_greater = true
 suffix = " second/s"
+_custom_value = 0.0
 
 [node name="HBoxContainer3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings"]
 layout_mode = 2
@@ -565,6 +567,7 @@ The price when purchasing the equipment in a shop. The purchase price may increa
 
 [Note]: The final purchase and sale price will depend on how the \"Purchase Ratio\" and \"Sales ratio\" parameters are configured in the shop."
 allow_greater = true
+_custom_value = 0.0
 
 [node name="LPCPart" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1"]
 layout_mode = 2
@@ -666,6 +669,7 @@ layout_mode = 2
 tooltip_text = "[title]Max HP[/title]
 Determines the value added to \"Max Hp\" parameter of an actor when the object is equipped."
 allow_greater = true
+_custom_value = 0.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer2/ParameterChanges/HboxContainer"]
 layout_mode = 2
@@ -682,6 +686,7 @@ tooltip_text = "[title]Attack[/title]
 Determines the value added to \"Attack\" parameter of an actor when the object is equipped."
 allow_greater = true
 allow_lesser = true
+_custom_value = 0.0
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer2/ParameterChanges/HboxContainer"]
 layout_mode = 2
@@ -697,6 +702,7 @@ layout_mode = 2
 tooltip_text = "[title]Magical Attack[/title]
 Determines the value added to \"Magical Attack\" parameter of an actor when the object is equipped."
 allow_greater = true
+_custom_value = 0.0
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer2/ParameterChanges/HboxContainer"]
 layout_mode = 2
@@ -713,6 +719,7 @@ tooltip_text = "[title]Agility[/title]
 Determines the value added to \"Agility\" parameter of an actor when the object is equipped."
 allow_greater = true
 allow_lesser = true
+_custom_value = 0.0
 
 [node name="HboxContainer2" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer2/ParameterChanges"]
 layout_mode = 2
@@ -731,6 +738,7 @@ layout_mode = 2
 tooltip_text = "[title]Max MP[/title]
 Determines the value added to \"Max MP\" parameter of an actor when the object is equipped."
 allow_greater = true
+_custom_value = 0.0
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer2/ParameterChanges/HboxContainer2"]
 layout_mode = 2
@@ -746,6 +754,7 @@ layout_mode = 2
 tooltip_text = "[title]Defense[/title]
 Determines the value added to \"Defense\" parameter of an actor when the object is equipped."
 allow_greater = true
+_custom_value = 0.0
 
 [node name="VBoxContainer5" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer2/ParameterChanges/HboxContainer2"]
 layout_mode = 2
@@ -761,6 +770,7 @@ layout_mode = 2
 tooltip_text = "[title]Magical Defense[/title]
 Determines the value added to \"Magical Defense\" parameter of an actor when the object is equipped."
 allow_greater = true
+_custom_value = 0.0
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer2/ParameterChanges/HboxContainer2"]
 layout_mode = 2
@@ -776,6 +786,7 @@ layout_mode = 2
 tooltip_text = "[title]Luck[/title]
 Determines the value added to \"Luck\" parameter of an actor when the object is equipped."
 allow_greater = true
+_custom_value = 0.0
 
 [node name="UserParameters" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2"]
 layout_mode = 2
@@ -906,6 +917,7 @@ Number of times this equipment can be upgraded. Use the \"Upgrade Settings\" but
 min_value = 1.0
 value = 1.0
 allow_greater = true
+_custom_value = 0.0
 
 [node name="UpgradeSettingsButton" type="TextureButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Upgrades/MarginContainer/ParameterChanges2/VBoxContainer5/HBoxContainer"]
 unique_name_in_owner = true
@@ -977,7 +989,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 tooltip_text = "[title]Craft Item[/title]
-Materials required to build this equipment."
+Materials required to build this equipment.
+
+[Note]: In-game, crafting this item requires its construction blueprint. The blueprint can either be granted through an event command or automatically unlocked the first time the armor  is dismantled."
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 text = "Craft"
 
@@ -1014,7 +1028,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 tooltip_text = "[title]Disassemble Item[/title]
-Materials obtained by breaking down this equipment."
+Materials obtained by breaking down this equipment.
+
+[Note]: Dismantling this item will grant you its construction blueprint if you have not already learned it."
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 text = "Disassemble"
 
@@ -1023,7 +1039,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-tooltip_text = "Copy the list of disassemble materials to the clipboard. This list can be pasted into any weapon/equipment."
+tooltip_text = "Copy the list of disassemble materials to the clipboard. This list can be pasted into any weapon/equipment/item disassemble.."
 mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_bsxiw")
 texture_hover = SubResource("AtlasTexture_xoohg")

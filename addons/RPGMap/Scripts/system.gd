@@ -28,11 +28,14 @@ func load_data() -> void:
 		if database.has_method("initialize"):
 			database.initialize()
 	
-	_inject_extra_data()
+	if not DatabaseLoader.is_develop_build:
+		_inject_extra_data()
 
 
 func _inject_extra_data() -> void:
 	if not database: return
+	database.migrate_to_version(DatabaseLoader.get_master_version())
+	
 	
 	#var database_path = DatabaseLoader.get_database_path()
 	#if ResourceLoader.exists(database_path):

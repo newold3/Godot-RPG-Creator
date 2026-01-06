@@ -140,15 +140,8 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_iu3fr"]
-texture = ExtResource("6_a4wet")
-texture_margin_left = 6.0
-texture_margin_top = 6.0
-texture_margin_right = 6.0
-texture_margin_bottom = 6.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_occp0"]
-texture = ExtResource("7_64e30")
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wanv4"]
+texture = ExtResource("9_a2vwq")
 texture_margin_left = 6.0
 texture_margin_top = 6.0
 texture_margin_right = 6.0
@@ -161,29 +154,15 @@ texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wanv4"]
-texture = ExtResource("9_a2vwq")
-texture_margin_left = 6.0
-texture_margin_top = 6.0
-texture_margin_right = 6.0
-texture_margin_bottom = 6.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yd8hk"]
-texture = ExtResource("6_a4wet")
-texture_margin_left = 6.0
-texture_margin_top = 6.0
-texture_margin_right = 6.0
-texture_margin_bottom = 6.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gommh"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_occp0"]
 texture = ExtResource("7_64e30")
 texture_margin_left = 6.0
 texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_37igj"]
-texture = ExtResource("8_2eb1a")
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_iu3fr"]
+texture = ExtResource("6_a4wet")
 texture_margin_left = 6.0
 texture_margin_top = 6.0
 texture_margin_right = 6.0
@@ -196,7 +175,29 @@ texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_37igj"]
+texture = ExtResource("8_2eb1a")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gommh"]
+texture = ExtResource("7_64e30")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yd8hk"]
+texture = ExtResource("6_a4wet")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
 [node name="SetWeatherEffectsDialog" type="Window"]
+oversampling_override = 1.0
 title = "Weather Effects"
 position = Vector2i(0, 36)
 size = Vector2i(500, 305)
@@ -297,6 +298,7 @@ tooltip_text = "ID of the weather scene to be added to or removed from the curre
 min_value = 1.0
 value = 1.0
 allow_greater = true
+_custom_value = 0.0
 
 [node name="WeatherScenePanel" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_ud8oq")]
 unique_name_in_owner = true
@@ -346,10 +348,10 @@ custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 tooltip_text = "[title]Ok[/title]
 Saves all changes and closes the windows."
-theme_override_styles/disabled = SubResource("StyleBoxTexture_iu3fr")
-theme_override_styles/hover = SubResource("StyleBoxTexture_occp0")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_n0new")
 theme_override_styles/normal = SubResource("StyleBoxTexture_wanv4")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_n0new")
+theme_override_styles/hover = SubResource("StyleBoxTexture_occp0")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_iu3fr")
 text = "OK"
 
 [node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_eb6nj")]
@@ -358,10 +360,10 @@ custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 tooltip_text = "[title]Cancel[/title]
 Closes this window without saving any changes."
-theme_override_styles/disabled = SubResource("StyleBoxTexture_yd8hk")
-theme_override_styles/hover = SubResource("StyleBoxTexture_gommh")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_37igj")
 theme_override_styles/normal = SubResource("StyleBoxTexture_5rb3t")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_37igj")
+theme_override_styles/hover = SubResource("StyleBoxTexture_gommh")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_yd8hk")
 text = "CANCEL"
 
 [connection signal="toggled" from="MarginContainer/VBoxContainer/OperationPanel/MarginContainer/VBoxContainer/AddEffect" to="." method="_on_add_effect_toggled"]

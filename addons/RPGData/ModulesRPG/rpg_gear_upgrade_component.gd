@@ -8,6 +8,7 @@ func get_class(): return "RPGGearUpgradeComponent"
 
 @export var component: RPGComponent = RPGComponent.new()
 @export var quantity: int = 1
+@export var percent: float = 100.0
 
 
 func clone(value: bool = true) -> RPGGearUpgradeComponent:

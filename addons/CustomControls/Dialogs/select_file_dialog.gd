@@ -332,6 +332,7 @@ func _fill_favorite_files() -> void:
 
 
 func fill_files(file_id: String, update_directory: bool = true) -> void:
+	file_type = file_id
 	current_cache_key = file_id
 	current_file_filters_data = current_cache_key
 	current_file_type = 0
@@ -971,6 +972,7 @@ func _on_rebuild_cache_pressed() -> void:
 	FileCache.rebuild()
 	await FileCache.main_scene.cache_ready
 	%Loading.visible = false
+	print([file_type_arr, file_type])
 	if file_type_arr:
 		fill_mix_files(file_type_arr)
 	else:

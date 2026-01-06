@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://b0srjsmjugonl"]
+[gd_scene load_steps=44 format=3 uid="uid://b0srjsmjugonl"]
 
 [ext_resource type="Script" uid="uid://bump7pqmi3em1" path="res://addons/RPGData/Scripts/items_panel.gd" id="1_o7gbm"]
 [ext_resource type="PackedScene" uid="uid://pc2xir2w2ox2" path="res://addons/RPGData/Scenes/panel_title.tscn" id="2_fscur"]
@@ -14,6 +14,8 @@
 [ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="9_peh6x"]
 [ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="10_52w3s"]
 [ext_resource type="PackedScene" uid="uid://ddq8ntwy5i1cp" path="res://addons/RPGData/Scenes/effects_panel.tscn" id="11_js38s"]
+[ext_resource type="PackedScene" uid="uid://dxcyqc2dscbvw" path="res://addons/CustomControls/custom_simple_column_item_list.tscn" id="15_1lb0b"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="16_m3f6y"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6s3bo"]
 resource_local_to_scene = true
@@ -120,6 +122,63 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
+[sub_resource type="Gradient" id="Gradient_m3f6y"]
+colors = PackedColorArray(0.333333, 0.352941, 0.360784, 1, 0.380392, 0.4, 0.407843, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_jgvht"]
+gradient = SubResource("Gradient_m3f6y")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nyjph"]
+texture = SubResource("GradientTexture2D_jgvht")
+
+[sub_resource type="Gradient" id="Gradient_h4tpd"]
+offsets = PackedFloat32Array(0, 0.369535, 1)
+colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_cqv4m"]
+gradient = SubResource("Gradient_h4tpd")
+fill_from = Vector2(0.547009, 1)
+fill_to = Vector2(0.559829, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jgvht"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_cqv4m")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_epxdh"]
+bg_color = Color(0, 0, 0, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nyjph"]
+atlas = ExtResource("16_m3f6y")
+region = Rect2(168, 192, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h4tpd"]
+atlas = ExtResource("16_m3f6y")
+region = Rect2(144, 192, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cqv4m"]
+atlas = ExtResource("16_m3f6y")
+region = Rect2(168, 168, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1uq56"]
+atlas = ExtResource("16_m3f6y")
+region = Rect2(120, 192, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_epxdh"]
+atlas = ExtResource("16_m3f6y")
+region = Rect2(96, 192, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bmfo7"]
+atlas = ExtResource("16_m3f6y")
+region = Rect2(72, 192, 24, 24)
+
 [node name="ItemsPanel" type="HBoxContainer"]
 anchors_preset = 15
 anchor_right = 1.0
@@ -209,7 +268,7 @@ clip_children = 0
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
-default_tabs = Array[String](["General", "Actions", "Effects", "Other"])
+default_tabs = Array[String](["General", "Actions", "Effects", "Recipes", "Other"])
 tab_name_base = ""
 background_color = Color(0, 0, 0, 0)
 tab_selected = null
@@ -962,34 +1021,122 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="BattleMessage" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4"]
+[node name="Recipies" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4"]
 layout_mode = 2
 size_flags_vertical = 3
-size_flags_stretch_ratio = 0.65
 theme_override_styles/panel = SubResource("StyleBoxFlat_8qhnf")
 
-[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/BattleMessage"]
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Recipies"]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="Message" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/BattleMessage/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Recipies/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Recipies/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Recipies"
+
+[node name="Recipies" type="ScrollContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Recipies/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+vertical_scroll_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Recipies/MarginContainer/VBoxContainer/Recipies"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="RecipesPanel" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Recipies/MarginContainer/VBoxContainer/Recipies/MarginContainer" instance=ExtResource("15_1lb0b")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
+event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
+top_bar_style = SubResource("StyleBoxTexture_nyjph")
+cursor_style = SubResource("StyleBoxTexture_jgvht")
+panel_style = SubResource("StyleBoxFlat_epxdh")
+names = PackedStringArray("Name of the recipe")
+placeholder_text = "Add new recipie..."
+enable_multiselection = true
+itemlist_tooltip = "[title]Recipe List[/title]
+List of recipes added to the selected item. Each of these recipes can be used to create one or more items of this type."
+padding_start_char = "📜 "
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Recipies/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="DisassembleButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Recipies/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("10_52w3s")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "[title]Disassemble Item[/title]
+Materials obtained by dismantling this item."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+text = "Disassemble"
+
+[node name="CopyDisassemble" type="TextureButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Recipies/MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Copy the list of disassemble materials to the clipboard. This list can be pasted into any weapon/equipment/item disassemble."
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_nyjph")
+texture_hover = SubResource("AtlasTexture_h4tpd")
+texture_disabled = SubResource("AtlasTexture_cqv4m")
+
+[node name="PasteDisassemble" type="TextureButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Recipies/MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Paste a list of previously saved disassemble materials from the clipboard"
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = SubResource("AtlasTexture_1uq56")
+texture_hover = SubResource("AtlasTexture_epxdh")
+texture_disabled = SubResource("AtlasTexture_bmfo7")
+
+[node name="Tab5" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="BattleMessage" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.65
+theme_override_styles/panel = SubResource("StyleBoxFlat_8qhnf")
+
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5/BattleMessage"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="Message" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5/BattleMessage/MarginContainer"]
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.4
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/BattleMessage/MarginContainer/Message"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5/BattleMessage/MarginContainer/Message"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/BattleMessage/MarginContainer/Message/HBoxContainer2"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5/BattleMessage/MarginContainer/Message/HBoxContainer2"]
 layout_mode = 2
 text = "Battle Message:"
 
-[node name="AutoMessageOptions" type="OptionButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/BattleMessage/MarginContainer/Message/HBoxContainer2"]
+[node name="AutoMessageOptions" type="OptionButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5/BattleMessage/MarginContainer/Message/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
@@ -1009,7 +1156,7 @@ popup/item_3/text = "A Employs B!"
 popup/item_3/id = 2
 script = ExtResource("9_mb5nf")
 
-[node name="BattleMessageTextEdit" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/BattleMessage/MarginContainer/Message" instance=ExtResource("8_phwyt")]
+[node name="BattleMessageTextEdit" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5/BattleMessage/MarginContainer/Message" instance=ExtResource("8_phwyt")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
@@ -1021,27 +1168,27 @@ Assign a fixed phrase that appears during battle when this item is used in battl
 [Note]: Messages must be one line long. If more than one line is specified, each line will be treated as a separate message, and one will be randomly selected to display."
 wrap_mode = 1
 
-[node name="Notes" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4"]
+[node name="Notes" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_8qhnf")
 
-[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Notes"]
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5/Notes"]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="Notes" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Notes/MarginContainer"]
+[node name="Notes" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5/Notes/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Notes/MarginContainer/Notes"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5/Notes/MarginContainer/Notes"]
 layout_mode = 2
 text = "Notes"
 
-[node name="NoteTextEdit" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Notes/MarginContainer/Notes" instance=ExtResource("8_phwyt")]
+[node name="NoteTextEdit" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5/Notes/MarginContainer/Notes" instance=ExtResource("8_phwyt")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -1083,6 +1230,11 @@ wrap_mode = 1
 [connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage/HBoxContainer/Control/DamageSetFormulaButton" to="." method="_on_damage_set_formula_button_pressed"]
 [connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage/HboxContainer3/VBoxContainer/DamageVarianceSpinBox" to="." method="_on_damage_variance_spin_box_value_changed"]
 [connection signal="item_selected" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage/HboxContainer3/VBoxContainer2/DamageCriticalHitsOptions" to="." method="_on_damage_critical_hits_options_item_selected"]
-[connection signal="item_selected" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/BattleMessage/MarginContainer/Message/HBoxContainer2/AutoMessageOptions" to="." method="_on_auto_message_options_item_selected"]
-[connection signal="text_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/BattleMessage/MarginContainer/Message/BattleMessageTextEdit" to="." method="_on_battle_message_text_edit_text_changed"]
-[connection signal="text_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Notes/MarginContainer/Notes/NoteTextEdit" to="." method="_on_note_text_edit_text_changed"]
+[connection signal="delete_pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Recipies/MarginContainer/VBoxContainer/Recipies/MarginContainer/RecipesPanel" to="." method="_on_recipes_panel_delete_pressed"]
+[connection signal="item_activated" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Recipies/MarginContainer/VBoxContainer/Recipies/MarginContainer/RecipesPanel" to="." method="_on_recipes_panel_item_activated"]
+[connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Recipies/MarginContainer/VBoxContainer/HBoxContainer2/DisassembleButton" to="." method="_on_disassemble_button_pressed"]
+[connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Recipies/MarginContainer/VBoxContainer/HBoxContainer2/CopyDisassemble" to="." method="_on_copy_disassemble_pressed"]
+[connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Recipies/MarginContainer/VBoxContainer/HBoxContainer2/PasteDisassemble" to="." method="_on_paste_disassemble_pressed"]
+[connection signal="item_selected" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5/BattleMessage/MarginContainer/Message/HBoxContainer2/AutoMessageOptions" to="." method="_on_auto_message_options_item_selected"]
+[connection signal="text_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5/BattleMessage/MarginContainer/Message/BattleMessageTextEdit" to="." method="_on_battle_message_text_edit_text_changed"]
+[connection signal="text_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5/Notes/MarginContainer/Notes/NoteTextEdit" to="." method="_on_note_text_edit_text_changed"]

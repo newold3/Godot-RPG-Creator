@@ -164,6 +164,8 @@ func get_class(): return "ColumnItemList"
 
 ## Tooltip for each item
 @export_multiline var items_tooltip: PackedStringArray
+
+@export var padding_start_char: String = ""
 #endregion
 
 
@@ -198,6 +200,7 @@ var custom_row_column = {}
 var current_order: Array = []
 
 var row_colors: Dictionary = {} # Dictionary[index: int] = Color / Stylebox
+var text_row_colors: Dictionary = {} # Dictionary[index: int] = Color
 
 var custom_icons: Dictionary = {} # Dictionary[index: int] = Texture
 
@@ -282,6 +285,10 @@ func disconnect_gui_input() -> void:
 # color = Color or Stylebox
 func add_row_color(index: int, color: Variant) -> void:
 	row_colors[index] = color
+
+
+func add_row_text_color(index: int, color: Color) -> void:
+	text_row_colors[index] = color
 
 
 # index = Item index
@@ -724,6 +731,8 @@ func _on_itemlist_draw() -> void:
 	
 	if cache_columns_width.size() != columns:
 		update_name_and_sizes()
+	
+	var start_padding = 0 if padding_start_char.is_empty() else font.get_string_size(padding_start_char, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
 
 	var last_item_rect: Rect2
 	if node.get_item_count() > 0:
@@ -784,11 +793,13 @@ func _on_itemlist_draw() -> void:
 						
 						var current_text_color = items_text_default_color
 						var key = str([index, real_index])
-						if custom_row_column.has(key) and custom_row_column[key] is Color:
-							current_text_color = custom_row_column[key]
-						elif columns_text_colors.size() > real_index and columns_text_colors[real_index] is Color:
-							current_text_color = columns_text_colors[real_index]
-						
+						if text_row_colors.has(index):
+							current_text_color = text_row_colors[index]
+						else:
+							if custom_row_column.has(key) and custom_row_column[key] is Color:
+								current_text_color = custom_row_column[key]
+							elif columns_text_colors.size() > real_index and columns_text_colors[real_index] is Color:
+								current_text_color = columns_text_colors[real_index]
 						# Calcular la posición x del texto, aplicando desplazamiento solo en primera columna
 						var text_x = x + text_margin_left
 						if i == 0:
@@ -796,6 +807,11 @@ func _on_itemlist_draw() -> void:
 						
 						var text = items[index][real_index]
 						var text_y = rect.position.y + y
+						
+						if not padding_start_char.is_empty():
+							if not text.begins_with(padding_start_char):
+								text_x += start_padding
+								
 						node.draw_string(
 							font,
 							Vector2(
