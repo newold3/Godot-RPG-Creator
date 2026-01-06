@@ -1,0 +1,1 @@
+Use this folder to organize your assets, scenes, scripts, and shaders. It is the only safe folder that will not be modified after an update.
