@@ -17,7 +17,7 @@ func get_data() -> RPGItem:
 
 func _update_data_fields() -> void:
 	busy = true
-	
+
 	if current_selected_index != -1:
 		disable_all(false)
 		fill_category_types()
@@ -27,12 +27,12 @@ func _update_data_fields() -> void:
 		fill_invocation_animation()
 		fill_scope()
 		_fill_recipes_list()
-		var current_data = get_data()
+		var current_data = get_data().clone(true)
 		
 		if not current_data.recipes:
 			var new_list: Array[RPGRecipe] = []
 			current_data.recipes = new_list
-		
+
 		%NameLineEdit.text = current_data.name
 		%IconPicker.set_icon(current_data.icon.path, current_data.icon.region)
 		%EffectsPanel.set_data(database, current_data.effects)
@@ -257,6 +257,7 @@ func _on_visibility_changed() -> void:
 
 
 func _on_is_perishable_option_button_item_selected(index: int) -> void:
+	if busy or not get_data() or not get_data().perishable: return
 	var current_data = get_data().perishable
 	current_data.is_perishable = index
 	%Perishable.propagate_call("set_disabled", [index == 0])
@@ -266,10 +267,12 @@ func _on_is_perishable_option_button_item_selected(index: int) -> void:
 
 
 func _on_perishable_duration_spin_box_value_changed(value: float) -> void:
+	if busy or not get_data() or not get_data().perishable: return
 	get_data().perishable.duration = value
 
 
 func _on_perishable_action_option_button_item_selected(index: int) -> void:
+	if busy or not get_data() or not get_data().perishable: return
 	get_data().perishable.action = index
 	%PerishableItemConversionButton.set_disabled(index == 0)
 
@@ -311,16 +314,19 @@ func _on_animation_button_pressed() -> void:
 
 
 func _on_animation_selected(id: int, target: Variant) -> void:
+	if busy or not get_data() or not get_data().invocation: return
 	get_data().invocation.animation = id
 	fill_invocation_animation()
 
 
 func _on_animation_button_middle_click_pressed() -> void:
+	if busy or not get_data() or not get_data().invocation: return
 	get_data().invocation.animation = -1
 	fill_invocation_animation()
 
 
 func _on_animation_button_right_click_pressed() -> void:
+	if busy or not get_data() or not get_data().invocation: return
 	get_data().invocation.animation = -2
 	fill_invocation_animation()
 

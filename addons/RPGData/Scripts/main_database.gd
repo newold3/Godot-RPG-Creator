@@ -229,7 +229,7 @@ func load_panel(path: String, _real_data) -> Control:
 	var node = panels[current_tab]
 	node.visible = false
 	%PanelContents.call_deferred("add_child", node)
-	await node.tree_entered
+	await node.ready
 	
 	node.database = data
 	if _real_data:
