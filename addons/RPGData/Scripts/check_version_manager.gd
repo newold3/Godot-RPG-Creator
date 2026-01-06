@@ -45,4 +45,4 @@ func _on_request_completed(_result: int, response_code: int, _headers: PackedStr
 
 
 func _is_newer_version(remote_ver: String) -> bool:
-	return remote_ver > CURRENT_VERSION
+	return remote_ver.naturalnocasecmp_to(CURRENT_VERSION) > 0
