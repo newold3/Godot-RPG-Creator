@@ -21,14 +21,15 @@ var _confirm_dialog: ConfirmationDialog
 
 
 func _ready() -> void:
+	# Create HTTP Request node
 	_http_request = HTTPRequest.new()
 	add_child(_http_request)
 	_http_request.request_completed.connect(_on_zip_downloaded)
 	
+	# Create UI immediately
 	_create_confirmation_dialog()
 
 
-## Creates the UI dialog to warn the user.
 func _create_confirmation_dialog() -> void:
 	_confirm_dialog = ConfirmationDialog.new()
 	_confirm_dialog.title = "Update Confirmation"
@@ -45,35 +46,47 @@ func _create_confirmation_dialog() -> void:
 	msg += "Do you want to proceed?"
 	
 	_confirm_dialog.dialog_text = msg
+	
 	_confirm_dialog.confirmed.connect(_on_user_confirmed_update)
+	_confirm_dialog.canceled.connect(_on_user_cancelled_update)
+	
 	add_child(_confirm_dialog)
 
 
-## Entry point: Call this function to show the warning and start the flow.
+## Entry point called by external scripts.
 func request_update() -> void:
 	_confirm_dialog.popup()
 
+
+## --- USER INTERACTION ---
 
 func _on_user_confirmed_update() -> void:
 	print("User confirmed update. Starting download...")
 	download_source_update()
 
 
-## Starts the download of the full project source code.
+func _on_user_cancelled_update() -> void:
+	print("Update cancelled by user.")
+	_cleanup_and_die()
+
+
+## --- LOGIC ---
+
 func download_source_update() -> void:
 	update_started.emit()
 	
-	# Save directly to a file.
 	_http_request.download_file = ProjectSettings.globalize_path("user://") + UPDATE_ZIP_FILE
 	
 	var error = _http_request.request(SOURCE_ZIP_URL)
 	if error != OK:
 		update_error.emit("Request failed.")
+		_cleanup_and_die()
 
 
 func _on_zip_downloaded(result: int, response_code: int, _headers: PackedStringArray, _body: PackedByteArray) -> void:
 	if result != HTTPRequest.RESULT_SUCCESS or response_code != 200:
 		update_error.emit("Download failed. Code: " + str(response_code))
+		_cleanup_and_die()
 		return
 	
 	print("Download complete. Extracting source...")
@@ -86,18 +99,19 @@ func _extract_zip_contents() -> void:
 	
 	if zip_reader.open(zip_path) != OK:
 		update_error.emit("Failed to open ZIP.")
+		_cleanup_and_die()
 		return
 
 	var files: PackedStringArray = zip_reader.get_files()
 	var base_extract_path: String = ProjectSettings.globalize_path(TEMP_EXTRACT_FOLDER)
 	
-	# Clean temp folder.
+	# Cleanup temp folder before starting
 	var dir = DirAccess.open("user://")
 	if dir.dir_exists(TEMP_EXTRACT_FOLDER):
 		dir.remove(TEMP_EXTRACT_FOLDER)
 	dir.make_dir_recursive(TEMP_EXTRACT_FOLDER)
 
-	# Detect root folder (e.g. "Godot-RPG-Creator-master/").
+	# Detect GitHub root folder logic
 	var root_folder_in_zip: String = ""
 	if files.size() > 0:
 		var first_file = files[0]
@@ -110,14 +124,14 @@ func _extract_zip_contents() -> void:
 			
 		var content: PackedByteArray = zip_reader.read_file(file_path)
 		
-		# Remove root folder prefix.
+		# Trim root folder
 		var clean_path: String = file_path
 		if not root_folder_in_zip.is_empty() and file_path.begins_with(root_folder_in_zip):
 			clean_path = file_path.trim_prefix(root_folder_in_zip)
 		
 		var abs_file_path: String = base_extract_path + clean_path
 		
-		# Create directories.
+		# Create directories
 		var base_dir: String = abs_file_path.get_base_dir()
 		if not DirAccess.dir_exists_absolute(base_dir):
 			DirAccess.make_dir_recursive_absolute(base_dir)
@@ -129,7 +143,6 @@ func _extract_zip_contents() -> void:
 
 	zip_reader.close()
 	
-	# CRITICAL: Merge project.godot before applying the update.
 	print("Files extracted. Merging project settings...")
 	_merge_project_settings(base_extract_path)
 	
@@ -137,11 +150,6 @@ func _extract_zip_contents() -> void:
 	_create_updater_bat(base_extract_path)
 
 
-## Merges the remote project.godot into the local one.
-## RULES:
-## 1. If a key exists in Local, KEEP Local value (User config is sacred).
-## 2. If a key does NOT exist in Local (it's new in repo), ADD it.
-## 3. EXCEPTION: Always update 'application/config/version'.
 func _merge_project_settings(temp_folder_path: String) -> void:
 	var local_config_path: String = "res://project.godot"
 	var remote_config_path: String = temp_folder_path + "project.godot"
@@ -153,42 +161,35 @@ func _merge_project_settings(temp_folder_path: String) -> void:
 	var local_config = ConfigFile.new()
 	var remote_config = ConfigFile.new()
 	
-	# 1. Load Local (Si falla, no podemos fusionar, abortamos para no romper nada)
 	if local_config.load(local_config_path) != OK:
-		push_error("Could not load local project.godot. Aborting merge to allow full overwrite.")
+		push_error("Could not load local project.godot. Aborting merge.")
 		return
 		
-	# 2. Load Remote
 	if remote_config.load(remote_config_path) != OK:
 		push_error("Could not load downloaded project.godot.")
 		return
 	
-	# 3. Iterate through REMOTE settings
 	for section in remote_config.get_sections():
 		for key in remote_config.get_section_keys(section):
 			
-			# SPECIAL CASE: Always update the version number
+			# FORCE UPDATE VERSION
 			if section == "application" and key == "config/version":
 				var new_version = remote_config.get_value(section, key)
 				local_config.set_value(section, key, new_version)
 				continue
 			
-			# GENERAL RULE: Only add if the User implies DOES NOT have it
+			# ADD ONLY IF MISSING
 			if not local_config.has_section_key(section, key):
 				var new_val = remote_config.get_value(section, key)
 				local_config.set_value(section, key, new_val)
-				print("New setting added: [%s] %s" % [section, key])
-			
-			# If local_config HAS the key, we do NOTHING. Local prevails.
 	
-	# 4. Save the hybrid file back to the TEMP folder
-	# The .bat script will take this file and copy it over the real one.
 	local_config.save(remote_config_path)
 
 
 func _create_updater_bat(source_folder: String) -> void:
 	if OS.get_name() != "Windows":
 		print("Update script only supports Windows currently.")
+		_cleanup_and_die()
 		return
 
 	var bat_path: String = ProjectSettings.globalize_path("user://updater.bat")
@@ -198,12 +199,7 @@ func _create_updater_bat(source_folder: String) -> void:
 	var script_content: String = "@echo off\r\n"
 	script_content += "timeout /t 3 /nobreak > NUL\r\n"
 	script_content += 'xcopy "%s" "%s" /E /Y /I\r\n' % [source_folder, project_root]
-	
-	# Restart logic.
-	# Usually, when running from source/editor, executable is the Editor itself.
-	# We pass '--path' to reopen this specific project.
 	script_content += 'start "" "%s" --path "%s"\r\n' % [godot_exe, project_root]
-	
 	script_content += '(goto) 2>nul & del "%~f0"'
 
 	var file = FileAccess.open(bat_path, FileAccess.WRITE)
@@ -214,3 +210,12 @@ func _create_updater_bat(source_folder: String) -> void:
 		print("Update ready. Restarting...")
 		OS.create_process(bat_path, [])
 		get_tree().quit()
+	else:
+		update_error.emit("Could not create batch file.")
+		_cleanup_and_die()
+
+
+## Helper to remove itself from the tree
+func _cleanup_and_die() -> void:
+	print("UpdateManager cleaning up.")
+	queue_free()
