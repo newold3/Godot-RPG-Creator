@@ -1,16 +1,14 @@
 @tool
 extends Node
 
-## Displays a startup warning regarding the usage of the UserContents folder.
-## Remains dormant after the first check to prevent editor crashes.
+## Displays a startup warning regarding the usage of the User_Content folder.
+## Uses ProjectSettings to persist the user's preference.
 
-const CONFIG_PATH: String = "user://startup_warning.cfg"
 const SETTING_PATH: String = "godot_rpg_creator/interface/show_startup_warning"
 const USER_SAFE_FOLDER: String = "UserContents"
 
 var _dialog: AcceptDialog
 var _checkbox: CheckBox
-# Flag to prevent the popup from appearing multiple times in the same session (e.g. when opening settings)
 var _has_shown: bool = false
 
 
@@ -19,17 +17,15 @@ func _ready() -> void:
 		queue_free()
 		return
 
-	# If we already showed the warning this session, do nothing.
 	if _has_shown:
 		return
 
-	# Wait for editor to stabilize
+	# Wait briefly to ensure the editor interface is fully loaded
 	await get_tree().create_timer(1.5).timeout
-	
-	# Double check after the timer (in case script reloaded)
-	if _has_shown: return
 
-	# Ensure the setting exists
+	if _has_shown:
+		return
+
 	if not ProjectSettings.has_setting(SETTING_PATH):
 		ProjectSettings.set_setting(SETTING_PATH, true)
 		ProjectSettings.set_initial_value(SETTING_PATH, true)
@@ -44,27 +40,17 @@ func _ready() -> void:
 
 
 func _check_and_show() -> void:
-	# Mark as shown immediately to prevent loops
 	_has_shown = true
 	
-	# 1. Check Project Settings
-	var show_by_settings = ProjectSettings.get_setting(SETTING_PATH)
-	if not show_by_settings:
-		return
+	var show_warning = ProjectSettings.get_setting(SETTING_PATH)
 	
-	# 2. Check User Preference
-	var config = ConfigFile.new()
-	var err = config.load(CONFIG_PATH)
-	if err == OK:
-		var dont_show_again = config.get_value("general", "dont_show_again", false)
-		if dont_show_again:
-			return
+	if not show_warning:
+		return
 	
 	_create_ui()
 
 
 func _create_ui() -> void:
-	# Safety cleanup if a dialog was left over
 	if _dialog:
 		_dialog.queue_free()
 		
@@ -83,12 +69,11 @@ func _create_ui() -> void:
 	var label = Label.new()
 	label.text = "Welcome to Godot RPG Creator!\n\n" + \
 	"GOLDEN RULE FOR UPDATES:\n" + \
-	"This project is updated frequently, overwriting core files.\n\n" + \
+	"This project is updated frequently via Git, overwriting core files.\n\n" + \
 	"Please save ALL your custom files (Scripts, Scenes, Assets)\n" + \
 	"inside the designated safe folder:\n\n" + \
 	"📂 res://%s/\n\n" % USER_SAFE_FOLDER + \
-	"Any file modified outside this folder may be deleted or\n" + \
-	"reset in the next update."
+	"Any file modified outside this folder WILL BE RESET in the next update."
 	
 	label.custom_minimum_size.x = 480
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -109,15 +94,20 @@ func _create_ui() -> void:
 
 
 func _on_dialog_confirmed() -> void:
-	var config = ConfigFile.new()
-	config.set_value("general", "dont_show_again", _checkbox.button_pressed)
-	config.save(CONFIG_PATH)
+	if _checkbox.button_pressed:
+		ProjectSettings.set_setting(SETTING_PATH, false)
+		
+		# Persist the setting change to project.godot
+		var err = ProjectSettings.save()
+		if err != OK:
+			printerr("Error saving project settings: ", err)
+		else:
+			print("Startup warning disabled in Project Settings.")
 	
 	_cleanup_ui()
 
 
 func _cleanup_ui() -> void:
-	# Only delete the dialog, NOT the main node (to avoid crashes)
 	if _dialog:
 		_dialog.queue_free()
 		_dialog = null
