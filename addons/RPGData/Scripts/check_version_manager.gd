@@ -220,18 +220,23 @@ func _on_animate_dots() -> void:
 
 
 func _on_manager_error(msg: String) -> void:
+	if msg == "CLOSE_SUCCESS":
+		_cleanup_ui()
+		return
+
 	_dots_timer.stop()
+	
 	if _status_label:
 		_status_label.text = "ERROR: " + msg
 		_status_label.add_theme_color_override("font_color", Color(1, 0.4, 0.4))
+	
 	if _overlay:
-		_overlay.gui_input.connect(func(event):
-			if event is InputEventMouseButton and event.pressed: _cleanup_ui()
-		)
+		# Show manual close button only on real errors
 		var btn = Button.new()
 		btn.text = "Close"
 		btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 		btn.pressed.connect(_cleanup_ui)
+		
 		var margin = _panel_container.get_child(0)
 		var vbox = margin.get_child(0)
 		vbox.add_child(HSeparator.new())

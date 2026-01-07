@@ -55,15 +55,20 @@ func _on_sha_received(_result: int, code: int, _headers: PackedStringArray, body
 		
 	_target_sha = json["sha"]
 	
+	if _local_sha == "":
+		_save_sha_to_user(_target_sha)
+		update_status.emit("Project initialized successfully.")
+		await get_tree().create_timer(1.5).timeout
+		update_error.emit("CLOSE_SUCCESS") 
+		return
+
 	if _local_sha == _target_sha:
-		update_status.emit("Project is up to date.")
-		update_error.emit("No update needed.")
+		update_status.emit("Your project is already up to date.")
+		await get_tree().create_timer(1.5).timeout
+		update_error.emit("CLOSE_SUCCESS")
 		return
 	
-	if _local_sha == "":
-		_start_zip_download()
-	else:
-		_start_incremental_update()
+	_start_incremental_update()
 
 
 func _start_zip_download() -> void:
