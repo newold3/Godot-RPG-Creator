@@ -1,7 +1,7 @@
 class_name SmartUpdateManager
 extends Node
 
-## Handles the logic for downloading, extracting, and applying updates via Git.
+## Handles logic for downloading, extracting, and applying updates via Git.
 ## Supports full ZIP downloads and incremental file updates.
 
 signal update_status(msg: String)
@@ -72,8 +72,8 @@ func _on_api_response(result: int, code: int, _headers: PackedStringArray, body:
 		update_error.emit("Invalid JSON response.")
 		return
 	
-	# Priority 1: Commit Response (Contains SHA)
-	if json.has("sha"):
+	# Initial commit check to get latest SHA
+	if json.has("sha") and not json.has("files"):
 		_remote_sha = json["sha"]
 		
 		if _local_sha.is_empty():
@@ -83,17 +83,17 @@ func _on_api_response(result: int, code: int, _headers: PackedStringArray, body:
 			update_status.emit("Up to date")
 		else:
 			update_status.emit("Analyzing version differences")
-			_http.request("https://api.github.com/repos/%s/%s/compare/%s...%s" % [REPO_OWNER, REPO_NAME, _local_sha, _remote_sha])
+			var compare_url = "https://api.github.com/repos/%s/%s/compare/%s...%s" % [REPO_OWNER, REPO_NAME, _local_sha, _remote_sha]
+			_http.request(compare_url)
 	
-	# Priority 2: Diff Response (Contains files list)
+	# Comparison results with file list
 	elif json.has("files"):
-		if _remote_sha.is_empty():
-			update_error.emit("Critical: Diff received without SHA.")
-			return
 		_process_diff(json)
 
 
 func _process_diff(data: Dictionary) -> void:
+	print("DEBUG: GitHub reported ", data["files"].size(), " changes.")
+	
 	if data.get("status") == "diverged" or data["files"].size() > 100:
 		update_status.emit("Major update. Switching to full download")
 		_start_full_download()
@@ -105,12 +105,15 @@ func _process_diff(data: Dictionary) -> void:
 	for f in data["files"]:
 		var path = f["filename"]
 		var status = f["status"]
-		var is_safe_zone = path.begins_with(USER_SAFE_FOLDER)
+		
+		if path.begins_with(USER_SAFE_FOLDER): continue
+		
+		print("DEBUG: Pending change: ", path, " (", status, ")")
 		
 		if status == "removed":
-			if not is_safe_zone: _pending_deletes.append(path)
+			_pending_deletes.append(path)
 		elif status == "renamed":
-			if not is_safe_zone: _pending_deletes.append(f["previous_filename"])
+			_pending_deletes.append(f["previous_filename"])
 			_pending_downloads.append(path)
 		else:
 			_pending_downloads.append(path)
@@ -120,9 +123,6 @@ func _process_diff(data: Dictionary) -> void:
 	else:
 		update_status.emit("Processing %d files" % [_pending_downloads.size() + _pending_deletes.size()])
 		_start_incremental_download()
-
-
-## --- FULL DOWNLOAD PATH (ZIP) ---
 
 
 func _start_full_download() -> void:
@@ -139,7 +139,6 @@ func _start_full_download() -> void:
 func _monitor_download_status() -> void:
 	var downloaded = _http.get_downloaded_bytes()
 	var total = _http.get_body_size()
-	
 	var mb_dl = downloaded / 1024.0 / 1024.0
 	
 	if total > 0:
@@ -180,9 +179,11 @@ func _zip_extraction_worker(safe_sha: String) -> void:
 	for file_path in files:
 		processed_count += 1
 		
-		# Update UI less frequently to speed up I/O
-		if processed_count % 200 == 0:
+		if processed_count % 13 == 0:
 			call_deferred("emit_signal", "update_status", "Extracting: %d / %d" % [processed_count, total_files])
+		
+		if processed_count % 100 == 0:
+			OS.delay_msec(25)
 		
 		if file_path.ends_with("/"): continue
 		
@@ -200,9 +201,6 @@ func _zip_extraction_worker(safe_sha: String) -> void:
 	call_deferred("_finalize_update_process", safe_sha)
 
 
-## --- INCREMENTAL PATH ---
-
-
 func _start_incremental_download() -> void:
 	var dir = DirAccess.open("user://")
 	dir.make_dir_recursive(TEMP_FOLDER)
@@ -216,17 +214,20 @@ func _incremental_worker(safe_sha: String) -> void:
 	
 	for file_path in _pending_downloads:
 		count += 1
-		
 		call_deferred("emit_signal", "update_status", "Downloading file %d of %d" % [count, total])
 		
 		var raw_url = "/%s/%s/%s/%s" % [REPO_OWNER, REPO_NAME, BRANCH, file_path.uri_encode()]
 		var err = http_client.connect_to_host("raw.githubusercontent.com", 443, TLSOptions.client())
+		
 		if err == OK:
 			while http_client.get_status() == HTTPClient.STATUS_CONNECTING or http_client.get_status() == HTTPClient.STATUS_RESOLVING:
 				http_client.poll(); OS.delay_msec(10)
+			
 			http_client.request(HTTPClient.METHOD_GET, raw_url, PackedStringArray(["User-Agent: GodotUpdater"]))
+			
 			while http_client.get_status() == HTTPClient.STATUS_REQUESTING:
 				http_client.poll(); OS.delay_msec(10)
+				
 			if http_client.has_response() and http_client.get_response_code() == 200:
 				var body = PackedByteArray()
 				while http_client.get_status() == HTTPClient.STATUS_BODY:
@@ -234,19 +235,16 @@ func _incremental_worker(safe_sha: String) -> void:
 					var chunk = http_client.read_response_body_chunk()
 					if chunk.size() > 0: body.append_array(chunk)
 				_save_temp_file(file_path, body)
+			
 			http_client.close()
 	
 	if not _pending_deletes.is_empty():
 		var f_del = FileAccess.open(TEMP_FOLDER + DELETE_LIST_FILE, FileAccess.WRITE)
 		for del_path in _pending_deletes:
-			if not del_path.begins_with(USER_SAFE_FOLDER):
-				f_del.store_line(del_path.replace("/", "\\"))
+			f_del.store_line(del_path.replace("/", "\\"))
 		f_del.close()
 	
 	call_deferred("_finalize_update_process", safe_sha)
-
-
-## --- UTILS ---
 
 
 func _save_temp_file(path: String, content: PackedByteArray) -> void:
@@ -254,7 +252,9 @@ func _save_temp_file(path: String, content: PackedByteArray) -> void:
 	var base_dir = full_path.get_base_dir()
 	if not DirAccess.dir_exists_absolute(base_dir):
 		DirAccess.make_dir_recursive_absolute(base_dir)
-	if path == "project.godot": _merge_configs(full_path, content)
+	
+	if path == "project.godot": 
+		_merge_configs(full_path, content)
 	else:
 		var f = FileAccess.open(full_path, FileAccess.WRITE)
 		if f: f.store_buffer(content)
@@ -267,8 +267,10 @@ func _merge_configs(temp_path: String, new_content: PackedByteArray) -> void:
 	local.load("res://project.godot"); remote.load(temp_path)
 	for s in remote.get_sections():
 		for k in remote.get_section_keys(s):
-			if s == "application" and k == "config/version": local.set_value(s, k, remote.get_value(s, k))
-			elif not local.has_section_key(s, k): local.set_value(s, k, remote.get_value(s, k))
+			if s == "application" and k == "config/version": 
+				local.set_value(s, k, remote.get_value(s, k))
+			elif not local.has_section_key(s, k): 
+				local.set_value(s, k, remote.get_value(s, k))
 	local.save(temp_path)
 
 
@@ -289,38 +291,27 @@ func _create_bat_script() -> void:
 	if OS.get_name() != "Windows": return
 	
 	var bat_path = ProjectSettings.globalize_path("user://updater.bat")
-	
-	# TRIM SUFFIX is crucial to allow appending quotes in BAT without escaping them
 	var project_root = ProjectSettings.globalize_path("res://").replace("/", "\\").trim_suffix("\\")
 	var temp_root = ProjectSettings.globalize_path(TEMP_FOLDER).replace("/", "\\").trim_suffix("\\")
-	
 	var godot_exe = OS.get_executable_path().replace("/", "\\")
 	var user_sha_dest = ProjectSettings.globalize_path("user://version_sha.txt").replace("/", "\\")
 	var delete_list_path = temp_root + "\\" + DELETE_LIST_FILE
 	
 	var script = "@echo off\r\n"
-	script += "timeout /t 5 /nobreak > NUL\r\n"
+	script += "timeout /t 10 /nobreak > NUL\r\n"
 	
-	# Process Deletions
-	# NOTE: We use %%%%f to generate %%f in the final file (required for BAT loops)
 	script += 'if exist "%s" (\r\n' % delete_list_path
 	script += '  for /f "usebackq delims=" %%%%f in ("%s") do (\r\n' % delete_list_path
 	script += '    if exist "%s\\%%%%f" del /f /q "%s\\%%%%f"\r\n' % [project_root, project_root]
 	script += '  )\r\n'
 	script += ')\r\n'
 	
-	# Overwrite Files
-	script += 'xcopy "%s\\*" "%s" /Y /S /E /I\r\n' % [temp_root, project_root]
-	
-	# Update Local SHA
+	script += 'xcopy "%s\\*" "%s" /Y /S /E /I /R /K\r\n' % [temp_root, project_root]
 	script += 'copy /Y "%s\\version_sha.txt" "%s"\r\n' % [temp_root, user_sha_dest]
-	
-	# Cleanup
 	script += 'rmdir /s /q "%s"\r\n' % temp_root
 	
-	# Restart Godot
 	script += 'start "" "%s" --path "%s" -e\r\n' % [godot_exe.trim_suffix("\\"), project_root]
-	script += '(goto) 2>nul & del "%~f0"'
+	script += '(goto) 2>nul & del "%%~f0"'
 	
 	var f = FileAccess.open(bat_path, FileAccess.WRITE)
 	f.store_string(script)
@@ -341,5 +332,4 @@ func _on_thread_finished() -> void:
 	if FileAccess.file_exists(bat_path):
 		var args = ["/c", bat_path]
 		OS.create_process("cmd.exe", args)
-
 		get_tree().quit()
