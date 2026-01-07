@@ -39,7 +39,6 @@ func _ready() -> void:
 
 	if Engine.is_editor_hint():
 		_cleanup_ui()
-		
 		if DatabaseLoader.is_develop_build:
 			_setup_dev_autosync()
 		else:
