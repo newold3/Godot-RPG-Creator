@@ -288,11 +288,15 @@ func _create_bat_script() -> void:
 	if OS.get_name() != "Windows": return
 	
 	var bat_path = ProjectSettings.globalize_path("user://updater.bat")
-	var project_root = ProjectSettings.globalize_path("res://").replace("/", "\\")
-	var temp_root = ProjectSettings.globalize_path(TEMP_FOLDER).replace("/", "\\")
+	
+	# FIX: Trim suffix "\" to ensure quotes are not escaped in BAT command
+	# Example: "C:\Path\" -> BAD. "C:\Path" -> GOOD.
+	var project_root = ProjectSettings.globalize_path("res://").replace("/", "\\").trim_suffix("\\")
+	var temp_root = ProjectSettings.globalize_path(TEMP_FOLDER).replace("/", "\\").trim_suffix("\\")
+	
 	var godot_exe = OS.get_executable_path().replace("/", "\\")
 	var user_sha_dest = ProjectSettings.globalize_path("user://version_sha.txt").replace("/", "\\")
-	var delete_list_path = temp_root + DELETE_LIST_FILE
+	var delete_list_path = temp_root + "\\" + DELETE_LIST_FILE
 	
 	var script = "@echo off\r\n"
 	script += "timeout /t 5 /nobreak > NUL\r\n"
@@ -300,21 +304,22 @@ func _create_bat_script() -> void:
 	# Process Deletions
 	script += 'if exist "%s" (\r\n' % delete_list_path
 	script += '  for /f "usebackq delims=" %%f in ("%s") do (\r\n' % delete_list_path
+	# We added back the "\" separator since we trimmed the root
 	script += '    if exist "%s\\%%f" del /f /q "%s\\%%f"\r\n' % [project_root, project_root]
 	script += '  )\r\n'
 	script += ')\r\n'
 	
-	# Overwrite Files
-	script += 'xcopy "%s*" "%s" /Y /S /E /I\r\n' % [temp_root, project_root]
+	# Overwrite Files (xcopy needs trailing \* for content copy)
+	script += 'xcopy "%s\\*" "%s" /Y /S /E /I\r\n' % [temp_root, project_root]
 	
 	# Update Local SHA
-	script += 'copy /Y "%sversion_sha.txt" "%s"\r\n' % [temp_root, user_sha_dest]
+	script += 'copy /Y "%s\\version_sha.txt" "%s"\r\n' % [temp_root, user_sha_dest]
 	
 	# Cleanup
 	script += 'rmdir /s /q "%s"\r\n' % temp_root
 	
 	# Restart Godot
-	script += 'start "" "%s" --path "%s" -e\r\n' % [godot_exe.trim_suffix("\\"), project_root.trim_suffix("\\")]
+	script += 'start "" "%s" --path "%s" -e\r\n' % [godot_exe.trim_suffix("\\"), project_root]
 	script += '(goto) 2>nul & del "%~f0"'
 	
 	var f = FileAccess.open(bat_path, FileAccess.WRITE)
@@ -334,5 +339,6 @@ func _on_thread_finished() -> void:
 	
 	var bat_path = ProjectSettings.globalize_path("user://updater.bat")
 	if FileAccess.file_exists(bat_path):
+		# FIX: Reverted to create_process for proper detachment
 		OS.create_process(bat_path, [])
 		get_tree().quit()
