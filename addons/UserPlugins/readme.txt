@@ -1,0 +1,1 @@
+Add non-core plugins to this folder to ensure that an update never deletes them.
