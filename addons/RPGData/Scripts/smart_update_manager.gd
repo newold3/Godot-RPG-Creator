@@ -13,7 +13,7 @@ signal update_error(msg: String)
 
 const REPO_OWNER: String = "newold3"
 const REPO_NAME: String = "Godot-RPG-Creator"
-const BRANCH: String = "master"
+const BRANCH: String = "develop"
 
 ## The folder where user custom files are safe from deletion.
 const USER_SAFE_FOLDER: String = "UserContents/"

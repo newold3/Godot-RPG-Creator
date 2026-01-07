@@ -10,7 +10,7 @@ signal update_found(new_version: String)
 ## Reference to the HTTPRequest node.
 var _http_request: HTTPRequest
 
-## Reference to the initial confirmation dialog.
+## Reference to the initial confirmation dialog. Created only if needed.
 var _pre_update_dialog: ConfirmationDialog
 
 
@@ -19,48 +19,33 @@ func _ready() -> void:
 	add_child(_http_request)
 	_http_request.request_completed.connect(_on_request_completed)
 
-	_create_pre_update_dialog()
-	
-	# Uncomment this if you want to check automatically on startup
 	if Engine.is_editor_hint():
+		await get_tree().create_timer(4.0).timeout
 		check_for_updates()
 
 
-func _create_pre_update_dialog() -> void:
-	_pre_update_dialog = ConfirmationDialog.new()
-	_pre_update_dialog.title = "New Version Available"
-	_pre_update_dialog.min_size = Vector2(300, 100)
-	_pre_update_dialog.initial_position = Window.WINDOW_INITIAL_POSITION_CENTER_MAIN_WINDOW_SCREEN
-	
-	# If user clicks "OK", we load the heavy UpdateManager
-	_pre_update_dialog.confirmed.connect(_instantiate_update_manager)
-	
-	add_child(_pre_update_dialog)
-
-
 func check_for_updates() -> void:
-	print("Checking for updates...")
 	_http_request.request(version_check_url)
 
 
 func _on_request_completed(_result: int, response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
 	if response_code != 200:
-		print("Failed to reach update server.")
 		return
 	
 	var response_text: String = body.get_string_from_utf8().strip_edges()
 	
 	if response_text.begins_with("version:"):
-		var remote_version: String = response_text.split(":")[1].strip_edges()
-		
-		if _is_newer_version(remote_version):
-			print("Update available: %s" % remote_version)
-			update_found.emit(remote_version)
-			_show_update_dialog(remote_version)
-		else:
-			print("Up to date.")
+		var parts = response_text.split(":")
+		if parts.size() > 1:
+			var remote_version: String = parts[1].strip_edges()
+			
+			if _is_newer_version(remote_version):
+				print("New version found: %s" % remote_version)
+				update_found.emit(remote_version)
+				
+				call_deferred("_show_update_dialog", remote_version)
 	else:
-		print("Invalid version file format.")
+		printerr("Invalid version file format from server.")
 
 
 func _is_newer_version(remote_ver: String) -> bool:
@@ -70,12 +55,25 @@ func _is_newer_version(remote_ver: String) -> bool:
 
 
 func _show_update_dialog(new_version: String) -> void:
+	if not _pre_update_dialog:
+		_create_pre_update_dialog()
+	
 	_pre_update_dialog.dialog_text = "A new version of Godot RPG Creator is available: v%s\n\nDo you want to update now?" % new_version
 	_pre_update_dialog.popup_centered()
 
 
+func _create_pre_update_dialog() -> void:
+	_pre_update_dialog = ConfirmationDialog.new()
+	_pre_update_dialog.title = "New Version Available"
+	_pre_update_dialog.min_size = Vector2(300, 100)
+	_pre_update_dialog.initial_position = Window.WINDOW_INITIAL_POSITION_CENTER_MAIN_WINDOW_SCREEN
+	
+	_pre_update_dialog.confirmed.connect(_instantiate_update_manager)
+	
+	add_child(_pre_update_dialog)
+
+
 func _instantiate_update_manager() -> void:
-	# Instantiates the heavy manager logic only when needed
-	var manager = UpdateManager.new()
+	var manager = SmartUpdateManager.new()
 	add_child(manager)
-	manager.request_update()
+	manager.check_updates()
