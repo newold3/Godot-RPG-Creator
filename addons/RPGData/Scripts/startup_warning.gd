@@ -14,6 +14,8 @@ var _has_shown: bool = false
 
 
 func _ready() -> void:
+	if DatabaseLoader.is_develop_build: return
+	
 	if not Engine.is_editor_hint():
 		queue_free()
 		return

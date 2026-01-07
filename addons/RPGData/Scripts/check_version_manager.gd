@@ -1,8 +1,8 @@
 @tool
 extends Node
 
-## Checks for updates from a remote Gist file.
-## In develop mode, it periodically syncs the local SHA with the master branch.
+## Checks for updates and syncs dev SHA.
+## Optimized to ensure DatabaseLoader is ready before checking flags.
 
 signal update_found(new_version: String)
 
@@ -39,16 +39,24 @@ func _ready() -> void:
 
 	if Engine.is_editor_hint():
 		_cleanup_ui()
-		if DatabaseLoader.is_develop_build:
-			_setup_dev_autosync()
-		else:
-			await get_tree().create_timer(4.0).timeout
-			if not is_instance_valid(self) or not is_inside_tree(): return
+		_initialize_logic()
+
+
+func _initialize_logic() -> void:
+	DatabaseLoader.setup()
+	await get_tree().create_timer(1.0).timeout
+	
+	if not is_instance_valid(self) or not is_inside_tree(): return
+	
+	if DatabaseLoader.is_develop_build:
+		_setup_dev_autosync()
+	else:
+		await get_tree().create_timer(3.0).timeout
+		if is_instance_valid(self):
 			check_for_updates()
 
 
 func _setup_dev_autosync() -> void:
-	## Setup for Newold's environment to keep version_sha.txt updated.
 	_http_dev = HTTPRequest.new()
 	add_child(_http_dev)
 	_http_dev.request_completed.connect(_on_dev_sha_received)
@@ -66,7 +74,6 @@ func _setup_dev_autosync() -> void:
 func _check_github_sha_dev() -> void:
 	if _http_dev.get_http_client_status() != HTTPClient.STATUS_DISCONNECTED:
 		return
-	
 	var headers = ["User-Agent: Godot-RPG-Creator-Dev-Sync"]
 	_http_dev.request(GITHUB_API_URL, headers)
 
@@ -88,7 +95,7 @@ func _on_dev_sha_received(_result: int, code: int, _headers: PackedStringArray, 
 		if f:
 			f.store_string(remote_sha)
 			f.close()
-			print("[DEV AUTO-SYNC] Updated res:// version_sha.txt to master SHA: ", remote_sha.left(7))
+			print("[DEV AUTO-SYNC] Updated res:// version_sha.txt to: ", remote_sha.left(7))
 
 
 func _exit_tree() -> void:
@@ -100,16 +107,13 @@ func check_for_updates() -> void:
 
 
 func _on_request_completed(_result: int, response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
-	if response_code != 200:
-		return
+	if response_code != 200: return
 	
 	var response_text: String = body.get_string_from_utf8().strip_edges()
-	
 	if response_text.begins_with("version:"):
 		var parts = response_text.split(":")
 		if parts.size() > 1:
 			var remote_version: String = parts[1].strip_edges()
-			
 			if _is_newer_version(remote_version):
 				update_found.emit(remote_version)
 				_wait_and_show_dialog(remote_version)
@@ -123,17 +127,14 @@ func _is_newer_version(remote_ver: String) -> bool:
 func _wait_and_show_dialog(new_version: String) -> void:
 	while get_tree().get_nodes_in_group(BLOCKING_GROUP).size() > 0:
 		await get_tree().create_timer(0.5).timeout
-	
 	if not is_instance_valid(self) or not is_inside_tree(): return
 	_show_update_dialog(new_version)
 
 
 func _show_update_dialog(new_version: String) -> void:
 	if not is_instance_valid(self) or not is_inside_tree(): return
-	
 	if not _pre_update_dialog:
 		_create_pre_update_dialog()
-	
 	_pre_update_dialog.dialog_text = "A new version of Godot RPG Creator is available: v%s\n\nDo you want to update now?" % new_version
 	_pre_update_dialog.popup_centered()
 
@@ -149,20 +150,16 @@ func _create_pre_update_dialog() -> void:
 
 func _instantiate_update_manager() -> void:
 	_create_progress_ui()
-	
 	var manager = SmartUpdateManager.new()
 	add_child(manager)
-	
 	manager.update_status.connect(_on_manager_status)
 	manager.update_error.connect(_on_manager_error)
-	
 	manager.check_updates()
 
 
 func _create_progress_ui() -> void:
 	var base_control = EditorInterface.get_base_control()
 	if not base_control: return
-
 	_overlay = ColorRect.new()
 	_overlay.color = Color(0, 0, 0, 0.8)
 	_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -170,16 +167,13 @@ func _create_progress_ui() -> void:
 	_overlay.focus_mode = Control.FOCUS_ALL
 	base_control.add_child(_overlay)
 	_overlay.grab_focus()
-	
 	_panel_container = PanelContainer.new()
 	_panel_container.custom_minimum_size = Vector2(400, 150)
 	_panel_container.layout_mode = 1 
 	_panel_container.anchors_preset = Control.PRESET_CENTER
 	_overlay.add_child(_panel_container)
-	
 	var vbox = VBoxContainer.new()
 	vbox.add_theme_constant_override("separation", 15)
-	
 	var margin = MarginContainer.new()
 	margin.add_theme_constant_override("margin_top", 20)
 	margin.add_theme_constant_override("margin_bottom", 20)
@@ -187,33 +181,26 @@ func _create_progress_ui() -> void:
 	margin.add_theme_constant_override("margin_right", 20)
 	margin.add_child(vbox)
 	_panel_container.add_child(margin)
-	
 	var title = Label.new()
 	title.text = "UPDATING RPG CREATOR"
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_font_size_override("font_size", 18)
 	title.add_theme_color_override("font_color", Color(0.4, 0.7, 1.0))
 	vbox.add_child(title)
-	
 	vbox.add_child(HSeparator.new())
-	
 	_status_label = Label.new()
 	_status_label.text = "Initializing..."
 	_status_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	vbox.add_child(_status_label)
-	
 	_dots_timer.start()
 
 
 func _on_manager_status(msg: String) -> void:
 	_base_text = msg
-	if _status_label:
-		_status_label.text = msg
-	
+	if _status_label: _status_label.text = msg
 	if "Extracting" in msg:
-		if not _dots_timer.is_stopped():
-			_dots_timer.stop()
+		if not _dots_timer.is_stopped(): _dots_timer.stop()
 	else:
 		if _dots_timer.is_stopped():
 			_dots_timer.start()
@@ -237,11 +224,9 @@ func _on_manager_error(msg: String) -> void:
 	if _status_label:
 		_status_label.text = "ERROR: " + msg
 		_status_label.add_theme_color_override("font_color", Color(1, 0.4, 0.4))
-	
 	if _overlay:
 		_overlay.gui_input.connect(func(event):
-			if event is InputEventMouseButton and event.pressed:
-				_cleanup_ui()
+			if event is InputEventMouseButton and event.pressed: _cleanup_ui()
 		)
 		var btn = Button.new()
 		btn.text = "Close"

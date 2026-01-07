@@ -1,19 +1,20 @@
 class_name SmartUpdateManager
 extends Node
 
-## Unified Update Manager for Godot RPG Creator.
-## In dev mode, it strictly uses user:// to avoid conflicts with master branch files.
+## Hybrid Update Manager for Godot RPG Creator.
+## Handles ZIP for full installs and Incremental for patches with Windows stability.
 
 signal update_status(msg: String)
 signal update_error(msg: String)
 
 const REPO_OWNER: String = "newold3"
 const REPO_NAME: String = "Godot-RPG-Creator-4.5.6-"
-const BRANCH: String = "develop"
+const BRANCH: String = "master"
 
 const SHA_USER_FILE: String = "user://version_sha.txt"
 const SHA_RES_FILE: String = "res://addons/RPGData/version_sha.txt"
 const TEMP_FOLDER: String = "user://temp_update_data/"
+const TEMP_ZIP_PATH: String = "user://update_package.zip"
 
 var _http: HTTPRequest
 var _local_sha: String = ""
@@ -23,18 +24,13 @@ var _thread: Thread
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	
 	_http = HTTPRequest.new()
 	add_child(_http)
 	_http.request_completed.connect(_on_sha_received)
-	
 	_initialize_local_sha()
 
 
 func _initialize_local_sha() -> void:
-	# Priority logic:
-	# In develop mode, we ONLY trust user:// to test incremental updates.
-	# res:// is only a fallback for fresh end-user installs.
 	if FileAccess.file_exists(SHA_USER_FILE):
 		_local_sha = FileAccess.get_file_as_string(SHA_USER_FILE).strip_edges()
 	elif not DatabaseLoader.is_develop_build and FileAccess.file_exists(SHA_RES_FILE):
@@ -59,24 +55,83 @@ func _on_sha_received(_result: int, code: int, _headers: PackedStringArray, body
 		
 	_target_sha = json["sha"]
 	
-	# Final check: In dev mode we don't look at res:// sha to avoid 'master' interference
 	if _local_sha == _target_sha:
-		_save_sha_to_user(_target_sha)
 		update_status.emit("Project is up to date.")
 		update_error.emit("No update needed.")
 		return
 	
 	if _local_sha == "":
-		_start_full_download()
+		_start_zip_download()
 	else:
 		_start_incremental_update()
 
 
-func _start_full_download() -> void:
-	update_status.emit("Initial download...")
-	_http.request_completed.disconnect(_on_sha_received)
-	_http.request_completed.connect(_on_tree_received)
-	_http.request("https://api.github.com/repos/%s/%s/git/trees/%s?recursive=1" % [REPO_OWNER, REPO_NAME, BRANCH])
+func _start_zip_download() -> void:
+	update_status.emit("Downloading full project (ZIP)...")
+	var zip_url = "https://github.com/%s/%s/archive/refs/heads/%s.zip" % [REPO_OWNER, REPO_NAME, BRANCH]
+	
+	for sig in _http.request_completed.get_connections():
+		_http.request_completed.disconnect(sig.callable)
+		
+	_http.request_completed.connect(_on_zip_received)
+	_http.request(zip_url)
+
+
+func _on_zip_received(_result: int, code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
+	if code != 200:
+		update_error.emit("Failed to download ZIP")
+		return
+		
+	var f = FileAccess.open(TEMP_ZIP_PATH, FileAccess.WRITE)
+	if f:
+		f.store_buffer(body)
+		f.close()
+		update_status.emit("Extracting files...")
+		_thread = Thread.new()
+		_thread.start(_threaded_zip_process)
+	else:
+		update_error.emit("Could not save temporary ZIP to disk")
+
+
+func _threaded_zip_process() -> void:
+	var zip = ZIPReader.new()
+	var err = zip.open(TEMP_ZIP_PATH)
+	
+	if err != OK:
+		call_deferred("emit_signal", "update_error", "Failed to open ZIP (Error %d)" % err)
+		return
+		
+	var files = zip.get_files()
+	if files.is_empty():
+		zip.close()
+		call_deferred("emit_signal", "update_error", "ZIP is empty")
+		return
+
+	var root_folder = files[0] 
+	var total_files = files.size()
+	var processed_count = 0
+	
+	for path in files:
+		processed_count += 1
+		if path.ends_with("/"): continue
+		
+		# Feedback and saturation control
+		call_deferred("emit_signal", "update_status", "Extracting (%d/%d):\n%s" % [processed_count, total_files, path.get_file()])
+		
+		var internal_path = path.replace(root_folder, "")
+		if internal_path.begins_with("UserContents/"): continue
+		
+		var content = zip.read_file(path)
+		_write_to_temp(internal_path, content)
+		
+		if processed_count % 50 == 0:
+			OS.delay_msec(50)
+	
+	zip.close()
+	if FileAccess.file_exists(TEMP_ZIP_PATH):
+		DirAccess.remove_absolute(TEMP_ZIP_PATH)
+	
+	call_deferred("_finalize_update")
 
 
 func _start_incremental_update() -> void:
@@ -84,19 +139,6 @@ func _start_incremental_update() -> void:
 	_http.request_completed.disconnect(_on_sha_received)
 	_http.request_completed.connect(_on_comparison_received)
 	_http.request("https://api.github.com/repos/%s/%s/compare/%s...%s" % [REPO_OWNER, REPO_NAME, _local_sha, _target_sha])
-
-
-func _on_tree_received(_result: int, code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
-	if code != 200:
-		update_error.emit("Failed to fetch tree")
-		return
-		
-	var json = JSON.parse_string(body.get_string_from_utf8())
-	var files: Array = []
-	for item in json.get("tree", []):
-		if item["type"] == "blob" and not item["path"].begins_with("UserContents/"):
-			files.append(item["path"])
-	_launch_thread(files)
 
 
 func _on_comparison_received(_result: int, code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
@@ -109,24 +151,23 @@ func _on_comparison_received(_result: int, code: int, _headers: PackedStringArra
 	for f in json.get("files", []):
 		if not f["filename"].begins_with("UserContents/"):
 			files.append(f["filename"])
-	_launch_thread(files)
-
-
-func _launch_thread(files: Array) -> void:
+	
 	if files.is_empty():
 		_save_sha_to_user(_target_sha)
 		update_error.emit("No changes found.")
 		return
+		
+	update_status.emit("Downloading %d updated files..." % files.size())
 	_thread = Thread.new()
-	_thread.start(_threaded_download_process.bind(files))
+	_thread.start(_threaded_incremental_process.bind(files))
 
 
-func _threaded_download_process(files: Array) -> void:
+func _threaded_incremental_process(files: Array) -> void:
 	var count = 0
 	var total = files.size()
 	for path in files:
 		count += 1
-		call_deferred("emit_signal", "update_status", "Downloading (%d/%d): %s" % [count, total, path.get_file()])
+		call_deferred("emit_signal", "update_status", "Patching (%d/%d):\n%s" % [count, total, path.get_file()])
 		var result = _sync_download("https://raw.githubusercontent.com/%s/%s/%s/%s" % [REPO_OWNER, REPO_NAME, BRANCH, path.uri_encode()])
 		if result.is_empty():
 			call_deferred("emit_signal", "update_error", "Failed: " + path)
@@ -140,7 +181,7 @@ func _sync_download(url: String) -> PackedByteArray:
 	client.connect_to_host("raw.githubusercontent.com", 443, TLSOptions.client())
 	while client.get_status() < 3: client.poll(); OS.delay_msec(5)
 	if client.get_status() != 3: return PackedByteArray()
-	client.request(HTTPClient.METHOD_GET, url.replace("https://raw.githubusercontent.com", ""), [])
+	client.request(HTTPClient.METHOD_GET, url.replace("https://raw.githubusercontent.com", ""), ["User-Agent: Godot-Updater"])
 	while client.get_status() == HTTPClient.STATUS_REQUESTING: client.poll(); OS.delay_msec(5)
 	var rb = PackedByteArray()
 	while client.get_status() == HTTPClient.STATUS_BODY:

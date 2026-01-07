@@ -42,7 +42,7 @@ func _setup_update_button() -> void:
 	# Icon from editor theme (Reload icon)
 	var editor_base = get_editor_interface().get_base_control()
 	update_button.icon = editor_base.get_theme_icon("Reload", "EditorIcons")
-	update_button.tooltip_text = "Check for RPG Creator Updates"
+	update_button.tooltip_text = "[title]Updates[/title]\nCheck for RPG Creator Updates"
 	update_button.pressed.connect(_on_update_button_pressed)
 	update_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	
