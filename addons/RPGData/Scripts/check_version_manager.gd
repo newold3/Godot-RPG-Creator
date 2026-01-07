@@ -1,17 +1,16 @@
 @tool
 extends Node
 
-## Emitted when a newer version is found.
+## Checks for updates from a remote Gist file.
+## Waits for other startup warnings to close before showing UI.
+
 signal update_found(new_version: String)
 
-## URL to the raw text file.
 @export var version_check_url: String = "https://gist.githubusercontent.com/newold3/3ff01f9859cc46ae86b8eb5344cbb800/raw/godot_rpg_creator_version.txt"
 
-## Reference to the HTTPRequest node.
 var _http_request: HTTPRequest
-
-## Reference to the initial confirmation dialog. Created only if needed.
 var _pre_update_dialog: ConfirmationDialog
+const BLOCKING_GROUP: String = "startup_blocking_window" # Must match StartupWarning script
 
 
 func _ready() -> void:
@@ -21,6 +20,7 @@ func _ready() -> void:
 
 	if Engine.is_editor_hint():
 		await get_tree().create_timer(4.0).timeout
+		if not is_instance_valid(self) or not is_inside_tree(): return
 		check_for_updates()
 
 
@@ -43,18 +43,28 @@ func _on_request_completed(_result: int, response_code: int, _headers: PackedStr
 				print("New version found: %s" % remote_version)
 				update_found.emit(remote_version)
 				
-				call_deferred("_show_update_dialog", remote_version)
+				_wait_and_show_dialog(remote_version)
 	else:
-		printerr("Invalid version file format from server.")
+		printerr("Invalid version file format.")
 
 
 func _is_newer_version(remote_ver: String) -> bool:
 	var current_version: String = ProjectSettings.get_setting("application/config/version")
-	# Returns > 0 if remote_ver is naturally "larger" (newer) than current_version.
 	return remote_ver.naturalnocasecmp_to(current_version) > 0
 
 
+func _wait_and_show_dialog(new_version: String) -> void:
+	# Loop while the blocking group has members
+	while get_tree().get_nodes_in_group(BLOCKING_GROUP).size() > 0:
+		await get_tree().create_timer(0.5).timeout
+	
+	if not is_instance_valid(self) or not is_inside_tree(): return
+	_show_update_dialog(new_version)
+
+
 func _show_update_dialog(new_version: String) -> void:
+	if not is_instance_valid(self) or not is_inside_tree(): return
+	
 	if not _pre_update_dialog:
 		_create_pre_update_dialog()
 	
@@ -68,7 +78,7 @@ func _create_pre_update_dialog() -> void:
 	_pre_update_dialog.min_size = Vector2(300, 100)
 	_pre_update_dialog.initial_position = Window.WINDOW_INITIAL_POSITION_CENTER_MAIN_WINDOW_SCREEN
 	
-	_pre_update_dialog.confirmed.connect(_instantiate_update_manager)
+	_pre_update_dialog.confirmed.connect(func(): call_deferred("_instantiate_update_manager"))
 	
 	add_child(_pre_update_dialog)
 

@@ -6,6 +6,7 @@ extends Node
 
 const SETTING_PATH: String = "godot_rpg_creator/interface/show_startup_warning"
 const USER_SAFE_FOLDER: String = "UserContents"
+const BLOCKING_GROUP: String = "startup_blocking_window"
 
 var _dialog: AcceptDialog
 var _checkbox: CheckBox
@@ -22,6 +23,8 @@ func _ready() -> void:
 
 	# Wait briefly to ensure the editor interface is fully loaded
 	await get_tree().create_timer(1.5).timeout
+	
+	if not is_instance_valid(self) or not is_inside_tree(): return
 
 	if _has_shown:
 		return
@@ -59,7 +62,8 @@ func _create_ui() -> void:
 	_dialog.initial_position = Window.WINDOW_INITIAL_POSITION_CENTER_MAIN_WINDOW_SCREEN
 	_dialog.min_size = Vector2(520, 300)
 	
-	# Non-exclusive to prevent conflicts with other editor windows
+	_dialog.add_to_group(BLOCKING_GROUP)
+	
 	_dialog.exclusive = false
 	_dialog.transient = true 
 	
@@ -96,8 +100,6 @@ func _create_ui() -> void:
 func _on_dialog_confirmed() -> void:
 	if _checkbox.button_pressed:
 		ProjectSettings.set_setting(SETTING_PATH, false)
-		
-		# Persist the setting change to project.godot
 		var err = ProjectSettings.save()
 		if err != OK:
 			printerr("Error saving project settings: ", err)
@@ -109,5 +111,7 @@ func _on_dialog_confirmed() -> void:
 
 func _cleanup_ui() -> void:
 	if _dialog:
+		if _dialog.is_in_group(BLOCKING_GROUP):
+			_dialog.remove_from_group(BLOCKING_GROUP)
 		_dialog.queue_free()
 		_dialog = null
