@@ -20,6 +20,9 @@ config/windows_native_icon="res://icon.ico"
 
 [autoload]
 
+RPGSYSTEM="*res://addons/RPGMap/Scripts/system.gd"
+StartupWarning="*res://addons/RPGData/Scripts/startup_warning.gd"
+CheckVersionManager="*res://addons/RPGData/Scripts/check_version_manager.gd"
 PreloadSceneManager="*res://Scripts/preload_scene_manager.gd"
 RPGDialogFunctions="*res://addons/CustomControls/Dialogs/rpg_dialog_functions.gd"
 CustomTooltipManager="*res://addons/CustomControls/custom_tooltip_manager.gd"
@@ -28,7 +31,6 @@ TranslationManager="*res://addons/AutoTranslatePlugins/translation_manager.gd"
 GameManager="*res://Scripts/game_manager.gd"
 GameInterpreter="*res://addons/RPGData/Scripts/Interpreter/main_interpreter.gd"
 QuestManager="*res://Scripts/quest_manager.gd"
-RPGSYSTEM="*res://addons/RPGMap/Scripts/system.gd"
 RPGMapsInfo="*res://addons/RPGMap/Scripts/maps_info.gd"
 DayNightManager="*res://Scripts/day_night_system.gd"
 ControllerManager="*res://Scripts/controller_manager.gd"
@@ -73,6 +75,10 @@ folder_colors={
 [global]
 
 Effekseer=""
+
+[godot_rpg_creator]
+
+interface/show_startup_warning=true
 
 [gui]
 
@@ -314,6 +320,8 @@ locale/fallback="es"
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
 2d/batching/uniform_set_cache_size=40960
 textures/decals/filter=0
 textures/light_projectors/filter=0

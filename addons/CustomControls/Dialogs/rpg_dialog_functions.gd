@@ -55,7 +55,7 @@ func _find_game_embbedded_menu() -> PopupMenu:
 
 ## Checks if the window instance is valid, is a Window node, and has a valid ID.
 func _is_valid_window(window) -> bool:
-	return is_instance_valid(window) and window is Window and window.get_window_id() != -1
+	return is_instance_valid(window) and window is Window and window.get_window_id() != -1 and not window.is_queued_for_deletion()
 
 
 func preview_commands_in_action(commands: Array[RPGEventCommand]) -> void:
@@ -149,15 +149,20 @@ func _process(delta: float) -> void:
 			if not _is_valid_window(last_dialog):
 				current_opened_dialogs.erase(last_dialog)
 			elif last_dialog.is_input_disabled():
-				last_dialog.set_disable_input.call_deferred(false)
+				_enable_inpout_for_window.call_deferred(last_dialog)
 		
 		elif _is_valid_window(main_window) and main_window.is_input_disabled():
-			main_window.set_disable_input.call_deferred(false)
+			_enable_inpout_for_window.call_deferred(main_window)
 		
 	if initial_delay > 0.0:
 		initial_delay -= delta
 	
 	_check_window_focus()
+
+
+func _enable_inpout_for_window(window: Window) -> void:
+	if _is_valid_window(window):
+		window.set_disable_input(false)
 
 
 func _on_root_focus_entered() -> void:
@@ -203,13 +208,13 @@ func open_dialog(path: Variant, mode: OPEN_MODE = OPEN_MODE.CENTERED_ON_MOUSE, d
 		dialog = path
 		
 	TranslationManager.translate(dialog)
-	dialog.set_transparent_background(true)
+	#dialog.set_transparent_background(true)
 	dialog.visible = false
 	#if disable_exclusive_flag:
 		#dialog.exclusive = false
 	#else:
 		#dialog.exclusive = true
-	dialog.force_native = true
+	#dialog.force_native = true
 	if dialog.name in ["DatabaseDialog", "LPCCharacterCreatorDialog", "EditEventDialog"]:
 		dialog.exclusive = true
 		dialog.transient = true

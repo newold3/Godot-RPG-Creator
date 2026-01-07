@@ -49,8 +49,10 @@ func _input(event: InputEvent) -> void:
 
 func _on_visibility_changed() -> void:
 	if visible:
+		if not is_inside_tree(): return
 		if ResourceLoader.exists(MainDatabasePanel.BACKUP_PATH):
 			await _restore_database_requested()
+		if not is_inside_tree(): return
 		timer.start()
 		if mode == Window.MODE_MINIMIZED:
 			mode = Window.MODE_WINDOWED
@@ -78,6 +80,7 @@ func _on_timer_timeout() -> void:
 
 func save() -> void:
 	DatabaseLoader.save_database()
+	# SAVE DATABASE ID
 	#var data_folder_path = DatabaseLoader.get_data_folder_path()
 	#var absolute_data_folder_path = ProjectSettings.globalize_path(data_folder_path)
 	#if !DirAccess.dir_exists_absolute(absolute_data_folder_path):

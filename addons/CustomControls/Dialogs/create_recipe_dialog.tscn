@@ -1,0 +1,206 @@
+[gd_scene load_steps=16 format=3 uid="uid://c7nfyi71bggtw"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_ia6q6"]
+[ext_resource type="Script" uid="uid://cjtaw32y1qfbg" path="res://addons/CustomControls/Dialogs/create_recipe_dialog.gd" id="2_8vjbt"]
+[ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="3_td2ce"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="4_ruin6"]
+[ext_resource type="PackedScene" uid="uid://dxcyqc2dscbvw" path="res://addons/CustomControls/custom_simple_column_item_list.tscn" id="5_gln3g"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="6_207pk"]
+
+[sub_resource type="Gradient" id="Gradient_7ascj"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ourej"]
+gradient = SubResource("Gradient_7ascj")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="Gradient" id="Gradient_2ef08"]
+colors = PackedColorArray(0.333333, 0.352941, 0.360784, 1, 0.380392, 0.4, 0.407843, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_1nkme"]
+gradient = SubResource("Gradient_2ef08")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4xil0"]
+texture = SubResource("GradientTexture2D_1nkme")
+
+[sub_resource type="Gradient" id="Gradient_obnio"]
+offsets = PackedFloat32Array(0, 0.369535, 1)
+colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_4o6c8"]
+gradient = SubResource("Gradient_obnio")
+fill_from = Vector2(0.547009, 1)
+fill_to = Vector2(0.559829, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ia6q6"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_4o6c8")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vgklh"]
+bg_color = Color(0, 0, 0, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+
+[node name="CreateRecipeDialog" type="Window"]
+oversampling_override = 1.0
+title = "Create Recipe"
+position = Vector2i(0, 36)
+size = Vector2i(600, 400)
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_ia6q6")
+script = ExtResource("2_8vjbt")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_ourej")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Name:"
+
+[node name="Name" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_td2ce")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Recipe name"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Price:"
+
+[node name="Price" parent="MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("4_ruin6")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Cost in money to create this item"
+allow_greater = true
+_custom_value = 0.0
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Quantity:"
+
+[node name="Quantity" parent="MarginContainer/VBoxContainer/HBoxContainer4" instance=ExtResource("4_ruin6")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Number of items to be created when using this recipe"
+min_value = 1.0
+value = 1.0
+allow_greater = true
+_custom_value = 1.0
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="LearnedByDefault" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer5"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "indicates whether this recipe is available from the start of the game"
+mouse_default_cursor_shape = 2
+text = "Learned from the beginning of the game"
+
+[node name="Materials" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+vertical_scroll_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Materials"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MaterialsPanel" parent="MarginContainer/VBoxContainer/Materials/MarginContainer" instance=ExtResource("5_gln3g")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
+event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
+top_bar_style = SubResource("StyleBoxTexture_4xil0")
+cursor_style = SubResource("StyleBoxTexture_ia6q6")
+panel_style = SubResource("StyleBoxFlat_vgklh")
+columns = 2
+names = PackedStringArray("Name", "Quantity")
+sizes = PackedInt32Array(400, 312)
+placeholder_text = "Add new material..."
+enable_multiselection = true
+itemlist_tooltip = "[title]Materials[/title]
+list of materials needed to make this item"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("6_207pk")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("6_207pk")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+text = "CANCEL"
+
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/HBoxContainer/Name" to="." method="_on_name_text_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer3/Price" to="." method="_on_price_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer4/Quantity" to="." method="_on_quantity_value_changed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/HBoxContainer5/LearnedByDefault" to="." method="_on_learned_by_default_toggled"]
+[connection signal="delete_pressed" from="MarginContainer/VBoxContainer/Materials/MarginContainer/MaterialsPanel" to="." method="_on_materials_panel_delete_pressed"]
+[connection signal="item_activated" from="MarginContainer/VBoxContainer/Materials/MarginContainer/MaterialsPanel" to="." method="_on_materials_panel_item_activated"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/CancelButton" to="." method="_on_cancel_button_pressed"]

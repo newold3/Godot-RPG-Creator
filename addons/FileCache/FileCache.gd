@@ -4,25 +4,13 @@ extends EditorPlugin
 
 ## FileCache - Godot Editor Plugin for Asset Management and Caching
 ##
+## Optimized to use Regex for class detection instead of instantiation (.new).
+##
 ## Key Features:
-## - Automatic scanning and categorization of project assets by type (images, sounds, fonts, etc.)
-## - Real-time cache updates when files are moved, deleted, or modified
-## - Batch processing system to maintain editor responsiveness during large operations
-## - Persistent storage of cache data and dialog configurations
-## - Support for custom RPG-specific resource types (characters, maps, enemies, etc.)
-## - File system monitoring with automatic cache invalidation and refresh
-##
-## The plugin organizes cached files into categories such as:
-## - Media assets: images, sounds, fonts, animations
-## - Game content: maps, characters, events, enemies, vehicles
-## - UI components: dialogs, scenes, transitions, input handlers
-## - Technical assets: curves, tilesets, battle backgrounds
-##
-## Cache data is automatically saved to `.godot/file_cache.cfg` and dialog settings
-## to `.godot/dialog_options.cfg` for persistence across editor sessions.
-##
-## Usage: The plugin runs automatically in the editor background, providing
-## cached asset data through static access methods for other tools and editors.
+## - Instant file scanning using EditorFileSystem.
+## - Static type checking via class_name.
+## - Fallback to Regex analysis for scripts using get_class() overrides.
+## - Zero instantiation of scenes during scanning.
 
 
 ## Signal emitted when the file cache is fully loaded and ready for use.
@@ -30,13 +18,16 @@ static var cache_ready: Signal = StaticSignal.make()
 
 ## Path to the cache file where all cached data is stored.
 const CACHE_FILE_PATH = "res://.godot/file_cache.cfg"
+
 ## Path to the options file where dialog configurations are stored.
 const OPTIONS_FILE_PATH = "res://.godot/dialog_options.cfg"
 
 ## Dictionary that stores all cached file data organized by resource type.
 static var cache: Dictionary = {}
+
 ## Flag indicating whether the cache has been fully initialized and is ready to use.
 static var cache_setted: bool = false
+
 ## Timer used to delay cache refresh operations to avoid excessive rebuilding.
 static var refresh_timer: float = 0.0
 
@@ -45,19 +36,25 @@ static var options = {}
 
 ## Array of file paths waiting to be processed and added to the cache.
 var pending_files_to_process = []
+
 ## Flag to prevent concurrent file processing operations.
 var is_processing_files = false
+
 ## Maximum number of files to process in a single batch to avoid freezing the editor.
-var file_batch_size = 40
+var file_batch_size = 100
+
 ## Time delay between processing batches to maintain editor responsiveness.
-var scan_throttle_time = 0.05
+var scan_throttle_time = 0.01
 
 ## List of file extensions recognized as image files.
 var image_extensions = ["png", "bmp", "jpg", "jpeg", "svg", "tga", "webp"]
+
 ## List of file extensions recognized as audio/sound files.
 var sound_extensions = ["mp3str", "oggvorbisstr", "sample", "wav", "ogg", "mp3"]
+
 ## List of file extensions recognized as font files.
 var font_extensions = ["fondata", "ttf", "ttc", "otf", "otc", "woff", "woff2", "pfb", "pfm", "font"]
+
 ## List of file extensions recognized as videos.
 var video_extensions = ["ogv"]
 
@@ -71,11 +68,18 @@ static var main_scene: FileCache
 
 ## Maximum number of file previews that can be generated simultaneously.
 const MAX_SIMULTANEOUS_PREVIEWS: int = 15
+
 ## Counter to track the number of previews currently being generated.
 var preview_counter: int = 0
 
+## Regex used to parse the return value of get_class() from script source code.
+static var _class_regex: RegEx = RegEx.new()
+
+
 ## Initializes the plugin, loads existing cache and options, and sets up file system monitoring.
 func _enter_tree() -> void:
+	# Compile regex once on startup to save performance
+	_class_regex.compile("func\\s+get_class[\\s\\S]*?return\\s*[\"']([^\"']+)[\"']")
 	main_scene = self
 	tree_exiting.connect(_on_tree_exiting)
 
@@ -140,8 +144,12 @@ func _process(delta: float) -> void:
 
 	if !is_processing_files and !pending_files_to_process.is_empty():
 		process_pending_files.call_deferred()
+	
+	if pending_files_to_process.is_empty():
+		set_process(false)
 
-## Processes pending files in batches to maintain editor responsiveness during large cache operations.
+
+## Processes pending files in batches to maintain editor responsiveness.
 func process_pending_files() -> void:
 	if is_processing_files:
 		return
@@ -159,13 +167,15 @@ func process_pending_files() -> void:
 		save()
 		cache_ready.emit()
 
-## Removes invalid or deleted file entries from the cache to keep it clean and accurate.
+
+## Removes invalid or deleted file entries from the cache.
 func fix_cache() -> void:
 	for key in cache:
 		var file_paths = cache[key].keys()
 		for file_path in file_paths:
 			if !FileAccess.file_exists(file_path):
 				cache[key].erase(file_path)
+
 
 #region File Manipulation
 
@@ -174,6 +184,7 @@ func _on_resource_save(resource) -> void:
 	var path = resource.get_path()
 	if !pending_files_to_process.has(path):
 		pending_files_to_process.append(path)
+
 
 ## Updates cache entries when files are moved or renamed in the file system.
 func _on_files_moved(old_file: String, new_file: String) -> void:
@@ -190,6 +201,7 @@ func _on_files_moved(old_file: String, new_file: String) -> void:
 			return
 	cache_setted = true
 
+
 ## Removes deleted files from the cache when they are deleted from the file system.
 func _on_file_removed(removed_file: String) -> void:
 	var rpg_maps_info = get_node_or_null("/root/RPGMapsInfo")
@@ -204,11 +216,13 @@ func _on_file_removed(removed_file: String) -> void:
 			return
 	cache_setted = true
 
+
 ## Re-caches resources when they are imported or reloaded by the Godot editor.
 func _on_resources_imports(paths: PackedStringArray) -> void:
 	for path in paths:
 		if !pending_files_to_process.has(path):
 			pending_files_to_process.append(path)
+
 
 ## Updates the cache when a scene file is saved in the editor.
 func _on_scene_saved(path: String) -> void:
@@ -217,9 +231,10 @@ func _on_scene_saved(path: String) -> void:
 
 #endregion
 
+
 #region Building Dialog Options
 
-## Initializes default configuration settings for known dialog types with their default states.
+## Initializes default configuration settings for known dialog types.
 func build_options() -> void:
 	options = {
 		"event_dialog": {"detached": false, "position": Vector2i.ZERO, "size": Vector2i.ZERO},
@@ -230,14 +245,17 @@ func build_options() -> void:
 
 #endregion
 
+
 #region Building Cache
 
 ## Static method to trigger a complete cache rebuild from anywhere in the codebase.
 static func rebuild() -> void:
 	if main_scene:
+		main_scene.set_process(true)
 		main_scene.build_cache()
 
-## Initializes the cache structure and begins scanning all project files for caching.
+
+## Initializes the cache structure and begins scanning using EditorFileSystem.
 func build_cache() -> void:
 	cache_setted = false
 	cache = {
@@ -249,10 +267,33 @@ func build_cache() -> void:
 		"battle_background_scenes": {}, "tilesets": {}, "timer_scenes": {},
 		"shop_scene": {}, "extraction_scenes": {}
 	}
-	pending_files_to_process = collect_all_files("res://")
+	
+	# Optimization: Use EditorFileSystem memory
+	var fs = get_editor_interface().get_resource_filesystem().get_filesystem()
+	if fs:
+		pending_files_to_process = _scan_filesystem_recursively(fs)
+	else:
+		pending_files_to_process = collect_all_files("res://")
 	process_pending_files()
 
-## Recursively collects all file paths in the project that should be included in the cache.
+
+## Recursively collects all file paths from the EditorFileSystem (In-Memory).
+func _scan_filesystem_recursively(dir: EditorFileSystemDirectory) -> Array:
+	var files = []
+	for i in range(dir.get_file_count()):
+		var file_path = dir.get_file_path(i)
+		if file_path.ends_with(".import") or file_path.begins_with("res://."):
+			continue
+		files.append(file_path)
+	for i in range(dir.get_subdir_count()):
+		var subdir = dir.get_subdir(i)
+		var subdir_path = subdir.get_path()
+		if !should_skip_directory(subdir_path):
+			files.append_array(_scan_filesystem_recursively(subdir))
+	return files
+
+
+## Legacy method: Recursively collects all file paths in the project (Disk I/O).
 func collect_all_files(path: String = "res://") -> Array:
 	var files = []
 	var dir: DirAccess = DirAccess.open(path)
@@ -271,7 +312,8 @@ func collect_all_files(path: String = "res://") -> Array:
 			file_name = dir.get_next()
 	return files
 
-## Determines whether a directory should be excluded from cache scanning based on predefined rules.
+
+## Determines whether a directory should be excluded from cache scanning.
 func should_skip_directory(dir_path: String) -> bool:
 	return (
 		dir_path.begins_with("res://.")
@@ -281,13 +323,15 @@ func should_skip_directory(dir_path: String) -> bool:
 			and !dir_path.begins_with("res://addons/CustomControls/Images"))
 	)
 
-## Determines whether a file should be excluded from cache scanning based on extension and validity.
+
+## Determines whether a file should be excluded from cache scanning.
 func should_skip_file(file_path: String) -> bool:
 	return (
 		file_path.ends_with(".import") 
 		or !ResourceLoader.exists(file_path)
 		or file_path.begins_with("res://addons/tile_bit_tools/")
 	)
+
 
 ## Internal callback that initiates a cache refresh when the file system changes.
 func _rescan_files() -> void:
@@ -305,27 +349,24 @@ func _rescan_files() -> void:
 
 func _find_new_files_only(dir: EditorFileSystemDirectory) -> Array:
 	var new_files = []
-	
-	# Revisar archivos en este directorio
 	for i in range(dir.get_file_count()):
 		var file_path = dir.get_file_path(i)
-		if file_path not in _known_files:  # O(1) en diccionario
+		if file_path not in _known_files:
 			new_files.append(file_path)
 	
-	# Recursivamente en subdirectorios
 	for i in range(dir.get_subdir_count()):
 		new_files.append_array(_find_new_files_only(dir.get_subdir(i)))
-	
 	return new_files
 
 
-## Static method to initiate a delayed cache rebuild, typically called after file system changes.
+## Static method to initiate a delayed cache rebuild.
 static func rescan_files() -> void:
 	if _show_prints:
 		print("rebuilding cache...")
 	refresh_timer = 0.15
 
-## Analyzes and categorizes a file by its type and content, adding it to the appropriate cache category.
+
+## Analyzes and categorizes a file by its type and content.
 func cache_file(file_path: String, force_rescan: bool = false) -> void:
 	if should_skip_file(file_path):
 		return
@@ -337,6 +378,7 @@ func cache_file(file_path: String, force_rescan: bool = false) -> void:
 		for key in cache:
 			if cache[key].has(file_path):
 				cache[key].erase(file_path)
+				
 	var extension = file_path.get_extension().to_lower()
 	if extension in image_extensions:
 		if !cache.images.has(file_path): cache.images[file_path] = true
@@ -357,15 +399,12 @@ func cache_file(file_path: String, force_rescan: bool = false) -> void:
 	elif extension == "tscn":
 		classify_scene_file(file_path)
 
-## Loads and analyzes a Godot resource file to determine its type and cache it appropriately.
-## Optimized to fail safely and check lightweight types first.
+
+## Loads and analyzes a Godot resource file.
 func classify_resource_file(file_path: String) -> void:
 	if !ResourceLoader.exists(file_path):
 		return
 
-	# Try to get the class type string without loading the full file first (Faster/Safer)
-	# This works well for built-in types like Texture2D, AudioStream, etc.
-	# Note: For custom script resources, it might just return "Resource", so we still need load() fallback.
 	var file_type = get_editor_interface().get_resource_filesystem().get_file_type(file_path)
 	
 	match file_type:
@@ -382,19 +421,10 @@ func classify_resource_file(file_path: String) -> void:
 		"VideoStreamTheora":
 			cache.videos[file_path] = true; return
 	
-	# If we are here, it's likely a Custom Resource or complex type.
-	# We perform a safe load.
-	var res = null
-	
-	# Using load() inside a try/catch structure is not possible in GDScript directly,
-	# but we rely on ResourceLoader safety checks.
-	res = load(file_path)
-	
+	var res = load(file_path)
 	if res == null:
-		return # File might be corrupted or invalid
+		return
 
-	# Check inheritance
-	# Note: These checks trigger the resource script logic.
 	if res is AudioStream:
 		cache.sounds[file_path] = true
 	elif res is RPGLPCCharacter:
@@ -415,38 +445,43 @@ func classify_resource_file(file_path: String) -> void:
 	elif res is VideoStream:
 		cache.videos[file_path] = true
 	
-	# Explicitly release reference (though Godot does this automatically for locals, 
-	# it's good practice in tool scripts handling heavy data)
 	res = null
 
 
-## Analyzes a scene file by examining its root node's script to determine its purpose and cache category.
+## Analyzes a scene file by examining its root node's script using Regex to avoid instantiation.
 func classify_scene_file(file_path: String) -> void:
-	# Verificación rápida de mapas por ruta (sin cargar escena)
+	# Quick map check
 	var node = get_node_or_null("/root/RPGMapsInfo")
 	if node and node.map_infos.maps.has(file_path):
 		cache.maps[file_path] = true
 		return
 
-	# Carga el estado de la escena (ligero)
 	var state = load(file_path).get_state()
 	
-	# 1. Chequeo por tipo de nodo nativo
+	# 1. Native Node Type check
 	var root_node_type = state.get_node_type(0)
 	if root_node_type in ["Sprite2D", "AnimatedSprite2D", "TextureRect"]:
 		cache.animated_images[file_path] = true
 		return
 	
-	# 2. Chequeo por Script
+	# 2. Script Type check
 	for prop_idx in state.get_node_property_count(0):
 		if state.get_node_property_name(0, prop_idx) == "script":
 			var script_res = state.get_node_property_value(0, prop_idx)
+			if script_res == null:
+				continue
+				
+			# Try fast global_name first
+			var class_identifier = script_res.get_global_name()
 			
-			# OPTIMIZACIÓN: Intentar chequear sin instanciar primero (usando class_name)
-			# Esto evita ejecutar _init() y es mucho más rápido y seguro.
-			var global_name = script_res.get_global_name()
-			# Mapeo rápido de nombres globales a categorías
-			match global_name:
+			# If global_name is empty, fallback to Regex on source_code
+			if class_identifier == "":
+				var source = script_res.source_code
+				var regex_match = _class_regex.search(source)
+				if regex_match:
+					class_identifier = regex_match.get_string(1)
+			
+			match class_identifier:
 				"BattleAnimation": cache.animations[file_path] = true; return
 				"RPGMap": cache.maps[file_path] = true; return
 				"LPCEnemy": cache.enemies[file_path] = true; return
@@ -464,43 +499,17 @@ func classify_scene_file(file_path: String) -> void:
 				"BattleBackgroundScene": cache.battle_background_scenes[file_path] = true; return
 				"GeneralShopScene": cache.shop_scene[file_path] = true; return
 				"RPGExtractionScene": cache.extraction_scenes[file_path] = true; return
-
-			# FALLBACK: Si no usan class_name o es herencia compleja, instanciamos con cuidado.
-			# Solo llegamos aquí si el match de arriba falló.
-			var instance = script_res.new()
-			
-			# Chequeos de tipo con la instancia
-			if instance is BattleAnimation: cache.animations[file_path] = true
-			elif instance is RPGMap: cache.maps[file_path] = true
-			elif instance is LPCEnemy: cache.enemies[file_path] = true
-			elif instance is DialogBase: cache.message_dialogs[file_path] = true
-			elif instance is ScrollText: cache.scroll_scenes[file_path] = true
-			elif instance is RPGVehicle: cache.vehicles[file_path] = true
-			elif instance is GameTransition: cache.transition_scenes[file_path] = true
-			elif instance is TimerScene: cache.timer_scenes[file_path] = true
-			else:
-				# Chequeos por string de clase (para scripts sin class_name global fuerte)
-				var instance_class = instance.get_class()
-				# Nota: get_class() suele devolver el tipo nativo a menos que sobreescribas get_class()
-				# Es mejor intentar casteos o flags si es posible.
-				pass 
-
-			# ¡CRÍTICO! Liberar la memoria inmediatamente
-			if instance is Node:
-				instance.free()
-			elif instance is Object and not instance is RefCounted:
-				instance.free()
-			
-			# Salimos del loop una vez encontrado el script
 			return
 
-## Saves the dialog options configuration to disk for persistence across editor sessions.
+
+## Saves the dialog options configuration to disk.
 func save_options(_resource: Resource = null) -> void:
 	var f = FileAccess.open(OPTIONS_FILE_PATH, FileAccess.WRITE)
 	f.store_var(options)
 	f.close()
 
-## Saves both the cache and options data to disk and emits the cache_ready signal.
+
+## Saves both the cache and options data to disk.
 func save() -> void:
 	save_options()
 	if !cache_setted:
@@ -514,7 +523,8 @@ func save() -> void:
 	if _show_prints:
 		print("Cache saved!")
 
-## Final cleanup method called when the editor is closing to ensure all data is saved.
+
+## Final cleanup method called when the editor is closing.
 func _on_tree_exiting() -> void:
 	if !pending_files_to_process.is_empty():
 		process_pending_files()

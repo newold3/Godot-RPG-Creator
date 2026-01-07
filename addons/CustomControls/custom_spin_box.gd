@@ -21,6 +21,7 @@ var drag_timer: Timer
 var waiting_for_drag: bool = false
 var initial_mouse_position: Vector2
 var busy: bool = false
+var _initialization_complete: bool = false
 
 # This variable will store the real value, bypassing the initial clamping of the standard SpinBox.
 # It is exposed to storage via _get_property_list but hidden from the inspector.
@@ -40,8 +41,6 @@ signal value_updated(old_value: float, new_value: float)
 signal text_changed(text: String)
 
 
-# This function registers _custom_value as a storage property.
-# It saves to the .tscn file but does not show up in the Inspector.
 func _get_property_list() -> Array:
 	return [
 		{
@@ -53,11 +52,20 @@ func _get_property_list() -> Array:
 
 
 func _ready() -> void:
-	# Force the stored custom value into the SpinBox.
-	# At this stage, allow_greater/lesser are loaded, so the value won't be clamped.
+	# Temporarily allow any value to avoid clamping during initialization
+	var _prev_greater = allow_greater
+	var _prev_lesser = allow_lesser
+	allow_greater = true
+	allow_lesser = true
+	
+	# Apply the stored value cleanly
 	value = _custom_value
 	
+	allow_greater = _prev_greater
+	allow_lesser = _prev_lesser
+	
 	old_value = value
+	
 	var lineedit = get_line_edit()
 	lineedit.set_script(load("res://addons/CustomControls/custom_line_edit.gd"))
 	lineedit.focus_entered.connect(_on_line_edit_focus_entered)
@@ -76,10 +84,13 @@ func _ready() -> void:
 	else:
 		rounded = false
 	
-	await get_tree().process_frame
+	# Mark initialization as complete
+	_initialization_complete = true
 	
 	changed.connect(_on_changed)
-	_on_text_changed.call_deferred(lineedit.text)
+	
+	# Initial text update
+	_on_text_changed(lineedit.text)
 
 
 func _on_changed() -> void:
@@ -134,7 +145,6 @@ func set_disabled(_value: bool) -> void:
 		lineedit.set_text(prefix + str(value) + suffix)
 
 
-## Check if the control is actually visible in the viewport considering scroll containers
 func is_control_actually_visible() -> bool:
 	if not visible or not is_inside_tree():
 		return false
@@ -167,7 +177,6 @@ func is_control_actually_visible() -> bool:
 	return true
 
 
-## Check if the mouse is actually over the visible control
 func is_mouse_over_visible_control() -> bool:
 	if not is_control_actually_visible():
 		return false
@@ -227,13 +236,11 @@ func _on_line_edit_focus_exited() -> void:
 
 
 func _on_value_changed(new_value: float) -> void:
-	# Crucial Check: Only update the storage variable if the node is fully ready.
-	# This prevents the initial clamping (that happens during scene load)
-	# from overwriting the correct value stored in _custom_value.
-	if is_node_ready() and not RPGDialogFunctions.there_are_any_dialog_open():
+	if _initialization_complete and is_node_ready() and not RPGDialogFunctions.there_are_any_dialog_open():
 		_custom_value = new_value
 	
 	var line_edit = get_line_edit()
+	var is_focused = line_edit.has_focus()
 	value_updated.emit(old_value, new_value)
 	old_value = new_value
 	var text: String
@@ -242,12 +249,12 @@ func _on_value_changed(new_value: float) -> void:
 	else:
 		text = str(value)
 		
-	line_edit.set_deferred("text", text)
+	line_edit.text = text
 	
 	if not RPGDialogFunctions.there_are_any_dialog_open():
 		return
 		
-	if is_editable():
+	if is_editable() and is_focused:
 		_current_spinbox_focused = line_edit
 		call_deferred("_line_edit_grab_focus")
 
@@ -264,12 +271,14 @@ func _on_text_changed(text: String) -> void:
 	var line_edit = get_line_edit()
 	for key in value_replace.keys():
 		if str(key) == text:
+			# Safety await for text replacements
 			for i in 3:
 				if is_inside_tree():
 					await get_tree().process_frame
 				else:
 					return
-			line_edit.text = prefix + str(value_replace[key]) + suffix
+			if is_instance_valid(self) and is_inside_tree():
+				line_edit.text = prefix + str(value_replace[key]) + suffix
 			break
 	
 	busy = false

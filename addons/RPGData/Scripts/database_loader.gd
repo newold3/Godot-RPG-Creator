@@ -18,6 +18,7 @@ const USER_FOLDER: String = "res://data/"
 const FILE_DATABASE: String = "database"
 const FILE_SYSTEM: String = "system"
 const FILE_MAP_INFO: String = "map_info"
+const FILE_VERSION: String = "version.dat"
 
 
 static var is_develop_build: bool = false
@@ -49,6 +50,8 @@ static func setup() -> void:
 static func save_database() -> void:
 	var resource = RPGSYSTEM.database
 	_save_generic(resource, FILE_DATABASE)
+	if is_develop_build and resource:
+		_save_master_version(resource._id_version)
 
 
 ## Saves the System resource.
@@ -109,6 +112,7 @@ static func _save_generic(resource: Resource, filename: String) -> void:
 		# User Mode: Standard ResourceSaver
 		var path = USER_FOLDER + filename + ".res"
 		ResourceSaver.save(resource, path)
+		resource.take_over_path(path)
 
 
 ## Handles loading logic, including fallback creation from Master if User data is missing.
@@ -156,6 +160,28 @@ static func _load_from_compressed_bin(path: String) -> Resource:
 	
 	printerr("Error: Loaded data is not a Resource: ", path)
 	return null
+
+
+## Saves the current version ID to a file in the Master folder.
+static func _save_master_version(version: int) -> void:
+	var path = MASTER_FOLDER + FILE_VERSION
+	var file = FileAccess.open_compressed(path, FileAccess.WRITE, FileAccess.COMPRESSION_ZSTD)
+	if file:
+		file.store_32(version)
+		file.close()
+
+
+## Reads the master version ID from the Master folder.
+## Returns 0 if the file doesn't exist.
+static func get_master_version() -> int:
+	var path = MASTER_FOLDER + FILE_VERSION
+	if FileAccess.file_exists(path):
+		var file = FileAccess.open_compressed(path, FileAccess.READ, FileAccess.COMPRESSION_ZSTD)
+		if file:
+			var v = file.get_32()
+			file.close()
+			return v
+	return 0
 
 
 ## Checks dev access keys.

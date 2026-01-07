@@ -16,9 +16,11 @@ fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
 [node name="SelectRequiredItemDialog" type="Window"]
+oversampling_override = 1.0
 title = "Component"
 position = Vector2i(0, 36)
-size = Vector2i(380, 260)
+size = Vector2i(420, 260)
+wrap_controls = true
 transient = true
 exclusive = true
 unresizable = true
@@ -58,8 +60,8 @@ unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Select material type (Items, Weapons or Armors)"
 mouse_default_cursor_shape = 2
-item_count = 3
 selected = 0
+item_count = 3
 popup/item_0/text = "Items"
 popup/item_0/id = 0
 popup/item_1/text = "Weapons"
@@ -92,6 +94,25 @@ tooltip_text = "Selects the required quantity of the selected material"
 min_value = 1.0
 value = 1.0
 allow_greater = true
+_custom_value = 0.0
+
+[node name="PercentContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PercentContainer"]
+layout_mode = 2
+text = "Drop Rate:"
+
+[node name="Percent" parent="MarginContainer/VBoxContainer/PercentContainer" instance=ExtResource("2_fleir")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Determines the chance for this material to be obtained when dismantling an item."
+step = 0.001
+rounded = false
+allow_greater = true
+_custom_value = 0.0
 
 [node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -124,5 +145,6 @@ text_overrun_behavior = 3
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/DataType" to="." method="_on_data_type_item_selected"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ItemType" to="." method="_on_item_type_pressed"]
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/Quantity" to="." method="_on_quantity_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/PercentContainer/Percent" to="." method="_on_percent_value_changed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/OKButton" to="." method="_on_ok_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/CancelButton" to="." method="_on_cancel_button_pressed"]

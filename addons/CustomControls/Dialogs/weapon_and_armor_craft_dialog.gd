@@ -8,12 +8,29 @@ var cost: int
 
 var busy: bool = false
 
+var percent_enabled: bool = false
+
 signal materials_changed(materials: Array[RPGGearUpgradeComponent], cost: int)
 
 
 func _ready() -> void:
 	close_requested.connect(queue_free)
 	%MaterialList.set_lock_items(PackedInt32Array([0]))
+
+
+func enabled_percent(value: bool) -> void:
+	percent_enabled = value
+	
+	var node = %MaterialList
+	if percent_enabled:
+		node.columns = 3
+		node.names = [tr("Material"), tr("Quantity"), "%"]
+		node.sizes = [400, 180, 0]
+	else:
+		node.columns = 2
+		node.names = [tr("Material"), tr("Quantity")]
+		node.sizes = [400, 0]
+	
 
 
 func set_data(_database: RPGDATA, _data: Array[RPGGearUpgradeComponent], _cost: int) -> void:
@@ -26,7 +43,6 @@ func set_data(_database: RPGDATA, _data: Array[RPGGearUpgradeComponent], _cost: 
 	fill_material_list()
 	
 	if title.begins_with("Disassemble"):
-		
 		%MaterialList.default_tooltip = "Materials obtained after dismantling this item."
 	else:
 		%MaterialList.default_tooltip = "Materials required for the construction of this item."
@@ -57,10 +73,18 @@ func fill_material_list(selected_index: int = -1) -> void:
 			if current_data.size() > mat.component.item_id:
 				var item_name = str(mat.component.item_id).pad_zeros(str(current_data.size()).length()) + ": " + current_data[mat.component.item_id].name
 				var quantity = str(mat.quantity)
-				node.add_column([prefix + item_name, quantity])
+				if percent_enabled:
+					var percent = float(mat.percent)
+					node.add_column([prefix + item_name, quantity, percent])
+				else:
+					node.add_column([prefix + item_name, quantity])
 			else:
 				var quantity = str(mat.quantity)
-				node.add_column([prefix + "⚠ Invalid Data", quantity])
+				if percent_enabled:
+					var percent = float(mat.percent)
+					node.add_column([prefix + "⚠ Invalid Data", quantity, percent])
+				else:
+					node.add_column([prefix + "⚠ Invalid Data", quantity])
 	
 	if selected_index >= 0:
 		await node.columns_setted
@@ -107,6 +131,8 @@ func show_select_required_item_dialog(item: RPGGearUpgradeComponent = null, inde
 	var path = "res://addons/CustomControls/Dialogs/select_required_item_dialog.tscn"
 	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
 	dialog.database = database
+	if percent_enabled:
+		dialog.enable_percent(true)
 	if item:
 		dialog.set_data(item)
 		dialog.component_updated.connect(_on_component_updated.bind(index))

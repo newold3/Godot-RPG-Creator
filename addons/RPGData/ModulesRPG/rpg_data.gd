@@ -11,6 +11,9 @@ extends Resource
 func get_class():
 	return "RPGDATA"
 
+
+@export var _id_version: int
+
 ## List of actors.
 @export var actors: Array[RPGActor] = []
 
@@ -258,6 +261,7 @@ func clone(value: bool = true) -> RPGDATA:
 	new_data.system = system.clone(true)
 	new_data.types = types.clone(true)
 	new_data.terms = terms.clone(true)
+	new_data._id_version = _id_version
 
 	return new_data
 
@@ -267,7 +271,7 @@ func update_with_other_db(other: RPGDATA) -> void:
 	var arrs = [
 		"actors", "classes", "professions", "skills", "items", "weapons", "armors",
 		"enemies", "troops", "states", "animations", "common_events",
-		"system", "types", "terms", "speakers", "quests"
+		"system", "types", "terms", "speakers", "quests", "_id_version"
 	]
 
 	for id in arrs:
@@ -276,82 +280,114 @@ func update_with_other_db(other: RPGDATA) -> void:
 ## Checks if the RPG data is equal to another database.
 ## @param other RPGDATA - The other database to compare with.
 ## @return bool - Whether the RPG data is equal to the other database.
+## Compares this instance with another RPGDATA instance to check if they are functionally equivalent.
+## It performs a deep recursive search converting nested objects to dictionaries.
 func is_equal_to(other: RPGDATA) -> bool:
 	if not other:
 		return false
 
-	# Compare each exported property of RPGDATA
-	for property in get_property_list():
-		if not (property.usage & PROPERTY_USAGE_SCRIPT_VARIABLE):
-			continue
+	var bd1 = inst_to_dict(self)
+	var bd2 = inst_to_dict(other)
+	return _recursive_diff_search(bd1, bd2, "root")
 
-		var prop_name = property.name
-		var value_self = get(prop_name)
-		var value_other = other.get(prop_name)
 
-		if not _compare_values(value_self, value_other):
+func _recursive_diff_search(val_a: Variant, val_b: Variant, path: String) -> bool:
+	# 1. Check Types
+	if typeof(val_a) != typeof(val_b):
+		# If one is an object and the other is a dictionary, it might be due to previous recursion,
+		# but strictly speaking types must match.
+		#print("Diff found at [%s]: Type mismatch. A is %s, B is %s" % [path, type_string(typeof(val_a)), type_string(typeof(val_b))])
+		return false
+
+	# 2. Check Objects (Deep Compare)
+	if typeof(val_a) == TYPE_OBJECT:
+		# If they point to the exact same instance, they are equal.
+		if val_a == val_b:
+			return true
+		
+		# If one is null and the other is not (handled by type check usually, but good for safety).
+		if not val_a or not val_b:
+			#print("Diff found at [%s]: One object is null." % path)
+			return false
+		
+		# Convert nested objects to dictionaries to inspect their properties.
+		var dict_a = inst_to_dict(val_a)
+		var dict_b = inst_to_dict(val_b)
+		
+		# Recurse using the dictionary representation of these objects.
+		return _recursive_diff_search(dict_a, dict_b, path + " -> (Object)")
+
+	# 3. Check Dictionaries (Recursion)
+	elif typeof(val_a) == TYPE_DICTIONARY:
+		var keys_a: Array = val_a.keys()
+		var keys_b: Array = val_b.keys()
+
+		if keys_a.size() != keys_b.size():
+			#print("Diff found at [%s]: Dictionary size mismatch. A has %d keys, B has %d keys." % [path, keys_a.size(), keys_b.size()])
+			return false
+
+		for key in keys_a:
+			if not val_b.has(key):
+				#print("Diff found at [%s]: Key '%s' is missing in B." % [path, str(key)])
+				return false
+			
+			if not _recursive_diff_search(val_a[key], val_b[key], path + "." + str(key)):
+				return false
+		
+		return true
+
+	# 4. Check Arrays (Recursion)
+	elif typeof(val_a) == TYPE_ARRAY:
+		if val_a.size() != val_b.size():
+			#print("Diff found at [%s]: Array size mismatch. A: %d, B: %d" % [path, val_a.size(), val_b.size()])
+			return false
+
+		for i in range(val_a.size()):
+			if not _recursive_diff_search(val_a[i], val_b[i], path + "[%d]" % i):
+				return false
+
+		return true
+
+	# 5. Check Primitive Values
+	else:
+		if val_a != val_b:
+			#print("Diff found at [%s]: Values differ. A: %s vs B: %s" % [path, str(val_a), str(val_b)])
 			return false
 
 	return true
 
-## Compares two values for equality.
-## @param a - The first value to compare.
-## @param b - The second value to compare.
-## @return bool - Whether the two values are equal.
-func _compare_values(a, b) -> bool:
-	# If either is null
-	if a == null or b == null:
-		return a == b
 
-	# If they are different types
-	if typeof(a) != typeof(b):
-		return false
+## Migrates the database to a target version, applying upgrades sequentially.
+## @param target_version int - The version to upgrade to.
+func migrate_to_version(target_version: int) -> void:
+	if _id_version >= target_version:
+		return
+	
+	print("The user database needs to be updated to the latest version.")
+	print("Migrating RPGDATA from version %s to %s..." % [_id_version, target_version])
+	
+	# Apply upgrades sequentially:
+	# If current is 3 and target is 5, it runs: 4, then 5.
+	for i in range(_id_version + 1, target_version + 1):
+		_apply_upgrade(i)
+		_id_version = i
+		print(" - Upgraded to version %s" % _id_version)
+	
+	print("Migration complete.")
 
-	# If it's an array or packed array
-	if a is Array or typeof(a) in [
-		TYPE_PACKED_BYTE_ARRAY, TYPE_PACKED_INT32_ARRAY,
-		TYPE_PACKED_INT64_ARRAY, TYPE_PACKED_FLOAT32_ARRAY,
-		TYPE_PACKED_FLOAT64_ARRAY, TYPE_PACKED_STRING_ARRAY,
-		TYPE_PACKED_VECTOR2_ARRAY, TYPE_PACKED_VECTOR3_ARRAY,
-		TYPE_PACKED_COLOR_ARRAY
-	]:
-		if a.size() != b.size():
-			return false
-		for i in range(a.size()):
-			if not _compare_values(a[i], b[i]):
-				return false
-		return true
 
-	# If it's a dictionary
-	if a is Dictionary:
-		if a.size() != b.size():
-			return false
-		for key in a:
-			if not b.has(key):
-				return false
-			if not _compare_values(a[key], b[key]):
-				return false
-		return true
-
-	# If it's a custom object (RPGActor, RPGSkill, etc.)
-	if a is Object and a.has_method("get_property_list"):
-		# If they are different classes
-		if a.get_class() != b.get_class():
-			return false
-
-		# Compare each exported property
-		for property in a.get_property_list():
-			if not (property.usage & PROPERTY_USAGE_SCRIPT_VARIABLE):
-				continue
-
-			var prop_name = property.name
-			var value_a = a.get(prop_name)
-			var value_b = b.get(prop_name)
-
-			if not _compare_values(value_a, value_b):
-				return false
-
-		return true
-
-	# For basic types (int, float, string, bool)
-	return a == b
+## Internal logic to apply specific changes for a single version step.
+## @param version_index int - The version number currently being installed.
+func _apply_upgrade(version_index: int) -> void:
+	match version_index:
+		10:
+			# Fix Items recipes
+			for item in items:
+				if not item: continue
+				var new_list: Array[RPGRecipe] = []
+				item.recipes = new_list
+				var _disassemble_materials: Array[RPGGearUpgradeComponent] = []
+				item.disassemble_materials = _disassemble_materials
+		_:
+			# Default case for versions without specific structural changes
+			pass

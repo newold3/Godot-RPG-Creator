@@ -17,7 +17,7 @@ func get_data() -> RPGItem:
 
 func _update_data_fields() -> void:
 	busy = true
-	
+
 	if current_selected_index != -1:
 		disable_all(false)
 		fill_category_types()
@@ -26,7 +26,13 @@ func _update_data_fields() -> void:
 		fill_item_conversion()
 		fill_invocation_animation()
 		fill_scope()
-		var current_data = get_data()
+		_fill_recipes_list()
+		var current_data = get_data().clone(true)
+		
+		if not current_data.recipes:
+			var new_list: Array[RPGRecipe] = []
+			current_data.recipes = new_list
+
 		%NameLineEdit.text = current_data.name
 		%IconPicker.set_icon(current_data.icon.path, current_data.icon.region)
 		%EffectsPanel.set_data(database, current_data.effects)
@@ -57,10 +63,31 @@ func _update_data_fields() -> void:
 		%PerishableItemConversionButton.set_disabled(current_data.perishable.is_perishable == 0 or current_data.perishable.action == 0)
 		%BattleMessageTextEdit.text = current_data.battle_message
 		%NoteTextEdit.text = current_data.notes
+		%PasteDisassemble.set_disabled(!StaticEditorVars.CLIPBOARD.get("items_disassemble", false))
 	else:
 		disable_all(true)
 	
 	busy = false
+
+
+func _fill_recipes_list(index: int = -1) -> void:
+	var node = %RecipesPanel
+	node.clear()
+	var recipes = get_data().recipes
+	var i = 1
+	for item: RPGRecipe in recipes:
+		var learned_prefix = "📜 " if item.learned_by_default else ""
+		node.add_column(["%s#%s: %s" % [learned_prefix, i, item.name]])
+		if item.learned_by_default:
+			node.add_row_text_color(i-1, Color.WHITE)
+		else:
+			node.add_row_text_color(i-1, Color(0.857, 0.731, 0.794))
+		i += 1
+	
+	if recipes.size() > 0:
+		await node.columns_setted
+		index = max(0, min(index, recipes.size() - 1))
+		node.select(index)
 
 
 func fill_item_conversion() -> void:
@@ -230,6 +257,7 @@ func _on_visibility_changed() -> void:
 
 
 func _on_is_perishable_option_button_item_selected(index: int) -> void:
+	if busy or not get_data() or not get_data().perishable: return
 	var current_data = get_data().perishable
 	current_data.is_perishable = index
 	%Perishable.propagate_call("set_disabled", [index == 0])
@@ -239,10 +267,12 @@ func _on_is_perishable_option_button_item_selected(index: int) -> void:
 
 
 func _on_perishable_duration_spin_box_value_changed(value: float) -> void:
+	if busy or not get_data() or not get_data().perishable: return
 	get_data().perishable.duration = value
 
 
 func _on_perishable_action_option_button_item_selected(index: int) -> void:
+	if busy or not get_data() or not get_data().perishable: return
 	get_data().perishable.action = index
 	%PerishableItemConversionButton.set_disabled(index == 0)
 
@@ -284,41 +314,50 @@ func _on_animation_button_pressed() -> void:
 
 
 func _on_animation_selected(id: int, target: Variant) -> void:
+	if busy or not get_data() or not get_data().invocation: return
 	get_data().invocation.animation = id
 	fill_invocation_animation()
 
 
 func _on_animation_button_middle_click_pressed() -> void:
+	if busy or not get_data() or not get_data().invocation: return
 	get_data().invocation.animation = -1
 	fill_invocation_animation()
 
 
 func _on_animation_button_right_click_pressed() -> void:
+	if busy or not get_data() or not get_data().invocation: return
 	get_data().invocation.animation = -2
 	fill_invocation_animation()
 
 
 func _on_speed_spin_box_value_changed(value: float) -> void:
+	if busy or not get_data() or not get_data().invocation: return
 	get_data().invocation.speed = value
 
 
 func _on_success_spin_box_value_changed(value: float) -> void:
+	if busy or not get_data() or not get_data().invocation: return
 	get_data().invocation.success = value
 
 
 func _on_repeat_spin_box_value_changed(value: float) -> void:
+	if busy or not get_data() or not get_data().invocation: return
 	get_data().invocation.repeat = value
 
 
 func _on_tp_gain_spin_box_value_changed(value: float) -> void:
+	if busy or not get_data() or not get_data().invocation: return
 	get_data().invocation.tp_gain = value
 
 
 func _on_hit_type_options_item_selected(index: int) -> void:
+	if busy or not get_data() or not get_data().invocation: return
 	get_data().invocation.hit_type = index
 
 
 func _on_damage_type_options_item_selected(index: int) -> void:
+	if busy or not get_data() or not get_data().damage: return
 	get_data().damage.type = index
 	
 	if index == 0:
@@ -331,22 +370,27 @@ func _on_damage_type_options_item_selected(index: int) -> void:
 
 
 func _on_damage_element_options_item_selected(index: int) -> void:
+	if busy or not get_data() or not get_data().damage: return
 	get_data().damage.element_id = index
 
 
 func _on_damage_formula_line_edit_text_changed(new_text: String) -> void:
+	if busy or not get_data() or not get_data().damage: return
 	get_data().damage.formula = new_text
 
 
 func _on_damage_variance_spin_box_value_changed(value: float) -> void:
+	if busy or not get_data() or not get_data().damage: return
 	get_data().damage.variance  = value
 
 
 func _on_damage_critical_hits_options_item_selected(index: int) -> void:
+	if busy or not get_data() or not get_data().damage: return
 	get_data().damage.critical = index
 
 
 func _on_note_text_edit_text_changed() -> void:
+	if busy: return
 	get_data().notes = %NoteTextEdit.text
 
 
@@ -435,3 +479,75 @@ func _on_icon_picker_paste_requested(icon: String, region: Rect2) -> void:
 	data_icon.path = icon
 	data_icon.region = region
 	%IconPicker.set_icon(data_icon.path, data_icon.region)
+
+
+func _on_recipes_panel_delete_pressed(indexes: PackedInt32Array) -> void:
+	var remove_recipes: Array[RPGRecipe] = []
+	var recipes = get_data().recipes
+	for index in indexes:
+		if index >= 0 and recipes.size() > index:
+			remove_recipes.append(recipes[index])
+	for obj in remove_recipes:
+		recipes.erase(obj)
+	_fill_recipes_list(indexes[0])
+
+
+func _on_recipes_panel_item_activated(index: int) -> void:
+	var current_data = get_data()
+		
+	var path = "res://addons/CustomControls/Dialogs/create_recipe_dialog.tscn"
+	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
+	var recipe: RPGRecipe = current_data.recipes[index] if index >= 0 and current_data.recipes.size() > index else RPGRecipe.new()
+	dialog.set_data(recipe)
+	dialog.recipe_changed.connect(
+		func(new_recipe: RPGRecipe) -> void:
+			if index >= 0 and current_data.recipes.size() > index:
+				current_data.recipes[index] = new_recipe
+			else:
+				current_data.recipes.append(new_recipe)
+			_fill_recipes_list(index)
+	)
+
+
+func _on_copy_disassemble_pressed() -> void:
+	var current_data = get_data()
+	var components = []
+	for component: RPGGearUpgradeComponent in current_data.disassemble_materials:
+		components.append(component.clone(true))
+	StaticEditorVars.CLIPBOARD.items_disassemble = {
+		"cost": current_data.disassemble_cost,
+		"components": components
+	}
+	%PasteDisassemble.set_disabled(false)
+
+
+func _on_paste_disassemble_pressed() -> void:
+	var current_data = get_data()
+	var items_disassemble = StaticEditorVars.CLIPBOARD.get("items_disassemble", null)
+	if items_disassemble:
+		var components = []
+		for component: RPGGearUpgradeComponent in items_disassemble.components:
+			components.append(component.clone(true))
+		current_data.disassemble_materials = components
+		current_data.disassemble_cost = items_disassemble.cost
+
+
+func _on_disassemble_button_pressed() -> void:
+	var path = "res://addons/CustomControls/Dialogs/weapon_and_armor_craft_dialog.tscn"
+	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
+	dialog.title = "Disassemble Materials"
+	dialog.enabled_percent(true)
+	var current_data = get_data()
+	var d = RPGSYSTEM.database
+	var mats = current_data.disassemble_materials
+	var cost = current_data.disassemble_cost
+	dialog.set_data(d, mats, cost)
+	dialog.materials_changed.connect(_on_craft_material_changed)
+
+
+func _on_craft_material_changed(new_mats: Array[RPGGearUpgradeComponent], cost: int) -> void:
+	var real_mats: Array[RPGGearUpgradeComponent] = get_data().disassemble_materials
+	get_data().disassemble_cost = cost
+	real_mats.clear()
+	for mat in new_mats:
+		real_mats.append(mat)

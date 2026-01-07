@@ -40,6 +40,13 @@ func _ready() -> void:
 			await get_tree().process_frame
 		real_data = node.database
 		data = real_data.clone(true)
+		
+		if DatabaseLoader.is_develop_build:
+			%DeveloperSection.visible = true
+			%DatabaseVersion.value = int(real_data._id_version)
+		else:
+			%DeveloperSection.visible = false
+			
 		start()
 	else:
 		printerr("RPGSYSTEM is not set as autoload")
@@ -76,6 +83,11 @@ func _on_parent_visibility_changed() -> void:
 				# Forces a visibility update to address any potential inconsistencies arising from deleted data.
 				current_panel.hide()
 				current_panel.show()
+			if DatabaseLoader.is_develop_build:
+				%DeveloperSection.visible = true
+				%DatabaseVersion.value = int(real_data._id_version)
+			else:
+				%DeveloperSection.visible = false
 			%LeftMenu.get_child(current_tab).set_pressed_no_signal(true)
 		CustomTooltipManager.replace_all_tooltips_with_custom(self)
 	else:
@@ -217,7 +229,7 @@ func load_panel(path: String, _real_data) -> Control:
 	var node = panels[current_tab]
 	node.visible = false
 	%PanelContents.call_deferred("add_child", node)
-	await node.tree_entered
+	await node.ready
 	
 	node.database = data
 	if _real_data:
@@ -394,3 +406,9 @@ func _save_to_database() -> void:
 
 func _save_database(path: String) -> void:
 	ResourceSaver.save(data, path)
+
+
+func _on_database_version_value_changed(value: float) -> void:
+	if DatabaseLoader.is_develop_build:
+		real_data._id_version = value
+		data._id_version = value

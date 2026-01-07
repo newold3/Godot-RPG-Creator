@@ -23,6 +23,11 @@ func get_class(): return "RPGItem"
 @export var perishable: RPGPerishable = RPGPerishable.new()
 @export var battle_message: String = ""
 @export var notes: String = ""
+@export var recipes: Array[RPGRecipe] = []
+## Materials obtained from disassembling the item.
+@export var disassemble_materials : Array[RPGGearUpgradeComponent] = []
+## Cost of disassembling the armor.
+@export var disassemble_cost: int = 0
 
 
 func clear():
@@ -42,6 +47,18 @@ func clone(value: bool = true) -> RPGItem:
 	
 	for i in new_item.effects.size():
 		new_item.effects[i] = new_item.effects[i].clone(value)
+	if not "recipes" in new_item or new_item.recipes == null:
+		var _recipes: Array[RPGRecipe] = []
+		new_item.recipes = _recipes
+	for i in new_item.recipes.size():
+		new_item.recipes[i] = new_item.recipes[i].clone(value)
+	
+	if not "disassemble_materials" in new_item or new_item.disassemble_materials == null:
+		var _disassemble_materials: Array[RPGGearUpgradeComponent] = []
+		new_item.disassemble_materials = _disassemble_materials
+	for i in new_item.disassemble_materials.size():
+		new_item.disassemble_materials[i] = new_item.disassemble_materials[i].clone(value)
+	
 	new_item.damage = new_item.damage.clone(value)
 	new_item.scope = new_item.scope.clone(value)
 	new_item.invocation = new_item.invocation.clone(value)

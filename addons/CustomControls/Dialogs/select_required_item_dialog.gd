@@ -9,9 +9,15 @@ var real_data: RPGGearUpgradeComponent
 signal component_created(component: RPGGearUpgradeComponent)
 signal component_updated(component: RPGGearUpgradeComponent)
 
+
 func _ready() -> void:
 	close_requested.connect(queue_free)
 	%Quantity.get_line_edit().grab_focus()
+
+
+func enable_percent(value: bool) -> void:
+	%PercentContainer.visible = value
+	size.y = 0
 
 
 func set_data(_data: RPGGearUpgradeComponent) -> void:
@@ -28,6 +34,7 @@ func create_new_data() -> void:
 func fill_all() -> void:
 	%DataType.select(data.component.data_id)
 	%Quantity.value = data.quantity
+	%Percent.value = data.percent
 	fill_item()
 
 
@@ -92,7 +99,7 @@ func _on_quantity_value_changed(value: float) -> void:
 
 
 func _on_ok_button_pressed() -> void:
-	%Quantity.apply()
+	propagate_call("apply")
 	if real_data:
 		real_data.component.data_id = data.component.data_id
 		real_data.component.item_id = data.component.item_id
@@ -105,3 +112,7 @@ func _on_ok_button_pressed() -> void:
 
 func _on_cancel_button_pressed() -> void:
 	queue_free()
+
+
+func _on_percent_value_changed(value: float) -> void:
+	data.percent = value

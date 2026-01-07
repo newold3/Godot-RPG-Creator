@@ -267,14 +267,16 @@ func _on_craft_button_pressed() -> void:
 
 func _on_disassemble_button_pressed() -> void:
 	show_craft_dialog(
-		"Disassemble Materials", get_data().disassemble_materials, "disassemble_cost"
+		"Disassemble Materials", get_data().disassemble_materials, "disassemble_cost", true
 	)
 
 
-func show_craft_dialog(_title: String, mats: Array[RPGGearUpgradeComponent], cost_id: String) -> void:
+func show_craft_dialog(_title: String, mats: Array[RPGGearUpgradeComponent], cost_id: String, percent_enabled: bool = false) -> void:
 	var path = "res://addons/CustomControls/Dialogs/weapon_and_armor_craft_dialog.tscn"
 	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
 	dialog.title = _title
+	if percent_enabled:
+		dialog.enabled_percent(true)
 	dialog.set_data(database, mats, get_data()[cost_id])
 	dialog.materials_changed.connect(_on_craft_material_changed.bind(mats, cost_id))
 

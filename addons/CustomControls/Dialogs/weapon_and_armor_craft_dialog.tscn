@@ -75,7 +75,7 @@ gradient = SubResource("Gradient_4l6wd")
 fill_from = Vector2(0.547009, 1)
 fill_to = Vector2(0.559829, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fmnar"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_acsxx"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_h70kq")
 
@@ -89,6 +89,7 @@ border_width_bottom = 1
 border_color = Color(0, 0, 0, 1)
 
 [node name="WeaponAndArmorCraftDialog" type="Window"]
+oversampling_override = 1.0
 title = "Craft Materials"
 position = Vector2i(0, 36)
 size = Vector2i(800, 495)
@@ -152,11 +153,11 @@ size_flags_vertical = 3
 odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
 event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 top_bar_style = SubResource("StyleBoxTexture_4vw55")
-cursor_style = SubResource("StyleBoxTexture_fmnar")
+cursor_style = SubResource("StyleBoxTexture_acsxx")
 panel_style = SubResource("StyleBoxFlat_spyke")
 columns = 2
 names = PackedStringArray("Material", "Quantity")
-sizes = PackedInt32Array(240, 0)
+sizes = PackedInt32Array(400, 0)
 text_margin_left = 4
 placeholder_text = "select material..."
 enable_multiselection = true

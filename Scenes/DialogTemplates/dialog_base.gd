@@ -1161,7 +1161,7 @@ func _get_initial_config_commands() -> String:
 	return commands
 
 
-func setup_text(text: String, use_soft_reset: bool = false, is_additional_text: bool = false) -> void:
+func setup_text(text: String, use_soft_reset: bool = false, _is_additional_text: bool = false) -> void:
 	if not is_inside_tree() or is_queued_for_deletion(): return
 	if not instant_text_enabled: busy_until_resume = true
 	
