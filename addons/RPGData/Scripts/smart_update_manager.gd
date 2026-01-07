@@ -2,7 +2,7 @@ class_name SmartUpdateManager
 extends Node
 
 ## Multi-threaded update manager for Godot RPG Creator.
-## Features advanced Windows BAT logging for troubleshooting.
+## Final version with aggressive BAT cleanup and status reporting.
 
 signal update_status(msg: String)
 signal update_error(msg: String)
@@ -167,19 +167,24 @@ func _create_and_run_bat() -> void:
 	var godot_exe = OS.get_executable_path().replace("/", "\\")
 	
 	var script = "@echo off\r\n"
-	script += 'echo Starting Update Log > "%s"\r\n' % log_path
+	script += 'echo [LOG] Start Update: %s > "%s"\r\n' % [Time.get_datetime_string_from_system(), log_path]
 	script += "timeout /t 5 /nobreak > NUL\r\n"
 	
-	# Try to copy files and log results
-	script += 'xcopy "%s\\*" "%s" /Y /S /E /I /R >> "%s" 2>&1\r\n' % [temp_res, project_res, log_path]
+	script += 'echo [LOG] Copying files... >> "%s"\r\n' % log_path
+	script += 'xcopy "%s\\*" "%s" /Y /S /E /I /R /H >> "%s" 2>&1\r\n' % [temp_res, project_res, log_path]
+	
+	script += 'echo [LOG] Updating version_sha.txt... >> "%s"\r\n' % log_path
 	script += 'copy /Y "%s\\version_sha.txt" "%s" >> "%s" 2>&1\r\n' % [temp_res, user_sha_dest, log_path]
 	
+	script += 'echo [LOG] Cleaning temp... >> "%s"\r\n' % log_path
 	script += 'rmdir /s /q "%s" >> "%s" 2>&1\r\n' % [temp_res, log_path]
 	
-	# Start Godot and log if it fails
-	script += 'start "" "%s" --path "%s" -e >> "%s" 2>&1\r\n' % [godot_exe, project_res, log_path]
+	script += 'echo [LOG] Restarting Godot... >> "%s"\r\n' % log_path
+	script += 'start "" "%s" --path "%s" -e\r\n' % [godot_exe, project_res]
 	
-	script += 'del "%%~f0"'
+	# Fix: Use a self-destructing command that works even with start blocking
+	script += 'echo [LOG] Update finished. >> "%s"\r\n' % log_path
+	script += '(goto) 2>nul & del "%~f0"'
 	
 	var f = FileAccess.open(bat_path, FileAccess.WRITE)
 	if f:

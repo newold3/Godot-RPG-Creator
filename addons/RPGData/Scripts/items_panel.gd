@@ -3,7 +3,7 @@ extends BasePanelData
 
 
 func _ready() -> void:
-	print("TEST")
+	print("TEST INITIAL")
 	super()
 	default_data_element = RPGItem.new()
 
