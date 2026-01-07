@@ -1,8 +1,8 @@
 class_name SmartUpdateManager
 extends Node
 
-## Multi-threaded update manager for Godot RPG Creator.
-## Final version with aggressive BAT cleanup and status reporting.
+## Unified Update Manager for Godot RPG Creator.
+## Handles both initial full download and incremental updates using threads.
 
 signal update_status(msg: String)
 signal update_error(msg: String)
@@ -54,15 +54,46 @@ func _on_sha_received(_result: int, code: int, _headers: PackedStringArray, body
 		update_error.emit("No update needed.")
 		return
 		
+	if _local_sha == "":
+		_start_full_download()
+	else:
+		_start_incremental_update()
+
+
+func _start_full_download() -> void:
+	update_status.emit("Initial download detected...")
+	_http.request_completed.disconnect(_on_sha_received)
+	_http.request_completed.connect(_on_tree_received)
+	_http.request("https://api.github.com/repos/%s/%s/git/trees/%s?recursive=1" % [REPO_OWNER, REPO_NAME, BRANCH])
+
+
+func _start_incremental_update() -> void:
 	update_status.emit("Comparing versions...")
 	_http.request_completed.disconnect(_on_sha_received)
 	_http.request_completed.connect(_on_comparison_received)
 	_http.request("https://api.github.com/repos/%s/%s/compare/%s...%s" % [REPO_OWNER, REPO_NAME, _local_sha, _target_sha])
 
 
+func _on_tree_received(_result: int, code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
+	if code != 200:
+		update_error.emit("Failed to fetch repository tree")
+		return
+		
+	var json = JSON.parse_string(body.get_string_from_utf8())
+	var files_to_download: Array = []
+	
+	for item in json.get("tree", []):
+		if item["type"] == "blob":
+			var path = item["path"]
+			if not path.begins_with("UserContents/"):
+				files_to_download.append(path)
+				
+	_launch_thread(files_to_download)
+
+
 func _on_comparison_received(_result: int, code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
 	if code != 200:
-		update_error.emit("Comparison failed (Error %d)" % code)
+		update_error.emit("Comparison failed")
 		return
 		
 	var json = JSON.parse_string(body.get_string_from_utf8())
@@ -73,15 +104,18 @@ func _on_comparison_received(_result: int, code: int, _headers: PackedStringArra
 		if not fname.begins_with("UserContents/"):
 			files_to_download.append(fname)
 			
-	if files_to_download.is_empty():
+	_launch_thread(files_to_download)
+
+
+func _launch_thread(files: Array) -> void:
+	if files.is_empty():
 		_save_sha_locally()
-		update_error.emit("No file changes detected.")
+		update_error.emit("No changes to apply.")
 		return
 		
-	update_status.emit("Downloading %d files..." % files_to_download.size())
-	
+	update_status.emit("Preparing %d files..." % files.size())
 	_thread = Thread.new()
-	_thread.start(_threaded_download_process.bind(files_to_download))
+	_thread.start(_threaded_download_process.bind(files))
 
 
 func _threaded_download_process(files: Array) -> void:
@@ -96,7 +130,7 @@ func _threaded_download_process(files: Array) -> void:
 		var result = _sync_download(url)
 		
 		if result.is_empty():
-			call_deferred("emit_signal", "update_error", "Failed to download: " + file_path)
+			call_deferred("emit_signal", "update_error", "Failed: " + file_path)
 			return
 			
 		_write_to_temp_disk(file_path, result)
@@ -111,7 +145,7 @@ func _sync_download(url: String) -> PackedByteArray:
 	if err != OK: return PackedByteArray()
 	while client.get_status() == HTTPClient.STATUS_CONNECTING or client.get_status() == HTTPClient.STATUS_RESOLVING:
 		client.poll()
-		OS.delay_msec(10)
+		OS.delay_msec(5)
 		
 	if client.get_status() != HTTPClient.STATUS_CONNECTED: return PackedByteArray()
 	
@@ -119,7 +153,7 @@ func _sync_download(url: String) -> PackedByteArray:
 	
 	while client.get_status() == HTTPClient.STATUS_REQUESTING:
 		client.poll()
-		OS.delay_msec(10)
+		OS.delay_msec(5)
 		
 	var rb = PackedByteArray()
 	while client.get_status() == HTTPClient.STATUS_BODY:
@@ -160,36 +194,19 @@ func _finalize_update() -> void:
 
 func _create_and_run_bat() -> void:
 	var bat_path = ProjectSettings.globalize_path("user://updater.bat")
-	var log_path = ProjectSettings.globalize_path("user://update_log.txt").replace("/", "\\")
 	var project_res = ProjectSettings.globalize_path("res://").replace("/", "\\").trim_suffix("\\")
 	var temp_res = ProjectSettings.globalize_path(TEMP_FOLDER).replace("/", "\\").trim_suffix("\\")
 	var user_sha_dest = ProjectSettings.globalize_path(SHA_FILE).replace("/", "\\")
 	var godot_exe = OS.get_executable_path().replace("/", "\\")
 	
 	var script = "@echo off\r\n"
-	script += 'echo [LOG] Start Update: %s > "%s"\r\n' % [Time.get_datetime_string_from_system(), log_path]
 	script += "timeout /t 5 /nobreak > NUL\r\n"
-	
-	script += 'echo [LOG] Copying files... >> "%s"\r\n' % log_path
-	script += 'xcopy "%s\\*" "%s" /Y /S /E /I /R /H >> "%s" 2>&1\r\n' % [temp_res, project_res, log_path]
-	
-	script += 'echo [LOG] Updating version_sha.txt... >> "%s"\r\n' % log_path
-	script += 'copy /Y "%s\\version_sha.txt" "%s" >> "%s" 2>&1\r\n' % [temp_res, user_sha_dest, log_path]
-	
-	script += 'echo [LOG] Cleaning temp... >> "%s"\r\n' % log_path
-	script += 'rmdir /s /q "%s" >> "%s" 2>&1\r\n' % [temp_res, log_path]
-	
-	script += 'echo [LOG] Restarting Godot... >> "%s"\r\n' % log_path
+	script += 'xcopy "%s\\*" "%s" /Y /S /E /I /R /H\r\n' % [temp_res, project_res]
+	script += 'copy /Y "%s\\version_sha.txt" "%s"\r\n' % [temp_res, user_sha_dest]
+	script += 'rmdir /s /q "%s"\r\n' % temp_res
 	script += 'start "" "%s" --path "%s" -e\r\n' % [godot_exe, project_res]
-	
-	# Fix: Use a self-destructing command that works even with start blocking
-	script += 'echo [LOG] Update finished. >> "%s"\r\n' % log_path
 	script += '(goto) 2>nul & del "%~f0"'
 	
-	var f = FileAccess.open(bat_path, FileAccess.WRITE)
-	if f:
-		f.store_string(script)
-		f.close()
-		
+	FileAccess.open(bat_path, FileAccess.WRITE).store_string(script)
 	OS.create_process("cmd.exe", ["/c", bat_path])
 	get_tree().quit()
