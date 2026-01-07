@@ -180,7 +180,8 @@ func _zip_extraction_worker(safe_sha: String) -> void:
 	for file_path in files:
 		processed_count += 1
 		
-		if processed_count % 10 == 0:
+		# Update UI less frequently to speed up I/O
+		if processed_count % 200 == 0:
 			call_deferred("emit_signal", "update_status", "Extracting: %d / %d" % [processed_count, total_files])
 		
 		if file_path.ends_with("/"): continue
@@ -289,8 +290,7 @@ func _create_bat_script() -> void:
 	
 	var bat_path = ProjectSettings.globalize_path("user://updater.bat")
 	
-	# FIX: Trim suffix "\" to ensure quotes are not escaped in BAT command
-	# Example: "C:\Path\" -> BAD. "C:\Path" -> GOOD.
+	# TRIM SUFFIX is crucial to allow appending quotes in BAT without escaping them
 	var project_root = ProjectSettings.globalize_path("res://").replace("/", "\\").trim_suffix("\\")
 	var temp_root = ProjectSettings.globalize_path(TEMP_FOLDER).replace("/", "\\").trim_suffix("\\")
 	
@@ -302,14 +302,14 @@ func _create_bat_script() -> void:
 	script += "timeout /t 5 /nobreak > NUL\r\n"
 	
 	# Process Deletions
+	# NOTE: We use %%%%f to generate %%f in the final file (required for BAT loops)
 	script += 'if exist "%s" (\r\n' % delete_list_path
-	script += '  for /f "usebackq delims=" %%f in ("%s") do (\r\n' % delete_list_path
-	# We added back the "\" separator since we trimmed the root
-	script += '    if exist "%s\\%%f" del /f /q "%s\\%%f"\r\n' % [project_root, project_root]
+	script += '  for /f "usebackq delims=" %%%%f in ("%s") do (\r\n' % delete_list_path
+	script += '    if exist "%s\\%%%%f" del /f /q "%s\\%%%%f"\r\n' % [project_root, project_root]
 	script += '  )\r\n'
 	script += ')\r\n'
 	
-	# Overwrite Files (xcopy needs trailing \* for content copy)
+	# Overwrite Files
 	script += 'xcopy "%s\\*" "%s" /Y /S /E /I\r\n' % [temp_root, project_root]
 	
 	# Update Local SHA
@@ -339,6 +339,7 @@ func _on_thread_finished() -> void:
 	
 	var bat_path = ProjectSettings.globalize_path("user://updater.bat")
 	if FileAccess.file_exists(bat_path):
-		# FIX: Reverted to create_process for proper detachment
-		OS.create_process(bat_path, [])
+		var args = ["/c", bat_path]
+		OS.create_process("cmd.exe", args)
+
 		get_tree().quit()
