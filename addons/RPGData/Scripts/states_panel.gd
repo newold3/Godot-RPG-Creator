@@ -11,6 +11,7 @@ func _ready() -> void:
 
 
 func get_data() -> RPGState:
+	if not data: return null
 	current_selected_index = max(1, min(current_selected_index, data.size() - 1))
 	return data[current_selected_index]
 
@@ -125,10 +126,12 @@ func _on_auto_removal_options_item_selected(index: int) -> void:
 	%MaxTurnsSpinBox.set_disabled(index == 0)
 
 func _on_min_turns_spin_box_value_changed(value: float) -> void:
+	if not get_data(): return
 	get_data().min_turns = value
 
 
 func _on_max_turns_spin_box_value_changed(value: float) -> void:
+	if not get_data(): return
 	get_data().max_turns = value
 
 

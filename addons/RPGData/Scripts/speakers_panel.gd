@@ -18,6 +18,7 @@ func set_data(data: Array) -> void:
 
 
 func get_data() -> RPGSpeaker:
+	if not data: return null
 	current_selected_index = max(1, min(current_selected_index, data.size() - 1))
 	return data[current_selected_index]
 
@@ -297,6 +298,7 @@ func _on_font_selected(path: String) -> void:
 
 
 func _on_font_size_value_changed(value: float) -> void:
+	if not get_data(): return
 	get_data().font_size = value
 
 

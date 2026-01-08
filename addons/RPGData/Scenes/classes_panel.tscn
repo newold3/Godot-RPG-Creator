@@ -505,7 +505,6 @@ layout_mode = 2
 tooltip_text = "[title]Max Level for parameters[/title]
 Maximum level for curve parameters (max hp, max mp, ...). Changing this value will affect the maximum level that each parameter in this class can reach."
 min_value = 1.0
-value = 1.0
 allow_greater = true
 _custom_value = 0.0
 
@@ -900,7 +899,6 @@ size_flags_horizontal = 3
 tooltip_text = "Weight used when comparing this equipment with another to determine which is better. These weights are configurable for each class; for example, a warrior might have higher weights for attack and defense, while a mage might prioritize magic attack and magic defense."
 min_value = 0.01
 step = 0.01
-value = 0.01
 rounded = false
 allow_greater = true
 _custom_value = 0.0
@@ -917,7 +915,6 @@ size_flags_horizontal = 3
 tooltip_text = "Weight used when comparing this equipment with another to determine which is better. These weights are configurable for each class; for example, a warrior might have higher weights for attack and defense, while a mage might prioritize magic attack and magic defense."
 min_value = 0.01
 step = 0.01
-value = 0.01
 rounded = false
 allow_greater = true
 _custom_value = 0.0
@@ -937,7 +934,6 @@ size_flags_horizontal = 3
 tooltip_text = "Weight used when comparing this equipment with another to determine which is better. These weights are configurable for each class; for example, a warrior might have higher weights for attack and defense, while a mage might prioritize magic attack and magic defense."
 min_value = 0.01
 step = 0.01
-value = 0.01
 rounded = false
 allow_greater = true
 _custom_value = 0.0
@@ -953,7 +949,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 min_value = 0.01
 step = 0.01
-value = 0.01
 rounded = false
 allow_greater = true
 _custom_value = 0.0
@@ -973,7 +968,6 @@ size_flags_horizontal = 3
 tooltip_text = "Weight used when comparing this equipment with another to determine which is better. These weights are configurable for each class; for example, a warrior might have higher weights for attack and defense, while a mage might prioritize magic attack and magic defense."
 min_value = 0.01
 step = 0.01
-value = 0.01
 rounded = false
 allow_greater = true
 _custom_value = 0.0
@@ -990,7 +984,6 @@ size_flags_horizontal = 3
 tooltip_text = "Weight used when comparing this equipment with another to determine which is better. These weights are configurable for each class; for example, a warrior might have higher weights for attack and defense, while a mage might prioritize magic attack and magic defense."
 min_value = 0.01
 step = 0.01
-value = 0.01
 rounded = false
 allow_greater = true
 _custom_value = 0.0
@@ -1010,7 +1003,6 @@ size_flags_horizontal = 3
 tooltip_text = "Weight used when comparing this equipment with another to determine which is better. These weights are configurable for each class; for example, a warrior might have higher weights for attack and defense, while a mage might prioritize magic attack and magic defense."
 min_value = 0.01
 step = 0.01
-value = 0.01
 rounded = false
 allow_greater = true
 _custom_value = 0.0
@@ -1027,7 +1019,6 @@ size_flags_horizontal = 3
 tooltip_text = "Weight used when comparing this equipment with another to determine which is better. These weights are configurable for each class; for example, a warrior might have higher weights for attack and defense, while a mage might prioritize magic attack and magic defense."
 min_value = 0.01
 step = 0.01
-value = 0.01
 rounded = false
 allow_greater = true
 _custom_value = 0.0
@@ -1157,8 +1148,8 @@ wrap_mode = 1
 [connection signal="clicked" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer2/IconPicker" to="." method="_on_icon_picker_clicked"]
 [connection signal="paste_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer2/IconPicker" to="." method="_on_icon_picker_paste_requested"]
 [connection signal="remove_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer2/IconPicker" to="." method="_on_icon_picker_remove_requested"]
-[connection signal="text_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer/NameLineEdit" to="." method="_on_name_line_edit_text_changed_update_class_list"]
 [connection signal="text_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer/NameLineEdit" to="." method="_on_name_line_edit_text_changed"]
+[connection signal="text_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer/NameLineEdit" to="." method="_on_name_line_edit_text_changed_update_class_list"]
 [connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer3/MaxLevelSpinBox" to="." method="_on_max_level_spin_box_value_changed"]
 [connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer4/TickInterval" to="." method="_on_tick_interval_value_changed"]
 [connection signal="text_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3/DescriptionText" to="." method="_on_description_text_edit_text_changed"]

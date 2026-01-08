@@ -626,6 +626,7 @@ func update_air_transport(path: String) -> void:
 
 
 func _on_party_active_members_value_changed(value: float) -> void:
+	if not data: return
 	data.party_active_members = value
 
 
@@ -852,10 +853,12 @@ func _on_shadow_skew_value_changed(value: float) -> void:
 
 
 func _on_shadow_length_x_value_changed(value: float) -> void:
+	if not data: return
 	data.day_night_config.shadow_max_length = value
 
 
 func _on_shadow_length_y_value_changed(value: float) -> void:
+	if not data: return
 	data.day_night_config.shadow_min_length = value
 
 

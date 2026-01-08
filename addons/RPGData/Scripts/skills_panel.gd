@@ -8,6 +8,7 @@ func _ready() -> void:
 
 
 func get_data() -> RPGSkill:
+	if not data: return null
 	current_selected_index = max(1, min(current_selected_index, data.size() - 1))
 	if data.size() > current_selected_index:
 		return data[current_selected_index]
@@ -265,18 +266,22 @@ func _on_success_spin_box_value_changed(value: float) -> void:
 
 
 func _on_repeat_spin_box_value_changed(value: float) -> void:
+	if not get_data(): return
 	get_data().invocation.repeat = value
 
 
 func _on_tp_gain_spin_box_value_changed(value: float) -> void:
+	if not get_data(): return
 	get_data().invocation.tp_gain = value
 
 
 func _on_hit_type_options_item_selected(index: int) -> void:
+	if not get_data(): return
 	get_data().invocation.hit_type = index
 
 
 func _on_damage_type_options_item_selected(index: int) -> void:
+	if not get_data(): return
 	get_data().damage.type = index
 	
 	if index == 0:
@@ -289,22 +294,27 @@ func _on_damage_type_options_item_selected(index: int) -> void:
 
 
 func _on_damage_element_options_item_selected(index: int) -> void:
+	if not get_data(): return
 	get_data().damage.element_id = index
 
 
 func _on_damage_formula_line_edit_text_changed(new_text: String) -> void:
+	if not get_data(): return
 	get_data().damage.formula = new_text
 
 
 func _on_damage_variance_spin_box_value_changed(value: float) -> void:
+	if not get_data(): return
 	get_data().damage.variance  = value
 
 
 func _on_damage_critical_hits_options_item_selected(index: int) -> void:
+	if not get_data(): return
 	get_data().damage.critical = index
 
 
 func _on_note_text_edit_text_changed() -> void:
+	if not get_data(): return
 	get_data().notes = %NoteTextEdit.text
 
 
@@ -329,16 +339,19 @@ func _on_animation_button_pressed() -> void:
 
 
 func _on_animation_selected(id: int, target: Variant) -> void:
+	if not get_data(): return
 	get_data().invocation.animation = id
 	fill_invocation_animation()
 
 
 func _on_animation_button_middle_click_pressed() -> void:
+	if not get_data(): return
 	get_data().invocation.animation = -1
 	fill_invocation_animation()
 
 
 func _on_animation_button_right_click_pressed() -> void:
+	if not get_data(): return
 	get_data().invocation.animation = -2
 	fill_invocation_animation()
 

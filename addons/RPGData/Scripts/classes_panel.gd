@@ -11,6 +11,7 @@ func _ready() -> void:
 
 
 func get_data() -> RPGClass:
+	if not data: return null
 	current_selected_index = max(1, min(current_selected_index, data.size() - 1))
 	return data[current_selected_index]
 
@@ -133,6 +134,7 @@ func fill_params() -> void:
 
 func resize_params() -> void:
 	var current_data = get_data()
+	if not current_data: return
 	var value = current_data.max_level + 1
 	if current_data.experience.data.size() != value:
 		var index1 = current_data.experience.data.size()
@@ -152,6 +154,7 @@ func resize_params() -> void:
 
 func _on_max_level_spin_box_value_changed(value: float) -> void:
 	if busy: return
+	if not get_data(): return
 	get_data().max_level = value
 	params_need_resize = 0.15
 
@@ -415,34 +418,42 @@ func _on_tick_interval_value_changed(value: float) -> void:
 
 
 func _on_hp_weight_value_changed(value: float) -> void:
+	if not get_data(): return
 	get_data().weights["HP"] = value
 
 
 func _on_mp_weight_value_changed(value: float) -> void:
+	if not get_data(): return
 	get_data().weights["MP"] = value
 
 
 func _on_attack_weight_value_changed(value: float) -> void:
+	if not get_data(): return
 	get_data().weights["ATK"] = value
 
 
 func _on_defense_weight_value_changed(value: float) -> void:
+	if not get_data(): return
 	get_data().weights["DEF"] = value
 
 
 func _on_magic_attack_weight_value_changed(value: float) -> void:
+	if not get_data(): return
 	get_data().weights["MATK"] = value
 
 
 func _on_magic_defense_weight_value_changed(value: float) -> void:
+	if not get_data(): return
 	get_data().weights["MDEF"] = value
 
 
 func _on_agility_weight_value_changed(value: float) -> void:
+	if not get_data(): return
 	get_data().weights["AGI"] = value
 
 
 func _on_luck_weight_value_changed(value: float) -> void:
+	if not get_data(): return
 	get_data().weights["LUCK"] = value
 
 

@@ -21,6 +21,7 @@ func get_custom_class() -> String:
 
 
 func get_data() -> RPGQuest:
+	if not data: return null
 	if current_selected_index != -1:
 		current_selected_index = max(1, min(current_selected_index, data.size() - 1))
 		return data[current_selected_index]
@@ -200,6 +201,7 @@ func _on_is_repeatable_toggled(toggled_on: bool) -> void:
 
 
 func _on_max_level_spin_box_value_changed(value: float) -> void:
+	if not get_data(): return
 	get_data().min_level = value
 
 
@@ -523,6 +525,7 @@ func _on_item_id_pressed() -> void:
 
 
 func _on_quantity_value_changed(value: float) -> void:
+	if not get_data(): return
 	if not busy: quest_cache.item_quantity = value
 	get_data().quantity = value
 
@@ -537,6 +540,7 @@ func _on_enemy_id_pressed() -> void:
 
 
 func _on_enemy_quantity_value_changed(value: float) -> void:
+	if not get_data(): return
 	if not busy: quest_cache.enemy_quantity = value
 	get_data().quantity = value
 

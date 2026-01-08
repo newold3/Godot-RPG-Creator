@@ -16,6 +16,7 @@ func _on_armor_created(armor: RPGArmor) -> void:
 
 
 func get_data() -> RPGArmor:
+	if not data: return null
 	current_selected_index = max(1, min(current_selected_index, data.size() - 1))
 	if data.size() > current_selected_index:
 		return data[current_selected_index]
@@ -239,6 +240,7 @@ func _on_luck_spin_box_value_changed(value: float) -> void:
 
 
 func _on_armor_max_levels_spin_box_value_changed(value: float) -> void:
+	if not get_data(): return
 	var current_data = get_data()
 	current_data.upgrades.max_levels = value
 	current_data.upgrades.levels.resize(value)
