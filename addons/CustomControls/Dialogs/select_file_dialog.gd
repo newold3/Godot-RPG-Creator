@@ -20,6 +20,9 @@ class FileStruct:
 		return "<FileStruct path=\"%s\" type=\"%s\" icon=\"%s\"" % [path, type, icon]
 
 
+## Number of files to show per page to prevent Godot preview crashes.
+@export var items_per_page: int = 50
+
 @export var ignore_folders: Array[String] = []
 
 
@@ -54,6 +57,11 @@ var history: Dictionary = {
 
 var queue_files: Array[FileStruct] = []
 
+## Complete list of files to be paginated.
+var filtered_files_pool: Array[FileStruct] = []
+
+var current_page: int = 0
+
 var auto_play_sounds: bool = false
 
 var current_cache_key: Variant = null
@@ -74,7 +82,6 @@ var current_file_filters_data: Variant = ""
 var favorite_button_enabled: bool = false
 var all_button_enabled: bool = false
 
-# Token to validate async operations and prevent race conditions
 var _load_token: int = 0
 
 static var cache_last_selection: Dictionary = {}
@@ -91,15 +98,13 @@ func _ready() -> void:
 	visibility_changed.connect(_on_visibility_changed)
 	tree_exiting.connect(_save_last_folder_visited)
 	close_requested.connect(_on_cancel_button_pressed)
-	#scroll_container.get_v_scroll_bar().value_changed.connect(set_all_files_visibility_timer)
 	%FileContainer.item_rect_changed.connect(set_all_files_visibility_timer)
 	
 	if FileCache.options:
 		var p_favorite_button_enabled = FileCache.options.get("file_dialog_favorite_toggled", false)
 		%FavoriteButton.set_pressed_no_signal(p_favorite_button_enabled)
 		var p_all_button_enabled = FileCache.options.get("file_dialog_all_files_toggled", false)
-		#%AllButton.set_pressed_no_signal(p_all_button_enabled)
-		%AllButton.set_pressed(p_all_button_enabled)
+		%AllButton.set_pressed_no_signal(p_all_button_enabled)
 		favorite_button_enabled = p_favorite_button_enabled
 		all_button_enabled = p_all_button_enabled
 
@@ -126,26 +131,26 @@ func reset() -> void:
 	%Filename.text = ""
 	%FilterLineEdit.text = ""
 	_update_label_path_selected()
-	if all_button_enabled and not favorite_button_enabled:
+	
+	if all_button_enabled:
 		%AllButton.set_pressed_no_signal(true)
-	elif not all_button_enabled and favorite_button_enabled:
+	elif favorite_button_enabled:
 		%FavoriteButton.set_pressed_no_signal(true)
 
 
 func set_dialog_mode(id: int) -> void:
 	dialog_mode = clamp(id, 0, 1)
-	var directory_controls_visible = (id == 1)
-	%DirectoryExtraControls1.visible = directory_controls_visible
-	#%DirectoryExtraControls2.visible = directory_controls_visible
 	title = TranslationManager.tr("Select File") if dialog_mode == 0 else TranslationManager.tr("Select Directory")
-	history.back.clear()
-	history.next.clear()
 	%FavoriteButton.visible = dialog_mode == 0
 	%AllButton.visible = dialog_mode == 0
+	_update_ui_controls()
 
 
-func hide_directory_extra_controls2() -> void:
-	%DirectoryExtraControls2.visible = false
+func _update_ui_controls() -> void:
+	var is_navigable = (dialog_mode == 1) or (dialog_mode == 0 and not all_button_enabled and not favorite_button_enabled)
+	%DirectoryExtraControls1.visible = is_navigable
+	%Back.visible = is_navigable
+	%Next.visible = is_navigable
 
 
 func set_file_selected(path: String) -> void:
@@ -201,11 +206,13 @@ func _change_state_button(button: TextureButton, history_id: String) -> void:
 
 
 func _clear_current_files() -> void:
-	_load_token += 1 # Invalidate previous async operations
+	_load_token += 1
 	%FilterLineEdit.text = ""
 	for file in %FileContainer.get_children():
 		file.queue_free()
 	queue_files.clear()
+	filtered_files_pool.clear()
+	current_page = 0
 
 
 func _get_files_in_cache(file_id: String) -> PackedStringArray:
@@ -215,119 +222,69 @@ func _get_files_in_cache(file_id: String) -> PackedStringArray:
 			FileCache.rescan_files()
 			await FileCache.cache_ready
 		if file_id in FileCache.cache:
-			var files = FileCache.cache[file_id].keys()
-			return files
-	
+			return FileCache.cache[file_id].keys()
 	return []
 
 
 func _get_files_recursive(path: String, extensions: Array) -> PackedStringArray:
 	var found_files: PackedStringArray = []
 	var dir = DirAccess.open(path)
-	if dir == null:
-		print(tr("Error: Could not open directory") + ": ", path)
-		return []
+	if dir == null: return []
 	
 	dir.list_dir_begin()
 	var file_name = dir.get_next()
 	
 	while file_name != "":
 		var full_path = path.path_join(file_name)
-		
 		if dir.current_is_dir():
 			found_files.append_array(_get_files_recursive(full_path, extensions))
 		else:
-			var file_extension = file_name.get_extension().to_lower()
-			
-			var lower_extensions: Array[String] = []
-			for ext in extensions:
-				lower_extensions.append(ext.to_lower())
-			
-			if file_extension in lower_extensions:
+			var ext = file_name.get_extension().to_lower()
+			if extensions.any(func(e): return e.to_lower() == ext):
 				found_files.append(full_path)
-		
 		file_name = dir.get_next()
 	
 	return found_files
 
 
 func _get_folders(dir_path: String) -> PackedStringArray:
-	if dir_path.is_empty():
-		dir_path = "res://"
-	
+	if dir_path.is_empty(): dir_path = "res://"
 	var directories: PackedStringArray = []
-	
 	var dir = DirAccess.open(dir_path)
-	
-	if dir == null:
-		push_error("Error accessing directory: " + dir_path)
-		return []
+	if dir == null: return []
 	
 	dir.list_dir_begin()
 	var file_name = dir.get_next()
 	while file_name != "":
-		if dir.current_is_dir():
+		if dir.current_is_dir() and not file_name.begins_with("."):
 			directories.append(dir_path.path_join(file_name))
 		file_name = dir.get_next()
-
-	dir.list_dir_end()
-	
 	return directories
-
-
-func _get_directory_selected() -> String:
-	if dialog_mode == 1:
-		if not current_directory_selected.is_empty():
-			return current_directory_selected
-		if not current_directory.is_empty():
-			return current_directory
-
-	if (dialog_mode == 0 and file_mode == FILE_MODE.NAVIGABLE) or dialog_mode == 1:
-		if current_file_selected.is_empty():
-			return "res://"
-		elif FileAccess.file_exists(current_file_selected):
-			return current_file_selected.get_base_dir()
-		else:
-			return current_file_selected
-
-	return "" if not (dialog_mode == 0 and file_mode == FILE_MODE.NAVIGABLE) else "res://"
 
 
 func _append_folders(dir_path: String) -> void:
 	var folders = _get_folders(dir_path)
+	current_directory_count = folders.size()
 	for folder in folders:
 		queue_files.append(FileStruct.new(folder, "directory", "", _is_directory_empty(folder)))
 	
 	current_directory = dir_path
 	%CurrentPath.text = current_directory
-	%DirectoryExtraControls1.visible = true
-
-
-func _get_base_directory_with_last_visited(default_path: String) -> String:
-	if (default_path == "res://" or default_path.is_empty()) and not last_folder_visited.is_empty():
-		return last_folder_visited
-	return default_path
 
 
 func _fill_favorite_files() -> void:
-	%DirectoryExtraControls1.visible = false
 	_clear_current_files()
+	_update_ui_controls()
 	
 	var options_cache = FileCache.options
-	if options_cache:
-		if "favorite_files" in options_cache:
-			var favorite_files = options_cache.favorite_files
-			for file in favorite_files:
-				var file_id = str(favorite_files[file])
-				if file_id == str(current_file_filters_data):
-					queue_files.append(FileStruct.new(file, "file"))
-				elif current_file_filters_data is Array or current_file_filters_data is PackedStringArray:
-					var ext = file.get_extension()
-					for id in current_file_filters_data:
-						if ext == str(id):
-							queue_files.append(FileStruct.new(file, "file"))
-							break
+	if options_cache and "favorite_files" in options_cache:
+		var favorite_files = options_cache.favorite_files
+		for file in favorite_files:
+			var file_id = str(favorite_files[file])
+			if file_id == str(current_file_filters_data):
+				filtered_files_pool.append(FileStruct.new(file, "file"))
 	
+	_paginate_next_batch()
 	hide_loading()
 
 
@@ -342,32 +299,23 @@ func fill_files(file_id: String, update_directory: bool = true) -> void:
 		return
 	
 	_clear_current_files()
+	_update_ui_controls()
+	
 	var current_token = _load_token
-	
-	# Add directories
-	var base_dir = _get_directory_selected() if update_directory else current_directory
-	if all_button_enabled:
-		base_dir = ""
-	if not base_dir.is_empty():
-		base_dir = _get_base_directory_with_last_visited(base_dir) if update_directory else base_dir
-		_append_folders(base_dir)
-	else:
-		%DirectoryExtraControls1.visible = false
-		
-	# Add Files
 	var files = await _get_files_in_cache(file_id)
+	if current_token != _load_token: return
 	
-	# Race condition check
-	if current_token != _load_token:
-		return
+	var base_dir = ""
+	if not all_button_enabled:
+		base_dir = current_directory if not update_directory else (last_folder_visited if not last_folder_visited.is_empty() else "res://")
+		_append_folders(base_dir)
 		
-	hide_loading()
 	for file in files:
-		if not base_dir.is_empty():
-			if file.get_base_dir() == base_dir:
-				queue_files.append(FileStruct.new(file, "file"))
-		else:
-			queue_files.append(FileStruct.new(file, "file"))
+		if all_button_enabled or file.get_base_dir() == base_dir:
+			filtered_files_pool.append(FileStruct.new(file, "file"))
+			
+	_paginate_next_batch()
+	hide_loading()
 
 
 func fill_mix_files(file_ids: PackedStringArray, update_directory: bool = true) -> void:
@@ -380,32 +328,23 @@ func fill_mix_files(file_ids: PackedStringArray, update_directory: bool = true) 
 		return
 		
 	_clear_current_files()
-	var current_token = _load_token
+	_update_ui_controls()
 	
-	# Add directories
-	var base_dir = _get_directory_selected() if update_directory else current_directory
-	if all_button_enabled:
-		base_dir = ""
-	if not base_dir.is_empty():
-		base_dir = _get_base_directory_with_last_visited(base_dir) if update_directory else base_dir
+	var current_token = _load_token
+	var base_dir = ""
+	if not all_button_enabled:
+		base_dir = current_directory if not update_directory else (last_folder_visited if not last_folder_visited.is_empty() else "res://")
 		_append_folders(base_dir)
-	else:
-		%DirectoryExtraControls1.visible = false
 		
-	# Add Files
-	for file_id in file_ids:
-		var files = await _get_files_in_cache(file_id)
-		
-		if current_token != _load_token:
-			return
-			
-		hide_loading()
+	for id in file_ids:
+		var files = await _get_files_in_cache(id)
+		if current_token != _load_token: return
 		for file in files:
-			if not base_dir.is_empty():
-				if file.get_base_dir() == base_dir:
-					queue_files.append(FileStruct.new(file, "file"))
-			else:
-				queue_files.append(FileStruct.new(file, "file"))
+			if all_button_enabled or file.get_base_dir() == base_dir:
+				filtered_files_pool.append(FileStruct.new(file, "file"))
+				
+	_paginate_next_batch()
+	hide_loading()
 
 
 func fill_files_by_extension(path: String = "res://", extensions: Array = [], update_directory: bool = true)-> void:
@@ -418,195 +357,210 @@ func fill_files_by_extension(path: String = "res://", extensions: Array = [], up
 		return
 		
 	_clear_current_files()
-	# No await here, but good practice to maintain consistency if recursive search becomes async
-	var current_token = _load_token 
+	_update_ui_controls()
 	
-	if not path.is_empty() and not path == "res://":
-		current_path = path
-		current_file_selected = path
-		_update_label_path_selected()
-	
-	# Add directories
-	var base_dir = path.get_base_dir() if update_directory else current_directory
-	if all_button_enabled:
-		base_dir = ""
-	if not base_dir.is_empty():
-		base_dir = _get_base_directory_with_last_visited(base_dir) if update_directory else base_dir
+	var base_dir = path if !all_button_enabled else "res://"
+	if !all_button_enabled:
 		_append_folders(base_dir)
-	else:
-		%DirectoryExtraControls1.visible = false
 		
-	# Add Files
 	var files = _get_files_recursive(base_dir, extensions)
-	
-	if current_token != _load_token:
-		return
-		
-	hide_loading()
 	for file in files:
-		if not base_dir.is_empty():
-			if file.get_base_dir() == base_dir:
-				queue_files.append(FileStruct.new(file, "file"))
+		if all_button_enabled or file.get_base_dir() == base_dir:
+			filtered_files_pool.append(FileStruct.new(file, "file"))
+			
+	_paginate_next_batch()
+	hide_loading()
+
+
+func _paginate_next_batch() -> void:
+	var start = current_page * items_per_page
+	if start >= filtered_files_pool.size(): return
+	
+	var end = min(start + items_per_page, filtered_files_pool.size())
+	queue_files.append_array(filtered_files_pool.slice(start, end))
+	current_page += 1
+
+
+func populate_files() -> void:
+	if queue_files.is_empty(): return
+	
+	%Loading.visible = false
+	%NoFilesFound.visible = false
+	
+	# Priority: Folders first
+	var folders = queue_files.filter(func(f): return f.type == "directory")
+	folders.sort_custom(func(a, b): return a.path.naturalnocasecmp_to(b.path) < 0)
+	
+	# Process batch limit for frames
+	for i in range(min(15, queue_files.size())):
+		if queue_files.is_empty(): break
+		var file = queue_files.pop_front()
+		
+		var file_selector = FILE_SELECTOR.instantiate()
+		%FileContainer.add_child(file_selector)
+		
+		if file.type == "file":
+			_setup_file_node(file_selector, file.path)
 		else:
-			queue_files.append(FileStruct.new(file, "file"))
+			file_selector.set_directory(file.path, EMPTY_FOLDER_ICON if file.is_empty else FOLDER_ICON)
+			file_selector.double_click.connect(navigate_to_directory)
+			file_selector.selected.connect(_on_directory_selected)
+			if !all_button_enabled: 
+				%FileContainer.move_child(file_selector, 0)
+
+	refresh_delay_timer = 0.05
 
 
-func _is_directory_empty(dir_path: String) -> bool:
-	var dir: DirAccess = DirAccess.open(dir_path)
-	
-	if DirAccess.get_open_error() != OK:
-		return true
-	
-	dir.list_dir_begin()
-	var file_name = dir.get_next()
-	
-	while file_name != "":
-		if !file_name.begins_with("."):
-			return false
-		file_name = dir.get_next()
-	
-	return true
-
-
-func set_directories(path: String, step: int = 0) -> void:
-	var current_token = _load_token # Capture token from caller context if possible, or assume current
-	if step == 0:
-		_clear_current_files()
-		current_token = _load_token # Get the new token after clear
-	
-	var dir: DirAccess = DirAccess.open(path)
-	current_directory_count = 0
-	
-	if DirAccess.get_open_error() == OK:
-		current_directory = path
-		%CurrentPath.text = current_directory
+func _setup_file_node(node: Control, path: String) -> void:
+	# Specific logic for RPG Godot Creator Character previews
+	if path in FileCache.cache.characters:
+		var res = load(path)
+		if res is RPGLPCCharacter:
+			node.set_path(path, res.character_preview, path.replace("_data.%s" % path.get_extension(), "").get_file())
+		else:
+			node.set_path(path)
+	else:
+		node.set_path(path)
 		
-		dir.list_dir_begin()
-		
-		var file_name = dir.get_next()
-		
-		while file_name != "":
-			if current_token != _load_token: return # Cancel if navigated away
-			
-			if dir.current_is_dir() and !file_name.begins_with("."):
-				var dir_path = dir.get_current_dir().path_join(file_name)
-				queue_files.append(FileStruct.new(dir_path, "directory", "", _is_directory_empty(dir_path)))
-				current_directory_count += 1
-			
-			file_name = dir.get_next()
-			
-			file_count += 1
-			if file_count % 30 == 0:
-				await get_tree().process_frame
+	node.selected.connect(_on_file_selected)
+	node.double_click.connect(select_file)
+	node.add_to_favorite_requested.connect(_add_to_favorite)
+	node.show_favorite_button()
+	if path.to_lower() == current_file_selected.to_lower():
+		node.select()
 
-	if step == 0:
-		hide_loading()
+
+func _check_all_nodes_visibility() -> void:
+	var children = %FileContainer.get_children()
+	for child in children:
+		var global_rect = child.get_global_rect()
+		var view_rect = scroll_container.get_global_rect()
+		if view_rect.intersects(global_rect):
+			if child.has_method("enable"): child.enable()
+		else:
+			if child.has_method("disable"): child.disable()
+			
+	# Trigger next page if scroll is near bottom
+	var scroll = scroll_container.get_v_scroll_bar()
+	if scroll.value > (scroll.max_value - scroll.page - 100):
+		if (current_page * items_per_page) < filtered_files_pool.size():
+			_paginate_next_batch()
+
+
+func navigate_to_directory(path: String) -> void:
+	current_directory = path
+	current_page = 0
+	_refresh_view()
+
+
+func _refresh_view() -> void:
+	match current_file_type:
+		0: fill_files(current_file_filters_data, false)
+		1: fill_files_by_extension(current_directory, current_file_filters_data, false)
+		2: fill_mix_files(current_file_filters_data, false)
+
+
+func _on_all_button_toggled(toggled_on: bool) -> void:
+	all_button_enabled = toggled_on
+	if toggled_on:
+		favorite_button_enabled = false
+		%FavoriteButton.set_pressed_no_signal(false)
+	
+	if FileCache.options:
+		FileCache.options.file_dialog_all_files_toggled = toggled_on
+		
+	_refresh_view()
+
+
+func _on_favorite_button_toggled(toggled_on: bool) -> void:
+	favorite_button_enabled = toggled_on
+	if toggled_on:
+		all_button_enabled = false
+		%AllButton.set_pressed_no_signal(false)
+		
+	if FileCache.options:
+		FileCache.options.file_dialog_favorite_toggled = toggled_on
+		
+	_refresh_view()
+
+
+func _on_visibility_changed() -> void:
+	if visible:
+		_refresh_view()
+
+
+func _on_ok_button_pressed() -> void:
+	if not current_file_selected.is_empty():
+		select_file(current_file_selected)
+	elif not current_directory_selected.is_empty():
+		if dialog_mode == 1:
+			select_file(current_directory_selected)
+		else:
+			navigate_to_directory(current_directory_selected)
+
+
+func select_file(path: String) -> void:
+	if target_callable: target_callable.call(path)
+	hide()
+
+
+func _on_file_selected(node: Control) -> void:
+	for child in %FileContainer.get_children(): child.deselect()
+	node.select()
+	current_file_selected = node.path
+	current_path = node.path
+	_update_label_path_selected()
+
+
+func _on_directory_selected(node: Control) -> void:
+	current_directory_selected = node.path
+
+
+func _update_label_path_selected() -> void:
+	%PathSelected.text = " " + current_path if not current_path.is_empty() else " -"
+
+
+func set_all_files_visibility_timer(_p=null) -> void:
+	refresh_delay_timer = 0.05
 
 
 func hide_loading() -> void:
 	%Loading.visible = false
-	if %FileContainer.get_child_count() == 0 and queue_files.size() == 0 and dialog_mode == 0:
-		%NoFilesFound.visible = true
-		#%OKButton.set_disabled(true)
+	%NoFilesFound.visible = (%FileContainer.get_child_count() == 0 and queue_files.is_empty() and filtered_files_pool.is_empty())
 
 
-func populate_files() -> void:
-	if queue_files.is_empty():
-		return
+func _on_cancel_button_pressed() -> void:
+	hide()
 
-	%Loading.visible = false
-	%NoFilesFound.visible = false
-	
-	# Sorting logic here...
-	var folders = queue_files.filter(func(f): return f.type == "directory")
-	folders.sort_custom(func(a, b): return a.path.naturalnocasecmp_to(b.path) < 0)
 
-	var keys = cache_last_selection.get(current_cache_key, [])
-	var cache_files = queue_files.filter(func(f): return f.type != "directory" and keys.has(f.path))
-	cache_files.sort_custom(func(a, b): return keys.find(a.path) > keys.find(b.path))
+func _is_directory_empty(path: String) -> bool:
+	var dir = DirAccess.open(path)
+	if !dir: return true
+	dir.list_dir_begin()
+	var first = dir.get_next()
+	return first == "" or first == "."
 
-	var other_files = queue_files.filter(func(f): return f.type != "directory" and not keys.has(f.path))
-	other_files.sort_custom(func(a, b): return a.path.naturalnocasecmp_to(b.path) > 0)
-	
-	queue_files = folders + cache_files + other_files
 
-	var filter_node = %FilterLineEdit
+func apply_filter(filter_text: String) -> void:
+	for child in %FileContainer.get_children():
+		child.visible = filter_text.is_empty() or child.path.get_file().to_lower().contains(filter_text.to_lower())
 
-	# Process chunk
-	for i in range(min(40, queue_files.size())):
-		if queue_files.is_empty(): break
-		
-		var file: FileStruct = queue_files.pop_back()
-		var path = file.path
-		
-		if ignore_folders.any(func(ignore_path): return path.begins_with(ignore_path)):
-			continue
-			
-		if (
-			(dialog_mode == 0 and not FileAccess.file_exists(path)) or
-			(dialog_mode == 1 and not DirAccess.dir_exists_absolute(ProjectSettings.globalize_path(path)))
-		):
-			if not (dialog_mode == 0 and file_mode == FILE_MODE.NAVIGABLE and file.type == "directory"):
-				continue
-			
-		var file_selector = FILE_SELECTOR.instantiate()
-		file_selector.select_other.connect(_select_other_file)
-		
-		%FileContainer.add_child(file_selector)
-		if file.type == "file":
-			if path in FileCache.cache.characters:
-				if path.get_extension() != "tres":
-					file_selector.queue_free()
-					continue
-				var res = load(path)
-				if res is RPGLPCCharacter:
-					file_selector.set_path(path, res.character_preview,
-					path.replace("_data.%s" % path.get_extension(), "").get_file())
-				else:
-					file_selector.queue_free()
-					continue
-			elif path in FileCache.cache.equipment_parts:
-				var res: RPGLPCEquipmentPart = load(path)
-				file_selector.set_path(res.name, res.equipment_preview)
-				file_selector.path = path
-			elif path in FileCache.cache.events:
-				var res: RPGLPCCharacter = load(path)
-				file_selector.set_path(path, res.event_preview,
-				path.replace("_data.%s" % path.get_extension(), "").get_file())
-			else:
-				file_selector.set_path(path)
-			file_selector.selected.connect(_on_file_selected)
-			file_selector.double_click.connect(select_file)
-			file_selector.add_to_favorite_requested.connect(_add_to_favorite)
-			file_selector.remove_from_favorite_requested.connect(_remove_from_favorite)
-			file_selector.show_favorite_button()
-		elif file.type == "directory":
-			if file.is_empty:
-				file_selector.set_directory(path, EMPTY_FOLDER_ICON)
-			else:
-				file_selector.set_directory(path, FOLDER_ICON)
-			file_selector.selected.connect(_on_directory_selected)
-			file_selector.double_click.connect(
-				func(p_path: String):
-					navigate_to_directory(p_path)
-					history.next.clear()
-			)
-			if file_selector.get_index() >= current_directory_count:
-				%FileContainer.move_child(file_selector, 0)
 
-		if path.to_lower() == current_file_selected.to_lower():
-			try_select_current_file(file_selector)
-		
-		file_selector.visible = filter_node.text.length() == 0 or file_selector.path.to_lower().find(filter_node.text.to_lower()) != -1
-		file_selector.is_hidden = !file_selector.visible
-		
-		var current_cache = cache_last_selection.get(current_cache_key, [])
-		var file_is_in_cache = current_cache.has(file_selector.path)
-		if file_is_in_cache and file.type == "file":
-			%FileContainer.move_child(file_selector, current_directory_count)
-		
-	var t = get_tree().create_timer(0.03)
-	t.timeout.connect(set_all_files_visibility_timer)
+func _on_custom_line_edit_text_changed(new_text: String) -> void:
+	filter_delay_timer = 0.25
+
+
+func _save_last_folder_visited() -> void:
+	if not current_directory.is_empty() and current_directory != "res://": 
+		last_folder_visited = current_directory
+
+
+func _on_back_button_pressed() -> void:
+	if current_directory == "res://": return
+	navigate_to_directory(current_directory.get_base_dir())
+
+
+func _select_other_file(_i, _d): pass
 
 
 func _add_to_favorite(path: String) -> void:
@@ -615,398 +569,3 @@ func _add_to_favorite(path: String) -> void:
 		if not "favorite_files" in options_cache:
 			options_cache.favorite_files = {}
 		options_cache.favorite_files[path] = current_file_filters_data
-
-
-func _remove_from_favorite(path: String) -> void:
-	var options_cache = FileCache.options
-	if options_cache and "favorite_files" in options_cache:
-		options_cache.favorite_files.erase(path)
-
-
-func _check_node_visibility(file_selector: FileSelector) -> void:
-	if file_selector.is_hidden:
-		return
-		
-	var global_rect = file_selector.get_global_rect()
-	var scroll_container_global_rect = scroll_container.get_global_rect()
-	var intersection = scroll_container_global_rect.intersects(global_rect, true)
-
-	if not file_selector.is_enabled and intersection:
-		file_selector.enable()
-	elif file_selector.is_enabled and not intersection:
-		file_selector.disable()
-
-
-func _check_all_nodes_visibility() -> void:
-	for child: FileSelector in %FileContainer.get_children():
-		_check_node_visibility(child)
-
-
-func set_all_files_visibility_timer(_param: float = 0.0) -> void:
-	refresh_delay_timer = 0.01
-
-
-func _select_other_file(index: int, direction: int) -> void:
-	# Direction -> 0 up, 1 left, 2 down, 3 right
-	var current_selection = null
-	var children = %FileContainer.get_children()
-	if direction == 0:
-		for i in range(index - 1, -1, -1):
-			if children[i].global_position.x ==  children[index].global_position.x:
-				children[i].select()
-				current_selection = children[i]
-				break
-	elif direction == 2:
-		for i in range(index + 1, children.size(), 1):
-			if children[i].global_position.x ==  children[index].global_position.x:
-				children[i].select()
-				current_selection = children[i]
-				break
-	elif direction == 1:
-		if index - 1 >= 0:
-			children[index - 1].select()
-			current_selection = children[index - 1]
-	elif direction == 3:
-		if index + 1 < children.size():
-			children[index + 1].select()
-			current_selection = children[index + 1]
-	
-	if !current_selection:
-		if direction == 0:
-			for i in range(children.size() - 1, index, -1):
-				if children[i].global_position.x ==  children[index].global_position.x:
-					children[i].select()
-					current_selection = children[i]
-					break
-		elif direction == 2:
-			for i in range(0, index, 1):
-				if children[i].global_position.x ==  children[index].global_position.x:
-					children[i].select()
-					current_selection = children[i]
-					break
-		elif direction == 1:
-			children[-1].select()
-			current_selection = children[-1]
-		elif direction == 3:
-			children[0].select()
-			current_selection = children[0]
-	
-	if current_selection:
-		current_selection.selected.emit(current_selection)
-
-
-func try_select_current_file(file_selector: FileSelector) -> void:
-	await get_tree().process_frame
-	await get_tree().process_frame
-	await get_tree().process_frame
-	if visible and is_instance_valid(file_selector):
-		file_selector.select()
-		%OKButton.set_disabled(false)
-		await get_tree().process_frame
-		if visible:
-			%FilterLineEdit.grab_focus()
-
-
-func _on_file_selected(current_file: FileSelector) -> void:
-	for file in %FileContainer.get_children():
-		file.deselect()
-		
-	current_file.select()
-	
-	current_path = current_file.path
-	current_file_selected = current_file.path
-	current_directory_selected = ""
-	_update_label_path_selected()
-	
-	if auto_play_sounds and ["wav", "ogg", "mp3"].has(current_path.get_extension().to_lower()):
-		var player: AudioStreamPlayer = %AudioStreamPlayer
-		player.stop()
-		player.stream = load(current_path)
-		player.play()
-	
-	await get_tree().process_frame
-	%FilterLineEdit.grab_focus()
-	%OKButton.set_disabled(false)
-
-
-func select_file(path: String) -> void:
-	if not path.is_empty() and not path == "res://":
-		if target_callable:
-			target_callable.call(path)
-	if !destroy_on_hide:
-		hide()
-	else:
-		queue_free()
-	if not current_cache_key in cache_last_selection:
-		cache_last_selection[current_cache_key] = []
-	if path in cache_last_selection[current_cache_key]:
-		cache_last_selection[current_cache_key].erase(path)
-	if cache_last_selection[current_cache_key].size() > MAX_CACHE_LAST_SELECTION_FILES:
-		cache_last_selection[current_cache_key].pop_front()
-	cache_last_selection[current_cache_key].append(path)
-
-
-func _on_directory_selected(current_file: FileSelector) -> void:
-	current_directory_selected = current_file.path
-	current_path = current_file.path if dialog_mode == 1 else ""
-	current_file_selected = ""
-	_update_label_path_selected()
-	for file in %FileContainer.get_children():
-		file.deselect()
-	
-	await get_tree().process_frame
-	%Filename.grab_focus()
-	%OKButton.set_disabled(false)
-
-
-func navigate_to_directory(path: String) -> void:
-	current_directory = path
-	current_directory = current_directory.trim_suffix("/")
-	
-	if current_directory == "res:/":
-		current_directory = "res://"
-		
-	current_directory_selected = ""
-	current_path = ""
-	current_file_selected = ""
-	
-	if dialog_mode == 0:
-		%OKButton.set_disabled(true)
-	else:
-		%OKButton.set_disabled(false)
-		current_directory_selected = path
-		current_path = path
-		# Update label immediately to reflect navigation
-		_update_label_path_selected()
-	
-	if dialog_mode == 1:
-		_clear_current_files() # Clear before refilling to avoid visual glitches
-		_append_folders(current_directory)
-		hide_loading()
-	elif dialog_mode == 0 and file_mode == FILE_MODE.NAVIGABLE:
-		match current_file_type:
-			0:
-				await fill_files(current_file_filters_data, false)
-				return
-			1:
-				fill_files_by_extension(current_directory, current_file_filters_data, false)
-				return
-			2:
-				await fill_mix_files(current_file_filters_data, false)
-				return
-	
-	await get_tree().process_frame
-	%Filename.grab_focus()
-
-
-func _on_ok_button_pressed() -> void:
-	if %OKButton.is_disabled():
-		if !destroy_on_hide:
-			hide()
-		else:
-			queue_free()
-	else:
-		var path: String
-		if dialog_mode == 0:
-			if file_mode == FILE_MODE.NAVIGABLE and current_file_selected.is_empty() and not current_directory_selected.is_empty():
-				navigate_to_directory(current_directory_selected)
-				return
-			elif not current_path.is_empty():
-				path = current_file_selected
-		else:
-			path = current_directory_selected
-
-		if !path.begins_with("res://"):
-			path = ProjectSettings.localize_path(path)
-		
-		select_file(path)
-
-
-func _on_cancel_button_pressed() -> void:
-	if !destroy_on_hide:
-		hide()
-	else:
-		queue_free()
-
-
-func _on_custom_line_edit_text_changed(new_text: String) -> void:
-	if new_text.length() != 0:
-		%FilterLineEdit.right_icon = ResourceLoader.load("res://addons/CustomControls/Images/filter_reset.png")
-	else:
-		%FilterLineEdit.right_icon = ResourceLoader.load("res://addons/CustomControls/Images/magnifying_glass.png")
-	filter_delay_timer = 0.25
-
-
-func apply_filter(filter_text) -> void:
-	for child in %FileContainer.get_children():
-		child.visible = filter_text.length() == 0 or child.path.get_file().to_lower().find(filter_text.to_lower()) != -1
-		if child.visible:
-			child.set_text_selected(filter_text)
-		else:
-			child.set_text_selected("")
-
-
-func _on_filter_line_edit_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton:
-		if event.is_pressed():
-			if event.button_index == MOUSE_BUTTON_LEFT:
-				if %FilterLineEdit.text.length() > 0:
-					if event.position.x >= %FilterLineEdit.size.x - 22:
-						%FilterLineEdit.text = ""
-						_on_custom_line_edit_text_changed("")
-	elif event is InputEventMouseMotion:
-		if event.position.x >= %FilterLineEdit.size.x - 22:
-			%FilterLineEdit.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-		else:
-			%FilterLineEdit.mouse_default_cursor_shape = Control.CURSOR_IBEAM
-
-
-func _on_visibility_changed() -> void:
-	if visible:
-		await get_tree().process_frame
-		if visible:
-			reset()
-			%FilterLineEdit.grab_focus()
-	else:
-		_save_last_folder_visited()
-
-
-func _save_last_folder_visited() -> void:
-	var folder_to_save = ""
-	if dialog_mode == 0:
-		if not current_file_selected.is_empty() and FileAccess.file_exists(current_file_selected):
-			folder_to_save = current_file_selected.get_base_dir()
-		elif not current_directory.is_empty() and current_directory != "res://":
-			folder_to_save = current_directory
-	elif dialog_mode == 1:
-		if not current_directory_selected.is_empty() and current_directory_selected != "res://":
-			folder_to_save = current_directory_selected
-		elif not current_directory.is_empty() and current_directory != "res://":
-			folder_to_save = current_directory
-	if not folder_to_save.is_empty() and folder_to_save != "res://":
-		if not folder_to_save.begins_with("res://"):
-			folder_to_save = "res://" + folder_to_save
-		last_folder_visited = folder_to_save
-	else:
-		last_folder_visited = ""
-
-
-func _on_back_button_pressed() -> void:
-	var path: String
-
-	if history.back.size() > 0:
-		path = history.back.pop_back()
-		if !history.next.has(path):
-			history.next.append(path)
-	elif current_directory != "res://":
-		if !history.next.has(current_directory):
-			history.next.append(current_directory)
-		var path_arr = Array(current_directory.trim_suffix("/").split("/"))
-		path_arr.pop_back()
-		path = "/".join(path_arr)
-		
-	if path.is_empty():
-		path = "res://"
-	if path == "res:/": path = "res://"
-	if !path.ends_with("/"): path += "/"
-
-	navigate_to_directory(path)
-	
-	if history.back.has(current_directory):
-		history.back.erase(current_directory)
-	if history.next.has(current_directory):
-		history.next.erase(current_directory)
-	
-	await get_tree().process_frame
-	%Filename.grab_focus()
-
-
-func _on_next_button_pressed() -> void:
-	if history.next.size() > 0:
-		var path = history.next.pop_back()
-		if !history.back.has(path):
-			history.back.append(path)
-		navigate_to_directory(path)
-	
-	if history.back.has(current_directory):
-		history.back.erase(current_directory)
-	if history.next.has(current_directory):
-		history.next.erase(current_directory)
-	
-	await get_tree().process_frame
-	%Filename.grab_focus()
-
-
-func _on_create_folder_pressed() -> void:
-	var path = "res://addons/CustomControls/Dialogs/select_text_dialog.tscn"
-	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
-	dialog.title = TranslationManager.tr("New Folder name")
-	dialog.text_selected.connect(_create_new_folder)
-
-
-func _create_new_folder(text: String) -> void:
-	current_directory = current_directory.path_join(text)
-	_update_label_path_selected()
-	var absolute_path = ProjectSettings.globalize_path(current_directory)
-	if !DirAccess.dir_exists_absolute(absolute_path):
-		DirAccess.make_dir_recursive_absolute(absolute_path)
-		
-	navigate_to_directory(current_directory)
-
-
-func _update_label_path_selected() -> void:
-	if not current_path.is_empty():
-		%PathSelected.text = " " + current_path
-	else:
-		%PathSelected.text = " -"
-
-
-func clear_files() -> void:
-	for file in %FileContainer.get_children():
-		file.queue_free()
-
-
-func _on_rebuild_cache_pressed() -> void:
-	clear_files()
-	%Loading.visible = true
-	FileCache.rebuild()
-	await FileCache.main_scene.cache_ready
-	%Loading.visible = false
-	print([file_type_arr, file_type])
-	if file_type_arr:
-		fill_mix_files(file_type_arr)
-	else:
-		fill_files(file_type)
-
-
-func _on_favorite_button_toggled(toggled_on: bool) -> void:
-	favorite_button_enabled = toggled_on
-	if FileCache.options:
-		FileCache.options.file_dialog_favorite_toggled = favorite_button_enabled
-	if favorite_button_enabled: # Show items saved in favorites
-		%AllButton.set_pressed_no_signal(false)
-		_fill_favorite_files()
-	else:
-		navigate_to_directory(current_directory)
-		if all_button_enabled:
-			%AllButton.set_pressed_no_signal(true)
-			%DirectoryExtraControls1.visible = false
-		else:
-			%DirectoryExtraControls1.visible = true
-
-
-func _on_all_button_toggled(toggled_on: bool) -> void:
-	all_button_enabled = toggled_on
-	if FileCache.options:
-		FileCache.options.file_dialog_all_files_toggled = all_button_enabled
-	var dir = "res://" if current_directory.is_empty() and last_folder_visited.is_empty() \
-		else current_directory if not current_directory.is_empty() \
-		else last_folder_visited
-	if all_button_enabled: # Show all items without folders
-		%FavoriteButton.set_pressed_no_signal(false)
-		favorite_button_enabled = false
-		navigate_to_directory(dir)
-		%DirectoryExtraControls1.visible = false
-	else:
-		navigate_to_directory(dir)
-		%DirectoryExtraControls1.visible = true

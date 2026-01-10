@@ -110,10 +110,13 @@ func set_tool_connections() -> void:
 func setup_button_groups() -> void:
 	var button_group = ButtonGroup.new()
 	var index = 0
+	var child_count = %LeftMenu.get_child_count()
 	for child in %LeftMenu.get_children():
 		if "button_group" in child:
 			child.button_group = button_group
-			child.pressed.connect(_on_button_pressed.bind(child, index))
+			var real_index = index if child.get_index() < child_count - 2 else \
+				5000 if child.get_index() == child_count - 2 else 6000
+			child.pressed.connect(_on_button_pressed.bind(child, real_index))
 			index += 1
 
 
@@ -123,10 +126,10 @@ func start() -> void:
 
 
 func _on_button_pressed(_button: CustomSimpleButton, index: int) -> void:
-	if index == %LeftMenu.get_child_count() - 2:
+	if index == 5000:
 		_on_ok_pressed()
 		return
-	elif index == %LeftMenu.get_child_count() - 1:
+	elif index == 6000:
 		_on_cancel_pressed()
 		return
 		

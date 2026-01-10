@@ -1,4 +1,4 @@
-[gd_scene load_steps=97 format=4 uid="uid://cluc8yqovtlvf"]
+[gd_scene load_steps=111 format=4 uid="uid://cluc8yqovtlvf"]
 
 [ext_resource type="Script" uid="uid://cjwvraifvygt2" path="res://Scenes/Maps/test_map.gd" id="1_didij"]
 [ext_resource type="Gradient" uid="uid://bqcge4l0i5fro" path="res://addons/RPGMap/Assets/GridGradient/orange_gradient.tres" id="2_kukki"]
@@ -543,26 +543,107 @@ list = Array[ExtResource("5_fiyda")]([SubResource("Resource_udsps"), SubResource
 condition = SubResource("Resource_i3lja")
 movement_route = SubResource("Resource_mwk4m")
 options = SubResource("Resource_uqj4g")
-launcher = 3
 event_trigger_list = PackedInt32Array()
 
 [sub_resource type="Resource" id="Resource_hlnrr"]
-script = ExtResource("11_dhmk3")
+script = ExtResource("4_htxeb")
 
 [sub_resource type="Resource" id="Resource_abbut"]
-script = ExtResource("12_yak7x")
-levels = Array[ExtResource("11_dhmk3")]([SubResource("Resource_hlnrr")])
+script = ExtResource("5_fiyda")
+code = 19
+parameters = {
+&"operation_type": 0,
+&"switch_id": 2
+}
 
 [sub_resource type="Resource" id="Resource_52txu"]
+script = ExtResource("6_ewx0n")
+
+[sub_resource type="Resource" id="Resource_vhwhc"]
+script = ExtResource("5_fiyda")
+code = 2
+parameters = {
+&"character_name": {
+"type": 0,
+"value": ""
+},
+&"face": SubResource("Resource_52txu"),
+&"height": 0.0,
+&"is_floating_dialog": false,
+&"position": 0,
+&"width": 0.0
+}
+
+[sub_resource type="Resource" id="Resource_8y6r3"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "Hola extranjero!"
+}
+
+[sub_resource type="Resource" id="Resource_jo002"]
+script = ExtResource("5_fiyda")
+
+[sub_resource type="Resource" id="Resource_te067"]
+script = ExtResource("8_didij")
+skippable = true
+
+[sub_resource type="Resource" id="Resource_dxoa3"]
+script = ExtResource("9_uohsy")
+
+[sub_resource type="Resource" id="Resource_dh6ms"]
+script = ExtResource("3_nd5sh")
+id = 1
+list = Array[ExtResource("5_fiyda")]([SubResource("Resource_abbut"), SubResource("Resource_vhwhc"), SubResource("Resource_8y6r3"), SubResource("Resource_jo002")])
+condition = SubResource("Resource_hlnrr")
+movement_route = SubResource("Resource_te067")
+options = SubResource("Resource_dxoa3")
+event_trigger_list = PackedInt32Array()
+
+[sub_resource type="Resource" id="Resource_173e5"]
+script = ExtResource("4_htxeb")
+use_local_switch = true
+local_switch_id = 2
+
+[sub_resource type="Resource" id="Resource_ixleh"]
+script = ExtResource("5_fiyda")
+
+[sub_resource type="Resource" id="Resource_xppuo"]
+script = ExtResource("8_didij")
+skippable = true
+
+[sub_resource type="Resource" id="Resource_f6c5g"]
+script = ExtResource("9_uohsy")
+
+[sub_resource type="Resource" id="Resource_nvt8r"]
+script = ExtResource("3_nd5sh")
+id = 2
+list = Array[ExtResource("5_fiyda")]([SubResource("Resource_ixleh")])
+condition = SubResource("Resource_173e5")
+movement_route = SubResource("Resource_xppuo")
+options = SubResource("Resource_f6c5g")
+event_trigger_list = PackedInt32Array()
+character_path = "res://Scenes/NPCs/Npc_1/npc_1_data.tres"
+
+[sub_resource type="Resource" id="Resource_qiucp"]
+script = ExtResource("11_dhmk3")
+
+[sub_resource type="Resource" id="Resource_2mltf"]
+script = ExtResource("12_yak7x")
+levels = Array[ExtResource("11_dhmk3")]([SubResource("Resource_qiucp")])
+
+[sub_resource type="Resource" id="Resource_eu5nv"]
 script = ExtResource("13_11apb")
 name = "EV0001"
 id = 2
-pages = Array[ExtResource("3_nd5sh")]([SubResource("Resource_ov42u")])
-relationship = SubResource("Resource_abbut")
+pages = Array[ExtResource("3_nd5sh")]([SubResource("Resource_ov42u"), SubResource("Resource_dh6ms"), SubResource("Resource_nvt8r")])
+relationship = SubResource("Resource_2mltf")
+_editor_last_page_used = 1
+fade_page_swap_enabled = true
 
 [sub_resource type="Resource" id="Resource_xn408"]
 script = ExtResource("3_kxphi")
-events = Array[ExtResource("13_11apb")]([SubResource("Resource_52txu")])
+events = Array[ExtResource("13_11apb")]([SubResource("Resource_eu5nv")])
 
 [node name="TestMap" type="Node2D"]
 y_sort_enabled = true

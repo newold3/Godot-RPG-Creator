@@ -82,7 +82,8 @@ const MANIPULATOR_MODES = {
 	"EQUIP_MENU": "equip menu",
 	"EQUIP_MENU_SUB_MENU": "equip menu sub menu",
 	"SAVELOAD": "main menu save/load",
-	"CONFIRM": "main confirm window"
+	"CONFIRM": "main confirm window",
+	"GUI_SCENE": "standard gui scene"
 }
 
 var scene_cache: Dictionary = {
@@ -401,6 +402,7 @@ func _save_options() -> void:
 
 
 func update_data(value: Variant, type: String, index: int) -> void:
+	print(value)
 	if type in game_state:
 		var data = game_state[type]
 		if data and data.size() > index:
@@ -1159,7 +1161,11 @@ func get_armor_parameter(armor_id: int, parameter_id: String, armor_level: int) 
 
 func get_local_switch(id: int) -> bool:
 	if game_state and current_map:
-		return game_state.game_self_switches.get("%s-%s" % [current_map.internal_id, id], false)
+		print({
+			"ids": game_state.game_self_switches,
+			"Current id": "%s-%s" % [current_map.internal_id, id]
+		})
+		return game_state.game_self_switches.get("%s_%s" % [current_map.internal_id, id], false)
 		
 	return false
 

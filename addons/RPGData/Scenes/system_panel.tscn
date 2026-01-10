@@ -364,7 +364,6 @@ layout_mode = 2
 tooltip_text = "Maximum number of active characters in the party. Only the number of characters specified here will participate in battle, while the rest will be assigned to the reserve group"
 min_value = 1.0
 max_value = 8.0
-value = 1.0
 _custom_value = 0.0
 
 [node name="MoveActorUp" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/InitialParty/MarginContainer/VBoxContainer/HBoxContainer"]
@@ -1046,7 +1045,6 @@ tooltip_text = "Maximum length shadows can reach"
 min_value = 0.01
 max_value = 5.0
 step = 0.01
-value = 0.01
 rounded = false
 suffix = "maximun"
 _custom_value = 0.0
@@ -1059,7 +1057,6 @@ tooltip_text = "Minimum length shadows can shrink to"
 min_value = 0.01
 max_value = 5.0
 step = 0.01
-value = 0.01
 rounded = false
 suffix = "minimun"
 _custom_value = 0.0
@@ -1542,6 +1539,42 @@ The player can die if they take too much damage from floor traps (or any environ
 mouse_default_cursor_shape = 2
 text = "Death By Floor Damage"
 
+[node name="HSeparator3" type="HSeparator" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Events Behaviour:"
+
+[node name="LegacyMode" type="CheckBox" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+tooltip_text = "[title]Legacy Mode[/title]
+Emulates the behavior of other RPG Makers (when an event activates its page, if a command changes the active page, only the active page’s graphic is updated, but the current page continues executing all of its commands).
+
+When disabled, any command that changes the active page will interrupt the current page’s commands and immediately jump to the active page.
+
+[Note]: This value will be applied to each new event created, but it will be possible to change it for each event in the same event configuration dialog."
+mouse_default_cursor_shape = 2
+text = "Enable Legacy Mode"
+
+[node name="FadePageSwap" type="CheckBox" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+tooltip_text = "[title]Fade Page Swap[/title]
+When an event command changes the active page for that event, the graph for the next active page will appear instantly if this parameter is disabled (legacy mode) or via a fade out/fade in when this parameter is enabled.
+
+[Note]: This value will be applied to each new event created, but it will be possible to change it for each event in the same event configuration dialog."
+mouse_default_cursor_shape = 2
+text = "Enable Fade Page Swap"
+
 [node name="Tab7" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer"]
 unique_name_in_owner = true
 visible = false
@@ -1713,6 +1746,8 @@ The scenes defined here will be preloaded when the game starts. This is useful f
 [connection signal="toggled" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer/OtherConfig/Other2" to="." method="_on_other_2_toggled"]
 [connection signal="toggled" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer/OtherConfig/Other3" to="." method="_on_other_3_toggled"]
 [connection signal="toggled" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer/OtherConfig/Other4" to="." method="_on_other_4_toggled"]
+[connection signal="toggled" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer/HBoxContainer/LegacyMode" to="." method="_on_legacy_mode_toggled"]
+[connection signal="toggled" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer/HBoxContainer/FadePageSwap" to="." method="_on_fade_page_swap_toggled"]
 [connection signal="delete_pressed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab7/PreloadScene/MarginContainer/VBoxContainer/GameSceneList" to="." method="_on_game_scene_list_delete_pressed"]
 [connection signal="item_activated" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab7/PreloadScene/MarginContainer/VBoxContainer/GameSceneList" to="." method="_on_game_scene_list_item_activated"]
 [connection signal="delete_pressed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab8/PreloadScene/MarginContainer/VBoxContainer/PreloadSceneList" to="." method="_on_preload_scene_list_delete_pressed"]

@@ -67,7 +67,7 @@ func _config_hand_over_menu_main_buttons() -> void:
 	GameManager.set_confin_area(Rect2(), hand_manipulator)
 	GameManager.set_hand_position(MainHandCursor.HandPosition.RIGHT, hand_manipulator)
 	GameManager.set_cursor_offset(Vector2(-16, 0), hand_manipulator)
-	ControllerManager.set_focusable_control_threshold(500, 500)
+	ControllerManager.set_focusable_control_threshold(150, 150)
 
 
 func _process(_delta: float) -> void:

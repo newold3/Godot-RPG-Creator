@@ -14,6 +14,8 @@ func get_class(): return "RPGEvent"
 @export var quests: Array[RPGEventPQuest] = []
 @export var relationship: RPGRelationship = RPGRelationship.new()
 @export var _editor_last_page_used: int
+@export var legacy_mode: bool = false
+@export var fade_page_swap_enabled: bool = false
 
 var last_page_used: RPGEventPage
 
@@ -24,6 +26,9 @@ func _init(_id: int = 0, _x: int = 0, _y: int = 0) -> void:
 	y = _y
 	if pages.size() == 0:
 		add_new_page(0)
+	if RPGSYSTEM.database:
+		legacy_mode = RPGSYSTEM.database.system.legacy_mode
+		fade_page_swap_enabled = RPGSYSTEM.database.system.fade_page_swap_enabled
 
 
 func initialize_page_ids() -> void:

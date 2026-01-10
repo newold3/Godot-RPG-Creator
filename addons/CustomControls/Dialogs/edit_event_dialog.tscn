@@ -108,6 +108,27 @@ tooltip_text = "[title]Save As Preset[/title]
 Save this event as a preset so you can create it quickly whenever you want."
 text = "Save As Preset"
 
+[node name="LegacyMode" type="CheckBox" parent="MarginContainer/VBoxContainer/TopContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "[title]Legacy Mode[/title]
+Emulates the behavior of other RPG Makers (when an event activates its page, if a command changes the active page, only the active page’s graphic is updated, but the current page continues executing all of its commands).
+When disabled, any command that changes the active page will interrupt the current page’s commands and immediately jump to the active page.
+
+[Note]: This setting can be configured as the default in the System section of the database for newly created events. The event’s Legacy setting applies only to that specific event."
+mouse_default_cursor_shape = 2
+text = "Legacy Mode Enabled"
+
+[node name="FadePageSwap" type="CheckBox" parent="MarginContainer/VBoxContainer/TopContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "[title]Fade Page Swap[/title]
+When an event command changes the active page for that event, the graph for the next active page will appear instantly if this parameter is disabled (legacy mode) or via a fade out/fade in when this parameter is enabled.
+
+[Note]: This setting can be configured as the default in the System section of the database for newly created events. The event’s fade page swap setting applies only to that specific event."
+mouse_default_cursor_shape = 2
+text = "Enable Fade Page Swap"
+
 [node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 
@@ -311,6 +332,8 @@ text = "APPLY"
 
 [connection signal="text_changed" from="MarginContainer/VBoxContainer/TopContainer/VBoxContainer/EventName" to="." method="_on_event_name_text_changed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/TopContainer/VBoxContainer/SaveAsPresetButton" to="." method="_on_save_as_preset_button_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/TopContainer/VBoxContainer/LegacyMode" to="." method="_on_legacy_mode_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/TopContainer/VBoxContainer/FadePageSwap" to="." method="_on_fade_page_swap_toggled"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer/NewPageButton" to="." method="_on_new_page_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer/CopyPageButton" to="." method="_on_copy_page_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer/PastePageButton" to="." method="_on_paste_page_button_pressed"]

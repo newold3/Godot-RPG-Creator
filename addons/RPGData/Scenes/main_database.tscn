@@ -150,9 +150,14 @@ value = 10.0
 allow_greater = true
 _custom_value = 10.0
 
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+
 [node name="LeftMenu" type="VBoxContainer" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="CustomButton1" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/LeftMenu" instance=ExtResource("1_bal0x")]
 unique_name_in_owner = true
@@ -344,12 +349,15 @@ toggle_mode = true
 button_group = SubResource("ButtonGroup_yt8he")
 text = "Quests"
 
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/LeftMenu"]
+layout_mode = 2
+size_flags_vertical = 10
+
 [node name="CustomButton15" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/LeftMenu" instance=ExtResource("1_bal0x")]
 unique_name_in_owner = true
 modulate = Color(0.536621, 1, 0.1875, 1)
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
-size_flags_vertical = 10
 tooltip_text = "[title]Apply[/title]
 Save the changes made to the database (you can press “Enter” to get the same result)."
 theme_override_styles/pressed = SubResource("StyleBoxTexture_356kg")

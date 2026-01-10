@@ -25,6 +25,10 @@ class IngameEvent:
 		map_id = p_map_id
 		relationship = p_relationship
 		page_id = p_page_id
+	
+	func update_page(new_page: RPGEventPage, new_character_data: RPGLPCCharacter) -> void:
+		page_id = new_page.page_id
+		character_data = new_character_data
 
 class IngameExtractionEvent:
 	var event: RPGExtractionItem
@@ -1063,27 +1067,28 @@ func _setup_extraction_events() -> void:
 
 
 func refresh_events() -> void:
-	var refresh_event_list = []
-
 	for ev: IngameEvent in current_ingame_events.values():
 		if not ev: continue
 		if ev.lpc_event:
 			var page = ev.lpc_event.current_event.get_active_page()
 			if page and page != ev.lpc_event.current_event_page:
-				refresh_event_list.append({"event": ev, "new_page": page, "page_id": ev.page_id})
+				if not ev.event.legacy_mode:
+					_handle_legacy_refresh(ev, page)
+				else:
+					_handle_modern_refresh(ev, page)
 	
-	for obj: Dictionary in refresh_event_list:
-		GameInterpreter.remove_interpreter(obj.event)
-		var ev: IngameEvent = obj.event
-		if ev:
-			var page: RPGEventPage = obj.new_page
-			page.id = ev.event.id
-			current_ingame_events.erase(ev.lpc_event.current_event.id)
-			var entity_id = str(ev.lpc_event.get_rid()) + "-Page#" + str(obj.page_id)
-			GameInterpreter.remove_interpreter_by_id(entity_id)
-			ev.page_id = page.page_id
-			_load_event(ev, page)
-	
+	#for obj: Dictionary in refresh_event_list:
+		#GameInterpreter.remove_interpreter(obj.event)
+		#var ev: IngameEvent = obj.event
+		#if ev:
+			#var page: RPGEventPage = obj.new_page
+			#page.id = ev.event.id
+			#current_ingame_events.erase(ev.lpc_event.current_event.id)
+			#var entity_id = str(ev.lpc_event.get_rid()) + "-Page#" + str(obj.page_id)
+			#GameInterpreter.remove_interpreter_by_id(entity_id)
+			#ev.page_id = page.page_id
+			#_load_event(ev, page)
+	#
 	#  refresh ingame_event_regions
 	for obj: CollisionShape2D in ingame_event_regions:
 		var region = obj.get_meta("region_data")
@@ -1097,6 +1102,27 @@ func refresh_events() -> void:
 		#_perform_shadow_update()
 		if not is_inside_tree(): return
 		get_tree().create_timer(0.03).timeout.connect(remove_meta.bind("_disable_shadow"))
+
+
+func _handle_legacy_refresh(ev: IngameEvent, page: RPGEventPage) -> void:
+	page.id = ev.event.id
+	if page.launcher != page.LAUNCHER_MODE.CALLER:
+		var new_character_data
+		if ResourceLoader.exists(page.character_path):
+			new_character_data = load(page.character_path)
+			if new_character_data and ResourceLoader.exists(new_character_data.scene_path):
+				var new_scene_path = new_character_data.scene_path
+		ev.update_page(page, new_character_data)
+		_update_event_visuals(ev, page)
+
+
+func _handle_modern_refresh(ev: IngameEvent, page: RPGEventPage) -> void:
+	page.id = ev.event.id
+	current_ingame_events.erase(ev.lpc_event.current_event.id)
+	var entity_id = str(ev.lpc_event.get_rid()) + "-Page#" + str(ev.page_id)
+	GameInterpreter.remove_interpreter_by_id(entity_id)
+	ev.page_id = page.page_id
+	_load_event(ev, page)
 
 
 func refresh_extraction_events() -> void:
@@ -1221,6 +1247,62 @@ func _load_event(ev: IngameEvent, current_page: RPGEventPage) -> void:
 		GameInterpreter.auto_start_automatic_events([ {"obj": scene, "commands": current_page.list, "id": interpreter_id}])
 	elif current_page.launcher == RPGEventPage.LAUNCHER_MODE.PARALLEL:
 		GameInterpreter.register_interpreter(scene, current_page.list, true, interpreter_id)
+
+
+## Updates an existing IngameEvent's visual scene and data.
+func _update_event_visuals(ev: IngameEvent, current_page: RPGEventPage) -> void:
+	var old_scene = ev.lpc_event
+	var old_character_data = ev.character_data
+	var old_scene_path = ""
+	
+	if old_character_data and ResourceLoader.exists(old_character_data.scene_path):
+		old_scene_path = old_character_data.scene_path
+		
+	var new_character_data: RPGLPCCharacter = null
+	var new_scene_path = ""
+	
+	if current_page.launcher != current_page.LAUNCHER_MODE.CALLER:
+		if ResourceLoader.exists(current_page.character_path):
+			new_character_data = load(current_page.character_path)
+			if new_character_data and ResourceLoader.exists(new_character_data.scene_path):
+				new_scene_path = new_character_data.scene_path
+				
+	var can_reuse_scene = (old_scene_path == new_scene_path and old_scene_path != "" and current_page.launcher != current_page.LAUNCHER_MODE.CALLER)
+	var scene: Variant
+	
+	if can_reuse_scene:
+		scene = old_scene
+		
+		## Check if the scene actually uses event_data before assignment.
+		if "event_data" in scene:
+			scene.event_data = new_character_data
+			
+		_update_scene_properties(scene, ev.lpc_event.current_event, current_page)
+	else:
+		old_scene.set_meta("_disable_shadow", true)
+		
+		if current_page.launcher == current_page.LAUNCHER_MODE.CALLER:
+			scene = EmptyLPCEvent.new()
+		elif new_scene_path != "":
+			scene = load(new_scene_path).instantiate()
+			
+			## Check if the instantiated scene actually uses event_data.
+			if "event_data" in scene:
+				scene.event_data = new_character_data
+		else:
+			scene = EmptyLPCEvent.new()
+			
+		scene.set_meta("_disable_shadow", true)
+		add_child(scene)
+		set_event_position(scene, Vector2i(ev.lpc_event.current_event.x, ev.lpc_event.current_event.y), current_page.direction)
+		
+		#_handle_scene_transition_animation(old_scene, scene)
+		
+	ev.character_data = new_character_data
+	ev.lpc_event = scene
+	ev.page_id = current_page.page_id
+	
+	#_update_interpreter_context(ev, scene, current_page)
 
 
 func _create_ingame_event(ev: RPGEvent, page: RPGEventPage) -> IngameEvent:

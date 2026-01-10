@@ -41,6 +41,8 @@ func _update_data_fields() -> void:
 		%AutoShowPopups.set_pressed_no_signal(options.get("auto_popup_on_pick_up_items", true))
 		%PauseInMenu.set_pressed_no_signal(data.pause_day_night_in_menu)
 		%FollowersEnabled.set_pressed_no_signal(data.followers_enabled)
+		%LegacyMode.set_pressed_no_signal(data.legacy_mode == true)
+		%FadePageSwap.set_pressed_no_signal(data.fade_page_swap_enabled == true)
 		
 		var movement_mode_index = max(0, min(data.movement_mode, 1))
 		%MovementMode.select(movement_mode_index)
@@ -1008,3 +1010,11 @@ func _on_followers_enabled_toggled(value: bool) -> void:
 
 func _on_shadow_color_color_changed(color: Color) -> void:
 	data.day_night_config.shadow_color = color
+
+
+func _on_legacy_mode_toggled(toggled_on: bool) -> void:
+	data.legacy_mode = toggled_on
+
+
+func _on_fade_page_swap_toggled(toggled_on: bool) -> void:
+	data.fade_page_swap_enabled = toggled_on

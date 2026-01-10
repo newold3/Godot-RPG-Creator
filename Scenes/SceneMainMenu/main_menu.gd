@@ -87,7 +87,7 @@ func start() -> void:
 	
 	super()
 	
-	ControllerManager.set_focusable_control_threshold(500, 500)
+	ControllerManager.set_focusable_control_threshold(150, 150)
 	
 	main_menu_items.start()
 	party_menu.restart()

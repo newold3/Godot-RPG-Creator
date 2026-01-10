@@ -22,15 +22,8 @@ gradient = SubResource("Gradient_u5yrp")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nv5ev"]
-texture = ExtResource("7_2h5h0")
-texture_margin_left = 6.0
-texture_margin_top = 6.0
-texture_margin_right = 6.0
-texture_margin_bottom = 6.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cr2q0"]
-texture = ExtResource("5_u135p")
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jfd0k"]
+texture = ExtResource("4_unctx")
 texture_margin_left = 6.0
 texture_margin_top = 6.0
 texture_margin_right = 6.0
@@ -43,14 +36,22 @@ texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jfd0k"]
-texture = ExtResource("4_unctx")
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cr2q0"]
+texture = ExtResource("5_u135p")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nv5ev"]
+texture = ExtResource("7_2h5h0")
 texture_margin_left = 6.0
 texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
 [node name="NumericalInputDialog" type="Window"]
+oversampling_override = 1.0
 title = "Input Number"
 position = Vector2i(0, 36)
 size = Vector2i(448, 652)
@@ -109,7 +110,7 @@ text = "Variable:"
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Asks the user to select an n-digit number/text and assigns the entered value to this variable."
-text = "0001:1"
+text = "0001:"
 
 [node name="Label2" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -122,6 +123,7 @@ tooltip_text = "Prompts the user to enter a number of length equal to the one de
 min_value = 1.0
 max_value = 9.0
 value = 1.0
+_custom_value = 1.0
 
 [node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -243,6 +245,7 @@ size_flags_horizontal = 3
 tooltip_text = "Moves the choice box dialog along the X-axis from the final position."
 allow_greater = true
 allow_lesser = true
+_custom_value = 0.0
 
 [node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer11"]
 layout_mode = 2
@@ -255,6 +258,7 @@ size_flags_horizontal = 3
 tooltip_text = "Moves the choice box dialog along the Y-axis from the final position."
 allow_greater = true
 allow_lesser = true
+_custom_value = 0.0
 
 [node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer11"]
 layout_mode = 2
@@ -344,10 +348,10 @@ custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 tooltip_text = "[title]Ok[/title]
 Saves all changes and closes the windows."
-theme_override_styles/disabled = SubResource("StyleBoxTexture_nv5ev")
-theme_override_styles/hover = SubResource("StyleBoxTexture_cr2q0")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_3ldxg")
 theme_override_styles/normal = SubResource("StyleBoxTexture_jfd0k")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_3ldxg")
+theme_override_styles/hover = SubResource("StyleBoxTexture_cr2q0")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_nv5ev")
 text = "OK"
 
 [node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_tbha7")]
@@ -356,10 +360,10 @@ custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 tooltip_text = "[title]Cancel[/title]
 Closes this window without saving any changes."
-theme_override_styles/disabled = SubResource("StyleBoxTexture_nv5ev")
-theme_override_styles/hover = SubResource("StyleBoxTexture_cr2q0")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_3ldxg")
 theme_override_styles/normal = SubResource("StyleBoxTexture_jfd0k")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_3ldxg")
+theme_override_styles/hover = SubResource("StyleBoxTexture_cr2q0")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_nv5ev")
 text = "CANCEL"
 
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/Type" to="." method="_on_type_item_selected"]

@@ -60,6 +60,8 @@ func set_event(event: RPGEvent) -> void:
 	current_event = new_event
 	%QuestManagerPanel.quests = current_event.quests
 	%RelationshipManagerPanel.relationship = current_event.relationship
+	%LegacyMode.set_pressed_no_signal(current_event.legacy_mode == true)
+	%FadePageSwap.set_pressed_no_signal(current_event.fade_page_swap_enabled == true)
 
 
 func set_events(_events: RPGEvents) -> void:
@@ -312,3 +314,11 @@ func _save_preset(preset_name: String) -> void:
 	
 	# Save the preset file
 	FileAccess.open(preset_file_path, FileAccess.WRITE).store_var(preset, true)
+
+
+func _on_legacy_mode_toggled(toggled_on: bool) -> void:
+	current_event.legacy_mode = toggled_on
+
+
+func _on_fade_page_swap_toggled(toggled_on: bool) -> void:
+	current_event.fade_page_swap_enabled = toggled_on

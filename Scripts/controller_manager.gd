@@ -110,6 +110,7 @@ var last_action_registered: RegisterKey = null # Last action registered
 var close_neighbor_script
 var current_controller: CONTROLLER_TYPE
 var controller_info: Dictionary = {}
+var is_caps_lock_on: bool = false
 
 var last_checked_frame: int = -1
 
@@ -134,6 +135,19 @@ const ERASE_LETTER_INPUTS = {
 	"joy": [JOY_BUTTON_B] # Gamepad buttons for erase action
 }
 enum CONTROLLER_TYPE {Keyboard, Mouse, Joypad}
+## Extra symbols for Shift + Numbers (Top row)
+const SHIFT_SYMBOLS_EXTRA := {
+	KEY_1: "!", KEY_2: "\"", KEY_3: "·", KEY_4: "$", KEY_5: "%",
+	KEY_6: "&", KEY_7: "/", KEY_8: "(", KEY_9: ")", KEY_0: "=",
+	KEY_MINUS: "?", KEY_EQUAL: "¿"
+}
+## Mapping for Numpad keys to their character representation
+const KP_MAP := {
+	KEY_KP_0: "0", KEY_KP_1: "1", KEY_KP_2: "2", KEY_KP_3: "3", 
+	KEY_KP_4: "4", KEY_KP_5: "5", KEY_KP_6: "6", KEY_KP_7: "7", 
+	KEY_KP_8: "8", KEY_KP_9: "9", KEY_KP_ADD: "+", KEY_KP_SUBTRACT: "-", 
+	KEY_KP_MULTIPLY: "*", KEY_KP_DIVIDE: "/", KEY_KP_PERIOD: "."
+}
 
 
 signal controller_changed(controller_type: CONTROLLER_TYPE)
@@ -180,7 +194,7 @@ func _get_current_frame() -> int:
 
 
 ## threshold used to detect neighboring controls at the given address
-func set_focusable_control_threshold(horizontal: int = 10, vertical: int = 50) -> void:
+func set_focusable_control_threshold(horizontal: int = 30, vertical: int = 30) -> void:
 	close_neighbor_script.horizontal_threshold = horizontal
 	close_neighbor_script.vertical_threshold = vertical
 
@@ -594,6 +608,11 @@ func _input(event: InputEvent) -> void:
 	if Engine.is_editor_hint(): return
 	
 	if event is InputEventKey:
+		_sync_caps_lock_state(event)
+		
+		if event.keycode == KEY_CAPSLOCK and event.pressed and not event.is_echo():
+			is_caps_lock_on = !is_caps_lock_on
+			
 		controller_info.clear()
 		_change_current_controller(CONTROLLER_TYPE.Keyboard)
 		_handle_key_event(key_states.keys, event.keycode, event.is_pressed(), "keys")
@@ -620,6 +639,23 @@ func _input(event: InputEvent) -> void:
 		action.update(get_process_delta_time())
 	
 	_cleanup_released_actions()
+
+
+## Synchronizes the internal CapsLock state with the OS state
+func _sync_caps_lock_state(event: InputEventKey) -> void:
+	if not event.pressed or event.unicode <= 0 or event.unicode > 0xFFFF:
+		return
+
+	var u: int = event.unicode
+	var is_shift: bool = event.shift_pressed
+	
+	var is_lower: bool = (u >= 97 and u <= 122) or u == 241
+	var is_upper: bool = (u >= 65 and u <= 90) or u == 209
+
+	if is_lower:
+		is_caps_lock_on = is_shift
+	elif is_upper:
+		is_caps_lock_on = not is_shift
 
 
 func _cleanup_released_actions() -> void:
@@ -1061,7 +1097,6 @@ func is_action_just_pressed(action: String) -> bool:
 	
 	var current_frame = Engine.get_physics_frames()
 	var result = false
-	
 	if Input.is_action_pressed(action):
 		if not action_states.has(action):
 			_register_action(action)
@@ -1071,6 +1106,145 @@ func is_action_just_pressed(action: String) -> bool:
 				action_states[action].refresh()
 				get_viewport().set_input_as_handled()
 				result = true
+	
+	cache[cache_key] = result
+	return result
+
+
+## Helper to convert keycode to the correct character string
+func _keycode_to_char(keycode: int) -> String:
+	var is_shift_pressed := Input.is_key_pressed(KEY_SHIFT)
+	var should_be_upper := is_caps_lock_on != is_shift_pressed
+	
+	# 1. Letters A-Z
+	if keycode >= KEY_A and keycode <= KEY_Z:
+		var char_base := OS.get_keycode_string(keycode)
+		return char_base.to_upper() if should_be_upper else char_base.to_lower()
+
+	# 2. Special Case: Ñ
+	if keycode == KEY_QUOTELEFT:
+		return "Ñ" if should_be_upper else "ñ"
+
+	# 3. Numpad Keys (0-9 and operators)
+	if KP_MAP.has(keycode):
+		return KP_MAP[keycode]
+
+	# 4. Standard Top Row Numbers & Shift Symbols
+	if is_shift_pressed:
+		if SHIFT_SYMBOLS_EXTRA.has(keycode):
+			return SHIFT_SYMBOLS_EXTRA[keycode]
+	
+	# 5. Standard Operators and Symbols (non-numpad)
+	if keycode == KEY_PLUS: return "+"
+	if keycode == KEY_MINUS: return "-"
+	if keycode == KEY_SLASH: return "/"
+	if keycode == KEY_ASTERISK: return "*"
+
+	var s := OS.get_keycode_string(keycode)
+	if s.length() == 1:
+		return s
+
+	return ""
+
+
+## Get the character of any key that was just pressed this frame
+func get_any_key_just_pressed() -> String:
+	if cache.has("any_key_just"):
+		return cache.any_key_just
+
+	var current_frame := Engine.get_physics_frames()
+
+	for keycode in key_states.keys.keys():
+		var key: RegisterKey = key_states.keys[keycode]
+
+		if key.initialize and key.current_delay <= 0:
+			if key.registered_frame == current_frame or key.registered_frame == -1:
+				if keycode == KEY_SHIFT or keycode == KEY_CAPSLOCK or keycode == KEY_CTRL or keycode == KEY_ALT:
+					continue
+					
+				key.refresh()
+				get_viewport().set_input_as_handled()
+
+				var result := _keycode_to_char(keycode)
+				if result != "":
+					cache.any_key_just = result
+					return result
+
+	cache.any_key_just = ""
+	return ""
+
+
+## Get the character of any key being pressed (supports echo/repeat)
+func get_any_key_pressed() -> String:
+	if cache.has("any_key"):
+		return cache.any_key
+
+	for keycode in key_states.keys.keys():
+		var key: RegisterKey = key_states.keys[keycode]
+
+		if key.is_active():
+			if keycode == KEY_SHIFT or keycode == KEY_CAPSLOCK or keycode == KEY_CTRL or keycode == KEY_ALT:
+				continue
+				
+			key.refresh()
+			get_viewport().set_input_as_handled()
+
+			var result := _keycode_to_char(keycode)
+			if result != "":
+				cache.any_key = result
+				return result
+
+	cache.any_key = ""
+	return ""
+
+
+## Check if either Enter or Numpad Enter is pressed with repeat handling
+func is_enter_pressed() -> bool:
+	if is_enter_just_pressed(): return true
+	
+	var result = false
+	
+	# Check standard Enter
+	if KEY_ENTER in key_states.keys and key_states.keys[KEY_ENTER].current_delay <= 0:
+		key_states.keys[KEY_ENTER].refresh()
+		result = true
+	
+	# Check Numpad Enter if standard was not pressed
+	if not result and KEY_KP_ENTER in key_states.keys and key_states.keys[KEY_KP_ENTER].current_delay <= 0:
+		key_states.keys[KEY_KP_ENTER].refresh()
+		result = true
+	
+	if result:
+		get_viewport().set_input_as_handled()
+		
+	return result
+
+
+## Check if either Enter or Numpad Enter was JUST pressed (no echo)
+func is_enter_just_pressed() -> bool:
+	var cache_key = "enter_just"
+	if cache.has(cache_key):
+		return cache[cache_key]
+	
+	var current_frame = Engine.get_physics_frames()
+	var result = false
+	
+	# Standard Enter
+	if KEY_ENTER in key_states.keys and key_states.keys[KEY_ENTER].initialize:
+		var key = key_states.keys[KEY_ENTER]
+		if key.registered_frame == current_frame or key.registered_frame == -1:
+			key.refresh()
+			result = true
+			
+	# Numpad Enter
+	if not result and KEY_KP_ENTER in key_states.keys and key_states.keys[KEY_KP_ENTER].initialize:
+		var key = key_states.keys[KEY_KP_ENTER]
+		if key.registered_frame == current_frame or key.registered_frame == -1:
+			key.refresh()
+			result = true
+	
+	if result:
+		get_viewport().set_input_as_handled()
 	
 	cache[cache_key] = result
 	return result

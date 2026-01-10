@@ -31,6 +31,16 @@ extends Resource
 @export var pause_day_night_in_menu: bool = true
 @export var followers_enabled: bool = false
 @export var message_image_positions: Dictionary = {} # "path" = Dictionary Config
+## Emulates the behavior of other RPG Makers (when an event activates its page,
+## if a command changes the active page, only the active page’s graphic is updated,
+## but the current page continues executing all of its commands).
+## [br]When disabled, any command that changes the active page will interrupt
+## the current page’s commands and immediately jump to the active page.
+@export var legacy_mode: bool = true
+## When an event command changes the active page for that event, the graph
+## for the next active page will appear instantly if this parameter is disabled
+## (legacy mode) or via a fade out/fade in when this parameter is enabled.
+@export var fade_page_swap_enabled: bool = false
 
 
 func get_class(): return "RPGSystem"
