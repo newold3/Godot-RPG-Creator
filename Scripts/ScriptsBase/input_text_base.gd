@@ -29,7 +29,6 @@ func _process(delta: float) -> void:
 	if not started: return
 	
 	var current_shift = Input.is_key_pressed(KEY_SHIFT)
-	
 	var current_upper_state = _should_be_upper()
 	
 	if current_shift != is_shift_pressed or current_upper_state != _last_state_was_upper:
@@ -42,17 +41,12 @@ func _process(delta: float) -> void:
 ## Overriding button press logic
 func _on_button_pressed(button: BaseButton) -> void:
 	if button == bloq_shift:
-		play_fx(select_fx)
-		_update_keyboard_visuals()
-		_animate_button_click(button)
-		return
-	
-	var key_text = button.name
-	if key_text.length() == 1:
-		key_text = key_text.upper() if _should_be_upper() else key_text.lower()
-		key_selected.emit(key_text)
+		var new_state_is_upper: bool = !ControllerManager.is_caps_lock_on
+		var force_val: int = 2 if new_state_is_upper else 1
+		_update_keyboard_visuals(force_val)
 		play_fx(select_fx)
 		_animate_button_click(button)
+		ControllerManager.toggle_os_caps_lock.call_deferred()
 		return
 
 	super(button)
@@ -64,9 +58,15 @@ func _should_be_upper() -> bool:
 	return ControllerManager.is_caps_lock_on != is_shift_pressed
 
 
-func _update_keyboard_visuals() -> void:
-	var upper = _should_be_upper()
-	_last_state_was_upper = upper
+func _update_keyboard_visuals(force_state: int = 0) -> void:
+	var should_be_upper: bool
+	
+	match force_state:
+		1: should_be_upper = false
+		2: should_be_upper = true
+		_: should_be_upper = _should_be_upper()
+		
+	_last_state_was_upper = should_be_upper
 	
 	if is_instance_valid(bloq_shift):
 		var label = _find_label(bloq_shift)
@@ -84,17 +84,9 @@ func _update_keyboard_visuals() -> void:
 			
 		var label = _find_label(button)
 		if label and button.name.length() == 1:
-			label.text = button.name.to_upper() if upper else button.name.to_lower()
-
-
-func _find_label(node: Node) -> Control:
-	if node is Label or node is RichTextLabel:
-		return node
-	for child in node.get_children():
-		var found = _find_label(child)
-		if found:
-			return found
-	return null
+			label.text = button.name.to_upper() if should_be_upper else button.name.to_lower()
+	
+	_update_label()
 
 
 func _start_animation() -> void:

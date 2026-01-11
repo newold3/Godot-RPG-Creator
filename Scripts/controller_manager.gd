@@ -155,34 +155,105 @@ signal controller_changed(controller_type: CONTROLLER_TYPE)
 
 ## Initialize the input controller
 func _ready() -> void:
+	if not Engine.is_editor_hint():
+		get_tree().node_added.connect(_on_node_added)
+		_clean_existing_controls(get_tree().root)
+
 	clear()
 	_scan_initial_caps_lock()
 	set_input_delays(initial_key_delay, echo_key_delay)
 	close_neighbor_script = preload("res://Scripts/close_neighbor.gd").new()
 
 
+func _on_node_added(node: Node) -> void:
+	if node is Control:
+		_strip_neighbors(node)
+
+
+func _strip_neighbors(node: Control) -> void:
+	var keys = [
+		"focus_neighbor_right", 
+		"focus_neighbor_left", 
+		"focus_neighbor_top", 
+		"focus_neighbor_bottom"
+	]
+	var ids = [
+		"right",
+		"left",
+		"up",
+		"down"
+	]
+	
+	var meta_data = {}
+	for i in keys.size():
+		var key = keys[i]
+		var val = node.get(key)
+		if val and not val.is_empty():
+			meta_data[ids[i]] = val
+		
+		# Limpiamos la propiedad nativa de Godot para que no navegue solo
+		node.set(key, NodePath(""))
+	
+	# Guardamos los vecinos originales en metadata por si el algoritmo los necesita
+	if not meta_data.is_empty():
+		node.set_meta("neighbors", meta_data)
+
+
+func _clean_existing_controls(root: Node) -> void:
+	for child in root.get_children():
+		if child is Control:
+			_strip_neighbors(child)
+		_clean_existing_controls(child)
+
+
 func _scan_initial_caps_lock() -> void:
 	# HACK TO GET CapsLock STATE
+	
 	var output = []
+	var os_name = OS.get_name()
+	var success : bool = false
+	
+	match os_name:
+		"Windows":
+			var exit_code = OS.execute("powershell", ["-Command", "[console]::CapsLock"], output)
+			if exit_code == 0 and output.size() > 0:
+				is_caps_lock_on = output[0].strip_edges().to_lower() == "true"
+				success = true
+				
+		"macOS":
+			var script = "import Quartz; print(Quartz.CGEventSourceFlagsState(1) & 0x00010000 != 0)"
+			var exit_code = OS.execute("python3", ["-c", script], output)
+			if exit_code == 0 and output.size() > 0:
+				is_caps_lock_on = output[0].strip_edges().to_lower() == "true"
+				success = true
+				
+		"Linux":
+			var exit_code = OS.execute("xset", ["q"], output)
+			if exit_code == 0 and output.size() > 0:
+				var full_output = "".join(output)
+				is_caps_lock_on = "Caps Lock:   on" in full_output
+				success = true
+
+	if not success:
+		is_caps_lock_on = Input.is_key_pressed(KEY_CAPSLOCK)
+
+
+func toggle_os_caps_lock() -> void:
+	# HACK TO TOGGLED CapsLock STATE
+	
 	var os_name = OS.get_name()
 	
 	match os_name:
 		"Windows":
-			OS.execute("powershell", ["-Command", "[console]::CapsLock"], output)
-			if output.size() > 0:
-				is_caps_lock_on = output[0].strip_edges().to_lower() == "true"
-				
+			var script = "$w = New-Object -ComObject WScript.Shell; $w.SendKeys('{CAPSLOCK}')"
+			OS.execute("powershell", ["-Command", script])
+			
 		"macOS":
-			var script = "import Quartz; print(Quartz.CGEventSourceFlagsState(1) & 0x00010000 != 0)"
-			OS.execute("python3", ["-c", script], output)
-			if output.size() > 0:
-				is_caps_lock_on = output[0].strip_edges().to_lower() == "true"
-				
+			var script = "tell application \"System Events\" to key code 57"
+			OS.execute("osascript", ["-e", script])
+			
 		"Linux":
-			OS.execute("xset", ["q"], output)
-			if output.size() > 0:
-				var full_output = "".join(output)
-				is_caps_lock_on = "Caps Lock:   on" in full_output
+			OS.execute("xdotool", ["key", "Caps_Lock"])
 
 
 ## initiale key states
@@ -521,8 +592,8 @@ func remove_erase_letter() -> void:
 		key_states.joy_buttons.erase(button)
 
 
-func get_closest_focusable_control(current: Control, direction: String, limit_to_parent: bool = false, extra_focusable_controls: Array = []) -> Control:
-	return close_neighbor_script.get_closest_focusable_control(current, direction, limit_to_parent, extra_focusable_controls)
+func get_closest_focusable_control(current: Control, direction: String, limit_to_parent: bool = false, extra_focusable_controls: Array = [], allow_h_warp: bool = true, allow_v_warp: bool = true) -> Control:
+	return close_neighbor_script.get_closest_focusable_control(current, direction, limit_to_parent, extra_focusable_controls, allow_h_warp, allow_v_warp)
 
 
 ## Process input states every frame

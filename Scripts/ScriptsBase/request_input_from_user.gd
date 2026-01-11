@@ -231,8 +231,11 @@ func _end_animation() -> void:
 ## Sets up visual behaviors, signals, and groups for all keyboard buttons
 func _config_buttons() -> void:
 	for button: BaseButton in buttons:
+		if not button: continue
+		
 		if not button.is_in_group("key_button"):
 			button.add_to_group("key_button")
+		
 		button.focus_entered.connect(
 			func():
 				button.pivot_offset = button.size * 0.5
@@ -253,31 +256,25 @@ func _config_buttons() -> void:
 
 ## Specialized bridge for key selection following strict navigation rules
 func _on_key_selected_base(key: String) -> void:
-	var was_empty = buffer[current_index] == empty_char
-	var is_at_last_pos = current_index == max_chars - 1
-	
 	_handle_insertion(key)
-	
-	var is_buffer_full = _is_input_complete()
-	
-	if is_at_last_pos:
-		if buffer[0] == empty_char:
-			pass
-		else:
-			if is_buffer_full:
-				if ok_button: ok_button.grab_focus.call_deferred()
-			else:
-				for i in range(max_chars):
-					if buffer[i] == empty_char:
-						current_index = i
-						break
+	if _is_input_complete():
+		_select_ok_button.call_deferred()
 	else:
-		if was_empty and is_buffer_full:
-			if ok_button: ok_button.grab_focus()
-		else:
-			current_index = clampi(current_index + 1, 0, max_chars - 1)
-	
-	_update_label()
+		if current_index < max_chars - 1:
+			current_index += 1
+		_update_label()
+
+
+func _select_ok_button() -> void:
+	if current_button and current_button.has_focus():
+		current_button.release_focus()
+		current_button = null
+		
+	_refresh_ok_button_state()
+	if ok_button:
+		ok_button.grab_focus()
+		current_button = ok_button
+		_update_label()
 
 
 ## Bridge for the virtual backspace signal with new movement rules
@@ -304,15 +301,15 @@ func _update_label() -> void:
 	
 	var display_list = buffer.duplicate()
 	
-	if current_index == max_chars - 1 and display_list[current_index] != empty_char:
-		if display_list[0] == empty_char:
-			display_list.pop_front()
-			display_list.append(empty_char)
+	while display_list.size() > 0 and display_list[0] == empty_char and display_list.back() != empty_char:
+		display_list.pop_front()
+		display_list.append(empty_char)
 	
 	var text_result = ""
-	var is_ok_focused = ok_button and current_button == ok_button
+	var focus_owner = get_viewport().gui_get_focus_owner()
+	var is_ok_focused = (focus_owner == ok_button)
 	
-	for i in display_list.size():
+	for i in range(display_list.size()):
 		if i == current_index and not is_ok_focused:
 			text_result += "[" + display_list[i] + "]"
 		else:
@@ -343,10 +340,13 @@ func _handle_insertion(key: String) -> void:
 
 ## Functional deletion logic: clear and ALWAYS shift cursor if possible
 func _handle_deletion() -> void:
-	buffer[current_index] = empty_char
-	
-	if current_index > 0:
+	if buffer[current_index] != empty_char:
+		buffer[current_index] = empty_char
+	elif current_index > 0:
 		current_index -= 1
+		buffer[current_index] = empty_char
+	
+	_update_label()
 
 
 ## Final callback to return data
@@ -357,7 +357,6 @@ func _on_input_completed(_final_text: String) -> void:
 ## Handles the logic when a virtual button is pressed via UI
 func _on_button_pressed(button: BaseButton) -> void:
 	var key = button.name.to_lower()
-	
 	match key:
 		"ok":
 			value_selected.emit(get_text())
@@ -373,10 +372,21 @@ func _on_button_pressed(button: BaseButton) -> void:
 			key_selected.emit(" ")
 			play_fx(select_fx)
 		_:
-			key_selected.emit(button.name)
+			var label = _find_label(button)
+			key_selected.emit(label.text)
 			play_fx(select_fx)
 		
 	_animate_button_click(button)
+
+
+func _find_label(node: Node) -> Control:
+	if node is Label or node is RichTextLabel:
+		return node
+	for child in node.get_children():
+		var found = _find_label(child)
+		if found:
+			return found
+	return null
 
 
 func _move_cursor_left() -> void:
@@ -409,10 +419,19 @@ func _config_hand() -> void:
 	GameManager.force_show_cursor()
 
 
-## Processes navigation and physical keyboard shortcuts
+func _get_next_control() -> Control:
+	var direction = ControllerManager.get_pressed_direction()
+		
+	if direction:
+		return ControllerManager.get_closest_focusable_control(current_button, direction, true, buttons, true, false)
+	
+	return null
+
+
 ## Processes navigation and physical keyboard shortcuts
 func _process(delta: float) -> void:
 	if not started or not current_button: return
+
 	if GameManager.get_cursor_manipulator() == manipulator:
 		
 		var key = ControllerManager.get_any_key_just_pressed()
@@ -462,11 +481,7 @@ func _process(delta: float) -> void:
 					_on_button_pressed(current_button)
 			return
 		
-		var new_control: Node
-		var direction = ControllerManager.get_pressed_direction()
-		
-		if direction:
-			new_control = ControllerManager.get_closest_focusable_control(current_button, direction, true, buttons)
+		var new_control: Node = _get_next_control()
 		
 		if new_control:
 			new_control.grab_focus()
@@ -479,11 +494,10 @@ func _refresh_ok_button_state() -> void:
 	var complete = _is_input_complete()
 	
 	ok_button.disabled = !complete
-
+	
 	if complete:
 		ok_button.modulate = Color.WHITE
 		ok_button.focus_mode = Control.FOCUS_CLICK
-		
 	else:
 		ok_button.modulate = Color(0.5, 0.5, 0.5, 0.7)
 		ok_button.focus_mode = Control.FOCUS_NONE

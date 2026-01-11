@@ -11,6 +11,15 @@ func get_class() -> String:
 	return "SelectDigitsScene"
 
 
+func _get_next_control() -> Control:
+	var direction = ControllerManager.get_pressed_direction()
+		
+	if direction:
+		return ControllerManager.get_closest_focusable_control(current_button, direction, true, buttons, true, true)
+	
+	return null
+
+
 func _start_animation() -> void:
 	pivot_offset = Vector2(size.x * 0.5, 0.0)
 	scale = Vector2(0.2, 1.5)
