@@ -1,0 +1,2010 @@
+[gd_scene load_steps=34 format=3 uid="uid://bihb4aqkpdc7k"]
+
+[ext_resource type="Script" uid="uid://q3vw2b76h5uf" path="res://Scenes/GUI/SteamPunkTheme/OtherScenes/select_text_dialog.gd" id="1_grbih"]
+[ext_resource type="Texture2D" uid="uid://ddjpsj7rhadut" path="res://Assets/Images/GUI/shadow1.png" id="2_vigln"]
+[ext_resource type="Texture2D" uid="uid://5igkil1scxn" path="res://Assets/Images/GUI/other_gui1.png" id="3_ujbmh"]
+[ext_resource type="Shader" uid="uid://n40yqyd5nqwv" path="res://Assets/Shaders/energy_flow.gdshader" id="4_q20r2"]
+[ext_resource type="PackedScene" uid="uid://8gbgmsgpvibk" path="res://addons/CustomControls/auto_fit_label.tscn" id="5_rmo2h"]
+[ext_resource type="FontFile" uid="uid://dvh0mi6yu0ywx" path="res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf" id="6_qkohr"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_e7vif"]
+
+[sub_resource type="Gradient" id="Gradient_e7vif"]
+offsets = PackedFloat32Array(0, 0.12809917, 0.19421488, 0.2768595, 1)
+colors = PackedColorArray(0.014211937, 3.619207e-09, 1.1280645e-09, 1, 0.3024786, 0.011241015, 0.006237926, 1, 0.09865674, 0.07512211, 0.0009275096, 1, 0.2025486, 0.008696662, 0.004333861, 1, 0.035475288, 0.013442853, 1.35367735e-08, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_qwdof"]
+gradient = SubResource("Gradient_e7vif")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_qwdof"]
+noise_type = 3
+frequency = 0.0533
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_qyx2o"]
+noise = SubResource("FastNoiseLite_qwdof")
+seamless = true
+seamless_blend_skirt = 0.383
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qyx2o"]
+shader = ExtResource("4_q20r2")
+shader_parameter/energy_gradient = SubResource("GradientTexture2D_qwdof")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_qyx2o")
+shader_parameter/modulate_color = Color(1, 1, 1, 1)
+shader_parameter/noise_scale = Vector2(0.22, 0.03)
+shader_parameter/speed = Vector2(0, -0.01)
+shader_parameter/intensity = 7.906000375535
+shader_parameter/energy_mix_factor = 0.090000004275
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qwdof"]
+atlas = ExtResource("3_ujbmh")
+region = Rect2(48, 51, 282, 208)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_f8n7v"]
+shader = ExtResource("4_q20r2")
+shader_parameter/energy_gradient = SubResource("GradientTexture2D_qwdof")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_qyx2o")
+shader_parameter/modulate_color = Color(0.36826333, 0.87486273, 1, 1)
+shader_parameter/noise_scale = Vector2(10, 10)
+shader_parameter/speed = Vector2(0.01, 0.02)
+shader_parameter/intensity = 7.570000359575
+shader_parameter/energy_mix_factor = 0.5
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_03vxj"]
+atlas = ExtResource("3_ujbmh")
+region = Rect2(472, 348, 218, 6)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6a1p6"]
+atlas = ExtResource("3_ujbmh")
+region = Rect2(401, 335, 6, 218)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f8n7v"]
+atlas = ExtResource("3_ujbmh")
+region = Rect2(498, 593, 163, 23)
+
+[sub_resource type="LabelSettings" id="LabelSettings_qyx2o"]
+font = ExtResource("6_qkohr")
+font_size = 29
+font_color = Color(0.8156863, 0.73333335, 0, 1)
+stacked_outline_count = 3
+stacked_outline_0/size = 6
+stacked_outline_0/color = Color(0.8156863, 0.2509804, 0, 0.78431374)
+stacked_outline_1/size = 9
+stacked_outline_1/color = Color(0.6392157, 0.3254902, 0, 0.4)
+stacked_outline_2/size = 16
+stacked_outline_2/color = Color(0.6392157, 0.3254902, 0, 0.13333334)
+
+[sub_resource type="LabelSettings" id="LabelSettings_f8n7v"]
+font = ExtResource("6_qkohr")
+font_size = 18
+font_color = Color(0.043137256, 0.9882353, 0.21960784, 1)
+stacked_outline_count = 3
+stacked_outline_0/size = 3
+stacked_outline_0/color = Color(0.17388186, 0.2987444, 0.093343206, 0.78431374)
+stacked_outline_1/size = 6
+stacked_outline_1/color = Color(0.010575492, 0.08069346, 0, 0.4)
+stacked_outline_2/size = 12
+stacked_outline_2/color = Color(0, 0, 0, 0.13333334)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v4bg5"]
+atlas = ExtResource("3_ujbmh")
+region = Rect2(715, 183.5, 74, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7lh1f"]
+atlas = ExtResource("3_ujbmh")
+region = Rect2(720, 268, 74, 73)
+
+[sub_resource type="LabelSettings" id="LabelSettings_e7vif"]
+font = ExtResource("6_qkohr")
+font_size = 22
+font_color = Color(1, 0.6627451, 0, 1)
+stacked_outline_count = 3
+stacked_outline_0/size = 3
+stacked_outline_0/color = Color(0.17388186, 0.2987444, 0.093343206, 0.78431374)
+stacked_outline_1/size = 6
+stacked_outline_1/color = Color(0.010575492, 0.08069346, 0, 0.4)
+stacked_outline_2/size = 12
+stacked_outline_2/color = Color(0, 0, 0, 0.13333334)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q20r2"]
+atlas = ExtResource("3_ujbmh")
+region = Rect2(715, 183.5, 74, 74)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rmo2h"]
+texture = SubResource("AtlasTexture_q20r2")
+texture_margin_left = 32.002228
+texture_margin_top = 34.319073
+texture_margin_right = 31.493614
+texture_margin_bottom = 34.407455
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qkohr"]
+atlas = ExtResource("3_ujbmh")
+region = Rect2(720, 268, 74, 73)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8jkvt"]
+texture = SubResource("AtlasTexture_qkohr")
+texture_margin_left = 35.0
+texture_margin_top = 34.0
+texture_margin_right = 33.0
+texture_margin_bottom = 33.0
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+
+[sub_resource type="LabelSettings" id="LabelSettings_grbih"]
+font = ExtResource("6_qkohr")
+font_size = 22
+font_color = Color(1, 0.6627451, 0, 1)
+stacked_outline_count = 3
+stacked_outline_0/size = 3
+stacked_outline_0/color = Color(0.17388186, 0.2987444, 0.093343206, 0.78431374)
+stacked_outline_1/size = 6
+stacked_outline_1/color = Color(0.010575492, 0.08069346, 0, 0.4)
+stacked_outline_2/size = 12
+stacked_outline_2/color = Color(0, 0, 0, 0.13333334)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_grbih"]
+atlas = ExtResource("3_ujbmh")
+region = Rect2(711, 103.5, 74, 74)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vigln"]
+texture = SubResource("AtlasTexture_grbih")
+texture_margin_left = 33.722073
+texture_margin_top = 34.319073
+texture_margin_right = 33.459152
+texture_margin_bottom = 34.407455
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qyx2o"]
+atlas = ExtResource("3_ujbmh")
+region = Rect2(359, 285, 19, 19)
+
+[sub_resource type="Animation" id="Animation_f8n7v"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MainFrame/VBoxContainer/TopContainer/VBoxContainer/TitleContainer/AnimateBackground/Animation1:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MainFrame/VBoxContainer/TopContainer/VBoxContainer/Digits/Polygon2D/Animation2:color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("MainFrame/InnerDecoration1/VBoxContainer/TextureRect:material:shader_parameter/intensity")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [7.570000359575]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("MainFrame/InnerDecoration1/VBoxContainer/TextureRect:material:shader_parameter/energy_mix_factor")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.5]
+}
+
+[sub_resource type="Animation" id="Animation_qyx2o"]
+resource_name = "Shining"
+loop_mode = 1
+step = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MainFrame/VBoxContainer/TopContainer/VBoxContainer/TitleContainer/AnimateBackground/Animation1:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.56, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 0), Color(0, 0, 0, 1), Color(0, 0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MainFrame/VBoxContainer/TopContainer/VBoxContainer/Digits/Polygon2D/Animation2:color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.003000006, 0.564, 0.999),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 0.14509805), Color(0, 0, 0, 0), Color(0, 0, 0, 0.14509805)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("MainFrame/InnerDecoration1/VBoxContainer/TextureRect:material:shader_parameter/intensity")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.004999995, 0.57),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [7.570000359575, 10.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("MainFrame/InnerDecoration1/VBoxContainer/TextureRect:material:shader_parameter/energy_mix_factor")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.572),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.5, 0.7430000352925]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_v4bg5"]
+_data = {
+&"RESET": SubResource("Animation_f8n7v"),
+&"Shining": SubResource("Animation_qyx2o")
+}
+
+[node name="SelectTextDialog" type="PanelContainer" node_paths=PackedStringArray("buttons", "initial_selected_button", "back_button", "ok_button", "space_button", "bloq_shift", "title_node", "entry_label")]
+offset_left = 1.0
+offset_top = 40.0
+offset_right = 781.0
+offset_bottom = 474.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_e7vif")
+script = ExtResource("1_grbih")
+buttons = [NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1/1"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1/2"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1/3"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1/4"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1/5"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1/6"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1/7"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1/8"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1/9"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1/0"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1/Back"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2/Q"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2/W"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2/E"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2/R"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2/T"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2/Y"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2/U"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2/I"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2/O"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2/P"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3/A"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3/S"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3/D"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3/F"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3/G"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3/H"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3/J"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3/K"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3/L"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3/Ñ"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4/Shift"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4/Z"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4/X"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4/C"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4/V"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4/B"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4/N"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4/M"), NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row5/Space")]
+initial_selected_button = NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3/A")
+back_button = NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1/Back")
+ok_button = NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4/Ok")
+space_button = NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row5/Space")
+bloq_shift = NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4/Shift")
+title_node = NodePath("MainFrame/VBoxContainer/TopContainer/VBoxContainer/TitleContainer/Title/TitleLabelContainer/Control/TitleLabel")
+entry_label = NodePath("MainFrame/VBoxContainer/TopContainer/VBoxContainer/Digits/DigitLabelContainer/Control/DigitLabel")
+
+[node name="Shadow" type="Polygon2D" parent="."]
+position = Vector2(430.7344, 273.70105)
+scale = Vector2(3.235757, 1.6643419)
+color = Color(1, 1, 1, 0.6)
+texture = ExtResource("2_vigln")
+polygon = PackedVector2Array(-145.86322, -134.34799, -144.04659, -133.69, -140.04997, -137.63792, -139.68665, -146.19177, -136.4167, -147.50774, -136.05338, -158.69353, -127.69683, -158.69353, -120.793594, -163.95743, 105.196365, -163.95743, 112.46292, -158.69353, 120.81946, -158.69353, 120.81946, -148.16573, 124.45276, -144.8758, 124.45276, -138.29591, 128.81268, -133.69, 130.99265, -133.69, 133.89926, -122.50421, 133.53595, 112.39731, 132.08264, 118.97717, 126.99603, 127.53104, 115.006226, 139.37479, 100.10977, 148.58661, -117.160324, 148.58661, -140.04997, 130.82095, -148.76985, 114.37128, -149.4965, 110.42334, -149.13318, -124.47818, -147.67987, -131.05806)
+uv = PackedVector2Array(-0.17144775, 32.54181, 2.045517, 33.344803, 6.922867, 28.52687, 7.3662567, 18.087997, 11.356812, 16.48204, 11.800201, 2.8312073, 21.998291, 2.8312073, 30.422806, -3.5927048, 306.21454, -3.5927048, 315.0824, 2.8312073, 325.28046, 2.8312073, 325.28046, 15.679047, 329.71445, 19.693985, 329.71445, 27.723877, 335.03516, 33.344803, 337.69556, 33.344803, 341.2427, 46.99562, 340.79932, 333.66272, 339.02576, 341.6926, 332.8182, 352.1315, 318.18616, 366.5853, 300.007, 377.82712, 34.85675, 377.82712, 6.922867, 356.14642, -3.7186127, 336.0717, -4.6054077, 331.25375, -4.162018, 44.586655, -2.388443, 36.556755)
+
+[node name="MainFrame" type="NinePatchRect" parent="."]
+layout_mode = 2
+texture = ExtResource("3_ujbmh")
+region_rect = Rect2(43, 322, 293, 282)
+patch_margin_left = 107
+patch_margin_top = 50
+patch_margin_right = 107
+patch_margin_bottom = 73
+axis_stretch_horizontal = 2
+
+[node name="BackgroundContainer" type="Polygon2D" parent="MainFrame"]
+show_behind_parent = true
+clip_children = 1
+position = Vector2(-2.287336, -0.36638212)
+scale = Vector2(1.4574668, 1.0002608)
+polygon = PackedVector2Array(5, 26, 12.053334, 9.902564, 34.388885, 3.365509, 509.50916, 5.731003, 527, 8, 534, 24, 533, 383, 515.4747, 405.5011, 478.4242, 431.2539, 443.43192, 433.88715, 393.34506, 433.2534, 136.0493, 433.2534, 69.49547, 433.2534, 39.3061, 419.69412, 17.350199, 401.26175, 5.686124, 381.26694)
+
+[node name="Background" type="TextureRect" parent="MainFrame/BackgroundContainer"]
+material = SubResource("ShaderMaterial_qyx2o")
+offset_right = 534.0
+offset_bottom = 431.0
+texture = SubResource("AtlasTexture_qwdof")
+
+[node name="InnerDecoration1" type="MarginContainer" parent="MainFrame"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 35
+theme_override_constants/margin_top = 90
+theme_override_constants/margin_right = 30
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainFrame/InnerDecoration1"]
+layout_mode = 2
+theme_override_constants/separation = 59
+
+[node name="TextureRect" type="TextureRect" parent="MainFrame/InnerDecoration1/VBoxContainer"]
+material = SubResource("ShaderMaterial_f8n7v")
+layout_mode = 2
+size_flags_vertical = 0
+texture = SubResource("AtlasTexture_03vxj")
+
+[node name="TextureRect2" type="TextureRect" parent="MainFrame/InnerDecoration1/VBoxContainer"]
+material = SubResource("ShaderMaterial_f8n7v")
+layout_mode = 2
+size_flags_vertical = 0
+texture = SubResource("AtlasTexture_03vxj")
+
+[node name="TextureRect3" type="TextureRect" parent="MainFrame/InnerDecoration1/VBoxContainer"]
+material = SubResource("ShaderMaterial_f8n7v")
+layout_mode = 2
+size_flags_vertical = 0
+texture = SubResource("AtlasTexture_03vxj")
+
+[node name="TextureRect4" type="TextureRect" parent="MainFrame/InnerDecoration1/VBoxContainer"]
+material = SubResource("ShaderMaterial_f8n7v")
+layout_mode = 2
+size_flags_vertical = 0
+texture = SubResource("AtlasTexture_03vxj")
+
+[node name="InnerDecoration2" type="MarginContainer" parent="MainFrame"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 91
+theme_override_constants/margin_top = 45
+theme_override_constants/margin_bottom = 25
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainFrame/InnerDecoration2"]
+layout_mode = 2
+theme_override_constants/separation = 67
+
+[node name="TextureRect" type="TextureRect" parent="MainFrame/InnerDecoration2/HBoxContainer"]
+material = SubResource("ShaderMaterial_f8n7v")
+layout_mode = 2
+size_flags_horizontal = 0
+texture = SubResource("AtlasTexture_6a1p6")
+
+[node name="TextureRect2" type="TextureRect" parent="MainFrame/InnerDecoration2/HBoxContainer"]
+material = SubResource("ShaderMaterial_f8n7v")
+layout_mode = 2
+size_flags_horizontal = 0
+texture = SubResource("AtlasTexture_6a1p6")
+
+[node name="TextureRect3" type="TextureRect" parent="MainFrame/InnerDecoration2/HBoxContainer"]
+material = SubResource("ShaderMaterial_f8n7v")
+layout_mode = 2
+size_flags_horizontal = 0
+texture = SubResource("AtlasTexture_6a1p6")
+
+[node name="InnerFrameContainer" type="MarginContainer" parent="MainFrame"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 11
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 11
+theme_override_constants/margin_bottom = 10
+
+[node name="InterFrame" type="NinePatchRect" parent="MainFrame/InnerFrameContainer"]
+layout_mode = 2
+texture = ExtResource("3_ujbmh")
+region_rect = Rect2(378, 51, 271, 217)
+patch_margin_left = 112
+patch_margin_top = 29
+patch_margin_right = 111
+patch_margin_bottom = 123
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+
+[node name="DecorationBack" type="TextureRect" parent="MainFrame/InnerFrameContainer/InterFrame"]
+modulate = Color(1, 1, 1, 0.5921569)
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -81.5
+offset_top = -15.0
+offset_right = 81.5
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = SubResource("AtlasTexture_f8n7v")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainFrame"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="TopContainer" type="MarginContainer" parent="MainFrame/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = -39
+theme_override_constants/margin_right = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainFrame/VBoxContainer/TopContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="TitleContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 14
+
+[node name="AnimateBackground" type="Polygon2D" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer/TitleContainer"]
+clip_children = 1
+position = Vector2(-41.379307, 0)
+scale = Vector2(2.724138, 1)
+polygon = PackedVector2Array(75, 6, 62.17721, 5.5, 47.493668, 5.5, 41.253162, 7.5, 33, 16, 27.670883, 16.5, 26.20253, 20.5, 26.569618, 26.5, 27.303795, 29.5, 26.569618, 32.5, 24, 31, 23.632908, 34.5, 26.20253, 40.5, 33, 41, 279, 41, 283, 37, 285, 33, 284, 31, 281.3291, 29.5, 281.6962, 25.5, 281.3291, 17.5, 275.0886, 16.5, 266.27847, 6.5, 252.6962, 6.5, 232, 7)
+
+[node name="Animation1" type="ColorRect" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer/TitleContainer/AnimateBackground"]
+unique_name_in_owner = true
+offset_left = 20.0
+offset_right = 290.0
+offset_bottom = 45.0
+color = Color(0, 0, 0, 0)
+
+[node name="Title" type="NinePatchRect" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer/TitleContainer"]
+custom_minimum_size = Vector2(0, 47)
+layout_mode = 2
+size_flags_vertical = 0
+texture = ExtResource("3_ujbmh")
+region_rect = Rect2(549, 393, 239, 47)
+patch_margin_left = 98
+patch_margin_right = 95
+axis_stretch_horizontal = 2
+
+[node name="TitleLabelContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer/TitleContainer/Title"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 56
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 56
+theme_override_constants/margin_bottom = 4
+
+[node name="Control" type="Control" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer/TitleContainer/Title/TitleLabelContainer"]
+layout_mode = 2
+
+[node name="TitleLabel" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer/TitleContainer/Title/TitleLabelContainer/Control" instance=ExtResource("5_rmo2h")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(308, 19.5)
+theme_override_font_sizes/font_size = 29
+text = "Title"
+label_settings = SubResource("LabelSettings_qyx2o")
+
+[node name="SeparatorContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = -6
+
+[node name="Separator" type="NinePatchRect" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer/SeparatorContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+size_flags_vertical = 0
+texture = ExtResource("3_ujbmh")
+region_rect = Rect2(448, 559, 269, 10)
+patch_margin_left = 85
+patch_margin_right = 84
+
+[node name="Digits" type="NinePatchRect" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+texture = ExtResource("3_ujbmh")
+region_rect = Rect2(445, 483, 272, 33)
+patch_margin_left = 85
+patch_margin_top = 19
+patch_margin_right = 84
+patch_margin_bottom = 17
+axis_stretch_horizontal = 2
+
+[node name="Polygon2D" type="Polygon2D" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer/Digits"]
+clip_children = 1
+position = Vector2(-25.42857, 0)
+scale = Vector2(2.5892856, 1)
+polygon = PackedVector2Array(26, 7, 22.951725, 7.5, 19.475863, 7.5, 17.544828, 10.5, 16.386208, 12.5, 16, 15, 16, 25, 16.772415, 28.5, 18.70345, 32.5, 20.248276, 33.5, 27, 34, 284, 34, 285.95862, 33.5, 287.88968, 33.5, 292.13794, 33.5, 294.06897, 32.5, 296.38623, 27.5, 296.77243, 15.5, 294.8414, 9.5, 292.13794, 6.5, 286, 7)
+
+[node name="Animation2" type="ColorRect" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer/Digits/Polygon2D"]
+unique_name_in_owner = true
+offset_left = 8.0
+offset_top = 2.0
+offset_right = 301.0
+offset_bottom = 36.0
+color = Color(0, 0, 0, 0)
+
+[node name="DigitLabelContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer/Digits"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 29
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 8
+
+[node name="Control" type="Control" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer/Digits/DigitLabelContainer"]
+layout_mode = 2
+
+[node name="DigitLabel" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer/Digits/DigitLabelContainer/Control" instance=ExtResource("5_rmo2h")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(351.5, 12)
+theme_override_font_sizes/font_size = 18
+text = "▪️▪️▪️▪️▪️"
+label_settings = SubResource("LabelSettings_f8n7v")
+
+[node name="BottomContainer" type="MarginContainer" parent="MainFrame/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 45
+
+[node name="ButtonContainer" type="VBoxContainer" parent="MainFrame/VBoxContainer/BottomContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = -7
+
+[node name="Row1" type="HFlowContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = -14
+theme_override_constants/v_separation = -8
+alignment = 1
+
+[node name="1" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1/1"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1/1/MarginContainer"]
+layout_mode = 2
+text = "1"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="2" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1/2"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1/2/MarginContainer"]
+layout_mode = 2
+text = "2"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="3" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1/3"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1/3/MarginContainer"]
+layout_mode = 2
+text = "3"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="4" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1/4"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1/4/MarginContainer"]
+layout_mode = 2
+text = "4"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="5" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1/5"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1/5/MarginContainer"]
+layout_mode = 2
+text = "5"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="6" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1/6"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1/6/MarginContainer"]
+layout_mode = 2
+text = "6"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="7" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1/7"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1/7/MarginContainer"]
+layout_mode = 2
+text = "7"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="8" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1/8"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1/8/MarginContainer"]
+layout_mode = 2
+text = "8"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="9" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1/9"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1/9/MarginContainer"]
+layout_mode = 2
+text = "9"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="0" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1/0"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1/0/MarginContainer"]
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Back" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1/Back"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row1/Back/MarginContainer"]
+layout_mode = 2
+text = "🡸"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Row2" type="HFlowContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = -14
+theme_override_constants/v_separation = -8
+alignment = 1
+
+[node name="Separator1" type="Control" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+
+[node name="Q" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2/Q"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2/Q/MarginContainer"]
+layout_mode = 2
+text = "Q"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="W" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2/W"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2/W/MarginContainer"]
+layout_mode = 2
+text = "W"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="E" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2/E"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2/E/MarginContainer"]
+layout_mode = 2
+text = "E"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="R" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2/R"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2/R/MarginContainer"]
+layout_mode = 2
+text = "R"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="T" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2/T"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2/T/MarginContainer"]
+layout_mode = 2
+text = "T"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Y" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2/Y"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2/Y/MarginContainer"]
+layout_mode = 2
+text = "Y"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="U" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2/U"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2/U/MarginContainer"]
+layout_mode = 2
+text = "U"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="I" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2/I"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2/I/MarginContainer"]
+layout_mode = 2
+text = "I"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="O" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2/O"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2/O/MarginContainer"]
+layout_mode = 2
+text = "O"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="P" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2/P"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2/P/MarginContainer"]
+layout_mode = 2
+text = "P"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Separator2" type="Control" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+
+[node name="Row3" type="HFlowContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = -14
+theme_override_constants/v_separation = -8
+alignment = 1
+
+[node name="Separator1" type="Control" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+
+[node name="A" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3/A"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3/A/MarginContainer"]
+layout_mode = 2
+text = "A"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="S" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3/S"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3/S/MarginContainer"]
+layout_mode = 2
+text = "S"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="D" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3/D"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3/D/MarginContainer"]
+layout_mode = 2
+text = "D"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="F" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3/F"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3/F/MarginContainer"]
+layout_mode = 2
+text = "F"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="G" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3/G"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3/G/MarginContainer"]
+layout_mode = 2
+text = "G"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="H" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3/H"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3/H/MarginContainer"]
+layout_mode = 2
+text = "H"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="J" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3/J"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3/J/MarginContainer"]
+layout_mode = 2
+text = "J"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="K" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3/K"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3/K/MarginContainer"]
+layout_mode = 2
+text = "K"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="L" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3/L"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3/L/MarginContainer"]
+layout_mode = 2
+text = "L"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Ñ" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3/Ñ"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3/Ñ/MarginContainer"]
+layout_mode = 2
+text = "Ñ"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Separator2" type="Control" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row3"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+
+[node name="Row4" type="HFlowContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = -14
+theme_override_constants/v_separation = -8
+alignment = 1
+
+[node name="Shift" type="Button" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4"]
+custom_minimum_size = Vector2(120, 42)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+focus_mode = 1
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_rmo2h")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_8jkvt")
+theme_override_styles/hover = SubResource("StyleBoxTexture_8jkvt")
+theme_override_styles/focus = SubResource("StyleBoxTexture_8jkvt")
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4/Shift"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4/Shift/MarginContainer"]
+layout_mode = 2
+text = "🡅"
+label_settings = SubResource("LabelSettings_grbih")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Z" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4/Z"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4/Z/MarginContainer"]
+layout_mode = 2
+text = "Z"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="X" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4/X"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4/X/MarginContainer"]
+layout_mode = 2
+text = "X"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="C" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4/C"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4/C/MarginContainer"]
+layout_mode = 2
+text = "C"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="V" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4/V"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4/V/MarginContainer"]
+layout_mode = 2
+text = "V"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="B" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4/B"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4/B/MarginContainer"]
+layout_mode = 2
+text = "B"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="N" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4/N"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4/N/MarginContainer"]
+layout_mode = 2
+text = "N"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="M" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_v4bg5")
+texture_focused = SubResource("AtlasTexture_7lh1f")
+stretch_mode = 5
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4/M"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4/M/MarginContainer"]
+layout_mode = 2
+text = "M"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Ok" type="Button" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4"]
+custom_minimum_size = Vector2(120, 42)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+focus_mode = 1
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_rmo2h")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_8jkvt")
+theme_override_styles/hover = SubResource("StyleBoxTexture_8jkvt")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_vigln")
+theme_override_styles/focus = SubResource("StyleBoxTexture_8jkvt")
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4/Ok"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4/Ok/MarginContainer"]
+layout_mode = 2
+text = "OK"
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Row5" type="HFlowContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/h_separation = -14
+theme_override_constants/v_separation = -8
+alignment = 1
+
+[node name="Separator1" type="Control" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row5"]
+custom_minimum_size = Vector2(36, 0)
+layout_mode = 2
+
+[node name="Space" type="Button" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row5"]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+focus_mode = 1
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_rmo2h")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_8jkvt")
+theme_override_styles/hover = SubResource("StyleBoxTexture_8jkvt")
+theme_override_styles/focus = SubResource("StyleBoxTexture_8jkvt")
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row5/Space"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row5/Space/MarginContainer"]
+layout_mode = 2
+label_settings = SubResource("LabelSettings_e7vif")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Separator2" type="Control" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row5"]
+custom_minimum_size = Vector2(36, 0)
+layout_mode = 2
+
+[node name="ExternalDecoration" type="Control" parent="MainFrame"]
+anchors_preset = 0
+offset_right = 385.0
+offset_bottom = 395.0
+mouse_filter = 2
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
+
+[node name="Screw1" type="TextureRect" parent="MainFrame/ExternalDecoration"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 75.0
+offset_right = 27.0
+offset_bottom = 94.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = SubResource("AtlasTexture_qyx2o")
+
+[node name="Screw2" type="TextureRect" parent="MainFrame/ExternalDecoration"]
+layout_mode = 0
+offset_left = 764.0
+offset_top = 162.0
+offset_right = 783.0
+offset_bottom = 181.0
+rotation = 0.7175699
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = SubResource("AtlasTexture_qyx2o")
+
+[node name="Screw3" type="TextureRect" parent="MainFrame/ExternalDecoration"]
+layout_mode = 0
+offset_left = 389.0
+offset_top = 411.0
+offset_right = 408.0
+offset_bottom = 430.0
+rotation = 1.6364543
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = SubResource("AtlasTexture_qyx2o")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_v4bg5")
+}
+autoplay = "Shining"

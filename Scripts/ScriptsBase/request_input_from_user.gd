@@ -18,6 +18,9 @@ extends PanelContainer
 ## Reference to the space bar button. If null, Space key confirms current selection
 @export var space_button: BaseButton
 
+## Reference to the shift lock button
+@export var bloq_shift: BaseButton
+
 ## Label used to display the title or prompt message
 @export var title_node: Label
 
@@ -26,7 +29,7 @@ extends PanelContainer
 
 
 var started: bool = false
-var current_button: TextureButton
+var current_button: BaseButton
 var manipulator: String = GameManager.MANIPULATOR_MODES.GUI_SCENE
 var max_chars: int = 6
 var empty_char: String = "▪️"
@@ -230,9 +233,9 @@ func _config_buttons() -> void:
 	for button: BaseButton in buttons:
 		if not button.is_in_group("key_button"):
 			button.add_to_group("key_button")
-		button.pivot_offset = button.size * 0.5
 		button.focus_entered.connect(
 			func():
+				button.pivot_offset = button.size * 0.5
 				var t = create_tween()
 				t.tween_property(button, "scale", Vector2(1.1, 1.1), 0.1)
 				current_button = button
@@ -241,6 +244,7 @@ func _config_buttons() -> void:
 		)
 		button.focus_exited.connect(
 			func():
+				button.pivot_offset = button.size * 0.5
 				var t = create_tween()
 				t.tween_property(button, "scale", Vector2(1.0, 1.0), 0.3).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
 		)
@@ -406,51 +410,10 @@ func _config_hand() -> void:
 
 
 ## Processes navigation and physical keyboard shortcuts
+## Processes navigation and physical keyboard shortcuts
 func _process(delta: float) -> void:
 	if not started or not current_button: return
 	if GameManager.get_cursor_manipulator() == manipulator:
-		
-		var is_tab_just_pressed = Input.is_key_pressed(KEY_TAB) and ControllerManager.is_action_just_pressed("ui_focus_next")
-		var is_shift_pressed = Input.is_key_pressed(KEY_SHIFT)
-
-		if ControllerManager.is_action_just_pressed("Button L1") or (is_tab_just_pressed and is_shift_pressed) or ControllerManager.is_action_just_pressed("Button L1 Extra"):
-			_move_cursor_left()
-			return
-			
-		elif ControllerManager.is_action_just_pressed("Button R1") or (is_tab_just_pressed and not is_shift_pressed) or (ControllerManager.is_action_just_pressed("Button R1 Extra") and not Input.is_key_pressed(KEY_SHIFT)):
-			_move_cursor_right()
-			return
-
-		elif ControllerManager.is_enter_just_pressed():
-			get_viewport().set_input_as_handled()
-			if ok_button and ControllerManager.is_key_pressed(KEY_CTRL):
-				ok_button.grab_focus()
-				current_button = ok_button
-				_on_button_pressed(current_button)
-			elif current_button:
-				current_button.pressed.emit()
-				_on_button_pressed(current_button)
-			return
-		
-		var new_control: Node
-		var direction = ControllerManager.get_pressed_direction()
-		
-		if direction:
-			new_control = ControllerManager.get_closest_focusable_control(current_button, direction, true)
-		elif ControllerManager.is_confirm_pressed():
-			if ControllerManager.is_key_pressed(KEY_SPACE) and space_button:
-				space_button.grab_focus()
-				current_button = space_button
-				_on_button_pressed(current_button)
-			elif current_button:
-				_on_button_pressed(current_button)
-			return
-		elif ControllerManager.is_erase_letter_pressed():
-			if back_button:
-				back_button.grab_focus()
-				current_button = back_button
-				_on_button_pressed(current_button)
-			return
 		
 		var key = ControllerManager.get_any_key_just_pressed()
 		if key:
@@ -467,9 +430,48 @@ func _process(delta: float) -> void:
 					_on_button_pressed(current_button)
 					return
 		
+		if ControllerManager.is_erase_letter_pressed():
+			if back_button:
+				back_button.grab_focus()
+				current_button = back_button
+				_on_button_pressed(current_button)
+			return
+
+		var is_tab_just_pressed = Input.is_key_pressed(KEY_TAB) and ControllerManager.is_action_just_pressed("ui_focus_next")
+		var is_shift_pressed = Input.is_key_pressed(KEY_SHIFT)
+
+		if ControllerManager.is_action_just_pressed("Button L1") or (is_tab_just_pressed and is_shift_pressed) or ControllerManager.is_action_just_pressed("Button L1 Extra"):
+			_move_cursor_left()
+			return
+		elif ControllerManager.is_action_just_pressed("Button R1") or (is_tab_just_pressed and not is_shift_pressed) or (ControllerManager.is_action_just_pressed("Button R1 Extra") and not Input.is_key_pressed(KEY_SHIFT)):
+			_move_cursor_right()
+			return
+
+		if ControllerManager.is_enter_just_pressed() or ControllerManager.is_confirm_pressed():
+			get_viewport().set_input_as_handled()
+			if ok_button and ControllerManager.is_key_pressed(KEY_CTRL):
+				ok_button.grab_focus()
+				current_button = ok_button
+				_on_button_pressed(current_button)
+			elif current_button:
+				if ControllerManager.is_key_pressed(KEY_SPACE) and space_button:
+					space_button.grab_focus()
+					current_button = space_button
+					_on_button_pressed(current_button)
+				else:
+					_on_button_pressed(current_button)
+			return
+		
+		var new_control: Node
+		var direction = ControllerManager.get_pressed_direction()
+		
+		if direction:
+			new_control = ControllerManager.get_closest_focusable_control(current_button, direction, true, buttons)
+		
 		if new_control:
 			new_control.grab_focus()
 			play_fx(move_fx)
+
 
 func _refresh_ok_button_state() -> void:
 	if not ok_button: return

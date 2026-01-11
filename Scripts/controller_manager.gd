@@ -156,8 +156,33 @@ signal controller_changed(controller_type: CONTROLLER_TYPE)
 ## Initialize the input controller
 func _ready() -> void:
 	clear()
+	_scan_initial_caps_lock()
 	set_input_delays(initial_key_delay, echo_key_delay)
 	close_neighbor_script = preload("res://Scripts/close_neighbor.gd").new()
+
+
+func _scan_initial_caps_lock() -> void:
+	# HACK TO GET CapsLock STATE
+	var output = []
+	var os_name = OS.get_name()
+	
+	match os_name:
+		"Windows":
+			OS.execute("powershell", ["-Command", "[console]::CapsLock"], output)
+			if output.size() > 0:
+				is_caps_lock_on = output[0].strip_edges().to_lower() == "true"
+				
+		"macOS":
+			var script = "import Quartz; print(Quartz.CGEventSourceFlagsState(1) & 0x00010000 != 0)"
+			OS.execute("python3", ["-c", script], output)
+			if output.size() > 0:
+				is_caps_lock_on = output[0].strip_edges().to_lower() == "true"
+				
+		"Linux":
+			OS.execute("xset", ["q"], output)
+			if output.size() > 0:
+				var full_output = "".join(output)
+				is_caps_lock_on = "Caps Lock:   on" in full_output
 
 
 ## initiale key states
