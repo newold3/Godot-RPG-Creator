@@ -30,6 +30,7 @@ class IngameEvent:
 		page_id = new_page.page_id
 		character_data = new_character_data
 
+
 class IngameExtractionEvent:
 	var event: RPGExtractionItem
 	var scene: Variant
@@ -629,6 +630,7 @@ func _on_event_monitor_body_entered(body_rid: RID, body: Node2D, body_shape_inde
 			if commands:
 				if body.has_method("_reset"):
 					body._reset(true)
+
 				GameInterpreter.start_event(body, commands, true)
 				
 		elif action_type == "enemy_spawn_area" and (body.is_in_group("player") or body.is_in_group("vehicle")): # Process Enemy Spawn Region
@@ -730,6 +732,7 @@ func _create_particle_container() -> void:
 
 func get_particle_container() -> Node2D:
 	return particle_container
+
 
 func set_force_update_shadow(enable_force_update_timer: bool) -> void:
 	force_update_shadow = force_update_shadow_timer if enable_force_update_timer else 0
@@ -893,19 +896,6 @@ func _draw_shadow(layer: TileMapLayer, cell: Vector2i, shadow_info: RPGMapCastSh
 		}
 
 	return shadow
-	
-	#var sprite_name = "ShadowSprite%s" % cell
-	#var shadow_sprite = Sprite2D.new()
-	#shadow_sprite.name = sprite_name
-	#shadow_sprite.centered = true
-	#shadow_sprite.offset = Vector2(texture_region.size.x * 0.5, -texture_region.size.y * 0.5)
-	#shadow_sprite.texture = atlas_source.texture
-	#shadow_sprite.region_enabled = true
-	#shadow_sprite.region_rect = texture_region
-#
-	#shadow_sprite.position = tile_position - shadow_sprite.offset
-	#
-	#return shadow_sprite
 
 
 func _process(delta: float) -> void:
@@ -933,7 +923,7 @@ func _process(delta: float) -> void:
 			cursor_canvas.queue_redraw()
 		else:
 			cursor_canvas.visible = false
-	
+
 
 func _is_selected_in_editor() -> bool:
 	if Engine.is_editor_hint():
@@ -1038,7 +1028,6 @@ func _setup_events() -> void:
 	
 	for ev: RPGEvent in events.get_events():
 		ev.initialize_page_ids()
-		var interpreter_id = "event_" + str(ev.id)
 		var page: RPGEventPage = ev.get_active_page()
 		if page:
 			page.id = ev.id
@@ -1046,7 +1035,7 @@ func _setup_events() -> void:
 			if ingame_event:
 				current_ingame_events[ev.id] = ingame_event
 				
-				# Recopilar eventos automáticos
+				var interpreter_id = "event_" + str(ev.id)
 				if page.launcher == RPGEventPage.LAUNCHER_MODE.AUTOMATIC:
 					automatic_events.append({"obj": ingame_event.lpc_event, "commands": page.list, "id": interpreter_id})
 				elif page.launcher == RPGEventPage.LAUNCHER_MODE.PARALLEL:
@@ -1069,273 +1058,143 @@ func _setup_extraction_events() -> void:
 func refresh_events() -> void:
 	for ev: IngameEvent in current_ingame_events.values():
 		if not ev: continue
-		if ev.lpc_event:
-			var page = ev.lpc_event.current_event.get_active_page()
-			if page and page != ev.lpc_event.current_event_page:
-				if not ev.event.legacy_mode:
-					_handle_legacy_refresh(ev, page)
-				else:
-					_handle_modern_refresh(ev, page)
+		var active_page = ev.event.get_active_page()
+		
+		if active_page and active_page.page_id != ev.page_id:
+			active_page.id = ev.event.id
+
+			if ev.event.legacy_mode:
+				_handle_legacy_refresh(ev, active_page)
+			else:
+				_handle_modern_refresh(ev, active_page)
 	
-	#for obj: Dictionary in refresh_event_list:
-		#GameInterpreter.remove_interpreter(obj.event)
-		#var ev: IngameEvent = obj.event
-		#if ev:
-			#var page: RPGEventPage = obj.new_page
-			#page.id = ev.event.id
-			#current_ingame_events.erase(ev.lpc_event.current_event.id)
-			#var entity_id = str(ev.lpc_event.get_rid()) + "-Page#" + str(obj.page_id)
-			#GameInterpreter.remove_interpreter_by_id(entity_id)
-			#ev.page_id = page.page_id
-			#_load_event(ev, page)
-	#
-	#  refresh ingame_event_regions
 	for obj: CollisionShape2D in ingame_event_regions:
 		var region = obj.get_meta("region_data")
 		var region_is_disabled = region.activation_mode == EventRegion.ActivationMode.SWITCH and not GameManager.get_switch(region.activation_switch_id)
 		if obj.disabled != region_is_disabled:
 			obj.set_deferred("disabled", region_is_disabled)
+
+
+func _handle_modern_refresh(ev: IngameEvent, page: RPGEventPage) -> void:
+	var interpreter_id = "event_" + str(ev.event_id)
 	
-	if has_meta("_disable_shadow"):
-		#shadows.events.clear()
-		#_create_shadows()
-		#_perform_shadow_update()
-		if not is_inside_tree(): return
-		get_tree().create_timer(0.03).timeout.connect(remove_meta.bind("_disable_shadow"))
+	GameInterpreter.remove_interpreter_by_id(interpreter_id)
+	
+	var new_char_data = null
+	if ResourceLoader.exists(page.character_path):
+		new_char_data = load(page.character_path)
+	
+	ev.update_page(page, new_char_data)
+	_load_event_graphics(ev, page, ev.lpc_event.current_direction)
+	
+	if page.launcher == RPGEventPage.LAUNCHER_MODE.AUTOMATIC or page.launcher == RPGEventPage.LAUNCHER_MODE.PARALLEL:
+		await get_tree().process_frame
+		await get_tree().process_frame
+		await get_tree().process_frame
+		if is_instance_valid(self):
+			_perform_injection(ev, page, interpreter_id)
 
 
 func _handle_legacy_refresh(ev: IngameEvent, page: RPGEventPage) -> void:
 	page.id = ev.event.id
-	if page.launcher != page.LAUNCHER_MODE.CALLER:
-		var new_character_data
-		if ResourceLoader.exists(page.character_path):
-			new_character_data = load(page.character_path)
-			if new_character_data and ResourceLoader.exists(new_character_data.scene_path):
-				var new_scene_path = new_character_data.scene_path
-		ev.update_page(page, new_character_data)
-		_update_event_visuals(ev, page)
+	var interpreter_id = "event_" + str(ev.event_id)
+	var active_interpreter = GameInterpreter.get_interpreter_with_id(interpreter_id)
+	
+	if active_interpreter:
+		active_interpreter.is_updating = true
+	
+	var new_char_data = null
+	if ResourceLoader.exists(page.character_path):
+		new_char_data = load(page.character_path)
+	
+	ev.update_page(page, new_char_data)
+	_load_event_graphics(ev, page, ev.lpc_event.current_direction)
+	
+	if page.launcher == RPGEventPage.LAUNCHER_MODE.AUTOMATIC or page.launcher == RPGEventPage.LAUNCHER_MODE.PARALLEL:
+		_inject_parallel_auto_after_interpreter(ev, page)
 
 
-func _handle_modern_refresh(ev: IngameEvent, page: RPGEventPage) -> void:
-	page.id = ev.event.id
-	current_ingame_events.erase(ev.lpc_event.current_event.id)
-	var entity_id = str(ev.lpc_event.get_rid()) + "-Page#" + str(ev.page_id)
-	GameInterpreter.remove_interpreter_by_id(entity_id)
+func _load_event_graphics(ev: IngameEvent, page: RPGEventPage, direction: int) -> void:
+	var old_scene = ev.lpc_event
+	var character_data: RPGLPCCharacter = null
+	var scene_path = ""
+	
+	if ResourceLoader.exists(page.character_path):
+		character_data = load(page.character_path)
+		if character_data and ResourceLoader.exists(character_data.scene_path):
+			scene_path = character_data.scene_path
+	
+	var new_scene: Variant
+	if scene_path != "" and page.launcher != RPGEventPage.LAUNCHER_MODE.CALLER:
+		new_scene = load(scene_path).instantiate()
+		new_scene.event_data = character_data
+	else:
+		new_scene = EmptyLPCEvent.new()
+		
+	add_child(new_scene)
+	
+	ev.lpc_event = new_scene
+	ev.character_data = character_data
 	ev.page_id = page.page_id
-	_load_event(ev, page)
-
-
-func refresh_extraction_events() -> void:
-	for ev: IngameExtractionEvent in current_ingame_extraction_events.values():
-		if ev.scene: ev.scene.refresh()
-
-
-func _load_event(ev: IngameEvent, current_page: RPGEventPage) -> void:
-	var old_scene = ev.lpc_event
-	var old_character_data = ev.character_data
-	var old_scene_path = ""
 	
-	# Obtener el path de la escena anterior
-	if old_character_data and ResourceLoader.exists(old_character_data.scene_path):
-		old_scene_path = old_character_data.scene_path
+	var pos = Vector2i(ev.event.x, ev.event.y)
+	if GameManager.game_state and ev.event_id in GameManager.game_state.current_events:
+		pos = GameManager.game_state.current_events[ev.event_id].position
+		
+	set_event_position(new_scene, pos, direction)
+	_update_scene_properties(new_scene, ev.event, page)
 	
-	# Determinar nueva escena y datos del personaje
-	var new_character_data: RPGLPCCharacter = null
-	var new_scene_path = ""
-	
-	if current_page.launcher != current_page.LAUNCHER_MODE.CALLER:
-		if ResourceLoader.exists(current_page.character_path):
-			new_character_data = load(current_page.character_path)
-			if new_character_data and ResourceLoader.exists(new_character_data.scene_path):
-				new_scene_path = new_character_data.scene_path
-	
-	# Verificar si podemos reutilizar la escena existente
-	var can_reuse_scene = (old_scene_path == new_scene_path and
-						  old_scene_path != "" and
-						  current_page.launcher != current_page.LAUNCHER_MODE.CALLER)
-	
-	var scene: Variant
-	
-	var animation1: Variant
-	var animation2: Variant
-	
-	if can_reuse_scene:
-		# Reutilizar la escena existente
-		scene = old_scene
-		scene.event_data = new_character_data
+	var valid_old_scene = is_instance_valid(old_scene)
+	var valid_new_scene = is_instance_valid(new_scene)
+	if ev.event.fade_page_swap_enabled:
+		if old_scene and "is_invalid_event" in old_scene:
+			old_scene.is_invalid_event = true
+		new_scene.modulate.a = 0
+		var t = create_tween().set_parallel(true)
+		if valid_old_scene:
+			t.tween_property(old_scene, "modulate:a", 0.0, 0.25)
+		if valid_new_scene:
+			if valid_old_scene:
+				t.tween_property(new_scene, "modulate:a", 1.0, 0.25).set_delay(0.25)
+			else:
+				t.tween_property(new_scene, "modulate:a", 1.0, 0.25)
+		t.chain().tween_callback(func(): if valid_old_scene: old_scene.queue_free())
 	else:
-		# Crear nueva escena
-		#old_scene.visible = false
-		old_scene.set_meta("_disable_shadow", true)
-		
-		if current_page.launcher == current_page.LAUNCHER_MODE.CALLER:
-			scene = EmptyLPCEvent.new()
-		elif new_scene_path != "":
-			scene = load(new_scene_path).instantiate()
-			scene.event_data = new_character_data
-		else:
-			scene = EmptyLPCEvent.new()
-		
-		scene.set_meta("_disable_shadow", true)
-		set_meta("_disable_shadow", true)
+		if valid_old_scene:
+			old_scene.queue_free()
 
-		
-		add_child(scene)
-		set_event_position(scene, Vector2i(ev.lpc_event.current_event.x, ev.lpc_event.current_event.y), current_page.direction)
-		
-		if not is_inside_tree(): return
-		get_tree().create_timer(0.06).timeout.connect(
-			func():
-				if is_instance_valid(scene):
-					scene.remove_meta("_disable_shadow")
+
+func _inject_parallel_auto_after_interpreter(ev: IngameEvent, page: RPGEventPage) -> void:
+	var interpreter_id = "event_" + str(ev.event_id)
+	var active_interpreter = GameInterpreter.get_interpreter_with_id(interpreter_id)
+	
+	if active_interpreter and not active_interpreter.is_parallel() and not active_interpreter.is_complete():
+		active_interpreter.all_commands_processed.connect(
+			func(_i): _perform_injection(ev, page, interpreter_id),
+			CONNECT_ONE_SHOT
 		)
-		
-		animation1 = scene
-		animation2 = old_scene
-	
-	# Actualizar propiedades de la escena
-	_update_scene_properties(scene, ev.lpc_event.current_event, current_page)
-	
-	# Crear nuevo IngameEvent
-	var new_ingame_event = IngameEvent.new(ev.lpc_event.current_event, new_character_data, scene, internal_id)
-	current_ingame_events[ev.lpc_event.current_event.id] = new_ingame_event
-	
-	# Manejar eventos especiales
-	#_handle_special_event_modes(scene, current_page)
-	
-	# Change event graphics, use tween to fade in/out
-	var use_animation_in_out: bool = true # Disable this variable to instant appear/disappear
-	
-	if animation1 and animation2 and use_animation_in_out:
-		var node1 = animation1.get_node_or_null("%FinalCharacter")
-		var node2 = animation2.get_node_or_null("%FinalCharacter")
-		var current_scene_modulate = animation1.modulate
-		var t1 = 0.5
-		var t2 = 0.15
-		
-		var t = create_tween()
-		t.set_parallel(true)
-		if node1:
-			animation1.modulate = Color.TRANSPARENT
-			t.tween_property(animation1, "modulate", current_scene_modulate, t1)
-			if node1.get_material() is ShaderMaterial:
-				var m = node1.get_material().get_shader_parameter("blend_color")
-				node1.get_material().set_shader_parameter("blend_color", Color.TRANSPARENT)
-				t.tween_method(
-					func(c: Color): node1.get_material().set_shader_parameter("blend_color", c)
-					, Color.TRANSPARENT, m, t1
-				)
-		if node2:
-			t.tween_property(animation2, "modulate", Color.TRANSPARENT, t2)
-			if node2.get_material() is ShaderMaterial:
-				var m = node2.get_material().get_shader_parameter("blend_color")
-				t.tween_method(
-					func(c: Color): node2.get_material().set_shader_parameter("blend_color", c)
-					, m, Color.TRANSPARENT, t2
-				)
-		t.tween_callback(animation2.queue_free).set_delay(t2 + 0.01)
-		
-	elif animation2:
-		var t = create_tween().tween_callback(animation2.queue_free).set_delay(0.06)
-	
-	var interpreter_id = "event_" + str(ev.event.id)
-	
-	if old_scene != scene:
-		old_scene.queue_free()
-	
-	if current_page.launcher == RPGEventPage.LAUNCHER_MODE.AUTOMATIC:
-		GameInterpreter.auto_start_automatic_events([ {"obj": scene, "commands": current_page.list, "id": interpreter_id}])
-	elif current_page.launcher == RPGEventPage.LAUNCHER_MODE.PARALLEL:
-		GameInterpreter.register_interpreter(scene, current_page.list, true, interpreter_id)
-
-
-## Updates an existing IngameEvent's visual scene and data.
-func _update_event_visuals(ev: IngameEvent, current_page: RPGEventPage) -> void:
-	var old_scene = ev.lpc_event
-	var old_character_data = ev.character_data
-	var old_scene_path = ""
-	
-	if old_character_data and ResourceLoader.exists(old_character_data.scene_path):
-		old_scene_path = old_character_data.scene_path
-		
-	var new_character_data: RPGLPCCharacter = null
-	var new_scene_path = ""
-	
-	if current_page.launcher != current_page.LAUNCHER_MODE.CALLER:
-		if ResourceLoader.exists(current_page.character_path):
-			new_character_data = load(current_page.character_path)
-			if new_character_data and ResourceLoader.exists(new_character_data.scene_path):
-				new_scene_path = new_character_data.scene_path
-				
-	var can_reuse_scene = (old_scene_path == new_scene_path and old_scene_path != "" and current_page.launcher != current_page.LAUNCHER_MODE.CALLER)
-	var scene: Variant
-	
-	if can_reuse_scene:
-		scene = old_scene
-		
-		## Check if the scene actually uses event_data before assignment.
-		if "event_data" in scene:
-			scene.event_data = new_character_data
-			
-		_update_scene_properties(scene, ev.lpc_event.current_event, current_page)
 	else:
-		old_scene.set_meta("_disable_shadow", true)
+		if active_interpreter and active_interpreter.is_parallel():
+			active_interpreter.end()
 		
-		if current_page.launcher == current_page.LAUNCHER_MODE.CALLER:
-			scene = EmptyLPCEvent.new()
-		elif new_scene_path != "":
-			scene = load(new_scene_path).instantiate()
-			
-			## Check if the instantiated scene actually uses event_data.
-			if "event_data" in scene:
-				scene.event_data = new_character_data
-		else:
-			scene = EmptyLPCEvent.new()
-			
-		scene.set_meta("_disable_shadow", true)
-		add_child(scene)
-		set_event_position(scene, Vector2i(ev.lpc_event.current_event.x, ev.lpc_event.current_event.y), current_page.direction)
-		
-		#_handle_scene_transition_animation(old_scene, scene)
-		
-	ev.character_data = new_character_data
-	ev.lpc_event = scene
-	ev.page_id = current_page.page_id
-	
-	#_update_interpreter_context(ev, scene, current_page)
+		_perform_injection(ev, page, interpreter_id)
+
+
+func _perform_injection(ev: IngameEvent, page: RPGEventPage, interpreter_id: String) -> void:
+	if page.launcher == RPGEventPage.LAUNCHER_MODE.AUTOMATIC:
+		GameInterpreter.auto_start_automatic_events([{"obj": ev.lpc_event, "commands": page.list, "id": interpreter_id}])
+	elif page.launcher == RPGEventPage.LAUNCHER_MODE.PARALLEL:
+		GameInterpreter.register_interpreter(ev.lpc_event, page.list, true, interpreter_id)
 
 
 func _create_ingame_event(ev: RPGEvent, page: RPGEventPage) -> IngameEvent:
-	var scene: Variant
-	var character_data: RPGLPCCharacter = null
+	# Initial IngameEvent object to hold reference
+	var ingame_event = IngameEvent.new(ev, null, null, internal_id, null, page.page_id)
 	
-	# Determinar qué escena crear
-	if page.launcher == page.LAUNCHER_MODE.CALLER:
-		scene = EmptyLPCEvent.new()
-	elif ResourceLoader.exists(page.character_path):
-		character_data = load(page.character_path)
-		if character_data and ResourceLoader.exists(character_data.scene_path):
-			scene = load(character_data.scene_path).instantiate()
-			scene.event_data = character_data
-		else:
-			scene = EmptyLPCEvent.new()
-	else:
-		scene = EmptyLPCEvent.new()
+	# Load graphics (this handles scene instantiation and positioning)
+	_load_event_graphics(ingame_event, page, page.direction)
 	
-	add_child(scene)
-	if GameManager.game_state and ev.id in GameManager.game_state.current_events:
-		var event_data: RPGEventSaveData = GameManager.game_state.current_events[ev.id]
-		set_event_position(scene, event_data.position, event_data.direction, false, true)
-	else:
-		set_event_position(scene, Vector2i(ev.x, ev.y), page.direction)
-	
-	# Actualizar propiedades de la escena
-	_update_scene_properties(scene, ev, page)
-	
-	# Manejar eventos especiales
-	#_handle_special_event_modes(scene, page)
-	
-	return IngameEvent.new(ev, character_data, scene, internal_id, null, page.page_id)
+	return ingame_event
 
 
 func _create_ingame_extraction_event(ev: RPGExtractionItem) -> IngameExtractionEvent:
@@ -1472,20 +1331,18 @@ func _bake_keot_data_fast() -> void:
 		if not tile_set.has_custom_data_layer_by_name(layar_data): continue
 		
 		# ---------------------------------------------------------
-		# FASE 1: CACHE DEL TILESET (La "Libreta de notas")
+		# FASE 1: CACHE DEL TILESET
 		# ---------------------------------------------------------
-		# Queremos saber: ¿El tile del Atlas (2,1) es KEOT?
-		# Guardaremos: cache[source_id][atlas_coords] = target_z
 		var cache: Dictionary = {}
 		
 		var source_count = tile_set.get_source_count()
 		
-		# Recorremos los "Source" (las imágenes/atlas que componen tu tileset)
+		# Recorremos los "Source"
 		for i in range(source_count):
 			var source_id = tile_set.get_source_id(i)
 			var source = tile_set.get_source(source_id)
 			
-			# Aseguramos que es un Atlas (donde pintas tiles normales)
+			# Aseguramos que es un Atlas
 			if source is TileSetAtlasSource:
 				var tiles_count = source.get_tiles_count()
 				
@@ -1493,9 +1350,6 @@ func _bake_keot_data_fast() -> void:
 				for j in range(tiles_count):
 					var atlas_coords = source.get_tile_id(j)
 					
-					# ESTA ES LA CLAVE:
-					# Pedimos la data al SOURCE, no al MAPA.
-					# 0 es el alternative_tile_id (0 = original sin rotar)
 					var tile_data = source.get_tile_data(atlas_coords, 0)
 					
 					if tile_data and tile_data.get_custom_data(layar_data):
@@ -1505,13 +1359,11 @@ func _bake_keot_data_fast() -> void:
 						cache[source_id][atlas_coords] = z
 
 		# ---------------------------------------------------------
-		# FASE 2: LECTURA DEL MAPA (Usando IDs, no Data)
+		# FASE 2: LECTURA DEL MAPA
 		# ---------------------------------------------------------
 		var cells = layer.get_used_cells()
 		
 		for coords in cells:
-			# Aquí usamos las funciones rápidas que pusiste en tu mensaje.
-			# Solo devuelven números (int y Vector2i), no objetos pesados.
 			var id = layer.get_cell_source_id(coords)
 			
 			# 1. ¿Está este ID en nuestra libreta de "Tiles Mágicos"?
@@ -1619,7 +1471,7 @@ func _draw_cursor_highlight() -> void:
 	var mouse_grid_x: int = int(local_mouse.x / tile_size.x)
 	var mouse_grid_y: int = int(local_mouse.y / tile_size.y)
 	
-	# Determine the bounds to iterate, clamped to the map size if necessary
+	# Determine the bounds to iterate
 	var start_x: int = mouse_grid_x - cursor_radius
 	var end_x: int = mouse_grid_x + cursor_radius
 	var start_y: int = mouse_grid_y - cursor_radius
@@ -1627,7 +1479,7 @@ func _draw_cursor_highlight() -> void:
 
 	for x in range(start_x, end_x + 1):
 		for y in range(start_y, end_y + 1):
-			# Calculate Chebyshev distance (concentric square rings)
+			# Calculate Chebyshev distance
 			var dist_x: int = abs(x - mouse_grid_x)
 			var dist_y: int = abs(y - mouse_grid_y)
 			var distance: int = max(dist_x, dist_y)
@@ -1640,8 +1492,8 @@ func _draw_cursor_highlight() -> void:
 			var draw_pos: Vector2 = Vector2(x * tile_size.x, y * tile_size.y)
 			var rect: Rect2 = Rect2(draw_pos, tile_size)
 			
-			# Draw the filled rect (or outline if preferred)
-			cursor_canvas.draw_rect(rect, color, false) # 'false' means filled, change to 'true' for outline only
+			# Draw the filled rect
+			cursor_canvas.draw_rect(rect, color, false)
 
 
 func _on_keot_canvas_draw() -> void:
@@ -1915,6 +1767,9 @@ func add_event_in(pos: Vector2i) -> bool:
 	if is_place_free:
 		var event_id: int = events.get_next_id()
 		var event := RPGEvent.new(event_id, pos.x, pos.y)
+		if RPGSYSTEM.database:
+			event.legacy_mode = RPGSYSTEM.database.system.legacy_mode
+			event.fade_page_swap_enabled = RPGSYSTEM.database.system.fade_page_swap_enabled
 		events.add_event(event)
 		current_event = event
 		notify_property_list_changed()
@@ -2148,7 +2003,7 @@ func _get_next_event_region_id() -> int:
 		next_id += 1
 
 	return next_id
-		
+
 
 func paste_event_region_in(pos: Vector2i, region: EventRegion) -> bool:
 	if !Engine.is_editor_hint():
@@ -2281,6 +2136,7 @@ func get_in_game_event(event_id: int) -> Variant:
 	
 	return null
 
+
 # Search event by pos in array current_ingame_events.values()
 func get_in_game_event_by_pos(event_id: int) -> Variant:
 	var current_events = current_ingame_events.values()
@@ -2288,6 +2144,7 @@ func get_in_game_event_by_pos(event_id: int) -> Variant:
 		return current_events[event_id].lpc_event
 	
 	return null
+
 
 # Search event by event real id
 func get_in_game_event_by_id(event_id: int) -> Variant:
@@ -2724,7 +2581,6 @@ func get_map_size_info() -> Dictionary:
 	tiles.min_position = rect.position
 	tiles.max_position = rect.end
 	
-	
 	return tiles
 
 
@@ -2769,10 +2625,6 @@ func get_ingame_rect() -> Rect2i:
 		if child is TileMapLayer:
 			var child_rect = Rect2(child.get_used_rect())
 			rect = rect.merge(child_rect)
-			#rect.position.x = min(rect.position.x, child_rect.position.x)
-			#rect.position.y = min(rect.position.y, child_rect.position.y)
-			#rect.size.x = max(rect.size.x, child_rect.size.x - 1)
-			#rect.size.y = max(rect.size.y, child_rect.size.y - 1)
 	
 	if not Engine.is_editor_hint():
 		rect_size_cache.map_ingame_rect = rect
@@ -2851,11 +2703,6 @@ func get_wrapped_position(position: Vector2) -> Vector2:
 	return Vector2(wrapped_x, wrapped_y)
 
 
-#func _get_property_list() -> void:
-	#if use_dynamic_day_night:
-		#pass
-
-
 func _validate_property(property):
 	var properties = ["internal_id", "events", "extraction_events", "regions", "event_regions", "current_edit_button_pressed", "_baked_keot_data"]
 	if property.name in properties:
@@ -2920,6 +2767,7 @@ func get_custom_data_layer_names() -> PackedStringArray:
 	
 	return layers
 
+
 func get_tile_terrain_name(tile: Vector2i) -> PackedStringArray:
 	var terrain_name: PackedStringArray = []
 	var tile_map_layer: TileMapLayer = MAP_LAYERS.ground
@@ -2935,8 +2783,6 @@ func get_tile_terrain_name(tile: Vector2i) -> PackedStringArray:
 			terrain_name.append_array(other_terrains)
 	
 	return terrain_name
-	
-#endregion
 
 
 #region Functions used in game
@@ -3045,8 +2891,6 @@ func get_cell_data(tile_position: Vector2i) -> Dictionary:
 	return result
 
 
-# The parameter ignore_is_blocked_tile is used as a failsafe to prevent the player from getting
-# stuck on a fully blocked tile (i.e. a tile that doesn't allow movement in any direction).
 func can_move_to_direction(tile_position: Vector2i, player_direction: int, ignore_is_blocked_tile: bool = false) -> bool:
 	var passable: bool = true
 	

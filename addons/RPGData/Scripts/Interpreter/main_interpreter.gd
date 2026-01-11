@@ -14,6 +14,7 @@ class Interpreter:
 	var parallel: bool = false # Flag indicating that this interpreter is running in parallel
 	var paused: bool = false # Flag indicating that this interpreter is paused by a wait command
 	var loop: Dictionary = {"start_index": -1, "end_index": -1} # Dictionary to store loop data for the interpreter
+	var is_updating: bool = false
 	var is_common_event: bool = false
 	
 	signal all_commands_processed(interpreter: Interpreter)  # Signal emitted when all commands have been processed
@@ -27,27 +28,38 @@ class Interpreter:
 		obj = _obj  # Set the node associated with this interpreter
 		commands = _commands  # Set the list of commands to be processed
 		parallel = is_parallel  # Set whether this is a parallel interpreter
+		
 		# Connect the signal to mark the interpreter as completed when all commands are processed
-		all_commands_processed.connect(func(_interpreter: Interpreter): completed = true)
+		all_commands_processed.connect(
+			func(_interpreter: Interpreter):
+				completed = true
+		)
 		main_interpreter = main
 
 
 	# Process a single command through the main interpreter
 	func _process_command() -> bool:
-		#print(["Procesando command para ", self, " Completed = ", is_complete(), " current command index = ", command_index])
-		if busy or completed or commands.is_empty(): # If already busy, completed, or no commands, return early
+		if busy or completed or commands.is_empty(): 
 			return false
 		
 		# Saltar comandos desactivados
 		_skip_disabled_commands()
 		
+		# Re-chequeo tras saltar comandos
+		if command_index >= commands.size():
+			next()
+			return true
+		
 		while main_interpreter.showing_any_menu:
 			await main_interpreter.get_tree().process_frame
 		
 		busy = true  # Mark as busy
+		
 		var success = await main_interpreter._process_other_interpreter_command(self)  # Try processing the command
-		if not success and main_interpreter.prints_debugs:  # If processing fails and debugging is enabled, print an error
-			print("Skip command %s for obj %s" % [commands[command_index], obj])
+		
+		if not success and main_interpreter.prints_debugs:
+			print("[Interpreter %s] Skip command %s for obj %s" % [id, commands[command_index], obj])
+		
 		next()  # Move to the next command
 		busy = false  # Mark as not busy
 		return success
@@ -55,28 +67,22 @@ class Interpreter:
 	
 	# Salta comandos desactivados asegurándose de no procesar hijos de comandos desactivados
 	func _skip_disabled_commands() -> void:
+		var start_idx = command_index
 		while command_index < commands.size():
 			var current_command = commands[command_index]
 			
-			# Si el comando no está desactivado, procesar normalmente
 			if not current_command.ignore_command:
 				return
 			
-			# Si está desactivado, encontrar el siguiente comando que no sea hijo
 			var current_indent = current_command.indent
 			var skip_to_index = command_index + 1
 			
-			# Buscar el próximo comando con indent igual o menor (no es hijo)
 			while skip_to_index < commands.size():
 				var next_command = commands[skip_to_index]
-				
-				# Si encontramos un comando con indent igual o menor, es el siguiente a procesar
 				if next_command.indent <= current_indent:
 					break
-				
 				skip_to_index += 1
 			
-			# Saltar a ese índice
 			command_index = skip_to_index
 
 
@@ -87,50 +93,55 @@ class Interpreter:
 		# Si el comando index está fuera de rango
 		if command_index >= commands.size():
 			if parallel:
-				command_index = 0 # Restart commands for parallel interpreters
+				command_index = 0 
 			else:
-				all_commands_processed.emit(self)
+				end()
 		else:
-			# Verificar si el siguiente comando está desactivado
 			_skip_disabled_commands()
 	
 	
 	# Set the command index to a specific position
 	func go_to(index: int) -> void:
-		if index >= 0 and commands.size() > index:  # Ensure the index is within bounds
-			command_index = index  # Set the command index to the specified position
+		if index >= 0 and commands.size() > index:
+			command_index = index
 		elif main_interpreter.prints_debugs:
 			print("Invalid command index: ", index)
 	
 	
 	# Return the command index to a specific position
 	func get_command(index: int) -> RPGEventCommand:
-		if index >= 0 and commands.size() > index:  # Ensure the index is within bounds
-			return commands[index] # Return the command index to the specified position
-		elif main_interpreter.prints_debugs:
-			print("Invalid command index: ", index)
-		
+		if index >= 0 and commands.size() > index:
+			return commands[index]
 		return null
 	
 	
-	# Checks if all commands have been processed
 	func is_complete() -> bool:
 		return completed
 	
 	
-	# Checks if the interpreter is a parallel process
 	func is_parallel() -> bool:
 		return parallel
 	
-	# Checks if the interpreter is paused by a wait command
+	
 	func is_paused() -> bool:
 		return paused
+	
+	
+	func is_valid() -> bool:
+		if is_updating:
+			is_updating = false
+			return true
+		return is_instance_valid(obj) if obj != null else true
+
 
 	func end() -> void:
 		command_index = commands.size()
 		completed = true  # Mark as completed
 		busy = false  # Mark as not busy
-		all_commands_processed.emit(self)  # Emit signal that all commands have been processed
+		all_commands_processed.emit(self)
+	
+	func _to_string() -> String:
+		return "<Interpreter %s: %s, complete=%s>" % [get_instance_id(), id, completed]
 
 
 # MainInterpreter properties
@@ -438,6 +449,34 @@ func is_busy() -> bool:
 	)
 
 
+## Returns the interpreter object associated with the given ID, or null if not found.
+func get_interpreter_with_id(interpreter_id: String) -> Interpreter:
+	if interpreter_id.is_empty():
+		return null
+	
+	# 1. Search in sequential/temporary interpreters
+	for interpreter: Interpreter in _current_interpreters:
+		if interpreter.id == interpreter_id and not interpreter.is_complete():
+			return interpreter
+	
+	# 2. Search in registered/parallel interpreters
+	for interpreter: Interpreter in interpreters:
+		if interpreter.id == interpreter_id and not interpreter.is_complete():
+			return interpreter
+			
+	# 3. Check current automatic running event
+	if current_automatic_interpreter and current_automatic_interpreter.id == interpreter_id:
+		if not current_automatic_interpreter.is_complete():
+			return current_automatic_interpreter
+	
+	return null
+
+
+## Checks if an event with a specific ID is currently running.
+func is_event_running(interpreter_id: String = "") -> bool:
+	return get_interpreter_with_id(interpreter_id) != null
+
+
 # Register a new interpreter with the main interpreter
 func register_interpreter(obj: Variant, commands: Array[RPGEventCommand], is_parallel: bool = false, interpreter_id: String = "") -> void:
 	remove_interpreter_by_id(interpreter_id)
@@ -469,17 +508,21 @@ func remove_interpreter(obj: Variant) -> void:
 func remove_interpreter_by_id(id: String) -> void:
 	if id.is_empty(): return
 	
-	for interpreter: Interpreter in interpreters:
-		if interpreter.id == id:
-			interpreter.end()
+	for i in range(interpreters.size()):
+		var inter = interpreters[i]
+		if inter.id == id:
+			inter.end()
 	
-	for interpreter: Interpreter in _current_interpreters:
-		if interpreter.id == id:
-			interpreter.end()
+	for i in range(_current_interpreters.size()):
+		var inter = _current_interpreters[i]
+		if inter.id == id:
+			inter.end()
 	
-	if current_automatic_interpreter and current_automatic_interpreter.id == id:
-		current_automatic_interpreter.end()
-		_on_interpreter_stopped(current_automatic_interpreter)
+	# 3. Escaneo del automático actual
+	if current_automatic_interpreter:
+		if current_automatic_interpreter.id == id:
+			current_automatic_interpreter.end()
+			_on_interpreter_stopped(current_automatic_interpreter)
 
 
 # Starts a series of events sequentially.
@@ -524,8 +567,12 @@ func _process_automatic_events_queue() -> void:
 # Start processing an event using a new temporary interpreter
 func start_event(obj: Node, commands: Array[RPGEventCommand], automatic_is_enabled: bool = false, interpreter_id: String = "") -> void:
 	remove_interpreter_by_id(interpreter_id)
-	if not automatic_is_enabled: busy = true
+	
+	if not automatic_is_enabled: 
+		busy = true
+	
 	var interpreter = Interpreter.new(obj, commands, false, self, interpreter_id)
+	
 	if automatic_is_enabled:
 		interpreter.force_stop.connect(_on_interpreter_stopped)
 		current_automatic_interpreter = interpreter
@@ -534,14 +581,28 @@ func start_event(obj: Node, commands: Array[RPGEventCommand], automatic_is_enabl
 	var is_nullable = interpreter.obj == null
 	
 	_current_interpreters.append(interpreter)
+	await get_tree().process_frame
+	
+	var loop_count = 0
 	while not interpreter.is_complete():
-		if not is_nullable and not is_instance_valid(interpreter.obj):
+		loop_count += 1
+		if not is_nullable and not interpreter.is_valid():
 			break
-		await interpreter._process_command()
-		processed_command.emit(current_command, GameManager.interpreter_last_scene_created)
-	_current_interpreters.erase(interpreter)
 		
-	if not automatic_is_enabled: busy = false
+		var current_idx = interpreter.command_index
+		
+		await interpreter._process_command()
+		
+		processed_command.emit(current_command, GameManager.interpreter_last_scene_created)
+	
+	if _current_interpreters.has(interpreter):
+		_current_interpreters.erase(interpreter)
+	
+	if current_automatic_interpreter == interpreter:
+		current_automatic_interpreter = null
+		
+	if not automatic_is_enabled: 
+		busy = false
 
 
 #region Function used when load game to restore images and scenes

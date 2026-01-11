@@ -1161,10 +1161,6 @@ func get_armor_parameter(armor_id: int, parameter_id: String, armor_level: int) 
 
 func get_local_switch(id: int) -> bool:
 	if game_state and current_map:
-		print({
-			"ids": game_state.game_self_switches,
-			"Current id": "%s-%s" % [current_map.internal_id, id]
-		})
 		return game_state.game_self_switches.get("%s_%s" % [current_map.internal_id, id], false)
 		
 	return false

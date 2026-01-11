@@ -171,6 +171,8 @@ func _get_next_move_toward_event() -> Vector2i:
 
 
 func start(obj: Node, launcher_mode: RPGEventPage.LAUNCHER_MODE) -> bool:
+	if is_invalid_event: return false
+	
 	# update interactive_events_found stat
 	if GameManager.game_state and GameManager.current_map:
 		var id = "%s_%s" % [GameManager.current_map.internal_id, current_event.id]
@@ -190,7 +192,8 @@ func start(obj: Node, launcher_mode: RPGEventPage.LAUNCHER_MODE) -> bool:
 			last_direction = get_opposite_direction(obj.current_direction)
 			current_direction = last_direction
 				
-		GameInterpreter.start_event(self, current_event_page.list)
+		var interpreter_id = "event_" + str(current_event.id)
+		GameInterpreter.start_event(self, current_event_page.list, false, interpreter_id)
 	
 	targets_over_me.append(obj)
 	

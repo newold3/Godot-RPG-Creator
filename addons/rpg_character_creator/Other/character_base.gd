@@ -48,6 +48,8 @@ var current_map_tile_size: Vector2i = Vector2i.ZERO
 var map_offset: Vector2i
 var cumulative_steps: float = 0
 
+var is_invalid_event: bool = false
+
 var current_direction: DIRECTIONS = DIRECTIONS.DOWN
 var last_direction: DIRECTIONS = DIRECTIONS.DOWN
 

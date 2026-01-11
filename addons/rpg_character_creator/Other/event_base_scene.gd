@@ -59,6 +59,8 @@ func _process(delta: float) -> void:
 
 
 func start(obj: Node, launcher_mode: RPGEventPage.LAUNCHER_MODE) -> bool:
+	if is_invalid_event: return false
+	
 	# update interactive_events_found stat
 	if GameManager.game_state and GameManager.current_map:
 		var id = "%s_%s" % [GameManager.current_map.internal_id, current_event.id]
@@ -82,7 +84,9 @@ func start(obj: Node, launcher_mode: RPGEventPage.LAUNCHER_MODE) -> bool:
 			
 		busy = true
 			
-		GameInterpreter.start_event(self, current_event_page.list)
+		var interpreter_id = "event_" + str(current_event.id)
+		GameInterpreter.start_event(self, current_event_page.list, false, interpreter_id)
+		
 		var delay = (current_frame_time - Time.get_ticks_msec()) / 1000.0
 		if delay < 0.1:
 			await get_tree().create_timer(0.1 - delay).timeout
