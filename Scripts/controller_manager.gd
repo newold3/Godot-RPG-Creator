@@ -110,7 +110,10 @@ var last_action_registered: RegisterKey = null # Last action registered
 var close_neighbor_script
 var current_controller: CONTROLLER_TYPE
 var controller_info: Dictionary = {}
-var is_caps_lock_on: bool = false
+var is_caps_lock_on: bool = false :
+	set(value):
+		is_caps_lock_on = value
+		caps_lock_changed.emit(is_caps_lock_on)
 
 var last_checked_frame: int = -1
 
@@ -151,6 +154,7 @@ const KP_MAP := {
 
 
 signal controller_changed(controller_type: CONTROLLER_TYPE)
+signal caps_lock_changed(value: bool)
 
 
 ## Initialize the input controller

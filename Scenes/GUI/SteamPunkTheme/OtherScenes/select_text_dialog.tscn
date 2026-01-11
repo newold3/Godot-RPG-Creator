@@ -53,17 +53,13 @@ shader_parameter/energy_mix_factor = 0.5
 atlas = ExtResource("3_ujbmh")
 region = Rect2(472, 348, 218, 6)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_6a1p6"]
-atlas = ExtResource("3_ujbmh")
-region = Rect2(401, 335, 6, 218)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_f8n7v"]
 atlas = ExtResource("3_ujbmh")
 region = Rect2(498, 593, 163, 23)
 
 [sub_resource type="LabelSettings" id="LabelSettings_qyx2o"]
 font = ExtResource("6_qkohr")
-font_size = 29
+font_size = 9
 font_color = Color(0.8156863, 0.73333335, 0, 1)
 stacked_outline_count = 3
 stacked_outline_0/size = 6
@@ -75,7 +71,7 @@ stacked_outline_2/color = Color(0.6392157, 0.3254902, 0, 0.13333334)
 
 [sub_resource type="LabelSettings" id="LabelSettings_f8n7v"]
 font = ExtResource("6_qkohr")
-font_size = 18
+font_size = 9
 font_color = Color(0.043137256, 0.9882353, 0.21960784, 1)
 stacked_outline_count = 3
 stacked_outline_0/size = 3
@@ -99,11 +95,11 @@ font_size = 22
 font_color = Color(1, 0.6627451, 0, 1)
 stacked_outline_count = 3
 stacked_outline_0/size = 3
-stacked_outline_0/color = Color(0.17388186, 0.2987444, 0.093343206, 0.78431374)
+stacked_outline_0/color = Color(0.651772, 0.22199807, 0.21517226, 0.78431374)
 stacked_outline_1/size = 6
-stacked_outline_1/color = Color(0.010575492, 0.08069346, 0, 0.4)
+stacked_outline_1/color = Color(0.745992, 0.19133782, 0.24069262, 0.4)
 stacked_outline_2/size = 12
-stacked_outline_2/color = Color(0, 0, 0, 0.13333334)
+stacked_outline_2/color = Color(0.10980392, 0, 0, 0.13333334)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_q20r2"]
 atlas = ExtResource("3_ujbmh")
@@ -137,11 +133,11 @@ font_size = 22
 font_color = Color(1, 0.6627451, 0, 1)
 stacked_outline_count = 3
 stacked_outline_0/size = 3
-stacked_outline_0/color = Color(0.17388186, 0.2987444, 0.093343206, 0.78431374)
+stacked_outline_0/color = Color(0.651772, 0.22199807, 0.21517226, 0.78431374)
 stacked_outline_1/size = 6
-stacked_outline_1/color = Color(0.010575492, 0.08069346, 0, 0.4)
+stacked_outline_1/color = Color(0.745992, 0.19133782, 0.24069262, 0.4)
 stacked_outline_2/size = 12
-stacked_outline_2/color = Color(0, 0, 0, 0.13333334)
+stacked_outline_2/color = Color(0.10980392, 0, 0, 0.13333334)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_grbih"]
 atlas = ExtResource("3_ujbmh")
@@ -155,6 +151,18 @@ texture_margin_right = 33.459152
 texture_margin_bottom = 34.407455
 axis_stretch_horizontal = 2
 axis_stretch_vertical = 2
+
+[sub_resource type="LabelSettings" id="LabelSettings_vigln"]
+font = ExtResource("6_qkohr")
+font_size = 22
+font_color = Color(1, 0.6627451, 0, 1)
+stacked_outline_count = 3
+stacked_outline_0/size = 3
+stacked_outline_0/color = Color(0.651772, 0.22199807, 0.21517226, 0.78431374)
+stacked_outline_1/size = 6
+stacked_outline_1/color = Color(0.745992, 0.19133782, 0.24069262, 0.4)
+stacked_outline_2/size = 12
+stacked_outline_2/color = Color(0.10980392, 0, 0, 0.13333334)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qyx2o"]
 atlas = ExtResource("3_ujbmh")
@@ -329,9 +337,60 @@ theme_override_constants/margin_left = 35
 theme_override_constants/margin_top = 90
 theme_override_constants/margin_right = 30
 
+[node name="Control" type="Control" parent="MainFrame/InnerDecoration1"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MainFrame/InnerDecoration1/Control"]
+material = SubResource("ShaderMaterial_f8n7v")
+layout_mode = 0
+offset_left = 47.0
+offset_top = 1.0
+offset_right = 265.0
+offset_bottom = 7.0
+rotation = 0.707803
+size_flags_vertical = 0
+texture = SubResource("AtlasTexture_03vxj")
+
+[node name="TextureRect3" type="TextureRect" parent="MainFrame/InnerDecoration1/Control"]
+material = SubResource("ShaderMaterial_f8n7v")
+custom_minimum_size = Vector2(6, 0)
+layout_mode = 0
+offset_left = 67.0
+offset_top = 194.0
+offset_right = 179.80612
+offset_bottom = 200.0
+rotation = 0.707803
+size_flags_vertical = 0
+texture = SubResource("AtlasTexture_03vxj")
+expand_mode = 1
+
+[node name="TextureRect4" type="TextureRect" parent="MainFrame/InnerDecoration1/Control"]
+material = SubResource("ShaderMaterial_f8n7v")
+custom_minimum_size = Vector2(6, 0)
+layout_mode = 0
+offset_left = 630.0
+offset_top = 193.0
+offset_right = 742.80615
+offset_bottom = 199.0
+rotation = 2.3044815
+size_flags_vertical = 0
+texture = SubResource("AtlasTexture_03vxj")
+expand_mode = 1
+
+[node name="TextureRect2" type="TextureRect" parent="MainFrame/InnerDecoration1/Control"]
+material = SubResource("ShaderMaterial_f8n7v")
+layout_mode = 0
+offset_left = 660.0
+offset_top = -1.9999847
+offset_right = 878.0
+offset_bottom = 4.0000153
+rotation = 2.3504593
+size_flags_vertical = 0
+texture = SubResource("AtlasTexture_03vxj")
+
 [node name="VBoxContainer" type="VBoxContainer" parent="MainFrame/InnerDecoration1"]
 layout_mode = 2
-theme_override_constants/separation = 59
+theme_override_constants/separation = 60
 
 [node name="TextureRect" type="TextureRect" parent="MainFrame/InnerDecoration1/VBoxContainer"]
 material = SubResource("ShaderMaterial_f8n7v")
@@ -357,39 +416,11 @@ layout_mode = 2
 size_flags_vertical = 0
 texture = SubResource("AtlasTexture_03vxj")
 
-[node name="InnerDecoration2" type="MarginContainer" parent="MainFrame"]
-show_behind_parent = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 91
-theme_override_constants/margin_top = 45
-theme_override_constants/margin_bottom = 25
-
-[node name="HBoxContainer" type="HBoxContainer" parent="MainFrame/InnerDecoration2"]
-layout_mode = 2
-theme_override_constants/separation = 67
-
-[node name="TextureRect" type="TextureRect" parent="MainFrame/InnerDecoration2/HBoxContainer"]
+[node name="TextureRect5" type="TextureRect" parent="MainFrame/InnerDecoration1/VBoxContainer"]
 material = SubResource("ShaderMaterial_f8n7v")
 layout_mode = 2
-size_flags_horizontal = 0
-texture = SubResource("AtlasTexture_6a1p6")
-
-[node name="TextureRect2" type="TextureRect" parent="MainFrame/InnerDecoration2/HBoxContainer"]
-material = SubResource("ShaderMaterial_f8n7v")
-layout_mode = 2
-size_flags_horizontal = 0
-texture = SubResource("AtlasTexture_6a1p6")
-
-[node name="TextureRect3" type="TextureRect" parent="MainFrame/InnerDecoration2/HBoxContainer"]
-material = SubResource("ShaderMaterial_f8n7v")
-layout_mode = 2
-size_flags_horizontal = 0
-texture = SubResource("AtlasTexture_6a1p6")
+size_flags_vertical = 0
+texture = SubResource("AtlasTexture_03vxj")
 
 [node name="InnerFrameContainer" type="MarginContainer" parent="MainFrame"]
 show_behind_parent = true
@@ -506,7 +537,7 @@ offset_bottom = 0.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(308, 19.5)
-theme_override_font_sizes/font_size = 29
+theme_override_font_sizes/font_size = 9
 text = "Title"
 label_settings = SubResource("LabelSettings_qyx2o")
 
@@ -573,7 +604,7 @@ offset_bottom = 0.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(351.5, 12)
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 9
 text = "▪️▪️▪️▪️▪️"
 label_settings = SubResource("LabelSettings_f8n7v")
 uppercase = false
@@ -952,11 +983,12 @@ vertical_alignment = 1
 
 [node name="Row2" type="HFlowContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer"]
 layout_mode = 2
-theme_override_constants/h_separation = -14
+theme_override_constants/h_separation = -21
 theme_override_constants/v_separation = -8
 alignment = 1
 
 [node name="Separator1" type="Control" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2"]
+visible = false
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 
@@ -1281,6 +1313,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Separator2" type="Control" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row2"]
+visible = false
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 
@@ -1926,7 +1959,7 @@ grow_vertical = 2
 [node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Row4/Ok/MarginContainer"]
 layout_mode = 2
 text = "OK"
-label_settings = SubResource("LabelSettings_e7vif")
+label_settings = SubResource("LabelSettings_vigln")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -1998,9 +2031,9 @@ texture = SubResource("AtlasTexture_qyx2o")
 
 [node name="Screw2" type="TextureRect" parent="MainFrame/ExternalDecoration"]
 layout_mode = 0
-offset_left = 764.0
+offset_left = 760.99994
 offset_top = 162.0
-offset_right = 783.0
+offset_right = 779.99994
 offset_bottom = 181.0
 rotation = 0.7175699
 size_flags_horizontal = 0
@@ -2009,10 +2042,10 @@ texture = SubResource("AtlasTexture_qyx2o")
 
 [node name="Screw3" type="TextureRect" parent="MainFrame/ExternalDecoration"]
 layout_mode = 0
-offset_left = 389.0
-offset_top = 411.0
-offset_right = 408.0
-offset_bottom = 430.0
+offset_left = 389.00003
+offset_top = 410.00006
+offset_right = 408.00003
+offset_bottom = 429.00006
 rotation = 1.6364543
 size_flags_horizontal = 0
 size_flags_vertical = 0

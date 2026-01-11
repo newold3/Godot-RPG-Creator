@@ -42,6 +42,11 @@ var move_fx: Dictionary = {"stream": AudioStream, "volume": 0, "pitch": 1}
 var select_fx: Dictionary = {"stream": AudioStream, "volume": 0, "pitch": 1}
 var remove_fx: Dictionary = {"stream": AudioStream, "volume": 0, "pitch": 1}
 
+var _orig_font_color: Color
+var _orig_outline_color: Color
+var _orig_stacked_colors: Array[Color] = []
+var _settings_captured: bool = false
+
 
 signal is_started()
 signal key_selected(key: String)
@@ -489,18 +494,57 @@ func _process(delta: float) -> void:
 
 
 func _refresh_ok_button_state() -> void:
-	if not ok_button: return
-	
+	## Refreshes the OK button visual state and manages the full outline stack restoration.
+	if not ok_button:
+		return
+
 	var complete = _is_input_complete()
-	
 	ok_button.disabled = !complete
 	
+	var label = _find_label(ok_button)
+	if label and "label_settings" in label and label.label_settings:
+		_manage_stacked_label_settings(label, complete)
+
 	if complete:
-		ok_button.modulate = Color.WHITE
+		ok_button.self_modulate = Color.WHITE
 		ok_button.focus_mode = Control.FOCUS_CLICK
 	else:
-		ok_button.modulate = Color(0.5, 0.5, 0.5, 0.7)
+		ok_button.self_modulate = Color(0.5, 0.5, 0.5, 1.0)
 		ok_button.focus_mode = Control.FOCUS_NONE
+
+
+func _manage_stacked_label_settings(label: Label, enabled: bool) -> void:
+	## Captures or applies visual states using a high-contrast gray palette for readability.
+	var settings = label.label_settings
+	
+	if not _settings_captured:
+		label.label_settings = settings.duplicate()
+		settings = label.label_settings
+		
+		_orig_font_color = settings.font_color
+		_orig_outline_color = settings.outline_color
+		
+		_orig_stacked_colors.clear()
+		for i in range(settings.stacked_outline_count):
+			_orig_stacked_colors.append(settings.get_stacked_outline_color(i))
+			
+		_settings_captured = true
+
+	if enabled:
+		settings.font_color = _orig_font_color
+		settings.outline_color = _orig_outline_color
+		
+		for i in range(settings.stacked_outline_count):
+			settings.set_stacked_outline_color(i, _orig_stacked_colors[i])
+	else:
+		var text_gray = Color(0.8, 0.8, 0.8, 1.0)
+		var outline_gray = Color(0.2, 0.2, 0.2, 0.6)
+		
+		settings.font_color = text_gray
+		settings.outline_color = outline_gray
+		
+		for i in range(settings.stacked_outline_count):
+			settings.set_stacked_outline_color(i, outline_gray)
 
 
 ## Checks if the buffer is completely filled (no empty_char left)

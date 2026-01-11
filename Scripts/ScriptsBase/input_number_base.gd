@@ -42,6 +42,9 @@ func _modulate_opacity(color: Color) -> void:
 
 
 func _end_animation() -> void:
+	GameManager.set_cursor_manipulator(GameManager.MANIPULATOR_MODES.NONE)
+	GameManager.force_hide_cursor()
+	
 	pivot_offset = size * 0.5
 	
 	var t = create_tween()
