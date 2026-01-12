@@ -416,7 +416,15 @@ func _setup_file_node(node: Control, path: String) -> void:
 	if path in FileCache.cache.characters:
 		var res = load(path)
 		if res is RPGLPCCharacter:
-			node.set_path(path, res.character_preview, path.replace("_data.%s" % path.get_extension(), "").get_file())
+			var preview = res.character_preview
+			node.set_path(path, preview, path.replace("_data.%s" % path.get_extension(), "").get_file())
+		else:
+			node.set_path(path)
+	elif path in FileCache.cache.events:
+		var res = load(path)
+		if res is RPGLPCCharacter:
+			var preview = res.event_preview
+			node.set_path(path, preview, path.replace("_data.%s" % path.get_extension(), "").get_file())
 		else:
 			node.set_path(path)
 	else:
