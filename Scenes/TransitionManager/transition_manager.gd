@@ -150,6 +150,8 @@ func start(start_texture: Texture) -> void:
 
 
 func end(final_texture: Texture = null):
+	await get_tree().create_timer(0.3).timeout
+	
 	var mat: ShaderMaterial = %ShaderEffect.get_material()
 	
 	if transition_type <= 3:

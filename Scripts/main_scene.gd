@@ -7,7 +7,7 @@ var initialize_title_scene: bool = false
 var game_state: GameUserData
 var current_map: RPGMap
 var current_player: LPCCharacter
-var followers: Array[LPCCharacter]
+var followers: Array[SimpleFollower]
 var busy: bool = false
 var fx_busy: bool = false
 var battle_in_progress: bool = false
@@ -34,6 +34,8 @@ var last_fx_ids: Dictionary
 
 var _load_data_map: Dictionary = {}
 var interpreter_id = "_load_interpreter"
+
+var _current_scene_loaded: Node
 
 
 @onready var interpreter = %Interpreter
@@ -628,6 +630,112 @@ func setup_player() -> void:
 		GameManager._transfer_direction = -1
 
 
+func _refresh_follower_nodes(instant: bool = false) -> void:
+	if not current_map or not current_player: return
+	
+	var needed = game_state.current_party.size() - 1 if game_state.followers_enabled else 0
+	var base_delay = 18
+	var insert_idx = current_player.get_index()
+	
+	var start_spots = _get_procedural_party_positions(needed)
+	
+	while followers.size() < needed:
+		var f = preload("uid://pbm7vnwv6qll").instantiate()
+		current_map.add_child(f)
+		current_map.move_child(f, insert_idx)
+		
+		f.global_position = start_spots[followers.size()]
+		f.modulate.a = 1.0 if instant else 0.0
+		
+		followers.append(f)
+		
+	while followers.size() > needed:
+		var f = followers.pop_back()
+		f.queue_free()
+		
+	for i in range(followers.size()):
+		followers[i].follower_id = i + 1
+		followers[i].target_node = current_player if i == 0 else followers[i-1]
+		followers[i].frame_delay = base_delay
+		
+		if followers[i].has_method("_initialize_queue"):
+			followers[i]._initialize_queue()
+			
+		if followers[i].has_method("_update_facing_direction"):
+			followers[i]._update_facing_direction()
+
+
+func update_party_visuals(instant: bool = false) -> void:
+	if not game_state or game_state.current_party.is_empty():
+		return
+		
+	var party = game_state.current_party
+	
+	if current_player:
+		var leader_actor = RPGSYSTEM.database.actors[party[0]]
+		current_player.set_data(load(leader_actor.character_data_file))
+		current_player.name = "Player_" + leader_actor.name
+		
+	_refresh_follower_nodes(instant)
+	
+	for i in range(1, party.size()):
+		if (i - 1) < followers.size():
+			var follower = followers[i - 1]
+			follower.update_appearance_cascade(party[i], instant)
+
+
+func _get_procedural_party_positions(count: int) -> Array[Vector2]:
+	var spots: Array[Vector2] = []
+	var map = GameManager.current_map
+	if not map or not current_player:
+		for i in range(count): spots.append(Vector2.ZERO)
+		return spots
+	
+	var visited_tiles: Array[Vector2i] = []
+	var current_center_tile = map.get_tile_from_position(current_player.global_position)
+	visited_tiles.append(current_center_tile)
+
+	for i in range(count):
+		var adjacent_directions = [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN]
+		adjacent_directions.shuffle()
+		
+		var found_spot = false
+		for dir in adjacent_directions:
+			var target_tile = Vector2i(current_center_tile + dir)
+			
+			if not target_tile in visited_tiles and map.is_passable(target_tile, 0, current_player):
+				var world_pos = map.get_tile_position(target_tile)
+				spots.append(world_pos)
+				visited_tiles.append(target_tile)
+				current_center_tile = target_tile
+				found_spot = true
+				break
+		
+		if not found_spot:
+			var fallback_pos = spots[-1] if not spots.is_empty() else current_player.global_position
+			spots.append(fallback_pos)
+			
+	return spots
+
+
+func regroup() -> void:
+	game_state.followers_enabled = false
+	if followers.is_empty(): return
+	
+	var tween = create_tween().set_parallel(true)
+	var target_pos = current_player.global_position if current_player else Vector2.ZERO
+	
+	for f in followers:
+		f.is_invalid_event = true
+		tween.tween_property(f, "global_position", target_pos, 0.6).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		tween.tween_property(f, "modulate:a", 0.0, 0.5)
+		
+	await tween.finished
+	for f in followers:
+		if is_instance_valid(f): f.queue_free()
+	followers.clear()
+
+
 func _create_or_reuse_player() -> void:
 	"""Create new player or reuse existing one"""
 	if GameManager.loading_game and current_player and is_instance_valid(current_player):
@@ -640,9 +748,11 @@ func _create_or_reuse_player() -> void:
 			var scene_path = actor.character_scene
 			if ResourceLoader.exists(scene_path):
 				current_player = load(scene_path).instantiate()
+				current_player.name = "Player_" + actor.name
 				
 		if not current_player:
 			current_player = preload("uid://bfh5umy1vx2y3").instantiate()
+			current_player.name = "Player_Empty"
 	elif current_player and current_player.is_inside_tree():
 		current_player.get_parent().remove_child(current_player)
 	
@@ -1121,6 +1231,8 @@ func change_scene(path: String, destroy_gui: bool = false) -> void:
 	%TransitionCanvas.layer = 128
 	var transition_texture = _create_transition_texture()
 	await _load_scene_async(path, transition_texture)
+	if _current_scene_loaded and _current_scene_loaded is RPGMap:
+		await _current_scene_loaded.map_started
 	if GameManager.game_state:
 		GameManager.game_state.erased_events.clear()
 	if destroy_gui:
@@ -1157,6 +1269,8 @@ func _load_scene_async(path: String, transition_texture: ImageTexture) -> void:
 	var res = await _wait_for_resource_load(path)
 	if res:
 		_instantiate_and_setup_scene(res, path)
+	else:
+		_current_scene_loaded = null
 
 
 func _wait_for_resource_load(path: String) -> Resource:
@@ -1179,9 +1293,11 @@ func _instantiate_and_setup_scene(res: Resource, path: String) -> void:
 	"""Instantiate and setup the loaded scene"""
 	if not res is PackedScene:
 		printerr("The current path is not a scene: ", path)
+		_current_scene_loaded = null
 		return
 	
 	var next_scene = res.instantiate()
+	_current_scene_loaded = next_scene
 	_setup_scene_based_on_type(next_scene)
 	current_scene = next_scene
 

@@ -18,8 +18,9 @@ var _caps_settings_captured: bool = false
 
 func _ready() -> void:
 	super()
-	ControllerManager.caps_lock_changed.connect(_update_caps_lock_label)
-	_update_keyboard_visuals()
+	if not Engine.is_editor_hint():
+		ControllerManager.caps_lock_changed.connect(_update_caps_lock_label)
+		_update_keyboard_visuals()
 
 
 func get_class() -> String:

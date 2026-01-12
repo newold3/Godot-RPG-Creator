@@ -165,6 +165,7 @@ func fill_data(tab: String, data : Variant, real_data: Variant, selected_id: int
 	if ["Switch", "Variable", "Text Variable"].has(tab):
 		for i in range(1, data.size()):
 			var data_name: String = ""
+			@warning_ignore("incompatible_ternary")
 			var n = str(data[i]) if data[i] is String else int(data[i])
 			var value = str(n if tab != "Switch" else true if data[i] == 1 else false)
 			data_name = real_data.get_item_name(i)

@@ -268,6 +268,8 @@ var last_extraction_event_pasted_id: int
 var map_layout: MapLayout
 #endregion
 
+signal map_started()
+
 
 func _init() -> void:
 	if Engine.is_editor_hint():
@@ -441,6 +443,8 @@ func _start_game_mode() -> void:
 	_setup_common_events()
 	# add player:
 	parent.setup_player()
+	# add followers:
+	GameManager.show_followers(GameManager.game_state.followers_enabled, true)
 	# set shadows
 	if draw_shadows:
 		_create_shadows()
@@ -563,6 +567,10 @@ func _start_game_mode() -> void:
 	keots_area.build_from_cache(self, _baked_keot_data)
 	
 	visible = true
+	
+	await get_tree().create_timer(0.04).timeout
+	
+	map_started.emit()
 
 
 func _on_event_monitor_body_entered(body_rid: RID, body: Node2D, body_shape_index: int, local_shape_index: int, main_area: Area2D) -> void:
@@ -831,6 +839,7 @@ func _create_dynamic_shadows() -> void:
 	# Player/s shadows:
 	shadows.players.clear()
 	var nodes = get_tree().get_nodes_in_group("player")
+	nodes.append_array(get_tree().get_nodes_in_group("follower"))
 	for node in nodes:
 		if node.has_method("get_shadow_data"):
 			var node_shadow_data = node.get_shadow_data()

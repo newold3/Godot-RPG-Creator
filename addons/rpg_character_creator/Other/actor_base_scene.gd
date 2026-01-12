@@ -94,7 +94,7 @@ func maintain_current_look() -> void:
 
 
 func _process(delta: float) -> void:
-	if GameManager.loading_game:
+	if GameManager.loading_game or is_invalid_event:
 		return
 		
 	if frame_delay == 0.0:
@@ -140,7 +140,7 @@ func _process(delta: float) -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if GameManager.loading_game:
+	if GameManager.loading_game or is_invalid_event:
 		return
 	
 	if !can_perform_action():

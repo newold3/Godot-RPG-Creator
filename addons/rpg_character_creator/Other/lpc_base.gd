@@ -431,6 +431,32 @@ func _on_animation_finished() -> void:
 		is_attacking = false
 
 
+func get_baking_nodes() -> Dictionary:
+	return {
+		"wings": wings_back,
+		"wb": hands_back,
+		"body": body,
+		"wf": hands_front
+	}
+
+
+func update_player_appearance(char_data: RPGLPCCharacter) -> void:
+	if not char_data or not GameManager.main_scene:
+		return
+		
+	var baker = GameManager.get_character_baker()
+	if baker:
+		baker.request_bake_character(
+			str(get_instance_id()),
+			char_data,
+			"walk",
+			wings_back,
+			hands_back,
+			body,
+			hands_front
+		)
+
+
 func get_current_animation() -> Dictionary:
 	if !animations:
 		return {}

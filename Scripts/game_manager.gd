@@ -1260,20 +1260,30 @@ func remove_party_member(actor_id: int) -> void:
 
 func change_formation(actor_id1: int, actor_id2: int) -> void:
 	if game_state and is_actor_in_group(actor_id1) and is_actor_in_group(actor_id2):
-		# Check if any actor is locked
 		if is_party_member_locked(actor_id1) or is_party_member_locked(actor_id2):
 			return
-		
+			
 		var p1 = game_state.current_party.find(actor_id1)
 		var p2 = game_state.current_party.find(actor_id2)
+		
+		var temp = game_state.current_party[p1]
+		game_state.current_party[p1] = game_state.current_party[p2]
+		game_state.current_party[p2] = temp
+		
+		# Tras el cambio de IDs, actualizamos visuales
+		if main_scene:
+			main_scene.update_party_visuals()
 
-		if p1 != -1 and p2 != -2:
-			var temp = game_state.current_party[p1]
-			game_state.current_party[p1] = game_state.current_party[p2]
-			game_state.current_party[p2] = temp
-			if 0 in [p1, p2]:
-				update_character_graphics(current_player, game_state.current_party[0])
-			_update_follower()
+
+func show_followers(value: bool, instant: bool = false) -> void:
+	if not game_state: return
+	game_state.followers_enabled = value
+	_update_follower(instant)
+
+
+func _update_follower(instant: bool = false) -> void:
+	if main_scene:
+		main_scene.update_party_visuals(instant)
 
 
 func update_character_graphics(node: Node, new_player_id: int) -> void:
@@ -1285,18 +1295,6 @@ func update_character_graphics(node: Node, new_player_id: int) -> void:
 		if ResourceLoader.exists(scene_path):
 			var scene_data: RPGLPCCharacter = load(scene_path)
 			current_player.set_data(scene_data)
-
-
-func show_followers(value: bool) -> void:
-	if not game_state: return
-	game_state.followers_enabled = value
-	_update_follower()
-
-
-func _update_follower() -> void:
-	if not game_state or not game_state.followers_enabled: return
-	# TODO
-	pass
 
 
 func is_party_member_locked(actor_id: int) -> bool:

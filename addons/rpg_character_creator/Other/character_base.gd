@@ -86,12 +86,6 @@ var _contact_activation_cooldown: float = 1.0
 var _ignore_events_contact: Array = []
 var _squared_tile_size: int
 
-var _visual_history: Array[Dictionary] = []
-var _max_history_size: int = 300 
-var _last_recorded_pos: Vector2 = Vector2.ZERO
-var _last_recorded_direction: int = -1
-var _record_threshold_squared: float = 16.0
-
 
 # Must be serialized and deserialized in save file
 @onready var character_options: CharacterOptions
@@ -125,8 +119,6 @@ func _ready() -> void:
 	if GameManager.current_map:
 		_squared_tile_size = GameManager.current_map.tile_size.length_squared()
 		GameManager.current_map.update_event_position_in_layout(self)
-	if is_in_group("player") and GameManager.game_state and GameManager.game_state.followers_enabled:
-		_initialize_visual_history()
 
 
 func _on_end_movement() -> void:
@@ -150,7 +142,7 @@ func _on_character_options_changed() -> void:
 
 
 func _physics_process(delta: float):
-	if GameManager.loading_game:
+	if GameManager.loading_game or is_invalid_event:
 		return 
 	
 	if is_in_group("player"):
@@ -211,75 +203,6 @@ func _physics_process(delta: float):
 	
 	if movement_current_mode == MOVEMENTMODE.EVENT and GameManager.current_map:
 		GameManager.current_map.moving_event = false
-	
-	if is_in_group("player") and GameManager.game_state and GameManager.game_state.followers_enabled:
-		_record_visual_state_conditional()
-
-
-#region History Recorder
-func _record_visual_state_conditional() -> void:
-	var dist_sq = global_position.distance_squared_to(_last_recorded_pos)
-	
-	if dist_sq < _record_threshold_squared and current_direction == _last_recorded_direction:
-		return 
-
-	var snapshot = {
-		"pos": global_position,
-		"z": z_index,
-		"scale": scale,
-		"modulate": modulate,
-		"dir": current_direction,
-		"rotation": rotation,
-		"skew": skew
-	}
-	
-	if has_method("get_character_sprite"):
-		var sprite: Sprite2D = call("get_character_sprite")
-		if sprite:
-			snapshot.centered = sprite.centered
-			snapshot.offset = sprite.offset
-			snapshot.flip_h = sprite.flip_h
-			snapshot.flip_v = sprite.flip_v
-	
-	_visual_history.push_front(snapshot)
-	if _visual_history.size() > _max_history_size:
-		_visual_history.pop_back()
-	
-	_last_recorded_pos = global_position
-	_last_recorded_direction = current_direction
-
-
-func _initialize_visual_history() -> void:
-	var initial_snapshot = {
-		"pos": global_position,
-		"z": z_index,
-		"scale": scale,
-		"modulate": modulate,
-		"dir": current_direction,
-		"rotation": rotation,
-		"skew": skew
-	}
-	
-	if has_method("get_character_sprite"):
-		var sprite: Sprite2D = call("get_character_sprite")
-		if sprite:
-			initial_snapshot.centered = sprite.centered
-			initial_snapshot.offset = sprite.offset
-			initial_snapshot.flip_h = sprite.flip_h
-			initial_snapshot.flip_v = sprite.flip_v
-			
-	_last_recorded_pos = global_position
-	_last_recorded_direction = current_direction
-	
-	for i in range(_max_history_size):
-		_visual_history.append(initial_snapshot)
-
-func get_visual_snapshot(lag_steps: int) -> Dictionary:
-	if _visual_history.is_empty(): return {}
-	var index = clampi(lag_steps, 0, _visual_history.size() - 1)
-	return _visual_history[index]
-
-#endregion
 
 
 func _should_check_nearby_events() -> bool:
@@ -290,7 +213,6 @@ func _should_check_nearby_events() -> bool:
 	return page.launcher == RPGEventPage.LAUNCHER_MODE.ANY_CONTACT or \
 		   page.launcher == RPGEventPage.LAUNCHER_MODE.EVENT_COLLISION or \
 		   page.launcher == RPGEventPage.LAUNCHER_MODE.PLAYER_COLLISION
-
 
 
 func _draw() -> void:

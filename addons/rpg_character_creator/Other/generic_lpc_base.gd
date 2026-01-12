@@ -21,7 +21,6 @@ var force_disable_breathing: bool
 				#%FinalCharacter.get_material().set_shader_parameter("blend_color", current_event_page.modulate)
 				force_disable_breathing = !character_options.idle_animation
 				%MainTexture.modulate = current_event_page.modulate
-				
 
 var current_data: Variant = null
 
@@ -83,11 +82,6 @@ func _ready() -> void:
 		calculate_grid_move_duration()
 		set_process(true)
 		set_process_input(true)
-		
-
-
-func set_modulate(color: Color) -> void:
-	%FinalCharacter.modulate = color
 
 
 func _manage_animator() -> void:
@@ -106,7 +100,7 @@ func _manage_animator() -> void:
 
 
 func _process(delta: float) -> void:
-	if GameManager.loading_game:
+	if GameManager.loading_game or is_invalid_event:
 		return
 		
 	if frame_delay <= frame_delay_max:

@@ -1,4 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://c0fqf3d6glpki"]
+[gd_scene load_steps=8 format=3 uid="uid://pbm7vnwv6qll"]
+
+[ext_resource type="Script" uid="uid://plprq13jb6ol" path="res://addons/rpg_character_creator/Other/simple_follower.gd" id="1_lt3p5"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_xbtvb"]
 
@@ -60,10 +62,11 @@ _data = {
 &"RESET": SubResource("Animation_368bl")
 }
 
-[node name="Actor" type="CharacterBody2D"]
+[node name="Actor" type="CharacterBody2D" groups=["follower"]]
 z_index = 1
 y_sort_enabled = true
 collision_mask = 14
+script = ExtResource("1_lt3p5")
 
 [node name="FullBody" type="Marker2D" parent="."]
 unique_name_in_owner = true
@@ -102,6 +105,7 @@ region_filter_clip_enabled = true
 unique_name_in_owner = true
 position = Vector2(0, -7)
 shape = SubResource("CapsuleShape2D_4ncqf")
+disabled = true
 
 [node name="Bounds" type="Node2D" parent="."]
 
@@ -131,6 +135,8 @@ position = Vector2(0, -29)
 unique_name_in_owner = true
 collision_layer = 64
 collision_mask = 64
+monitoring = false
+monitorable = false
 metadata/entity = Object(CharacterBody2D,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":0,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"light_mask":1,"visibility_layer":1,"z_index":1,"z_as_relative":true,"y_sort_enabled":true,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"position":Vector2(0, 0),"rotation":0.0,"scale":Vector2(1, 1),"skew":0.0,"disable_mode":0,"collision_layer":1,"collision_mask":46,"collision_priority":1.0,"input_pickable":false,"motion_mode":0,"up_direction":Vector2(0, -1),"velocity":Vector2(0, 0),"slide_on_ceiling":true,"max_slides":4,"wall_min_slide_angle":0.2617994,"floor_stop_on_slope":true,"floor_constant_speed":false,"floor_block_on_wall":true,"floor_max_angle":0.7853982,"floor_snap_length":1.0,"platform_on_leave":0,"platform_floor_layers":4294967295,"platform_wall_layers":0,"safe_margin":0.08,"script":null)
 
 
@@ -138,6 +144,7 @@ metadata/entity = Object(CharacterBody2D,"_import_path":NodePath(""),"unique_nam
 unique_name_in_owner = true
 position = Vector2(0, -13)
 shape = SubResource("RectangleShape2D_fk01f")
+disabled = true
 debug_color = Color(0.7580552, 0.44811207, 0.2082015, 0.41960785)
 
 [node name="MainAnimator" type="AnimationPlayer" parent="."]
