@@ -655,6 +655,7 @@ func _refresh_follower_nodes(instant: bool = false) -> void:
 		
 	for i in range(followers.size()):
 		followers[i].follower_id = i + 1
+		@warning_ignore("incompatible_ternary")
 		followers[i].target_node = current_player if i == 0 else followers[i-1]
 		followers[i].frame_delay = base_delay
 		
