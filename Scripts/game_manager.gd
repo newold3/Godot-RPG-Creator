@@ -1275,6 +1275,10 @@ func change_formation(actor_id1: int, actor_id2: int) -> void:
 			main_scene.update_party_visuals()
 
 
+func get_followers() -> Array:
+	return get_tree().get_nodes_in_group("follower")
+
+
 func show_followers(value: bool, instant: bool = false) -> void:
 	if not game_state: return
 	game_state.followers_enabled = value

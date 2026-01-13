@@ -759,6 +759,7 @@ y_sort_enabled = true
 collision_mask = 14
 script = ExtResource("1_0nwrq")
 actor_data = SubResource("Resource_yomel")
+preview_direction = false
 can_move_on_terrains = PackedStringArray("^lava", "^water")
 
 [node name="FullBody" type="Marker2D" parent="."]
@@ -772,7 +773,12 @@ region_enabled = true
 region_rect = Rect2(0, 640, 64, 64)
 region_filter_clip_enabled = true
 
-[node name="HandsBack" type="Sprite2D" parent="FullBody"]
+[node name="OffhandBack" type="Sprite2D" parent="FullBody"]
+unique_name_in_owner = true
+position = Vector2(0, -32)
+region_enabled = true
+
+[node name="MainHandBack" type="Sprite2D" parent="FullBody"]
 unique_name_in_owner = true
 position = Vector2(0, -32)
 region_enabled = true
@@ -787,7 +793,12 @@ region_enabled = true
 region_rect = Rect2(0, 640, 64, 64)
 region_filter_clip_enabled = true
 
-[node name="HandsFront" type="Sprite2D" parent="FullBody"]
+[node name="OffhandFront" type="Sprite2D" parent="FullBody"]
+unique_name_in_owner = true
+position = Vector2(0, -32)
+region_enabled = true
+
+[node name="MainHandFront" type="Sprite2D" parent="FullBody"]
 unique_name_in_owner = true
 position = Vector2(0, -32)
 region_enabled = true

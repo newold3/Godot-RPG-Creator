@@ -94,6 +94,7 @@ func maintain_current_look() -> void:
 
 
 func _process(delta: float) -> void:
+	super(delta)
 	if GameManager.loading_game or is_invalid_event:
 		return
 		
@@ -185,7 +186,7 @@ func _reset(force_reset: bool = false) -> void:
 	velocity = Vector2.ZERO
 	if movement_current_mode == MOVEMENTMODE.FREE and not force_reset:
 		return
-	if movement_tween:
+	if movement_tween and not _processing_command_route:
 		movement_tween.kill()
 	if force_reset: current_animation = "idle"
 	#is_moving = false

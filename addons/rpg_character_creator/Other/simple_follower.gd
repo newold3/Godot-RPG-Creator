@@ -1,26 +1,21 @@
-## simple_follower.gd
 class_name SimpleFollower
 extends CharacterBody2D
 
 
-## Distance to maintain from the target.
-@export var stop_distance: float = 26.0
-## Number of physics frames to delay.
-@export var frame_delay: int = 15
-## Speed to interpolate position visually.
-@export var follow_speed: float = 8.0
+## How many "distance steps" this follower lags behind.
+@export var spacing_steps: int = 24
 ## Constant speed of the walk animation (frames per second).
-@export var animation_fps: float = 24.0
+@export var animation_fps: float = 19.0
 ## Time the walk animation persists after movement stops.
 @export var walk_persist_time: float = 0.07
 
+var speed: float = 14
 
-var _frame_queue: Array[Dictionary] = []
+
 var _is_fading: bool = false
 var is_invalid_event: bool = false
 var target_node: Node2D
 var follower_id: int = 0
-var _target_snapshot: Dictionary
 
 var current_direction: int = CharacterBase.DIRECTIONS.DOWN
 var current_animation: String = "idle"
@@ -31,8 +26,15 @@ var current_weapon_images: Dictionary = {}
 var _frame_timer: float = 0.0
 var _idle_timer: float = 0.0
 var _last_pos: Vector2 = Vector2.ZERO
-## Tracks the target's position in the last physics frame to detect warps.
-var _last_target_pos_check: Vector2 = Vector2.ZERO
+
+## Flag to control animation and transform manually, bypassing follower logic.
+var is_manual_animation: bool = false
+
+var is_jumping_locally: bool = false
+var is_force_walking: bool = false
+var target_position: Vector2
+var jump_snapshot: Dictionary
+var local_tween: Tween
 
 
 @onready var animations = {
@@ -40,95 +42,218 @@ var _last_target_pos_check: Vector2 = Vector2.ZERO
 	"weapon": RPGSYSTEM.weapon_animations_data.animations
 }
 @onready var wings: Sprite2D = %WingsBack
-@onready var hands_back: Sprite2D = %HandsBack
+@onready var offhand_back: Sprite2D = %OffhandBack
+@onready var mainhand_back: Sprite2D = %MainHandBack
 @onready var body: Sprite2D = %Body
-@onready var hands_front: Sprite2D = %HandsFront
+@onready var offhand_front: Sprite2D = %OffhandFront
+@onready var mainhand_front: Sprite2D = %MainHandFront
 
 
 func _ready() -> void:
-	for sprite in [wings, hands_back, body, hands_front]:
+	for sprite in [wings, mainhand_back, body, offhand_front]:
 		sprite.region_enabled = true
 	
 	_last_pos = global_position
-	_initialize_queue()
+
+	if target_node:
+		global_position = target_node.global_position
 
 
-func _physics_process(_delta: float) -> void:
-	if not target_node or is_invalid_event:
-		return
-	_handle_target_warp()
-	
-	var current_snap = _get_target_snapshot()
-	_frame_queue.push_back(current_snap)
-	
-	if _frame_queue.size() > frame_delay:
-		_target_snapshot = _frame_queue.pop_front()
-	
-	_last_target_pos_check = target_node.global_position
+func _process_next_frame(delta: float) -> void:
+	_frame_timer += delta
+	if _frame_timer >= (1.0 / animation_fps):
+		current_frame += 1
+		_frame_timer = 0.0
 
-
-func _process(delta: float) -> void:
-	if _target_snapshot.is_empty() or _is_fading:
-		return
-		
-	var dist_to_target = global_position.distance_to(target_node.global_position)
-	
-	if dist_to_target > stop_distance:
-		global_position = global_position.lerp(_target_snapshot.pos, follow_speed * delta)
-		
-		if follower_id == 1:
-			current_direction = _target_snapshot.direction
-		else:
-			_update_facing_direction()
-	else:
-		_update_facing_direction()
-	
-	var is_moving_this_frame = global_position.distance_to(_last_pos) > 0.1
-	_last_pos = global_position
-	
-	if is_moving_this_frame:
-		_idle_timer = walk_persist_time
-		current_animation = "walk"
-		
-		_frame_timer += delta
-		var frame_duration = 1.0 / animation_fps
-		if _frame_timer >= frame_duration:
-			current_frame += 1
-			_frame_timer = 0.0
-	else:
-		_idle_timer = max(0.0, _idle_timer - delta)
-		if _idle_timer <= 0.0:
-			current_animation = "idle"
-			current_frame = 0
-			_frame_timer = 0.0
-	
 	run_animation()
 
 
-func _update_facing_direction() -> void:
-	if not target_node:
+func _process(delta: float) -> void:
+	if is_manual_animation:
 		return
-		
-	var diff = target_node.global_position - global_position
-	if diff.length() < 2.0:
+
+	if not target_node or is_invalid_event or _is_fading or is_jumping_locally:
+		if is_jumping_locally:
+			_process_next_frame(delta)
 		return
+	
+	if is_force_walking:
+		_approach_launch_pad(target_position, delta)
+		var dist_to_launch = global_position.distance_to(target_position)
+		if dist_to_launch < 4:
+			is_force_walking = false
+			target_position = Vector2.ZERO
+			current_direction = jump_snapshot.direction
+			var rect = jump_snapshot.region_rect
+			var flip = jump_snapshot.flip_h
+			body.region_rect = rect
+			body.flip_h = flip
+			wings.region_rect = rect
+			wings.flip_h = flip
+			_trigger_local_jump(jump_snapshot)
+		return
+	
+	if GameManager.current_player:
+		var my_step_offset = follower_id * spacing_steps
+		var snapshot = GameManager.current_player.get_history_step(my_step_offset)
 		
-	if abs(diff.x) > abs(diff.y):
-		current_direction = CharacterBase.DIRECTIONS.RIGHT if diff.x > 0 else CharacterBase.DIRECTIONS.LEFT
+		if not snapshot.is_empty():
+			if snapshot.get("event") == "start_jump":
+				var launch_pad = snapshot.get("jump_start_pos", global_position)
+				var orig = snapshot.get("followers_position")[follower_id]
+				var dist_to_launch = orig.distance_to(launch_pad)
+				if dist_to_launch > 4:
+					global_position = orig
+					_approach_launch_pad(launch_pad, delta)
+					is_force_walking = true
+					target_position = launch_pad
+					jump_snapshot = snapshot
+				else:
+					_trigger_local_jump(snapshot)
+					
+			elif snapshot.get("event") == "end_jump":
+				is_jumping_locally = false
+			else:
+				_process_follower_logic(snapshot, delta)
+
+func _approach_launch_pad(target_pos: Vector2, delta: float) -> void:
+	global_position = global_position.lerp(target_pos, speed * delta)
+	
+	current_animation = "walk"
+	_idle_timer = walk_persist_time
+	
+	var dir_vector = target_pos - global_position
+	if abs(dir_vector.x) > abs(dir_vector.y):
+		current_direction = CharacterBase.DIRECTIONS.RIGHT if dir_vector.x > 0 else CharacterBase.DIRECTIONS.LEFT
 	else:
-		current_direction = CharacterBase.DIRECTIONS.DOWN if diff.y > 0 else CharacterBase.DIRECTIONS.UP
+		current_direction = CharacterBase.DIRECTIONS.DOWN if dir_vector.y > 0 else CharacterBase.DIRECTIONS.UP
+		
+	run_animation()
+
+
+func _trigger_local_jump(snap: Dictionary) -> void:
+	if is_jumping_locally: return
+	
+	is_jumping_locally = true
+	
+	var start_pos = global_position
+	var end_pos = snap.get("jump_target", start_pos)
+	var jump_height = snap.get("jump_height", 30.0)
+	var jump_duration = snap.get("jump_duration", 0.35)
+	
+	# Configuración inicial
+	current_animation = "start_jump"
+	current_frame = 0
+	run_animation()
+	
+	var initial_delay = 0.05
+	
+	if local_tween: local_tween.kill()
+	
+	local_tween = create_tween()
+	local_tween.set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
+	
+	if initial_delay > 0:
+		local_tween.tween_interval(initial_delay * follower_id)
+	
+	local_tween.tween_property(self, "scale", Vector2(0.94, 0.55), 0.15).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	local_tween.tween_interval(0.02)
+	
+	local_tween.set_parallel(true)
+	
+	local_tween.tween_property(self, "scale", Vector2(1.02, 1.04), 0.1).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	
+	local_tween.tween_method(func(t):
+		global_position = start_pos.lerp(end_pos, t) - Vector2(0, sin(t * PI) * jump_height)
+	, 0.0, 1.0, jump_duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	
+	local_tween.tween_callback(func():
+		current_animation = "end_jump"
+		current_frame = 0
+		run_animation()
+	).set_delay(jump_duration * 0.65)
+	
+	local_tween.set_parallel(false)
+	local_tween.tween_interval(0.01)
+	
+	local_tween.tween_property(self, "scale", Vector2(1.1, 0.90), 0.1).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CIRC)
+	local_tween.tween_property(self, "scale", Vector2.ONE, 0.15).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
+	
+	local_tween.tween_callback(func():
+		is_jumping_locally = false
+	)
+
+
+func _process_follower_logic(snap: Dictionary, delta: float) -> void:
+	_apply_snapshot_transform(snap)
+	
+	var dist_moved = global_position.distance_squared_to(_last_pos)
+	_last_pos = global_position
+	
+	if dist_moved > 0.001:
+		_idle_timer = walk_persist_time
+		current_animation = "walk"
+		_apply_snapshot_visuals(snap)
+		
+	else:
+		_idle_timer = max(0.0, _idle_timer - delta)
+		
+		if _idle_timer <= 0.0:
+			current_animation = "idle"
+			
+			_frame_timer += delta
+			if _frame_timer >= (1.0 / animation_fps):
+				current_frame += 1
+				_frame_timer = 0.0
+			
+			run_animation()
+		else:
+			_apply_snapshot_visuals(snap)
+
+
+func _apply_snapshot_transform(snap: Dictionary) -> void:
+	global_position = snap.pos
+	scale = snap.scale
+	rotation = snap.rotation
+	modulate = snap.modulate
+	z_index = snap.z_index
+	current_direction = snap.direction
+
+
+func _apply_snapshot_visuals(snap: Dictionary) -> void:
+	var rect = snap.region_rect
+	var flip = snap.flip_h
+	
+	body.region_rect = rect
+	body.flip_h = flip
+	wings.region_rect = rect
+	wings.flip_h = flip
+	
+	_update_weapon_textures()
+	
+	if (mainhand_back.texture and mainhand_back.texture.get_size() == body.texture.get_size()):
+		mainhand_back.region_rect = rect
+		mainhand_back.flip_h = flip
+		
+	if (offhand_front.texture and offhand_front.texture.get_size() == body.texture.get_size()):
+		offhand_front.region_rect = rect
+		offhand_front.flip_h = flip
+
+
+func _update_weapon_textures() -> void:
+	if current_animation == "idle" and "idle" in current_weapon_images:
+		mainhand_back.texture = current_weapon_images.idle.back
+		offhand_front.texture = current_weapon_images.idle.front
+	elif current_animation == "walk" and "walk" in current_weapon_images:
+		mainhand_back.texture = current_weapon_images.walk.back
+		offhand_front.texture = current_weapon_images.walk.front
 
 
 func run_animation() -> void:
 	if not is_inside_tree() or _is_fading:
 		return
 	
-	if current_animation == "idle" and "idle" in current_weapon_images:
-		hands_back.texture = current_weapon_images.idle.back
-		hands_front.texture = current_weapon_images.idle.front
-	elif current_animation == "walk" and "walk" in current_weapon_images:
-		hands_back.texture = current_weapon_images.walk.back
-		hands_front.texture = current_weapon_images.walk.front
+	_update_weapon_textures()
 	
 	var anim_data = get_current_animation()
 	var weapon_anim_data = get_current_weapon_animation()
@@ -136,14 +261,14 @@ func run_animation() -> void:
 	if anim_data.is_empty() and weapon_anim_data.is_empty():
 		return
 	
-	if anim_data.is_empty():
-		anim_data = weapon_anim_data
-	
-	if weapon_anim_data.is_empty():
-		weapon_anim_data = anim_data
+	if anim_data.is_empty(): anim_data = weapon_anim_data
+	if weapon_anim_data.is_empty(): weapon_anim_data = anim_data
 	
 	if current_frame >= anim_data.frames.size():
-		current_frame = 0
+		if anim_data.get("loop"):
+			current_frame = 0
+		else:
+			current_frame = anim_data.frames.size() - 1
 
 	var weapon_current_frame = min(current_frame, weapon_anim_data.frames.size() - 1)
 	var normal_animation_current_frame = min(current_frame, anim_data.frames.size() - 1)
@@ -153,18 +278,19 @@ func run_animation() -> void:
 	var player_size = anim_data.frame_size
 	
 	var rect = Rect2(player_frame[0], player_frame[1], player_size[0], player_size[1])
+	
 	body.region_rect = rect
 	wings.region_rect = rect
 	
 	if (
-		(hands_back.texture and hands_back.texture.get_size() == body.texture.get_size()) or
-		(hands_front.texture and hands_front.texture.get_size() == body.texture.get_size())
+		(mainhand_back.texture and mainhand_back.texture.get_size() == body.texture.get_size()) or
+		(offhand_front.texture and offhand_front.texture.get_size() == body.texture.get_size())
 	):
-		hands_back.region_rect = body.region_rect
+		mainhand_back.region_rect = body.region_rect
 	else:
-		hands_back.region_rect = Rect2(weapon_frame[0], weapon_frame[1], 192, 192)
+		mainhand_back.region_rect = Rect2(weapon_frame[0], weapon_frame[1], 192, 192)
 		
-	hands_front.region_rect = hands_back.region_rect
+	offhand_front.region_rect = mainhand_back.region_rect
 
 
 func get_current_animation() -> Dictionary:
@@ -204,51 +330,6 @@ func get_current_weapon_animation() -> Dictionary:
 	return {}
 
 
-func _get_target_snapshot() -> Dictionary:
-	if not target_node:
-		return {}
-	
-	return {
-		"direction": target_node.get("current_direction"),
-		"animation": target_node.get("current_animation"),
-		"pos": target_node.global_position,
-		"z": target_node.z_index,
-		"scale": target_node.scale,
-		"modulate": target_node.modulate
-	}
-
-
-func _initialize_queue() -> void:
-	_frame_queue.clear()
-	var initial_snap = _get_target_snapshot()
-	initial_snap.pos = global_position
-	
-	for i in range(frame_delay):
-		_frame_queue.push_back(initial_snap.duplicate())
-	
-	_target_snapshot = initial_snap.duplicate()
-	_last_target_pos_check = target_node.global_position if target_node else global_position
-
-
-## Adjusts follower position and movement history when the target warps.
-func _handle_target_warp() -> void:
-	if _last_target_pos_check == Vector2.ZERO: return
-	
-	var distance_sq = target_node.global_position.distance_squared_to(_last_target_pos_check)
-	
-	if distance_sq > 65536:
-		var warp_offset = target_node.global_position - _last_target_pos_check
-		
-		global_position += warp_offset
-		_last_pos += warp_offset
-		
-		for snap in _frame_queue:
-			snap.pos += warp_offset
-		
-		if not _target_snapshot.is_empty():
-			_target_snapshot.pos += warp_offset
-
-
 func get_character_sprite() -> Sprite2D:
 	return body
 
@@ -259,7 +340,7 @@ func get_shadow_data() -> Dictionary:
 	
 	var shadow = {
 		"main_node": body,
-		"sprites": [wings, hands_back, body, hands_front],
+		"sprites": [wings, mainhand_back, body, offhand_front],
 		"position": body.global_position,
 		"feet_offset": 16
 	}
@@ -288,7 +369,14 @@ func update_appearance_cascade(actor_id: int, instant: bool = false) -> void:
 	var baker = GameManager.get_character_baker()
 	if baker:
 		var bake_id = "follower_" + str(get_instance_id())
-		baker.request_bake_character(bake_id, char_data, "walk", wings, hands_back, body, hands_front)
+		baker.request_bake_character(
+			bake_id, char_data, "walk", wings,
+			offhand_back,
+			mainhand_back,
+			body,
+			offhand_front,
+			offhand_front
+		)
 		await baker.character_baked
 	
 	if not instant:
@@ -312,3 +400,59 @@ func _manage_animator() -> void:
 				node.speed_scale = randf_range(0.6, 0.7)
 				node.play("Breathing")
 		)
+
+
+func get_body_region_rect() -> Rect2:
+	var node = get_node_or_null("%Body")
+	if node:
+		return node.region_rect
+
+	return Rect2()
+
+
+func reset_movement_queue() -> void:
+	pass
+
+
+## Enables or disables manual animation control.
+## When enabled, follower logic (movement and auto-animation) is bypassed.
+func set_manual_animation_active(active: bool) -> void:
+	is_manual_animation = active
+
+
+## Manually updates the follower's transform and visual properties.
+## Dictionary keys: modulate, scale, position, z_index, rotation, region_rect.
+func update_manual_state(data: Dictionary) -> void:
+	if not is_manual_animation:
+		return
+		
+	if "modulate" in data:
+		modulate = data.modulate
+	
+	if "scale" in data:
+		scale = data.scale
+		
+	if "position" in data:
+		global_position = data.position
+		
+	if "z_index" in data:
+		z_index = data.z_index
+		
+	if "rotation" in data:
+		rotation = data.rotation
+		
+	if "region_rect" in data:
+		var rect = data.region_rect
+		var flip = data.get("flip_h", false)
+		
+		body.region_rect = rect
+		body.flip_h = flip
+		wings.region_rect = rect
+		wings.flip_h = flip
+		
+		if (mainhand_back.texture and mainhand_back.texture.get_size() == body.texture.get_size()):
+			mainhand_back.region_rect = rect
+			mainhand_back.flip_h = flip
+		if (offhand_front.texture and offhand_front.texture.get_size() == body.texture.get_size()):
+			offhand_front.region_rect = rect
+			offhand_front.flip_h = flip

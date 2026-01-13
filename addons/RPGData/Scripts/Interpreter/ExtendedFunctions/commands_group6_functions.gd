@@ -481,6 +481,7 @@ func _command_0057() -> void:
 		for c: RPGEventCommand in command_list:
 			var route_command = c.parameters.get("movement_command", null)
 			list.append(route_command)
+
 		route.list = list
 		target.route_command_index = 0
 		target.route_commands = route

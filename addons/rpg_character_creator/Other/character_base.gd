@@ -58,6 +58,7 @@ var event_movement_frequency: int = 10
 var event_movement_frame_count: int = 0
 var route_commands: RPGMovementRoute
 var route_command_index: int = 0
+var _processing_command_route: bool = false
 
 var update_texture_timer: float = 0.0
 var current_frame: int = -1
@@ -98,6 +99,13 @@ var force_animation_enabled: bool = false
 
 var targets_over_me: Array = []
 
+var movement_history: Array[Dictionary] = []
+var _last_recorded_pos: Vector2 = Vector2.ZERO
+var _last_recorded_scale: Vector2 = Vector2.ONE
+
+const MAX_HISTORY_SIZE: int = 300
+const MIN_RECORD_DIST_SQ: float = 2.0
+
 const MAX_FLEE_DISTANCE_SQUARED: int = 25
 const MAX_JUMP_HEIGHT: int = 48
 
@@ -109,6 +117,7 @@ signal attack(animation: String)
 signal start_motion(motion: Vector2)
 signal end_movement()
 signal event_start_movement()
+signal idle_setted()
 
 
 func _ready() -> void:
@@ -139,6 +148,14 @@ func set_character_options(new_options: CharacterOptions) -> void:
 
 func _on_character_options_changed() -> void:
 	calculate_grid_move_duration()
+
+
+func _process(_delta: float) -> void:
+	if GameManager.loading_game or is_invalid_event:
+		return
+		
+	if is_in_group("player"):
+		_smart_record_history()
 
 
 func _physics_process(delta: float):
@@ -203,6 +220,61 @@ func _physics_process(delta: float):
 	
 	if movement_current_mode == MOVEMENTMODE.EVENT and GameManager.current_map:
 		GameManager.current_map.moving_event = false
+
+
+func _smart_record_history() -> void:
+	var dist_sq = global_position.distance_squared_to(_last_recorded_pos)
+	var has_moved = dist_sq > MIN_RECORD_DIST_SQ
+	
+	var scale_diff = (scale - _last_recorded_scale).length_squared()
+	var has_scaled = scale_diff > 0.0001
+	
+	if has_moved or is_jumping or has_scaled or movement_history.is_empty():
+		_add_snapshot()
+
+
+func _add_snapshot(snapshot: Dictionary = {}) -> void:
+	var visual_rect = Rect2()
+	var body_node = get_node_or_null("%Body")
+	if body_node:
+		visual_rect = body_node.region_rect
+	
+	if not snapshot:
+		snapshot = {
+			"pos": global_position,
+			"scale": scale,
+			"modulate": modulate,
+			"z_index": z_index,
+			"region_rect": visual_rect,
+			"flip_h": body_node.flip_h if body_node else false,
+			"direction": current_direction,
+			"rotation": rotation,
+			"animation": current_animation,
+			"is_jumping": is_jumping
+		}
+	
+	movement_history.push_back(snapshot)
+	_last_recorded_pos = global_position # Actualizamos referencia
+	
+	if movement_history.size() > MAX_HISTORY_SIZE:
+		movement_history.pop_front()
+
+
+func clear_movement_history() -> void:
+	movement_history.clear()
+	_last_recorded_pos = global_position
+
+
+func get_history_step(step_offset: int) -> Dictionary:
+	if movement_history.is_empty():
+		return {}
+	
+	var index = movement_history.size() - 1 - step_offset
+	
+	if index < 0:
+		return movement_history[0]
+	
+	return movement_history[index]
 
 
 func _should_check_nearby_events() -> bool:
@@ -408,11 +480,11 @@ func set_current_look(motion: Vector2) -> void:
 
 
 func update_process_route() -> void:
-	if is_moving or busy or is_jumping:
+	if is_moving or busy or is_jumping or _processing_command_route:
 		return
-		
-	var result = await process_route_command()
 
+	_processing_command_route = true
+	var result = await process_route_command()
 	if result.action:
 		match result.action:
 			"move":
@@ -424,7 +496,6 @@ func update_process_route() -> void:
 				if result.keep_direction:
 					current_direction = backup_direction
 					run_animation()
-					
 				GameManager.game_state.stats.steps += 1
 			"jump":
 				if is_on_vehicle and current_vehicle:
@@ -456,6 +527,8 @@ func update_process_route() -> void:
 				current_vehicle.reset_force_movement()
 	elif is_on_vehicle and current_vehicle:
 		current_vehicle.reset_force_movement()
+
+	_processing_command_route = false
 
 
 func _get_next_move_toward_target(target: Vector2i, target_screen_position: Vector2) -> Vector2i:
@@ -895,6 +968,7 @@ func _animation_to_idle() -> void:
 	if not is_moving:
 		current_animation = "idle"
 		#current_frame = 0
+	idle_setted.emit()
 
 
 func _process_event_contact(contacting_entities: Array, stop_movement_on_activate: bool) -> bool:
@@ -1132,7 +1206,6 @@ func look_at_event(event: Variant) -> void:
 	last_direction = current_direction
 
 
-# Check contact before move
 # Check contact before move
 func _check_contact_before_move(tile: Vector2i, is_after_move: bool = false) -> bool:
 	return true
@@ -1468,10 +1541,9 @@ func start_movement(motion_data: Dictionary) -> void:
 		movement_tween.kill()
 
 	movement_tween = create_tween()
-	movement_tween.tween_interval(0.0)
+	movement_tween.tween_interval(0.001)
 	
 	is_moving = true
-	#previous_tile = get_current_tile()
 	var final_motion = motion_data.final_motion
 	var current_motion = motion_data.current_motion
 	var map = GameManager.current_map
@@ -1580,7 +1652,6 @@ func move_event(new_pos: Vector2, route: RPGMovementRoute = null, keep_direction
 	
 	var motion_data = get_motion(new_pos)
 	var motion = motion_data.final_motion
-	
 	if motion:
 		if not character_options.fixed_direction and not keep_direction:
 			var diagonal_movement_direction_mode = RPGSYSTEM.database.system.options.get("movement_mode", 0)
@@ -1613,6 +1684,14 @@ func move_event(new_pos: Vector2, route: RPGMovementRoute = null, keep_direction
 		position = GameManager.current_map.get_wrapped_position(position)
 
 
+func get_body_region_rect() -> Rect2:
+	var node = get_node_or_null("%Body")
+	if node:
+		return node.region_rect
+
+	return Rect2()
+
+
 func jump_to(new_pos: Vector2, route: RPGMovementRoute = null, start_fx: Dictionary = {}, end_fx: Dictionary = {}) -> void:
 	if is_moving or busy or is_jumping:
 		return
@@ -1622,6 +1701,7 @@ func jump_to(new_pos: Vector2, route: RPGMovementRoute = null, start_fx: Diction
 	
 	if motion:
 		update_virtual_tile(motion)
+		
 		if not character_options.fixed_direction:
 			match RPGSYSTEM.database.system.options.get("movement_mode", 0):
 				0: set_vertical_look(motion)
@@ -1633,38 +1713,65 @@ func jump_to(new_pos: Vector2, route: RPGMovementRoute = null, start_fx: Diction
 		var end_pos = position + motion
 		var distance = motion.length()
 		var jump_height = min(MAX_JUMP_HEIGHT, distance * 0.5)
-		var jump_duration = clamp(distance * 0.1, 0.2, 0.35)
-		
+		var jump_duration = clamp(distance * 0.1, 0.25, 0.45) 
+
 		if "get_shadow_data" in self:
 			var shadow_data = call("get_shadow_data")
 			if shadow_data is Dictionary and "sprite_shadow" in shadow_data and shadow_data.sprite_shadow is Node:
 				var is_horizontal_jump = (motion.y == 0)
-				shadow_data.sprite_shadow.set_meta("is_jumping", true)
-				shadow_data.sprite_shadow.set_meta("jumping_shadow_global_position", global_position)
-				shadow_data.sprite_shadow.set_meta("jumping_shadow_parent", self)
-				shadow_data.sprite_shadow.set_meta("jumping_horizontal_mode", is_horizontal_jump)
-				shadow_data.sprite_shadow.set_meta("jumping_start_position", start_pos)
-				shadow_data.sprite_shadow.set_meta("jumping_target_position", end_pos)
+				var s = shadow_data.sprite_shadow
+				s.set_meta("is_jumping", true)
+				s.set_meta("jumping_shadow_global_position", global_position)
+				s.set_meta("jumping_shadow_parent", self)
+				s.set_meta("jumping_horizontal_mode", is_horizontal_jump)
+				s.set_meta("jumping_start_position", start_pos)
+				s.set_meta("jumping_target_position", end_pos)
 
 		is_jumping = true
-		
+		force_animation_enabled = true
 		current_animation = "start_jump"
 		current_frame = 0
-		force_animation_enabled = true
+		var followers = get_tree().get_nodes_in_group("follower")
+		var map = {}
+		for f in followers:
+			map[f.follower_id] = f.global_position
+		var visual_rect = Rect2()
+		var body_node = get_node_or_null("%Body")
+		if body_node:
+			visual_rect = body_node.region_rect
+		_add_snapshot({
+			"event": "start_jump",
+			"jump_start_pos": start_pos,
+			"jump_target": end_pos,
+			"jump_height": jump_height,
+			"jump_duration": jump_duration,
+			"followers_position": map,
+			"pos": global_position,
+			"scale": scale,
+			"modulate": modulate,
+			"z_index": z_index,
+			"region_rect": visual_rect,
+			"flip_h": body_node.flip_h if body_node else false,
+			"direction": current_direction,
+			"rotation": rotation,
+			"animation": current_animation,
+			"is_jumping": is_jumping
+		})
 		
 		if movement_tween:
 			movement_tween.kill()
 		
 		movement_tween = create_tween()
+		movement_tween.set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
 
 		if start_fx:
 			movement_tween.tween_callback(GameManager.play_se.bind(
 				start_fx.get("path", ""), start_fx.get("volume", 0.0), start_fx.get("pitch", 1.0)
 			))
 		
-		# Squash before jump
-		movement_tween.tween_property(self, "scale", Vector2(0.94, 0.55), 0.12).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
-		movement_tween.tween_interval(0.01)
+		movement_tween.tween_property(self, "scale", Vector2(0.94, 0.55), 0.15).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+		movement_tween.tween_callback(_smart_record_history) 
+		movement_tween.tween_interval(0.02)
 		
 		movement_tween.tween_callback(
 			func():
@@ -1676,19 +1783,18 @@ func jump_to(new_pos: Vector2, route: RPGMovementRoute = null, start_fx: Diction
 		movement_tween.tween_interval(0.001)
 		movement_tween.set_parallel(true)
 		
-		movement_tween.tween_property(self, "scale", Vector2(1.02, 1.04), 0.06).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		movement_tween.tween_property(self, "scale", Vector2(1.02, 1.04), 0.1).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
-		# Simulated parabola motion using custom tween (position + y arc)
 		movement_tween.tween_method(
-			func(t): position = start_pos.lerp(end_pos, t) - Vector2(0, sin(t * PI) * jump_height),
-			0.0, 1.0, jump_duration
+			func(t): 
+				position = start_pos.lerp(end_pos, t) - Vector2(0, sin(t * PI) * jump_height)
+		, 0.0, 1.0, jump_duration
 		).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 		
-		# Land sound
 		if end_fx:
 			movement_tween.tween_callback(GameManager.play_se.bind(
 				end_fx.get("path", ""), end_fx.get("volume", 0.0), end_fx.get("pitch", 1.0)
-			)).set_delay(jump_duration - 0.03)
+			)).set_delay(jump_duration - 0.05)
 		
 		movement_tween.tween_callback(set.bind("current_frame", 0)).set_delay(jump_duration * 0.65)
 		movement_tween.tween_callback(
@@ -1707,18 +1813,22 @@ func jump_to(new_pos: Vector2, route: RPGMovementRoute = null, start_fx: Diction
 				get_parent().add_child(dust)
 		)
 
-		# Compress and return to normal scale
-		movement_tween.tween_property(self, "scale", Vector2(1.0, 0.92), 0.15).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CIRC)
-		movement_tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.2).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_EXPO)
+		movement_tween.tween_property(self, "scale", Vector2(1.1, 0.90), 0.1).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CIRC)
+		movement_tween.tween_callback(_smart_record_history)
+		movement_tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.15).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
 
 		movement_tween.tween_callback(
 			func():
 				is_jumping = false
 				force_animation_enabled = false
+				_add_snapshot({"event": "end_jump"})
+				
 				if "get_shadow_data" in self:
 					var shadow_data = call("get_shadow_data")
 					if shadow_data is Dictionary and "sprite_shadow" in shadow_data and shadow_data.sprite_shadow is Node:
 						shadow_data.sprite_shadow.set_meta("is_jumping", false)
+				
+				scale = Vector2.ONE 
 		)
 
 		await movement_tween.finished

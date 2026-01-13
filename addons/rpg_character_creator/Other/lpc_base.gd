@@ -27,9 +27,11 @@ var force_disable_breathing: bool
 }
 @onready var full_body: Marker2D = %FullBody
 @onready var wings_back: Sprite2D = %WingsBack
-@onready var hands_back: Sprite2D = %HandsBack
+@onready var offhand_back: Sprite2D = %OffhandBack
+@onready var mainhand_back: Sprite2D = %MainHandBack
 @onready var body: Sprite2D = %Body
-@onready var hands_front: Sprite2D = %HandsFront
+@onready var offhand_front: Sprite2D = %OffhandFront
+@onready var mainhand_front: Sprite2D = %MainHandFront
 
 
 const PROJECTILES = {
@@ -61,8 +63,8 @@ func _build() -> void:
 	
 	var parent_node = get_node_or_null("%FullBody")
 	var mat = CanvasItemMaterial.new()
-	var sprites = ["%WingsBack", "%HandsBack", "%Body", "%HandsFront"]
-	var parts = ["wings_back", "hands_back", "body", "hands_front"]
+	var sprites = ["%WingsBack", "%OffhandBack", "%MainHandBack", "%Body", "%OffhandFront", "%MainHandFront"]
+	var parts = ["wings_back", "offhand_back", "mainhand_back", "body", "offhand_front", "mainhand_front"]
 	for i in sprites.size():
 		var node_sprite = get_node_or_null(sprites[i])
 		if node_sprite == null:
@@ -156,6 +158,10 @@ func _ready() -> void:
 		set_process_input(true)
 	
 	super()
+
+
+func _process(_delta: float) -> void:
+	super(_delta)
 
 
 func _setup_contact_shape() -> void:
@@ -310,9 +316,11 @@ func install_parts() -> void:
 			current_data,
 			"",
 			wings_back,
-			hands_back,
+			offhand_back,
+			mainhand_back,
 			body,
-			hands_front
+			offhand_front,
+			mainhand_front
 		)
 		if current_weapon_data:
 			var actions: Array = current_weapon_data.get("actions", [])
@@ -370,12 +378,43 @@ func run_animation(force_animation: bool = false) -> void:
 	if not is_inside_tree(): return
 	if frame_delay > 0.0 and not force_animation: return
 	
+	var should_show_weapon = false
+	if current_data:
+		should_show_weapon = current_data.always_show_weapon or is_attacking
+	
+	if current_animation in current_weapon_images:
+		var weapon_imgs = current_weapon_images[current_animation]
+		if weapon_imgs:
+			mainhand_back.texture = weapon_imgs.back
+			mainhand_front.texture = weapon_imgs.front
+			
+			offhand_back.visible = should_show_weapon
+			offhand_front.visible = should_show_weapon
+			mainhand_back.visible = should_show_weapon
+			mainhand_front.visible = should_show_weapon
+		else:
+			mainhand_back.visible = false
+			mainhand_front.visible = false
+			offhand_back.visible = false
+			offhand_front.visible = false
+	else:
+		mainhand_back.visible = false
+		mainhand_front.visible = false
+		offhand_back.visible = false
+		offhand_front.visible = false
+	
+	if current_animation in current_weapon_images and self == GameManager.current_player:
+		var weapon_imgs = current_weapon_images[current_animation]
+		if weapon_imgs:
+			mainhand_back.texture = weapon_imgs.back
+			mainhand_front.texture = weapon_imgs.front
+	
 	if current_animation == "idle" and "idle" in current_weapon_images:
-		hands_back.texture = current_weapon_images.idle.back
-		hands_front.texture = current_weapon_images.idle.front
+		mainhand_back.texture = current_weapon_images.idle.back
+		mainhand_front.texture = current_weapon_images.idle.front
 	elif current_animation == "walk" and "walk" in current_weapon_images:
-		hands_back.texture = current_weapon_images.walk.back
-		hands_front.texture = current_weapon_images.walk.front
+		mainhand_back.texture = current_weapon_images.walk.back
+		mainhand_front.texture = current_weapon_images.walk.front
 	
 	var current_animation = get_current_animation()
 	var current_weapon_animation = get_current_weapon_animation()
@@ -399,15 +438,17 @@ func run_animation(force_animation: bool = false) -> void:
 	
 	body.region_rect = Rect2(player_frame[0], player_frame[1], player_size[0], player_size[1])
 	wings_back.region_rect = body.region_rect
+	offhand_back.region_rect = body.region_rect
+	offhand_front.region_rect = body.region_rect
 	
 	if (
-		(hands_back.texture and hands_back.texture.get_size() == body.texture.get_size()) or
-		(hands_front.texture and hands_front.texture.get_size() == body.texture.get_size())
+		(mainhand_back.texture and mainhand_back.texture.get_size() == body.texture.get_size()) or
+		(mainhand_front.texture and mainhand_front.texture.get_size() == body.texture.get_size())
 	):
-		hands_back.region_rect = body.region_rect
+		mainhand_back.region_rect = body.region_rect
 	else:
-		hands_back.region_rect = Rect2(weapon_frame[0], weapon_frame[1], 192, 192)
-	hands_front.region_rect = hands_back.region_rect
+		mainhand_back.region_rect = Rect2(weapon_frame[0], weapon_frame[1], 192, 192)
+	mainhand_front.region_rect = mainhand_back.region_rect
 	
 	# 2. UPDATE LOGIC
 	current_frame += 1
@@ -434,9 +475,11 @@ func _on_animation_finished() -> void:
 func get_baking_nodes() -> Dictionary:
 	return {
 		"wings": wings_back,
-		"wb": hands_back,
+		"offhandback": offhand_back,
+		"mainhandback": mainhand_back,
 		"body": body,
-		"wf": hands_front
+		"offhandfront": offhand_front,
+		"mainhandfront": mainhand_front
 	}
 
 
@@ -451,9 +494,11 @@ func update_player_appearance(char_data: RPGLPCCharacter) -> void:
 			char_data,
 			"walk",
 			wings_back,
-			hands_back,
+			offhand_back,
+			mainhand_back,
 			body,
-			hands_front
+			offhand_front,
+			mainhand_front
 		)
 
 
@@ -542,8 +587,8 @@ func attack_with_weapon() -> void:
 		return
 
 	if current_animation in current_weapon_images:
-		hands_back.texture = current_weapon_images[current_animation].back
-		hands_front.texture = current_weapon_images[current_animation].front
+		mainhand_back.texture = current_weapon_images[current_animation].back
+		mainhand_front.texture = current_weapon_images[current_animation].front
 		
 	if current_animation == "fish_throw":
 		current_animation = "fish_full_animation"
@@ -594,9 +639,12 @@ func can_perform_action() -> bool:
 func get_shadow_data() -> Dictionary:
 	if is_on_vehicle or is_queued_for_deletion() or has_meta("_disable_shadow"):
 		return {}
+	var sprites = []
+	for s in [wings_back, offhand_back, mainhand_back, body, offhand_front, mainhand_front]:
+		if s.visible and s.modulate.a > 0.0 and s.self_modulate.a > 0.0: sprites.append(s)
 	var shadow = {
 		"main_node": full_body,
-		"sprites": [wings_back, hands_back, body, hands_front],
+		"sprites": sprites,
 		"position": full_body.global_position,
 		"feet_offset": 16
 	}

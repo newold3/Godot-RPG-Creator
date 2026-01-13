@@ -1,4 +1,4 @@
-[gd_scene load_steps=121 format=4 uid="uid://cluc8yqovtlvf"]
+[gd_scene load_steps=128 format=4 uid="uid://cluc8yqovtlvf"]
 
 [ext_resource type="Script" uid="uid://cjwvraifvygt2" path="res://Scenes/Maps/test_map.gd" id="1_didij"]
 [ext_resource type="Gradient" uid="uid://bqcge4l0i5fro" path="res://addons/RPGMap/Assets/GridGradient/orange_gradient.tres" id="2_kukki"]
@@ -555,6 +555,7 @@ parameters = {
 &"operation_type": 0,
 &"switch_id": 2
 }
+ignore_command = true
 
 [sub_resource type="Resource" id="Resource_52txu"]
 script = ExtResource("6_ewx0n")
@@ -582,9 +583,53 @@ parameters = {
 }
 
 [sub_resource type="Resource" id="Resource_jo002"]
-script = ExtResource("6_ewx0n")
+script = ExtResource("5_fiyda")
+code = 57
+parameters = {
+&"loop": false,
+&"skippable": true,
+&"target": -1,
+&"wait": false
+}
 
 [sub_resource type="Resource" id="Resource_te067"]
+script = ExtResource("7_aukdg")
+code = 7
+
+[sub_resource type="Resource" id="Resource_dxoa3"]
+script = ExtResource("5_fiyda")
+code = 58
+parameters = {
+&"movement_command": SubResource("Resource_te067")
+}
+
+[sub_resource type="Resource" id="Resource_dh6ms"]
+script = ExtResource("7_aukdg")
+code = 7
+
+[sub_resource type="Resource" id="Resource_173e5"]
+script = ExtResource("5_fiyda")
+code = 58
+parameters = {
+&"movement_command": SubResource("Resource_dh6ms")
+}
+
+[sub_resource type="Resource" id="Resource_ixleh"]
+script = ExtResource("7_aukdg")
+code = 40
+parameters = [Vector2i(3, -4), {}, {}]
+
+[sub_resource type="Resource" id="Resource_xppuo"]
+script = ExtResource("5_fiyda")
+code = 58
+parameters = {
+&"movement_command": SubResource("Resource_ixleh")
+}
+
+[sub_resource type="Resource" id="Resource_f6c5g"]
+script = ExtResource("6_ewx0n")
+
+[sub_resource type="Resource" id="Resource_nvt8r"]
 script = ExtResource("5_fiyda")
 code = 2
 parameters = {
@@ -592,24 +637,26 @@ parameters = {
 "type": 0,
 "value": ""
 },
-&"face": SubResource("Resource_jo002"),
+&"face": SubResource("Resource_f6c5g"),
 &"height": 0.0,
 &"is_floating_dialog": false,
 &"position": 0,
 &"width": 0.0
 }
+ignore_command = true
 
-[sub_resource type="Resource" id="Resource_dxoa3"]
+[sub_resource type="Resource" id="Resource_qiucp"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "mensaje 2"
 }
+ignore_command = true
 
-[sub_resource type="Resource" id="Resource_dh6ms"]
+[sub_resource type="Resource" id="Resource_2mltf"]
 script = ExtResource("6_ewx0n")
 
-[sub_resource type="Resource" id="Resource_173e5"]
+[sub_resource type="Resource" id="Resource_eu5nv"]
 script = ExtResource("5_fiyda")
 code = 2
 parameters = {
@@ -617,50 +664,52 @@ parameters = {
 "type": 0,
 "value": ""
 },
-&"face": SubResource("Resource_dh6ms"),
+&"face": SubResource("Resource_2mltf"),
 &"height": 0.0,
 &"is_floating_dialog": false,
 &"position": 0,
 &"width": 0.0
 }
+ignore_command = true
 
-[sub_resource type="Resource" id="Resource_ixleh"]
+[sub_resource type="Resource" id="Resource_bvp2u"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "mensaje 3"
 }
+ignore_command = true
 
-[sub_resource type="Resource" id="Resource_xppuo"]
+[sub_resource type="Resource" id="Resource_bbwwk"]
 script = ExtResource("5_fiyda")
 
-[sub_resource type="Resource" id="Resource_f6c5g"]
+[sub_resource type="Resource" id="Resource_64tee"]
 script = ExtResource("8_didij")
 skippable = true
 
-[sub_resource type="Resource" id="Resource_nvt8r"]
+[sub_resource type="Resource" id="Resource_c30ta"]
 script = ExtResource("9_uohsy")
 
-[sub_resource type="Resource" id="Resource_qiucp"]
+[sub_resource type="Resource" id="Resource_paa2j"]
 script = ExtResource("3_nd5sh")
 id = 1
-list = Array[ExtResource("5_fiyda")]([SubResource("Resource_abbut"), SubResource("Resource_vhwhc"), SubResource("Resource_8y6r3"), SubResource("Resource_te067"), SubResource("Resource_dxoa3"), SubResource("Resource_173e5"), SubResource("Resource_ixleh"), SubResource("Resource_xppuo")])
+list = Array[ExtResource("5_fiyda")]([SubResource("Resource_abbut"), SubResource("Resource_vhwhc"), SubResource("Resource_8y6r3"), SubResource("Resource_jo002"), SubResource("Resource_dxoa3"), SubResource("Resource_173e5"), SubResource("Resource_xppuo"), SubResource("Resource_nvt8r"), SubResource("Resource_qiucp"), SubResource("Resource_eu5nv"), SubResource("Resource_bvp2u"), SubResource("Resource_bbwwk")])
 condition = SubResource("Resource_hlnrr")
-movement_route = SubResource("Resource_f6c5g")
-options = SubResource("Resource_nvt8r")
+movement_route = SubResource("Resource_64tee")
+options = SubResource("Resource_c30ta")
 event_trigger_list = PackedInt32Array()
 character_path = "res://Scenes/NPCs/Npc_1/npc_1_data.tres"
 modulate = Color(0.79296875, 0.08673096, 0.08673096, 1)
 
-[sub_resource type="Resource" id="Resource_2mltf"]
+[sub_resource type="Resource" id="Resource_ug546"]
 script = ExtResource("4_htxeb")
 use_local_switch = true
 local_switch_id = 2
 
-[sub_resource type="Resource" id="Resource_eu5nv"]
+[sub_resource type="Resource" id="Resource_fk6ie"]
 script = ExtResource("6_ewx0n")
 
-[sub_resource type="Resource" id="Resource_bvp2u"]
+[sub_resource type="Resource" id="Resource_0jiwo"]
 script = ExtResource("5_fiyda")
 code = 2
 parameters = {
@@ -668,66 +717,66 @@ parameters = {
 "type": 0,
 "value": ""
 },
-&"face": SubResource("Resource_eu5nv"),
+&"face": SubResource("Resource_fk6ie"),
 &"height": 0.0,
 &"is_floating_dialog": false,
 &"position": 0,
 &"width": 0.0
 }
 
-[sub_resource type="Resource" id="Resource_bbwwk"]
+[sub_resource type="Resource" id="Resource_r3rve"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "este texto es automatico"
 }
 
-[sub_resource type="Resource" id="Resource_64tee"]
+[sub_resource type="Resource" id="Resource_iu46p"]
 script = ExtResource("5_fiyda")
 code = 94
 
-[sub_resource type="Resource" id="Resource_c30ta"]
+[sub_resource type="Resource" id="Resource_jtkyu"]
 script = ExtResource("5_fiyda")
 
-[sub_resource type="Resource" id="Resource_paa2j"]
+[sub_resource type="Resource" id="Resource_vpwna"]
 script = ExtResource("8_didij")
 skippable = true
 
-[sub_resource type="Resource" id="Resource_ug546"]
+[sub_resource type="Resource" id="Resource_qfjyi"]
 script = ExtResource("9_uohsy")
 
-[sub_resource type="Resource" id="Resource_fk6ie"]
+[sub_resource type="Resource" id="Resource_iqi6h"]
 script = ExtResource("3_nd5sh")
 id = 2
-list = Array[ExtResource("5_fiyda")]([SubResource("Resource_bvp2u"), SubResource("Resource_bbwwk"), SubResource("Resource_64tee"), SubResource("Resource_c30ta")])
-condition = SubResource("Resource_2mltf")
-movement_route = SubResource("Resource_paa2j")
-options = SubResource("Resource_ug546")
+list = Array[ExtResource("5_fiyda")]([SubResource("Resource_0jiwo"), SubResource("Resource_r3rve"), SubResource("Resource_iu46p"), SubResource("Resource_jtkyu")])
+condition = SubResource("Resource_ug546")
+movement_route = SubResource("Resource_vpwna")
+options = SubResource("Resource_qfjyi")
 launcher = 3
 event_trigger_list = PackedInt32Array()
 character_path = "res://Scenes/NPCs/Npc_1/npc_1_data.tres"
 
-[sub_resource type="Resource" id="Resource_0jiwo"]
+[sub_resource type="Resource" id="Resource_64057"]
 script = ExtResource("11_dhmk3")
 
-[sub_resource type="Resource" id="Resource_r3rve"]
+[sub_resource type="Resource" id="Resource_tmtqo"]
 script = ExtResource("12_yak7x")
-levels = Array[ExtResource("11_dhmk3")]([SubResource("Resource_0jiwo")])
+levels = Array[ExtResource("11_dhmk3")]([SubResource("Resource_64057")])
 
-[sub_resource type="Resource" id="Resource_iu46p"]
+[sub_resource type="Resource" id="Resource_vipxv"]
 script = ExtResource("13_11apb")
 name = "EV0001"
 id = 2
 x = 15
 y = 9
-pages = Array[ExtResource("3_nd5sh")]([SubResource("Resource_ov42u"), SubResource("Resource_qiucp"), SubResource("Resource_fk6ie")])
-relationship = SubResource("Resource_r3rve")
+pages = Array[ExtResource("3_nd5sh")]([SubResource("Resource_ov42u"), SubResource("Resource_paa2j"), SubResource("Resource_iqi6h")])
+relationship = SubResource("Resource_tmtqo")
 _editor_last_page_used = 1
 legacy_mode = true
 
 [sub_resource type="Resource" id="Resource_xn408"]
 script = ExtResource("3_kxphi")
-events = Array[ExtResource("13_11apb")]([SubResource("Resource_iu46p")])
+events = Array[ExtResource("13_11apb")]([SubResource("Resource_vipxv")])
 
 [node name="TestMap" type="Node2D"]
 y_sort_enabled = true

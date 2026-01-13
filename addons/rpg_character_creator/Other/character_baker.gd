@@ -10,8 +10,10 @@ signal weapon_baked(id: String, result: Dictionary)
 
 
 @onready var vp_wings: SubViewport = %WingsBack
+@onready var vp_offhand_back: SubViewport = $OffhandBack
 @onready var vp_weapon_back: SubViewport = %WeaponBack
 @onready var vp_body: SubViewport = %Body
+@onready var vp_offhand_front: SubViewport = $OffHandFront
 @onready var vp_weapon_front: SubViewport = %WeaponFront
 
 
@@ -26,9 +28,8 @@ const CLOTHING_KEYS = [
 	"gloves", "belt", "pants", "shoes", "back", "ammo"
 ]
 
-const WEAPON_KEYS = [
-	"mainhand", "offhand"
-]
+const MAINHAND_KEYS = ["mainhand"]
+const OFFHAND_KEYS = ["offhand"]
 
 
 var _queue: Array[Dictionary] = []
@@ -36,16 +37,25 @@ var _is_baking: bool = false
 
 
 ## Queues a request to bake the character and update specific Sprite2D nodes.
-## This handles the 4 layers (Wings, Weapon Back, Body, Weapon Front).
-func request_bake_character(id: String, data: RPGLPCCharacter, weapon_anim: String, target_wings: Sprite2D, target_wb: Sprite2D, target_body: Sprite2D, target_wf: Sprite2D) -> void:
+## This handles the 6 layers (Wings, Offhand Back, Weapon Back, Body, Offhand Front, Weapon Front).
+func request_bake_character(id: String, data: RPGLPCCharacter, weapon_anim: String, 
+		target_wings: Sprite2D, 
+		target_off_back: Sprite2D,
+		target_wb: Sprite2D, 
+		target_body: Sprite2D, 
+		target_off_front: Sprite2D,
+		target_wf: Sprite2D) -> void:
+	
 	_queue.append({
 		"type": "character",
 		"id": id,
 		"data": data,
 		"anim": weapon_anim,
 		"target_wings": target_wings,
+		"target_off_back": target_off_back,
 		"target_wb": target_wb,
 		"target_body": target_body,
+		"target_off_front": target_off_front,
 		"target_wf": target_wf
 	})
 	_process_queue()
@@ -91,36 +101,42 @@ func _bake_character_internal(task: Dictionary) -> void:
 	
 	# Reset viewports
 	_clear_viewport(vp_wings)
+	_clear_viewport(vp_offhand_back)
 	_clear_viewport(vp_weapon_back)
 	_clear_viewport(vp_body)
+	_clear_viewport(vp_offhand_front)
 	_clear_viewport(vp_weapon_front)
 	
 	# Setup layers
 	_setup_wings_viewport(data)
 	_setup_body_viewport(data)
-	_setup_weapon_viewports(data, task.anim)
 	
+	# Setup Offhand (Shields) - Independent Layer
+	_setup_specific_weapon_viewports(data, task.anim, OFFHAND_KEYS, vp_offhand_back, vp_offhand_front)
+	
+	# Setup Mainhand (Weapons) - Independent Layer
+	_setup_specific_weapon_viewports(data, task.anim, MAINHAND_KEYS, vp_weapon_back, vp_weapon_front)
+	
+	# Apply visibility rules (uses default logic: hide if always_show_weapon is false)
 	_apply_visibility_rules(task.data)
 	
 	# Render
 	vp_wings.render_target_update_mode = SubViewport.UPDATE_ONCE
+	vp_offhand_back.render_target_update_mode = SubViewport.UPDATE_ONCE
 	vp_weapon_back.render_target_update_mode = SubViewport.UPDATE_ONCE
 	vp_body.render_target_update_mode = SubViewport.UPDATE_ONCE
+	vp_offhand_front.render_target_update_mode = SubViewport.UPDATE_ONCE
 	vp_weapon_front.render_target_update_mode = SubViewport.UPDATE_ONCE
 	
 	await RenderingServer.frame_post_draw
 	
-	# Capture
-	var tex_wings = ImageTexture.create_from_image(vp_wings.get_texture().get_image())
-	var tex_wb = ImageTexture.create_from_image(vp_weapon_back.get_texture().get_image())
-	var tex_body = ImageTexture.create_from_image(vp_body.get_texture().get_image())
-	var tex_wf = ImageTexture.create_from_image(vp_weapon_front.get_texture().get_image())
-	
 	# Update Targets
-	_update_sprite(task.target_wings, tex_wings)
-	_update_sprite(task.target_wb, tex_wb)
-	_update_sprite(task.target_body, tex_body)
-	_update_sprite(task.target_wf, tex_wf)
+	_update_sprite(task.target_wings, _get_img(vp_wings))
+	_update_sprite(task.target_off_back, _get_img(vp_offhand_back))
+	_update_sprite(task.target_wb, _get_img(vp_weapon_back))
+	_update_sprite(task.target_body, _get_img(vp_body))
+	_update_sprite(task.target_off_front, _get_img(vp_offhand_front))
+	_update_sprite(task.target_wf, _get_img(vp_weapon_front))
 	
 	character_baked.emit(task.id)
 
@@ -130,32 +146,55 @@ func _bake_weapon_batch_internal(task: Dictionary) -> void:
 	var animations: Array = task.anims
 	var results: Dictionary = task.target
 	
-	
 	for anim in animations:
 		_clear_viewport(vp_weapon_back)
 		_clear_viewport(vp_weapon_front)
 		
-		_setup_weapon_viewports(data, anim)
-		_apply_visibility_rules(task.data)
+		_setup_specific_weapon_viewports(data, anim, MAINHAND_KEYS, vp_weapon_back, vp_weapon_front)
+		
+		_apply_visibility_rules(task.data, true)
 		
 		vp_weapon_back.render_target_update_mode = SubViewport.UPDATE_ONCE
 		vp_weapon_front.render_target_update_mode = SubViewport.UPDATE_ONCE
 		
 		await RenderingServer.frame_post_draw
 		
-		var tex_wb = ImageTexture.create_from_image(vp_weapon_back.get_texture().get_image())
-		var tex_wf = ImageTexture.create_from_image(vp_weapon_front.get_texture().get_image())
+		var tex_wb = _get_img(vp_weapon_back)
+		var tex_wf = _get_img(vp_weapon_front)
+		
 		results[anim] = {
 			"back": tex_wb,
 			"front": tex_wf
 		}
 	
+	var ammo_part = data.equipment_parts.get("ammo")
+	if ammo_part:
+		_clear_viewport(vp_weapon_back)
+		
+		_apply_single_weapon_layer(vp_weapon_back, "mainhandBack", ammo_part, ammo_part.front_texture)
+		
+		_apply_visibility_rules(task.data, true)
+		
+		vp_weapon_back.render_target_update_mode = SubViewport.UPDATE_ONCE
+		await RenderingServer.frame_post_draw
+		
+		var tex_ammo = _get_img(vp_weapon_back)
+		
+		results["ammo"] = {
+			"back": tex_ammo,
+			"front": tex_ammo
+		}
+
 	weapon_baked.emit(task.id, results)
 
 
 func _update_sprite(node: Sprite2D, texture: Texture2D) -> void:
 	if is_instance_valid(node):
 		node.texture = texture
+
+
+func _get_img(vp: SubViewport) -> ImageTexture:
+	return ImageTexture.create_from_image(vp.get_texture().get_image())
 
 
 func _setup_wings_viewport(data: RPGLPCCharacter) -> void:
@@ -173,14 +212,15 @@ func _setup_body_viewport(data: RPGLPCCharacter) -> void:
 			_apply_texture_data(vp_body, key, data.equipment_parts[key])
 
 
-func _setup_weapon_viewports(data: RPGLPCCharacter, animation_id: String) -> void:
-	for key in WEAPON_KEYS:
+## Sets up weapon viewports for a specific list of keys (Separates Mainhand from Offhand).
+func _setup_specific_weapon_viewports(data: RPGLPCCharacter, animation_id: String, keys: Array, vp_back: SubViewport, vp_front: SubViewport) -> void:
+	for key in keys:
 		var part = data.equipment_parts.get(key)
 		if part:
 			if data.body_type == part.body_type and data.head_type == part.head_type:
 				var specific_textures = _get_weapon_paths_for_animation(part, animation_id)
-				_apply_single_weapon_layer(vp_weapon_back, key + "Back", part, specific_textures.back)
-				_apply_single_weapon_layer(vp_weapon_front, key + "Front", part, specific_textures.front)
+				_apply_single_weapon_layer(vp_back, key + "Back", part, specific_textures.back)
+				_apply_single_weapon_layer(vp_front, key + "Front", part, specific_textures.front)
 
 
 func _apply_texture_data(viewport: SubViewport, part_id: String, part_data: Resource) -> void:
@@ -201,7 +241,8 @@ func _apply_texture_data(viewport: SubViewport, part_id: String, part_data: Reso
 			_setup_node(node_single, part_data, false, part_data.front_texture)
 
 
-## Handles weapon layers, ensuring the viewport resizes to match the texture (e.g., for large spritesheets).
+## Handles weapon layers. Since we have separated Viewports for Main/Offhand,
+## we can safely resize the viewport to match the current texture exactly.
 func _apply_single_weapon_layer(viewport: SubViewport, node_name: String, part_data: Resource, texture_path: String) -> void:
 	var container = viewport.get_node_or_null("Container")
 	if not container: container = viewport
@@ -240,6 +281,7 @@ func _setup_node(node: TextureRect, data: Variant, _is_back: bool, texture_path:
 
 
 ## Parses the weapon JSON config to find the texture matching the requested animation ID.
+## Handles both specific spritesheets (e.g., "slash") and generic fallbacks.
 func _get_weapon_paths_for_animation(part: RPGLPCEquipmentPart, animation_id: String) -> Dictionary:
 	var paths = {"front": "", "back": ""}
 	
@@ -257,31 +299,39 @@ func _get_weapon_paths_for_animation(part: RPGLPCEquipmentPart, animation_id: St
 		
 	var body_type = part.body_type
 	var head_type = part.head_type
-	var texture_found = false
 	
-	# First pass: try to find exact animation match
+	var fix_path = func(p: String) -> String:
+		if p.is_empty(): return ""
+		if p.begins_with("res://"): return p
+		return "res://addons/rpg_character_creator/" + p
+
+	var generic_candidate = {"front": "", "back": ""}
+	var found_specific = false
+
 	for texture in weapon_data.get("textures", []):
 		var t_body = texture.get("body", body_type)
 		var t_head = texture.get("head", head_type)
+		
+		if t_body != body_type or t_head != head_type:
+			continue
+			
 		var t_spriteset = texture.get("spritesheet", "")
 		
-		if t_body == body_type and t_head == head_type and t_spriteset.find(animation_id) != -1:
-			paths.front = "res://addons/rpg_character_creator/" + texture.get("front", "")
-			paths.back = "res://addons/rpg_character_creator/" + texture.get("back", "")
-			texture_found = true
-			break
-			
-	# Second pass: fallback to base char texture
-	if not texture_found:
-		for texture in weapon_data.get("textures", []):
-			var t_body = texture.get("body", body_type)
-			var t_head = texture.get("head", head_type)
-			var t_spriteset = texture.get("spritesheet", "")
-			
-			if (t_body == body_type and t_head == head_type and (t_spriteset == "char_base" or t_spriteset == "")):
-				paths.front = "res://addons/rpg_character_creator/" + texture.get("front", "")
-				paths.back = "res://addons/rpg_character_creator/" + texture.get("back", "")
-				break
+		if t_spriteset != "" and t_spriteset.find(animation_id) != -1:
+			paths.front = fix_path.call(texture.get("front", ""))
+			paths.back = fix_path.call(texture.get("back", ""))
+			found_specific = true
+			break 
+		
+		if t_spriteset == "" or t_spriteset == "char_base":
+			generic_candidate.front = fix_path.call(texture.get("front", ""))
+			generic_candidate.back = fix_path.call(texture.get("back", ""))
+	
+	if not found_specific:
+		if generic_candidate.front != "":
+			paths.front = generic_candidate.front
+		if generic_candidate.back != "":
+			paths.back = generic_candidate.back
 	
 	return paths
 
@@ -305,7 +355,7 @@ func _find_node_insensitive(parent: Node, partial_name: String) -> Node:
 
 
 func _clear_viewport(vp: SubViewport) -> void:
-	if vp == vp_weapon_back or vp == vp_weapon_front:
+	if vp in [vp_offhand_back, vp_weapon_back, vp_offhand_front, vp_weapon_front]:
 		vp.size = Vector2i(1, 1)
 		
 	var container = vp.get_node_or_null("Container")
@@ -316,21 +366,22 @@ func _clear_viewport(vp: SubViewport) -> void:
 			child.position = Vector2.ZERO
 
 
-## Applies visibility rules based on the character data configuration.
-func _apply_visibility_rules(data: RPGLPCCharacter) -> void:
-	if not data.always_show_weapon:
-		var weapon_keys = ["mainhand", "offhand", "ammo"]
+## Applies visibility rules. 
+## [param force_weapon_visible] Overrides 'always_show_weapon' logic (for baking weapon lists).
+func _apply_visibility_rules(data: RPGLPCCharacter, force_weapon_visible: bool = false) -> void:
+	if not data.always_show_weapon and not force_weapon_visible:
+		
+		var weapon_keys = ["mainhand", "ammo"]
+		
 		for key in weapon_keys:
 			_set_nodes_visibility(key, false)
-	
+
 	for key in data.hidden_items:
 		_set_nodes_visibility(key, false)
 
 
-## Searches across all viewports for nodes matching the part_id and sets their visibility.
-## Handles suffixes like "Back" and "Front" automatically.
 func _set_nodes_visibility(part_id: String, visible_state: bool) -> void:
-	var viewports = [vp_wings, vp_weapon_back, vp_body, vp_weapon_front]
+	var viewports = [vp_wings, vp_offhand_back, vp_weapon_back, vp_body, vp_offhand_front, vp_weapon_front]
 	var suffixes = ["", "Back", "Front"]
 	
 	for vp in viewports:
