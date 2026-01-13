@@ -577,3 +577,7 @@ func _add_to_favorite(path: String) -> void:
 		if not "favorite_files" in options_cache:
 			options_cache.favorite_files = {}
 		options_cache.favorite_files[path] = current_file_filters_data
+
+
+func _on_rebuild_cache_pressed() -> void:
+	FileCache.rebuild(true)

@@ -2,6 +2,10 @@
 class_name RPGVehicle
 extends CharacterBody2D
 
+func get_class() -> String:
+	return "RPGVehicle"
+
+
 ## Vehicle type (This information is used by the "conditional separation" command when the "vehicle being driven" option is selected).
 @export_enum("Land Vehicle", "Sea Vehicle", "Air Veicle") var vehicle_type: int = 0
 

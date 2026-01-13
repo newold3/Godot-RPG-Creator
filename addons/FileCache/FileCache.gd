@@ -249,8 +249,10 @@ func build_options() -> void:
 #region Building Cache
 
 ## Static method to trigger a complete cache rebuild from anywhere in the codebase.
-static func rebuild() -> void:
+static func rebuild(full_scan: bool = false) -> void:
 	if main_scene:
+		if full_scan:
+			cache.clear()
 		main_scene.set_process(true)
 		main_scene.build_cache()
 
@@ -448,7 +450,8 @@ func classify_resource_file(file_path: String) -> void:
 	res = null
 
 
-## Analyzes a scene file by examining its root node's script using Regex to avoid instantiation.
+## Analyzes a scene file by examining its root node's script.
+## Uses a hybrid approach: Fast property check first, instantiation fallback for inherited scenes.
 func classify_scene_file(file_path: String) -> void:
 	# Quick map check
 	var node = get_node_or_null("/root/RPGMapsInfo")
@@ -456,50 +459,109 @@ func classify_scene_file(file_path: String) -> void:
 		cache.maps[file_path] = true
 		return
 
-	var state = load(file_path).get_state()
-	
+	var packed_scene = load(file_path)
+	if not packed_scene:
+		return
+
+	var state = packed_scene.get_state()
+
 	# 1. Native Node Type check
 	var root_node_type = state.get_node_type(0)
 	if root_node_type in ["Sprite2D", "AnimatedSprite2D", "TextureRect"]:
 		cache.animated_images[file_path] = true
 		return
-	
-	# 2. Script Type check
+
+	# 2. Script Type check (Fast: Parsing source file properties)
 	for prop_idx in state.get_node_property_count(0):
 		if state.get_node_property_name(0, prop_idx) == "script":
 			var script_res = state.get_node_property_value(0, prop_idx)
 			if script_res == null:
 				continue
-				
-			# Try fast global_name first
-			var class_identifier = script_res.get_global_name()
-			
-			# If global_name is empty, fallback to Regex on source_code
-			if class_identifier == "":
-				var source = script_res.source_code
-				var regex_match = _class_regex.search(source)
-				if regex_match:
-					class_identifier = regex_match.get_string(1)
-			
-			match class_identifier:
-				"BattleAnimation": cache.animations[file_path] = true; return
-				"RPGMap": cache.maps[file_path] = true; return
-				"LPCEnemy": cache.enemies[file_path] = true; return
-				"DialogBase": cache.message_dialogs[file_path] = true; return
-				"ScrollText": cache.scroll_scenes[file_path] = true; return
-				"RPGVehicle": cache.vehicles[file_path] = true; return
-				"GameTransition": cache.transition_scenes[file_path] = true; return
-				"TimerScene": cache.timer_scenes[file_path] = true; return
-				"WeatherScene": cache.weather[file_path] = true; return
-				"ExpressiveBubble": cache.expressive_bubbles[file_path] = true; return
-				"ChoiceScene": cache.choice_scenes[file_path] = true; return
-				"SelectDigitsScene": cache.numerical_input_scenes[file_path] = true; return
-				"SelectTextsScene": cache.text_input_scenes[file_path] = true; return
-				"MapParallaxScene": cache.map_parallax_scenes[file_path] = true; return
-				"BattleBackgroundScene": cache.battle_background_scenes[file_path] = true; return
-				"GeneralShopScene": cache.shop_scene[file_path] = true; return
-				"RPGExtractionScene": cache.extraction_scenes[file_path] = true; return
-			return
+
+			if _check_and_cache_script(file_path, script_res):
+				return
+
+	# 3. Inheritance Fallback (Slow: Instantiation)
+	# If we reach here, no explicit script property was found on the root node.
+	# This usually happens with inherited scenes where the script is defined in the parent.
+	if packed_scene.can_instantiate():
+		var instance = packed_scene.instantiate()
+		if instance:
+			var script_res = instance.get_script()
+			if script_res:
+				if _check_and_cache_script(file_path, script_res):
+					instance.free()
+					return
+
+			instance.free()
+
+
+## Helper to identify script class (including inheritance) and update cache.
+func _check_and_cache_script(file_path: String, script_res: Resource) -> bool:
+	# 1. Try to get direct name (class_name)
+	var class_identifier = script_res.get_global_name()
+
+	# 2. If no class_name, look for get_class() overrides using Regex
+	if class_identifier == "":
+		var source = script_res.source_code
+		var regex_match = _class_regex.search(source)
+		if regex_match:
+			class_identifier = regex_match.get_string(1)
+
+	# 3. If still empty, look at inheritance (Script Inheritance)
+	# Critical for scripts that only use "extends RPGVehicle" without a class_name
+	if class_identifier == "":
+		var base_script = script_res.get_base_script()
+		while base_script:
+			var base_name = base_script.get_global_name()
+			if base_name != "":
+				# Check if parent is one of the classes we are interested in
+				if _is_valid_cache_class(base_name):
+					class_identifier = base_name
+					break
+			base_script = base_script.get_base_script()
+
+	# 4. Verify and Cache
+	if class_identifier != "":
+		return _match_identifier_to_cache(file_path, class_identifier)
+
+	return false
+
+
+## Helper to check if the class name is relevant for caching.
+func _is_valid_cache_class(_class_name: String) -> bool:
+	match _class_name:
+		"BattleAnimation", "RPGMap", "LPCEnemy", "DialogBase", "ScrollText", \
+		"RPGVehicle", "GameTransition", "TimerScene", "WeatherScene", \
+		"ExpressiveBubble", "ChoiceScene", "SelectDigitsScene", "SelectTextsScene", \
+		"MapParallaxScene", "BattleBackgroundScene", "GeneralShopScene", \
+		"RPGExtractionScene":
+			return true
+	return false
+
+
+## Helper to assign file path to the correct cache dictionary.
+func _match_identifier_to_cache(file_path: String, class_identifier: String) -> bool:
+	match class_identifier:
+		"BattleAnimation": cache.animations[file_path] = true
+		"RPGMap": cache.maps[file_path] = true
+		"LPCEnemy": cache.enemies[file_path] = true
+		"DialogBase": cache.message_dialogs[file_path] = true
+		"ScrollText": cache.scroll_scenes[file_path] = true
+		"RPGVehicle": cache.vehicles[file_path] = true
+		"GameTransition": cache.transition_scenes[file_path] = true
+		"TimerScene": cache.timer_scenes[file_path] = true
+		"WeatherScene": cache.weather[file_path] = true
+		"ExpressiveBubble": cache.expressive_bubbles[file_path] = true
+		"ChoiceScene": cache.choice_scenes[file_path] = true
+		"SelectDigitsScene": cache.numerical_input_scenes[file_path] = true
+		"SelectTextsScene": cache.text_input_scenes[file_path] = true
+		"MapParallaxScene": cache.map_parallax_scenes[file_path] = true
+		"BattleBackgroundScene": cache.battle_background_scenes[file_path] = true
+		"GeneralShopScene": cache.shop_scene[file_path] = true
+		"RPGExtractionScene": cache.extraction_scenes[file_path] = true
+		_: return false
+	return true
 
 
 ## Saves the dialog options configuration to disk.

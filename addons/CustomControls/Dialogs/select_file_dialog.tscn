@@ -278,6 +278,7 @@ size_flags_vertical = 4
 tooltip_text = "Switch between browsing folders or displaying all files without browsing"
 mouse_default_cursor_shape = 2
 toggle_mode = true
+button_pressed = true
 texture_normal = ExtResource("9_56g62")
 texture_pressed = ExtResource("10_umg3t")
 texture_hover = ExtResource("11_of5pj")
@@ -310,6 +311,7 @@ metadata/original_text = ""
 
 [node name="Back" type="TextureButton" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/DirectoryExtraControls1"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_vertical = 4
 tooltip_text = "Click to go back to a previous directory"
@@ -320,6 +322,7 @@ flip_h = true
 
 [node name="Next" type="TextureButton" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/DirectoryExtraControls1"]
 unique_name_in_owner = true
+visible = false
 modulate = Color(0.3137255, 0.3137255, 0.3137255, 0.40392157)
 layout_mode = 2
 size_flags_vertical = 4
@@ -375,7 +378,6 @@ alignment = 1
 
 [node name="NoFilesFound" type="Control" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/MarginContainer"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 
 [node name="ColorRect" type="ColorRect" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/MarginContainer/NoFilesFound"]
@@ -463,6 +465,7 @@ text = "CANCEL"
 
 [node name="Loading" type="Control" parent="MarginContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 metadata/_edit_group_ = true
 metadata/_edit_lock_ = true
@@ -507,7 +510,7 @@ position = Vector2(-1, 0.5)
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_wjcc4")
 autoplay = "default"
-frame_progress = 0.45635098
+frame_progress = 0.40563807
 
 [node name="Label" type="Label" parent="MarginContainer/Loading/Control"]
 layout_mode = 1
