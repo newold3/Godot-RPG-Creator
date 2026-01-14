@@ -1291,12 +1291,13 @@ func _update_follower(instant: bool = false) -> void:
 
 
 func update_character_graphics(node: Node, new_player_id: int) -> void:
-	# TODO Add logic to update graphics when change equip
 	if node and new_player_id > 0 and RPGSYSTEM.database.actors.size() > new_player_id:
 		if not "current_data" in node: return
 		var actor = RPGSYSTEM.database.actors[new_player_id]
 		var scene_path = actor.character_data_file
 		if ResourceLoader.exists(scene_path):
+			current_player.set_meta("actor_id", new_player_id)
+			current_player.set_meta("party_id", 0)
 			var scene_data: RPGLPCCharacter = load(scene_path)
 			current_player.set_data(scene_data)
 

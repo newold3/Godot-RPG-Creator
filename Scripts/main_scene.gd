@@ -632,9 +632,8 @@ func setup_player() -> void:
 
 func _refresh_follower_nodes(instant: bool = false) -> void:
 	if not current_map or not current_player: return
-	
 	var needed = game_state.current_party.size() - 1 if game_state.followers_enabled else 0
-	var base_delay = 18
+	needed = min(needed, RPGSYSTEM.database.system.party_active_members - 1)
 	var insert_idx = current_player.get_index()
 	
 	var start_spots = _get_procedural_party_positions(needed)
@@ -654,10 +653,11 @@ func _refresh_follower_nodes(instant: bool = false) -> void:
 		f.queue_free()
 		
 	for i in range(followers.size()):
+		followers[i].set_meta("actor_id", game_state.current_party[i+1])
+		followers[i].set_meta("party_id", i+1)
 		followers[i].follower_id = i + 1
 		@warning_ignore("incompatible_ternary")
 		followers[i].target_node = current_player if i == 0 else followers[i-1]
-		#followers[i].frame_delay = base_delay
 		
 		if followers[i].has_method("_initialize_queue"):
 			followers[i]._initialize_queue()
@@ -674,8 +674,11 @@ func update_party_visuals(instant: bool = false) -> void:
 	
 	if current_player:
 		var leader_actor = RPGSYSTEM.database.actors[party[0]]
+		current_player.set_meta("actor_id", game_state.current_party[0])
+		current_player.set_meta("party_id", 0)
 		current_player.set_data(load(leader_actor.character_data_file))
 		current_player.name = "Player_" + leader_actor.name
+		
 		
 	_refresh_follower_nodes(instant)
 	
@@ -750,10 +753,14 @@ func _create_or_reuse_player() -> void:
 			if ResourceLoader.exists(scene_path):
 				current_player = load(scene_path).instantiate()
 				current_player.name = "Player_" + actor.name
+				current_player.set_meta("actor_id", player_id)
+				current_player.set_meta("party_id", 0)
 				
 		if not current_player:
 			current_player = preload("uid://bfh5umy1vx2y3").instantiate()
 			current_player.name = "Player_Empty"
+			current_player.set_meta("actor_id", player_id)
+			current_player.set_meta("party_id", 0)
 	elif current_player and current_player.is_inside_tree():
 		current_player.get_parent().remove_child(current_player)
 	
@@ -780,6 +787,9 @@ func _setup_player_properties() -> void:
 	"""Setup player camera and movement properties"""
 	main_camera.add_target_to_array(current_player, 10)
 	main_camera.fast_reposition.call_deferred()
+	
+	current_player.set_meta("actor_id", game_state.current_party[0])
+	current_player.set_meta("party_id", 0)
 	
 	if "movement_current_mode" in current_player:
 		match RPGSYSTEM.database.system.movement_mode:

@@ -11,6 +11,7 @@ func get_custom_class() -> String: return "LPCCharacter"
 @export var actor_data: RPGLPCCharacter
 
 var ctrl_pressed: bool = false # Debug key
+
 #endregion
 
 
@@ -98,11 +99,20 @@ func _process(delta: float) -> void:
 	if GameManager.loading_game or is_invalid_event:
 		return
 		
-	if frame_delay == 0.0:
+	if frame_delay <= 0.0:
 		run_animation()
-		frame_delay = frame_delay_max if !is_running else frame_delay_max_running
+		
+		var current_anim_data = get_current_animation()
+		
+		var target_fps = current_anim_data.get("fps", 0)
+		
+		if target_fps > 0:
+			frame_delay = 1.0 / float(target_fps)
+		else:
+			frame_delay = frame_delay_max if !is_running else frame_delay_max_running
 	else:
 		frame_delay = max(0.0, frame_delay - delta)
+	
 	
 	if force_animation_enabled or !can_perform_action() or is_on_vehicle:
 		return

@@ -37,15 +37,16 @@ var _is_baking: bool = false
 
 
 ## Queues a request to bake the character and update specific Sprite2D nodes.
-## This handles the 6 layers (Wings, Offhand Back, Weapon Back, Body, Offhand Front, Weapon Front).
+## Added [param actor_id] to fetch real equipment from the database.
 func request_bake_character(id: String, data: RPGLPCCharacter, weapon_anim: String, 
 		target_wings: Sprite2D, 
 		target_off_back: Sprite2D,
 		target_wb: Sprite2D, 
 		target_body: Sprite2D, 
 		target_off_front: Sprite2D,
-		target_wf: Sprite2D) -> void:
-	
+		target_wf: Sprite2D,
+		actor_id: int = -1) -> void:
+
 	_queue.append({
 		"type": "character",
 		"id": id,
@@ -56,21 +57,22 @@ func request_bake_character(id: String, data: RPGLPCCharacter, weapon_anim: Stri
 		"target_wb": target_wb,
 		"target_body": target_body,
 		"target_off_front": target_off_front,
-		"target_wf": target_wf
+		"target_wf": target_wf,
+		"actor_id": actor_id
 	})
 	_process_queue()
 
 
 ## Queues a request to bake a list of weapon animations.
-## [param result_map] should be an empty Dictionary; it will be filled with:
-## { "anim_name": { "back": ImageTexture, "front": ImageTexture } }
-func request_bake_weapon(id: String, data: RPGLPCCharacter, animations: Array, result_map: Dictionary) -> void:
+## Added [param actor_id] to fetch real equipment from the database.
+func request_bake_weapon(id: String, data: RPGLPCCharacter, animations: Array, result_map: Dictionary, actor_id: int = -1) -> void:
 	_queue.append({
 		"type": "weapon_batch",
 		"id": id,
 		"data": data,
 		"anims": animations,
-		"target": result_map
+		"target": result_map,
+		"actor_id": actor_id
 	})
 	_process_queue()
 
@@ -97,7 +99,8 @@ func _process_queue() -> void:
 
 
 func _bake_character_internal(task: Dictionary) -> void:
-	var data: RPGLPCCharacter = task.data
+	# Resolve correct gear data before baking
+	var data: RPGLPCCharacter = _get_updated_character_data(task.data, task.actor_id)
 	
 	# Reset viewports
 	_clear_viewport(vp_wings)
@@ -117,8 +120,8 @@ func _bake_character_internal(task: Dictionary) -> void:
 	# Setup Mainhand (Weapons) - Independent Layer
 	_setup_specific_weapon_viewports(data, task.anim, MAINHAND_KEYS, vp_weapon_back, vp_weapon_front)
 	
-	# Apply visibility rules (uses default logic: hide if always_show_weapon is false)
-	_apply_visibility_rules(task.data)
+	# Apply visibility rules
+	_apply_visibility_rules(data)
 	
 	# Render
 	vp_wings.render_target_update_mode = SubViewport.UPDATE_ONCE
@@ -142,7 +145,8 @@ func _bake_character_internal(task: Dictionary) -> void:
 
 
 func _bake_weapon_batch_internal(task: Dictionary) -> void:
-	var data: RPGLPCCharacter = task.data
+	# Resolve correct gear data before baking weapons
+	var data: RPGLPCCharacter = _get_updated_character_data(task.data, task.actor_id)
 	var animations: Array = task.anims
 	var results: Dictionary = task.target
 	
@@ -152,7 +156,7 @@ func _bake_weapon_batch_internal(task: Dictionary) -> void:
 		
 		_setup_specific_weapon_viewports(data, anim, MAINHAND_KEYS, vp_weapon_back, vp_weapon_front)
 		
-		_apply_visibility_rules(task.data, true)
+		_apply_visibility_rules(data, true)
 		
 		vp_weapon_back.render_target_update_mode = SubViewport.UPDATE_ONCE
 		vp_weapon_front.render_target_update_mode = SubViewport.UPDATE_ONCE
@@ -166,26 +170,154 @@ func _bake_weapon_batch_internal(task: Dictionary) -> void:
 			"back": tex_wb,
 			"front": tex_wf
 		}
-	
+
 	var ammo_part = data.equipment_parts.get("ammo")
 	if ammo_part:
 		_clear_viewport(vp_weapon_back)
+		_clear_viewport(vp_weapon_front)
 		
-		_apply_single_weapon_layer(vp_weapon_back, "mainhandBack", ammo_part, ammo_part.front_texture)
+		var ammo_paths = _get_weapon_paths_for_animation(ammo_part, "walk")
 		
-		_apply_visibility_rules(task.data, true)
+		_apply_single_weapon_layer(vp_weapon_back, "mainhandBack", ammo_part, ammo_paths.back)
+		_apply_single_weapon_layer(vp_weapon_front, "mainhandFront", ammo_part, ammo_paths.front)
+		
+		_apply_visibility_rules(data, true)
 		
 		vp_weapon_back.render_target_update_mode = SubViewport.UPDATE_ONCE
+		vp_weapon_front.render_target_update_mode = SubViewport.UPDATE_ONCE
+		
 		await RenderingServer.frame_post_draw
 		
-		var tex_ammo = _get_img(vp_weapon_back)
-		
 		results["ammo"] = {
-			"back": tex_ammo,
-			"front": tex_ammo
+			"back": _get_img(vp_weapon_back),
+			"front": _get_img(vp_weapon_front)
 		}
-
+		
+		var projectile_id = _get_projectile_id_from_part(ammo_part)
+		
+		if projectile_id != "":
+			_clear_viewport(vp_weapon_back)
+			
+			var proj_path = "res://addons/rpg_character_creator/textures/projectiles/" + projectile_id + ".png"
+			
+			_apply_single_weapon_layer(vp_weapon_back, "mainhandBack", ammo_part, proj_path)
+			
+			_apply_visibility_rules(data, true)
+			
+			vp_weapon_back.render_target_update_mode = SubViewport.UPDATE_ONCE
+			await RenderingServer.frame_post_draw
+			
+			var tex_proj = _get_img(vp_weapon_back)
+			results["projectile"] = {
+				"back": tex_proj,
+				"front": tex_proj 
+			}
+	
 	weapon_baked.emit(task.id, results)
+
+
+## Checks if the actor has specific gear equipped and updates the character data accordingly.
+func _get_updated_character_data(base_data: RPGLPCCharacter, actor_id: int) -> RPGLPCCharacter:
+	if actor_id == -1:
+		return base_data
+	
+	var actor = GameManager.get_actor(actor_id)
+	if not actor:
+		return base_data
+		
+	var new_data = base_data.duplicate()
+	
+	var ammo_explicitly_equipped = false
+	var weapon_embedded_ammo = null
+	
+	var _resolve_json_path = func(p: String) -> String:
+		if p.is_empty(): return ""
+		if p.begins_with("res://"): return p
+		return "res://addons/rpg_character_creator/" + p
+	
+	for item_obj in actor.current_gear:
+		if not item_obj:
+			continue
+			
+		var db_item = null
+		# Type 1 = Weapon, Type 2 = Armor
+		if item_obj.type == 1:
+			db_item = RPGSYSTEM.database.weapons.get(item_obj.id)
+		elif item_obj.type == 2:
+			db_item = RPGSYSTEM.database.armors.get(item_obj.id)
+			
+		if not db_item:
+			continue
+		
+		var lpc_part_path: String = db_item.lpc_part
+		if lpc_part_path.is_empty():
+			continue
+			
+		if not FileAccess.file_exists(lpc_part_path):
+			continue
+			
+		var lpc_part = load(lpc_part_path)
+		if lpc_part is RPGLPCEquipmentPart:
+			if lpc_part.body_type == new_data.body_type and lpc_part.head_type == new_data.head_type:
+				new_data.equipment_parts[lpc_part.part_id] = lpc_part
+				
+				if lpc_part.part_id == "ammo":
+					ammo_explicitly_equipped = true
+				elif lpc_part.part_id == "mainhand" and lpc_part.ammo:
+					weapon_embedded_ammo = lpc_part.ammo
+					
+			else:
+				if lpc_part.config_path.is_empty() or not FileAccess.file_exists(lpc_part.config_path):
+					continue
+					
+				var f = FileAccess.open(lpc_part.config_path, FileAccess.READ)
+				var json_data = JSON.parse_string(f.get_as_text())
+				f.close()
+				
+				if not json_data or not "textures" in json_data:
+					continue
+					
+				var best_match = null
+				for t in json_data.textures:
+					var t_body = t.get("body", "")
+					var t_head = t.get("head", "")
+					
+					if t_body == new_data.body_type and (t_head == "" or t_head == new_data.head_type):
+						best_match = t
+						break
+
+				if best_match:
+					var fixed_part = lpc_part.duplicate()
+					fixed_part.body_type = new_data.body_type
+					fixed_part.head_type = new_data.head_type
+					fixed_part.front_texture = _resolve_json_path.call(best_match.get("front", ""))
+					fixed_part.back_texture = _resolve_json_path.call(best_match.get("back", ""))
+					
+					new_data.equipment_parts[lpc_part.part_id] = fixed_part
+					
+					if lpc_part.part_id == "ammo":
+						ammo_explicitly_equipped = true
+					elif lpc_part.part_id == "mainhand" and lpc_part.ammo:
+						weapon_embedded_ammo = lpc_part.ammo
+
+	if not ammo_explicitly_equipped and weapon_embedded_ammo:
+		new_data.equipment_parts["ammo"] = weapon_embedded_ammo
+		
+	return new_data
+
+
+func _get_projectile_id_from_part(part: RPGLPCEquipmentPart) -> String:
+	if not FileAccess.file_exists(part.config_path):
+		return ""
+		
+	var f = FileAccess.open(part.config_path, FileAccess.READ)
+	var json_data = JSON.parse_string(f.get_as_text())
+	f.close()
+	
+	if json_data and "projectile" in json_data:
+		return json_data["projectile"]
+	
+	return ""
 
 
 func _update_sprite(node: Sprite2D, texture: Texture2D) -> void:
@@ -370,12 +502,10 @@ func _clear_viewport(vp: SubViewport) -> void:
 ## [param force_weapon_visible] Overrides 'always_show_weapon' logic (for baking weapon lists).
 func _apply_visibility_rules(data: RPGLPCCharacter, force_weapon_visible: bool = false) -> void:
 	if not data.always_show_weapon and not force_weapon_visible:
-		
 		var weapon_keys = ["mainhand", "ammo"]
-		
 		for key in weapon_keys:
 			_set_nodes_visibility(key, false)
-
+	
 	for key in data.hidden_items:
 		_set_nodes_visibility(key, false)
 

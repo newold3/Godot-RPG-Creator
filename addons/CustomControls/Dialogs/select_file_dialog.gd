@@ -197,7 +197,14 @@ func _process(delta: float) -> void:
 
 
 func _change_state_button(button: TextureButton, history_id: String) -> void:
-	if (history_id == "back" and current_directory != "res://") or not history[history_id].is_empty():
+	var can_navigate = false
+	
+	if history_id == "back":
+		can_navigate = not history.back.is_empty() or current_directory != "res://"
+	elif history_id == "next":
+		can_navigate = not history.next.is_empty()
+		
+	if can_navigate:
 		button.set_disabled(false)
 		button.modulate = Color.WHITE
 	else:
@@ -248,9 +255,11 @@ func _get_files_recursive(path: String, extensions: Array) -> PackedStringArray:
 
 
 func _get_folders(dir_path: String) -> PackedStringArray:
-	if dir_path.is_empty(): dir_path = "res://"
+	dir_path = _clean_path(dir_path)
+	
 	var directories: PackedStringArray = []
 	var dir = DirAccess.open(dir_path)
+	
 	if dir == null: return []
 	
 	dir.list_dir_begin()
@@ -270,6 +279,14 @@ func _append_folders(dir_path: String) -> void:
 	
 	current_directory = dir_path
 	%CurrentPath.text = current_directory
+
+
+func _clean_path(path: String) -> String:
+	if path.is_empty(): return "res://"
+	path = path.replace("\\", "/")
+	if path.length() > 6 and path.ends_with("/"):
+		path = path.left(-1)
+	return path
 
 
 func _fill_favorite_files() -> void:
@@ -294,24 +311,33 @@ func fill_files(file_id: String, update_directory: bool = true) -> void:
 	current_file_filters_data = current_cache_key
 	current_file_type = 0
 	
-	if favorite_button_enabled:
-		_fill_favorite_files()
-		return
-	
 	_clear_current_files()
 	_update_ui_controls()
+	
+	var base_dir = ""
+	if not all_button_enabled or dialog_mode == 1:
+		if update_directory:
+			if not current_directory.is_empty(): base_dir = current_directory
+			elif not last_folder_visited.is_empty(): base_dir = last_folder_visited
+			else: base_dir = "res://"
+			
+			current_directory = _clean_path(base_dir)
+			%CurrentPath.text = current_directory
+		else:
+			base_dir = current_directory
+		_append_folders(base_dir)
+	
+	if dialog_mode == 1:
+		hide_loading()
+		return
+
 	
 	var current_token = _load_token
 	var files = await _get_files_in_cache(file_id)
 	if current_token != _load_token: return
 	
-	var base_dir = ""
-	if not all_button_enabled:
-		base_dir = current_directory if not update_directory else (last_folder_visited if not last_folder_visited.is_empty() else "res://")
-		_append_folders(base_dir)
-		
 	for file in files:
-		if all_button_enabled or file.get_base_dir() == base_dir:
+		if all_button_enabled or _clean_path(file.get_base_dir()) == base_dir:
 			filtered_files_pool.append(FileStruct.new(file, "file"))
 			
 	_paginate_next_batch()
@@ -332,9 +358,13 @@ func fill_mix_files(file_ids: PackedStringArray, update_directory: bool = true) 
 	
 	var current_token = _load_token
 	var base_dir = ""
-	if not all_button_enabled:
+	if not all_button_enabled or dialog_mode == 1:
 		base_dir = current_directory if not update_directory else (last_folder_visited if not last_folder_visited.is_empty() else "res://")
 		_append_folders(base_dir)
+	
+	if dialog_mode == 1:
+		hide_loading()
+		return
 		
 	for id in file_ids:
 		var files = await _get_files_in_cache(id)
@@ -360,8 +390,12 @@ func fill_files_by_extension(path: String = "res://", extensions: Array = [], up
 	_update_ui_controls()
 	
 	var base_dir = path if !all_button_enabled else "res://"
-	if !all_button_enabled:
+	if !all_button_enabled or dialog_mode == 1:
 		_append_folders(base_dir)
+	
+	if dialog_mode == 1:
+		hide_loading()
+		return
 		
 	var files = _get_files_recursive(base_dir, extensions)
 	for file in files:
@@ -455,9 +489,25 @@ func _check_all_nodes_visibility() -> void:
 			_paginate_next_batch()
 
 
-func navigate_to_directory(path: String) -> void:
+func navigate_to_directory(path: String, add_to_history: bool = true) -> void:
+	path = _clean_path(path)
+	
+	if path == current_directory:
+		return
+
+	if add_to_history:
+		if not current_directory.is_empty():
+			history.back.append(current_directory)
+		history.next.clear()
+	
 	current_directory = path
 	current_page = 0
+	
+	current_file_selected = ""
+	current_directory_selected = ""
+	%CurrentPath.text = current_directory
+	_update_label_path_selected()
+	_update_history_buttons()
 	_refresh_view()
 
 
@@ -470,9 +520,23 @@ func _refresh_view() -> void:
 
 func _on_all_button_toggled(toggled_on: bool) -> void:
 	all_button_enabled = toggled_on
+	
 	if toggled_on:
 		favorite_button_enabled = false
 		%FavoriteButton.set_pressed_no_signal(false)
+	
+	if not toggled_on:
+		if current_directory.is_empty():
+			if not last_folder_visited.is_empty():
+				current_directory = last_folder_visited
+			else:
+				current_directory = "res://"
+		
+		current_directory = _clean_path(current_directory)
+		
+		%CurrentPath.text = current_directory
+		
+		_update_history_buttons()
 	
 	if FileCache.options:
 		FileCache.options.file_dialog_all_files_toggled = toggled_on
@@ -498,12 +562,16 @@ func _on_visibility_changed() -> void:
 
 
 func _on_ok_button_pressed() -> void:
-	if not current_file_selected.is_empty():
-		select_file(current_file_selected)
-	elif not current_directory_selected.is_empty():
-		if dialog_mode == 1:
+	if dialog_mode == 1:
+		if not current_directory_selected.is_empty():
 			select_file(current_directory_selected)
 		else:
+			select_file(current_directory)
+			
+	else:
+		if not current_file_selected.is_empty():
+			select_file(current_file_selected)
+		elif not current_directory_selected.is_empty():
 			navigate_to_directory(current_directory_selected)
 
 
@@ -521,11 +589,25 @@ func _on_file_selected(node: Control) -> void:
 
 
 func _on_directory_selected(node: Control) -> void:
+	for child in %FileContainer.get_children():
+		if child != node: child.deselect()
+	
 	current_directory_selected = node.path
+	current_path = node.path
+	_update_label_path_selected()
 
 
 func _update_label_path_selected() -> void:
-	%PathSelected.text = " " + current_path if not current_path.is_empty() else " -"
+	var text_to_show = ""
+	
+	if not current_file_selected.is_empty():
+		text_to_show = current_file_selected
+	elif not current_directory_selected.is_empty():
+		text_to_show = current_directory_selected
+	else:
+		text_to_show = current_directory
+		
+	%PathSelected.text = " " + text_to_show if not text_to_show.is_empty() else " -"
 
 
 func set_all_files_visibility_timer(_p=null) -> void:
@@ -563,9 +645,33 @@ func _save_last_folder_visited() -> void:
 		last_folder_visited = current_directory
 
 
+func _update_history_buttons() -> void:
+	var can_back = not history.back.is_empty() or (_clean_path(current_directory) != "res://")
+	%Back.set_disabled(not can_back)
+	%Back.modulate = Color.WHITE if can_back else Color(0.5, 0.5, 0.5, 0.5)
+	
+	var can_next = not history.next.is_empty()
+	%Next.set_disabled(not can_next)
+	%Next.modulate = Color.WHITE if can_next else Color(0.5, 0.5, 0.5, 0.5)
+
+
 func _on_back_button_pressed() -> void:
-	if current_directory == "res://": return
-	navigate_to_directory(current_directory.get_base_dir())
+	var prev: String
+	if not history.back.is_empty():
+		prev = history.back.pop_back()
+	else:
+		prev = current_directory.get_base_dir()
+	history.next.append(current_directory)
+	navigate_to_directory(prev, false)
+	_update_history_buttons()
+
+
+func _on_next_button_pressed() -> void:
+	if not history.next.is_empty():
+		var next_path = history.next.pop_back()
+		history.back.append(current_directory)
+		navigate_to_directory(next_path, false)
+		_update_history_buttons()
 
 
 func _select_other_file(_i, _d): pass
@@ -577,6 +683,12 @@ func _add_to_favorite(path: String) -> void:
 		if not "favorite_files" in options_cache:
 			options_cache.favorite_files = {}
 		options_cache.favorite_files[path] = current_file_filters_data
+
+
+func hide_directory_extra_controls2() -> void:
+	var node = %DirectoryExtraControls2
+	if node:
+		node.visible = false
 
 
 func _on_rebuild_cache_pressed() -> void:

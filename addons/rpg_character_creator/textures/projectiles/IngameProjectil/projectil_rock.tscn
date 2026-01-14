@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://d3grkxqs78ul3"]
+
+[ext_resource type="Script" uid="uid://4u3tpyqiuauv" path="res://addons/rpg_character_creator/textures/projectiles/IngameProjectil/projectil_rock.gd" id="1_uo665"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5poom"]
+
+[node name="Rock" type="Area2D" node_paths=PackedStringArray("sprite", "collision_shape") groups=["projectil"]]
+collision_layer = 32768
+collision_mask = 0
+script = ExtResource("1_uo665")
+sprite = NodePath("Sprite2D")
+collision_shape = NodePath("CollisionShape2D")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+unique_name_in_owner = true
+shape = SubResource("CircleShape2D_5poom")

@@ -1,4 +1,5 @@
 @tool
+class_name ConfirmCreateCharacter
 extends Window
 
 signal ok_pressed(options: RPGCharacterCreationOptions)
@@ -6,8 +7,26 @@ signal ok_pressed(options: RPGCharacterCreationOptions)
 
 var options = RPGCharacterCreationOptions.new()
 
+static var paths_and_name = {
+	"character_folder": "res://",
+	"equipment_folder": "res://",
+	"actor_name": ""
+}
+
 
 func _ready() -> void:
+	if not paths_and_name:
+		paths_and_name = {
+			"character_folder": "",
+			"equipment_folder": "",
+			"actor_name": ""
+		}
+	ok_pressed.connect(
+		func(_options: RPGCharacterCreationOptions):
+			paths_and_name.character_folder = _options.character_folder
+			paths_and_name.equipment_folder = _options.equipment_folder
+			paths_and_name.name = _options.name
+	)
 	close_requested.connect(queue_free)
 	await get_tree().process_frame
 	# If not checked, godot throws an error if this scene is open when opening the editor.
@@ -18,8 +37,7 @@ func _ready() -> void:
 func set_options(_options: RPGCharacterCreationOptions) -> void:
 	options = _options
 	%CharacterFolder.text = options.character_folder
-	options.name = ""
-	%CharacterName.text = ""
+	%CharacterName.text = options.name
 	%CheckBox22.set_pressed_no_signal(options.all)
 	%CheckBox23.set_pressed(options.create_event_character)
 	%CheckBox24.set_pressed(options.is_generic_lpc_event)
@@ -143,7 +161,8 @@ func _on_character_folder_button_down() -> void:
 			default_path = options.character_folder
 		else:
 			default_path = parent.confirm_dialog_options.character_folder
-		dialog.navigate_to_directory(default_path)
+		await get_tree().process_frame
+		dialog.navigate_to_directory.call_deferred(default_path)
 
 
 func _set_character_folder(path: String) -> void:
@@ -166,7 +185,8 @@ func _on_equipment_folder_pressed() -> void:
 	var parent = get_parent()
 	if "confirm_dialog_options" in parent and parent.confirm_dialog_options is RPGCharacterCreationOptions:
 		var default_path =  parent.confirm_dialog_options.equipment_folder
-		dialog.navigate_to_directory(default_path)
+		await get_tree().process_frame
+		dialog.navigate_to_directory.call_deferred(default_path)
 
 
 func _set_equipment_folder(path: String) -> void:

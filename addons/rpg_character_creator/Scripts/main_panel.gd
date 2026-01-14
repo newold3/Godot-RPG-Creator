@@ -1031,8 +1031,10 @@ func _on_create_character_and_equipment_pressed() -> void:
 	var busy = true
 	if "busy" in parent:
 		parent.busy = true
-	if "confirm_dialog_options" in parent and parent.confirm_dialog_options is RPGCharacterCreationOptions:
-		dialog.set_options(parent.confirm_dialog_options)
+	var selfparent = get_parent().get_parent()
+	if "confirm_dialog_options" in selfparent and selfparent.confirm_dialog_options is RPGCharacterCreationOptions:
+		var options: RPGCharacterCreationOptions = selfparent.confirm_dialog_options
+		dialog.set_options(selfparent.confirm_dialog_options)
 	dialog.ok_pressed.connect(_on_save)
 	dialog.tree_exited.connect(
 		func():
@@ -1178,7 +1180,7 @@ func import_data(data_path: String) -> void:
 		return
 		
 	var res = load(data_path)
-	print(res)
+
 	if res is RPGLPCEquipmentPart:
 		if res.body_type == current_character.character["body_type"] and res.head_type == current_character.character["head_type"]:
 			var config_path: String = res.config_path
@@ -1208,6 +1210,13 @@ func import_data(data_path: String) -> void:
 		else:
 			printerr("The current character does not support this piece of equipment")
 	elif res is RPGLPCCharacter:
+		var parent = get_parent().get_parent()
+		if "confirm_dialog_options" in parent and parent.confirm_dialog_options is RPGCharacterCreationOptions:
+			var options: RPGCharacterCreationOptions = parent.confirm_dialog_options
+			var actor_name = data_path.get_file().trim_suffix("_data.tres")
+			options.name = actor_name
+			options.character_folder = data_path.get_base_dir() + "/"
+			options.equipment_folder = options.character_folder
 		# Set Palette
 		var node = %Palettes
 		node.select(0)
@@ -1264,7 +1273,6 @@ func import_data(data_path: String) -> void:
 			var id: String = ids[i]
 			var part: RPGLPCBodyPart = res.body_parts.get(id)
 			var config_path: String = part.config_path
-			print(config_path)
 			var f = FileAccess.open(config_path, FileAccess.READ)
 			var json: String = f.get_as_text()
 			f.close()
@@ -1358,8 +1366,9 @@ func _on_save(options: RPGCharacterCreationOptions) -> void:
 	
 	if options.create_character:
 		_save_character_scene(options, character_data)
-	
-	await _save_walking_texture(options)
+
+	if options.create_character or options.create_event_character:
+		await _save_walking_texture(options)
 	
 	if options.create_event_character:
 		await _save_event_scene(options, character_data)
@@ -1519,6 +1528,12 @@ func _create_equipment_part_data(item: String, character_data: RPGLPCCharacter) 
 	
 	_set_textures(item_data, texture_back_data, texture_front_data)
 	_set_palettes(item_data, item)
+	
+	if item == "mainhand":
+		var ammo_id = current_character.character.get("ammo", "")
+		if ammo_id and ammo_id.to_lower() != "none":
+			var ammo_part_resource = _create_equipment_part_for_saving("ammo", character_data)
+			item_data.ammo = ammo_part_resource
 	
 	return item_data
 
@@ -1722,6 +1737,10 @@ func _save_walking_texture(options: RPGCharacterCreationOptions) -> void:
 		y += 192
 	
 	var character_folder = _get_character_folder_path(options)
+	var absolute_path = ProjectSettings.globalize_path(character_folder)
+	if !DirAccess.dir_exists_absolute(absolute_path):
+		DirAccess.make_dir_recursive_absolute(absolute_path)
+		
 	var image_path = character_folder + options.name + "_character_minimalist.png"
 	img.save_png(image_path)
 	
@@ -1798,7 +1817,7 @@ func _save_equipment_part(key: String, equipment_folder: String, character_data:
 	_prepare_character_for_equipment_part(key)
 	await get_tree().process_frame
 	await RenderingServer.frame_post_draw
-	
+
 	if !_should_save_equipment_part(key):
 		return
 	
@@ -1806,7 +1825,6 @@ func _save_equipment_part(key: String, equipment_folder: String, character_data:
 	var img = await _capture_equipment_part_image(key)
 	
 	if !img:
-		print("part %s is empty?" % key)
 		return
 	
 	_save_equipment_part_files(key, equipment_folder, equipment_part_data, img)
@@ -1827,6 +1845,7 @@ func _should_save_equipment_part(key: String) -> bool:
 
 
 func _create_equipment_part_for_saving(key: String, character_data: RPGLPCCharacter) -> RPGLPCEquipmentPart:
+	print(key)
 	var equipment_data = data.gear[key][current_character.character[key]]
 	var texture_back_data: CharacterPart = current_character.textures.get(key + "_texture_back", null)
 	var texture_front_data: CharacterPart = _get_front_texture_data(key)

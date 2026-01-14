@@ -375,7 +375,8 @@ func update_appearance_cascade(actor_id: int, instant: bool = false) -> void:
 			mainhand_back,
 			body,
 			offhand_front,
-			offhand_front
+			offhand_front,
+			get_meta("actor_id") if has_meta("actor_id") else -1
 		)
 		await baker.character_baked
 	

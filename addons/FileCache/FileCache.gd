@@ -509,7 +509,7 @@ func _check_and_cache_script(file_path: String, script_res: Resource) -> bool:
 			class_identifier = regex_match.get_string(1)
 
 	# 3. If still empty, look at inheritance (Script Inheritance)
-	# Critical for scripts that only use "extends RPGVehicle" without a class_name
+	# Critical for scripts that only use "extends Custom ClassName" without a class_name
 	if class_identifier == "":
 		var base_script = script_res.get_base_script()
 		while base_script:

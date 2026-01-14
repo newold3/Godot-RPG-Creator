@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://clvpmj2oi67an"]
+
+[ext_resource type="Script" uid="uid://2270e815733a" path="res://addons/rpg_character_creator/textures/projectiles/IngameProjectil/projectil_arcane.gd" id="1_rcbeb"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5poom"]
+
+[node name="Arcane" type="Area2D" node_paths=PackedStringArray("sprite", "collision_shape") groups=["projectil"]]
+collision_layer = 32768
+collision_mask = 0
+script = ExtResource("1_rcbeb")
+sprite = NodePath("Sprite2D")
+collision_shape = NodePath("CollisionShape2D")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+unique_name_in_owner = true
+shape = SubResource("CircleShape2D_5poom")

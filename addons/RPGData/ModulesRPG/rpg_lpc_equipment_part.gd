@@ -18,6 +18,7 @@ func get_class(): return "RPGLPCEquipmentPart"
 @export var palette1: RPGLPCPalette = RPGLPCPalette.new()
 @export var palette2: RPGLPCPalette = RPGLPCPalette.new()
 @export var palette3: RPGLPCPalette = RPGLPCPalette.new()
+@export var ammo: RPGLPCEquipmentPart = null
 
 
 func _to_string() -> String:

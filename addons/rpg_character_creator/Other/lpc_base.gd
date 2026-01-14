@@ -33,6 +33,9 @@ var force_disable_breathing: bool
 @onready var offhand_front: Sprite2D = %OffhandFront
 @onready var mainhand_front: Sprite2D = %MainHandFront
 
+var ammo_node_back: Sprite2D
+var ammo_node_front: Sprite2D
+
 
 const PROJECTILES = {
 	"arrow": preload("res://addons/rpg_character_creator/textures/projectiles/arrow.tscn"),
@@ -136,6 +139,22 @@ func _build() -> void:
 
 
 func _ready() -> void:
+	if not Engine.is_editor_hint() and full_body and body:
+		var s: Sprite2D = body.duplicate()
+		s.name = "AmmoBack"
+		s.region_enabled = true
+		s.unique_name_in_owner = true
+		full_body.add_child(s)
+		
+		ammo_node_back = s
+		ammo_node_back.visible = false
+		s = body.duplicate()
+		s.name = "AmmoFront"
+		s.region_enabled = true
+		s.unique_name_in_owner = true
+		full_body.add_child(s)
+		ammo_node_front = s
+		ammo_node_front.visible = false
 	_setup_contact_shape()
 	tree_entered.connect(_on_tree_entered)
 	get_tree().create_timer(0.05).timeout.connect(set.bind("can_show_shadows", true))
@@ -293,23 +312,41 @@ func _on_tree_entered() -> void:
 func install_parts() -> void:
 	if not current_data: return
 	
-	# Set weapon config file
-	if FileAccess.file_exists(current_data.equipment_parts.mainhand.config_path):
-		var f = FileAccess.open(current_data.equipment_parts.mainhand.config_path, FileAccess.READ)
+	var config_path: String = ""
+	var actor_id = get_meta("actor_id") if has_meta("actor_id") else -1
+	
+	if actor_id != -1:
+		var actor = GameManager.get_actor(actor_id)
+		if actor:
+			for item in actor.current_gear:
+				if item and item.type == 1:
+					var db_item = RPGSYSTEM.database.weapons.get(item.id)
+					if db_item:
+						var lpc_path = db_item.lpc_part
+						if lpc_path and FileAccess.file_exists(lpc_path):
+							var lpc_res = load(lpc_path)
+							if lpc_res and "config_path" in lpc_res:
+								config_path = lpc_res.config_path
+					break
+	
+	if config_path.is_empty():
+		var mainhand = current_data.equipment_parts.get("mainhand")
+		if mainhand and "config_path" in mainhand:
+			config_path = mainhand.config_path
+	
+	if FileAccess.file_exists(config_path):
+		var f = FileAccess.open(config_path, FileAccess.READ)
 		current_weapon_data = JSON.parse_string(f.get_as_text())
 		f.close()
 	else:
 		current_weapon_data = {}
 	
 	for img_id in current_weapon_images:
-		var obj = current_weapon_images[img_id]
-		if obj:
-			var back = obj.get("back", null)
-			var front = obj.get("front", null)
-	current_weapon_images = {}
+		current_weapon_images = {}
 		
 	var bake_id = "build_player" if is_in_group("player") else "build_event%s" % str(current_data) if is_in_group("event") else "build_vehicle%s" % get_instance_id()
 	var node: CharacterBaker = GameManager.get_character_baker()
+	
 	if node:
 		node.request_bake_character(
 			bake_id,
@@ -320,16 +357,20 @@ func install_parts() -> void:
 			mainhand_back,
 			body,
 			offhand_front,
-			mainhand_front
+			mainhand_front,
+			actor_id
 		)
+		
 		if current_weapon_data:
 			var actions: Array = current_weapon_data.get("actions", [])
-			var actions_parsed: Array = actions + ["idle", "walk"]
+			var actions_to_bake = actions + ["idle", "walk"] 
+			
 			node.request_bake_weapon(
 				bake_id + "_weapons",
 				current_data,
-				actions + actions_parsed,
-				current_weapon_images
+				actions_to_bake,
+				current_weapon_images,
+				actor_id
 			)
 
 
@@ -392,16 +433,29 @@ func run_animation(force_animation: bool = false) -> void:
 			offhand_front.visible = should_show_weapon
 			mainhand_back.visible = should_show_weapon
 			mainhand_front.visible = should_show_weapon
+			
+			if "ammo" in current_weapon_images:
+				ammo_node_back.texture = current_weapon_images.ammo.back
+				ammo_node_front.texture = current_weapon_images.ammo.front
+				ammo_node_back.visible = should_show_weapon
+				ammo_node_front.visible = should_show_weapon
+			else:
+				ammo_node_back.visible = false
+				ammo_node_front.visible = false
 		else:
 			mainhand_back.visible = false
 			mainhand_front.visible = false
 			offhand_back.visible = false
 			offhand_front.visible = false
+			ammo_node_back.visible = false
+			ammo_node_front.visible = false
 	else:
 		mainhand_back.visible = false
 		mainhand_front.visible = false
 		offhand_back.visible = false
 		offhand_front.visible = false
+		ammo_node_back.visible = false
+		ammo_node_front.visible = false
 	
 	if current_animation in current_weapon_images and self == GameManager.current_player:
 		var weapon_imgs = current_weapon_images[current_animation]
@@ -440,6 +494,12 @@ func run_animation(force_animation: bool = false) -> void:
 	wings_back.region_rect = body.region_rect
 	offhand_back.region_rect = body.region_rect
 	offhand_front.region_rect = body.region_rect
+	ammo_node_back.region_rect = body.region_rect
+	ammo_node_front.region_rect = body.region_rect
+	
+	var action_frame = current_animation.get("action_frame", -1)
+	if current_frame == action_frame:
+		_handle_action_frame(current_animation)
 	
 	if (
 		(mainhand_back.texture and mainhand_back.texture.get_size() == body.texture.get_size()) or
@@ -463,6 +523,46 @@ func run_animation(force_animation: bool = false) -> void:
 			else:
 				# Clamp to the last frame index
 				current_frame = current_animation.frames.size() - 1
+
+
+func _get_direction_string() -> String:
+	match current_direction:
+		DIRECTIONS.UP: return "up"
+		DIRECTIONS.DOWN: return "down"
+		DIRECTIONS.LEFT: return "left"
+		DIRECTIONS.RIGHT: return "right"
+	return "down"
+
+
+func _handle_action_frame(anim_data: Dictionary) -> void:
+	var _data: RPGLPCCharacter = current_data
+	if not _data:
+		return
+	
+	if not has_meta("actor_id"): return
+	
+	var actor_id = get_meta("actor_id")
+	var actor = GameManager.get_actor(actor_id)
+	
+	
+	var offset_array = anim_data.get("emiter", [0, 0])
+	var emission_point = Vector2(offset_array[0], offset_array[1])
+	var anim_id = anim_data.get("id", "")
+	
+	return
+	
+	if "shoot" in anim_id or "cast" in anim_id:
+		var ammo_id = "arrow"
+		
+		if "shoot" in anim_id:
+			ammo_id = current_data.equipment_parts["ammo"].name.to_lower()
+		elif "cast" in anim_id:
+			ammo_id = "arcane1"
+		
+		perform_shoot(ammo_id, _get_direction_string(), emission_point)
+		
+	elif "slash" in anim_id or "thrust" in anim_id or "smash" in anim_id or "whip" in anim_id:
+		pass
 
 
 func _on_animation_finished() -> void:
@@ -498,7 +598,8 @@ func update_player_appearance(char_data: RPGLPCCharacter) -> void:
 			mainhand_back,
 			body,
 			offhand_front,
-			mainhand_front
+			mainhand_front,
+			get_meta("actor_id") if has_meta("actor_id") else -1
 		)
 
 
@@ -536,6 +637,8 @@ func get_current_weapon_animation() -> Dictionary:
 
 
 func perform_shoot(ammo_id: String, direction: String, ammo_position: Vector2) -> void:
+	print(["shoot ", ammo_id, direction, ammo_position])
+	return
 	var p = PROJECTILES.get(ammo_id, "")
 	if p:
 		var blend_color = current_data.equipment_parts.ammo.palette1.blend_color
