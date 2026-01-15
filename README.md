@@ -85,9 +85,9 @@ Your help is essential! As a solo developer (@Newold), I cannot test every possi
 
 ### Found a bug?
 Please open an **[Issue]** in this repository describing:
-1.  What you were trying to do.
-2.  What happened (error, crash, unexpected behavior).
-3.  Steps to reproduce it (if known).
+1.  What you were trying to do.
+2.  What happened (error, crash, unexpected behavior).
+3.  Steps to reproduce it (if known).
 
 ### Have a suggestion?
 Do you think something essential is missing? Would you change how a tool works?
@@ -97,10 +97,24 @@ Open an **[Issue]** with the `enhancement` or `suggestion` label. I am open to d
 
 ## 📥 Installation
 
-1.  Clone this repository or download the ZIP.
-2.  You need **Godot 4.x** installed.
-3.  Import the project (`project.godot`) into the engine.
-4.  Run and start creating!
+1.  Clone this repository or download the ZIP.
+2.  You need **Godot 4.x** installed.
+3.  Import the project (`project.godot`) into the engine.
+4.  Run and start creating!
+
+---
+
+## ❤️ Supporters
+
+A huge thank you to the patrons who support the development of Godot RPG Creator. Your contribution helps keep this project free and open source!
+
+### 💎 Insider
+* **Jana**
+
+### 🏆 Supporters
+* **Brian**
+
+Do you want to support the project and appear here? [Become a Patron](https://www.patreon.com/newold13/)
 
 ---
 
