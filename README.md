@@ -97,10 +97,12 @@ Open an **[Issue]** with the `enhancement` or `suggestion` label. I am open to d
 
 ## 📥 Installation
 
-1.  Clone this repository or download the ZIP.
-2.  You need **Godot 4.x** installed.
-3.  Import the project (`project.godot`) into the engine.
-4.  Run and start creating!
+1. Clone this repository or download the ZIP.
+2. You need **Godot 4.x** installed.
+3. Import the project (`project.godot`) into the engine.
+4. Run and start creating!
+
+*(Note: The project is not yet compatible with Godot 4.6)*
 
 ---
 
