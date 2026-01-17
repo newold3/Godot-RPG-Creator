@@ -1,0 +1,75 @@
+[gd_scene load_steps=10 format=3 uid="uid://yq58jhw5uhf1"]
+
+[ext_resource type="Texture2D" uid="uid://oagj8xxxu65q" path="res://addons/CustomControls/Images/master_button_rounded_tab.png" id="1_ln6jt"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="2_klj00"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ml17y"]
+texture = ExtResource("1_ln6jt")
+texture_margin_left = 7.0
+texture_margin_top = 7.0
+texture_margin_right = 7.0
+texture_margin_bottom = 7.0
+region_rect = Rect2(0, 0, 60, 25)
+modulate_color = Color(0.66, 0.6534, 0.65351003, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_itlh1"]
+texture = ExtResource("1_ln6jt")
+texture_margin_left = 7.0
+texture_margin_top = 7.0
+texture_margin_right = 7.0
+texture_margin_bottom = 7.0
+region_rect = Rect2(0, 0, 60, 25)
+modulate_color = Color(0.9526532, 0.49303722, 0.5323511, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5tkkc"]
+texture = ExtResource("1_ln6jt")
+texture_margin_left = 7.0
+texture_margin_top = 7.0
+texture_margin_right = 7.0
+texture_margin_bottom = 7.0
+region_rect = Rect2(0, 0, 60, 25)
+modulate_color = Color(0.90607613, 0.55825835, 0.27199066, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0oti0"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_8ovvn"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gkug8"]
+atlas = ExtResource("2_klj00")
+region = Rect2(168, 240, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0421g"]
+atlas = ExtResource("2_klj00")
+region = Rect2(192, 240, 24, 24)
+
+[node name="Button" type="Button"]
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.26488, 0.08461995, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxTexture_ml17y")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_itlh1")
+theme_override_styles/hover = SubResource("StyleBoxTexture_5tkkc")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_0oti0")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_8ovvn")
+text = "TAB"
+
+[node name="Save" type="TextureButton" parent="."]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -24.0
+offset_top = -12.0
+offset_bottom = 12.0
+grow_horizontal = 0
+grow_vertical = 2
+tooltip_text = "Lock this part so that it cannot be changed when using random selection."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+toggle_mode = true
+texture_normal = SubResource("AtlasTexture_gkug8")
+texture_pressed = SubResource("AtlasTexture_0421g")

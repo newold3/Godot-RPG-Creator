@@ -1,0 +1,84 @@
+[gd_scene load_steps=9 format=3 uid="uid://cce7oe3b1jm21"]
+
+[ext_resource type="Script" uid="uid://chwvn5xkjjwcq" path="res://addons/rpg_character_creator/Scenes/NewEditor/part_button.gd" id="1_odex8"]
+[ext_resource type="Texture2D" uid="uid://oagj8xxxu65q" path="res://addons/CustomControls/Images/master_button_rounded_tab.png" id="2_d5udd"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="3_2j1k5"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2j1k5"]
+texture = ExtResource("2_d5udd")
+texture_margin_left = 7.0
+texture_margin_top = 7.0
+texture_margin_right = 7.0
+texture_margin_bottom = 7.0
+region_rect = Rect2(0, 0, 60, 25)
+modulate_color = Color(0.66, 0.6534, 0.65351003, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_psn43"]
+texture = ExtResource("2_d5udd")
+texture_margin_left = 7.0
+texture_margin_top = 7.0
+texture_margin_right = 7.0
+texture_margin_bottom = 7.0
+region_rect = Rect2(0, 0, 60, 25)
+modulate_color = Color(0.89584565, 0.5703121, 0.25672543, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hj7yg"]
+texture = ExtResource("2_d5udd")
+texture_margin_left = 7.0
+texture_margin_top = 7.0
+texture_margin_right = 7.0
+texture_margin_bottom = 7.0
+region_rect = Rect2(0, 0, 60, 25)
+modulate_color = Color(0.24540526, 0.73864347, 0.7391724, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_psn43"]
+atlas = ExtResource("3_2j1k5")
+region = Rect2(216, 168, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hj7yg"]
+atlas = ExtResource("3_2j1k5")
+region = Rect2(216, 240, 24, 24)
+
+[node name="PartButton" type="Control"]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 3
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -32.0
+offset_right = 32.0
+offset_bottom = 64.0
+grow_horizontal = 2
+focus_mode = 2
+mouse_default_cursor_shape = 2
+script = ExtResource("1_odex8")
+background_style = SubResource("StyleBoxTexture_2j1k5")
+selected_style = SubResource("StyleBoxTexture_psn43")
+hover_style = SubResource("StyleBoxTexture_hj7yg")
+
+[node name="Texture" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Save" type="TextureButton" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -24.0
+offset_bottom = 24.0
+grow_horizontal = 0
+tooltip_text = "Save this part to disk.
+
+[Note] You can assign it to any piece of equipment to upgrade that part on the character equipped with it, if it is compatible with this part."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_psn43")
+texture_hover = SubResource("AtlasTexture_hj7yg")

@@ -693,3 +693,5 @@ func hide_directory_extra_controls2() -> void:
 
 func _on_rebuild_cache_pressed() -> void:
 	FileCache.rebuild(true)
+	await FileCache.cache_setted
+	_refresh_view()

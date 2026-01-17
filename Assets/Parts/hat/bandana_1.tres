@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="RPGLPCEquipmentPart" load_steps=6 format=3 uid="uid://csq2p3yodmgf8"]
+
+[ext_resource type="Script" uid="uid://cqx1cnfjmgp73" path="res://addons/RPGData/ModulesRPG/rpg_lpc_palette.gd" id="1_860cq"]
+[ext_resource type="Script" uid="uid://der67xririmwh" path="res://addons/RPGData/ModulesRPG/rpg_lpc_equipment_part.gd" id="2_vplfw"]
+
+[sub_resource type="Resource" id="Resource_uot5s"]
+script = ExtResource("1_860cq")
+colors = PackedInt64Array(0, 0, 16, 118230271, 23, 185996799, 27, 320349439, 66, 304621311, 133, 558118911, 161, 693388287, 183, 643839487, 228, 796667135, 255, 1402286591)
+
+[sub_resource type="Resource" id="Resource_fa05i"]
+script = ExtResource("1_860cq")
+colors = PackedInt64Array(0, 0, 255, 487792383, 39, 807875327, 101, 673071615, 156, 841837311, 215, 1011461631, 239, 1181403647)
+
+[sub_resource type="Resource" id="Resource_k7rdu"]
+script = ExtResource("1_860cq")
+colors = PackedInt64Array()
+
+[resource]
+script = ExtResource("2_vplfw")
+config_path = "res://addons/rpg_character_creator/Data/gear/hat/bandana3.hat"
+part_id = "hat"
+body_type = "hf1"
+head_type = "hf1"
+equipment_preview = "res://Assets/Parts/hat/bandana_1_preview.png"
+name = "Bandana 3"
+front_texture = "res://addons/rpg_character_creator/textures/gear/hat/bandana/bandana3_f.png"
+palette1 = SubResource("Resource_uot5s")
+palette2 = SubResource("Resource_fa05i")
+palette3 = SubResource("Resource_k7rdu")

@@ -31,6 +31,8 @@ var _visibility_dirty: bool = false
 
 const ACTOR_BASE_SCENE = preload("res://addons/rpg_character_creator/Other/actor_base_scene.tscn")
 const GENERIC_LPC_BASE_SCENE = preload("res://addons/rpg_character_creator/Other/generic_lpc_base_scene.tscn")
+const PARTS_ROOT_DIR = "res://Assets/Parts"
+const PARTS_MANIFEST_PATH = PARTS_ROOT_DIR + "/parts_manifest.json"
 
 # Preview Parts
 const PREVIEW_SIZE = Vector2i(36, 36)
@@ -105,21 +107,36 @@ func _on_palette_changed(part_id: String, palettes: Dictionary) -> void:
 
 
 func _update_palette(part_id: String, palettes: Dictionary) -> void:
-	current_palettes[part_id] = palettes
-	var part_id_extra: String = ""
-	if part_id == "mainhand":
-		if current_character.character.mainhand in ["boomerang", "whip"]:
-			part_id_extra = "ammo"
-			current_palettes[part_id_extra] = palettes
-	elif part_id == "ammo":
-		if current_character.character.ammo in ["boomerang", "whip"]:
-			part_id_extra = "mainhand"
-			current_palettes[part_id_extra] = palettes
-			
-	if RPGDialogFunctions.there_are_any_dialog_open():
-		if not part_id_extra.is_empty():
-			rebuild_timer[part_id_extra] = 0.15
-		rebuild_timer[part_id] = 0.15
+	pass
+	#var textures = current_character.get_textures_from_part(part_id)
+	#if textures.front:
+		#textures.front.palette1.blend_color = palettes.blend_color1
+		#textures.front.palette2.blend_color = palettes.blend_color2
+		#textures.front.palette3.blend_color = palettes.blend_color3
+		#textures.front.palette1.lightness = palettes.lightness1
+		#textures.front.palette2.lightness = palettes.lightness2
+		#textures.front.palette3.lightness = palettes.lightness3
+		#textures.front.palette1.colors.clear()
+		#textures.front.palette2.colors.clear()
+		#textures.front.palette3.colors.clear()
+		#textures.front.palette1.colors + palettes.palette1
+		#textures.front.palette2.colors + palettes.palette2
+		#textures.front.palette3.colors + palettes.palette3
+#
+	#if textures.back:
+		#textures.back.palette1.blend_color = palettes.blend_color1
+		#textures.back.palette2.blend_color = palettes.blend_color2
+		#textures.back.palette3.blend_color = palettes.blend_color3
+		#textures.back.palette1.lightness = palettes.lightness1
+		#textures.back.palette2.lightness = palettes.lightness2
+		#textures.back.palette3.lightness = palettes.lightness3
+		#textures.front.palette1.colors.clear()
+		#textures.back.palette2.colors.clear()
+		#textures.back.palette3.colors.clear()
+		#textures.back.palette1.colors + palettes.palette1
+		#textures.back.palette2.colors + palettes.palette2
+		#textures.back.palette3.colors + palettes.palette3
+
 
 
 func _rebuild_icons_for_part(part_id: String) -> void:
@@ -1175,128 +1192,471 @@ func _on_import_data_pressed() -> void:
 	dialog.fill_mix_files(["characters", "events", "equipment_parts"])
 
 
+#func import_data(data_path: String) -> void:
+	#if !data_path:
+		#return
+		#
+	#var res = load(data_path)
+	#if not res:
+		#return
+#
+	#var gear_map = {
+		#"mask": %Mask, "hat": %Hat, "glasses": %GearFacial,
+		#"suit": %Suit, "jacket": %Jacket, "shirt": %Shirt,
+		#"gloves": %Gloves, "belt": %Belt, "pants": %Pants,
+		#"shoes": %Shoes, "back": %Back, "mainhand": %MainHand,
+		#"ammo": %Ammo, "offhand": %Offhand
+	#}
+	#
+	#var body_map = {
+		#"eyes": %Eyes, "wings": %Wings, "tail": %Tail, "horns": %Horns,
+		#"hair": %Hair, "hairadd": %HairAddon, "ears": %Ears, "nose": %Nose,
+		#"facial": %FacialHair, "add1": %BodyAddon1, "add2": %BodyAddon2, "add3": %BodyAddon3
+	#}
+#
+	#var get_id_from_config = func(config_path: String) -> String:
+		#if config_path.is_empty(): return "none"
+		#var f = FileAccess.open(config_path, FileAccess.READ)
+		#if f:
+			#var json = f.get_as_text()
+			#f.close()
+			#var obj = JSON.parse_string(json)
+			#return obj.get("id", "none")
+		#return "none"
+#
+	#var apply_part_to_ui = func(ui_node: Control, part_res: Resource, slot_id: String):
+		## 1. Obtener ID del item
+		#var item_id = "none"
+		#if part_res and not part_res.config_path.is_empty():
+			#item_id = get_id_from_config.call(part_res.config_path)
+		#
+		## print("Importing Part: ", slot_id, " ID: ", item_id) # DEBUG
+#
+		## 2. UI: Sincronizar Dropdown/OptionButton
+		#if ui_node is OptionButton:
+			#var found = false
+			## A) Intentar por Metadata (ID real)
+			#for i in ui_node.get_item_count():
+				#if ui_node.get_item_metadata(i) == item_id:
+					#ui_node.select(i)
+					#found = true
+					#break
+			## B) Intentar por Texto (Fallback)
+			#if not found:
+				#for i in ui_node.get_item_count():
+					#if ui_node.get_item_text(i) == item_id:
+						#ui_node.select(i)
+						#found = true
+						#break
+			## C) Si falla, seleccionar 'none' (normalmente índice 0)
+			#if not found: ui_node.select(0)
+#
+		## 3. UI: Actualizar ColorPickers
+		#if part_res:
+			#update_colors_for(slot_id, part_res.palette1, part_res.palette2, part_res.palette3)
+#
+		## ==========================================================
+		## 4. DATOS INTERNOS (EditorCharacterData)
+		## ==========================================================
+		#
+		## A) Actualizar ID en el diccionario plano
+		#if "character" in current_character and current_character.character is Dictionary:
+			#current_character.character[slot_id] = item_id
+#
+		## B) Mapeo de texturas (Slot -> Claves internas)
+		#var target_texture_keys = []
+		#
+		#var simple_map = {
+			#"body": "body_texture", "head": "head_texture", "eyes": "eyes_texture",
+			#"nose": "nose_texture", "ears": "ears_texture", "facial": "facial_texture",
+			#"hair": "hair_texture", "hairadd": "hairadd_texture", "horns": "horns_texture",
+			#"mask": "mask_texture", "hat": "hat_texture", "glasses": "glasses_texture",
+			#"suit": "suit_texture", "jacket": "jacket_texture", "shirt": "shirt_texture",
+			#"gloves": "gloves_texture", "belt": "belt_texture", "pants": "pants_texture",
+			#"shoes": "shoes_texture", "add1": "add1_texture", "add2": "add2_texture", "add3": "add3_texture"
+		#}
+		#
+		#if slot_id in simple_map:
+			#target_texture_keys.append(simple_map[slot_id])
+			#
+		## Mapeo complejo
+		#match slot_id:
+			#"mainhand": target_texture_keys.append_array(["mainhand_texture_front", "mainhand_texture_back"])
+			#"offhand": target_texture_keys.append_array(["offhand_texture_front", "offhand_texture_back"])
+			#"ammo": target_texture_keys.append_array(["ammo_texture_front", "ammo_texture_back"])
+			#"wings": target_texture_keys.append_array(["wings_texture_front", "wings_texture_back"])
+			#"tail": target_texture_keys.append_array(["tail_texture_front", "tail_texture_back"])
+			#"back": target_texture_keys.append_array(["back_texture_front", "back_texture_back"])
+#
+		## C) Aplicar datos a las texturas
+		#for key in target_texture_keys:
+			#if not current_character.textures.has(key): continue
+			#
+			#var char_part = current_character.textures[key]
+			#
+			#if part_res and item_id != "none":
+				## Definir path
+				#var is_front = key.ends_with("_front")
+				#char_part.path = part_res.front_texture if is_front else part_res.back_texture
+				#char_part.part_id = part_res.part_id
+				#
+				## Copiar Paletas (Valores RAW)
+				#char_part.palette1.colors = part_res.palette1.colors.duplicate()
+				#char_part.palette1.blend_color = part_res.palette1.blend_color
+				#char_part.palette1.lightness = part_res.palette1.lightness
+				#
+				#char_part.palette2.colors = part_res.palette2.colors.duplicate()
+				#char_part.palette2.blend_color = part_res.palette2.blend_color
+				#char_part.palette2.lightness = part_res.palette2.lightness
+				#
+				#char_part.palette3.colors = part_res.palette3.colors.duplicate()
+				#char_part.palette3.blend_color = part_res.palette3.blend_color
+				#char_part.palette3.lightness = part_res.palette3.lightness
+			#else:
+				#char_part.path = ""
+#
+		#if has_method("_update_texture"):
+			#call("_update_texture", slot_id)
+		#elif has_method("update_texture"):
+			#call("update_texture", slot_id)
+#
+		#update_colors_for(slot_id, part_res.palette1, part_res.palette2, part_res.palette3)
+#
+	#if res is IngameCostume:
+		#for key in body_map.keys():
+			#var part = res.body_parts.get(key)
+			#apply_part_to_ui.call(body_map[key], part, key)
+			#
+		#for key in gear_map.keys():
+			#var part = res.equipment_parts.get(key)
+			#apply_part_to_ui.call(gear_map[key], part, key)
+#
+		#if res.body_parts.body:
+			#update_colors_for("body", res.body_parts.body.palette1, res.body_parts.body.palette2, res.body_parts.body.palette3)
+		#
+		#update_items_visibility()
+#
+	#elif res is RPGLPCEquipmentData:
+		#var mode = res.get("application_mode")
+		#if mode == null: mode = 0 # Default Strict
+		#
+		#var weapon_slots = ["mainhand", "offhand", "ammo"]
+		#
+		#for key in gear_map.keys():
+			#var part = res.get(key)
+			#var has_part = part and part is RPGLPCEquipmentPart and not part.config_path.is_empty()
+			#
+			#if has_part:
+				#apply_part_to_ui.call(gear_map[key], part, key)
+			#else:
+				#match mode:
+					#0: # Strict
+						#gear_map[key].select("none")
+					#1: # Hybrid
+						#if not key in weapon_slots:
+							#gear_map[key].select("none")
+					#2: # Partial
+						#pass
+		#
+		#update_items_visibility()
+#
+	#elif res is RPGLPCEquipmentPart:
+		#if res.body_type == current_character.character["body_type"]: # Simple check
+			#if res.part_id in gear_map:
+				#apply_part_to_ui.call(gear_map[res.part_id], res, res.part_id)
+				#update_items_visibility()
+		#else:
+			#printerr("Character Creator: Part body type mismatch.")
+#
+	#elif res is RPGLPCCharacter:
+		#var parent = get_parent().get_parent()
+		#if "confirm_dialog_options" in parent and parent.confirm_dialog_options is RPGCharacterCreationOptions:
+			#var options = parent.confirm_dialog_options
+			#var actor_name = data_path.get_file().get_basename()
+			#options.name = actor_name
+			#options.character_folder = data_path.get_base_dir() + "/"
+			#options.equipment_folder = options.character_folder
+#
+		#var palettes_node = %Palettes
+		#palettes_node.select(0)
+		#for i in palettes_node.get_item_count():
+			#if palettes_node.get_item_metadata(i) == res.palette:
+				#palettes_node.select(i)
+				#break
+				#
+		#var race_node = %Races
+		#race_node.select(0)
+		#for i in race_node.get_item_count():
+			#if race_node.get_item_metadata(i) == res.race:
+				#race_node.select(i)
+				#break
+		#race_node.item_selected.emit(race_node.get_selected())
+		#
+		#%Gender.select(res.gender)
+		#%Body.select(res.body_type)
+#
+		#if res.body_parts.body:
+			#update_colors_for("body", res.body_parts.body.palette1, res.body_parts.body.palette2, res.body_parts.body.palette3)
+#
+		#for key in body_map.keys():
+			#var part = res.body_parts.get(key)
+			#apply_part_to_ui.call(body_map[key], part, key)
+#
+		#for key in gear_map.keys():
+			#var part = res.equipment_parts.get(key)
+			#apply_part_to_ui.call(gear_map[key], part, key)
+#
+		#update_items_visibility()
+		#
+		#res.unreference()
+
+
 func import_data(data_path: String) -> void:
 	if !data_path:
 		return
 		
 	var res = load(data_path)
+	if not res:
+		return
 
 	if res is RPGLPCEquipmentPart:
-		if res.body_type == current_character.character["body_type"] and res.head_type == current_character.character["head_type"]:
-			var config_path: String = res.config_path
-			var f = FileAccess.open(config_path, FileAccess.READ)
-			var json: String = f.get_as_text()
-			f.close()
-			var obj: Dictionary = JSON.parse_string(json)
-			var parts = {
-				"mask": %Mask,
-				"hat": %Hat,
-				"glasses": %GearFacial,
-				"suit": %Suit,
-				"jacket": %Jacket,
-				"shirt": %Shirt,
-				"gloves": %Gloves,
-				"belt": %Belt,
-				"pants": %Pants,
-				"shoes": %Shoes,
-				"back": %Back,
-				"mainhand": %MainHand,
-				"ammo": %Ammo,
-				"offhand": %Offhand
-			}
-			parts[res.part_id].select(obj.get("id", "none"))
-			update_colors_for(res.part_id, res.palette1, res.palette2, res.palette3)
-			update_items_visibility()
-		else:
-			printerr("The current character does not support this piece of equipment")
+		_import_single_part(res)
 	elif res is RPGLPCCharacter:
-		var parent = get_parent().get_parent()
-		if "confirm_dialog_options" in parent and parent.confirm_dialog_options is RPGCharacterCreationOptions:
-			var options: RPGCharacterCreationOptions = parent.confirm_dialog_options
-			var actor_name = data_path.get_file().trim_suffix("_data.tres")
-			options.name = actor_name
-			options.character_folder = data_path.get_base_dir() + "/"
-			options.equipment_folder = options.character_folder
-		# Set Palette
-		var node = %Palettes
-		node.select(0)
-		for i in node.get_item_count():
-			if node.get_item_metadata(i) == res.palette:
-				node.select(i)
-				break
-		# Set Race
-		node = %Races
-		node.select(0)
-		for i in node.get_item_count():
-			if node.get_item_metadata(i) == res.race:
-				node.select(i)
-				break
-		node.item_selected.emit(node.get_selected())
-		# Set Gender
-		node = %Gender
-		node.select(res.gender)
-		# Set Body
-		node = %Body
-		node.select(res.body_type)
-		var palette_data = {
-			"c1a" = res.body_parts.body.palette1,
-			"c1b" = res.body_parts.body.palette2,
-			"c1c" = res.body_parts.body.palette3,
-			"c2a" = res.body_parts.head.palette1,
-			"c2b" = res.body_parts.head.palette2,
-			"c2c" = res.body_parts.head.palette3,
-			"c3a" = res.body_parts.nose.palette1,
-			"c3b" = res.body_parts.nose.palette2,
-			"c3c" = res.body_parts.nose.palette3,
-			"c4a" = res.body_parts.ears.palette1,
-			"c4b" = res.body_parts.ears.palette2,
-			"c4c" = res.body_parts.ears.palette3
-		}
-		var type_id = \
-			"body" if palette_data.c1a.colors else \
-			"head" if palette_data.c2a.colors else \
-			"nose" if palette_data.c3a.colors else \
-			"ears"
-		var current_var_id = \
-			1 if type_id == "body" else \
-			2 if type_id == "head" else \
-			3 if type_id == "nose" else \
-			4
-		var pal1 = palette_data["c%sa" % current_var_id]
-		var pal2 = palette_data["c%sb" % current_var_id]
-		var pal3 = palette_data["c%sc" % current_var_id]
-		update_colors_for("body", pal1, pal2, pal3)
-		# Set Body Parts
-		var parts = [%Eyes, %Wings, %Tail, %Horns, %Hair, %HairAddon, %Ears, %Nose, %FacialHair, %BodyAddon1, %BodyAddon2, %BodyAddon3]
-		var ids = ["eyes", "wings", "tail", "horns", "hair", "hairadd", "ears", "nose", "facial", "add1", "add2", "add3"]
-		for i in parts.size():
-			var id: String = ids[i]
-			var part: RPGLPCBodyPart = res.body_parts.get(id)
-			var config_path: String = part.config_path
-			var f = FileAccess.open(config_path, FileAccess.READ)
-			var json: String = f.get_as_text()
-			f.close()
-			var obj: Dictionary = JSON.parse_string(json)
-			parts[i].select(obj.get("id", "none"))
-			update_colors_for(id, part.palette1, part.palette2, part.palette3)
-		# Set Gear Parts
-		parts = [%Mask, %Hat, %GearFacial, %Suit, %Jacket, %Shirt, %Gloves, %Belt, %Pants, %Shoes, %Back, %MainHand, %Ammo, %Offhand]
-		ids = ["mask", "hat", "glasses", "suit", "jacket", "shirt", "gloves", "belt", "pants", "shoes", "back", "mainhand", "ammo", "offhand"]
-		for i in parts.size():
-			var id: String = ids[i]
-			var part: RPGLPCEquipmentPart = res.equipment_parts.get(id)
-			var config_path: String = part.config_path
-			var f = FileAccess.open(config_path, FileAccess.READ)
-			var json: String = f.get_as_text()
-			f.close()
-			var obj: Dictionary = JSON.parse_string(json)
-			parts[i].select(obj.get("id", "none"))
+		_import_full_character(res)
+	elif res is RPGLPCEquipmentData:
+		_import_equipment_set(res)
+	elif res is IngameCostume:
+		_import_ingame_costume(res)
+		
+	if res is RefCounted:
+		res.unreference()
+
+
+func _get_id_from_config(config_path: String) -> String:
+	if config_path.is_empty():
+		return "none"
+	var f = FileAccess.open(config_path, FileAccess.READ)
+	if f:
+		var json_text = f.get_as_text()
+		f.close()
+		var obj = JSON.parse_string(json_text)
+		if obj:
+			return obj.get("id", "none")
+	return "none"
+
+
+func _is_item_compatible_with_current_body(slot_id: String, item_id: String) -> bool:
+	if not data.gear.has(slot_id): return false
+	if not data.gear[slot_id].has(item_id): return false
+	
+	var item_config = data.gear[slot_id][item_id]
+	
+	if not "textures" in item_config:
+		return true
+		
+	var current_body = current_character.character["body_type"]
+	var current_head = current_character.character["head_type"]
+	
+	for tex in item_config.textures:
+		var body_match = (not tex.has("body")) or (tex.body == current_body)
+		var head_match = (not tex.has("head")) or (tex.head == current_head)
+		
+		if body_match and head_match:
+			return true
+			
+	return false
+
+
+func _updata_colors_and_select_item(res: RPGLPCEquipmentPart) -> void:
+	var parts = {
+		"mask": %Mask, "hat": %Hat, "glasses": %GearFacial, "suit": %Suit,
+		"jacket": %Jacket, "shirt": %Shirt, "gloves": %Gloves, "belt": %Belt,
+		"pants": %Pants, "shoes": %Shoes, "back": %Back,"mainhand": %MainHand,
+		"ammo": %Ammo, "offhand": %Offhand
+	}
+
+	var config_path: String = res.config_path
+	var f = FileAccess.open(config_path, FileAccess.READ)
+	var json: String = f.get_as_text()
+	f.close()
+	var obj: Dictionary = JSON.parse_string(json)
+	update_colors_for(res.part_id, res.palette1, res.palette2, res.palette3)
+	parts[res.part_id].select(obj.get("id", "none"))
+	update_items_visibility()
+
+
+func _import_single_part(res: RPGLPCEquipmentPart) -> void:
+	var parts = {
+		"mask": %Mask, "hat": %Hat, "glasses": %GearFacial,
+		"suit": %Suit, "jacket": %Jacket, "shirt": %Shirt,
+		"gloves": %Gloves, "belt": %Belt, "pants": %Pants,
+		"shoes": %Shoes, "back": %Back, "mainhand": %MainHand,
+		"ammo": %Ammo, "offhand": %Offhand
+	}
+	
+	if not res.part_id in parts:
+		return
+
+	var item_id = _get_id_from_config(res.config_path)
+	if item_id == "none":
+		return
+
+	if not _is_item_compatible_with_current_body(res.part_id, item_id):
+		printerr("Item '%s' (Slot: %s) not compatible with current body type." % [item_id, res.part_id])
+		return
+
+	_updata_colors_and_select_item(res)
+
+
+func _import_full_character(res: RPGLPCCharacter) -> void:
+	# 1. Set Global Stats (Palette, Race, Gender, Body)
+	var palettes_node = %Palettes
+	palettes_node.select(0)
+	for i in palettes_node.get_item_count():
+		if palettes_node.get_item_metadata(i) == res.palette:
+			palettes_node.select(i)
+			break
+			
+	var race_node = %Races
+	race_node.select(0)
+	for i in race_node.get_item_count():
+		if race_node.get_item_metadata(i) == res.race:
+			race_node.select(i)
+			break
+	race_node.item_selected.emit(race_node.get_selected())
+	
+	%Gender.select(res.gender)
+	%Body.select(res.body_type)
+
+	# 2. Extract and Apply Base Body Colors
+	# (Logic preserved exactly from your snippet)
+	var palette_data = {
+		"c1a": res.body_parts.body.palette1, "c1b": res.body_parts.body.palette2, "c1c": res.body_parts.body.palette3,
+		"c2a": res.body_parts.head.palette1, "c2b": res.body_parts.head.palette2, "c2c": res.body_parts.head.palette3,
+		"c3a": res.body_parts.nose.palette1, "c3b": res.body_parts.nose.palette2, "c3c": res.body_parts.nose.palette3,
+		"c4a": res.body_parts.ears.palette1, "c4b": res.body_parts.ears.palette2, "c4c": res.body_parts.ears.palette3
+	}
+	var type_id = "body"
+	if not palette_data.c1a.colors:
+		if palette_data.c2a.colors: type_id = "head"
+		elif palette_data.c3a.colors: type_id = "nose"
+		else: type_id = "ears"
+		
+	var current_var_id = 1
+	if type_id == "head": current_var_id = 2
+	elif type_id == "nose": current_var_id = 3
+	elif type_id == "ears": current_var_id = 4
+	
+	var pal1 = palette_data["c%sa" % current_var_id]
+	var pal2 = palette_data["c%sb" % current_var_id]
+	var pal3 = palette_data["c%sc" % current_var_id]
+	
+	update_colors_for("body", pal1, pal2, pal3)
+
+	# 3. Apply Body Parts
+	var body_nodes = [%Eyes, %Wings, %Tail, %Horns, %Hair, %HairAddon, %Ears, %Nose, %FacialHair, %BodyAddon1, %BodyAddon2, %BodyAddon3]
+	var body_ids = ["eyes", "wings", "tail", "horns", "hair", "hairadd", "ears", "nose", "facial", "add1", "add2", "add3"]
+	
+	for i in body_nodes.size():
+		var id = body_ids[i]
+		var part = res.body_parts.get(id)
+		if part:
+			var id_name = _get_id_from_config(part.config_path)
+			body_nodes[i].select(id_name)
 			update_colors_for(id, part.palette1, part.palette2, part.palette3)
 
-		# Update items visibility
-		update_items_visibility()
+	# 4. Apply Gear Parts
+	var gear_nodes = [%Mask, %Hat, %GearFacial, %Suit, %Jacket, %Shirt, %Gloves, %Belt, %Pants, %Shoes, %Back, %MainHand, %Ammo, %Offhand]
+	var gear_ids = ["mask", "hat", "glasses", "suit", "jacket", "shirt", "gloves", "belt", "pants", "shoes", "back", "mainhand", "ammo", "offhand"]
+	
+	for i in gear_nodes.size():
+		var id = gear_ids[i]
+		var part = res.equipment_parts.get(id)
+		if part:
+			var id_name = _get_id_from_config(part.config_path)
+			gear_nodes[i].select(id_name)
+			update_colors_for(id, part.palette1, part.palette2, part.palette3)
+
+	update_items_visibility()
+
+
+func _import_equipment_set(res: RPGLPCEquipmentData) -> void:
+	var gear_nodes = {
+		"mask": %Mask, "hat": %Hat, "glasses": %GearFacial,
+		"suit": %Suit, "jacket": %Jacket, "shirt": %Shirt,
+		"gloves": %Gloves, "belt": %Belt, "pants": %Pants,
+		"shoes": %Shoes, "back": %Back, "mainhand": %MainHand,
+		"ammo": %Ammo, "offhand": %Offhand
+	}
+	
+	# Determine Mode (Default Strict = 0)
+	var mode = res.get("application_mode")
+	if mode == null: mode = 0
+	var weapon_slots = ["mainhand", "offhand", "ammo"]
+
+	for id in gear_nodes.keys():
+		var part = res.get(id)
+		var has_part = part and part is RPGLPCEquipmentPart and not part.config_path.is_empty()
 		
-		res.unreference()
+		if has_part:
+			# Apply Part
+			var id_name = _get_id_from_config(part.config_path)
+			update_colors_for(id, part.palette1, part.palette2, part.palette3)
+			gear_nodes[id].select(id_name)
+		else:
+			# Handle Missing Part based on Mode
+			match mode:
+				0: # Strict (Clear everything not in set)
+					gear_nodes[id].select("none")
+				1: # Hybrid (Clear clothes, keep weapons)
+					if not id in weapon_slots:
+						gear_nodes[id].select("none")
+				2: # Partial (Do nothing)
+					pass
+					
+	update_items_visibility()
+
+
+func _import_ingame_costume(res: IngameCostume) -> void:
+	# Logic is similar to full character but we don't set Race/Gender/Global Palette
+	# We only strictly apply the visual parts stored in the costume
+	
+	# 1. Apply Body Parts
+	var body_nodes = {
+		"eyes": %Eyes, "wings": %Wings, "tail": %Tail, "horns": %Horns, 
+		"hair": %Hair, "hairadd": %HairAddon, "ears": %Ears, "nose": %Nose, 
+		"facial": %FacialHair, "add1": %BodyAddon1, "add2": %BodyAddon2, "add3": %BodyAddon3
+	}
+	
+	for id in body_nodes.keys():
+		var part = res.body_parts.get(id)
+		if part:
+			var id_name = _get_id_from_config(part.config_path)
+			update_colors_for(id, part.palette1, part.palette2, part.palette3)
+			body_nodes[id].select(id_name)
+			
+	# 2. Apply Gear Parts
+	var gear_nodes = {
+		"mask": %Mask, "hat": %Hat, "glasses": %GearFacial,
+		"suit": %Suit, "jacket": %Jacket, "shirt": %Shirt,
+		"gloves": %Gloves, "belt": %Belt, "pants": %Pants,
+		"shoes": %Shoes, "back": %Back, "mainhand": %MainHand,
+		"ammo": %Ammo, "offhand": %Offhand
+	}
+
+	for id in gear_nodes.keys():
+		var part = res.equipment_parts.get(id)
+		if part:
+			var id_name = _get_id_from_config(part.config_path)
+			update_colors_for(id, part.palette1, part.palette2, part.palette3)
+			gear_nodes[id].select(id_name)
+
+	# 3. Base Body Color (if stored in body_parts.body)
+	if res.body_parts.body:
+		var p = res.body_parts.body
+		update_colors_for("body", p.palette1, p.palette2, p.palette3)
+
+	update_items_visibility()
 
 
 func update_colors_for(part_id: String, pal1: RPGLPCPalette, pal2: RPGLPCPalette, pal3: RPGLPCPalette, clone_palettes: bool = true) -> void:
@@ -1330,7 +1690,10 @@ func update_colors_for(part_id: String, pal1: RPGLPCPalette, pal2: RPGLPCPalette
 		"lightness3": pal3.lightness,
 		"palette1": pal1.colors,
 		"palette2": pal2.colors,
-		"palette3": pal3.colors
+		"palette3": pal3.colors,
+		"original_palette1": pal1.colors,
+		"original_palette2": pal2.colors,
+		"original_palette3": pal3.colors
 	}
 	_on_palette_changed(part_id, palette_data)
 	
@@ -1374,9 +1737,20 @@ func _on_save(options: RPGCharacterCreationOptions) -> void:
 		await _save_event_scene(options, character_data)
 	
 	if options.create_equipment_parts:
+		_update_progress(20)
 		await _save_equipment_parts(options, character_data)
 	
+	if options.create_equipment_set:
+		_update_progress(30)
+		await _save_equipment_set_process(options, character_data)
+	
+	if options.create_ingame_costume:
+		_update_progress(40)
+		await _save_ingame_costume_process(options, character_data)
+	
 	_cleanup_saving()
+	
+	EditorInterface.get_resource_filesystem().scan()
 
 
 # Setup Methods
@@ -1802,6 +2176,9 @@ func _save_event_scene_file(scn, scene_file_path: String, script_file_path: Stri
 
 # Equipment Parts Saving
 func _save_equipment_parts(options: RPGCharacterCreationOptions, character_data: RPGLPCCharacter) -> void:
+	if !DirAccess.dir_exists_absolute(PARTS_ROOT_DIR):
+		DirAccess.make_dir_recursive_absolute(PARTS_ROOT_DIR)
+
 	var keys = ["mask", "hat", "glasses", "suit", "jacket", "shirt", "gloves", "belt", "pants", "shoes", "back", "mainhand", "offhand", "ammo"]
 	var perc = 70.0 / keys.size()
 	
@@ -1810,10 +2187,10 @@ func _save_equipment_parts(options: RPGCharacterCreationOptions, character_data:
 		if options.save_parts[key] == false: 
 			continue
 		
-		await _save_equipment_part(key, options.equipment_folder, character_data)
+		await _save_equipment_part(key, PARTS_ROOT_DIR, character_data)
 
 
-func _save_equipment_part(key: String, equipment_folder: String, character_data: RPGLPCCharacter) -> void:
+func _save_equipment_part(key: String, _equipment_folder: String, character_data: RPGLPCCharacter) -> void:
 	_prepare_character_for_equipment_part(key)
 	await get_tree().process_frame
 	await RenderingServer.frame_post_draw
@@ -1827,7 +2204,7 @@ func _save_equipment_part(key: String, equipment_folder: String, character_data:
 	if !img:
 		return
 	
-	_save_equipment_part_files(key, equipment_folder, equipment_part_data, img)
+	_save_equipment_part_files_hashed(key, equipment_part_data, img)
 
 
 func _prepare_character_for_equipment_part(key: String) -> void:
@@ -1844,24 +2221,150 @@ func _should_save_equipment_part(key: String) -> bool:
 	return current_character.character[key] and current_character.character[key].to_lower() != "none"
 
 
-func _create_equipment_part_for_saving(key: String, character_data: RPGLPCCharacter) -> RPGLPCEquipmentPart:
-	print(key)
-	var equipment_data = data.gear[key][current_character.character[key]]
-	var texture_back_data: CharacterPart = current_character.textures.get(key + "_texture_back", null)
-	var texture_front_data: CharacterPart = _get_front_texture_data(key)
+func _create_equipment_part_for_saving(slot_id: String, character_data: RPGLPCCharacter) -> RPGLPCEquipmentPart:
+	var original_part = character_data.equipment_parts.get(slot_id)
+	if original_part == null: return null
+
+	var new_part = original_part.duplicate()
 	
-	var equipment_part = RPGLPCEquipmentPart.new()
-	equipment_part.part_id = key
-	equipment_part.name = equipment_data.name
-	equipment_part.is_large_texture = texture_front_data.is_large_texture
-	equipment_part.body_type = character_data.body_type
-	equipment_part.head_type = character_data.head_type
-	equipment_part.config_path = equipment_data.config_path
 	
-	_set_textures(equipment_part, texture_back_data, texture_front_data)
-	_set_equipment_part_palettes(equipment_part, texture_front_data, texture_back_data)
+	var texture_key = _get_representative_texture_key(slot_id)
+	if "textures" in current_character and current_character.textures.has(texture_key):
+		var visual_data = current_character.textures[texture_key]
+		new_part.palette1.colors = visual_data.palette1.colors.duplicate()
+		new_part.palette2.colors = visual_data.palette2.colors.duplicate()
+		new_part.palette3.colors = visual_data.palette3.colors.duplicate()
+		print("SAVING [", slot_id, "]: User didn't modify colors, taking from visual memory.")
+
+	return new_part
+
+# Helper necesario para saber qué textura mirar (Front vs Back vs Normal)
+func _get_representative_texture_key(slot_id: String) -> String:
+	var simple_map = {
+		"mask": "mask_texture", "hat": "hat_texture", "glasses": "glasses_texture",
+		"suit": "suit_texture", "jacket": "jacket_texture", "shirt": "shirt_texture",
+		"gloves": "gloves_texture", "belt": "belt_texture", "pants": "pants_texture",
+		"shoes": "shoes_texture", 
+		# Items complejos: usamos la capa frontal como referencia de color
+		"back": "back_texture_front", 
+		"mainhand": "mainhand_texture_front", 
+		"ammo": "ammo_texture_front", 
+		"offhand": "offhand_texture_front",
+		"wings": "wings_texture_front",
+		"tail": "tail_texture_front",
+		# Partes del cuerpo
+		"body": "body_texture", "eyes": "eyes_texture", "hair": "hair_texture"
+	}
 	
-	return equipment_part
+	if slot_id in simple_map:
+		return simple_map[slot_id]
+	
+	# Fallback genérico
+	return slot_id + "_texture"
+
+
+func _save_equipment_set_process(options: RPGCharacterCreationOptions, character_data: RPGLPCCharacter) -> void:
+	var set_name = options.name + "_set"
+	
+	var folder = PARTS_ROOT_DIR.path_join("Sets")
+	
+	if not DirAccess.dir_exists_absolute(folder):
+		DirAccess.make_dir_recursive_absolute(folder)
+	
+	if not folder.ends_with("/"): folder += "/"
+	
+	var image_path = folder + set_name + "_preview.png"
+	var resource_path = folder + set_name + ".tres"
+	
+	_prepare_character_for_set_preview()
+	await get_tree().process_frame
+	await RenderingServer.frame_post_draw
+	
+	var img = await _capture_set_preview_image()
+	if img:
+		img.save_png(image_path)
+	
+	var set_resource = _create_multipart_resource(character_data)
+	ResourceSaver.save(set_resource, resource_path)
+
+
+func _save_ingame_costume_process(options: RPGCharacterCreationOptions, character_data: RPGLPCCharacter) -> void:
+	var set_name = options.name + "_costume"
+	
+	var folder = PARTS_ROOT_DIR.path_join("Costumes")
+	
+	if not DirAccess.dir_exists_absolute(folder):
+		DirAccess.make_dir_recursive_absolute(folder)
+		
+	if not folder.ends_with("/"): folder += "/"
+	
+	var resource_path = folder + set_name + ".tres"
+	var image_path = folder + set_name + "_preview.png"
+
+	var costume = IngameCostume.new()
+	costume.body_parts = character_data.body_parts.duplicate(true)
+	costume.equipment_parts = character_data.equipment_parts.duplicate(true)
+	costume.hidden_items = character_data.hidden_items.duplicate()
+	
+	ResourceSaver.save(costume, resource_path)
+	
+	%EditorCharacter.reset_animation(%EditorCharacter.DIRECTIONS.DOWN)
+	await get_tree().process_frame
+	await RenderingServer.frame_post_draw
+	
+	var img2: Image = %EditorCharacter.get_full_character()
+	var used_rect = img2.get_used_rect()
+	if used_rect.size != Vector2i.ZERO:
+		var img = Image.create(used_rect.size.x, used_rect.size.y, true, img2.get_format())
+		img.blit_rect(img2, used_rect, Vector2.ZERO)
+		img.resize(img.get_width() * 2, img.get_height() * 2, Image.INTERPOLATE_NEAREST)
+		img.save_png(image_path)
+
+
+func _prepare_character_for_set_preview() -> void:
+	%EditorCharacter.hide_all()
+	%EditorCharacter.reset_animation(%EditorCharacter.DIRECTIONS.DOWN)
+	
+	var gear_keys = ["mask", "hat", "glasses", "suit", "jacket", "shirt", "gloves", "belt", "pants", "shoes", "back", "mainhand", "offhand", "ammo"]
+	
+	for key in gear_keys:
+		if current_character.character.get(key, "none") != "none":
+			%EditorCharacter.show_parts_with_id(key)
+
+
+func _capture_set_preview_image() -> Image:
+	await get_tree().process_frame
+	await RenderingServer.frame_post_draw
+	
+	var img2: Image = %EditorCharacter.get_full_character()
+	var used_rect = img2.get_used_rect()
+	
+	if used_rect.size == Vector2i.ZERO:
+		return null
+	
+	var img = Image.create(used_rect.size.x, used_rect.size.y, true, img2.get_format())
+	img.blit_rect(img2, used_rect, Vector2.ZERO)
+	
+	img.resize(img.get_width() * 2, img.get_height() * 2, Image.INTERPOLATE_NEAREST)
+	
+	return img
+
+
+func _create_multipart_resource(character_data: RPGLPCCharacter) -> RPGLPCEquipmentData:
+	var multipart = RPGLPCEquipmentData.new()
+	var gear_keys = ["mask", "hat", "glasses", "suit", "jacket", "shirt", "gloves", "belt", "pants", "shoes", "back", "mainhand", "offhand", "ammo"]
+	
+	for key in gear_keys:
+		var item_id = current_character.character.get(key, "none")
+		
+		if item_id == "none" or item_id == "":
+			continue
+			
+		var part_resource = _create_equipment_part_for_saving(key, character_data)
+		
+		multipart.set(key, part_resource)
+		
+	return multipart
 
 
 func _set_equipment_part_palettes(equipment_part: RPGLPCEquipmentPart, texture_front_data: CharacterPart, texture_back_data: CharacterPart) -> void:
@@ -1926,13 +2429,83 @@ func _capture_ammo_image(key: String) -> Image:
 	return img
 
 
-func _save_equipment_part_files(key: String, equipment_folder: String, equipment_part: RPGLPCEquipmentPart, img: Image) -> void:
-	var equipment_name = _clean_equipment_name(equipment_part.name)
-	var file_paths = _generate_unique_equipment_paths(key, equipment_folder, equipment_name)
+func _save_equipment_part_files_hashed(key: String, equipment_part: RPGLPCEquipmentPart, img: Image) -> void:
+	# 1. Setup specific part folder (e.g., res://Assets/Parts/helmet/)
+	var part_folder = PARTS_ROOT_DIR.path_join(key)
+	if !DirAccess.dir_exists_absolute(part_folder):
+		DirAccess.make_dir_recursive_absolute(part_folder)
+
+	# 2. Generate Hash based on colors
+	var color_hash = _generate_equipment_hash(equipment_part)
+
+	# 3. Manage Manifest
+	var manifest = _load_and_clean_manifest()
+	var final_file_path = ""
+	var final_image_path = ""
+
+	if manifest.has(color_hash):
+		# Hash exists: Overwrite existing file
+		final_file_path = manifest[color_hash]
+		final_image_path = final_file_path.replace(".tres", "_preview.png")
+	else:
+		# Hash is new: Generate sequential name
+		var equipment_name = _clean_equipment_name(equipment_part.name)
+		var paths = _generate_sequential_paths(part_folder, equipment_name)
+		final_file_path = paths.file_path
+		final_image_path = paths.image_path
+		
+		# Update Manifest
+		manifest[color_hash] = final_file_path
+		_save_manifest(manifest)
+
+	# 4. Save Files
+	img.save_png(final_image_path)
+	equipment_part.equipment_preview = final_image_path
+	ResourceSaver.save(equipment_part, final_file_path)
+
+
+func _generate_equipment_hash(part: RPGLPCEquipmentPart) -> String:
+	# Create a unique string based on the part name and all color arrays
+	var raw_data = part.name + part.part_id
 	
-	img.save_png(file_paths.image_path)
-	equipment_part.equipment_preview = file_paths.image_path
-	ResourceSaver.save(equipment_part, file_paths.file_path)
+	raw_data += str(part.palette1.colors)
+	raw_data += str(part.palette2.colors)
+	raw_data += str(part.palette3.colors)
+	
+	return raw_data.md5_text()
+
+
+func _load_and_clean_manifest() -> Dictionary:
+	var manifest = {}
+	
+	if FileAccess.file_exists(PARTS_MANIFEST_PATH):
+		var file = FileAccess.open(PARTS_MANIFEST_PATH, FileAccess.READ)
+		var text = file.get_as_text()
+		manifest = JSON.parse_string(text)
+		if manifest == null:
+			manifest = {}
+		file.close()
+
+	# Auto-clean: Remove entries where files no longer exist
+	var keys_to_remove = []
+	for hash_key in manifest.keys():
+		var path = manifest[hash_key]
+		if !FileAccess.file_exists(path):
+			keys_to_remove.append(hash_key)
+	
+	if not keys_to_remove.is_empty():
+		for k in keys_to_remove:
+			manifest.erase(k)
+		_save_manifest(manifest)
+		
+	return manifest
+
+
+func _save_manifest(manifest: Dictionary) -> void:
+	var file = FileAccess.open(PARTS_MANIFEST_PATH, FileAccess.WRITE)
+	if file:
+		var json_string = JSON.stringify(manifest, "\t")
+		file.store_string(json_string)
 
 
 func _clean_equipment_name(name: String) -> String:
@@ -1940,17 +2513,19 @@ func _clean_equipment_name(name: String) -> String:
 	return equipment_name.replace("(", "").replace(")", "").replace("/", "").replace("\\", "")
 
 
-func _generate_unique_equipment_paths(key: String, equipment_folder: String, equipment_name: String) -> Dictionary:
+func _generate_sequential_paths(folder: String, base_name: String) -> Dictionary:
 	var id = 1
-	var image_name = equipment_name + str(id)
-	var image_path = equipment_folder + key + "_" + image_name + "_preview.png"
-	var file_path = equipment_folder + key + "_" + image_name + ".tres"
+	var file_path = ""
+	var image_path = ""
 	
-	while FileAccess.file_exists(image_path) or FileAccess.file_exists(file_path):
+	while true:
+		var suffix = "_" + str(id)
+		image_path = folder.path_join(base_name + suffix + "_preview.png")
+		file_path = folder.path_join(base_name + suffix + ".tres")
+		
+		if !FileAccess.file_exists(file_path):
+			break
 		id += 1
-		image_name = equipment_name + str(id)
-		image_path = equipment_folder + key + "_" + image_name + "_preview.png"
-		file_path = equipment_folder + key + "_" + image_name + ".tres"
 	
 	return {"image_path": image_path, "file_path": file_path}
 

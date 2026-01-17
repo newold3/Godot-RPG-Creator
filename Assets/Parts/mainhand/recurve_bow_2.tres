@@ -1,0 +1,52 @@
+[gd_resource type="Resource" script_class="RPGLPCEquipmentPart" load_steps=10 format=3 uid="uid://cek87ug36rt0h"]
+
+[ext_resource type="Script" uid="uid://cqx1cnfjmgp73" path="res://addons/RPGData/ModulesRPG/rpg_lpc_palette.gd" id="1_cvbar"]
+[ext_resource type="Script" uid="uid://der67xririmwh" path="res://addons/RPGData/ModulesRPG/rpg_lpc_equipment_part.gd" id="2_lt1u0"]
+
+[sub_resource type="Resource" id="Resource_cvbar"]
+script = ExtResource("1_cvbar")
+colors = PackedInt64Array(0, 0, 16, 285212927, 23, 402653439, 27, 956301567, 66, 889192703, 133, 1577058559, 161, 1962934527, 183, 2231369983, 228, 2583691519, 255, 3003121919)
+
+[sub_resource type="Resource" id="Resource_lt1u0"]
+script = ExtResource("1_cvbar")
+colors = PackedInt64Array(0, 0, 16, 151390719, 23, 285806847, 27, 437065983, 66, 840967679, 133, 1815624191, 161, 2555342079, 183, 3078843647, 228, 3551362303, 255, 3905657599)
+
+[sub_resource type="Resource" id="Resource_6dpbo"]
+script = ExtResource("1_cvbar")
+colors = PackedInt64Array(0, 0, 21, 487792383, 50, 774190079, 78, 1296719359, 91, 1582453503, 114, 1919647487, 135, 2256437247, 173, 2979633407, 199, 3300237311, 247, 3857106943, 254, 4294967295)
+
+[sub_resource type="Resource" id="Resource_06xya"]
+script = ExtResource("2_lt1u0")
+palette1 = SubResource("Resource_cvbar")
+palette2 = SubResource("Resource_lt1u0")
+palette3 = SubResource("Resource_6dpbo")
+
+[sub_resource type="Resource" id="Resource_in46y"]
+script = ExtResource("1_cvbar")
+blend_color = 2585402111
+colors = PackedInt64Array(0, 0, 16, 117703935, 23, 184944383, 27, 420547839, 66, 403967487, 133, 756880895, 161, 908270079, 183, 1025973247, 228, 1631529983, 255, 1917465855)
+
+[sub_resource type="Resource" id="Resource_21n57"]
+script = ExtResource("1_cvbar")
+blend_color = 1751212799
+colors = PackedInt64Array(0, 0, 21, 370087935, 50, 605890559, 78, 993609983, 91, 1228881919, 114, 1481859583, 135, 1751212799, 173, 2306242047, 199, 2542566399, 247, 2981272319, 254, 3318072831)
+
+[sub_resource type="Resource" id="Resource_mblah"]
+script = ExtResource("1_cvbar")
+blend_color = 3857106943
+colors = PackedInt64Array(0, 0, 200, 3300237311, 250, 3857106943)
+
+[resource]
+script = ExtResource("2_lt1u0")
+config_path = "res://addons/rpg_character_creator/Data/gear/mainhand/bow2.mainhand"
+part_id = "mainhand"
+body_type = "hm1"
+head_type = "hm1"
+equipment_preview = "res://Assets/Parts/mainhand/recurve_bow_2_preview.png"
+name = "Recurve Bow"
+front_texture = "res://addons/rpg_character_creator/textures/gear/mainhand/bow/recurve_mf.png"
+back_texture = "res://addons/rpg_character_creator/textures/gear/mainhand/bow/recurve_mb.png"
+palette1 = SubResource("Resource_in46y")
+palette2 = SubResource("Resource_21n57")
+palette3 = SubResource("Resource_mblah")
+ammo = SubResource("Resource_06xya")

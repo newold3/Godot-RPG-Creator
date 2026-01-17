@@ -35,7 +35,7 @@ frame_6/duration = 0.1
 frame_7/texture = ExtResource("9_fo16f")
 frame_7/duration = 0.1
 
-[node name="CharacterEditorPaletteButton" type="HBoxContainer"]
+[node name="CharacterEditorPaletteButton" type="HBoxContainer" groups=["palette_button"]]
 offset_right = 40.0
 offset_bottom = 40.0
 size_flags_horizontal = 3
@@ -74,6 +74,7 @@ tooltip_text = "[title]Edit Part Colors[/title]
 Edit the colors of this part of the character."
 focus_mode = 0
 mouse_default_cursor_shape = 2
+disabled = true
 texture_normal = ExtResource("2_k7hg1")
 texture_hover = ExtResource("3_6varm")
 texture_disabled = ExtResource("5_aud24")

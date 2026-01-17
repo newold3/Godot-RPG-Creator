@@ -205,10 +205,7 @@ func _process(delta: float) -> void:
 		force_refresh_tabs_timer -= delta
 		if force_refresh_tabs_timer <= 0:
 			if not default_tabs.is_empty():
-				clear()
-				for tab in default_tabs:
-					add_tab(tab)
-				refresh()
+				create_tabs(PackedStringArray(default_tabs))
 		
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		if current_button_pressed == 0 and !button_left_disabled:
@@ -340,6 +337,14 @@ func update_tabs(current_tabs: int = 0, index: int = 0, force_selection: bool = 
 	move_tabs(0, 0)
 	
 	select(index, force_selection)
+
+
+func create_tabs(_tabs: PackedStringArray) -> void:
+	default_tabs = _tabs
+	clear()
+	for tab in _tabs:
+		add_tab(tab)
+	#refresh()
 
 
 func add_tab(tab_text: String, index: int = -1) -> void:

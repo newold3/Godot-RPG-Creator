@@ -11,6 +11,12 @@ func get_class(): return "RPGLPCPalette"
 @export var colors: PackedInt64Array = []
 
 
+func clear() -> void:
+	blend_color = 0
+	lightness = 0.0
+	colors.clear()
+
+
 func _to_string() -> String:
 	return "<palette: blend_color: %s, lightness: %s, colors: %s>" % [blend_color, lightness, colors]
 

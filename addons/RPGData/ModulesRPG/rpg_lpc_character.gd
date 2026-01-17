@@ -6,6 +6,7 @@ extends  Resource
 func get_class(): return "RPGLPCCharacter"
 
 
+@export var body_id: String = ""
 @export var body_type: String = ""
 @export var head_type: String = ""
 @export var palette: String = ""
@@ -21,6 +22,17 @@ func get_class(): return "RPGLPCCharacter"
 @export var event_preview: String = ""
 @export var scene_path: String = ""
 @export var hidden_items: Array = []
+
+
+func clear() -> void:
+	for key in ["body_type", "head_type", "palette", "race", "gender", "face_preview", "character_preview", "battler_preview", "event_preview", "scene_path", "body_id"]:
+		set(key, "")
+
+	always_show_weapon = false
+	inmutable = false
+	equipment_parts.clear()
+	body_parts.clear()
+	hidden_items.clear()
 
 
 func set_generic_config() -> void:

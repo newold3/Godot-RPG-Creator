@@ -22,6 +22,11 @@ func get_class(): return "RPGLPCBodyData"
 @export var add3: RPGLPCBodyPart = RPGLPCBodyPart.new()
 
 
+func clear() -> void:
+	for key in ["body", "head", "eyes", "wings", "tail", "horns", "hair", "hairadd", "ears", "nose", "facial", "add1", "add2", "add3"]:
+		get(key).clear()
+
+
 func _to_string() -> String:
 	var ids = [body, head, eyes, wings, tail, horns, hair, hairadd, ears, nose, facial, add1, add2, add3]
 	var s: String = "RPGLPCBodyData"
