@@ -29,6 +29,9 @@ func get_class():
 ## Types of armor.
 @export var armor_types: PackedStringArray = []
 
+## Types of armor.
+@export var tool_types: PackedStringArray = []
+
 ## Rarity types of armor.
 @export var armor_rarity_types: PackedStringArray = []
 

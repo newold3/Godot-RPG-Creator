@@ -1,4 +1,4 @@
-[gd_scene load_steps=71 format=3 uid="uid://hphhu5u2nxnw"]
+[gd_scene load_steps=72 format=3 uid="uid://hphhu5u2nxnw"]
 
 [ext_resource type="Script" uid="uid://djbfqtqmaermk" path="res://addons/RPGData/Scripts/weapons_panel.gd" id="1_ogxcx"]
 [ext_resource type="PackedScene" uid="uid://pc2xir2w2ox2" path="res://addons/RPGData/Scenes/panel_title.tscn" id="2_rb3wg"]
@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="10_jes70"]
 [ext_resource type="PackedScene" uid="uid://os7clwyqwlka" path="res://addons/RPGData/Scenes/traits_panel.tscn" id="11_6p2or"]
 [ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="12_cslf3"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="14_th10d"]
 [ext_resource type="PackedScene" uid="uid://dxcyqc2dscbvw" path="res://addons/CustomControls/custom_simple_column_item_list.tscn" id="15_38olt"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6s3bo"]
@@ -230,7 +231,7 @@ gradient = SubResource("Gradient_05vhk")
 fill_from = Vector2(0.547009, 1)
 fill_to = Vector2(0.559829, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_38olt"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hg4eb"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_cpsvt")
 
@@ -638,6 +639,23 @@ The LPC Characters (Characters created with the [Character and Equipment Editor]
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 text = "Select LPC Weapon"
 
+[node name="Label2" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Tool/s:"
+
+[node name="Tools" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/HBoxContainer" instance=ExtResource("14_th10d")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+tooltip_text = "Convert this weapon into a tool that can trigger events. For it to work, you need to equip a weapon with a tool compatible with event activation. When attacking with that weapon (or with the weapon’s projectile), it will be able to trigger events that are activated by this/these tool(s).
+
+[Note]: You need to have a valid LPC weapon equipped for it to work."
+selected = 0
+item_count = 1
+popup/item_0/text = "None"
+popup/item_0/id = 0
+enable_multi_selection = true
+
 [node name="Tab2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer"]
 unique_name_in_owner = true
 visible = false
@@ -903,12 +921,11 @@ odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
 event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 top_bar_style = SubResource("StyleBoxTexture_iljhf")
 columns_text_colors = PackedColorArray(0.72549, 0.992157, 0.772549, 1)
-cursor_style = SubResource("StyleBoxTexture_38olt")
+cursor_style = SubResource("StyleBoxTexture_hg4eb")
 panel_style = SubResource("StyleBoxFlat_iudot")
 columns = 2
 names = PackedStringArray("Parameter", "Value")
 sizes = PackedInt32Array(740, 0)
-items = Array[PackedStringArray]([PackedStringArray("Param 1", "0.00"), PackedStringArray("Param 2", "0.00")])
 enable_multiselection = true
 itemlist_tooltip = "[title]User Parameters[/title]
 Base values for each of the user-defined parameters"
@@ -951,7 +968,6 @@ Number of times this weapon can be upgraded. Use the \"Upgrade Settings\" button
 
 [Weapons that have only one upgrade level will be shown stacked in the weapon menu. Weapons with more than one upgrade level will not stack in the weapon menu]"
 min_value = 1.0
-value = 1.0
 allow_greater = true
 _custom_value = 0.0
 
@@ -1177,6 +1193,7 @@ wrap_mode = 1
 [connection signal="middle_click_pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer/AnimationButton" to="." method="_on_animation_button_middle_click_pressed"]
 [connection signal="middle_click_pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/HBoxContainer/LPCPartButton" to="." method="_on_lpc_part_button_middle_click_pressed"]
 [connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/HBoxContainer/LPCPartButton" to="." method="_on_lpc_part_button_pressed"]
+[connection signal="multi_selection_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/HBoxContainer/Tools" to="." method="_on_tools_multi_selection_changed"]
 [connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HBoxContainer/CopyParameters" to="." method="_on_copy_parameters_pressed"]
 [connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HBoxContainer/PasteParameters" to="." method="_on_paste_parameters_pressed"]
 [connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HboxContainer/VBoxContainer5/MaxHPSpinBox" to="." method="_on_max_hp_spin_box_value_changed"]

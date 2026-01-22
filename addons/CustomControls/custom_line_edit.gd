@@ -57,7 +57,7 @@ func _start_selection():
 	select_all()
 
 
-func grab_focus() -> void:
+func grab_focus(_hide_focus: bool = false) -> void:
 	if not editable: return
 	super()
 

@@ -98,7 +98,7 @@ func _on_focus_entered() -> void:
 		busy = false
 
 
-#func grab_focus() -> void:
+#func grab_focus(_hide_focus: bool = false) -> void:
 	#return 
 	#if DisplayServer.window_get_active_popup() != -1:
 		#return

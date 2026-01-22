@@ -669,7 +669,8 @@ Choose how you want this page to be activated
  \"Auto-Start\": The event starts automatically as soon as its conditions are met. It blocks player input until it finishes.
  \"Parallel\": The event runs automatically in the background without interrupting player control.
  \"Caller\": The event runs only when triggered directly by another event or script.
- \"Any Contact\": The event runs when the player or other event walks onto the same tile as the event.[/ul]
+ \"Any Contact\": The event runs when the player or other event walks onto the same tile as the event.
+ \"Tool\": Projectile or weapon/tool that activates this page.[/ul]
 
 [Note]: When the trigger is set to \"Player Contact\", \"Event Contact\", or \"Any Contact\", if the \"Passable\" option is enabled, contact will occur upon collision; otherwise, contact will occur when occupying the same tile as this event.
 
@@ -678,7 +679,7 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 selected = 0
 allow_reselect = true
-item_count = 7
+item_count = 8
 popup/item_0/text = "Action Button"
 popup/item_0/id = 0
 popup/item_1/text = "Player Contact"
@@ -693,6 +694,8 @@ popup/item_5/text = "Caller"
 popup/item_5/id = 5
 popup/item_6/text = "Any Contact"
 popup/item_6/id = 6
+popup/item_7/text = "Tool"
+popup/item_7/id = 7
 script = ExtResource("5_csadr")
 
 [node name="TriggerEventList" type="TextureButton" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer"]

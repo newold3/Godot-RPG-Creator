@@ -398,7 +398,6 @@ func highlight_color_selected(item_id: int, part_id: String, color_key: String) 
 		else "palette3"
 		
 	var color_index = current_data[palette_id].colors[item_id * 2 + 2]
-	
 	hightlight_color.emit(part_id, int(palette_id), color_index)
 
 

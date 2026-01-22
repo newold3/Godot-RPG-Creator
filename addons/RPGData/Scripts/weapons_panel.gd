@@ -34,6 +34,9 @@ func _update_data_fields() -> void:
 		fill_user_parameters()
 		fill_animation()
 		var current_data = get_data()
+		if current_data.tools_family == null:
+			current_data.tools_family = []
+		fill_tools()
 		%NameLineEdit.text = current_data.name
 		%IconPicker.set_icon(current_data.icon.path, current_data.icon.region)
 		%TraitsPanel.set_data(database, current_data.traits)
@@ -200,6 +203,13 @@ func fill_animation() -> void:
 		node.text = TranslationManager.tr("None")
 
 
+func fill_tools() -> void:
+	var node = %Tools
+	node.clear()
+	for tool in RPGSYSTEM.database.types.tool_types:
+		node.add_item(tool)
+
+
 func fill_weapon_types() -> void:
 	if !database: return
 	
@@ -278,6 +288,7 @@ func _on_visibility_changed() -> void:
 		fill_rarity_types()
 		fill_user_parameters()
 		fill_animation()
+		fill_tools()
 		if current_selected_index != -1:
 			%TraitsPanel.set_data(database, get_data().traits)
 		else:
@@ -503,3 +514,8 @@ func _on_reset_user_parameters_pressed() -> void:
 		if get_data().user_parameters.size() > i:
 			get_data().user_parameters[i] = database.types.user_parameters[i].default_value
 	fill_user_parameters()
+
+
+func _on_tools_multi_selection_changed(selected_ids: Array[int]) -> void:
+	get_data().tools_family.clear()
+	get_data().tools_family.append_array(PackedInt32Array(selected_ids))

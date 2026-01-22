@@ -45,7 +45,7 @@ func _on_focus_entered() -> void:
 		busy = false
 
 
-func grab_focus() -> void:
+func grab_focus(_hide_focus: bool = false) -> void:
 	if preview_message_dialog and is_instance_valid(preview_message_dialog) and preview_message_dialog.visible:
 		var rect = Rect2(
 			DisplayServer.window_get_position(preview_message_dialog.get_window_id()),

@@ -14,12 +14,19 @@ var part_id: String = ""
 var item_id: String = ""
 
 signal pressed()
+signal save(part_id: String, item_id: String, tex: Texture2D)
 
 static var buttons: Array[Control] = []
 
 
 func _init() -> void:
-	focus_mode = FOCUS_ALL
+	focus_mode = FOCUS_CLICK
+
+
+func _ready() -> void:
+	var neighbors = ["focus_neighbor_left", "focus_neighbor_top", "focus_neighbor_right", "focus_neighbor_bottom", "focus_next", "focus_previous"]
+	for key in neighbors:
+		set(key, get_path())
 
 
 func _draw() -> void:
@@ -84,44 +91,75 @@ func set_textures(_textures: Array[Texture], _region: Rect2 = Rect2()) -> void:
 		node.texture = null
 		return
 
-	if _textures.size() == 1:
-		var tex = _textures[0]
-		if _region.has_area():
-			var atlas = AtlasTexture.new()
-			atlas.atlas = tex
-			atlas.region = _region
-			node.texture = atlas
-		else:
-			node.texture = tex
-		return
-
-	var first_valid_tex: Texture2D = _textures[0]
+	var first_valid_tex: Texture = _textures[0]
 	if not first_valid_tex:
 		return
 
-	var final_image: Image = first_valid_tex.get_image().duplicate()
+	var final_image: Image = Image.create(64, 64, false, Image.FORMAT_RGBA8)
 	
-	for i in range(1, _textures.size()):
-		var tex = _textures[i]
-		if tex:
-			var layer_img = tex.get_image()
-			final_image.blend_rect(
-				layer_img, 
-				Rect2(Vector2.ZERO, layer_img.get_size()), 
-				Vector2.ZERO
-			)
+	for t: Texture in _textures:
+		if not t: continue
+		var raw_img = t.get_image()
+		var src_rect = Rect2i(_region) if _region.has_area() else Rect2i(0, 0, raw_img.get_width(), raw_img.get_height())
+		if src_rect.position.x >= raw_img.get_width() or src_rect.position.y >= raw_img.get_height():
+			continue
+
+		var max_w = raw_img.get_width() - src_rect.position.x
+		var max_h = raw_img.get_height() - src_rect.position.y
+		src_rect.size.x = min(src_rect.size.x, max_w)
+		src_rect.size.y = min(src_rect.size.y, max_h)
+		
+		if src_rect.size.x <= 0 or src_rect.size.y <= 0:
+			continue
+
+		var cut_img = raw_img.get_region(src_rect)
+		
+		var used_rect = cut_img.get_used_rect()
+		if used_rect.size == Vector2i.ZERO:
+			continue
+			
+		var trimmed_img = cut_img.get_region(used_rect)
+
+		var w = float(trimmed_img.get_width())
+		var h = float(trimmed_img.get_height())
+		var max_side = 52.0
+		var min_side = 32.0
+		var current_max = max(w, h)
+		var scale_factor = 1.0
+		var needs_resize = false
+		var interp_mode = Image.INTERPOLATE_NEAREST
+		
+		if current_max > max_side:
+			scale_factor = max_side / current_max
+			needs_resize = true
+		elif current_max < min_side:
+			scale_factor = min_side / current_max
+			needs_resize = true
+			
+		if needs_resize:
+			var new_w = max(1, int(w * scale_factor))
+			var new_h = max(1, int(h * scale_factor))
+			trimmed_img.resize(new_w, new_h, interp_mode)
+			
+		var dest_x = int((64 - trimmed_img.get_width()) / 2.0)
+		var dest_y = int((64 - trimmed_img.get_height()) / 2.0)
+		
+		final_image.blend_rect(trimmed_img, Rect2i(0, 0, trimmed_img.get_width(), trimmed_img.get_height()), Vector2i(dest_x, dest_y))
 
 	var final_texture = ImageTexture.create_from_image(final_image)
 
-	if _region.has_area():
-		var atlas = AtlasTexture.new()
-		atlas.atlas = final_texture
-		atlas.region = _region
-		node.texture = atlas
-	else:
-		node.texture = final_texture
+	node.texture = final_texture
 
 
 ## Programmatically selects the item by grabbing focus.
 func select() -> void:
 	grab_focus()
+
+
+func hide_save_button() -> void:
+	$Save.visible = false
+
+
+func _on_save_pressed() -> void:
+	if not %Save.visible: return
+	save.emit(part_id, item_id, %Texture.texture)

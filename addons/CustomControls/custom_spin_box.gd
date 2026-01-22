@@ -100,7 +100,7 @@ func _on_changed() -> void:
 		rounded = false
 
 
-func grab_focus() -> void:
+func grab_focus(_hide_focus: bool = false) -> void:
 	if !is_editable() or disabled: return
 	super()
 

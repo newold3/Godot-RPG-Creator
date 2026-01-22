@@ -13,11 +13,15 @@ func _ready() -> void:
 
 func set_data(real_data: RPGTypes) -> void:
 	data = real_data
+	if data.tool_types == null or data.tool_types.size() == 0:
+		data.tool_types = [tr("None")]
+		data.icons.tool_icons = [RPGIcon.new()]
 	fill_list(%ElementList, data.element_types, 0, 1)
 	fill_list(%SkillList, data.skill_types, 0, 2)
 	fill_list(%WeaponList, data.weapon_types, 0, 3)
 	fill_list(%WeaponRarityList, data.weapon_rarity_types, 0, "3b")
 	fill_list(%ArmorList, data.armor_types, 0, 4)
+	fill_list(%ToolList, data.tool_types, 0, "20")
 	fill_list(%ArmorRarityList, data.armor_rarity_types, 0, "4b")
 	fill_list(%ItemList, data.item_types, 0, 5)
 	fill_list(%ItemRarityList, data.item_rarity_types, 0, "5b")
@@ -31,6 +35,7 @@ func set_data(real_data: RPGTypes) -> void:
 	%WeaponList.lock_item(0, true)
 	%WeaponRarityList.lock_item(0, true)
 	%ArmorList.lock_item(0, true)
+	%ToolList.lock_item(0, true)
 	%ArmorRarityList.lock_item(0, true)
 	%ItemList.lock_item(0, true)
 	%ItemRarityList.lock_item(0, true)
@@ -520,6 +525,9 @@ func _on_icon_picker_clicked(id: int) -> void:
 		10:
 			var itemlist_index = %MainParametersList.get_selected_items()[0]
 			dialog.set_data(data.icons.main_parameters_icons[itemlist_index])
+		20:
+			var itemlist_index = %ToolList.get_selected_items()[0]
+			dialog.set_data(data.icons.tool_icons[itemlist_index])
 	
 	dialog.icon_changed.connect(update_icon.bind(id))
 
@@ -551,6 +559,9 @@ func update_icon(id: int) -> void:
 		10:
 			var itemlist_index = %MainParametersList.get_selected_items()[0]
 			icon = data.icons.main_parameters_icons[itemlist_index]
+		20:
+			var itemlist_index = %ToolList.get_selected_items()[0]
+			icon = data.icons.tool_icons[itemlist_index]
 			
 	var node_path = "%%IconPicker%s" % id
 	get_node(node_path).set_icon(icon.path, icon.region)
@@ -582,6 +593,9 @@ func _on_icon_picker_remove_requested(id: int) -> void:
 		10:
 			var itemlist_index = %MainParametersList.get_selected_items()[0]
 			data.icons.main_parameters_icons[itemlist_index].clear()
+		20:
+			var itemlist_index = %ToolList.get_selected_items()[0]
+			data.icons.tool_icons[itemlist_index].clear()
 	
 	var node_path = "%%IconPicker%s" % id
 	get_node(node_path).set_icon("")
@@ -614,6 +628,9 @@ func _on_icon_paste_requested(icon: String, region: Rect2, index: int) -> void:
 		10:
 			var itemlist_index = %MainParametersList.get_selected_items()[0]
 			icon_data = data.icons.main_parameters_icons[itemlist_index]
+		20:
+			var itemlist_index = %ToolList.get_selected_items()[0]
+			icon_data = data.icons.tool_icons[itemlist_index]
 	
 	if icon_data:
 		icon_data.path = icon
@@ -729,3 +746,43 @@ func _on_main_parameters_list_item_selected(index: int) -> void:
 	%IconPicker10.set_disabled(false)
 	var current_icon = data.icons.main_parameters_icons[index]
 	%IconPicker10.set_icon(current_icon.path, current_icon.region)
+
+
+func _on_name_20_line_edit_text_changed(new_text: String) -> void:
+	var index = %ToolList.get_selected_items()[0]
+	data.tool_types[index] = new_text
+	var id = str(index+1).pad_zeros(str(data.icons.tool_icons.size()).length())
+	var item_name = id + ": " + new_text
+	%ToolList.set_item_text(index, item_name)
+
+
+func _on_add_item_20_button_pressed() -> void:
+	if data.tool_types == null: data.tool_types = []
+	data.tool_types.append("")
+	if data.icons.tool_icons == null: data.icons.tool_icons = []
+	data.icons.tool_icons.append(RPGIcon.new())
+	fill_list(%ToolList, data.tool_types, data.tool_types.size() - 1, 20)
+	%Name20LineEdit.grab_focus()
+	need_fix_data = true
+
+
+func _on_remove_item_20_button_pressed() -> void:
+	var index = %ToolList.get_selected_items()[0]
+	if index > 0:
+		data.tool_types.remove_at(index)
+		data.icons.tool_icons.remove_at(index)
+		index = min(index, data.tool_types.size() - 1)
+		fill_list(%ToolList, data.tool_types, index, 20)
+		need_fix_data = true
+
+
+func _on_tool_list_item_activated(index: int) -> void:
+	%Name20LineEdit.grab_focus()
+
+
+func _on_tool_list_item_selected(index: int) -> void:
+	%Name20LineEdit.text = data.tool_types[index]
+	%RemoveItem20Button.set_disabled(index == 0)
+	var current_icon = data.icons.tool_icons[index]
+	%IconPicker20.set_disabled(false)
+	%IconPicker20.set_icon(current_icon.path, current_icon.region)

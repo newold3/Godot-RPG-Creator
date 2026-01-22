@@ -493,7 +493,7 @@ custom_minimum_size = Vector2(149, 32)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
-default_tabs = Array[String](["Equipment", "Items", "Weapons", "Armors", "Skills", "Elements", "Rarities", "User Parameters", "User Statistics", "Main Parameters"])
+default_tabs = Array[String](["Equipment", "Items", "Weapons", "Armors", "Tools", "Skills", "Elements", "Rarities", "User Parameters", "User Statistics", "Main Parameters"])
 tab_name_base = ""
 background_color = Color(0, 0, 0, 0)
 tab_selected = null
@@ -927,28 +927,130 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="SkillTypeContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5"]
+[node name="ToolTypeContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_mwo22")
 
-[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/SkillTypeContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/SkillTypeContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 12
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/SkillTypeContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Tool Types"
+
+[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer/Label"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -24.0
+offset_top = -12.0
+offset_bottom = 12.0
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 10
+tooltip_text = "[title]Tool Types[/title]
+List of tool types to define and manage different tool categories."
+mouse_default_cursor_shape = 16
+texture_normal = SubResource("AtlasTexture_nfmol")
+texture_hover = SubResource("AtlasTexture_tbecf")
+
+[node name="ToolList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_3qr2q")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_ld2ir")
+theme_override_styles/focus = SubResource("StyleBoxFlat_ld2ir")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_ucqc6")
+theme_override_styles/selected = SubResource("StyleBoxTexture_vm4ah")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_qmrra")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+text = "Name: "
+
+[node name="Name20LineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("6_xe17m")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "[title]Armor Name[/title]
+Enter name for this data"
+
+[node name="IconPicker20" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_m5jdy")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+size_flags_vertical = 6
+tooltip_text = "[title]Icon[/title]
+Image used in some menus to display this type
+
+Mouse wheel click to erase de current image."
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="AddItem20Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Add Data[/title]
+Add a new entry to the selected list."
+text = "Add Item"
+text_overrun_behavior = 3
+
+[node name="RemoveItem20Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Remove Data[/title]
+Remove entry from the selected list."
+text = "Remove Item"
+text_overrun_behavior = 3
+
+[node name="Tab6" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="SkillTypeContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_mwo22")
+
+[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Skill Types"
 
-[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/SkillTypeContainer/MarginContainer/VBoxContainer/Label"]
+[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer/Label"]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -967,7 +1069,7 @@ mouse_default_cursor_shape = 16
 texture_normal = SubResource("AtlasTexture_nfmol")
 texture_hover = SubResource("AtlasTexture_tbecf")
 
-[node name="SkillList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/SkillTypeContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_3qr2q")]
+[node name="SkillList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_3qr2q")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -977,15 +1079,15 @@ theme_override_styles/hovered = SubResource("StyleBoxFlat_b3fyy")
 theme_override_styles/selected = SubResource("StyleBoxTexture_l1hdm")
 theme_override_styles/selected_focus = SubResource("StyleBoxTexture_se4nh")
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/SkillTypeContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/SkillTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 text = "Name: "
 
-[node name="Name2LineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/SkillTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("6_xe17m")]
+[node name="Name2LineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("6_xe17m")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -993,7 +1095,7 @@ size_flags_vertical = 4
 tooltip_text = "[title]Skill Name[/title]
 Enter name for this data"
 
-[node name="IconPicker2" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/SkillTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_m5jdy")]
+[node name="IconPicker2" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_m5jdy")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(72, 72)
 layout_mode = 2
@@ -1003,10 +1105,10 @@ Image used in some menus to display this type
 
 Mouse wheel click to erase de current image."
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/SkillTypeContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="AddItem2Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/SkillTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="AddItem2Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1015,7 +1117,7 @@ Add a new entry to the selected list."
 text = "Add Item"
 text_overrun_behavior = 3
 
-[node name="RemoveItem2Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/SkillTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="RemoveItem2Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1024,33 +1126,33 @@ Remove entry from the selected list."
 text = "Remove Item"
 text_overrun_behavior = 3
 
-[node name="Tab6" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer"]
+[node name="Tab7" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="ElementTypeContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6"]
+[node name="ElementTypeContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_mwo22")
 
-[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/ElementTypeContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/ElementTypeContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 12
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/ElementTypeContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Element Types"
 
-[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/ElementTypeContainer/MarginContainer/VBoxContainer/Label"]
+[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer/Label"]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -1069,7 +1171,7 @@ mouse_default_cursor_shape = 16
 texture_normal = SubResource("AtlasTexture_nfmol")
 texture_hover = SubResource("AtlasTexture_tbecf")
 
-[node name="ElementList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/ElementTypeContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_3qr2q")]
+[node name="ElementList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_3qr2q")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -1079,15 +1181,15 @@ theme_override_styles/hovered = SubResource("StyleBoxFlat_q7evm")
 theme_override_styles/selected = SubResource("StyleBoxTexture_jmija")
 theme_override_styles/selected_focus = SubResource("StyleBoxTexture_oxwwd")
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/ElementTypeContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 text = "Name: "
 
-[node name="Name1LineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("6_xe17m")]
+[node name="Name1LineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("6_xe17m")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1095,7 +1197,7 @@ size_flags_vertical = 4
 tooltip_text = "[title]Element Name[/title]
 Enter name for this data"
 
-[node name="IconPicker1" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_m5jdy")]
+[node name="IconPicker1" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_m5jdy")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(72, 72)
 layout_mode = 2
@@ -1105,24 +1207,24 @@ Image used in some menus to display this type
 
 Mouse wheel click to erase de current image."
 
-[node name="ElementAttackColor" type="ColorPickerButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="ElementAttackColor" type="ColorPickerButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 tooltip_text = "Color for numbers in battle when this element is applied."
 mouse_default_cursor_shape = 2
 
-[node name="ColorizeElementNumbers" type="CheckBox" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="ColorizeElementNumbers" type="CheckBox" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "If you want the numbers in battle to appear colored with the attack color of this element when using an attack with this element, this option must be checked; otherwise, the default colors for attacks will be used."
 mouse_default_cursor_shape = 2
 text = "Colorize Numbers"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/ElementTypeContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="AddItem1Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="AddItem1Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1131,7 +1233,7 @@ Add a new entry to the selected list."
 text = "Add Item"
 text_overrun_behavior = 3
 
-[node name="RemoveItem1Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="RemoveItem1Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1140,34 +1242,34 @@ Remove entry from the selected list."
 text = "Remove Item"
 text_overrun_behavior = 3
 
-[node name="Tab7" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer"]
+[node name="Tab8" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="ItemRariryContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7"]
+[node name="ItemRariryContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_0tfot")
 
-[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ItemRariryContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ItemRariryContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 12
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ItemRariryContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Item Rarity Types"
 
-[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ItemRariryContainer/MarginContainer/VBoxContainer/Label"]
+[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer/Label"]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -1186,7 +1288,7 @@ mouse_default_cursor_shape = 16
 texture_normal = SubResource("AtlasTexture_nfmol")
 texture_hover = SubResource("AtlasTexture_tbecf")
 
-[node name="ItemRarityList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ItemRariryContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_3qr2q")]
+[node name="ItemRarityList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_3qr2q")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -1196,25 +1298,25 @@ theme_override_styles/hovered = SubResource("StyleBoxFlat_yc18g")
 theme_override_styles/selected = SubResource("StyleBoxTexture_bieli")
 theme_override_styles/selected_focus = SubResource("StyleBoxTexture_kf8bn")
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ItemRariryContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ItemRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ItemRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer"]
 layout_mode = 2
 text = "Name:"
 
-[node name="Name5bLineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ItemRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer" instance=ExtResource("6_xe17m")]
+[node name="Name5bLineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer" instance=ExtResource("6_xe17m")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Item Rarity Name[/title]
 Enter name for this data"
 
-[node name="ItemRarityColorButton" type="ColorPickerButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ItemRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="ItemRarityColorButton" type="ColorPickerButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
@@ -1222,10 +1324,10 @@ tooltip_text = "[title]Rarity Color[/title]
 The text of the selected data will be drawn in the color specified here."
 mouse_default_cursor_shape = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ItemRariryContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="AddItem5bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ItemRariryContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="AddItem5bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1234,7 +1336,7 @@ Add a new entry to the selected list."
 text = "Add Item"
 text_overrun_behavior = 3
 
-[node name="RemoveItem5bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ItemRariryContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="RemoveItem5bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1243,28 +1345,28 @@ Remove entry from the selected list."
 text = "Remove Item"
 text_overrun_behavior = 3
 
-[node name="WeaponjRariryContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7"]
+[node name="WeaponjRariryContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_0tfot")
 
-[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/WeaponjRariryContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="VboxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/WeaponjRariryContainer/MarginContainer"]
+[node name="VboxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 12
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/WeaponjRariryContainer/MarginContainer/VboxContainer"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer"]
 layout_mode = 2
 text = "Weapon Rarity Types"
 
-[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/WeaponjRariryContainer/MarginContainer/VboxContainer/Label"]
+[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer/Label"]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -1283,7 +1385,7 @@ mouse_default_cursor_shape = 16
 texture_normal = SubResource("AtlasTexture_nfmol")
 texture_hover = SubResource("AtlasTexture_tbecf")
 
-[node name="WeaponRarityList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/WeaponjRariryContainer/MarginContainer/VboxContainer" instance=ExtResource("2_3qr2q")]
+[node name="WeaponRarityList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer" instance=ExtResource("2_3qr2q")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -1293,25 +1395,25 @@ theme_override_styles/hovered = SubResource("StyleBoxFlat_bwq4m")
 theme_override_styles/selected = SubResource("StyleBoxTexture_7lqkn")
 theme_override_styles/selected_focus = SubResource("StyleBoxTexture_nry7y")
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/WeaponjRariryContainer/MarginContainer/VboxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/WeaponjRariryContainer/MarginContainer/VboxContainer/HBoxContainer2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/WeaponjRariryContainer/MarginContainer/VboxContainer/HBoxContainer2/VBoxContainer"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer/HBoxContainer2/VBoxContainer"]
 layout_mode = 2
 text = "Name:"
 
-[node name="Name3bLineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/WeaponjRariryContainer/MarginContainer/VboxContainer/HBoxContainer2/VBoxContainer" instance=ExtResource("6_xe17m")]
+[node name="Name3bLineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer/HBoxContainer2/VBoxContainer" instance=ExtResource("6_xe17m")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Weapon Rarity Name[/title]
 Enter name for this data"
 
-[node name="WeaponRarityColorButton" type="ColorPickerButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/WeaponjRariryContainer/MarginContainer/VboxContainer/HBoxContainer2"]
+[node name="WeaponRarityColorButton" type="ColorPickerButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer/HBoxContainer2"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
@@ -1319,10 +1421,10 @@ tooltip_text = "[title]Rarity Color[/title]
 The text of the selected data will be drawn in the color specified here."
 mouse_default_cursor_shape = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/WeaponjRariryContainer/MarginContainer/VboxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer"]
 layout_mode = 2
 
-[node name="AddItem3bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/WeaponjRariryContainer/MarginContainer/VboxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="AddItem3bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1331,7 +1433,7 @@ Add a new entry to the selected list."
 text = "Add Item"
 text_overrun_behavior = 3
 
-[node name="RemoveItem3bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/WeaponjRariryContainer/MarginContainer/VboxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="RemoveItem3bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1340,28 +1442,28 @@ Remove entry from the selected list."
 text = "Remove Item"
 text_overrun_behavior = 3
 
-[node name="ArmorRariryContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7"]
+[node name="ArmorRariryContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_0tfot")
 
-[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ArmorRariryContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ArmorRariryContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 12
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ArmorRariryContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Armor Rarity Types"
 
-[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ArmorRariryContainer/MarginContainer/VBoxContainer/Label"]
+[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer/Label"]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -1380,7 +1482,7 @@ mouse_default_cursor_shape = 16
 texture_normal = SubResource("AtlasTexture_nfmol")
 texture_hover = SubResource("AtlasTexture_tbecf")
 
-[node name="ArmorRarityList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ArmorRariryContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_3qr2q")]
+[node name="ArmorRarityList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_3qr2q")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -1390,25 +1492,25 @@ theme_override_styles/hovered = SubResource("StyleBoxFlat_sa1nb")
 theme_override_styles/selected = SubResource("StyleBoxTexture_1ugtn")
 theme_override_styles/selected_focus = SubResource("StyleBoxTexture_w8oue")
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ArmorRariryContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ArmorRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ArmorRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer"]
 layout_mode = 2
 text = "Name:"
 
-[node name="Name4bLineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ArmorRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer" instance=ExtResource("6_xe17m")]
+[node name="Name4bLineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer" instance=ExtResource("6_xe17m")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Armor Rarity Name[/title]
 Enter name for this data"
 
-[node name="ArmorRarityColorButton" type="ColorPickerButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ArmorRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="ArmorRarityColorButton" type="ColorPickerButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
@@ -1416,10 +1518,10 @@ tooltip_text = "[title]Rarity Color[/title]
 The text of the selected data will be drawn in the color specified here."
 mouse_default_cursor_shape = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ArmorRariryContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="AddItem4bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ArmorRariryContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="AddItem4bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1428,7 +1530,7 @@ Add a new entry to the selected list."
 text = "Add Item"
 text_overrun_behavior = 3
 
-[node name="RemoveItem4bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ArmorRariryContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="RemoveItem4bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1437,33 +1539,33 @@ Remove entry from the selected list."
 text = "Remove Item"
 text_overrun_behavior = 3
 
-[node name="Tab8" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer"]
+[node name="Tab9" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="UserParameterContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8"]
+[node name="UserParameterContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_mwo22")
 
-[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/UserParameterContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/UserParameterContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 12
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/UserParameterContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "User Parameters"
 
-[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/UserParameterContainer/MarginContainer/VBoxContainer/Label"]
+[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/Label"]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -1482,7 +1584,7 @@ mouse_default_cursor_shape = 16
 texture_normal = SubResource("AtlasTexture_nfmol")
 texture_hover = SubResource("AtlasTexture_tbecf")
 
-[node name="UserParametersList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/UserParameterContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_3qr2q")]
+[node name="UserParametersList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_3qr2q")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -1492,15 +1594,15 @@ theme_override_styles/hovered = SubResource("StyleBoxFlat_ke3ba")
 theme_override_styles/selected = SubResource("StyleBoxTexture_f8erh")
 theme_override_styles/selected_focus = SubResource("StyleBoxTexture_0l57i")
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/UserParameterContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+[node name="Label2" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 text = "Name: "
 
-[node name="Name6bLineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("6_xe17m")]
+[node name="Name6bLineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("6_xe17m")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1508,7 +1610,7 @@ size_flags_vertical = 4
 tooltip_text = "[title]User Parameter Name[/title]
 Enter name for this data"
 
-[node name="IconPicker8" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("5_m5jdy")]
+[node name="IconPicker8" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("5_m5jdy")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(72, 72)
 layout_mode = 2
@@ -1518,15 +1620,15 @@ Image used in some menus to display this type
 
 Mouse wheel click to erase de current image."
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/UserParameterContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 text = "Value:"
 
-[node name="ParameterValue" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_jeof8")]
+[node name="ParameterValue" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_jeof8")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1534,11 +1636,12 @@ tooltip_text = "[title]Default Value[/title]
 Default value for the selected parameter."
 allow_greater = true
 allow_lesser = true
+_custom_value = 0.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/UserParameterContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="AddItem6bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="AddItem6bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1547,7 +1650,7 @@ Add a new entry to the selected list."
 text = "Add Item"
 text_overrun_behavior = 3
 
-[node name="RemoveItem6bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="RemoveItem6bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1556,33 +1659,33 @@ Remove entry from the selected list."
 text = "Remove Item"
 text_overrun_behavior = 3
 
-[node name="Tab9" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer"]
+[node name="Tab10" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="UserStatsContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9"]
+[node name="UserStatsContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_mwo22")
 
-[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserStatsContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserStatsContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 12
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserStatsContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "User Stats"
 
-[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserStatsContainer/MarginContainer/VBoxContainer/Label"]
+[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer/MarginContainer/VBoxContainer/Label"]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -1601,7 +1704,7 @@ mouse_default_cursor_shape = 16
 texture_normal = SubResource("AtlasTexture_nfmol")
 texture_hover = SubResource("AtlasTexture_tbecf")
 
-[node name="UserStatsList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserStatsContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_3qr2q")]
+[node name="UserStatsList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_3qr2q")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -1611,25 +1714,25 @@ theme_override_styles/hovered = SubResource("StyleBoxFlat_roffj")
 theme_override_styles/selected = SubResource("StyleBoxTexture_fpr4q")
 theme_override_styles/selected_focus = SubResource("StyleBoxTexture_4p32c")
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserStatsContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserStatsContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+[node name="Label2" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 text = "Name: "
 
-[node name="Name7bLineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserStatsContainer/MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("6_xe17m")]
+[node name="Name7bLineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer/MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("6_xe17m")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]User Parameter Name[/title]
 Enter name for this data"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserStatsContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="AddItem7bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserStatsContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="AddItem7bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1638,7 +1741,7 @@ Add a new entry to the selected list."
 text = "Add Item"
 text_overrun_behavior = 3
 
-[node name="RemoveItem7bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserStatsContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="RemoveItem7bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1647,33 +1750,33 @@ Remove entry from the selected list."
 text = "Remove Item"
 text_overrun_behavior = 3
 
-[node name="Tab10" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer"]
+[node name="Tab11" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="MainParameterContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10"]
+[node name="MainParameterContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_mwo22")
 
-[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/MainParameterContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/MainParameterContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 12
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/MainParameterContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Main Parameters"
 
-[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/MainParameterContainer/MarginContainer/VBoxContainer/Label"]
+[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer/MarginContainer/VBoxContainer/Label"]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -1692,7 +1795,7 @@ mouse_default_cursor_shape = 16
 texture_normal = SubResource("AtlasTexture_nfmol")
 texture_hover = SubResource("AtlasTexture_tbecf")
 
-[node name="MainParametersList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/MainParameterContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_3qr2q")]
+[node name="MainParametersList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_3qr2q")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -1702,15 +1805,15 @@ theme_override_styles/hovered = SubResource("StyleBoxFlat_4p32c")
 theme_override_styles/selected = SubResource("StyleBoxTexture_jcmcw")
 theme_override_styles/selected_focus = SubResource("StyleBoxTexture_kh2ng")
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/MainParameterContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/MainParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+[node name="Label2" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 text = "Name: "
 
-[node name="Name10LineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/MainParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("6_xe17m")]
+[node name="Name10LineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("6_xe17m")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1718,7 +1821,7 @@ size_flags_vertical = 4
 tooltip_text = "[title]User Parameter Name[/title]
 Enter name for this data"
 
-[node name="IconPicker10" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/MainParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("5_m5jdy")]
+[node name="IconPicker10" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("5_m5jdy")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(72, 72)
 layout_mode = 2
@@ -1761,60 +1864,68 @@ Mouse wheel click to erase de current image."
 [connection signal="remove_requested" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab4/ArmorTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2/IconPicker4" to="." method="_on_icon_picker_remove_requested" binds= [4]]
 [connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab4/ArmorTypeContainer/MarginContainer/VBoxContainer/HBoxContainer/AddItem4Button" to="." method="_on_add_item_4_button_pressed"]
 [connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab4/ArmorTypeContainer/MarginContainer/VBoxContainer/HBoxContainer/RemoveItem4Button" to="." method="_on_remove_item_4_button_pressed"]
-[connection signal="item_activated" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/SkillTypeContainer/MarginContainer/VBoxContainer/SkillList" to="." method="_on_skill_list_item_activated"]
-[connection signal="item_selected" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/SkillTypeContainer/MarginContainer/VBoxContainer/SkillList" to="." method="_on_skill_list_item_selected"]
-[connection signal="text_changed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/SkillTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2/Name2LineEdit" to="." method="_on_name_2_line_edit_text_changed"]
-[connection signal="clicked" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/SkillTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2/IconPicker2" to="." method="_on_icon_picker_clicked" binds= [2]]
-[connection signal="paste_requested" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/SkillTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2/IconPicker2" to="." method="_on_icon_paste_requested" binds= [2]]
-[connection signal="remove_requested" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/SkillTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2/IconPicker2" to="." method="_on_icon_picker_remove_requested" binds= [2]]
-[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/SkillTypeContainer/MarginContainer/VBoxContainer/HBoxContainer/AddItem2Button" to="." method="_on_add_item_2_button_pressed"]
-[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/SkillTypeContainer/MarginContainer/VBoxContainer/HBoxContainer/RemoveItem2Button" to="." method="_on_remove_item_2_button_pressed"]
-[connection signal="item_activated" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/ElementTypeContainer/MarginContainer/VBoxContainer/ElementList" to="." method="_on_element_list_item_activated"]
-[connection signal="item_selected" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/ElementTypeContainer/MarginContainer/VBoxContainer/ElementList" to="." method="_on_element_list_item_selected"]
-[connection signal="text_changed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2/Name1LineEdit" to="." method="_on_name_1_line_edit_text_changed"]
-[connection signal="clicked" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2/IconPicker1" to="." method="_on_icon_picker_clicked" binds= [1]]
-[connection signal="paste_requested" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2/IconPicker1" to="." method="_on_icon_paste_requested" binds= [1]]
-[connection signal="remove_requested" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2/IconPicker1" to="." method="_on_icon_picker_remove_requested" binds= [1]]
-[connection signal="color_changed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2/ElementAttackColor" to="." method="_on_element_attack_color_color_changed"]
-[connection signal="toggled" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2/ColorizeElementNumbers" to="." method="_on_colorize_element_numbers_toggled"]
-[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer/AddItem1Button" to="." method="_on_add_item_1_button_pressed"]
-[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer/RemoveItem1Button" to="." method="_on_remove_item_1_button_pressed"]
-[connection signal="item_activated" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ItemRariryContainer/MarginContainer/VBoxContainer/ItemRarityList" to="." method="_on_item_rarity_list_item_activated"]
-[connection signal="item_selected" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ItemRariryContainer/MarginContainer/VBoxContainer/ItemRarityList" to="." method="_on_item_rarity_list_item_selected"]
-[connection signal="text_changed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ItemRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer/Name5bLineEdit" to="." method="_on_name_5b_line_edit_text_changed"]
-[connection signal="color_changed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ItemRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2/ItemRarityColorButton" to="." method="_on_item_rarity_color_button_color_changed"]
-[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ItemRariryContainer/MarginContainer/VBoxContainer/HBoxContainer/AddItem5bButton" to="." method="_on_add_item_5b_button_pressed"]
-[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ItemRariryContainer/MarginContainer/VBoxContainer/HBoxContainer/RemoveItem5bButton" to="." method="_on_remove_item_5b_button_pressed"]
-[connection signal="item_activated" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/WeaponjRariryContainer/MarginContainer/VboxContainer/WeaponRarityList" to="." method="_on_weapon_rarity_list_item_activated"]
-[connection signal="item_selected" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/WeaponjRariryContainer/MarginContainer/VboxContainer/WeaponRarityList" to="." method="_on_weapon_rarity_list_item_selected"]
-[connection signal="text_changed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/WeaponjRariryContainer/MarginContainer/VboxContainer/HBoxContainer2/VBoxContainer/Name3bLineEdit" to="." method="_on_name_3b_line_edit_text_changed"]
-[connection signal="color_changed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/WeaponjRariryContainer/MarginContainer/VboxContainer/HBoxContainer2/WeaponRarityColorButton" to="." method="_on_weapon_rarity_color_button_color_changed"]
-[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/WeaponjRariryContainer/MarginContainer/VboxContainer/HBoxContainer/AddItem3bButton" to="." method="_on_add_item_3b_button_pressed"]
-[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/WeaponjRariryContainer/MarginContainer/VboxContainer/HBoxContainer/RemoveItem3bButton" to="." method="_on_remove_item_3b_button_pressed"]
-[connection signal="item_activated" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ArmorRariryContainer/MarginContainer/VBoxContainer/ArmorRarityList" to="." method="_on_armor_rarity_list_item_activated"]
-[connection signal="item_selected" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ArmorRariryContainer/MarginContainer/VBoxContainer/ArmorRarityList" to="." method="_on_armor_rarity_list_item_selected"]
-[connection signal="text_changed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ArmorRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer/Name4bLineEdit" to="." method="_on_name_4b_line_edit_text_changed"]
-[connection signal="color_changed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ArmorRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2/ArmorRarityColorButton" to="." method="_on_armor_rarity_color_button_color_changed"]
-[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ArmorRariryContainer/MarginContainer/VBoxContainer/HBoxContainer/AddItem4bButton" to="." method="_on_add_item_4b_button_pressed"]
-[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ArmorRariryContainer/MarginContainer/VBoxContainer/HBoxContainer/RemoveItem4bButton" to="." method="_on_remove_item_4b_button_pressed"]
-[connection signal="item_activated" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/UserParameterContainer/MarginContainer/VBoxContainer/UserParametersList" to="." method="_on_user_parameters_list_item_activated"]
-[connection signal="item_selected" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/UserParameterContainer/MarginContainer/VBoxContainer/UserParametersList" to="." method="_on_user_parameters_list_item_selected"]
-[connection signal="text_changed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3/Name6bLineEdit" to="." method="_on_name_6b_line_edit_text_changed"]
-[connection signal="clicked" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3/IconPicker8" to="." method="_on_icon_picker_clicked" binds= [8]]
-[connection signal="paste_requested" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3/IconPicker8" to="." method="_on_icon_paste_requested" binds= [8]]
-[connection signal="remove_requested" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3/IconPicker8" to="." method="_on_icon_picker_remove_requested" binds= [8]]
-[connection signal="text_changed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer2/ParameterValue" to="." method="_on_parameter_value_text_changed"]
-[connection signal="value_changed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer2/ParameterValue" to="." method="_on_parameter_value_value_changed"]
-[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer/AddItem6bButton" to="." method="_on_add_item_6b_button_pressed"]
-[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer/RemoveItem6bButton" to="." method="_on_remove_item_6b_button_pressed"]
-[connection signal="item_activated" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserStatsContainer/MarginContainer/VBoxContainer/UserStatsList" to="." method="_on_user_stats_list_item_activated"]
-[connection signal="item_selected" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserStatsContainer/MarginContainer/VBoxContainer/UserStatsList" to="." method="_on_user_stats_list_item_selected"]
-[connection signal="text_changed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserStatsContainer/MarginContainer/VBoxContainer/HBoxContainer3/Name7bLineEdit" to="." method="_on_name_7b_line_edit_text_changed"]
-[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserStatsContainer/MarginContainer/VBoxContainer/HBoxContainer/AddItem7bButton" to="." method="_on_add_item_7b_button_pressed"]
-[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserStatsContainer/MarginContainer/VBoxContainer/HBoxContainer/RemoveItem7bButton" to="." method="_on_remove_item_7b_button_pressed"]
-[connection signal="item_activated" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/MainParameterContainer/MarginContainer/VBoxContainer/MainParametersList" to="." method="_on_main_parameters_list_item_activated"]
-[connection signal="item_selected" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/MainParameterContainer/MarginContainer/VBoxContainer/MainParametersList" to="." method="_on_main_parameters_list_item_selected"]
-[connection signal="text_changed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/MainParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3/Name10LineEdit" to="." method="_on_name_10_line_edit_text_changed"]
-[connection signal="clicked" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/MainParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3/IconPicker10" to="." method="_on_icon_picker_clicked" binds= [10]]
-[connection signal="paste_requested" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/MainParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3/IconPicker10" to="." method="_on_icon_paste_requested" binds= [10]]
-[connection signal="remove_requested" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/MainParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3/IconPicker10" to="." method="_on_icon_picker_remove_requested" binds= [10]]
+[connection signal="item_activated" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer/ToolList" to="." method="_on_tool_list_item_activated"]
+[connection signal="item_selected" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer/ToolList" to="." method="_on_tool_list_item_selected"]
+[connection signal="text_changed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2/Name20LineEdit" to="." method="_on_name_20_line_edit_text_changed"]
+[connection signal="clicked" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2/IconPicker20" to="." method="_on_icon_picker_clicked" binds= [20]]
+[connection signal="paste_requested" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2/IconPicker20" to="." method="_on_icon_paste_requested" binds= [20]]
+[connection signal="remove_requested" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2/IconPicker20" to="." method="_on_icon_picker_remove_requested" binds= [20]]
+[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer/HBoxContainer/AddItem20Button" to="." method="_on_add_item_20_button_pressed"]
+[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer/HBoxContainer/RemoveItem20Button" to="." method="_on_remove_item_20_button_pressed"]
+[connection signal="item_activated" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer/SkillList" to="." method="_on_skill_list_item_activated"]
+[connection signal="item_selected" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer/SkillList" to="." method="_on_skill_list_item_selected"]
+[connection signal="text_changed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2/Name2LineEdit" to="." method="_on_name_2_line_edit_text_changed"]
+[connection signal="clicked" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2/IconPicker2" to="." method="_on_icon_picker_clicked" binds= [2]]
+[connection signal="paste_requested" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2/IconPicker2" to="." method="_on_icon_paste_requested" binds= [2]]
+[connection signal="remove_requested" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2/IconPicker2" to="." method="_on_icon_picker_remove_requested" binds= [2]]
+[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer/HBoxContainer/AddItem2Button" to="." method="_on_add_item_2_button_pressed"]
+[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer/HBoxContainer/RemoveItem2Button" to="." method="_on_remove_item_2_button_pressed"]
+[connection signal="item_activated" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer/ElementList" to="." method="_on_element_list_item_activated"]
+[connection signal="item_selected" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer/ElementList" to="." method="_on_element_list_item_selected"]
+[connection signal="text_changed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2/Name1LineEdit" to="." method="_on_name_1_line_edit_text_changed"]
+[connection signal="clicked" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2/IconPicker1" to="." method="_on_icon_picker_clicked" binds= [1]]
+[connection signal="paste_requested" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2/IconPicker1" to="." method="_on_icon_paste_requested" binds= [1]]
+[connection signal="remove_requested" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2/IconPicker1" to="." method="_on_icon_picker_remove_requested" binds= [1]]
+[connection signal="color_changed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2/ElementAttackColor" to="." method="_on_element_attack_color_color_changed"]
+[connection signal="toggled" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2/ColorizeElementNumbers" to="." method="_on_colorize_element_numbers_toggled"]
+[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer/AddItem1Button" to="." method="_on_add_item_1_button_pressed"]
+[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer/RemoveItem1Button" to="." method="_on_remove_item_1_button_pressed"]
+[connection signal="item_activated" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer/ItemRarityList" to="." method="_on_item_rarity_list_item_activated"]
+[connection signal="item_selected" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer/ItemRarityList" to="." method="_on_item_rarity_list_item_selected"]
+[connection signal="text_changed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer/Name5bLineEdit" to="." method="_on_name_5b_line_edit_text_changed"]
+[connection signal="color_changed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2/ItemRarityColorButton" to="." method="_on_item_rarity_color_button_color_changed"]
+[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer/HBoxContainer/AddItem5bButton" to="." method="_on_add_item_5b_button_pressed"]
+[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer/HBoxContainer/RemoveItem5bButton" to="." method="_on_remove_item_5b_button_pressed"]
+[connection signal="item_activated" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer/WeaponRarityList" to="." method="_on_weapon_rarity_list_item_activated"]
+[connection signal="item_selected" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer/WeaponRarityList" to="." method="_on_weapon_rarity_list_item_selected"]
+[connection signal="text_changed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer/HBoxContainer2/VBoxContainer/Name3bLineEdit" to="." method="_on_name_3b_line_edit_text_changed"]
+[connection signal="color_changed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer/HBoxContainer2/WeaponRarityColorButton" to="." method="_on_weapon_rarity_color_button_color_changed"]
+[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer/HBoxContainer/AddItem3bButton" to="." method="_on_add_item_3b_button_pressed"]
+[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer/HBoxContainer/RemoveItem3bButton" to="." method="_on_remove_item_3b_button_pressed"]
+[connection signal="item_activated" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer/ArmorRarityList" to="." method="_on_armor_rarity_list_item_activated"]
+[connection signal="item_selected" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer/ArmorRarityList" to="." method="_on_armor_rarity_list_item_selected"]
+[connection signal="text_changed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer/Name4bLineEdit" to="." method="_on_name_4b_line_edit_text_changed"]
+[connection signal="color_changed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2/ArmorRarityColorButton" to="." method="_on_armor_rarity_color_button_color_changed"]
+[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer/HBoxContainer/AddItem4bButton" to="." method="_on_add_item_4b_button_pressed"]
+[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer/HBoxContainer/RemoveItem4bButton" to="." method="_on_remove_item_4b_button_pressed"]
+[connection signal="item_activated" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/UserParametersList" to="." method="_on_user_parameters_list_item_activated"]
+[connection signal="item_selected" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/UserParametersList" to="." method="_on_user_parameters_list_item_selected"]
+[connection signal="text_changed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3/Name6bLineEdit" to="." method="_on_name_6b_line_edit_text_changed"]
+[connection signal="clicked" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3/IconPicker8" to="." method="_on_icon_picker_clicked" binds= [8]]
+[connection signal="paste_requested" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3/IconPicker8" to="." method="_on_icon_paste_requested" binds= [8]]
+[connection signal="remove_requested" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3/IconPicker8" to="." method="_on_icon_picker_remove_requested" binds= [8]]
+[connection signal="text_changed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer2/ParameterValue" to="." method="_on_parameter_value_text_changed"]
+[connection signal="value_changed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer2/ParameterValue" to="." method="_on_parameter_value_value_changed"]
+[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer/AddItem6bButton" to="." method="_on_add_item_6b_button_pressed"]
+[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer/RemoveItem6bButton" to="." method="_on_remove_item_6b_button_pressed"]
+[connection signal="item_activated" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer/MarginContainer/VBoxContainer/UserStatsList" to="." method="_on_user_stats_list_item_activated"]
+[connection signal="item_selected" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer/MarginContainer/VBoxContainer/UserStatsList" to="." method="_on_user_stats_list_item_selected"]
+[connection signal="text_changed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer/MarginContainer/VBoxContainer/HBoxContainer3/Name7bLineEdit" to="." method="_on_name_7b_line_edit_text_changed"]
+[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer/MarginContainer/VBoxContainer/HBoxContainer/AddItem7bButton" to="." method="_on_add_item_7b_button_pressed"]
+[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer/MarginContainer/VBoxContainer/HBoxContainer/RemoveItem7bButton" to="." method="_on_remove_item_7b_button_pressed"]
+[connection signal="item_activated" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer/MarginContainer/VBoxContainer/MainParametersList" to="." method="_on_main_parameters_list_item_activated"]
+[connection signal="item_selected" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer/MarginContainer/VBoxContainer/MainParametersList" to="." method="_on_main_parameters_list_item_selected"]
+[connection signal="text_changed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3/Name10LineEdit" to="." method="_on_name_10_line_edit_text_changed"]
+[connection signal="clicked" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3/IconPicker10" to="." method="_on_icon_picker_clicked" binds= [10]]
+[connection signal="paste_requested" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3/IconPicker10" to="." method="_on_icon_paste_requested" binds= [10]]
+[connection signal="remove_requested" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3/IconPicker10" to="." method="_on_icon_picker_remove_requested" binds= [10]]

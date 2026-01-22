@@ -388,6 +388,12 @@ func _apply_upgrade(version_index: int) -> void:
 				item.recipes = new_list
 				var _disassemble_materials: Array[RPGGearUpgradeComponent] = []
 				item.disassemble_materials = _disassemble_materials
+		11:
+			if types.tool_types == null or types.tool_types.size() == 0:
+				types.tool_types = ["None"]
+				types.icons.tool_icons = [RPGIcon.new()]
+			for weapon: RPGWeapon in weapons:
+				if weapon.tools_family == null:
+					weapon.tools_family = []
 		_:
-			# Default case for versions without specific structural changes
 			pass

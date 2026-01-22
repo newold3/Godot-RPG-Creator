@@ -23,6 +23,10 @@ func get_class(): return "RPGLPCCharacter"
 @export var scene_path: String = ""
 @export var hidden_items: Array = []
 
+## Dictionary that stores metadata exclusive to the Editor (color cache, families, raws).
+## Does not affect the final game, but is vital for being able to re-edit the character without losing data.
+@export var editor_color_data: Dictionary = {}
+
 
 func clear() -> void:
 	for key in ["body_type", "head_type", "palette", "race", "gender", "face_preview", "character_preview", "battler_preview", "event_preview", "scene_path", "body_id"]:

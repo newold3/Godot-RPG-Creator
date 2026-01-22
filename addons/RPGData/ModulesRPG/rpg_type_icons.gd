@@ -23,6 +23,9 @@ func get_class():
 ## Icons for armor types.
 @export var armor_icons: Array[RPGIcon] = []
 
+## Icons for armor types.
+@export var tool_icons: Array[RPGIcon] = []
+
 ## Icons for item types.
 @export var item_icons: Array[RPGIcon] = []
 
@@ -49,6 +52,8 @@ func clone(value: bool = true) -> RPGTypeIcons:
 		new_type_icons.weapon_icons[i] = new_type_icons.weapon_icons[i].clone(value)
 	for i in new_type_icons.armor_icons.size():
 		new_type_icons.armor_icons[i] = new_type_icons.armor_icons[i].clone(value)
+	for i in new_type_icons.tool_icons.size():
+		new_type_icons.tool_icons[i] = new_type_icons.tool_icons[i].clone(value)
 	for i in new_type_icons.item_icons.size():
 		new_type_icons.item_icons[i] = new_type_icons.item_icons[i].clone(value)
 	for i in new_type_icons.skill_icons.size():
