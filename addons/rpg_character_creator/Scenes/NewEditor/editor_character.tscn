@@ -3223,6 +3223,15 @@ theme_override_constants/margin_bottom = 12
 script = ExtResource("1_750hs")
 main_material = SubResource("ShaderMaterial_hpjyg")
 
+[node name="PreviewPartViewport" type="SubViewport" parent="."]
+unique_name_in_owner = true
+transparent_bg = true
+
+[node name="PreviewPartTexture" type="TextureRect" parent="PreviewPartViewport"]
+unique_name_in_owner = true
+offset_right = 40.0
+offset_bottom = 40.0
+
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
 theme_override_constants/separation = 0
@@ -3616,23 +3625,28 @@ custom_minimum_size = Vector2(190, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
-tooltip_text = "Choose what you want to save:
-[ul]
-“Save Character”: Saves a playable character.
-“Save Event”: Saves a non-playable character.
-“Save Costume”: Saves this configuration as a costume (only the visible layers).
+tooltip_text = "ul]
+“Save Character”: Saves the playable character with all equipped gear and body parts, regardless of any layer visibility changes made in the editor.
+
+“Save Event”: Saves the non-playable character with all equipped gear and body parts, regardless of any layer visibility changes made in the editor.
+
+“Set”: Saves the installed gear pieces into a configuration file. Body parts are ignored. When applied to a character, only the defined gear parts update their visuals.
+
+“Save Costume”: Saves the final visual configuration shown in the editor, including manually hidden layers. When applied to a character, all of its visuals are replaced by the costume.
 [/ul]
 
-[Note]: You can right-click on the tabs to toggle the visibility of each layer, and click the eye icon in the body section to show or hide the body and head, allowing you to export the costume with only the layers you want."
+[Note]: Some layers may be automatically hidden by equipped items (for example, a helmet hiding the hair). These automatic visibility changes are respected by all save modes. Manually hidden layers, however, only affect Save Costume. Other save modes ignore manual layer visibility."
 focus_mode = 0
 selected = 0
-item_count = 3
+item_count = 4
 popup/item_0/text = "Save Character"
 popup/item_0/id = 0
 popup/item_1/text = "Save Event"
 popup/item_1/id = 1
-popup/item_2/text = "Save Costume"
+popup/item_2/text = "Save Set"
 popup/item_2/id = 2
+popup/item_3/text = "Save Costume"
+popup/item_3/id = 3
 
 [node name="SaveOptions1" type="VBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/SaveAndImportContainer/TabContainer/Save Options"]
 unique_name_in_owner = true
@@ -4740,6 +4754,7 @@ metadata/_edit_group_ = true
 metadata/_edit_lock_ = true
 
 [node name="SavingBackground" type="TextureRect" parent="SavingLayer"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

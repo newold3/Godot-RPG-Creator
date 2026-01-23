@@ -14,7 +14,7 @@ var part_id: String = ""
 var item_id: String = ""
 
 signal pressed()
-signal save(part_id: String, item_id: String, tex: Texture2D)
+signal save(part_id: String, item_id: String, tex: HeroEditorPartButton)
 
 static var buttons: Array[Control] = []
 
@@ -151,6 +151,10 @@ func set_textures(_textures: Array[Texture], _region: Rect2 = Rect2()) -> void:
 	node.texture = final_texture
 
 
+func get_texture_rect() -> TextureRect:
+	return %Texture
+
+
 ## Programmatically selects the item by grabbing focus.
 func select() -> void:
 	grab_focus()
@@ -162,4 +166,4 @@ func hide_save_button() -> void:
 
 func _on_save_pressed() -> void:
 	if not %Save.visible: return
-	save.emit(part_id, item_id, %Texture.texture)
+	save.emit(part_id, item_id, self)

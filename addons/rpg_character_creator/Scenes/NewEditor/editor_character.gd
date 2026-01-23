@@ -47,6 +47,7 @@ const PART_BUTTON = preload("uid://cce7oe3b1jm21")
 const DEFAULT_TEXTURE = preload("uid://c2k4jiswpdy88")
 const PLUGIN_PATH = "res://addons/rpg_character_creator/"
 const PALETTE_BUTTON = preload("uid://mbnqbs4rwy66")
+const PARTS_ROOT_DIR = "res://Assets/Parts"
 
 signal data_loaded()
 
@@ -1019,6 +1020,22 @@ func _sync_cache_from_character(layer: String, modified_palette_idx: int = -1, n
 	if not part: return
 	
 	var item_data = _get_item_data(layer, part.part_id)
+
+	if item_data.is_empty() or part.part_id == "none":
+		var potential_parts: Array = []
+		if is_body:
+			potential_parts = _get_body_parts(layer)
+		else:
+			potential_parts = _get_gear_parts(layer)
+		
+		for part_candidate in potential_parts:
+			if part_candidate != "none":
+				var candidate_data = _get_item_data(layer, part_candidate)
+				if not candidate_data.get("primarycolors", []).is_empty() or \
+				   not candidate_data.get("secondarycolors", []).is_empty() or \
+				   not candidate_data.get("fixedcolors", []).is_empty():
+					item_data = candidate_data
+					break
 	
 	var get_src_key = func(list_name: String, id_prop: String, old_src_prop: String, check_idx: int) -> String:
 		if check_idx == modified_palette_idx and new_src_key != "":
@@ -1313,6 +1330,25 @@ func _fill_palette_presets() -> void:
 	if not current_data: return
 	
 	var item_data = _get_item_data(active_layer, current_data.part_id)
+	var is_fallback = false
+
+	if item_data.is_empty() or current_data.part_id == "none":
+		var potential_parts: Array = []
+		if is_body:
+			potential_parts = _get_body_parts(active_layer)
+		else:
+			potential_parts = _get_gear_parts(active_layer)
+		
+		for part_candidate in potential_parts:
+			if part_candidate != "none":
+				var candidate_data = _get_item_data(active_layer, part_candidate)
+				if not candidate_data.get("primarycolors", []).is_empty() or \
+				   not candidate_data.get("secondarycolors", []).is_empty() or \
+				   not candidate_data.get("fixedcolors", []).is_empty():
+					item_data = candidate_data
+					is_fallback = true
+					break
+
 	var palette_id = %PaletteSelector.get_selected_id()
 	
 	var palette = "primarycolors" 
@@ -1347,7 +1383,29 @@ func _fill_palette_presets() -> void:
 				var tex = ImageTexture.create_from_image(img)
 				node.add_icon_item(tex, color.name)
 				node.set_item_metadata(node.get_item_count() - 1, key)
-	
+
+	if is_fallback and not color_list.is_empty():
+		if node.get_item_count() > 1:
+			node.select(1)
+			
+		var first_key = color_list[0]
+		var map_data = _resolve_colors_from_map(data.colormaps[current_character.palette], first_key)
+		
+		if not map_data.is_empty():
+			var grad = get_gradient(map_data.colors)
+			if palette_id == 0:
+				current_data.palette1.colors = map_data.colors
+				current_data.palette1.blend_color = map_data.color
+				current_data.gradient1 = grad
+			elif palette_id == 1:
+				current_data.palette2.colors = map_data.colors
+				current_data.palette2.blend_color = map_data.color
+				current_data.gradient2 = grad
+			else:
+				current_data.palette3.colors = map_data.colors
+				current_data.palette3.blend_color = map_data.color
+				current_data.gradient3 = grad
+
 	var disabled1 = item_data.get("primarycolors", []).size() == 0
 	var disabled2 = item_data.get("secondarycolors", []).size() == 0
 	var disabled3 = item_data.get("fixedcolors", []).size() == 0
@@ -2042,8 +2100,49 @@ func _on_synchronize_palettes_toggled(toggled_on: bool) -> void:
 
 
 #region Save
+func _enable_saving_container() -> void:
+	%Character.busy = true
+	var tex = get_viewport().get_texture()
+	%SavingBackground.texture = tex
+	%SavingLayer.visible = true
 
-func _on_part_save_requested(layer: String, item_id: String, texture: Texture2D) -> void:
+
+func _disable_saving_container() -> void:
+	%Character.busy = false
+	%SavingBackground.texture = null
+	%SavingLayer.visible = false
+
+
+func get_file_id(folder, base_name) -> int:
+	var max_id = 0
+	var dir = DirAccess.open(folder)
+	
+	if dir:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		
+		while file_name != "":
+			if not dir.current_is_dir():
+				if file_name.ends_with(".tres"):
+					var name_no_ext = file_name.get_basename()
+
+					if name_no_ext.begins_with(base_name):
+						var suffix = name_no_ext.trim_prefix(base_name)
+
+						if suffix.is_valid_int():
+							var found_id = suffix.to_int()
+							if found_id > max_id:
+								max_id = found_id
+			
+			file_name = dir.get_next()
+		dir.list_dir_end()
+	
+	return max_id + 1
+
+
+func _on_part_save_requested(layer: String, item_id: String, button: HeroEditorPartButton) -> void:
+	_enable_saving_container()
+	
 	var is_body = layer in body_layers or layer == "body" or layer == "head"
 	var collection = current_character.body_parts if is_body else current_character.equipment_parts
 	var source_part = collection.get(layer)
@@ -2055,10 +2154,14 @@ func _on_part_save_requested(layer: String, item_id: String, texture: Texture2D)
 
 	var part_to_save = source_part.duplicate(true)
 	
+	
 	part_to_save.part_id = item_id
 	if "name" in part_to_save:
 		part_to_save.name = new_item_data.get("name", item_id)
 	part_to_save.config_path = _fix_path(new_item_data.get("config_path", ""))
+	
+	part_to_save.body_type = current_character.body_type
+	part_to_save.head_type = current_character.head_type
 	
 	if "textures" in new_item_data:
 		part_to_save.front_texture = _fix_path(new_item_data.textures.get("front", ""))
@@ -2070,12 +2173,53 @@ func _on_part_save_requested(layer: String, item_id: String, texture: Texture2D)
 		_smart_update_color(part_to_save.palette1, "current_primary_color_id", "gradient1", new_item_data.get("primarycolors", []), global_map, part_to_save)
 		_smart_update_color(part_to_save.palette2, "current_secondary_color_id", "gradient2", new_item_data.get("secondarycolors", []), global_map, part_to_save)
 		_smart_update_color(part_to_save.palette3, "current_fixed_color_id", "gradient3", new_item_data.get("fixedcolors", []), global_map, part_to_save)
-
-	var _pending_save_resource = part_to_save
-	var _pending_preview_image: Image
 	
-	if texture:
-		_pending_preview_image = texture.get_image()
+	var folder = PARTS_ROOT_DIR.path_join(current_part + "/")
+	if !DirAccess.dir_exists_absolute(folder):
+		DirAccess.make_dir_recursive_absolute(folder)
+	
+	var regex = RegEx.new()
+	regex.compile("\\d+$")
+	var base_name = regex.sub(item_id, "")
+	
+	if base_name.is_empty():
+		base_name = "custom_part"
+	
+	var id = get_file_id(folder, base_name)
+	var resource_path = folder.path_join(base_name + str(id) + ".tres")
+	var image_path = folder.path_join(base_name + str(id) + "_preview.png")
+	
+	# Save
+	if button:
+		var tex = button.get_texture_rect()
+		if tex:
+			var target_size = tex.texture.get_size()
+			%PreviewPartViewport.size = target_size
+			%PreviewPartTexture.size = target_size
+			
+			%PreviewPartTexture.texture = tex.texture
+			%PreviewPartTexture.material = tex.material
+			%PreviewPartTexture.position = Vector2.ZERO
+			
+			%PreviewPartViewport.render_target_update_mode = SubViewport.UPDATE_ONCE
+			
+			await get_tree().process_frame
+			await get_tree().process_frame
+			await RenderingServer.frame_post_draw
+			
+			var img = %PreviewPartViewport.get_texture().get_image()
+			if img:
+				img.save_png(image_path)
+				part_to_save.equipment_preview = image_path
+				
+	ResourceSaver.save(part_to_save, resource_path)
+	
+	_disable_saving_container()
+	
+	print("Part %s Saved in %s" % [item_id, resource_path])
+	
+	if Engine.is_editor_hint():
+		EditorInterface.get_resource_filesystem().scan()
 
 
 func _smart_update_color(palette_res: Resource, id_prop: String, grad_prop: String, new_presets: Array, color_map: Dictionary, target_part: Resource) -> void:
@@ -2111,15 +2255,24 @@ func _on_save_mode_item_selected(index: int) -> void:
 			%SaveOptions2.visible = true
 			%CustomeLabel.visible = false
 			%FolderContainer.visible = true
+			%CharacterName.placeholder_text = tr("Character Name")
 		1:
 			%SaveOptions1.visible = true
 			%SaveOptions2.visible = false
 			%CustomeLabel.visible = false
 			%FolderContainer.visible = true
+			%CharacterName.placeholder_text = tr("Event Name")
 		2:
+			%SaveOptions1.visible = true
+			%SaveOptions2.visible = false
+			%CustomeLabel.visible = false
+			%FolderContainer.visible = false
+			%CharacterName.placeholder_text = tr("Set Name")
+		3:
 			%SaveOptions1.visible = true
 			%SaveOptions2.visible = false
 			%CustomeLabel.visible = true
 			%FolderContainer.visible = false
+			%CharacterName.placeholder_text = tr("Costume Name")
 
 #endregion
