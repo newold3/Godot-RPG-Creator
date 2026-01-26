@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://bkhjucbiesdpr"]
+[gd_scene format=3 uid="uid://bkhjucbiesdpr"]
 
 [ext_resource type="Script" uid="uid://ukntx504oiny" path="res://Scripts/main_scene.gd" id="1_rt5xa"]
 [ext_resource type="Script" uid="uid://cddnniwjpmq2t" path="res://Scripts/main_camera.gd" id="2_03j2t"]
@@ -15,7 +15,7 @@
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_rbbkg"]
 frequency = 0.0011
 
-[sub_resource type="Resource" id="Resource_maf8m"]
+[sub_resource type="Resource" id="Resource_76v2p"]
 resource_local_to_scene = true
 script = ExtResource("6_huasi")
 dynamic_skew = -0.840179252261254
@@ -28,29 +28,29 @@ shader_parameter/modulate = Color(1, 1, 1, 0)
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_huasi"]
 
-[node name="MainScene" type="Node2D" node_paths=PackedStringArray("transition_manager") groups=["start_scene_main"]]
+[node name="MainScene" type="Node2D" unique_id=631871742 node_paths=PackedStringArray("transition_manager") groups=["start_scene_main"]]
 texture_filter = 5
 script = ExtResource("1_rt5xa")
 transition_manager = NodePath("TransitionCanvas/TransitionManager")
 
-[node name="CharacterBaker" parent="." instance=ExtResource("2_drdnd")]
+[node name="CharacterBaker" parent="." unique_id=1952400785 instance=ExtResource("2_drdnd")]
 unique_name_in_owner = true
 
-[node name="KeotSystem" type="Area2D" parent="."]
+[node name="KeotSystem" type="Area2D" parent="." unique_id=826643861]
 unique_name_in_owner = true
 script = ExtResource("2_76v2p")
 
-[node name="Interpreter" type="Node" parent="."]
+[node name="Interpreter" type="Node" parent="." unique_id=701371195]
 unique_name_in_owner = true
 script = ExtResource("2_j1x1n")
 
-[node name="MainSubViewportContainer" type="SubViewportContainer" parent="."]
+[node name="MainSubViewportContainer" type="SubViewportContainer" parent="." unique_id=1938859068]
 unique_name_in_owner = true
 offset_right = 1152.0
 offset_bottom = 640.0
 focus_mode = 0
 
-[node name="MainGameViewport" type="SubViewport" parent="MainSubViewportContainer" groups=["main_game_viewport"]]
+[node name="MainGameViewport" type="SubViewport" parent="MainSubViewportContainer" unique_id=1592557191 groups=["main_game_viewport"]]
 unique_name_in_owner = true
 transparent_bg = true
 handle_input_locally = false
@@ -58,10 +58,10 @@ canvas_item_default_texture_filter = 0
 size = Vector2i(1152, 640)
 render_target_update_mode = 4
 
-[node name="BackgroundColorContainer" type="CanvasLayer" parent="MainSubViewportContainer/MainGameViewport"]
+[node name="BackgroundColorContainer" type="CanvasLayer" parent="MainSubViewportContainer/MainGameViewport" unique_id=868785325]
 layer = -100
 
-[node name="BackgroundColor" type="ColorRect" parent="MainSubViewportContainer/MainGameViewport/BackgroundColorContainer"]
+[node name="BackgroundColor" type="ColorRect" parent="MainSubViewportContainer/MainGameViewport/BackgroundColorContainer" unique_id=1179528568]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -69,7 +69,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="MainCamera" type="Camera2D" parent="MainSubViewportContainer/MainGameViewport" groups=["camera"]]
+[node name="MainCamera" type="Camera2D" parent="MainSubViewportContainer/MainGameViewport" unique_id=1310806426 groups=["camera"]]
 unique_name_in_owner = true
 zoom = Vector2(2, 2)
 drag_left_margin = 0.45
@@ -83,39 +83,39 @@ smooth_speed = 2.0
 noise = SubResource("FastNoiseLite_rbbkg")
 zoom_speed = 2.0
 
-[node name="MainModulate" type="CanvasModulate" parent="MainSubViewportContainer/MainGameViewport"]
+[node name="MainModulate" type="CanvasModulate" parent="MainSubViewportContainer/MainGameViewport" unique_id=155968943]
 unique_name_in_owner = true
 
-[node name="MapContainer" type="Parallax2D" parent="MainSubViewportContainer/MainGameViewport/MainModulate"]
+[node name="MapContainer" type="Parallax2D" parent="MainSubViewportContainer/MainGameViewport/MainModulate" unique_id=820017641]
 unique_name_in_owner = true
 texture_repeat = 2
 repeat_times = 4
 ignore_camera_scroll = true
 
-[node name="ShadowContainer" type="Node2D" parent="MainSubViewportContainer/MainGameViewport/MainModulate/MapContainer" groups=["dynamic_shadow_container"]]
+[node name="ShadowContainer" type="Node2D" parent="MainSubViewportContainer/MainGameViewport/MainModulate/MapContainer" unique_id=900129669 groups=["dynamic_shadow_container"]]
 unique_name_in_owner = true
 
-[node name="DynamicShadows" parent="MainSubViewportContainer/MainGameViewport/MainModulate/MapContainer/ShadowContainer" instance=ExtResource("4_0ic7e")]
+[node name="DynamicShadows" parent="MainSubViewportContainer/MainGameViewport/MainModulate/MapContainer/ShadowContainer" unique_id=1028687855 instance=ExtResource("4_0ic7e")]
 unique_name_in_owner = true
-shadow_component = SubResource("Resource_maf8m")
+shadow_component = SubResource("Resource_76v2p")
 
-[node name="ImageContainer" type="Node2D" parent="MainSubViewportContainer/MainGameViewport/MainModulate/MapContainer"]
+[node name="ImageContainer" type="Node2D" parent="MainSubViewportContainer/MainGameViewport/MainModulate/MapContainer" unique_id=214212949]
 unique_name_in_owner = true
 
-[node name="ScreenEffectCanvas" type="CanvasLayer" parent="."]
+[node name="ScreenEffectCanvas" type="CanvasLayer" parent="." unique_id=1160792887]
 unique_name_in_owner = true
 follow_viewport_enabled = true
 
-[node name="MainSceneAndImageContainer" type="Node2D" parent="ScreenEffectCanvas"]
+[node name="MainSceneAndImageContainer" type="Node2D" parent="ScreenEffectCanvas" unique_id=221988622]
 
-[node name="SceneContainer" type="Node2D" parent="ScreenEffectCanvas/MainSceneAndImageContainer"]
+[node name="SceneContainer" type="Node2D" parent="ScreenEffectCanvas/MainSceneAndImageContainer" unique_id=787518069]
 unique_name_in_owner = true
 
-[node name="WeatherCanvas" type="CanvasLayer" parent="."]
+[node name="WeatherCanvas" type="CanvasLayer" parent="." unique_id=1960524551]
 unique_name_in_owner = true
 layer = 10
 
-[node name="WeatherModulate" type="ColorRect" parent="WeatherCanvas"]
+[node name="WeatherModulate" type="ColorRect" parent="WeatherCanvas" unique_id=540108576]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_mai8y")
 anchors_preset = 15
@@ -126,11 +126,11 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(1, 1, 1, 0)
 
-[node name="VideoCanvas" type="CanvasLayer" parent="."]
+[node name="VideoCanvas" type="CanvasLayer" parent="." unique_id=379167009]
 unique_name_in_owner = true
 layer = 99
 
-[node name="VideoContainer" type="MarginContainer" parent="VideoCanvas"]
+[node name="VideoContainer" type="MarginContainer" parent="VideoCanvas" unique_id=1882735994]
 unique_name_in_owner = true
 anchors_preset = 15
 anchor_right = 1.0
@@ -139,16 +139,16 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="OptionsCanvas" type="CanvasLayer" parent="."]
+[node name="OptionsCanvas" type="CanvasLayer" parent="." unique_id=1929781603]
 unique_name_in_owner = true
 layer = 100
 visible = false
 
-[node name="TransitionCanvas" type="CanvasLayer" parent="."]
+[node name="TransitionCanvas" type="CanvasLayer" parent="." unique_id=471951043]
 unique_name_in_owner = true
 layer = 115
 
-[node name="Flash" type="ColorRect" parent="TransitionCanvas"]
+[node name="Flash" type="ColorRect" parent="TransitionCanvas" unique_id=431029474]
 unique_name_in_owner = true
 material = SubResource("CanvasItemMaterial_huasi")
 anchors_preset = 15
@@ -159,10 +159,10 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(1, 1, 1, 0)
 
-[node name="TransitionManager" parent="TransitionCanvas" instance=ExtResource("7_cyd8t")]
+[node name="TransitionManager" parent="TransitionCanvas" unique_id=1594618058 instance=ExtResource("7_cyd8t")]
 unique_name_in_owner = true
 
-[node name="SecondaryTransition" type="ColorRect" parent="TransitionCanvas"]
+[node name="SecondaryTransition" type="ColorRect" parent="TransitionCanvas" unique_id=1269402849]
 unique_name_in_owner = true
 anchors_preset = 15
 anchor_right = 1.0
@@ -172,12 +172,12 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0)
 
-[node name="MessageCanvas" type="CanvasLayer" parent="."]
+[node name="MessageCanvas" type="CanvasLayer" parent="." unique_id=469834250]
 unique_name_in_owner = true
 layer = 120
 visible = false
 
-[node name="MessageCharacterImages" type="Control" parent="MessageCanvas"]
+[node name="MessageCharacterImages" type="Control" parent="MessageCanvas" unique_id=1605910488]
 unique_name_in_owner = true
 layout_mode = 3
 anchors_preset = 15
@@ -186,23 +186,23 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Control" type="VBoxContainer" parent="MessageCanvas"]
+[node name="Control" type="VBoxContainer" parent="MessageCanvas" unique_id=1599319309]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Dialog" parent="MessageCanvas/Control" node_paths=PackedStringArray("character_container") instance=ExtResource("4_re3ur")]
+[node name="Dialog" parent="MessageCanvas/Control" unique_id=1651516393 node_paths=PackedStringArray("character_container") instance=ExtResource("4_re3ur")]
 unique_name_in_owner = true
 layout_mode = 2
 character_container = NodePath("../../MessageCharacterImages")
 
-[node name="OverMessageCanvas" type="CanvasLayer" parent="."]
+[node name="OverMessageCanvas" type="CanvasLayer" parent="." unique_id=2008279795]
 unique_name_in_owner = true
 layer = 121
 
-[node name="AnimateItems" parent="OverMessageCanvas" instance=ExtResource("8_huasi")]
+[node name="AnimateItems" parent="OverMessageCanvas" unique_id=540726037 instance=ExtResource("8_huasi")]
 unique_name_in_owner = true
 icon_size = Vector2(22, 22)
 move_duration = 0.5
@@ -211,48 +211,48 @@ vertical_spacing = -10.0
 horizontal_offset = -2.0
 spawn_delay = 0.15
 
-[node name="GUICanvas" type="CanvasLayer" parent="."]
+[node name="GUICanvas" type="CanvasLayer" parent="." unique_id=964964266]
 unique_name_in_owner = true
 layer = 125
 
-[node name="AudioPlayerContainer" type="Node" parent="."]
+[node name="AudioPlayerContainer" type="Node" parent="." unique_id=1894868300]
 
-[node name="BGMPlayer1" type="AudioStreamPlayer" parent="AudioPlayerContainer"]
+[node name="BGMPlayer1" type="AudioStreamPlayer" parent="AudioPlayerContainer" unique_id=884328190]
 unique_name_in_owner = true
 bus = &"BGM"
 
-[node name="BGMPlayer2" type="AudioStreamPlayer" parent="AudioPlayerContainer"]
+[node name="BGMPlayer2" type="AudioStreamPlayer" parent="AudioPlayerContainer" unique_id=578462472]
 unique_name_in_owner = true
 bus = &"BGM"
 
-[node name="MEPlayer" type="AudioStreamPlayer" parent="AudioPlayerContainer"]
+[node name="MEPlayer" type="AudioStreamPlayer" parent="AudioPlayerContainer" unique_id=219174165]
 unique_name_in_owner = true
 bus = &"BGM"
 
-[node name="BGSPlayer1" type="AudioStreamPlayer" parent="AudioPlayerContainer"]
+[node name="BGSPlayer1" type="AudioStreamPlayer" parent="AudioPlayerContainer" unique_id=593439365]
 unique_name_in_owner = true
 bus = &"Ambient"
 
-[node name="BGSPlayer2" type="AudioStreamPlayer" parent="AudioPlayerContainer"]
+[node name="BGSPlayer2" type="AudioStreamPlayer" parent="AudioPlayerContainer" unique_id=1726443430]
 unique_name_in_owner = true
 bus = &"Ambient"
 
-[node name="SEPlayer1" type="AudioStreamPlayer" parent="AudioPlayerContainer"]
+[node name="SEPlayer1" type="AudioStreamPlayer" parent="AudioPlayerContainer" unique_id=1186822971]
 unique_name_in_owner = true
 bus = &"SE"
 
-[node name="SEPlayer2" type="AudioStreamPlayer" parent="AudioPlayerContainer"]
+[node name="SEPlayer2" type="AudioStreamPlayer" parent="AudioPlayerContainer" unique_id=697729519]
 unique_name_in_owner = true
 bus = &"SE"
 
-[node name="SEPlayer3" type="AudioStreamPlayer" parent="AudioPlayerContainer"]
+[node name="SEPlayer3" type="AudioStreamPlayer" parent="AudioPlayerContainer" unique_id=433395937]
 unique_name_in_owner = true
 bus = &"SE"
 
-[node name="SEPlayer4" type="AudioStreamPlayer" parent="AudioPlayerContainer"]
+[node name="SEPlayer4" type="AudioStreamPlayer" parent="AudioPlayerContainer" unique_id=1272404886]
 unique_name_in_owner = true
 bus = &"SE"
 
-[node name="SEPlayer5" type="AudioStreamPlayer" parent="AudioPlayerContainer"]
+[node name="SEPlayer5" type="AudioStreamPlayer" parent="AudioPlayerContainer" unique_id=1388112149]
 unique_name_in_owner = true
 bus = &"SE"

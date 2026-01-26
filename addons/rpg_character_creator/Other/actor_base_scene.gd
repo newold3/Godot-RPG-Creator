@@ -201,6 +201,8 @@ func _reset(force_reset: bool = false) -> void:
 	if force_reset: current_animation = "idle"
 	#is_moving = false
 	movement_vector = Vector2.ZERO
+	if is_on_vehicle and current_vehicle:
+		current_vehicle._reset(true)
 
 
 #endregion

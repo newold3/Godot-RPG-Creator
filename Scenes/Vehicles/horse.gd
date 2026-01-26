@@ -83,6 +83,12 @@ func _process(delta: float) -> void:
 	if is_jumping or force_jump_enabled:
 		return
 	
+	if GameInterpreter.is_busy():
+		var direction_name = get_direction_name()
+		current_animation = "Idle" + direction_name
+		%AnimationPlayer.play(current_animation)
+		return
+	
 	if Input.is_key_pressed(KEY_I):
 		last_direction = LPCCharacter.DIRECTIONS.UP
 		current_direction = last_direction
@@ -319,25 +325,83 @@ func is_any_direction_pressed() -> bool:
 
 
 #override
-func get_player_position() -> Vector2:
-	var p = %MainCharacter.global_position - %MainCharacter.get_texture().get_size() * 0.5
-	return global_position + p + %FinalVehicle.offset
+#func get_shadow_data() -> Dictionary:
+	#var sprite = %FinalVehicle
+	#var tex = sprite.texture
+	#
+	#if not tex: return {}
+#
+	#var img = tex.get_image()
+	#if not img: return {}
+	#var used_rect = img.get_used_rect()
+	#
+	#var atlas = AtlasTexture.new()
+	#atlas.atlas = tex
+	#atlas.region = used_rect
+	#
+	#var tex_size = tex.get_size()
+	#var texture_top_left_local = sprite.offset - (tex_size / 2.0)
+#
+	#var feet_local_pos = texture_top_left_local
+	#feet_local_pos.x += used_rect.position.x + (used_rect.size.x / 2.0)
+	#feet_local_pos.y += used_rect.position.y + used_rect.size.y
+#
+	#var feet_world_pos = sprite.to_global(feet_local_pos) - Vector2(used_rect.size.x * 0.5, used_rect.size.y)
+#
+	#var shadow = {
+		#"main_node": self,
+		#"texture": atlas,
+		#"sprite_scale": scale,
+		#"position": feet_world_pos, 
+		#"offset": Vector2.ZERO,
+		#"mask_offset": GameManager.current_map.tile_size * 0.5 - sprite.position,
+		#"feet_offset": 8
+	#}
+	#
+	#if GameManager.current_map:
+		#shadow.cell = Vector2i(global_position / Vector2(GameManager.current_map.tile_size))
+	#
+	#return shadow
 
 
 func get_shadow_data() -> Dictionary:
-	var tex = $Final.get_texture()
+	var sprite = %FinalVehicle
+	var tex = sprite.texture
+	if not tex: return {}
+
+	var img = tex.get_image()
+	if not img: return {}
+	var used_rect = img.get_used_rect()
 	
-	var shadow = {
-		"texture": tex,
-		"position": global_position - tex.get_size() * 0.5 + $FinalVehicle.position + $FinalVehicle.offset,
-		"is_shadow_viewport": true,
-		"texture_viewport": %Shadow.get_texture(),
-		"sprite_shadow": %FinalShadow,
-		"shadow_position": global_position - %Shadow.get_texture().get_size() * 0.5,
-		"sprite_scale": scale
+	var atlas = AtlasTexture.new()
+	atlas.atlas = tex
+	atlas.region = used_rect
+
+	var tex_origin = sprite.offset - (tex.get_size() / 2.0)
+	
+	var local_x_min = tex_origin.x + used_rect.position.x
+	var local_x_max = tex_origin.x + used_rect.position.x + used_rect.size.x
+	var local_y_min = tex_origin.y + used_rect.position.y
+	var local_y_max = tex_origin.y + used_rect.position.y + used_rect.size.y
+	
+	var p_bl_local = Vector2(local_x_min, local_y_max)
+	var p_br_local = Vector2(local_x_max, local_y_max)
+	var p_tr_local = Vector2(local_x_max, local_y_min)
+	var p_tl_local = Vector2(local_x_min, local_y_min)
+
+	var quad_points = [
+		sprite.to_global(p_bl_local), # 0: left foot
+		sprite.to_global(p_br_local), # 1: Right foot
+		sprite.to_global(p_tr_local), # 2: Right head
+		sprite.to_global(p_tl_local)  # 3: left head
+	]
+
+	quad_points[0].y -= 1
+	quad_points[1].y -= 1
+	return {
+		"main_node": self,
+		"texture": atlas,
+		"quad_points": quad_points,
+		"position": global_position,
+		"cell": Vector2i(global_position / Vector2(GameManager.current_map.tile_size))
 	}
-	
-	if GameManager.current_map:
-		shadow.cell = Vector2i(global_position / Vector2(GameManager.current_map.tile_size))
-	
-	return shadow

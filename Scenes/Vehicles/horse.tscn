@@ -1,4 +1,4 @@
-[gd_scene load_steps=85 format=3 uid="uid://b54jms66bb66r"]
+[gd_scene format=3 uid="uid://b54jms66bb66r"]
 
 [ext_resource type="Script" uid="uid://dkrdxsieunyrg" path="res://Scenes/Vehicles/horse.gd" id="1_gprnh"]
 [ext_resource type="Texture2D" uid="uid://tc2spxaplrvl" path="res://Assets/Images/Vehicles/horse.png" id="2_b1a70"]
@@ -11,7 +11,8 @@
 
 [sub_resource type="Resource" id="Resource_jkqc7"]
 script = ExtResource("2_udmrv")
-grow_up = 1
+grow_left = 1
+grow_right = 1
 
 [sub_resource type="Curve" id="Curve_xqpur"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.210683, 1), 0.0, 0.0, 0, 0, Vector2(0.810089, 0.827503), -1.00227, -1.00227, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -34,7 +35,7 @@ point_count = 3
 [sub_resource type="CurveTexture" id="CurveTexture_72ubp"]
 curve = SubResource("Curve_rlvxv")
 
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_3ambt"]
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_pbw4f"]
 resource_local_to_scene = true
 particle_flag_align_y = true
 particle_flag_disable_z = true
@@ -55,7 +56,7 @@ alpha_curve = SubResource("CurveTexture_2qtqf")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_s1cwp"]
 shader = ExtResource("3_wbknr")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_pbw4f"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_3ambt"]
 viewport_path = NodePath("CharacterViewport")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_s7tr5"]
@@ -388,13 +389,13 @@ fill_to = Vector2(0.5, 0.564)
 shader = ExtResource("3_wbknr")
 shader_parameter/mask_texture = SubResource("GradientTexture2D_ctmxn")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_3ambt"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_1066t"]
 viewport_path = NodePath("FinalCharacter")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_1066t"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_g17kw"]
 viewport_path = NodePath("VehicleViewport")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_g17kw"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_u45gt"]
 viewport_path = NodePath("Final")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2aanc"]
@@ -467,7 +468,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Mouth:position")
+tracks/5/path = NodePath("Bounds/Mouth:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -544,7 +545,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Mouth:position")
+tracks/5/path = NodePath("Bounds/Mouth:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -621,7 +622,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Mouth:position")
+tracks/5/path = NodePath("Bounds/Mouth:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -698,7 +699,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Mouth:position")
+tracks/5/path = NodePath("Bounds/Mouth:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -817,31 +818,31 @@ tracks/7/keys = {
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("FootFrontRight:position")
+tracks/8/path = NodePath("Bounds/FootFrontRight:position")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(8, 5)]
+"values": [Vector2(-10.329151, 12.91144)]
 }
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("FootFrontLeft:position")
+tracks/9/path = NodePath("Bounds/FootFrontLeft:position")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(-9, 4)]
+"values": [Vector2(6.455719, 3.8734322)]
 }
 tracks/10/type = "value"
 tracks/10/imported = false
 tracks/10/enabled = true
-tracks/10/path = NodePath("Mouth:position")
+tracks/10/path = NodePath("Bounds/Mouth:position")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/keys = {
@@ -948,19 +949,19 @@ tracks/6/keys = {
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("FootFrontRight:position")
+tracks/7/path = NodePath("Bounds/FootFrontRight:position")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(21, 4)]
+"values": [Vector2(-19.367157, 3.8734322)]
 }
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("FootFrontLeft:position")
+tracks/8/path = NodePath("Bounds/FootFrontLeft:position")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
@@ -972,7 +973,7 @@ tracks/8/keys = {
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("Mouth:position")
+tracks/9/path = NodePath("Bounds/Mouth:position")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
@@ -1079,7 +1080,7 @@ tracks/6/keys = {
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("FootFrontRight:position")
+tracks/7/path = NodePath("Bounds/FootFrontRight:position")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
@@ -1091,7 +1092,7 @@ tracks/7/keys = {
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("FootFrontLeft:position")
+tracks/8/path = NodePath("Bounds/FootFrontLeft:position")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
@@ -1103,7 +1104,7 @@ tracks/8/keys = {
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("Mouth:position")
+tracks/9/path = NodePath("Bounds/Mouth:position")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
@@ -1210,7 +1211,7 @@ tracks/6/keys = {
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("FootFrontRight:position")
+tracks/7/path = NodePath("Bounds/FootFrontRight:position")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
@@ -1222,7 +1223,7 @@ tracks/7/keys = {
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("FootFrontLeft:position")
+tracks/8/path = NodePath("Bounds/FootFrontLeft:position")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
@@ -1234,7 +1235,7 @@ tracks/8/keys = {
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("Mouth:position")
+tracks/9/path = NodePath("Bounds/Mouth:position")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
@@ -1323,7 +1324,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("FootFrontRight:position")
+tracks/6/path = NodePath("Bounds/FootFrontRight:position")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -1335,7 +1336,7 @@ tracks/6/keys = {
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("FootFrontLeft:position")
+tracks/7/path = NodePath("Bounds/FootFrontLeft:position")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
@@ -1347,7 +1348,7 @@ tracks/7/keys = {
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("Mouth:position")
+tracks/8/path = NodePath("Bounds/Mouth:position")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
@@ -1436,7 +1437,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("FootFrontLeft:position")
+tracks/6/path = NodePath("Bounds/FootFrontLeft:position")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -1448,7 +1449,7 @@ tracks/6/keys = {
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("FootFrontRight:position")
+tracks/7/path = NodePath("Bounds/FootFrontRight:position")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
@@ -1460,7 +1461,7 @@ tracks/7/keys = {
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("Mouth:position")
+tracks/8/path = NodePath("Bounds/Mouth:position")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
@@ -1537,7 +1538,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("FootFrontRight:position")
+tracks/5/path = NodePath("Bounds/FootFrontRight:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -1549,7 +1550,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("FootFrontLeft:position")
+tracks/6/path = NodePath("Bounds/FootFrontLeft:position")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -1561,7 +1562,7 @@ tracks/6/keys = {
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("Mouth:position")
+tracks/7/path = NodePath("Bounds/Mouth:position")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
@@ -1638,7 +1639,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("FootFrontRight:position")
+tracks/5/path = NodePath("Bounds/FootFrontRight:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -1650,7 +1651,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("FootFrontLeft:position")
+tracks/6/path = NodePath("Bounds/FootFrontLeft:position")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -1662,7 +1663,7 @@ tracks/6/keys = {
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("Mouth:position")
+tracks/7/path = NodePath("Bounds/Mouth:position")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
@@ -1739,7 +1740,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("FootFrontRight:position")
+tracks/5/path = NodePath("Bounds/FootFrontRight:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -1751,7 +1752,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("FootFrontLeft:position")
+tracks/6/path = NodePath("Bounds/FootFrontLeft:position")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -1763,7 +1764,7 @@ tracks/6/keys = {
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("Mouth:position")
+tracks/7/path = NodePath("Bounds/Mouth:position")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
@@ -1840,7 +1841,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("FootFrontRight:position")
+tracks/5/path = NodePath("Bounds/FootFrontRight:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -1852,7 +1853,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("FootFrontLeft:position")
+tracks/6/path = NodePath("Bounds/FootFrontLeft:position")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -1864,7 +1865,7 @@ tracks/6/keys = {
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("Mouth:position")
+tracks/7/path = NodePath("Bounds/Mouth:position")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
@@ -1941,7 +1942,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("FootFrontRight:position")
+tracks/5/path = NodePath("Bounds/FootFrontRight:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -1953,7 +1954,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("FootFrontLeft:position")
+tracks/6/path = NodePath("Bounds/FootFrontLeft:position")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -1965,7 +1966,7 @@ tracks/6/keys = {
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("Mouth:position")
+tracks/7/path = NodePath("Bounds/Mouth:position")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
@@ -2042,7 +2043,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("FootFrontRight:position")
+tracks/5/path = NodePath("Bounds/FootFrontRight:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -2054,7 +2055,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("FootFrontLeft:position")
+tracks/6/path = NodePath("Bounds/FootFrontLeft:position")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -2066,7 +2067,7 @@ tracks/6/keys = {
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("Mouth:position")
+tracks/7/path = NodePath("Bounds/Mouth:position")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
@@ -2177,7 +2178,7 @@ tracks/7/keys = {
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("FootFrontRight:position")
+tracks/8/path = NodePath("Bounds/FootFrontRight:position")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
@@ -2189,7 +2190,7 @@ tracks/8/keys = {
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("FootFrontLeft:position")
+tracks/9/path = NodePath("Bounds/FootFrontLeft:position")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
@@ -2201,7 +2202,7 @@ tracks/9/keys = {
 tracks/10/type = "value"
 tracks/10/imported = false
 tracks/10/enabled = true
-tracks/10/path = NodePath("Mouth:position")
+tracks/10/path = NodePath("Bounds/Mouth:position")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/keys = {
@@ -2278,7 +2279,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Mouth:position")
+tracks/5/path = NodePath("Bounds/Mouth:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -2355,7 +2356,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Mouth:position")
+tracks/5/path = NodePath("Bounds/Mouth:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -2432,7 +2433,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Mouth:position")
+tracks/5/path = NodePath("Bounds/Mouth:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -2509,7 +2510,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Mouth:position")
+tracks/5/path = NodePath("Bounds/Mouth:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -2544,7 +2545,7 @@ _data = {
 &"StartJumpUp": SubResource("Animation_3ambt")
 }
 
-[node name="Horse" type="CharacterBody2D"]
+[node name="Horse" type="CharacterBody2D" unique_id=1340306221]
 z_index = 1
 y_sort_enabled = true
 scale = Vector2(0.774507, 0.774507)
@@ -2552,6 +2553,7 @@ collision_layer = 4
 collision_mask = 46
 script = ExtResource("1_gprnh")
 can_interact_from_the_vehicle = true
+current_direction = 1
 offset_view_from_bottom = -237
 offset_view_from_top = -800
 vehicle_speed = 150.0
@@ -2562,43 +2564,43 @@ is_a_living_creature = true
 can_move_on_terrains = PackedStringArray("^lava", "^water")
 can_disembark_on_terrains = PackedStringArray("all")
 
-[node name="Smoke" parent="." instance=ExtResource("3_pbw4f")]
+[node name="Smoke" parent="." unique_id=1295565066 instance=ExtResource("3_pbw4f")]
 unique_name_in_owner = true
 show_behind_parent = true
 z_index = 0
 amount = 100
 one_shot = false
 explosiveness = 0.0
-process_material = SubResource("ParticleProcessMaterial_3ambt")
+process_material = SubResource("ParticleProcessMaterial_pbw4f")
 
-[node name="CharacterViewport" type="SubViewport" parent="."]
+[node name="CharacterViewport" type="SubViewport" parent="." unique_id=620378043]
 unique_name_in_owner = true
 transparent_bg = true
 size = Vector2i(192, 192)
 
-[node name="FinalCharacter" type="SubViewport" parent="."]
+[node name="FinalCharacter" type="SubViewport" parent="." unique_id=773357250]
 unique_name_in_owner = true
 transparent_bg = true
 size = Vector2i(192, 192)
 
-[node name="Character" type="Sprite2D" parent="FinalCharacter"]
+[node name="Character" type="Sprite2D" parent="FinalCharacter" unique_id=1745311320]
 unique_name_in_owner = true
 texture_filter = 1
 material = SubResource("ShaderMaterial_s1cwp")
 position = Vector2(98, 117.035)
 rotation = -0.0314159
 scale = Vector2(1.225, 1.225)
-texture = SubResource("ViewportTexture_pbw4f")
+texture = SubResource("ViewportTexture_3ambt")
 
-[node name="VehicleViewport" type="SubViewport" parent="."]
+[node name="VehicleViewport" type="SubViewport" parent="." unique_id=1523591062]
 unique_name_in_owner = true
 transparent_bg = true
 size = Vector2i(192, 192)
 
-[node name="Node2D" type="Node2D" parent="VehicleViewport"]
+[node name="Node2D" type="Node2D" parent="VehicleViewport" unique_id=70359093]
 position = Vector2(98, 160)
 
-[node name="Vehicle" type="AnimatedSprite2D" parent="VehicleViewport/Node2D"]
+[node name="Vehicle" type="AnimatedSprite2D" parent="VehicleViewport/Node2D" unique_id=1096364919]
 unique_name_in_owner = true
 y_sort_enabled = true
 position = Vector2(0, -1)
@@ -2606,93 +2608,106 @@ sprite_frames = SubResource("SpriteFrames_jd0jw")
 animation = &"IdleDown"
 offset = Vector2(0, -50)
 
-[node name="CharacterContainer" type="Node2D" parent="VehicleViewport/Node2D"]
+[node name="CharacterContainer" type="Node2D" parent="VehicleViewport/Node2D" unique_id=1911445947]
 position = Vector2(0, -48)
 
-[node name="MainCharacter" type="Sprite2D" parent="VehicleViewport/Node2D/CharacterContainer"]
+[node name="MainCharacter" type="Sprite2D" parent="VehicleViewport/Node2D/CharacterContainer" unique_id=993582124]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_vb0s0")
 position = Vector2(-3, -16)
-texture = SubResource("ViewportTexture_3ambt")
+texture = SubResource("ViewportTexture_1066t")
 
-[node name="HorseDownHeadGalloping" type="Sprite2D" parent="VehicleViewport/Node2D"]
+[node name="HorseDownHeadGalloping" type="Sprite2D" parent="VehicleViewport/Node2D" unique_id=1264190870]
 visible = false
 position = Vector2(0, -29)
 texture = ExtResource("5_biib6")
 offset = Vector2(1, -67)
 
-[node name="HorseDownHeadIdle" type="Sprite2D" parent="VehicleViewport/Node2D"]
+[node name="HorseDownHeadIdle" type="Sprite2D" parent="VehicleViewport/Node2D" unique_id=726661208]
 visible = false
 position = Vector2(-2, -58)
 texture = ExtResource("6_54j4u")
 offset = Vector2(-4, -116)
 
-[node name="Final" type="SubViewport" parent="."]
+[node name="Final" type="SubViewport" parent="." unique_id=1874413234]
 unique_name_in_owner = true
 transparent_bg = true
 size = Vector2i(192, 192)
 
-[node name="VehicleFinal" type="Sprite2D" parent="Final"]
+[node name="VehicleFinal" type="Sprite2D" parent="Final" unique_id=1995078951]
 unique_name_in_owner = true
-texture = SubResource("ViewportTexture_1066t")
+texture = SubResource("ViewportTexture_g17kw")
 centered = false
 
-[node name="Shadow" type="SubViewport" parent="."]
+[node name="Shadow" type="SubViewport" parent="." unique_id=1159907850]
 unique_name_in_owner = true
 transparent_bg = true
 canvas_item_default_texture_filter = 0
 size = Vector2i(1024, 1024)
 
-[node name="Node2D" type="Node2D" parent="Shadow"]
+[node name="Node2D" type="Node2D" parent="Shadow" unique_id=1926505256]
 position = Vector2(510, 518)
 scale = Vector2(0.775, 0.775)
 
-[node name="FinalShadow" type="Sprite2D" parent="Shadow/Node2D"]
+[node name="FinalShadow" type="Sprite2D" parent="Shadow/Node2D" unique_id=178641669]
 unique_name_in_owner = true
 modulate = Color(0, 0, 0, 1)
-texture = SubResource("ViewportTexture_g17kw")
+texture = SubResource("ViewportTexture_u45gt")
 centered = false
 offset = Vector2(-96, -162)
 
-[node name="FinalVehicle" type="Sprite2D" parent="."]
+[node name="FullBody" type="Marker2D" parent="." unique_id=1476950374]
 unique_name_in_owner = true
-position = Vector2(0, -8)
-texture = SubResource("ViewportTexture_g17kw")
+scale = Vector2(0.99999994, 0.99999994)
+
+[node name="FinalVehicle" type="Sprite2D" parent="FullBody" unique_id=2035190708]
+unique_name_in_owner = true
+position = Vector2(0, -8.000001)
+scale = Vector2(1.0000001, 1.0000001)
+texture = SubResource("ViewportTexture_u45gt")
 offset = Vector2(-2, -50)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1855415489]
 position = Vector2(0, -8)
 shape = SubResource("RectangleShape2D_2aanc")
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=400143434]
 stream = ExtResource("6_2jq0g")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=223337415]
 unique_name_in_owner = true
-libraries = {
-&"": SubResource("AnimationLibrary_tlfka")
-}
+libraries/ = SubResource("AnimationLibrary_tlfka")
 speed_scale = 1.5
 
-[node name="FootFrontLeft" type="Marker2D" parent="."]
+[node name="Bounds" type="Node2D" parent="." unique_id=87490512]
+unique_name_in_owner = true
+scale = Vector2(0.99999994, 0.99999994)
+
+[node name="FootFrontLeft" type="Marker2D" parent="Bounds" unique_id=2126381631]
 unique_name_in_owner = true
 position = Vector2(-9, 4)
+scale = Vector2(1.0000001, 1.0000001)
 
-[node name="FootFrontRight" type="Marker2D" parent="."]
+[node name="FootFrontRight" type="Marker2D" parent="Bounds" unique_id=775469001]
 unique_name_in_owner = true
 position = Vector2(8, 5)
+scale = Vector2(1.0000001, 1.0000001)
 
-[node name="FootBackLeft" type="Marker2D" parent="."]
+[node name="FootBackLeft" type="Marker2D" parent="Bounds" unique_id=620532431]
 unique_name_in_owner = true
-position = Vector2(-9, 4)
+position = Vector2(18.076017, 6.455715)
+scale = Vector2(1.0000001, 1.0000001)
 
-[node name="FootBackRight" type="Marker2D" parent="."]
+[node name="FootBackRight" type="Marker2D" parent="Bounds" unique_id=1656226]
 unique_name_in_owner = true
-position = Vector2(8, 5)
+position = Vector2(20.658302, 5.1645737)
+scale = Vector2(1.0000001, 1.0000001)
 
-[node name="StartPlayerPosition" type="Marker2D" parent="."]
+[node name="StartPlayerPosition" type="Marker2D" parent="Bounds" unique_id=1366496876]
 unique_name_in_owner = true
-position = Vector2(0, -63)
+position = Vector2(-1.291144, -59.392624)
+scale = Vector2(1.0000001, 1.0000001)
 
-[node name="Mouth" type="Marker2D" parent="."]
+[node name="Mouth" type="Marker2D" parent="Bounds" unique_id=1120996892]
 unique_name_in_owner = true
+scale = Vector2(1.0000001, 1.0000001)

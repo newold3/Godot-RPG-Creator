@@ -745,14 +745,15 @@ func get_shadow_data() -> Dictionary:
 	var sprites = []
 	for s in [wings_back, offhand_back, mainhand_back, body, offhand_front, mainhand_front]:
 		if s.visible and s.modulate.a > 0.0 and s.self_modulate.a > 0.0: sprites.append(s)
+	var parent_body = full_body
 	var shadow = {
-		"main_node": full_body,
+		"main_node": parent_body,
 		"sprites": sprites,
-		"position": full_body.global_position,
+		"position": parent_body.global_position,
 		"feet_offset": 16
 	}
 	if GameManager.current_map:
-		shadow.cell = Vector2i(global_position / Vector2(GameManager.current_map.tile_size))
+		shadow.cell = Vector2i(parent_body.global_position / Vector2(GameManager.current_map.tile_size))
 	
 	return shadow
 

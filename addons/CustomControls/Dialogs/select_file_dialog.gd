@@ -301,6 +301,7 @@ func _fill_favorite_files() -> void:
 			if file_id == str(current_file_filters_data):
 				filtered_files_pool.append(FileStruct.new(file, "file"))
 	
+	_prioritize_selected_file()
 	_paginate_next_batch()
 	hide_loading()
 
@@ -340,6 +341,7 @@ func fill_files(file_id: String, update_directory: bool = true) -> void:
 		if all_button_enabled or _clean_path(file.get_base_dir()) == base_dir:
 			filtered_files_pool.append(FileStruct.new(file, "file"))
 			
+	_prioritize_selected_file()
 	_paginate_next_batch()
 	hide_loading()
 
@@ -373,6 +375,7 @@ func fill_mix_files(file_ids: PackedStringArray, update_directory: bool = true) 
 			if all_button_enabled or file.get_base_dir() == base_dir:
 				filtered_files_pool.append(FileStruct.new(file, "file"))
 				
+	_prioritize_selected_file()
 	_paginate_next_batch()
 	hide_loading()
 
@@ -402,8 +405,23 @@ func fill_files_by_extension(path: String = "res://", extensions: Array = [], up
 		if all_button_enabled or file.get_base_dir() == base_dir:
 			filtered_files_pool.append(FileStruct.new(file, "file"))
 			
+	_prioritize_selected_file()
 	_paginate_next_batch()
 	hide_loading()
+
+
+## Ensures the currently selected file (if any) is moved to the top of the list
+## so it is rendered in the first batch, preventing issues with lazy loading.
+func _prioritize_selected_file() -> void:
+	if current_file_selected.is_empty() or filtered_files_pool.is_empty():
+		return
+
+	# Search for the selected file in the current pool
+	for i in range(filtered_files_pool.size()):
+		if filtered_files_pool[i].path == current_file_selected:
+			var file = filtered_files_pool.pop_at(i)
+			filtered_files_pool.push_front(file)
+			break
 
 
 func _paginate_next_batch() -> void:
@@ -439,7 +457,7 @@ func populate_files() -> void:
 			file_selector.set_directory(file.path, EMPTY_FOLDER_ICON if file.is_empty else FOLDER_ICON)
 			file_selector.double_click.connect(navigate_to_directory)
 			file_selector.selected.connect(_on_directory_selected)
-			if !all_button_enabled: 
+			if !all_button_enabled:
 				%FileContainer.move_child(file_selector, 0)
 
 	refresh_delay_timer = 0.05
@@ -526,7 +544,10 @@ func _on_all_button_toggled(toggled_on: bool) -> void:
 		%FavoriteButton.set_pressed_no_signal(false)
 	
 	if not toggled_on:
-		if current_directory.is_empty():
+		if not current_file_selected.is_empty():
+			# If we have a file selected, jump to its directory when switching view
+			current_directory = _clean_path(current_file_selected.get_base_dir())
+		elif current_directory.is_empty():
 			if not last_folder_visited.is_empty():
 				current_directory = last_folder_visited
 			else:
@@ -641,7 +662,7 @@ func _on_custom_line_edit_text_changed(new_text: String) -> void:
 
 
 func _save_last_folder_visited() -> void:
-	if not current_directory.is_empty() and current_directory != "res://": 
+	if not current_directory.is_empty() and current_directory != "res://":
 		last_folder_visited = current_directory
 
 

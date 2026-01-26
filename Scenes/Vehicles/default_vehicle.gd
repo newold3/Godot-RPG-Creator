@@ -381,6 +381,18 @@ func reset_force_movement() -> void:
 	force_jump_enabled = false
 
 
+func _reset(force_reset: bool = false) -> void:
+	is_moving = false
+	velocity = Vector2.ZERO
+	if force_reset:
+		pass
+		#var direction_name = get_direction_name()
+		#current_animation = "Idle" + direction_name
+		#%AnimationPlayer.play(current_animation)
+	is_moving = false
+	movement_vector = Vector2.ZERO
+
+
 func _physics_process(_delta: float) -> void:
 	if GameManager.loading_game:
 		return
@@ -544,7 +556,7 @@ func get_player_possible_movement(motion: Vector2) -> Vector2i:
 	return result
 
 
-func get_possible_movement(motion: Vector2) -> Vector2i:
+func get_possible_movement(motion: Vector2, is_jump_action: bool = false) -> Vector2i:
 	var result: Vector2i = Vector2i.ZERO
 	
 	# Check if there is movement and if it can move
@@ -583,6 +595,44 @@ func get_possible_movement(motion: Vector2) -> Vector2i:
 	var can_move_horizontally = dx != 0 and get_tile_passability(horizontal_tile, motion) != Vector2i.ZERO
 	var can_move_vertically = dy != 0 and get_tile_passability(vertical_tile, motion) != Vector2i.ZERO
 	var can_move_diagonally = dx != 0 and dy != 0 and get_tile_passability(diagonal_tile, motion) != Vector2i.ZERO
+	
+	if is_jump_action:
+		# For jumping, we need strict passability (no sliding)
+		var is_target_passable = true
+		var target_tile_for_check = Vector2i.ZERO
+
+		if dx != 0 and dy != 0:
+			if not can_move_diagonally: is_target_passable = false
+			target_tile_for_check = diagonal_tile
+		elif dx != 0:
+			if not can_move_horizontally: is_target_passable = false
+			target_tile_for_check = horizontal_tile
+		elif dy != 0:
+			if not can_move_vertically: is_target_passable = false
+			target_tile_for_check = vertical_tile
+		
+		# If map blocks it, return ZERO
+		if not is_target_passable:
+			return Vector2i.ZERO
+			
+		# Check for solid events at the target tile (since jump bypasses physics collision)
+		var events_at_target = map.get_in_game_events_in(target_tile_for_check)
+		if not is_in_group("player") and GameManager.current_player and GameManager.current_player.get_current_tile() == target_tile_for_check:
+			events_at_target.append(GameManager.current_player)
+			
+		for entity in events_at_target:
+			if entity == self: continue
+			
+			var is_solid_entity = false
+			if entity.is_in_group("player") or entity is RPGVehicle:
+				is_solid_entity = !entity.is_passable() if entity.has_method("is_passable") else true
+			elif "character_options" in entity and entity.character_options:
+				is_solid_entity = not entity.character_options.passable
+			
+			if is_solid_entity:
+				return Vector2i.ZERO
+		
+		return Vector2i(1 if dx != 0 else 0, 1 if dy != 0 else 0)
 	
 	if can_move_horizontally and can_move_vertically and can_move_diagonally:
 		result = Vector2i(1, 1)
@@ -719,6 +769,7 @@ func set_shadow(_color: Color, _offset: Vector2, _skew: float, _scale: Vector2, 
 
 func get_current_tile() -> Vector2i:
 	if GameManager.current_map:
+		@warning_ignore("integer_division")
 		return Vector2i(Vector2i(global_position) / GameManager.current_map.tile_size)
 	else:
 		return Vector2i()
@@ -809,7 +860,8 @@ func jump_to(new_pos: Vector2, _route: RPGMovementRoute = null, start_fx: Dictio
 	if is_moving or busy or is_jumping:
 		return
 		
-	var possible_movement = get_possible_movement(new_pos)
+	var possible_movement = get_possible_movement(new_pos, true)
+
 	@warning_ignore("incompatible_ternary")
 	var motion = null if !possible_movement else new_pos * Vector2(GameManager.current_map.tile_size)
 	
@@ -847,71 +899,78 @@ func jump_to(new_pos: Vector2, _route: RPGMovementRoute = null, start_fx: Dictio
 	if movement_tween:
 		movement_tween.kill()
 		
-		movement_tween = create_tween()
+	movement_tween = create_tween()
+	
+	# Capture the scale at the start of the jump to use as a baseline
+	var base_scale = scale
 
-		if start_fx:
-			movement_tween.tween_callback(GameManager.play_se.bind(
-				start_fx.get("path", ""), start_fx.get("volume", 0.0), start_fx.get("pitch", 1.0)
-			))
-		
-		# Squash before jump
-		movement_tween.tween_property(self, "scale", Vector2(0.94, 0.8), 0.12).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
-		movement_tween.tween_interval(0.01)
-		
-		movement_tween.tween_callback(
-			func():
-				var dust = JUMP_PARTICLES.instantiate()
-				dust.position = position
-				get_parent().add_child(dust)
-		)
-		
-		movement_tween.tween_interval(0.001)
-		movement_tween.set_parallel(true)
-		
-		movement_tween.tween_property(self, "scale", Vector2(1.02, 1.04), 0.06).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	if start_fx:
+		movement_tween.tween_callback(GameManager.play_se.bind(
+			start_fx.get("path", ""), start_fx.get("volume", 0.0), start_fx.get("pitch", 1.0)
+		))
+	
+	# Squash before jump (relative to base scale)
+	movement_tween.tween_property(self, "scale", base_scale * Vector2(0.94, 0.8), 0.12).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	movement_tween.tween_interval(0.01)
+	
+	movement_tween.tween_callback(
+		func():
+			var dust = JUMP_PARTICLES.instantiate()
+			dust.position = position
+			get_parent().add_child(dust)
+	)
+	
+	movement_tween.tween_interval(0.001)
+	movement_tween.set_parallel(true)
+	
+	# Stretch in air (relative to base scale)
+	movement_tween.tween_property(self, "scale", base_scale * Vector2(1.02, 1.04), 0.06).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
-		# Simulated parabola motion using custom tween (position + y arc)
-		movement_tween.tween_method(
-			func(t): position = start_pos.lerp(end_pos, t) - Vector2(0, sin(t * PI) * jump_height),
-			0.0, 1.0, jump_duration
-		).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-		
-		# Land sound
-		if end_fx:
-			movement_tween.tween_callback(GameManager.play_se.bind(
-				end_fx.get("path", ""), end_fx.get("volume", 0.0), end_fx.get("pitch", 1.0)
-			)).set_delay(jump_duration - 0.03)
-		
-		movement_tween.tween_callback(
-			func():
-				current_animation = "end_jump"
-				run_animation()
-		).set_delay(jump_duration * 0.75)
-		
-		movement_tween.set_parallel(false)
-		movement_tween.tween_interval(0.01)
-		
-		movement_tween.tween_callback(
-			func():
-				var dust = JUMP_PARTICLES.instantiate()
-				dust.position = position
-				get_parent().add_child(dust)
-		)
+	# Simulated parabola motion using custom tween (position + y arc)
+	movement_tween.tween_method(
+		func(t): position = start_pos.lerp(end_pos, t) - Vector2(0, sin(t * PI) * jump_height),
+		0.0, 1.0, jump_duration
+	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	
+	# Land sound
+	if end_fx:
+		movement_tween.tween_callback(GameManager.play_se.bind(
+			end_fx.get("path", ""), end_fx.get("volume", 0.0), end_fx.get("pitch", 1.0)
+		)).set_delay(jump_duration - 0.03)
+	
+	movement_tween.tween_callback(
+		func():
+			current_animation = "end_jump"
+			run_animation()
+	).set_delay(jump_duration * 0.75)
+	
+	movement_tween.set_parallel(false)
+	movement_tween.tween_interval(0.01)
+	
+	movement_tween.tween_callback(
+		func():
+			var dust = JUMP_PARTICLES.instantiate()
+			dust.position = position
+			get_parent().add_child(dust)
+	)
 
-		# Compress and return to normal scale
-		movement_tween.tween_property(self, "scale", Vector2(1.0, 0.92), 0.15).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CIRC)
-		movement_tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.2).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_EXPO)
+	# Compress on landing (relative to base scale)
+	movement_tween.tween_property(self, "scale", base_scale * Vector2(1.0, 0.92), 0.15).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CIRC)
+	
+	# Return to original base scale
+	movement_tween.tween_property(self, "scale", base_scale, 0.2).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_EXPO)
 
-		movement_tween.tween_callback(
-			func():
-				is_jumping = false
-				if "get_shadow_data" in self:
-					var shadow_data = call("get_shadow_data")
-					if shadow_data is Dictionary and "sprite_shadow" in shadow_data and shadow_data.sprite_shadow is Node:
-						shadow_data.sprite_shadow.set_meta("is_jumping", false)
-		)
+	movement_tween.tween_callback(
+		func():
+			is_jumping = false
+			force_jump_enabled = false
+			if "get_shadow_data" in self:
+				var shadow_data = call("get_shadow_data")
+				if shadow_data is Dictionary and "sprite_shadow" in shadow_data and shadow_data.sprite_shadow is Node:
+					shadow_data.sprite_shadow.set_meta("is_jumping", false)
+	)
 
-		await movement_tween.finished
+	await movement_tween.finished
 
 
 func _on_end_movement() -> void:

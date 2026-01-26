@@ -160,7 +160,7 @@ func _process(_delta: float) -> void:
 
 func _physics_process(delta: float):
 	if GameManager.loading_game or is_invalid_event:
-		return 
+		return
 	
 	if is_in_group("player"):
 		_save_player_position_into_game_state()
@@ -190,7 +190,10 @@ func _physics_process(delta: float):
 			else:
 				targets_over_me.remove_at(i)
 	
-	if is_on_vehicle: return
+	if is_on_vehicle:
+		if route_commands:
+			update_process_route()
+		return
 				
 	if is_inside_tree():
 		queue_redraw()
@@ -485,6 +488,7 @@ func update_process_route() -> void:
 
 	_processing_command_route = true
 	var result = await process_route_command()
+
 	if result.action:
 		match result.action:
 			"move":
@@ -1696,7 +1700,7 @@ func jump_to(new_pos: Vector2, route: RPGMovementRoute = null, start_fx: Diction
 	if is_moving or busy or is_jumping:
 		return
 	
-	var possible_movement = get_possible_movements(new_pos)
+	var possible_movement = get_possible_movements(new_pos, true)
 	var motion = null if !possible_movement else new_pos * Vector2(current_map_tile_size)
 	
 	if motion:
@@ -1839,7 +1843,7 @@ func vehicle_jump_to(new_pos: Vector2, route: RPGMovementRoute = null, start_fx:
 		return
 	
 	is_jumping = true
-		
+
 	await current_vehicle.jump_to(new_pos, route, start_fx, end_fx)
 	
 	is_jumping = false
@@ -1945,7 +1949,7 @@ func _try_move_with_free_mode(current_tile: Vector2i, motion: Vector2) -> Vector
 	return result
 
 
-func get_possible_movements(motion: Vector2) -> Vector2i:
+func get_possible_movements(motion: Vector2, is_jump_action: bool = false) -> Vector2i:
 	var result: Vector2i = Vector2i.ZERO
 
 	# Redondear el motion hacia afuera
@@ -1977,6 +1981,44 @@ func get_possible_movements(motion: Vector2) -> Vector2i:
 	var can_move_horizontally = dx != 0 and get_tile_passability(horizontal_tile, motion) != Vector2i.ZERO
 	var can_move_vertically = dy != 0 and get_tile_passability(vertical_tile, motion) != Vector2i.ZERO
 	var can_move_diagonally = dx != 0 and dy != 0 and get_tile_passability(diagonal_tile, motion) != Vector2i.ZERO
+	
+	if is_jump_action:
+		# For jumping, we need strict passability (no sliding)
+		var is_target_passable = true
+		var target_tile_for_check = Vector2i.ZERO
+
+		if dx != 0 and dy != 0:
+			if not can_move_diagonally: is_target_passable = false
+			target_tile_for_check = diagonal_tile
+		elif dx != 0:
+			if not can_move_horizontally: is_target_passable = false
+			target_tile_for_check = horizontal_tile
+		elif dy != 0:
+			if not can_move_vertically: is_target_passable = false
+			target_tile_for_check = vertical_tile
+		
+		# If map blocks it, return ZERO
+		if not is_target_passable:
+			return Vector2i.ZERO
+			
+		# Check for solid events at the target tile (since jump bypasses physics collision)
+		var events_at_target = map.get_in_game_events_in(target_tile_for_check)
+		if not is_in_group("player") and GameManager.current_player and GameManager.current_player.get_current_tile() == target_tile_for_check:
+			events_at_target.append(GameManager.current_player)
+			
+		for entity in events_at_target:
+			if entity == self: continue
+			
+			var is_solid_entity = false
+			if entity.is_in_group("player") or entity is RPGVehicle:
+				is_solid_entity = !entity.is_passable() if entity.has_method("is_passable") else true
+			elif "character_options" in entity and entity.character_options:
+				is_solid_entity = not entity.character_options.passable
+			
+			if is_solid_entity:
+				return Vector2i.ZERO
+		
+		return Vector2i(1 if dx != 0 else 0, 1 if dy != 0 else 0)
 
 	if can_move_horizontally and can_move_vertically and can_move_diagonally:
 		result = Vector2i(1, 1)
@@ -1991,7 +2033,6 @@ func get_possible_movements(motion: Vector2) -> Vector2i:
 	if result.y != 0 and not map.is_tile_passable_from_direction(get_current_tile(), current_direction, true):
 		result.y = 0
 
-	# Modo libre: intenta moverse aunque no esté alineado al grid
 	if movement_current_mode == MOVEMENTMODE.FREE:
 		if result == Vector2i.ZERO:
 			result = _try_move_with_free_mode(current_tile, motion)

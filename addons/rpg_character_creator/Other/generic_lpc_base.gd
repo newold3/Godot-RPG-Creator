@@ -51,12 +51,10 @@ func _build() -> void:
 		
 		if ResourceLoader.exists(texture_path):
 			var tex = load(texture_path)
-			
-			var atlas = AtlasTexture.new()
-			atlas.region = Rect2(0, 192, 192, 192) # Starting position = 0, 192 = idle down
-			atlas.set_local_to_scene(true)
-			atlas.atlas = tex
-			%MainTexture.texture = atlas
+	
+			%MainTexture.region_enabled = true
+			%MainTexture.region_rect = Rect2(0, 192, 192, 192)
+			%MainTexture.texture = tex
 
 	if not is_in_group("event"):
 		add_to_group("event")
@@ -129,22 +127,23 @@ func _update_frame():
 	if current_frame >= current_animation.size():
 		current_frame = 0
 	
-	if %MainTexture.texture and %MainTexture.texture is AtlasTexture:
-		%MainTexture.texture.region.position = current_animation[current_frame]
+	if %MainTexture.texture:
+		%MainTexture.region_rect.position = current_animation[current_frame]
 
 
 func get_shadow_data() -> Dictionary:
-	if is_queued_for_deletion() or has_meta("_disable_shadow"):
+	if is_on_vehicle or is_queued_for_deletion() or has_meta("_disable_shadow"):
 		return {}
-		
+	var sprites = [%MainTexture]
+	var parent_body = %FullBody
 	var shadow = {
-		"main_node": %FullBody,
-		"sprites": [%MainTexture],
-		"position": %FullBody.global_position,
+		"main_node": parent_body,
+		"sprites": sprites,
+		"position": parent_body.global_position,
 		"feet_offset": 16
 	}
 	if GameManager.current_map:
-		shadow.cell = Vector2i(global_position / Vector2(GameManager.current_map.tile_size))
+		shadow.cell = Vector2i(parent_body.global_position / Vector2(GameManager.current_map.tile_size))
 	
 	return shadow
 

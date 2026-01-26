@@ -4,6 +4,8 @@ uniform sampler2D shadow_texture : hint_default_transparent;
 uniform sampler2D mask_texture   : hint_default_transparent;
 
 uniform vec4 overlay_color : source_color = vec4(0.0, 0.0, 0.0, 0.5);
+uniform vec4 debug_color : source_color = vec4(1.0, 0.0, 0.0, 0.5);
+uniform bool debug_enabled = false;
 
 // --- HEIGHTMAP / DISPLACEMENT ---
 uniform float height_strength = 0.01;
@@ -58,37 +60,48 @@ void fragment() {
 	}
 
 	if (should_discard && shadow_alpha < 0.1) {
-		discard;
+		if (!debug_enabled)
+			discard;
+		else
+			COLOR = debug_color;
 	}
+	else {
 
-	// ------------------------------------------------
-	// CONTACT DISPLACEMENT (DOES NOT MODULATE COLOR)
-	// ------------------------------------------------
+		// ------------------------------------------------
+		// CONTACT DISPLACEMENT (DOES NOT MODULATE COLOR)
+		// ------------------------------------------------
 
-	vec2 final_uv = UV;
+		vec2 final_uv = UV;
 
-	// Only displace if there is contact with the mask
-	if (mask_alpha > 0.09) {
+		// Only displace if there is contact with the mask
+		if (mask_alpha > 0.09) {
 
-		// Height from mask
-		float height = mask_tex.r;
+			// Height from mask
+			float height = mask_tex.r;
 
-		// Smooth and controlled offset
-		vec2 offset = shadow_direction * height * height_strength;
+			// Smooth and controlled offset
+			vec2 offset = shadow_direction * height * height_strength;
 
-		final_uv += offset;
+			final_uv += offset;
+		}
+
+		// Re-sample ONLY to check for shadow
+		float displaced_alpha = texture(shadow_texture, final_uv).a;
+
+		if (displaced_alpha < 0.01) {
+			if (!debug_enabled)
+				discard;
+			else {
+				COLOR = debug_color;
+			}
+		}
+		else {
+
+			// ------------------------------------------------
+			// FIXED FINAL COLOR
+			// ------------------------------------------------
+
+			COLOR = overlay_color;
+		}
 	}
-
-	// Re-sample ONLY to check for shadow
-	float displaced_alpha = texture(shadow_texture, final_uv).a;
-
-	if (displaced_alpha < 0.01) {
-		discard;
-	}
-
-	// ------------------------------------------------
-	// FIXED FINAL COLOR
-	// ------------------------------------------------
-
-	COLOR = overlay_color;
 }
