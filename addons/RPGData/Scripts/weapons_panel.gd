@@ -259,10 +259,13 @@ func fill_rarity_types() -> void:
 
 
 func fill_user_parameters(selected_index: int = 0) -> void:
+	var current_data = get_data()
+	if not current_data: return
+	
 	var node = %UserParameters
 	node.clear()
 	
-	var user_parameters = get_data().user_parameters
+	var user_parameters = current_data.user_parameters
 	var user_parameter_data = RPGSYSTEM.database.types.user_parameters
 	if user_parameters.size() != user_parameter_data.size():
 		user_parameters.resize(user_parameter_data.size())

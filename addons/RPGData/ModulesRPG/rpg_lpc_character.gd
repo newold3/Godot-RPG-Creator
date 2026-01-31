@@ -40,8 +40,8 @@ func clear() -> void:
 
 
 func set_generic_config() -> void:
-	equipment_parts = null
-	body_parts = null
+	equipment_parts.clear()
+	body_parts.clear()
 	hidden_items.clear()
 
 

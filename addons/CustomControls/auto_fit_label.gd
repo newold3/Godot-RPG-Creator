@@ -34,7 +34,7 @@ signal font_size_changed(new_size: int)
 
 func _ready() -> void:
 	old_text = text
-	adjust_text_fit(3)
+	adjust_text_fit.call_deferred(3)
 
 
 func _process(delta: float) -> void:
@@ -128,7 +128,9 @@ func adjust_text_fit(loops: int = 0) -> void:
 	if label_settings:
 		label_settings.font_size = font_size + 1
 	font_size_changed.emit(font_size + 1)
-	clip_text = false
+	custom_minimum_size = size
+	set.call_deferred("clip_text", false)
+	#clip_text = false
 	
 	if is_inside_tree():
 		await get_tree().process_frame

@@ -179,7 +179,7 @@ func _synchronize_bars(full_properties: bool = false) -> void:
 		#custom_vbar.value = vscroll.value
 		custom_vbar.set_value_no_signal(-child.position.y)
 		custom_vbar.position = custom_vscroll_offset
-		custom_vbar.size = custom_vscroll_size
+		custom_vbar.set_size.call_deferred(custom_vscroll_size)
 		custom_vbar.modulate.a = 1.0
 		custom_vbar.mouse_filter = Control.MOUSE_FILTER_STOP
 		
@@ -200,7 +200,7 @@ func _synchronize_bars(full_properties: bool = false) -> void:
 		#custom_hbar.value = hscroll.value
 		custom_hbar.set_value_no_signal(-child.position.x)
 		custom_hbar.position = custom_hscroll_offset
-		custom_hbar.size = custom_hscroll_size
+		custom_hbar.set_size.call_deferred(custom_hscroll_size)
 		custom_hbar.modulate.a = 1.0
 		custom_hbar.mouse_filter = Control.MOUSE_FILTER_STOP
 		

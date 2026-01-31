@@ -541,8 +541,26 @@ func _get_next_move_toward_target(target: Vector2i, target_screen_position: Vect
 	if map:
 		var current = get_current_tile()
 		var next = map.pathfinder.get_next_tile(self, current, target)
+		
 		if next != null:
-			return next - current
+			var diff = next - current
+			var map_size = map.get_map_size_in_tiles()
+			
+			if map.infinite_horizontal_scroll:
+				var half_width = map_size.x / 2
+				if diff.x > half_width:
+					diff.x -= map_size.x
+				elif diff.x < -half_width:
+					diff.x += map_size.x
+			
+			if map.infinite_vertical_scroll:
+				var half_height = map_size.y / 2
+				if diff.y > half_height:
+					diff.y -= map_size.y
+				elif diff.y < -half_height:
+					diff.y += map_size.y
+			
+			return diff
 	
 	return Vector2i.ZERO
 
@@ -581,22 +599,38 @@ func _get_next_move_away_from_player() -> Vector2i:
 	
 	var my_tile: Vector2i = get_current_tile()
 	var player_tile = GameManager.current_player.get_current_tile() if not GameManager.current_player.is_on_vehicle else GameManager.current_player.current_vehicle.get_current_tile()
-
-	var furthest_tile := my_tile
-	var max_distance := my_tile.distance_squared_to(player_tile)
 	
-	if max_distance >= MAX_FLEE_DISTANCE_SQUARED:
+	var map = GameManager.current_map
+	var map_size = map.get_map_size_in_tiles()
+	var infinite_x = map.infinite_horizontal_scroll
+	var infinite_y = map.infinite_vertical_scroll
+
+	var current_dist_sq = _get_wrapped_distance_sq(my_tile, player_tile, map_size, infinite_x, infinite_y)
+	
+	if current_dist_sq >= MAX_FLEE_DISTANCE_SQUARED:
 		return Vector2i(0, 0)
 
+	var best_move = Vector2i.ZERO
+	var max_distance = current_dist_sq
+
 	for dir in directions:
-		var neighbor = my_tile + dir
-		if GameManager.current_map.is_passable(neighbor, GameManager.current_map.pathfinder.vector2_to_direction(dir), self):
-			var dist = neighbor.distance_squared_to(player_tile)
+		var raw_neighbor = my_tile + dir
+		
+		var wrapped_neighbor = raw_neighbor
+		if infinite_x:
+			wrapped_neighbor.x = posmod(wrapped_neighbor.x, map_size.x)
+		if infinite_y:
+			wrapped_neighbor.y = posmod(wrapped_neighbor.y, map_size.y)
+			
+		if map.is_passable(wrapped_neighbor, map.pathfinder.vector2_to_direction(dir), self):
+			
+			var dist = _get_wrapped_distance_sq(wrapped_neighbor, player_tile, map_size, infinite_x, infinite_y)
+			
 			if dist > max_distance:
 				max_distance = dist
-				furthest_tile = neighbor
+				best_move = dir
 	
-	var motion = furthest_tile - my_tile
+	var motion = best_move
 	if motion:
 		if motion.x == 0:
 			current_direction = DIRECTIONS.UP if motion.y < 0 else DIRECTIONS.DOWN
@@ -605,6 +639,17 @@ func _get_next_move_away_from_player() -> Vector2i:
 		last_direction = current_direction
 
 	return motion
+
+func _get_wrapped_distance_sq(from_pos: Vector2i, to_pos: Vector2i, size: Vector2i, inf_x: bool, inf_y: bool) -> float:
+	var dx = abs(from_pos.x - to_pos.x)
+	var dy = abs(from_pos.y - to_pos.y)
+	
+	if inf_x:
+		dx = min(dx, size.x - dx)
+	if inf_y:
+		dy = min(dy, size.y - dy)
+		
+	return float(dx * dx + dy * dy)
 
 
 func _is_movement_route_command(command: RPGMovementCommand) -> bool:

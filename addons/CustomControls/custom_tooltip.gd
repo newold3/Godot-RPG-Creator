@@ -37,7 +37,7 @@ func _ready() -> void:
 	transparent_bg = true
 	set_transparent_background(true)
 	RenderingServer.viewport_set_clear_mode(get_viewport_rid(),RenderingServer.VIEWPORT_CLEAR_ALWAYS)
-	size = Vector2i.ONE
+	set_deferred("size", Vector2i.ONE)
 	set_window_position()
 
 

@@ -7,100 +7,94 @@ uniform vec4 overlay_color : source_color = vec4(0.0, 0.0, 0.0, 0.5);
 uniform vec4 debug_color : source_color = vec4(1.0, 0.0, 0.0, 0.5);
 uniform bool debug_enabled = false;
 
-// --- HEIGHTMAP / DISPLACEMENT ---
-uniform float height_strength = 0.01;
+// --- CONFIGURATION ---
+uniform float distortion_strength : hint_range(0.0, 0.1) = 0.02;
+uniform float sun_displacement_strength : hint_range(0.0, 0.1) = 0.02;
 uniform vec2 shadow_direction = vec2(0.0, -1.0);
+
+uniform float overlap_threshold : hint_range(0.0, 1.0) = 0.15; 
 
 const float border_width = 1.5;
 
+
 void fragment() {
-
-	vec4 shadow_tex = texture(shadow_texture, UV);
-	vec4 mask_tex   = texture(mask_texture, UV);
-
-	float shadow_alpha = shadow_tex.a;
-	float mask_alpha   = mask_tex.a;
-
-	float shadow_y = shadow_tex.r;
-	float mask_y   = mask_tex.r;
-
-	if (shadow_alpha < 0.01) {
+	vec4 base_shadow = texture(shadow_texture, UV);
+	vec4 base_mask   = texture(mask_texture, UV);
+	
+	if (base_shadow.a < 0.01 && base_mask.a < 0.01) {
 		discard;
 	}
 
-	bool should_discard = false;
+	float mask_alpha = base_mask.a;
+	float shadow_y   = base_shadow.r;
+	float mask_y     = base_mask.r;
+
+	vec2 final_uv = UV;
 
 	// ------------------------------------------------
-	// DEPTH LOGIC (DO NOT TOUCH)
+	// 1. DYNAMIC DISTORTION
 	// ------------------------------------------------
 	if (mask_alpha > 0.09) {
+		vec2 ps = vec2(1.0) / vec2(textureSize(mask_texture, 0));
 
-		float depth_margin = 0.001;
-		bool caster_is_in_front = shadow_y > (mask_y + depth_margin);
+		float a_up    = texture(mask_texture, UV + vec2(0.0, -ps.y * 2.0)).a;
+		float a_down  = texture(mask_texture, UV + vec2(0.0,  ps.y * 2.0)).a;
+		float a_left  = texture(mask_texture, UV + vec2(-ps.x * 2.0, 0.0)).a;
+		float a_right = texture(mask_texture, UV + vec2( ps.x * 2.0, 0.0)).a;
 
-		if (!caster_is_in_front) {
+		vec2 slope = vec2(a_left - a_right, a_up - a_down);
+		vec2 refraction_offset = slope * distortion_strength;
+		float incidence = dot(normalize(slope + vec2(0.001)), shadow_direction); 
+		vec2 sun_offset = shadow_direction * (mask_alpha * sun_displacement_strength) * (1.0 + incidence);
 
-			vec2 ps = vec2(1.0) / vec2(textureSize(mask_texture, 0));
-
-			float a_up    = texture(mask_texture, UV + vec2(0.0, -ps.y * border_width)).a;
-			float a_down  = texture(mask_texture, UV + vec2(0.0,  ps.y * border_width)).a;
-			float a_left  = texture(mask_texture, UV + vec2(-ps.x * border_width, 0.0)).a;
-			float a_right = texture(mask_texture, UV + vec2( ps.x * border_width, 0.0)).a;
-
-			bool is_edge =
-				a_up    < 0.02 ||
-				a_down  < 0.02 ||
-				a_left  < 0.02 ||
-				a_right < 0.02;
-
-			if (!is_edge) {
-				should_discard = true;
-			}
-		}
+		final_uv += refraction_offset + sun_offset;
 	}
 
-	if (should_discard && shadow_alpha < 0.1) {
-		if (!debug_enabled)
-			discard;
-		else
-			COLOR = debug_color;
+	// ------------------------------------------------
+	// 2. RESAMPLE
+	// ------------------------------------------------
+	vec4 distorted_shadow = texture(shadow_texture, final_uv);
+	
+	if (distorted_shadow.a < 0.01) {
+		if (!debug_enabled) discard;
+		else COLOR = vec4(0.0, 0.0, 1.0, 0.5);
 	}
 	else {
 
-		// ------------------------------------------------
-		// CONTACT DISPLACEMENT (DOES NOT MODULATE COLOR)
-		// ------------------------------------------------
+		bool should_discard = false;
 
-		vec2 final_uv = UV;
-
-		// Only displace if there is contact with the mask
+		// ------------------------------------------------
+		// 3. DEPTH LOGIC + OVERLAP
+		// ------------------------------------------------
 		if (mask_alpha > 0.09) {
+			float depth_margin = 0.001;
+			
+			bool caster_is_in_front = shadow_y > (mask_y + depth_margin);
 
-			// Height from mask
-			float height = mask_tex.r;
+			if (!caster_is_in_front) {
+				
+				vec2 ps = vec2(1.0) / vec2(textureSize(mask_texture, 0));
+				float a_up    = texture(mask_texture, UV + vec2(0.0, -ps.y * border_width)).a;
+				float a_down  = texture(mask_texture, UV + vec2(0.0,  ps.y * border_width)).a;
+				float a_left  = texture(mask_texture, UV + vec2(-ps.x * border_width, 0.0)).a;
+				float a_right = texture(mask_texture, UV + vec2( ps.x * border_width, 0.0)).a;
 
-			// Smooth and controlled offset
-			vec2 offset = shadow_direction * height * height_strength;
+				bool is_edge = a_up < 0.02 || a_down < 0.02 || a_left < 0.02 || a_right < 0.02;
 
-			final_uv += offset;
-		}
-
-		// Re-sample ONLY to check for shadow
-		float displaced_alpha = texture(shadow_texture, final_uv).a;
-
-		if (displaced_alpha < 0.01) {
-			if (!debug_enabled)
-				discard;
-			else {
-				COLOR = debug_color;
+				if (!is_edge) {
+					
+					if (distorted_shadow.a < overlap_threshold) {
+						should_discard = true;
+					}
+				}
 			}
 		}
+
+		if (should_discard) {
+			if (!debug_enabled) discard;
+			else COLOR = debug_color;
+		}
 		else {
-
-			// ------------------------------------------------
-			// FIXED FINAL COLOR
-			// ------------------------------------------------
-
 			COLOR = overlay_color;
 		}
 	}

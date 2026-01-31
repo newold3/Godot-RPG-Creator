@@ -166,7 +166,11 @@ func get_screen_tiles_size(current_map: RPGMap) -> Vector2i:
 		return Vector2i(get_editor_visible_rect().size)
 	var tile_size = current_map.tile_size
 	var tiles = Vector2(ceil(Vector2(get_viewport().size) / Vector2(tile_size)))
-	tiles += tiles * 0.85
+	
+	# FIX 1: Aumentamos el margen de renderizado (De 0.85 a 1.5)
+	# Esto asegura que las sombras se dibujen mucho antes de entrar en pantalla
+	tiles += tiles * 1.5 
+	
 	tiles /= main_camera.zoom
 	return Vector2i(tiles)
 
@@ -218,7 +222,8 @@ func _get_shadow_visibility(dn: RPGDayNightComponent) -> float:
 	return max_alpha
 
 
-# --- CACHÉ ---
+# --- CACHE & HELPERS ---
+
 func _get_smart_used_rect(texture: Texture) -> Rect2:
 	if texture.resource_path.is_empty():
 		var img = texture.get_image()
@@ -231,11 +236,33 @@ func _get_smart_used_rect(texture: Texture) -> Rect2:
 	
 	var img = texture.get_image()
 	var rect = Rect2(Vector2.ZERO, texture.get_size())
-	if img: 
+	if img:
 		rect = img.get_used_rect()
 	
 	visible_rect_cache[id] = rect
 	return rect
+
+
+func _get_uvs_from_rect(rect: Rect2, texture_size: Vector2) -> PackedVector2Array:
+	var uv_min = rect.position / texture_size
+	var uv_max = rect.end / texture_size
+	return PackedVector2Array([
+		uv_min,
+		Vector2(uv_max.x, uv_min.y),
+		uv_max,
+		Vector2(uv_min.x, uv_max.y)
+	])
+
+
+func _is_polygon_safe(points: PackedVector2Array) -> bool:
+	if points.size() < 3:
+		return false
+	return not Geometry2D.triangulate_polygon(points).is_empty()
+
+
+func _draw_safe_polygon(canvas: Node2D, points: PackedVector2Array, colors: PackedColorArray, uvs: PackedVector2Array, texture: Texture2D) -> void:
+	if _is_polygon_safe(points):
+		canvas.draw_polygon(points, colors, uvs, texture)
 
 
 func set_drawing_textures() -> void:
@@ -263,9 +290,8 @@ func set_drawing_textures() -> void:
 		shadow_color.a *= visibility
 		mat.set_shader_parameter("overlay_color", shadow_color)
 		var sk = using_data[start_id + "dynamic_skew"]
-		var sun_angle = - sk * PI
-		var sun_direction := Vector2(sin(sun_angle), cos(sun_angle)).normalized()
-		mat.set_shader_parameter("shadow_direction", sun_direction)
+		var sun_vec = Vector2(sk, 1.0).normalized()
+		mat.set_shader_parameter("shadow_direction", sun_vec)
 
 	@warning_ignore_start("integer_division")
 	var screen_tiles_size = get_screen_tiles_size(current_map) / 2
@@ -280,40 +306,20 @@ func set_drawing_textures() -> void:
 
 	var map_rect: Rect2 = current_map.get_used_rect(false)
 	var viewport_size: Vector2i = map_rect.size
-	var map_tiles = viewport_size / current_map.tile_size
-	var screen_mid_size = screen_tiles_size * 0.5
 	var screen_height = float(viewport_size.y)
 	if screen_height < get_viewport_rect().size.y:
 		screen_height = get_viewport_rect().size.y
 
-	var distance_from_edges = {
-		"left": player_current_tile.x - 5,
-		"right": map_tiles.x - player_current_tile.x - 5,
-		"up": player_current_tile.y - 5,
-		"down": map_tiles.y - player_current_tile.y - 5,
-	}
-
-	if current_map.infinite_horizontal_scroll:
-		distance_from_edges.extra_left = 0
-		distance_from_edges.extra_right = 0
-	else:
-		distance_from_edges.extra_left = 0
-		distance_from_edges.extra_right = 0
-	if current_map.infinite_vertical_scroll:
-		distance_from_edges.extra_up = 0
-		distance_from_edges.extra_down = 0
-	else:
-		distance_from_edges.extra_up = 0
-		distance_from_edges.extra_down = 0
-
 	var screen_rect = Rect2() if not in_editor_map else get_visible_area_with_margin(EXTRA_MARGIN)
-	
-	# COMPOSITE
+
+	# COMPOSITE & SINGLE OFFSETS
 	var composite_correction_offset = Vector2(-current_map.tile_size.x, -current_map.tile_size.y)
-	
-	# SINGLE
 	var single_correction_offset = Vector2(current_map.tile_size.x * 0.5, current_map.tile_size.y)
-	# ==========================================================================
+
+	# FIX 2: Preparamos datos del mapa para cálculo infinito
+	var map_size_tiles = current_map.get_map_size_in_tiles()
+	var infinite_x = current_map.infinite_horizontal_scroll
+	var infinite_y = current_map.infinite_vertical_scroll
 
 	for data: Dictionary in shadow_data:
 		if ("texture" in data and not is_instance_valid(data.texture)) or \
@@ -325,22 +331,30 @@ func set_drawing_textures() -> void:
 			continue
 
 		var tile_cell = data.cell
-		var inside_main_map = (
-			tile_cell.x >= player_current_tile.x - screen_tiles_size.x and
-			tile_cell.x <= player_current_tile.x + screen_tiles_size.x and
-			tile_cell.y >= player_current_tile.y - screen_tiles_size.y and
-			tile_cell.y <= player_current_tile.y + screen_tiles_size.y
-		)
-		var inside_extra_tiles = false
+		var inside_main_map = false
 
-		if not inside_main_map and not inside_extra_tiles:
-			if not screen_rect:
-				var alpha = _calculate_alpha_by_distance_squared(GameManager.current_player.global_position, data.position)
-				if not GameManager.current_player or alpha <= 0: continue
-				else: data.shadow_alpha = alpha
-			elif in_editor_map:
-				var data_offset = data.get("offset", Vector2.ZERO)
-				if not screen_rect.has_point(data.position - data_offset): continue
+		if in_editor_map:
+			# En editor usamos chequeo simple de rect
+			var data_offset = data.get("offset", Vector2.ZERO)
+			if screen_rect.has_point(data.position - data_offset):
+				inside_main_map = true
+		else:
+			# FIX 2: Lógica de Culling que entiende el Wrap Infinito
+			var diff_x = abs(tile_cell.x - player_current_tile.x)
+			if infinite_x:
+				# Si la distancia directa es grande, comprueba la distancia "dando la vuelta"
+				diff_x = min(diff_x, abs(diff_x - map_size_tiles.x))
+			
+			var diff_y = abs(tile_cell.y - player_current_tile.y)
+			if infinite_y:
+				diff_y = min(diff_y, abs(diff_y - map_size_tiles.y))
+
+			# Si la distancia (corregida o normal) está dentro del rango visual, se dibuja
+			if diff_x <= screen_tiles_size.x and diff_y <= screen_tiles_size.y:
+				inside_main_map = true
+
+		if not inside_main_map:
+			continue
 
 		# ----------------------------------------------------------------------
 		# COMPOSITE SPRITES
@@ -360,18 +374,15 @@ func set_drawing_textures() -> void:
 				if not is_instance_valid(sprite) or not is_instance_valid(sprite.texture): continue
 				
 				var region = sprite.region_rect
-				var tex_size = sprite.texture.get_size()
-				var uv_min = region.position / tex_size
-				var uv_max = (region.position + region.size) / tex_size
-				var final_uvs = [Vector2(uv_min.x, uv_min.y), Vector2(uv_max.x, uv_min.y), Vector2(uv_max.x, uv_max.y), Vector2(uv_min.x, uv_max.y)]
+				var final_uvs = _get_uvs_from_rect(region, sprite.texture.get_size())
 				
 				var w_half = region.size.x / 2.0
 				var h_half = region.size.y / 2.0
 				var sprite_pos = sprite.position
 				var local_points = [Vector2(-w_half, -h_half), Vector2(w_half, -h_half), Vector2(w_half, h_half), Vector2(-w_half, h_half)]
 				
-				var final_points = []
-				var final_colors = []
+				var final_points = PackedVector2Array()
+				var final_colors = PackedColorArray()
 				var feet_offset: int = data.get("feet_offset", 0)
 
 				for i in local_points.size():
@@ -436,6 +447,11 @@ func set_drawing_textures() -> void:
 				
 				var center_pos = pos + offset + single_correction_offset
 				
+				if data.get("is_tileset", false):
+					center_pos = pos + offset + (full_size / 2.0)
+				else:
+					center_pos = pos + offset + single_correction_offset
+				
 				var p_tl = center_pos + (tl_offset * s_scale)
 				var p_tr = center_pos + (tr_offset * s_scale)
 				var p_br = center_pos + (br_offset * s_scale)
@@ -452,7 +468,7 @@ func set_drawing_textures() -> void:
 			var p_tr = q_points[2]
 			var p_tl = q_points[3]
 			
-			var height = p_bl.y - p_tl.y 
+			var height = p_bl.y - p_tl.y
 			var sk = using_data[start_id + "dynamic_skew"]
 			var skew_offset = -height * sk
 			
@@ -476,13 +492,13 @@ func set_drawing_textures() -> void:
 			s_tl.x = p_tl.x + final_skew
 			s_tr.x = p_tr.x + final_skew
 			
-			var shadow_points = [s_tl, s_tr, p_br, p_bl]
+			var shadow_points = PackedVector2Array([s_tl, s_tr, p_br, p_bl])
 			
 			var base_y = p_bl.y
 			var alpha_depth = _encode_y_position_as_alpha(base_y, screen_height)
 			var color = Color(alpha_depth, 1.0, 1.0, 0.1)
-			var colors = [color, color, color, color]
-			var uvs = [Vector2(0, 0), Vector2(1, 0), Vector2(1, 1), Vector2(0, 1)]
+			var colors = PackedColorArray([color, color, color, color])
+			var uvs = PackedVector2Array([Vector2(0, 0), Vector2(1, 0), Vector2(1, 1), Vector2(0, 1)])
 
 			current_drawing_shadows.tiles.append({
 				"main_texture": data.get("main_texture", null),
@@ -495,12 +511,12 @@ func set_drawing_textures() -> void:
 			})
 			
 			var mask_nudge = Vector2(1, -2)
-			var mask_points = [
-				q_points[3] + mask_nudge, 
-				q_points[2] - mask_nudge, 
-				q_points[1] + mask_nudge, 
+			var mask_points = PackedVector2Array([
+				q_points[3] + mask_nudge,
+				q_points[2] - mask_nudge,
+				q_points[1] + mask_nudge,
 				q_points[0] - mask_nudge
-			]
+			])
 
 			current_drawing_shadows.masks.append({
 				"main_texture": data.get("main_texture", null),
@@ -524,6 +540,7 @@ func _on_canvas1_draw():
 			continue
 			
 		if tile.type == "texture":
+			# Standard texture draw
 			var sprite_scale = tile.sprite_scale
 			var pos = tile.position
 			var texture = tile.texture
@@ -532,16 +549,16 @@ func _on_canvas1_draw():
 			var adjusted_position = pos - scale_offset
 			var color = tile.color
 			%Canvas1.draw_texture_rect(texture, Rect2(adjusted_position, texture_size * sprite_scale), false, color)
+
 		elif tile.type == "polygon":
+			# Optimized safe polygon draw
+			var uvs = tile.uvs
 			if tile.get("is_cropped", false):
 				var rect = _get_smart_used_rect(tile.texture)
-				var tex_size = tile.texture.get_size()
-				var uv_min = rect.position / tex_size
-				var uv_max = rect.end / tex_size
-				var uvs = [uv_min, Vector2(uv_max.x, uv_min.y), uv_max, Vector2(uv_min.x, uv_max.y)]
-				%Canvas1.draw_polygon(tile.points, tile.colors, uvs, tile.texture)
-			else:
-				%Canvas1.draw_polygon(tile.points, tile.colors, tile.uvs, tile.texture)
+				uvs = _get_uvs_from_rect(rect, tile.texture.get_size())
+			
+			_draw_safe_polygon(%Canvas1, tile.points, tile.colors, uvs, tile.texture)
+
 	%Canvas1.get_parent().get_parent().render_target_update_mode = SubViewport.UPDATE_ONCE
 
 
@@ -556,21 +573,19 @@ func _on_canvas2_draw():
 			continue
 			
 		if mask.get("type") == "polygon":
-			var colors = [mask.color, mask.color, mask.color, mask.color]
+			var colors = PackedColorArray([mask.color, mask.color, mask.color, mask.color])
+			var uvs = mask.uvs
 			if mask.get("is_cropped", false):
 				var rect = _get_smart_used_rect(mask.texture)
-				var tex_size = mask.texture.get_size()
-				var uv_min = rect.position / tex_size
-				var uv_max = rect.end / tex_size
-				var uvs = [uv_min, Vector2(uv_max.x, uv_min.y), uv_max, Vector2(uv_min.x, uv_max.y)]
-				%Canvas2.draw_polygon(mask.points, colors, uvs, mask.texture)
-			else:
-				%Canvas2.draw_polygon(mask.points, colors, mask.uvs, mask.texture)
+				uvs = _get_uvs_from_rect(rect, mask.texture.get_size())
+			
+			_draw_safe_polygon(%Canvas2, mask.points, colors, uvs, mask.texture)
+
 		else:
 			var sprite_scale = mask.sprite_scale
 			var texture = mask.texture
 			var pos = mask.position - texture.get_size() * 0.5 * sprite_scale
-			if not texture: continue
+			
 			if "region" in mask:
 				var texture_size = mask.region.size
 				%Canvas2.draw_texture_rect_region(texture, Rect2(pos, texture_size * sprite_scale), mask.region, mask.color)

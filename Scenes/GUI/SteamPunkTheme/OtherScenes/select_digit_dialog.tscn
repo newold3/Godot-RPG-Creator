@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://ff67ci457s52"]
+[gd_scene format=3 uid="uid://ff67ci457s52"]
 
 [ext_resource type="Texture2D" uid="uid://5igkil1scxn" path="res://Assets/Images/GUI/other_gui1.png" id="1_03vxj"]
 [ext_resource type="Script" uid="uid://bojb3ct61jypm" path="res://Scenes/GUI/SteamPunkTheme/OtherScenes/select_digit_dialog.gd" id="1_e7vif"]
@@ -223,7 +223,7 @@ _data = {
 &"Shining": SubResource("Animation_qyx2o")
 }
 
-[node name="SelectDigitDialog" type="PanelContainer" node_paths=PackedStringArray("buttons", "initial_selected_button", "back_button", "ok_button", "title_node", "entry_label")]
+[node name="SelectDigitDialog" type="PanelContainer" unique_id=1419392249 node_paths=PackedStringArray("buttons", "initial_selected_button", "back_button", "ok_button", "title_node", "entry_label")]
 offset_left = 1.0
 offset_top = 40.0
 offset_right = 334.0
@@ -237,7 +237,7 @@ ok_button = NodePath("MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Ok
 title_node = NodePath("MainFrame/VBoxContainer/TopContainer/VBoxContainer/TitleContainer/Title/TitleLabelContainer/Control/TitleLabel")
 entry_label = NodePath("MainFrame/VBoxContainer/TopContainer/VBoxContainer/Digits/DigitLabelContainer/Control/DigitLabel")
 
-[node name="Shadow" type="Polygon2D" parent="."]
+[node name="Shadow" type="Polygon2D" parent="." unique_id=775219266]
 position = Vector2(177, 188)
 scale = Vector2(1.194704, 1.2270114)
 color = Color(1, 1, 1, 0.6)
@@ -246,7 +246,7 @@ polygon = PackedVector2Array(-69.5, -174, -69.5, -172.6, -96.6, -166, -103, -166
 uv = PackedVector2Array(98, 7, 98, 8.4, 70.9, 15, 64.5, 15, 55.5, 20, 52.9, 20, 37, 44.4, 37, 46, 25.5, 54, 23.1, 54, 15.1, 63, 13.6, 63, 9.6, 74, 8.4, 74, 7, 80.8, 7, 286.5, 16, 304.5, 16, 306.9, 28, 317.9, 28, 319.1, 43, 328.1, 43, 329.3, 85, 347.2, 85, 348.5, 107.7, 355, 227.4, 355, 266.4, 340, 269.5, 340, 299.5, 323, 301.9, 323, 319.9, 304, 321.5, 304, 326.5, 288, 328, 288, 328, 80.6, 322, 66.6, 322, 64, 297.7, 45, 290, 31.4, 290, 29.2, 283, 22.2, 283, 20.6, 272, 16.5, 272, 15.4, 237, 8.3, 237, 7)
 polygons = [PackedInt32Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45)]
 
-[node name="MainFrame" type="NinePatchRect" parent="."]
+[node name="MainFrame" type="NinePatchRect" parent="." unique_id=1032326840]
 layout_mode = 2
 texture = ExtResource("1_03vxj")
 region_rect = Rect2(43, 322, 293, 282)
@@ -256,20 +256,20 @@ patch_margin_right = 107
 patch_margin_bottom = 73
 axis_stretch_horizontal = 2
 
-[node name="BackgroundContainer" type="Polygon2D" parent="MainFrame"]
+[node name="BackgroundContainer" type="Polygon2D" parent="MainFrame" unique_id=828104964]
 show_behind_parent = true
 clip_children = 1
 position = Vector2(1.9376172, 0.15451413)
 scale = Vector2(0.6124764, 0.8454859)
 polygon = PackedVector2Array(5, 26, 12.053334, 9.902564, 34.388885, 3.365509, 509.50916, 5.731003, 527, 8, 534, 24, 533, 383, 511.1419, 399.58734, 462.1604, 418.51135, 431.13885, 427.9734, 393.58636, 436.25262, 136.19199, 435.0699, 96.43207, 423.24237, 47.450592, 406.68384, 8.265442, 380.66333)
 
-[node name="Background" type="TextureRect" parent="MainFrame/BackgroundContainer"]
+[node name="Background" type="TextureRect" parent="MainFrame/BackgroundContainer" unique_id=739098163]
 material = SubResource("ShaderMaterial_qyx2o")
 offset_right = 534.0
 offset_bottom = 431.0
 texture = SubResource("AtlasTexture_qwdof")
 
-[node name="InnerDecoration1" type="MarginContainer" parent="MainFrame"]
+[node name="InnerDecoration1" type="MarginContainer" parent="MainFrame" unique_id=1602809080]
 show_behind_parent = true
 layout_mode = 1
 anchors_preset = 15
@@ -281,35 +281,35 @@ theme_override_constants/margin_left = 35
 theme_override_constants/margin_top = 90
 theme_override_constants/margin_right = 30
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainFrame/InnerDecoration1"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainFrame/InnerDecoration1" unique_id=10854348]
 layout_mode = 2
 theme_override_constants/separation = 59
 
-[node name="TextureRect" type="TextureRect" parent="MainFrame/InnerDecoration1/VBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="MainFrame/InnerDecoration1/VBoxContainer" unique_id=1365103465]
 material = SubResource("ShaderMaterial_f8n7v")
 layout_mode = 2
 size_flags_vertical = 0
 texture = SubResource("AtlasTexture_03vxj")
 
-[node name="TextureRect2" type="TextureRect" parent="MainFrame/InnerDecoration1/VBoxContainer"]
+[node name="TextureRect2" type="TextureRect" parent="MainFrame/InnerDecoration1/VBoxContainer" unique_id=1037868929]
 material = SubResource("ShaderMaterial_f8n7v")
 layout_mode = 2
 size_flags_vertical = 0
 texture = SubResource("AtlasTexture_03vxj")
 
-[node name="TextureRect3" type="TextureRect" parent="MainFrame/InnerDecoration1/VBoxContainer"]
+[node name="TextureRect3" type="TextureRect" parent="MainFrame/InnerDecoration1/VBoxContainer" unique_id=795736489]
 material = SubResource("ShaderMaterial_f8n7v")
 layout_mode = 2
 size_flags_vertical = 0
 texture = SubResource("AtlasTexture_03vxj")
 
-[node name="TextureRect4" type="TextureRect" parent="MainFrame/InnerDecoration1/VBoxContainer"]
+[node name="TextureRect4" type="TextureRect" parent="MainFrame/InnerDecoration1/VBoxContainer" unique_id=615769998]
 material = SubResource("ShaderMaterial_f8n7v")
 layout_mode = 2
 size_flags_vertical = 0
 texture = SubResource("AtlasTexture_03vxj")
 
-[node name="InnerDecoration2" type="MarginContainer" parent="MainFrame"]
+[node name="InnerDecoration2" type="MarginContainer" parent="MainFrame" unique_id=913382493]
 show_behind_parent = true
 layout_mode = 1
 anchors_preset = 15
@@ -321,29 +321,29 @@ theme_override_constants/margin_left = 91
 theme_override_constants/margin_top = 45
 theme_override_constants/margin_bottom = 25
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainFrame/InnerDecoration2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainFrame/InnerDecoration2" unique_id=1741193295]
 layout_mode = 2
 theme_override_constants/separation = 67
 
-[node name="TextureRect" type="TextureRect" parent="MainFrame/InnerDecoration2/HBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="MainFrame/InnerDecoration2/HBoxContainer" unique_id=322209160]
 material = SubResource("ShaderMaterial_f8n7v")
 layout_mode = 2
 size_flags_horizontal = 0
 texture = SubResource("AtlasTexture_6a1p6")
 
-[node name="TextureRect2" type="TextureRect" parent="MainFrame/InnerDecoration2/HBoxContainer"]
+[node name="TextureRect2" type="TextureRect" parent="MainFrame/InnerDecoration2/HBoxContainer" unique_id=1552319545]
 material = SubResource("ShaderMaterial_f8n7v")
 layout_mode = 2
 size_flags_horizontal = 0
 texture = SubResource("AtlasTexture_6a1p6")
 
-[node name="TextureRect3" type="TextureRect" parent="MainFrame/InnerDecoration2/HBoxContainer"]
+[node name="TextureRect3" type="TextureRect" parent="MainFrame/InnerDecoration2/HBoxContainer" unique_id=101310022]
 material = SubResource("ShaderMaterial_f8n7v")
 layout_mode = 2
 size_flags_horizontal = 0
 texture = SubResource("AtlasTexture_6a1p6")
 
-[node name="InnerFrameContainer" type="MarginContainer" parent="MainFrame"]
+[node name="InnerFrameContainer" type="MarginContainer" parent="MainFrame" unique_id=230947151]
 show_behind_parent = true
 layout_mode = 1
 anchors_preset = 15
@@ -356,7 +356,7 @@ theme_override_constants/margin_top = 40
 theme_override_constants/margin_right = 11
 theme_override_constants/margin_bottom = 10
 
-[node name="InterFrame" type="NinePatchRect" parent="MainFrame/InnerFrameContainer"]
+[node name="InterFrame" type="NinePatchRect" parent="MainFrame/InnerFrameContainer" unique_id=1146218746]
 layout_mode = 2
 texture = ExtResource("1_03vxj")
 region_rect = Rect2(378, 51, 271, 217)
@@ -367,7 +367,7 @@ patch_margin_bottom = 123
 axis_stretch_horizontal = 2
 axis_stretch_vertical = 2
 
-[node name="DecorationBack" type="TextureRect" parent="MainFrame/InnerFrameContainer/InterFrame"]
+[node name="DecorationBack" type="TextureRect" parent="MainFrame/InnerFrameContainer/InterFrame" unique_id=1850902154]
 modulate = Color(1, 1, 1, 0.5921569)
 show_behind_parent = true
 layout_mode = 1
@@ -384,7 +384,7 @@ grow_horizontal = 2
 grow_vertical = 0
 texture = SubResource("AtlasTexture_f8n7v")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainFrame"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainFrame" unique_id=628436137]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -393,34 +393,34 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
 
-[node name="TopContainer" type="MarginContainer" parent="MainFrame/VBoxContainer"]
+[node name="TopContainer" type="MarginContainer" parent="MainFrame/VBoxContainer" unique_id=216551466]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = -39
 theme_override_constants/margin_right = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainFrame/VBoxContainer/TopContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainFrame/VBoxContainer/TopContainer" unique_id=1066494412]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="TitleContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer"]
+[node name="TitleContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer" unique_id=926097326]
 layout_mode = 2
 theme_override_constants/margin_left = 14
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 14
 
-[node name="AnimateBackground" type="Polygon2D" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer/TitleContainer"]
+[node name="AnimateBackground" type="Polygon2D" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer/TitleContainer" unique_id=1104127462]
 clip_children = 1
 polygon = PackedVector2Array(75, 6, 64, 9, 52, 14, 48, 17, 33, 16, 30, 20, 30, 24, 33, 26, 32, 28, 30, 32, 24, 31, 24, 34, 27, 40, 33, 41, 279, 41, 283, 37, 285, 33, 284, 31, 278, 31, 276, 26, 279, 22, 275, 17, 260, 17, 252, 12, 232, 7)
 
-[node name="Animation1" type="ColorRect" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer/TitleContainer/AnimateBackground"]
+[node name="Animation1" type="ColorRect" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer/TitleContainer/AnimateBackground" unique_id=1066648751]
 unique_name_in_owner = true
 offset_left = 20.0
 offset_right = 290.0
 offset_bottom = 45.0
 color = Color(0, 0, 0, 0)
 
-[node name="Title" type="NinePatchRect" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer/TitleContainer"]
+[node name="Title" type="NinePatchRect" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer/TitleContainer" unique_id=1580041019]
 custom_minimum_size = Vector2(0, 47)
 layout_mode = 2
 size_flags_vertical = 0
@@ -430,7 +430,7 @@ patch_margin_left = 98
 patch_margin_right = 95
 axis_stretch_horizontal = 2
 
-[node name="TitleLabelContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer/TitleContainer/Title"]
+[node name="TitleLabelContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer/TitleContainer/Title" unique_id=1249506774]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -443,10 +443,10 @@ theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 56
 theme_override_constants/margin_bottom = 4
 
-[node name="Control" type="Control" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer/TitleContainer/Title/TitleLabelContainer"]
+[node name="Control" type="Control" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer/TitleContainer/Title/TitleLabelContainer" unique_id=1519231212]
 layout_mode = 2
 
-[node name="TitleLabel" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer/TitleContainer/Title/TitleLabelContainer/Control" instance=ExtResource("3_6a1p6")]
+[node name="TitleLabel" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer/TitleContainer/Title/TitleLabelContainer/Control" unique_id=284212913 instance=ExtResource("3_6a1p6")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -460,11 +460,11 @@ theme_override_font_sizes/font_size = 29
 text = "Title"
 label_settings = SubResource("LabelSettings_qyx2o")
 
-[node name="SeparatorContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer"]
+[node name="SeparatorContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer" unique_id=1233388426]
 layout_mode = 2
 theme_override_constants/margin_top = -6
 
-[node name="Separator" type="NinePatchRect" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer/SeparatorContainer"]
+[node name="Separator" type="NinePatchRect" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer/SeparatorContainer" unique_id=282248741]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 size_flags_vertical = 0
@@ -473,7 +473,7 @@ region_rect = Rect2(448, 559, 269, 10)
 patch_margin_left = 85
 patch_margin_right = 84
 
-[node name="Digits" type="NinePatchRect" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer"]
+[node name="Digits" type="NinePatchRect" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer" unique_id=2020117451]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 texture = ExtResource("1_03vxj")
@@ -484,11 +484,11 @@ patch_margin_right = 84
 patch_margin_bottom = 17
 axis_stretch_horizontal = 2
 
-[node name="Polygon2D" type="Polygon2D" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer/Digits"]
+[node name="Polygon2D" type="Polygon2D" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer/Digits" unique_id=844264190]
 clip_children = 1
 polygon = PackedVector2Array(26, 7, 23, 8, 21, 9, 19, 11, 17, 14, 16, 15, 16, 25, 17, 27, 19, 29, 23, 32, 27, 34, 284, 34, 285, 33, 288, 32, 289, 31, 291, 31, 295, 27, 296, 15, 295, 13, 292, 9, 286, 7)
 
-[node name="Animation2" type="ColorRect" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer/Digits/Polygon2D"]
+[node name="Animation2" type="ColorRect" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer/Digits/Polygon2D" unique_id=1542844586]
 unique_name_in_owner = true
 offset_left = 8.0
 offset_top = 2.0
@@ -496,7 +496,7 @@ offset_right = 301.0
 offset_bottom = 36.0
 color = Color(0, 0, 0, 0)
 
-[node name="DigitLabelContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer/Digits"]
+[node name="DigitLabelContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer/Digits" unique_id=368517183]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -508,10 +508,10 @@ theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 24
 theme_override_constants/margin_bottom = 8
 
-[node name="Control" type="Control" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer/Digits/DigitLabelContainer"]
+[node name="Control" type="Control" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer/Digits/DigitLabelContainer" unique_id=2063319415]
 layout_mode = 2
 
-[node name="DigitLabel" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer/Digits/DigitLabelContainer/Control" instance=ExtResource("3_6a1p6")]
+[node name="DigitLabel" parent="MainFrame/VBoxContainer/TopContainer/VBoxContainer/Digits/DigitLabelContainer/Control" unique_id=1887920370 instance=ExtResource("3_6a1p6")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -525,7 +525,7 @@ theme_override_font_sizes/font_size = 18
 text = "▪️▪️▪️▪️▪️"
 label_settings = SubResource("LabelSettings_f8n7v")
 
-[node name="BottomContainer" type="MarginContainer" parent="MainFrame/VBoxContainer"]
+[node name="BottomContainer" type="MarginContainer" parent="MainFrame/VBoxContainer" unique_id=114127045]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 50
@@ -533,14 +533,14 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 45
 
-[node name="ButtonContainer" type="GridContainer" parent="MainFrame/VBoxContainer/BottomContainer"]
+[node name="ButtonContainer" type="GridContainer" parent="MainFrame/VBoxContainer/BottomContainer" unique_id=805655578]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/h_separation = -14
 theme_override_constants/v_separation = -8
 columns = 3
 
-[node name="1" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer"]
+[node name="1" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer" unique_id=2067690932]
 custom_minimum_size = Vector2(74, 74)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -551,7 +551,7 @@ texture_focused = SubResource("AtlasTexture_7lh1f")
 stretch_mode = 5
 metadata/_edit_group_ = true
 
-[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/1"]
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/1" unique_id=1162197667]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -565,14 +565,14 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/1/MarginContainer"]
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/1/MarginContainer" unique_id=1474298463]
 layout_mode = 2
 text = "1"
 label_settings = SubResource("LabelSettings_e7vif")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="2" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer"]
+[node name="2" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer" unique_id=696729034]
 custom_minimum_size = Vector2(74, 74)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -583,7 +583,7 @@ texture_focused = SubResource("AtlasTexture_7lh1f")
 stretch_mode = 5
 metadata/_edit_group_ = true
 
-[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/2"]
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/2" unique_id=473594519]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -597,14 +597,14 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/2/MarginContainer"]
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/2/MarginContainer" unique_id=1215500704]
 layout_mode = 2
 text = "2"
 label_settings = SubResource("LabelSettings_e7vif")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="3" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer"]
+[node name="3" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer" unique_id=1121156116]
 custom_minimum_size = Vector2(74, 74)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -615,7 +615,7 @@ texture_focused = SubResource("AtlasTexture_7lh1f")
 stretch_mode = 5
 metadata/_edit_group_ = true
 
-[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/3"]
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/3" unique_id=459670273]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -629,14 +629,14 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/3/MarginContainer"]
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/3/MarginContainer" unique_id=2050908761]
 layout_mode = 2
 text = "3"
 label_settings = SubResource("LabelSettings_e7vif")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="4" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer"]
+[node name="4" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer" unique_id=668762150]
 custom_minimum_size = Vector2(74, 74)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -647,7 +647,7 @@ texture_focused = SubResource("AtlasTexture_7lh1f")
 stretch_mode = 5
 metadata/_edit_group_ = true
 
-[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/4"]
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/4" unique_id=1833163696]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -661,14 +661,14 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/4/MarginContainer"]
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/4/MarginContainer" unique_id=1137390502]
 layout_mode = 2
 text = "4"
 label_settings = SubResource("LabelSettings_e7vif")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="5" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer"]
+[node name="5" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer" unique_id=1482395190]
 custom_minimum_size = Vector2(74, 74)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -679,7 +679,7 @@ texture_focused = SubResource("AtlasTexture_7lh1f")
 stretch_mode = 5
 metadata/_edit_group_ = true
 
-[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/5"]
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/5" unique_id=1395181893]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -693,14 +693,14 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/5/MarginContainer"]
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/5/MarginContainer" unique_id=1935441556]
 layout_mode = 2
 text = "5"
 label_settings = SubResource("LabelSettings_e7vif")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="6" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer"]
+[node name="6" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer" unique_id=75873733]
 custom_minimum_size = Vector2(74, 74)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -711,7 +711,7 @@ texture_focused = SubResource("AtlasTexture_7lh1f")
 stretch_mode = 5
 metadata/_edit_group_ = true
 
-[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/6"]
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/6" unique_id=1401160502]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -725,14 +725,14 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/6/MarginContainer"]
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/6/MarginContainer" unique_id=1707366592]
 layout_mode = 2
 text = "6"
 label_settings = SubResource("LabelSettings_e7vif")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="7" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer"]
+[node name="7" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer" unique_id=971368735]
 custom_minimum_size = Vector2(74, 74)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -743,7 +743,7 @@ texture_focused = SubResource("AtlasTexture_7lh1f")
 stretch_mode = 5
 metadata/_edit_group_ = true
 
-[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/7"]
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/7" unique_id=62760750]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -757,14 +757,14 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/7/MarginContainer"]
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/7/MarginContainer" unique_id=1020850108]
 layout_mode = 2
 text = "7"
 label_settings = SubResource("LabelSettings_e7vif")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="8" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer"]
+[node name="8" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer" unique_id=1319748981]
 custom_minimum_size = Vector2(74, 74)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -775,7 +775,7 @@ texture_focused = SubResource("AtlasTexture_7lh1f")
 stretch_mode = 5
 metadata/_edit_group_ = true
 
-[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/8"]
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/8" unique_id=659390246]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -789,14 +789,14 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/8/MarginContainer"]
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/8/MarginContainer" unique_id=870477346]
 layout_mode = 2
 text = "8"
 label_settings = SubResource("LabelSettings_e7vif")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="9" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer"]
+[node name="9" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer" unique_id=578666234]
 custom_minimum_size = Vector2(74, 74)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -807,7 +807,7 @@ texture_focused = SubResource("AtlasTexture_7lh1f")
 stretch_mode = 5
 metadata/_edit_group_ = true
 
-[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/9"]
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/9" unique_id=67483456]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -821,14 +821,14 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/9/MarginContainer"]
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/9/MarginContainer" unique_id=958452559]
 layout_mode = 2
 text = "9"
 label_settings = SubResource("LabelSettings_e7vif")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Back" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer"]
+[node name="Back" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer" unique_id=990118466]
 custom_minimum_size = Vector2(74, 74)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -839,7 +839,7 @@ texture_focused = SubResource("AtlasTexture_7lh1f")
 stretch_mode = 5
 metadata/_edit_group_ = true
 
-[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Back"]
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Back" unique_id=2138450114]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -853,14 +853,14 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Back/MarginContainer"]
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Back/MarginContainer" unique_id=139744502]
 layout_mode = 2
 text = "🡸"
 label_settings = SubResource("LabelSettings_e7vif")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="0" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer"]
+[node name="0" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer" unique_id=695505987]
 custom_minimum_size = Vector2(74, 74)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -871,7 +871,7 @@ texture_focused = SubResource("AtlasTexture_7lh1f")
 stretch_mode = 5
 metadata/_edit_group_ = true
 
-[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/0"]
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/0" unique_id=236515796]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -885,14 +885,14 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/0/MarginContainer"]
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/0/MarginContainer" unique_id=1037655431]
 layout_mode = 2
 text = "0"
 label_settings = SubResource("LabelSettings_e7vif")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Ok" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer"]
+[node name="Ok" type="TextureButton" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer" unique_id=1818426367]
 custom_minimum_size = Vector2(74, 74)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -904,7 +904,7 @@ texture_focused = SubResource("AtlasTexture_7lh1f")
 stretch_mode = 5
 metadata/_edit_group_ = true
 
-[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Ok"]
+[node name="MarginContainer" type="MarginContainer" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Ok" unique_id=1163356099]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -918,14 +918,14 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Ok/MarginContainer"]
+[node name="Label" type="Label" parent="MainFrame/VBoxContainer/BottomContainer/ButtonContainer/Ok/MarginContainer" unique_id=295216596]
 layout_mode = 2
 text = "OK"
 label_settings = SubResource("LabelSettings_e7vif")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ExternalDecoration" type="Control" parent="MainFrame"]
+[node name="ExternalDecoration" type="Control" parent="MainFrame" unique_id=159040699]
 anchors_preset = 0
 offset_right = 385.0
 offset_bottom = 395.0
@@ -933,7 +933,7 @@ mouse_filter = 2
 metadata/_edit_group_ = true
 metadata/_edit_lock_ = true
 
-[node name="Screw1" type="TextureRect" parent="MainFrame/ExternalDecoration"]
+[node name="Screw1" type="TextureRect" parent="MainFrame/ExternalDecoration" unique_id=461156739]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 75.0
@@ -943,7 +943,7 @@ size_flags_horizontal = 0
 size_flags_vertical = 0
 texture = SubResource("AtlasTexture_qyx2o")
 
-[node name="Screw2" type="TextureRect" parent="MainFrame/ExternalDecoration"]
+[node name="Screw2" type="TextureRect" parent="MainFrame/ExternalDecoration" unique_id=568342562]
 layout_mode = 0
 offset_left = 314.0
 offset_top = 114.0
@@ -954,7 +954,7 @@ size_flags_horizontal = 0
 size_flags_vertical = 0
 texture = SubResource("AtlasTexture_qyx2o")
 
-[node name="Screw3" type="TextureRect" parent="MainFrame/ExternalDecoration"]
+[node name="Screw3" type="TextureRect" parent="MainFrame/ExternalDecoration" unique_id=433928365]
 layout_mode = 0
 offset_left = 176.0
 offset_top = 349.0
@@ -965,8 +965,6 @@ size_flags_horizontal = 0
 size_flags_vertical = 0
 texture = SubResource("AtlasTexture_qyx2o")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_v4bg5")
-}
-autoplay = "Shining"
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1023464588]
+libraries/ = SubResource("AnimationLibrary_v4bg5")
+autoplay = &"Shining"

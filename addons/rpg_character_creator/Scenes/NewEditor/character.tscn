@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://c7nrlvywu3al0"]
+[gd_scene format=3 uid="uid://c7nrlvywu3al0"]
 
 [ext_resource type="Script" uid="uid://bfr4whpwjagqu" path="res://addons/rpg_character_creator/Scenes/NewEditor/character.gd" id="1_cde47"]
 [ext_resource type="PackedScene" uid="uid://dy6oyqv8yyw7r" path="res://addons/rpg_character_creator/Scenes/part_texture.tscn" id="1_oogbp"]
@@ -472,227 +472,227 @@ viewport_path = NodePath("OffHandFront")
 [sub_resource type="ViewportTexture" id="ViewportTexture_j2uty"]
 viewport_path = NodePath("WeaponFront")
 
-[node name="Character" type="Control"]
+[node name="Character" type="Control" unique_id=410136974]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_cde47")
 
-[node name="WingsBack" type="SubViewport" parent="."]
+[node name="WingsBack" type="SubViewport" parent="." unique_id=1186627879]
 unique_name_in_owner = true
 transparent_bg = true
 size = Vector2i(832, 1344)
 render_target_update_mode = 4
 
-[node name="WingsBack" parent="WingsBack" instance=ExtResource("1_oogbp")]
+[node name="WingsBack" parent="WingsBack" unique_id=1333932863 instance=ExtResource("1_oogbp")]
 material = SubResource("ShaderMaterial_wun8s")
 offset_right = 0.0
 offset_bottom = 0.0
 
-[node name="OffhandBack" type="SubViewport" parent="."]
+[node name="OffhandBack" type="SubViewport" parent="." unique_id=138830043]
 transparent_bg = true
 size = Vector2i(832, 1344)
 render_target_update_mode = 4
 
-[node name="OffHandBack" parent="OffhandBack" instance=ExtResource("1_oogbp")]
+[node name="OffHandBack" parent="OffhandBack" unique_id=1897701707 instance=ExtResource("1_oogbp")]
 material = SubResource("ShaderMaterial_roc3e")
 offset_right = 0.0
 offset_bottom = 0.0
 
-[node name="WeaponBack" type="SubViewport" parent="."]
+[node name="WeaponBack" type="SubViewport" parent="." unique_id=1544240724]
 unique_name_in_owner = true
 transparent_bg = true
 render_target_update_mode = 4
 
-[node name="MainHandBack" parent="WeaponBack" instance=ExtResource("1_oogbp")]
+[node name="MainHandBack" parent="WeaponBack" unique_id=1891547495 instance=ExtResource("1_oogbp")]
 material = SubResource("ShaderMaterial_qof1o")
 offset_right = 0.0
 offset_bottom = 0.0
 
-[node name="Body" type="SubViewport" parent="."]
+[node name="Body" type="SubViewport" parent="." unique_id=1342628677]
 transparent_bg = true
 size = Vector2i(832, 1344)
 render_target_update_mode = 4
 
-[node name="BackBack" parent="Body" instance=ExtResource("1_oogbp")]
+[node name="BackBack" parent="Body" unique_id=2027783045 instance=ExtResource("1_oogbp")]
 material = SubResource("ShaderMaterial_vy5wx")
 offset_right = 0.0
 offset_bottom = 0.0
 
-[node name="TailBack" parent="Body" instance=ExtResource("1_oogbp")]
+[node name="TailBack" parent="Body" unique_id=1754530266 instance=ExtResource("1_oogbp")]
 material = SubResource("ShaderMaterial_j2uty")
 offset_right = 0.0
 offset_bottom = 0.0
 
-[node name="Body" parent="Body" instance=ExtResource("1_oogbp")]
+[node name="Body" parent="Body" unique_id=886936090 instance=ExtResource("1_oogbp")]
 material = SubResource("ShaderMaterial_xovw2")
 offset_left = 64.0
 offset_top = 64.0
 offset_right = 64.0
 offset_bottom = 64.0
 
-[node name="Add2" parent="Body" instance=ExtResource("1_oogbp")]
+[node name="Add2" parent="Body" unique_id=831484945 instance=ExtResource("1_oogbp")]
 material = SubResource("ShaderMaterial_t716e")
 offset_right = 0.0
 offset_bottom = 0.0
 
-[node name="Suit" parent="Body" instance=ExtResource("1_oogbp")]
+[node name="Suit" parent="Body" unique_id=512525143 instance=ExtResource("1_oogbp")]
 material = SubResource("ShaderMaterial_br735")
 offset_right = 0.0
 offset_bottom = 0.0
 
-[node name="Pants" parent="Body" instance=ExtResource("1_oogbp")]
+[node name="Pants" parent="Body" unique_id=1302314291 instance=ExtResource("1_oogbp")]
 material = SubResource("ShaderMaterial_fm5df")
 offset_left = 64.0
 offset_top = 64.0
 offset_right = 64.0
 offset_bottom = 64.0
 
-[node name="Shoes" parent="Body" instance=ExtResource("1_oogbp")]
+[node name="Shoes" parent="Body" unique_id=1012812917 instance=ExtResource("1_oogbp")]
 material = SubResource("ShaderMaterial_wegu7")
 offset_left = 64.0
 offset_top = 64.0
 offset_right = 64.0
 offset_bottom = 64.0
 
-[node name="Gloves" parent="Body" instance=ExtResource("1_oogbp")]
+[node name="Gloves" parent="Body" unique_id=1533102013 instance=ExtResource("1_oogbp")]
 material = SubResource("ShaderMaterial_hvdj8")
 offset_left = 64.0
 offset_top = 64.0
 offset_right = 64.0
 offset_bottom = 64.0
 
-[node name="Shirt" parent="Body" instance=ExtResource("1_oogbp")]
+[node name="Shirt" parent="Body" unique_id=779812599 instance=ExtResource("1_oogbp")]
 material = SubResource("ShaderMaterial_8apsm")
 offset_right = 0.0
 offset_bottom = 0.0
 
-[node name="Belt" parent="Body" instance=ExtResource("1_oogbp")]
+[node name="Belt" parent="Body" unique_id=1173243727 instance=ExtResource("1_oogbp")]
 material = SubResource("ShaderMaterial_3juwh")
 offset_left = 64.0
 offset_top = 64.0
 offset_right = 64.0
 offset_bottom = 64.0
 
-[node name="Add3" parent="Body" instance=ExtResource("1_oogbp")]
+[node name="Add3" parent="Body" unique_id=252527176 instance=ExtResource("1_oogbp")]
 material = SubResource("ShaderMaterial_3qpj6")
 offset_right = 0.0
 offset_bottom = 0.0
 
-[node name="Jacket" parent="Body" instance=ExtResource("1_oogbp")]
+[node name="Jacket" parent="Body" unique_id=572039885 instance=ExtResource("1_oogbp")]
 material = SubResource("ShaderMaterial_iq8g1")
 offset_left = 64.0
 offset_top = 64.0
 offset_right = 64.0
 offset_bottom = 64.0
 
-[node name="Head" parent="Body" instance=ExtResource("1_oogbp")]
+[node name="Head" parent="Body" unique_id=680618516 instance=ExtResource("1_oogbp")]
 material = SubResource("ShaderMaterial_fl0h6")
 offset_left = 64.0
 offset_top = 64.0
 offset_right = 64.0
 offset_bottom = 64.0
 
-[node name="Eyes" parent="Body" instance=ExtResource("1_oogbp")]
+[node name="Eyes" parent="Body" unique_id=1573255172 instance=ExtResource("1_oogbp")]
 material = SubResource("ShaderMaterial_305qu")
 offset_left = 64.0
 offset_top = 64.0
 offset_right = 64.0
 offset_bottom = 64.0
 
-[node name="Facial" parent="Body" instance=ExtResource("1_oogbp")]
+[node name="Facial" parent="Body" unique_id=396606491 instance=ExtResource("1_oogbp")]
 material = SubResource("ShaderMaterial_litpl")
 offset_left = 64.0
 offset_top = 64.0
 offset_right = 64.0
 offset_bottom = 64.0
 
-[node name="Ears" parent="Body" instance=ExtResource("1_oogbp")]
+[node name="Ears" parent="Body" unique_id=1472826004 instance=ExtResource("1_oogbp")]
 material = SubResource("ShaderMaterial_12s7a")
 offset_left = 64.0
 offset_top = 64.0
 offset_right = 64.0
 offset_bottom = 64.0
 
-[node name="Nose" parent="Body" instance=ExtResource("1_oogbp")]
+[node name="Nose" parent="Body" unique_id=2138801155 instance=ExtResource("1_oogbp")]
 material = SubResource("ShaderMaterial_vxe7s")
 offset_left = 64.0
 offset_top = 64.0
 offset_right = 64.0
 offset_bottom = 64.0
 
-[node name="Add1" parent="Body" instance=ExtResource("1_oogbp")]
+[node name="Add1" parent="Body" unique_id=1527733922 instance=ExtResource("1_oogbp")]
 material = SubResource("ShaderMaterial_reyt0")
 offset_right = 0.0
 offset_bottom = 0.0
 
-[node name="Mask" parent="Body" instance=ExtResource("1_oogbp")]
+[node name="Mask" parent="Body" unique_id=855772657 instance=ExtResource("1_oogbp")]
 material = SubResource("ShaderMaterial_rs0a2")
 offset_right = 0.0
 offset_bottom = 0.0
 
-[node name="Glasses" parent="Body" instance=ExtResource("1_oogbp")]
+[node name="Glasses" parent="Body" unique_id=389964055 instance=ExtResource("1_oogbp")]
 material = SubResource("ShaderMaterial_jydl7")
 offset_right = 0.0
 offset_bottom = 0.0
 
-[node name="Hair" parent="Body" instance=ExtResource("1_oogbp")]
+[node name="Hair" parent="Body" unique_id=233429603 instance=ExtResource("1_oogbp")]
 material = SubResource("ShaderMaterial_iby4b")
 offset_left = 64.0
 offset_top = 64.0
 offset_right = 64.0
 offset_bottom = 64.0
 
-[node name="HairAdd" parent="Body" instance=ExtResource("1_oogbp")]
+[node name="HairAdd" parent="Body" unique_id=1076442622 instance=ExtResource("1_oogbp")]
 material = SubResource("ShaderMaterial_mke48")
 offset_right = 0.0
 offset_bottom = 0.0
 
-[node name="Hat" parent="Body" instance=ExtResource("1_oogbp")]
+[node name="Hat" parent="Body" unique_id=1202928906 instance=ExtResource("1_oogbp")]
 material = SubResource("ShaderMaterial_6jw4o")
 offset_right = 0.0
 offset_bottom = 0.0
 
-[node name="TailFront" parent="Body" instance=ExtResource("1_oogbp")]
+[node name="TailFront" parent="Body" unique_id=231290419 instance=ExtResource("1_oogbp")]
 material = SubResource("ShaderMaterial_1cajx")
 offset_right = 0.0
 offset_bottom = 0.0
 
-[node name="BackFront" parent="Body" instance=ExtResource("1_oogbp")]
+[node name="BackFront" parent="Body" unique_id=1106059339 instance=ExtResource("1_oogbp")]
 material = SubResource("ShaderMaterial_ewxul")
 offset_right = 0.0
 offset_bottom = 0.0
 
-[node name="WingsFront" parent="Body" instance=ExtResource("1_oogbp")]
+[node name="WingsFront" parent="Body" unique_id=106904450 instance=ExtResource("1_oogbp")]
 material = SubResource("ShaderMaterial_8rovr")
 offset_right = 0.0
 offset_bottom = 0.0
 
-[node name="Horns" parent="Body" instance=ExtResource("1_oogbp")]
+[node name="Horns" parent="Body" unique_id=1393200143 instance=ExtResource("1_oogbp")]
 material = SubResource("ShaderMaterial_fv5lq")
 offset_right = 0.0
 offset_bottom = 0.0
 
-[node name="OffHandFront" type="SubViewport" parent="."]
+[node name="OffHandFront" type="SubViewport" parent="." unique_id=85664469]
 transparent_bg = true
 size = Vector2i(832, 1344)
 render_target_update_mode = 4
 
-[node name="OffHandFront" parent="OffHandFront" instance=ExtResource("1_oogbp")]
+[node name="OffHandFront" parent="OffHandFront" unique_id=939630701 instance=ExtResource("1_oogbp")]
 material = SubResource("ShaderMaterial_k7khj")
 offset_right = 0.0
 offset_bottom = 0.0
 
-[node name="WeaponFront" type="SubViewport" parent="."]
+[node name="WeaponFront" type="SubViewport" parent="." unique_id=402280568]
 unique_name_in_owner = true
 transparent_bg = true
 render_target_update_mode = 4
 
-[node name="MainHandFront" parent="WeaponFront" instance=ExtResource("1_oogbp")]
+[node name="MainHandFront" parent="WeaponFront" unique_id=1190518590 instance=ExtResource("1_oogbp")]
 material = SubResource("ShaderMaterial_e5egq")
 offset_right = 0.0
 offset_bottom = 0.0
 
-[node name="FullBody" type="Control" parent="."]
+[node name="FullBody" type="Control" parent="." unique_id=1944523391]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -703,45 +703,45 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="WingsBack" type="Sprite2D" parent="FullBody"]
+[node name="WingsBack" type="Sprite2D" parent="FullBody" unique_id=1382056879]
 material = SubResource("CanvasItemMaterial_wun8s")
 texture = SubResource("ViewportTexture_cde47")
 region_enabled = true
 region_rect = Rect2(0, 640, 64, 64)
 region_filter_clip_enabled = true
 
-[node name="OffhandBack" type="Sprite2D" parent="FullBody"]
+[node name="OffhandBack" type="Sprite2D" parent="FullBody" unique_id=1612019737]
 unique_name_in_owner = true
 texture = SubResource("ViewportTexture_wun8s")
 region_enabled = true
 
-[node name="MainHandBack" type="Sprite2D" parent="FullBody"]
+[node name="MainHandBack" type="Sprite2D" parent="FullBody" unique_id=1174385203]
 unique_name_in_owner = true
 texture = SubResource("ViewportTexture_roc3e")
 region_enabled = true
 region_rect = Rect2(0, 384, 192, 192)
 region_filter_clip_enabled = true
 
-[node name="Body" type="Sprite2D" parent="FullBody"]
+[node name="Body" type="Sprite2D" parent="FullBody" unique_id=1861262958]
 material = SubResource("CanvasItemMaterial_wun8s")
 texture = SubResource("ViewportTexture_qof1o")
 region_enabled = true
 region_rect = Rect2(0, 640, 64, 64)
 region_filter_clip_enabled = true
 
-[node name="OffhandFront" type="Sprite2D" parent="FullBody"]
+[node name="OffhandFront" type="Sprite2D" parent="FullBody" unique_id=1177205215]
 unique_name_in_owner = true
 texture = SubResource("ViewportTexture_vy5wx")
 region_enabled = true
 
-[node name="MainHandFront" type="Sprite2D" parent="FullBody"]
+[node name="MainHandFront" type="Sprite2D" parent="FullBody" unique_id=1882431170]
 unique_name_in_owner = true
 texture = SubResource("ViewportTexture_j2uty")
 region_enabled = true
 region_rect = Rect2(0, 384, 192, 192)
 region_filter_clip_enabled = true
 
-[node name="AmmoNode" type="Sprite2D" parent="FullBody"]
+[node name="AmmoNode" type="Sprite2D" parent="FullBody" unique_id=1362356144]
 unique_name_in_owner = true
 visible = false
 material = SubResource("CanvasItemMaterial_wun8s")

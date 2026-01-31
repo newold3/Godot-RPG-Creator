@@ -48,6 +48,10 @@ const DEFAULT_TEXTURE = preload("uid://c2k4jiswpdy88")
 const PLUGIN_PATH = "res://addons/rpg_character_creator/"
 const PALETTE_BUTTON = preload("uid://mbnqbs4rwy66")
 const PARTS_ROOT_DIR = "res://Assets/Parts"
+const SET_FOLDER_NAME = "sets"
+const COSTUME_FOLDER_NAME = "costume"
+
+var race_name_generator = preload("uid://b5lb470bx8ej2").new()
 
 signal data_loaded()
 
@@ -2100,6 +2104,12 @@ func _on_synchronize_palettes_toggled(toggled_on: bool) -> void:
 
 
 #region Save
+func _on_character_random_name_button_pressed() -> void:
+	var race = %Races.get_item_text(%Races.get_selected_id())
+	var text = race_name_generator.generate_name_for_race(race)
+	%CharacterName.text = text
+
+
 func _enable_saving_container() -> void:
 	%Character.busy = true
 	var tex = get_viewport().get_texture()
@@ -2274,5 +2284,77 @@ func _on_save_mode_item_selected(index: int) -> void:
 			%CustomeLabel.visible = true
 			%FolderContainer.visible = false
 			%CharacterName.placeholder_text = tr("Costume Name")
+
+
+func _on_save_data_pressed() -> void:
+	var folder = %CharacterFolder.text
+	var file_name = %CharacterName.text.to_lower()
+	
+	_enable_saving_container()
+	
+	match %SaveMode.get_selected_id():
+		0: # Save Character
+			_save_character(folder, file_name)
+		1: # Save Event
+			_save_event(folder, file_name)
+		2: # Save Set (manually hidden layers = discarded)
+			_save_set(file_name)
+		3: # Save Costume (manually hidden layers = ignored and save all)
+			_save_costume(file_name)
+	
+	_disable_saving_container()
+
+
+func _save_character(folder: String, file_name: String) -> void:
+	var data_path = folder.path_join(file_name + "_data.tres")
+	var scene_path = folder.path_join(file_name + ".tscn")
+	var scene_script_path = folder.path_join(file_name + ".gd")
+	var face_preview = folder.path_join(file_name + "_face.png")
+	var character_preview = folder.path_join(file_name + "_character.png")
+	var battler_preview = folder.path_join(file_name + "_battler.png")
+	var minimalist_charset = folder.path_join(file_name + "_character_minimalist.png")
+	await %Character.save_character_preview(face_preview, character_preview, battler_preview, minimalist_charset)
+	var res = current_character
+	res.face_preview = face_preview
+	res.character_preview = character_preview
+	res.battler_preview = battler_preview
+	res.scene_path = scene_path
+	res.always_show_weapon = %ShowWeapon.is_pressed()
+	res.inmutable = %MakeInmutable.is_pressed()
+
+
+func _save_event(folder: String, file_name: String) -> void:
+	var data_path = folder.path_join(file_name + "_data.tres")
+	var scene_path = folder.path_join(file_name + "_event.tscn")
+	var scene_script_path = folder.path_join(file_name + "_event.gd")
+	var character_preview = folder.path_join(file_name + "_event.png")
+	var minimalist_charset = folder.path_join(file_name + "_character_minimalist.png")
+	await %Character.save_event_preview(character_preview, minimalist_charset)
+	var res = current_character
+	res.event_preview = character_preview
+	res.scene_path = scene_path
+	res.inmutable = true
+	res.always_show_weapon = true
+
+
+func _save_set(file_name: String) -> void:
+	var folder = PARTS_ROOT_DIR.path_join(SET_FOLDER_NAME)
+	var data_path = folder.path_join(file_name + "_data.tres")
+	var set_preview = folder.path_join(file_name + "_preview.png")
+	await %Character.save_set_preview(set_preview)
+	var res = IngameGearSet.create_from_parts(current_character.equipment_parts)
+	res.set_peview = set_preview
+
+
+func _save_costume(file_name: String) -> void:
+	var folder = PARTS_ROOT_DIR.path_join(SET_FOLDER_NAME)
+	var data_path = folder.path_join(file_name + "_data.tres")
+	var costume_preview = folder.path_join(file_name + "_preview.png")
+	await %Character.save_costume_preview(costume_preview)
+	var res = IngameCostume.create_from_character(current_character)
+	res.character_peview = costume_preview
+	res.inmutable = true
+	res.always_show_weapon = true
+
 
 #endregion

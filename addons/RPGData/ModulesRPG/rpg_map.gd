@@ -416,7 +416,8 @@ func _start_game_mode() -> void:
 	map_layout = MapLayout.new()
 	GameManager.current_map = self
 	visible = false
-	pathfinder = AStarPathfinder.new(self)
+	pathfinder = AStarPathfinder.new()
+	pathfinder.initialize(self)
 	event_offset = Vector2(tile_size.x * 0.5, tile_size.y - 4)
 	# Check if scene_main needs to be set up.
 	var parent = get_tree().get_first_node_in_group("start_scene_main")
@@ -883,6 +884,9 @@ func _draw_shadow(layer: TileMapLayer, cell: Vector2i, shadow_info: RPGMapCastSh
 
 	# Calculate the correct tile position
 	var tile_position = layer.map_to_local(cell) - tile_size * 0.5 - offset + Vector2(0, 2)
+	#if shadow_info.width > 1:
+		#var x = shadow_info.width - 1
+		#tile_position.x += x * tile_size.x * 0.5
 
 	# Create Shadow Sprite
 	var key = "%s_%s" % [atlas_source.texture.get_rid().get_id(), texture_region]
@@ -893,7 +897,9 @@ func _draw_shadow(layer: TileMapLayer, cell: Vector2i, shadow_info: RPGMapCastSh
 			"texture": tex,
 			"position": tile_position,
 			"cell": cell,
-			"feet_offset": shadow_info.feet_offset
+			"feet_offset": shadow_info.feet_offset,
+			"is_tileset": true,
+			"width": shadow_info.width - 1
 		}
 		cached_environment_textures[key] = tex
 	else:
@@ -901,7 +907,9 @@ func _draw_shadow(layer: TileMapLayer, cell: Vector2i, shadow_info: RPGMapCastSh
 			"texture": cached_environment_textures[key],
 			"position": tile_position,
 			"cell": cell,
-			"feet_offset": shadow_info.feet_offset
+			"feet_offset": shadow_info.feet_offset,
+			"is_tileset": true,
+			"width": shadow_info.width - 1
 		}
 
 	return shadow
