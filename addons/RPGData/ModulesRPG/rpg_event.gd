@@ -87,6 +87,39 @@ func get_last_page_used() -> RPGEventPage:
 
 
 func get_active_page() -> RPGEventPage:
+	# ----------------------------------------------------------------
+	# USE IN EDITOR
+	# ----------------------------------------------------------------
+	if Engine.is_editor_hint():
+		for i: int in range(pages.size() - 1, -1, -1):
+			var page: RPGEventPage = pages[i]
+			var condition: RPGEventPageCondition = page.condition
+			
+			# Check if the page has any condition enabled
+			var has_any_condition: bool = (
+				condition.use_switch1 or 
+				condition.use_switch2 or 
+				condition.use_local_switch or 
+				condition.use_variable or 
+				condition.use_item or 
+				condition.use_actor or
+				page.is_quest_page
+			)
+			
+			if not has_any_condition:
+				last_page_used = page
+				return page
+		
+		# Fallback to the first page if available
+		if not pages.is_empty():
+			last_page_used = pages[0]
+			return pages[0]
+			
+		return null
+		
+	# ----------------------------------------------------------------
+	# USE IN INGAME
+	# ----------------------------------------------------------------
 	var current_page: RPGEventPage = null
 	
 	var game_state: GameUserData = GameManager.game_state

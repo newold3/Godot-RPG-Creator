@@ -51,4 +51,4 @@ func clone(value: bool = true) -> RPGEventPage:
 
 
 func _to_string() -> String:
-	return "<RPGEventPage id: %s list: %s>" % [id, list]
+	return "<RPGEventPage id: %s character_path = %s, list: %s>" % [id, character_path, list]

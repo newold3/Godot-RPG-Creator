@@ -1,6 +1,14 @@
 @tool
 extends Node2D
 
+class ShadowRuntimeData:
+	var visible_rect_cache: Dictionary = {}
+	var current_drawing_shadows = {
+		"tiles": [],
+		"masks": []
+	}
+
+
 @export var shadow_component: ShadowComponent:
 	set(value):
 		if shadow_component and shadow_component.shadow_updated.is_connected(update):
@@ -32,18 +40,14 @@ var current_map_rect: Rect2 = Rect2()
 var main_offset: Vector2
 var in_editor_map: RPGMap
 
-var visible_rect_cache: Dictionary = {}
-
-var current_drawing_shadows = {
-	"tiles": [],
-	"masks": []
-}
+var _rt: ShadowRuntimeData
 
 const EXTRA_MARGIN: int = 400
 
 
 func _ready() -> void:
 	set_process(false)
+	_rt = ShadowRuntimeData.new()
 	var viewport_size = get_viewport().size
 	%ShadowSubViewport.size = viewport_size
 	%MaskSubViewport.size = viewport_size
@@ -54,6 +58,13 @@ func _ready() -> void:
 	update()
 	await get_tree().process_frame
 	set_process(true)
+
+
+func _validate_property(property):
+	if not Engine.is_editor_hint():
+		if property.name == "_rt":
+			property.usage &= ~PROPERTY_USAGE_EDITOR
+			return
 
 
 func synchronizes_cameras() -> void:
@@ -231,15 +242,15 @@ func _get_smart_used_rect(texture: Texture) -> Rect2:
 		return Rect2(Vector2.ZERO, texture.get_size())
 
 	var id = texture.get_rid()
-	if visible_rect_cache.has(id):
-		return visible_rect_cache[id]
+	if _rt.visible_rect_cache.has(id):
+		return _rt.visible_rect_cache[id]
 	
 	var img = texture.get_image()
 	var rect = Rect2(Vector2.ZERO, texture.get_size())
 	if img:
 		rect = img.get_used_rect()
 	
-	visible_rect_cache[id] = rect
+	_rt.visible_rect_cache[id] = rect
 	return rect
 
 
@@ -266,8 +277,8 @@ func _draw_safe_polygon(canvas: Node2D, points: PackedVector2Array, colors: Pack
 
 
 func set_drawing_textures() -> void:
-	current_drawing_shadows.tiles.clear()
-	current_drawing_shadows.masks.clear()
+	_rt.current_drawing_shadows.tiles.clear()
+	_rt.current_drawing_shadows.masks.clear()
 
 	var current_map: RPGMap
 	if in_editor_map:
@@ -400,7 +411,7 @@ func set_drawing_textures() -> void:
 					final_points.append(trans_p)
 					final_colors.append(color)
 
-				current_drawing_shadows.tiles.append({
+				_rt.current_drawing_shadows.tiles.append({
 					"main_texture": data.get("main_texture", null),
 					"type": "polygon",
 					"points": final_points,
@@ -409,7 +420,7 @@ func set_drawing_textures() -> void:
 					"texture": sprite.texture
 				})
 				
-				current_drawing_shadows.masks.append({
+				_rt.current_drawing_shadows.masks.append({
 					"main_texture": data.get("main_texture", null),
 					"texture": sprite.texture,
 					"position": sprite.global_position + composite_correction_offset + data.get("mask_offset", Vector2.ZERO),
@@ -500,7 +511,7 @@ func set_drawing_textures() -> void:
 			var colors = PackedColorArray([color, color, color, color])
 			var uvs = PackedVector2Array([Vector2(0, 0), Vector2(1, 0), Vector2(1, 1), Vector2(0, 1)])
 
-			current_drawing_shadows.tiles.append({
+			_rt.current_drawing_shadows.tiles.append({
 				"main_texture": data.get("main_texture", null),
 				"type": "polygon",
 				"points": shadow_points,
@@ -518,7 +529,7 @@ func set_drawing_textures() -> void:
 				q_points[0] - mask_nudge
 			])
 
-			current_drawing_shadows.masks.append({
+			_rt.current_drawing_shadows.masks.append({
 				"main_texture": data.get("main_texture", null),
 				"type": "polygon",
 				"texture": st,
@@ -530,7 +541,7 @@ func set_drawing_textures() -> void:
 
 
 func _on_canvas1_draw():
-	for tile in current_drawing_shadows.tiles:
+	for tile in _rt.current_drawing_shadows.tiles:
 		if not is_instance_valid(tile.texture):
 			continue
 		if "main_texture" in tile and tile.main_texture and (
@@ -563,7 +574,7 @@ func _on_canvas1_draw():
 
 
 func _on_canvas2_draw():
-	for mask in current_drawing_shadows.masks:
+	for mask in _rt.current_drawing_shadows.masks:
 		if "main_texture" in mask and mask.main_texture and (
 			not is_instance_valid(mask.main_texture) or
 			mask.main_texture.has_meta("_disable_shadow")

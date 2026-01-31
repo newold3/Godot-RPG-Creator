@@ -46,6 +46,16 @@ class IngameExtractionEvent:
 			extraction_event = GameExtractionItem.new(event.id)
 
 
+class MapRuntimeData:
+	var cached_environment_textures: Dictionary = {}
+	var shadows: Dictionary = {
+		"tiles": {},
+		"vehicles": {},
+		"events": {},
+		"players": {}
+	}
+
+
 #region Exports
 @export_category("Editor Fields")
 ## Changes the size for tiles to all TileMapLayers added to this control.
@@ -250,13 +260,6 @@ var shadow_viewport: SubViewport
 var mask_shadow_viewport: SubViewport
 var shadow_compose: SubViewport
 var shadow_container: CanvasGroup
-var cached_environment_textures: Dictionary = {}
-var shadows: Dictionary = {
-	"tiles": {},
-	"vehicles": {},
-	"events": {},
-	"players": {}
-}
 var current_ingame_events: Dictionary[int, IngameEvent] = {}
 var current_ingame_extraction_events: Dictionary[int, IngameExtractionEvent] = {}
 var current_ingame_vehicles: Array[RPGVehicle] = []
@@ -266,6 +269,8 @@ var rect_size_cache: Dictionary = {}
 var last_extraction_event_pasted_id: int
 
 var map_layout: MapLayout
+
+var _rt: MapRuntimeData
 #endregion
 
 signal map_started()
@@ -298,6 +303,8 @@ func _ready() -> void:
 		"environment": find_child("Environment"),
 		"overlay": find_child("Overlay")
 	}
+	
+	_rt = MapRuntimeData.new()
 
 	_set_child_opacity(self, true)
 	
@@ -771,7 +778,7 @@ func _perform_shadow_update() -> void:
 		DayNightManager.day_night_config = RPGSYSTEM.database.system.day_night_config.clone(true)
 		
 	var all_shadows = []
-	for item in shadows.values():
+	for item in _rt.shadows.values():
 		for shadow_data in item.values():
 			if "main_node" in shadow_data and "visible" in shadow_data.main_node:
 				if not shadow_data.main_node.visible:
@@ -813,7 +820,7 @@ func _create_shadows() -> void:
 func _create_cell_shadows() -> void:
 	var original_layer: TileMapLayer = MAP_LAYERS.environment
 	var used_cells = original_layer.get_used_cells()
-	shadows.tiles.clear()
+	_rt.shadows.tiles.clear()
 	for cell in used_cells:
 		var tile_coord = map_to_local(cell)
 		var source_id = original_layer.get_cell_source_id(cell)
@@ -826,19 +833,19 @@ func _create_cell_shadows() -> void:
 					var cast_shadow: RPGMapCastShadow = tile_data.get_custom_data("Cast Shadow")
 					if cast_shadow:
 						var shadow_data = _draw_shadow(original_layer, cell, cast_shadow, tile_data.texture_origin)
-						shadows.tiles[cell] = shadow_data
+						_rt.shadows.tiles[cell] = shadow_data
 
 
 func _create_dynamic_shadows() -> void:
 	# vehicle shadows
-	shadows.vehicles.clear()
+	_rt.shadows.vehicles.clear()
 	for vehicle in current_ingame_vehicles:
 		var vehicle_shadow_data = vehicle.get_shadow_data()
 		if vehicle_shadow_data:
-			shadows.vehicles[vehicle.get_rid().get_id()] = vehicle_shadow_data
+			_rt.shadows.vehicles[vehicle.get_rid().get_id()] = vehicle_shadow_data
 	
 	# Player/s shadows:
-	shadows.players.clear()
+	_rt.shadows.players.clear()
 	var nodes = get_tree().get_nodes_in_group("player")
 	nodes.append_array(get_tree().get_nodes_in_group("follower"))
 	for node in nodes:
@@ -846,10 +853,10 @@ func _create_dynamic_shadows() -> void:
 			var node_shadow_data = node.get_shadow_data()
 			var rid = node.get_rid().get_id()
 			if node_shadow_data and node.visible and node.modulate.a > 0:
-				shadows.players[rid] = node_shadow_data
+				_rt.shadows.players[rid] = node_shadow_data
 	
 	# Event/s shadows:
-	shadows.events.clear()
+	_rt.shadows.events.clear()
 	for ev: IngameEvent in current_ingame_events.values():
 		if not ev: continue
 		if ev.lpc_event:
@@ -860,7 +867,7 @@ func _create_dynamic_shadows() -> void:
 				var node_shadow_data = node.get_shadow_data()
 				var rid = node.get_rid()
 				if node_shadow_data and node.visible and node.modulate.a > 0:
-					shadows.events[rid] = node_shadow_data
+					_rt.shadows.events[rid] = node_shadow_data
 	
 	# Extraction Event/s shadows:
 	for ev: IngameExtractionEvent in current_ingame_extraction_events.values():
@@ -872,7 +879,7 @@ func _create_dynamic_shadows() -> void:
 				var node_shadow_data = node.get_shadow_data()
 				var rid = node.get_rid()
 				if node_shadow_data and node.visible and node.modulate.a > 0:
-					shadows.events[rid] = node_shadow_data
+					_rt.shadows.events[rid] = node_shadow_data
 
 
 func _draw_shadow(layer: TileMapLayer, cell: Vector2i, shadow_info: RPGMapCastShadow, offset: Vector2) -> Dictionary:
@@ -891,7 +898,7 @@ func _draw_shadow(layer: TileMapLayer, cell: Vector2i, shadow_info: RPGMapCastSh
 	# Create Shadow Sprite
 	var key = "%s_%s" % [atlas_source.texture.get_rid().get_id(), texture_region]
 	var shadow
-	if !cached_environment_textures.has(key):
+	if !_rt.cached_environment_textures.has(key):
 		var tex = ImageTexture.create_from_image(atlas_source.texture.get_image().get_region(texture_region))
 		shadow = {
 			"texture": tex,
@@ -901,10 +908,10 @@ func _draw_shadow(layer: TileMapLayer, cell: Vector2i, shadow_info: RPGMapCastSh
 			"is_tileset": true,
 			"width": shadow_info.width - 1
 		}
-		cached_environment_textures[key] = tex
+		_rt.cached_environment_textures[key] = tex
 	else:
 		shadow = {
-			"texture": cached_environment_textures[key],
+			"texture": _rt.cached_environment_textures[key],
 			"position": tile_position,
 			"cell": cell,
 			"feet_offset": shadow_info.feet_offset,
@@ -2455,7 +2462,7 @@ func _on_event_canvas_draw() -> void:
 		for event: RPGEvent in obj:
 			if !event:
 				continue
-			
+
 			var real_pos = Vector2i(map_to_local(Vector2i(event.x, event.y)))
 			var rect = Rect2i(real_pos + Vector2i.ONE, tile_size - Vector2i(2, 2))
 			
@@ -2468,9 +2475,9 @@ func _on_event_canvas_draw() -> void:
 			else:
 				event_canvas.draw_rect(rect, color1, false, 2)
 				event_canvas.draw_rect(rect, color4, true)
-			
+				
 			if event.pages.size() > 0:
-				var page: RPGEventPage = event.pages[0]
+				var page: RPGEventPage = event.get_active_page()
 				var path = page.character_path
 				if ResourceLoader.exists(path):
 					var res: RPGLPCCharacter = ResourceLoader.load(path)
@@ -2484,7 +2491,9 @@ func _on_event_canvas_draw() -> void:
 						else:
 							tex = ResourceLoader.load(character_preview_path)
 							event_preview_textures[character_preview_path] = tex
-						event_canvas.draw_texture_rect(tex, rect, false, Color(1, 1, 1, color1.a))
+						var tex_color = page.modulate
+						tex_color.a = color1.a
+						event_canvas.draw_texture_rect(tex, rect, false, tex_color)
 
 
 func _on_extraction_event_canvas_draw() -> void:
@@ -2721,6 +2730,11 @@ func get_wrapped_position(position: Vector2) -> Vector2:
 
 
 func _validate_property(property):
+	if not Engine.is_editor_hint():
+		if property.name == "_rt":
+			property.usage = PROPERTY_USAGE_NO_EDITOR
+			return
+			
 	var properties = ["internal_id", "events", "extraction_events", "regions", "event_regions", "current_edit_button_pressed", "_baked_keot_data"]
 	if property.name in properties:
 		property.usage &= ~PROPERTY_USAGE_EDITOR

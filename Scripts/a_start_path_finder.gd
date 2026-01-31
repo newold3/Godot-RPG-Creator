@@ -29,7 +29,6 @@ func _build_graph() -> void:
 	for x in range(_map_size.x):
 		for y in range(_map_size.y):
 			var current_tile = Vector2i(x, y)
-			var current_id = _get_id_from_tile(current_tile)
 			
 			if not _is_tile_passable_static(current_tile):
 				continue
@@ -43,34 +42,34 @@ func _build_graph() -> void:
 			_try_connect_diagonal(current_tile, Vector2i(-1, 1))  # Down-Left
 
 # Attempt to connect with a relative tile (dx, dy)
-func _try_connect(origin: Vector2i, offset: Vector2i, cost: float) -> void:
+func _try_connect(origin: Vector2i, offset: Vector2i, _cost: float) -> void:
 	var target_x = origin.x + offset.x
 	var target_y = origin.y + offset.y
-	var wrap_h = false
-	var wrap_v = false
-
+	var _wrap_h = false
+	var _wrap_v = false
+	
 	# Wrapping X
 	if target_x >= _map_size.x:
 		if _infinite_x: 
 			target_x -= _map_size.x
-			wrap_h = true
+			_wrap_h = true
 		else: return
 	elif target_x < 0:
 		if _infinite_x: 
 			target_x += _map_size.x
-			wrap_h = true
+			_wrap_h = true
 		else: return
 	
 	# Wrapping Y
 	if target_y >= _map_size.y:
 		if _infinite_y: 
 			target_y -= _map_size.y
-			wrap_v = true
+			_wrap_v = true
 		else: return
 	elif target_y < 0:
 		if _infinite_y: 
 			target_y += _map_size.y
-			wrap_v = true
+			_wrap_v = true
 		else: return
 
 	var target_tile = Vector2i(target_x, target_y)
