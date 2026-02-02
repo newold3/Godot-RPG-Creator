@@ -14,6 +14,9 @@ const MASTER_FOLDER: String = "res://addons/RPGData/MasterData/"
 ## Folder where the user data is stored (Normal Mode).
 const USER_FOLDER: String = "res://data/"
 
+## Path to the launcher identification file.
+const PROJECT_CONFIG_FILE: String = "res://rpg_project.cfg"
+
 # -- File Names --
 const FILE_DATABASE: String = "database"
 const FILE_SYSTEM: String = "system"
@@ -58,12 +61,40 @@ static func save_database() -> void:
 static func save_system() -> void:
 	var resource = RPGSYSTEM.system
 	_save_generic(resource, FILE_SYSTEM)
+	_save_project_config_file()
 
 
 ## Saves the MapInfos resource.
 static func save_map_infos() -> void:
 	var resource = RPGSYSTEM.map_infos.map_infos
 	_save_generic(resource, FILE_MAP_INFO)
+
+
+## Generates the config file required by the Launcher to identify this project.
+static func _save_project_config_file() -> void:
+	var config = ConfigFile.new()
+	
+	# 1. Get Project Name from ProjectSettings
+	var project_name: String = ProjectSettings.get_setting("application/config/name", "Untitled RPG")
+	
+	# 2. Get Game Version from ProjectSettings (custom property or standard if available)
+	# Defaulting to 1.0.0 if not set in settings
+	var project_version: String = ProjectSettings.get_setting("application/config/version", "1.0.0")
+	
+	# 3. Get Editor/Creator Version from the Database resource
+	var editor_id_version: int = 0
+	if RPGSYSTEM.database:
+		editor_id_version = RPGSYSTEM.database._id_version
+
+	# Set values
+	config.set_value("config", "name", project_name)
+	config.set_value("config", "icon", "res://icon.svg")
+	config.set_value("config", "version", project_version)
+	
+	# We save the internal DB version ID as the "creator_version"
+	config.set_value("config", "creator_version", editor_id_version) 
+	
+	config.save(PROJECT_CONFIG_FILE)
 
 
 # ------------------------------------------------------------------------------
