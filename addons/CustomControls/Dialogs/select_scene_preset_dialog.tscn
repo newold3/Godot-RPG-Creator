@@ -1,0 +1,149 @@
+[gd_scene format=3 uid="uid://fedfbqfu7awf"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_m8kia"]
+[ext_resource type="Script" uid="uid://cgml1h0wgbcpk" path="res://addons/CustomControls/Dialogs/select_scene_preset_dialog.gd" id="2_m8kia"]
+[ext_resource type="PackedScene" uid="uid://dxcyqc2dscbvw" path="res://addons/CustomControls/custom_simple_column_item_list.tscn" id="3_8gkg7"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="4_b2uno"]
+
+[sub_resource type="Gradient" id="Gradient_vvvrv"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_fg0k8"]
+gradient = SubResource("Gradient_vvvrv")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="Gradient" id="Gradient_0qaiw"]
+colors = PackedColorArray(0.333333, 0.352941, 0.360784, 1, 0.380392, 0.4, 0.407843, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_6nd8c"]
+gradient = SubResource("Gradient_0qaiw")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_b2uno"]
+texture = SubResource("GradientTexture2D_6nd8c")
+
+[sub_resource type="Gradient" id="Gradient_v2iab"]
+offsets = PackedFloat32Array(0, 0.369535, 1)
+colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_cc2pl"]
+gradient = SubResource("Gradient_v2iab")
+fill_from = Vector2(0.547009, 1)
+fill_to = Vector2(0.559829, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_m8kia"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_cc2pl")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_glcxy"]
+bg_color = Color(0, 0, 0, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+
+[node name="SelectScenePresetDialog" type="Window" unique_id=533371700]
+oversampling_override = 1.0
+title = "Select Scenes To Make Preset"
+position = Vector2i(0, 36)
+size = Vector2i(540, 420)
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_m8kia")
+script = ExtResource("2_m8kia")
+
+[node name="Background" type="TextureRect" parent="." unique_id=968685966]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_fg0k8")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=259162080]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1314612548]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1981422405]
+layout_mode = 2
+alignment = 2
+
+[node name="SelectAll" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=272492653]
+layout_mode = 2
+tooltip_text = "Select all scenes to be exported"
+mouse_default_cursor_shape = 2
+text = "Select All"
+
+[node name="SelectNone" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=181145888]
+layout_mode = 2
+tooltip_text = "Deselect all scenes"
+mouse_default_cursor_shape = 2
+text = "Select None"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=987639573]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="SceneList" parent="MarginContainer/VBoxContainer" unique_id=2092998181 instance=ExtResource("3_8gkg7")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(137, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
+event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
+top_bar_style = SubResource("StyleBoxTexture_b2uno")
+cursor_style = SubResource("StyleBoxTexture_m8kia")
+panel_style = SubResource("StyleBoxFlat_glcxy")
+names = PackedStringArray("Scenes")
+sizes = PackedInt32Array(80)
+items = Array[PackedStringArray]([PackedStringArray("Scene Title"), PackedStringArray("Scene Load Game"), PackedStringArray("Scene Options"), PackedStringArray("Scene Credits"), PackedStringArray("Scene Main Menu"), PackedStringArray("Scene Equipment")])
+enable_multiselection = true
+show_checkboxes = true
+itemlist_tooltip = "List of scenes you want to include in the preset."
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1866534249]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=699128187]
+layout_mode = 2
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=610434071 instance=ExtResource("4_b2uno")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1982425684 instance=ExtResource("4_b2uno")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+text = "Cancel"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/SelectAll" to="." method="_on_select_all_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/SelectNone" to="." method="_on_select_none_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

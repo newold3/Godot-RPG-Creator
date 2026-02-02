@@ -9,6 +9,7 @@ var busy: bool = false
 var _preset_file_dialog: FileDialog
 var _confirm_dialog: ConfirmationDialog
 var _pending_import_path: String
+var _exported_scenes: PackedInt32Array = []
 
 
 func set_data(real_data: RPGSystem) -> void:
@@ -44,13 +45,20 @@ func _setup_confirm_dialog() -> void:
 	add_child(_confirm_dialog)
 
 
-func _on_file_selected(path: String, is_export: bool) -> void:
+func _on_file_selected(path: String, is_export: bool, _scenes: PackedInt32Array) -> void:
 	var target_extension = "rpgpack"
 	if path.get_extension() != target_extension:
 		path = path.get_basename() + "." + target_extension
 		
 	if is_export:
-		PresetExporter.export_preset_package(data.game_scenes, path)
+		var scenes: Dictionary = {}
+		var keys = data.game_scenes.keys()
+		for i in data.game_scenes.keys().size():
+			if not i in _scenes: continue
+			var key = keys[i]
+			scenes[key] = data.game_scenes[key]
+		if not scenes.is_empty():
+			PresetExporter.export_preset_package(scenes, path)
 	else:
 		var conflicts = PresetInstaller.check_package_conflicts(path)
 		if conflicts.size() > 0:
@@ -90,11 +98,24 @@ func _finalize_installation(path: String) -> void:
 	
 	if not new_scenes.is_empty():
 		# inject new scenes
-		
-		print("Importación completada con éxito.")
+		print("Import completed successfully.")
 
 
-func open_preset_manager_dialog(is_export: bool) -> void:
+func open_select_scene_dialog() -> void:
+	_exported_scenes = []
+	
+	var path = "res://addons/CustomControls/Dialogs/select_scene_preset_dialog.tscn"
+	var dialog = RPGDialogFunctions.open_dialog(path)
+	
+	dialog.OK.connect(
+		func(_scenes: PackedInt32Array) -> void:
+			_exported_scenes = _scenes
+	)
+
+	await dialog.tree_exited
+
+
+func open_preset_manager_dialog(is_export: bool, _scenes: PackedInt32Array = []) -> void:
 	if is_export:
 		_preset_file_dialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
 		_preset_file_dialog.title = "Export Preset Package"
@@ -107,7 +128,7 @@ func open_preset_manager_dialog(is_export: bool) -> void:
 	if _preset_file_dialog.file_selected.is_connected(_on_file_selected):
 		_preset_file_dialog.file_selected.disconnect(_on_file_selected)
 		
-	_preset_file_dialog.file_selected.connect(_on_file_selected.bind(is_export), CONNECT_ONE_SHOT)
+	_preset_file_dialog.file_selected.connect(_on_file_selected.bind(is_export, _scenes), CONNECT_ONE_SHOT)
 
 	_preset_file_dialog.popup_centered_ratio(0.6)
 
@@ -1117,7 +1138,9 @@ func _on_fade_page_swap_toggled(toggled_on: bool) -> void:
 
 
 func _on_export_scenes_pressed() -> void:
-	open_preset_manager_dialog(true)
+	await open_select_scene_dialog()
+	if not _exported_scenes.is_empty():
+		open_preset_manager_dialog(true, _exported_scenes)
 
 
 func _on_import_scenes_pressed() -> void:

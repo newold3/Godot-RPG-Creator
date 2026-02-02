@@ -109,13 +109,13 @@ region = Rect2(24, 120, 24, 24)
 [sub_resource type="Gradient" id="Gradient_60doh"]
 colors = PackedColorArray(0.333333, 0.352941, 0.360784, 1, 0.380392, 0.4, 0.407843, 1)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_6nd8c"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_plo3t"]
 gradient = SubResource("Gradient_60doh")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2qda7"]
-texture = SubResource("GradientTexture2D_6nd8c")
+texture = SubResource("GradientTexture2D_plo3t")
 
 [sub_resource type="Gradient" id="Gradient_v2iab"]
 offsets = PackedFloat32Array(0, 0.369535, 1)
@@ -126,7 +126,7 @@ gradient = SubResource("Gradient_v2iab")
 fill_from = Vector2(0.547009, 1)
 fill_to = Vector2(0.559829, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_plo3t"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hsjp2"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_cc2pl")
 
@@ -148,15 +148,15 @@ gradient = SubResource("Gradient_8k375")
 fill_from = Vector2(0.547009, 1)
 fill_to = Vector2(0.559829, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hsjp2"]
-resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_v6eua")
-
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bafj1"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_v6eua")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fhlha"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_v6eua")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ha2h2"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_v6eua")
 
@@ -172,7 +172,7 @@ region = Rect2(96, 48, 24, 24)
 atlas = ExtResource("8_ca2t6")
 region = Rect2(96, 216, 24, 24)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ha2h2"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ds8gs"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_cc2pl")
 
@@ -199,11 +199,11 @@ region = Rect2(216, 168, 24, 24)
 atlas = ExtResource("8_ca2t6")
 region = Rect2(144, 72, 24, 24)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ds8gs"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_304yl"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_cc2pl")
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_304yl"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ftd1a"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_cc2pl")
 
@@ -418,7 +418,7 @@ size_flags_vertical = 3
 odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
 event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 top_bar_style = SubResource("StyleBoxTexture_2qda7")
-cursor_style = SubResource("StyleBoxTexture_plo3t")
+cursor_style = SubResource("StyleBoxTexture_hsjp2")
 panel_style = SubResource("StyleBoxFlat_215jy")
 names = PackedStringArray("Members")
 sizes = PackedInt32Array(80)
@@ -558,7 +558,7 @@ size_flags_vertical = 3
 odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
 event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 top_bar_style = SubResource("StyleBoxTexture_2qda7")
-cursor_style = SubResource("StyleBoxTexture_hsjp2")
+cursor_style = SubResource("StyleBoxTexture_bafj1")
 panel_style = SubResource("StyleBoxFlat_215jy")
 columns = 3
 names = PackedStringArray("Type", "Map", "Position")
@@ -611,7 +611,7 @@ size_flags_vertical = 3
 odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
 event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 top_bar_style = SubResource("StyleBoxTexture_2qda7")
-cursor_style = SubResource("StyleBoxTexture_bafj1")
+cursor_style = SubResource("StyleBoxTexture_fhlha")
 panel_style = SubResource("StyleBoxFlat_215jy")
 columns = 4
 names = PackedStringArray("Type", "Filename", "Volume", "Pitch")
@@ -659,7 +659,7 @@ size_flags_vertical = 3
 odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
 event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 top_bar_style = SubResource("StyleBoxTexture_2qda7")
-cursor_style = SubResource("StyleBoxTexture_fhlha")
+cursor_style = SubResource("StyleBoxTexture_ha2h2")
 panel_style = SubResource("StyleBoxFlat_215jy")
 columns = 4
 names = PackedStringArray("Type", "Filename", "Volume", "Pitch")
@@ -1181,7 +1181,7 @@ size_flags_vertical = 3
 odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
 event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 top_bar_style = SubResource("StyleBoxTexture_2qda7")
-cursor_style = SubResource("StyleBoxTexture_ha2h2")
+cursor_style = SubResource("StyleBoxTexture_ds8gs")
 panel_style = SubResource("StyleBoxFlat_215jy")
 names = PackedStringArray("User Signals")
 sizes = PackedInt32Array(80)
@@ -1660,7 +1660,7 @@ size_flags_vertical = 3
 odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
 event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 top_bar_style = SubResource("StyleBoxTexture_2qda7")
-cursor_style = SubResource("StyleBoxTexture_ds8gs")
+cursor_style = SubResource("StyleBoxTexture_304yl")
 panel_style = SubResource("StyleBoxFlat_215jy")
 columns = 2
 names = PackedStringArray("Scene", "Path")
@@ -1708,7 +1708,7 @@ size_flags_vertical = 3
 odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
 event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 top_bar_style = SubResource("StyleBoxTexture_2qda7")
-cursor_style = SubResource("StyleBoxTexture_304yl")
+cursor_style = SubResource("StyleBoxTexture_ftd1a")
 panel_style = SubResource("StyleBoxFlat_215jy")
 names = PackedStringArray("Scene List")
 sizes = PackedInt32Array(80)

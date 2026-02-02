@@ -150,6 +150,12 @@ func get_class(): return "ColumnItemList"
 			node.select_mode = ItemList.SELECT_MULTI if value else ItemList.SELECT_SINGLE
 			notify_property_list_changed()
 
+## Show a checkbox when multiselection is enabled
+@export var show_checkboxes: bool = false:
+	set(value):
+		show_checkboxes = value
+		queue_redraw()
+
 ## Deselect when lost focus
 @export var deselect_when_lost_focus: bool = false :
 	set(value):
@@ -249,6 +255,13 @@ func _ready() -> void:
 	
 	resized.connect(_on_resized)
 
+
+func set_toggled_mode(value: bool) -> void:
+	var node = %ItemList
+	if value:
+		node.select_mode = ItemList.SelectMode.SELECT_TOGGLE
+	else:
+		node.select_mode = ItemList.SelectMode.SELECT_SINGLE
 
 func set_filter(filter: String) -> void:
 	current_filter = filter
@@ -365,6 +378,12 @@ func select_items(indexes: PackedInt32Array) -> void:
 
 func deselect_all() -> void:
 	%ItemList.deselect_all()
+
+
+func select_all() -> void:
+	var node = %ItemList
+	for i in node.get_item_count():
+		%ItemList.select(i, false)
 
 
 func fill_items() -> void:
@@ -507,6 +526,23 @@ func _on_itemlist_gui_input(event: InputEvent) -> void:
 	if %ItemList.get_item_count() == 0:
 		return
 	
+	if show_checkboxes and enable_multiselection and event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
+		var checkbox_width = 24
+		var mouse_pos = %ItemList.get_local_mouse_position()
+		
+		if mouse_pos.x <= checkbox_width + text_margin_left:
+			var index = get_item_at_position(mouse_pos)
+			if index != -1:
+				if %ItemList.is_selected(index):
+					%ItemList.deselect(index)
+					multi_selected.emit(index, false)
+				else:
+					%ItemList.select(index, false)
+					multi_selected.emit(index, true)
+				
+				get_viewport().set_input_as_handled()
+				return
+
 	if %ItemList.is_anything_selected() and event is InputEventKey and event.is_pressed():
 		if event.keycode == KEY_DELETE or event.keycode == KEY_BACKSPACE:
 			delete_pressed.emit(%ItemList.get_selected_items())
@@ -721,7 +757,6 @@ func _on_itemlist_draw() -> void:
 	var rect: Rect2
 	
 	var item_selected: PackedInt32Array = node.get_selected_items()
-		
 	
 	var v_separation = node.get("theme_override_constants/v_separation")
 	if !v_separation and v_separation != 0:
@@ -733,6 +768,16 @@ func _on_itemlist_draw() -> void:
 		update_name_and_sizes()
 	
 	var start_padding = 0 if padding_start_char.is_empty() else font.get_string_size(padding_start_char, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+
+	var draw_checkbox = show_checkboxes and enable_multiselection
+	var checkbox_checked_tex: Texture2D
+	var checkbox_unchecked_tex: Texture2D
+	var checkbox_width = 0
+	
+	if draw_checkbox:
+		checkbox_checked_tex = get_theme_icon("checked", "CheckBox")
+		checkbox_unchecked_tex = get_theme_icon("unchecked", "CheckBox")
+		checkbox_width = 24
 
 	var last_item_rect: Rect2
 	if node.get_item_count() > 0:
@@ -759,19 +804,28 @@ func _on_itemlist_draw() -> void:
 			var x = 0
 			var y = font.get_ascent()
 			
-			# Calcular el tamaño extra del icono una sola vez por fila
+			if draw_checkbox:
+				var icon_to_draw = checkbox_checked_tex if index in item_selected else checkbox_unchecked_tex
+				if icon_to_draw:
+					var icon_y = rect.position.y + (rect.size.y - icon_to_draw.get_height()) / 2
+					var icon_rect = Rect2(Vector2(text_margin_left, icon_y), icon_to_draw.get_size())
+					node.draw_texture_rect(icon_to_draw, icon_rect, false)
+
 			var row_icon_size = 0
 			if lock_items.has(index):
 				row_icon_size = 24
 			elif custom_icons.has(index):
 				row_icon_size = custom_icons[index].get_size().x + 2
+			
+			var custom_icon_x_offset = 2
+			if draw_checkbox:
+				custom_icon_x_offset += checkbox_width
 
-			# Dibujar el icono ANTES del bucle de columnas, sin afectar x
 			if lock_items.has(index):
-				var icon_rect = Rect2(Vector2(2, rect.position.y), Vector2(20, 20))
+				var icon_rect = Rect2(Vector2(custom_icon_x_offset, rect.position.y), Vector2(20, 20))
 				node.draw_texture_rect(MINI_PADLOCK, icon_rect, false)
 			elif custom_icons.has(index):
-				var icon_rect = Rect2(Vector2(2, rect.position.y), custom_icons[index].get_size())
+				var icon_rect = Rect2(Vector2(custom_icon_x_offset, rect.position.y), custom_icons[index].get_size())
 				node.draw_texture_rect(custom_icons[index], icon_rect, false)
 
 			if index < items.size():
@@ -785,9 +839,8 @@ func _on_itemlist_draw() -> void:
 						var text_size = -1
 						if i != items[index].size() - 1:
 							text_size = cache_columns_width[real_index]
-							# Solo aplicamos la reducción del icono en la primera columna
 							if i == 0:
-								text_size = max(5, text_size - row_icon_size)
+								text_size = max(5, text_size - row_icon_size - checkbox_width)
 							else:
 								text_size = max(5, text_size)
 						
@@ -800,10 +853,11 @@ func _on_itemlist_draw() -> void:
 								current_text_color = custom_row_column[key]
 							elif columns_text_colors.size() > real_index and columns_text_colors[real_index] is Color:
 								current_text_color = columns_text_colors[real_index]
-						# Calcular la posición x del texto, aplicando desplazamiento solo en primera columna
+						
 						var text_x = x + text_margin_left
+						
 						if i == 0:
-							text_x += row_icon_size
+							text_x += row_icon_size + checkbox_width
 						
 						var text = items[index][real_index]
 						var text_y = rect.position.y + y
@@ -924,6 +978,13 @@ func set_selected_items(ids) -> void:
 
 func get_item_list() -> ItemList:
 	return %ItemList as ItemList
+
+
+func get_item_name(id: int) -> String:
+	if id >= 0 and id < items.size():
+		return items[id][0]
+	
+	return "item " + str(id)
 
 
 func get_item_count() -> int:
