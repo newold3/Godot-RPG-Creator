@@ -255,7 +255,7 @@ func _deserialize_camera_target(obj: Dictionary) -> Dictionary:
 	if type == "player" and GameManager.current_player:
 		return {"target": GameManager.current_player, "priority": priority}
 	elif type == "event" and GameManager.current_map:
-		var event_id = obj.get("id", 0)
+		var event_id = obj.get("id", 0) # _uniq_id
 		var event = GameManager.current_map.get_in_game_event_by_id(event_id)
 		if event:
 			return {"target": event, "priority": priority}

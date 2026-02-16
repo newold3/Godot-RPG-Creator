@@ -45,13 +45,13 @@ func _command_0072() -> void:
 
 	if GameManager.current_map: # Show animation on map
 		match target_id:
-			0: # Current player
+			-1: # Current player
 				if GameManager.current_player:
 					target = GameManager.current_player
-			1: # This event:
+			0: # This event:
 				target = current_interpreter.obj
-			_: # event with id target_id - 1
-				target = GameManager.current_map.get_in_game_event_by_pos(target_id - 2)
+			_: # event with id target_id (uniq_id)
+				target = GameManager.current_map.get_in_game_event_by_uniq_id(target_id)
 
 	elif GameManager.current_battle_scene: # Show animation on battle scene
 		return # TODO
@@ -136,13 +136,13 @@ func _command_0073() -> void:
 	if ResourceLoader.exists(scene_path):
 		var target: Variant
 		match target_id:
-			0: # Current player
+			-1: # Current player
 				if GameManager.current_player:
 					target = GameManager.current_player
-			1: # This event:
+			0: # This event:
 				target = current_interpreter.obj
-			_: # event with id target_id - 1
-				target = GameManager.current_map.get_in_game_event_by_pos(target_id - 2)
+			_: # event with id target_id (uniq_id)
+				target = GameManager.current_map.get_in_game_event_by_uniq_id(target_id)
 		if target:
 			var scene = load(scene_path).instantiate()
 			scene.z_as_relative = false

@@ -17,15 +17,18 @@ func set_targets(events: Array, append_player: bool = true) -> void:
 	
 	if append_player:
 		node.add_item("Player")
+		node.set_item_metadata(-1, -1)
 	
 	if current_event:
 		node.add_item("This Event")
+		node.set_item_metadata(-1, 0)
 	
 	for event: RPGEvent in events:
 		if event.name:
 			node.add_item(event.name)
 		else:
 			node.add_item("Event #%s" % event.id)
+		node.set_item_metadata(-1, event._uniq_id)
 	
 	if node.get_item_count():
 		node.select(0)
@@ -38,7 +41,15 @@ func set_data() -> void:
 	var target_id = parameters[0].parameters.get("target_id", 0)
 	var wait = parameters[0].parameters.get("wait", false)
 	
-	%TargetOptions.select(target_id if %TargetOptions.get_item_count() > target_id else 0)
+	var items = %TargetOptions.get_item_count()
+	if items > 0:
+		%TargetOptions.select(0)
+		for i in %TargetOptions.get_item_count():
+			var real_index =  %TargetOptions.get_item_metadata(i)
+			if real_index == target_id:
+				%TargetOptions.select(i)
+				break
+	
 	%Wait.set_pressed(wait)
 	%BallonScene.text = current_ballon_scene_path.get_file() if current_ballon_scene_path else "Select ballon scene"
 
@@ -46,7 +57,9 @@ func set_data() -> void:
 func build_command_list() -> Array[RPGEventCommand]:
 	var commands: Array[RPGEventCommand] = super()
 
-	commands[-1].parameters.target_id = %TargetOptions.get_selected_id()
+	var selected_id = %TargetOptions.get_selected_id()
+	var target_id = %TargetOptions.get_item_metadata(selected_id)
+	commands[-1].parameters.target_id = target_id
 	commands[-1].parameters.path = current_ballon_scene_path
 	commands[-1].parameters.wait = %Wait.is_pressed()
 	

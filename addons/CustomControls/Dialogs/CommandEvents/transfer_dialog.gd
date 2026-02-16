@@ -104,11 +104,15 @@ func set_events(events: Array) -> void:
 	node2.clear()
 	
 	node1.add_item("This Event")
+	node1.set_item_metadata(-1, 0)
 	node2.add_item("This Event")
+	node2.set_item_metadata(-1, 0)
 	
 	for event: RPGEvent in events:
 		node1.add_item("%s: %s" % [event.id, event.name])
+		node1.set_item_metadata(-1, event._uniq_id)
 		node2.add_item("%s: %s" % [event.id, event.name])
+		node2.set_item_metadata(-1, event._uniq_id)
 
 
 func set_data() -> void:
@@ -128,16 +132,24 @@ func set_data() -> void:
 		set_event_transfer_mode()
 		
 		var index = parameters[0].parameters.get("value", {}).get("swap_event_id", 0)
-		if index > 0 and %SwapEventButton.get_item_count() > index:
-			%SwapEventButton.select(index)
-		else:
+		var items = %SwapEventButton.get_item_count()
+		if items > 0:
 			%SwapEventButton.select(0)
+			for i in %SwapEventButton.get_item_count():
+				var real_index =  %SwapEventButton.get_item_metadata(i)
+				if real_index == index:
+					%SwapEventButton.select(i)
+					break
 		
 		index = parameters[0].parameters.get("value", {}).get("event_id", 0)
-		if index > 0 and %EventOptions.get_item_count() > index:
-			%EventOptions.select(index)
-		else:
+		items = %EventOptions.get_item_count()
+		if items > 0:
 			%EventOptions.select(0)
+			for i in %EventOptions.get_item_count():
+				var real_index =  %EventOptions.get_item_metadata(i)
+				if real_index == index:
+					%EventOptions.select(i)
+					break
 	
 	var index = parameters[0].parameters.get("direction", 0)
 	index = max(0, min(index, %DirectionButton.get_item_count()))
@@ -218,6 +230,7 @@ func build_command_list() -> Array[RPGEventCommand]:
 
 func get_value() -> Dictionary:
 	var value: Dictionary = {}
+	var selected_id = %EventOptions.get_selected_id()
 	if current_type == 0: # Manual Settings
 		value.assigned_map_id = type_values.get("assigned_map_id", 0)
 		value.assigned_x = type_values.get("assigned_x", 0)
@@ -228,8 +241,11 @@ func get_value() -> Dictionary:
 		value.x = type_values.get("x", 1)
 		value.y = type_values.get("y", 1)
 	elif current_type == 2: # Swap For Other Event
-		value.swap_event_id = %SwapEventButton.get_selected_id()
-	value.event_id = %EventOptions.get_selected_id()
+		var swap_selected_id = %SwapEventButton.get_selected_id()
+		var target_id = %SwapEventButton.get_item_metadata(swap_selected_id)
+		selected_id = %EventOptions.get_item_metadata(selected_id)
+		value.swap_event_id = target_id
+	value.event_id = selected_id
 	
 	return value
 

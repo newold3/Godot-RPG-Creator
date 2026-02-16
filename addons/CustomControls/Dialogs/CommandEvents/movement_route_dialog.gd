@@ -65,7 +65,7 @@ func set_targets(events: Array, append_player: bool = true) -> void:
 			node.add_item(event.name)
 		else:
 			node.add_item("Event #%s" % event.id)
-		node.set_item_metadata(-1, event.uniq_id)
+		node.set_item_metadata(-1, event._uniq_id)
 	
 	if node.get_item_count() > 0:
 		node.select(0)

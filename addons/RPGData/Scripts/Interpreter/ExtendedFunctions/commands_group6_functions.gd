@@ -333,7 +333,11 @@ func _transfer_event(params: Dictionary) -> void:
 		debug_print("Invalid event ID for transfer")
 		return
 
-	var current_event = GameManager.current_map.get_in_game_event_by_pos(event_id - 1) if event_id > 0 else current_interpreter.obj
+	var current_event
+	if event_id == 0:
+		current_event = current_interpreter.obj
+	else: # _uniq_id
+		current_event = GameManager.current_map.get_in_game_event_by_uniq_id(event_id)
 	
 	var direction1: LPCCharacter.DIRECTIONS = _get_direction(direction, current_event)
 
@@ -342,7 +346,12 @@ func _transfer_event(params: Dictionary) -> void:
 		return
 
 	if swap_event_id != -1:
-		var swap_event = GameManager.current_map.get_in_game_event_by_pos(swap_event_id - 1) if event_id > 0 else current_interpreter.obj
+		var swap_event
+		if swap_event == 0:
+			current_event = current_interpreter.obj
+		else: # _uniq_id
+			current_event = GameManager.current_map.get_in_game_event_by_uniq_id(swap_event)
+
 		if not swap_event:
 			debug_print("Swap event not found in map with ID: %s" % swap_event_id)
 			return

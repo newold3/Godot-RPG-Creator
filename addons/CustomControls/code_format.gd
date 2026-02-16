@@ -102,14 +102,19 @@ func get_item_data_name(data: Array, id: int) -> String:
 	return "< %s: %s >" % [id, data[id].name] if id < data.size() else "⚠ Invalid Data"
 
 func get_event_name(id: int) -> String:
-	var data = ["Player"]
-	var edited_scene = RPGSYSTEM.editor_interface.get_edited_scene_root()
-	if edited_scene and edited_scene is RPGMap:
-		data.append("This Event")
-		for ev: RPGEvent in edited_scene.events.get_events():
-			data.append("%s: %s" % [ev.id, ev.name])
+	match id:
+		-1: # PLAYER
+			return "Player"
+		0: # This Event
+			return "This Event"
+		_: # Event _uniq_id
+			var edited_scene = RPGSYSTEM.editor_interface.get_edited_scene_root()
+			if edited_scene and edited_scene is RPGMap:
+				for ev: RPGEvent in edited_scene.events.get_events():
+					if ev._uniq_id == id:
+						return("%s: %s" % [ev.id, ev.name])
 
-	return data[id] if id < data.size() else "⚠ Invalid Data"
+	return "⚠ Invalid Data"
 
 func get_actor_name(id: int) -> String:
 	if id > 0 && RPGSYSTEM.database.actors.size() > id:
@@ -1982,10 +1987,7 @@ func _format_command_53(data: FormatData) -> Array:
 			target = "Air Transport"
 	elif target_id == 2:
 		var event_id = pa.get("event_id", 0)
-		if event_id <= 0:
-			target = "This Event"
-		else:
-			target = "Event " + str(event_id)
+		target = get_event_name(event_id)
 
 	if type == 0:
 		var map_id = pa.get("assigned_map_id", 0)
@@ -2017,7 +2019,8 @@ func _format_command_53(data: FormatData) -> Array:
 		value = "%s, x = %s, y = %s" % [variable_name1, variable_name2, variable_name3]
 	elif type == 2:
 		var swap_event_id = pa.get("swap_event_id", 0)
-		value = "Swap position with < event %s >" % [swap_event_id]
+		var target_swap = get_event_name(swap_event_id)
+		value = "Swap position with < event %s >" % [target_swap]
 
 	var current_direction = data.command.parameters.get("direction", 0)
 	var direction = "Hold direction" if current_direction == 0 else \
@@ -2404,6 +2407,9 @@ func _format_command_73(data: FormatData) -> Array:
 	var path = data.command.parameters.get("path", "")
 	var wait = data.command.parameters.get("wait", false)
 	var wait_text = _get_wait_text(wait)
+	var file = path.get_file()
+	if file.is_empty():
+		file = "⚠️" + tr("Unselected scene")
 	return [{
 		"texts": [
 			{
@@ -2411,7 +2417,7 @@ func _format_command_73(data: FormatData) -> Array:
 				"color": color_theme.get("color10", Color.WHITE)
 			},
 			{
-				"text": "[%s, %s%s]" % [target_name, path.get_file(), wait_text],
+				"text": "[%s, %s%s]" % [target_name, file, wait_text],
 				"color": color_theme.get("color3", Color.WHITE)
 			}
 		],

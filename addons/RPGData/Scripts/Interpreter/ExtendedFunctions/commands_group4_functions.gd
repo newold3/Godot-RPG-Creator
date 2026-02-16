@@ -159,8 +159,14 @@ func _command_0021() -> void:
 			if value1 == 0:
 				target = GameManager.current_player
 			elif GameManager.current_map:
-				var event_id = 0 if value1 == 1 else value1 - 2
-				target = GameManager.current_map.get_in_game_event_by_pos(event_id)
+				match value1:
+					-1: # Current player
+						if GameManager.current_player:
+							target = GameManager.current_player
+					0: # This event:
+						target = current_interpreter.obj
+					_: # event with id target_id (uniq_id)
+						target = GameManager.current_map.get_in_game_event_by_uniq_id(value1)
 			if target:
 				if value2 < 4:
 					var direction = GameManager.current_player.DIRECTIONS.DOWN if value2 == 0 \

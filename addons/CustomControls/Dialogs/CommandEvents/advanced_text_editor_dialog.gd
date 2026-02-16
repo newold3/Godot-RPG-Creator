@@ -126,7 +126,7 @@ func set_events(events: Array) -> void:
 	
 	for event: RPGEvent in events:
 		node.add_item("%s: %s" % [event.id, event.name])
-		node.set_item_metadata(-1, event.id)
+		node.set_item_metadata(-1, event._uniq_id)
 
 
 func set_scroll_mode_dialog() -> void:

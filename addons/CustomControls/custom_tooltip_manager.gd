@@ -374,8 +374,6 @@ func _create_tooltip(title: String, contents: String, parent_node) -> void:
 	
 	tooltip.visible = false
 	tooltip.position = get_window().get_mouse_position()
-	
-	print(final_contents)
 
 	# Defer final setup to avoid race conditions
 	call_deferred(
