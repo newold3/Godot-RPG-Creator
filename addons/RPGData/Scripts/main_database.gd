@@ -167,18 +167,17 @@ func get_current_data(index: int) -> Variant:
 	elif index == 2: current_data = data.professions
 	elif index == 3: current_data = data.skills
 	elif index == 4: current_data = data.items
-	elif index == 5: current_data = data.weapons
-	elif index == 6: current_data = data.armors
-	elif index == 7: current_data = data.enemies
-	elif index == 8: current_data = data.troops
-	elif index == 9: current_data = data.states
-	elif index == 10: current_data = data.animations
-	elif index == 11: current_data = data.common_events
-	elif index == 12: current_data = data.types
-	elif index == 13: current_data = data.terms
-	elif index == 14: current_data = data.system
-	elif index == 15: current_data = data.speakers
-	elif index == 16: current_data = data.quests
+	elif index == 5: current_data = []
+	elif index == 6: current_data = data.enemies
+	elif index == 7: current_data = data.troops
+	elif index == 8: current_data = data.states
+	elif index == 9: current_data = data.animations
+	elif index == 10: current_data = data.common_events
+	elif index == 11: current_data = data.types
+	elif index == 12: current_data = data.terms
+	elif index == 13: current_data = data.system
+	elif index == 14: current_data = data.speakers
+	elif index == 15: current_data = data.quests
 	
 	return current_data
 
@@ -196,29 +195,29 @@ func get_panel(index) -> Control:
 	elif index == 4:
 		node = await load_panel("res://addons/RPGData/Scenes/items_panel.tscn", data.items)
 	elif index == 5:
-		node = await load_panel("res://addons/RPGData/Scenes/weapons_panel.tscn", data.weapons)
+		node = await load_panel("res://addons/RPGData/Scenes/equipment_panel.tscn", [])
 	elif index == 6:
-		node = await load_panel("res://addons/RPGData/Scenes/armors_panel.tscn", data.armors)
-	elif index == 7:
 		node = await load_panel("res://addons/RPGData/Scenes/enemies_panel.tscn", data.enemies)
-	elif index == 8:
+	elif index == 7:
 		node = await load_panel("res://addons/RPGData/Scenes/troops_panel.tscn", data.troops)
-	elif index == 9:
+	elif index == 8:
 		node = await load_panel("res://addons/RPGData/Scenes/states_panel.tscn", data.states)
-	elif index == 10:
+	elif index == 9:
 		node = await load_panel("res://addons/RPGData/Scenes/animations_panel.tscn", data.animations)
-	elif index == 11:
+	elif index == 10:
 		node = await load_panel("res://addons/RPGData/Scenes/common_events_panel.tscn", data.common_events)
-	elif index == 12:
+	elif index == 11:
 		node = await load_panel("res://addons/RPGData/Scenes/types_panel.tscn", data.types)
-	elif index == 13:
+	elif index == 12:
 		node = await load_panel("res://addons/RPGData/Scenes/terms_panel.tscn", data.terms)
-	elif index == 14:
+	elif index == 13:
 		node = await load_panel("res://addons/RPGData/Scenes/system_panel.tscn", data.system)
-	elif index == 15:
+	elif index == 14:
 		node = await load_panel("res://addons/RPGData/Scenes/speakers_panel.tscn", data.speakers)
-	elif index == 16:
+	elif index == 15:
 		node = await load_panel("res://addons/RPGData/Scenes/quests_panel.tscn", data.quests)
+		
+	return node
 		
 	
 	return node

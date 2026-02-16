@@ -1,5 +1,5 @@
 @tool
-class_name LPCEditorDialog
+class_name LPCEditorDialog2
 extends Window
 
 var busy: bool = false
@@ -42,6 +42,7 @@ func _ready() -> void:
 
 
 func _on_window_input(event: InputEvent) -> void:
+	return
 	if event is InputEventMouseMotion:
 		try_focus_palette_window()
 

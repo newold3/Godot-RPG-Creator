@@ -10,6 +10,7 @@ func get_class(): return "RPGMap"
 class IngameEvent:
 	var map_id: int
 	var event_id: int
+	var uniq_id: int
 	var relationship: GameRelationship
 	var event: RPGEvent
 	var character_data: RPGLPCCharacter
@@ -22,6 +23,11 @@ class IngameEvent:
 		lpc_event = p_lpc_event
 		if event:
 			event_id = event.id
+			if "_uniq_id" in event:
+				uniq_id = event._uniq_id
+			else:
+				# Fallback
+				uniq_id = event.id 
 		map_id = p_map_id
 		relationship = p_relationship
 		page_id = p_page_id
@@ -69,11 +75,13 @@ class MapRuntimeData:
 				child.tile_set.tile_size = tile_size
 		queue_redraw()
 
+
 ## Color with which the grid will be drawn in this control.
 @export var grid_gradient: Gradient:
 	set(gradient):
 		grid_gradient = gradient
 		queue_redraw()
+
 
 ## Color used for the grid lines.
 @export var grid_color: Color = Color(0.969, 0.718, 0.639, 0.514):
@@ -81,8 +89,10 @@ class MapRuntimeData:
 		grid_color = color
 		queue_redraw()
 
+
 ## Radius of the area to draw around the mouse cursor (in tiles).
 @export var cursor_radius: int = 5
+
 
 ## Change the opacity of the children for better visibility of the canvases.
 @export_range(0.0, 1.0, 0.01) var children_opacity: float = 0.21:
@@ -103,6 +113,7 @@ class MapRuntimeData:
 			enemy_spawn_canvas.modulate = Color(1.0, 1.0, 1.0, canvas_opacity)
 		if event_region_canvas:
 			event_region_canvas.modulate = Color(1.0, 1.0, 1.0, canvas_opacity)
+
 
 ## Copy the map ID to the clipboard
 @export var copy_map_id_into_clipboard: bool = false:
@@ -127,6 +138,7 @@ class MapRuntimeData:
 ## Makes the map infinitely scrollable horizontally (useful for world maps)
 @export var infinite_horizontal_scroll: bool = false
 
+
 ## Makes the map infinitely scrollable vertically (useful for world maps)
 @export var infinite_vertical_scroll: bool = false
 
@@ -138,8 +150,8 @@ class MapRuntimeData:
 ## Limits camera panning to map height on maps that do not have infinite vertical scroll
 @export var auto_set_vertical_camera_limits: bool = true
 
-@export_subgroup("Shadows")
 
+@export_subgroup("Shadows")
 ## Draw shadows to the environment layer, events, player and vehicles.
 ## (This will create shadow sprites for each object / character that has shadow,
 ## if you prefer to use godot light and occlusion, disable this option
@@ -151,11 +163,9 @@ class MapRuntimeData:
 		notify_property_list_changed()
 
 
-## Enable integrated Day/Night usage (configurable in [System] within the database). Disabling this
-## option will turn off the Day/Night cycle and instead use the fixed shadow component integrated
-## into the map. In Day/Night mode, you can set the starting time for this map, 
-## or leave it at -1 to use the current time recorded by the Day/Night system.
-@export var use_dynamic_day_night: bool = true:
+## Enable integrated Day/Night usage (configurable in [System] within the database).
+## Disabling this
+@export var use_dynamic_day_night: bool = false:
 	set(value):
 		use_dynamic_day_night = value
 		if DayNightManager:
@@ -167,21 +177,15 @@ class MapRuntimeData:
 		notify_property_list_changed()
 
 
-## In Day/Night mode, you can set the starting time for this map, 
+## Uou can set the starting time for this map, 
 ## or leave it at -1 to use the current time recorded by the Day/Night system.
-@export_range(-1, 24, 1) var dynamic_day_night_hour: int = 13:
+@export_range(-1, 24, 1) var map_starting_hour: int = 13:
 	set(value):
-		dynamic_day_night_hour = value
+		map_starting_hour = value
 		if DayNightManager:
-			DayNightManager.set_time(dynamic_day_night_hour)
+			DayNightManager.set_time(map_starting_hour)
 		_update_shadows()
 
-
-## Set the shadow parameters.
-@export var shadow_parameters: ShadowComponent:
-	set(value):
-		shadow_parameters = value
-		_update_shadows()
 
 ## Preview Shadow in editor
 @export var preview_shadows_in_editor: bool = false:
@@ -230,6 +234,9 @@ var editor_canvas_modulate: CanvasModulate
 var current_parent: MainScene
 var editor_shadow_canvas: Node2D
 
+var show_passability_debug: bool = false
+var passability_canvas: Node2D
+
 var event_preview_textures: Dictionary = {}
 var extraction_event_preview_textures: Dictionary = {}
 
@@ -271,7 +278,11 @@ var last_extraction_event_pasted_id: int
 var map_layout: MapLayout
 
 var _rt: MapRuntimeData
+
+const GENERIC_EVENT_SCENE_PATH = "res://addons/rpg_character_creator/Other/generic_lpc_base_scene.tscn"
+const GENERIC_EVENT_SCRIPT_PATH = "res://addons/rpg_character_creator/Other/generic_lpc_base.gd"
 #endregion
+
 
 signal map_started()
 
@@ -547,7 +558,7 @@ func _start_game_mode() -> void:
 	
 	# Set day hour if using day / night system
 	if use_dynamic_day_night:
-		DayNightManager.continue_from_time(dynamic_day_night_hour)
+		DayNightManager.continue_from_time(map_starting_hour)
 	
 	
 	# Clear repeat if map is small
@@ -802,8 +813,6 @@ func _perform_shadow_update() -> void:
 	if shadow_canvas:
 		shadow_canvas.call_deferred("set_current_map_rect", used_rect)
 		shadow_canvas.set_deferred("shadow_data", all_shadows)
-		if shadow_parameters:
-			shadow_canvas.set_deferred("shadow_component", shadow_parameters)
 
 
 func _create_shadows() -> void:
@@ -1053,13 +1062,17 @@ func _setup_events() -> void:
 	for ev: RPGEvent in events.get_events():
 		ev.initialize_page_ids()
 		var page: RPGEventPage = ev.get_active_page()
+		
 		if page:
 			page.id = ev.id
 			var ingame_event = _create_ingame_event(ev, page)
 			if ingame_event:
-				current_ingame_events[ev.id] = ingame_event
+				# Use _uniq_id as key for safer persistence
+				current_ingame_events[ev._uniq_id] = ingame_event
 				
-				var interpreter_id = "event_" + str(ev.id)
+				# Also use _uniq_id for the interpreter ID to prevent collisions 
+				# when events are reordered or moved.
+				var interpreter_id = "event_" + str(ev._uniq_id)
 				if page.launcher == RPGEventPage.LAUNCHER_MODE.AUTOMATIC:
 					automatic_events.append({"obj": ingame_event.lpc_event, "commands": page.list, "id": interpreter_id})
 				elif page.launcher == RPGEventPage.LAUNCHER_MODE.PARALLEL:
@@ -1100,7 +1113,7 @@ func refresh_events() -> void:
 
 
 func _handle_modern_refresh(ev: IngameEvent, page: RPGEventPage) -> void:
-	var interpreter_id = "event_" + str(ev.event_id)
+	var interpreter_id = "event_" + str(ev._uniq_id)
 	
 	GameInterpreter.remove_interpreter_by_id(interpreter_id)
 	
@@ -1121,7 +1134,7 @@ func _handle_modern_refresh(ev: IngameEvent, page: RPGEventPage) -> void:
 
 func _handle_legacy_refresh(ev: IngameEvent, page: RPGEventPage) -> void:
 	page.id = ev.event.id
-	var interpreter_id = "event_" + str(ev.event_id)
+	var interpreter_id = "event_" + str(ev._uniq_id)
 	var active_interpreter = GameInterpreter.get_interpreter_with_id(interpreter_id)
 	
 	if active_interpreter:
@@ -1140,22 +1153,49 @@ func _handle_legacy_refresh(ev: IngameEvent, page: RPGEventPage) -> void:
 
 func _load_event_graphics(ev: IngameEvent, page: RPGEventPage, direction: int) -> void:
 	var old_scene = ev.lpc_event
+	var new_scene: Variant = null
 	var character_data: RPGLPCCharacter = null
-	var scene_path = ""
 	
-	if ResourceLoader.exists(page.character_path):
-		character_data = load(page.character_path)
-		if character_data and ResourceLoader.exists(character_data.scene_path):
-			scene_path = character_data.scene_path
-	
-	var new_scene: Variant
-	if scene_path != "" and page.launcher != RPGEventPage.LAUNCHER_MODE.CALLER:
-		new_scene = load(scene_path).instantiate()
-		new_scene.event_data = character_data
-	else:
+	match page.character_type:
+		0: # Lpc Event
+			if ResourceLoader.exists(page.character_path):
+				character_data = load(page.character_path)
+				if character_data and ResourceLoader.exists(character_data.scene_path):
+					new_scene = load(character_data.scene_path).instantiate()
+					
+		1: # Image
+			if ResourceLoader.exists(GENERIC_EVENT_SCENE_PATH):
+				new_scene = load(GENERIC_EVENT_SCENE_PATH).instantiate()
+				var sc = load(GENERIC_EVENT_SCRIPT_PATH)
+				new_scene.set_script(sc)
+				
+			if new_scene and ResourceLoader.exists(page.character_path):
+				if "custom_texture" in new_scene:
+					new_scene.custom_texture = load(page.character_path)
+					
+		2: # Custom Scene
+			if ResourceLoader.exists(GENERIC_EVENT_SCENE_PATH):
+				new_scene = load(GENERIC_EVENT_SCENE_PATH).instantiate()
+				var sc = load(GENERIC_EVENT_SCRIPT_PATH)
+				new_scene.set_script(sc)
+				
+			if new_scene and ResourceLoader.exists(page.character_path):
+				if "custom_scene" in new_scene:
+					new_scene.custom_scene = load(page.character_path)
+
+	if not new_scene:
 		new_scene = EmptyLPCEvent.new()
 		
 	add_child(new_scene)
+	
+	if "display_mode" in new_scene:
+		new_scene.display_mode = page.character_type
+	
+	if "event_data" in new_scene:
+		new_scene.event_data = character_data
+	
+	if new_scene.has_method("_build"):
+		new_scene._build()
 	
 	ev.lpc_event = new_scene
 	ev.character_data = character_data
@@ -1189,7 +1229,7 @@ func _load_event_graphics(ev: IngameEvent, page: RPGEventPage, direction: int) -
 
 
 func _inject_parallel_auto_after_interpreter(ev: IngameEvent, page: RPGEventPage) -> void:
-	var interpreter_id = "event_" + str(ev.event_id)
+	var interpreter_id = "event_" + str(ev._uniq_id)
 	var active_interpreter = GameInterpreter.get_interpreter_with_id(interpreter_id)
 	
 	if active_interpreter and not active_interpreter.is_parallel() and not active_interpreter.is_complete():
@@ -1483,6 +1523,43 @@ func _draw() -> void:
 		draw_line(Vector2(start_x, y_pos), Vector2(end_x, y_pos), grid_color)
 
 
+func _on_passability_canvas_draw() -> void:
+	if !Engine.is_editor_hint() or !editing_events:
+		return
+
+	var used_rect: Rect2i = get_ingame_rect()
+	var mark: String = "❌"
+	var font: Font = ThemeDB.fallback_font
+	
+	var font_size: int = int(tile_size.x * 0.7) 
+	
+	var text_size: Vector2 = font.get_string_size(mark, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size)
+	var ascent: float = font.get_ascent(font_size)
+	var descent: float = font.get_descent(font_size)
+	var total_height: float = ascent + descent
+
+	var vertical_correction: float = -1.0
+	var final_offset: Vector2 = Vector2(
+		(tile_size.x - text_size.x) / 2.0,
+		(tile_size.y - total_height) / 2.0 + ascent + vertical_correction
+	)
+
+	for x in range(used_rect.position.x, used_rect.end.x):
+		for y in range(used_rect.position.y, used_rect.end.y):
+			var tile_pos := Vector2i(x, y)
+			
+			if is_tile_block(tile_pos, false):
+				var draw_pos: Vector2 = Vector2(tile_pos * tile_size)
+				passability_canvas.draw_string(
+					font, 
+					draw_pos + final_offset, 
+					mark, 
+					HORIZONTAL_ALIGNMENT_CENTER, 
+					-1, 
+					font_size
+				)
+
+
 func _draw_cursor_highlight() -> void:
 	# Only draw if we have a gradient and we are in the correct editor modes
 	if not grid_gradient or not Engine.is_editor_hint() or not cursor_canvas:
@@ -1586,6 +1663,10 @@ func set_editing_events(value: bool) -> void:
 			_set_child_opacity(self, true)
 		else:
 			_set_child_opacity(self, false)
+	
+	show_passability_debug = value
+	if passability_canvas:
+		passability_canvas.queue_redraw()
 			
 	queue_redraw()
 
@@ -1715,6 +1796,12 @@ func create_canvas(refresh_events: bool = false) -> void:
 	cursor_canvas.z_index = 200
 	cursor_canvas.draw.connect(_draw_cursor_highlight)
 	add_child(cursor_canvas)
+	
+	passability_canvas = Node2D.new()
+	passability_canvas.z_index = 150
+	passability_canvas.draw.connect(_on_passability_canvas_draw)
+	draw.connect(passability_canvas.queue_redraw)
+	add_child(passability_canvas)
 
 
 func perform_full_update() -> void:
@@ -2153,6 +2240,7 @@ func get_in_game_events() -> Array[IngameEvent]:
 
 
 func get_in_game_event(event_id: int) -> Variant:
+	# Iterate to find by sequential ID (compatibility with event commands)
 	for ev: IngameEvent in current_ingame_events.values():
 		if not ev: continue
 		if ev.event and ev.event.id == event_id and ev.lpc_event:
@@ -2161,20 +2249,22 @@ func get_in_game_event(event_id: int) -> Variant:
 	return null
 
 
-# Search event by pos in array current_ingame_events.values()
+# Search event by pos in array (legacy index search, or sequential ID based)
 func get_in_game_event_by_pos(event_id: int) -> Variant:
-	var current_events = current_ingame_events.values()
-	if current_events.size() > event_id:
-		return current_events[event_id].lpc_event
-	
-	return null
+	# Since dictionary is now keyed by uniq_id, direct index access by event_id is unsafe
+	# unless event_id represents the sequential ID.
+	return get_in_game_event(event_id)
 
 
 # Search event by event real id
 func get_in_game_event_by_id(event_id: int) -> Variant:
-	if event_id in current_ingame_events:
-		return current_ingame_events[event_id].lpc_event
-	
+	return get_in_game_event(event_id)
+
+
+# Search event by unique ID
+func get_in_game_event_by_uniq_id(uniq_id: int) -> Variant:
+	if uniq_id in current_ingame_events:
+		return current_ingame_events[uniq_id].lpc_event
 	return null
 
 
@@ -2247,6 +2337,10 @@ func remove_weather_scene(id: int) -> void:
 
 func get_event_by_id(id: int) -> RPGEvent:
 	return events.get_event_by_id(id)
+
+
+func get_event_by_uniq_id(id: int) -> RPGEvent:
+	return events.get_event_by_uniq_id(id)
 
 
 func remove_event_in(pos: Vector2i) -> bool:
@@ -2478,22 +2572,55 @@ func _on_event_canvas_draw() -> void:
 				
 			if event.pages.size() > 0:
 				var page: RPGEventPage = event.get_active_page()
-				var path = page.character_path
-				if ResourceLoader.exists(path):
-					var res: RPGLPCCharacter = ResourceLoader.load(path)
-					var character_preview_path = res.event_preview
-					if ResourceLoader.exists(character_preview_path):
-						rect.position += Vector2i.ONE
-						rect.size -= Vector2i(2, 2)
-						var tex: Texture
-						if character_preview_path in event_preview_textures:
-							tex = event_preview_textures[character_preview_path]
+				var tex_to_draw: Texture2D = null
+				var cache_key: String = ""
+				
+				match page.character_type:
+					0: # LPC Character
+						if ResourceLoader.exists(page.character_path):
+							cache_key = "lpc_" + page.character_path
+							
+							if cache_key in event_preview_textures:
+								tex_to_draw = event_preview_textures[cache_key]
+							else:
+								var res: RPGLPCCharacter = ResourceLoader.load(page.character_path)
+								if res and ResourceLoader.exists(res.event_preview):
+									tex_to_draw = ResourceLoader.load(res.event_preview)
+									event_preview_textures[cache_key] = tex_to_draw
+									
+					1: # Custom Image
+						if ResourceLoader.exists(page.character_path):
+							cache_key = "img_" + page.character_path
+							
+							if cache_key in event_preview_textures:
+								tex_to_draw = event_preview_textures[cache_key]
+							else:
+								tex_to_draw = ResourceLoader.load(page.character_path)
+								event_preview_textures[cache_key] = tex_to_draw
+
+					2: # Custom Scene
+						var preview_path = page.character_path.get_basename() + "_preview.png"
+						cache_key = "scn_" + preview_path
+						
+						if cache_key in event_preview_textures:
+							tex_to_draw = event_preview_textures[cache_key]
 						else:
-							tex = ResourceLoader.load(character_preview_path)
-							event_preview_textures[character_preview_path] = tex
-						var tex_color = page.modulate
-						tex_color.a = color1.a
-						event_canvas.draw_texture_rect(tex, rect, false, tex_color)
+							if ResourceLoader.exists(preview_path):
+								tex_to_draw = ResourceLoader.load(preview_path)
+							else:
+								# Fallback:
+								tex_to_draw = preload("uid://ccgbok1pihel5")
+							
+							event_preview_textures[cache_key] = tex_to_draw
+
+				if tex_to_draw:
+					var draw_rect = rect
+					draw_rect.position += Vector2i.ONE
+					draw_rect.size -= Vector2i(2, 2)
+					
+					var tex_color = page.modulate
+					tex_color.a = color1.a
+					event_canvas.draw_texture_rect(tex_to_draw, draw_rect, false, tex_color)
 
 
 func _on_extraction_event_canvas_draw() -> void:
@@ -2739,30 +2866,12 @@ func _validate_property(property):
 	if property.name in properties:
 		property.usage &= ~PROPERTY_USAGE_EDITOR
 	
-	properties = ["dynamic_day_night_hour", "shadow_parameters"]
-	if property.name in properties:
-		if use_dynamic_day_night:
-			if property.name == "shadow_parameters":
-				property.usage = PROPERTY_USAGE_NO_EDITOR
-			if property.name == "dynamic_day_night_hour":
-				property.usage = PROPERTY_USAGE_EDITOR
-		else:
-			if property.name == "shadow_parameters":
-				property.usage = PROPERTY_USAGE_EDITOR
-			if property.name == "dynamic_day_night_hour":
-				property.usage = PROPERTY_USAGE_NO_EDITOR
-	
-	properties = ["use_dynamic_day_night", "dynamic_day_night_hour", "shadow_parameters", "preview_shadows_in_editor"]
+	properties = ["use_dynamic_day_night", "preview_shadows_in_editor"]
 	if property.name in properties:
 		if not draw_shadows:
 			property.usage = PROPERTY_USAGE_NO_EDITOR
 		else:
-			if property.name == "use_dynamic_day_night" or property.name == "preview_shadows_in_editor":
-				property.usage = PROPERTY_USAGE_EDITOR
-			elif property.name == "dynamic_day_night_hour":
-				property.usage = PROPERTY_USAGE_EDITOR if use_dynamic_day_night else PROPERTY_USAGE_NO_EDITOR
-			elif property.name == "shadow_parameters":
-				property.usage = PROPERTY_USAGE_NO_EDITOR if use_dynamic_day_night else PROPERTY_USAGE_EDITOR
+			property.usage = PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_STORAGE
 
 
 func _get_configuration_warnings() -> PackedStringArray:
@@ -2944,8 +3053,8 @@ func can_move_to_direction(tile_position: Vector2i, player_direction: int, ignor
 	return passable
 
 
-func is_tile_block(tile_position: Vector2i) -> bool:
-	var block: bool = true
+func is_tile_block(tile_position: Vector2i, default_value: bool = true) -> bool:
+	var block: bool = default_value
 	
 	# Check map
 	var source_id = MAP_LAYERS.environment.get_cell_source_id(tile_position)

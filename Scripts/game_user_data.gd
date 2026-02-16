@@ -8,6 +8,8 @@ extends Resource
 @export var items: Dictionary = {} # {"item_id": Array[GameItem]}
 @export var weapons: Dictionary = {} # {"item_id": Array[GameWeapon]}
 @export var armors: Dictionary = {} # {"item_id": Array[GameArmor]}
+@export var sets: Dictionary = {} # {item_id: Array[IngameCostume / IngameGearSet]}
+@export var skill_evolves: Dictionary = {} # {actor_id: Dictionary} -> {skill_id: uses}
 @export var active_misions: Array[GameQuest] = []
 @export var extraction_items: Dictionary = {} # {"map_id": {"item_id": GameExtractionItem}}
 @export var profession_levels: Dictionary = {} # Profession ID -> {Level, sub_level, available, experience}

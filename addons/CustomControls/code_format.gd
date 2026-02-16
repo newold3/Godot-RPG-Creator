@@ -2114,7 +2114,7 @@ func _format_command_57(data: FormatData) -> Array:
 		elif target == 0:
 			n1 = "This Event"
 		else:
-			var event = edited_scene.events.get_event_by_id(target)
+			var event = edited_scene.events.get_event_by_uniq_id(target)
 			if event:
 				n1 = "[%s: %s]" % [event.id, event.name]
 			else:
@@ -2896,12 +2896,15 @@ func _format_command_93(data: FormatData) -> Array:
 
 # Manage Camera Targets
 func _format_command_123(data: FormatData) -> Array:
-	var targets = data.command.parameters.get("targets", [])
+	var targets = data.command.parameters.get("legacy_targets", [])
 	var targets_str = ""
 	if targets.has(0):
 		targets_str += "player"
 	for target in targets:
-		if target != 0:
+		if target == 0: continue
+		if targets_str.is_empty():
+			targets_str = "ev #%s" % target
+		else:
 			targets_str += ", ev #%s" % target
 	
 	var target_color = color_theme.get("color3", Color.WHITE)

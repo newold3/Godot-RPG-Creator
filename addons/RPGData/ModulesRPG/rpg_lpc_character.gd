@@ -1,6 +1,6 @@
 @tool
 class_name RPGLPCCharacter
-extends  Resource
+extends Resource
 
 
 func get_class(): return "RPGLPCCharacter"
@@ -53,6 +53,39 @@ func _to_string() -> String:
 		"Race = %s" % race,
 		"Gender = %s" % gender
 	])
+
+
+## Creates a new IngameCostume instance based on an existing character.
+## Uses reflection to automatically copy all storage properties.
+static func create_from_costume(source: IngameCostume) -> RPGLPCCharacter:
+	var character = RPGLPCCharacter.new()
+
+	# Iterate over all properties of the source object
+	for prop in source.get_property_list():
+		if not (prop.usage & PROPERTY_USAGE_STORAGE):
+			continue
+
+		var name: String = prop.name
+		
+		# Skip internal Godot properties that we should not overwrite
+		if name in ["script", "resource_path", "resource_local_to_scene", "resource_name"]:
+			continue
+
+		# Get the value from the source
+		var value = source.get(name)
+
+		# HANDLE DEEP COPIES
+		# If it is a Resource (like EquipmentData) or a collection (Array/Dictionary),
+		# we must duplicate it to avoid shared references.
+		if value is Resource and value.has_method("duplicate"):
+			character.set(name, value.duplicate_deep(DEEP_DUPLICATE_ALL))
+		elif value is Array or value is Dictionary:
+			character.set(name, value.duplicate_deep(DEEP_DUPLICATE_ALL))
+		else:
+			# For primitive types (String, int, bool), simple assignment is fine
+			character.set(name, value)
+
+	return character
 
 
 func serialize_character_to_database() -> Dictionary:

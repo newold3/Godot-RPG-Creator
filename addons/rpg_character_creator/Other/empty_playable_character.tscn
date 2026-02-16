@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bfh5umy1vx2y3"]
+[gd_scene format=3 uid="uid://bfh5umy1vx2y3"]
 
 [ext_resource type="Script" uid="uid://bwyi4a2ha7sg2" path="res://addons/rpg_character_creator/Other/empty_playable_character.gd" id="1_krkbt"]
 
@@ -62,7 +62,7 @@ _data = {
 &"RESET": SubResource("Animation_368bl")
 }
 
-[node name="EmptyPlayableCharacter" type="CharacterBody2D"]
+[node name="EmptyPlayableCharacter" type="CharacterBody2D" unique_id=1749673877]
 z_index = 1
 y_sort_enabled = true
 collision_mask = 14
@@ -70,25 +70,10 @@ script = ExtResource("1_krkbt")
 preview_direction = false
 can_move_on_terrains = PackedStringArray("^lava", "^water")
 
-[node name="FullBody" type="Marker2D" parent="."]
+[node name="FullBody" type="Marker2D" parent="." unique_id=1059379063]
 unique_name_in_owner = true
 
-[node name="WingsBack" type="Sprite2D" parent="FullBody"]
-unique_name_in_owner = true
-material = SubResource("CanvasItemMaterial_krkbt")
-position = Vector2(0, -32)
-region_enabled = true
-region_rect = Rect2(0, 640, 64, 64)
-region_filter_clip_enabled = true
-
-[node name="HandsBack" type="Sprite2D" parent="FullBody"]
-unique_name_in_owner = true
-position = Vector2(0, -32)
-region_enabled = true
-region_rect = Rect2(0, 384, 192, 192)
-region_filter_clip_enabled = true
-
-[node name="Body" type="Sprite2D" parent="FullBody"]
+[node name="WingsBack" type="Sprite2D" parent="FullBody" unique_id=1669507921]
 unique_name_in_owner = true
 material = SubResource("CanvasItemMaterial_krkbt")
 position = Vector2(0, -32)
@@ -96,57 +81,80 @@ region_enabled = true
 region_rect = Rect2(0, 640, 64, 64)
 region_filter_clip_enabled = true
 
-[node name="HandsFront" type="Sprite2D" parent="FullBody"]
+[node name="OffhandBack" type="Sprite2D" parent="FullBody" unique_id=1537921779]
+unique_name_in_owner = true
+position = Vector2(0, -32)
+region_enabled = true
+
+[node name="MainHandBack" type="Sprite2D" parent="FullBody" unique_id=432571646]
 unique_name_in_owner = true
 position = Vector2(0, -32)
 region_enabled = true
 region_rect = Rect2(0, 384, 192, 192)
 region_filter_clip_enabled = true
 
-[node name="CollisionShape" type="CollisionShape2D" parent="."]
+[node name="Body" type="Sprite2D" parent="FullBody" unique_id=1320306115]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_krkbt")
+position = Vector2(0, -32)
+region_enabled = true
+region_rect = Rect2(0, 640, 64, 64)
+region_filter_clip_enabled = true
+
+[node name="MainHandFront" type="Sprite2D" parent="FullBody" unique_id=909993222]
+unique_name_in_owner = true
+position = Vector2(0, -32)
+region_enabled = true
+region_rect = Rect2(0, 384, 192, 192)
+region_filter_clip_enabled = true
+
+[node name="OffhandFront" type="Sprite2D" parent="FullBody" unique_id=1088167509]
+unique_name_in_owner = true
+position = Vector2(0, -32)
+region_enabled = true
+
+[node name="CollisionShape" type="CollisionShape2D" parent="." unique_id=1549138903]
 unique_name_in_owner = true
 position = Vector2(0, -7)
 shape = SubResource("CapsuleShape2D_qihgp")
 
-[node name="Bounds" type="Node2D" parent="."]
+[node name="Bounds" type="Node2D" parent="." unique_id=1449602882]
 
-[node name="Down" type="Marker2D" parent="Bounds"]
+[node name="Down" type="Marker2D" parent="Bounds" unique_id=1121730925]
 unique_name_in_owner = true
 
-[node name="Up" type="Marker2D" parent="Bounds"]
+[node name="Up" type="Marker2D" parent="Bounds" unique_id=1390734718]
 unique_name_in_owner = true
 position = Vector2(0, -49)
 
-[node name="Left" type="Marker2D" parent="Bounds"]
+[node name="Left" type="Marker2D" parent="Bounds" unique_id=167315767]
 unique_name_in_owner = true
 position = Vector2(-15, -24)
 
-[node name="Right" type="Marker2D" parent="Bounds"]
+[node name="Right" type="Marker2D" parent="Bounds" unique_id=53094987]
 unique_name_in_owner = true
 position = Vector2(15, -24)
 
-[node name="Feet" type="Marker2D" parent="Bounds"]
+[node name="Feet" type="Marker2D" parent="Bounds" unique_id=213297811]
 unique_name_in_owner = true
 
-[node name="Mouth" type="Marker2D" parent="Bounds"]
+[node name="Mouth" type="Marker2D" parent="Bounds" unique_id=102817510]
 unique_name_in_owner = true
 position = Vector2(0, -29)
 
-[node name="ContactArea" type="Area2D" parent="."]
+[node name="ContactArea" type="Area2D" parent="." unique_id=648028009]
 unique_name_in_owner = true
 collision_layer = 64
 collision_mask = 64
 
-[node name="AreaShape" type="CollisionShape2D" parent="ContactArea"]
+[node name="AreaShape" type="CollisionShape2D" parent="ContactArea" unique_id=327366479]
 unique_name_in_owner = true
 position = Vector2(0, -13)
 shape = SubResource("RectangleShape2D_cmg6s")
 debug_color = Color(0.7580552, 0.44811207, 0.2082015, 0.41960785)
 
-[node name="MainAnimator" type="AnimationPlayer" parent="."]
+[node name="MainAnimator" type="AnimationPlayer" parent="." unique_id=1035619544]
 unique_name_in_owner = true
-libraries = {
-&"": SubResource("AnimationLibrary_w2gn3")
-}
-autoplay = "Breathing"
+libraries/ = SubResource("AnimationLibrary_w2gn3")
+autoplay = &"Breathing"
 speed_scale = 0.6

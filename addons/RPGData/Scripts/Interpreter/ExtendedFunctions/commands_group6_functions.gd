@@ -464,7 +464,7 @@ func _command_0057() -> void:
 				target = GameManager.current_player
 		0: # This event:
 			target = current_interpreter.obj
-		_: # event with id target_id
+		_: # event with id target_id (uniq id)
 			if GameManager.current_map:
 				target = GameManager.current_map.get_in_game_event_by_id(target_id)
 			else:
@@ -543,9 +543,9 @@ func _command_0123() -> void:
 	
 	camera.clear_targets()
 		
-	var targets: PackedInt32Array = current_command.parameters.get("targets", [])
+	var targets: PackedInt64Array = current_command.parameters.get("targets", [])
 	var priorities: PackedInt32Array = current_command.parameters.get("priorities", [])
-	
+	print(targets)
 	for i: int in targets.size():
 		var target = targets[i]
 		if target == 0 and GameManager.current_player:
@@ -553,7 +553,7 @@ func _command_0123() -> void:
 			var node = GameManager.current_player if not GameManager.current_player.is_on_vehicle else GameManager.current_player.current_vehicle
 			camera.add_target_to_array(node, priority)
 		elif target > 0 and GameManager.current_map:
-			var event = GameManager.current_map.get_in_game_event_by_pos(target - 1)
+			var event = GameManager.current_map.get_in_game_event_by_uniq_id(target)
 			if event:
 				var priority = 5 if priorities.size() <= i else priorities[i]
 				camera.add_target_to_array(event, priority)

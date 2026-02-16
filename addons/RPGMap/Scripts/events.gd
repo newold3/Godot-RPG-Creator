@@ -108,7 +108,15 @@ func get_event(index: int) -> RPGEvent:
 
 func get_event_by_id(id: int) -> RPGEvent:
 	for event: RPGEvent in get_events():
-		if event.id == id:
+		if event._uniq_id == id:
+			return event
+	
+	return null
+
+
+func get_event_by_uniq_id(id: int) -> RPGEvent:
+	for event: RPGEvent in get_events():
+		if event._uniq_id == id:
 			return event
 	
 	return null

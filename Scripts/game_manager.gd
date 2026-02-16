@@ -455,6 +455,13 @@ func create_image(type: int, index: int, image_path: String) -> GameImage:
 	return null
 
 
+func get_map_tile_size() -> Vector2i:
+	if current_map:
+		return current_map.tile_size
+	
+	return Vector2i.ZERO
+
+
 func get_image(index: int) -> GameImage:
 	return current_ingame_images.get(index, null)
 
@@ -1179,6 +1186,13 @@ func get_profession_level(profession: RPGProfession) -> int:
 		return -1 if not profession_is_available else profession_level
 		
 	return 0
+
+
+func get_ingame_events() -> Array[RPGMap.IngameEvent]:
+	if current_map:
+		return current_map.get_in_game_events()
+	
+	return []
 
 
 func get_event_relationship_level(event_id: int) -> int:

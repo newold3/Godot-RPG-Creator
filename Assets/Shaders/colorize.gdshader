@@ -12,6 +12,9 @@ uniform float lightness3 : hint_range(0.0, 1.0, 0.1);
 uniform sampler2D mask1 : hint_default_black;
 uniform sampler2D mask2 : hint_default_black;
 uniform sampler2D mask3 : hint_default_black;
+uniform sampler2D mask4 : hint_default_black;
+uniform sampler2D mask5 : hint_default_black;
+uniform sampler2D mask6 : hint_default_black;
 
 uniform bool use_custom_alpha = false;
 uniform float alpha : hint_range(0.0, 1.0, 0.01) = 1.0;
@@ -23,7 +26,7 @@ uniform int highlight_palette_id = 0;
 
 void fragment() {
 	vec4 color_base = texture(TEXTURE, UV);
-	vec4 mask_golor = vec4(1.0, 1.0, 0.0, 1.0);
+	vec4 mask_color = vec4(1.0, 1.0, 0.0, 1.0);
 	vec4 new_color;
 
 	// Calculate highlight pulsing color (Black <-> White smooth animation)
@@ -34,11 +37,15 @@ void fragment() {
 
 	// Base mask check
 	if (
-		(color_base.a <= 0.1) ||
-		(color_base == mask_golor) ||
-		(texture(mask1, UV) == mask_golor) ||
-		(texture(mask2, UV) == mask_golor) ||
-		(texture(mask3, UV) == mask_golor))
+			(color_base.a <= 0.1) ||
+			(color_base == mask_color) ||
+			(texture(mask1, UV) == mask_color) ||
+			(texture(mask2, UV) == mask_color) ||
+			(texture(mask3, UV) == mask_color) ||
+			(texture(mask4, UV) == mask_color) ||
+			(texture(mask5, UV) == mask_color) ||
+			(texture(mask6, UV) == mask_color)
+		)
 	{
 		new_color = vec4(0.0);
 	}

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="RPGLPCEquipmentPart" load_steps=10 format=3 uid="uid://cek87ug36rt0h"]
+[gd_resource type="Resource" script_class="RPGLPCEquipmentPart" format=3 uid="uid://cek87ug36rt0h"]
 
 [ext_resource type="Script" uid="uid://cqx1cnfjmgp73" path="res://addons/RPGData/ModulesRPG/rpg_lpc_palette.gd" id="1_cvbar"]
 [ext_resource type="Script" uid="uid://der67xririmwh" path="res://addons/RPGData/ModulesRPG/rpg_lpc_equipment_part.gd" id="2_lt1u0"]
@@ -20,6 +20,9 @@ script = ExtResource("2_lt1u0")
 palette1 = SubResource("Resource_cvbar")
 palette2 = SubResource("Resource_lt1u0")
 palette3 = SubResource("Resource_6dpbo")
+gradient1 = PackedColorArray()
+gradient2 = PackedColorArray()
+gradient3 = PackedColorArray()
 
 [sub_resource type="Resource" id="Resource_in46y"]
 script = ExtResource("1_cvbar")
@@ -39,7 +42,8 @@ colors = PackedInt64Array(0, 0, 200, 3300237311, 250, 3857106943)
 [resource]
 script = ExtResource("2_lt1u0")
 config_path = "res://addons/rpg_character_creator/Data/gear/mainhand/bow2.mainhand"
-part_id = "mainhand"
+part_id = "bow2"
+layer_id = "mainhand"
 body_type = "hm1"
 head_type = "hm1"
 equipment_preview = "res://Assets/Parts/mainhand/recurve_bow_2_preview.png"
@@ -49,4 +53,7 @@ back_texture = "res://addons/rpg_character_creator/textures/gear/mainhand/bow/re
 palette1 = SubResource("Resource_in46y")
 palette2 = SubResource("Resource_21n57")
 palette3 = SubResource("Resource_mblah")
+gradient1 = PackedColorArray()
+gradient2 = PackedColorArray()
+gradient3 = PackedColorArray()
 ammo = SubResource("Resource_06xya")

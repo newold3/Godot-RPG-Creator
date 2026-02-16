@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://bo3rpy0db4jj6"]
+[gd_scene format=3 uid="uid://bo3rpy0db4jj6"]
 
 [ext_resource type="Shader" uid="uid://c0rcvcbe0qvjh" path="res://Assets/Shaders/colorize.gdshader" id="1_xoa6l"]
 [ext_resource type="Texture2D" uid="uid://d15fcw4y6o1fe" path="res://addons/rpg_character_creator/textures/projectiles/rock.png" id="2_tv5w4"]
@@ -107,15 +107,13 @@ _data = {
 &"rock_animation": SubResource("Animation_6oxqe")
 }
 
-[node name="Rock" type="AnimatedSprite2D"]
+[node name="Rock" type="AnimatedSprite2D" unique_id=1582205206]
 material = SubResource("ShaderMaterial_evgvv")
 sprite_frames = SubResource("SpriteFrames_7ewuj")
 animation = &"Right"
 script = ExtResource("3_bhvje")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_75udd")
-}
-autoplay = "rock_animation"
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=737266758]
+libraries/ = SubResource("AnimationLibrary_75udd")
+autoplay = &"rock_animation"
 speed_scale = 0.389

@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://bqvsevtpd6d02"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_av8lf"]
+[ext_resource type="PackedScene" uid="uid://dbmedskp7yjjk" path="res://addons/rpg_character_creator/Scenes/NewEditor/editor_character.tscn" id="2_fmnpx"]
+[ext_resource type="Script" uid="uid://qyvgq5itdbtl" path="res://addons/rpg_character_creator/Scenes/NewEditor/editor_character_dialog.gd" id="2_i2yhw"]
+
+[sub_resource type="Gradient" id="Gradient_tgvw3"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_fmnpx"]
+gradient = SubResource("Gradient_tgvw3")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[node name="EditorCharacterDialog" type="Window" unique_id=348829781]
+canvas_item_default_texture_filter = 3
+oversampling_override = 1.0
+title = "LPC Character And Equipment Creator"
+position = Vector2i(0, 36)
+size = Vector2i(1300, 880)
+min_size = Vector2i(1300, 880)
+theme = ExtResource("1_av8lf")
+script = ExtResource("2_i2yhw")
+
+[node name="Background" type="TextureRect" parent="." unique_id=1359114935]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_fmnpx")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2034298947]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="EditorCharacter" parent="." unique_id=1710952908 instance=ExtResource("2_fmnpx")]
+unique_name_in_owner = true

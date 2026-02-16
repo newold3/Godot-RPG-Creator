@@ -263,6 +263,7 @@ func build_cache() -> void:
 	cache = {
 		"animated_images": {}, "images": {}, "sounds": {}, "animations": {}, "maps": {},
 		"characters": {}, "events": {}, "equipment_parts": {}, "enemies": {}, "curves": {},
+		"sets": {}, "costumes": {},
 		"fonts": {}, "message_dialogs": {}, "scroll_scenes": {}, "choice_scenes": {},
 		"vehicles": {}, "weather": {}, "expressive_bubbles": {}, "numerical_input_scenes": {},
 		"text_input_scenes": {}, "transition_scenes": {}, "videos": {}, "map_parallax_scenes": {},
@@ -429,11 +430,15 @@ func classify_resource_file(file_path: String) -> void:
 
 	if res is AudioStream:
 		cache.sounds[file_path] = true
+	elif res is IngameCostume:
+		cache.costumes[file_path] = true
 	elif res is RPGLPCCharacter:
 		if res.event_preview:
 			cache.events[file_path] = true
 		else:
 			cache.characters[file_path] = true
+	elif res is IngameGearSet:
+		cache.sets[file_path] = true
 	elif res is RPGLPCEquipmentPart:
 		cache.equipment_parts[file_path] = true
 	elif res is Curve:

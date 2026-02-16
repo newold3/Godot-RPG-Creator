@@ -12,11 +12,13 @@ extends Control
 var _is_hovering: bool = false
 var part_id: String = ""
 var item_id: String = ""
+var is_selected: bool = false
 
 signal pressed()
+signal selected(button: HeroEditorPartButton)
 signal save(part_id: String, item_id: String, tex: HeroEditorPartButton)
 
-static var buttons: Array[Control] = []
+static var buttons: Array[HeroEditorPartButton] = []
 
 
 func _init() -> void:
@@ -24,15 +26,25 @@ func _init() -> void:
 
 
 func _ready() -> void:
+	if not self in buttons:
+		buttons.append(self)
+	tree_exiting.connect(func(): if self in buttons: buttons.erase(self))
+	selected.connect(_on_selected)
 	var neighbors = ["focus_neighbor_left", "focus_neighbor_top", "focus_neighbor_right", "focus_neighbor_bottom", "focus_next", "focus_previous"]
 	for key in neighbors:
 		set(key, get_path())
 
 
+func _on_selected(button_selected: HeroEditorPartButton) -> void:
+	for b in buttons:
+		if b != button_selected:
+			b.is_selected = false
+
+
 func _draw() -> void:
 	var current_style: StyleBox = background_style
 
-	if has_focus() and selected_style:
+	if (is_selected or has_focus()) and selected_style:
 		current_style = selected_style
 	elif _is_hovering and hover_style:
 		current_style = hover_style
@@ -53,10 +65,11 @@ func _draw() -> void:
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-			grab_focus()
-			pressed.emit()
-			accept_event()
+		if event.pressed:
+			if event.button_index == MOUSE_BUTTON_LEFT:
+				select()
+				accept_event()
+				pressed.emit()
 
 
 func _notification(what: int) -> void:
@@ -158,6 +171,8 @@ func get_texture_rect() -> TextureRect:
 ## Programmatically selects the item by grabbing focus.
 func select() -> void:
 	grab_focus()
+	is_selected = true
+	selected.emit(self)
 
 
 func hide_save_button() -> void:
@@ -167,3 +182,7 @@ func hide_save_button() -> void:
 func _on_save_pressed() -> void:
 	if not %Save.visible: return
 	save.emit(part_id, item_id, self)
+	
+	var t = create_tween()
+	t.tween_property(self, "modulate", Color("#60de6e"), 0.1)
+	t.tween_property(self, "modulate", Color.WHITE, 0.2)

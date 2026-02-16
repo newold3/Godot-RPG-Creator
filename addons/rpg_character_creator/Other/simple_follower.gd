@@ -345,8 +345,11 @@ func get_shadow_data() -> Dictionary:
 		"feet_offset": 16
 	}
 	
+	var tile_size = GameManager.get_map_tile_size()
+	shadow.position.y += tile_size.y + 2
+	
 	if GameManager.current_map:
-		shadow.cell = Vector2i(global_position / Vector2(GameManager.current_map.tile_size))
+		shadow.cell = Vector2i(global_position / Vector2(tile_size))
 	
 	return shadow
 

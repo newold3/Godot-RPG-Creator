@@ -393,6 +393,7 @@ func fill_day_night() -> void:
 	%DuskColor.set_pick_color(config.dusk_color)
 	%NightColor.set_pick_color(config.night_color)
 	%ShadowColor.set_pick_color(config.shadow_color)
+	%ShadowBlurSize.value = config.blur_size
 	%DayVolume.value = config.day_audio_volume
 	%NightVolume.value = config.night_audio_volume
 	%AudioTransitionSpeed.value = config.audio_transition_speed
@@ -1145,3 +1146,7 @@ func _on_export_scenes_pressed() -> void:
 
 func _on_import_scenes_pressed() -> void:
 	open_preset_manager_dialog(false)
+
+
+func _on_shadow_blur_size_value_changed(value: float) -> void:
+	data.day_night_config.blur_size = value

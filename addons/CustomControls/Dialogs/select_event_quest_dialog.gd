@@ -11,18 +11,8 @@ signal data_changed(data: RPGEventPQuest)
 
 func _ready() -> void:
 	close_requested.connect(queue_free)
-	_fill_local_switches()
 	_fill_page_list([0])
 	_fill_relationship_level_list(0)
-
-
-func _fill_local_switches() -> void:
-	var node = %EnableSelfSwitch
-	node.clear()
-	
-	node.add_item(tr("Do not activate any switch."))
-	for key in RPGSYSTEM.system.self_switches.get_switch_names():
-		node.add_item("Switch %s" % key)
 
 
 func _fill_page_list(indexes: Array = []) -> void:
@@ -57,9 +47,6 @@ func _fill_relationship_level_list(index: int) -> void:
 func set_data(p_data: RPGEventPQuest) -> void:
 	data = p_data.clone(true)
 	_update_texts()
-	var self_switch_id = data.self_switch_enabled + 1
-	if %EnableSelfSwitch.get_item_count() > self_switch_id:
-		%EnableSelfSwitch.select(self_switch_id)
 	_on_quest_id_selected(data.id, null)
 	%CustomTimer.value = data.custom_timer
 	%UseCustomTimer.set_pressed(data.use_custom_timer)
@@ -72,7 +59,6 @@ func set_data(p_data: RPGEventPQuest) -> void:
 
 func _update_texts() -> void:
 	%StartMessage.text = data.dialogue_on_start.replace("\n", "\\n")
-	%EndMessage.text = data.dialogue_in_progress.replace("\n", "\\n")
 	%SuccessMessage.text = data.dialogue_on_finish.replace("\n", "\\n")
 	%FailureMessage.text = data.dialogue_on_failure.replace("\n", "\\n")
 
@@ -94,17 +80,15 @@ func _show_text_message(id: int) -> void:
 	var text: String
 	match id:
 		0: text = data.dialogue_on_start
-		1: text = data.dialogue_in_progress
-		2: text = data.dialogue_on_finish
-		3: text = data.dialogue_on_failure
+		1: text = data.dialogue_on_finish
+		2: text = data.dialogue_on_failure
 	dialog.set_fast_edit_text(text)
 	dialog.fast_text_changed.connect(
 		func(new_text: String):
 			match id:
 				0: data.dialogue_on_start = new_text
-				1: data.dialogue_in_progress = new_text
-				2: data.dialogue_on_finish = new_text
-				3: data.dialogue_on_failure = new_text
+				1: data.dialogue_on_finish = new_text
+				2: data.dialogue_on_failure = new_text
 			_update_texts()
 	)
 
@@ -113,16 +97,12 @@ func _on_start_message_pressed() -> void:
 	_show_text_message(0)
 
 
-func _on_end_message_pressed() -> void:
+func _on_success_message_pressed() -> void:
 	_show_text_message(1)
 
 
-func _on_success_message_pressed() -> void:
-	_show_text_message(2)
-
-
 func _on_failure_message_pressed() -> void:
-	_show_text_message(3)
+	_show_text_message(2)
 
 
 func _on_enable_self_switch_item_selected(index: int) -> void:

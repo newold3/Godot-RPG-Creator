@@ -501,7 +501,8 @@ func start_vehicle_movement() -> void:
 	movement_vector.y = floor(movement_vector.y) if movement_vector.y < 0 else ceil(movement_vector.y)
 	movement_vector *= Vector2(possible_movements)
 	
-	var motion = movement_vector * Vector2(GameManager.current_map.tile_size)
+	var tile_size: Vector2 = GameManager.get_map_tile_size()
+	var motion = movement_vector * Vector2(tile_size)
 	if motion.x != 0:
 		var collision_x: KinematicCollision2D = move_and_collide(Vector2(motion.x, 0), true)
 		if collision_x:
@@ -574,7 +575,8 @@ func get_possible_movement(motion: Vector2, is_jump_action: bool = false) -> Vec
 			1 if motion.y != 0 else 0
 		)
 	
-	var real_motion = motion * Vector2(GameManager.current_map.tile_size)
+	var tile_size: Vector2 = GameManager.get_map_tile_size()
+	var real_motion = motion * tile_size
 	var collision: KinematicCollision2D = move_and_collide(real_motion, true)
 	if collision:
 		return (Vector2i.ZERO)
@@ -769,8 +771,9 @@ func set_shadow(_color: Color, _offset: Vector2, _skew: float, _scale: Vector2, 
 
 func get_current_tile() -> Vector2i:
 	if GameManager.current_map:
+		var tile_size: Vector2i = GameManager.get_map_tile_size()
 		@warning_ignore("integer_division")
-		return Vector2i(Vector2i(global_position) / GameManager.current_map.tile_size)
+		return Vector2i(Vector2i(global_position) / tile_size)
 	else:
 		return Vector2i()
 
@@ -862,8 +865,9 @@ func jump_to(new_pos: Vector2, _route: RPGMovementRoute = null, start_fx: Dictio
 		
 	var possible_movement = get_possible_movement(new_pos, true)
 
+	var tile_size: Vector2 = GameManager.get_map_tile_size()
 	@warning_ignore("incompatible_ternary")
-	var motion = null if !possible_movement else new_pos * Vector2(GameManager.current_map.tile_size)
+	var motion = null if !possible_movement else new_pos * tile_size
 	
 	if !motion:
 		return

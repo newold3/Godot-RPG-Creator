@@ -459,6 +459,8 @@ func _on_toggled_regions_draw_butto_pressed(value: bool) -> void:
 	if current_object:
 		current_object.force_show_regions = value
 		current_object.queue_redraw()
+	
+	FileCache.options.show_regions_toggled = value
 
 
 func _tree_exiting() -> void:
@@ -575,7 +577,9 @@ func _handle_regions_button(config: Dictionary, toggled_on: bool) -> void:
 	if not toggled_regions_button or not config.show_regions:
 		if toggled_regions_button:
 			toggled_regions_button.visible = false
-			toggled_regions_button.toggled.emit(false)
+			var last_state = FileCache.options.get("show_regions_toggled", false)
+			toggled_regions_button.set_pressed_no_signal(last_state)
+			toggled_regions_button.toggled.emit(last_state)
 		return
 	
 	toggled_regions_button.visible = current_object != null and current_object.current_edit_button_pressed == config.button_index and toggled_on
@@ -957,9 +961,6 @@ func _edit(object: Object) -> void:
 			enemy_spawn_regions_dock.close()
 			extraction_events_dock.close()
 			events_dock.close()
-			#var output_button: Button = event_button.get_parent().get_child(0)
-			#if output_button:
-				#output_button.toggled.emit(true)
 		return
 
 	if current_object and is_instance_valid(current_object) and "set_editing_events" in current_object:
@@ -972,7 +973,7 @@ func _edit(object: Object) -> void:
 	
 	if current_object and !"set_editing_events" in current_object:
 		current_object = null
-		#return
+
 	if events_dock:
 		if current_object:
 			events_dock.open()
@@ -1022,12 +1023,37 @@ func _edit(object: Object) -> void:
 		"current_edit_button_pressed" in current_object
 	):
 		current_object.current_edit_button_pressed = -1
+
+	if current_object:
+		_sync_initial_edit_mode.call_deferred()
+
+
+func _sync_initial_edit_mode() -> void:
+	if not is_instance_valid(current_object):
+		return
 	
-	if toggled_regions_button:
-		toggled_regions_button.visible = current_object != null and current_object.current_edit_button_pressed == 0
-		if toggled_regions_button.visible:
-			_force_toggled_regions_button_position()
-		toggled_regions_button.toggled.emit(toggled_regions_button.visible)
+	var last_state = FileCache.options.get("show_regions_toggled", false)
+	
+	if events_dock.visible:
+		_on_event_button_toggled(true)
+	elif extraction_events_dock.visible:
+		_on_extraction_event_button_toggled(true)
+	elif enemy_spawn_regions_dock.visible:
+		_on_enemy_spawn_region_button_toggled(true)
+	elif event_regions_dock.visible:
+		_on_event_region_button_toggled(true)
+	
+	if toggled_regions_button and toggled_regions_button.visible:
+
+		_force_toggled_regions_button_position()
+		
+		toggled_regions_button.set_pressed_no_signal(last_state)
+		
+		if current_object:
+			current_object.force_show_regions = last_state
+			current_object.queue_redraw()
+
+		toggled_regions_button.toggled.emit(last_state)
 
 
 func _force_toggled_regions_button_position() -> void:

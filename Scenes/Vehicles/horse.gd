@@ -348,18 +348,19 @@ func is_any_direction_pressed() -> bool:
 #
 	#var feet_world_pos = sprite.to_global(feet_local_pos) - Vector2(used_rect.size.x * 0.5, used_rect.size.y)
 #
+	#var tile_size: Vector2 = GameManager.get_map_tile_size()
 	#var shadow = {
 		#"main_node": self,
 		#"texture": atlas,
 		#"sprite_scale": scale,
 		#"position": feet_world_pos, 
 		#"offset": Vector2.ZERO,
-		#"mask_offset": GameManager.current_map.tile_size * 0.5 - sprite.position,
+		#"mask_offset": tile_size * 0.5 - sprite.position,
 		#"feet_offset": 8
 	#}
 	#
 	#if GameManager.current_map:
-		#shadow.cell = Vector2i(global_position / Vector2(GameManager.current_map.tile_size))
+		#shadow.cell = Vector2i(global_position / Vector2(tile_size))
 	#
 	#return shadow
 
@@ -398,10 +399,11 @@ func get_shadow_data() -> Dictionary:
 
 	quad_points[0].y -= 1
 	quad_points[1].y -= 1
+	var tile_size: Vector2 = GameManager.get_map_tile_size()
 	return {
 		"main_node": self,
 		"texture": atlas,
 		"quad_points": quad_points,
 		"position": global_position,
-		"cell": Vector2i(global_position / Vector2(GameManager.current_map.tile_size))
+		"cell": Vector2i(global_position / tile_size)
 	}

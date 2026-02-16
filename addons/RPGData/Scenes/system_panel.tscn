@@ -126,7 +126,7 @@ gradient = SubResource("Gradient_v2iab")
 fill_from = Vector2(0.547009, 1)
 fill_to = Vector2(0.559829, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hsjp2"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_plo3t"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_cc2pl")
 
@@ -148,15 +148,15 @@ gradient = SubResource("Gradient_8k375")
 fill_from = Vector2(0.547009, 1)
 fill_to = Vector2(0.559829, 0)
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hsjp2"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_v6eua")
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bafj1"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_v6eua")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fhlha"]
-resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_v6eua")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ha2h2"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_v6eua")
 
@@ -172,7 +172,7 @@ region = Rect2(96, 48, 24, 24)
 atlas = ExtResource("8_ca2t6")
 region = Rect2(96, 216, 24, 24)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ds8gs"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ha2h2"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_cc2pl")
 
@@ -199,11 +199,11 @@ region = Rect2(216, 168, 24, 24)
 atlas = ExtResource("8_ca2t6")
 region = Rect2(144, 72, 24, 24)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_304yl"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ds8gs"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_cc2pl")
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ftd1a"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_304yl"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_cc2pl")
 
@@ -250,6 +250,8 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 default_tabs = Array[String](["General", "Vehicles and start positions", "Music & Sounds", "Day/Night Config", "Signals", "Other Options", "Game Scenes", "Preload Scenes"])
+drag_threshold = 10.0
+current_tab_unselected_text_outline_color = Color(0, 0, 0, 1)
 tab_name_base = ""
 background_color = Color(0, 0, 0, 0)
 tab_selected = null
@@ -344,7 +346,7 @@ custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
 tooltip_text = "Image displayed to the right of the game currency.
 
-Mouse wheel click to erase de current image."
+Mouse wheel click to erase the current image."
 
 [node name="InitialParty" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1" unique_id=1359037055]
 layout_mode = 2
@@ -418,7 +420,7 @@ size_flags_vertical = 3
 odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
 event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 top_bar_style = SubResource("StyleBoxTexture_2qda7")
-cursor_style = SubResource("StyleBoxTexture_hsjp2")
+cursor_style = SubResource("StyleBoxTexture_plo3t")
 panel_style = SubResource("StyleBoxFlat_215jy")
 names = PackedStringArray("Members")
 sizes = PackedInt32Array(80)
@@ -473,7 +475,7 @@ layout_mode = 2
 size_flags_vertical = 3
 tooltip_text = "Scene for this transport (Must be a valid RPGVehicle-type scene)
 
-Mouse wheel click to erase de current image."
+Mouse wheel click to erase the current image."
 clipboard_key = "rpg_vehicle"
 custom_copy_and_paste_enabled = true
 
@@ -495,7 +497,7 @@ layout_mode = 2
 size_flags_vertical = 3
 tooltip_text = "Scene for this transport (Must be a valid RPGVehicle-type scene)
 
-Mouse wheel click to erase de current image."
+Mouse wheel click to erase the current image."
 clipboard_key = "rpg_vehicle"
 custom_copy_and_paste_enabled = true
 
@@ -517,7 +519,7 @@ layout_mode = 2
 size_flags_vertical = 3
 tooltip_text = "Scene for this transport (Must be a valid RPGVehicle-type scene)
 
-Mouse wheel click to erase de current image."
+Mouse wheel click to erase the current image."
 clipboard_key = "rpg_vehicle"
 custom_copy_and_paste_enabled = true
 
@@ -558,7 +560,7 @@ size_flags_vertical = 3
 odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
 event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 top_bar_style = SubResource("StyleBoxTexture_2qda7")
-cursor_style = SubResource("StyleBoxTexture_bafj1")
+cursor_style = SubResource("StyleBoxTexture_hsjp2")
 panel_style = SubResource("StyleBoxFlat_215jy")
 columns = 3
 names = PackedStringArray("Type", "Map", "Position")
@@ -611,7 +613,7 @@ size_flags_vertical = 3
 odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
 event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 top_bar_style = SubResource("StyleBoxTexture_2qda7")
-cursor_style = SubResource("StyleBoxTexture_fhlha")
+cursor_style = SubResource("StyleBoxTexture_bafj1")
 panel_style = SubResource("StyleBoxFlat_215jy")
 columns = 4
 names = PackedStringArray("Type", "Filename", "Volume", "Pitch")
@@ -659,7 +661,7 @@ size_flags_vertical = 3
 odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
 event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 top_bar_style = SubResource("StyleBoxTexture_2qda7")
-cursor_style = SubResource("StyleBoxTexture_ha2h2")
+cursor_style = SubResource("StyleBoxTexture_fhlha")
 panel_style = SubResource("StyleBoxFlat_215jy")
 columns = 4
 names = PackedStringArray("Type", "Filename", "Volume", "Pitch")
@@ -975,7 +977,7 @@ tooltip_text = "Shadow intensity/opacity during daytime"
 max_value = 1.0
 step = 0.01
 rounded = false
-suffix = "Day Shadow"
+suffix = "Day Shadow (max opacity)"
 _custom_value = 0.0
 
 [node name="SunNightShadowStrength" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Sun/HBoxContainer2" unique_id=1793234344 instance=ExtResource("8_bxeuf")]
@@ -986,7 +988,7 @@ tooltip_text = "Shadow intensity/opacity during nighttime"
 max_value = 2.0
 step = 0.01
 rounded = false
-suffix = "Night Shadow"
+suffix = "Night Shadow (min opacity)"
 _custom_value = 0.0
 
 [node name="HSeparator7" type="HSeparator" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer" unique_id=351186960]
@@ -1081,6 +1083,24 @@ rounded = false
 suffix = "minimun"
 _custom_value = 0.0
 
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer" unique_id=1122557313]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1271145111]
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+text = "Shadow Blur Size:"
+
+[node name="ShadowBlurSize" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1774247051 instance=ExtResource("8_bxeuf")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Controls how strong the blur effect is. Higher values make the blur softer and more spread out; lower values keep it subtle and sharp."
+max_value = 5.0
+step = 0.01
+rounded = false
+_custom_value = 0.0
+
 [node name="HSeparator8" type="HSeparator" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer" unique_id=428100756]
 layout_mode = 2
 
@@ -1126,21 +1146,21 @@ tooltip_text = "Hour offset when street lights turn on (relative to sunset)"
 max_value = 24.0
 _custom_value = 0.0
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Switches" unique_id=2064447355]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Switches/HBoxContainer2" unique_id=1093319214]
+[node name="Label2" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Switches/HBoxContainer" unique_id=1093319214]
 custom_minimum_size = Vector2(280, 0)
 layout_mode = 2
 text = "Street Lights Off Hour:"
 
-[node name="StreetLightsOffHour" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Switches/HBoxContainer2" unique_id=320588782 instance=ExtResource("8_bxeuf")]
+[node name="StreetLightsOffHour" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Switches/HBoxContainer" unique_id=320588782 instance=ExtResource("8_bxeuf")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Hour offset when street lights turn off (relative to sunset)"
 max_value = 24.0
 _custom_value = 0.0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Switches" unique_id=2064447355]
+layout_mode = 2
 
 [node name="Tab5" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer" unique_id=312240628]
 unique_name_in_owner = true
@@ -1181,7 +1201,7 @@ size_flags_vertical = 3
 odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
 event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 top_bar_style = SubResource("StyleBoxTexture_2qda7")
-cursor_style = SubResource("StyleBoxTexture_ds8gs")
+cursor_style = SubResource("StyleBoxTexture_ha2h2")
 panel_style = SubResource("StyleBoxFlat_215jy")
 names = PackedStringArray("User Signals")
 sizes = PackedInt32Array(80)
@@ -1660,7 +1680,7 @@ size_flags_vertical = 3
 odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
 event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 top_bar_style = SubResource("StyleBoxTexture_2qda7")
-cursor_style = SubResource("StyleBoxTexture_304yl")
+cursor_style = SubResource("StyleBoxTexture_ds8gs")
 panel_style = SubResource("StyleBoxFlat_215jy")
 columns = 2
 names = PackedStringArray("Scene", "Path")
@@ -1708,7 +1728,7 @@ size_flags_vertical = 3
 odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
 event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 top_bar_style = SubResource("StyleBoxTexture_2qda7")
-cursor_style = SubResource("StyleBoxTexture_ftd1a")
+cursor_style = SubResource("StyleBoxTexture_304yl")
 panel_style = SubResource("StyleBoxFlat_215jy")
 names = PackedStringArray("Scene List")
 sizes = PackedInt32Array(80)
@@ -1766,9 +1786,10 @@ The scenes defined here will be preloaded when the game starts. This is useful f
 [connection signal="value_changed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Shadow/HBoxContainer2/ShadowSkew" to="." method="_on_shadow_skew_value_changed"]
 [connection signal="value_changed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Shadow/HBoxContainer3/ShadowLengthX" to="." method="_on_shadow_length_x_value_changed"]
 [connection signal="value_changed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Shadow/HBoxContainer3/ShadowLengthY" to="." method="_on_shadow_length_y_value_changed"]
+[connection signal="value_changed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/HBoxContainer2/ShadowBlurSize" to="." method="_on_shadow_blur_size_value_changed"]
 [connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Switches/HBoxContainer3/SwitchId" to="." method="_on_switch_id_pressed"]
 [connection signal="value_changed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Switches/HBoxContainer/StreetLightsOnHour" to="." method="_on_street_lights_on_hour_value_changed"]
-[connection signal="value_changed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Switches/HBoxContainer2/StreetLightsOffHour" to="." method="_on_street_lights_off_hour_value_changed"]
+[connection signal="value_changed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Switches/HBoxContainer/StreetLightsOffHour" to="." method="_on_street_lights_off_hour_value_changed"]
 [connection signal="delete_pressed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5/UserSignal/MarginContainer/VBoxContainer/UserSignalList" to="." method="_on_user_signal_list_delete_pressed"]
 [connection signal="item_activated" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5/UserSignal/MarginContainer/VBoxContainer/UserSignalList" to="." method="_on_user_signal_list_item_activated"]
 [connection signal="item_selected" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer/DiagonalMovementMode/Other1" to="." method="_on_other_1_item_selected"]

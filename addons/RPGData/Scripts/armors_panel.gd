@@ -189,6 +189,8 @@ func fill_user_parameters(selected_index: int = 0) -> void:
 	var node = %UserParameters
 	node.clear()
 	
+	if not get_data(): return
+	
 	var user_parameters = get_data().user_parameters
 	var user_parameter_data = RPGSYSTEM.database.types.user_parameters
 	if user_parameters.size() != user_parameter_data.size():

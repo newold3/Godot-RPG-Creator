@@ -13,9 +13,9 @@ func _ready() -> void:
 
 func set_data(real_data: RPGTypes) -> void:
 	data = real_data
-	if data.tool_types == null or data.tool_types.size() == 0:
-		data.tool_types = [tr("None")]
-		data.icons.tool_icons = [RPGIcon.new()]
+	if data.tool_types == null:
+		data.tool_types = []
+		data.icons.tool_icons = []
 	fill_list(%ElementList, data.element_types, 0, 1)
 	fill_list(%SkillList, data.skill_types, 0, 2)
 	fill_list(%WeaponList, data.weapon_types, 0, 3)
@@ -35,7 +35,7 @@ func set_data(real_data: RPGTypes) -> void:
 	%WeaponList.lock_item(0, true)
 	%WeaponRarityList.lock_item(0, true)
 	%ArmorList.lock_item(0, true)
-	%ToolList.lock_item(0, true)
+	#%ToolList.lock_item(0, true)
 	%ArmorRarityList.lock_item(0, true)
 	%ItemList.lock_item(0, true)
 	%ItemRarityList.lock_item(0, true)
@@ -63,6 +63,14 @@ func fill_list(itemlist: ItemList, items: Array, item_selected: int, button_id: 
 			if %Name7bLineEdit.has_focus(): %Name7bLineEdit.release_focus()
 			if %Name7bLineEdit.has_meta("original_text"):
 				%Name7bLineEdit.remove_meta("original_text")
+		elif str(button_id) == "20":
+			%Name20LineEdit.set_disabled(true)
+			%RemoveItem20Button.set_disabled(true)
+			%IconPicker20.set_disabled(true)
+			%Name20LineEdit.text = ""
+			if %Name20LineEdit.has_focus(): %Name20LineEdit.release_focus()
+			if %Name20LineEdit.has_meta("original_text"):
+				%Name20LineEdit.remove_meta("original_text")
 		return
 	for i in items.size():
 		var id = str(i+1).pad_zeros(str(items.size()).length())
@@ -100,6 +108,14 @@ func fill_list(itemlist: ItemList, items: Array, item_selected: int, button_id: 
 			if %Name7bLineEdit.has_focus(): %Name7bLineEdit.release_focus()
 		%Name7bLineEdit.set_disabled(!enabled)
 		%RemoveItem7bButton.set_disabled(!enabled)
+	if str(button_id) == "20":
+		var enabled = %ToolList.get_selected_items().size() > 0
+		%Name20LineEdit.set_disabled(!enabled)
+		%RemoveItem20Button.set_disabled(!enabled)
+		%IconPicker20.set_disabled(!enabled)
+		if !enabled:
+			%Name20LineEdit.text = ""
+			if %Name20LineEdit.has_focus(): %Name20LineEdit.release_focus()
 
 
 func _on_element_list_item_selected(index: int) -> void:
@@ -339,6 +355,10 @@ func fix_data() -> void:
 			armor.user_parameters.resize(data.user_parameters.size())
 			for level in armor.upgrades.levels:
 				level.user_parameters.resize(data.user_parameters.size())
+		
+		for costume in database.costumes:
+			if not costume: continue
+			costume.user_parameters.resize(data.user_parameters.size())
 
 
 func _on_weapon_rarity_list_item_selected(index: int) -> void:
@@ -768,12 +788,11 @@ func _on_add_item_20_button_pressed() -> void:
 
 func _on_remove_item_20_button_pressed() -> void:
 	var index = %ToolList.get_selected_items()[0]
-	if index > 0:
-		data.tool_types.remove_at(index)
-		data.icons.tool_icons.remove_at(index)
-		index = min(index, data.tool_types.size() - 1)
-		fill_list(%ToolList, data.tool_types, index, 20)
-		need_fix_data = true
+	data.tool_types.remove_at(index)
+	data.icons.tool_icons.remove_at(index)
+	index = min(index, data.tool_types.size() - 1)
+	fill_list(%ToolList, data.tool_types, index, 20)
+	need_fix_data = true
 
 
 func _on_tool_list_item_activated(index: int) -> void:
@@ -782,7 +801,6 @@ func _on_tool_list_item_activated(index: int) -> void:
 
 func _on_tool_list_item_selected(index: int) -> void:
 	%Name20LineEdit.text = data.tool_types[index]
-	%RemoveItem20Button.set_disabled(index == 0)
 	var current_icon = data.icons.tool_icons[index]
 	%IconPicker20.set_disabled(false)
 	%IconPicker20.set_icon(current_icon.path, current_icon.region)

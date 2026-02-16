@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cn2kr73xkn1fr"]
+[gd_scene format=3 uid="uid://cn2kr73xkn1fr"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_fnarl"]
 [ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="1_jbg6b"]
@@ -33,6 +33,10 @@ texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
+[sub_resource type="LabelSettings" id="LabelSettings_d6ss7"]
+font_size = 15
+font_color = Color(0.66492164, 0.66492164, 0.6649216, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6gnsf"]
 draw_center = false
 border_width_left = 2
@@ -45,7 +49,8 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[node name="EditEventDialog" type="Window" groups=["event_editor"]]
+[node name="EditEventDialog" type="Window" unique_id=2044703520 groups=["event_editor"]]
+canvas_item_default_texture_filter = 3
 oversampling_override = 1.0
 title = "Edit Event"
 position = Vector2i(0, 36)
@@ -57,7 +62,7 @@ min_size = Vector2i(1400, 1000)
 theme = ExtResource("1_fnarl")
 script = ExtResource("2_76sai")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1020359644]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -65,7 +70,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_s3a4r")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2041998070]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -76,24 +81,24 @@ theme_override_constants/margin_top = 18
 theme_override_constants/margin_right = 18
 theme_override_constants/margin_bottom = 18
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=794570066]
 layout_mode = 2
 
-[node name="TopContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="TopContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=281079311]
 layout_mode = 2
 theme_override_constants/separation = 32
 
-[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TopContainer"]
+[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TopContainer" unique_id=172124955]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
 size_flags_stretch_ratio = 0.15
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TopContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TopContainer/VBoxContainer" unique_id=1424547053]
 layout_mode = 2
 text = "Name:"
 
-[node name="EventName" type="LineEdit" parent="MarginContainer/VBoxContainer/TopContainer/VBoxContainer"]
+[node name="EventName" type="LineEdit" parent="MarginContainer/VBoxContainer/TopContainer/VBoxContainer" unique_id=1099623203]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(470.625, 0)
 layout_mode = 2
@@ -101,14 +106,14 @@ size_flags_horizontal = 3
 editable = false
 caret_blink = true
 
-[node name="SaveAsPresetButton" parent="MarginContainer/VBoxContainer/TopContainer/VBoxContainer" instance=ExtResource("1_jbg6b")]
+[node name="SaveAsPresetButton" parent="MarginContainer/VBoxContainer/TopContainer/VBoxContainer" unique_id=1640001426 instance=ExtResource("1_jbg6b")]
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 tooltip_text = "[title]Save As Preset[/title]
 Save this event as a preset so you can create it quickly whenever you want."
 text = "Save As Preset"
 
-[node name="LegacyMode" type="CheckBox" parent="MarginContainer/VBoxContainer/TopContainer/VBoxContainer"]
+[node name="LegacyMode" type="CheckBox" parent="MarginContainer/VBoxContainer/TopContainer/VBoxContainer" unique_id=705539076]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "[title]Legacy Mode[/title]
@@ -119,7 +124,7 @@ When disabled, any command that changes the active page will interrupt the curre
 mouse_default_cursor_shape = 2
 text = "Legacy Mode Enabled"
 
-[node name="FadePageSwap" type="CheckBox" parent="MarginContainer/VBoxContainer/TopContainer/VBoxContainer"]
+[node name="FadePageSwap" type="CheckBox" parent="MarginContainer/VBoxContainer/TopContainer/VBoxContainer" unique_id=386877441]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "[title]Fade Page Swap[/title]
@@ -129,25 +134,25 @@ When an event command changes the active page for that event, the graph for the 
 mouse_default_cursor_shape = 2
 text = "Enable Fade Page Swap"
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1912928101]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1992724112]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=772726537]
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 theme_override_constants/margin_top = 38
 
-[node name="HBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer"]
+[node name="HBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer" unique_id=1927660007]
 layout_mode = 2
 size_flags_vertical = 0
 size_flags_stretch_ratio = 0.65
 
-[node name="NewPageButton" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("1_jbg6b")]
+[node name="NewPageButton" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer" unique_id=1084419382 instance=ExtResource("1_jbg6b")]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.65)
 custom_minimum_size = Vector2(160, 0)
@@ -158,7 +163,7 @@ disabled = true
 text = "NEW
 PAGE"
 
-[node name="CopyPageButton" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("1_jbg6b")]
+[node name="CopyPageButton" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer" unique_id=824646900 instance=ExtResource("1_jbg6b")]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.65)
 custom_minimum_size = Vector2(160, 0)
@@ -169,7 +174,7 @@ disabled = true
 text = "COPY
 PAGE"
 
-[node name="PastePageButton" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("1_jbg6b")]
+[node name="PastePageButton" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer" unique_id=784222963 instance=ExtResource("1_jbg6b")]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.65)
 custom_minimum_size = Vector2(160, 0)
@@ -180,7 +185,7 @@ disabled = true
 text = "PASTE
 PAGE"
 
-[node name="RemovePageButton" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("1_jbg6b")]
+[node name="RemovePageButton" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer" unique_id=979150928 instance=ExtResource("1_jbg6b")]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.65)
 custom_minimum_size = Vector2(160, 0)
@@ -191,7 +196,7 @@ disabled = true
 text = "REMOVE
 PAGE"
 
-[node name="CleanPageButton" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("1_jbg6b")]
+[node name="CleanPageButton" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer" unique_id=1999473299 instance=ExtResource("1_jbg6b")]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.65)
 custom_minimum_size = Vector2(160, 0)
@@ -202,11 +207,11 @@ disabled = true
 text = "CLEAN
 PAGE"
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer" unique_id=1826428178]
 custom_minimum_size = Vector2(160, 8)
 layout_mode = 2
 
-[node name="QuestManagerButton" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("1_jbg6b")]
+[node name="QuestManagerButton" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer" unique_id=1954902426 instance=ExtResource("1_jbg6b")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -222,7 +227,7 @@ toggle_mode = true
 text = "MANAGE
 QUESTS"
 
-[node name="RelationshipManagerButton" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("1_jbg6b")]
+[node name="RelationshipManagerButton" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer" unique_id=1785366656 instance=ExtResource("1_jbg6b")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -237,12 +242,45 @@ toggle_mode = true
 text = "MANAGE
 RELATIONSHIP"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Control" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer" unique_id=1366349129]
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Control" unique_id=403605629]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Control" unique_id=1321673399]
+layout_mode = 2
+text = "ID:"
+label_settings = SubResource("LabelSettings_d6ss7")
+
+[node name="EventID" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Control" unique_id=315273295]
+unique_name_in_owner = true
+modulate = Color(0.71129656, 0.71129656, 0.7112965, 1)
+layout_mode = 2
+label_settings = SubResource("LabelSettings_d6ss7")
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Control" unique_id=2059194762]
+layout_mode = 2
+text = "Internal ID:"
+label_settings = SubResource("LabelSettings_d6ss7")
+
+[node name="EventInternalID" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Control" unique_id=489171952]
+unique_name_in_owner = true
+modulate = Color(0.71129656, 0.71129656, 0.7112965, 1)
+layout_mode = 2
+label_settings = SubResource("LabelSettings_d6ss7")
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Control" unique_id=1642402059]
+custom_minimum_size = Vector2(0, 56)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=44216417]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=149202319]
 z_index = 10
 layout_mode = 2
 theme_override_constants/margin_left = 20
@@ -250,14 +288,14 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 14
 theme_override_constants/margin_bottom = 0
 
-[node name="ColorRect" type="ColorRect" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer"]
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer" unique_id=2133661110]
 clip_children = 1
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 size_flags_horizontal = 3
 color = Color(0.2, 0.227451, 0.27451, 1)
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/ColorRect"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/ColorRect" unique_id=467397478]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -265,7 +303,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="BackToPagesButton" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/ColorRect/HBoxContainer" instance=ExtResource("1_jbg6b")]
+[node name="BackToPagesButton" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/ColorRect/HBoxContainer" unique_id=1873124284 instance=ExtResource("1_jbg6b")]
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(110, 0)
@@ -276,53 +314,57 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_d5k6b")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_fys7c")
 text = "🢀 Back"
 
-[node name="EventPageContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/ColorRect/HBoxContainer" instance=ExtResource("2_dyjno")]
+[node name="EventPageContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/ColorRect/HBoxContainer" unique_id=1612870588 instance=ExtResource("2_dyjno")]
 unique_name_in_owner = true
 clip_children = 0
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
+allow_drag_and_drop = true
+drag_threshold = 10.0
+current_tab_unselected_text_outline_color = Color(0, 0, 0, 1)
+tab_name_base = ""
 background_color = Color(0, 0, 0, 0)
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1351238423]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_6gnsf")
 
-[node name="EditEventPage" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer" instance=ExtResource("6_wi52r")]
+[node name="EditEventPage" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer" unique_id=231231599 instance=ExtResource("6_wi52r")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="QuestManagerPanel" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer" instance=ExtResource("8_f0bo5")]
+[node name="QuestManagerPanel" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer" unique_id=1049007097 instance=ExtResource("8_f0bo5")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="RelationshipManagerPanel" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer" instance=ExtResource("9_d6ss7")]
+[node name="RelationshipManagerPanel" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer" unique_id=947935963 instance=ExtResource("9_d6ss7")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=920194024]
 custom_minimum_size = Vector2(0, 8)
 layout_mode = 2
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=146546704]
 layout_mode = 2
 alignment = 2
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("1_jbg6b")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2" unique_id=1236916566 instance=ExtResource("1_jbg6b")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("1_jbg6b")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2" unique_id=1090496485 instance=ExtResource("1_jbg6b")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 text = "CANCEL"
 
-[node name="ApplyButton" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("1_jbg6b")]
+[node name="ApplyButton" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2" unique_id=82345662 instance=ExtResource("1_jbg6b")]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.65)
 custom_minimum_size = Vector2(160, 0)
@@ -343,6 +385,7 @@ text = "APPLY"
 [connection signal="toggled" from="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer/RelationshipManagerButton" to="." method="_on_relationship_manager_button_toggled"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/ColorRect/HBoxContainer/BackToPagesButton" to="." method="_on_back_to_pages_button_pressed"]
 [connection signal="tab_changed" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/ColorRect/HBoxContainer/EventPageContainer" to="." method="_on_event_page_container_tab_changed"]
+[connection signal="tabs_changed" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/ColorRect/HBoxContainer/EventPageContainer" to="." method="_on_event_page_container_tabs_changed"]
 [connection signal="changed" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/EditEventPage" to="." method="_on_edit_event_page_changed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2/OKButton" to="." method="_on_ok_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2/CancelButton" to="." method="_on_cancel_button_pressed"]

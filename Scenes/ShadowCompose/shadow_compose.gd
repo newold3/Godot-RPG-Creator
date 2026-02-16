@@ -9,21 +9,6 @@ class ShadowRuntimeData:
 	}
 
 
-@export var shadow_component: ShadowComponent:
-	set(value):
-		if shadow_component and shadow_component.shadow_updated.is_connected(update):
-			shadow_component.shadow_updated.disconnect(update)
-		shadow_component = value
-		if shadow_component:
-			if Engine.is_editor_hint():
-				if not shadow_component.shadow_updated.is_connected(update):
-					shadow_component.shadow_updated.connect(update)
-				if is_node_ready():
-					shadow_component.shadow_updated.emit()
-			elif is_node_ready():
-				update()
-
-
 @export var shadow_data: Array:
 	set(value):
 		value.sort_custom(
@@ -126,13 +111,9 @@ func _process(delta: float) -> void:
 
 
 func update():
-	if shadow_component:
-		var mat: ShaderMaterial = %ShadowLayer.get_material()
-		mat.set_shader_parameter("blur_size", shadow_component.blur_size)
-		mat.set_shader_parameter("overlay_color", shadow_component.shadow_color)
-		
-		%Shadows.z_index = shadow_component.shadow_z_index
-		%Shadows.get_material().blend_mode = shadow_component.shadow_blend_type
+	var mat: ShaderMaterial = %ShadowLayer.get_material()
+	mat.set_shader_parameter("blur_size", RPGSYSTEM.database.system.day_night_config.blur_size)
+	mat.set_shader_parameter("overlay_color",RPGSYSTEM.database.system.day_night_config.shadow_color)
 
 	need_refresh = true
 
@@ -178,8 +159,6 @@ func get_screen_tiles_size(current_map: RPGMap) -> Vector2i:
 	var tile_size = current_map.tile_size
 	var tiles = Vector2(ceil(Vector2(get_viewport().size) / Vector2(tile_size)))
 	
-	# FIX 1: Aumentamos el margen de renderizado (De 0.85 a 1.5)
-	# Esto asegura que las sombras se dibujen mucho antes de entrar en pantalla
 	tiles += tiles * 1.5 
 	
 	tiles /= main_camera.zoom
@@ -224,16 +203,20 @@ func _encode_y_position_as_alpha(world_y: float, reference_height: float) -> flo
 
 func _get_shadow_visibility(dn: RPGDayNightComponent) -> float:
 	var h := dn.current_hour
-	var min_alpha = 0.12
-	var max_alpha = 1.0
-	if h >= 8.0 and h < 18.0: return max_alpha
-	if h >= 18.0 and h < 23.9: return remap(h, 18.0, 23.9, max_alpha, min_alpha)
-	if h >= 23.9 or h < 5.0: return min_alpha
-	if h >= 5.0 and h < 8.0: return remap(h, 5.0, 8.0, min_alpha, max_alpha)
+	var min_alpha = RPGSYSTEM.database.system.day_night_config.shadow_night_strength
+	var max_alpha = RPGSYSTEM.database.system.day_night_config.shadow_day_strength
+	
+	if h >= 8.0 and h < 18.0: 
+		return max_alpha
+	if h >= 18.0 and h < 23.9: 
+		return remap(h, 18.0, 23.9, max_alpha, min_alpha)
+	if h >= 23.9 or h < 5.0: 
+		return min_alpha
+	if h >= 5.0 and h < 8.0: 
+		return remap(h, 5.0, 8.0, min_alpha, max_alpha)
+	
 	return max_alpha
 
-
-# --- CACHE & HELPERS ---
 
 func _get_smart_used_rect(texture: Texture) -> Rect2:
 	if texture.resource_path.is_empty():
@@ -287,8 +270,7 @@ func set_drawing_textures() -> void:
 		current_map = GameManager.current_map
 
 	var day_night_data = DayNightManager.get_data()
-	@warning_ignore("incompatible_ternary")
-	var using_data = shadow_component if (not day_night_data or not DayNightManager.is_enabled()) else day_night_data
+	var using_data = day_night_data
 	var start_id = "shadow_" if using_data == day_night_data else ""
 
 	if not using_data or not current_map or (not GameManager.current_player and not in_editor_map):
@@ -323,11 +305,9 @@ func set_drawing_textures() -> void:
 
 	var screen_rect = Rect2() if not in_editor_map else get_visible_area_with_margin(EXTRA_MARGIN)
 
-	# COMPOSITE & SINGLE OFFSETS
 	var composite_correction_offset = Vector2(-current_map.tile_size.x, -current_map.tile_size.y)
 	var single_correction_offset = Vector2(current_map.tile_size.x * 0.5, current_map.tile_size.y)
 
-	# FIX 2: Preparamos datos del mapa para cálculo infinito
 	var map_size_tiles = current_map.get_map_size_in_tiles()
 	var infinite_x = current_map.infinite_horizontal_scroll
 	var infinite_y = current_map.infinite_vertical_scroll
@@ -345,31 +325,24 @@ func set_drawing_textures() -> void:
 		var inside_main_map = false
 
 		if in_editor_map:
-			# En editor usamos chequeo simple de rect
 			var data_offset = data.get("offset", Vector2.ZERO)
 			if screen_rect.has_point(data.position - data_offset):
 				inside_main_map = true
 		else:
-			# FIX 2: Lógica de Culling que entiende el Wrap Infinito
 			var diff_x = abs(tile_cell.x - player_current_tile.x)
 			if infinite_x:
-				# Si la distancia directa es grande, comprueba la distancia "dando la vuelta"
 				diff_x = min(diff_x, abs(diff_x - map_size_tiles.x))
 			
 			var diff_y = abs(tile_cell.y - player_current_tile.y)
 			if infinite_y:
 				diff_y = min(diff_y, abs(diff_y - map_size_tiles.y))
 
-			# Si la distancia (corregida o normal) está dentro del rango visual, se dibuja
 			if diff_x <= screen_tiles_size.x and diff_y <= screen_tiles_size.y:
 				inside_main_map = true
 
 		if not inside_main_map:
 			continue
 
-		# ----------------------------------------------------------------------
-		# COMPOSITE SPRITES
-		# ----------------------------------------------------------------------
 		if data.has("sprites") and data.has("main_node") and not data.sprites.is_empty():
 			var m_scale = data.main_node.scale
 			var m_rot = data.main_node.rotation
@@ -428,12 +401,8 @@ func set_drawing_textures() -> void:
 					"color": mask_color,
 					"region": region
 				})
-
-		# ----------------------------------------------------------------------
-		# SINGLE TEXTURE
-		# ----------------------------------------------------------------------
 		else:
-			var st: Texture = data.texture
+			var st: Texture = data.get("texture", null)
 			if not is_instance_valid(st): continue
 
 			var q_points = []
@@ -551,7 +520,6 @@ func _on_canvas1_draw():
 			continue
 			
 		if tile.type == "texture":
-			# Standard texture draw
 			var sprite_scale = tile.sprite_scale
 			var pos = tile.position
 			var texture = tile.texture
@@ -562,7 +530,6 @@ func _on_canvas1_draw():
 			%Canvas1.draw_texture_rect(texture, Rect2(adjusted_position, texture_size * sprite_scale), false, color)
 
 		elif tile.type == "polygon":
-			# Optimized safe polygon draw
 			var uvs = tile.uvs
 			if tile.get("is_cropped", false):
 				var rect = _get_smart_used_rect(tile.texture)

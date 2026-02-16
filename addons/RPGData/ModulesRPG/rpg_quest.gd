@@ -54,6 +54,9 @@ enum ItemType {
 ## Icon that will be displayed on the npc when this quest is ready to be delivered.
 @export var icon_completed: RPGIcon = RPGIcon.new("res://Scenes/QuestMarkers/quest_completed.tscn")
 
+## Icon that will be displayed on the npc when this quest is failed.
+@export var icon_failed: RPGIcon = RPGIcon.new("res://Scenes/QuestMarkers/quest_failed.tscn")
+
 ## Minimum party level required to start this quest
 @export var min_level: int = 0
 
@@ -134,7 +137,7 @@ func clear():
 	vars = ["is_repeatable", "default_unlocked", "keep_materials"]
 	for v in vars:
 		set(v, false)
-	for v in [icon_available, icon_progress, icon_completed, prerequisites, quests_unlocked, reward, multi_quests, target_event]:
+	for v in [icon_available, icon_progress, icon_completed, icon_failed, prerequisites, quests_unlocked, reward, multi_quests, target_event]:
 		v.clear()
 	type = QuestMode.TALK_TO_NPC
 	item_type = ItemType.ITEM
@@ -142,6 +145,7 @@ func clear():
 	icon_available.path = "res://Scenes/QuestMarkers/quest_available.tscn"
 	icon_progress.path = "res://Scenes/QuestMarkers/quest_in_progress.tscn"
 	icon_completed.path = "res://Scenes/QuestMarkers/quest_completed.tscn"
+	icon_failed.path = "res://Scenes/QuestMarkers/quest_failed.tscn"
 
 
 func clear_objetive() -> void:
@@ -162,4 +166,6 @@ func clone(value: bool = true) -> RPGQuest:
 	if new_quest.reward:
 		new_quest.reward = new_quest.reward.clone(value)
 	new_quest.target_event = new_quest.target_event.clone(value)
+	for v in ["icon_available", "icon_progress", "icon_completed", "icon_failed"]:
+		new_quest[v] = get(v).clone(value)
 	return new_quest

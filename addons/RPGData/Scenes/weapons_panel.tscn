@@ -392,6 +392,8 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 default_tabs = Array[String](["General", "Stats", "Properties", "Other"])
+drag_threshold = 10.0
+current_tab_unselected_text_outline_color = Color(0, 0, 0, 1)
 tab_name_base = ""
 background_color = Color(0, 0, 0, 0)
 tab_selected = null
@@ -451,7 +453,7 @@ size_flags_vertical = 6
 tooltip_text = "[title]Weapon Icon[/title]
 The image that is displayed together with the weapon name during gameplay. You can select an image in the [Select an Image] window that appears after clicking on this control.
 
-Mouse wheel click to erase de current image."
+Mouse wheel click to erase the current image."
 
 [node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer" unique_id=477688723]
 layout_mode = 2
@@ -645,11 +647,14 @@ text = "Tool/s:"
 
 [node name="Tools" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/HBoxContainer" unique_id=1200572524 instance=ExtResource("14_th10d")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(160, 0)
+custom_minimum_size = Vector2(420, 0)
 layout_mode = 2
 tooltip_text = "Convert this weapon into a tool that can trigger events. For it to work, you need to equip a weapon with a tool compatible with event activation. When attacking with that weapon (or with the weapon’s projectile), it will be able to trigger events that are activated by this/these tool(s).
 
-[Note]: You need to have a valid LPC weapon equipped for it to work."
+[Note]: You need to have a valid LPC weapon equipped for it to work.
+
+[Note 2]: Hold Ctrl or Shift to select more than one tool. Middle-click to reset the selected tools, and click outside the item list to close it."
+expand_icon = true
 selected = 0
 item_count = 1
 popup/item_0/text = "None"
@@ -1193,6 +1198,7 @@ wrap_mode = 1
 [connection signal="middle_click_pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer/AnimationButton" to="." method="_on_animation_button_middle_click_pressed"]
 [connection signal="middle_click_pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/HBoxContainer/LPCPartButton" to="." method="_on_lpc_part_button_middle_click_pressed"]
 [connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/HBoxContainer/LPCPartButton" to="." method="_on_lpc_part_button_pressed"]
+[connection signal="middle_click" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/HBoxContainer/Tools" to="." method="_on_tools_middle_click"]
 [connection signal="multi_selection_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/HBoxContainer/Tools" to="." method="_on_tools_multi_selection_changed"]
 [connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HBoxContainer/CopyParameters" to="." method="_on_copy_parameters_pressed"]
 [connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HBoxContainer/PasteParameters" to="." method="_on_paste_parameters_pressed"]

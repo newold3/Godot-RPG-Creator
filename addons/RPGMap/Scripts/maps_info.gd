@@ -13,6 +13,8 @@ func load_maps_info() -> void:
 	
 	if map_infos == null:
 		map_infos = MapInfos.new()
+	
+	map_infos.validate_and_clean_project()
 
 
 func fix_maps(data: Array) -> void:

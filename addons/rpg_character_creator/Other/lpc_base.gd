@@ -186,7 +186,7 @@ func _process(_delta: float) -> void:
 func _setup_contact_shape() -> void:
 	var node = get_node_or_null("%ContactArea")
 	if node and GameManager.current_map:
-		var tile_size = GameManager.current_map.tile_size
+		var tile_size: Vector2 = GameManager.get_map_tile_size()
 		var collision_shape = node.get_child(0)
 		var shape = collision_shape.shape
 		shape.size = tile_size * 0.8
@@ -202,7 +202,7 @@ func _expand_contact_shape(direction: Vector2) -> void:
 	if not node or not GameManager.current_map:
 		return
 
-	var tile_size: Vector2 = GameManager.current_map.tile_size
+	var tile_size: Vector2 = GameManager.get_map_tile_size()
 	var collision_shape: CollisionShape2D = node.get_child(0)
 	var shape: RectangleShape2D = collision_shape.shape
 
@@ -286,7 +286,7 @@ func _on_main_area_entered(area: Area2D) -> void:
 		var is_solid_contact = entity_is_solid and my_is_solid
 		
 		if entity_page:
-			var entity_id = str(entity.get_rid()) + "-Page#" + str(entity_page.page_id)
+			var entity_id = str(entity.get_rid()) + "-Page#" + str(entity_page._uniq_id)
 			if my_is_player and not entity_is_player:
 				var entity_page_launcher = entity_page.launcher
 				if entity_page_launcher in [RPGEventPage.LAUNCHER_MODE.ANY_CONTACT, RPGEventPage.LAUNCHER_MODE.PLAYER_COLLISION]:
@@ -297,7 +297,7 @@ func _on_main_area_entered(area: Area2D) -> void:
 					if entity_page_launcher == RPGEventPage.LAUNCHER_MODE.ANY_CONTACT:
 						_activate_event(entity, entity_page.list, entity_id, is_solid_contact)
 					else:
-						var entity_page_id = entity_page.get("id")
+						var entity_page_id = entity_page.get("_uniq_id")
 						var my_trigger_list = my_page.get("event_trigger_list")
 						if entity_page_id in my_trigger_list:
 							_activate_event(entity, entity_page.list, entity_id, is_solid_contact)
@@ -753,7 +753,8 @@ func get_shadow_data() -> Dictionary:
 		"feet_offset": 16
 	}
 	if GameManager.current_map:
-		shadow.cell = Vector2i(parent_body.global_position / Vector2(GameManager.current_map.tile_size))
+		var tile_size: Vector2 = GameManager.get_map_tile_size()
+		shadow.cell = Vector2i(parent_body.global_position / tile_size)
 	
 	return shadow
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=74 format=3 uid="uid://bf0drnfotes42"]
+[gd_scene format=3 uid="uid://bf0drnfotes42"]
 
 [ext_resource type="Script" uid="uid://cbhgoqcyh5gg5" path="res://addons/RPGData/Scripts/types_panel.gd" id="1_nycak"]
 [ext_resource type="PackedScene" uid="uid://ccipi0sikmjuu" path="res://addons/CustomControls/custom_tab_container.tscn" id="2_0tfot"]
@@ -28,7 +28,7 @@ texture = ExtResource("3_mwo22")
 texture_margin_left = 18.0
 texture_margin_right = 18.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0ufkh"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ua0j7"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -54,7 +54,7 @@ fill_to = Vector2(0.58547, 0)
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8ye30"]
 texture = SubResource("GradientTexture2D_rwjvt")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p0582"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_roffj"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -87,344 +87,6 @@ region = Rect2(192, 0, 24, 24)
 atlas = ExtResource("2_4hqja")
 region = Rect2(216, 0, 24, 24)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7unn2"]
-resource_local_to_scene = true
-content_margin_left = 3.0
-content_margin_right = 3.0
-bg_color = Color(1, 1, 1, 1)
-draw_center = false
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.113725, 0.133333, 0.160784, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pt0eh"]
-resource_local_to_scene = true
-draw_center = false
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-
-[sub_resource type="Gradient" id="Gradient_3obsl"]
-offsets = PackedFloat32Array(0, 0.369535, 1)
-colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_0tfot"]
-gradient = SubResource("Gradient_3obsl")
-fill_from = Vector2(0.547009, 1)
-fill_to = Vector2(0.559829, 0)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1g11c"]
-resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_0tfot")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_x5wwy"]
-resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_0tfot")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t6l2c"]
-resource_local_to_scene = true
-content_margin_left = 3.0
-content_margin_right = 3.0
-bg_color = Color(1, 1, 1, 1)
-draw_center = false
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.113725, 0.133333, 0.160784, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_outie"]
-resource_local_to_scene = true
-draw_center = false
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-
-[sub_resource type="Gradient" id="Gradient_mwo22"]
-offsets = PackedFloat32Array(0, 0.369535, 1)
-colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_mtkxg"]
-gradient = SubResource("Gradient_mwo22")
-fill_from = Vector2(0.547009, 1)
-fill_to = Vector2(0.559829, 0)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_j7khu"]
-resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_mtkxg")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2swl5"]
-resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_mtkxg")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wipmj"]
-resource_local_to_scene = true
-content_margin_left = 3.0
-content_margin_right = 3.0
-bg_color = Color(1, 1, 1, 1)
-draw_center = false
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.113725, 0.133333, 0.160784, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x5emt"]
-resource_local_to_scene = true
-draw_center = false
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0mqpa"]
-resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_mtkxg")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_arjw7"]
-resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_mtkxg")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ld2ir"]
-resource_local_to_scene = true
-content_margin_left = 3.0
-content_margin_right = 3.0
-bg_color = Color(1, 1, 1, 1)
-draw_center = false
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.113725, 0.133333, 0.160784, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ucqc6"]
-resource_local_to_scene = true
-draw_center = false
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vm4ah"]
-resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_mtkxg")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qmrra"]
-resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_mtkxg")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_htqwj"]
-resource_local_to_scene = true
-content_margin_left = 3.0
-content_margin_right = 3.0
-bg_color = Color(1, 1, 1, 1)
-draw_center = false
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.113725, 0.133333, 0.160784, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b3fyy"]
-resource_local_to_scene = true
-draw_center = false
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_l1hdm"]
-resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_mtkxg")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_se4nh"]
-resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_mtkxg")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l1gub"]
-resource_local_to_scene = true
-content_margin_left = 3.0
-content_margin_right = 3.0
-bg_color = Color(1, 1, 1, 1)
-draw_center = false
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.113725, 0.133333, 0.160784, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q7evm"]
-resource_local_to_scene = true
-draw_center = false
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jmija"]
-resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_mtkxg")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_oxwwd"]
-resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_mtkxg")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0tfot"]
-draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0, 0, 0, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8xw0h"]
-resource_local_to_scene = true
-content_margin_left = 3.0
-content_margin_right = 3.0
-bg_color = Color(1, 1, 1, 1)
-draw_center = false
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.113725, 0.133333, 0.160784, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yc18g"]
-resource_local_to_scene = true
-draw_center = false
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bieli"]
-resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_mtkxg")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kf8bn"]
-resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_mtkxg")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8tyno"]
-resource_local_to_scene = true
-content_margin_left = 3.0
-content_margin_right = 3.0
-bg_color = Color(1, 1, 1, 1)
-draw_center = false
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.113725, 0.133333, 0.160784, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bwq4m"]
-resource_local_to_scene = true
-draw_center = false
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7lqkn"]
-resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_mtkxg")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nry7y"]
-resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_mtkxg")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0qesd"]
-resource_local_to_scene = true
-content_margin_left = 3.0
-content_margin_right = 3.0
-bg_color = Color(1, 1, 1, 1)
-draw_center = false
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.113725, 0.133333, 0.160784, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sa1nb"]
-resource_local_to_scene = true
-draw_center = false
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1ugtn"]
-resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_mtkxg")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_w8oue"]
-resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_mtkxg")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qh580"]
-resource_local_to_scene = true
-content_margin_left = 3.0
-content_margin_right = 3.0
-bg_color = Color(1, 1, 1, 1)
-draw_center = false
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.113725, 0.133333, 0.160784, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ke3ba"]
-resource_local_to_scene = true
-draw_center = false
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_f8erh"]
-resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_mtkxg")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0l57i"]
-resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_mtkxg")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ua0j7"]
-resource_local_to_scene = true
-content_margin_left = 3.0
-content_margin_right = 3.0
-bg_color = Color(1, 1, 1, 1)
-draw_center = false
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.113725, 0.133333, 0.160784, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_roffj"]
-resource_local_to_scene = true
-draw_center = false
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fpr4q"]
-resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_mtkxg")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4p32c"]
-resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_mtkxg")
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fpr4q"]
 resource_local_to_scene = true
 content_margin_left = 3.0
@@ -445,15 +107,381 @@ border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
 
+[sub_resource type="Gradient" id="Gradient_3obsl"]
+offsets = PackedFloat32Array(0, 0.369535, 1)
+colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_0tfot"]
+gradient = SubResource("Gradient_3obsl")
+fill_from = Vector2(0.547009, 1)
+fill_to = Vector2(0.559829, 0)
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jcmcw"]
 resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_mtkxg")
+texture = SubResource("GradientTexture2D_0tfot")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kh2ng"]
 resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_0tfot")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ecrx6"]
+resource_local_to_scene = true
+content_margin_left = 3.0
+content_margin_right = 3.0
+bg_color = Color(1, 1, 1, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5u4bt"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="Gradient" id="Gradient_mwo22"]
+offsets = PackedFloat32Array(0, 0.369535, 1)
+colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_mtkxg"]
+gradient = SubResource("Gradient_mwo22")
+fill_from = Vector2(0.547009, 1)
+fill_to = Vector2(0.559829, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lrlyw"]
+resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_mtkxg")
 
-[node name="TypesPanel" type="HBoxContainer"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_444gy"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ynbwj"]
+resource_local_to_scene = true
+content_margin_left = 3.0
+content_margin_right = 3.0
+bg_color = Color(1, 1, 1, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fm3kw"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_eqqfj"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tltr7"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a62ci"]
+resource_local_to_scene = true
+content_margin_left = 3.0
+content_margin_right = 3.0
+bg_color = Color(1, 1, 1, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3xe0t"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4h4n6"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_h4qun"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k8tkj"]
+resource_local_to_scene = true
+content_margin_left = 3.0
+content_margin_right = 3.0
+bg_color = Color(1, 1, 1, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4lefs"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_np8fj"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_r5fsu"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2nt11"]
+resource_local_to_scene = true
+content_margin_left = 3.0
+content_margin_right = 3.0
+bg_color = Color(1, 1, 1, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wy6p8"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_spe7r"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8g36i"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n6gcd"]
+resource_local_to_scene = true
+content_margin_left = 3.0
+content_margin_right = 3.0
+bg_color = Color(1, 1, 1, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1nduf"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tfxtb"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_eyrpm"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0tfot"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h8qpq"]
+resource_local_to_scene = true
+content_margin_left = 3.0
+content_margin_right = 3.0
+bg_color = Color(1, 1, 1, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jjrgl"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kkfax"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_j2c6c"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_huh2b"]
+resource_local_to_scene = true
+content_margin_left = 3.0
+content_margin_right = 3.0
+bg_color = Color(1, 1, 1, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ilhlt"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_02446"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7jedj"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f2jjw"]
+resource_local_to_scene = true
+content_margin_left = 3.0
+content_margin_right = 3.0
+bg_color = Color(1, 1, 1, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2pofm"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_om4of"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ws0wx"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gp00a"]
+resource_local_to_scene = true
+content_margin_left = 3.0
+content_margin_right = 3.0
+bg_color = Color(1, 1, 1, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_511ti"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_h3chk"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_boi7v"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lshb4"]
+resource_local_to_scene = true
+content_margin_left = 3.0
+content_margin_right = 3.0
+bg_color = Color(1, 1, 1, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jr337"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8104c"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qprn0"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eek0i"]
+resource_local_to_scene = true
+content_margin_left = 3.0
+content_margin_right = 3.0
+bg_color = Color(1, 1, 1, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i0p8f"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7g77p"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cd0lk"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[node name="TypesPanel" type="HBoxContainer" unique_id=1327369552]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -462,31 +490,31 @@ grow_vertical = 2
 theme_override_constants/separation = 8
 script = ExtResource("1_nycak")
 
-[node name="MainColumn" type="PanelContainer" parent="."]
+[node name="MainColumn" type="PanelContainer" parent="." unique_id=1210932370]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_0fgwc")
 
-[node name="MarginContainer" type="MarginContainer" parent="MainColumn"]
+[node name="MarginContainer" type="MarginContainer" parent="MainColumn" unique_id=616577854]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer" unique_id=1595277266]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer" unique_id=827363415]
 layout_mode = 2
 
-[node name="Control" type="Control" parent="MainColumn/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Control" type="Control" parent="MainColumn/MarginContainer/VBoxContainer/HBoxContainer" unique_id=103827928]
 custom_minimum_size = Vector2(16, 0)
 layout_mode = 2
 
-[node name="ConfigDataTabs" parent="MainColumn/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("2_0tfot")]
+[node name="ConfigDataTabs" parent="MainColumn/MarginContainer/VBoxContainer/HBoxContainer" unique_id=743618606 instance=ExtResource("2_0tfot")]
 unique_name_in_owner = true
 clip_children = 0
 custom_minimum_size = Vector2(149, 32)
@@ -494,53 +522,55 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
 default_tabs = Array[String](["Equipment", "Items", "Weapons", "Armors", "Tools", "Skills", "Elements", "Rarities", "User Parameters", "User Statistics", "Main Parameters"])
+drag_threshold = 10.0
+current_tab_unselected_text_outline_color = Color(0, 0, 0, 1)
 tab_name_base = ""
 background_color = Color(0, 0, 0, 0)
 tab_selected = null
 stylebox_tab_selected = SubResource("StyleBoxTexture_roffj")
 
-[node name="CustomPanel" parent="MainColumn/MarginContainer/VBoxContainer" instance=ExtResource("4_ua0j7")]
+[node name="CustomPanel" parent="MainColumn/MarginContainer/VBoxContainer" unique_id=545366213 instance=ExtResource("4_ua0j7")]
 custom_minimum_size = Vector2(510, 160)
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_0ufkh")
-style1 = SubResource("StyleBoxFlat_0ufkh")
+theme_override_styles/panel = SubResource("StyleBoxFlat_ua0j7")
+style1 = SubResource("StyleBoxFlat_ua0j7")
 style2 = SubResource("StyleBoxTexture_8ye30")
-style3 = SubResource("StyleBoxFlat_p0582")
+style3 = SubResource("StyleBoxFlat_roffj")
 
-[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel"]
+[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel" unique_id=1095946862]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 6
 
-[node name="Tab1" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer"]
+[node name="Tab1" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer" unique_id=72612839]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="EquipmentTypesContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab1"]
+[node name="EquipmentTypesContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab1" unique_id=903870237]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_mwo22")
 
-[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab1/EquipmentTypesContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab1/EquipmentTypesContainer" unique_id=1035536567]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="VboxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab1/EquipmentTypesContainer/MarginContainer"]
+[node name="VboxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab1/EquipmentTypesContainer/MarginContainer" unique_id=1427645463]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 12
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab1/EquipmentTypesContainer/MarginContainer/VboxContainer"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab1/EquipmentTypesContainer/MarginContainer/VboxContainer" unique_id=863846947]
 layout_mode = 2
 text = "Equipment Types"
 
-[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab1/EquipmentTypesContainer/MarginContainer/VboxContainer/Label"]
+[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab1/EquipmentTypesContainer/MarginContainer/VboxContainer/Label" unique_id=1375646543]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -559,25 +589,25 @@ mouse_default_cursor_shape = 16
 texture_normal = SubResource("AtlasTexture_nfmol")
 texture_hover = SubResource("AtlasTexture_tbecf")
 
-[node name="EquipmentList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab1/EquipmentTypesContainer/MarginContainer/VboxContainer" instance=ExtResource("2_3qr2q")]
+[node name="EquipmentList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab1/EquipmentTypesContainer/MarginContainer/VboxContainer" unique_id=2097762316 instance=ExtResource("2_3qr2q")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_7unn2")
-theme_override_styles/focus = SubResource("StyleBoxFlat_7unn2")
-theme_override_styles/hovered = SubResource("StyleBoxFlat_pt0eh")
-theme_override_styles/selected = SubResource("StyleBoxTexture_1g11c")
-theme_override_styles/selected_focus = SubResource("StyleBoxTexture_x5wwy")
+theme_override_styles/panel = SubResource("StyleBoxFlat_fpr4q")
+theme_override_styles/focus = SubResource("StyleBoxFlat_fpr4q")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_4p32c")
+theme_override_styles/selected = SubResource("StyleBoxTexture_jcmcw")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_kh2ng")
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab1/EquipmentTypesContainer/MarginContainer/VboxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab1/EquipmentTypesContainer/MarginContainer/VboxContainer" unique_id=820358616]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab1/EquipmentTypesContainer/MarginContainer/VboxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab1/EquipmentTypesContainer/MarginContainer/VboxContainer/HBoxContainer2" unique_id=1894754488]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 text = "Name: "
 
-[node name="Name6LineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab1/EquipmentTypesContainer/MarginContainer/VboxContainer/HBoxContainer2" instance=ExtResource("6_xe17m")]
+[node name="Name6LineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab1/EquipmentTypesContainer/MarginContainer/VboxContainer/HBoxContainer2" unique_id=1186013238 instance=ExtResource("6_xe17m")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -585,7 +615,7 @@ size_flags_vertical = 4
 tooltip_text = "[title]Equipment Name[/title]
 Enter name for this data"
 
-[node name="IconPicker6" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab1/EquipmentTypesContainer/MarginContainer/VboxContainer/HBoxContainer2" instance=ExtResource("5_m5jdy")]
+[node name="IconPicker6" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab1/EquipmentTypesContainer/MarginContainer/VboxContainer/HBoxContainer2" unique_id=493103673 instance=ExtResource("5_m5jdy")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(72, 72)
 layout_mode = 2
@@ -593,12 +623,12 @@ size_flags_vertical = 6
 tooltip_text = "[title]Icon[/title]
 Image used in some menus to display this type
 
-Mouse wheel click to erase de current image."
+Mouse wheel click to erase the current image."
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab1/EquipmentTypesContainer/MarginContainer/VboxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab1/EquipmentTypesContainer/MarginContainer/VboxContainer" unique_id=732694178]
 layout_mode = 2
 
-[node name="AddItem6Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab1/EquipmentTypesContainer/MarginContainer/VboxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="AddItem6Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab1/EquipmentTypesContainer/MarginContainer/VboxContainer/HBoxContainer" unique_id=1304298344 instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -607,7 +637,7 @@ Add a new entry to the selected list."
 text = "Add Item"
 text_overrun_behavior = 3
 
-[node name="RemoveItem6Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab1/EquipmentTypesContainer/MarginContainer/VboxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="RemoveItem6Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab1/EquipmentTypesContainer/MarginContainer/VboxContainer/HBoxContainer" unique_id=1955735399 instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -616,33 +646,33 @@ Remove entry from the selected list."
 text = "Remove Item"
 text_overrun_behavior = 3
 
-[node name="Tab2" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer"]
+[node name="Tab2" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer" unique_id=1274771541]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="ItemTypeContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab2"]
+[node name="ItemTypeContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab2" unique_id=1356354276]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_mwo22")
 
-[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab2/ItemTypeContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab2/ItemTypeContainer" unique_id=1119718273]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab2/ItemTypeContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab2/ItemTypeContainer/MarginContainer" unique_id=390792823]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 12
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab2/ItemTypeContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab2/ItemTypeContainer/MarginContainer/VBoxContainer" unique_id=1909674053]
 layout_mode = 2
 text = "Item Types"
 
-[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab2/ItemTypeContainer/MarginContainer/VBoxContainer/Label"]
+[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab2/ItemTypeContainer/MarginContainer/VBoxContainer/Label" unique_id=1577717868]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -661,25 +691,25 @@ mouse_default_cursor_shape = 16
 texture_normal = SubResource("AtlasTexture_nfmol")
 texture_hover = SubResource("AtlasTexture_tbecf")
 
-[node name="ItemList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab2/ItemTypeContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_3qr2q")]
+[node name="ItemList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab2/ItemTypeContainer/MarginContainer/VBoxContainer" unique_id=1540717652 instance=ExtResource("2_3qr2q")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_t6l2c")
-theme_override_styles/focus = SubResource("StyleBoxFlat_t6l2c")
-theme_override_styles/hovered = SubResource("StyleBoxFlat_outie")
-theme_override_styles/selected = SubResource("StyleBoxTexture_j7khu")
-theme_override_styles/selected_focus = SubResource("StyleBoxTexture_2swl5")
+theme_override_styles/panel = SubResource("StyleBoxFlat_ecrx6")
+theme_override_styles/focus = SubResource("StyleBoxFlat_ecrx6")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_5u4bt")
+theme_override_styles/selected = SubResource("StyleBoxTexture_lrlyw")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_444gy")
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab2/ItemTypeContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab2/ItemTypeContainer/MarginContainer/VBoxContainer" unique_id=592484159]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab2/ItemTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab2/ItemTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1451867380]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 text = "Name: "
 
-[node name="Name5LineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab2/ItemTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("6_xe17m")]
+[node name="Name5LineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab2/ItemTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=2066192186 instance=ExtResource("6_xe17m")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -687,7 +717,7 @@ size_flags_vertical = 4
 tooltip_text = "[title]Item Name[/title]
 Enter name for this data"
 
-[node name="IconPicker5" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab2/ItemTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_m5jdy")]
+[node name="IconPicker5" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab2/ItemTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=216553447 instance=ExtResource("5_m5jdy")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(72, 72)
 layout_mode = 2
@@ -695,12 +725,12 @@ size_flags_vertical = 6
 tooltip_text = "[title]Icon[/title]
 Image used in some menus to display this type
 
-Mouse wheel click to erase de current image."
+Mouse wheel click to erase the current image."
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab2/ItemTypeContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab2/ItemTypeContainer/MarginContainer/VBoxContainer" unique_id=369494323]
 layout_mode = 2
 
-[node name="AddItem5Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab2/ItemTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="AddItem5Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab2/ItemTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1042647768 instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -709,7 +739,7 @@ Add a new entry to the selected list."
 text = "Add Item"
 text_overrun_behavior = 3
 
-[node name="RemoveItem5Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab2/ItemTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="RemoveItem5Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab2/ItemTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1839529195 instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -718,33 +748,33 @@ Remove entry from the selected list."
 text = "Remove Item"
 text_overrun_behavior = 3
 
-[node name="Tab3" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer"]
+[node name="Tab3" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer" unique_id=647724079]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="WeaponTypeContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab3"]
+[node name="WeaponTypeContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab3" unique_id=1940852566]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_mwo22")
 
-[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab3/WeaponTypeContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab3/WeaponTypeContainer" unique_id=1463322076]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab3/WeaponTypeContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab3/WeaponTypeContainer/MarginContainer" unique_id=1179671911]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 12
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab3/WeaponTypeContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab3/WeaponTypeContainer/MarginContainer/VBoxContainer" unique_id=1393992430]
 layout_mode = 2
 text = "Weapon Types"
 
-[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab3/WeaponTypeContainer/MarginContainer/VBoxContainer/Label"]
+[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab3/WeaponTypeContainer/MarginContainer/VBoxContainer/Label" unique_id=2088107780]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -763,25 +793,25 @@ mouse_default_cursor_shape = 16
 texture_normal = SubResource("AtlasTexture_nfmol")
 texture_hover = SubResource("AtlasTexture_tbecf")
 
-[node name="WeaponList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab3/WeaponTypeContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_3qr2q")]
+[node name="WeaponList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab3/WeaponTypeContainer/MarginContainer/VBoxContainer" unique_id=348834118 instance=ExtResource("2_3qr2q")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_wipmj")
-theme_override_styles/focus = SubResource("StyleBoxFlat_wipmj")
-theme_override_styles/hovered = SubResource("StyleBoxFlat_x5emt")
-theme_override_styles/selected = SubResource("StyleBoxTexture_0mqpa")
-theme_override_styles/selected_focus = SubResource("StyleBoxTexture_arjw7")
+theme_override_styles/panel = SubResource("StyleBoxFlat_ynbwj")
+theme_override_styles/focus = SubResource("StyleBoxFlat_ynbwj")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_fm3kw")
+theme_override_styles/selected = SubResource("StyleBoxTexture_eqqfj")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_tltr7")
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab3/WeaponTypeContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab3/WeaponTypeContainer/MarginContainer/VBoxContainer" unique_id=2119866783]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab3/WeaponTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab3/WeaponTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=2113891482]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 text = "Name: "
 
-[node name="Name3LineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab3/WeaponTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("6_xe17m")]
+[node name="Name3LineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab3/WeaponTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1181133027 instance=ExtResource("6_xe17m")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -789,7 +819,7 @@ size_flags_vertical = 4
 tooltip_text = "[title]Weapon Name[/title]
 Enter name for this data"
 
-[node name="IconPicker3" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab3/WeaponTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_m5jdy")]
+[node name="IconPicker3" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab3/WeaponTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1088517775 instance=ExtResource("5_m5jdy")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(72, 72)
 layout_mode = 2
@@ -797,12 +827,12 @@ size_flags_vertical = 6
 tooltip_text = "[title]Icon[/title]
 Image used in some menus to display this type
 
-Mouse wheel click to erase de current image."
+Mouse wheel click to erase the current image."
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab3/WeaponTypeContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab3/WeaponTypeContainer/MarginContainer/VBoxContainer" unique_id=1625388983]
 layout_mode = 2
 
-[node name="AddItem3Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab3/WeaponTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="AddItem3Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab3/WeaponTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=492680185 instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -811,7 +841,7 @@ Add a new entry to the selected list."
 text = "Add Item"
 text_overrun_behavior = 3
 
-[node name="RemoveItem3Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab3/WeaponTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="RemoveItem3Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab3/WeaponTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=562589014 instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -820,33 +850,33 @@ Remove entry from the selected list."
 text = "Remove Item"
 text_overrun_behavior = 3
 
-[node name="Tab4" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer"]
+[node name="Tab4" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer" unique_id=578782604]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="ArmorTypeContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab4"]
+[node name="ArmorTypeContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab4" unique_id=850300929]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_mwo22")
 
-[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab4/ArmorTypeContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab4/ArmorTypeContainer" unique_id=177837643]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab4/ArmorTypeContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab4/ArmorTypeContainer/MarginContainer" unique_id=683409237]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 12
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab4/ArmorTypeContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab4/ArmorTypeContainer/MarginContainer/VBoxContainer" unique_id=2057779420]
 layout_mode = 2
 text = "Armor Types"
 
-[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab4/ArmorTypeContainer/MarginContainer/VBoxContainer/Label"]
+[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab4/ArmorTypeContainer/MarginContainer/VBoxContainer/Label" unique_id=377433461]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -865,25 +895,25 @@ mouse_default_cursor_shape = 16
 texture_normal = SubResource("AtlasTexture_nfmol")
 texture_hover = SubResource("AtlasTexture_tbecf")
 
-[node name="ArmorList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab4/ArmorTypeContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_3qr2q")]
+[node name="ArmorList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab4/ArmorTypeContainer/MarginContainer/VBoxContainer" unique_id=754820734 instance=ExtResource("2_3qr2q")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_ld2ir")
-theme_override_styles/focus = SubResource("StyleBoxFlat_ld2ir")
-theme_override_styles/hovered = SubResource("StyleBoxFlat_ucqc6")
-theme_override_styles/selected = SubResource("StyleBoxTexture_vm4ah")
-theme_override_styles/selected_focus = SubResource("StyleBoxTexture_qmrra")
+theme_override_styles/panel = SubResource("StyleBoxFlat_a62ci")
+theme_override_styles/focus = SubResource("StyleBoxFlat_a62ci")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_3xe0t")
+theme_override_styles/selected = SubResource("StyleBoxTexture_4h4n6")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_h4qun")
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab4/ArmorTypeContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab4/ArmorTypeContainer/MarginContainer/VBoxContainer" unique_id=2124684749]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab4/ArmorTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab4/ArmorTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=295786458]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 text = "Name: "
 
-[node name="Name4LineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab4/ArmorTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("6_xe17m")]
+[node name="Name4LineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab4/ArmorTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1783215735 instance=ExtResource("6_xe17m")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -891,7 +921,7 @@ size_flags_vertical = 4
 tooltip_text = "[title]Armor Name[/title]
 Enter name for this data"
 
-[node name="IconPicker4" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab4/ArmorTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_m5jdy")]
+[node name="IconPicker4" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab4/ArmorTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=2019214505 instance=ExtResource("5_m5jdy")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(72, 72)
 layout_mode = 2
@@ -899,12 +929,12 @@ size_flags_vertical = 6
 tooltip_text = "[title]Icon[/title]
 Image used in some menus to display this type
 
-Mouse wheel click to erase de current image."
+Mouse wheel click to erase the current image."
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab4/ArmorTypeContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab4/ArmorTypeContainer/MarginContainer/VBoxContainer" unique_id=1112767976]
 layout_mode = 2
 
-[node name="AddItem4Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab4/ArmorTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="AddItem4Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab4/ArmorTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=593079196 instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -913,7 +943,7 @@ Add a new entry to the selected list."
 text = "Add Item"
 text_overrun_behavior = 3
 
-[node name="RemoveItem4Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab4/ArmorTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="RemoveItem4Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab4/ArmorTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1987144029 instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -922,33 +952,33 @@ Remove entry from the selected list."
 text = "Remove Item"
 text_overrun_behavior = 3
 
-[node name="Tab5" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer"]
+[node name="Tab5" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer" unique_id=1957242709]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="ToolTypeContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5"]
+[node name="ToolTypeContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5" unique_id=524288934]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_mwo22")
 
-[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer" unique_id=1285455428]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer" unique_id=1749049202]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 12
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer" unique_id=2063296533]
 layout_mode = 2
 text = "Tool Types"
 
-[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer/Label"]
+[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer/Label" unique_id=1498610112]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -967,25 +997,25 @@ mouse_default_cursor_shape = 16
 texture_normal = SubResource("AtlasTexture_nfmol")
 texture_hover = SubResource("AtlasTexture_tbecf")
 
-[node name="ToolList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_3qr2q")]
+[node name="ToolList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer" unique_id=2086677776 instance=ExtResource("2_3qr2q")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_ld2ir")
-theme_override_styles/focus = SubResource("StyleBoxFlat_ld2ir")
-theme_override_styles/hovered = SubResource("StyleBoxFlat_ucqc6")
-theme_override_styles/selected = SubResource("StyleBoxTexture_vm4ah")
-theme_override_styles/selected_focus = SubResource("StyleBoxTexture_qmrra")
+theme_override_styles/panel = SubResource("StyleBoxFlat_k8tkj")
+theme_override_styles/focus = SubResource("StyleBoxFlat_k8tkj")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_4lefs")
+theme_override_styles/selected = SubResource("StyleBoxTexture_np8fj")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_r5fsu")
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer" unique_id=361968933]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1341584980]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 text = "Name: "
 
-[node name="Name20LineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("6_xe17m")]
+[node name="Name20LineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=2011520106 instance=ExtResource("6_xe17m")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -993,7 +1023,7 @@ size_flags_vertical = 4
 tooltip_text = "[title]Armor Name[/title]
 Enter name for this data"
 
-[node name="IconPicker20" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_m5jdy")]
+[node name="IconPicker20" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1194878880 instance=ExtResource("5_m5jdy")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(72, 72)
 layout_mode = 2
@@ -1001,12 +1031,12 @@ size_flags_vertical = 6
 tooltip_text = "[title]Icon[/title]
 Image used in some menus to display this type
 
-Mouse wheel click to erase de current image."
+Mouse wheel click to erase the current image."
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer" unique_id=860524870]
 layout_mode = 2
 
-[node name="AddItem20Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="AddItem20Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=680145336 instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1015,7 +1045,7 @@ Add a new entry to the selected list."
 text = "Add Item"
 text_overrun_behavior = 3
 
-[node name="RemoveItem20Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="RemoveItem20Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=494089053 instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1024,33 +1054,33 @@ Remove entry from the selected list."
 text = "Remove Item"
 text_overrun_behavior = 3
 
-[node name="Tab6" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer"]
+[node name="Tab6" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer" unique_id=477600892]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="SkillTypeContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6"]
+[node name="SkillTypeContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6" unique_id=1812542378]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_mwo22")
 
-[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer" unique_id=922034257]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer" unique_id=758443781]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 12
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer" unique_id=875242486]
 layout_mode = 2
 text = "Skill Types"
 
-[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer/Label"]
+[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer/Label" unique_id=1969506216]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -1069,25 +1099,25 @@ mouse_default_cursor_shape = 16
 texture_normal = SubResource("AtlasTexture_nfmol")
 texture_hover = SubResource("AtlasTexture_tbecf")
 
-[node name="SkillList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_3qr2q")]
+[node name="SkillList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer" unique_id=135561305 instance=ExtResource("2_3qr2q")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_htqwj")
-theme_override_styles/focus = SubResource("StyleBoxFlat_htqwj")
-theme_override_styles/hovered = SubResource("StyleBoxFlat_b3fyy")
-theme_override_styles/selected = SubResource("StyleBoxTexture_l1hdm")
-theme_override_styles/selected_focus = SubResource("StyleBoxTexture_se4nh")
+theme_override_styles/panel = SubResource("StyleBoxFlat_2nt11")
+theme_override_styles/focus = SubResource("StyleBoxFlat_2nt11")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_wy6p8")
+theme_override_styles/selected = SubResource("StyleBoxTexture_spe7r")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_8g36i")
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer" unique_id=248769476]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1910082043]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 text = "Name: "
 
-[node name="Name2LineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("6_xe17m")]
+[node name="Name2LineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=675528817 instance=ExtResource("6_xe17m")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1095,7 +1125,7 @@ size_flags_vertical = 4
 tooltip_text = "[title]Skill Name[/title]
 Enter name for this data"
 
-[node name="IconPicker2" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_m5jdy")]
+[node name="IconPicker2" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=634916553 instance=ExtResource("5_m5jdy")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(72, 72)
 layout_mode = 2
@@ -1103,12 +1133,12 @@ size_flags_vertical = 6
 tooltip_text = "[title]Icon[/title]
 Image used in some menus to display this type
 
-Mouse wheel click to erase de current image."
+Mouse wheel click to erase the current image."
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer" unique_id=1939723027]
 layout_mode = 2
 
-[node name="AddItem2Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="AddItem2Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1557606576 instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1117,7 +1147,7 @@ Add a new entry to the selected list."
 text = "Add Item"
 text_overrun_behavior = 3
 
-[node name="RemoveItem2Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="RemoveItem2Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=441933220 instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1126,33 +1156,33 @@ Remove entry from the selected list."
 text = "Remove Item"
 text_overrun_behavior = 3
 
-[node name="Tab7" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer"]
+[node name="Tab7" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer" unique_id=297100074]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="ElementTypeContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7"]
+[node name="ElementTypeContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7" unique_id=380857499]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_mwo22")
 
-[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer" unique_id=315654860]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer" unique_id=1220552783]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 12
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer" unique_id=2098737923]
 layout_mode = 2
 text = "Element Types"
 
-[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer/Label"]
+[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer/Label" unique_id=1725969432]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -1171,25 +1201,25 @@ mouse_default_cursor_shape = 16
 texture_normal = SubResource("AtlasTexture_nfmol")
 texture_hover = SubResource("AtlasTexture_tbecf")
 
-[node name="ElementList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_3qr2q")]
+[node name="ElementList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer" unique_id=793733755 instance=ExtResource("2_3qr2q")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_l1gub")
-theme_override_styles/focus = SubResource("StyleBoxFlat_l1gub")
-theme_override_styles/hovered = SubResource("StyleBoxFlat_q7evm")
-theme_override_styles/selected = SubResource("StyleBoxTexture_jmija")
-theme_override_styles/selected_focus = SubResource("StyleBoxTexture_oxwwd")
+theme_override_styles/panel = SubResource("StyleBoxFlat_n6gcd")
+theme_override_styles/focus = SubResource("StyleBoxFlat_n6gcd")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_1nduf")
+theme_override_styles/selected = SubResource("StyleBoxTexture_tfxtb")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_eyrpm")
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer" unique_id=1168765638]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1174150300]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 text = "Name: "
 
-[node name="Name1LineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("6_xe17m")]
+[node name="Name1LineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=580240313 instance=ExtResource("6_xe17m")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1197,7 +1227,7 @@ size_flags_vertical = 4
 tooltip_text = "[title]Element Name[/title]
 Enter name for this data"
 
-[node name="IconPicker1" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_m5jdy")]
+[node name="IconPicker1" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=841654617 instance=ExtResource("5_m5jdy")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(72, 72)
 layout_mode = 2
@@ -1205,26 +1235,26 @@ size_flags_vertical = 6
 tooltip_text = "[title]Icon[/title]
 Image used in some menus to display this type
 
-Mouse wheel click to erase de current image."
+Mouse wheel click to erase the current image."
 
-[node name="ElementAttackColor" type="ColorPickerButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="ElementAttackColor" type="ColorPickerButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=155897916]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 tooltip_text = "Color for numbers in battle when this element is applied."
 mouse_default_cursor_shape = 2
 
-[node name="ColorizeElementNumbers" type="CheckBox" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="ColorizeElementNumbers" type="CheckBox" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1320072436]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "If you want the numbers in battle to appear colored with the attack color of this element when using an attack with this element, this option must be checked; otherwise, the default colors for attacks will be used."
 mouse_default_cursor_shape = 2
 text = "Colorize Numbers"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer" unique_id=548435717]
 layout_mode = 2
 
-[node name="AddItem1Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="AddItem1Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=197022548 instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1233,7 +1263,7 @@ Add a new entry to the selected list."
 text = "Add Item"
 text_overrun_behavior = 3
 
-[node name="RemoveItem1Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="RemoveItem1Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1279014744 instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1242,34 +1272,34 @@ Remove entry from the selected list."
 text = "Remove Item"
 text_overrun_behavior = 3
 
-[node name="Tab8" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer"]
+[node name="Tab8" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer" unique_id=538758952]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="ItemRariryContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8"]
+[node name="ItemRariryContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8" unique_id=1941011187]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_0tfot")
 
-[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer" unique_id=1723326084]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer" unique_id=407780389]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 12
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer" unique_id=314927229]
 layout_mode = 2
 text = "Item Rarity Types"
 
-[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer/Label"]
+[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer/Label" unique_id=1299786250]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -1288,35 +1318,35 @@ mouse_default_cursor_shape = 16
 texture_normal = SubResource("AtlasTexture_nfmol")
 texture_hover = SubResource("AtlasTexture_tbecf")
 
-[node name="ItemRarityList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_3qr2q")]
+[node name="ItemRarityList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer" unique_id=1186421496 instance=ExtResource("2_3qr2q")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_8xw0h")
-theme_override_styles/focus = SubResource("StyleBoxFlat_8xw0h")
-theme_override_styles/hovered = SubResource("StyleBoxFlat_yc18g")
-theme_override_styles/selected = SubResource("StyleBoxTexture_bieli")
-theme_override_styles/selected_focus = SubResource("StyleBoxTexture_kf8bn")
+theme_override_styles/panel = SubResource("StyleBoxFlat_h8qpq")
+theme_override_styles/focus = SubResource("StyleBoxFlat_h8qpq")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_jjrgl")
+theme_override_styles/selected = SubResource("StyleBoxTexture_kkfax")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_j2c6c")
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer" unique_id=1037887474]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=773441813]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer" unique_id=686844854]
 layout_mode = 2
 text = "Name:"
 
-[node name="Name5bLineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer" instance=ExtResource("6_xe17m")]
+[node name="Name5bLineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer" unique_id=1853783105 instance=ExtResource("6_xe17m")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Item Rarity Name[/title]
 Enter name for this data"
 
-[node name="ItemRarityColorButton" type="ColorPickerButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="ItemRarityColorButton" type="ColorPickerButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=310668760]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
@@ -1324,10 +1354,10 @@ tooltip_text = "[title]Rarity Color[/title]
 The text of the selected data will be drawn in the color specified here."
 mouse_default_cursor_shape = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer" unique_id=1779519677]
 layout_mode = 2
 
-[node name="AddItem5bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="AddItem5bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=849065308 instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1336,7 +1366,7 @@ Add a new entry to the selected list."
 text = "Add Item"
 text_overrun_behavior = 3
 
-[node name="RemoveItem5bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="RemoveItem5bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1592876746 instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1345,28 +1375,28 @@ Remove entry from the selected list."
 text = "Remove Item"
 text_overrun_behavior = 3
 
-[node name="WeaponjRariryContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8"]
+[node name="WeaponjRariryContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8" unique_id=1812594939]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_0tfot")
 
-[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer" unique_id=432087677]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="VboxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer"]
+[node name="VboxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer" unique_id=83889953]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 12
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer" unique_id=2094116546]
 layout_mode = 2
 text = "Weapon Rarity Types"
 
-[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer/Label"]
+[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer/Label" unique_id=1514862544]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -1385,35 +1415,35 @@ mouse_default_cursor_shape = 16
 texture_normal = SubResource("AtlasTexture_nfmol")
 texture_hover = SubResource("AtlasTexture_tbecf")
 
-[node name="WeaponRarityList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer" instance=ExtResource("2_3qr2q")]
+[node name="WeaponRarityList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer" unique_id=772136221 instance=ExtResource("2_3qr2q")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_8tyno")
-theme_override_styles/focus = SubResource("StyleBoxFlat_8tyno")
-theme_override_styles/hovered = SubResource("StyleBoxFlat_bwq4m")
-theme_override_styles/selected = SubResource("StyleBoxTexture_7lqkn")
-theme_override_styles/selected_focus = SubResource("StyleBoxTexture_nry7y")
+theme_override_styles/panel = SubResource("StyleBoxFlat_huh2b")
+theme_override_styles/focus = SubResource("StyleBoxFlat_huh2b")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_ilhlt")
+theme_override_styles/selected = SubResource("StyleBoxTexture_02446")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_7jedj")
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer" unique_id=589763705]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer/HBoxContainer2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer/HBoxContainer2" unique_id=1210419102]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer/HBoxContainer2/VBoxContainer"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer/HBoxContainer2/VBoxContainer" unique_id=245434913]
 layout_mode = 2
 text = "Name:"
 
-[node name="Name3bLineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer/HBoxContainer2/VBoxContainer" instance=ExtResource("6_xe17m")]
+[node name="Name3bLineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer/HBoxContainer2/VBoxContainer" unique_id=1834214617 instance=ExtResource("6_xe17m")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Weapon Rarity Name[/title]
 Enter name for this data"
 
-[node name="WeaponRarityColorButton" type="ColorPickerButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer/HBoxContainer2"]
+[node name="WeaponRarityColorButton" type="ColorPickerButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer/HBoxContainer2" unique_id=244700651]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
@@ -1421,10 +1451,10 @@ tooltip_text = "[title]Rarity Color[/title]
 The text of the selected data will be drawn in the color specified here."
 mouse_default_cursor_shape = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer" unique_id=433341817]
 layout_mode = 2
 
-[node name="AddItem3bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="AddItem3bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer/HBoxContainer" unique_id=2118297902 instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1433,7 +1463,7 @@ Add a new entry to the selected list."
 text = "Add Item"
 text_overrun_behavior = 3
 
-[node name="RemoveItem3bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="RemoveItem3bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer/HBoxContainer" unique_id=147316890 instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1442,28 +1472,28 @@ Remove entry from the selected list."
 text = "Remove Item"
 text_overrun_behavior = 3
 
-[node name="ArmorRariryContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8"]
+[node name="ArmorRariryContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8" unique_id=1738220466]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_0tfot")
 
-[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer" unique_id=989482581]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer" unique_id=933715610]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 12
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer" unique_id=1549763665]
 layout_mode = 2
 text = "Armor Rarity Types"
 
-[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer/Label"]
+[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer/Label" unique_id=921150557]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -1482,35 +1512,35 @@ mouse_default_cursor_shape = 16
 texture_normal = SubResource("AtlasTexture_nfmol")
 texture_hover = SubResource("AtlasTexture_tbecf")
 
-[node name="ArmorRarityList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_3qr2q")]
+[node name="ArmorRarityList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer" unique_id=591854386 instance=ExtResource("2_3qr2q")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_0qesd")
-theme_override_styles/focus = SubResource("StyleBoxFlat_0qesd")
-theme_override_styles/hovered = SubResource("StyleBoxFlat_sa1nb")
-theme_override_styles/selected = SubResource("StyleBoxTexture_1ugtn")
-theme_override_styles/selected_focus = SubResource("StyleBoxTexture_w8oue")
+theme_override_styles/panel = SubResource("StyleBoxFlat_f2jjw")
+theme_override_styles/focus = SubResource("StyleBoxFlat_f2jjw")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_2pofm")
+theme_override_styles/selected = SubResource("StyleBoxTexture_om4of")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_ws0wx")
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer" unique_id=447344156]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1678382800]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer" unique_id=1658334481]
 layout_mode = 2
 text = "Name:"
 
-[node name="Name4bLineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer" instance=ExtResource("6_xe17m")]
+[node name="Name4bLineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer" unique_id=16354766 instance=ExtResource("6_xe17m")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Armor Rarity Name[/title]
 Enter name for this data"
 
-[node name="ArmorRarityColorButton" type="ColorPickerButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="ArmorRarityColorButton" type="ColorPickerButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1011612172]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
@@ -1518,10 +1548,10 @@ tooltip_text = "[title]Rarity Color[/title]
 The text of the selected data will be drawn in the color specified here."
 mouse_default_cursor_shape = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer" unique_id=1997938190]
 layout_mode = 2
 
-[node name="AddItem4bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="AddItem4bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1797759506 instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1530,7 +1560,7 @@ Add a new entry to the selected list."
 text = "Add Item"
 text_overrun_behavior = 3
 
-[node name="RemoveItem4bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="RemoveItem4bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=134382743 instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1539,33 +1569,33 @@ Remove entry from the selected list."
 text = "Remove Item"
 text_overrun_behavior = 3
 
-[node name="Tab9" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer"]
+[node name="Tab9" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer" unique_id=44579119]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="UserParameterContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9"]
+[node name="UserParameterContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9" unique_id=713388940]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_mwo22")
 
-[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer" unique_id=349314983]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer" unique_id=1930724796]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 12
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer" unique_id=1863074766]
 layout_mode = 2
 text = "User Parameters"
 
-[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/Label"]
+[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/Label" unique_id=1275398257]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -1584,25 +1614,25 @@ mouse_default_cursor_shape = 16
 texture_normal = SubResource("AtlasTexture_nfmol")
 texture_hover = SubResource("AtlasTexture_tbecf")
 
-[node name="UserParametersList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_3qr2q")]
+[node name="UserParametersList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer" unique_id=286885762 instance=ExtResource("2_3qr2q")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_qh580")
-theme_override_styles/focus = SubResource("StyleBoxFlat_qh580")
-theme_override_styles/hovered = SubResource("StyleBoxFlat_ke3ba")
-theme_override_styles/selected = SubResource("StyleBoxTexture_f8erh")
-theme_override_styles/selected_focus = SubResource("StyleBoxTexture_0l57i")
+theme_override_styles/panel = SubResource("StyleBoxFlat_gp00a")
+theme_override_styles/focus = SubResource("StyleBoxFlat_gp00a")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_511ti")
+theme_override_styles/selected = SubResource("StyleBoxTexture_h3chk")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_boi7v")
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer" unique_id=1189423395]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+[node name="Label2" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=907009982]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 text = "Name: "
 
-[node name="Name6bLineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("6_xe17m")]
+[node name="Name6bLineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1475095446 instance=ExtResource("6_xe17m")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1610,7 +1640,7 @@ size_flags_vertical = 4
 tooltip_text = "[title]User Parameter Name[/title]
 Enter name for this data"
 
-[node name="IconPicker8" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("5_m5jdy")]
+[node name="IconPicker8" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=490142646 instance=ExtResource("5_m5jdy")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(72, 72)
 layout_mode = 2
@@ -1618,17 +1648,17 @@ size_flags_vertical = 6
 tooltip_text = "[title]Icon[/title]
 Image used in some menus to display this type
 
-Mouse wheel click to erase de current image."
+Mouse wheel click to erase the current image."
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer" unique_id=2125572665]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=374178057]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 text = "Value:"
 
-[node name="ParameterValue" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_jeof8")]
+[node name="ParameterValue" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=328686787 instance=ExtResource("5_jeof8")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1638,10 +1668,10 @@ allow_greater = true
 allow_lesser = true
 _custom_value = 0.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer" unique_id=897084783]
 layout_mode = 2
 
-[node name="AddItem6bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="AddItem6bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=374930888 instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1650,7 +1680,7 @@ Add a new entry to the selected list."
 text = "Add Item"
 text_overrun_behavior = 3
 
-[node name="RemoveItem6bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="RemoveItem6bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1389694609 instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1659,33 +1689,33 @@ Remove entry from the selected list."
 text = "Remove Item"
 text_overrun_behavior = 3
 
-[node name="Tab10" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer"]
+[node name="Tab10" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer" unique_id=870134904]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="UserStatsContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10"]
+[node name="UserStatsContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10" unique_id=1530515476]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_mwo22")
 
-[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer" unique_id=178208843]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer/MarginContainer" unique_id=1228535054]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 12
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer/MarginContainer/VBoxContainer" unique_id=660221026]
 layout_mode = 2
 text = "User Stats"
 
-[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer/MarginContainer/VBoxContainer/Label"]
+[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer/MarginContainer/VBoxContainer/Label" unique_id=1960269309]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -1704,35 +1734,35 @@ mouse_default_cursor_shape = 16
 texture_normal = SubResource("AtlasTexture_nfmol")
 texture_hover = SubResource("AtlasTexture_tbecf")
 
-[node name="UserStatsList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_3qr2q")]
+[node name="UserStatsList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer/MarginContainer/VBoxContainer" unique_id=149392255 instance=ExtResource("2_3qr2q")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_ua0j7")
-theme_override_styles/focus = SubResource("StyleBoxFlat_ua0j7")
-theme_override_styles/hovered = SubResource("StyleBoxFlat_roffj")
-theme_override_styles/selected = SubResource("StyleBoxTexture_fpr4q")
-theme_override_styles/selected_focus = SubResource("StyleBoxTexture_4p32c")
+theme_override_styles/panel = SubResource("StyleBoxFlat_lshb4")
+theme_override_styles/focus = SubResource("StyleBoxFlat_lshb4")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_jr337")
+theme_override_styles/selected = SubResource("StyleBoxTexture_8104c")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_qprn0")
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer/MarginContainer/VBoxContainer" unique_id=1703665030]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+[node name="Label2" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1168597584]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 text = "Name: "
 
-[node name="Name7bLineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer/MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("6_xe17m")]
+[node name="Name7bLineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1700759483 instance=ExtResource("6_xe17m")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]User Parameter Name[/title]
 Enter name for this data"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer/MarginContainer/VBoxContainer" unique_id=1017074894]
 layout_mode = 2
 
-[node name="AddItem7bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="AddItem7bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=975703868 instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1741,7 +1771,7 @@ Add a new entry to the selected list."
 text = "Add Item"
 text_overrun_behavior = 3
 
-[node name="RemoveItem7bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_wnm54")]
+[node name="RemoveItem7bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1474637355 instance=ExtResource("4_wnm54")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1750,33 +1780,33 @@ Remove entry from the selected list."
 text = "Remove Item"
 text_overrun_behavior = 3
 
-[node name="Tab11" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer"]
+[node name="Tab11" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer" unique_id=1590068013]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="MainParameterContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11"]
+[node name="MainParameterContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11" unique_id=25095961]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_mwo22")
 
-[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer" unique_id=1697101325]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer/MarginContainer" unique_id=632023972]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 12
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer/MarginContainer/VBoxContainer" unique_id=1919513764]
 layout_mode = 2
 text = "Main Parameters"
 
-[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer/MarginContainer/VBoxContainer/Label"]
+[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer/MarginContainer/VBoxContainer/Label" unique_id=243232816]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -1795,25 +1825,25 @@ mouse_default_cursor_shape = 16
 texture_normal = SubResource("AtlasTexture_nfmol")
 texture_hover = SubResource("AtlasTexture_tbecf")
 
-[node name="MainParametersList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_3qr2q")]
+[node name="MainParametersList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer/MarginContainer/VBoxContainer" unique_id=262315992 instance=ExtResource("2_3qr2q")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_fpr4q")
-theme_override_styles/focus = SubResource("StyleBoxFlat_fpr4q")
-theme_override_styles/hovered = SubResource("StyleBoxFlat_4p32c")
-theme_override_styles/selected = SubResource("StyleBoxTexture_jcmcw")
-theme_override_styles/selected_focus = SubResource("StyleBoxTexture_kh2ng")
+theme_override_styles/panel = SubResource("StyleBoxFlat_eek0i")
+theme_override_styles/focus = SubResource("StyleBoxFlat_eek0i")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_i0p8f")
+theme_override_styles/selected = SubResource("StyleBoxTexture_7g77p")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_cd0lk")
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer/MarginContainer/VBoxContainer" unique_id=903984614]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+[node name="Label2" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=233590730]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 text = "Name: "
 
-[node name="Name10LineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("6_xe17m")]
+[node name="Name10LineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1707166778 instance=ExtResource("6_xe17m")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1821,7 +1851,7 @@ size_flags_vertical = 4
 tooltip_text = "[title]User Parameter Name[/title]
 Enter name for this data"
 
-[node name="IconPicker10" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("5_m5jdy")]
+[node name="IconPicker10" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1473767880 instance=ExtResource("5_m5jdy")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(72, 72)
 layout_mode = 2
@@ -1829,7 +1859,7 @@ size_flags_vertical = 6
 tooltip_text = "[title]Icon[/title]
 Image used in some menus to display this type
 
-Mouse wheel click to erase de current image."
+Mouse wheel click to erase the current image."
 
 [connection signal="tab_changed" from="MainColumn/MarginContainer/VBoxContainer/HBoxContainer/ConfigDataTabs" to="." method="_on_config_data_tabs_tab_changed"]
 [connection signal="item_activated" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab1/EquipmentTypesContainer/MarginContainer/VboxContainer/EquipmentList" to="." method="_on_equipment_list_item_activated"]

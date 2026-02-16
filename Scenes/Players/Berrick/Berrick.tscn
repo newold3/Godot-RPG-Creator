@@ -875,17 +875,17 @@ region_enabled = true
 region_rect = Rect2(0, 640, 64, 64)
 region_filter_clip_enabled = true
 
-[node name="OffhandFront" type="Sprite2D" parent="FullBody" unique_id=1558337897]
-unique_name_in_owner = true
-position = Vector2(0, -32)
-region_enabled = true
-
 [node name="MainHandFront" type="Sprite2D" parent="FullBody" unique_id=789836917]
 unique_name_in_owner = true
 position = Vector2(0, -32)
 region_enabled = true
 region_rect = Rect2(0, 384, 192, 192)
 region_filter_clip_enabled = true
+
+[node name="OffhandFront" type="Sprite2D" parent="FullBody" unique_id=1558337897]
+unique_name_in_owner = true
+position = Vector2(0, -32)
+region_enabled = true
 
 [node name="CollisionShape" type="CollisionShape2D" parent="." unique_id=674624678]
 unique_name_in_owner = true

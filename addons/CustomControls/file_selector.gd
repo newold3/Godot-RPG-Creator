@@ -15,13 +15,13 @@ var is_selected: bool = false
 var is_enabled: bool = false
 var is_hidden: bool = false
 
+var _metadata_loaded: bool = false
+
 var cache_image: Texture2D
 
 @onready var cursor: ColorRect = %Cursor
 @onready var label: RichTextLabel = %Label
 @onready var icon: TextureRect = %Icon
-
-
 
 
 func _ready() -> void:
@@ -69,12 +69,13 @@ func _request_update_preview(_preview: String) -> void:
 	while FileCache.main_scene.preview_counter > FileCache.MAX_SIMULTANEOUS_PREVIEWS:
 		await get_tree().process_frame
 	FileCache.main_scene.preview_counter += 1
-	
+
 	if _preview and ResourceLoader.exists(_preview):
 		var img = load(_preview)
 		_update_image("", img, img, true)
 	else:
-		var preview_path = path.get_basename() + "_preview.png"
+		var base_dir = path.get_basename()
+		var preview_path = base_dir + "_preview.png"
 		if ResourceLoader.exists(preview_path):
 			var s = load(preview_path)
 			if s is Texture:
@@ -88,6 +89,11 @@ func _request_update_preview(_preview: String) -> void:
 			elif path.get_extension() == "tres" and FileCache.cache.images.has(path):
 				var img = load(path)
 				_update_image("", img, img, true)
+			elif path.get_extension() == "tres" and FileCache.cache.costumes.has(path):
+				var res: IngameCostume = load(path)
+				if FileAccess.file_exists(res.character_preview):
+					var img = load(res.character_preview)
+					_update_image("", img, img, true)
 			else:
 				var main_database = get_tree().get_nodes_in_group("main_database")
 				if main_database:
@@ -120,6 +126,89 @@ func _update_image(_path: String, preview: Texture, thumbnail_preview, using_cou
 
 func _on_mouse_entered() -> void:
 	cursor.visible = true
+	
+	if not _metadata_loaded:
+		_load_metadata_async()
+
+
+func _load_metadata_async() -> void:
+	_metadata_loaded = true
+	
+	if not FileAccess.file_exists(path) and not ResourceLoader.exists(path):
+		return
+
+	var ext = path.get_extension().to_lower()
+	var extra_info: String = ""
+	
+	var file_len = 0
+	
+	var file = FileAccess.open(path, FileAccess.READ)
+	if file:
+		file_len = file.get_length()
+		file.close()
+	
+	var size_str = String.humanize_size(file_len)
+
+	if ext in ["png", "jpg", "jpeg", "webp", "svg", "bmp", "tga"]:
+		var w = 0
+		var h = 0
+		var found = false
+		
+		if path.begins_with("res://") and ResourceLoader.exists(path):
+			var res = load(path)
+			if res is Texture2D:
+				w = res.get_width()
+				h = res.get_height()
+				found = true
+		
+		if not found:
+			var img = Image.load_from_file(path)
+			if img:
+				w = img.get_width()
+				h = img.get_height()
+				found = true
+		
+		if found:
+			extra_info += "\n[color=GRAY]Dimensions:[/color] %d x %d px" % [w, h]
+
+	elif ext in ["wav", "ogg", "mp3"]:
+		if ResourceLoader.exists(path):
+			var stream = load(path)
+			if stream is AudioStream:
+				var len_sec = stream.get_length()
+				
+				if len_sec < 60:
+					extra_info += "\n[color=GRAY]Duration:[/color] %.2f s" % len_sec
+				else:
+					var minutes = int(len_sec / 60)
+					var seconds = int(len_sec) % 60
+					extra_info += "\n[color=GRAY]Duration:[/color] %02d:%02d" % [minutes, seconds]
+
+	elif ext in ["tscn", "scn"]:
+		if ResourceLoader.exists(path):
+			var packed_scene = load(path)
+			if packed_scene is PackedScene:
+				var state = packed_scene.get_state()
+				if state and state.get_node_count() > 0:
+					var type = state.get_node_type(0)
+					extra_info += "\n[color=GRAY]Root Type:[/color] %s" % type
+	
+	var t = tooltip_text
+	if has_meta("current_tooltip"):
+		t = get_meta("current_tooltip")
+	
+	t = t.strip_edges()
+	
+	var separator = "[hr color=#444444 width=100%]"
+	
+	t += "\n" + separator
+	t += "\n[color=GRAY]Size:[/color] " + size_str
+	t += extra_info
+	
+	tooltip_text = t
+	set_meta("current_tooltip", t)
+	
+	CustomTooltipManager.replace_all_tooltips_with_custom(self)
 
 
 func _on_mouse_exited() -> void:

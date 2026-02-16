@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://bfjehgeo8wgo1"]
+[gd_scene format=3 uid="uid://bfjehgeo8wgo1"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_dbw7k"]
 [ext_resource type="Script" uid="uid://bjgo36yf2wf5p" path="res://addons/CustomControls/Dialogs/select_file_dialog.gd" id="2_ofpbr"]
@@ -171,7 +171,7 @@ animations = [{
 "speed": 15.0
 }]
 
-[node name="SelectFileDialog" type="Window" groups=["custom_file_dialog"]]
+[node name="SelectFileDialog" type="Window" unique_id=396582144 groups=["custom_file_dialog"]]
 disable_3d = true
 snap_2d_transforms_to_pixel = true
 snap_2d_vertices_to_pixel = true
@@ -187,7 +187,7 @@ theme = ExtResource("1_dbw7k")
 script = ExtResource("2_ofpbr")
 ignore_folders = Array[String](["res://addons/effekseer/", "res://Assets/EffekEffects/"])
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=146094923]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -195,7 +195,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_e8gxf")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1565349100]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -206,16 +206,16 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=37343642]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer"]
+[node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer" unique_id=327724175]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_4yvde")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Panel"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Panel" unique_id=563139792]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -227,17 +227,17 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer" unique_id=870019831]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer" unique_id=163689328]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=618143409]
 layout_mode = 2
 text = "Filter:"
 
-[node name="FilterLineEdit" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_b8num")]
+[node name="FilterLineEdit" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=337890573 instance=ExtResource("3_b8num")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -245,7 +245,7 @@ tooltip_text = "[title]Filter Files[/title]
 Type here to filter the list of files/and or folders shown in the list below."
 right_icon = ExtResource("4_tfgt2")
 
-[node name="RebuildCache" type="TextureButton" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="RebuildCache" type="TextureButton" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=2019336511]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -258,7 +258,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_2xaq3")
 texture_hover = SubResource("AtlasTexture_y1a5w")
 
-[node name="FavoriteButton" type="TextureButton" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="FavoriteButton" type="TextureButton" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=118654234]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
@@ -270,7 +270,7 @@ texture_normal = ExtResource("6_223sb")
 texture_pressed = ExtResource("7_cetms")
 texture_hover = ExtResource("8_5sdey")
 
-[node name="AllButton" type="TextureButton" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="AllButton" type="TextureButton" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1867454541]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
@@ -283,20 +283,20 @@ texture_normal = ExtResource("9_56g62")
 texture_pressed = ExtResource("10_umg3t")
 texture_hover = ExtResource("11_of5pj")
 
-[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer"]
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer" unique_id=1010675120]
 custom_minimum_size = Vector2(0, 4)
 layout_mode = 2
 
-[node name="DirectoryExtraControls1" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer"]
+[node name="DirectoryExtraControls1" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer" unique_id=2043167750]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/DirectoryExtraControls1"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/DirectoryExtraControls1" unique_id=1785465480]
 layout_mode = 2
 text = "Current Folder:"
 
-[node name="CurrentPath" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/DirectoryExtraControls1" instance=ExtResource("3_b8num")]
+[node name="CurrentPath" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/DirectoryExtraControls1" unique_id=584422366 instance=ExtResource("3_b8num")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -309,7 +309,7 @@ selecting_enabled = false
 disabled = true
 metadata/original_text = ""
 
-[node name="Back" type="TextureButton" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/DirectoryExtraControls1"]
+[node name="Back" type="TextureButton" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/DirectoryExtraControls1" unique_id=1228432663]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -320,7 +320,7 @@ texture_normal = SubResource("AtlasTexture_l75n7")
 texture_hover = SubResource("AtlasTexture_xk8xy")
 flip_h = true
 
-[node name="Next" type="TextureButton" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/DirectoryExtraControls1"]
+[node name="Next" type="TextureButton" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/DirectoryExtraControls1" unique_id=731454495]
 unique_name_in_owner = true
 visible = false
 modulate = Color(0.3137255, 0.3137255, 0.3137255, 0.40392157)
@@ -332,7 +332,7 @@ disabled = true
 texture_normal = SubResource("AtlasTexture_l75n7")
 texture_hover = SubResource("AtlasTexture_xk8xy")
 
-[node name="CreateFolder" type="TextureButton" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/DirectoryExtraControls1"]
+[node name="CreateFolder" type="TextureButton" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/DirectoryExtraControls1" unique_id=1425399031]
 layout_mode = 2
 size_flags_vertical = 4
 tooltip_text = "Click to create a new directory"
@@ -340,25 +340,25 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_7d665")
 texture_hover = SubResource("AtlasTexture_ybjcm")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer" unique_id=1309616443]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_top = 12
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/MarginContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/MarginContainer" unique_id=744891271]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_4yvde")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/MarginContainer/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/MarginContainer/PanelContainer" unique_id=1265109334]
 layout_mode = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/MarginContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/MarginContainer" unique_id=1789736517]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -367,7 +367,7 @@ script = ExtResource("6_7yi6c")
 scroll_duration = 0.3
 curve = ExtResource("7_0n0fi")
 
-[node name="FileContainer" type="FlowContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/MarginContainer/ScrollContainer"]
+[node name="FileContainer" type="FlowContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/MarginContainer/ScrollContainer" unique_id=1579982082]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -376,11 +376,11 @@ theme_override_constants/h_separation = 4
 theme_override_constants/v_separation = 4
 alignment = 1
 
-[node name="NoFilesFound" type="Control" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/MarginContainer"]
+[node name="NoFilesFound" type="Control" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/MarginContainer" unique_id=1647025432]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/MarginContainer/NoFilesFound"]
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/MarginContainer/NoFilesFound" unique_id=412306825]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -390,7 +390,7 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0.403922)
 
-[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/MarginContainer/NoFilesFound"]
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/MarginContainer/NoFilesFound" unique_id=2123256939]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -398,45 +398,45 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/MarginContainer/NoFilesFound/CenterContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/MarginContainer/NoFilesFound/CenterContainer" unique_id=1609882909]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "No files found"
 
-[node name="DirectoryExtraControls2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer"]
+[node name="DirectoryExtraControls2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer" unique_id=623822022]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/DirectoryExtraControls2"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/DirectoryExtraControls2" unique_id=1535995638]
 layout_mode = 2
 text = "File Name:"
 
-[node name="Filename" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/DirectoryExtraControls2" instance=ExtResource("3_b8num")]
+[node name="Filename" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/DirectoryExtraControls2" unique_id=1744588178 instance=ExtResource("3_b8num")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Current file name"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=307951251]
 layout_mode = 2
 alignment = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1407846372]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 4
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/MarginContainer" unique_id=1116261462]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/MarginContainer/VBoxContainer" unique_id=68860704]
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "Selected Path:"
 
-[node name="PathSelected" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/MarginContainer/VBoxContainer"]
+[node name="PathSelected" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/MarginContainer/VBoxContainer" unique_id=1311129382]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -445,7 +445,7 @@ theme_override_font_sizes/font_size = 18
 text = " -"
 text_overrun_behavior = 3
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_sp1nc")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=147206315 instance=ExtResource("5_sp1nc")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -454,7 +454,7 @@ tooltip_text = "[title]Ok[/title]
 Saves all changes and closes the windows."
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_sp1nc")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1045318696 instance=ExtResource("5_sp1nc")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -463,13 +463,14 @@ tooltip_text = "[title]Cancel[/title]
 Closes this window without saving any changes."
 text = "CANCEL"
 
-[node name="Loading" type="Control" parent="MarginContainer"]
+[node name="Loading" type="Control" parent="MarginContainer" unique_id=1205325084]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 metadata/_edit_group_ = true
 metadata/_edit_lock_ = true
 
-[node name="ColorRect" type="ColorRect" parent="MarginContainer/Loading"]
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/Loading" unique_id=701553640]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -479,7 +480,7 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0.403922)
 
-[node name="ColorRect2" type="TextureRect" parent="MarginContainer/Loading"]
+[node name="ColorRect2" type="TextureRect" parent="MarginContainer/Loading" unique_id=552284986]
 custom_minimum_size = Vector2(80, 60)
 layout_mode = 1
 anchors_preset = 12
@@ -493,7 +494,7 @@ grow_vertical = 0
 texture = SubResource("GradientTexture2D_0n0fi")
 expand_mode = 1
 
-[node name="Control" type="Control" parent="MarginContainer/Loading"]
+[node name="Control" type="Control" parent="MarginContainer/Loading" unique_id=722180687]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -503,15 +504,15 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="MarginContainer/Loading/Control"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="MarginContainer/Loading/Control" unique_id=125378074]
 unique_name_in_owner = true
 position = Vector2(-1, 0.5)
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_wjcc4")
 autoplay = "default"
-frame_progress = 0.370635
+frame_progress = 0.39651942
 
-[node name="Label" type="Label" parent="MarginContainer/Loading/Control"]
+[node name="Label" type="Label" parent="MarginContainer/Loading/Control" unique_id=2123952533]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -527,7 +528,7 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 32
 text = "One moment please, looking for files"
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1452158532]
 unique_name_in_owner = true
 
 [connection signal="gui_input" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer/FilterLineEdit" to="." method="_on_filter_line_edit_gui_input"]

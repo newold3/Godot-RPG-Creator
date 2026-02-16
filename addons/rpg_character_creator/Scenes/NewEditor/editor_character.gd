@@ -19,6 +19,10 @@ var gear_layers: PackedStringArray = [
 const GROUP_SKIN = ["body", "head", "ears", "nose"]
 const GROUP_HAIR = ["hair", "hairadd", "facial"]
 
+const HELP_LABEL = preload("uid://bei8c08qswgxh")
+var help_label_tween: Tween
+var help_label: Label
+
 var data: Dictionary
 var _thread: Thread = null
 var starting: bool = false
@@ -27,6 +31,8 @@ var editor_hidden_layers: Array[String] = []
 var tasks: Array = []
 var load_time_budget_ms: int = 10
 var auto_select_merge: bool = true
+
+var importing: bool = false
 
 # Stores the current color state for each layer to persist custom choices.
 # Keys: p_id, s_id, f_id (indices), p_raw, s_raw (numeric arrays), p_src (source key), p_grad (visual gradient)
@@ -47,6 +53,9 @@ const PART_BUTTON = preload("uid://cce7oe3b1jm21")
 const DEFAULT_TEXTURE = preload("uid://c2k4jiswpdy88")
 const PLUGIN_PATH = "res://addons/rpg_character_creator/"
 const PALETTE_BUTTON = preload("uid://mbnqbs4rwy66")
+
+const ACTOR_BASE_SCENE = preload("res://addons/rpg_character_creator/Other/actor_base_scene.tscn")
+const GENERIC_LPC_BASE_SCENE = preload("res://addons/rpg_character_creator/Other/generic_lpc_base_scene.tscn")
 const PARTS_ROOT_DIR = "res://Assets/Parts"
 const SET_FOLDER_NAME = "sets"
 const COSTUME_FOLDER_NAME = "costume"
@@ -59,6 +68,7 @@ signal data_loaded()
 #region Initialization
 
 func _ready() -> void:
+	%SaveTabContainer.get_tab_bar().mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	start()
 
 
@@ -88,6 +98,8 @@ func _on_data_loaded() -> void:
 	
 	if not current_part.is_empty():
 		select(current_part)
+	
+	update_tab_indicators()
 
 
 func _configure_initial_loadout() -> void:
@@ -132,8 +144,10 @@ func _configure_initial_loadout() -> void:
 
 ## Helper function to copy color configuration from one part to another.
 func _copy_part_colors(source_layer: String, target_layer: String) -> void:
-	var source = current_character.body_parts.get(source_layer)
-	var target = current_character.body_parts.get(target_layer)
+	var c1 = current_character.equipment_parts if source_layer in gear_layers else current_character.body_parts
+	var c2 = current_character.equipment_parts if target_layer in gear_layers else current_character.body_parts
+	var source = c1.get(source_layer)
+	var target = c2.get(target_layer)
 	
 	if not source or not target:
 		return
@@ -344,6 +358,7 @@ func set_data(_thread_callable: String = "") -> void:
 func _data_loaded() -> void:
 	data_loaded.emit()
 	%Character.set_animation_data(data.player_animations, data.weapon_animations)
+	%Character.weapon_data = data.gear["mainhand"]
 	request_visibility_update()
 
 
@@ -464,13 +479,24 @@ func _create_tabs() -> void:
 
 
 func _on_tab_gui_input(event: InputEvent, button: Button, layer: String) -> void:
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
-		if layer in editor_hidden_layers:
-			editor_hidden_layers.erase(layer)
-			button.modulate.a = 1.0
-		else:
-			editor_hidden_layers.append(layer)
-			button.modulate.a = 0.4
+	if event is InputEventMouseButton:
+		if event.pressed:
+			if event.button_index == MOUSE_BUTTON_RIGHT:
+				if layer in editor_hidden_layers:
+					editor_hidden_layers.erase(layer)
+					button.modulate.a = 1.0
+					button.accept_event()
+				else:
+					editor_hidden_layers.append(layer)
+					button.modulate.a = 0.4
+					button.accept_event()
+			elif event.button_index == MOUSE_BUTTON_MIDDLE:
+				install_part(layer, "none")
+				_on_part_button_pressed("", "", {})
+				request_visibility_update()
+				if layer == current_part:
+					parts_container.get_child(0).select()
+				button.accept_event()
 			
 		request_visibility_update()
 
@@ -554,6 +580,8 @@ func fill_bodies(id_selected: String) -> void:
 		if body.gender == gender_id:
 			bodies[body.name] = {
 				"id": key,
+				"body_id": body.get("body_id", race_id),
+				"head_id": body.get("head_id", race_id),
 				"name": body.name,
 				"head_type": body["head-type"],
 				"body_type": body["body-type"]
@@ -575,27 +603,27 @@ func fill_bodies(id_selected: String) -> void:
 
 func _get_body_parts(layer: String) -> Array:
 	var parts: Array = []
-	var race_id = %Races.get_item_metadata(%Races.get_selected_id())
 	
-	if race_id in data.characters.race and "configs" in data.characters.race[race_id]:
-		var configs: Dictionary = data.characters.race[race_id].configs
-		var current_head = current_character.head_type
-		var current_gender = current_character.gender
-		var current_body = current_character.body_type
-		
-		for config in configs.values():
-			if not layer in config: continue
-			
-			if (config.gender == current_gender and
-				config["body-type"] == current_body and
-				config["head-type"] == current_head):
-				parts = config[layer]
-				break
-				
+	if not %UnrestrictedMode.is_pressed():
+		var race_id = current_character.race
+		if race_id in data.characters.race and "configs" in data.characters.race[race_id]:
+			var configs = data.characters.race[race_id].configs
+			var body_cfg = configs.get(current_character.body_id, {})
+			parts = body_cfg.get(layer, [])
+	
+	if %UnrestrictedMode.is_pressed():
+		if data.characters.has(layer):
+			for item_id in data.characters[layer].keys():
+				if not parts.has(item_id):
+					parts.append(item_id)
+	
+	parts.sort()
 	return parts
 
 
 func _get_gear_parts(layer: String) -> Array:
+	if not data or not "gear" in data: return []
+	
 	var parts: Array = []
 	
 	if layer == "ammo":
@@ -644,7 +672,7 @@ func _fill_parts(layer: String, parts: Array) -> void:
 		var b = PART_BUTTON.instantiate()
 		b.name = part_id
 
-		b.tooltip_text = "%s - %s" % [layer.capitalize(), item_data.get("name", part_id)]
+		b.tooltip_text = "[title]%s[/title]\n\"%s\"" % [layer.capitalize(), item_data.get("name", part_id)]
 		
 		b.part_id = layer
 		b.item_id = item_data.item_id
@@ -680,7 +708,7 @@ func _fill_parts(layer: String, parts: Array) -> void:
 		if current_equipped_id == "none":
 			call_deferred("_select_button", b)
 	
-	_update_shaders()
+	#_update_shaders()
 
 
 func _clear_parts() -> void:
@@ -697,7 +725,39 @@ func _select_button(button: Control) -> void:
 	if not is_inside_tree(): return
 	await get_tree().process_frame
 	if is_instance_valid(button) and button.is_inside_tree() and not button.is_queued_for_deletion():
-		button.grab_focus()
+		button.select()
+
+
+func get_button(part_id: String, item_id: String) -> HeroEditorPartButton:
+	for button: HeroEditorPartButton in parts_container.get_children():
+		if button.part_id == part_id and button.item_id == item_id:
+			return button
+	
+	return null
+
+
+func update_tab_indicators() -> void:
+	for button in tabs_container.get_children():
+		if not button.has_method("enable_part_installed"):
+			continue
+
+		# Buttons are named with uppercase layer names (e.g., "JACKET")
+		var layer = button.name.to_lower()
+		
+		# Determine if it is a body part or gear to access the correct dictionary
+		var is_body_part = layer in body_layers or layer == "body" or layer == "head"
+		var collection = current_character.body_parts if is_body_part else current_character.equipment_parts
+		
+		if not collection:
+			continue
+
+		var part_resource = collection.get(layer)
+		
+		# Valid if the resource exists, has an ID, and is not "none"
+		var is_installed = part_resource and part_resource.part_id != "" and part_resource.part_id != "none"
+
+		button.enable_part_installed(is_installed)
+
 
 #endregion
 
@@ -706,7 +766,6 @@ func _select_button(button: Control) -> void:
 
 func _get_item_data(layer: String, item_id: String) -> Dictionary:
 	var item: Dictionary = {}
-	
 	var is_body_part = layer in body_layers or layer == "body" or layer == "head"
 	var current_data: Dictionary = data.characters if is_body_part else data.gear
 	
@@ -722,7 +781,6 @@ func _get_item_data(layer: String, item_id: String) -> Dictionary:
 		for texture_data in file_data.textures:
 			var head = texture_data.get("head", head_type)
 			var body = texture_data.get("body", body_type)
-			
 			if head == head_type and body == body_type:
 				valid_texture = texture_data
 				break
@@ -747,44 +805,35 @@ func _get_item_data(layer: String, item_id: String) -> Dictionary:
 	if "alt" in file_data: item["alt"] = file_data["alt"]
 	if "slotsalt" in file_data: item["slotsalt"] = file_data["slotsalt"]
 	if "slotshidden" in file_data: item["slotshidden"] = file_data["slotshidden"]
+	if "slotsset" in file_data: item["slotshidden"] = item.get("slotshidden", []) + file_data["slotsset"]
 	
 	var parent_layer = ""
-	if layer in ["head", "ears", "nose"]:
+	if file_data.get("parent") == "body" or layer in ["head", "ears", "nose"]:
 		parent_layer = "body"
 	elif layer in ["hairadd", "facial"]:
 		parent_layer = "hair"
 	
-	if parent_layer != "":
+	if parent_layer != "" and parent_layer != layer:
 		var lists_to_check = ["primarycolors", "secondarycolors", "fixedcolors"]
-		var needs_inheritance = false
 		for list_name in lists_to_check:
 			if item[list_name].is_empty():
-				needs_inheritance = true
-				break
-		
-		if needs_inheritance:
-			var parent_part_id = ""
-			
-			if parent_layer in ["body", "head"] or parent_layer in body_layers:
+				var parent_part_id = ""
 				var parent_res = current_character.body_parts.get(parent_layer)
 				if parent_res: parent_part_id = parent_res.part_id
-			
-			if parent_part_id == "" or parent_part_id == "none":
-				if parent_layer == "body": parent_part_id = "human"
-				elif parent_layer == "hair": parent_part_id = "afro"
-			
-			var parent_data = _get_raw_item_data_for_inheritance(parent_layer, parent_part_id)
-			
-			if not parent_data.is_empty():
-				for list_name in lists_to_check:
-					if item[list_name].is_empty():
-						item[list_name] = parent_data.get(list_name, []).duplicate()
+				
+				if parent_part_id == "" or parent_part_id == "none":
+					if parent_layer == "body": parent_part_id = "human"
+					elif parent_layer == "hair": parent_part_id = "afro"
+				
+				var parent_data = _get_raw_item_data_for_inheritance(parent_layer, parent_part_id)
+				if not parent_data.is_empty():
+					item[list_name] = parent_data.get(list_name, []).duplicate()
 
 	return item
 
 
 func _get_raw_item_data_for_inheritance(layer: String, item_id: String) -> Dictionary:
-	var current_data: Dictionary = data.characters # Asumimos que los padres (body/hair) siempre son characters
+	var current_data: Dictionary = data.characters
 	
 	if not layer in current_data or not item_id in current_data[layer]:
 		return {}
@@ -812,23 +861,33 @@ func install_part(layer: String, part_id: String) -> void:
 	if part_id == "none":
 		part_resource.clear()
 		part_resource.part_id = part_id
+		part_resource.layer_id = layer
 		part_resource.config_path = _fix_path(item_data.get("config_path", ""))
 		if layer == "mainhand":
 			var current_ammo = current_character.equipment_parts.get("ammo")
 			if current_ammo and current_ammo.part_id != "none" and not current_ammo.part_id.is_empty():
 				install_part("ammo", "none")
 		_recalculate_global_interactions()
+		update_tab_indicators()
 		return
 	
 	if not item_data.is_empty():
 		part_resource.part_id = part_id
+		part_resource.layer_id = layer
 		_update_part_resource(part_resource, item_data)
 		_configure_part_colors_from_cache(layer, part_resource, item_data)
 	else:
 		part_resource.clear()
 		part_resource.part_id = "none"
+		part_resource.layer_id = layer
 	
 	if layer == "mainhand":
+		if part_id == "boomerang":
+			_copy_part_colors("ammo", "mainhand")
+		else:
+			if current_part == "mainhand":
+				_sync_cache_from_character("mainhand")
+			
 		var allowed_ammo: Array = item_data.get("ammo", [])
 		var current_ammo_part = current_character.equipment_parts.get("ammo")
 		var current_ammo_id = current_ammo_part.part_id if current_ammo_part else "none"
@@ -842,36 +901,88 @@ func install_part(layer: String, part_id: String) -> void:
 					install_part("ammo", default_ammo)
 				else:
 					install_part("ammo", "none")
+	elif layer == "ammo":
+		if current_character.equipment_parts.mainhand.part_id == "boomerang":
+			_copy_part_colors("ammo", "mainhand")
 	
 	if layer == current_part:
+		_fill_edit_colors()
 		_refresh_active_keys()
 		
 	_recalculate_global_interactions()
+	update_tab_indicators()
 
 
 func _validate_and_update_all_parts() -> void:
+	var allowed_configs = _get_current_race_config()
+	var core = ["body", "head"]
+	var unrestricted = %UnrestrictedMode.is_pressed()
+
 	var all_layers = ["body", "head"] + Array(body_layers) + Array(gear_layers)
 	
 	for layer in all_layers:
 		var is_body_part = layer in body_layers or layer == "body" or layer == "head"
 		var collection = current_character.body_parts if is_body_part else current_character.equipment_parts
-		
 		if not collection: continue
 		
 		var part_resource = collection.get(layer)
+		var current_id = part_resource.part_id
 		
+		# Validation logic for Restricted Mode
+		if not unrestricted:
+			# We only restrict BODY parts based on race. Gear is ignored here.
+			if is_body_part:
+				if allowed_configs.has(layer):
+					# The race has this layer defined (e.g., specific ears).
+					# Check if the currently selected item is allowed.
+					var allowed_ids = allowed_configs[layer]
+					if current_id != "" and current_id != "none" and not allowed_ids.has(current_id):
+						install_part(layer, "none")
+						continue
+				elif not layer in core:
+					# The race does NOT define this layer (e.g., wings on a human).
+					# Since it's not a core part (body/head), we must clear it.
+					install_part(layer, "none")
+					continue
+		
+		# Re-install current part to ensure visuals are up to date
 		if part_resource.part_id != "" and part_resource.part_id != "none":
 			install_part(layer, part_resource.part_id)
 		
-		if part_resource.part_id == "none" and is_body_part:
-			var candidates = _get_body_parts(layer)
-			for candidate_id in candidates:
-				var item_data = _get_item_data(layer, candidate_id)
-				if not item_data.is_empty():
-					install_part(layer, candidate_id)
-					break
+		# Safety check: Core parts (Body/Head) must never be "none".
+		# If they are "none" (or were cleared above), pick the default from config.
+		if part_resource.part_id == "none" and (layer == "body" or layer == "head"):
+			if allowed_configs.has(layer) and not allowed_configs[layer].is_empty():
+				install_part(layer, allowed_configs[layer][0])
 	
 	_recalculate_global_interactions()
+
+
+func _get_current_race_config() -> Dictionary:
+	var race_id = current_character.race
+	if not data.characters.race.has(race_id): return {}
+	
+	var configs = data.characters.race[race_id].get("configs", {})
+	if configs.has(current_character.body_id):
+		return configs[current_character.body_id]
+		
+	return {}
+
+
+func _on_unrestricted_mode_toggled(_toggled_on: bool) -> void:
+	var found_active_tab = false
+	for btn in tabs_container.get_children():
+		if btn.button_pressed:
+			current_part = btn.name.to_lower()
+			found_active_tab = true
+			break
+	
+	if not found_active_tab:
+		current_part = "body"
+		
+	_validate_and_update_all_parts()
+	_select_tab(true, current_part)
+	update_tab_indicators()
 
 
 func _update_part_resource(resource: Resource, item_data: Dictionary) -> void:
@@ -901,10 +1012,13 @@ func _update_part_resource(resource: Resource, item_data: Dictionary) -> void:
 func _recalculate_global_interactions() -> void:
 	current_character.hidden_items.clear()
 	
+	var previous_alt_states = {}
 	var all_body_layers = ["body", "head"] + Array(body_layers)
+	
 	for layer in all_body_layers:
 		var part = current_character.body_parts.get(layer)
 		if part and "is_alt" in part:
+			previous_alt_states[layer] = part.is_alt
 			part.is_alt = false
 
 	for layer in gear_layers:
@@ -915,20 +1029,25 @@ func _recalculate_global_interactions() -> void:
 		var item_data = _get_item_data(layer, gear_part.part_id)
 		if item_data.is_empty(): continue
 		
-		if "slotsalt" in item_data:
-			var targets = item_data.slotsalt
-			if targets is Array:
-				for target_layer in targets:
-					var target_part = current_character.body_parts.get(target_layer)
-					if target_part and "is_alt" in target_part:
-						target_part.is_alt = true
+		var alt_targets = item_data.get("alt", []) if item_data.has("alt") else item_data.get("slotsalt", [])
+		if alt_targets is Array:
+			for target_layer in alt_targets:
+				var target_part = current_character.body_parts.get(target_layer)
+				if target_part and "is_alt" in target_part:
+					target_part.is_alt = true
 		
 		if "slotshidden" in item_data:
-			var targets = item_data.slotshidden
+			var targets = item_data["slotshidden"]
 			if targets is Array:
 				for target_id in targets:
 					if not target_id in current_character.hidden_items:
 						current_character.hidden_items.append(target_id)
+
+	for layer in all_body_layers:
+		var part = current_character.body_parts.get(layer)
+		if part and "is_alt" in part:
+			if previous_alt_states.get(layer, false) != part.is_alt:
+				%Character.update_part(layer)
 	
 	_refresh_weapon_images()
 	current_character.changed.emit()
@@ -936,7 +1055,6 @@ func _recalculate_global_interactions() -> void:
 
 func _refresh_weapon_images() -> void:
 	if not current_character: return
-	
 	if current_character.equipment_parts.mainhand.part_id in data.gear.mainhand:
 		var part_id = current_character.equipment_parts.mainhand.part_id
 		var current_data = data.gear.mainhand[part_id]
@@ -947,7 +1065,7 @@ func _refresh_weapon_images() -> void:
 			if not "body" in t or t.body != current_character.body_type:
 				continue
 			if "spritesheet" in t:
-				if t.spritesheet.ends_with("walk"):
+				if t.spritesheet.ends_with("walk") or t.spritesheet == "char_base":
 					images.idle = {
 						"back": t.back,
 						"front": t.front
@@ -980,6 +1098,20 @@ func _refresh_weapon_images() -> void:
 				"back": "res://addons/rpg_character_creator/textures/gear/mainhand/farm/fishingpole_fish_back.png",
 				"front": "res://addons/rpg_character_creator/textures/gear/mainhand/farm/fishingpole_fish_front.png"
 			}
+		if part_id == "boomerang": # add boomerang idle and walk:
+			var gender = "m" if current_character.gender == "male" else "f"
+			images.idle = {
+				"back": "res://addons/rpg_character_creator/textures/gear/ammo/boomerang/boomerang_walk_%sb.png" % gender,
+				"front": "res://addons/rpg_character_creator/textures/gear/ammo/boomerang/boomerang_walk_%sf.png" % gender
+			}
+			images.walk = {
+				"back": images.idle.back,
+				"front": images.idle.front
+			}
+			images.islash = {
+				"back": "res://addons/rpg_character_creator/textures/gear/ammo/boomerang/boomerang_islash_%sb.png" % gender,
+				"front": "res://addons/rpg_character_creator/textures/gear/ammo/boomerang/boomerang_islash_%sf.png" % gender
+			}
 	
 		%Character.set_extra_data(part_id, images, actions)
 
@@ -1001,15 +1133,26 @@ func _get_edit_targets() -> Array:
 	var node = %PartsGroup
 	var selected_idx = node.get_selected_id()
 	
+	var target_part = current_part
+	if current_part == "mainhand":
+		var weapon = current_character.equipment_parts.get("mainhand")
+		if weapon and weapon.part_id == "boomerang":
+			target_part = "ammo"
+
 	if selected_idx == -1:
-		return [current_part]
+		return [target_part]
 
 	var meta = node.get_item_metadata(selected_idx)
 	
 	if meta == "merge":
-		if current_part in GROUP_SKIN: return GROUP_SKIN
-		if current_part in GROUP_HAIR: return GROUP_HAIR
-		return [current_part]
+		if target_part in GROUP_SKIN: return GROUP_SKIN
+		if target_part in GROUP_HAIR: return GROUP_HAIR
+		return [target_part]
+	
+	if meta == "mainhand":
+		var weapon = current_character.equipment_parts.get("mainhand")
+		if weapon and weapon.part_id == "boomerang":
+			return ["ammo"]
 	
 	return [meta]
 
@@ -1017,27 +1160,30 @@ func _get_edit_targets() -> Array:
 ## Persists the current character state into the color cache.
 ## This is called when switching tabs so new buttons know if they should use custom colors.
 func _sync_cache_from_character(layer: String, modified_palette_idx: int = -1, new_src_key: String = "") -> void:
-	var is_body = layer in body_layers or layer == "body" or layer == "head"
-	var collection = current_character.body_parts if is_body else current_character.equipment_parts
+	var is_body_layer = layer in body_layers or layer == "body" or layer == "head"
+	var collection = current_character.body_parts if is_body_layer else current_character.equipment_parts
 	var part = collection.get(layer)
 	
 	if not part: return
 	
 	var item_data = _get_item_data(layer, part.part_id)
 
-	if item_data.is_empty() or part.part_id == "none":
-		var potential_parts: Array = []
-		if is_body:
-			potential_parts = _get_body_parts(layer)
-		else:
-			potential_parts = _get_gear_parts(layer)
+	if layer in GROUP_SKIN and layer != "body":
+		var has_any_presets = not item_data.get("primarycolors", []).is_empty() or \
+							  not item_data.get("secondarycolors", []).is_empty() or \
+							  not item_data.get("fixedcolors", []).is_empty()
 		
+		if not has_any_presets:
+			var body_res = current_character.body_parts.get("body")
+			if body_res:
+				item_data = _get_item_data("body", body_res.part_id)
+
+	if item_data.is_empty() or part.part_id == "none":
+		var potential_parts = _get_body_parts(layer) if is_body_layer else _get_gear_parts(layer)
 		for part_candidate in potential_parts:
 			if part_candidate != "none":
 				var candidate_data = _get_item_data(layer, part_candidate)
-				if not candidate_data.get("primarycolors", []).is_empty() or \
-				   not candidate_data.get("secondarycolors", []).is_empty() or \
-				   not candidate_data.get("fixedcolors", []).is_empty():
+				if not candidate_data.get("primarycolors", []).is_empty():
 					item_data = candidate_data
 					break
 	
@@ -1053,7 +1199,6 @@ func _sync_cache_from_character(layer: String, modified_palette_idx: int = -1, n
 		var old_cache = _layer_color_cache.get(layer, {})
 		var saved_key = old_cache.get(old_src_prop, "")
 		if saved_key != "": return saved_key
-			
 		return ""
 
 	var p_src = get_src_key.call("primarycolors", "current_primary_color_id", "p_src", 0)
@@ -1078,6 +1223,14 @@ func _sync_cache_from_character(layer: String, modified_palette_idx: int = -1, n
 	if old.has("f_grad"): cache_entry["f_grad"] = old.f_grad
 	
 	_layer_color_cache[layer] = cache_entry
+
+
+func _rebuild_color_cache() -> void:
+	_layer_color_cache.clear()
+	var all_layers = ["body", "head"] + Array(body_layers) + Array(gear_layers)
+	
+	for layer in all_layers:
+		_sync_cache_from_character(layer)
 
 
 ## Configures the colors of a new part based on the layer cache.
@@ -1198,36 +1351,47 @@ func _update_shaders() -> void:
 
 
 func _hightlight_color(palette_id: int, color_index: int) -> void:
-	%Character.set_highlight_color(current_part, true, palette_id, color_index)
+	var targets = _get_edit_targets()
+	
+	if palette_id == 0:
+		for target in targets:
+			%Character.set_highlight_color(target, false, 0, 0)
+		return
+
+	for target in targets:
+		var highlight_layer = target
+		
+		if target == "ammo":
+			var weapon = current_character.equipment_parts.get("mainhand")
+			if weapon and weapon.part_id == "boomerang":
+				highlight_layer = "mainhand"
+		
+		%Character.set_highlight_color(highlight_layer, true, palette_id, color_index)
 
 
 func _update_colors_for_button(button: HeroEditorPartButton) -> void:
-	var cache = _layer_color_cache.get(button.part_id)
+	if not is_instance_valid(button): return
+	
+	var layer_to_check = button.part_id
+	if button.part_id == "mainhand" and button.item_id == "boomerang":
+		layer_to_check = "ammo"
+	
+	var cache = _layer_color_cache.get(layer_to_check)
 	var btn_item_data = _get_item_data(button.part_id, button.item_id)
 	
 	var resolve_button_gradient = func(channel_char: String, list_name: String, src_prop: String) -> PackedColorArray:
-		# 1. Custom Color Check with Family Validation
 		if cache and cache.get(channel_char + "_id") == -1:
 			var source_key = cache.get(src_prop, "")
 			var presets = btn_item_data.get(list_name, [])
 			
-			# WILDCARD VISUAL LOGIC:
-			# If it's Legacy ("") OR if family matches -> PAINT CUSTOM
 			if source_key == "" or presets.has(source_key):
-				# A. Use Cached Gradient (Visual / Fine Tune)
 				var grad_data = cache.get(channel_char + "_grad", [])
 				if not grad_data.is_empty(): return grad_data
-				
-				# B. Fallback: Use RAW Data
 				var raw_data = cache.get(channel_char + "_raw", [])
 				if not raw_data.is_empty(): return get_gradient(raw_data)
 		
-		# 2. Preset Logic
 		var target_id = 0
 		if cache: target_id = cache.get(channel_char + "_id", 0)
-		
-		# If cache says -1 (Custom) but family DID NOT match above,
-		# force target_id to 0 (Default) so this button looks normal.
 		if target_id == -1: target_id = 0 
 		
 		return _get_gradient_for_color(target_id, btn_item_data, list_name)
@@ -1273,6 +1437,8 @@ func _fill_edit_colors() -> void:
 	var node = %PartsGroup
 	node.clear()
 	
+	var is_boomerang = current_part == "mainhand" and current_character.equipment_parts.mainhand.part_id == "boomerang"
+	
 	var group = []
 	var group_name = ""
 	
@@ -1287,18 +1453,15 @@ func _fill_edit_colors() -> void:
 		node.add_item(current_part.capitalize())
 		node.set_item_metadata(0, current_part)
 		node.select(0)
-		
 		if %SynchronizePalettes: %SynchronizePalettes.disabled = true
 	else:
 		node.add_item("Sync %s Layers" % group_name)
 		node.set_item_metadata(0, "merge")
-		
 		for layer in group:
 			node.add_item(" - " + layer.capitalize())
 			node.set_item_metadata(node.get_item_count() - 1, layer)
 		
 		if %SynchronizePalettes: %SynchronizePalettes.disabled = false
-		
 		if auto_select_merge:
 			node.select(0) 
 		else:
@@ -1319,14 +1482,11 @@ func _fill_palette_presets() -> void:
 	var targets = _get_edit_targets()
 	if targets.is_empty(): return
 	var active_layer = targets[0]
-
-	if not active_layer is String or active_layer.is_empty():
-		return
+	if not active_layer is String or active_layer.is_empty(): return
 
 	var current_data
-	var is_body = active_layer in body_layers or active_layer == "body" or active_layer == "head"
-	
-	if is_body:
+	var is_body_layer = active_layer in body_layers or active_layer == "body" or active_layer == "head"
+	if is_body_layer:
 		current_data = current_character.body_parts.get(active_layer)
 	else:
 		current_data = current_character.equipment_parts.get(active_layer)
@@ -1334,32 +1494,9 @@ func _fill_palette_presets() -> void:
 	if not current_data: return
 	
 	var item_data = _get_item_data(active_layer, current_data.part_id)
-	var is_fallback = false
-
-	if item_data.is_empty() or current_data.part_id == "none":
-		var potential_parts: Array = []
-		if is_body:
-			potential_parts = _get_body_parts(active_layer)
-		else:
-			potential_parts = _get_gear_parts(active_layer)
-		
-		for part_candidate in potential_parts:
-			if part_candidate != "none":
-				var candidate_data = _get_item_data(active_layer, part_candidate)
-				if not candidate_data.get("primarycolors", []).is_empty() or \
-				   not candidate_data.get("secondarycolors", []).is_empty() or \
-				   not candidate_data.get("fixedcolors", []).is_empty():
-					item_data = candidate_data
-					is_fallback = true
-					break
-
 	var palette_id = %PaletteSelector.get_selected_id()
-	
-	var palette = "primarycolors" 
-	if palette_id == 1: palette = "secondarycolors"
-	elif palette_id == 2: palette = "fixedcolors"
-	
-	var color_list = item_data.get(palette, [])
+	var palette_key = ["primarycolors", "secondarycolors", "fixedcolors"][palette_id]
+	var color_list = item_data.get(palette_key, [])
 	
 	var node = %PalettePresets
 	node.clear()
@@ -1369,15 +1506,9 @@ func _fill_palette_presets() -> void:
 	if color_list.is_empty():
 		node.add_item("There are no presets.")
 	else:
-		if palette_id == 0:
-			node.add_item("Primary Color Presets - Select...")
-			gradient_label.text = "Primary Gradient"
-		elif palette_id == 1:
-			node.add_item("Secondary Color Presets - Select...")
-			gradient_label.text = "Secondary Gradient"
-		else:
-			node.add_item("Tertiary Color Presets - Select...")
-			gradient_label.text = "Tertiary Gradient"
+		var labels = ["Primary", "Secondary", "Tertiary"]
+		node.add_item("%s Color Presets - Select..." % labels[palette_id])
+		gradient_label.text = "%s Gradient" % labels[palette_id]
 			
 		for key in color_list:
 			if data.colormaps[current_character.palette].items.has(key):
@@ -1388,187 +1519,153 @@ func _fill_palette_presets() -> void:
 				node.add_icon_item(tex, color.name)
 				node.set_item_metadata(node.get_item_count() - 1, key)
 
-	if is_fallback and not color_list.is_empty():
-		if node.get_item_count() > 1:
-			node.select(1)
-			
-		var first_key = color_list[0]
-		var map_data = _resolve_colors_from_map(data.colormaps[current_character.palette], first_key)
-		
-		if not map_data.is_empty():
-			var grad = get_gradient(map_data.colors)
-			if palette_id == 0:
-				current_data.palette1.colors = map_data.colors
-				current_data.palette1.blend_color = map_data.color
-				current_data.gradient1 = grad
-			elif palette_id == 1:
-				current_data.palette2.colors = map_data.colors
-				current_data.palette2.blend_color = map_data.color
-				current_data.gradient2 = grad
-			else:
-				current_data.palette3.colors = map_data.colors
-				current_data.palette3.blend_color = map_data.color
-				current_data.gradient3 = grad
-
-	var disabled1 = item_data.get("primarycolors", []).size() == 0
-	var disabled2 = item_data.get("secondarycolors", []).size() == 0
-	var disabled3 = item_data.get("fixedcolors", []).size() == 0
+	var has_primary = not item_data.get("primarycolors", []).is_empty()
+	var has_secondary = not item_data.get("secondarycolors", []).is_empty()
+	var has_tertiary = not item_data.get("fixedcolors", []).is_empty()
 	
-	%GradientFastButton1.set_disabled(disabled1)
-	%GradientFastButton2.set_disabled(disabled2)
-	%GradientFastButton3.set_disabled(disabled3)
+	%PaletteSelector.set_item_disabled(0, not has_primary)
+	%PaletteSelector.set_item_disabled(1, not has_secondary)
+	%PaletteSelector.set_item_disabled(2, not has_tertiary)
 	
-	%PaletteSelector.set_item_disabled(0, disabled1)
-	%PaletteSelector.set_item_disabled(1, disabled2)
-	%PaletteSelector.set_item_disabled(2, disabled3)
-	
-	var index = palette_id
-	var current_is_disabled = false
-	
-	if palette_id == 0 and disabled1: current_is_disabled = true
-	elif palette_id == 1 and disabled2: current_is_disabled = true
-	elif palette_id == 2 and disabled3: current_is_disabled = true
-	
-	if current_is_disabled:
-		if not disabled1: index = 0
-		elif not disabled2: index = 1
-		elif not disabled3: index = 2
-		else: index = 0
-		
-	if index != palette_id:
-		var btn = get_node_or_null("%%GradientFastButton%s" % (index + 1))
-		if btn: btn.set_pressed_no_signal(true)
-		%PaletteSelector.select(index)
+	%GradientFastButton1.set_disabled(item_data.get("primarycolors", []).is_empty())
+	%GradientFastButton2.set_disabled(item_data.get("secondarycolors", []).is_empty())
+	%GradientFastButton3.set_disabled(item_data.get("fixedcolors", []).is_empty())
 	
 	_fill_current_colors()
 
 
 func _fill_current_colors() -> void:
-	var targets = _get_edit_targets()
-	if targets.is_empty(): return
-	var active_layer = targets[0]
+	if not body_layers: return
 	
-	if not active_layer is String or active_layer.is_empty():
-		return
+	var targets = _get_edit_targets()
+	if !targets or targets.is_empty(): return
+	var active_layer = targets[0]
+	if !active_layer: return
 	
 	var palette_id = %PaletteSelector.get_selected_id()
 	var node = %CurentColorConatiner
 	for child in node.get_children():
 		child.queue_free()
-		node.remove_child(child)
-	
+
 	var current_data
-	var is_body = active_layer in body_layers or active_layer == "body" or active_layer == "head"
-	
-	if is_body:
+	if active_layer in body_layers or active_layer in ["body", "head"]:
 		current_data = current_character.body_parts.get(active_layer)
 	else:
 		current_data = current_character.equipment_parts.get(active_layer)
 	
 	if not current_data: return
 	
-	var palette: String
-	if palette_id == 0: palette = "palette1"
-	elif palette_id == 1: palette = "palette2"
-	else: palette = "palette3"
-
-	var colors = current_data[palette].colors
-	for i in range(2, colors.size(), 2):
-		var color = Color(int(colors[i+1]))
-
+	var palette_name = ["palette1", "palette2", "palette3"][palette_id]
+	var colors = current_data[palette_name].colors
+	
+	for i in range(0, colors.size(), 2):
+		var gradient_idx = colors[i]
+		var color_val = Color(int(colors[i+1]))
+		
 		var b = PALETTE_BUTTON.instantiate()
 		b.can_be_selected = false
-		b.target = {"palette_id": palette_id, "index": node.get_child_count(), "color": color}
+		
+		b.target = {
+			"palette_id": palette_id, 
+			"index": i / 2, 
+			"color": color_val
+		}
+		
 		b.pressed.connect(_on_palette_button_pressed)
-		b.mouse_entered.connect(_hightlight_color.bind(palette_id + 1, colors[i]))
+		b.mouse_entered.connect(_hightlight_color.bind(palette_id + 1, gradient_idx))
 		b.mouse_exited.connect(_hightlight_color.bind(0, 0))
 		node.add_child(b)
-		b.color = color
+		b.color = color_val
 
 
 func _apply_color_preset(color_key: String, is_specific_list: bool = false) -> void:
 	var targets = _get_edit_targets()
+	var is_boomerang_equipped = current_character.equipment_parts.mainhand.part_id == "boomerang"
+	
+	if is_boomerang_equipped:
+		if targets.has("ammo") and not targets.has("mainhand"): targets.append("mainhand")
+		elif targets.has("mainhand") and not targets.has("ammo"): targets.append("ammo")
+
 	var color_map = data.colormaps.get(current_character.palette)
-	
 	if not color_map: return
-	
 	var color_data_global = _resolve_colors_from_map(color_map, color_key)
 	if color_data_global.is_empty(): return
 	
-	var global_colors = color_data_global.colors
-	var global_blend = color_data_global.color
-	var global_gradient = get_gradient(global_colors)
-	
-	var active_layer = targets[0]
 	var palette_idx = %PaletteSelector.get_selected_id()
-	var list_name = "primarycolors"
-	match palette_idx:
-		1: list_name = "secondarycolors"
-		2: list_name = "fixedcolors"
-	
-	var source_index = -1
-	if is_specific_list:
-		var is_body_active = active_layer in body_layers or active_layer == "body" or active_layer == "head"
-		var collection_active = current_character.body_parts if is_body_active else current_character.equipment_parts
-		var part_active = collection_active.get(active_layer)
-		if part_active and part_active.part_id != "none":
-			var active_item_data = _get_item_data(active_layer, part_active.part_id)
-			var active_list = active_item_data.get(list_name, [])
-			source_index = active_list.find(color_key)
-
+	var list_name = ["primarycolors", "secondarycolors", "fixedcolors"][palette_idx]
 	active_preset_keys[palette_idx] = color_key
 
 	for target_layer in targets:
-		var is_body_part = target_layer in body_layers or target_layer == "body" or target_layer == "head"
-		var collection = current_character.body_parts if is_body_part else current_character.equipment_parts
-		
-		var part_resource = collection.get(target_layer)
-		if not part_resource: continue 
-		
-		var is_empty_slot = (part_resource.part_id == "none" or part_resource.part_id.is_empty())
-		var final_index = -1
-		
-		if is_empty_slot:
-			final_index = source_index
-		else:
-			var item_data = _get_item_data(target_layer, part_resource.part_id)
-			var list = item_data.get(list_name, [])
-			
-			final_index = list.find(color_key) 
-			
-			if final_index == -1 and source_index != -1:
-				if source_index < list.size():
-					final_index = source_index 
-		
-		match palette_idx:
-			0:
-				part_resource.palette1.colors = global_colors
-				part_resource.palette1.blend_color = global_blend
-				part_resource.gradient1 = global_gradient
-				part_resource.current_primary_color_id = final_index
-			1:
-				part_resource.palette2.colors = global_colors
-				part_resource.palette2.blend_color = global_blend
-				part_resource.gradient2 = global_gradient
-				part_resource.current_secondary_color_id = final_index
-			2:
-				part_resource.palette3.colors = global_colors
-				part_resource.palette3.blend_color = global_blend
-				part_resource.gradient3 = global_gradient
-				part_resource.current_fixed_color_id = final_index
+		var coll = current_character.body_parts if target_layer in body_layers or target_layer in ["body", "head"] else current_character.equipment_parts
+		var res = coll.get(target_layer)
+		if not res: continue 
+
+		var item_data = _get_item_data(target_layer, res.part_id)
+		var local_preset_id = item_data.get(list_name, []).find(color_key)
+
+		var p_res = [res.palette1, res.palette2, res.palette3][palette_idx]
+		var g_prop = ["gradient1", "gradient2", "gradient3"][palette_idx]
+		var id_prop = ["current_primary_color_id", "current_secondary_color_id", "current_fixed_color_id"][palette_idx]
+
+		p_res.colors = color_data_global.colors.duplicate()
+		p_res.blend_color = color_data_global.color
+		res.set(g_prop, get_gradient(color_data_global.colors))
+		res.set(id_prop, local_preset_id)
 		
 		_sync_cache_from_character(target_layer, palette_idx, color_key)
-		
-		if not is_empty_slot:
-			%Character.update_part(target_layer)
+		if res.part_id != "none": %Character.update_part(target_layer)
 
 	_update_shaders()
-	
 	for button in parts_container.get_children():
-		if button is HeroEditorPartButton:
-			_update_colors_for_button(button)
-			
+		if button is HeroEditorPartButton: _update_colors_for_button(button)
 	_fill_current_colors()
+
+
+func backup() -> void:
+	set_meta("_backups", [
+		%Palettes.get_selected_id(),
+		%Races.get_selected_id(),
+		%Gender.get_selected_id(),
+		%Body.get_selected_id(),
+		%SaveMode.get_selected_id(),
+		%CharacterName.text,
+		%CharacterFolder.text,
+		%ShowWeapon.is_pressed(),
+		%MakeInmutable.is_pressed()
+	])
+
+
+func refresh() -> void:
+	if has_meta("_backups"):
+		var meta = get_meta("_backups")
+		%Palettes.select(meta[0])
+		%Palettes.text = %Palettes.get_item_text(meta[0])
+		%Races.select(meta[1])
+		%Races.text = %Races.get_item_text(meta[1])
+		%Gender.select(meta[2])
+		%Gender.text = %Gender.get_item_text(meta[2])
+		%Body.select(meta[3])
+		%Body.text = %Body.get_item_text(meta[3])
+		%SaveMode.select(meta[4])
+		%SaveMode.text = %SaveMode.get_item_text(meta[4])
+		%CharacterName.text = meta[5]
+		%CharacterFolder.text = meta[6]
+		%ShowWeapon.set_pressed_no_signal(meta[7])
+		%MakeInmutable.set_pressed_no_signal(meta[8])
+		remove_meta("_backups")
+		
+	var last_tab = current_part
+		
+	%Character.set_character(current_character, editor_hidden_layers)
+	
+	if not last_tab.is_empty():
+		for btn in tabs_container.get_children():
+			if btn.name.to_lower() == last_tab:
+				btn.set_pressed_no_signal(true)
+		
+		var parts = _get_body_parts(last_tab) if last_tab in body_layers else _get_gear_parts(last_tab)
+		_fill_parts(last_tab, parts)
+		_fill_edit_colors()
 
 
 func _refresh_active_keys() -> void:
@@ -1612,6 +1709,8 @@ func select(layer: String) -> void:
 
 
 func _on_palettes_item_selected(index: int) -> void:
+	if importing: return
+	
 	var palette_id = %Palettes.get_item_metadata(index)
 	
 	current_character.palette = palette_id
@@ -1672,6 +1771,8 @@ func _apply_palette_update_to_part(resource: Resource, item_data: Dictionary, ne
 
 
 func _on_races_item_selected(index: int) -> void:
+	if importing: return
+	
 	var race_id = %Races.get_item_metadata(index)
 	if !race_id:
 		return
@@ -1682,6 +1783,8 @@ func _on_races_item_selected(index: int) -> void:
 
 
 func _on_gender_item_selected(index: int) -> void:
+	if importing: return
+	
 	var gender_id = %Gender.get_item_metadata(index)
 	if !gender_id:
 		return
@@ -1691,15 +1794,27 @@ func _on_gender_item_selected(index: int) -> void:
 
 
 func _on_body_item_selected(index: int) -> void:
+	if importing: return
+	
 	var body_data = %Body.get_item_metadata(index)
-	if !body_data:
-		return
+	if !body_data: return
 
 	current_character.body_id = body_data.id
 	current_character.body_type = body_data.body_type
 	current_character.head_type = body_data.head_type
 	
+	install_part("body", body_data.body_id)
+	install_part("head", body_data.head_id)
+	
 	_validate_and_update_all_parts()
+	
+	_apply_default_preset_for_layer("body")
+	_apply_default_preset_for_layer("head")
+	
+	current_part = "body"
+	
+	_fill_edit_colors()
+	_fill_palette_presets()
 	
 	if starting:
 		select("eyes")
@@ -1707,22 +1822,48 @@ func _on_body_item_selected(index: int) -> void:
 		select(current_part)
 
 
+func _apply_default_preset_for_layer(layer: String) -> void:
+	var res = current_character.body_parts.get(layer)
+	if not res: return
+	
+	var item_data = _get_item_data(layer, res.part_id)
+	var presets = item_data.get("primarycolors", [])
+	
+	if presets.is_empty(): return
+	
+	if res.current_primary_color_id < 0 or res.current_primary_color_id >= presets.size():
+		var target_key = presets[0]
+		_apply_color_preset(target_key, true)
+
+
+func refresh_part_buttons() -> void:
+	_select_tab.call_deferred(true, current_part)
+
+
 func _select_tab(value: bool, layer: String) -> void:
 	if value:
 		current_part = layer
-		_sync_cache_from_character(layer)
 		
+		var effective_layer = layer
+		if layer == "mainhand":
+			var weapon = current_character.equipment_parts.get("mainhand")
+			if weapon and weapon.part_id == "boomerang":
+				effective_layer = "ammo"
+		
+		_sync_cache_from_character(effective_layer)
 		_refresh_active_keys()
+		
 		var parts: Array
 		if layer in body_layers:
 			parts = _get_body_parts(layer)
 		else:
 			parts = _get_gear_parts(layer)
+			
 		_fill_parts(layer, parts)
 		_fill_edit_colors()
 
 
-func _on_part_button_pressed(layer: String, part_id: String, _item_data: Dictionary) -> void:
+func _on_part_button_pressed(_layer: String, _part_id: String, _item_data: Dictionary) -> void:
 	tasks.clear()
 	_fill_palette_presets.call_deferred()
 	_update_shaders.call_deferred()
@@ -1752,6 +1893,11 @@ func _open_color_dialog(item_id: int, palette: String, color: Color) -> void:
 func _on_color_dialog_preview_color(color: Color, palette: String, item_id: int) -> void:
 	var targets = _get_edit_targets()
 	
+	var is_boomerang_equipped = current_character.equipment_parts.mainhand.part_id == "boomerang"
+	if is_boomerang_equipped and (targets.has("ammo") or targets.has("mainhand")):
+		if not targets.has("ammo"): targets.append("ammo")
+		if not targets.has("mainhand"): targets.append("mainhand")
+	
 	for target_layer in targets:
 		var is_body = target_layer in body_layers or target_layer == "body" or target_layer == "head"
 		var collection = current_character.body_parts if is_body else current_character.equipment_parts
@@ -1764,80 +1910,57 @@ func _on_color_dialog_preview_color(color: Color, palette: String, item_id: int)
 			current_data[palette].colors[target_index] = color.to_rgba32()
 			current_data["gradient%s" % palette.right(1)] = get_gradient(current_data[palette].colors)
 		
-		%Character.update_part(target_layer)
+		var palette_num = palette.right(1) # Extract "1", "2" o "3"
+		var grad_val = current_data["gradient" + palette_num]
+		
+		%Character.set_part_shader_parameter(target_layer, "palette" + palette_num, grad_val)
 
 
 func _on_color_dialog_color_selected(color: Color, palette: String, item_id: int, original_color: Color) -> void:
 	var targets = _get_edit_targets()
-	var something_changed = false
 	
+	var is_boomerang_equipped = current_character.equipment_parts.mainhand.part_id == "boomerang"
+	if is_boomerang_equipped:
+		if (targets.has("ammo") or targets.has("mainhand")):
+			if not targets.has("ammo"): targets.append("ammo")
+			if not targets.has("mainhand"): targets.append("mainhand")
+
+	var something_changed = false
 	for target_layer in targets:
 		var is_body = target_layer in body_layers or target_layer == "body" or target_layer == "head"
 		var collection = current_character.body_parts if is_body else current_character.equipment_parts
 		var current_data = collection.get(target_layer)
 		
 		if not current_data: continue
-		
 		var target_index = (item_id * 2) + 3
 		
-		if current_data[palette].colors.size() <= target_index:
-			continue
+		if current_data[palette].colors.size() > target_index:
+			current_data[palette].colors[target_index] = color.to_rgba32()
+			current_data["gradient%s" % palette.right(1)] = get_gradient(current_data[palette].colors)
 			
-		current_data[palette].colors[target_index] = color.to_rgba32()
-		current_data["gradient%s" % palette.right(1)] = get_gradient(current_data[palette].colors)
-		
-		if color.to_rgba32() != original_color.to_rgba32():
-			something_changed = true
 			var cache = _layer_color_cache.get(target_layer, {})
+			var p_idx = 0 if palette == "palette1" else 1 if palette == "palette2" else 2
 			
-			var is_empty_slot = (current_data.part_id == "none" or current_data.part_id.is_empty())
-			var src_key_val = ""
-			
-			if not is_empty_slot:
-				var item_data = _get_item_data(target_layer, current_data.part_id)
-				var resolve_src = func(idx_prop: String, list_name: String, old_src_key: String) -> String:
-					var idx = current_data.get(idx_prop)
-					var presets = item_data.get(list_name, [])
-					if idx >= 0 and idx < presets.size(): return presets[idx]
-					var cached_key = cache.get(old_src_key, "")
-					if cached_key != "": return cached_key
-					if not presets.is_empty(): return presets[0]
-					return ""
+			match p_idx:
+				0: current_data.current_primary_color_id = -1
+				1: current_data.current_secondary_color_id = -1
+				2: current_data.current_fixed_color_id = -1
 				
-				if palette == "palette1": src_key_val = resolve_src.call("current_primary_color_id", "primarycolors", "p_src")
-				elif palette == "palette2": src_key_val = resolve_src.call("current_secondary_color_id", "secondarycolors", "s_src")
-				elif palette == "palette3": src_key_val = resolve_src.call("current_fixed_color_id", "fixedcolors", "f_src")
+			_sync_cache_from_character(target_layer, p_idx, "")
 			
-			match palette:
-				"palette1": 
-					cache["p_src"] = src_key_val
-					current_data.current_primary_color_id = -1
-					cache["p_id"] = -1
-					cache["p_raw"] = current_data.palette1.colors.duplicate()
-					cache.erase("p_grad")
-				"palette2": 
-					cache["s_src"] = src_key_val
-					current_data.current_secondary_color_id = -1
-					cache["s_id"] = -1
-					cache["s_raw"] = current_data.palette2.colors.duplicate()
-					cache.erase("s_grad")
-				"palette3": 
-					cache["f_src"] = src_key_val
-					current_data.current_fixed_color_id = -1
-					cache["f_id"] = -1
-					cache["f_raw"] = current_data.palette3.colors.duplicate()
-					cache.erase("f_grad")
-			
-			_layer_color_cache[target_layer] = cache
-		
-		if current_data.part_id != "none":
-			%Character.update_part(target_layer)
+			something_changed = true
+			if current_data.part_id != "none":
+				%Character.update_part(target_layer)
 	
 	if something_changed:
-		for button in parts_container.get_children():
-			if button is HeroEditorPartButton:
-				_update_colors_for_button(button)
-		_fill_current_colors()
+		_update_ui_after_color_change()
+
+
+func _update_ui_after_color_change() -> void:
+	for button in parts_container.get_children():
+		if button is HeroEditorPartButton:
+			_update_colors_for_button(button)
+	_fill_current_colors()
 
 
 func _open_fine_tune_dialog() -> void:
@@ -1865,44 +1988,41 @@ func _open_fine_tune_dialog() -> void:
 func _on_dialog_color_changed(colors: Array[Color], gradient_id: String) -> void:
 	var targets = _get_edit_targets()
 	var something_changed = false
+	var p_idx = 0 if gradient_id == "gradient1" else 1 if gradient_id == "gradient2" else 2
 	
 	for target_layer in targets:
-		var is_body = target_layer in body_layers or target_layer == "body" or target_layer == "head"
+		var is_body = target_layer in body_layers or target_layer in ["body", "head"]
 		var collection = current_character.body_parts if is_body else current_character.equipment_parts
 		var current_data = collection.get(target_layer)
-		
 		if not current_data: continue
 		
 		current_data.set(gradient_id, colors)
 		
+		var palette_res = [current_data.palette1, current_data.palette2, current_data.palette3][p_idx]
+		var current_palette_colors = palette_res.colors
+		
+		for i in range(0, current_palette_colors.size(), 2):
+			var color_index_in_gradient = current_palette_colors[i]
+			var new_color = colors[color_index_in_gradient]
+			current_palette_colors[i+1] = new_color.to_rgba32()
+		
+		palette_res.colors = current_palette_colors
+		
+		var id_props = ["current_primary_color_id", "current_secondary_color_id", "current_fixed_color_id"]
+		current_data.set(id_props[p_idx], -1)
+		
 		var cache = _layer_color_cache.get(target_layer, {})
-		
-		match gradient_id:
-			"gradient1":
-				current_data.current_primary_color_id = -1
-				cache["p_id"] = -1
-				cache["p_raw"] = current_data.palette1.colors.duplicate()
-				cache["p_grad"] = colors
-			"gradient2":
-				current_data.current_secondary_color_id = -1
-				cache["s_id"] = -1
-				cache["s_raw"] = current_data.palette2.colors.duplicate()
-				cache["s_grad"] = colors
-			"gradient3":
-				current_data.current_fixed_color_id = -1
-				cache["f_id"] = -1
-				cache["f_raw"] = current_data.palette3.colors.duplicate()
-				cache["f_grad"] = colors
-		
+		var p_char = ["p", "s", "f"][p_idx]
+		cache[p_char + "_id"] = -1
+		cache[p_char + "_raw"] = current_palette_colors.duplicate()
+		cache[p_char + "_grad"] = colors
 		_layer_color_cache[target_layer] = cache
-		something_changed = true
 		
+		something_changed = true
 		%Character.update_part(target_layer)
 	
 	if something_changed:
-		for button in parts_container.get_children():
-			if button is HeroEditorPartButton:
-				_update_colors_for_button(button)
+		_update_ui_after_color_change()
 		_fill_current_colors()
 
 
@@ -1944,7 +2064,7 @@ func _on_palette_presets_item_selected(index: int) -> void:
 
 
 func request_visibility_update() -> void:
-	pass
+	%Character.set_character(current_character, editor_hidden_layers)
 
 
 func _on_gradient_fast_button_1_toggled(toggled_on: bool) -> void:
@@ -1983,7 +2103,7 @@ func _on_randomize_pressed() -> void:
 	var weights: Dictionary = {
 		"mask": 0.15, "hat": 0.7, "glasses": 0.3, "suit": 0.1, "jacket": 0.4,
 		"add1": 0.1, "add2": 0.1, "add3": 0.1, "wings": 0.2, "tail": 0.3,
-		"horns": 0.2, "back": 0.5
+		"horns": 0.2, "back": 0.15
 	}
 	
 	for layer in layers:
@@ -2103,24 +2223,20 @@ func _on_synchronize_palettes_toggled(toggled_on: bool) -> void:
 #endregion
 
 
-#region Save
+#region Save and Import
+func _confirm_overwrite(msg: String) -> bool:
+	var path = "res://addons/CustomControls/Dialogs/confirm_dialog.tscn"
+	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
+	dialog.set_text(tr("There is already a preset with that name. Do you want to overwrite it?"))
+	dialog.title = TranslationManager.tr("Override Preset")
+	await dialog.tree_exiting
+	return dialog.result
+
+
 func _on_character_random_name_button_pressed() -> void:
 	var race = %Races.get_item_text(%Races.get_selected_id())
 	var text = race_name_generator.generate_name_for_race(race)
 	%CharacterName.text = text
-
-
-func _enable_saving_container() -> void:
-	%Character.busy = true
-	var tex = get_viewport().get_texture()
-	%SavingBackground.texture = tex
-	%SavingLayer.visible = true
-
-
-func _disable_saving_container() -> void:
-	%Character.busy = false
-	%SavingBackground.texture = null
-	%SavingLayer.visible = false
 
 
 func get_file_id(folder, base_name) -> int:
@@ -2151,7 +2267,7 @@ func get_file_id(folder, base_name) -> int:
 
 
 func _on_part_save_requested(layer: String, item_id: String, button: HeroEditorPartButton) -> void:
-	_enable_saving_container()
+	_show_overlay()
 	
 	var is_body = layer in body_layers or layer == "body" or layer == "head"
 	var collection = current_character.body_parts if is_body else current_character.equipment_parts
@@ -2164,8 +2280,10 @@ func _on_part_save_requested(layer: String, item_id: String, button: HeroEditorP
 
 	var part_to_save = source_part.duplicate(true)
 	
+	_clean_part_gradients(part_to_save, true)
 	
 	part_to_save.part_id = item_id
+	part_to_save.layer_id = layer
 	if "name" in part_to_save:
 		part_to_save.name = new_item_data.get("name", item_id)
 	part_to_save.config_path = _fix_path(new_item_data.get("config_path", ""))
@@ -2224,12 +2342,31 @@ func _on_part_save_requested(layer: String, item_id: String, button: HeroEditorP
 				
 	ResourceSaver.save(part_to_save, resource_path)
 	
-	_disable_saving_container()
+	_clean_part_gradients(part_to_save, false)
 	
-	print("Part %s Saved in %s" % [item_id, resource_path])
+	_hide_overlay()
+	
+	var help_text = "Part %s Saved in %s" % [item_id, resource_path]
+	_show_save_notification(help_text)
 	
 	if Engine.is_editor_hint():
 		EditorInterface.get_resource_filesystem().scan()
+
+
+func _show_save_notification(message: String) -> void:
+	if not help_label:
+		help_label = HELP_LABEL.instantiate()
+		get_window().add_child(help_label)
+	help_label.text = message
+	
+	if help_label_tween: help_label_tween.kill()
+	
+	help_label_tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	help_label_tween.tween_callback(help_label.show)
+	help_label_tween.tween_property(help_label, "modulate", Color.WHITE, 0.3).from(Color.TRANSPARENT)
+	help_label_tween.tween_interval(1.0)
+	help_label_tween.tween_property(help_label, "modulate", Color.TRANSPARENT, 0.5)
+	help_label_tween.tween_callback(help_label.hide)
 
 
 func _smart_update_color(palette_res: Resource, id_prop: String, grad_prop: String, new_presets: Array, color_map: Dictionary, target_part: Resource) -> void:
@@ -2266,46 +2403,83 @@ func _on_save_mode_item_selected(index: int) -> void:
 			%CustomeLabel.visible = false
 			%FolderContainer.visible = true
 			%CharacterName.placeholder_text = tr("Character Name")
+			%CharacterRandomNameButton.visible = true
 		1:
 			%SaveOptions1.visible = true
 			%SaveOptions2.visible = false
 			%CustomeLabel.visible = false
 			%FolderContainer.visible = true
 			%CharacterName.placeholder_text = tr("Event Name")
+			%CharacterRandomNameButton.visible = true
 		2:
 			%SaveOptions1.visible = true
 			%SaveOptions2.visible = false
 			%CustomeLabel.visible = false
 			%FolderContainer.visible = false
 			%CharacterName.placeholder_text = tr("Set Name")
+			%CharacterRandomNameButton.visible = false
 		3:
 			%SaveOptions1.visible = true
 			%SaveOptions2.visible = false
 			%CustomeLabel.visible = true
 			%FolderContainer.visible = false
 			%CharacterName.placeholder_text = tr("Costume Name")
+			%CharacterRandomNameButton.visible = false
+
+
+func _clean_part_gradients(part: Resource, active: bool) -> void:
+	if not part: return
+	if "is_cleaning_for_save" in part:
+		part.is_cleaning_for_save = active
+
+
+func _clean_collection_gradients(obj: Variant, is_body_parts: bool = false, active: bool = true) -> void:
+	var collection = PackedStringArray(["body", "head"]) + body_layers if is_body_parts else gear_layers
+	for key in collection:
+		var part = obj.get(key)
+		if part:
+			_clean_part_gradients(part, active)
 
 
 func _on_save_data_pressed() -> void:
 	var folder = %CharacterFolder.text
 	var file_name = %CharacterName.text.to_lower()
+
+	if %CreateSubFolder.is_pressed():
+		folder = folder.path_join(file_name)
 	
-	_enable_saving_container()
+	_show_overlay()
 	
 	match %SaveMode.get_selected_id():
 		0: # Save Character
-			_save_character(folder, file_name)
+			await _save_character(folder, file_name)
+			_show_save_notification("Character “%s” Saved" % file_name)
 		1: # Save Event
-			_save_event(folder, file_name)
+			await _save_event(folder, file_name)
+			_show_save_notification("Event “%s” Saved" % file_name)
 		2: # Save Set (manually hidden layers = discarded)
-			_save_set(file_name)
+			await _save_set(file_name)
+			_show_save_notification("Set “%s” Saved" % file_name)
 		3: # Save Costume (manually hidden layers = ignored and save all)
-			_save_costume(file_name)
+			await _save_costume(file_name)
+			_show_save_notification("Costume “%s” Saved" % file_name)
 	
-	_disable_saving_container()
+	_hide_overlay()
+
+
+## Checks if any of the target files already exist and returns a list of their names.
+func _get_existing_files(paths: Array[String]) -> Array[String]:
+	var existing: Array[String] = []
+	for path in paths:
+		if FileAccess.file_exists(path):
+			existing.append(path.get_file())
+	return existing
 
 
 func _save_character(folder: String, file_name: String) -> void:
+	_show_overlay()
+	
+	# Paths
 	var data_path = folder.path_join(file_name + "_data.tres")
 	var scene_path = folder.path_join(file_name + ".tscn")
 	var scene_script_path = folder.path_join(file_name + ".gd")
@@ -2313,48 +2487,642 @@ func _save_character(folder: String, file_name: String) -> void:
 	var character_preview = folder.path_join(file_name + "_character.png")
 	var battler_preview = folder.path_join(file_name + "_battler.png")
 	var minimalist_charset = folder.path_join(file_name + "_character_minimalist.png")
-	await %Character.save_character_preview(face_preview, character_preview, battler_preview, minimalist_charset)
-	var res = current_character
+	
+	var all_paths: Array[String] = [
+		data_path, scene_path, scene_script_path, 
+		face_preview, character_preview, battler_preview, minimalist_charset
+	]
+	
+	var existing = _get_existing_files(all_paths)
+	
+	if not existing.is_empty():
+		var msg = "The following files already exist:\n- %s\n\nDo you want to overwrite them?" % "\n- ".join(existing)
+		if not await _confirm_overwrite(msg):
+			return
+	
+	DirAccess.make_dir_recursive_absolute(folder)
+	
+	# Images
+	var charset: Image = await %Character.get_minimalist_spriteset()
+	charset.save_png(minimalist_charset)
+	
+	var char: Image = await %Character.get_character_preview()
+	char.save_png(character_preview)
+	
+	var battler: Image = await %Character.get_battler_preview()
+	battler.save_png(battler_preview)
+	
+	var face: Image = await %Character.get_face_preview()
+	face.save_png(face_preview)
+	
+	# Resource
+	var res = current_character.duplicate_deep(Resource.DEEP_DUPLICATE_ALL)
 	res.face_preview = face_preview
 	res.character_preview = character_preview
 	res.battler_preview = battler_preview
 	res.scene_path = scene_path
 	res.always_show_weapon = %ShowWeapon.is_pressed()
 	res.inmutable = %MakeInmutable.is_pressed()
+	
+	_clean_collection_gradients(res.body_parts, true)
+	_clean_collection_gradients(res.equipment_parts)
+	
+	ResourceSaver.save(res, data_path)
+	
+	_clean_collection_gradients(res.body_parts, true, false)
+	_clean_collection_gradients(res.equipment_parts, false, false)
+	
+	# Scene And Script
+	_create_character_script(scene_script_path)
+	_create_character_scene_file(scene_script_path, scene_path, current_character, file_name)
+	
+	if Engine.is_editor_hint():
+		EditorInterface.get_resource_filesystem().scan()
+		
+	_hide_overlay()
+
+
+func _create_character_script(script_file_path: String) -> void:
+	var script = GDScript.new()
+	script.source_code = "@tool\nextends LPCCharacter\n\n"
+	ResourceSaver.save(script, script_file_path)
+
+
+func _create_character_scene_file(script_file_path: String, scene_file_path: String, character_data: RPGLPCCharacter, name: String) -> void:
+	var scn = ACTOR_BASE_SCENE.instantiate()
+	scn.set_script(load(script_file_path))
+	scn.actor_data = character_data
+	scn.name = name.to_pascal_case()
+	scn.add_to_group("player")
+	
+	var packed_scene = PackedScene.new()
+	packed_scene.pack(scn)
+	ResourceSaver.save(packed_scene, scene_file_path)
+	
+	scn.free()
 
 
 func _save_event(folder: String, file_name: String) -> void:
+	_show_overlay()
+	
+	# Paths
 	var data_path = folder.path_join(file_name + "_data.tres")
 	var scene_path = folder.path_join(file_name + "_event.tscn")
 	var scene_script_path = folder.path_join(file_name + "_event.gd")
 	var character_preview = folder.path_join(file_name + "_event.png")
 	var minimalist_charset = folder.path_join(file_name + "_character_minimalist.png")
-	await %Character.save_event_preview(character_preview, minimalist_charset)
-	var res = current_character
+	
+	var all_paths: Array[String] = [
+		data_path, scene_path, scene_script_path, character_preview, minimalist_charset
+	]
+	
+	var existing = _get_existing_files(all_paths)
+	
+	if not existing.is_empty():
+		var msg = "The following files already exist:\n- %s\n\nDo you want to overwrite them?" % "\n- ".join(existing)
+		if not await _confirm_overwrite(msg):
+			return
+	
+	DirAccess.make_dir_recursive_absolute(folder)
+	
+	# Images
+	var charset: Image = await %Character.get_minimalist_spriteset()
+	charset.save_png(minimalist_charset)
+	
+	var character: Image = await %Character.get_battler_preview()
+	character.save_png(character_preview)
+	
+	# Resource
+	var res = current_character.duplicate_deep(Resource.DEEP_DUPLICATE_ALL)
 	res.event_preview = character_preview
 	res.scene_path = scene_path
 	res.inmutable = true
 	res.always_show_weapon = true
+	
+	_clean_collection_gradients(res.body_parts, true)
+	_clean_collection_gradients(res.equipment_parts)
+	
+	ResourceSaver.save(res, data_path)
+	
+	_clean_collection_gradients(res.body_parts, true, false)
+	_clean_collection_gradients(res.equipment_parts, false, false)
+	
+	# Scene And Script
+	_create_event_script(scene_script_path)
+	_create_event_scene_file(scene_script_path, scene_path, current_character, file_name)
+	
+	if Engine.is_editor_hint():
+		EditorInterface.get_resource_filesystem().scan()
+		
+	_hide_overlay()
+
+
+func _create_event_script(script_file_path: String) -> void:
+	var script = GDScript.new()
+	script.source_code = "@tool\nextends GenericLPCEvent\n\n"
+	ResourceSaver.save(script, script_file_path)
+
+
+func _create_event_scene_file(script_file_path: String, scene_file_path: String, event_data: RPGLPCCharacter, name: String) -> void:
+	var scn = GENERIC_LPC_BASE_SCENE.instantiate()
+	var script = load(script_file_path)
+	scn.set_script(script)
+	scn.event_data = event_data
+	scn.name = name.to_pascal_case()
+	scn.add_to_group("event")
+	
+	var packed_scene = PackedScene.new()
+	packed_scene.pack(scn)
+	ResourceSaver.save(packed_scene, scene_file_path)
+	
+	scn.free()
 
 
 func _save_set(file_name: String) -> void:
-	var folder = PARTS_ROOT_DIR.path_join(SET_FOLDER_NAME)
+	_show_overlay()
+	
+	var folder = PARTS_ROOT_DIR.path_join(SET_FOLDER_NAME).path_join(file_name) 
 	var data_path = folder.path_join(file_name + "_data.tres")
 	var set_preview = folder.path_join(file_name + "_preview.png")
-	await %Character.save_set_preview(set_preview)
-	var res = IngameGearSet.create_from_parts(current_character.equipment_parts)
-	res.set_peview = set_preview
+	
+	var all_paths: Array[String] = [
+		data_path, set_preview
+	]
+	
+	var existing = _get_existing_files(all_paths)
+	
+	if not existing.is_empty():
+		var msg = "The following files already exist:\n- %s\n\nDo you want to overwrite them?" % "\n- ".join(existing)
+		if not await _confirm_overwrite(msg):
+			return
+	
+	DirAccess.make_dir_recursive_absolute(folder)
+	
+	var set_image: Image = await %Character.get_set_preview()
+	set_image.save_png(set_preview)
+	
+	var res = IngameGearSet.create_from_parts(current_character.equipment_parts) 
+	res.set_preview = set_preview
+	
+	_clean_collection_gradients(res.equipment_parts)
+	
+	ResourceSaver.save(res, data_path)
+	
+	_clean_collection_gradients(res.equipment_parts, false, false)
+	
+	if Engine.is_editor_hint():
+		EditorInterface.get_resource_filesystem().scan()
+		
+	_hide_overlay()
 
 
 func _save_costume(file_name: String) -> void:
-	var folder = PARTS_ROOT_DIR.path_join(SET_FOLDER_NAME)
+	_show_overlay()
+	
+	var folder = PARTS_ROOT_DIR.path_join(COSTUME_FOLDER_NAME).path_join(file_name)
 	var data_path = folder.path_join(file_name + "_data.tres")
-	var costume_preview = folder.path_join(file_name + "_preview.png")
-	await %Character.save_costume_preview(costume_preview)
-	var res = IngameCostume.create_from_character(current_character)
-	res.character_peview = costume_preview
-	res.inmutable = true
-	res.always_show_weapon = true
+	var costume_preview = folder.path_join(file_name + "_preview.png") 
+	
+	var all_paths: Array[String] = [
+		data_path, costume_preview
+	]
+	
+	var existing = _get_existing_files(all_paths)
+	
+	if not existing.is_empty():
+		var msg = "The following files already exist:\n- %s\n\nDo you want to overwrite them?" % "\n- ".join(existing)
+		if not await _confirm_overwrite(msg):
+			return
+	
+	DirAccess.make_dir_recursive_absolute(folder)
+	
+	var costume_image: Image = await %Character.get_costume_preview()
+	costume_image.save_png(costume_preview)
+	
+	var res = IngameCostume.create_from_character(current_character) 
+	res.character_preview = costume_preview 
+	res.inmutable = true 
+	res.always_show_weapon = true 
+	
+	var layers_to_none = current_character.hidden_items.duplicate()
+	for layer in editor_hidden_layers:
+		if not layer in layers_to_none:
+			layers_to_none.append(layer)
+	
+	for layer in layers_to_none:
+		var is_body = layer in body_layers or layer == "body" or layer == "head"
+		var collection = res.body_parts if is_body else res.equipment_parts
+		
+		if layer in collection:
+			var part_res = collection.get(layer)
+			part_res.clear()
+			part_res.part_id = "none"
+	
+	_clean_collection_gradients(res.body_parts, true)
+	_clean_collection_gradients(res.equipment_parts)
+	
+	ResourceSaver.save(res, data_path)
+	
+	_clean_collection_gradients(res.body_parts, true, false)
+	_clean_collection_gradients(res.equipment_parts, false, false)
+	
+	if Engine.is_editor_hint():
+		EditorInterface.get_resource_filesystem().scan()
+		
+	_hide_overlay()
 
+
+func _show_overlay() -> void:
+	var tex = ImageTexture.create_from_image(get_viewport().get_texture().get_image())
+	%OverlayTexture.texture = tex
+	%Overlay.show()
+
+
+func _hide_overlay() -> void:
+	%OverlayTexture.texture = null
+	%Overlay.hide()
+
+
+func _on_character_name_text_changed(new_text: String) -> void:
+	var lineedit = %CharacterName
+	var caret_pos = lineedit.caret_column
+	
+	# Convert to lowercase first to satisfy the requirement
+	var lower_text = new_text.replace(" ", "_").to_lower()
+	
+	
+	# Updated RegEx to allow lowercase letters, numbers, underscores and 'ñ'
+	var regex = RegEx.new()
+	regex.compile("[^a-z0-9_ñ]")
+	
+	var clean_text = regex.sub(lower_text, "", true)
+	
+	if new_text != clean_text:
+		lineedit.text = clean_text
+		# Restore caret position. If it was a conversion (Upper to Lower), 
+		# we don't subtract 1 to keep the flow
+		var diff = new_text.length() - clean_text.length()
+		lineedit.caret_column = caret_pos - diff
+
+
+func _on_character_folder_pressed() -> void:
+	var path = "res://addons/CustomControls/Dialogs/select_file_dialog.tscn"
+	
+	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
+	await get_tree().process_frame
+	
+	dialog.target_callable = _set_save_folder
+	dialog.set_dialog_mode(1)
+	dialog.hide_directory_extra_controls2()
+	dialog.destroy_on_hide = true
+	
+	var default_path = %CharacterFolder.text
+	if not default_path.begins_with("res://"):
+		default_path = "res://".path_join(default_path)
+	
+	dialog.navigate_to_directory.call_deferred(default_path)
+
+
+func _set_save_folder(path: String) -> void:
+	var folder = path.get_basename().replace("res://", "")
+	if not folder.ends_with("/"):
+		folder += "/"
+		
+	%CharacterFolder.text = folder
+
+
+# --- Imports
+
+
+func _on_import_pressed() -> void:
+	var path = "res://addons/CustomControls/Dialogs/select_file_dialog.tscn"
+	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
+	
+	await get_tree().process_frame
+	
+	dialog.target_callable = _on_import_data
+	dialog.destroy_on_hide = true
+	
+	dialog.fill_mix_files(["characters", "events", "equipment_parts", "sets", "costumes"])
+
+
+func _on_import_data(path: String) -> void:
+	if ResourceLoader.exists(path):
+		var res: Variant = load(path).duplicate_deep(Resource.DEEP_DUPLICATE_ALL)
+		
+		importing = true 
+		tasks.clear()
+		_clear_parts()
+
+		if res is IngameCostume:
+			var character = RPGLPCCharacter.create_from_costume(res)
+			_import_character(character, path, true)
+		elif res is RPGLPCCharacter:
+			_import_character(res, path)
+		elif res is IngameGearSet:
+			_import_gear_set(res)
+		elif res is RPGLPCEquipmentPart:
+			_import_part(res, true)
+		
+		if importing:
+			importing = false
+			_finalize_import_ui()
+
+
+func _finalize_import_ui() -> void:
+	if current_part.is_empty():
+		current_part = "body"
+	
+	%Character.set_character(current_character, editor_hidden_layers)
+	
+	_select_tab(true, current_part)
+	update_tab_indicators()
+	
+	_fill_palette_presets.call_deferred()
+	_update_shaders.call_deferred()
+	_recalculate_global_interactions.call_deferred()
+
+
+# --- CORE IMPORT FUNCTIONS ---
+
+func _import_character(character: RPGLPCCharacter, path: String, is_costume: bool = false) -> void:
+	current_character = character
+	
+	# 1. UI Setup
+	var character_name = path.get_file().replace("_data." + path.get_extension(), "")
+	%CharacterName.text = character_name
+	
+	var folder = path.get_base_dir().replace("res://", "")
+	if not folder.ends_with("/"): folder += "/"
+	%CharacterFolder.text = folder
+	
+	if is_costume:
+		%SaveMode.set_pressed_no_signal(3)
+	else:
+		%SaveMode.set_pressed_no_signal(0)
+		%ShowWeapon.set_pressed_no_signal(character.always_show_weapon)
+		%MakeInmutable.set_pressed_no_signal(character.inmutable)
+	%CreateSubFolder.set_pressed_no_signal(false)
+	
+	# 2. Metadata Sync (Palette, Race, Gender)
+	var pal_idx = _get_index_by_metadata(%Palettes, character.palette)
+	if pal_idx != -1: %Palettes.select(pal_idx)
+	
+	_sync_race_and_gender_ui(character)
+	
+	# 3. Body & Geometry Recovery
+	_recover_body_configuration(character)
+	fill_bodies(character.body_id)
+	
+	var body_node = %Body
+	for i in body_node.get_item_count():
+		if body_node.get_item_metadata(i).get("id") == character.body_id:
+			body_node.select(i)
+			break
+
+	# 4. Unrestricted Mode Check
+	_check_and_apply_unrestricted_mode()
+
+	# 5. Data Injection & Sanitization
+	var layers_to_check = ["body", "head"] + Array(body_layers) + Array(gear_layers)
+	var db_char = data.characters
+	var db_gear = data.gear
+	
+	for layer in layers_to_check:
+		var is_body = layer in body_layers or layer == "body" or layer == "head"
+		var collection = current_character.body_parts if is_body else current_character.equipment_parts
+		if not collection: continue
+		var part = collection.get(layer)
+		
+		# Fix Legacy Data
+		if part.gradient1.is_empty() or (part.part_id != "none" and part.config_path != ""):
+			_fix_import_data(part, layer)
+			var db = db_char if is_body else db_gear
+			if layer in db and part.part_id != "none" and not db[layer].has(part.part_id):
+				part.part_id = "none"
+		
+		# Sanitize Colors (Force Custom -1 if needed)
+		if part.part_id != "none":
+			_sanitize_part_colors(layer, part)
+
+	# 6. Cache & Finish
+	_rebuild_color_cache()
+	
+	var found_active_tab = false
+	for btn in tabs_container.get_children():
+		if btn.button_pressed:
+			current_part = btn.name.to_lower()
+			found_active_tab = true
+			break
+	if not found_active_tab: current_part = "body"
+	
+	importing = false
+	_finalize_import_ui()
+	_show_save_notification("Import Complete. Synced Layer: %s" % current_part)
+
+
+func _import_gear_set(full_set: IngameGearSet) -> void:
+
+	for layer in gear_layers:
+		var imported_part = full_set.equipment_parts.get(layer)
+		
+		if imported_part:
+			if imported_part.layer_id.is_empty():
+				imported_part.layer_id = layer
+			
+			_import_part(imported_part, false)
+	
+	_recalculate_global_interactions()
+	_show_save_notification("Gear Set Imported")
+
+
+func _import_part(source_part: Resource, refresh_ui: bool = true) -> void:
+	var layer = source_part.layer_id
+	_fix_import_data(source_part, layer)
+	
+	if refresh_ui:
+		current_part = layer
+		if _layer_color_cache.has(layer):
+			_layer_color_cache.erase(layer)
+		
+		for b in tabs_container.get_children():
+			b.set_pressed_no_signal(b.text.to_lower() == layer)
+	
+	# 1. Install (Set IDs, Texture paths)
+	install_part(layer, source_part.part_id)
+	
+	# 2. Inject Data (Colors, Gradients)
+	var target_part = _get_character_part(layer)
+	if target_part:
+		_inject_part_data(target_part, source_part)
+		
+		# 3. Sanitize (Ensure colors match IDs)
+		_sanitize_part_colors(layer, target_part)
+		
+		# 4. Update Cache
+		_sync_cache_from_character(layer)
+
+	if refresh_ui:
+		importing = false
+		_finalize_import_ui()
+		_show_save_notification("Part Imported: %s" % source_part.part_id)
+
+
+# --- HELPERS ---
+
+# Copy colors, gradients, and IDs from one resource to another
+func _inject_part_data(target: Resource, source: Resource) -> void:
+	target.gradient1 = source.gradient1
+	target.gradient2 = source.gradient2
+	target.gradient3 = source.gradient3
+	
+	if source.palette1:
+		target.palette1.colors = source.palette1.colors.duplicate()
+		target.palette1.blend_color = source.palette1.blend_color
+	if source.palette2:
+		target.palette2.colors = source.palette2.colors.duplicate()
+		target.palette2.blend_color = source.palette2.blend_color
+	if source.palette3:
+		target.palette3.colors = source.palette3.colors.duplicate()
+		target.palette3.blend_color = source.palette3.blend_color
+	
+	target.current_primary_color_id = source.get("current_primary_color_id") if "current_primary_color_id" in source else -1
+	target.current_secondary_color_id = source.get("current_secondary_color_id") if "current_secondary_color_id" in source else -1
+	target.current_fixed_color_id = source.get("current_fixed_color_id") if "current_fixed_color_id" in source else -1
+
+
+# Check if the colors match the preset. If not, force ID -1 (Custom).
+func _sanitize_part_colors(layer: String, part: Resource) -> void:
+	var global_map = data.colormaps.get(current_character.palette)
+	if not global_map: return
+	
+	var item_data = _get_item_data(layer, part.part_id)
+	if item_data.is_empty(): return
+	
+	var check_consistency = func(id_prop, colors_prop, list_name):
+		var current_idx = part.get(id_prop)
+		if current_idx == -1: return
+
+		var current_colors = part.get(colors_prop).colors
+		if current_colors.is_empty(): return
+
+		var is_consistent = false
+		var presets = item_data.get(list_name, [])
+		
+		if current_idx >= 0 and current_idx < presets.size():
+			var preset_key = presets[current_idx]
+			var map_data = _resolve_colors_from_map(global_map, preset_key)
+			
+			# We use _are_colors_equal to avoid type errors (Packed vs Array).
+			if not map_data.is_empty() and _are_colors_equal(current_colors, map_data.colors):
+				is_consistent = true
+		
+		# If the ID says it is a preset (0, 1...) but the colors do not match, we force -1.
+		if not is_consistent:
+			part.set(id_prop, -1)
+
+	check_consistency.call("current_primary_color_id", "palette1", "primarycolors")
+	check_consistency.call("current_secondary_color_id", "palette2", "secondarycolors")
+	check_consistency.call("current_fixed_color_id", "palette3", "fixedcolors")
+
+
+func _check_and_apply_unrestricted_mode() -> void:
+	var needs_unrestricted = false
+	var config = _get_current_race_config()
+	
+	if config.is_empty():
+		needs_unrestricted = true
+	else:
+		for layer in body_layers:
+			var part = current_character.body_parts.get(layer)
+			if part and part.part_id != "none" and part.part_id != "":
+				if not config.has(layer) or not part.part_id in config[layer]:
+					needs_unrestricted = true
+					break
+	
+	if needs_unrestricted:
+		%UnrestrictedMode.set_pressed_no_signal(true)
+
+
+func _recover_body_configuration(character: RPGLPCCharacter) -> void:
+	var race_def = data.characters.race.get(character.race)
+	if not race_def or not race_def.has("configs"): return
+	
+	# 1. Attempt to validate the current ID
+	if character.body_id != "" and race_def.configs.has(character.body_id):
+		return # Valid ID
+	
+	# 2. Search by visual match
+	for config_id in race_def.configs:
+		var config = race_def.configs[config_id]
+		if config.gender == character.gender and \
+		   config.get("body-type") == character.body_type and \
+		   config.get("head-type") == character.head_type:
+			character.body_id = config_id
+			return
+			
+	# 3. Force synchronization of visual types if we find ID
+	if character.body_id != "" and race_def.configs.has(character.body_id):
+		var cfg = race_def.configs[character.body_id]
+		if cfg.has("head-type"): character.head_type = cfg["head-type"]
+		if cfg.has("body-type"): character.body_type = cfg["body-type"]
+
+
+func _sync_race_and_gender_ui(character: RPGLPCCharacter) -> void:
+	# Sync Race
+	var race_idx = _get_index_by_metadata(%Races, character.race)
+	if race_idx == -1: # Fallback by name
+		for i in %Races.get_item_count():
+			if %Races.get_item_text(i).to_lower() == character.race.to_lower().replace("_", " "):
+				race_idx = i
+				character.race = %Races.get_item_metadata(i)
+				break
+	if race_idx != -1: 
+		%Races.select(race_idx)
+		var race_data = data.characters.race[character.race]
+		fill_genders(race_data.genders, character.gender)
+
+	# Sync Gender
+	var gen_idx = _get_index_by_metadata(%Gender, character.gender)
+	if gen_idx != -1: %Gender.select(gen_idx)
+
+
+func _get_character_part(layer: String) -> Resource:
+	if layer in ["body", "head"] + Array(body_layers):
+		return current_character.body_parts.get(layer)
+	return current_character.equipment_parts.get(layer)
+
+
+func _fix_import_data(part: Variant, layer: String) -> void:
+	part.layer_id = layer
+	part.config_path = part.config_path.get_basename() + ".lcc"
+	
+	# Ensure gradients if missing
+	if part.gradient1.is_empty() and part.palette1: part.gradient1 = get_gradient(part.palette1.colors)
+	if part.gradient2.is_empty() and part.palette2: part.gradient2 = get_gradient(part.palette2.colors)
+	if part.gradient3.is_empty() and part.palette3: part.gradient3 = get_gradient(part.palette3.colors)
+	
+	if "alt_config_path" in part and not part.alt_config_path.is_empty():
+		part.alt_config_path = part.alt_config_path.get_basename() + ".lcc"
+		
+	# Retrieve actual part_id from the file if it exists
+	if FileAccess.file_exists(part.config_path):
+		var f = FileAccess.open(part.config_path, FileAccess.READ)
+		var json = f.get_as_text()
+		f.close()
+		var obj: Dictionary = JSON.parse_string(json)
+		part.part_id = obj.get("id", "none")
+
+
+func _are_colors_equal(packed_colors: Variant, json_colors: Array) -> bool:
+	if packed_colors.size() != json_colors.size():
+		return false
+	
+	for i in range(packed_colors.size()):
+		var c1 = packed_colors[i] if packed_colors[i] is Color else Color(int(packed_colors[i]))
+		var c2 = Color(json_colors[i]) if json_colors[i] is String else Color(int(json_colors[i]))
+		if c1.to_html() != c2.to_html():
+			return false
+	return true
 
 #endregion

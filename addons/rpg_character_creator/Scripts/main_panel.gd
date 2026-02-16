@@ -1189,7 +1189,7 @@ func _on_import_data_pressed() -> void:
 	dialog.target_callable = import_data
 	dialog.destroy_on_hide = true
 	
-	dialog.fill_mix_files(["characters", "events", "equipment_parts"])
+	dialog.fill_mix_files(["characters", "events", "equipment_parts", "sets", "costumes"])
 
 
 #func import_data(data_path: String) -> void:

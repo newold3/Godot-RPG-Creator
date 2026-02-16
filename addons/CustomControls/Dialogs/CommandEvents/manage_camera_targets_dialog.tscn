@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://bj5wvpg0qvo87"]
+[gd_scene format=3 uid="uid://bj5wvpg0qvo87"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_wr68k"]
 [ext_resource type="Script" uid="uid://dplpvwsjy03gm" path="res://addons/CustomControls/Dialogs/CommandEvents/manage_camera_targets_dialog.gd" id="2_wr68k"]
@@ -28,7 +28,7 @@ region = Rect2(192, 0, 24, 24)
 atlas = ExtResource("3_6hcv8")
 region = Rect2(216, 0, 24, 24)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xa8q0"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6hcv8"]
 resource_local_to_scene = true
 content_margin_left = 3.0
 content_margin_right = 3.0
@@ -40,7 +40,7 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.113725, 0.133333, 0.160784, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jpkee"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j3rg0"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 1
@@ -57,23 +57,16 @@ gradient = SubResource("Gradient_bktm0")
 fill_from = Vector2(0.547009, 1)
 fill_to = Vector2(0.559829, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dkdyo"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_apjl2"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_j11wx")
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_oxkw2"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_63ahe"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_j11wx")
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qiqap"]
-texture = ExtResource("5_63ahe")
-texture_margin_left = 6.0
-texture_margin_top = 6.0
-texture_margin_right = 6.0
-texture_margin_bottom = 6.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7qdgr"]
-texture = ExtResource("6_xa8q0")
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_subod"]
+texture = ExtResource("8_bktm0")
 texture_margin_left = 6.0
 texture_margin_top = 6.0
 texture_margin_right = 6.0
@@ -86,29 +79,15 @@ texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_subod"]
-texture = ExtResource("8_bktm0")
-texture_margin_left = 6.0
-texture_margin_top = 6.0
-texture_margin_right = 6.0
-texture_margin_bottom = 6.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hfo07"]
-texture = ExtResource("5_63ahe")
-texture_margin_left = 6.0
-texture_margin_top = 6.0
-texture_margin_right = 6.0
-texture_margin_bottom = 6.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4sujn"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7qdgr"]
 texture = ExtResource("6_xa8q0")
 texture_margin_left = 6.0
 texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5stfh"]
-texture = ExtResource("7_jpkee")
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qiqap"]
+texture = ExtResource("5_63ahe")
 texture_margin_left = 6.0
 texture_margin_top = 6.0
 texture_margin_right = 6.0
@@ -121,7 +100,29 @@ texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[node name="ManageCameraTargetsDialog" type="Window"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5stfh"]
+texture = ExtResource("7_jpkee")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4sujn"]
+texture = ExtResource("6_xa8q0")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hfo07"]
+texture = ExtResource("5_63ahe")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[node name="ManageCameraTargetsDialog" type="Window" unique_id=1079656585]
+oversampling_override = 1.0
 title = "Manage Camera Targets"
 position = Vector2i(0, 36)
 size = Vector2i(580, 480)
@@ -132,7 +133,7 @@ unresizable = true
 theme = ExtResource("1_wr68k")
 script = ExtResource("2_wr68k")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=2023340371]
 material = SubResource("CanvasItemMaterial_u11f1")
 anchors_preset = 15
 anchor_right = 1.0
@@ -141,7 +142,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_6yyp3")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1357881545]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -152,19 +153,19 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=158028675]
 layout_mode = 2
 
-[node name="HBoxContainer7" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer7" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1446712169]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer7"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer7" unique_id=1180647380]
 layout_mode = 2
 size_flags_vertical = 0
 text = "Camera Targets:"
 vertical_alignment = 1
 
-[node name="Info" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer7"]
+[node name="Info" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer7" unique_id=1043892899]
 layout_mode = 2
 size_flags_horizontal = 10
 tooltip_text = "[title]Targets[/title]
@@ -178,24 +179,24 @@ mouse_default_cursor_shape = 16
 texture_normal = SubResource("AtlasTexture_apjl2")
 texture_hover = SubResource("AtlasTexture_63ahe")
 
-[node name="TargetList" parent="MarginContainer/VBoxContainer" instance=ExtResource("4_j3rg0")]
+[node name="TargetList" parent="MarginContainer/VBoxContainer" unique_id=1017281535 instance=ExtResource("4_j3rg0")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/v_separation = -1
-theme_override_styles/focus = SubResource("StyleBoxFlat_xa8q0")
-theme_override_styles/panel = SubResource("StyleBoxFlat_xa8q0")
-theme_override_styles/hovered = SubResource("StyleBoxFlat_jpkee")
-theme_override_styles/selected = SubResource("StyleBoxTexture_dkdyo")
-theme_override_styles/selected_focus = SubResource("StyleBoxTexture_oxkw2")
+theme_override_styles/panel = SubResource("StyleBoxFlat_6hcv8")
+theme_override_styles/focus = SubResource("StyleBoxFlat_6hcv8")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_j3rg0")
+theme_override_styles/selected = SubResource("StyleBoxTexture_apjl2")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_63ahe")
 select_mode = 1
 item_count = 1
 item_0/text = "Player"
 odd_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 event_line_color = Color(0.145098, 0.156863, 0.164706, 1)
 
-[node name="Priority" type="SpinBox" parent="MarginContainer/VBoxContainer/TargetList"]
+[node name="Priority" type="SpinBox" parent="MarginContainer/VBoxContainer/TargetList" unique_id=767136884]
 unique_name_in_owner = true
 visible = false
 z_index = 10
@@ -209,39 +210,39 @@ offset_bottom = -9.0
 tooltip_text = "Priority to be given to this character by the camera for tracking purposes"
 allow_greater = true
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1225957974]
 layout_mode = 2
 size_flags_vertical = 8
 theme_override_constants/separation = 12
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=425045199]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 alignment = 1
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("4_apjl2")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=676166126 instance=ExtResource("4_apjl2")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 tooltip_text = "[title]Ok[/title]
 Saves all changes and closes the windows."
-theme_override_styles/disabled = SubResource("StyleBoxTexture_qiqap")
-theme_override_styles/hover = SubResource("StyleBoxTexture_7qdgr")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_mjylh")
 theme_override_styles/normal = SubResource("StyleBoxTexture_subod")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_mjylh")
+theme_override_styles/hover = SubResource("StyleBoxTexture_7qdgr")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_qiqap")
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("4_apjl2")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=2071567120 instance=ExtResource("4_apjl2")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 tooltip_text = "[title]Cancel[/title]
 Closes this window without saving any changes."
-theme_override_styles/disabled = SubResource("StyleBoxTexture_hfo07")
-theme_override_styles/hover = SubResource("StyleBoxTexture_4sujn")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_5stfh")
 theme_override_styles/normal = SubResource("StyleBoxTexture_maa40")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_5stfh")
+theme_override_styles/hover = SubResource("StyleBoxTexture_4sujn")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_hfo07")
 text = "CANCEL"
 
 [connection signal="gui_input" from="MarginContainer/VBoxContainer/TargetList" to="." method="_on_target_list_gui_input"]

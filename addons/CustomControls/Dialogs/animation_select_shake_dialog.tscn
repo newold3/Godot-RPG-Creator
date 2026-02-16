@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dhcakxqoqyykl"]
+[gd_scene format=3 uid="uid://dhcakxqoqyykl"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_g3gmy"]
 [ext_resource type="Script" uid="uid://c0u03v437rqlc" path="res://addons/CustomControls/Dialogs/animation_select_shake_dialog.gd" id="2_o7h8m"]
@@ -14,17 +14,19 @@ gradient = SubResource("Gradient_vvvrv")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
-[node name="AnimationSelecShakeDialog" type="Window"]
+[node name="AnimationSelecShakeDialog" type="Window" unique_id=1209942677]
+oversampling_override = 1.0
 title = "Animation Flash"
 position = Vector2i(0, 36)
 size = Vector2i(480, 242)
+wrap_controls = true
 transient = true
 exclusive = true
 unresizable = true
 theme = ExtResource("1_g3gmy")
 script = ExtResource("2_o7h8m")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1199708591]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -32,7 +34,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_n4cyl")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2087716855]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -43,52 +45,54 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1026222022]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1028491326]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1179253471]
 custom_minimum_size = Vector2(115, 0)
 layout_mode = 2
 text = "Frame:"
 
-[node name="Frame" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_e16m8")]
+[node name="Frame" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1078505652 instance=ExtResource("3_e16m8")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Select the frame where this shake will be displayed"
 allow_greater = true
+_custom_value = 0.0
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=2019196949]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1040208920]
 custom_minimum_size = Vector2(115, 0)
 layout_mode = 2
 text = "Duration:"
 
-[node name="Duration" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("3_e16m8")]
+[node name="Duration" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=558656311 instance=ExtResource("3_e16m8")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Select the time that this shake will stay on the screen."
 min_value = 0.01
 step = 0.01
-value = 0.1
+rounded = false
 allow_greater = true
 suffix = " second/s"
+_custom_value = 0.0
 
-[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1196080844]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer5"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer5" unique_id=880460085]
 custom_minimum_size = Vector2(115, 0)
 layout_mode = 2
 text = "Target:"
 
-[node name="Target" type="OptionButton" parent="MarginContainer/VBoxContainer/HBoxContainer5"]
+[node name="Target" type="OptionButton" parent="MarginContainer/VBoxContainer/HBoxContainer5" unique_id=303433582]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -102,15 +106,15 @@ popup/item_1/text = "Screen"
 popup/item_1/id = 1
 script = ExtResource("4_ma6v4")
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=117424417]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=2045632006]
 custom_minimum_size = Vector2(115, 0)
 layout_mode = 2
 text = "Amplitude:"
 
-[node name="Amplitude" parent="MarginContainer/VBoxContainer/HBoxContainer4" instance=ExtResource("3_e16m8")]
+[node name="Amplitude" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=484852105 instance=ExtResource("3_e16m8")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -118,34 +122,36 @@ tooltip_text = "Controls how far the image is offset from the origin.
 
 [Note]: For screen shakes, a value over 10 may give a good result. For character shakes, a value less than 2.5 may give better results."
 step = 0.01
-value = 0.1
+rounded = false
 allow_greater = true
+_custom_value = 0.0
 
-[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1113924838]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6" unique_id=875491720]
 custom_minimum_size = Vector2(115, 0)
 layout_mode = 2
 text = "Frequency:"
 
-[node name="Frequency" parent="MarginContainer/VBoxContainer/HBoxContainer6" instance=ExtResource("3_e16m8")]
+[node name="Frequency" parent="MarginContainer/VBoxContainer/HBoxContainer6" unique_id=1193588002 instance=ExtResource("3_e16m8")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Controls the frequency with which the target is agitated"
 step = 0.1
-value = 0.1
+rounded = false
 allow_greater = true
+_custom_value = 0.0
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1568158103]
 layout_mode = 2
 size_flags_vertical = 10
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=2042465529]
 layout_mode = 2
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("5_doac4")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1784768096 instance=ExtResource("5_doac4")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -154,7 +160,7 @@ tooltip_text = "[title]Ok[/title]
 Saves all changes and closes the windows."
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("5_doac4")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer3" unique_id=191867628 instance=ExtResource("5_doac4")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2

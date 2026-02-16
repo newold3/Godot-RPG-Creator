@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cx5ry3xer1jl3"]
+[gd_scene format=3 uid="uid://cx5ry3xer1jl3"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_cix3b"]
 [ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="2_5neam"]
@@ -23,16 +23,19 @@ region = Rect2(48, 72, 24, 24)
 atlas = ExtResource("5_wosju")
 region = Rect2(48, 96, 24, 24)
 
-[node name="AnimationSelectSoundDialog" type="Window"]
+[node name="AnimationSelectSoundDialog" type="Window" unique_id=1934454591]
+oversampling_override = 1.0
 title = "Animation Sound"
+position = Vector2i(0, 36)
 size = Vector2i(480, 206)
+wrap_controls = true
 transient = true
 exclusive = true
 unresizable = true
 theme = ExtResource("1_cix3b")
 script = ExtResource("2_shq88")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=861938558]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -40,7 +43,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_jhfde")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1818619530]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -51,37 +54,38 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=430779472]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1103440672]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=763852231]
 custom_minimum_size = Vector2(105, 0)
 layout_mode = 2
 text = "Frame:"
 
-[node name="Frame" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("2_5neam")]
+[node name="Frame" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=653701963 instance=ExtResource("2_5neam")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Select the frame where this sound will be reproduced"
 allow_greater = true
+_custom_value = 0.0
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=905706187]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1896517701]
 custom_minimum_size = Vector2(105, 0)
 layout_mode = 2
 text = "Filename:"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1831265895]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Filename" parent="MarginContainer/VBoxContainer/HBoxContainer2/HBoxContainer" instance=ExtResource("3_gekb2")]
+[node name="Filename" parent="MarginContainer/VBoxContainer/HBoxContainer2/HBoxContainer" unique_id=1809219762 instance=ExtResource("3_gekb2")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -91,9 +95,8 @@ tooltip_text = "Click to select sound
 "
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 text = "Select Sound File"
-text_overrun_behavior = 3
 
-[node name="PlayButton" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer2/HBoxContainer"]
+[node name="PlayButton" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer2/HBoxContainer" unique_id=865661115]
 layout_mode = 2
 size_flags_vertical = 4
 tooltip_text = "[title]Play Audio[/title]
@@ -103,19 +106,19 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_vr6oq")
 texture_hover = SubResource("AtlasTexture_etj80")
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1040131338]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=10477764]
 custom_minimum_size = Vector2(105, 0)
 layout_mode = 2
 text = "Pitch:"
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=1649903046]
 layout_mode = 2
 text = "Min:"
 
-[node name="MinPitch" parent="MarginContainer/VBoxContainer/HBoxContainer4" instance=ExtResource("2_5neam")]
+[node name="MinPitch" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=1913322342 instance=ExtResource("2_5neam")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -123,13 +126,14 @@ tooltip_text = "Selects the pitch for the sound. This will be selected between t
 min_value = 0.01
 max_value = 4.0
 step = 0.01
-value = 1.0
+rounded = false
+_custom_value = 0.0
 
-[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4"]
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=108902583]
 layout_mode = 2
 text = "Max:"
 
-[node name="MaxPitch" parent="MarginContainer/VBoxContainer/HBoxContainer4" instance=ExtResource("2_5neam")]
+[node name="MaxPitch" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=534215005 instance=ExtResource("2_5neam")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -137,17 +141,18 @@ tooltip_text = "Selects the pitch for the sound. This will be selected between t
 min_value = 0.01
 max_value = 4.0
 step = 0.01
-value = 1.0
+rounded = false
+_custom_value = 0.0
 
-[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1715457250]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer5"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer5" unique_id=170270505]
 custom_minimum_size = Vector2(105, 0)
 layout_mode = 2
 text = "Volume:"
 
-[node name="Volume" parent="MarginContainer/VBoxContainer/HBoxContainer5" instance=ExtResource("2_5neam")]
+[node name="Volume" parent="MarginContainer/VBoxContainer/HBoxContainer5" unique_id=688006495 instance=ExtResource("2_5neam")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -155,15 +160,17 @@ tooltip_text = "Select the volume for this audio"
 min_value = -80.0
 max_value = 24.0
 step = 0.01
+rounded = false
+_custom_value = 0.0
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=5475465]
 layout_mode = 2
 size_flags_vertical = 10
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=41152626]
 layout_mode = 2
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("4_vi2ow")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1079069899 instance=ExtResource("4_vi2ow")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -172,7 +179,7 @@ tooltip_text = "[title]Ok[/title]
 Saves all changes and closes the windows."
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("4_vi2ow")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1924903066 instance=ExtResource("4_vi2ow")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -181,7 +188,7 @@ tooltip_text = "[title]Cancel[/title]
 Closes this window without saving any changes."
 text = "Cancel"
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=78444910]
 
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer/Frame" to="." method="_on_frame_value_changed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/HBoxContainer/Filename" to="." method="_on_filename_pressed"]

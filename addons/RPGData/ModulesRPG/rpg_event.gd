@@ -6,6 +6,11 @@ extends Resource
 func get_class(): return "RPGEvent"
 
 
+@export var _uniq_id: int = -1 :
+	get():
+		if _uniq_id == -1: _uniq_id = _generate_16_digit_id()
+		return _uniq_id
+
 @export var name : String = ""
 @export var id : int = 0
 @export var x : int = 0
@@ -18,6 +23,16 @@ func get_class(): return "RPGEvent"
 @export var fade_page_swap_enabled: bool = false
 
 var last_page_used: RPGEventPage
+
+
+func _generate_16_digit_id() -> int:
+	var id = str(randi_range(1, 9))
+	var characters = "0123456789"
+	for i in range(15):
+		var random_index = randi() % characters.length()
+		id += characters.substr(random_index, 1)
+	
+	return int(id)
 
 
 func _init(_id: int = 0, _x: int = 0, _y: int = 0) -> void:
@@ -78,6 +93,8 @@ func clone(value: bool = true) -> RPGEvent:
 		new_event.relationship = RPGRelationship.new()
 	else:
 		new_event.relationship = new_event.relationship.clone(value)
+	
+	new_event._uniq_id = _generate_16_digit_id()
 		
 	return new_event
 
@@ -184,9 +201,9 @@ func is_equal_to(other: RPGEvent) -> bool:
 	if not other:
 		return false
 		
-	# Compare each exported property of RPGEvent
+	# CORRECCIÓN 1: Usar PROPERTY_USAGE_STORAGE para ignorar variables internas
 	for property in get_property_list():
-		if not (property.usage & PROPERTY_USAGE_SCRIPT_VARIABLE):
+		if not (property.usage & PROPERTY_USAGE_STORAGE):
 			continue
 			
 		var prop_name = property.name
@@ -200,30 +217,24 @@ func is_equal_to(other: RPGEvent) -> bool:
 
 
 func _compare_values(a, b) -> bool:
-	# If either is null
+	# 1. Null Check
 	if a == null or b == null:
 		return a == b
 		
-	# If they are different types
+	# 2. Type Check
 	if typeof(a) != typeof(b):
 		return false
-		
-	# If it's an array or packed array
-	if a is Array or typeof(a) in [
-		TYPE_PACKED_BYTE_ARRAY, TYPE_PACKED_INT32_ARRAY,
-		TYPE_PACKED_INT64_ARRAY, TYPE_PACKED_FLOAT32_ARRAY,
-		TYPE_PACKED_FLOAT64_ARRAY, TYPE_PACKED_STRING_ARRAY,
-		TYPE_PACKED_VECTOR2_ARRAY, TYPE_PACKED_VECTOR3_ARRAY,
-		TYPE_PACKED_COLOR_ARRAY
-	]:
+
+	# CORRECCIÓN 2: Restaurar lógica de Arrays (IMPRESCINDIBLE para 'pages')
+	if a is Array or typeof(a) in [TYPE_PACKED_BYTE_ARRAY, TYPE_PACKED_INT32_ARRAY, TYPE_PACKED_INT64_ARRAY, TYPE_PACKED_FLOAT32_ARRAY, TYPE_PACKED_FLOAT64_ARRAY, TYPE_PACKED_STRING_ARRAY, TYPE_PACKED_VECTOR2_ARRAY, TYPE_PACKED_VECTOR3_ARRAY, TYPE_PACKED_COLOR_ARRAY]:
 		if a.size() != b.size():
 			return false
 		for i in range(a.size()):
 			if not _compare_values(a[i], b[i]):
 				return false
 		return true
-		
-	# If it's a dictionary
+
+	# CORRECCIÓN 2b: Restaurar lógica de Diccionarios
 	if a is Dictionary:
 		if a.size() != b.size():
 			return false
@@ -234,29 +245,31 @@ func _compare_values(a, b) -> bool:
 				return false
 		return true
 		
-	# If it's a custom object (RPGActor, RPGSkill, etc.)
-	if a is Object and a.has_method("get_property_list"):
-		# If they are different classes
-		if a.get_class() != b.get_class():
+	# 3. Objects
+	if a is Object:
+		# CORRECCIÓN 3: Evitar error de get_class() usando get_script()
+		var script_a = a.get_script()
+		var script_b = b.get_script()
+		if script_a != script_b:
 			return false
 			
-		# Compare each exported property
-		for property in a.get_property_list():
-			if not (property.usage & PROPERTY_USAGE_SCRIPT_VARIABLE):
-				continue
+		if a.has_method("get_property_list"):
+			for property in a.get_property_list():
+				# Asegurarse de comparar solo lo guardable recursivamente también
+				if not (property.usage & PROPERTY_USAGE_STORAGE):
+					continue
 				
-			var prop_name = property.name
-			var value_a = a.get(prop_name)
-			var value_b = b.get(prop_name)
-			
-			if not _compare_values(value_a, value_b):
-				return false
+				var prop_name = property.name
+				var value_a = a.get(prop_name)
+				var value_b = b.get(prop_name)
 				
-		return true
+				if not _compare_values(value_a, value_b):
+					return false
+			return true
 		
-	# For basic types (int, float, string, bool)
+	# 4. Basic Values
 	return a == b
 
 
 func _to_string() -> String:
-	return "<RPGEvent: ID: %s, Name: %s, Position: %sx, %sy>" % [id, name, x, y]
+	return "<RPGEvent: ID: %s, Name: %s, Position: %sx, %sy Internal ID: %s>" % [id, name, x, y, _uniq_id]

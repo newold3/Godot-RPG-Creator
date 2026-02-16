@@ -91,6 +91,7 @@ func _on_visibility_changed() -> void:
 		if current_selected_index != -1:
 			%TraitsPanel.set_data(database, get_data().traits)
 			fill_battle_actions()
+			fill_drop_list()
 		else:
 			%TraitsPanel.clear()
 		busy = true
@@ -147,6 +148,9 @@ func fill_drop_list(selected_index: int = -1) -> void:
 		elif mat.item.data_id == 2: # armors
 			current_data = database.armors
 			prefix = "<Armor> "
+		elif mat.item.data_id == 3: # set / costume
+			current_data = database.costumes
+			prefix = "<🎭 Set / Costume> "
 		
 		if current_data:
 			var quantity: String

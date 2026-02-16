@@ -44,6 +44,7 @@ func setup() -> void:
 		tab_selected = current_event._editor_last_page_used
 		tab_selected = clamp(tab_selected, 0, current_event.pages.size() - 1)
 		original_event = current_event.clone()
+		_fix_clone_event(original_event, current_event)
 		%QuestManagerPanel.pages = current_event.pages
 		%QuestManagerPanel.relationship_levels = current_event.relationship.levels
 		%QuestManagerPanel.set_data(current_event.quests)
@@ -55,13 +56,23 @@ func setup() -> void:
 	%ApplyButton.set_disabled(true)
 
 
+func _fix_clone_event(new_event: RPGEvent, event: RPGEvent) -> void:
+	new_event._uniq_id = event._uniq_id
+	for i in new_event.pages.size():
+		new_event.pages[i]._uniq_id = event.pages[i]._uniq_id
+
+
 func set_event(event: RPGEvent) -> void:
 	var new_event = event.clone(true)
+	_fix_clone_event(new_event, event)
 	current_event = new_event
 	%QuestManagerPanel.quests = current_event.quests
 	%RelationshipManagerPanel.relationship = current_event.relationship
 	%LegacyMode.set_pressed_no_signal(current_event.legacy_mode == true)
 	%FadePageSwap.set_pressed_no_signal(current_event.fade_page_swap_enabled == true)
+	
+	%EventID.text = str(event.id)
+	%EventInternalID.text = str(event._uniq_id)
 
 
 func set_events(_events: RPGEvents) -> void:
@@ -138,7 +149,9 @@ func _create_undo_redo_action() -> void:
 	
 	# Crear copias de los eventos
 	var modified_event = current_event.clone(true)
+	_fix_clone_event(modified_event, current_event)
 	var original_copy = original_event.clone(true)
+	_fix_clone_event(original_copy, current_event)
 	
 	undo_redo.create_action("Edit Event", UndoRedo.MERGE_DISABLE, current_object)
 	
@@ -322,3 +335,39 @@ func _on_legacy_mode_toggled(toggled_on: bool) -> void:
 
 func _on_fade_page_swap_toggled(toggled_on: bool) -> void:
 	current_event.fade_page_swap_enabled = toggled_on
+
+
+func _on_event_page_container_tabs_changed(from: int, to: int) -> void:
+	var bak_page = current_event.pages[from]
+	current_event.pages[from] = current_event.pages[to]
+	current_event.pages[to] = bak_page
+	
+	var bak_id = current_event.pages[from].id
+	current_event.pages[from].id = current_event.pages[to].id
+	current_event.pages[to].id = bak_id
+	
+	# Fix quests:
+	for quest in current_event.quests:
+		if quest.on_start_quest_page == from:
+			quest.on_start_quest_page = to
+		elif quest.on_start_quest_page == to:
+			quest.on_start_quest_page = from
+		
+		if quest.on_finish_quest_page == from:
+			quest.on_finish_quest_page = to
+		elif quest.on_finish_quest_page == to:
+			quest.on_finish_quest_page = from
+		
+		if quest.on_failure_quest_page == from:
+			quest.on_failure_quest_page = to
+		elif quest.on_failure_quest_page == to:
+			quest.on_failure_quest_page = from
+		
+		if not quest.required_pages.is_empty():
+			for i in range(quest.required_pages.size()):
+				if quest.required_pages[i] == from:
+					quest.required_pages[i] = to
+				elif quest.required_pages[i] == to:
+					quest.required_pages[i] = from
+	
+	fill_pages(to)

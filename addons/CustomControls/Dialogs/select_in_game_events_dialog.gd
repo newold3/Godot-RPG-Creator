@@ -2,7 +2,7 @@
 extends Window
 
 
-signal events_selected(list: PackedInt32Array)
+signal events_selected(list: PackedInt64Array)
 
 
 func _ready() -> void:
@@ -15,12 +15,12 @@ func fill_events(events: Array, disabled_event: int = -1) -> void:
 	
 	for ev: Dictionary in events:
 		node.add_item("%s: %s" % [ev.id, ev.name])
-		node.set_item_metadata(-1, ev.id)
-		if ev.id == disabled_event:
+		node.set_item_metadata(-1, ev.uniq_id)
+		if ev.uniq_id == disabled_event:
 			node.set_item_disabled(-1, true)
 
 
-func select_events(items: PackedInt32Array) -> void:
+func select_events(items: PackedInt64Array) -> void:
 	var node: ItemList = %EventList
 	node.deselect_all()
 	for i in node.get_item_count():
@@ -31,11 +31,11 @@ func select_events(items: PackedInt32Array) -> void:
 
 func _on_ok_button_pressed() -> void:
 	var items = %EventList.get_selected_items()
-	var real_ids: PackedInt32Array = []
+	var real_ids: PackedInt64Array = []
 	
 	for i in items:
 		real_ids.append(%EventList.get_item_metadata(i))
-	print(real_ids)
+
 	if items.size() > 0:
 		events_selected.emit(real_ids)
 	queue_free()

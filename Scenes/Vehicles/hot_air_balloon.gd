@@ -88,6 +88,7 @@ func get_shadow_data() -> Dictionary:
 	}
 	
 	if GameManager.current_map:
-		shadow.cell = Vector2i(global_position / Vector2(GameManager.current_map.tile_size))
+		var tile_size: Vector2 = GameManager.get_map_tile_size()
+		shadow.cell = Vector2i(global_position / tile_size)
 	
 	return shadow

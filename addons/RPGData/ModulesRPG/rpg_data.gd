@@ -35,6 +35,9 @@ func get_class():
 ## List of armors.
 @export var armors: Array[RPGArmor] = []
 
+## List of armors.
+@export var costumes: Array[RPGCostume] = []
+
 ## List of enemies.
 @export var enemies: Array[RPGEnemy] = []
 
@@ -141,6 +144,8 @@ func initialize() -> void:
 	armors.clear()
 	armors.append(null)
 	armors.append(RPGArmor.new())
+	# costumes
+	costumes.clear()
 	# Enemies
 	enemies.clear()
 	enemies.append(null)
@@ -247,7 +252,7 @@ func clone(value: bool = true) -> RPGDATA:
 	var new_data = RPGDATA.new()
 
 	var arrs = [
-		"actors", "classes", "professions", "skills", "items", "weapons", "armors",
+		"actors", "classes", "professions", "skills", "items", "weapons", "armors", "costumes",
 		"enemies", "troops", "states", "animations", "common_events", "speakers", "quests"]
 	for v in arrs:
 		var current_data = get(v)
@@ -270,7 +275,7 @@ func clone(value: bool = true) -> RPGDATA:
 func update_with_other_db(other: RPGDATA) -> void:
 	var arrs = [
 		"actors", "classes", "professions", "skills", "items", "weapons", "armors",
-		"enemies", "troops", "states", "animations", "common_events",
+		"costumes", "enemies", "troops", "states", "animations", "common_events",
 		"system", "types", "terms", "speakers", "quests", "_id_version"
 	]
 
@@ -390,10 +395,11 @@ func _apply_upgrade(version_index: int) -> void:
 				item.disassemble_materials = _disassemble_materials
 		11:
 			if types.tool_types == null or types.tool_types.size() == 0:
-				types.tool_types = ["None"]
-				types.icons.tool_icons = [RPGIcon.new()]
+				types.tool_types = []
+				types.icons.tool_icons = []
 			for weapon: RPGWeapon in weapons:
 				if weapon.tools_family == null:
 					weapon.tools_family = []
+			costumes = []
 		_:
 			pass

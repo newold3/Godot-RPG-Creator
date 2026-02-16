@@ -126,7 +126,8 @@ func _ready() -> void:
 	end_movement.connect(_on_end_movement)
 	initialize_virtual_tile()
 	if GameManager.current_map:
-		_squared_tile_size = GameManager.current_map.tile_size.length_squared()
+		var tile_size: Vector2i = GameManager.get_map_tile_size()
+		_squared_tile_size = tile_size.length_squared()
 		GameManager.current_map.update_event_position_in_layout(self)
 
 
@@ -579,7 +580,7 @@ func _get_next_move_toward_event() -> Vector2i:
 	var target_screen_position: Vector2 = Vector2.ZERO
 	var page = get("current_event_page")
 	if page and GameManager.current_map:
-		var event = GameManager.current_map.get_in_game_event_by_pos(page.movement_to_target - 1)
+		var event = GameManager.current_map.get_in_game_event_by_uniq_id(page.movement_to_target)
 		if event and event.has_method("get_current_tile"):
 			goal = event.get_current_tile()
 			target_screen_position = event.get_global_transform_with_canvas().origin
@@ -1026,7 +1027,7 @@ func _process_event_contact(contacting_entities: Array, stop_movement_on_activat
 		return false
 
 	var events_to_start: Array = []
-	var self_id = page.get("id") if page else -1
+	var self_id = page.get("_uniq_id") if page else -1
 	var self_launcher = page.launcher
 	var primary_target = contacting_entities[0] if not contacting_entities.is_empty() else null
 	var self_activated_this_check = false
@@ -1050,7 +1051,7 @@ func _process_event_contact(contacting_entities: Array, stop_movement_on_activat
 				activate_self = true
 			elif self_launcher == RPGEventPage.LAUNCHER_MODE.EVENT_COLLISION and not entity.is_in_group("player"):
 				if "current_event_page" in entity and entity.current_event_page:
-					var other_id = entity.current_event_page.get("id")
+					var other_id = entity.current_event_page.get("_uniq_id")
 					var event_trigger_list = page.get("event_trigger_list")
 					if other_id in event_trigger_list:
 						activate_self = true
@@ -1360,7 +1361,7 @@ func _can_activate_event(my_entity, other_entity) -> bool:
 			if my_launcher == RPGEventPage.LAUNCHER_MODE.ANY_CONTACT:
 				return true
 			elif other_page:
-				var other_id = other_page.get("id")
+				var other_id = other_page.get("_uniq_id")
 				var my_trigger_list = my_page.get("event_trigger_list")
 				if other_id in my_trigger_list:
 					return true
@@ -1372,7 +1373,7 @@ func _can_activate_event(my_entity, other_entity) -> bool:
 			if other_launcher == RPGEventPage.LAUNCHER_MODE.ANY_CONTACT:
 				return true
 			elif my_page:
-				var my_id = my_page.get("id")
+				var my_id = my_page.get("_uniq_id")
 				var other_trigger_list = other_page.get("event_trigger_list")
 				if my_id in other_trigger_list:
 					return true
@@ -1631,7 +1632,7 @@ func _animate_contact_area(final_motion: Vector2) -> void:
 				collision_shape.set_meta("_original_position_and_size",
 					{"position": collision_shape.position, "size": collision_shape.shape.size}
 				)
-			var tile_size = Vector2(GameManager.current_map.tile_size)
+			var tile_size: Vector2 = GameManager.get_map_tile_size()
 				
 			contact_area_tween = create_tween()
 			contact_area_tween.set_parallel(true)
@@ -1956,12 +1957,12 @@ func free_movement(delta: float) -> void:
 	# update steps
 	if GameManager.current_map:
 		update_virtual_tile(velocity * delta)
-		
+		var tile_size: Vector2 = GameManager.get_map_tile_size()
 		cumulative_steps += (movement_vector * delta).length()
-		var steps_to_add = int(cumulative_steps / GameManager.current_map.tile_size.x)
+		var steps_to_add = int(cumulative_steps / tile_size.x)
 		if steps_to_add > 0:
 			GameManager.game_state.stats.steps += steps_to_add
-			cumulative_steps = int(cumulative_steps) % GameManager.current_map.tile_size.x
+			cumulative_steps = int(cumulative_steps) % int(tile_size.x)
 	
 	end_movement.emit()
 

@@ -1,16 +1,8 @@
 [gd_scene format=3 uid="uid://v4ufvixoj8c"]
 
 [ext_resource type="Script" uid="uid://l2mwq0xa3mc7" path="res://Scenes/ShadowCompose/shadow_compose.gd" id="1_njyuq"]
-[ext_resource type="Script" uid="uid://cj4kiemdnbi7n" path="res://Scenes/ShadowCompose/shadow_component.gd" id="2_56cum"]
 [ext_resource type="Shader" uid="uid://b5k56fa1aqc3t" path="res://Assets/Shaders/simple_shadow_mask.gdshader" id="3_ir3x7"]
 [ext_resource type="Shader" uid="uid://dgadfpb7oyxyd" path="res://Assets/Shaders/gaussian_blur.gdshader" id="4_ju3o3"]
-
-[sub_resource type="Resource" id="Resource_ebpiw"]
-resource_local_to_scene = true
-script = ExtResource("2_56cum")
-dynamic_skew = -0.840179252261254
-elongation = Vector2(1, 0.5423088)
-shadow_transform = 2.56841
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_8iou7"]
 viewport_path = NodePath("MaskSubViewport")
@@ -26,18 +18,18 @@ shader_parameter/mask_texture = SubResource("ViewportTexture_8iou7")
 shader_parameter/overlay_color = Color(0, 0, 0, 0.5)
 shader_parameter/debug_color = Color(0, 0.43783325, 0.71, 0.9372549)
 shader_parameter/debug_enabled = false
-shader_parameter/distortion_strength = 0.03
-shader_parameter/sun_displacement_strength = 0.02
 shader_parameter/shadow_direction = Vector2(0.36, 0.24)
-shader_parameter/overlap_threshold = 0.15
+shader_parameter/overlap_threshold = 0.1030000048925
+shader_parameter/mask_distort_strength = 0.1190000056525
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_rnuyh"]
 viewport_path = NodePath("ShadowSubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rqcww"]
 shader = ExtResource("4_ju3o3")
-shader_parameter/blur_size = 2.5
-shader_parameter/overlay_color = Color(0, 0, 0, 0.45)
+shader_parameter/blur_size = 1.0
+shader_parameter/overlay_color = Color(0.840625, 0.06830079, 0.06830079, 0.50980395)
+shader_parameter/debug_color = Color(0, 0, 1, 0.5)
 shader_parameter/enable_debug = false
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_j5kux"]
@@ -58,12 +50,12 @@ viewport_path = NodePath("ShadowFinal")
 [node name="ShadowCompose" type="Node2D" unique_id=827305729]
 z_index = 100
 script = ExtResource("1_njyuq")
-shadow_component = SubResource("Resource_ebpiw")
 
 [node name="ShadowSubViewport" type="SubViewport" parent="." unique_id=569849659]
 unique_name_in_owner = true
 transparent_bg = true
-size = Vector2i(1589, 1128)
+canvas_item_default_texture_filter = 0
+size = Vector2i(1544, 1083)
 render_target_update_mode = 1
 
 [node name="Canvas1Parallax" type="Parallax2D" parent="ShadowSubViewport" unique_id=1131042118]
@@ -76,7 +68,8 @@ unique_name_in_owner = true
 [node name="MaskSubViewport" type="SubViewport" parent="." unique_id=962747054]
 unique_name_in_owner = true
 transparent_bg = true
-size = Vector2i(1589, 1128)
+canvas_item_default_texture_filter = 0
+size = Vector2i(1544, 1083)
 render_target_update_mode = 1
 
 [node name="Canvas2Parallax" type="Parallax2D" parent="MaskSubViewport" unique_id=1740337686]
@@ -89,7 +82,8 @@ unique_name_in_owner = true
 [node name="ShadowFinalMix" type="SubViewport" parent="." unique_id=1933239785]
 unique_name_in_owner = true
 transparent_bg = true
-size = Vector2i(1589, 1128)
+canvas_item_default_texture_filter = 0
+size = Vector2i(1544, 1083)
 render_target_update_mode = 4
 
 [node name="ShadowsFinalSprite" type="Sprite2D" parent="ShadowFinalMix" unique_id=774285177]
@@ -101,7 +95,8 @@ centered = false
 [node name="ShadowFinal" type="SubViewport" parent="." unique_id=942205079]
 unique_name_in_owner = true
 transparent_bg = true
-size = Vector2i(1589, 1128)
+canvas_item_default_texture_filter = 0
+size = Vector2i(1544, 1083)
 render_target_update_mode = 4
 
 [node name="ShadowLayer" type="Sprite2D" parent="ShadowFinal" unique_id=191682031]

@@ -155,6 +155,7 @@ func select(idx: int, single: bool = true) -> void:
 
 
 func add_item(text: String, icon: Texture2D = null, selectable: bool = true) -> int:
+	if text.is_empty(): text = " "
 	var index = super(text, icon, selectable)
 	set_item_tooltip_enabled(index, false)
 	return index

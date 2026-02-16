@@ -60,7 +60,7 @@ func _ready() -> void:
 	tooltip_regex.filter1.compile("\\[title](.+)\\[/title]")
 	tooltip_regex.filter2.compile('\\[(\\d*) *([^\\]]+) *\\]')
 	tooltip_regex.filter3.compile("(?<!\\[)(-?\\s*\\b\\d+\\b\\s*%?)(?![\\]])")
-	tooltip_regex.filter4.compile('(?<!\\[)\\"([^\\"]+)\\"(?!\\])')
+	tooltip_regex.filter4.compile('(?<!\\[)["“]([^"“”]+)["”](?!\\])')
 
 
 func _process(delta: float) -> void:
@@ -324,6 +324,17 @@ func _create_tooltip(title: String, contents: String, parent_node) -> void:
 		formatted_title = formatted_title.strip_edges()
 		formatted_contents = formatted_contents.strip_edges()
 		
+		var protected_tags = {}
+		var protection_regex = RegEx.new()
+		protection_regex.compile("\\[hr[^\\]]*\\]")
+		
+		var matches = protection_regex.search_all(formatted_contents)
+		for i in range(matches.size()):
+			var tag_string = matches[i].get_string()
+			var placeholder = "__PROTECTED_TAG_HR_%d__" % i 
+			protected_tags[placeholder] = tag_string
+			formatted_contents = formatted_contents.replace(tag_string, placeholder)
+		
 		if formatted_contents.length() > 0 and not formatted_contents.ends_with(".") and not formatted_contents.ends_with("]"):
 			formatted_contents += "."
 		
@@ -344,6 +355,9 @@ func _create_tooltip(title: String, contents: String, parent_node) -> void:
 		
 		# filter4: Quotes
 		formatted_contents = tooltip_regex.filter4.sub(formatted_contents, "[color=#ff512f]$1[/color]", true)
+		
+		for placeholder in protected_tags:
+			formatted_contents = formatted_contents.replace(placeholder, protected_tags[placeholder])
 
 		final_title = formatted_title
 		final_contents = formatted_contents
@@ -360,6 +374,8 @@ func _create_tooltip(title: String, contents: String, parent_node) -> void:
 	
 	tooltip.visible = false
 	tooltip.position = get_window().get_mouse_position()
+	
+	print(final_contents)
 
 	# Defer final setup to avoid race conditions
 	call_deferred(

@@ -50,9 +50,7 @@ func set_map_events(current_map: RPGMap) -> void:
 	if not current_map: return
 	
 	# Iterate over the dictionary of currently loaded runtime events
-	for event_id in current_map.current_ingame_events.keys():
-		var ingame_event: RPGMap.IngameEvent = current_map.current_ingame_events[event_id]
-		
+	for ingame_event: RPGMap.IngameEvent in current_map:
 		# Ensure the runtime object is valid and has directional state
 		if ingame_event and ingame_event.lpc_event and "current_direction" in ingame_event.lpc_event:
 			
@@ -60,11 +58,11 @@ func set_map_events(current_map: RPGMap) -> void:
 			
 			# The page ID is retrieved from the IngameEvent wrapper
 			save_data.position = ingame_event.lpc_event.position
-			save_data.event_id = ingame_event.event.id
+			save_data.event_id = ingame_event.uniq_id
 			save_data.direction = ingame_event.lpc_event.current_direction
 			save_data.active_page_id = ingame_event.page_id
 			
-			current_map_events[event_id] = save_data
+			current_map_events[ingame_event.uniq_id] = save_data
 
 #endregion
 
@@ -75,7 +73,7 @@ func set_map_events(current_map: RPGMap) -> void:
 ## Returns true if any valid save file is found. Useful for enabling "Continue" buttons.
 static func has_any_save_file() -> bool:
 	var paths = _get_paths_for_slot(AUTO_SAVE_SLOT_ID)
-	var base_dir = paths["dir"] 
+	var base_dir = paths["dir"]
 
 	var dir = DirAccess.open(base_dir)
 	if dir:
@@ -172,7 +170,7 @@ static func _serialize_camera_target(obj: Variant) -> Dictionary:
 		return {"type": "player", "priority": priority}
 	
 	if node is LPCEvent:
-		return {"type": "event", "id": node.current_event.id, "priority": priority}
+		return {"type": "event", "id": node.current_event._uniq_id, "priority": priority}
 	
 	if node is RPGVehicle:
 		return {"type": "vehicle", "id": node.vehicle_type, "priority": priority} # O un ID único si hay varios

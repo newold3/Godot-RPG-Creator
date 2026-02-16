@@ -216,7 +216,7 @@ func reset_values(node: Node) -> void:
 		node.value = 0
 	elif node is OptionButton and node.get_item_count() > 0:
 		node.select(0)
-	elif "text" in node:
+	elif "text" in node and not node is Label and not node is RichTextLabel:
 		node.text = ""
 	elif node.get_class() in ["ColumnItemList", "CurveParameter"]:
 		node.clear()

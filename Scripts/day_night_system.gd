@@ -64,6 +64,7 @@ func update_calculations():
 
 
 func calculate_time_data():
+	if not calculated_data: return
 	calculated_data.current_hour = current_time
 	calculated_data.time_string = get_time_string()
 	
@@ -77,6 +78,7 @@ func calculate_time_data():
 
 
 func calculate_sun_data():
+	if not calculated_data: return
 	# 6 AM = 0°, 12 PM = 90°, 6 PM = 180°
 	var sun_angle = (current_time - 6.0) * 15.0
 	calculated_data.sun_angle = sun_angle
@@ -91,6 +93,7 @@ func calculate_sun_data():
 
 
 func calculate_moon_data():
+	if not calculated_data: return
 	"""Calculate moon-specific data for the night cycle"""
 	if current_time >= 22.5 or current_time < 6.0:
 		# Night hours when moon is active
@@ -149,13 +152,14 @@ func calculate_moon_angle() -> float:
 
 
 func calculate_ambient_data():
+	if not calculated_data: return
 	calculated_data.ambient_color = get_ambient_color()
 	calculated_data.ambient_intensity = get_ambient_intensity()
 
 
 func get_ambient_color() -> Color:
+	if not day_night_config: return Color.WHITE
 	var hour = current_time
-	
 	if hour >= 5.0 and hour < 8.0:  # Dawn
 		var t = (hour - 5.0) / 3.0
 		return day_night_config.night_color.lerp(day_night_config.dawn_color, t)
@@ -187,6 +191,7 @@ func get_ambient_intensity() -> float:
 
 
 func calculate_audio_data():
+	if not day_night_config: return
 	var target_volume = day_night_config.day_audio_volume if is_day_time() else day_night_config.night_audio_volume
 	
 	calculated_data.audio_volume = target_volume
@@ -194,11 +199,13 @@ func calculate_audio_data():
 
 
 func calculate_shadow_data():
+	if not calculated_data: return
 	calculated_data.shadow_strength = day_night_config.shadow_day_strength if is_day_time() else day_night_config.shadow_night_strength
 	calculated_data.shadows_enabled = calculated_data.shadow_strength > 0.0
 
 
 func calculate_dynamic_shadow_data():
+	if not day_night_config: return
 	"""Calculate dynamic shadow properties based on sun position"""
 	if not day_night_config.shadow_enabled:
 		calculated_data.shadow_visible = false
@@ -276,6 +283,7 @@ func calculate_dynamic_shadow_data():
 
 
 func calculate_switches_data():
+	if not calculated_data: return
 	var old_street_lights = calculated_data.street_lights_on
 	var should_street_lights_be_on = (current_time >= day_night_config.street_lights_on_hour or current_time <= day_night_config.street_lights_off_hour)
 	calculated_data.street_lights_on = should_street_lights_be_on
@@ -342,7 +350,8 @@ func start() -> void:
 
 
 func continue_from_time(hour: float) -> void:
-	current_time = clamp(hour, 0.0, 24.0)
+	if hour > -1:
+		current_time = clamp(hour, 0.0, 24.0)
 	time_speed = 24.0 / day_night_config.day_duration_seconds
 	
 	update_calculations()
@@ -369,10 +378,12 @@ func set_time_speed(speed: float):
 
 
 func set_enabled() -> void:
+	if not calculated_data: return
 	calculated_data.enabled = true
 
 
 func set_disabled() -> void:
+	if not calculated_data: return
 	calculated_data.enabled = false
 
 
@@ -390,6 +401,7 @@ func resume_time():
 
 # Override this function with your custom implementation
 func final_update():
+	if not calculated_data: return
 	GameManager.set_day_color(calculated_data.ambient_color)
 
 

@@ -36,7 +36,7 @@ func _update_data_fields() -> void:
 		var current_data = get_data()
 		if current_data.tools_family == null:
 			current_data.tools_family = []
-		fill_tools()
+		fill_tools(current_data.tools_family)
 		%NameLineEdit.text = current_data.name
 		%IconPicker.set_icon(current_data.icon.path, current_data.icon.region)
 		%TraitsPanel.set_data(database, current_data.traits)
@@ -203,11 +203,34 @@ func fill_animation() -> void:
 		node.text = TranslationManager.tr("None")
 
 
-func fill_tools() -> void:
+func fill_tools(_selected_ids: PackedInt32Array) -> void:
 	var node = %Tools
+	
 	node.clear()
-	for tool in RPGSYSTEM.database.types.tool_types:
-		node.add_item(tool)
+	node.add_item("none")
+	
+	if not get_data(): 
+		if not node.multi_selection_changed.is_connected(_on_tools_multi_selection_changed):
+			node.multi_selection_changed.connect(_on_tools_multi_selection_changed)
+		return
+	
+	var selected_tools = _selected_ids
+	
+	if 0 in selected_tools:
+		node.set_item_selected(0, true, true)
+
+	for i in database.types.tool_types.size():
+		var tool = database.types.tool_types[i]
+		var item_index = i + 1 
+		
+		var icon = database.types.icons.tool_icons[i]
+		if FileAccess.file_exists(icon.path):
+			node.add_icon_item(load(icon.path), "Tool %s: %s" % [i + 1, tool], item_index)
+		else:
+			node.add_item("Tool %s: %s" % [i + 1, tool], item_index)
+
+		if item_index in selected_tools:
+			node.set_item_selected(item_index, true, true)
 
 
 func fill_weapon_types() -> void:
@@ -291,7 +314,7 @@ func _on_visibility_changed() -> void:
 		fill_rarity_types()
 		fill_user_parameters()
 		fill_animation()
-		fill_tools()
+		fill_tools(get_data().tools_family)
 		if current_selected_index != -1:
 			%TraitsPanel.set_data(database, get_data().traits)
 		else:
@@ -519,6 +542,25 @@ func _on_reset_user_parameters_pressed() -> void:
 	fill_user_parameters()
 
 
-func _on_tools_multi_selection_changed(selected_ids: Array[int]) -> void:
+func _on_tools_multi_selection_changed(selected_ids: PackedInt32Array) -> void:
+	var node = %Tools
+	var clicked_index = node.get_hovered_item_index()
+	if clicked_index != -1:
+		if clicked_index == 0:
+			for id in selected_ids:
+				if id != 0:
+					node.set_item_selected(id, false)
+		elif selected_ids[0] == 0:
+			node.set_item_selected(0, false)
+	
 	get_data().tools_family.clear()
+	selected_ids = node.get_selected_items()
 	get_data().tools_family.append_array(PackedInt32Array(selected_ids))
+
+
+func _on_tools_middle_click() -> void:
+	get_data().tools_family.clear()
+	await get_tree().process_frame
+	await get_tree().process_frame
+	get_data().tools_family.append(0)
+	fill_tools(get_data().tools_family)

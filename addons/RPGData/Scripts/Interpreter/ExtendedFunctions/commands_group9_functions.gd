@@ -53,7 +53,7 @@ func _command_0075() -> void:
 		image_position.y += image.texture.get_height() / 2.0
 	#
 	#if image_type == 0 and GameManager.current_map:
-		#image_position += Vector2(GameManager.current_map.tile_size) / 2
+		#image_position += Vector2(GameManager.get_map_tile_size()) / 2
 
 	if image_type == 0:
 		image.z_index = z_index

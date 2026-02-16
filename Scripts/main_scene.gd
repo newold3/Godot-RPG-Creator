@@ -765,7 +765,9 @@ func _create_or_reuse_player() -> void:
 		current_player.get_parent().remove_child(current_player)
 	
 	if GameManager.current_map:
-		if current_player: current_player.current_map_tile_size = GameManager.current_map.tile_size
+		if current_player:
+			var tile_size: Vector2i = GameManager.get_map_tile_size()
+			current_player.current_map_tile_size = tile_size
 
 
 func _position_player() -> void:

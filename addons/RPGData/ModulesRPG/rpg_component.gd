@@ -11,11 +11,12 @@ extends Resource
 func get_class():
 	return "RPGComponent"
 
-## Data ID of the component (0 = items, 1 = weapons, 2 = armors).
+## Data ID of the component (0 = items, 1 = weapons, 2 = armors, 3 = sets / costumes).
 @export var data_id: int = 0
 
 ## Item ID of the component.
 @export var item_id: int = 1
+
 
 ## Clones the component.
 ## @param value bool - Whether to perform a deep clone.

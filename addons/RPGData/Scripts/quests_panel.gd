@@ -76,6 +76,9 @@ func _fill_reward_list(selected_index: int = -1) -> void:
 		elif reward.item.data_id == 2: # armors
 			current_data = database.armors
 			prefix = "<Armor> "
+		elif reward.item.data_id == 3: # set / costume
+			current_data = database.costumes
+			prefix = "<🎭 Set / Costume> "
 		
 		if current_data:
 			var quantity: String
@@ -156,6 +159,7 @@ func _update_data_fields() -> void:
 		%MissionAvailable.set_icon(current_data.icon_available.path, current_data.icon_available.region)
 		%MissionProgress.set_icon(current_data.icon_progress.path, current_data.icon_progress.region)
 		%MissionCompleted.set_icon(current_data.icon_completed.path, current_data.icon_completed.region)
+		%MissionFailed.set_icon(current_data.icon_failed.path, current_data.icon_failed.region)
 		
 		if current_data.prerequisites:
 			set_button_text(%Prerequisites, current_data.prerequisites)
@@ -766,3 +770,30 @@ func _on_global_event_middle_click_pressed() -> void:
 	quest_cache.global_event = -1
 	get_data().global_event = -1
 	set_global_event_name()
+
+
+func _on_mission_failed_clicked() -> void:
+	_open_icon_dialog(%MissionFailed, "icon_failed")
+
+
+func _on_mission_failed_paste_requested(icon: String, region: Rect2) -> void:
+	var data_icon = get_data().icon_failed
+	data_icon.path = icon
+	data_icon.region = region
+	%MissionFailed.set_icon(data_icon.path, data_icon.region)
+
+
+func _on_mission_failed_remove_requested() -> void:
+	get_data().icon_failed.clear()
+	%MissionFailed.clear()
+
+
+func _on_visibility_changed() -> void:
+	super()
+	if visible:
+		busy = true
+		if current_selected_index != -1:
+			_fill_reward_list()
+		else:
+			%RewardList.clear()
+		busy = true

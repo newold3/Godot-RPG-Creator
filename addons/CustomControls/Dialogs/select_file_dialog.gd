@@ -89,6 +89,7 @@ static var last_folder_visited: String = ""
 
 @onready var expression = Expression.new()
 @onready var scroll_container: ScrollContainer = %ScrollContainer
+@onready var audio_preview_player: AudioStreamPlayer = %AudioStreamPlayer
 
 
 func _ready() -> void:
@@ -107,6 +108,22 @@ func _ready() -> void:
 		%AllButton.set_pressed_no_signal(p_all_button_enabled)
 		favorite_button_enabled = p_favorite_button_enabled
 		all_button_enabled = p_all_button_enabled
+
+
+func _try_play_audio_preview(path: String) -> void:
+	if not audio_preview_player: return
+	
+	audio_preview_player.stop()
+	
+	var ext = path.get_extension().to_lower()
+	if not ext in ["wav", "ogg", "mp3"]:
+		return
+
+	if ResourceLoader.exists(path):
+		var stream = load(path)
+		if stream is AudioStream:
+			audio_preview_player.stream = stream
+			audio_preview_player.play()
 
 
 func skip(_path: String) -> void:
@@ -214,7 +231,6 @@ func _change_state_button(button: TextureButton, history_id: String) -> void:
 
 func _clear_current_files() -> void:
 	_load_token += 1
-	%FilterLineEdit.text = ""
 	for file in %FileContainer.get_children():
 		file.queue_free()
 	queue_files.clear()
@@ -289,7 +305,7 @@ func _clean_path(path: String) -> String:
 	return path
 
 
-func _fill_favorite_files() -> void:
+func _fill_favorite_files(filter_text: String = "") -> void:
 	_clear_current_files()
 	_update_ui_controls()
 	
@@ -299,14 +315,16 @@ func _fill_favorite_files() -> void:
 		for file in favorite_files:
 			var file_id = str(favorite_files[file])
 			if file_id == str(current_file_filters_data):
+				if not filter_text.is_empty() and not filter_text.to_lower() in file.get_file().to_lower():
+					continue
 				filtered_files_pool.append(FileStruct.new(file, "file"))
 	
-	_prioritize_selected_file()
+	_prioritize_recent_files()
 	_paginate_next_batch()
 	hide_loading()
 
 
-func fill_files(file_id: String, update_directory: bool = true) -> void:
+func fill_files(file_id: String, update_directory: bool = true, filter_text: String = "") -> void:
 	file_type = file_id
 	current_cache_key = file_id
 	current_file_filters_data = current_cache_key
@@ -332,27 +350,29 @@ func fill_files(file_id: String, update_directory: bool = true) -> void:
 		hide_loading()
 		return
 
-	
 	var current_token = _load_token
 	var files = await _get_files_in_cache(file_id)
 	if current_token != _load_token: return
 	
 	for file in files:
 		if all_button_enabled or _clean_path(file.get_base_dir()) == base_dir:
+			if not filter_text.is_empty() and not filter_text.to_lower() in file.get_file().to_lower():
+				continue
+			
 			filtered_files_pool.append(FileStruct.new(file, "file"))
 			
-	_prioritize_selected_file()
+	_prioritize_recent_files()
 	_paginate_next_batch()
 	hide_loading()
 
 
-func fill_mix_files(file_ids: PackedStringArray, update_directory: bool = true) -> void:
+func fill_mix_files(file_ids: PackedStringArray, update_directory: bool = true, filter_text: String = "") -> void:
 	current_cache_key = file_ids
 	current_file_filters_data = current_cache_key
 	current_file_type = 2
 	
 	if favorite_button_enabled:
-		_fill_favorite_files()
+		_fill_favorite_files(filter_text)
 		return
 		
 	_clear_current_files()
@@ -373,20 +393,23 @@ func fill_mix_files(file_ids: PackedStringArray, update_directory: bool = true) 
 		if current_token != _load_token: return
 		for file in files:
 			if all_button_enabled or file.get_base_dir() == base_dir:
+				if not filter_text.is_empty() and not filter_text.to_lower() in file.get_file().to_lower():
+					continue
+				
 				filtered_files_pool.append(FileStruct.new(file, "file"))
 				
-	_prioritize_selected_file()
+	_prioritize_recent_files()
 	_paginate_next_batch()
 	hide_loading()
 
 
-func fill_files_by_extension(path: String = "res://", extensions: Array = [], update_directory: bool = true)-> void:
+func fill_files_by_extension(path: String = "res://", extensions: Array = [], update_directory: bool = true, filter_text: String = "")-> void:
 	current_cache_key = extensions
 	current_file_filters_data = current_cache_key
 	current_file_type = 1
 	
 	if favorite_button_enabled:
-		_fill_favorite_files()
+		_fill_favorite_files(filter_text)
 		return
 		
 	_clear_current_files()
@@ -403,9 +426,12 @@ func fill_files_by_extension(path: String = "res://", extensions: Array = [], up
 	var files = _get_files_recursive(base_dir, extensions)
 	for file in files:
 		if all_button_enabled or file.get_base_dir() == base_dir:
+			if not filter_text.is_empty() and not filter_text.to_lower() in file.get_file().to_lower():
+				continue
+			
 			filtered_files_pool.append(FileStruct.new(file, "file"))
 			
-	_prioritize_selected_file()
+	_prioritize_recent_files()
 	_paginate_next_batch()
 	hide_loading()
 
@@ -479,6 +505,13 @@ func _setup_file_node(node: Control, path: String) -> void:
 			node.set_path(path, preview, path.replace("_data.%s" % path.get_extension(), "").get_file())
 		else:
 			node.set_path(path)
+	elif path in FileCache.cache.sets:
+		var res = load(path)
+		if res is IngameGearSet:
+			var preview = res.set_preview
+			node.set_path(path, preview, path.replace("_data.%s" % path.get_extension(), "").get_file())
+		else:
+			node.set_path(path)
 	else:
 		node.set_path(path)
 		
@@ -521,6 +554,8 @@ func navigate_to_directory(path: String, add_to_history: bool = true) -> void:
 	current_directory = path
 	current_page = 0
 	
+	%FilterLineEdit.text = ""
+	
 	current_file_selected = ""
 	current_directory_selected = ""
 	%CurrentPath.text = current_directory
@@ -530,10 +565,12 @@ func navigate_to_directory(path: String, add_to_history: bool = true) -> void:
 
 
 func _refresh_view() -> void:
+	var filter = %FilterLineEdit.text
+	
 	match current_file_type:
-		0: fill_files(current_file_filters_data, false)
-		1: fill_files_by_extension(current_directory, current_file_filters_data, false)
-		2: fill_mix_files(current_file_filters_data, false)
+		0: fill_files(current_file_filters_data, false, filter)
+		1: fill_files_by_extension(current_directory, current_file_filters_data, false, filter)
+		2: fill_mix_files(current_file_filters_data, false, filter)
 
 
 func _on_all_button_toggled(toggled_on: bool) -> void:
@@ -598,7 +635,61 @@ func _on_ok_button_pressed() -> void:
 
 func select_file(path: String) -> void:
 	if target_callable: target_callable.call(path)
+	if FileCache.options:
+		if not "recent_files" in FileCache.options:
+			FileCache.options.recent_files = []
+		
+		var recent: Array = FileCache.options.recent_files
+
+		if path in recent:
+			recent.erase(path)
+		
+		recent.push_front(path)
+		
+		if recent.size() > MAX_CACHE_LAST_SELECTION_FILES:
+			recent.resize(MAX_CACHE_LAST_SELECTION_FILES)
+	
+	if audio_preview_player: audio_preview_player.stop()
 	hide()
+
+
+## Moves selected file AND recent files to the top of the list.
+func _prioritize_recent_files() -> void:
+	if filtered_files_pool.is_empty():
+		return
+
+	var recent_list: Array = []
+	if FileCache.options and "recent_files" in FileCache.options:
+		recent_list = FileCache.options.recent_files
+
+	if current_file_selected.is_empty() and recent_list.is_empty():
+		return
+
+	var selected_items: Array[FileStruct] = []
+	var recent_items: Array[FileStruct] = []
+	var normal_items: Array[FileStruct] = []
+	
+	var recent_dict = {}
+	for i in range(recent_list.size()):
+		recent_dict[recent_list[i]] = i
+		
+	for file in filtered_files_pool:
+		if file.path == current_file_selected:
+			selected_items.append(file)
+		elif file.path in recent_dict:
+			recent_items.append(file)
+		else:
+			normal_items.append(file)
+			
+	if not recent_items.is_empty():
+		recent_items.sort_custom(func(a, b): 
+			return recent_dict[a.path] < recent_dict[b.path]
+		)
+	
+	filtered_files_pool.clear()
+	filtered_files_pool.append_array(selected_items)
+	filtered_files_pool.append_array(recent_items)
+	filtered_files_pool.append_array(normal_items)
 
 
 func _on_file_selected(node: Control) -> void:
@@ -607,6 +698,9 @@ func _on_file_selected(node: Control) -> void:
 	current_file_selected = node.path
 	current_path = node.path
 	_update_label_path_selected()
+	
+	if auto_play_sounds:
+		_try_play_audio_preview(node.path)
 
 
 func _on_directory_selected(node: Control) -> void:
@@ -641,6 +735,7 @@ func hide_loading() -> void:
 
 
 func _on_cancel_button_pressed() -> void:
+	if audio_preview_player: audio_preview_player.stop()
 	hide()
 
 
@@ -653,8 +748,7 @@ func _is_directory_empty(path: String) -> bool:
 
 
 func apply_filter(filter_text: String) -> void:
-	for child in %FileContainer.get_children():
-		child.visible = filter_text.is_empty() or child.path.get_file().to_lower().contains(filter_text.to_lower())
+	_refresh_view()
 
 
 func _on_custom_line_edit_text_changed(new_text: String) -> void:

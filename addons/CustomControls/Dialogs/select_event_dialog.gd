@@ -2,6 +2,12 @@
 extends Window
 
 
+const QUEST_ICON = preload("uid://bhdctf1b0orp7")
+
+# When the value is true, it disables any page that is not a quest page.
+var quest_mode: bool = false
+
+
 signal event_selected(map_id: int, event_id: int, page_id: int)
 
 
@@ -79,12 +85,21 @@ func fill_pages(index_selected: int = 0) -> void:
 				for i in ev.pages.size():
 					var page_name = "Page %s" % (i + 1) + (" (" + ev.pages[i] + ")" if not ev.pages[i].is_empty() else "")
 					node.add_item(page_name)
+					if i in ev.quest_pages:
+						node.set_item_icon(-1, QUEST_ICON)
+					if quest_mode and not i in ev.quest_pages:
+						node.set_item_disabled(i, true)
 				break
 	
-	if index_selected >= 0 and %PageList.get_item_count() > index_selected:
+	if index_selected >= 0 and %PageList.get_item_count() > index_selected and not %PageList.is_item_disabled(index_selected):
 		%PageList.select(index_selected)
-	elif %PageList.get_item_count() > 0:
+	elif %PageList.get_item_count() > 0 and not %PageList.is_item_disabled(0):
 		%PageList.select(0)
+	elif %PageList.get_item_count() > 0:
+		for i in range(0, %PageList.get_item_count(), 1):
+			if not %PageList.is_item_disabled(i):
+				%PageList.select(i)
+				break
 
 
 func _on_ok_button_pressed() -> void:

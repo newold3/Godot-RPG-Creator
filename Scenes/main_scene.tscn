@@ -7,20 +7,12 @@
 [ext_resource type="Script" uid="uid://5rdkpgt6uqnc" path="res://addons/RPGData/Scripts/Interpreter/main_interpreter.gd" id="2_j1x1n"]
 [ext_resource type="PackedScene" uid="uid://v4ufvixoj8c" path="res://Scenes/ShadowCompose/shadow_compose.tscn" id="4_0ic7e"]
 [ext_resource type="PackedScene" uid="uid://cwxq3ll0bhw0f" path="res://Scenes/DialogTemplates/base_dialog.tscn" id="4_re3ur"]
-[ext_resource type="Script" uid="uid://cj4kiemdnbi7n" path="res://Scenes/ShadowCompose/shadow_component.gd" id="6_huasi"]
 [ext_resource type="Shader" uid="uid://bvum8hbbud2xd" path="res://Assets/Shaders/simple_modulation.gdshader" id="6_m1efj"]
 [ext_resource type="PackedScene" uid="uid://cnpdb4o8usbf0" path="res://Scenes/TransitionManager/transition_manager.tscn" id="7_cyd8t"]
 [ext_resource type="PackedScene" uid="uid://dj44lomm46fuq" path="res://Scenes/OtherScenes/animate_items.tscn" id="8_huasi"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_rbbkg"]
 frequency = 0.0011
-
-[sub_resource type="Resource" id="Resource_76v2p"]
-resource_local_to_scene = true
-script = ExtResource("6_huasi")
-dynamic_skew = -0.840179252261254
-elongation = Vector2(1, 0.5423088)
-shadow_transform = 2.56841
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mai8y"]
 shader = ExtResource("6_m1efj")
@@ -97,7 +89,6 @@ unique_name_in_owner = true
 
 [node name="DynamicShadows" parent="MainSubViewportContainer/MainGameViewport/MainModulate/MapContainer/ShadowContainer" unique_id=1028687855 instance=ExtResource("4_0ic7e")]
 unique_name_in_owner = true
-shadow_component = SubResource("Resource_76v2p")
 
 [node name="ImageContainer" type="Node2D" parent="MainSubViewportContainer/MainGameViewport/MainModulate/MapContainer" unique_id=214212949]
 unique_name_in_owner = true
