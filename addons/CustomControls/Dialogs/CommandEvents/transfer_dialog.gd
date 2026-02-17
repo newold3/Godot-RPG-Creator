@@ -135,7 +135,7 @@ func set_data() -> void:
 		var items = %SwapEventButton.get_item_count()
 		if items > 0:
 			%SwapEventButton.select(0)
-			for i in %SwapEventButton.get_item_count():
+			for i in items:
 				var real_index =  %SwapEventButton.get_item_metadata(i)
 				if real_index == index:
 					%SwapEventButton.select(i)

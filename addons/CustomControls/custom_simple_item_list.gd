@@ -150,8 +150,11 @@ func _change_back_position(value: float) -> void:
 
 
 func select(idx: int, single: bool = true) -> void:
-	super(idx, single)
-	ensure_current_is_visible()
+	if idx < 0 and single:
+		deselect_all()
+	else:
+		super(idx, single)
+		ensure_current_is_visible()
 
 
 func add_item(text: String, icon: Texture2D = null, selectable: bool = true) -> int:

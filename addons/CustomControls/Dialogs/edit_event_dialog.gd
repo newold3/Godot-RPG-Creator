@@ -17,6 +17,7 @@ var busy: bool
 
 
 signal changed()
+signal event_updated(event: RPGEvent)
 
 
 func _ready() -> void:
@@ -137,6 +138,7 @@ func _on_event_page_container_tab_changed(tab: int) -> void:
 func _on_ok_button_pressed() -> void:
 	_create_undo_redo_action()
 	changed.emit()
+	event_updated.emit(current_event)
 	queue_free()
 
 
@@ -185,6 +187,8 @@ func confirm_changes() -> void:
 
 func _on_apply_button_pressed() -> void:
 	_create_undo_redo_action()
+	changed.emit()
+	event_updated.emit(current_event)
 	%ApplyButton.set_disabled(true)
 
 

@@ -28,12 +28,12 @@ func is_rpgmap_in(node: Node) -> bool:
 func validate_and_clean_project() -> void:
 	var dirty: bool = false
 	
-	print("[MapInfos] Validando integridad del proyecto...")
+	print("[MapInfos] Validating project integrity...")
 
 	for i in range(maps.size() - 1, -1, -1):
 		var map_path = maps[i]
 		if not FileAccess.file_exists(map_path):
-			print("[MapInfos] Archivo no encontrado, eliminando de lista maestra: ", map_path)
+			print("[MapInfos] File not found, removing from master list: ", map_path)
 			maps.remove_at(i)
 			dirty = true
 
@@ -50,7 +50,7 @@ func validate_and_clean_project() -> void:
 				paths_to_clean.append(path_key)
 
 	for map_path in paths_to_clean:
-		print("[MapInfos] Limpiando datos huérfanos de: ", map_path)
+		print("[MapInfos] Cleaning orphaned data from: ", map_path)
 		dirty = true
 		
 		if map_events.has(map_path):
@@ -75,10 +75,10 @@ func validate_and_clean_project() -> void:
 						dirty = true
 
 	if dirty:
-		print("[MapInfos] Limpieza completada. Guardando cambios...")
+		print("[MapInfos] Cleaning completed. Saving changes...")
 		save()
 	else:
-		print("[MapInfos] Proyecto limpio.")
+		print("[MapInfos] Clean project.")
 
 
 func fix_maps(data: Array) -> void:
@@ -134,6 +134,25 @@ func get_path_from_id(map_id: int) -> String:
 	return ""
 
 
+func _convert_event_to_dict(event: RPGEvent) -> Dictionary:
+	var pages: Array[Dictionary] = []
+	var quest_pages: PackedInt32Array = []
+	
+	for i in event.pages.size():
+		var page: RPGEventPage = event.pages[i]
+		pages.append({"name": page.name, "uid": page._uniq_id})
+		if page.is_quest_page:
+			quest_pages.append(i)
+	
+	return {
+		"id": event.id,
+		"uid": event._uniq_id,
+		"name": event.name,
+		"pages": pages,
+		"quest_pages": quest_pages
+	}
+
+
 func set_map_events(map_id: int, events: RPGEvents) -> void:
 	var map_path_key: String = ""
 	
@@ -155,25 +174,39 @@ func set_map_events(map_id: int, events: RPGEvents) -> void:
 
 	var items: Array = []
 	for ev: RPGEvent in events.events:
-		var pages: PackedStringArray = []
-		var quest_pages: PackedInt32Array = []
-		for i in ev.pages.size():
-			var page: RPGEventPage = ev.pages[i]
-			pages.append(page.name)
-			if page.is_quest_page:
-				quest_pages.append(i)
-		
-		items.append({
-			"id": ev.id, 
-			"uid": ev._uniq_id,
-			"name": ev.name, 
-			"pages": pages, 
-			"quest_pages": quest_pages
-		})
-		
+		var event_data = _convert_event_to_dict(ev)
+		items.append(event_data)
 		global_event_lookup[ev._uniq_id] = map_path_key
 	
 	map_events[map_path_key] = items
+
+
+func update_single_event(map_id: int, event: RPGEvent) -> void:
+	var map_path = get_path_from_id(map_id)
+	if map_path.is_empty():
+		push_warning("RPGMapsInfo: No map with ID %s found to update event." % map_id)
+		return
+
+	var new_event_data = _convert_event_to_dict(event)
+
+	if map_events.has(map_path):
+		var events_list: Array = map_events[map_path]
+		var found = false
+		
+		for i in events_list.size():
+			if events_list[i].get("uid", -1) == event._uniq_id or events_list[i]["id"] == event.id:
+				events_list[i] = new_event_data
+				found = true
+				break
+		
+		if not found:
+			events_list.append(new_event_data)
+	else:
+		map_events[map_path] = [new_event_data]
+
+	global_event_lookup[event._uniq_id] = map_path
+	
+	save.call_deferred()
 
 
 func get_map_events(map_id: int) -> Array:

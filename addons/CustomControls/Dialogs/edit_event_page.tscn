@@ -600,22 +600,12 @@ uppercase = true
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-tooltip_text = "[title]Page Initiator Type[/title]
-Choose how you want this page to be activated
+tooltip_text = "[title]Data Type[/title]
+The type of data this event will use to display its scene.
 
-[ul] \"Action Button\": The event runs when the player presses the action button while facing the event.
- \"Player Contact\": The event runs when the player walks onto the same tile as the event.
- \"Event Contact\": The event runs when another event moves onto the same tile. You must define which events can trigger it.
- \"Auto-Start\": The event starts automatically as soon as its conditions are met. It blocks player input until it finishes.
- \"Parallel\": The event runs automatically in the background without interrupting player control.
- \"Caller\": The event runs only when triggered directly by another event or script.
- \"Any Contact\": The event runs when the player or other event walks onto the same tile as the event.
- \"Tool\": Projectile(s) or weapon/tool(s) that activates this page.
- \"Signal\": Activated when another event emits the specified signal(s)[/ul]
-
-[Note]: When the trigger is set to \"Player Contact\", \"Event Contact\", or \"Any Contact\", if the \"Passable\" option is enabled, contact will occur upon collision; otherwise, contact will occur when occupying the same tile as this event.
-
-[Note 2]: Events with the \"Caller\" trigger will automatically be converted into an EmptyLPCEvent, with no graphics, no collisions, and fully passable."
+[ul] \"Lpc Event\": Standard LPC Event (created with the character editor).
+ \"Image\": Uses an image to create the in-game scene (images should be scaled to a maximum width equal to the tile width).
+ \"Custom Scene\": Custom scene that offers more control than a simple image. You can use any scene, but it is recommended to use a scene adapted to LPC assets. The scene can have the function process_event_state, which receives a dictionary with the keys is_moving, direction, and delta, and the function get_shadow_sprites, which returns an array of the sprites used by your scene.[/ul]"
 focus_mode = 0
 mouse_default_cursor_shape = 2
 alignment = 1

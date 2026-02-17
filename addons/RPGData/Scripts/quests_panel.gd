@@ -413,7 +413,8 @@ func set_npc_name() -> void:
 	if ev and ev.map_id != -1 and ev.event_id != -1:
 		map_name = RPGSYSTEM.map_infos.get_map_name_from_id(ev.map_id)
 		map_name = (map_name if not map_name.is_empty() else str(ev.map_id))
-		event_name = "%s: %s" % [ev.event_id, RPGSYSTEM.map_infos.get_event_name(ev.map_id, ev.event_id)]
+		var event: Dictionary = RPGSYSTEM.map_infos.get_event(ev.map_id, ev.event_id)
+		event_name = "%s: %s" % [event.get("id", 0), event.get("name", "")]
 		page_name = RPGSYSTEM.map_infos.get_event_page_name(ev.map_id, ev.event_id, ev.event_page_id)
 	
 	if not event_name.is_empty():
@@ -568,6 +569,7 @@ func _on_target_event_pressed() -> void:
 	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
 	
 	dialog.set_selection(get_data().target_event.map_id, get_data().target_event.event_id, get_data().target_event.event_page_id)
+	
 	
 	dialog.event_selected.connect(
 		func(map_id: int, event_id: int, page_id: int):

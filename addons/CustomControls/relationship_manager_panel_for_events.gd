@@ -13,8 +13,10 @@ func fill_list(index: int) -> void:
 	var node = %RelationshipList
 	node.clear()
 	
-	for level: RPGRelationshipLevel in relationship.levels:
-		var column = [level.name, str(int(level.experience))]
+	for i in relationship.levels.size():
+		var level: RPGRelationshipLevel = relationship.levels[i]
+		var level_name: String = level.name if not level.name.is_empty() else tr("Level") + " %s" % (i+1)
+		var column = [level_name, str(int(level.experience))]
 		node.add_column(column)
 	
 	await node.columns_setted

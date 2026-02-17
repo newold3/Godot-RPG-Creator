@@ -71,11 +71,22 @@ func get_event_name(map_id: int, event_id: int) -> String:
 	if map in map_infos.map_events:
 		var events = map_infos.map_events[map]
 		for event in events:
-			if event.id == event_id:
+			if event.uid == event_id or event.id == event_id:
 				event_name = event.name
 				break
 	
 	return event_name
+
+
+func get_event(map_id: int, event_id: int) -> Dictionary:
+	var map = get_map_by_id(map_id)
+	if map in map_infos.map_events:
+		var events = map_infos.map_events[map]
+		for event in events:
+			if event.uid == event_id or event.id == event_id:
+				return event
+	
+	return {}
 
 
 func get_event_page_name(map_id: int, event_id: int, page_id: int) -> String:
@@ -85,9 +96,12 @@ func get_event_page_name(map_id: int, event_id: int, page_id: int) -> String:
 	if map in map_infos.map_events:
 		var events = map_infos.map_events[map]
 		for event in events:
-			if event.id == event_id:
-				page_name = "Page %s" % (page_id + 1) + (" (" + event.pages[page_id] + ")" if page_id >= 0 and event.pages.size() > page_id and not event.pages[page_id].is_empty() else "")
-				break
+			if event.uid == event_id or event.id == event_id:
+				for i in event.pages.size():
+					var page = event.pages[i]
+					if page.uid == page_id:
+						page_name = "Page %s" % (i + 1) + (" (" + page.name + ")" if not page.name.is_empty() else "")
+						return page_name
 	
 	return page_name
 
@@ -102,6 +116,10 @@ func get_map_name_from_id(map_id: int) -> String:
 
 func update_file_path(old_file: String, new_file: String) -> void:
 	map_infos.update_file_path.call_deferred(old_file, new_file)
+
+
+func update_single_event(map_id: int, event: RPGEvent) -> void:
+	map_infos.update_single_event(map_id, event)
 
 
 func _exit_tree() -> void:

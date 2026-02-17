@@ -3249,6 +3249,7 @@ func show_edit_event_dialog() -> void:
 	dialog.set_event(current_event)
 	dialog.set_events(current_object.events)
 	dialog.changed.connect(get_editor_interface().mark_scene_as_unsaved)
+	dialog.event_updated.connect(_on_edit_event_dialog_changed.bind(current_object))
 	dialog.size_changed.connect(_on_dialog_size_changed.bind(path, dialog))
 	dialog.tree_exited.connect(_on_dialog_tree_exited)
 	dialog.tree_exiting.connect(
@@ -3266,6 +3267,13 @@ func show_edit_event_dialog() -> void:
 	else:
 		dialog.size = state.size
 		dialog.position = state.position
+
+
+func _on_edit_event_dialog_changed(event: RPGEvent, obj: RPGMap) -> void:
+	if is_instance_valid(obj) and is_instance_valid(event):
+		var rpg_map_info = get_node_or_null("/root/RPGMapsInfo")
+		if rpg_map_info:
+			rpg_map_info.update_single_event(obj.internal_id, event)
 
 
 func _on_dialog_tree_exited() -> void:

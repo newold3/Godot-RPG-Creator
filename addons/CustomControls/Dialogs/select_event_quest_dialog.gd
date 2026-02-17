@@ -105,10 +105,6 @@ func _on_failure_message_pressed() -> void:
 	_show_text_message(2)
 
 
-func _on_enable_self_switch_item_selected(index: int) -> void:
-	data.self_switch_enabled = index - 1
-
-
 func _on_quest_id_pressed() -> void:
 	var path = "res://addons/CustomControls/Dialogs/select_any_data_dialog.tscn"
 	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
@@ -153,3 +149,63 @@ func _on_confirm_ok_text_changed(new_text: String) -> void:
 
 func _on_confirm_cancel_text_changed(new_text: String) -> void:
 	data.confirm_cancel_option = new_text
+
+
+func _select_event(data_id: String, event: RPGMapEventID, is_single: bool) -> void:
+	var path = "res://addons/CustomControls/Dialogs/select_event_dialog.tscn"
+	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
+	
+	if is_single:
+		var w = get_tree().get_first_node_in_group("event_editor")
+		print([w.current_object, w.current_event])
+		dialog.setup_single_event_mode(w.current_object.internal_id, w.current_event._uniq_id, true, true)
+	else:
+		dialog.setup_quest_mode(true, true)
+	
+	dialog.set_selection(event.map_id, event.event_id, event.event_page_id)
+
+	#
+	dialog.event_selected.connect(
+		func(map_id: int, event_id: int, page_id: int):
+			var ev = RPGMapEventID.new(map_id, event_id, page_id)
+			data.set(data_id, ev)
+			set_control_name(data_id, ev)
+	)
+
+
+func set_control_name(data_id: String, event_id: RPGMapEventID) -> void:
+	var target_node = %StartPage if data_id == "start_page" else %TargetEventPage
+	
+	var event_name: String = ""
+	var map_name: String = ""
+	var page_name: String = ""
+	var ev = event_id
+	if ev and ev.map_id != -1 and ev.event_id != -1:
+		map_name = RPGSYSTEM.map_infos.get_map_name_from_id(ev.map_id)
+		map_name = (map_name if not map_name.is_empty() else str(ev.map_id))
+		var event: Dictionary = RPGSYSTEM.map_infos.get_event(ev.map_id, ev.event_id)
+		event_name = "%s: %s" % [event.get("id", 0), event.get("name", "")]
+		page_name = RPGSYSTEM.map_infos.get_event_page_name(ev.map_id, ev.event_id, ev.event_page_id)
+	
+	if not event_name.is_empty():
+		target_node.text = "Map < %s > event %s - %s" % [map_name, event_name, page_name]
+	else:
+		target_node.text = tr("Select Event")
+
+
+func _on_start_page_pressed() -> void:
+	_select_event("start_page", data.start_page, true)
+
+
+func _on_target_event_page_pressed() -> void:
+	_select_event("target_page", data.target_page, false)
+
+
+func _on_start_page_middle_click_pressed() -> void:
+	data.start_page.clear()
+	set_control_name("start_page", data.start_page)
+
+
+func _on_target_event_page_middle_click_pressed() -> void:
+	data.target_page.clear()
+	set_control_name("target_page", data.target_page)

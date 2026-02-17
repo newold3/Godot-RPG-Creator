@@ -118,7 +118,7 @@ func _create_custom_popup() -> void:
 	
 	# Crear ItemList
 	item_list = preload("res://addons/CustomControls/custom_simple_item_list.tscn").instantiate()
-	item_list.select_mode = ItemList.SELECT_MULTI
+	item_list.select_mode = ItemList.SELECT_TOGGLE
 	item_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	item_list.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	item_list.theme = load("res://addons/RPGMap/Assets/Themes/dialog_theme.tres")

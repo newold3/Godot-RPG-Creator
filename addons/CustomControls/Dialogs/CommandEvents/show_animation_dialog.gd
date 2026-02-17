@@ -44,7 +44,7 @@ func set_data() -> void:
 	var items = %TargetOptions.get_item_count()
 	if items > 0:
 		%TargetOptions.select(0)
-		for i in %TargetOptions.get_item_count():
+		for i in items:
 			var real_index = %TargetOptions.get_item_metadata(i)
 			if real_index == target_id:
 				%TargetOptions.select(i)

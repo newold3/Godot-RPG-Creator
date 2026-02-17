@@ -14,6 +14,10 @@ func get_class(): return "RPGEventPQuest"
 ## Level of relationship you must have with this NPC for
 ## this quest to be available (0 = no requirements).
 @export var relationship_requeriment_level: int = 0
+## Page that will be activated when talking to this event while having this quest active.
+@export var start_page: RPGMapEventID = RPGMapEventID.new()
+## Event and page required to complete this quest.
+@export var target_page: RPGMapEventID = RPGMapEventID.new()
 ## Initial dialogue that this event will reproduce before giving
 ## this quest to the player.
 @export var dialogue_on_start: String = ""

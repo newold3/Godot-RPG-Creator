@@ -20,7 +20,7 @@ fill_to = Vector2(0.5, 0)
 oversampling_override = 1.0
 title = "Event Quests"
 position = Vector2i(0, 36)
-size = Vector2i(640, 582)
+size = Vector2i(800, 586)
 wrap_controls = true
 transient = true
 exclusive = true
@@ -69,73 +69,39 @@ layout_mode = 2
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=1547335366]
 custom_minimum_size = Vector2(220, 0)
 layout_mode = 2
-text = "Enable Self Switch:"
+text = "Start Page:"
 
-[node name="EnableSelfSwitch" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=951964734 instance=ExtResource("4_5ove5")]
+[node name="StartPage" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=706305679 instance=ExtResource("3_sc7n4")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-tooltip_text = "Self switch that is activated when this quest is given to the player
-(this may activate other pages of the event if they have that switch as their start condition).
-You can choose not to activate any self switches.
+tooltip_text = "Page that will be activated when talking to this event while having this quest active.
 
-[Note]: You can use this option to change the active page of this NPC while you are on a quest assigned by them. (Remember to add that page to the list of active pages for this quest so the player can turn in the completed quest to this NPC."
-selected = 0
-item_count = 27
-popup/item_0/text = "Do Not Activate Any Switch."
-popup/item_0/id = 0
-popup/item_1/text = "Switch A"
-popup/item_1/id = 1
-popup/item_2/text = "Switch B"
-popup/item_2/id = 2
-popup/item_3/text = "Switch C"
-popup/item_3/id = 3
-popup/item_4/text = "Switch D"
-popup/item_4/id = 4
-popup/item_5/text = "Switch E"
-popup/item_5/id = 5
-popup/item_6/text = "Switch F"
-popup/item_6/id = 6
-popup/item_7/text = "Switch G"
-popup/item_7/id = 7
-popup/item_8/text = "Switch H"
-popup/item_8/id = 8
-popup/item_9/text = "Switch I"
-popup/item_9/id = 9
-popup/item_10/text = "Switch J"
-popup/item_10/id = 10
-popup/item_11/text = "Switch K"
-popup/item_11/id = 11
-popup/item_12/text = "Switch L"
-popup/item_12/id = 12
-popup/item_13/text = "Switch M"
-popup/item_13/id = 13
-popup/item_14/text = "Switch N"
-popup/item_14/id = 14
-popup/item_15/text = "Switch O"
-popup/item_15/id = 15
-popup/item_16/text = "Switch P"
-popup/item_16/id = 16
-popup/item_17/text = "Switch Q"
-popup/item_17/id = 17
-popup/item_18/text = "Switch R"
-popup/item_18/id = 18
-popup/item_19/text = "Switch S"
-popup/item_19/id = 19
-popup/item_20/text = "Switch T"
-popup/item_20/id = 20
-popup/item_21/text = "Switch U"
-popup/item_21/id = 21
-popup/item_22/text = "Switch V"
-popup/item_22/id = 22
-popup/item_23/text = "Switch W"
-popup/item_23/id = 23
-popup/item_24/text = "Switch X"
-popup/item_24/id = 24
-popup/item_25/text = "Switch Y"
-popup/item_25/id = 25
-popup/item_26/text = "Switch Z"
-popup/item_26/id = 26
+[Note]: The page must be a quest page, and you must manually add the event command \"accept mission\" to start the mission. If no page is specified, the dialogue defined in \"Start Message\" will be used, and the quest will be accepted immediately upon completion.
+
+[Note2]: Middle Click to erase."
+text = "Select page"
+clip_text = true
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=177425258]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6" unique_id=1534985699]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Target Event Page:"
+
+[node name="TargetEventPage" parent="MarginContainer/VBoxContainer/HBoxContainer6" unique_id=1065295141 instance=ExtResource("3_sc7n4")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Event and page required to turn in this mission once completed to receive the reward.
+
+[Note]: The page must be a quest page, and you must manually add the event command \"complete mission\" to turn in the mission. If no page is specified, the dialogue defined in \"Success Message\" will be used, and the quest will be turned in immediately upon completion.
+
+[Note2]: Middle Click to erase."
+text = "Select page"
+clip_text = true
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1786053292]
 layout_mode = 2
@@ -183,9 +149,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Select the pages that must be activated in order to receive this quest.
 
-[Note]: Any page that is activated and on this list will enable this NPC to give you this quest.
-
-[Note 2]: Use Shift or Control to select multiple pages."
+[Note]: Any page that is activated and included in this list will allow this NPC to give you this quest."
 enable_multi_selection = true
 multi_selection_prefix = "Page/s "
 
@@ -265,9 +229,7 @@ text = "Failure Message:"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-tooltip_text = "Dialogue that this event will reproduce if this quest was given to the player and they failed to complete it.
-
-[Note]: This is a fallback dialog; it will only start if there is no page defined for this action."
+tooltip_text = "Dialogue that will reproduce if this quest was given to the player and they failed to complete it."
 clip_text = true
 
 [node name="HSeparator4" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=562385656]
@@ -281,7 +243,11 @@ layout_mode = 2
 [node name="UseConfirm" type="CheckBox" parent="MarginContainer/VBoxContainer/VBoxContainer2" unique_id=1000972523]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Display a confirmation message to the player to accept this quest. If this option is disabled, after the start message, the quest will be given to the player automatically."
+tooltip_text = "Display a confirmation message to the player to accept this quest. If this option is disabled, after the start message, the quest will be given to the player automatically.
+
+[Note]: This only occurs if no starting page is defined and the fallback message \"Start Message\" is used.
+
+[note2]: If this option is disabled, the quest will start immediately after completing the fallback message."
 mouse_default_cursor_shape = 2
 text = "Use “Confirm” to give this quest to the player."
 
@@ -345,7 +311,10 @@ Closes this window without saving any changes."
 text = "CANCEL"
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/QuestID" to="." method="_on_quest_id_pressed"]
-[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer4/EnableSelfSwitch" to="." method="_on_enable_self_switch_item_selected"]
+[connection signal="middle_click_pressed" from="MarginContainer/VBoxContainer/HBoxContainer4/StartPage" to="." method="_on_start_page_middle_click_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer4/StartPage" to="." method="_on_start_page_pressed"]
+[connection signal="middle_click_pressed" from="MarginContainer/VBoxContainer/HBoxContainer6/TargetEventPage" to="." method="_on_target_event_page_middle_click_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer6/TargetEventPage" to="." method="_on_target_event_page_pressed"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/HBoxContainer5/UseCustomTimer" to="." method="_on_use_custom_timer_toggled"]
 [connection signal="multi_selection_changed" from="MarginContainer/VBoxContainer/HBoxContainer/PageList" to="." method="_on_page_list_multi_selection_changed"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer3/RelationshipLevel" to="." method="_on_relationship_level_item_selected"]
