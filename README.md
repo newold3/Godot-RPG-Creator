@@ -118,6 +118,8 @@ A huge thank you to the patrons who support the development of Godot RPG Creator
 
 Do you want to support the project and appear here? [Become a Patron](https://www.patreon.com/newold13/)
 
+Or, if you prefer, you can buy me a coffe on [☕ ko-fi](https://ko-fi.com/newold3)
+
 ---
 
 ## 📄 License
