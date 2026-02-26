@@ -132,7 +132,7 @@ func set_config(p_config: Dictionary) -> void:
 	items = {}
 	config = p_config
 	%ShopNameLabel.text = config.get("shop_name", terms.get_message("Shop Default Title"))
-	if ResourceLoader.exists(config.shop_keeper):
+	if AssetManager.exists(config.shop_keeper):
 		var shop_keeper_texture: Texture = load(config.shop_keeper)
 		$ShopKeeper.texture = shop_keeper_texture
 	

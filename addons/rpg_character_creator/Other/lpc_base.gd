@@ -45,10 +45,15 @@ const PROJECTILES = {
 	"boomerang": preload("res://addons/rpg_character_creator/textures/projectiles/boomerang.tscn")
 }
 
+var active_boomerang: Node2D = null
+var projectile_scene: PackedScene = preload("uid://dvj1a75ikakfy")
+
 var idle_tween: Tween
 
 var current_data: Variant = null
 var current_weapon_images: Dictionary = {}
+
+var current_combat_action: Area2D = null
 
 signal shoot_ammo(ammo_id: String, direction: String, ammo_position: Vector2)
 
@@ -169,7 +174,7 @@ func _ready() -> void:
 			if current_maps:
 				var map: RPGMap = GameManager.current_map
 				current_map_tile_size = map.tile_size
-		shoot_ammo.connect(perform_shoot)
+
 		animation_finished.connect(_on_animation_finished)
 		attack.connect(_on_attack)
 		calculate_grid_move_duration()
@@ -314,33 +319,61 @@ func install_parts() -> void:
 	
 	var config_path: String = ""
 	var actor_id = get_meta("actor_id") if has_meta("actor_id") else -1
+	var weapon_res: Resource = null
+	var equipped_ammo = null
 	
-	if actor_id != -1:
+	if is_in_group("player") and GameManager.game_state and not GameManager.game_state.current_party.is_empty():
+		actor_id = GameManager.game_state.current_party[0]
+		set_meta("actor_id", actor_id)
+		
 		var actor = GameManager.get_actor(actor_id)
 		if actor:
 			for item in actor.current_gear:
 				if item and item.type == 1:
 					var db_item = RPGSYSTEM.database.weapons.get(item.id)
 					if db_item:
-						var lpc_path = db_item.lpc_part
-						if lpc_path and FileAccess.file_exists(lpc_path):
-							var lpc_res = load(lpc_path)
-							if lpc_res and "config_path" in lpc_res:
-								config_path = lpc_res.config_path
+						if not db_item.lpc_part.is_empty() and AssetManager.exists(db_item.lpc_part):
+							weapon_res = load(db_item.lpc_part)
+						else:
+							var new_path = "res://addons/rpg_character_creator/Data/gear/mainhand/error_sword.res"
+							if AssetManager.exists(new_path):
+								weapon_res = load(new_path)
 					break
+					
+	var final_weapon_part = null
+	var final_ammo_part = null
 	
-	if config_path.is_empty():
-		var mainhand = current_data.equipment_parts.get("mainhand")
-		if mainhand and "config_path" in mainhand:
-			config_path = mainhand.config_path
-	
-	if FileAccess.file_exists(config_path):
-		var f = FileAccess.open(config_path, FileAccess.READ)
-		current_weapon_data = JSON.parse_string(f.get_as_text())
-		f.close()
+	if weapon_res:
+		final_weapon_part = weapon_res.duplicate()
+		final_weapon_part.body_type = current_data.body_type
+		final_weapon_part.head_type = current_data.head_type
+		
+		if "config_path" in final_weapon_part:
+			config_path = final_weapon_part.config_path
+		if "ammo" in final_weapon_part and final_weapon_part.ammo:
+			final_ammo_part = final_weapon_part.ammo.duplicate()
+			final_ammo_part.body_type = current_data.body_type
+			final_ammo_part.head_type = current_data.head_type
+			final_weapon_part.ammo = final_ammo_part 
+	else:
+		final_weapon_part = current_data.equipment_parts.get("mainhand")
+		if final_weapon_part:
+			if "config_path" in final_weapon_part:
+				config_path = final_weapon_part.config_path
+			if "ammo" in final_weapon_part and final_weapon_part.ammo:
+				final_ammo_part = final_weapon_part.ammo
+				
+	set_meta("equipped_ammo", final_ammo_part)
+			
+	if not config_path.is_empty():
+		var file_text = ZipMediaLoader.get_text_content(config_path)
+		if not file_text.is_empty():
+			current_weapon_data = JSON.parse_string(file_text)
+		else:
+			current_weapon_data = {}
 	else:
 		current_weapon_data = {}
-	
+		
 	for img_id in current_weapon_images:
 		current_weapon_images = {}
 		
@@ -368,9 +401,9 @@ func install_parts() -> void:
 			node.request_bake_weapon(
 				bake_id + "_weapons",
 				current_data,
+				final_weapon_part,
 				actions_to_bake,
-				current_weapon_images,
-				actor_id
+				current_weapon_images
 			)
 
 
@@ -420,8 +453,12 @@ func run_animation(force_animation: bool = false) -> void:
 	if frame_delay > 0.0 and not force_animation: return
 	
 	var should_show_weapon = false
+
 	if current_data:
 		should_show_weapon = current_data.always_show_weapon or is_attacking
+	
+	if current_animation and "walk" in current_animation and GameInterpreter.is_showing_message():
+		current_animation = current_animation.replace("walk", "idle")
 	
 	if current_animation in current_weapon_images:
 		var weapon_imgs = current_weapon_images[current_animation]
@@ -434,28 +471,33 @@ func run_animation(force_animation: bool = false) -> void:
 			mainhand_back.visible = should_show_weapon
 			mainhand_front.visible = should_show_weapon
 			
-			if "ammo" in current_weapon_images:
-				ammo_node_back.texture = current_weapon_images.ammo.back
-				ammo_node_front.texture = current_weapon_images.ammo.front
-				ammo_node_back.visible = should_show_weapon
-				ammo_node_front.visible = should_show_weapon
+			# --------- AMMO LOGIC ---------
+			if "ammo" in current_weapon_images and current_weapon_images.ammo:
+				if ammo_node_back:
+					ammo_node_back.texture = current_weapon_images.ammo.back
+					ammo_node_back.visible = is_attacking
+					
+				if ammo_node_front:
+					ammo_node_front.texture = current_weapon_images.ammo.front
+					ammo_node_front.visible = is_attacking
 			else:
-				ammo_node_back.visible = false
-				ammo_node_front.visible = false
+				if ammo_node_back: ammo_node_back.visible = false
+				if ammo_node_front: ammo_node_front.visible = false
+			# ------------------------------------------------
 		else:
 			mainhand_back.visible = false
 			mainhand_front.visible = false
 			offhand_back.visible = false
 			offhand_front.visible = false
-			ammo_node_back.visible = false
-			ammo_node_front.visible = false
+			if ammo_node_back: ammo_node_back.visible = false
+			if ammo_node_front: ammo_node_front.visible = false
 	else:
 		mainhand_back.visible = false
 		mainhand_front.visible = false
 		offhand_back.visible = false
 		offhand_front.visible = false
-		ammo_node_back.visible = false
-		ammo_node_front.visible = false
+		if ammo_node_back: ammo_node_back.visible = false
+		if ammo_node_front: ammo_node_front.visible = false
 	
 	if current_animation in current_weapon_images and self == GameManager.current_player:
 		var weapon_imgs = current_weapon_images[current_animation]
@@ -470,36 +512,38 @@ func run_animation(force_animation: bool = false) -> void:
 		mainhand_back.texture = current_weapon_images.walk.back
 		mainhand_front.texture = current_weapon_images.walk.front
 	
-	var current_animation = get_current_animation()
+	var current_animation_data = get_current_animation()
 	var current_weapon_animation = get_current_weapon_animation()
 
-	if !current_animation and !current_weapon_animation:
+	if !current_animation_data and !current_weapon_animation:
 		return
 	
-	if !current_animation:
-		current_animation = current_weapon_animation
+	if !current_animation_data:
+		current_animation_data = current_weapon_animation
 	
 	if !current_weapon_animation:
-		current_weapon_animation = current_animation
+		current_weapon_animation = current_animation_data
 	
-	# 1. RENDER PHASE
 	var weapon_current_frame = min(current_frame, current_weapon_animation.frames.size() - 1)
-	var normal_animation_current_frame = min(current_frame, current_animation.frames.size() - 1)
+	var normal_animation_current_frame = min(current_frame, current_animation_data.frames.size() - 1)
 	
-	var player_frame: Array = current_animation.frames[normal_animation_current_frame]
+	var player_frame: Array = current_animation_data.frames[normal_animation_current_frame]
 	var weapon_frame: Array = current_weapon_animation.frames[weapon_current_frame]
-	var player_size = current_animation.frame_size
+	var player_size = current_animation_data.frame_size
 	
 	body.region_rect = Rect2(player_frame[0], player_frame[1], player_size[0], player_size[1])
 	wings_back.region_rect = body.region_rect
 	offhand_back.region_rect = body.region_rect
 	offhand_front.region_rect = body.region_rect
-	ammo_node_back.region_rect = body.region_rect
-	ammo_node_front.region_rect = body.region_rect
 	
-	var action_frame = current_animation.get("action_frame", -1)
-	if current_frame == action_frame:
-		_handle_action_frame(current_animation)
+	if ammo_node_back: ammo_node_back.region_rect = body.region_rect
+	if ammo_node_front: ammo_node_front.region_rect = body.region_rect
+	
+	# ----------------------------------------
+	
+	var action_frame = current_animation_data.get("action_frame", -1)
+	if current_frame == action_frame and not "idle" in current_animation:
+		_handle_action_frame(current_animation_data)
 	
 	if (
 		(mainhand_back.texture and mainhand_back.texture.get_size() == body.texture.get_size()) or
@@ -510,19 +554,17 @@ func run_animation(force_animation: bool = false) -> void:
 		mainhand_back.region_rect = Rect2(weapon_frame[0], weapon_frame[1], 192, 192)
 	mainhand_front.region_rect = mainhand_back.region_rect
 	
-	# 2. UPDATE LOGIC
 	current_frame += 1
 	
-	if current_frame >= current_animation.frames.size():
-		if current_animation.get("loop", false):
+	if current_frame >= current_animation_data.frames.size():
+		if current_animation_data.get("loop", false):
 			current_frame = 0
 		else:
-			if not current_animation.get("keep_last_frame", false):
+			if not current_animation_data.get("keep_last_frame", false):
 				animation_finished.emit()
 				current_frame = 0
 			else:
-				# Clamp to the last frame index
-				current_frame = current_animation.frames.size() - 1
+				current_frame = current_animation_data.frames.size() - 1
 
 
 func _get_direction_string() -> String:
@@ -535,34 +577,37 @@ func _get_direction_string() -> String:
 
 
 func _handle_action_frame(anim_data: Dictionary) -> void:
-	var _data: RPGLPCCharacter = current_data
-	if not _data:
+	if not current_data: 
 		return
 	
-	if not has_meta("actor_id"): return
-	
-	var actor_id = get_meta("actor_id")
-	var actor = GameManager.get_actor(actor_id)
-	
-	
-	var offset_array = anim_data.get("emiter", [0, 0])
-	var emission_point = Vector2(offset_array[0], offset_array[1])
 	var anim_id = anim_data.get("id", "")
+	if current_weapon_data and current_weapon_data.get("ammo", []).size() > 0:
+		anim_id = "shoot"
+		
+	var is_valid_action_frame = ("shoot" in anim_id or "cast" in anim_id or "slash" in anim_id or "thrust" in anim_id or "oversize" in anim_id)
+	if not is_valid_action_frame:
+		return
 	
-	return
-	
-	if "shoot" in anim_id or "cast" in anim_id:
-		var ammo_id = "arrow"
+	if is_instance_valid(current_combat_action):
+		var offset_array = anim_data.get("emiter", [0, 0])
+		if "islash" in anim_id:
+			match anim_id:
+				"islash_left": offset_array = [-16, -16]
+				"islash_right": offset_array = [16, -16]
+				"islash_up": offset_array = [0, -32]
+				"islash_down": offset_array = [0, -16]
+
+		var emission_point = Vector2(offset_array[0], offset_array[1])
 		
-		if "shoot" in anim_id:
-			ammo_id = current_data.equipment_parts["ammo"].name.to_lower()
-		elif "cast" in anim_id:
-			ammo_id = "arcane1"
+		var spawn_pos = global_position + emission_point
+		current_combat_action.global_position = spawn_pos
 		
-		perform_shoot(ammo_id, _get_direction_string(), emission_point)
+		current_combat_action.shoot()
 		
-	elif "slash" in anim_id or "thrust" in anim_id or "smash" in anim_id or "whip" in anim_id:
-		pass
+		if current_combat_action is BoomerangProjectile:
+			active_boomerang = current_combat_action
+			
+		current_combat_action = null
 
 
 func _on_animation_finished() -> void:
@@ -636,46 +681,92 @@ func get_current_weapon_animation() -> Dictionary:
 	return current_animation
 
 
-func perform_shoot(ammo_id: String, direction: String, ammo_position: Vector2) -> void:
-	print(["shoot ", ammo_id, direction, ammo_position])
-	return
-	var p = PROJECTILES.get(ammo_id, "")
-	if p:
-		var blend_color = current_data.equipment_parts.ammo.palette1.blend_color
-		var obj = p.instantiate()
+func _debug_show_weapon_textures() -> void:
+	var canvas = CanvasLayer.new()
+	canvas.layer = 100
+	
+	var bg = ColorRect.new()
+	bg.color = Color(0, 0, 0, 0.1)
+	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
+	canvas.add_child(bg)
+	
+	var margin = MarginContainer.new()
+	margin.set_anchors_preset(Control.PRESET_FULL_RECT)
+	margin.add_theme_constant_override("margin_left", 40)
+	margin.add_theme_constant_override("margin_right", 40)
+	margin.add_theme_constant_override("margin_top", 40)
+	margin.add_theme_constant_override("margin_bottom", 40)
+	canvas.add_child(margin)
+	
+	var vbox_main = VBoxContainer.new()
+	margin.add_child(vbox_main)
+	
+	var lbl = Label.new()
+	lbl.text = "DEBUG: Weapon Textures applied (Closing in 5s...)"
+	lbl.add_theme_font_size_override("font_size", 24)
+	lbl.add_theme_color_override("font_color", Color.WHITE)
+	lbl.add_theme_constant_override("outline_size", 8)
+	lbl.add_theme_color_override("font_outline_color", Color.BLACK)
+	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	vbox_main.add_child(lbl)
+	
+	var hbox = HBoxContainer.new()
+	hbox.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	hbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	hbox.add_theme_constant_override("separation", 20)
+	vbox_main.add_child(hbox)
+	
+	# Back Texture Setup
+	var vbox_back = VBoxContainer.new()
+	vbox_back.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	
+	var tex_back_size = Vector2.ZERO
+	if mainhand_back.texture: 
+		tex_back_size = mainhand_back.texture.get_size()
 		
-		# Assuming ammo still needs visual properties from loaded data, 
-		# but since we removed get_textures_with_id, we need a safer way to get material if needed.
-		# For now, instantiating the projectile directly.
+	var lbl_back = Label.new()
+	lbl_back.text = "mainhand_back\nSize: " + str(tex_back_size)
+	lbl_back.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lbl_back.add_theme_constant_override("outline_size", 4)
+	lbl_back.add_theme_color_override("font_outline_color", Color.BLACK)
+	vbox_back.add_child(lbl_back)
+	
+	var tex_back_rect = TextureRect.new()
+	tex_back_rect.texture = mainhand_back.texture
+	tex_back_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	tex_back_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	tex_back_rect.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	vbox_back.add_child(tex_back_rect)
+	hbox.add_child(vbox_back)
+	
+	# Front Texture Setup
+	var vbox_front = VBoxContainer.new()
+	vbox_front.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	
+	var tex_front_size = Vector2.ZERO
+	if mainhand_front.texture: 
+		tex_front_size = mainhand_front.texture.get_size()
 		
-		if direction == "up":
-			obj.show_behind_parent = true
-		obj.set_blend_color(blend_color)
-		add_child(obj)
-		obj.position = ammo_position
-		if ammo_id == "bolt":
-			var x = 0
-			var y = 0
-			if direction == "down":
-				x += -6
-			elif direction == "left" or direction == "right":
-				y += 10
-			elif direction == "up":
-				x += 6
-			obj.position += Vector2(x, y)
-		obj.set_direction(direction)
-		var audio_path = "res://addons/rpg_character_creator/sounds/swosh-01.ogg" if ammo_id == "arrow" else \
-		"res://addons/rpg_character_creator/sounds/swosh-03.ogg" if ammo_id == "bolt" else \
-		"res://addons/rpg_character_creator/sounds/swosh-05.ogg" if ammo_id == "rock" else \
-		"res://addons/rpg_character_creator/sounds/spell1.ogg" if ammo_id == "arcane1" else \
-		""
-		if audio_path:
-			var fx = ResourceLoader.load(audio_path)
-			var audio_stream_player = AudioStreamPlayer.new()
-			audio_stream_player.stream = fx
-			audio_stream_player.finished.connect(func(): audio_stream_player.queue_free())
-			add_child(audio_stream_player)
-			audio_stream_player.play()
+	var lbl_front = Label.new()
+	lbl_front.text = "mainhand_front\nSize: " + str(tex_front_size)
+	lbl_front.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lbl_front.add_theme_constant_override("outline_size", 4)
+	lbl_front.add_theme_color_override("font_outline_color", Color.BLACK)
+	vbox_front.add_child(lbl_front)
+	
+	var tex_front_rect = TextureRect.new()
+	tex_front_rect.texture = mainhand_front.texture
+	tex_front_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	tex_front_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	tex_front_rect.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	vbox_front.add_child(tex_front_rect)
+	hbox.add_child(vbox_front)
+	
+	add_child(canvas)
+	
+	await get_tree().create_timer(5.0).timeout
+	if is_instance_valid(canvas):
+		canvas.queue_free()
 
 
 func _on_attack(animation_id: String) -> void:
@@ -684,10 +775,12 @@ func _on_attack(animation_id: String) -> void:
 
 func attack_with_weapon() -> void:
 	var actions = current_weapon_data.get("actions", [])
-	current_animation = actions[randi() % actions.size()]
-	if !current_animation:
+	
+	if actions.is_empty():
 		attack_without_weapon()
 		return
+		
+	current_animation = actions[randi() % actions.size()]
 
 	if current_animation in current_weapon_images:
 		mainhand_back.texture = current_weapon_images[current_animation].back
@@ -695,31 +788,77 @@ func attack_with_weapon() -> void:
 		
 	if current_animation == "fish_throw":
 		current_animation = "fish_full_animation"
-	elif current_animation == "shoot":
-		var fx = ResourceLoader.load("res://addons/rpg_character_creator/sounds/bow_draw.ogg")
-		var audio_stream_player = AudioStreamPlayer.new()
-		audio_stream_player.stream = fx
-		audio_stream_player.finished.connect(func(): audio_stream_player.queue_free())
-		add_child(audio_stream_player)
-		audio_stream_player.play()
+		
+	_prepare_combat_action()
 
-	if current_weapon_data.get("sounds", null):
-		var sound_path = current_weapon_data.sounds[randi() % current_weapon_data.sounds.size()]
-		sound_path = "res://addons/rpg_character_creator/" + sound_path
-		if ResourceLoader.exists(sound_path):
-			var fx = ResourceLoader.load(sound_path)
-			var audio_stream_player = AudioStreamPlayer.new()
-			audio_stream_player.stream = fx
-			audio_stream_player.finished.connect(func(): audio_stream_player.queue_free())
-			add_child(audio_stream_player)
-			audio_stream_player.play()
-			
 	current_frame = 0
 	is_attacking = true
+	
 	if current_animation != "fish_full_animation":
 		attack.emit(current_animation)
 	else:
 		attack.emit("fish")
+
+
+func _prepare_combat_action() -> void:
+	if is_instance_valid(current_combat_action):
+		current_combat_action.queue_free()
+	
+	var game_weapon: RPGWeapon
+	if has_meta("actor_id"):
+		game_weapon = GameManager.get_actor_weapon_db(get_meta("actor_id"))
+		
+	var script_path = game_weapon.lpc_part_custom_script if game_weapon else ""
+	if script_path.is_empty() or not projectile_scene:
+		return
+		
+	var ammo_id = "melee"
+	var ammo_part = get_meta("equipped_ammo") if has_meta("equipped_ammo") else current_data.equipment_parts.get("ammo")
+	
+	if ammo_part:
+		ammo_id = "arrow"
+		if ammo_part.part_id in PROJECTILES:
+			ammo_id = ammo_part.part_id
+		elif "config_path" in ammo_part and not ammo_part.config_path.is_empty():
+			var text = ZipMediaLoader.get_text_content(ammo_part.config_path)
+			if not text.is_empty():
+				var j = JSON.parse_string(text)
+				if j and typeof(j) == TYPE_DICTIONARY and j.has("projectile"):
+					ammo_id = j.projectile
+					
+	if ammo_id == "boomerang" and is_instance_valid(active_boomerang):
+		return
+		
+	current_combat_action = projectile_scene.instantiate()
+	current_combat_action.set_script(load(script_path))
+	
+	current_combat_action.player = self
+	if game_weapon:
+		current_combat_action.weapon_database = game_weapon
+	
+	var tex = current_weapon_images.get("projectile_shooted")
+	var proj_color = current_weapon_images.get("projectile_color", Color.WHITE)
+	var fxs: Array = current_weapon_data.get("sounds", [])
+	var fx: String = ""
+	if not fxs.is_empty():
+		fx = fxs.pick_random()
+		
+	var custom_stats = {
+		"texture": tex,
+		"projectile_color": proj_color,
+		"shape_type": "rect",
+		"shape_width": current_weapon_data.get("attack_width", 0.8),
+		"shape_height": current_weapon_data.get("attack_height", 0.8),
+		"initial_sound": fx
+	}
+	
+	if not fx.is_empty():
+		var plugin_path = "res://addons/rpg_character_creator/"
+		var sound_path = plugin_path.path_join(fx) if not fx.begins_with("res://") else fx
+		custom_stats.initial_sound = sound_path
+	
+	get_parent().add_child(current_combat_action)
+	current_combat_action.setup(ammo_id, _get_direction_string(), global_position, custom_stats)
 
 
 func attack_without_weapon() -> void:

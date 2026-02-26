@@ -133,7 +133,7 @@ func set_item(item: Dictionary) -> void:
 	description.text = item.description
 	price_label.text = GameManager.get_number_formatted(int(item.price))
 	var icon: RPGIcon = item.icon
-	if ResourceLoader.exists(icon.path):
+	if AssetManager.exists(icon.path):
 		item_icon.texture.atlas = load(icon.path)
 		item_icon.texture.region = icon.region
 	else:

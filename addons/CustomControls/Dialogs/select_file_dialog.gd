@@ -250,40 +250,42 @@ func _get_files_in_cache(file_id: String) -> PackedStringArray:
 
 
 func _get_files_recursive(path: String, extensions: Array) -> PackedStringArray:
-	var found_files: PackedStringArray = []
-	var dir = DirAccess.open(path)
-	if dir == null: return []
-	
-	dir.list_dir_begin()
-	var file_name = dir.get_next()
-	
-	while file_name != "":
-		var full_path = path.path_join(file_name)
-		if dir.current_is_dir():
-			found_files.append_array(_get_files_recursive(full_path, extensions))
-		else:
-			var ext = file_name.get_extension().to_lower()
-			if extensions.any(func(e): return e.to_lower() == ext):
-				found_files.append(full_path)
-		file_name = dir.get_next()
-	
-	return found_files
+	var results = ZipMediaLoader.get_files_in_path(path, extensions)
+	return PackedStringArray(results)
 
 
 func _get_folders(dir_path: String) -> PackedStringArray:
 	dir_path = _clean_path(dir_path)
-	
 	var directories: PackedStringArray = []
+	
+	# 1. Check physical directories
 	var dir = DirAccess.open(dir_path)
-	
-	if dir == null: return []
-	
-	dir.list_dir_begin()
-	var file_name = dir.get_next()
-	while file_name != "":
-		if dir.current_is_dir() and not file_name.begins_with("."):
-			directories.append(dir_path.path_join(file_name))
-		file_name = dir.get_next()
+	if dir != null:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while file_name != "":
+			if dir.current_is_dir() and not file_name.begins_with("."):
+				directories.append(dir_path.path_join(file_name))
+			file_name = dir.get_next()
+			
+	# 2. Check virtual directories from ZIPs
+	if not ZipMediaLoader._initialized:
+		ZipMediaLoader._mount_system()
+		
+	var clean_base = dir_path.replace("res://", "")
+	if clean_base != "" and not clean_base.ends_with("/"):
+		clean_base += "/"
+		
+	for path in ZipMediaLoader._files_index.keys():
+		if path.begins_with(clean_base):
+			var sub_path = path.replace(clean_base, "")
+			var slash_idx = sub_path.find("/")
+			
+			if slash_idx != -1:
+				var virtual_folder = dir_path.path_join(sub_path.left(slash_idx))
+				if not directories.has(virtual_folder):
+					directories.append(virtual_folder)
+					
 	return directories
 
 
@@ -490,35 +492,42 @@ func populate_files() -> void:
 
 
 func _setup_file_node(node: Control, path: String) -> void:
-	# Specific logic for RPG Godot Creator Character previews
+	var is_zipped: bool = not FileAccess.file_exists(path)
+	var zip_prefix: String = "📦\u00A0" if is_zipped else ""
+	var display_name: String = path.get_file().get_basename()
+	
 	if path in FileCache.cache.characters:
 		var res = load(path)
 		if res is RPGLPCCharacter:
 			var preview = res.character_preview
-			node.set_path(path, preview, path.replace("_data.%s" % path.get_extension(), "").get_file())
+			var custom_name = path.replace("_data.%s" % path.get_extension(), "").get_file()
+			node.set_path(path, preview, zip_prefix + custom_name)
 		else:
-			node.set_path(path)
+			node.set_path(path, "", zip_prefix + display_name)
 	elif path in FileCache.cache.events:
 		var res = load(path)
 		if res is RPGLPCCharacter:
 			var preview = res.event_preview
-			node.set_path(path, preview, path.replace("_data.%s" % path.get_extension(), "").get_file())
+			var custom_name = path.replace("_data.%s" % path.get_extension(), "").get_file()
+			node.set_path(path, preview, zip_prefix + custom_name)
 		else:
-			node.set_path(path)
+			node.set_path(path, "", zip_prefix + display_name)
 	elif path in FileCache.cache.sets:
 		var res = load(path)
 		if res is IngameGearSet:
 			var preview = res.set_preview
-			node.set_path(path, preview, path.replace("_data.%s" % path.get_extension(), "").get_file())
+			var custom_name = path.replace("_data.%s" % path.get_extension(), "").get_file()
+			node.set_path(path, preview, zip_prefix + custom_name)
 		else:
-			node.set_path(path)
+			node.set_path(path, "", zip_prefix + display_name)
 	else:
-		node.set_path(path)
+		node.set_path(path, "", zip_prefix + display_name)
 		
 	node.selected.connect(_on_file_selected)
 	node.double_click.connect(select_file)
 	node.add_to_favorite_requested.connect(_add_to_favorite)
 	node.show_favorite_button()
+	
 	if path.to_lower() == current_file_selected.to_lower():
 		node.select()
 
@@ -740,11 +749,28 @@ func _on_cancel_button_pressed() -> void:
 
 
 func _is_directory_empty(path: String) -> bool:
+	# 1. Check physical directory
 	var dir = DirAccess.open(path)
-	if !dir: return true
-	dir.list_dir_begin()
-	var first = dir.get_next()
-	return first == "" or first == "."
+	var physical_empty = true
+	
+	if dir:
+		dir.list_dir_begin()
+		var first = dir.get_next()
+		physical_empty = (first == "" or first == ".")
+		
+	if not physical_empty:
+		return false
+		
+	# 2. Check virtual directory
+	var clean_base = path.replace("res://", "")
+	if clean_base != "" and not clean_base.ends_with("/"):
+		clean_base += "/"
+		
+	for zip_path in ZipMediaLoader._files_index.keys():
+		if zip_path.begins_with(clean_base):
+			return false
+			
+	return true
 
 
 func apply_filter(filter_text: String) -> void:

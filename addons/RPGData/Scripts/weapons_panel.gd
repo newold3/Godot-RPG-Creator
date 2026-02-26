@@ -53,10 +53,7 @@ func _update_data_fields() -> void:
 		%WeaponMaxLevelsSpinBox.value = current_data.upgrades.max_levels
 		%NoteTextEdit.text = current_data.notes
 		%UpgradeSettingsButton.set_disabled(current_data.upgrades.max_levels == 1)
-		if current_data.lpc_part.length() > 0:
-			%LPCPartButton.text = current_data.lpc_part
-		else:
-			%LPCPartButton.text = TranslationManager.tr("Select LPC Weapon")
+		
 		%CopyUpgradeList.set_disabled(current_data.upgrades.max_levels == 1)
 
 		%PasteUpgradeList.set_disabled(!StaticEditorVars.CLIPBOARD.get("upgrade_list", false))
@@ -69,6 +66,9 @@ func _update_data_fields() -> void:
 		%UserParameters.set_disabled(user_parameter_disabled)
 		%CopyUserParameters.set_disabled(user_parameter_disabled)
 		%PasteUserParameters.set_disabled(user_parameter_disabled or !StaticEditorVars.CLIPBOARD.get("items_user_parameters", false))
+		
+		update_lpc_part_text()
+		
 	else:
 		disable_all(true)
 
@@ -224,7 +224,7 @@ func fill_tools(_selected_ids: PackedInt32Array) -> void:
 		var item_index = i + 1 
 		
 		var icon = database.types.icons.tool_icons[i]
-		if FileAccess.file_exists(icon.path):
+		if AssetManager.file_exists(icon.path):
 			node.add_icon_item(load(icon.path), "Tool %s: %s" % [i + 1, tool], item_index)
 		else:
 			node.add_item("Tool %s: %s" % [i + 1, tool], item_index)
@@ -309,6 +309,7 @@ func fill_user_parameters(selected_index: int = 0) -> void:
 func _on_visibility_changed() -> void:
 	super()
 	if visible:
+		if not get_data(): return
 		busy = true
 		fill_weapon_types()
 		fill_rarity_types()
@@ -364,7 +365,8 @@ func _on_craft_material_changed(new_mats: Array[RPGGearUpgradeComponent], cost: 
 
 func _on_lpc_part_button_middle_click_pressed() -> void:
 	get_data().lpc_part = ""
-	%LPCPartButton.text = TranslationManager.tr("Select LPC Weapon")
+	get_data().lpc_part_custom_script = ""
+	update_lpc_part_text()
 
 
 func open_file_dialog() -> Window:
@@ -391,21 +393,103 @@ func _on_lpc_part_button_pressed() -> void:
 	dialog.target_callable = update_lpc_part
 	dialog.set_file_selected(get_data().lpc_part)
 	
-	dialog.fill_files("equipment_parts")
+	dialog.fill_files("equipment_parts_weapons")
 
 
 func update_lpc_part(path: String) -> void:
 	get_data().lpc_part = path
-	if path.length() > 0:
+	update_lpc_part_text(true)
+
+
+func update_lpc_part_text(update_ammo: bool = false, update_cache: bool = false) -> void:
+	var data = get_data()
+	var path: String = data.lpc_part
+	
+	if not path.is_empty():
 		%LPCPartButton.text = path
 	else:
 		%LPCPartButton.text = TranslationManager.tr("Select LPC Weapon")
+		
+	var script_path: String = ""
+	var cache_id: String = ""
+	var projectile_id: String = ""
+	var is_melee: bool = true
+	
+	if AssetManager.file_exists(path):
+		var res = load(path)
+		var tags = Array(res.tags)
+		var valid_tags = tags.filter(func(tag: String): return not tag.to_lower() in ["mainhand", "weapon", "large"])
+		
+		%LPCPartInfo.text = tr("Detected part: ") + ", ".join(valid_tags)
+		
+		var ammo = res.get("ammo")
+		if ammo and not ammo.config_path.is_empty():
+			var json_text = ZipMediaLoader.get_text_content(ammo.config_path)
+			if not json_text.is_empty():
+				var config = JSON.parse_string(json_text)
+				if config and typeof(config) == TYPE_DICTIONARY:
+					projectile_id = config.get("projectile", "")
+					if not projectile_id.is_empty():
+						cache_id = "projectile_default_" + projectile_id
+						is_melee = false
+		
+		if is_melee:
+			cache_id = "melee_attack_default"
+		
+		if update_ammo:
+			data.lpc_part_custom_script = ""
+			
+			if not cache_id.is_empty():
+				script_path = FileCache.options.get(cache_id, "")
+				
+				if script_path.is_empty():
+					var default_path = "res://Scenes/OtherScenes/IngameProjectil/"
+					if is_melee:
+						script_path = default_path + "melee_base.gd"
+					else:
+						match projectile_id:
+							"boomerang": script_path = default_path + "projectile_boomerang_base.gd"
+							"rock": script_path = default_path + "projectile_rock_base.gd"
+							"bolt": script_path = default_path + "projectile_bolt_base.gd"
+							"arrow": script_path = default_path + "projectile_arrow_base.gd"
+							"arcane1": script_path = default_path + "projectile_arcane_base.gd"
+							_: script_path = ""
+						
+				data.lpc_part_custom_script = script_path
+		else:
+			script_path = data.lpc_part_custom_script
+			
+		if update_cache and not cache_id.is_empty() and not script_path.is_empty():
+			FileCache.options[cache_id] = script_path
+			
+		var is_valid_script = not script_path.is_empty()
+		var same_as_cache = false
+		
+		if not cache_id.is_empty():
+			same_as_cache = (FileCache.options.get(cache_id, "") == script_path)
+			
+		%SetAttackScriptAsDefault.set_pressed_no_signal(same_as_cache)
+		%SetAttackScriptAsDefault.set_disabled(not is_valid_script or cache_id.is_empty())
+		%ConfigScript.set_disabled(not is_valid_script)
+		
+	else:
+		%LPCPartInfo.text = tr("No weapon part selected.")
+		data.lpc_part_custom_script = ""
+		%SetAttackScriptAsDefault.set_pressed_no_signal(false)
+		%SetAttackScriptAsDefault.set_disabled(true)
+		%ConfigScript.set_disabled(true)
+		
+	if data.lpc_part_custom_script.is_empty():
+		%LPCPartScript.text = tr("No script installed.")
+	else:
+		%LPCPartScript.text = tr("Script installed:") + " " + data.lpc_part_custom_script
 
 
 func _on_copy_upgrade_list_pressed() -> void:
 	var current_data = get_data()
 	StaticEditorVars.CLIPBOARD.upgrade_list = current_data.upgrades.clone(true)
 	%PasteUpgradeList.set_disabled(false)
+	RPGEditorToast.show_message("Gear upgrade list copied to Clipboard")
 
 
 func _on_paste_upgrade_list_pressed() -> void:
@@ -420,6 +504,7 @@ func _on_copy_parameters_pressed() -> void:
 	var current_data = get_data()
 	StaticEditorVars.CLIPBOARD.items_parameters_list = current_data.params.duplicate()
 	%PasteParameters.set_disabled(false)
+	RPGEditorToast.show_message("Parameters copied to Clipboard")
 
 
 func _on_paste_parameters_pressed() -> void:
@@ -446,6 +531,7 @@ func _on_copy_craft_pressed() -> void:
 		"components": components
 	}
 	%PasteCraft.set_disabled(false)
+	RPGEditorToast.show_message("Craft materials copied to Clipboard")
 
 
 func _on_paste_craft_pressed() -> void:
@@ -469,6 +555,7 @@ func _on_copy_disassemble_pressed() -> void:
 		"components": components
 	}
 	%PasteDisassemble.set_disabled(false)
+	RPGEditorToast.show_message("Salvaged materials copied to Clipboard")
 
 
 func _on_paste_disassemble_pressed() -> void:
@@ -525,6 +612,7 @@ func _on_user_parameters_item_activated(index: int) -> void:
 func _on_copy_user_parameters_pressed() -> void:
 	StaticEditorVars.CLIPBOARD.items_user_parameters = get_data().user_parameters.duplicate()
 	%PasteUserParameters.set_disabled(false)
+	RPGEditorToast.show_message("User parameter list copied to Clipboard")
 
 
 func _on_paste_user_parameters_pressed() -> void:
@@ -540,6 +628,7 @@ func _on_reset_user_parameters_pressed() -> void:
 		if get_data().user_parameters.size() > i:
 			get_data().user_parameters[i] = database.types.user_parameters[i].default_value
 	fill_user_parameters()
+	RPGEditorToast.show_message("User parameter list reset to default values")
 
 
 func _on_tools_multi_selection_changed(selected_ids: PackedInt32Array) -> void:
@@ -564,3 +653,21 @@ func _on_tools_middle_click() -> void:
 	await get_tree().process_frame
 	get_data().tools_family.append(0)
 	fill_tools(get_data().tools_family)
+
+
+func _on_config_script_pressed() -> void:
+	var dialog = await open_file_dialog()
+
+	dialog.target_callable = update_attack_script
+	dialog.set_file_selected(get_data().lpc_part_custom_script)
+	
+	dialog.fill_files("weapon_attack_scripts")
+
+
+func update_attack_script(path: String) -> void:
+	get_data().lpc_part_custom_script = path
+	update_lpc_part_text(false)
+
+
+func _on_set_attack_script_as_default_toggled(toggled_on: bool) -> void:
+	update_lpc_part_text(false, toggled_on)

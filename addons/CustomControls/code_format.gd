@@ -1296,7 +1296,7 @@ func _format_command_21(data: FormatData) -> Array:
 			var character_name = get_event_name(character_id)
 			var param = [
 				"Looking At Down", "Looking At Left", "Looking At Right", "Looking At Up",
-				"Is In My Tile", "Is Out Of My Tile", "Is Jumping", "Is Passable", "Is On Vehicle"
+				"Is In My Tile", "Is Out Of My Tile", "Is Jumping", "Is Passable", "Is On Vehicle", "is Pressed"
 			][data.command.parameters.get("value2", 0)]
 			text = character_name + " " + param
 		7: # Vehicle

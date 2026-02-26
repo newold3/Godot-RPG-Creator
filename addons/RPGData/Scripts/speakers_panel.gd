@@ -20,7 +20,10 @@ func set_data(data: Array) -> void:
 func get_data() -> RPGSpeaker:
 	if not data: return null
 	current_selected_index = max(1, min(current_selected_index, data.size() - 1))
-	return data[current_selected_index]
+	if data.size() > current_selected_index:
+		return data[current_selected_index]
+	
+	return null
 
 
 func fill_main_list(selected_index: int) -> void:
@@ -303,22 +306,27 @@ func _on_font_size_value_changed(value: float) -> void:
 
 
 func _on_bold_text_toggled(toggled_on: bool) -> void:
+	if not get_data(): return
 	get_data().text_bold = toggled_on
 
 
 func _on_italic_text_toggled(toggled_on: bool) -> void:
+	if not get_data(): return
 	get_data().text_italic = toggled_on
 
 
 func _on_wait_on_finish_value_changed(value: float) -> void:
+	if not get_data(): return
 	get_data().wait_on_finish = value
 
 
 func _on_position_item_selected(index: int) -> void:
+	if not get_data(): return
 	get_data().character_position = index
 
 
 func _on_notes_text_changed() -> void:
+	if not get_data(): return
 	get_data().notes = %Notes.text
 
 

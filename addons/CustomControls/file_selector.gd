@@ -53,15 +53,16 @@ func set_path(_path: String, _preview: String = "", _name = "") -> void:
 	var base_name: String
 	if !_name:
 		base_name = _path.get_basename().get_file()
-		label.text = "[center]" + _path.get_basename().get_file() + "[/center]"
+		label.text = "[center]" + _path.get_basename().get_file().replace("_", " ") + "[/center]"
 	else:
-		base_name = _name
+		base_name = _name.replace("_", " ")
 	
 	label.text = "[center]" + base_name + "[/center]"
 		
 	path = _path
 	preview = _preview
-	tooltip_text = "[title]File: “%s”[/title]\n\"Full Path:\" [color=YELLOW_GREEN]%s[/color]" % [base_name.strip_edges(), path]
+	var final_title = base_name.replace("📦\u00A0", "").strip_edges().capitalize().replace("_", "")
+	tooltip_text = "[title]File: “%s”[/title]\n\"Full Path:\" [color=YELLOW_GREEN]%s[/color]" % [final_title, path]
 	CustomTooltipManager.replace_all_tooltips_with_custom(self)
 
 

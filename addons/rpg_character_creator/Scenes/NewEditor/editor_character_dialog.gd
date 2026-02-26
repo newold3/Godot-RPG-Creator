@@ -7,6 +7,7 @@ func _ready() -> void:
 	RPGMapPlugin.reload_inputs_safely()
 	close_requested.connect(_on_close_requested)
 	visibility_changed.connect(_on_visibility_changed)
+	%EditorCharacter.start()
 
 
 func _on_close_requested() -> void:

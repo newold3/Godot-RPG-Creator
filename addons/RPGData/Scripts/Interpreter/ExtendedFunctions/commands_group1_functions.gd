@@ -14,7 +14,6 @@ func _start_showing_message() -> void:
 	
 	interpreter.showing_message = true
 	GameManager.message_container.visible = true
-	
 	if current_index >= current_interpreter.commands.size() - 1:
 		var is_still_busy = interpreter.interpreters.any(
 			func(interpreter):

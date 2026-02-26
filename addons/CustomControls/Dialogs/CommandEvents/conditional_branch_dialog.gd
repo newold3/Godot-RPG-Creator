@@ -335,7 +335,8 @@ func update_controls() -> void:
 				break
 	
 	%CharacterState.select(cache_data.character_direction)
-	%CharacterState.set_item_disabled(-1, %CharacterID.get_selected_id() != 0)
+	%CharacterState.set_item_disabled(-2, %CharacterID.get_selected_id() != 0)
+	%CharacterState.set_item_disabled(-1, %CharacterID.get_selected_id() == 0)
 	%VehicleID.select(cache_data.vehicle_selected)
 	
 	%GoldCondition.select(cache_data.gold_condition)
@@ -908,7 +909,11 @@ func _on_enemy_state_pressed() -> void:
 func _on_character_id_item_selected(index: int) -> void:
 	var target_id = %CharacterID.get_item_metadata(index)
 	cache_data.character_selected = target_id
-	%CharacterState.set_item_disabled(-1, index != 0)
+	%CharacterState.set_item_disabled(-2, index != 0)
+	%CharacterState.set_item_disabled(-1, index == 0)
+	if index == 0 and %CharacterState.get_selected_id() == %CharacterState.get_item_count() -1:
+		%CharacterState.select(0)
+		_on_character_direction_item_selected(0)
 
 
 func _on_character_direction_item_selected(index: int) -> void:

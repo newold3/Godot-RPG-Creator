@@ -109,7 +109,12 @@ func _process(delta: float) -> void:
 		if target_fps > 0:
 			frame_delay = 1.0 / float(target_fps)
 		else:
-			frame_delay = frame_delay_max if !is_running else frame_delay_max_running
+			if is_attacking:
+				frame_delay = frame_delay_max_attacking
+			elif is_running:
+				frame_delay = frame_delay_max_running
+			else:
+				frame_delay = frame_delay_max
 	else:
 		frame_delay = max(0.0, frame_delay - delta)
 	
@@ -157,7 +162,7 @@ func _input(event: InputEvent) -> void:
 	if !can_perform_action():
 		return
 	
-	if event.is_action_pressed("ui_select") and can_attack:
+	if event.is_action_pressed("ui_select") and can_attack and not active_boomerang:
 		_reset()
 		var node = get_event_at_adjacent_tile()
 		var action_found: bool = false

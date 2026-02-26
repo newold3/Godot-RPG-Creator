@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="RPGLPCEquipmentPart" format=3 uid="uid://dj407q4rgjt8e"]
+
+[ext_resource type="Script" uid="uid://cqx1cnfjmgp73" path="res://addons/RPGData/ModulesRPG/rpg_lpc_palette.gd" id="1_gqmlb"]
+[ext_resource type="Script" uid="uid://der67xririmwh" path="res://addons/RPGData/ModulesRPG/rpg_lpc_equipment_part.gd" id="2_mgpmk"]
+
+[sub_resource type="Resource" id="Resource_1pbna"]
+script = ExtResource("1_gqmlb")
+blend_color = 1751212799
+colors = PackedInt64Array(0, 0, 21, 370087935, 50, 605890559, 78, 993609983, 91, 1228881919, 114, 1481859583, 135, 1751212799, 173, 2306242047, 199, 2542566399, 247, 2981272319, 254, 3318072831)
+
+[sub_resource type="Resource" id="Resource_svul0"]
+script = ExtResource("1_gqmlb")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_ufumh"]
+script = ExtResource("1_gqmlb")
+blend_color = 1631529983
+colors = PackedInt64Array(0, 0, 16, 117703935, 23, 184944383, 27, 420547839, 66, 403967487, 133, 756880895, 161, 908270079, 183, 1025973247, 228, 1631529983, 255, 1917465855)
+
+[resource]
+script = ExtResource("2_mgpmk")
+config_path = "res://addons/rpg_character_creator/Data/gear/mainhand/dagger1.lcc"
+part_id = "dagger1"
+layer_id = "mainhand"
+body_type = "hm1"
+head_type = "hm1"
+equipment_preview = "res://Assets/Parts/mainhand/dagger1_preview.png"
+name = "Dagger"
+front_texture = "res://addons/rpg_character_creator/textures/gear/mainhand/dagger/dagger_mf.png"
+back_texture = "res://addons/rpg_character_creator/textures/gear/mainhand/dagger/dagger_mb.png"
+tags = PackedStringArray("mainhand", "weapon", "dagger")
+palette1 = SubResource("Resource_1pbna")
+palette2 = SubResource("Resource_svul0")
+palette3 = SubResource("Resource_ufumh")

@@ -981,7 +981,7 @@ func set_message_config(config: Dictionary) -> void:
 	start_transition_id = config.get("text_transition", 0)
 	start_transition_parameters = get_parameters(start_transition_id, config.get("text_transition_parameters", {}))
 	var fx = config.get("fx_path", "res://Assets/Sounds/typewrite2.ogg")
-	if ResourceLoader.exists(fx):
+	if AssetManager.exists(fx):
 		text_fx = load(fx)
 	else:
 		text_fx = null
@@ -1360,7 +1360,7 @@ func get_speaker_commands(speaker_id: int) -> String:
 			new_text += get_image_or_face_command(speaker.character)
 			
 			# Letter-By-Letter Sound
-			if ResourceLoader.exists(speaker.text_fx.filename):
+			if AssetManager.exists(speaker.text_fx.filename):
 				var arg1 = "path=\"%s\"" % speaker.text_fx.filename
 				var arg2 = "" if speaker.text_fx.volume_db == 0.0 else " volume=%s" % speaker.text_fx.volume_db
 				var arg3 = "" if speaker.text_fx.pitch_scale == 1.0 else " pitch=%s" % speaker.text_fx.pitch_scale
@@ -1399,7 +1399,7 @@ func get_hide_speaker_commands(speaker_id: int) -> String:
 				
 			new_text += "[hidebox=%s _is_script_command=true]" % speaker.name.pos
 			
-			if ResourceLoader.exists(speaker.text_fx.filename):
+			if AssetManager.exists(speaker.text_fx.filename):
 				var arg1 = "" if !text_fx else "path=\"%s\"" % text_fx.resource_path
 				var arg2 = " volume=%s" % text_fx_volume
 				var arg3 = " pitch=%s" % text_fx_min_pitch
@@ -1851,7 +1851,7 @@ func show_close_animation() -> void:
 
 func start_command_character(command: SpecialEffectCommand) -> void:
 	if is_floating: return
-	if "path" in command.parameters and ResourceLoader.exists(command.parameters.path):
+	if "path" in command.parameters and AssetManager.exists(command.parameters.path):
 		var is_speaker: bool = command.parameters.get("is_character", false)
 		var id = int(command.parameters.get("id", 0))
 		var image_position = command.parameters.get("position", "left")
@@ -2066,7 +2066,7 @@ func start_command_face(command: SpecialEffectCommand, force_run: bool = false) 
 	if is_floating and not force_run: return
 	
 	if "path" in command.parameters:
-		if ResourceLoader.exists(command.parameters.path):
+		if AssetManager.exists(command.parameters.path):
 			var region_data = command.parameters.get("region", "0,0,0,0").split(",")
 			var region = Rect2(int(region_data[0]), int(region_data[1]), int(region_data[2]), int(region_data[3]))
 			var is_speaker = command.parameters.get("is_character", false)
@@ -2390,7 +2390,7 @@ func start_command_hidebox(command: SpecialEffectCommand) -> void:
 
 
 func start_command_sound(command: SpecialEffectCommand) -> void:
-	if "path" in command.parameters and ResourceLoader.exists(command.parameters.path):
+	if "path" in command.parameters and AssetManager.exists(command.parameters.path):
 		var stream: AudioStream = load(command.parameters.path)
 		var volume_db: float = 0.0
 		var pitch: float = 1.0
@@ -2500,7 +2500,7 @@ func start_command_change_blip(command: SpecialEffectCommand) -> void:
 	
 	var path = command.parameters.get("path", "")
 
-	if ResourceLoader.exists(path):
+	if AssetManager.exists(path):
 		current_text_fx = load(path)
 		current_text_fx_min_pitch = command.parameters.get("pitch", 1.0)
 		current_text_fx_max_pitch = command.parameters.get("pitch2", 1.0)

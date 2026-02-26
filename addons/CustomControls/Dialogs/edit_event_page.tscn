@@ -12,8 +12,10 @@
 [ext_resource type="PackedScene" uid="uid://u75p1b2dn3yq" path="res://addons/CustomControls/event_page_list_editor.tscn" id="8_qgfkt"]
 [ext_resource type="PackedScene" uid="uid://bbd8rv6w7vjb3" path="res://addons/CustomControls/custom_color_button.tscn" id="9_h2o4p"]
 [ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="12_kcex0"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="12_w08ns"]
+[ext_resource type="Script" uid="uid://c7kwutiivrd7j" path="res://addons/CustomControls/simple_texture_button.gd" id="13_pts3j"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f2p3o"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w08ns"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -31,17 +33,17 @@ corner_radius_bottom_left = 12
 [sub_resource type="Gradient" id="Gradient_ctwx1"]
 colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_kcex0"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_pts3j"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_ctwx1")
 fill_from = Vector2(0.542735, 0.995726)
 fill_to = Vector2(0.58547, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_w08ns"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kkq5y"]
 resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_kcex0")
+texture = SubResource("GradientTexture2D_pts3j")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pts3j"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b1qj2"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -54,7 +56,7 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kkq5y"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j355e"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -69,17 +71,17 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_b1qj2"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_o0uhe"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_ctwx1")
 fill_from = Vector2(0.542735, 0.995726)
 fill_to = Vector2(0.58547, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_j355e"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6pdng"]
 resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_b1qj2")
+texture = SubResource("GradientTexture2D_o0uhe")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o0uhe"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cy5rv"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -92,7 +94,7 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6pdng"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ymw04"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -107,17 +109,17 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_cy5rv"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_wavhf"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_ctwx1")
 fill_from = Vector2(0.542735, 0.995726)
 fill_to = Vector2(0.58547, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ymw04"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2t2yw"]
 resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_cy5rv")
+texture = SubResource("GradientTexture2D_wavhf")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wavhf"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mhumu"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -130,7 +132,7 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2t2yw"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qvqpa"]
 resource_local_to_scene = true
 bg_color = Color(1, 1, 1, 1)
 border_width_left = 4
@@ -140,7 +142,7 @@ border_width_bottom = 3
 border_color = Color(0, 0, 0, 1)
 border_blend = true
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mhumu"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p6oxe"]
 resource_local_to_scene = true
 bg_color = Color(1, 1, 1, 1)
 border_width_left = 4
@@ -150,7 +152,7 @@ border_width_bottom = 4
 border_color = Color(0, 0, 0, 1)
 border_blend = true
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qvqpa"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5n8h1"]
 resource_local_to_scene = true
 bg_color = Color(1, 1, 1, 1)
 border_width_left = 4
@@ -160,7 +162,7 @@ border_width_bottom = 4
 border_color = Color(0.94902, 0.627451, 0.0117647, 1)
 border_blend = true
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p6oxe"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_44tlk"]
 resource_local_to_scene = true
 content_margin_left = 8.0
 content_margin_top = 4.0
@@ -168,7 +170,7 @@ content_margin_right = 21.0
 content_margin_bottom = 4.0
 bg_color = Color(0.184314, 0.196078, 0.203922, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5n8h1"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_reuri"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -183,17 +185,17 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_44tlk"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_slc4x"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_ctwx1")
 fill_from = Vector2(0.542735, 0.995726)
 fill_to = Vector2(0.58547, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_reuri"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qixmy"]
 resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_44tlk")
+texture = SubResource("GradientTexture2D_slc4x")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slc4x"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_df5cq"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -206,7 +208,7 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qixmy"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ddgoq"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -221,17 +223,17 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_df5cq"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_eq3e0"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_ctwx1")
 fill_from = Vector2(0.542735, 0.995726)
 fill_to = Vector2(0.58547, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ddgoq"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5c8eq"]
 resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_df5cq")
+texture = SubResource("GradientTexture2D_eq3e0")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eq3e0"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aju8b"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -243,6 +245,14 @@ corner_radius_top_left = 12
 corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m1q1w"]
+atlas = ExtResource("12_w08ns")
+region = Rect2(120, 168, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x7gmb"]
+atlas = ExtResource("12_w08ns")
+region = Rect2(144, 168, 24, 24)
 
 [node name="EditEventPage" type="MarginContainer" unique_id=341481203]
 anchors_preset = 15
@@ -268,10 +278,10 @@ layout_mode = 2
 [node name="CustomPanel" parent="HBoxContainer/VBoxContainer" unique_id=1941240867 instance=ExtResource("1_whka3")]
 custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_f2p3o")
-style1 = SubResource("StyleBoxFlat_f2p3o")
-style2 = SubResource("StyleBoxTexture_w08ns")
-style3 = SubResource("StyleBoxFlat_pts3j")
+theme_override_styles/panel = SubResource("StyleBoxFlat_w08ns")
+style1 = SubResource("StyleBoxFlat_w08ns")
+style2 = SubResource("StyleBoxTexture_kkq5y")
+style3 = SubResource("StyleBoxFlat_b1qj2")
 
 [node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer/CustomPanel" unique_id=1599195741]
 layout_mode = 2
@@ -531,12 +541,6 @@ popup/item_1/id = 1
 popup/item_2/text = "Armor"
 popup/item_2/id = 2
 
-[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer8" unique_id=66705181]
-custom_minimum_size = Vector2(35, 0)
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-horizontal_alignment = 1
-
 [node name="HBoxContainer7" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer" unique_id=214370609]
 layout_mode = 2
 
@@ -550,10 +554,7 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "Exists Actor:"
 
-[node name="HBoxContainer9" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer" unique_id=1450755270]
-layout_mode = 2
-
-[node name="Condition6Value" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer9" unique_id=1510129617 instance=ExtResource("2_ghqqv")]
+[node name="Condition6Value" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer7" unique_id=1510129617 instance=ExtResource("2_ghqqv")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -564,21 +565,52 @@ Select the character that must be in the group for this page to be activated."
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 disabled = true
 
-[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer9" unique_id=116056213]
-custom_minimum_size = Vector2(35, 0)
+[node name="HBoxContainer10" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer" unique_id=1295904130]
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-horizontal_alignment = 1
+
+[node name="Condition7Pressed" type="CheckBox" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer10" unique_id=1635570672]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+tooltip_text = "[title]Is Pressurable[/title]
+This page will be valid if it has one or more allowed targets on the.
+
+[Note]: When this condition is selected, the event will be set and fixed as passable and will only have the launchers \"Player Contact\", \"Event Contact\", or \"Contact with Anyone\" active.
+
+[Note2]: When a page configured as pressable is activated, the previously active page will execute its commands. When the page is \"released,\" the commands added to the pressed page will be executed.
+"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+text = "Pressurable:"
+
+[node name="AllowPressureTargets" type="OptionButton" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer10" unique_id=928557188]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.01
+tooltip_text = "[title]Valid Targets[/title]
+Targets that can \"press\" this event.
+
+[Note]: For an event to be considered pressed, it must have this start condition and also one or more allowed targets on top of it. If no valid target has been defined, the player will be used as the fallback target."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+fit_to_longest_item = false
+allow_reselect = true
+script = ExtResource("5_csadr")
+enable_multi_selection = true
+
+[node name="HBoxContainer9" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer" unique_id=1450755270]
+layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer" unique_id=841201499]
 layout_mode = 2
 
 [node name="CustomPanel2" parent="HBoxContainer/VBoxContainer/HBoxContainer" unique_id=669124036 instance=ExtResource("1_whka3")]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_kkq5y")
-style1 = SubResource("StyleBoxFlat_kkq5y")
-style2 = SubResource("StyleBoxTexture_j355e")
-style3 = SubResource("StyleBoxFlat_o0uhe")
+theme_override_styles/panel = SubResource("StyleBoxFlat_j355e")
+style1 = SubResource("StyleBoxFlat_j355e")
+style2 = SubResource("StyleBoxTexture_6pdng")
+style3 = SubResource("StyleBoxFlat_cy5rv")
 
 [node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer/CustomPanel2" unique_id=1649689593]
 layout_mode = 2
@@ -592,7 +624,7 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer/CustomPanel2/MarginContainer/VBoxContainer" unique_id=541340568]
 layout_mode = 2
-text = "Ghaphics"
+text = "GRAPHICS"
 horizontal_alignment = 1
 uppercase = true
 
@@ -637,10 +669,10 @@ size_flags_horizontal = 3
 [node name="CustomPanel4" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1235435351 instance=ExtResource("1_whka3")]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_6pdng")
-style1 = SubResource("StyleBoxFlat_6pdng")
-style2 = SubResource("StyleBoxTexture_ymw04")
-style3 = SubResource("StyleBoxFlat_wavhf")
+theme_override_styles/panel = SubResource("StyleBoxFlat_ymw04")
+style1 = SubResource("StyleBoxFlat_ymw04")
+style2 = SubResource("StyleBoxTexture_2t2yw")
+style3 = SubResource("StyleBoxFlat_mhumu")
 
 [node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4" unique_id=1080404336]
 layout_mode = 2
@@ -725,8 +757,20 @@ disabled = true
 
 [node name="PlaceHolderLauncher" type="Control" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer3" unique_id=1479972787]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 30)
+custom_minimum_size = Vector2(0, 38)
 layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer3/PlaceHolderLauncher" unique_id=355376170]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.525894, 0.52589405, 0.525894, 1)
+text = "No extra actions"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="HSeparator" type="HSeparator" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer3" unique_id=1028758660]
 layout_mode = 2
@@ -802,23 +846,24 @@ size_flags_vertical = 6
 tooltip_text = "Choose the desired color
 
 [Note]: Click center to set the default color (white)."
-theme_override_styles/normal = SubResource("StyleBoxFlat_2t2yw")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_mhumu")
-theme_override_styles/hover = SubResource("StyleBoxFlat_qvqpa")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_p6oxe")
+theme_override_styles/normal = SubResource("StyleBoxFlat_qvqpa")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_p6oxe")
+theme_override_styles/hover = SubResource("StyleBoxFlat_5n8h1")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_44tlk")
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2" unique_id=1740053087]
 layout_mode = 2
 
 [node name="HBoxContainer2" type="VBoxContainer" parent="HBoxContainer/VBoxContainer" unique_id=2051688898]
 layout_mode = 2
+size_flags_vertical = 8
 
 [node name="CustomPanel3" parent="HBoxContainer/VBoxContainer/HBoxContainer2" unique_id=1023177755 instance=ExtResource("1_whka3")]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_5n8h1")
-style1 = SubResource("StyleBoxFlat_5n8h1")
-style2 = SubResource("StyleBoxTexture_reuri")
-style3 = SubResource("StyleBoxFlat_slc4x")
+theme_override_styles/panel = SubResource("StyleBoxFlat_reuri")
+style1 = SubResource("StyleBoxFlat_reuri")
+style2 = SubResource("StyleBoxTexture_qixmy")
+style3 = SubResource("StyleBoxFlat_df5cq")
 
 [node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel3" unique_id=1458922610]
 layout_mode = 2
@@ -886,10 +931,10 @@ text = "Passable"
 [node name="CustomPanel4" parent="HBoxContainer/VBoxContainer/HBoxContainer2" unique_id=1410917057 instance=ExtResource("1_whka3")]
 custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_qixmy")
-style1 = SubResource("StyleBoxFlat_qixmy")
-style2 = SubResource("StyleBoxTexture_ddgoq")
-style3 = SubResource("StyleBoxFlat_eq3e0")
+theme_override_styles/panel = SubResource("StyleBoxFlat_ddgoq")
+style1 = SubResource("StyleBoxFlat_ddgoq")
+style2 = SubResource("StyleBoxTexture_5c8eq")
+style3 = SubResource("StyleBoxFlat_aju8b")
 
 [node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4" unique_id=1893491427]
 layout_mode = 2
@@ -1027,6 +1072,15 @@ tooltip_text = "By marking this page as a quest page, this page will never be ac
 mouse_default_cursor_shape = 2
 text = "Mark as quest Page"
 
+[node name="PageExtraOptions" type="TextureButton" parent="HBoxContainer/VBoxContainer2/HBoxContainer" unique_id=849142871]
+layout_mode = 2
+size_flags_vertical = 8
+tooltip_text = "Set up extra data for this event page, such as hit points, enabling a self switch when hit or upon death."
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_m1q1w")
+texture_pressed = SubResource("AtlasTexture_x7gmb")
+script = ExtResource("13_pts3j")
+
 [node name="EventPageListEditor" parent="HBoxContainer/VBoxContainer2" unique_id=1128338880 instance=ExtResource("8_qgfkt")]
 unique_name_in_owner = true
 layout_mode = 2
@@ -1045,7 +1099,9 @@ layout_mode = 2
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer8/Condition5Value1" to="." method="_on_condition_5_value1_pressed"]
 [connection signal="item_selected" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer8/Condition5Value2" to="." method="_on_condition_5_value_2_item_selected"]
 [connection signal="toggled" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer7/Condition6Pressed" to="." method="_on_condition_6_pressed_toggled"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer9/Condition6Value" to="." method="_on_condition_6_value_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer7/Condition6Value" to="." method="_on_condition_6_value_pressed"]
+[connection signal="toggled" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer10/Condition7Pressed" to="." method="_on_condition_7_pressed_toggled"]
+[connection signal="multi_selection_changed" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer10/AllowPressureTargets" to="." method="_on_allow_pressure_targets_multi_selection_changed"]
 [connection signal="item_selected" from="HBoxContainer/VBoxContainer/HBoxContainer/CustomPanel2/MarginContainer/VBoxContainer/DataTypeSelected" to="." method="_on_data_type_selected_item_selected"]
 [connection signal="clicked" from="HBoxContainer/VBoxContainer/HBoxContainer/CustomPanel2/MarginContainer/VBoxContainer/CharacterImage" to="." method="_on_character_image_clicked"]
 [connection signal="custom_copy" from="HBoxContainer/VBoxContainer/HBoxContainer/CustomPanel2/MarginContainer/VBoxContainer/CharacterImage" to="." method="_on_character_image_custom_copy"]
@@ -1068,4 +1124,5 @@ layout_mode = 2
 [connection signal="value_changed" from="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer2/Frequency" to="." method="_on_frequency_value_changed"]
 [connection signal="text_changed" from="HBoxContainer/VBoxContainer2/HBoxContainer/PageName" to="." method="_on_page_name_text_changed"]
 [connection signal="toggled" from="HBoxContainer/VBoxContainer2/HBoxContainer/MarkAsQuestPage" to="." method="_on_mark_as_quest_page_toggled"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer2/HBoxContainer/PageExtraOptions" to="." method="_on_page_extra_options_pressed"]
 [connection signal="data_changed" from="HBoxContainer/VBoxContainer2/EventPageListEditor" to="." method="_on_event_page_list_editor_data_changed"]

@@ -67,12 +67,10 @@ func execute(code: String) -> Variant:
 		return null
 	
 	var lines = code.split("\n")
-	
 	var cleaned_code = ""
 	for line in lines:
 		cleaned_code += "\t" + line + "\n"
 
-	
 	# Create script and execute it
 	if _script:
 		_script = null

@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://dlql3isoj0b1o"]
+
+[ext_resource type="AudioStream" uid="uid://bjvpq4dqg8uta" path="res://addons/rpg_character_creator/sounds/boomerang.ogg" id="1_v1t3r"]
+
+[sub_resource type="GDScript" id="GDScript_acdlp"]
+script/source = "extends AudioStreamPlayer2D
+
+func _enter_tree() -> void:
+	playing = true
+"
+
+[node name="BoomerangFx2D" type="AudioStreamPlayer2D" unique_id=41747733]
+stream = ExtResource("1_v1t3r")
+autoplay = true
+area_mask = 0
+parameters/looping = true
+script = SubResource("GDScript_acdlp")

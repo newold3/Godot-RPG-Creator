@@ -60,6 +60,10 @@ func get_class(): return "RPGWeapon"
 ## Part of the weapon in LPC format.
 @export var lpc_part: String = ""
 
+## Script of type "CombatActionBase" used by this weapon to load different
+## animations when starting an attack, when hitting something, or when being destroyed.
+@export var lpc_part_custom_script: String = ""
+
 ## Add this weapon to one or more tools to trigger events in-game.
 @export var tools_family: PackedInt32Array = []
 

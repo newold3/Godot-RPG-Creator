@@ -567,6 +567,29 @@ Choose the rarity for this object.
 mouse_default_cursor_shape = 2
 script = ExtResource("9_mwr1g")
 
+[node name="HBoxContainer4" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings" unique_id=150683406]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer4" unique_id=1653526340]
+layout_mode = 2
+text = "Tool/s Family:"
+
+[node name="Tools" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer4" unique_id=1200572524 instance=ExtResource("14_th10d")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(420, 0)
+layout_mode = 2
+tooltip_text = "Convert this weapon into a tool that can trigger events. For it to work, you need to equip a weapon with a tool compatible with event activation. When attacking with that weapon (or with the weapon’s projectile), it will be able to trigger events that are activated by this/these tool(s).
+
+[Note]: You need to have a valid LPC weapon equipped for it to work.
+
+[Note 2]: Hold Ctrl or Shift to select more than one tool. Middle-click to reset the selected tools, and click outside the item list to close it."
+expand_icon = true
+selected = 0
+item_count = 1
+popup/item_0/text = "None"
+popup/item_0/id = 0
+enable_multi_selection = true
+
 [node name="HBoxContainer2" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings" unique_id=1261759760]
 layout_mode = 2
 
@@ -619,14 +642,17 @@ theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer" unique_id=1580773077]
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer" unique_id=905940619]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/HBoxContainer" unique_id=1890157297]
+[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/VBoxContainer" unique_id=1580773077]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1890157297]
 layout_mode = 2
 text = "LPC Part:"
 
-[node name="LPCPartButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/HBoxContainer" unique_id=1957062618 instance=ExtResource("10_jes70")]
+[node name="LPCPartButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1957062618 instance=ExtResource("10_jes70")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -641,25 +667,40 @@ The LPC Characters (Characters created with the [Character and Equipment Editor]
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 text = "Select LPC Weapon"
 
-[node name="Label2" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/HBoxContainer" unique_id=1653526340]
-layout_mode = 2
-text = "Tool/s:"
-
-[node name="Tools" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/HBoxContainer" unique_id=1200572524 instance=ExtResource("14_th10d")]
+[node name="LPCPartInfo" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/VBoxContainer/HBoxContainer" unique_id=580165132]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(420, 0)
+custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
-tooltip_text = "Convert this weapon into a tool that can trigger events. For it to work, you need to equip a weapon with a tool compatible with event activation. When attacking with that weapon (or with the weapon’s projectile), it will be able to trigger events that are activated by this/these tool(s).
+theme_override_colors/font_color = Color(0.6028429, 0.6028429, 0.602843, 1)
+text = "No weapon part selected."
 
-[Note]: You need to have a valid LPC weapon equipped for it to work.
+[node name="HBoxContainer2" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/VBoxContainer" unique_id=1874641181]
+layout_mode = 2
 
-[Note 2]: Hold Ctrl or Shift to select more than one tool. Middle-click to reset the selected tools, and click outside the item list to close it."
-expand_icon = true
-selected = 0
-item_count = 1
-popup/item_0/text = "None"
-popup/item_0/id = 0
-enable_multi_selection = true
+[node name="LPCPartScript" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1774995857]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.6028429, 0.6028429, 0.602843, 1)
+text = "No script installed."
+
+[node name="SetAttackScriptAsDefault" type="CheckBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1410466372]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Set the current script as the default script for this type of projectile."
+mouse_default_cursor_shape = 2
+text = "default?"
+
+[node name="ConfigScript" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=356523370 instance=ExtResource("4_gygv2")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+tooltip_text = "Select a valid script that will load when attacking and can execute different animations when starting the attack, on hit, and on destroy.
+
+[Note]: requires a valid script of type \"CombatActionBase\""
+text = "Config Script"
+text_overrun_behavior = 3
 
 [node name="Tab2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer" unique_id=1703406548]
 unique_name_in_owner = true
@@ -1193,13 +1234,15 @@ wrap_mode = 1
 [connection signal="text_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3/DescriptionTextEdit" to="." method="_on_description_text_edit_text_changed"]
 [connection signal="item_selected" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HboxContainer/VBoxContainer/WeaponTypeOptions" to="." method="_on_weapon_type_options_item_selected"]
 [connection signal="item_selected" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HboxContainer/VBoxContainer2/WeaponRarityTypeOptions" to="." method="_on_weapon_rarity_type_options_item_selected"]
+[connection signal="middle_click" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer4/Tools" to="." method="_on_tools_middle_click"]
+[connection signal="multi_selection_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer4/Tools" to="." method="_on_tools_multi_selection_changed"]
 [connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer2/PriceSpinBox" to="." method="_on_price_spin_box_value_changed"]
 [connection signal="button_down" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer/AnimationButton" to="." method="_on_animation_button_button_down"]
 [connection signal="middle_click_pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer/AnimationButton" to="." method="_on_animation_button_middle_click_pressed"]
-[connection signal="middle_click_pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/HBoxContainer/LPCPartButton" to="." method="_on_lpc_part_button_middle_click_pressed"]
-[connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/HBoxContainer/LPCPartButton" to="." method="_on_lpc_part_button_pressed"]
-[connection signal="middle_click" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/HBoxContainer/Tools" to="." method="_on_tools_middle_click"]
-[connection signal="multi_selection_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/HBoxContainer/Tools" to="." method="_on_tools_multi_selection_changed"]
+[connection signal="middle_click_pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/VBoxContainer/HBoxContainer/LPCPartButton" to="." method="_on_lpc_part_button_middle_click_pressed"]
+[connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/VBoxContainer/HBoxContainer/LPCPartButton" to="." method="_on_lpc_part_button_pressed"]
+[connection signal="toggled" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/VBoxContainer/HBoxContainer2/SetAttackScriptAsDefault" to="." method="_on_set_attack_script_as_default_toggled"]
+[connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/VBoxContainer/HBoxContainer2/ConfigScript" to="." method="_on_config_script_pressed"]
 [connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HBoxContainer/CopyParameters" to="." method="_on_copy_parameters_pressed"]
 [connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HBoxContainer/PasteParameters" to="." method="_on_paste_parameters_pressed"]
 [connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HboxContainer/VBoxContainer5/MaxHPSpinBox" to="." method="_on_max_hp_spin_box_value_changed"]

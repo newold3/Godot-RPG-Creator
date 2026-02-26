@@ -283,6 +283,7 @@ func show_confirm_save_dialog() -> void:
 
 func _on_save_confirm_save_data() -> void:
 	real_data.update_with_other_db(data)
+	RPGEditorToast.show_message("Database saved!")
 
 
 func _on_options_pressed() -> void:

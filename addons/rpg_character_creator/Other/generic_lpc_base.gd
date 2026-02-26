@@ -201,6 +201,10 @@ func _process(delta: float) -> void:
 			_update_frame(delta)
 
 
+func run_animation() -> void:
+	_update_frame(0.0)
+
+
 func is_passable() -> bool:
 	return character_options.passable
 
@@ -313,6 +317,14 @@ func _get_next_move_toward_event() -> Vector2i:
 		return goal
 	
 	return _get_next_move_toward_target(goal, target_screen_position)
+
+
+func is_pressed() -> bool:
+	if is_in_group("event") and GameManager.current_map:
+		if current_event_page and current_event_page.condition.use_pressure:
+			return true
+	
+	return false
 
 
 func start(obj: Node, launcher_mode: RPGEventPage.LAUNCHER_MODE) -> bool:

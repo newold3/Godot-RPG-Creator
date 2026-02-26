@@ -192,6 +192,11 @@ func _command_0021() -> void:
 						8: # Is On Vehicle
 							if target == GameManager.current_player and target.is_on_vehicle:
 								condition_met = true
+						9: # Is Pressed:
+							if target.has_method("is_pressed"):
+								print(target.is_pressed())
+								condition_met = target.is_pressed()
+								
 		7: # Vehicle
 			if GameManager.current_vehicle and GameManager.current_vehicle.vahicle_type == value1:
 				condition_met = true

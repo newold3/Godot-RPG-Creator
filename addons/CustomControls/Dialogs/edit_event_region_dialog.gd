@@ -19,6 +19,7 @@ func _ready() -> void:
 	var b = ButtonGroup.new()
 	%UseCommonEvent.button_group = b
 	%UseCallerEvent.button_group = b
+	CustomTooltipManager.replace_all_tooltips_with_custom.call_deferred(self)
 
 
 func set_region(region: EventRegion) -> void:
@@ -92,9 +93,9 @@ func fill_events(selected_index1: int, selected_index2: int) -> void:
 	for ev: RPGEvent in current_events:
 		var text = "Event #%s: %s" % [ev.id, ev.name]
 		list1.add_item(text)
-		list1.set_item_metadata(-1, ev.id)
+		list1.set_item_metadata(-1, ev._uniq_id)
 		list2.add_item(text)
-		list2.set_item_metadata(-1, ev.id)
+		list2.set_item_metadata(-1, ev._uniq_id)
 	
 	list1.select(0)
 	for i in list1.get_item_count():
@@ -113,7 +114,6 @@ func fill_events(selected_index1: int, selected_index2: int) -> void:
 
 func set_triggers(selected_indexes: PackedInt32Array) -> void:
 	var list = %TriggerList
-
 	var total_items = list.get_item_count()
 	
 	for i in list.get_item_count():
@@ -132,7 +132,7 @@ func set_events(events: Array) -> void:
 	for ev: RPGEvent in events:
 		var text = "Event #%s: %s" % [ev.id, ev.name]
 		list.add_item(text)
-		list.set_item_metadata(-1, ev.id)
+		list.set_item_metadata(-1, ev._uniq_id)
 	
 	current_events = events
 
@@ -223,6 +223,7 @@ func _on_size_y_value_changed(value: float) -> void:
 
 
 func _on_color_button_pressed() -> void:
+	if not current_region: return
 	var path = "res://addons/CustomControls/Dialogs/select_color.tscn"
 	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
 	
@@ -232,27 +233,32 @@ func _on_color_button_pressed() -> void:
 
 
 func _on_color_selected(color: Color) -> void:
+	if not current_region: return
 	%ApplyButton.set_disabled(false)
 	current_region.color = color
 	%ColorButton.set_color(color)
 
 
 func _on_entry_common_event_item_selected(index: int) -> void:
+	if not current_region: return
 	%ApplyButton.set_disabled(false)
 	current_region.entry_common_event = index
 
 
 func _on_exit_common_event_item_selected(index: int) -> void:
+	if not current_region: return
 	%ApplyButton.set_disabled(false)
 	current_region.exit_common_event = index
 
 
 func _on_entry_caller_event_item_selected(index: int) -> void:
+	if not current_region: return
 	current_region.trigger_caller_event_on_entry = %EntryCallerEvent.get_item_metadata(index)
 	%ApplyButton.set_disabled(false)
 
 
 func _on_exit_caller_event_item_selected(index: int) -> void:
+	if not current_region: return
 	current_region.trigger_caller_event_on_exit = %ExitCallerEvent.get_item_metadata(index)
 	%ApplyButton.set_disabled(false)
 
@@ -264,9 +270,17 @@ func _on_can_entry_toggled(toggled_on: bool) -> void:
 
 func _on_trigger_list_multi_selected(index: int, selected: bool) -> void:
 	%ApplyButton.set_disabled(false)
+	
+	var real_id = %TriggerList.get_item_metadata(index)
+	if selected and not real_id in current_region.triggers:
+		current_region.triggers.append(real_id)
+	elif not selected and real_id in current_region.triggers:
+		current_region.triggers.erase(real_id)
+	
 
 
 func _on_use_common_event_toggled(toggled_on: bool) -> void:
+	if not current_region: return
 	if toggled_on:
 		%CommonEventContainer.propagate_call("set_disabled", [false])
 		%CallerEventContainer.propagate_call("set_disabled", [true])
@@ -274,6 +288,7 @@ func _on_use_common_event_toggled(toggled_on: bool) -> void:
 
 
 func _on_use_caller_event_toggled(toggled_on: bool) -> void:
+	if not current_region: return
 	if toggled_on:
 		%CommonEventContainer.propagate_call("set_disabled", [true])
 		%CallerEventContainer.propagate_call("set_disabled", [false])
@@ -281,16 +296,19 @@ func _on_use_caller_event_toggled(toggled_on: bool) -> void:
 
 
 func _on_player_damage_value_changed(value: float) -> void:
+	if not current_region: return
 	current_region.damage_amount = value
 	%ApplyButton.set_disabled(false)
 
 
 func _on_damage_amount_value_changed(value: float) -> void:
+	if not current_region: return
 	current_region.damage_amount = value
 	%ApplyButton.set_disabled(false)
 
 
 func _on_damage_frequency_value_changed(value: float) -> void:
+	if not current_region: return
 	current_region.damage_frequency = value
 	%ApplyButton.set_disabled(false)
 

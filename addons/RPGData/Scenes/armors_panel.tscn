@@ -355,6 +355,8 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 default_tabs = Array[String](["General", "Stats", "Properties", "Other"])
+drag_threshold = 10.0
+current_tab_unselected_text_outline_color = Color(0, 0, 0, 1)
 tab_name_base = ""
 background_color = Color(0, 0, 0, 0)
 tab_selected = null
@@ -601,6 +603,13 @@ The LPC Characters (Characters created with the [Character and Equipment Editor]
 [1left Click]: Change part, [1Middle Click]: Erase Part"
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 text = "Select LPC Equipment"
+
+[node name="LPCPartInfo" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/HBoxContainer" unique_id=1105202399]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6028429, 0.6028429, 0.602843, 1)
+text = "No armor part selected."
 
 [node name="Tab2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer" unique_id=1601446905]
 unique_name_in_owner = true

@@ -38,8 +38,7 @@ func _on_ending() -> void:
 		player.remove_meta("current_scale_y")
 
 
-func _get_player_position() -> Vector2:
-	return global_position + Vector2(0, -%MainCharacter.global_position.y)
+
 
 
 func _set_initial_player_position(_target_position: Vector2) -> void:
@@ -57,26 +56,47 @@ func _set_initial_player_position(_target_position: Vector2) -> void:
 		await get_tree().process_frame
 
 
+func get_player_visual_offset() -> Vector2:
+	return Vector2(-1, -40)
+
+
+func _get_player_position() -> Vector2:
+	if player:
+		if player.is_on_vehicle:
+			return global_position + get_player_visual_offset()
+		else:
+			return player.global_position
+			
+	return global_position
+
+
 func _set_player_position(_target_position: Vector2) -> void:
 	if player:
 		var t = create_tween()
 		t.set_trans(Tween.TRANS_CIRC)
 		player.z_index = 10
+		
+		var start_pos = player.global_position
+		
 		match current_direction:
 			LPCCharacter.DIRECTIONS.LEFT:
-				t.tween_property(player, "position", Vector2(player.position.x - 16, player.position.y - 8), 0.08)
+				t.tween_property(player, "global_position", start_pos + Vector2(-16, -12), 0.08)
 			LPCCharacter.DIRECTIONS.RIGHT:
-				t.tween_property(player, "position", Vector2(player.position.x + 16, player.position.y - 8), 0.08)
+				t.tween_property(player, "global_position", start_pos + Vector2(16, -12), 0.08)
 			LPCCharacter.DIRECTIONS.UP:
 				player.z_index = 1
-				t.tween_property(player, "position", Vector2(player.position.x - 1, player.position.y - 6), 0.08)
+				t.tween_property(player, "global_position", start_pos + Vector2(-1, -12), 0.08)
 			LPCCharacter.DIRECTIONS.DOWN:
-				t.tween_property(player, "position", Vector2(player.position.x + 1, player.position.y - 6), 0.08)
-		t.tween_property(player, "position", _target_position, 0.06)
+				t.tween_property(player, "global_position", start_pos + Vector2(1, -12), 0.08)
+				
+		t.tween_property(player, "global_position", _target_position, 0.06)
 		t.tween_property(player, "scale:y", 0.9, 0.05)
 		t.tween_property(player, "scale:y", 1.0, 0.05)
+		
 		await t.finished
-		GameManager.current_player.z_index = 1
+		
+		if GameManager.current_player:
+			GameManager.current_player.z_index = 1
 
 
 func _process(delta: float) -> void:

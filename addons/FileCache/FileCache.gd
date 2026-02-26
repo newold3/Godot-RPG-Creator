@@ -173,7 +173,7 @@ func fix_cache() -> void:
 	for key in cache:
 		var file_paths = cache[key].keys()
 		for file_path in file_paths:
-			if !FileAccess.file_exists(file_path):
+			if not ZipMediaLoader.file_exists(file_path):
 				cache[key].erase(file_path)
 
 
@@ -262,21 +262,31 @@ func build_cache() -> void:
 	cache_setted = false
 	cache = {
 		"animated_images": {}, "images": {}, "sounds": {}, "animations": {}, "maps": {},
-		"characters": {}, "events": {}, "equipment_parts": {}, "enemies": {}, "curves": {},
-		"sets": {}, "costumes": {},
+		"characters": {}, "events": {}, "equipment_parts_weapons": {}, "equipment_parts_others": {},
+		"enemies": {}, "curves": {}, "sets": {}, "costumes": {},
 		"fonts": {}, "message_dialogs": {}, "scroll_scenes": {}, "choice_scenes": {},
 		"vehicles": {}, "weather": {}, "expressive_bubbles": {}, "numerical_input_scenes": {},
 		"text_input_scenes": {}, "transition_scenes": {}, "videos": {}, "map_parallax_scenes": {},
 		"battle_background_scenes": {}, "tilesets": {}, "timer_scenes": {},
-		"shop_scene": {}, "extraction_scenes": {}
+		"shop_scene": {}, "extraction_scenes": {}, "weapon_attack_scripts": {}
 	}
 	
-	# Optimization: Use EditorFileSystem memory
+	# Use EditorFileSystem memory for physical files
 	var fs = get_editor_interface().get_resource_filesystem().get_filesystem()
 	if fs:
 		pending_files_to_process = _scan_filesystem_recursively(fs)
 	else:
 		pending_files_to_process = collect_all_files("res://")
+		
+	# Inject virtual files from ZipMediaLoader
+	if not ZipMediaLoader._initialized:
+		ZipMediaLoader._mount_system()
+		
+	for zip_file in ZipMediaLoader._files_index.keys():
+		var full_path = "res://" + zip_file
+		if not pending_files_to_process.has(full_path):
+			pending_files_to_process.append(full_path)
+			
 	process_pending_files()
 
 
@@ -401,6 +411,28 @@ func cache_file(file_path: String, force_rescan: bool = false) -> void:
 		classify_resource_file(file_path)
 	elif extension == "tscn":
 		classify_scene_file(file_path)
+	elif extension == "gd":
+		classify_script_file(file_path)
+
+
+## Analyzes a standalone script file to determine if it inherits from specific base classes like CombatActionBase.
+func classify_script_file(file_path: String) -> void:
+	if !ResourceLoader.exists(file_path):
+		return
+		
+	var script_res = load(file_path)
+	if script_res is Script:
+		var current_script = script_res
+		
+		# Climb the inheritance tree to see if it extends CombatActionBase
+		while current_script:
+			var global_name = current_script.get_global_name()
+			var script_name = current_script.resource_path.get_file()
+			if global_name == "CombatActionBase" or script_name == "combat_action_base.gd":
+				cache.weapon_attack_scripts[file_path] = true
+				return
+				
+			current_script = current_script.get_base_script()
 
 
 ## Loads and analyzes a Godot resource file.
@@ -440,7 +472,10 @@ func classify_resource_file(file_path: String) -> void:
 	elif res is IngameGearSet:
 		cache.sets[file_path] = true
 	elif res is RPGLPCEquipmentPart:
-		cache.equipment_parts[file_path] = true
+		if res.layer_id == "mainhand":
+			cache.equipment_parts_weapons[file_path] = true
+		else:
+			cache.equipment_parts_others[file_path] = true
 	elif res is Curve:
 		cache.curves[file_path] = true
 	elif res is Font:

@@ -519,6 +519,7 @@ func _on_copy_disassemble_pressed() -> void:
 		"components": components
 	}
 	%PasteDisassemble.set_disabled(false)
+	RPGEditorToast.show_message("Salvaged materials copied to Clipboard")
 
 
 func _on_paste_disassemble_pressed() -> void:

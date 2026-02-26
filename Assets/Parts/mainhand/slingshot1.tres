@@ -1,0 +1,63 @@
+[gd_resource type="Resource" script_class="RPGLPCEquipmentPart" format=3 uid="uid://bgcxyyjs1dliy"]
+
+[ext_resource type="Script" uid="uid://cqx1cnfjmgp73" path="res://addons/RPGData/ModulesRPG/rpg_lpc_palette.gd" id="1_x5u3w"]
+[ext_resource type="Script" uid="uid://der67xririmwh" path="res://addons/RPGData/ModulesRPG/rpg_lpc_equipment_part.gd" id="2_pfvo6"]
+
+[sub_resource type="Resource" id="Resource_g5hlm"]
+script = ExtResource("1_x5u3w")
+blend_color = 2121296127
+colors = PackedInt64Array(0, 0, 16, 50529279, 23, 168299263, 27, 117836031, 66, 302846719, 133, 672669951, 161, 690236927, 183, 1582453503, 228, 2121296127, 255, 2256437247)
+
+[sub_resource type="Resource" id="Resource_uyvn2"]
+script = ExtResource("1_x5u3w")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_5hr1l"]
+script = ExtResource("1_x5u3w")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_nlmrn"]
+script = ExtResource("2_pfvo6")
+config_path = "res://addons/rpg_character_creator/Data/gear/ammo/rock.lcc"
+part_id = "rock"
+layer_id = "ammo"
+body_type = "hm1"
+head_type = "hm1"
+name = "Rock"
+front_texture = "res://addons/rpg_character_creator/empty"
+back_texture = "res://addons/rpg_character_creator/empty"
+tags = PackedStringArray("ammo", "rock")
+palette1 = SubResource("Resource_g5hlm")
+palette2 = SubResource("Resource_uyvn2")
+palette3 = SubResource("Resource_5hr1l")
+
+[sub_resource type="Resource" id="Resource_m7elm"]
+script = ExtResource("1_x5u3w")
+blend_color = 1631529983
+colors = PackedInt64Array(0, 0, 16, 117703935, 23, 184944383, 27, 420547839, 66, 403967487, 133, 756880895, 161, 908270079, 183, 1025973247, 228, 1631529983, 255, 1917465855)
+
+[sub_resource type="Resource" id="Resource_1cst3"]
+script = ExtResource("1_x5u3w")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_x87l8"]
+script = ExtResource("1_x5u3w")
+blend_color = 3857106943
+colors = PackedInt64Array(0, 0, 16, 353703423, 23, 505290495, 27, 437065983, 66, 1111638783, 133, 2508226815, 161, 2962790655, 183, 3300237311, 228, 3857106943, 255, 4294967295)
+
+[resource]
+script = ExtResource("2_pfvo6")
+config_path = "res://addons/rpg_character_creator/Data/gear/mainhand/slingshot.lcc"
+part_id = "slingshot"
+layer_id = "mainhand"
+body_type = "hm1"
+head_type = "hm1"
+equipment_preview = "res://Assets/Parts/mainhand/slingshot1_preview.png"
+name = "Slingshot"
+front_texture = "res://addons/rpg_character_creator/textures/gear/mainhand/slingshot/slingshot_mf.png"
+back_texture = "res://addons/rpg_character_creator/textures/gear/mainhand/slingshot/slingshot_mb.png"
+tags = PackedStringArray("mainhand", "weapon", "ranged", "slingshot")
+palette1 = SubResource("Resource_m7elm")
+palette2 = SubResource("Resource_1cst3")
+palette3 = SubResource("Resource_x87l8")
+ammo = SubResource("Resource_nlmrn")

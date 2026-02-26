@@ -53,4 +53,4 @@ func get_switch_names() -> Array:
 
 
 func size() -> int:
-	return data.size()
+	return keys.size()

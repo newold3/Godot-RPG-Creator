@@ -29,8 +29,10 @@ func _on_ok_button_pressed() -> void:
 
 
 func _on_level_name_text_changed(new_text: String) -> void:
+	if not data: return
 	data.name = new_text
 
 
 func _on_experience_to_masterize_value_changed(value: float) -> void:
+	if not data: return
 	data.experience = value

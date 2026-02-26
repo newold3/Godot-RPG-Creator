@@ -21,6 +21,7 @@ var is_cleaning_for_save: bool = false
 @export var front_texture: String = ""
 @export var back_texture: String = ""
 @export var is_large_texture: bool = false
+@export var tags: PackedStringArray = []
 @export var palette1: RPGLPCPalette = RPGLPCPalette.new()
 @export var palette2: RPGLPCPalette = RPGLPCPalette.new()
 @export var palette3: RPGLPCPalette = RPGLPCPalette.new()
@@ -79,7 +80,7 @@ func clear() -> void:
 	for key in ["config_path", "part_id", "body_type", "head_type", "equipment_preview", "name", "front_texture", "back_texture"]:
 		set(key, "")
 	is_large_texture = false
-	for key in ["palette1", "palette2", "palette3", "gradient1", "gradient2", "gradient3", "ammo"]:
+	for key in ["palette1", "palette2", "palette3", "gradient1", "gradient2", "gradient3", "ammo", "tags"]:
 		var obj = get(key)
 		if obj:
 			obj.clear()

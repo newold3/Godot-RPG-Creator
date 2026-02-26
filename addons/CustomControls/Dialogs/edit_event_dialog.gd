@@ -15,7 +15,6 @@ var plugin: RPGMapPlugin
 
 var busy: bool
 
-
 signal changed()
 signal event_updated(event: RPGEvent)
 
@@ -39,7 +38,7 @@ func setup() -> void:
 	if rpg_system:
 		edit_event_page.system = rpg_system.system
 	set_event_name()
-	#await get_tree().process_frame
+
 	var tab_selected = %EventPageContainer.selected_tab
 	if current_event:
 		tab_selected = current_event._editor_last_page_used
@@ -53,7 +52,7 @@ func setup() -> void:
 	fill_pages()
 	
 	%EventPageContainer.select(tab_selected, true)
-	#setup_current_page(tab_selected)
+
 	%ApplyButton.set_disabled(true)
 
 
@@ -139,6 +138,7 @@ func _on_ok_button_pressed() -> void:
 	_create_undo_redo_action()
 	changed.emit()
 	event_updated.emit(current_event)
+	RPGEditorToast.show_message(TranslationManager.tr("Event updated!"))
 	queue_free()
 
 
@@ -148,8 +148,7 @@ func _create_undo_redo_action() -> void:
 	if not current_event or not events or not original_event or not undo_redo or not current_object:
 		push_error("Faltan datos para crear la acción de undo/redo")
 		return
-	
-	# Crear copias de los eventos
+
 	var modified_event = current_event.clone(true)
 	_fix_clone_event(modified_event, current_event)
 	var original_copy = original_event.clone(true)
@@ -157,12 +156,12 @@ func _create_undo_redo_action() -> void:
 	
 	undo_redo.create_action("Edit Event", UndoRedo.MERGE_DISABLE, current_object)
 	
-	# DO - aplicar los cambios nuevos
+	# DO
 	undo_redo.add_do_method(plugin, "_force_mode_switch", plugin.current_edit_mode)
 	undo_redo.add_do_method(events, "replace_event", modified_event)
 	undo_redo.add_do_method(EditorInterface, "mark_scene_as_unsaved")
 	
-	# UNDO - restaurar el evento original
+	# UNDO
 	undo_redo.add_undo_method(plugin, "_force_mode_switch", plugin.current_edit_mode)
 	undo_redo.add_undo_method(events, "replace_event", original_copy)
 	undo_redo.add_undo_method(EditorInterface, "mark_scene_as_unsaved")
@@ -178,9 +177,16 @@ func confirm_changes() -> void:
 	if current_event and not current_event.is_equal_to(original_event):
 		var path = "res://addons/CustomControls/Dialogs/confirm_dialog.tscn"
 		var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
-		dialog.set_text("Discard the changes and exit?")
-		dialog.title = TranslationManager.tr("Override File")
-		dialog.OK.connect(queue_free)
+		dialog.set_text(TranslationManager.tr("You have unsaved changes.\nDo you want to save them before exiting?"))
+		dialog.title = TranslationManager.tr("Unsaved Changes")
+
+		dialog.tree_exiting.connect(
+			func():
+				if not dialog.result:
+					queue_free()
+				else:
+					_on_ok_button_pressed()
+		)
 	else:
 		queue_free()
 
@@ -190,6 +196,7 @@ func _on_apply_button_pressed() -> void:
 	changed.emit()
 	event_updated.emit(current_event)
 	%ApplyButton.set_disabled(true)
+	RPGEditorToast.show_message(TranslationManager.tr("Event applied!"))
 
 
 func _on_event_name_text_changed(new_text: String) -> void:
@@ -214,6 +221,7 @@ func _on_copy_page_button_pressed() -> void:
 		
 	StaticEditorVars.CLIPBOARD["event_page"] = current_page.clone(true)
 	%PastePageButton.set_disabled(false)
+	RPGEditorToast.show_message(TranslationManager.tr("Page copied to clipboard!"))
 
 
 func _on_paste_page_button_pressed() -> void:
@@ -331,6 +339,8 @@ func _save_preset(preset_name: String) -> void:
 	
 	# Save the preset file
 	FileAccess.open(preset_file_path, FileAccess.WRITE).store_var(preset, true)
+	
+	RPGEditorToast.show_message("Event Preset saved to\n  %s" % preset_file_path)
 
 
 func _on_legacy_mode_toggled(toggled_on: bool) -> void:

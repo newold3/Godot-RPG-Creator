@@ -39,7 +39,7 @@ func set_item_to_compare(item_type: int, item_id: int, item_level: int) -> void:
 		if real_item:
 			item_name.text = real_item.name + ("" if item_level <= 1 else " +%s" % int(item_level))
 			var icon: RPGIcon = real_item.icon
-			if ResourceLoader.exists(icon.path):
+			if AssetManager.exists(icon.path):
 				item_icon.texture.atlas = load(icon.path)
 				item_icon.texture.region = icon.region
 			else:

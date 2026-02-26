@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://dvj1a75ikakfy"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_gpgfl"]
+blend_mode = 4
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5poom"]
+
+[node name="DefaultProjectil" type="Area2D" unique_id=1330358742 groups=["proyectil"]]
+z_index = 1
+y_sort_enabled = true
+collision_layer = 32768
+collision_mask = 94
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=30009184]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_gpgfl")
+region_enabled = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1190449139]
+unique_name_in_owner = true
+shape = SubResource("CircleShape2D_5poom")

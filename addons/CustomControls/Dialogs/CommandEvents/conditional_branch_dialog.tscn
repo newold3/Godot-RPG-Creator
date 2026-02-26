@@ -1305,10 +1305,12 @@ unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.6)
 layout_mode = 2
 size_flags_horizontal = 3
-tooltip_text = "Uses the selected param of the player or map event as a criterion. Specify the target character and the param. This is only effective in map events."
+tooltip_text = "Uses the selected param of the player or map event as a criterion. Specify the target character and the param. This is only effective in map events.
+
+[Note]: For events only. If the collision mode is set to \"Player Contact\", \"Event Contact\", or \"Any Contact\", it is considered pressed when any entity that meets the condition is on the same tile."
 disabled = true
 selected = 0
-item_count = 9
+item_count = 10
 popup/item_0/text = "Looking At Down"
 popup/item_0/id = 0
 popup/item_1/text = "Looking At Left"
@@ -1327,6 +1329,8 @@ popup/item_7/text = "Is Passable"
 popup/item_7/id = 7
 popup/item_8/text = "Is On Vehicle"
 popup/item_8/id = 8
+popup/item_9/text = "Is Pressed"
+popup/item_9/id = 9
 
 [node name="Condition3" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/MarginContainer/TargetContainer/Page3" unique_id=1285555134 groups=["main_trait_filter_tab"]]
 layout_mode = 2

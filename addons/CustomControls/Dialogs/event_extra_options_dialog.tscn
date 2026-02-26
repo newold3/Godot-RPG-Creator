@@ -1,0 +1,498 @@
+[gd_scene format=3 uid="uid://jwvqja4gehhx"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_o81l7"]
+[ext_resource type="Script" uid="uid://b5oavnbqqadyv" path="res://addons/CustomControls/Dialogs/event_extra_options_dialog.gd" id="2_27hjp"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="3_o81l7"]
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="3_ulo5m"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="3_v8wqf"]
+[ext_resource type="Script" uid="uid://c7kwutiivrd7j" path="res://addons/CustomControls/simple_texture_button.gd" id="4_0ieku"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="4_eu62a"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="4_jdvip"]
+
+[sub_resource type="Gradient" id="Gradient_vvvrv"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_fg0k8"]
+gradient = SubResource("Gradient_vvvrv")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o7760"]
+atlas = ExtResource("3_v8wqf")
+region = Rect2(216, 168, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kg7s0"]
+atlas = ExtResource("3_v8wqf")
+region = Rect2(216, 240, 24, 24)
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_v8wqf"]
+
+[node name="EventExtraOptionsDialog" type="Window" unique_id=1900839263]
+oversampling_override = 1.0
+title = "Event Extra Options"
+position = Vector2i(0, 36)
+size = Vector2i(600, 502)
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_o81l7")
+script = ExtResource("2_27hjp")
+
+[node name="Background" type="TextureRect" parent="." unique_id=1637419448]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_fg0k8")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=874666685]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1122628375]
+layout_mode = 2
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=189680540]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=1238743754]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "General Config"
+
+[node name="SaveGeneralConfig" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=1127126270]
+layout_mode = 2
+size_flags_vertical = 8
+tooltip_text = "Sets the current base configuration as the default configuration for newly created pages.
+
+[Note] ⚠: This will not overwrite the base configuration already added to any existing event page."
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_o7760")
+texture_pressed = SubResource("AtlasTexture_kg7s0")
+script = ExtResource("4_0ieku")
+
+[node name="ShowNameInMap" type="CheckBox" parent="MarginContainer/VBoxContainer" unique_id=1792677151]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 8
+tooltip_text = "If enabled, the NPC's name will be displayed above their head.
+
+[Note] If the active NPC page has a name assigned, that name will be used; otherwise, the event's name will be used."
+mouse_default_cursor_shape = 2
+text = "Show Name in Map"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1940342705]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1590460214]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Name Config:"
+
+[node name="NameConfig" parent="MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1127083905 instance=ExtResource("3_ulo5m")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "LabelSettings used to draw the character name."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+disabled = true
+text = "Select Config"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1365207199]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1518702619]
+layout_mode = 2
+text = "Event Type:"
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=503509678]
+layout_mode = 2
+
+[node name="TypeNormalEvent" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer5" unique_id=198401219]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+tooltip_text = "Interaction with \"normal\" commands depends only on how you configure this page and its commands, unlike \"movable\" or \"liftable\" types, which have their own interaction logic."
+mouse_default_cursor_shape = 2
+button_pressed = true
+button_group = SubResource("ButtonGroup_v8wqf")
+text = "Normal"
+
+[node name="TypePickableEvent" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer5" unique_id=142271925]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+tooltip_text = "Converts this event into a liftable event. These events are set by default as \"non-passable\" and with the launcher fixed to \"Action Button.\" They use the \"Throw Strength\" parameter when the player throws them, moving the assigned tiles.
+
+[Note]: These events execute the commands defined on their active page once per interaction before being picked."
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_v8wqf")
+text = "Pickable"
+
+[node name="TypeMoveableEvent" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer5" unique_id=1632629207]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+tooltip_text = "Converts this event into a movable event. These events are set by default as \"non-passable\" and with the launcher fixed to \"Player Contact.\" They use the \"Time\" parameter to move 1 tile with the player when pushed, and an \"Initial Delay\" to postpone the movement by a few frames to simulate effort.
+
+[Note]: These events execute the commands defined on their active page once per interaction before being moved."
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_v8wqf")
+text = "Moveable"
+
+[node name="NewOptionsIncoming" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer5" unique_id=55575439]
+layout_mode = 2
+tooltip_text = "The \"Is Pickable\" and \"Is Moveable\" options are future features that have not been implemented yet."
+mouse_filter = 1
+mouse_default_cursor_shape = 16
+text = "⚠️"
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=69764578]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+
+[node name="ParamsTitle" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6" unique_id=7294183]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.63529414, 0.63529414, 0.63529414, 1)
+text = "Params:"
+
+[node name="PickableParams" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer6" unique_id=407969272]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/PickableParams" unique_id=1186595959]
+layout_mode = 2
+text = "Throw Strength:"
+
+[node name="ThrowStrength" parent="MarginContainer/VBoxContainer/HBoxContainer6/PickableParams" unique_id=1926866617 instance=ExtResource("3_o81l7")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Number of tiles the event will move when thrown."
+min_value = 1.0
+value = 1.0
+allow_greater = true
+_custom_value = 1.0
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/PickableParams" unique_id=722897359]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.63539076, 0.63539076, 0.63539076, 1)
+text = "tile/s"
+
+[node name="MoveableParams" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer6" unique_id=2106571474]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/MoveableParams" unique_id=1314800726]
+layout_mode = 2
+text = "Speed:"
+
+[node name="Time" parent="MarginContainer/VBoxContainer/HBoxContainer6/MoveableParams" unique_id=1676540868 instance=ExtResource("3_o81l7")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Time it takes the event and the player to move one tile while the player is pushing the event (in seconds)."
+min_value = 0.15
+step = 0.01
+value = 0.15
+rounded = false
+allow_greater = true
+_custom_value = 0.15
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/MoveableParams" unique_id=983183199]
+layout_mode = 2
+text = "Initial Delay :"
+
+[node name="InitialDelay" parent="MarginContainer/VBoxContainer/HBoxContainer6/MoveableParams" unique_id=1982024686 instance=ExtResource("3_o81l7")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Initial time elapsed in seconds before the event starts moving one tile (repeats for each tile moved)."
+step = 0.01
+value = 0.1
+rounded = false
+allow_greater = true
+_custom_value = 0.1
+
+[node name="NoParams" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6" unique_id=191081513]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6125778, 0.61257786, 0.6125778, 1)
+text = "-"
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=866359214]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=2118154986]
+layout_mode = 2
+
+[node name="UseExtraConfig" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=476787527]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Enables HP and hit/death switches for this page."
+mouse_default_cursor_shape = 2
+text = "use Extra Config"
+
+[node name="SaveExtraConfig" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1683497888]
+layout_mode = 2
+size_flags_vertical = 8
+tooltip_text = "Sets the current extra configuration as the default configuration for newly created pages.
+
+[Note] ⚠: This will not overwrite the base configuration already added to any existing event page."
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_o7760")
+texture_pressed = SubResource("AtlasTexture_kg7s0")
+script = ExtResource("4_0ieku")
+
+[node name="ExtraConfigContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=22552898]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraConfigContainer" unique_id=360348343]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ExtraConfigContainer/HBoxContainer" unique_id=275527606]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Is Inmortal:"
+
+[node name="IsInmortal" type="CheckBox" parent="MarginContainer/VBoxContainer/ExtraConfigContainer/HBoxContainer" unique_id=1935912191]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "If true, the event ignores damage but can still trigger 'on_hit' switches."
+mouse_default_cursor_shape = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraConfigContainer" unique_id=1446876493]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ExtraConfigContainer/HBoxContainer2" unique_id=1520848672]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "HP:"
+
+[node name="HP" parent="MarginContainer/VBoxContainer/ExtraConfigContainer/HBoxContainer2" unique_id=2039542927 instance=ExtResource("3_o81l7")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Health points for this event page."
+min_value = 1.0
+value = 1.0
+allow_greater = true
+_custom_value = 1.0
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraConfigContainer" unique_id=1474930891]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ExtraConfigContainer/HBoxContainer4" unique_id=1029026764]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Enable Self
+Switch On Dead:"
+
+[node name="EnableSelfSwitchOnDead" parent="MarginContainer/VBoxContainer/ExtraConfigContainer/HBoxContainer4" unique_id=670801972 instance=ExtResource("4_eu62a")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "ID of the Self Switch to activate when HP reaches 0."
+selected = 0
+item_count = 27
+popup/item_0/text = "None"
+popup/item_0/id = 0
+popup/item_1/text = "Switch A"
+popup/item_1/id = 1
+popup/item_2/text = "Switch B"
+popup/item_2/id = 2
+popup/item_3/text = "Switch C"
+popup/item_3/id = 3
+popup/item_4/text = "Switch D"
+popup/item_4/id = 4
+popup/item_5/text = "Switch E"
+popup/item_5/id = 5
+popup/item_6/text = "Switch F"
+popup/item_6/id = 6
+popup/item_7/text = "Switch G"
+popup/item_7/id = 7
+popup/item_8/text = "Switch H"
+popup/item_8/id = 8
+popup/item_9/text = "Switch I"
+popup/item_9/id = 9
+popup/item_10/text = "Switch J"
+popup/item_10/id = 10
+popup/item_11/text = "Switch K"
+popup/item_11/id = 11
+popup/item_12/text = "Switch L"
+popup/item_12/id = 12
+popup/item_13/text = "Switch M"
+popup/item_13/id = 13
+popup/item_14/text = "Switch N"
+popup/item_14/id = 14
+popup/item_15/text = "Switch O"
+popup/item_15/id = 15
+popup/item_16/text = "Switch P"
+popup/item_16/id = 16
+popup/item_17/text = "Switch Q"
+popup/item_17/id = 17
+popup/item_18/text = "Switch R"
+popup/item_18/id = 18
+popup/item_19/text = "Switch S"
+popup/item_19/id = 19
+popup/item_20/text = "Switch T"
+popup/item_20/id = 20
+popup/item_21/text = "Switch U"
+popup/item_21/id = 21
+popup/item_22/text = "Switch V"
+popup/item_22/id = 22
+popup/item_23/text = "Switch W"
+popup/item_23/id = 23
+popup/item_24/text = "Switch X"
+popup/item_24/id = 24
+popup/item_25/text = "Switch Y"
+popup/item_25/id = 25
+popup/item_26/text = "Switch Z"
+popup/item_26/id = 26
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraConfigContainer" unique_id=300735152]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ExtraConfigContainer/HBoxContainer3" unique_id=216815461]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Enable Self
+Switch On Hit:"
+
+[node name="EnableSelfSwitchOnHit" parent="MarginContainer/VBoxContainer/ExtraConfigContainer/HBoxContainer3" unique_id=621784070 instance=ExtResource("4_eu62a")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "ID of the Self Switch to activate on any hit."
+selected = 0
+item_count = 27
+popup/item_0/text = "None"
+popup/item_0/id = 0
+popup/item_1/text = "Switch A"
+popup/item_1/id = 1
+popup/item_2/text = "Switch B"
+popup/item_2/id = 2
+popup/item_3/text = "Switch C"
+popup/item_3/id = 3
+popup/item_4/text = "Switch D"
+popup/item_4/id = 4
+popup/item_5/text = "Switch E"
+popup/item_5/id = 5
+popup/item_6/text = "Switch F"
+popup/item_6/id = 6
+popup/item_7/text = "Switch G"
+popup/item_7/id = 7
+popup/item_8/text = "Switch H"
+popup/item_8/id = 8
+popup/item_9/text = "Switch I"
+popup/item_9/id = 9
+popup/item_10/text = "Switch J"
+popup/item_10/id = 10
+popup/item_11/text = "Switch K"
+popup/item_11/id = 11
+popup/item_12/text = "Switch L"
+popup/item_12/id = 12
+popup/item_13/text = "Switch M"
+popup/item_13/id = 13
+popup/item_14/text = "Switch N"
+popup/item_14/id = 14
+popup/item_15/text = "Switch O"
+popup/item_15/id = 15
+popup/item_16/text = "Switch P"
+popup/item_16/id = 16
+popup/item_17/text = "Switch Q"
+popup/item_17/id = 17
+popup/item_18/text = "Switch R"
+popup/item_18/id = 18
+popup/item_19/text = "Switch S"
+popup/item_19/id = 19
+popup/item_20/text = "Switch T"
+popup/item_20/id = 20
+popup/item_21/text = "Switch U"
+popup/item_21/id = 21
+popup/item_22/text = "Switch V"
+popup/item_22/id = 22
+popup/item_23/text = "Switch W"
+popup/item_23/id = 23
+popup/item_24/text = "Switch X"
+popup/item_24/id = 24
+popup/item_25/text = "Switch Y"
+popup/item_25/id = 25
+popup/item_26/text = "Switch Z"
+popup/item_26/id = 26
+
+[node name="HSeparator3" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=2033928099]
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=467109930]
+layout_mode = 2
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=557794169 instance=ExtResource("4_jdvip")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1691019284 instance=ExtResource("4_jdvip")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+text = "Cancel"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer4/SaveGeneralConfig" to="." method="_on_save_general_config_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/ShowNameInMap" to="." method="_on_show_name_in_map_toggled"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer3/NameConfig" to="." method="_on_name_config_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/HBoxContainer5/TypeNormalEvent" to="." method="_on_type_normal_event_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/HBoxContainer5/TypePickableEvent" to="." method="_on_type_pickable_event_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/HBoxContainer5/TypeMoveableEvent" to="." method="_on_type_moveable_event_toggled"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer6/PickableParams/ThrowStrength" to="." method="_on_throw_strength_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer6/MoveableParams/Time" to="." method="_on_time_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer6/MoveableParams/InitialDelay" to="." method="_on_initial_delay_value_changed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/HBoxContainer2/UseExtraConfig" to="." method="_on_use_extra_config_toggled"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/SaveExtraConfig" to="." method="_on_save_extra_config_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/ExtraConfigContainer/HBoxContainer/IsInmortal" to="." method="_on_is_inmortal_toggled"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/ExtraConfigContainer/HBoxContainer2/HP" to="." method="_on_hp_value_changed"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/ExtraConfigContainer/HBoxContainer4/EnableSelfSwitchOnDead" to="." method="_on_enable_self_switch_on_dead_item_selected"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/ExtraConfigContainer/HBoxContainer3/EnableSelfSwitchOnHit" to="." method="_on_enable_self_switch_on_hit_item_selected"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

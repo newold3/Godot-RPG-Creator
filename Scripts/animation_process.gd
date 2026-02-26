@@ -46,7 +46,7 @@ func _process(_delta: float) -> void:
 
 	for sound: RPGAnimationSound in current_data.sounds:
 		if sound.frame == current_frame:
-			if ResourceLoader.exists(sound.filename):
+			if AssetManager.exists(sound.filename):
 				GameManager.play_se(sound.filename, sound.volume_db, randf_range(sound.pitch_min, sound.pitch_max))
 				
 	if current_target:

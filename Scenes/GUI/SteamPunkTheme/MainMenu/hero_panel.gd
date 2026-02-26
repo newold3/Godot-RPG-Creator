@@ -111,7 +111,7 @@ func refresh() -> void:
 		%MPBar.max_value = current_actor.get_parameter("mp")
 		%MPBar.value = current_actor.params.mp
 		%NextExperienceLabel.text = current_actor.get_remaining_exp_to_level()
-		if ResourceLoader.exists(real_actor.face_preview.path):
+		if AssetManager.exists(real_actor.face_preview.path):
 			%HeroFace.texture.atlas = load(real_actor.face_preview.path)
 			%HeroFace.texture.region = real_actor.face_preview.region
 		else:

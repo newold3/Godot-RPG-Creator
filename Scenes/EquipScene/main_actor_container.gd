@@ -11,7 +11,7 @@ func set_actor(actor: GameActor) -> void:
 	if actor.id > 0 and data.size() > actor.id:
 		var real_actor: RPGActor = data[actor.id]
 		var img = real_actor.character_preview
-		if ResourceLoader.exists(img):
+		if AssetManager.exists(img):
 			actor_image.texture = ResourceLoader.load(img)
 		else:
 			actor_image.texture = null

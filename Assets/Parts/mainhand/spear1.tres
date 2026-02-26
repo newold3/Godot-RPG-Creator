@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="RPGLPCEquipmentPart" format=3 uid="uid://ct6n3b4weahra"]
+
+[ext_resource type="Script" uid="uid://cqx1cnfjmgp73" path="res://addons/RPGData/ModulesRPG/rpg_lpc_palette.gd" id="1_7jj3n"]
+[ext_resource type="Script" uid="uid://der67xririmwh" path="res://addons/RPGData/ModulesRPG/rpg_lpc_equipment_part.gd" id="2_xkg1j"]
+
+[sub_resource type="Resource" id="Resource_cjwpp"]
+script = ExtResource("1_7jj3n")
+blend_color = 3513208575
+colors = PackedInt64Array(0, 0, 21, 855639039, 50, 1728515583, 78, 2435329535, 91, 2771395583, 114, 3159248383, 135, 3513208575, 173, 4203637759, 199, 4290409727, 247, 4294945535, 254, 4294967295)
+
+[sub_resource type="Resource" id="Resource_2g65m"]
+script = ExtResource("1_7jj3n")
+blend_color = 1011461631
+colors = PackedInt64Array(0, 0, 16, 100926975, 23, 218631423, 27, 437065983, 66, 387130879, 133, 673071615, 161, 908679679, 183, 841837311, 228, 1011461631, 255, 1181403647)
+
+[sub_resource type="Resource" id="Resource_xf6u0"]
+script = ExtResource("1_7jj3n")
+colors = PackedInt64Array()
+
+[resource]
+script = ExtResource("2_xkg1j")
+config_path = "res://addons/rpg_character_creator/Data/gear/mainhand/spear7.lcc"
+part_id = "spear7"
+layer_id = "mainhand"
+body_type = "hm1"
+head_type = "hm1"
+equipment_preview = "res://Assets/Parts/mainhand/spear1_preview.png"
+name = "Trident"
+front_texture = "res://addons/rpg_character_creator/textures/gear/mainhand/spear/trident_walk_mf.png"
+back_texture = "res://addons/rpg_character_creator/textures/gear/mainhand/spear/trident_walk_mb.png"
+is_large_texture = true
+tags = PackedStringArray("mainhand", "weapon", "spear", "large")
+palette1 = SubResource("Resource_cjwpp")
+palette2 = SubResource("Resource_2g65m")
+palette3 = SubResource("Resource_xf6u0")

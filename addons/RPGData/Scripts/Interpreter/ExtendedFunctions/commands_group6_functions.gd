@@ -346,7 +346,7 @@ func _transfer_event(params: Dictionary) -> void:
 		return
 
 	if swap_event_id != -1:
-		var swap_event
+		var swap_event = 0
 		if swap_event == 0:
 			current_event = current_interpreter.obj
 		else: # _uniq_id
@@ -554,7 +554,7 @@ func _command_0123() -> void:
 		
 	var targets: PackedInt64Array = current_command.parameters.get("targets", [])
 	var priorities: PackedInt32Array = current_command.parameters.get("priorities", [])
-	print(targets)
+
 	for i: int in targets.size():
 		var target = targets[i]
 		if target == 0 and GameManager.current_player:

@@ -149,7 +149,7 @@ func create_stats_data() -> void:
 					index += stats_structure["Main Stats"].size()
 				var current_icon: RPGIcon = icons[index] if index < icons.size() else null
 				
-				if current_icon and ResourceLoader.exists(current_icon.path):
+				if current_icon and AssetManager.exists(current_icon.path):
 					var t = ResourceLoader.load(current_icon.path)
 					if current_icon.region:
 						tex = ImageTexture.create_from_image(t.get_image().get_region(current_icon.region))
@@ -208,7 +208,7 @@ func _add_element_stats() -> void:
 			var current_icon: RPGIcon = icons[i] if i < icons.size() else null
 			var tex = null
 			
-			if current_icon and ResourceLoader.exists(current_icon.path):
+			if current_icon and AssetManager.exists(current_icon.path):
 				var t = ResourceLoader.load(current_icon.path)
 				if current_icon.region:
 					tex = ImageTexture.create_from_image(t.get_image().get_region(current_icon.region))

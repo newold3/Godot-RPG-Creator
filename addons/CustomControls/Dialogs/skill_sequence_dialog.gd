@@ -436,6 +436,7 @@ func _on_copy_parameters_pressed() -> void:
 			items.append(data.clone(true))
 		StaticEditorVars.CLIPBOARD["skill_sequence"] = items
 		%PasteParameters.set_disabled(false)
+		RPGEditorToast.show_message("Sequence battle Ccopied into Clipboard")
 
 
 func _on_paste_parameters_pressed() -> void:

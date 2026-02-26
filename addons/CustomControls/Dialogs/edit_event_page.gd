@@ -60,6 +60,25 @@ func _fill_events(p_current_event: RPGEvent, event_list: Array, selected_id: int
 	current_event_list = event_list
 
 
+func _fill_pressure_targets(p_current_event: RPGEvent, event_list: Array, selected_ids: PackedInt64Array) -> void:
+	var node = %AllowPressureTargets
+	node.clear()
+
+	node.add_item("player")
+	node.set_item_metadata(-1, 0)
+	if 0 in selected_ids:
+		node.set_item_selected(0, true)
+	
+	for i in event_list.size():
+		var event: RPGEvent = event_list[i]
+		if event == p_current_event: continue
+		
+		node.add_item("Event %s: %s" % [event.id, event.name])
+		node.set_item_metadata(-1, event._uniq_id)
+		if event._uniq_id in selected_ids:
+			node.set_item_selected(i+1, true)
+
+
 func fill_local_switches() -> void:
 	var node = %Condition3Value
 	node.clear()
@@ -159,8 +178,15 @@ func fill_page(page: RPGEventPage) -> void:
 		if window and window is EditEventEditor:
 			var movement_to_target = current_page.movement_to_target
 			_fill_events(window.current_event, window.events.get_events(), movement_to_target)
+			_fill_pressure_targets(window.current_event, window.events.get_events(), current_page.condition.pressure_targets)
 		else:
 			_fill_events(null, [], -1)
+			_fill_pressure_targets(null, [], [])
+		
+		%Condition7Pressed.set_pressed_no_signal(current_page.condition.use_pressure)
+		%AllowPressureTargets.set_disabled(!current_page.condition.use_pressure)
+		
+		_set_pressed_mode(current_page.condition.use_pressure)
 		
 		%MovementRouteButton.visible = movement_type == 4
 		%SelectTargetEvent.visible = movement_type == 5
@@ -825,3 +851,84 @@ func _on_data_type_selected_item_selected(index: int) -> void:
 			2:
 				current_page.character_path = path_cache.scene
 				_set_icon_from_scene(current_page.character_path)
+
+
+func _on_page_extra_options_pressed() -> void:
+	var path = "res://addons/CustomControls/Dialogs/event_extra_options_dialog.tscn"
+	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
+	
+	dialog.set_page_options(current_page.options, current_page.condition.use_pressure)
+	dialog.OK.connect(_set_pressed_mode.bind(current_page.condition.use_pressure))
+
+
+func _on_condition_7_pressed_toggled(toggled_on: bool) -> void:
+	if current_page:
+		current_page.condition.use_pressure = toggled_on
+		_set_pressed_mode(toggled_on)
+		if current_page.condition.pressure_targets.is_empty():
+			_on_allow_pressure_targets_multi_selection_changed([])
+		if toggled_on:
+			current_page.options.event_type = 0	
+
+
+func _set_pressed_mode(value: bool) -> void:
+	var launcher = %Launcher
+	var selected_index = launcher.get_selected_id()
+	var active_indexes: Array = []
+	
+	# PRIORITY 1: Pressed Mode (Pressure Plate)
+	# This mode forces the event to be a trigger/sensor on the floor.
+	if value:
+		%AllowPressureTargets.set_disabled(false)
+		%EventOption4.set_pressed(true) # Force Traversable
+		%EventOption4.set_disabled(true)
+		
+		# Restricted to contact-based triggers
+		active_indexes = [1, 2, 6]
+		if not selected_index in active_indexes:
+			selected_index = active_indexes[0]
+			
+		for i in launcher.get_item_count():
+			launcher.set_item_disabled(i, not i in active_indexes)
+			
+	# PRIORITY 2: Extra Options (Pickable / Moveable)
+	# Only active if Pressed mode is NOT enabled.
+	elif current_page.options.event_type != 0:
+		%AllowPressureTargets.set_disabled(true)
+		%EventOption4.set_pressed(false)
+		%EventOption4.set_disabled(true)
+		
+		if current_page.options.event_type == 1: # Pickable
+			active_indexes = [0] # 'Press Button'
+		elif current_page.options.event_type == 2: # Moveable
+			active_indexes = [1] # 'Player Touch'
+			
+		if not selected_index in active_indexes:
+			selected_index = active_indexes[0]
+			
+		for i in launcher.get_item_count():
+			launcher.set_item_disabled(i, not i in active_indexes)
+			
+	# PRIORITY 3: Default / Manual Mode
+	# Full freedom for the user when no special modes are active.
+	else:
+		%AllowPressureTargets.set_disabled(true)
+		%EventOption4.set_disabled(false)
+		
+		for i in launcher.get_item_count():
+			launcher.set_item_disabled(i, false)
+	
+	launcher.select(selected_index)
+	launcher.item_selected.emit(selected_index)
+
+
+func _on_allow_pressure_targets_multi_selection_changed(selected_ids: Array[int]) -> void:
+	current_page.condition.pressure_targets.clear()
+	var node = %AllowPressureTargets
+	if selected_ids.is_empty():
+		current_page.condition.pressure_targets.append(0)
+		node.set_item_selected(0, true)
+	else:
+		for id in selected_ids:
+			var real_id = node.get_item_metadata(id)
+			current_page.condition.pressure_targets.append(real_id)

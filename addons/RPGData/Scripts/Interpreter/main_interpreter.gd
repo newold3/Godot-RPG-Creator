@@ -194,6 +194,10 @@ func _set_busy(value: bool) -> void:
 		busy = true
 
 
+func is_showing_message() -> bool:
+	return showing_message
+
+
 # Dynamically loads all command handlers
 func _load_command_handlers() -> void:
 	var path = HANDLERS_PATH

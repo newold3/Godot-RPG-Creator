@@ -8,7 +8,7 @@ func _command_0094() -> void:
 	
 	if current_interpreter.obj and GameManager.current_map:
 		var events = GameManager.get_ingame_events()
-		for obj: RPGMap.IngameEvent in events:
+		for obj: IngameEvent in events:
 			if obj.lpc_event == current_interpreter.obj:
 				# Delete the event and wait 3 frames to prevent screen flickering caused by the shadow system.
 				if GameManager.game_state:

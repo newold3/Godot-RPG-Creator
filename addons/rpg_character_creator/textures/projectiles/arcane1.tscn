@@ -1,9 +1,9 @@
-[gd_scene load_steps=35 format=3 uid="uid://77343buoiumk"]
+[gd_scene format=3 uid="uid://77343buoiumk"]
 
 [ext_resource type="Shader" uid="uid://c0rcvcbe0qvjh" path="res://Assets/Shaders/colorize.gdshader" id="1_spepj"]
 [ext_resource type="Texture2D" uid="uid://br3jlxws1cuuy" path="res://addons/rpg_character_creator/textures/projectiles/arcane1.png" id="1_vyqpw"]
 [ext_resource type="Script" uid="uid://da7k27kcotxuj" path="res://addons/rpg_character_creator/textures/projectiles/arcane1.gd" id="3_rq10h"]
-[ext_resource type="Texture2D" uid="uid://cpwnnitcrjea4" path="res://addons/rpg_character_creator/textures/projectiles/glow.png" id="4_t3hnq"]
+[ext_resource type="PackedScene" uid="uid://fyydv1ar20a" path="res://Scenes/OtherScenes/IngameProjectil/wand_particles.tscn" id="4_srxrc"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_evgvv"]
 shader = ExtResource("1_spepj")
@@ -192,72 +192,15 @@ _data = {
 &"rock_animation": SubResource("Animation_6oxqe")
 }
 
-[sub_resource type="Curve" id="Curve_v3iug"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.142857, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 3
-
-[sub_resource type="CurveTexture" id="CurveTexture_0rdtq"]
-curve = SubResource("Curve_v3iug")
-
-[sub_resource type="Gradient" id="Gradient_ju224"]
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.184314)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_ed4t4"]
-gradient = SubResource("Gradient_ju224")
-
-[sub_resource type="Curve" id="Curve_4626h"]
-_data = [Vector2(0.0222222, 0), 0.0, 0.0, 0, 0, Vector2(0.193651, 1), 0.0, 0.0, 0, 0, Vector2(0.346032, 0.317952), 0.0, 0.0, 0, 0, Vector2(0.47619, 0.663085), 0.0, 0.0, 0, 0, Vector2(0.612698, 0.153603), 0.0, 0.0, 0, 0, Vector2(0.784127, 0.408344), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 7
-
-[sub_resource type="Curve" id="Curve_jyai6"]
-resource_local_to_scene = true
-_data = [Vector2(0.0031746, 0), 0.0, 0.0, 0, 0, Vector2(0.4, 0.482301), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 3
-
-[sub_resource type="Curve" id="Curve_hoku4"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_c7k1y"]
-curve_x = SubResource("Curve_4626h")
-curve_y = SubResource("Curve_jyai6")
-curve_z = SubResource("Curve_hoku4")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_i5l5h"]
-particle_flag_disable_z = true
-angle_min = 1.07288e-05
-angle_max = 224.4
-inherit_velocity_ratio = 0.126
-velocity_pivot = Vector3(39.3, 17.225, 0)
-direction = Vector3(0, 0, 0)
-spread = 180.0
-initial_velocity_max = 19.48
-angular_velocity_min = -1.60933e-05
-angular_velocity_max = 215.07
-gravity = Vector3(0, 0, 0)
-linear_accel_min = -2.23517e-06
-linear_accel_max = 58.44
-radial_accel_min = -2.23517e-06
-radial_accel_max = 62.34
-scale_curve = SubResource("CurveXYZTexture_c7k1y")
-color_ramp = SubResource("GradientTexture1D_ed4t4")
-alpha_curve = SubResource("CurveTexture_0rdtq")
-
-[node name="Arcane1" type="AnimatedSprite2D"]
+[node name="Arcane1" type="AnimatedSprite2D" unique_id=1007426647]
 material = SubResource("ShaderMaterial_evgvv")
 sprite_frames = SubResource("SpriteFrames_7ewuj")
 animation = &"Right"
 script = ExtResource("3_rq10h")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_75udd")
-}
-autoplay = "rock_animation"
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1461949392]
+libraries/ = SubResource("AnimationLibrary_75udd")
+autoplay = &"rock_animation"
 speed_scale = 0.145
 
-[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
-amount = 60
-process_material = SubResource("ParticleProcessMaterial_i5l5h")
-texture = ExtResource("4_t3hnq")
-lifetime = 0.35
+[node name="GPUParticles2D" parent="." unique_id=1034764148 instance=ExtResource("4_srxrc")]

@@ -112,24 +112,26 @@ func load_variables_and_switches() -> void:
 
 func load_animations() -> void:
 	var data_folder = "res://addons/rpg_character_creator/Data/"
-	player_animations_data = load_animation_data(data_folder, "character.anim")
-	weapon_animations_data = load_animation_data(data_folder, "weapon.anim")
+	player_animations_data = load_animation_data(data_folder, "character.lcc")
+	weapon_animations_data = load_animation_data(data_folder, "weapon.lcc")
 
 
-func load_animation_data(data_folder: String, file: String) -> Dictionary:
-	var path = data_folder.path_join(file)
+func load_animation_data(data_folder: String, file_name: String) -> Dictionary:
+	var path = data_folder.path_join(file_name)
 	var animation_data: Dictionary = {}
-	var f = FileAccess.open(path, FileAccess.READ)
-	if f:
-		var json = f.get_as_text()
+	
+	var json = ZipMediaLoader.get_text_content(path)
+	
+	if not json.is_empty():
 		var parse_result = JSON.parse_string(json)
 		if parse_result:
 			animation_data = parse_result
 		else:
-			printerr("Error parsing JSON from file: %s" % path)
-		f.close()
+			printerr("❌ Error parsing JSON from file: %s" % path)
 	else:
-		printerr("Failed to open file: %s" % path)
+		# This will only happen if the file is missing in both Disk and ZIP
+		printerr("⚠️ Failed to find or read animation file: %s" % path)
+		
 	return animation_data
 
 

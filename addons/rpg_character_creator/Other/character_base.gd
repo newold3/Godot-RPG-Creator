@@ -66,6 +66,7 @@ var current_animation: String = "idle"
 var frame_delay: float = 0.0
 var frame_delay_max: float = 0.1
 var frame_delay_max_running: float = 0.05
+var frame_delay_max_attacking: float = 0.05
 var previous_tile: Vector2i
 var is_attacking: bool = false
 var can_attack: bool = true
@@ -137,7 +138,7 @@ func _on_end_movement() -> void:
 
 	call_deferred("_check_contact_after_move")
 	previous_tile = get_current_tile()
-	#_check_nearby_events_for_activation()
+	_check_nearby_events_for_activation()
 
 
 func set_character_options(new_options: CharacterOptions) -> void:
@@ -224,6 +225,12 @@ func _physics_process(delta: float):
 	
 	if movement_current_mode == MOVEMENTMODE.EVENT and GameManager.current_map:
 		GameManager.current_map.moving_event = false
+	
+	if not Engine.is_editor_hint() and is_in_group("player"):
+		if ControllerManager.is_action_just_pressed("Button L2"):
+			GameManager.shift_up_follower()
+		elif ControllerManager.is_action_just_pressed("Button R2"):
+			GameManager.shift_down_follower()
 
 
 func _smart_record_history() -> void:
@@ -760,7 +767,8 @@ func process_route_command() -> Dictionary:
 				var timer = get_tree().create_timer(wait_time)
 				timer.timeout.connect(
 					func():
-						result.target.busy = false
+						if is_instance_valid(result.target):
+							result.target.busy = false
 						busy = false
 				)
 			46: # Change Z-Index
@@ -840,7 +848,7 @@ func process_route_command() -> Dictionary:
 				if result.target == self and not is_in_group("player"):
 					var new_movement_frequency: float = command.parameters[0]
 					event_movement_frequency = new_movement_frequency
-					character_options.movenet_frequency = new_movement_frequency
+					character_options.movement_frequency = new_movement_frequency
 			# Column 3
 			3: # Walking Animation ON
 				character_options.walking_animation = true
@@ -981,7 +989,6 @@ func get_global_mouth_position() -> Vector2:
 	
 	return Vector2.ZERO
 
-
 #region movement
 func run_animation() -> void:
 	pass
@@ -1022,17 +1029,19 @@ func _animation_to_idle() -> void:
 
 
 func _process_event_contact(contacting_entities: Array, stop_movement_on_activate: bool) -> bool:
+	var im_player = is_in_group("player")
 	var page = get("current_event_page")
-	if not page:
+	
+	## If it's not the player and has no page, it can't interact
+	if not im_player and not page:
 		return false
 
 	var events_to_start: Array = []
 	var self_id = page.get("_uniq_id") if page else -1
-	var self_launcher = page.launcher
+	var self_launcher = page.launcher if page else -1
 	var primary_target = contacting_entities[0] if not contacting_entities.is_empty() else null
 	var self_activated_this_check = false
 
-	# Single loop for bidirectional logic
 	for entity in contacting_entities:
 		if entity in _ignore_events_contact:
 			continue
@@ -1043,8 +1052,8 @@ func _process_event_contact(contacting_entities: Array, stop_movement_on_activat
 		var activate_self = false
 		var activate_other = false
 
-		# 1. Check if 'entity' activates 'self'
-		if not self_activated_this_check:
+		## 1. Check if 'entity' activates 'self' (Only if self is an event)
+		if not im_player and not self_activated_this_check:
 			if self_launcher == RPGEventPage.LAUNCHER_MODE.PLAYER_COLLISION and entity.is_in_group("player"):
 				activate_self = true
 			elif self_launcher == RPGEventPage.LAUNCHER_MODE.ANY_CONTACT:
@@ -1056,36 +1065,41 @@ func _process_event_contact(contacting_entities: Array, stop_movement_on_activat
 					if other_id in event_trigger_list:
 						activate_self = true
 		
-		# 2. Check if 'self' activates 'entity'
-		if not entity.is_in_group("player"):
-			if "current_event_page" in entity and entity.current_event_page:
-				var other_page = entity.current_event_page
-				var other_launcher = other_page.launcher
-				
+		## 2. Check if 'self' (Player or Event) activates the 'entity'
+		if "current_event_page" in entity and entity.current_event_page:
+			var other_page = entity.current_event_page
+			var other_launcher = other_page.launcher
+			
+			if im_player:
+				## Player touching event logic
 				if other_launcher == RPGEventPage.LAUNCHER_MODE.ANY_CONTACT or \
 				   other_launcher == RPGEventPage.LAUNCHER_MODE.PLAYER_COLLISION:
+					activate_other = true
+			else:
+				## Event touching event logic
+				if other_launcher == RPGEventPage.LAUNCHER_MODE.ANY_CONTACT:
 					activate_other = true
 				elif other_launcher == RPGEventPage.LAUNCHER_MODE.EVENT_COLLISION:
 					var other_trigger_list = other_page.get("event_trigger_list")
 					if self_id in other_trigger_list:
 						activate_other = true
 
-		# 3. Process activations and ignores
+		## 3. Process activations and mutual ignore lists
 		if activate_self or activate_other:
-			_ignore_events_contact.append(entity)
-			entity._ignore_events_contact.append(self)
+			_add_mutual_ignore(self, entity)
 
 			if activate_self:
 				if not self in events_to_start:
 					events_to_start.append(self)
 				primary_target = entity
-				self_activated_this_check = true # Avoid 'self' being activated by multiple events
+				self_activated_this_check = true 
+
 
 			if activate_other:
 				if not entity in events_to_start:
 					events_to_start.append(entity)
 
-	# start events
+	## Start the collected events through the interpreter
 	if not events_to_start.is_empty():
 		var objs: Array[Dictionary] = []
 		for ev in events_to_start:
@@ -1190,12 +1204,14 @@ func _check_contact(tile: Vector2i, check_passable: bool = false) -> bool:
 func _check_nearby_events_for_activation() -> void:
 	if activated_this_frame:
 		return
-		
+
+
 	var valid_contacts: Array = []
 	var self_pos = position
 	
 	var nearby_entities: Array = GameManager.current_map.get_events_near_position(self_pos)
-	
+
+
 	if GameManager.current_player:
 		nearby_entities.append(GameManager.current_player)
 	
@@ -1218,10 +1234,17 @@ func _check_nearby_events_for_activation() -> void:
 		_:
 			return
 
+
 	const AXIS_TOLERANCE = 4.0
 
+
 	for entity in nearby_entities:
-		if entity == self:
+		if entity == self or not is_instance_valid(entity):
+			continue
+			
+		# Passable events should not be activated by bumping into them from adjacent tiles.
+		# They will be activated by _check_contact_after_move when overlapping the tile.
+		if not _is_solid(entity):
 			continue
 			
 		var entity_pos = entity.position
@@ -1239,15 +1262,28 @@ func _check_nearby_events_for_activation() -> void:
 			if is_on_axis and is_in_front:
 				valid_contacts.append(entity)
 
+
 	if not valid_contacts.is_empty():
 		# 'false' = Do not stop movement for this type of activation ("touch")
 		_process_event_contact(valid_contacts, false)
 
 
 func look_at_event(event: Variant) -> void:
-	if event == self: return
+	if event == self: 
+		return
+		
+	if character_options and character_options.fixed_direction:
+		return
 	
-	var direction = (event.global_position - global_position).normalized()
+	var diff = event.global_position - global_position
+	
+	if diff.length_squared() < 4.0:
+		if "current_direction" in event:
+			current_direction = get_opposite_direction(event.current_direction)
+			last_direction = current_direction
+		return
+	
+	var direction = diff.normalized()
 	if abs(direction.x) > abs(direction.y):
 		current_direction = DIRECTIONS.RIGHT if direction.x > 0 else DIRECTIONS.LEFT
 	else:
@@ -1258,93 +1294,60 @@ func look_at_event(event: Variant) -> void:
 
 # Check contact before move
 func _check_contact_before_move(tile: Vector2i, is_after_move: bool = false) -> bool:
-	return true
-	var my = self
-	var my_is_solid = _is_solid(my)
-	var my_is_moving = my.is_moving if "is_moving" in my else false
-	var my_is_player = my.is_in_group("player")
-	
-	# Recolectar todas las entities en el tile destino
+	if not GameManager.current_map:
+		return true
+
+
+	var im_player = is_in_group("player")
 	var all_entities_on_tile: Array = GameManager.current_map.get_in_game_events_in(tile, false)
 	
-	# Agregar player si es necesario
-	if not my_is_player and GameManager.current_player:
+	if not im_player and GameManager.current_player:
 		if GameManager.current_player.get_current_tile() == tile:
 			all_entities_on_tile.append(GameManager.current_player)
 	
-	# Limpiar duplicados
-	all_entities_on_tile = _remove_duplicates(all_entities_on_tile)
-	
-	var i_can_move: bool = true
+	var can_continue_movement: bool = true
 	var valid_contacts: Array = []
-	
-	# === PROCESAR CADA ENTITY ===
+
+
 	for entity in all_entities_on_tile:
-		if entity == my:
+		if entity == self:
 			continue
 		
 		var entity_is_solid = _is_solid(entity)
-		var entity_is_moving = entity.is_moving if "is_moving" in entity else false
-		var entity_is_player = entity.is_in_group("player")
 		
-		# Determinar qué hacer basado en los estados
-		var can_move_result: bool
-		var contacts_result: Array
-		
-		if my_is_player:
-			# PLAYER vs ENTITY
-			var result = _handle_player_contact(my, entity, entity_is_player)
-			can_move_result = result["can_move"]
-			contacts_result = result["contacts"]
-		elif entity_is_player:
-			# EVENT vs PLAYER
-			var result = _handle_event_vs_player(my, entity, my_is_solid, my_is_moving)
-			can_move_result = result["can_move"]
-			contacts_result = result["contacts"]
-		elif my_is_solid and entity_is_solid:
-			# SOLID vs SOLID
-			var result = _handle_solid_vs_solid(my, entity, my_is_moving, entity_is_moving)
-			can_move_result = result["can_move"]
-			contacts_result = result["contacts"]
-		elif my_is_solid and not entity_is_solid:
-			# SOLID vs PASSABLE
-			var result = _handle_solid_vs_passable(my, entity, my_is_moving, entity_is_moving)
-			can_move_result = result["can_move"]
-			contacts_result = result["contacts"]
-		elif not my_is_solid and entity_is_solid:
-			# PASSABLE vs SOLID
-			var result = _handle_passable_vs_solid(my, entity, entity_is_moving)
-			can_move_result = result["can_move"]
-			contacts_result = result["contacts"]
+		if entity_is_solid:
+			if not (character_options.passable or (im_player and Input.is_key_pressed(KEY_CTRL) and OS.is_debug_build())):
+				can_continue_movement = false
+			
+			## Solid events trigger upon physical contact (bumping), before the move is complete
+			if not is_after_move and not entity in _ignore_events_contact:
+				valid_contacts.append(entity)
 		else:
-			# PASSABLE vs PASSABLE
-			var result = _handle_passable_vs_passable(my, entity)
-			can_move_result = result["can_move"]
-			contacts_result = result["contacts"]
-		
-		i_can_move = i_can_move and can_move_result
-		valid_contacts.append_array(contacts_result)
-	
-	# === Deduplicar contactos ===
-	valid_contacts = _remove_duplicates(valid_contacts)
-	
-	# === Activar eventos ===
-	_trigger_events(valid_contacts)
-	
-	return i_can_move
+			## Passable events trigger upon overlapping, after the move is complete
+			if is_after_move and not entity in _ignore_events_contact:
+				valid_contacts.append(entity)
+
+
+	if not valid_contacts.is_empty():
+		var trigger_result = _process_event_contact(valid_contacts, not is_after_move)
+		if trigger_result and not is_after_move:
+			return false
+
+
+	return can_continue_movement
 
 
 # === HELPERS DE DETECCIÓN ===
-func _is_solid(entity) -> bool:
+func _is_solid(entity: Node) -> bool:
 	if entity.is_in_group("player") or entity is RPGVehicle:
 		if entity.has_method("is_passable"):
-			return entity.is_passable()
+			return not entity.is_passable()
 		return true
-	else:
-		if "character_options" in entity and entity.character_options:
-			var passable = not entity.character_options.passable
-			return passable
-		return false
+	
+	if "character_options" in entity and entity.character_options:
+		return not entity.character_options.passable
+		
+	return false
 
 
 func _can_activate_event(my_entity, other_entity) -> bool:
@@ -1495,21 +1498,7 @@ func _trigger_events(valid_contacts: Array) -> void:
 	if valid_contacts.is_empty():
 		return
 	
-	var valid_objs: Array[Dictionary] = []
-	var used: Array = []
-	
-	for ev in valid_contacts:
-		if not ev in used:
-			used.append(ev)
-			if ev.get("current_event_page"):
-				valid_objs.append({
-					"obj": ev,
-					"commands": ev.current_event_page.list,
-					"id": str(ev.get_rid())
-				})
-	
-	if valid_objs:
-		GameInterpreter.auto_start_automatic_events(valid_objs)
+	_process_event_contact(valid_contacts, true)
 
 
 # Check contact after move
@@ -1601,7 +1590,7 @@ func start_movement(motion_data: Dictionary) -> void:
 	if not final_motion:
 		is_moving = false
 		return
-		
+
 	target_position = position + final_motion
 	var start_position = position
 	var max_movement_time = max(grid_move_duration.x, grid_move_duration.y)

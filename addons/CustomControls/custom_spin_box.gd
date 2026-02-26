@@ -91,6 +91,10 @@ func _ready() -> void:
 	
 	# Initial text update
 	_on_text_changed(lineedit.text)
+	
+	await RenderingServer.frame_post_draw
+	await RenderingServer.frame_post_draw
+	CustomTooltipManager.replace_all_tooltips_with_custom(self)
 
 
 func _on_changed() -> void:

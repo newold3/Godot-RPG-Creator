@@ -78,7 +78,7 @@ func _process(_delta: float) -> void:
 			var objs: Array
 			if randi() % 2 == 0:
 				var events = GameManager.current_map.get_in_game_events()
-				objs = events.map(func(obj: RPGMap.IngameEvent): return obj.lpc_event)
+				objs = events.map(func(obj: IngameEvent): return obj.lpc_event)
 			else:
 				var vehicles = GameManager.current_map.get_in_game_vehicles()
 				objs = []

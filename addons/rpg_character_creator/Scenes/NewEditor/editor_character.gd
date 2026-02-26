@@ -26,6 +26,7 @@ var help_label: Label
 var data: Dictionary
 var _thread: Thread = null
 var starting: bool = false
+var is_started: bool = false
 var current_part: String = ""
 var editor_hidden_layers: Array[String] = []
 var tasks: Array = []
@@ -69,10 +70,19 @@ signal data_loaded()
 
 func _ready() -> void:
 	%SaveTabContainer.get_tab_bar().mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	start()
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_EDITOR_PRE_SAVE:
+		clear_all()
+		if %Character:
+			%Character.clear_all()
 
 
 func start() -> void:
+	is_started = true
+	_show_overlay(false)
+	
 	data_loaded.connect(_on_data_loaded)
 	_create_tabs()
 	_load_initial_data_in_thread()
@@ -172,9 +182,17 @@ func _copy_part_colors(source_layer: String, target_layer: String) -> void:
 
 
 func clear_all() -> void:
+	%AllPresets.clear()
+	%PalettePresets.clear()
 	data.clear()
 	tasks.clear()
-	_initialize_character()
+	for button in tabs_container.get_children():
+		if button.has_method("enable_part_installed"):
+			button.enable_part_installed(false)
+	if main_material:
+		main_material.set_shader_parameter("palette1", PackedColorArray())
+		main_material.set_shader_parameter("palette2", PackedColorArray())
+		main_material.set_shader_parameter("palette3", PackedColorArray())
 	_clear_parts()
 
 #endregion
@@ -247,52 +265,52 @@ func _load_button_texture(task: Dictionary) -> void:
 	if layer == "mainhand" and item_data.item_id in ["boomerang", "whip", "bow4"]:
 		if item_data.item_id == "boomerang":
 			var path = "uid://bgowkpplctj0k"
-			if ResourceLoader.exists(path): textures.append(load(path))
+			if AssetManager.file_exists(path): textures.append(load(path))
 			rect = Rect2(192, 0, 64, 64)
 		elif item_data.item_id == "whip":
 			var path = "uid://bkhvhv7qoc086"
-			if ResourceLoader.exists(path): textures.append(load(path))
+			if AssetManager.file_exists(path): textures.append(load(path))
 			rect = Rect2(0, 0, 26, 43)
 		elif item_data.item_id == "bow4":
 			rect = Rect2(192, 320, 64, 64) 
 			if textures.is_empty():
 				for key in item_data.textures:
 					var path = _fix_path(item_data.textures[key])
-					if ResourceLoader.exists(path): textures.append(load(path))
+					if AssetManager.file_exists(path): textures.append(load(path))
 	elif layer == "ammo":
 		match item_data.item_id:
 			"arcane1":
 				var path = "uid://br3jlxws1cuuy"
-				if ResourceLoader.exists(path): textures.append(load(path))
+				if AssetManager.file_exists(path): textures.append(load(path))
 				rect = Rect2(32, 0, 32, 32)
 			"arrow":
 				var path = "uid://by5msssxinwb4"
-				if ResourceLoader.exists(path): textures.append(load(path))
+				if AssetManager.file_exists(path): textures.append(load(path))
 				rect = Rect2(0, 0, 5, 26)
 			"bolt":
 				var path = "uid://bucs86b4hjn7e"
-				if ResourceLoader.exists(path): textures.append(load(path))
+				if AssetManager.file_exists(path): textures.append(load(path))
 				rect = Rect2(0, 0, 5, 23)
 			"boomerang":
 				var path = "uid://bgowkpplctj0k"
-				if ResourceLoader.exists(path): textures.append(load(path))
+				if AssetManager.file_exists(path): textures.append(load(path))
 				rect = Rect2(192, 0, 64, 64)
 			"rock":
 				var path = "uid://d15fcw4y6o1fe"
-				if ResourceLoader.exists(path): textures.append(load(path))
+				if AssetManager.file_exists(path): textures.append(load(path))
 				rect = Rect2(0, 0, 7, 6)
 			"whip":
 				var path = "uid://bkhvhv7qoc086"
-				if ResourceLoader.exists(path): textures.append(load(path))
+				if AssetManager.file_exists(path): textures.append(load(path))
 				rect = Rect2(0, 0, 26, 43)
 	else:
 		for key in item_data.textures:
 			if key == "back":
 				var path = _fix_path(item_data.textures[key])
-				if ResourceLoader.exists(path): textures.append(load(path))
+				if AssetManager.file_exists(path): textures.append(load(path))
 			if key == "front":
 				var path = _fix_path(item_data.textures[key])
-				if ResourceLoader.exists(path): textures.append(load(path))
+				if AssetManager.file_exists(path): textures.append(load(path))
 	
 		if not textures.is_empty():
 			var t = textures[0]
@@ -336,6 +354,7 @@ func get_files(path: String, filter: Array) -> Array:
 
 func _load_initial_data_in_thread() -> void:
 	clear_all()
+	_initialize_character()
 	%Character.set_character(current_character, editor_hidden_layers)
 	_thread = Thread.new()
 	_thread.start(set_data.bind("_end_thread"))
@@ -343,6 +362,7 @@ func _load_initial_data_in_thread() -> void:
 
 func _end_thread() -> void:
 	_thread.wait_to_finish()
+	_hide_overlay()
 
 
 func set_data(_thread_callable: String = "") -> void:
@@ -363,17 +383,18 @@ func _data_loaded() -> void:
 
 
 func set_body_data() -> void:
-	data = {}
-	data.characters = {}
+	data = {"characters": {}}
 	var keys = ["add1", "add2", "add3", "body", "ears", "eyes", "facial", "horns", "hair", "hairadd", "head", "nose", "race", "shadow", "tail", "wings"]
+	
 	for key in keys:
-		var path = "res://addons/rpg_character_creator/Data/character/%s" % key + "/"
-		var files = get_files(path, [])
+		var path = "res://addons/rpg_character_creator/Data/character/%s/" % key
+		var files = ZipMediaLoader.get_files_in_path(path, ["lcc"]) 
 		data.characters[key] = {}
+		
 		for file in files:
-			var f = FileAccess.open(file, FileAccess.READ)
-			var json = f.get_as_text()
-			f.close()
+			var json = ZipMediaLoader.get_text_content(file)
+			if json.is_empty(): continue
+			
 			var obj: Dictionary = JSON.parse_string(json)
 			var id: String = obj.get("id", "-")
 			obj.erase("id")
@@ -381,34 +402,40 @@ func set_body_data() -> void:
 			obj.file = file.get_file().trim_suffix("." + file.get_extension())
 			
 			if key == "race":
-				var body_data := {}
-				var genders := {}
-				for i in obj.configs.size():
-					var body_id = obj.configs[i].id
-					body_data[body_id] = obj.configs[i].duplicate(true)
-					body_data[body_id].erase("id")
-					body_data[body_id].chargen = true
-					body_data[body_id].default = obj.configs[i].get("default", false)
-					var body_gender = obj.configs[i].get("gender", "")
-					if body_gender and !genders.has(body_gender):
-						genders[body_gender] = {"name": body_gender.capitalize(), "chargen": true, "default": genders.size() == 0}
-				obj.genders = genders
-				obj.configs = body_data
+				_setup_race(obj)
 				
 			data.characters[key][id] = obj
+
+
+func _setup_race(obj: Dictionary) -> void:
+	var body_data := {}
+	var genders := {}
+	for i in obj.configs.size():
+		var body_id = obj.configs[i].id
+		body_data[body_id] = obj.configs[i].duplicate(true)
+		body_data[body_id].erase("id")
+		body_data[body_id].chargen = true
+		body_data[body_id].default = obj.configs[i].get("default", false)
+		var body_gender = obj.configs[i].get("gender", "")
+		if body_gender and !genders.has(body_gender):
+			genders[body_gender] = {"name": body_gender.capitalize(), "chargen": true, "default": genders.size() == 0}
+	obj.genders = genders
+	obj.configs = body_data
 
 
 func set_gear_data() -> void:
 	data.gear = {}
 	var keys = ["ammo", "back", "belt", "glasses", "gloves", "hat", "jacket", "mainhand", "mask", "offhand", "pants", "shirt", "shoes", "suit"]
+	
 	for key in keys:
-		var path = "res://addons/rpg_character_creator/Data/gear/%s" % key + "/"
-		var files = get_files(path, [])
+		var path = "res://addons/rpg_character_creator/Data/gear/%s/" % key
+		var files = ZipMediaLoader.get_files_in_path(path, ["lcc"])
 		data.gear[key] = {}
+		
 		for file in files:
-			var f = FileAccess.open(file, FileAccess.READ)
-			var json = f.get_as_text()
-			f.close()
+			var json = ZipMediaLoader.get_text_content(file)
+			if json.is_empty(): continue
+			
 			var obj: Dictionary = JSON.parse_string(json)
 			var id: String = obj.get("id", "-")
 			obj.erase("id")
@@ -419,19 +446,27 @@ func set_gear_data() -> void:
 func set_colormap_data() -> void:
 	data.colormaps = {}
 	var path = "res://addons/rpg_character_creator/Data/ColorMaps/"
-	var files = get_files(path, ["cm"])
+	var files = ZipMediaLoader.get_files_in_path(path, ["lcc"])
+	
 	for file in files:
-		var f = FileAccess.open(file, FileAccess.READ)
-		var json = f.get_as_text()
-		f.close()
+		if file.ends_with("color_list.lcc"):
+			continue
+			
+		var json = ZipMediaLoader.get_text_content(file)
+		if json.is_empty(): continue
+		
 		var obj: Dictionary = JSON.parse_string(json)
 		var id: String = obj.get("id", "-")
 		obj.erase("id")
+		
 		var items = {}
-		for item in obj.items:
-			var item_id = item.id
-			item.erase("id")
-			items[item_id] = item
+
+		if obj.has("items"):
+			for item in obj.items:
+				var item_id = item.id
+				item.erase("id")
+				items[item_id] = item
+			
 		obj.items = items
 		obj.config_path = file
 		data.colormaps[id] = obj
@@ -440,11 +475,12 @@ func set_colormap_data() -> void:
 func set_credits_data() -> void:
 	data.credits = {}
 	var path = "res://addons/rpg_character_creator/Data/credits/"
-	var files = get_files(path, ["credits"])
+	var files = ZipMediaLoader.get_files_in_path(path, ["lcc"])
+	
 	for file in files:
-		var f = FileAccess.open(file, FileAccess.READ)
-		var json = f.get_as_text()
-		f.close()
+		var json = ZipMediaLoader.get_text_content(file)
+		if json.is_empty(): continue
+		
 		var obj: Dictionary = JSON.parse_string(json)
 		var id: String = obj.get("id", "-")
 		obj.erase("id")
@@ -799,7 +835,8 @@ func _get_item_data(layer: String, item_id: String) -> Dictionary:
 		"secondarycolors": file_data.get("secondarycolors", []),
 		"fixedcolors": file_data.get("fixedcolors", []),
 		"is_large": file_data.get("tags", []).find("large") != -1,
-		"ammo": file_data.get("ammo", [])
+		"ammo": file_data.get("ammo", []),
+		"tags": file_data.get("tags", [])
 	}
 	
 	if "alt" in file_data: item["alt"] = file_data["alt"]
@@ -1007,6 +1044,9 @@ func _update_part_resource(resource: Resource, item_data: Dictionary) -> void:
 			resource.alt_config_path = _fix_path(alt_data.get("config_path", ""))
 		else:
 			resource.alt_config_path = ""
+	
+	if "tags" in resource and "tags" in item_data:
+		resource.tags = PackedStringArray(item_data.get("tags", []))
 
 
 func _recalculate_global_interactions() -> void:
@@ -1404,15 +1444,23 @@ func _update_colors_for_button(button: HeroEditorPartButton) -> void:
 
 
 func _set_data_colors() -> void:
+	if not data.colormaps.has(current_character.palette):
+		printerr("Palette not found in database: ", current_character.palette)
+		return
+		
 	var colors_data = data.colormaps[current_character.palette].items
 	var node = %AllPresets
 	
 	node.clear()
 	node.add_item(tr("All colors in palette..."))
 	
-	var f = FileAccess.open("res://addons/rpg_character_creator/Data/ColorMaps/color_list.json", FileAccess.READ)
-	var json = f.get_as_text()
-	f.close()
+	var color_list_path = "res://addons/rpg_character_creator/Data/ColorMaps/color_list.lcc"
+	var json = ZipMediaLoader.get_text_content(color_list_path)
+	
+	if json.is_empty():
+		printerr("Missing or empty color_list.lcc")
+		return
+		
 	var color_list = JSON.parse_string(json)
 	
 	for category_id in color_list.keys():
@@ -1421,6 +1469,9 @@ func _set_data_colors() -> void:
 		color_list[category_id].sort()
 		
 		for key in color_list[category_id]:
+			if not colors_data.has(key):
+				continue
+				
 			var color = colors_data[key]
 			var img = Image.create(20, 20, true, Image.FORMAT_RGB8)
 			img.fill(Color(int(color.color)))
@@ -1905,15 +1956,21 @@ func _on_color_dialog_preview_color(color: Color, palette: String, item_id: int)
 		
 		if not current_data: continue
 		
-		var target_index = (item_id * 2) + 3
+		var target_index = (item_id * 2) + 1
+		
 		if current_data[palette].colors.size() > target_index:
 			current_data[palette].colors[target_index] = color.to_rgba32()
 			current_data["gradient%s" % palette.right(1)] = get_gradient(current_data[palette].colors)
 		
-		var palette_num = palette.right(1) # Extract "1", "2" o "3"
+		var palette_num = palette.right(1)
 		var grad_val = current_data["gradient" + palette_num]
 		
 		%Character.set_part_shader_parameter(target_layer, "palette" + palette_num, grad_val)
+
+	if %CurentColorConatiner.get_child_count() > item_id:
+		var btn = %CurentColorConatiner.get_child(item_id)
+		if btn:
+			btn.color = color
 
 
 func _on_color_dialog_color_selected(color: Color, palette: String, item_id: int, original_color: Color) -> void:
@@ -1932,7 +1989,8 @@ func _on_color_dialog_color_selected(color: Color, palette: String, item_id: int
 		var current_data = collection.get(target_layer)
 		
 		if not current_data: continue
-		var target_index = (item_id * 2) + 3
+		
+		var target_index = (item_id * 2) + 1
 		
 		if current_data[palette].colors.size() > target_index:
 			current_data[palette].colors[target_index] = color.to_rgba32()
@@ -1982,44 +2040,57 @@ func _open_fine_tune_dialog() -> void:
 		2: gradient_id = "gradient3"
 			
 	dialog.set_colors(current_data.get(gradient_id))
+	
 	dialog.colors_changed.connect(_on_dialog_color_changed.bind(gradient_id))
 
 
-func _on_dialog_color_changed(colors: Array[Color], gradient_id: String) -> void:
+func _on_dialog_color_changed(colors: Array[Color], apply_to_all: bool, origin_gradient_id: String) -> void:
 	var targets = _get_edit_targets()
 	var something_changed = false
-	var p_idx = 0 if gradient_id == "gradient1" else 1 if gradient_id == "gradient2" else 2
 	
-	for target_layer in targets:
-		var is_body = target_layer in body_layers or target_layer in ["body", "head"]
-		var collection = current_character.body_parts if is_body else current_character.equipment_parts
-		var current_data = collection.get(target_layer)
-		if not current_data: continue
+	var gradients_to_process = []
+	if apply_to_all:
+		gradients_to_process = ["gradient1", "gradient2", "gradient3"]
+	else:
+		gradients_to_process = [origin_gradient_id]
+
+	for current_gradient_id in gradients_to_process:
+		var p_idx = 0
+		if current_gradient_id == "gradient2": p_idx = 1
+		elif current_gradient_id == "gradient3": p_idx = 2
 		
-		current_data.set(gradient_id, colors)
-		
-		var palette_res = [current_data.palette1, current_data.palette2, current_data.palette3][p_idx]
-		var current_palette_colors = palette_res.colors
-		
-		for i in range(0, current_palette_colors.size(), 2):
-			var color_index_in_gradient = current_palette_colors[i]
-			var new_color = colors[color_index_in_gradient]
-			current_palette_colors[i+1] = new_color.to_rgba32()
-		
-		palette_res.colors = current_palette_colors
-		
-		var id_props = ["current_primary_color_id", "current_secondary_color_id", "current_fixed_color_id"]
-		current_data.set(id_props[p_idx], -1)
-		
-		var cache = _layer_color_cache.get(target_layer, {})
-		var p_char = ["p", "s", "f"][p_idx]
-		cache[p_char + "_id"] = -1
-		cache[p_char + "_raw"] = current_palette_colors.duplicate()
-		cache[p_char + "_grad"] = colors
-		_layer_color_cache[target_layer] = cache
-		
-		something_changed = true
-		%Character.update_part(target_layer)
+		for target_layer in targets:
+			var is_body = target_layer in body_layers or target_layer in ["body", "head"]
+			var collection = current_character.body_parts if is_body else current_character.equipment_parts
+			var current_data = collection.get(target_layer)
+			if not current_data: continue
+			
+			current_data.set(current_gradient_id, colors)
+			
+			var palette_res = [current_data.palette1, current_data.palette2, current_data.palette3][p_idx]
+			var current_palette_colors = palette_res.colors
+			
+			for i in range(0, current_palette_colors.size(), 2):
+				var color_index_in_gradient = current_palette_colors[i]
+				if color_index_in_gradient < colors.size():
+					var new_color = colors[color_index_in_gradient]
+					current_palette_colors[i+1] = new_color.to_rgba32()
+			
+			palette_res.colors = current_palette_colors
+			
+			var id_props = ["current_primary_color_id", "current_secondary_color_id", "current_fixed_color_id"]
+			current_data.set(id_props[p_idx], -1)
+			
+			var cache = _layer_color_cache.get(target_layer, {})
+			var p_char = ["p", "s", "f"][p_idx]
+			
+			cache[p_char + "_id"] = -1
+			cache[p_char + "_raw"] = current_palette_colors.duplicate()
+			cache[p_char + "_grad"] = colors
+			_layer_color_cache[target_layer] = cache
+			
+			something_changed = true
+			%Character.update_part(target_layer)
 	
 	if something_changed:
 		_update_ui_after_color_change()
@@ -2269,14 +2340,39 @@ func get_file_id(folder, base_name) -> int:
 func _on_part_save_requested(layer: String, item_id: String, button: HeroEditorPartButton) -> void:
 	_show_overlay()
 	
+	var previous_mainhand_id: String = ""
+	var previous_ammo_id: String = ""
+	var is_temporary_equip: bool = false
+	
+	# Temporarily equip the mainhand if it is not currently equipped to resolve ammo dependencies
+	if layer == "mainhand":
+		var current_mainhand = current_character.equipment_parts.get("mainhand")
+		if current_mainhand and current_mainhand.part_id != item_id:
+			is_temporary_equip = true
+			previous_mainhand_id = current_mainhand.part_id
+			var current_ammo = current_character.equipment_parts.get("ammo")
+			previous_ammo_id = current_ammo.part_id if current_ammo else "none"
+			
+			install_part("mainhand", item_id)
+	
 	var is_body = layer in body_layers or layer == "body" or layer == "head"
 	var collection = current_character.body_parts if is_body else current_character.equipment_parts
 	var source_part = collection.get(layer)
 	
-	if not source_part: return
+	if not source_part:
+		if is_temporary_equip:
+			install_part("mainhand", previous_mainhand_id)
+			install_part("ammo", previous_ammo_id)
+		_hide_overlay()
+		return
 	
 	var new_item_data = _get_item_data(layer, item_id)
-	if new_item_data.is_empty(): return
+	if new_item_data.is_empty():
+		if is_temporary_equip:
+			install_part("mainhand", previous_mainhand_id)
+			install_part("ammo", previous_ammo_id)
+		_hide_overlay()
+		return
 
 	var part_to_save = source_part.duplicate(true)
 	
@@ -2286,6 +2382,8 @@ func _on_part_save_requested(layer: String, item_id: String, button: HeroEditorP
 	part_to_save.layer_id = layer
 	if "name" in part_to_save:
 		part_to_save.name = new_item_data.get("name", item_id)
+	if "tags" in part_to_save:
+		part_to_save.tags = PackedStringArray(new_item_data.get("tags", []))
 	part_to_save.config_path = _fix_path(new_item_data.get("config_path", ""))
 	
 	part_to_save.body_type = current_character.body_type
@@ -2302,6 +2400,14 @@ func _on_part_save_requested(layer: String, item_id: String, button: HeroEditorP
 		_smart_update_color(part_to_save.palette2, "current_secondary_color_id", "gradient2", new_item_data.get("secondarycolors", []), global_map, part_to_save)
 		_smart_update_color(part_to_save.palette3, "current_fixed_color_id", "gradient3", new_item_data.get("fixedcolors", []), global_map, part_to_save)
 	
+	if layer == "mainhand":
+		var current_ammo = current_character.equipment_parts.get("ammo")
+		if current_ammo and current_ammo.part_id != "none" and not current_ammo.part_id.is_empty():
+			part_to_save.ammo = current_ammo.duplicate(true)
+			_clean_part_gradients(part_to_save.ammo, true)
+		else:
+			part_to_save.ammo = null
+			
 	var folder = PARTS_ROOT_DIR.path_join(current_part + "/")
 	if !DirAccess.dir_exists_absolute(folder):
 		DirAccess.make_dir_recursive_absolute(folder)
@@ -2317,7 +2423,6 @@ func _on_part_save_requested(layer: String, item_id: String, button: HeroEditorP
 	var resource_path = folder.path_join(base_name + str(id) + ".tres")
 	var image_path = folder.path_join(base_name + str(id) + "_preview.png")
 	
-	# Save
 	if button:
 		var tex = button.get_texture_rect()
 		if tex:
@@ -2343,7 +2448,14 @@ func _on_part_save_requested(layer: String, item_id: String, button: HeroEditorP
 	ResourceSaver.save(part_to_save, resource_path)
 	
 	_clean_part_gradients(part_to_save, false)
-	
+	if part_to_save.get("ammo"):
+		_clean_part_gradients(part_to_save.ammo, false)
+		
+	# Restore previous equipment if it was temporarily changed
+	if is_temporary_equip:
+		install_part("mainhand", previous_mainhand_id)
+		install_part("ammo", previous_ammo_id)
+		
 	_hide_overlay()
 	
 	var help_text = "Part %s Saved in %s" % [item_id, resource_path]
@@ -2732,9 +2844,10 @@ func _save_costume(file_name: String) -> void:
 	_hide_overlay()
 
 
-func _show_overlay() -> void:
-	var tex = ImageTexture.create_from_image(get_viewport().get_texture().get_image())
-	%OverlayTexture.texture = tex
+func _show_overlay(create_main_texture: bool = true) -> void:
+	if create_main_texture:
+		var tex = ImageTexture.create_from_image(get_viewport().get_texture().get_image())
+		%OverlayTexture.texture = tex
 	%Overlay.show()
 
 
@@ -2803,7 +2916,11 @@ func _on_import_pressed() -> void:
 	dialog.target_callable = _on_import_data
 	dialog.destroy_on_hide = true
 	
-	dialog.fill_mix_files(["characters", "events", "equipment_parts", "sets", "costumes"])
+	dialog.fill_mix_files([
+		"characters", "events",
+		"equipment_parts_weapons", "equipment_parts_others",
+		"sets", "costumes"
+	])
 
 
 func _on_import_data(path: String) -> void:

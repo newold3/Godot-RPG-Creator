@@ -2,16 +2,13 @@
 extends Window
 
 
-## Rename all the buttons so that their IDs are consecutive without any gaps. (This option is disabled in the script by default to prevent accidental activation, which could change the current button names. These names have already been added to other scripts that use them as references.)
+## Rename all the buttons so that their IDs are consecutive without any gaps.
 @export var set_button_names: bool = false :
 	set(value):
 		if value:
-			# Disabled to prevent accidentally pressing this button and renaming all 
-			# the buttons, which could overwrite the commands currently added.
-			#rename_all_buttons(self, [1])
 			pass
 
-## To add a new button, activate this variable in the inspector and it will tell a valid button name to use
+## To add a new button, activate this variable in the inspector
 @export var get_available_button_name: bool = false :
 	set(value):
 		if value:
@@ -19,7 +16,7 @@ extends Window
 			print("Available Codes: " + _get_available_codes())
 
 
-## Variable used in the editor to quickly change the selected page in the tab container.
+## Variable used in the editor to quickly change the selected page
 @export_range(0, 2, 1) var show_buttons_page: int = 0 :
 	set(value):
 		show_buttons_page = value
@@ -31,11 +28,11 @@ var battle_buttons_is_enabled: bool = false
 var filter_update_timer: float = 0.0
 
 var favorite_buttons_need_refresh: bool = false
+var show_favorites_only: bool = false
 
 var current_button_hovered: CustomSimpleButton
 
 const FAVORITE_BUTTON = preload("uid://dsmo7ri8d6djp")
-
 
 var wrap_control_tween: Tween
 
@@ -47,6 +44,16 @@ signal request_update_favorite_buttons()
 
 
 func _ready() -> void:
+	# Load persistence for Favorites Only mode
+	show_favorites_only = FileCache.options.get("show_favorites_only", false)
+	
+	# Update the toggle button visual state if it exists in the scene
+	if has_node("%FavoritesOnlyButton"):
+		%FavoritesOnlyButton.set_pressed_no_signal(show_favorites_only)
+		if not %FavoritesOnlyButton.toggled.is_connected(_on_favorites_only_button_toggled):
+			%FavoritesOnlyButton.toggled.connect(_on_favorites_only_button_toggled)
+		%FavoritesOnlyButton.modulate.a = 0.6 if not show_favorites_only else 1.0
+
 	visibility_changed.connect(
 		func():
 			if visible:
@@ -69,10 +76,18 @@ func _ready() -> void:
 	_connect_all_buttons(self)
 	close_requested.connect(hide)
 	enable_battle_buttons(battle_buttons_is_enabled, false)
-	if not _last_filter_used.is_empty():
-		%Filter.text = _last_filter_used
-		_on_filter_text_changed(_last_filter_used)
-		filter_update_timer = 0.01
+	
+	# Restore filter or favorite state
+	if not _last_filter_used.is_empty() or show_favorites_only:
+		if not _last_filter_used.is_empty():
+			%Filter.text = _last_filter_used
+			_on_filter_text_changed(_last_filter_used)
+		
+		if _last_filter_used.is_empty() and show_favorites_only:
+			filter_update_timer = 0.01
+		else:
+			filter_update_timer = 0.01
+
 
 func _input(event: InputEvent) -> void:
 	if current_button_hovered and event is InputEventKey and event.keycode == KEY_F and event.is_pressed():
@@ -99,16 +114,31 @@ func update_filter_buttons() -> void:
 	%FilterButtonsContainer.get_parent().size.y = 0
 	
 	var filter = %Filter.text.to_lower()
-	if filter.length() > 0:
+	
+	# We enter "Filter Mode" if there is text OR if "Favorites Only" is active
+	if filter.length() > 0 or show_favorites_only:
 		show_filter_buttons(self, filter)
 		%FilterButtons.visible = true
 		await get_tree().process_frame
 		size.y = min(%FilterButtonsContainerMargin.size.y + 110, 840)
 	else:
+		# Return to Normal (Tab) Mode
 		%CustomTabContainer.visible = true
 		var index = %CustomTabContainer.selected_tab
 		[%GroupButtons1, %GroupButtons2, %GroupButtons3][index].visible = true
-		size.y = %ButtonsContainer.get_child(index).get_child(0).get_child(0).size.y + 170
+		
+		var needed_height = %ButtonsContainer.get_child(index).get_child(0).get_child(0).get_combined_minimum_size().y
+		
+		size.y = needed_height + 80
+		
+		if wrap_control_tween:
+			wrap_control_tween.kill()
+		wrap_control_tween = create_tween()
+		for i in 6:
+			wrap_control_tween.tween_callback(set.bind("wrap_controls", true))
+			wrap_control_tween.tween_interval(0.03)
+			wrap_control_tween.tween_callback(set.bind("wrap_controls", false))
+			wrap_control_tween.tween_interval(0.03)
 
 
 func reset_button_parents(node: Node) -> void:
@@ -133,12 +163,26 @@ func fix_buttons_order(node: Node) -> void:
 
 func show_filter_buttons(node: Node, filter: String, add_nodes_to_end: Array = [], step: int = 0) -> void:
 	if node is CustomSimpleButton:
-		if node.text.to_lower().find(filter) != -1:
-			node.reparent(%FilterButtonsContainer)
-		elif node.has_meta("current_tooltip"):
-			var node_tooltip = node.get_meta("current_tooltip").to_lower()
-			if filter in node_tooltip:
-				add_nodes_to_end.append(node)
+		var is_valid = true
+		
+		# First check: Favorites Only Mode
+		if show_favorites_only:
+			var button_id = int(str(node.name))
+			var current_favs = FileCache.options.get("current_favorite_commands", [])
+			if not button_id in current_favs:
+				is_valid = false
+		
+		# Second check: Text Filter
+		if is_valid:
+			if filter.is_empty():
+				node.reparent(%FilterButtonsContainer)
+			else:
+				if node.text.to_lower().find(filter) != -1:
+					node.reparent(%FilterButtonsContainer)
+				elif node.has_meta("current_tooltip"):
+					var node_tooltip = node.get_meta("current_tooltip").to_lower()
+					if filter in node_tooltip:
+						add_nodes_to_end.append(node)
 	
 	for child in node.get_children():
 		show_filter_buttons(child, filter, add_nodes_to_end, 1)
@@ -242,7 +286,17 @@ func _on_favorite_button_toggled(toggled_on: bool, button_id: int) -> void:
 	elif !toggled_on and button_id in FileCache.options.current_favorite_commands:
 		FileCache.options.current_favorite_commands.erase(button_id)
 		favorite_buttons_need_refresh = true
-		
+	
+	if show_favorites_only:
+		filter_update_timer = 0.01
+
+
+func _on_favorites_only_button_toggled(toggled_on: bool) -> void:
+	show_favorites_only = toggled_on
+	FileCache.options.show_favorites_only = show_favorites_only
+	filter_update_timer = 0.01
+
+	%FavoritesOnlyButton.modulate.a = 0.6 if not toggled_on else 1.0
 
 
 func _show_favorite_button(node: Control) -> void:
@@ -262,7 +316,7 @@ func _hide_favorite_button(node: Control) -> void:
 
 
 func _on_custom_tab_container_tab_changed(index: int) -> void:
-	if %Filter.text.length() > 0: return
+	if %Filter.text.length() > 0 or show_favorites_only: return
 	
 	last_page_selected = index
 	
@@ -304,7 +358,7 @@ func enable_battle_buttons(value: bool, affect_to_start_battle_button: bool = fa
 	battle_buttons_is_enabled = value
 
 
-# region Action for buttons
+#region Action for buttons
 func _on_button_pressed(button_id: String) -> void:
 	var id = int(button_id)
 	request_command_created.emit(id, self)
@@ -340,3 +394,4 @@ func _on_filter_gui_input(event: InputEvent) -> void:
 			%Filter.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		else:
 			%Filter.mouse_default_cursor_shape = Control.CURSOR_IBEAM
+#endregion

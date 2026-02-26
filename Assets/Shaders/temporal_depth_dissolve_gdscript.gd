@@ -81,7 +81,7 @@ func add_targets() -> void:
 	# Agregar eventos del juego
 	if GameManager.current_map:
 		var events = GameManager.get_ingame_events()
-		for ev: RPGMap.IngameEvent in events:
+		for ev: IngameEvent in events:
 			if ev.lpc_event and ev.lpc_event is not EmptyLPCEvent:
 				targets.append(ev.lpc_event)
 

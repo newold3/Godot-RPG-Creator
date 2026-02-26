@@ -42,7 +42,7 @@ func set_config(config: Dictionary) -> void:
 		transition_scene = config.get("scene_image", "")
 	elif transition_type == 3:
 		var tex_path = config.get("transition_image", "")
-		if ResourceLoader.exists(tex_path):
+		if AssetManager.exists(tex_path):
 			transition_texture = load(tex_path)
 	
 	current_transition_mode = -1
@@ -124,7 +124,7 @@ func start(start_texture: Texture) -> void:
 		if current_transition_scene and is_instance_valid(current_transition_scene):
 			current_transition_scene.queue_free()
 		current_transition_scene = null
-		if ResourceLoader.exists(transition_scene):
+		if AssetManager.exists(transition_scene):
 			var scn = load(transition_scene).instantiate()
 			if scn is GameTransition:
 				current_transition_scene = scn

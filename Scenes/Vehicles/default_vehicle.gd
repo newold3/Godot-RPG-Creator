@@ -128,6 +128,7 @@ func add_player(passenger: LPCCharacter) -> void:
 	
 	var node = get_node_or_null(player_container_node)
 	if node:
+		GameManager.disappear_followers()
 		player = passenger
 		await _set_initial_player_position(player_position)
 		current_map = passenger.get_parent()
@@ -163,12 +164,12 @@ func _get_player_position() -> Vector2:
 	return global_position
 
 
+func get_player_visual_offset() -> Vector2:
+	return Vector2.ZERO
+
+
 func remove_player() -> void:
 	if player and current_map:
-		var current_global_position = _get_player_position()
-		player.reparent(current_map)
-		player.global_position = current_global_position
-		
 		var current_tile = current_map.local_to_map(global_position)
 		if current_direction == LPCCharacter.DIRECTIONS.LEFT:
 			current_tile.x -= (extra_dimensions.grow_left + 1)
@@ -181,25 +182,37 @@ func remove_player() -> void:
 
 		var _target_position = current_map.get_tile_position(current_tile)
 		current_map.set_event_direction(player, current_direction)
+		
+		var real_start_pos = self.global_position + get_player_visual_offset()
+		
+		player.is_on_vehicle = false
+		player.current_vehicle = null
+		
+		player.reparent(current_map, false)
+		player.global_position = real_start_pos
+		
 		await _set_player_position(_target_position)
-		player.position = _target_position
-
+		
+		player.global_position = _target_position
+		
 		player.set_process(true)
 		player.set_process_input(true)
 		var camera = GameManager.get_camera()
 		if camera:
 			camera.remove_target_from_array(self)
 			camera.add_target_to_array(player)
+			
 		player.current_direction = current_direction
 		player.last_direction = current_direction
+		
 		var t = create_tween()
 		player.modulate.a = 0.8
-		player.is_on_vehicle = false
-		player.current_vehicle = null
 		t.tween_property(player, "modulate:a", 1.0, 0.25)
+		
 		player = null
 		
 	disembark_passenger()
+	GameManager.appear_followers()
 
 
 func board_passenger(passenger: LPCCharacter) -> void:

@@ -28,21 +28,22 @@ buses/default_bus_layout="uid://codo86bwyo1d8"
 
 [autoload]
 
+AssetManager="*uid://cmue1ho67colg"
 RPGSYSTEM="*res://addons/RPGMap/Scripts/system.gd"
 StartupWarning="*res://addons/RPGData/Scripts/startup_warning.gd"
 CheckVersionManager="*res://addons/RPGData/Scripts/check_version_manager.gd"
-PreloadSceneManager="*res://Scripts/preload_scene_manager.gd"
+PreloadSceneManager="*res://Scripts/IngameManagers/preload_scene_manager.gd"
 RPGDialogFunctions="*res://addons/CustomControls/Dialogs/rpg_dialog_functions.gd"
 CustomTooltipManager="*res://addons/CustomControls/custom_tooltip_manager.gd"
 GameMissionManager="*res://addons/RPGData/Scripts/GameDataScripts/game_mission_manager.gd"
 TranslationManager="*res://addons/AutoTranslatePlugins/translation_manager.gd"
-GameManager="*res://Scripts/game_manager.gd"
+GameManager="*res://Scripts/IngameManagers/game_manager.gd"
 GameInterpreter="*res://addons/RPGData/Scripts/Interpreter/main_interpreter.gd"
-QuestManager="*res://Scripts/quest_manager.gd"
+QuestManager="*res://Scripts/IngameManagers/quest_manager.gd"
 RPGMapsInfo="*res://addons/RPGMap/Scripts/maps_info.gd"
 DayNightManager="*res://Scripts/day_night_system.gd"
-ControllerManager="*res://Scripts/controller_manager.gd"
-SaveLoadManager="*res://Scripts/save_load_manager.gd"
+ControllerManager="*res://Scripts/IngameManagers/controller_manager.gd"
+SaveLoadManager="*res://Scripts/IngameManagers/save_load_manager.gd"
 
 [debug]
 
@@ -69,7 +70,7 @@ movie_writer/movie_file="C:/Users/nopap/Desktop/Pelis/preview.avi"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/AutoCallbackCreator/plugin.cfg", "res://addons/FileCache/plugin.cfg", "res://addons/RPGData/plugin.cfg", "res://addons/RPGMap/plugin.cfg", "res://addons/ScenePreview/plugin.cfg", "res://addons/SimpleTODO/plugin.cfg", "res://addons/effekseer/plugin.cfg", "res://addons/rpg_character_creator/plugin.cfg", "res://addons/rpg_database_export/plugin.cfg", "res://addons/rpg_scene_manager/plugin.cfg")
+enabled=PackedStringArray("res://addons/0ZipAssetLoader/plugin.cfg", "res://addons/AutoCallbackCreator/plugin.cfg", "res://addons/FileCache/plugin.cfg", "res://addons/RPGData/plugin.cfg", "res://addons/RPGMap/plugin.cfg", "res://addons/ScenePreview/plugin.cfg", "res://addons/SimpleTODO/plugin.cfg", "res://addons/effekseer/plugin.cfg", "res://addons/rpg_character_creator/plugin.cfg", "res://addons/rpg_database_export/plugin.cfg", "res://addons/rpg_scene_manager/plugin.cfg")
 
 [file_customization]
 

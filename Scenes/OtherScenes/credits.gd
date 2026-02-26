@@ -30,13 +30,13 @@ var initialized_timer: float = 2.5
 @onready var message_container: Control = %MessageContainer
 
 var files := [
-	"res://Assets/asset_credits.credits",
-	"res://addons/rpg_character_creator/Data/credits/character.credits",
-	"res://addons/rpg_character_creator/Data/credits/character_cm.credits",
-	"res://addons/rpg_character_creator/Data/credits/gear.credits",
-	"res://addons/rpg_character_creator/Data/credits/gear_cm.credits",
-	"res://addons/rpg_character_creator/Data/credits/projectiles.credits",
-	"res://addons/rpg_character_creator/Data/credits/spells.credits"
+	"res://Assets/asset_credits.lcc",
+	"res://addons/rpg_character_creator/Data/credits/character.lcc",
+	"res://addons/rpg_character_creator/Data/credits/character_cm.lcc",
+	"res://addons/rpg_character_creator/Data/credits/gear.lcc",
+	"res://addons/rpg_character_creator/Data/credits/gear_cm.lcc",
+	"res://addons/rpg_character_creator/Data/credits/projectiles.lcc",
+	"res://addons/rpg_character_creator/Data/credits/spells.lcc"
 ]
 
 var names := [
@@ -125,9 +125,17 @@ func _load_credits_thread() -> void:
 		_credits_array.append("[center][font_size=42][color=#ffc671]%s[/color][/font_size][/center]" % [names[i].to_upper()])
 		_credits_array.append("\n\n")
 		
-		var file = FileAccess.open(files[i], FileAccess.READ)
-		var json = JSON.parse_string(file.get_as_text())
-		file.close()
+		var json_text = ZipMediaLoader.get_text_content(files[i])
+		
+		if json_text.is_empty():
+			printerr("⚠️ Credits file not found or empty: ", files[i])
+			continue
+			
+		var json = JSON.parse_string(json_text)
+		
+		if not json:
+			printerr("❌ Error parsing credits JSON: ", files[i])
+			continue
 		
 		if "items" in json:
 			_credits_array.append("\n\n")

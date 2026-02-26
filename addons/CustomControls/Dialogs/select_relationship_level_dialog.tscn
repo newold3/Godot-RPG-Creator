@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dphok43ulr4dg"]
+[gd_scene format=3 uid="uid://dphok43ulr4dg"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_x5wea"]
 [ext_resource type="Script" uid="uid://det4eipc3r515" path="res://addons/CustomControls/Dialogs/select_relationship_level_dialog.gd" id="2_x5wea"]
@@ -14,7 +14,7 @@ gradient = SubResource("Gradient_vvvrv")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
-[node name="SelectRelationshipLevelDialog" type="Window"]
+[node name="SelectRelationshipLevelDialog" type="Window" unique_id=480030922]
 oversampling_override = 1.0
 title = "RelationShip Level"
 position = Vector2i(0, 36)
@@ -26,7 +26,7 @@ unresizable = true
 theme = ExtResource("1_x5wea")
 script = ExtResource("2_x5wea")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1926727739]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -34,7 +34,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_ykjfa")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=595868799]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -45,49 +45,49 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=80371956]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer" unique_id=130195080]
 layout_mode = 2
 text = "Current Level Name:"
 
-[node name="LevelName" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_xicnh")]
+[node name="LevelName" parent="MarginContainer/VBoxContainer" unique_id=2124146928 instance=ExtResource("3_xicnh")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Name used to identify this level"
 
-[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=2033919871]
 layout_mode = 2
 size_flags_vertical = 10
 theme_override_constants/separation = 12
 
-[node name="Lavel3" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="Lavel3" type="Label" parent="MarginContainer/VBoxContainer" unique_id=319400842]
 layout_mode = 2
-text = "Experience Required to Masterized level:"
+text = "Experience Required to Mastered level:"
 
-[node name="ExperienceToMasterize" parent="MarginContainer/VBoxContainer" instance=ExtResource("4_1qnrv")]
+[node name="ExperienceToMasterize" parent="MarginContainer/VBoxContainer" unique_id=1933470221 instance=ExtResource("4_1qnrv")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Base experience required to master this level. Once mastered, the relationship level with this NPC will increase to the next one on the list."
 min_value = 1.0
-value = 1.0
 allow_greater = true
+_custom_value = 0.0
 
-[node name="HSeparator3" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator3" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=845871799]
 layout_mode = 2
 size_flags_vertical = 10
 theme_override_constants/separation = 12
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=28647686]
 layout_mode = 2
 size_flags_vertical = 10
 alignment = 2
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_jyfds")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1574306784 instance=ExtResource("5_jyfds")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -96,7 +96,7 @@ tooltip_text = "[title]Ok[/title]
 Saves all changes and closes the windows."
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_jyfds")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=285777892 instance=ExtResource("5_jyfds")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3

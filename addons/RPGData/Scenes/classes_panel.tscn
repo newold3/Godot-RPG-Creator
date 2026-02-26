@@ -412,6 +412,8 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 default_tabs = Array[String](["General", "Parameters", "Skills And Properties", "Other"])
+drag_threshold = 10.0
+current_tab_unselected_text_outline_color = Color(0, 0, 0, 1)
 tab_name_base = ""
 background_color = Color(0, 0, 0, 0)
 tab_selected = null
@@ -1148,8 +1150,8 @@ wrap_mode = 1
 [connection signal="clicked" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer2/IconPicker" to="." method="_on_icon_picker_clicked"]
 [connection signal="paste_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer2/IconPicker" to="." method="_on_icon_picker_paste_requested"]
 [connection signal="remove_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer2/IconPicker" to="." method="_on_icon_picker_remove_requested"]
-[connection signal="text_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer/NameLineEdit" to="." method="_on_name_line_edit_text_changed_update_class_list"]
 [connection signal="text_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer/NameLineEdit" to="." method="_on_name_line_edit_text_changed"]
+[connection signal="text_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer/NameLineEdit" to="." method="_on_name_line_edit_text_changed_update_class_list"]
 [connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer3/MaxLevelSpinBox" to="." method="_on_max_level_spin_box_value_changed"]
 [connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer4/TickInterval" to="." method="_on_tick_interval_value_changed"]
 [connection signal="text_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3/DescriptionText" to="." method="_on_description_text_edit_text_changed"]

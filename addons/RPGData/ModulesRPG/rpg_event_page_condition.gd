@@ -12,6 +12,8 @@ func get_class(): return "RPGEventPageCondition"
 @export var use_variable: bool = false
 @export var use_item: bool = false
 @export var use_actor: bool = false
+@export var use_pressure: bool = false
+@export var pressure_targets: PackedInt64Array = [0]
 @export var switch1_id: int = 1
 @export var switch2_id: int = 1
 @export var local_switch_id: int = 0

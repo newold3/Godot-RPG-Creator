@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://b0srjsmjugonl"]
+[gd_scene format=3 uid="uid://b0srjsmjugonl"]
 
 [ext_resource type="Script" uid="uid://bump7pqmi3em1" path="res://addons/RPGData/Scripts/items_panel.gd" id="1_o7gbm"]
 [ext_resource type="PackedScene" uid="uid://pc2xir2w2ox2" path="res://addons/RPGData/Scenes/panel_title.tscn" id="2_fscur"]
@@ -17,7 +17,7 @@
 [ext_resource type="PackedScene" uid="uid://dxcyqc2dscbvw" path="res://addons/CustomControls/custom_simple_column_item_list.tscn" id="15_1lb0b"]
 [ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="16_m3f6y"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6s3bo"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m3f6y"]
 resource_local_to_scene = true
 content_margin_left = 3.0
 content_margin_right = 3.0
@@ -29,7 +29,7 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.113725, 0.133333, 0.160784, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kihu1"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jgvht"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 1
@@ -46,11 +46,11 @@ gradient = SubResource("Gradient_3obsl")
 fill_from = Vector2(0.547009, 1)
 fill_to = Vector2(0.559829, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rxxl6"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_h4tpd"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_mtkxg")
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_844mk"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1uq56"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_mtkxg")
 
@@ -71,7 +71,7 @@ texture = ExtResource("6_1lb0b")
 texture_margin_left = 18.0
 texture_margin_right = 18.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jgvht"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bmfo7"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -97,7 +97,7 @@ fill_to = Vector2(0.58547, 0)
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cqv4m"]
 texture = SubResource("GradientTexture2D_h4tpd")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1uq56"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q36ji"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -142,7 +142,7 @@ gradient = SubResource("Gradient_h4tpd")
 fill_from = Vector2(0.547009, 1)
 fill_to = Vector2(0.559829, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jgvht"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4nq6l"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_cqv4m")
 
@@ -179,7 +179,7 @@ region = Rect2(96, 192, 24, 24)
 atlas = ExtResource("16_m3f6y")
 region = Rect2(72, 192, 24, 24)
 
-[node name="ItemsPanel" type="HBoxContainer"]
+[node name="ItemsPanel" type="HBoxContainer" unique_id=618534947]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -188,35 +188,35 @@ grow_vertical = 2
 theme_override_constants/separation = 8
 script = ExtResource("1_o7gbm")
 
-[node name="LeftColumn" type="VBoxContainer" parent="."]
+[node name="LeftColumn" type="VBoxContainer" parent="." unique_id=1947655034]
 custom_minimum_size = Vector2(280, 0)
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="PanelTitle" parent="LeftColumn" instance=ExtResource("2_fscur")]
+[node name="PanelTitle" parent="LeftColumn" unique_id=1678035795 instance=ExtResource("2_fscur")]
 layout_mode = 2
 text = "Items"
 
-[node name="MainList" parent="LeftColumn" instance=ExtResource("3_2yhr2")]
+[node name="MainList" parent="LeftColumn" unique_id=1181096057 instance=ExtResource("3_2yhr2")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 tooltip_text = "[title]Items List[/title]
 Contains the list of items created. Select one to edit its properties."
 theme_override_constants/v_separation = -1
-theme_override_styles/panel = SubResource("StyleBoxFlat_6s3bo")
-theme_override_styles/focus = SubResource("StyleBoxFlat_6s3bo")
-theme_override_styles/hovered = SubResource("StyleBoxFlat_kihu1")
-theme_override_styles/selected = SubResource("StyleBoxTexture_rxxl6")
-theme_override_styles/selected_focus = SubResource("StyleBoxTexture_844mk")
+theme_override_styles/panel = SubResource("StyleBoxFlat_m3f6y")
+theme_override_styles/focus = SubResource("StyleBoxFlat_m3f6y")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_jgvht")
+theme_override_styles/selected = SubResource("StyleBoxTexture_h4tpd")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_1uq56")
 select_mode = 1
 odd_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 event_line_color = Color(0.145098, 0.156863, 0.164706, 1)
 
-[node name="HBoxContainer" type="HBoxContainer" parent="LeftColumn"]
+[node name="HBoxContainer" type="HBoxContainer" parent="LeftColumn" unique_id=843017633]
 layout_mode = 2
 
-[node name="AddDataButton" parent="LeftColumn/HBoxContainer" instance=ExtResource("4_johv4")]
+[node name="AddDataButton" parent="LeftColumn/HBoxContainer" unique_id=1081548546 instance=ExtResource("4_johv4")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -226,7 +226,7 @@ text = "Add
 Item"
 text_overrun_behavior = 3
 
-[node name="RemoveDataButton" parent="LeftColumn/HBoxContainer" instance=ExtResource("4_johv4")]
+[node name="RemoveDataButton" parent="LeftColumn/HBoxContainer" unique_id=1019171263 instance=ExtResource("4_johv4")]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.65)
 layout_mode = 2
@@ -238,88 +238,90 @@ text = "Delete
 Item"
 text_overrun_behavior = 3
 
-[node name="RightColumn" type="PanelContainer" parent="."]
+[node name="RightColumn" type="PanelContainer" parent="." unique_id=2137739960]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_0fgwc")
 
-[node name="MarginContainer" type="MarginContainer" parent="RightColumn"]
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn" unique_id=870901743]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer" unique_id=801466422]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer" unique_id=888234734]
 layout_mode = 2
 
-[node name="Control" type="Control" parent="RightColumn/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Control" type="Control" parent="RightColumn/MarginContainer/VBoxContainer/HBoxContainer" unique_id=13966476]
 custom_minimum_size = Vector2(16, 0)
 layout_mode = 2
 
-[node name="ConfigDataTabs" parent="RightColumn/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_8qhnf")]
+[node name="ConfigDataTabs" parent="RightColumn/MarginContainer/VBoxContainer/HBoxContainer" unique_id=2004819679 instance=ExtResource("5_8qhnf")]
 unique_name_in_owner = true
 clip_children = 0
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 default_tabs = Array[String](["General", "Actions", "Effects", "Recipes", "Other"])
+drag_threshold = 10.0
+current_tab_unselected_text_outline_color = Color(0, 0, 0, 1)
 tab_name_base = ""
 background_color = Color(0, 0, 0, 0)
 tab_selected = null
 stylebox_tab_selected = SubResource("StyleBoxTexture_m3f6y")
 
-[node name="ControlContainer" parent="RightColumn/MarginContainer/VBoxContainer" instance=ExtResource("5_s8epo")]
+[node name="ControlContainer" parent="RightColumn/MarginContainer/VBoxContainer" unique_id=558640531 instance=ExtResource("5_s8epo")]
 custom_minimum_size = Vector2(510, 160)
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_jgvht")
-style1 = SubResource("StyleBoxFlat_jgvht")
+theme_override_styles/panel = SubResource("StyleBoxFlat_bmfo7")
+style1 = SubResource("StyleBoxFlat_bmfo7")
 style2 = SubResource("StyleBoxTexture_cqv4m")
-style3 = SubResource("StyleBoxFlat_1uq56")
+style3 = SubResource("StyleBoxFlat_q36ji")
 
-[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer" unique_id=330539885]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="Tab1" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer"]
+[node name="Tab1" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer" unique_id=1980305943]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="General" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1"]
+[node name="General" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1" unique_id=1929464228]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_8qhnf")
 
-[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General"]
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General" unique_id=1602328529]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="GeneralSettings" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer"]
+[node name="GeneralSettings" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer" unique_id=236217983]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings"]
+[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings" unique_id=486245004]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer" unique_id=600722646]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer2"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer2" unique_id=1509974357]
 layout_mode = 2
 text = "Icon:"
 
-[node name="IconPicker" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer2" instance=ExtResource("6_e2e0q")]
+[node name="IconPicker" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer2" unique_id=205531497 instance=ExtResource("6_e2e0q")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
@@ -329,30 +331,30 @@ The image that is displayed together with the item name during gameplay. You can
 
 Mouse wheel click to erase the current image."
 
-[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer" unique_id=1536073569]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer" unique_id=243644979]
 layout_mode = 2
 text = "Name:"
 
-[node name="NameLineEdit" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer" instance=ExtResource("7_wsoya")]
+[node name="NameLineEdit" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer" unique_id=572009451 instance=ExtResource("7_wsoya")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 6
 tooltip_text = "[title]Item Name[/title]
 The name of the item. If the name is too long, it may not be completely displayed on the Play Screen."
 
-[node name="HBoxContainer4" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings"]
+[node name="HBoxContainer4" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings" unique_id=316304881]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer4"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer4" unique_id=272577454]
 layout_mode = 2
 text = "Description:"
 
-[node name="DescriptionTextEdit" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer4" instance=ExtResource("8_phwyt")]
+[node name="DescriptionTextEdit" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer4" unique_id=1016045801 instance=ExtResource("8_phwyt")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
@@ -360,18 +362,18 @@ tooltip_text = "[title]Description[/title]
 The description that appears when an item is selected in the Play Screen."
 wrap_mode = 1
 
-[node name="HboxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings"]
+[node name="HboxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings" unique_id=241764113]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HboxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HboxContainer" unique_id=1424864652]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HboxContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HboxContainer/VBoxContainer" unique_id=1288224428]
 layout_mode = 2
 text = "Item Type:"
 
-[node name="ItemTypeOptions" type="OptionButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HboxContainer/VBoxContainer"]
+[node name="ItemTypeOptions" type="OptionButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HboxContainer/VBoxContainer" unique_id=1170040643]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -402,15 +404,15 @@ popup/item_6/text = "Hidden Item 5"
 popup/item_6/id = 6
 script = ExtResource("9_mb5nf")
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HboxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HboxContainer" unique_id=1570348828]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HboxContainer/VBoxContainer2"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HboxContainer/VBoxContainer2" unique_id=593501737]
 layout_mode = 2
 text = "Item Category:"
 
-[node name="ItemCategoryOptions" type="OptionButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HboxContainer/VBoxContainer2"]
+[node name="ItemCategoryOptions" type="OptionButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HboxContainer/VBoxContainer2" unique_id=4959834]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -419,18 +421,18 @@ Category to classify the item in the menu of items."
 mouse_default_cursor_shape = 2
 script = ExtResource("9_mb5nf")
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings" unique_id=1558033562]
 layout_mode = 2
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3"]
+[node name="VBoxContainer3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3" unique_id=1165038963]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3/VBoxContainer3"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3/VBoxContainer3" unique_id=1615921981]
 layout_mode = 2
 text = "Item Rarity:"
 
-[node name="ItemRarityTypeOptions" type="OptionButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3/VBoxContainer3"]
+[node name="ItemRarityTypeOptions" type="OptionButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3/VBoxContainer3" unique_id=424253773]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -441,15 +443,15 @@ Choose the rarity for this object.
 mouse_default_cursor_shape = 2
 script = ExtResource("9_mb5nf")
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3" unique_id=841929991]
 custom_minimum_size = Vector2(140, 0)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3/VBoxContainer2"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3/VBoxContainer2" unique_id=1235888518]
 layout_mode = 2
 text = "Price:"
 
-[node name="PriceSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3/VBoxContainer2" instance=ExtResource("9_peh6x")]
+[node name="PriceSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3/VBoxContainer2" unique_id=1072490369 instance=ExtResource("9_peh6x")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "The price when purchasing the item in a shop.
@@ -458,15 +460,15 @@ tooltip_text = "The price when purchasing the item in a shop.
 allow_greater = true
 _custom_value = 0.0
 
-[node name="VBoxContainer4" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3"]
+[node name="VBoxContainer4" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3" unique_id=1850253283]
 layout_mode = 2
 size_flags_horizontal = 0
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3/VBoxContainer4"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3/VBoxContainer4" unique_id=1539762443]
 layout_mode = 2
 text = "Consumable:"
 
-[node name="ConsumableOptions" type="OptionButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3/VBoxContainer4"]
+[node name="ConsumableOptions" type="OptionButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3/VBoxContainer4" unique_id=1088029015]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(110, 31)
 layout_mode = 2
@@ -483,18 +485,18 @@ popup/item_1/text = "No"
 popup/item_1/id = 1
 script = ExtResource("9_mb5nf")
 
-[node name="HboxContainer2" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings"]
+[node name="HboxContainer2" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings" unique_id=290183406]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HboxContainer2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HboxContainer2" unique_id=1666804980]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HboxContainer2/VBoxContainer"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HboxContainer2/VBoxContainer" unique_id=619476149]
 layout_mode = 2
 text = "Scope:"
 
-[node name="ScopeButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HboxContainer2/VBoxContainer" instance=ExtResource("10_52w3s")]
+[node name="ScopeButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HboxContainer2/VBoxContainer" unique_id=1978344798 instance=ExtResource("10_52w3s")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -511,15 +513,15 @@ Can only be set for allies.[/cell]
 [/table]"
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HboxContainer2"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HboxContainer2" unique_id=1543957165]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HboxContainer2/VBoxContainer2"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HboxContainer2/VBoxContainer2" unique_id=981883012]
 layout_mode = 2
 text = "Ocassion:"
 
-[node name="OccasionOptions" type="OptionButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HboxContainer2/VBoxContainer2"]
+[node name="OccasionOptions" type="OptionButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HboxContainer2/VBoxContainer2" unique_id=1922405998]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 31)
 layout_mode = 2
@@ -546,36 +548,36 @@ popup/item_3/text = "Never"
 popup/item_3/id = 3
 script = ExtResource("9_mb5nf")
 
-[node name="Perishable" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1"]
+[node name="Perishable" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1" unique_id=1848097102]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_8qhnf")
 
-[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Perishable"]
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Perishable" unique_id=743918821]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="Perishable" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Perishable/MarginContainer"]
+[node name="Perishable" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Perishable/MarginContainer" unique_id=554809623]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Perishable/MarginContainer/Perishable"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Perishable/MarginContainer/Perishable" unique_id=1280766758]
 layout_mode = 2
 text = "Perishable Options"
 
-[node name="HboxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Perishable/MarginContainer/Perishable"]
+[node name="HboxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Perishable/MarginContainer/Perishable" unique_id=1399550798]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Perishable/MarginContainer/Perishable/HboxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Perishable/MarginContainer/Perishable/HboxContainer" unique_id=966052706]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Perishable/MarginContainer/Perishable/HboxContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Perishable/MarginContainer/Perishable/HboxContainer/VBoxContainer" unique_id=1457234565]
 layout_mode = 2
 text = "Is a perishable item?"
 
-[node name="IsPerishableOptionButton" type="OptionButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Perishable/MarginContainer/Perishable/HboxContainer/VBoxContainer"]
+[node name="IsPerishableOptionButton" type="OptionButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Perishable/MarginContainer/Perishable/HboxContainer/VBoxContainer" unique_id=976630779]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "[title]Is Perishable Item?[/title]
@@ -591,16 +593,16 @@ popup/item_1/text = "Yes"
 popup/item_1/id = 1
 script = ExtResource("9_mb5nf")
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Perishable/MarginContainer/Perishable/HboxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Perishable/MarginContainer/Perishable/HboxContainer" unique_id=210365178]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Perishable/MarginContainer/Perishable/HboxContainer/VBoxContainer2"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Perishable/MarginContainer/Perishable/HboxContainer/VBoxContainer2" unique_id=730805654]
 layout_mode = 2
 text = "Duration:"
 
-[node name="PerishableDurationSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Perishable/MarginContainer/Perishable/HboxContainer/VBoxContainer2" instance=ExtResource("9_peh6x")]
+[node name="PerishableDurationSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Perishable/MarginContainer/Perishable/HboxContainer/VBoxContainer2" unique_id=1468776843 instance=ExtResource("9_peh6x")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "[title]Perishing Time[/title]
@@ -610,14 +612,14 @@ allow_greater = true
 suffix = " seconds"
 _custom_value = 0.0
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Perishable/MarginContainer/Perishable/HboxContainer"]
+[node name="VBoxContainer3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Perishable/MarginContainer/Perishable/HboxContainer" unique_id=1951314992]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Perishable/MarginContainer/Perishable/HboxContainer/VBoxContainer3"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Perishable/MarginContainer/Perishable/HboxContainer/VBoxContainer3" unique_id=1636093913]
 layout_mode = 2
 text = "Action on perishing:"
 
-[node name="PerishableActionOptionButton" type="OptionButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Perishable/MarginContainer/Perishable/HboxContainer/VBoxContainer3"]
+[node name="PerishableActionOptionButton" type="OptionButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Perishable/MarginContainer/Perishable/HboxContainer/VBoxContainer3" unique_id=358902064]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "[title]Action On Perishing[/title]
@@ -635,14 +637,14 @@ popup/item_1/text = "Transform Into"
 popup/item_1/id = 1
 script = ExtResource("9_mb5nf")
 
-[node name="HboxContainer2" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Perishable/MarginContainer/Perishable"]
+[node name="HboxContainer2" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Perishable/MarginContainer/Perishable" unique_id=1984035527]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Perishable/MarginContainer/Perishable/HboxContainer2"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Perishable/MarginContainer/Perishable/HboxContainer2" unique_id=562478103]
 layout_mode = 2
 text = "Item Conversion:"
 
-[node name="PerishableItemConversionButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Perishable/MarginContainer/Perishable/HboxContainer2" instance=ExtResource("10_52w3s")]
+[node name="PerishableItemConversionButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Perishable/MarginContainer/Perishable/HboxContainer2" unique_id=969094182 instance=ExtResource("10_52w3s")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -652,42 +654,42 @@ tooltip_text = "[title]Item Conversion[/title]
 Choose which item this item will become at the end of its lifetime."
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 
-[node name="Tab2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer"]
+[node name="Tab2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer" unique_id=960666717]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="Invocation" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2"]
+[node name="Invocation" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2" unique_id=353766520]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_8qhnf")
 
-[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation"]
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation" unique_id=1957640079]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="Invocation" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer"]
+[node name="Invocation" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer" unique_id=706346194]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation" unique_id=1814830676]
 layout_mode = 2
 text = "Invocation Parameters"
 
-[node name="HboxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation"]
+[node name="HboxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation" unique_id=1961334523]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation/HboxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation/HboxContainer" unique_id=64250874]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation/HboxContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation/HboxContainer/VBoxContainer" unique_id=1228992604]
 layout_mode = 2
 text = "Speed:"
 
-[node name="SpeedSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation/HboxContainer/VBoxContainer" instance=ExtResource("9_peh6x")]
+[node name="SpeedSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation/HboxContainer/VBoxContainer" unique_id=801119632 instance=ExtResource("9_peh6x")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "[title]Invocation Speed[/title]
@@ -697,15 +699,15 @@ allow_greater = true
 allow_lesser = true
 _custom_value = 0.0
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation/HboxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation/HboxContainer" unique_id=1925888832]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation/HboxContainer/VBoxContainer2"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation/HboxContainer/VBoxContainer2" unique_id=379097759]
 layout_mode = 2
 text = "Success:"
 
-[node name="SuccessSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation/HboxContainer/VBoxContainer2" instance=ExtResource("9_peh6x")]
+[node name="SuccessSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation/HboxContainer/VBoxContainer2" unique_id=1947884993 instance=ExtResource("9_peh6x")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "[title]Invocation Sucess[/title]
@@ -714,15 +716,15 @@ allow_greater = true
 suffix = " %"
 _custom_value = 0.0
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation"]
+[node name="VBoxContainer3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation" unique_id=1425754276]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation/VBoxContainer3"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation/VBoxContainer3" unique_id=513214320]
 layout_mode = 2
 text = "Repeat:"
 
-[node name="RepeatSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation/VBoxContainer3" instance=ExtResource("9_peh6x")]
+[node name="RepeatSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation/VBoxContainer3" unique_id=743201906 instance=ExtResource("9_peh6x")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "[title]Invocation Repeat[/title]
@@ -731,15 +733,15 @@ min_value = 1.0
 allow_greater = true
 _custom_value = 0.0
 
-[node name="VBoxContainer4" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation"]
+[node name="VBoxContainer4" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation" unique_id=1269288064]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation/VBoxContainer4"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation/VBoxContainer4" unique_id=2135968114]
 layout_mode = 2
 text = "TP Gain:"
 
-[node name="TPGainSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation/VBoxContainer4" instance=ExtResource("9_peh6x")]
+[node name="TPGainSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation/VBoxContainer4" unique_id=334332891 instance=ExtResource("9_peh6x")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "[title]Invocation TP Gain[/title]
@@ -748,15 +750,15 @@ min_value = 1.0
 allow_greater = true
 _custom_value = 0.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation"]
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation" unique_id=1372025513]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation/VBoxContainer"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation/VBoxContainer" unique_id=676968142]
 layout_mode = 2
 text = "Hit Type:"
 
-[node name="HitTypeOptions" type="OptionButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation/VBoxContainer"]
+[node name="HitTypeOptions" type="OptionButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation/VBoxContainer" unique_id=1783537041]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "[title]Invocation Hit Type[/title]
@@ -778,15 +780,15 @@ popup/item_2/text = "Magical Attack"
 popup/item_2/id = 2
 script = ExtResource("9_mb5nf")
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation" unique_id=648943923]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation/VBoxContainer2"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation/VBoxContainer2" unique_id=944776403]
 layout_mode = 2
 text = "Animation:"
 
-[node name="AnimationButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation/VBoxContainer2" instance=ExtResource("10_52w3s")]
+[node name="AnimationButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation/VBoxContainer2" unique_id=448953949 instance=ExtResource("10_52w3s")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -798,37 +800,37 @@ Animations that appear when the item is used during battle.
 Mouse wheel click  to select \"none\" animation, Right Click to select \"Normal Attack\""
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 
-[node name="Damage" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2"]
+[node name="Damage" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2" unique_id=113207812]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_8qhnf")
 
-[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage"]
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage" unique_id=1694675661]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="Damage" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer"]
+[node name="Damage" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer" unique_id=882407914]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage" unique_id=1149449600]
 layout_mode = 2
 text = "Damage"
 
-[node name="HboxContainer2" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage"]
+[node name="HboxContainer2" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage" unique_id=364247741]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage/HboxContainer2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage/HboxContainer2" unique_id=582836500]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage/HboxContainer2/VBoxContainer"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage/HboxContainer2/VBoxContainer" unique_id=1574225923]
 layout_mode = 2
 text = "Type:"
 
-[node name="DamageTypeOptions" type="OptionButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage/HboxContainer2/VBoxContainer"]
+[node name="DamageTypeOptions" type="OptionButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage/HboxContainer2/VBoxContainer" unique_id=1299592252]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 31)
 layout_mode = 2
@@ -860,15 +862,15 @@ popup/item_6/text = "MP Drain"
 popup/item_6/id = 6
 script = ExtResource("9_mb5nf")
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage/HboxContainer2"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage/HboxContainer2" unique_id=106119423]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage/HboxContainer2/VBoxContainer2"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage/HboxContainer2/VBoxContainer2" unique_id=244097081]
 layout_mode = 2
 text = "Element:"
 
-[node name="DamageElementOptions" type="OptionButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage/HboxContainer2/VBoxContainer2"]
+[node name="DamageElementOptions" type="OptionButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage/HboxContainer2/VBoxContainer2" unique_id=1362900785]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 31)
 layout_mode = 2
@@ -878,14 +880,14 @@ The element that is assigned to an effect."
 mouse_default_cursor_shape = 2
 script = ExtResource("9_mb5nf")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage"]
+[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage" unique_id=1294734959]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage/HBoxContainer"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage/HBoxContainer" unique_id=1859865148]
 layout_mode = 2
 text = "Formula:"
 
-[node name="DamageFormulaLineEdit" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage/HBoxContainer" instance=ExtResource("7_wsoya")]
+[node name="DamageFormulaLineEdit" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage/HBoxContainer" unique_id=227977353 instance=ExtResource("7_wsoya")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -916,11 +918,11 @@ The following parameters can be used:
 [cell][color=#91e1ff]  x.re:[/color][/cell] [cell]Recovery Effect[/cell]
 [/table]"
 
-[node name="Control" type="Control" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage/HBoxContainer"]
+[node name="Control" type="Control" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage/HBoxContainer" unique_id=1248444599]
 custom_minimum_size = Vector2(37, 35)
 layout_mode = 2
 
-[node name="DamageSetFormulaButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage/HBoxContainer/Control" instance=ExtResource("4_johv4")]
+[node name="DamageSetFormulaButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage/HBoxContainer/Control" unique_id=1819758715 instance=ExtResource("4_johv4")]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -935,18 +937,18 @@ tooltip_text = "[title]Generate Fast Formula Button[/title]
 Opens a dialog to quickly generate a formula."
 text = "Set"
 
-[node name="HboxContainer3" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage"]
+[node name="HboxContainer3" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage" unique_id=1911103485]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage/HboxContainer3"]
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage/HboxContainer3" unique_id=290760414]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage/HboxContainer3/VBoxContainer"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage/HboxContainer3/VBoxContainer" unique_id=1592013753]
 layout_mode = 2
 text = "Variance:"
 
-[node name="DamageVarianceSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage/HboxContainer3/VBoxContainer" instance=ExtResource("9_peh6x")]
+[node name="DamageVarianceSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage/HboxContainer3/VBoxContainer" unique_id=279301496 instance=ExtResource("9_peh6x")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "[title]Damage Variance[/title]
@@ -954,14 +956,14 @@ How much the effectiveness of the skill varies (0 to 100%). Raise or lower the c
 suffix = " %"
 _custom_value = 0.0
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage/HboxContainer3"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage/HboxContainer3" unique_id=1474002960]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage/HboxContainer3/VBoxContainer2"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage/HboxContainer3/VBoxContainer2" unique_id=445902801]
 layout_mode = 2
 text = "Critical Hits:"
 
-[node name="DamageCriticalHitsOptions" type="OptionButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage/HboxContainer3/VBoxContainer2"]
+[node name="DamageCriticalHitsOptions" type="OptionButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage/HboxContainer3/VBoxContainer2" unique_id=1241252942]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(110, 31)
 layout_mode = 2
@@ -978,76 +980,76 @@ popup/item_1/text = "No"
 popup/item_1/id = 1
 script = ExtResource("9_mb5nf")
 
-[node name="Tab3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer"]
+[node name="Tab3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer" unique_id=1740214775]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="Effects" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3"]
+[node name="Effects" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3" unique_id=1451693967]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_8qhnf")
 
-[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Effects"]
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Effects" unique_id=1471418156]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Effects/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Effects/MarginContainer" unique_id=650506712]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Effects/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Effects/MarginContainer/VBoxContainer" unique_id=541148357]
 layout_mode = 2
 text = "Effects"
 
-[node name="Effects" type="ScrollContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Effects/MarginContainer/VBoxContainer"]
+[node name="Effects" type="ScrollContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Effects/MarginContainer/VBoxContainer" unique_id=1174367321]
 layout_mode = 2
 size_flags_vertical = 3
 vertical_scroll_mode = 0
 
-[node name="EffectsPanel" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Effects/MarginContainer/VBoxContainer/Effects" instance=ExtResource("11_js38s")]
+[node name="EffectsPanel" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Effects/MarginContainer/VBoxContainer/Effects" unique_id=1162751245 instance=ExtResource("11_js38s")]
 unique_name_in_owner = true
 layout_mode = 2
 itemlist_tooltip = "[title]Effect List[/title]
 Details of effects other than damage. Configure in the [Effects] window that appears after double-clicking."
 
-[node name="Tab4" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer"]
+[node name="Tab4" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer" unique_id=17142931]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="Recipies" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4"]
+[node name="Recipies" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4" unique_id=1554504514]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_8qhnf")
 
-[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Recipies"]
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Recipies" unique_id=1946675224]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Recipies/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Recipies/MarginContainer" unique_id=2145603144]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Recipies/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Recipies/MarginContainer/VBoxContainer" unique_id=1176681115]
 layout_mode = 2
 text = "Recipies"
 
-[node name="Recipies" type="ScrollContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Recipies/MarginContainer/VBoxContainer"]
+[node name="Recipies" type="ScrollContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Recipies/MarginContainer/VBoxContainer" unique_id=1312291732]
 layout_mode = 2
 size_flags_vertical = 3
 vertical_scroll_mode = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Recipies/MarginContainer/VBoxContainer/Recipies"]
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Recipies/MarginContainer/VBoxContainer/Recipies" unique_id=768542929]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="RecipesPanel" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Recipies/MarginContainer/VBoxContainer/Recipies/MarginContainer" instance=ExtResource("15_1lb0b")]
+[node name="RecipesPanel" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Recipies/MarginContainer/VBoxContainer/Recipies/MarginContainer" unique_id=399478687 instance=ExtResource("15_1lb0b")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1055,7 +1057,7 @@ size_flags_vertical = 3
 odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
 event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 top_bar_style = SubResource("StyleBoxTexture_nyjph")
-cursor_style = SubResource("StyleBoxTexture_jgvht")
+cursor_style = SubResource("StyleBoxTexture_4nq6l")
 panel_style = SubResource("StyleBoxFlat_epxdh")
 names = PackedStringArray("Name of the recipe")
 placeholder_text = "Add new recipie..."
@@ -1064,10 +1066,10 @@ itemlist_tooltip = "[title]Recipe List[/title]
 List of recipes added to the selected item. Each of these recipes can be used to create one or more items of this type."
 padding_start_char = "📜 "
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Recipies/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Recipies/MarginContainer/VBoxContainer" unique_id=1493269141]
 layout_mode = 2
 
-[node name="DisassembleButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Recipies/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("10_52w3s")]
+[node name="DisassembleButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Recipies/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=821241452 instance=ExtResource("10_52w3s")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -1078,7 +1080,7 @@ Materials obtained by dismantling this item."
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 text = "Disassemble"
 
-[node name="CopyDisassemble" type="TextureButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Recipies/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="CopyDisassemble" type="TextureButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Recipies/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=883122891]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -1089,7 +1091,7 @@ texture_normal = SubResource("AtlasTexture_nyjph")
 texture_hover = SubResource("AtlasTexture_h4tpd")
 texture_disabled = SubResource("AtlasTexture_cqv4m")
 
-[node name="PasteDisassemble" type="TextureButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Recipies/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="PasteDisassemble" type="TextureButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/Recipies/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1229696797]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -1101,39 +1103,39 @@ texture_normal = SubResource("AtlasTexture_1uq56")
 texture_hover = SubResource("AtlasTexture_epxdh")
 texture_disabled = SubResource("AtlasTexture_bmfo7")
 
-[node name="Tab5" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer"]
+[node name="Tab5" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer" unique_id=2133162378]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="BattleMessage" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5"]
+[node name="BattleMessage" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5" unique_id=1663809480]
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.65
 theme_override_styles/panel = SubResource("StyleBoxFlat_8qhnf")
 
-[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5/BattleMessage"]
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5/BattleMessage" unique_id=1153438732]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="Message" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5/BattleMessage/MarginContainer"]
+[node name="Message" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5/BattleMessage/MarginContainer" unique_id=2058649890]
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.4
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5/BattleMessage/MarginContainer/Message"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5/BattleMessage/MarginContainer/Message" unique_id=1132107352]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5/BattleMessage/MarginContainer/Message/HBoxContainer2"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5/BattleMessage/MarginContainer/Message/HBoxContainer2" unique_id=1497042002]
 layout_mode = 2
 text = "Battle Message:"
 
-[node name="AutoMessageOptions" type="OptionButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5/BattleMessage/MarginContainer/Message/HBoxContainer2"]
+[node name="AutoMessageOptions" type="OptionButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5/BattleMessage/MarginContainer/Message/HBoxContainer2" unique_id=1857579258]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
@@ -1153,7 +1155,7 @@ popup/item_3/text = "A Employs B!"
 popup/item_3/id = 2
 script = ExtResource("9_mb5nf")
 
-[node name="BattleMessageTextEdit" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5/BattleMessage/MarginContainer/Message" instance=ExtResource("8_phwyt")]
+[node name="BattleMessageTextEdit" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5/BattleMessage/MarginContainer/Message" unique_id=1690571687 instance=ExtResource("8_phwyt")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
@@ -1165,27 +1167,27 @@ Assign a fixed phrase that appears during battle when this item is used in battl
 [Note]: Messages must be one line long. If more than one line is specified, each line will be treated as a separate message, and one will be randomly selected to display."
 wrap_mode = 1
 
-[node name="Notes" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5"]
+[node name="Notes" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5" unique_id=717024212]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_8qhnf")
 
-[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5/Notes"]
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5/Notes" unique_id=888175495]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="Notes" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5/Notes/MarginContainer"]
+[node name="Notes" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5/Notes/MarginContainer" unique_id=170169072]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5/Notes/MarginContainer/Notes"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5/Notes/MarginContainer/Notes" unique_id=1506279663]
 layout_mode = 2
 text = "Notes"
 
-[node name="NoteTextEdit" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5/Notes/MarginContainer/Notes" instance=ExtResource("8_phwyt")]
+[node name="NoteTextEdit" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5/Notes/MarginContainer/Notes" unique_id=1266698493 instance=ExtResource("8_phwyt")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3

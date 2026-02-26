@@ -184,7 +184,9 @@ func _on_unavailable_color_changed(color: Color) -> void:
 
 func _on_reset_colors_pressed() -> void:
 	get_data().set_default_colors()
+	get_data().changed.emit()
 	_fill_colors()
+	RPGEditorToast.show_message("Profession range color reset")
 
 
 func _on_copy_weights_pressed() -> void:
@@ -206,6 +208,7 @@ func _on_copy_levels_pressed() -> void:
 		levels.append(level.clone(true))
 	StaticEditorVars.CLIPBOARD.profession_levels = levels
 	%PasteLevels.set_disabled(false)
+	RPGEditorToast.show_message("Profession levels copied into Clipboard")
 
 
 func _on_paste_levels_pressed() -> void:

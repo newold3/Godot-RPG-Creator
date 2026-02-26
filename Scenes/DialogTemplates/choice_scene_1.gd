@@ -241,7 +241,7 @@ func set_data(config: Dictionary, options: PackedStringArray) -> void:
 		if fx in config:
 			var data = config.get(fx, {})
 			var audio_path = data.get("path", "")
-			if ResourceLoader.exists(audio_path):
+			if AssetManager.exists(audio_path):
 				set(fx, {
 					"stream": load(audio_path),
 					"volume": data.get("volume", 0),
@@ -315,7 +315,7 @@ func _preccalculate_dialog_size() -> void:
 			
 	var align = HORIZONTAL_ALIGNMENT_LEFT
 	var font: String = format_config.get("font", "res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf")
-	if ResourceLoader.exists(font):
+	if AssetManager.exists(font):
 		current_text_font = load(font)
 		var text_size: int = format_config.get("text_size", 22)
 		var page_text = " (%s %s / %s)" % [tr("Page"), max_pages, max_pages]
@@ -360,7 +360,7 @@ func set_options(options: PackedStringArray, start_index: int = 0) -> void:
 	var font = format_config.get("font")
 	if font == null:
 		font = "res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf"
-	if ResourceLoader.exists(font):
+	if AssetManager.exists(font):
 		current_text_font = load(font)
 	var text_color = format_config.get("text_color")
 	if text_color == null:

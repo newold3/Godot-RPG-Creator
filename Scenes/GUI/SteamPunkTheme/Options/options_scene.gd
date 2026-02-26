@@ -92,7 +92,7 @@ func _fill_locales() -> void:
 
 func _load_options() -> void:
 	var path = "user://game_options.res"
-	if ResourceLoader.exists(path):
+	if AssetManager.exists(path):
 		current_options = load(path)
 		options_changed = false
 	else:

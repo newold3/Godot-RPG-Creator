@@ -150,7 +150,7 @@ func set_data_colors(colors: Dictionary) -> void:
 		node.add_item(tr("All colors in palette..."))
 		node.set_item_disabled(node.get_item_count() - 1, true)
 	
-	var f = FileAccess.open("res://addons/rpg_character_creator/Data/ColorMaps/color_list.json", FileAccess.READ)
+	var f = FileAccess.open("res://addons/rpg_character_creator/Data/ColorMaps/color_list.lcc", FileAccess.READ)
 	var json = f.get_as_text()
 	f.close()
 	var color_list = JSON.parse_string(json)

@@ -64,6 +64,53 @@ signal animation_finished()
 func _ready() -> void:
 	scale = Vector2(current_zoom, current_zoom)
 
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_EDITOR_PRE_SAVE:
+		clear_all()
+
+
+func clear_all() -> void:
+	if current_character:
+		if current_character.changed.is_connected(_refresh_character):
+			current_character.changed.disconnect(_refresh_character)
+		current_character = null
+	
+	var textures = [
+		$WingsBack/WingsBack, $OffhandBack/OffHandBack, $WeaponBack/MainHandBack, 
+		$Body/BackBack, $Body/TailBack, $Body/Body, $Body/Add2, $Body/Suit, 
+		$Body/Pants, $Body/Shoes, $Body/Gloves, $Body/Shirt, $Body/Belt, 
+		$Body/Add3, $Body/Jacket, $Body/Head, $Body/Eyes, $Body/Facial, 
+		$Body/Ears, $Body/Nose, $Body/Add1, $Body/Mask, $Body/Glasses, 
+		$Body/Hair, $Body/HairAdd, $Body/Hat, $Body/TailFront, $Body/BackFront, 
+		$Body/WingsFront, $Body/Horns, $OffHandFront/OffHandFront, 
+		$WeaponFront/MainHandFront, $Ammo/AmmoBack, $Ammo/AmmoFront
+	]
+	
+	for node in textures:
+		if is_instance_valid(node):
+			node.texture = null
+			
+			var mat = node.material as ShaderMaterial
+			if mat:
+				mat.set_shader_parameter("mask1", null)
+				mat.set_shader_parameter("mask2", null)
+				mat.set_shader_parameter("mask3", null)
+				mat.set_shader_parameter("mask4", null)
+				mat.set_shader_parameter("mask5", null)
+				mat.set_shader_parameter("mask6", null)
+				
+				mat.set_shader_parameter("palette1", PackedColorArray())
+				mat.set_shader_parameter("palette2", PackedColorArray())
+				mat.set_shader_parameter("palette3", PackedColorArray())
+
+	extra_hidden_layers.clear()
+	current_weapon_id = ""
+	current_weapon_images.clear()
+	current_actions.clear()
+	
+	offhand_back.visible = true
+	mainhand_back.visible = true
+
 
 func set_character(_character: RPGLPCCharacter, _hidden_layers: Array) -> void:
 	current_character = _character
@@ -158,12 +205,9 @@ func _process(delta: float) -> void:
 
 func _play_fx() -> void:
 	if current_animation == "shoot":
-		var fx = ResourceLoader.load("res://addons/rpg_character_creator/sounds/bow_draw.ogg")
-		var audio_stream_player = AudioStreamPlayer.new()
-		audio_stream_player.stream = fx
-		audio_stream_player.finished.connect(func(): audio_stream_player.queue_free())
-		add_child(audio_stream_player)
-		audio_stream_player.play()
+		var fx = ZipMediaLoader.get_audio_stream("res://addons/rpg_character_creator/sounds/bow_draw.ogg")
+		if fx:
+			_spawn_audio_player(fx)
 		
 	elif weapon_data:
 		var part_id = current_character.equipment_parts.mainhand.part_id
@@ -174,13 +218,18 @@ func _play_fx() -> void:
 				var sound_path = _weapon_data.sounds[randi() % _weapon_data.sounds.size()]
 				var plugin_path = "res://addons/rpg_character_creator/"
 				sound_path = plugin_path.path_join(sound_path)
-				if ResourceLoader.exists(sound_path):
-					var fx = ResourceLoader.load(sound_path)
-					var audio_stream_player = AudioStreamPlayer.new()
-					audio_stream_player.stream = fx
-					audio_stream_player.finished.connect(func(): audio_stream_player.queue_free())
-					add_child(audio_stream_player)
-					audio_stream_player.play()
+				
+				var fx = ZipMediaLoader.get_audio_stream(sound_path)
+				if fx:
+					_spawn_audio_player(fx)
+
+
+func _spawn_audio_player(stream: AudioStream) -> void:
+	var audio_stream_player = AudioStreamPlayer.new()
+	audio_stream_player.stream = stream
+	audio_stream_player.finished.connect(func(): audio_stream_player.queue_free())
+	add_child(audio_stream_player)
+	audio_stream_player.play()
 
 
 func stop() -> void:
@@ -237,7 +286,7 @@ func _load_part(tex_back_path: String, tex_front_path: String, targets: Dictiona
 	var final_front_path: String = tex_front_path
 
 	# Check for Alternative Configuration (Alt)
-	if data.get("is_alt") and FileAccess.file_exists(data.get("alt_config_path")):
+	if data.get("is_alt") and AssetManager.file_exists(data.get("alt_config_path")):
 		var alt_json: Dictionary = _get_json_data(data.get("alt_config_path"))
 		var alt_texture_data: Dictionary = _find_best_texture_match(alt_json, current_character.body_type, current_character.head_type)
 		if "back" in alt_texture_data:
@@ -250,8 +299,8 @@ func _load_part(tex_back_path: String, tex_front_path: String, targets: Dictiona
 				final_front_path = BASE_DIR.path_join(final_front_path)
 
 	# Load Textures
-	var tex_back: Texture2D = load(final_back_path) if ResourceLoader.exists(final_back_path) else null
-	var tex_front: Texture2D = load(final_front_path) if ResourceLoader.exists(final_front_path) else null
+	var tex_back: Texture2D = load(final_back_path) if AssetManager.file_exists(final_back_path) else null
+	var tex_front: Texture2D = load(final_front_path) if AssetManager.file_exists(final_front_path) else null
 
 	# Map target keys to the texture they should receive
 	var assignments: Dictionary = {
@@ -553,7 +602,7 @@ func run_animation(force_animation: bool = false) -> void:
 			if not path.begins_with("res://"):
 				path = BASE_DIR.path_join(path)
 			if not tex1.texture or tex1.texture.get_path() != path:
-				if ResourceLoader.exists(path):
+				if AssetManager.file_exists(path):
 					tex1.texture = load(path)
 				else:
 					tex1.texture = null
@@ -563,7 +612,7 @@ func run_animation(force_animation: bool = false) -> void:
 			if not path.begins_with("res://"):
 				path = BASE_DIR.path_join(path)
 			if not tex2.texture or tex2.texture.get_path() != path:
-				if ResourceLoader.exists(path):
+				if AssetManager.file_exists(path):
 					tex2.texture = load(path)
 				else:
 					tex2.texture = null
@@ -576,7 +625,7 @@ func run_animation(force_animation: bool = false) -> void:
 			if not path.begins_with("res://"):
 				path = BASE_DIR.path_join(path)
 			if not tex1.texture or tex1.texture.get_path() != path:
-				if ResourceLoader.exists(path):
+				if AssetManager.file_exists(path):
 					tex1.texture = load(path)
 				else:
 					tex1.texture = null
@@ -586,7 +635,7 @@ func run_animation(force_animation: bool = false) -> void:
 			if not path.begins_with("res://"):
 				path = BASE_DIR.path_join(path)
 			if not tex2.texture or tex2.texture.get_path() != path:
-				if ResourceLoader.exists(path):
+				if AssetManager.file_exists(path):
 					tex2.texture = load(path)
 				else:
 					tex2.texture = null
@@ -753,9 +802,6 @@ func perform_shoot(ammo_id: String, direction: String, ammo_position: Vector2) -
 			audio_stream_player.finished.connect(func(): audio_stream_player.queue_free())
 			add_child(audio_stream_player)
 			audio_stream_player.play()
-			
-	
-
 
 # SAVE
 

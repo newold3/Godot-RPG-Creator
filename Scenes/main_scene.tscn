@@ -7,9 +7,14 @@
 [ext_resource type="Script" uid="uid://5rdkpgt6uqnc" path="res://addons/RPGData/Scripts/Interpreter/main_interpreter.gd" id="2_j1x1n"]
 [ext_resource type="PackedScene" uid="uid://v4ufvixoj8c" path="res://Scenes/ShadowCompose/shadow_compose.tscn" id="4_0ic7e"]
 [ext_resource type="PackedScene" uid="uid://cwxq3ll0bhw0f" path="res://Scenes/DialogTemplates/base_dialog.tscn" id="4_re3ur"]
+[ext_resource type="Script" uid="uid://cvrmld6830g5n" path="res://Scripts/IngameManagers/party_followers_manager.gd" id="5_76v2p"]
+[ext_resource type="Script" uid="uid://chdikq801esmr" path="res://Scripts/IngameManagers/system_audio_manager.gd" id="6_drdnd"]
 [ext_resource type="Shader" uid="uid://bvum8hbbud2xd" path="res://Assets/Shaders/simple_modulation.gdshader" id="6_m1efj"]
 [ext_resource type="PackedScene" uid="uid://cnpdb4o8usbf0" path="res://Scenes/TransitionManager/transition_manager.tscn" id="7_cyd8t"]
+[ext_resource type="Script" uid="uid://r0f2nerk7dpp" path="res://Scripts/IngameManagers/screen_visuals_manager.gd" id="7_ioaeq"]
+[ext_resource type="Script" uid="uid://caqxe0k4vyenn" path="res://Scripts/IngameManagers/game_loader_manager.gd" id="8_7ewk0"]
 [ext_resource type="PackedScene" uid="uid://dj44lomm46fuq" path="res://Scenes/OtherScenes/animate_items.tscn" id="8_huasi"]
+[ext_resource type="Script" uid="uid://b5ed3erpmobv7" path="res://Scripts/IngameManagers/scene_manager.gd" id="9_lhp3t"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_rbbkg"]
 frequency = 0.0011
@@ -34,7 +39,28 @@ script = ExtResource("2_76v2p")
 
 [node name="Interpreter" type="Node" parent="." unique_id=701371195]
 unique_name_in_owner = true
+process_mode = 4
 script = ExtResource("2_j1x1n")
+
+[node name="PartyManager" type="Node" parent="." unique_id=1226871613]
+unique_name_in_owner = true
+script = ExtResource("5_76v2p")
+
+[node name="SystemAudioManager" type="Node" parent="." unique_id=1439662819]
+unique_name_in_owner = true
+script = ExtResource("6_drdnd")
+
+[node name="ScreenVisualsManager" type="Node" parent="." unique_id=647166898]
+unique_name_in_owner = true
+script = ExtResource("7_ioaeq")
+
+[node name="GameLoaderManager" type="Node" parent="." unique_id=784189893]
+unique_name_in_owner = true
+script = ExtResource("8_7ewk0")
+
+[node name="SceneManager" type="Node" parent="." unique_id=1915400662]
+unique_name_in_owner = true
+script = ExtResource("9_lhp3t")
 
 [node name="MainSubViewportContainer" type="SubViewportContainer" parent="." unique_id=1938859068]
 unique_name_in_owner = true
@@ -47,6 +73,7 @@ unique_name_in_owner = true
 transparent_bg = true
 handle_input_locally = false
 canvas_item_default_texture_filter = 0
+audio_listener_enable_2d = true
 size = Vector2i(1152, 640)
 render_target_update_mode = 4
 

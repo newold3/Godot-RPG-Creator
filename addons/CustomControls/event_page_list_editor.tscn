@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://cq8wt1ftsmf0v" path="res://addons/CustomControls/formatter.gd" id="4_21dn8"]
 [ext_resource type="Texture2D" uid="uid://dwcnj2mbl2v2y" path="res://addons/CustomControls/Images/magnifying_glass.png" id="4_fqmnf"]
 [ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="5_a58qb"]
+[ext_resource type="Script" uid="uid://c7kwutiivrd7j" path="res://addons/CustomControls/simple_texture_button.gd" id="8_3rpwi"]
 [ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="8_pjfad"]
 [ext_resource type="Texture2D" uid="uid://cxgtc7fff3htb" path="res://addons/CustomControls/Images/collapsable_button.png" id="9_kwkeb"]
 [ext_resource type="PackedScene" uid="uid://cq3w1n33om8lf" path="res://addons/CustomControls/favorite_button_command_container.tscn" id="9_oqr0o"]
@@ -210,6 +211,7 @@ tooltip_text = "Finds the previous command that matches the search pattern [colo
 mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_7mjtw")
 texture_pressed = SubResource("AtlasTexture_ld3bn")
+script = ExtResource("8_3rpwi")
 
 [node name="FindNextCommand" type="TextureButton" parent="VBoxContainer/HBoxContainer" unique_id=750881547]
 layout_mode = 2
@@ -218,6 +220,7 @@ tooltip_text = "Finds the next command that matches the search pattern [color=re
 mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_r7sb2")
 texture_pressed = SubResource("AtlasTexture_qcaeu")
+script = ExtResource("8_3rpwi")
 
 [node name="HSeparator" type="HSeparator" parent="VBoxContainer" unique_id=306595910]
 layout_mode = 2
@@ -235,6 +238,7 @@ text = "Fast Commands:"
 
 [node name="FavoriteButtonScrollContainer" type="ScrollContainer" parent="VBoxContainer/FastCommands" unique_id=1068940186]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 0

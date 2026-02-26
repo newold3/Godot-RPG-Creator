@@ -64,7 +64,7 @@ func _update_data_fields() -> void:
 	else:
 		disable_all(true)
 		%NameLineEdit.text = ""
-		%IconPicker.set_icon(null)
+		%IconPicker.set_icon("")
 		%TraitsPanel.clear()
 	
 	busy = false
@@ -228,6 +228,7 @@ func _on_copy_parameters_pressed() -> void:
 	var current_data = get_data()
 	StaticEditorVars.CLIPBOARD.items_parameters_list = current_data.params.duplicate()
 	%PasteParameters.set_disabled(false)
+	RPGEditorToast.show_message("Parameters copied to Clipboard")
 
 
 func _on_paste_parameters_pressed() -> void:
@@ -254,6 +255,7 @@ func _on_copy_craft_pressed() -> void:
 		"components": components
 	}
 	%PasteCraft.set_disabled(false)
+	RPGEditorToast.show_message("Craft materials copied to Clipboard")
 
 
 func _on_paste_craft_pressed() -> void:
@@ -277,6 +279,7 @@ func _on_copy_disassemble_pressed() -> void:
 		"components": components
 	}
 	%PasteDisassemble.set_disabled(false)
+	RPGEditorToast.show_message("Salvaged materials copied to Clipboard")
 
 
 func _on_paste_disassemble_pressed() -> void:
@@ -327,6 +330,7 @@ func _on_user_parameters_item_activated(index: int) -> void:
 func _on_copy_user_parameters_pressed() -> void:
 	StaticEditorVars.CLIPBOARD.items_user_parameters = get_data().user_parameters.duplicate()
 	%PasteUserParameters.set_disabled(false)
+	RPGEditorToast.show_message("User parameter list copied to Clipboard")
 
 
 func _on_paste_user_parameters_pressed() -> void:
@@ -342,9 +346,10 @@ func _on_reset_user_parameters_pressed() -> void:
 		if get_data().user_parameters.size() > i:
 			get_data().user_parameters[i] = database.types.user_parameters[i].default_value
 	fill_user_parameters()
+	RPGEditorToast.show_message("User parameter list reset to default values")
 
 
 func clear() -> void:
-	%IconPicker.set_icon(null)
+	%IconPicker.set_icon("")
 	%TraitsPanel.clear()
 	%UserParameters.clear()

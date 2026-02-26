@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://hxxx80onhxm3"]
+
+[ext_resource type="Script" uid="uid://bwgdi5w8x71kk" path="res://Scenes/OtherScenes/IngameProjectil/projectile_base.gd" id="1_2iwdx"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5poom"]
+
+[node name="DefaultProjectil" type="Area2D" unique_id=1733418153 node_paths=PackedStringArray("sprite", "collision_shape") groups=["projectil"]]
+collision_layer = 32768
+collision_mask = 0
+script = ExtResource("1_2iwdx")
+sprite = NodePath("Sprite2D")
+collision_shape = NodePath("CollisionShape2D")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=379144746]
+unique_name_in_owner = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1143452879]
+unique_name_in_owner = true
+shape = SubResource("CircleShape2D_5poom")

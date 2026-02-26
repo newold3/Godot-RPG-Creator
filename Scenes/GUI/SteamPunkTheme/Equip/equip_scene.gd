@@ -162,7 +162,7 @@ func _process_start_change_equip(slot_id: int) -> void:
 			if current_item.id > 0 and real_data.size() > current_item.id:
 				var real_item = real_data[current_item.id]
 				var tex = null
-				if ResourceLoader.exists(real_item.icon.path):
+				if AssetManager.exists(real_item.icon.path):
 					var icon_id = "%s_%s" % [real_item.icon.path, real_item.icon.region]
 					if not icon_id in inner_icon_cache:
 						var t = ResourceLoader.load(real_item.icon.path)

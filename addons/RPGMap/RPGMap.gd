@@ -122,7 +122,7 @@ var edit_configs = {
 		"dialog_option": "enemy_spawn_region_dialog",
 		"detach_method": "_on_detach_enemy_spawn_container_control",
 		"window_title": "Enemy Spawn Region List",
-		"show_regions": false
+		"show_regions": true
 	},
 	MODE.EVENT_REGION: {
 		"mode": MODE.EVENT_REGION,
@@ -135,7 +135,7 @@ var edit_configs = {
 		"dialog_option": "event_region_dialog",
 		"detach_method": "_on_detach_region_event_container_control",
 		"window_title": "Event Region List",
-		"show_regions": false
+		"show_regions": true
 	}
 }
 
@@ -1088,10 +1088,9 @@ func _handles(object: Object) -> bool:
 		return false
 	
 	if result:
-		if object.has_method("set_force_update_shadow"):
-			object.set_force_update_shadow(false)
-			return true
-		return false
+		if "shadow_manager" in object and object.shadow_manager:
+			object.shadow_manager.set_force_update_shadow(false)
+		return true
 	else:
 		if events_dock:
 			events_dock.visible = false
@@ -1103,8 +1102,10 @@ func _handles(object: Object) -> bool:
 			event_regions_dock.visible = false
 
 		if current_object:
-			current_object.set_force_update_shadow(true)
-			current_object.set_editing_events(false)
+			if "shadow_manager" in current_object and current_object.shadow_manager:
+				current_object.shadow_manager.set_force_update_shadow(true)
+			if current_object.has_method("set_editing_events"):
+				current_object.set_editing_events(false)
 			current_object.current_event = null
 			current_object = null
 		return false
@@ -2296,12 +2297,14 @@ func _on_tile_popup_menu_index_pressed(index: int) -> void:
 		var event_copy = event_to_cut.duplicate(true)
 		var event_id = event_copy.id
 		var event_pos = Vector2i(event_copy.x, event_copy.y)
+		event_copy._uniq_id = event_to_cut._uniq_id
+		event_copy.set_meta("is_original_event", true)
 		
 		undo_redo.create_action("Cut Event", UndoRedo.MERGE_DISABLE, current_object)
 		
 		# DO
 		undo_redo.add_do_method(self, "_force_mode_switch", MODE.EVENT)
-		undo_redo.add_do_method(self, "copy_tile_into_clipboard", event_copy)
+		undo_redo.add_do_method(self, "copy_tile_into_clipboard", event_copy, true)
 		undo_redo.add_do_method(current_object, "remove_event_in", event_pos)
 		undo_redo.add_do_method(get_editor_interface(), "mark_scene_as_unsaved")
 		undo_redo.add_do_method(event_container_control, "refresh", true)
@@ -2508,6 +2511,8 @@ func create_tile_from_preset(preset_path: String) -> void:
 		return
 	
 	var event_copy = preset.preset.duplicate(true)
+	if "_uniq_id" in event_copy and event_copy.has_method("_generate_16_digit_id"):
+		event_copy._uniq_id = event_copy._generate_16_digit_id()
 	
 	var undo_redo = get_undo_redo()
 	undo_redo.create_action("Create Event from Preset", UndoRedo.MERGE_DISABLE, current_object)
@@ -2907,10 +2912,15 @@ func _select_extraction_event_after_creation(pos: Vector2i):
 	current_object.select_extraction_event(pos)
 
 
-func copy_tile_into_clipboard(default_event: RPGEvent = null) -> void:
+func copy_tile_into_clipboard(default_event: RPGEvent = null, preserve_id: bool = false) -> void:
 	var event = current_object.get_event_in(current_tile_pos) if !default_event else default_event
 	if event:
+		var preserve_id_cache = -1
+		if preserve_id:
+			preserve_id_cache = event._uniq_id 
 		StaticEditorVars.CLIPBOARD["event"] = event.clone(true)
+		if preserve_id_cache != -1:
+			StaticEditorVars.CLIPBOARD["event"]._uniq_id = preserve_id_cache
 
 
 func copy_extraction_tile_into_clipboard(default_event: RPGExtractionItem = null) -> void:
@@ -2939,8 +2949,15 @@ func paste_tile() -> void:
 	if !event_to_paste:
 		return
 		
-	var event_copy = event_to_paste.duplicate(true)
+	var event_copy: RPGEvent = event_to_paste.duplicate(true)
 	event_copy.id = current_object.events.get_next_id()
+	
+	var is_original = event_copy.has_meta("is_original_event")
+	
+	if not is_original:
+		event_copy._uniq_id = event_copy._generate_16_digit_id()
+	elif event_copy.has_meta("is_original_event"):
+		event_copy.remove_meta("is_original_event")
 	
 	var undo_redo = get_undo_redo()
 
@@ -2952,6 +2969,8 @@ func paste_tile() -> void:
 	undo_redo.add_do_method(get_editor_interface(), "mark_scene_as_unsaved")
 	undo_redo.add_do_method(event_container_control, "refresh", true)
 	undo_redo.add_do_method(event_container_control, "select", event_copy.id, true, true)
+	if is_original:
+		undo_redo.add_do_method(self, "_set_cache_original_event", false)
 	
 	# UNDO
 	undo_redo.add_undo_method(self, "_force_mode_switch", MODE.EVENT)
@@ -2959,8 +2978,19 @@ func paste_tile() -> void:
 	undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
 	undo_redo.add_undo_method(event_container_control, "refresh", true)
 	undo_redo.add_undo_method(event_container_control, "select", -1, true, true)
+	if is_original:
+		undo_redo.add_undo_method(self, "_set_cache_original_event", true)
 
 	undo_redo.commit_action()
+
+
+func _set_cache_original_event(value: bool) -> void:
+	var event_into_clipboard = StaticEditorVars.CLIPBOARD.get("event")
+	if event_into_clipboard:
+		if value and !event_into_clipboard.has_meta("is_original_event"):
+			event_into_clipboard.set_meta("is_original_event", true)
+		elif !value and event_into_clipboard.has_meta("is_original_event"):
+			event_into_clipboard.remove_meta("is_original_event")
 
 
 func paste_extraction_tile() -> void:

@@ -50,7 +50,7 @@ func set_map_events(current_map: RPGMap) -> void:
 	if not current_map: return
 	
 	# Iterate over the dictionary of currently loaded runtime events
-	for ingame_event: RPGMap.IngameEvent in current_map:
+	for ingame_event: IngameEvent in current_map:
 		# Ensure the runtime object is valid and has directional state
 		if ingame_event and ingame_event.lpc_event and "current_direction" in ingame_event.lpc_event:
 			
