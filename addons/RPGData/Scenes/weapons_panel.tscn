@@ -667,13 +667,6 @@ The LPC Characters (Characters created with the [Character and Equipment Editor]
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 text = "Select LPC Weapon"
 
-[node name="LPCPartInfo" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/VBoxContainer/HBoxContainer" unique_id=580165132]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(320, 0)
-layout_mode = 2
-theme_override_colors/font_color = Color(0.6028429, 0.6028429, 0.602843, 1)
-text = "No weapon part selected."
-
 [node name="HBoxContainer2" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/VBoxContainer" unique_id=1874641181]
 layout_mode = 2
 
@@ -684,6 +677,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.6028429, 0.6028429, 0.602843, 1)
 text = "No script installed."
+text_overrun_behavior = 3
 
 [node name="SetAttackScriptAsDefault" type="CheckBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1410466372]
 unique_name_in_owner = true
@@ -700,6 +694,33 @@ tooltip_text = "Select a valid script that will load when attacking and can exec
 
 [Note]: requires a valid script of type \"CombatActionBase\""
 text = "Config Script"
+text_overrun_behavior = 3
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/VBoxContainer" unique_id=864690526]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=709405293]
+layout_mode = 2
+text = "In-Map Attack Power:"
+
+[node name="InMapAttackPower" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1423238733 instance=ExtResource("9_nlga7")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+tooltip_text = "Attack power used by this weapon when it is not used in battle."
+min_value = 1.0
+value = 1.0
+allow_greater = true
+_custom_value = 1.0
+
+[node name="LPCPartInfo" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=580165132]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.6028429, 0.6028429, 0.602843, 1)
+text = "No weapon part selected."
+horizontal_alignment = 2
 text_overrun_behavior = 3
 
 [node name="Tab2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer" unique_id=1703406548]
@@ -1243,6 +1264,7 @@ wrap_mode = 1
 [connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/VBoxContainer/HBoxContainer/LPCPartButton" to="." method="_on_lpc_part_button_pressed"]
 [connection signal="toggled" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/VBoxContainer/HBoxContainer2/SetAttackScriptAsDefault" to="." method="_on_set_attack_script_as_default_toggled"]
 [connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/VBoxContainer/HBoxContainer2/ConfigScript" to="." method="_on_config_script_pressed"]
+[connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/VBoxContainer/HBoxContainer3/InMapAttackPower" to="." method="_on_in_map_attack_power_value_changed"]
 [connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HBoxContainer/CopyParameters" to="." method="_on_copy_parameters_pressed"]
 [connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HBoxContainer/PasteParameters" to="." method="_on_paste_parameters_pressed"]
 [connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HboxContainer/VBoxContainer5/MaxHPSpinBox" to="." method="_on_max_hp_spin_box_value_changed"]

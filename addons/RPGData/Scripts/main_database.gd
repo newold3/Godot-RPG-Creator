@@ -91,10 +91,7 @@ func _on_parent_visibility_changed() -> void:
 			%LeftMenu.get_child(current_tab).set_pressed_no_signal(true)
 		CustomTooltipManager.replace_all_tooltips_with_custom(self)
 	else:
-		if !data_saved:
-			show_confirm_save_dialog()
-		else:
-			data = null
+		data = null
 		data_saved = false
 		CustomTooltipManager.restore_all_tooltips_for(self)
 		notify_property_list_changed()
@@ -256,29 +253,56 @@ func _on_ok_pressed() -> void:
 
 
 func _on_cancel_pressed() -> void:
+	discard_changes()
+		
+	#RPGSYSTEM.database = real_data
+	#cancel.emit()
+	#get_parent().hide()
+
+
+func discard_changes() -> void:
+	accept_event()
+	var database_changed = !data.is_equal_to(real_data)
+	if database_changed:
+		var path = "res://addons/CustomControls/Dialogs/confirm_dialog.tscn"
+		var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
+		dialog.set_text(TranslationManager.tr("You have unsaved changes.\n\nDo you want to exit and discard the changes?\n"))
+		dialog.title = TranslationManager.tr("Unsaved Changes")
+
+		dialog.tree_exiting.connect(
+			func():
+				if dialog.result:
+					cancel_dialog()
+		)
+	else:
+		cancel_dialog()
+
+
+func cancel_dialog() -> void:
 	RPGSYSTEM.database = real_data
 	cancel.emit()
 	get_parent().hide()
 
 
 func show_confirm_save_dialog() -> void:
-	get_viewport().set_input_as_handled()
-	var database_changed = !data.is_equal_to(real_data)
-	if database_changed:
-		var confirm_dialog := ConfirmationDialog.new()
-		confirm_dialog.title = "Confirm Save Data"
-		confirm_dialog.dialog_text = "The database has changed and has not been saved, do you want to save it before closing it?"
-		confirm_dialog.ok_button_text = "Save"
-		confirm_dialog.confirmed.connect(_on_save_confirm_save_data)
-		confirm_dialog.visibility_changed.connect(
-			func():
-				if !confirm_dialog.visible:
-					await get_tree().process_frame
-					RPGSYSTEM.database = real_data
-					data = null
-		)
-		get_parent().get_parent().add_child(confirm_dialog)
-		confirm_dialog.popup_centered()
+	return
+	#get_viewport().set_input_as_handled()
+	#var database_changed = !data.is_equal_to(real_data)
+	#if database_changed:
+		#var confirm_dialog := ConfirmationDialog.new()
+		#confirm_dialog.title = "Confirm Save Data"
+		#confirm_dialog.dialog_text = "The database has changed and has not been saved, do you want to save it before closing it?"
+		#confirm_dialog.ok_button_text = "Save"
+		#confirm_dialog.confirmed.connect(_on_save_confirm_save_data)
+		#confirm_dialog.visibility_changed.connect(
+			#func():
+				#if !confirm_dialog.visible:
+					#await get_tree().process_frame
+					#RPGSYSTEM.database = real_data
+					#data = null
+		#)
+		#get_parent().get_parent().add_child(confirm_dialog)
+		#confirm_dialog.popup_centered()
 
 
 func _on_save_confirm_save_data() -> void:

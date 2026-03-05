@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://b0tgo80yu4r10"]
+[gd_scene format=3 uid="uid://b0tgo80yu4r10"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_gd4fu"]
 [ext_resource type="Script" uid="uid://bbjliwqyml8u" path="res://addons/CustomControls/Dialogs/CommandEvents/change_actor_name.gd" id="2_7cdh7"]
@@ -20,15 +20,8 @@ gradient = SubResource("Gradient_u5yrp")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qiqap"]
-texture = ExtResource("5_58qek")
-texture_margin_left = 6.0
-texture_margin_top = 6.0
-texture_margin_right = 6.0
-texture_margin_bottom = 6.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7qdgr"]
-texture = ExtResource("6_7xuat")
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_subod"]
+texture = ExtResource("8_hwxb3")
 texture_margin_left = 6.0
 texture_margin_top = 6.0
 texture_margin_right = 6.0
@@ -41,29 +34,15 @@ texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_subod"]
-texture = ExtResource("8_hwxb3")
-texture_margin_left = 6.0
-texture_margin_top = 6.0
-texture_margin_right = 6.0
-texture_margin_bottom = 6.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hfo07"]
-texture = ExtResource("5_58qek")
-texture_margin_left = 6.0
-texture_margin_top = 6.0
-texture_margin_right = 6.0
-texture_margin_bottom = 6.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4sujn"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7qdgr"]
 texture = ExtResource("6_7xuat")
 texture_margin_left = 6.0
 texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5stfh"]
-texture = ExtResource("7_p11e5")
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qiqap"]
+texture = ExtResource("5_58qek")
 texture_margin_left = 6.0
 texture_margin_top = 6.0
 texture_margin_right = 6.0
@@ -76,7 +55,29 @@ texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[node name="ChangeActorName" type="Window"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5stfh"]
+texture = ExtResource("7_p11e5")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4sujn"]
+texture = ExtResource("6_7xuat")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hfo07"]
+texture = ExtResource("5_58qek")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[node name="ChangeActorName" type="Window" unique_id=652165783]
+oversampling_override = 1.0
 title = "Input Actor Name"
 position = Vector2i(0, 36)
 size = Vector2i(480, 199)
@@ -87,7 +88,7 @@ unresizable = true
 theme = ExtResource("1_gd4fu")
 script = ExtResource("2_7cdh7")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1451848824]
 material = SubResource("CanvasItemMaterial_u11f1")
 anchors_preset = 15
 anchor_right = 1.0
@@ -96,7 +97,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_6yyp3")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=842201738]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -107,14 +108,14 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1958554151]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer" unique_id=279801632]
 layout_mode = 2
 text = "Actor:"
 
-[node name="ActorOptions" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_xmvln")]
+[node name="ActorOptions" parent="MarginContainer/VBoxContainer" unique_id=1230351723 instance=ExtResource("3_xmvln")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "[title]Actor[/title]
@@ -123,59 +124,60 @@ text_overrun_behavior = 3
 selected = 0
 fit_to_longest_item = false
 item_count = 5
-popup/item_0/text = "1: Aiden"
+popup/item_0/text = "1: Dadarian"
 popup/item_0/id = 0
-popup/item_1/text = "2: Elara"
+popup/item_1/text = "2: Mina"
 popup/item_1/id = 1
-popup/item_2/text = "3: Thorne"
+popup/item_2/text = "3: Elara"
 popup/item_2/id = 2
-popup/item_3/text = "4: Lyra"
+popup/item_3/text = "4: Berrick"
 popup/item_3/id = 3
-popup/item_4/text = "5: Gideon"
+popup/item_4/text = "5: Oracle"
 popup/item_4/id = 4
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer" unique_id=347469706]
 layout_mode = 2
 text = "Max Letters:"
 
-[node name="MaxLetters" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_b6p8b")]
+[node name="MaxLetters" parent="MarginContainer/VBoxContainer" unique_id=1328700260 instance=ExtResource("3_b6p8b")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Maximum length for the name, leave at 0 to allow unlimited length names"
+_custom_value = 0.0
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1585566433]
 layout_mode = 2
 size_flags_vertical = 8
 theme_override_constants/separation = 12
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1032781342]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 alignment = 1
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("4_byyeu")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=714327956 instance=ExtResource("4_byyeu")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 tooltip_text = "[title]Ok[/title]
 Saves all changes and closes the windows."
-theme_override_styles/disabled = SubResource("StyleBoxTexture_qiqap")
-theme_override_styles/hover = SubResource("StyleBoxTexture_7qdgr")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_mjylh")
 theme_override_styles/normal = SubResource("StyleBoxTexture_subod")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_mjylh")
+theme_override_styles/hover = SubResource("StyleBoxTexture_7qdgr")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_qiqap")
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("4_byyeu")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=707533219 instance=ExtResource("4_byyeu")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 tooltip_text = "[title]Cancel[/title]
 Closes this window without saving any changes."
-theme_override_styles/disabled = SubResource("StyleBoxTexture_hfo07")
-theme_override_styles/hover = SubResource("StyleBoxTexture_4sujn")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_5stfh")
 theme_override_styles/normal = SubResource("StyleBoxTexture_maa40")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_5stfh")
+theme_override_styles/hover = SubResource("StyleBoxTexture_4sujn")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_hfo07")
 text = "CANCEL"
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/OKButton" to="." method="_on_ok_button_pressed"]

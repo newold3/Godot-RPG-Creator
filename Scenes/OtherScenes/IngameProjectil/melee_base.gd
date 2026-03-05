@@ -7,8 +7,6 @@ extends CombatActionBase
 ## How long the melee hitbox remains active after shoot() is called.
 @export var duration: float = 0.2
 
-var _hit_targets: Array[Node2D] = []
-
 
 func setup(_action_id: String, direction: String, start_pos: Vector2, custom_stats: Dictionary = {}) -> void:
 	position = start_pos
@@ -72,34 +70,14 @@ func shoot() -> void:
 	timer.timeout.connect(destroy)
 
 
-func hit(target: Node2D = null) -> void:
-	if _is_destroyed or is_queued_for_deletion():
-		return
-		
-	if target:
-		var target_parent = target.get_parent()
-		if player and target_parent and player == target_parent:
-			return
-			
-		if target in _hit_targets:
-			return
-			
-		if is_instance_valid(player) and target == player:
-			return
-			
-		if target_parent.is_in_group("event"):
-			print("event")
-			pass
-			
-		_hit_targets.append(target)
-		_play_impact_sound()
+func hit(_target: Node2D = null) -> void:
+	pass
 
 
 ## Plays specific sounds when the weapon strikes a target.
 func _play_impact_sound() -> void:
 	var stream_path = "uid://did4aih30hyu7"
 	var fx = ZipMediaLoader.get_audio_stream(stream_path)
-	print(fx)
 	if fx:
 		var audio_player = AudioStreamPlayer.new()
 		audio_player.stream = fx

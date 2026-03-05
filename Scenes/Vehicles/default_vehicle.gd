@@ -791,6 +791,10 @@ func get_current_tile() -> Vector2i:
 		return Vector2i()
 
 
+func get_current_virtual_tile() -> Vector2i:
+	return get_current_tile()
+
+
 func get_current_tiles() -> Array[Vector2i]:
 	var tiles: Array[Vector2i] = []
 	

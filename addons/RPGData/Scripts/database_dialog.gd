@@ -6,7 +6,7 @@ extends Window
 func _ready() -> void:
 	RPGMapPlugin.reload_inputs_safely()
 	#InputMap.load_from_project_settings()
-	close_requested.connect(hide_me)
+	close_requested.connect($MainDatabase.discard_changes)
 	visibility_changed.connect(_on_visibility_changed)
 	_load_backup()
 

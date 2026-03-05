@@ -408,6 +408,9 @@ func install_parts() -> void:
 
 
 func adjust_bounds() -> void:
+	var node = get_node_or_null("%Down")
+	if not node: return
+	
 	%Down.position = Vector2(0, 0)
 	%Up.position = Vector2(0, -49)
 	%Left.position = Vector2(-15, -24)

@@ -181,7 +181,15 @@ func _on_event_canvas_draw() -> void:
 					draw_rect.size -= Vector2i(2, 2)
 					var tex_color = page.modulate
 					tex_color.a = color1.a
-					event_canvas.draw_texture_rect(tex_to_draw, draw_rect, false, tex_color)
+					if page.character_type != 1:
+						event_canvas.draw_texture_rect(tex_to_draw, draw_rect, false, tex_color)
+					else:
+						event_canvas.draw_texture_rect_region(
+							tex_to_draw,
+							draw_rect,
+							page.character_region,
+							tex_color
+						)
 
 
 func _on_extraction_event_canvas_draw() -> void:

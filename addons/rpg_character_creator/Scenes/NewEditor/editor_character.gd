@@ -81,7 +81,7 @@ func _notification(what: int) -> void:
 
 func start() -> void:
 	is_started = true
-	_show_overlay(false)
+	_show_overlay(false, tr("LOADING") + "...")
 	
 	data_loaded.connect(_on_data_loaded)
 	_create_tabs()
@@ -2338,7 +2338,7 @@ func get_file_id(folder, base_name) -> int:
 
 
 func _on_part_save_requested(layer: String, item_id: String, button: HeroEditorPartButton) -> void:
-	_show_overlay()
+	_show_overlay(true, tr("SAVING PART") + "...")
 	
 	var previous_mainhand_id: String = ""
 	var previous_ammo_id: String = ""
@@ -2560,7 +2560,7 @@ func _on_save_data_pressed() -> void:
 	if %CreateSubFolder.is_pressed():
 		folder = folder.path_join(file_name)
 	
-	_show_overlay()
+	_show_overlay(true, tr("SAVING DATA") + "...")
 	
 	match %SaveMode.get_selected_id():
 		0: # Save Character
@@ -2589,7 +2589,7 @@ func _get_existing_files(paths: Array[String]) -> Array[String]:
 
 
 func _save_character(folder: String, file_name: String) -> void:
-	_show_overlay()
+	_show_overlay(true, tr("SAVING CHARACTER") + "...")
 	
 	# Paths
 	var data_path = folder.path_join(file_name + "_data.tres")
@@ -2675,7 +2675,7 @@ func _create_character_scene_file(script_file_path: String, scene_file_path: Str
 
 
 func _save_event(folder: String, file_name: String) -> void:
-	_show_overlay()
+	_show_overlay(true, tr("SAVING EVENT") + "...")
 	
 	# Paths
 	var data_path = folder.path_join(file_name + "_data.tres")
@@ -2751,7 +2751,7 @@ func _create_event_scene_file(script_file_path: String, scene_file_path: String,
 
 
 func _save_set(file_name: String) -> void:
-	_show_overlay()
+	_show_overlay(true, tr("SAVING SET") + "...")
 	
 	var folder = PARTS_ROOT_DIR.path_join(SET_FOLDER_NAME).path_join(file_name) 
 	var data_path = folder.path_join(file_name + "_data.tres")
@@ -2789,7 +2789,7 @@ func _save_set(file_name: String) -> void:
 
 
 func _save_costume(file_name: String) -> void:
-	_show_overlay()
+	_show_overlay(true, tr("SAVING COSTUME") + "...")
 	
 	var folder = PARTS_ROOT_DIR.path_join(COSTUME_FOLDER_NAME).path_join(file_name)
 	var data_path = folder.path_join(file_name + "_data.tres")
@@ -2844,10 +2844,11 @@ func _save_costume(file_name: String) -> void:
 	_hide_overlay()
 
 
-func _show_overlay(create_main_texture: bool = true) -> void:
+func _show_overlay(create_main_texture: bool = true, overlay_text: String = "SAVING...") -> void:
 	if create_main_texture:
 		var tex = ImageTexture.create_from_image(get_viewport().get_texture().get_image())
 		%OverlayTexture.texture = tex
+	%OverlayTitle.text = overlay_text
 	%Overlay.show()
 
 

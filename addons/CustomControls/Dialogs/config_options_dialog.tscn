@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://xudxiubniyvw"]
+[gd_scene format=3 uid="uid://xudxiubniyvw"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_f4ig5"]
 [ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="2_4wwb0"]
@@ -22,35 +22,7 @@ gradient = SubResource("Gradient_u5yrp")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wn4oh"]
-resource_local_to_scene = true
-content_margin_left = 8.0
-content_margin_top = 4.0
-content_margin_right = 21.0
-content_margin_bottom = 4.0
-bg_color = Color(0.184314, 0.196078, 0.203922, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t05es"]
-resource_local_to_scene = true
-bg_color = Color(1, 1, 1, 1)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color(0.94902, 0.627451, 0.0117647, 1)
-border_blend = true
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hk1kp"]
-resource_local_to_scene = true
-bg_color = Color(1, 1, 1, 1)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color(0, 0, 0, 1)
-border_blend = true
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5uy8f"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pyqac"]
 resource_local_to_scene = true
 bg_color = Color(1, 1, 1, 1)
 border_width_left = 4
@@ -60,27 +32,9 @@ border_width_bottom = 3
 border_color = Color(0, 0, 0, 1)
 border_blend = true
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e0oj7"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lcybs"]
 resource_local_to_scene = true
-content_margin_left = 8.0
-content_margin_top = 4.0
-content_margin_right = 21.0
-content_margin_bottom = 4.0
-bg_color = Color(0.184314, 0.196078, 0.203922, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p607g"]
-resource_local_to_scene = true
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color(0.94902, 0.627451, 0.0117647, 1)
-border_blend = true
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kodcg"]
-resource_local_to_scene = true
-bg_color = Color(0, 0, 0, 1)
+bg_color = Color(1, 1, 1, 1)
 border_width_left = 4
 border_width_top = 4
 border_width_right = 4
@@ -88,7 +42,25 @@ border_width_bottom = 4
 border_color = Color(0, 0, 0, 1)
 border_blend = true
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iagr7"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_326g8"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.94902, 0.627451, 0.0117647, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qidnt"]
+resource_local_to_scene = true
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 21.0
+content_margin_bottom = 4.0
+bg_color = Color(0.184314, 0.196078, 0.203922, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ghuvr"]
 resource_local_to_scene = true
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 4
@@ -98,17 +70,19 @@ border_width_bottom = 3
 border_color = Color(0, 0, 0, 1)
 border_blend = true
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mcotv"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a3nhf"]
 resource_local_to_scene = true
-content_margin_left = 8.0
-content_margin_top = 4.0
-content_margin_right = 21.0
-content_margin_bottom = 4.0
-bg_color = Color(0.184314, 0.196078, 0.203922, 1)
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+border_blend = true
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cimtg"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xss8d"]
 resource_local_to_scene = true
-bg_color = Color(0, 0, 0, 0.576471)
+bg_color = Color(0, 0, 0, 1)
 border_width_left = 4
 border_width_top = 4
 border_width_right = 4
@@ -116,19 +90,17 @@ border_width_bottom = 4
 border_color = Color(0.94902, 0.627451, 0.0117647, 1)
 border_blend = true
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_euvcc"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fbxfy"]
 resource_local_to_scene = true
-bg_color = Color(0, 0, 0, 0.576471)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color(0, 0, 0, 1)
-border_blend = true
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 21.0
+content_margin_bottom = 4.0
+bg_color = Color(0.184314, 0.196078, 0.203922, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rc8wy"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_11kfd"]
 resource_local_to_scene = true
-bg_color = Color(0, 0, 0, 0.576471)
+bg_color = Color(0, 0, 0, 0.5764706)
 border_width_left = 4
 border_width_top = 4
 border_width_right = 4
@@ -136,15 +108,36 @@ border_width_bottom = 3
 border_color = Color(0, 0, 0, 1)
 border_blend = true
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xsg1b"]
-texture = ExtResource("7_sk775")
-texture_margin_left = 6.0
-texture_margin_top = 6.0
-texture_margin_right = 6.0
-texture_margin_bottom = 6.0
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_72a0s"]
+resource_local_to_scene = true
+bg_color = Color(0, 0, 0, 0.5764706)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+border_blend = true
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_b7cj5"]
-texture = ExtResource("8_jm6ef")
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qjchy"]
+resource_local_to_scene = true
+bg_color = Color(0, 0, 0, 0.5764706)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.94902, 0.627451, 0.0117647, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kxbi2"]
+resource_local_to_scene = true
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 21.0
+content_margin_bottom = 4.0
+bg_color = Color(0.184314, 0.196078, 0.203922, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_87y8e"]
+texture = ExtResource("10_ji8bt")
 texture_margin_left = 6.0
 texture_margin_top = 6.0
 texture_margin_right = 6.0
@@ -157,14 +150,22 @@ texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_87y8e"]
-texture = ExtResource("10_ji8bt")
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_b7cj5"]
+texture = ExtResource("8_jm6ef")
 texture_margin_left = 6.0
 texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[node name="ConfigOptionsDialog" type="Window"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xsg1b"]
+texture = ExtResource("7_sk775")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[node name="ConfigOptionsDialog" type="Window" unique_id=1266698952]
+oversampling_override = 1.0
 title = "Options Config"
 position = Vector2i(0, 36)
 size = Vector2i(800, 335)
@@ -175,7 +176,7 @@ unresizable = true
 theme = ExtResource("1_f4ig5")
 script = ExtResource("2_dxk40")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=562731885]
 material = SubResource("CanvasItemMaterial_4adlr")
 anchors_preset = 15
 anchor_right = 1.0
@@ -184,7 +185,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_gnkwy")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=940109066]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -195,10 +196,10 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1764722547]
 layout_mode = 2
 
-[node name="UseMessageConfig" type="CheckBox" parent="MarginContainer/VBoxContainer"]
+[node name="UseMessageConfig" type="CheckBox" parent="MarginContainer/VBoxContainer" unique_id=575625776]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "When active, the current settings of the message dialog will be used. Otherwise, the settings specified below will apply."
@@ -206,27 +207,27 @@ mouse_default_cursor_shape = 2
 button_pressed = true
 text = "Use Message Config"
 
-[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1957180322]
 layout_mode = 2
 
-[node name="SelfConfigContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="SelfConfigContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1872847491]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfConfigContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfConfigContainer" unique_id=722531258]
 layout_mode = 2
 text = "Manual configuration"
 
-[node name="HBoxContainer8" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfConfigContainer"]
+[node name="HBoxContainer8" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfConfigContainer" unique_id=445156964]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer8"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer8" unique_id=732754547]
 custom_minimum_size = Vector2(220, 0)
 layout_mode = 2
 text = "Font:"
 
-[node name="Font" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer8" instance=ExtResource("2_4wwb0")]
+[node name="Font" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer8" unique_id=138244638 instance=ExtResource("2_4wwb0")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -234,33 +235,33 @@ tooltip_text = "Font to be used by default."
 disabled = true
 text = "Fontsunifont-13.0.01.ttf"
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer8"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer8" unique_id=152147787]
 custom_minimum_size = Vector2(190, 0)
 layout_mode = 2
 text = "   Text Color:"
 
-[node name="TextColor" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer8" instance=ExtResource("3_v6gdu")]
+[node name="TextColor" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer8" unique_id=750910175 instance=ExtResource("3_v6gdu")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
 size_flags_horizontal = 0
 tooltip_text = "Default Text Color."
-theme_override_styles/disabled = SubResource("StyleBoxFlat_wn4oh")
-theme_override_styles/hover = SubResource("StyleBoxFlat_t05es")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_hk1kp")
-theme_override_styles/normal = SubResource("StyleBoxFlat_5uy8f")
+theme_override_styles/normal = SubResource("StyleBoxFlat_pyqac")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_lcybs")
+theme_override_styles/hover = SubResource("StyleBoxFlat_326g8")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_qidnt")
 disabled = true
 current_color = Color(1, 1, 1, 1)
 
-[node name="HBoxContainer17" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfConfigContainer"]
+[node name="HBoxContainer17" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfConfigContainer" unique_id=2017335951]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer17"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer17" unique_id=1657158070]
 custom_minimum_size = Vector2(220, 0)
 layout_mode = 2
 text = "Text Size:"
 
-[node name="TextSize" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer17" instance=ExtResource("4_gwurd")]
+[node name="TextSize" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer17" unique_id=1101969026 instance=ExtResource("4_gwurd")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -271,16 +272,17 @@ max_value = 500.0
 value = 22.0
 editable = false
 disabled = true
+_custom_value = 22.0
 
-[node name="HBoxContainer19" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfConfigContainer"]
+[node name="HBoxContainer19" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfConfigContainer" unique_id=1886748910]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer19"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer19" unique_id=1608738717]
 custom_minimum_size = Vector2(220, 0)
 layout_mode = 2
 text = "Outline Size:"
 
-[node name="OutlineSize" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer19" instance=ExtResource("4_gwurd")]
+[node name="OutlineSize" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer19" unique_id=549685876 instance=ExtResource("4_gwurd")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -290,33 +292,34 @@ max_value = 500.0
 value = 2.0
 editable = false
 disabled = true
+_custom_value = 2.0
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer19"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer19" unique_id=1499000047]
 custom_minimum_size = Vector2(190, 0)
 layout_mode = 2
 text = "   Outline Color:"
 
-[node name="OutlineColor" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer19" instance=ExtResource("3_v6gdu")]
+[node name="OutlineColor" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer19" unique_id=2018979955 instance=ExtResource("3_v6gdu")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
 size_flags_horizontal = 0
 tooltip_text = "Default text outline color"
-theme_override_styles/disabled = SubResource("StyleBoxFlat_e0oj7")
-theme_override_styles/hover = SubResource("StyleBoxFlat_p607g")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_kodcg")
-theme_override_styles/normal = SubResource("StyleBoxFlat_iagr7")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ghuvr")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_a3nhf")
+theme_override_styles/hover = SubResource("StyleBoxFlat_xss8d")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_fbxfy")
 disabled = true
 
-[node name="HBoxContainer20" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfConfigContainer"]
+[node name="HBoxContainer20" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfConfigContainer" unique_id=1680595046]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer20"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer20" unique_id=1809969260]
 custom_minimum_size = Vector2(220, 0)
 layout_mode = 2
 text = "Shadow Offset:"
 
-[node name="ShadowOffsetX" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer20" instance=ExtResource("4_gwurd")]
+[node name="ShadowOffsetX" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer20" unique_id=1166127991 instance=ExtResource("4_gwurd")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -328,12 +331,13 @@ allow_lesser = true
 editable = false
 prefix = "X ="
 disabled = true
+_custom_value = 2.0
 
-[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer20"]
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer20" unique_id=79280752]
 custom_minimum_size = Vector2(26, 0)
 layout_mode = 2
 
-[node name="ShadowOffsetY" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer20" instance=ExtResource("4_gwurd")]
+[node name="ShadowOffsetY" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer20" unique_id=2024329148 instance=ExtResource("4_gwurd")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -345,38 +349,41 @@ allow_lesser = true
 editable = false
 prefix = "Y ="
 disabled = true
+_custom_value = 2.0
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer20"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer20" unique_id=95398075]
 custom_minimum_size = Vector2(190, 0)
 layout_mode = 2
 text = "   Shadow Color:"
 
-[node name="ShadowColor" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer20" instance=ExtResource("3_v6gdu")]
+[node name="ShadowColor" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer20" unique_id=1258499518 instance=ExtResource("3_v6gdu")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
 tooltip_text = "Default shadow color"
-theme_override_styles/disabled = SubResource("StyleBoxFlat_mcotv")
-theme_override_styles/hover = SubResource("StyleBoxFlat_cimtg")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_euvcc")
-theme_override_styles/normal = SubResource("StyleBoxFlat_rc8wy")
+theme_override_styles/normal = SubResource("StyleBoxFlat_11kfd")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_72a0s")
+theme_override_styles/hover = SubResource("StyleBoxFlat_qjchy")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_kxbi2")
 disabled = true
 current_color = Color(0, 0, 0, 0.576471)
 
-[node name="HBoxContainer18" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfConfigContainer"]
+[node name="HBoxContainer18" type="HBoxContainer" parent="MarginContainer/VBoxContainer/SelfConfigContainer" unique_id=1611428651]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer18"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer18" unique_id=509702619]
 custom_minimum_size = Vector2(220, 0)
 layout_mode = 2
 text = "Text Align:"
 
-[node name="TextAlign" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer18" instance=ExtResource("5_43hwo")]
+[node name="TextAlign" parent="MarginContainer/VBoxContainer/SelfConfigContainer/HBoxContainer18" unique_id=1099271891 instance=ExtResource("5_43hwo")]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.6)
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Default text alignment."
+focus_mode = 0
+mouse_filter = 2
 disabled = true
 selected = 0
 item_count = 3
@@ -386,40 +393,42 @@ popup/item_1/text = "Center"
 popup/item_1/id = 1
 popup/item_2/text = "Right"
 popup/item_2/id = 2
+metadata/original_focus_mode = 2
+metadata/original_mouse_filer = 0
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=2089353984]
 layout_mode = 2
 size_flags_vertical = 8
 theme_override_constants/separation = 12
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=25418441]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 alignment = 1
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("6_8h2pw")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1669097643 instance=ExtResource("6_8h2pw")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 tooltip_text = "[title]Ok[/title]
 Saves all changes and closes the windows."
-theme_override_styles/disabled = SubResource("StyleBoxTexture_xsg1b")
-theme_override_styles/hover = SubResource("StyleBoxTexture_b7cj5")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_d77lg")
 theme_override_styles/normal = SubResource("StyleBoxTexture_87y8e")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_d77lg")
+theme_override_styles/hover = SubResource("StyleBoxTexture_b7cj5")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_xsg1b")
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("6_8h2pw")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1161220272 instance=ExtResource("6_8h2pw")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 tooltip_text = "[title]Cancel[/title]
 Closes this window without saving any changes."
-theme_override_styles/disabled = SubResource("StyleBoxTexture_xsg1b")
-theme_override_styles/hover = SubResource("StyleBoxTexture_b7cj5")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_d77lg")
 theme_override_styles/normal = SubResource("StyleBoxTexture_87y8e")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_d77lg")
+theme_override_styles/hover = SubResource("StyleBoxTexture_b7cj5")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_xsg1b")
 text = "CANCEL"
 
 [connection signal="toggled" from="MarginContainer/VBoxContainer/UseMessageConfig" to="." method="_on_use_message_config_toggled"]

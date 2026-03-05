@@ -873,7 +873,7 @@ func _format_command_17(data: FormatData) -> Array:
 	formatted_text.append({
 		"texts": [
 			{
-				"text": data.tabs + default_text + " Control Switches : [%s] is %s" % [switch_name, operation],
+				"text": data.tabs + default_text + " Control Switches : <%s> set to %s" % [switch_name, operation],
 				"color": color_theme.get("color6", Color.WHITE)
 			}
 		],
@@ -1070,7 +1070,7 @@ func _format_command_18(data: FormatData) -> Array:
 	formatted_text.append({
 		"texts": [
 			{
-				"text": data.tabs + default_text + " Control Variables : < %s > %s= %s" % [variable_name, operation, text],
+				"text": data.tabs + default_text + " Control Variables : <%s> %s= %s" % [variable_name, operation, text],
 				"color": color_theme.get("color6", Color.WHITE)
 			}
 		],
@@ -1083,13 +1083,27 @@ func _format_command_18(data: FormatData) -> Array:
 func _format_command_19(data: FormatData) -> Array:
 	var formatted_text = []
 	var switch_id = data.command.parameters.get("switch_id", 0)
-	var switch_name = ["A", "B", "C", "D", "E", "F", "G", "H"][switch_id]
+	var switch_name = RPGSYSTEM.system.self_switches.get_switch_names()[switch_id]
 	var operation = "ON" if data.command.parameters.get("operation_type", 0) == 0 else "OFF"
+	
+	var target = data.command.parameters.get("event_id", 0)
+	var event_str = ""
+	
+	var edited_scene = RPGSYSTEM.editor_interface.get_edited_scene_root()
+	if edited_scene and edited_scene is RPGMap:
+		if target == 0:
+			event_str = "This Event"
+		else:
+			var event = edited_scene.events.get_event_by_uniq_id(target)
+			if event:
+				event_str = "[%s: %s]" % [event.id, event.name]
+	else:
+		event_str = "This Event"
 	
 	formatted_text.append({
 		"texts": [
 			{
-				"text": data.tabs + default_text + " Control Self Switch %s is %s" % [switch_name, operation],
+				"text": data.tabs + default_text + " Control Self Switch <%s> %s event = <%s>" % [switch_name, operation, event_str],
 				"color": color_theme.get("color6", Color.WHITE)
 			}
 		],
@@ -2191,12 +2205,22 @@ func _format_command_60(data: FormatData) -> Array:
 func _format_command_61(data: FormatData) -> Array:
 	var variable_id = data.command.parameters.get("id", 0)
 	var value = data.command.parameters.get("value", "")
+	var operations = ["==", "+=", "-="]
+	var operation_type = max(0, min(operations.size() - 1, data.command.parameters.get("operation", 0)))
 	var id = str(variable_id).pad_zeros(str(RPGSYSTEM.system.text_variables.size()).length())
 	var variable_name = id + ": " + RPGSYSTEM.system.text_variables.get_item_name(variable_id)
+	
+	var final_text = ""
+	if operation_type != 2:
+		final_text = " Text Variable <%s> %s %s" % [variable_name, operations[operation_type], value]
+	else:
+		var new_value = data.command.parameters.get("replace_text", "")
+		final_text = " Text Variable <%s> replace '%s' with '%s'" % [variable_name, value, new_value]
+
 	return [{
 		"texts": [
 			{
-				"text": data.tabs + default_text + " Text Variable %s = %s" % [variable_name, value],
+				"text": data.tabs + default_text + final_text,
 				"color": color_theme.get("color6", Color.WHITE)
 			}
 		],

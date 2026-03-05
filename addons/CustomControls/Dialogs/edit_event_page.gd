@@ -126,22 +126,7 @@ func fill_page(page: RPGEventPage) -> void:
 		%PageName.text = current_page.name
 		%MarkAsQuestPage.set_pressed_no_signal(current_page.is_quest_page)
 		
-		%DataTypeSelected.select(current_page.character_type)
-		
-		%CharacterImage.set_icon("")
-		
-		match current_page.character_type:
-			0:
-				path_cache.lpc_event = current_page.character_path
-				if current_page.character_path in FileCache.cache.events:
-					var res: RPGLPCCharacter = load(current_page.character_path)
-					%CharacterImage.set_icon(res.event_preview)
-			1:
-				path_cache.image = current_page.character_path
-				%CharacterImage.set_icon(current_page.character_path)
-			2:
-				path_cache.scene = current_page.character_path
-				_set_icon_from_scene(current_page.character_path)
+		_update_graphic()
 			
 		var local_switch_id = max(0, min(%Condition3Value.get_item_count() - 1, current_page.condition.local_switch_id))
 		current_page.condition.local_switch_id = local_switch_id 
@@ -195,16 +180,26 @@ func fill_page(page: RPGEventPage) -> void:
 		%TriggerEventList.visible = launcher in [2, 7, 8]
 		%PlaceHolderLauncher.visible = !%TriggerEventList.visible
 		_configure_launcher()
-		
-		#if (
-			#current_page.launcher == current_page.LAUNCHER_MODE.UNDER_PLAYER or
-			#current_page.launcher == current_page.LAUNCHER_MODE.UNDER_EVENT or
-			#current_page.launcher == current_page.LAUNCHER_MODE.ANY_CONTACT or
-			#current_page.launcher == current_page.LAUNCHER_MODE.CALLER
-		#):
-			#%EventOption4.set_disabled(true)
-		#else:
-			#%EventOption4.set_disabled(false)
+		%Launcher.item_selected.emit(launcher)
+
+
+func _update_graphic() -> void:
+	%DataTypeSelected.select(current_page.character_type)
+
+	%CharacterImage.set_icon("")
+	
+	match current_page.character_type:
+		0:
+			path_cache.lpc_event = current_page.character_path
+			if current_page.character_path in FileCache.cache.events:
+				var res: RPGLPCCharacter = load(current_page.character_path)
+				%CharacterImage.set_icon(res.event_preview)
+		1:
+			path_cache.image = current_page.character_path
+			%CharacterImage.set_icon(current_page.character_path, current_page.character_region)
+		2:
+			path_cache.scene = current_page.character_path
+			_set_icon_from_scene(current_page.character_path)
 
 
 func _set_icon_from_scene(path: String) -> void:
@@ -453,16 +448,6 @@ func _on_launcher_item_selected(index: int) -> void:
 	if current_page:
 		current_page.launcher = index
 	
-	#if (
-		#current_page.launcher == current_page.LAUNCHER_MODE.UNDER_PLAYER or
-		#current_page.launcher == current_page.LAUNCHER_MODE.UNDER_EVENT or
-		#current_page.launcher == current_page.LAUNCHER_MODE.ANY_CONTACT or
-		#current_page.launcher == current_page.LAUNCHER_MODE.CALLER
-	#):
-		#%EventOption4.set_disabled(true)
-	#else:
-		#%EventOption4.set_disabled(false)
-	
 	%TriggerEventList.visible = index in [2, 7, 8]
 	%PlaceHolderLauncher.visible = !%TriggerEventList.visible
 	_configure_launcher()
@@ -650,6 +635,10 @@ func _on_movement_route_button_pressed() -> void:
 
 
 func _on_character_image_clicked() -> void:
+	if current_page.character_type == 1:
+		_on_character_picker_clicked()
+		return
+		
 	var path = "res://addons/CustomControls/Dialogs/select_file_dialog.tscn"
 	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
 	
@@ -658,7 +647,6 @@ func _on_character_image_clicked() -> void:
 	var current_path: String
 	match current_page.character_type:
 		0: current_path = path_cache.lpc_event
-		1: current_path = path_cache.image
 		2: current_path = path_cache.scene
 	
 	dialog.destroy_on_hide = true
@@ -668,7 +656,6 @@ func _on_character_image_clicked() -> void:
 	
 	match current_page.character_type:
 		0: dialog.fill_mix_files(["events"])
-		1: dialog.fill_mix_files(["images"])
 		2: dialog.fill_files_by_extension(current_path, ["tscn"])
 
 
@@ -680,18 +667,32 @@ func _update_character_image(path: String) -> void:
 		%CharacterImage.set_icon(res.event_preview)
 		path_cache.lpc_event = path
 		changed.emit()
-	elif current_page.character_type == 1 and path in FileCache.cache.images:
-		%CharacterImage.set_icon(path)
-		path_cache.image = path
-		changed.emit()
 	elif current_page.character_type == 2 and path.get_extension() == "tscn":
 		_set_icon_from_scene(current_page.character_path)
 		path_cache.scene = path
 		changed.emit()
 
 
+func _on_character_picker_clicked() -> void:
+	var path = "res://addons/CustomControls/Dialogs/select_icon_dialog.tscn"
+	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
+	var icon = RPGIcon.new(path_cache.image, current_page.character_region)
+	dialog.set_data(icon)
+	
+	dialog.icon_changed.connect(update_character_image.bind(icon))
+
+
+func update_character_image(icon: RPGIcon) -> void:
+	%CharacterImage.set_icon(icon.path, icon.region)
+	path_cache.image = icon.path
+	current_page.character_path = icon.path
+	current_page.character_region = icon.region
+	changed.emit()
+
+
 func _on_character_image_remove_requested() -> void:
 	current_page.character_path = ""
+	current_page.character_region = Rect2()
 	%CharacterImage.set_icon("")
 	changed.emit()
 
@@ -825,13 +826,21 @@ func _on_mark_as_quest_page_toggled(toggled_on: bool) -> void:
 func _on_character_image_custom_copy(node: Control, clipboard_key: String) -> void:
 	if not current_page.character_path.is_empty():
 		var clipboard = StaticEditorVars.CLIPBOARD
-		clipboard[clipboard_key] = current_page.character_path
+		var data_copied = {}
+		data_copied.character_path = current_page.character_path
+		data_copied.character_region = current_page.character_region
+		data_copied.character_type = current_page.character_type
+		clipboard[clipboard_key] = data_copied
 
 
 func _on_character_image_custom_paste(node: Control, clipboard_key: String) -> void:
 	var clipboard = StaticEditorVars.CLIPBOARD
 	if clipboard_key in clipboard:
-		_update_character_image(clipboard[clipboard_key])
+		var data_copied = clipboard[clipboard_key]
+		current_page.character_path = data_copied.character_path
+		current_page.character_region = data_copied.character_region
+		current_page.character_type = data_copied.character_type
+		_update_graphic()
 
 
 func _on_data_type_selected_item_selected(index: int) -> void:
@@ -903,7 +912,7 @@ func _set_pressed_mode(value: bool) -> void:
 		elif current_page.options.event_type == 2: # Moveable
 			active_indexes = [1] # 'Player Touch'
 			
-		if not selected_index in active_indexes:
+		if not selected_index in active_indexes and not active_indexes.is_empty():
 			selected_index = active_indexes[0]
 			
 		for i in launcher.get_item_count():

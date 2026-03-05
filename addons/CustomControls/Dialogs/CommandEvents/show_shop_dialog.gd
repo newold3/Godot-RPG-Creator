@@ -150,6 +150,7 @@ func _on_sales_mode_item_selected(index: int) -> void:
 
 
 func _on_sales_ratio_value_changed(value: float) -> void:
+	if not parameters or parameters.is_empty(): return
 	parameters[0].parameters.sales_ratio = value
 
 
@@ -175,6 +176,8 @@ func _on_add_multiple_items_pressed() -> void:
 
 
 func _on_purchase_ratio_value_changed(value: float) -> void:
+	if not parameters or parameters.is_empty(): return
+	
 	parameters[0].parameters.purchase_ratio = value
 
 
@@ -295,10 +298,14 @@ func _on_clear_all_items_pressed() -> void:
 
 
 func _on_can_restock_toggled(toggled_on: bool) -> void:
+	if not parameters or parameters.is_empty(): return
+	
 	parameters[0].parameters.can_restock = toggled_on
 	%RestockTimerContainer.propagate_call("set_disabled",  [!toggled_on])
 
 
 func _change_restock_timer(value: float) -> void:
+	if not parameters or parameters.is_empty(): return
+	
 	value = %RestockTimeHours.value * 3600 + %RestockTimeMinutes.value * 60 + %RestockTimeSeconds.value
 	parameters[0].parameters.restock_timer = value

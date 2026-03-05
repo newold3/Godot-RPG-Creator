@@ -1,0 +1,35 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://us28d63nntdh"]
+
+[ext_resource type="Shader" uid="uid://bgm0rq4fxa7ru" path="res://Assets/Shaders/simple_water.gdshader" id="1_3jy15"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_3jy15"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_iq4ys"]
+noise = SubResource("FastNoiseLite_3jy15")
+seamless = true
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_16gpo"]
+frequency = 0.0059
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_k8u7a"]
+width = 128
+height = 128
+noise = SubResource("FastNoiseLite_16gpo")
+seamless = true
+
+[resource]
+shader = ExtResource("1_3jy15")
+shader_parameter/WATER_COL = Color(8.4228816e-07, 0.3922511, 0.40197212, 1)
+shader_parameter/WATER2_COL = Color(0.058, 0.529, 0.776, 1)
+shader_parameter/FOAM_COL = Color(0.38431373, 0.20784314, 0.10980392, 1)
+shader_parameter/distortion_speed = 4.555
+shader_parameter/tile = Vector2(5, 5)
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/mix_amount = 0.8290000393775
+shader_parameter/noise1 = SubResource("NoiseTexture2D_iq4ys")
+shader_parameter/noise2 = SubResource("NoiseTexture2D_k8u7a")
+shader_parameter/organic_strength = 0.7200000342
+shader_parameter/land_threshold_low = -0.4229999725925
+shader_parameter/land_threshold_high = 0.30500006198749996
+shader_parameter/foam_position = 0.150000054625
+shader_parameter/foam_thickness = 0.3530000167675

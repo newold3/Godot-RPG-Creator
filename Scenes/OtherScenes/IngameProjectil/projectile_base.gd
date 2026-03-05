@@ -29,11 +29,9 @@ var _anim_loop: bool = false
 var _is_animating: bool = false
 
 
-
 func _enter_tree() -> void:
 	sprite = get_node_or_null("%Sprite2D")
 	super()
-
 
 
 ## Initializes the projectile state, stats, and visual representation based on direction and ID.
@@ -59,20 +57,20 @@ func setup(action_id: String, direction: String, start_pos: Vector2, custom_stat
 			sprite.texture = custom_stats.texture
 		sprite.region_enabled = true
 		_configure_animation_and_shape()
-
+	
+	visible = false
 
 
 ## Triggers the physics process and plays the initialization effects.
 func shoot() -> void:
 	super.shoot()
 	_play_initial_sound()
-
+	visible = true
 
 
 ## Overridable method to play specific sounds when the projectile is shot.
 func _play_initial_sound() -> void:
 	pass
-
 
 
 ## Utility to play a sound effect dynamically from the ZipMediaLoader.
@@ -87,7 +85,6 @@ func _play_audio_from_path(path: String) -> void:
 		audio_player.finished.connect(audio_player.queue_free)
 
 
-
 func _physics_process(delta: float) -> void:
 	var displacement = direction_vector * speed * delta
 	position += displacement
@@ -100,34 +97,11 @@ func _physics_process(delta: float) -> void:
 		_process_animation(delta)
 
 
-
 ## Processes the impact logic and clears the projectile from the scene.
-func hit(target: Node2D = null) -> void:
-	if _is_destroyed or is_queued_for_deletion():
-		return
-		
-	if target and target.is_in_group("event"):
-		pass
-	
+func hit(_target: Node2D = null) -> void:
 	_play_audio_from_path("uid://did4aih30hyu7")
 	
 	destroy()
-
-
-
-func _on_body_entered(body: Node2D) -> void:
-	if is_instance_valid(player) and body == player:
-		return
-	hit(body)
-
-
-
-func _on_area_entered(area: Area2D) -> void:
-	var body = area.get_parent()
-	if body and is_instance_valid(player) and body == player:
-		return
-	hit(body)
-
 
 
 func _configure_animation_and_shape() -> void:
@@ -152,7 +126,6 @@ func _configure_animation_and_shape() -> void:
 
 	var shape_data = dir_data.get("shape", {})
 	_update_collision_shape(shape_data)
-
 
 
 func _update_collision_shape(shape_data: Dictionary) -> void:
@@ -180,7 +153,6 @@ func _update_collision_shape(shape_data: Dictionary) -> void:
 				collision_shape.shape = CapsuleShape2D.new()
 			collision_shape.shape.radius = shape_data.get("radius", 5.0)
 			collision_shape.shape.height = shape_data.get("height", 20.0)
-
 
 
 func _process_animation(delta: float) -> void:

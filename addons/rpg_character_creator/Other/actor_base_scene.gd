@@ -95,6 +95,8 @@ func maintain_current_look() -> void:
 
 
 func _process(delta: float) -> void:
+	if busy2: return
+	
 	super(delta)
 	if GameManager.loading_game or is_invalid_event:
 		return

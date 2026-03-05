@@ -234,10 +234,10 @@ func get_active_page() -> RPGEventPage:
 ## Helper function to evaluate all runtime conditions for a given page.
 func _are_page_conditions_met(page: RPGEventPage) -> bool:
 	var condition: RPGEventPageCondition = page.condition
-	
+
 	if condition.use_switch1 and not GameManager.get_switch(condition.switch1_id): return false
 	if condition.use_switch2 and not GameManager.get_switch(condition.switch2_id): return false
-	if condition.use_local_switch and not GameManager.get_local_switch(condition.local_switch_id): return false
+	if condition.use_local_switch and not GameManager.get_local_switch(condition.local_switch_id, _uniq_id): return false
 	if condition.use_pressure and not _is_pressed(condition.pressure_targets): return false
 	
 	if condition.use_variable:
@@ -264,23 +264,27 @@ func _is_pressed(targets: PackedInt64Array) -> bool:
 	if not current_ingame_event:
 		return false
 		
+	var my_cell: Vector2i = current_ingame_event.get_current_tile()
+		
 	var events: Array[IngameEvent] = GameManager.get_ingame_events()
 	
 	if events.is_empty():
 		return false
 
-	var my_cell: Vector2i = current_ingame_event.get_current_virtual_tile()
 
 	if targets.has(0):
 		if GameManager.current_player:
-			var p_cell: Vector2i = GameManager.current_player.get_current_virtual_tile()
+			var real_player = GameManager.current_player
+			if GameManager.current_player.is_on_vehicle and GameManager.current_vehicle:
+				real_player = GameManager.current_vehicle
+			var p_cell: Vector2i = real_player.get_current_tile()
 			if my_cell == p_cell:
 				return true
 				
 		var followers: Array = GameManager.get_followers()
 		for f in followers:
 			if is_instance_valid(f):
-				var f_cell: Vector2i = f.get_current_virtual_tile()
+				var f_cell: Vector2i = f.get_current_tile()
 				if my_cell == f_cell:
 					return true
 					
@@ -302,7 +306,7 @@ func _is_pressed(targets: PackedInt64Array) -> bool:
 				continue
 				
 			if targets.has(e_uniq_id):
-				var e_cell: Vector2i = node.get_current_virtual_tile()
+				var e_cell: Vector2i = node.get_current_tile()
 				if my_cell == e_cell:
 					return true
 	return false

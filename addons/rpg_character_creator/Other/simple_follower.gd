@@ -3,7 +3,7 @@ extends CharacterBody2D
 
 
 ## How many "distance steps" this follower lags behind.
-@export var spacing_steps: int = 24
+@export var spacing_steps: int = 16
 
 ## Constant speed of the walk animation (frames per second).
 @export var animation_fps: float = 19.0
@@ -25,6 +25,7 @@ var target_node: Node2D
 var follower_id: int = 0
 
 var current_direction: int = CharacterBase.DIRECTIONS.DOWN
+var fixed_direction: int = -1
 var current_animation: String = "idle"
 var current_frame: int = 0
 var current_weapon_data: Dictionary = {}
@@ -71,11 +72,19 @@ func _ready() -> void:
 		global_position = target_node.global_position
 
 
-func get_current_virtual_tile() -> Vector2i:
+func get_direction() -> CharacterBase.DIRECTIONS:
+	return current_direction
+
+
+func get_current_tile() -> Vector2i:
 	if GameManager.current_map:
 		return GameManager.current_map.get_tile_from_position(global_position)
 	
 	return Vector2i()
+
+
+func get_current_virtual_tile() -> Vector2i:
+	return get_current_tile()
 
 
 func _process_next_frame(delta: float) -> void:
@@ -85,6 +94,32 @@ func _process_next_frame(delta: float) -> void:
 		_frame_timer = 0.0
 
 	run_animation()
+
+
+func _get_index_at_distance(target_distance_px: float) -> int:
+	var player = GameManager.current_player
+	if not player or not "movement_history" in player:
+		return 0
+		
+	var history = player.movement_history
+	if history.is_empty():
+		return 0
+		
+	var accumulated_dist: float = 0.0
+	var current_idx = history.size() - 1
+	
+	while current_idx > 0:
+		var pos_curr = history[current_idx].pos
+		var pos_prev = history[current_idx - 1].pos
+		
+		accumulated_dist += pos_curr.distance_to(pos_prev)
+		
+		if accumulated_dist >= target_distance_px:
+			return (history.size() - 1) - current_idx
+			
+		current_idx -= 1
+	
+	return history.size() - 1
 
 
 func _process(delta: float) -> void:
@@ -126,7 +161,12 @@ func _process(delta: float) -> void:
 				player_moved = true
 			_last_player_head_pos = head_snapshot.pos
 
-		var base_offset = follower_id * spacing_steps
+		var dist_per_follower = 30.0
+		var total_needed_dist = follower_id * dist_per_follower
+
+		var dynamic_spacing_steps = _get_index_at_distance(total_needed_dist)
+
+		var base_offset = dynamic_spacing_steps
 
 		if _is_waiting:
 			if player_moved:
@@ -146,6 +186,7 @@ func _process(delta: float) -> void:
 				_extra_history_offset_f = max(0.0, _extra_history_offset_f - (catch_up_rate * delta))
 
 		var my_step_offset = base_offset + int(_extra_history_offset_f)
+
 		var snapshot = GameManager.current_player.get_history_step(my_step_offset)
 		
 		if not snapshot.is_empty():
@@ -318,6 +359,9 @@ func _update_weapon_textures() -> void:
 func run_animation() -> void:
 	if not is_inside_tree():
 		return
+	
+	if fixed_direction != -1:
+		current_direction = fixed_direction
 	
 	_update_weapon_textures()
 	

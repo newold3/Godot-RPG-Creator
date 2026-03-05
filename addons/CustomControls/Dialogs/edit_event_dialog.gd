@@ -177,15 +177,13 @@ func confirm_changes() -> void:
 	if current_event and not current_event.is_equal_to(original_event):
 		var path = "res://addons/CustomControls/Dialogs/confirm_dialog.tscn"
 		var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
-		dialog.set_text(TranslationManager.tr("You have unsaved changes.\nDo you want to save them before exiting?"))
+		dialog.set_text(TranslationManager.tr("You have unsaved changes.\n\nDo you want to exit and discard the changes?\n"))
 		dialog.title = TranslationManager.tr("Unsaved Changes")
 
 		dialog.tree_exiting.connect(
 			func():
-				if not dialog.result:
+				if dialog.result:
 					queue_free()
-				else:
-					_on_ok_button_pressed()
 		)
 	else:
 		queue_free()

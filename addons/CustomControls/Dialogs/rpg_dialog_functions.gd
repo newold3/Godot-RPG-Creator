@@ -279,28 +279,11 @@ func show_dialog(dialog: Window, mode: OPEN_MODE = OPEN_MODE.CENTERED_ON_MOUSE, 
 	if mode == OPEN_MODE.CENTERED:
 		dialog.popup_centered()
 	else:
-		var mouse_position = Vector2(DisplayServer.mouse_get_position())
-		var p: Vector2 = mouse_position - dialog.size * 0.5
-		var margin = 64
-		var screen_size = Vector2(DisplayServer.screen_get_size())
-		if p.x < margin:
-			p.x = margin
-		elif p.x > screen_size.x - margin - dialog.size.x:
-			p.x = screen_size.x - margin - dialog.size.x
-		if p.y < margin:
-			p.y = margin
-		elif p.y > screen_size.y - margin - dialog.size.y:
-			p.y = screen_size.y - margin - dialog.size.y
-		if (
-			p.x + dialog.size.x < 0 or
-			p.x > get_viewport().size.x or
-			p.y + dialog.size.y < 0 or
-			p.y > get_viewport().size.y
-		):
-			p = get_viewport().size * 0.5
+		var p = _repos_dialog(dialog)
 		var rect: Rect2 = Rect2(p, dialog.size)
 		dialog.popup(rect)
-		dialog.position = p
+		if not dialog.size_changed.is_connected(_repos_dialog):
+			dialog.size_changed.connect(self._repos_dialog.bind(dialog, true))
 
 	if current_opened_dialogs.size() > 0:
 		var last_dialog = current_opened_dialogs[-1]
@@ -317,6 +300,49 @@ func show_dialog(dialog: Window, mode: OPEN_MODE = OPEN_MODE.CENTERED_ON_MOUSE, 
 		dialog.grab_focus.call_deferred()
 
 	busy = false
+
+
+func _repos_dialog(dialog: Window, use_dialog_position: bool = false) -> Vector2i:
+	var screen_size = Vector2(DisplayServer.screen_get_size())
+	var margin = 32
+	var margin_bottom = 64
+	
+	if use_dialog_position:
+		var is_inside_x = dialog.position.x >= margin and (dialog.position.x + dialog.size.x) <= (screen_size.x - margin)
+		var is_inside_y = dialog.position.y >= margin and (dialog.position.y + dialog.size.y) <= (screen_size.y - margin_bottom)
+		
+		if is_inside_x and is_inside_y:
+			return dialog.position
+
+	var p: Vector2
+	if not use_dialog_position:
+		var mouse_position = Vector2(DisplayServer.mouse_get_position())
+		p = mouse_position - (Vector2(dialog.size) * 0.5)
+	else:
+		p = Vector2(dialog.position)
+	
+	if p.x < margin:
+		p.x = margin
+	elif p.x > screen_size.x - margin - dialog.size.x:
+		p.x = screen_size.x - margin - dialog.size.x
+		
+	if p.y < margin:
+		p.y = margin
+	elif p.y > screen_size.y - margin_bottom - dialog.size.y:
+		p.y = screen_size.y - margin_bottom - dialog.size.y
+	
+	if (
+		p.x + dialog.size.x < 0 or
+		p.x > screen_size.x or
+		p.y + dialog.size.y < 0 or
+		p.y > screen_size.y
+	):
+		p = (screen_size * 0.5) - (Vector2(dialog.size) * 0.5)
+	
+	var new_position = Vector2i(p)
+	dialog.position = new_position
+	
+	return new_position
 
 
 func _check_window_focus() -> void:

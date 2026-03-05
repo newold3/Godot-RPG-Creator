@@ -67,6 +67,8 @@ func _update_data_fields() -> void:
 		%CopyUserParameters.set_disabled(user_parameter_disabled)
 		%PasteUserParameters.set_disabled(user_parameter_disabled or !StaticEditorVars.CLIPBOARD.get("items_user_parameters", false))
 		
+		%InMapAttackPower.value = current_data.map_damage
+		
 		update_lpc_part_text()
 		
 	else:
@@ -671,3 +673,8 @@ func update_attack_script(path: String) -> void:
 
 func _on_set_attack_script_as_default_toggled(toggled_on: bool) -> void:
 	update_lpc_part_text(false, toggled_on)
+
+
+func _on_in_map_attack_power_value_changed(value: float) -> void:
+	if not busy and get_data():
+		get_data().map_damage = value

@@ -10,30 +10,11 @@ extends ProjectileBase
 var _time_accum: float = 0.0
 
 
-
 func setup(action_id: String, direction: String, start_pos: Vector2, custom_stats: Dictionary = {}) -> void:
 	super.setup(action_id, direction, start_pos, custom_stats)
 	
 	frequency = custom_stats.get("frequency", frequency)
 	amplitude = custom_stats.get("amplitude", amplitude)
-	
-	var x = 0
-	var y = 0
-	
-	if direction_string == "down":
-		x += 32
-		y = -32
-	elif direction_string == "left":
-		x = 24
-		y = 0
-	elif direction_string == "right":
-		x -= 24
-		y = -16
-	elif direction_string == "up":
-		x += 16
-		y += 24
-		
-	position += Vector2(x, y)
 	
 	var extra_vfx = preload("uid://fyydv1ar20a").instantiate()
 	add_child(extra_vfx)
@@ -43,10 +24,33 @@ func setup(action_id: String, direction: String, start_pos: Vector2, custom_stat
 		extra_vfx.process_material.color = blend_color
 
 
+func shoot() -> void:
+	super.shoot()
+	position += _get_projectile_offset(direction_string)
+
+
+func _get_projectile_offset(direction: String) -> Vector2:
+	var offset := Vector2.ZERO
+	var dir_lower := direction.to_lower()
+	
+	match dir_lower:
+		"down":
+			offset.x += 32
+			offset.y -= 32
+		"left":
+			offset.x += 24
+		"right":
+			offset.x -= 24
+			offset.y -= 16
+		"up":
+			offset.x += 16
+			offset.y += 24
+			
+	return offset
+
 
 func _play_initial_sound() -> void:
 	_play_audio_from_path("res://addons/rpg_character_creator/sounds/spell1.ogg")
-
 
 
 func _physics_process(delta: float) -> void:

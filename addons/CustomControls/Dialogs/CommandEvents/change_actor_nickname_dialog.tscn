@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://saxuyagpe47a"]
+[gd_scene format=3 uid="uid://saxuyagpe47a"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_vh5s3"]
 [ext_resource type="Script" uid="uid://r4il6sij3n0p" path="res://addons/CustomControls/Dialogs/CommandEvents/change_actor_nickname_dialog.gd" id="2_74po0"]
@@ -20,15 +20,8 @@ gradient = SubResource("Gradient_1r81o")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nv5ev"]
-texture = ExtResource("6_bloaw")
-texture_margin_left = 6.0
-texture_margin_top = 6.0
-texture_margin_right = 6.0
-texture_margin_bottom = 6.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cr2q0"]
-texture = ExtResource("7_72w34")
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jfd0k"]
+texture = ExtResource("9_hl27k")
 texture_margin_left = 6.0
 texture_margin_top = 6.0
 texture_margin_right = 6.0
@@ -41,24 +34,33 @@ texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jfd0k"]
-texture = ExtResource("9_hl27k")
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cr2q0"]
+texture = ExtResource("7_72w34")
 texture_margin_left = 6.0
 texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[node name="ChangeActorNicknameDialog" type="Window"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nv5ev"]
+texture = ExtResource("6_bloaw")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[node name="ChangeActorNicknameDialog" type="Window" unique_id=878105824]
+oversampling_override = 1.0
 title = "Change Actor Nickname"
 position = Vector2i(0, 36)
 size = Vector2i(448, 199)
+wrap_controls = true
 transient = true
 exclusive = true
 unresizable = true
 theme = ExtResource("1_vh5s3")
 script = ExtResource("2_74po0")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1583675053]
 material = SubResource("CanvasItemMaterial_erns2")
 anchors_preset = 15
 anchor_right = 1.0
@@ -67,7 +69,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_2105m")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1191325088]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -80,14 +82,14 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=2045563969]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer" unique_id=876513584]
 layout_mode = 2
 text = "Actor:"
 
-[node name="ActorOptions" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_v4fhu")]
+[node name="ActorOptions" parent="MarginContainer/VBoxContainer" unique_id=327273140 instance=ExtResource("3_v4fhu")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "[title]Actor[/title]
@@ -96,60 +98,60 @@ text_overrun_behavior = 3
 selected = 0
 fit_to_longest_item = false
 item_count = 5
-popup/item_0/text = "1: Aiden"
+popup/item_0/text = "1: Dadarian"
 popup/item_0/id = 0
-popup/item_1/text = "2: Elara"
+popup/item_1/text = "2: Mina"
 popup/item_1/id = 1
-popup/item_2/text = "3: Thorne"
+popup/item_2/text = "3: Elara"
 popup/item_2/id = 2
-popup/item_3/text = "4: Lyra"
+popup/item_3/text = "4: Berrick"
 popup/item_3/id = 3
-popup/item_4/text = "5: Gideon"
+popup/item_4/text = "5: Oracle"
 popup/item_4/id = 4
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1674928513]
 layout_mode = 2
 text = "New Nickname:"
 
-[node name="ActorNickname" parent="MarginContainer/VBoxContainer" instance=ExtResource("4_u1qqq")]
+[node name="ActorNickname" parent="MarginContainer/VBoxContainer" unique_id=703268596 instance=ExtResource("4_u1qqq")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "[title]Nickname[/title]
 New nickname for the character selected."
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1143728392]
 layout_mode = 2
 size_flags_vertical = 8
 theme_override_constants/separation = 12
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1088849132]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 alignment = 1
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_d6ks1")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=59165202 instance=ExtResource("5_d6ks1")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 tooltip_text = "[title]Ok[/title]
 Saves all changes and closes the windows."
-theme_override_styles/disabled = SubResource("StyleBoxTexture_nv5ev")
-theme_override_styles/hover = SubResource("StyleBoxTexture_cr2q0")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_3ldxg")
 theme_override_styles/normal = SubResource("StyleBoxTexture_jfd0k")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_3ldxg")
+theme_override_styles/hover = SubResource("StyleBoxTexture_cr2q0")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_nv5ev")
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_d6ks1")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=2026407333 instance=ExtResource("5_d6ks1")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 tooltip_text = "[title]Cancel[/title]
 Closes this window without saving any changes."
-theme_override_styles/disabled = SubResource("StyleBoxTexture_nv5ev")
-theme_override_styles/hover = SubResource("StyleBoxTexture_cr2q0")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_3ldxg")
 theme_override_styles/normal = SubResource("StyleBoxTexture_jfd0k")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_3ldxg")
+theme_override_styles/hover = SubResource("StyleBoxTexture_cr2q0")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_nv5ev")
 text = "CANCEL"
 
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/ActorOptions" to="." method="_on_actor_options_item_selected"]

@@ -68,7 +68,7 @@ func _set_switch_name() -> void:
 
 
 func _on_from_value_changed(value: float) -> void:
-	if busy: return
+	if busy or not current_data: return
 	if value > current_data.to:
 		%From.value = current_data.to
 	else:
@@ -76,7 +76,7 @@ func _on_from_value_changed(value: float) -> void:
 
 
 func _on_to_value_changed(value: float) -> void:
-	if busy: return
+	if busy or not current_data: return
 	if value < current_data.from:
 		%To.value = current_data.from
 	else:

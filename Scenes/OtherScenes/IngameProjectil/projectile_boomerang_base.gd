@@ -5,32 +5,38 @@ extends ProjectileBase
 @export var return_acceleration: float = 800.0
 
 var is_returning: bool = false
-var _hit_targets: Array[Node2D] = []
 
 
-
-## Initializes the boomerang, applying offsets, z-index logic, and extra VFX.
 func setup(action_id: String, direction: String, start_pos: Vector2, custom_stats: Dictionary = {}) -> void:
 	super.setup(action_id, direction, start_pos, custom_stats)
 	
-	var x = 0
-	var y = 0
-	
-	if direction_string == "left" or direction_string == "right":
-		y -= 32
-		x -= 16
-		z_index = 20
-	elif direction_string == "down":
-		y += 8
+	var dir_lower := direction.to_lower()
+	if dir_lower == "left" or dir_lower == "right" or dir_lower == "down":
 		z_index = 20
 	else:
 		z_index = 1
 		
-	position += Vector2(x, y)
-	
 	var extra_fx = preload("uid://dlql3isoj0b1o").instantiate()
 	add_child(extra_fx)
 
+
+func shoot() -> void:
+	super.shoot()
+	position += _get_projectile_offset(direction_string)
+
+
+func _get_projectile_offset(direction: String) -> Vector2:
+	var offset := Vector2.ZERO
+	var dir_lower := direction.to_lower()
+	
+	match dir_lower:
+		"left", "right":
+			offset.x -= 16
+			offset.y -= 32
+		"down":
+			offset.y += 8
+			
+	return offset
 
 
 func _physics_process(delta: float) -> void:
@@ -69,50 +75,10 @@ func _physics_process(delta: float) -> void:
 		_process_animation(delta)
 
 
-
-func hit(target: Node2D = null) -> void:
-	if _is_destroyed or is_queued_for_deletion():
-		return
-		
-	if target:
-		if target in _hit_targets:
-			return
-			
-		if target == player:
-			if is_returning:
-				super.hit(player)
-			return
-			
-		_hit_targets.append(target)
-		
+func hit(_target: Node2D = null) -> void:
 	if not is_returning:
 		_start_return()
 
 
-
 func _start_return() -> void:
 	is_returning = true
-
-
-
-func _on_body_entered(body: Node2D) -> void:
-	if body == player:
-		if is_returning:
-			hit(body)
-		return
-		
-	hit(body)
-
-
-
-func _on_area_entered(area: Area2D) -> void:
-	var body = area.get_parent()
-	if not body:
-		return
-		
-	if body == player:
-		if is_returning:
-			hit(body)
-		return
-		
-	hit(body)

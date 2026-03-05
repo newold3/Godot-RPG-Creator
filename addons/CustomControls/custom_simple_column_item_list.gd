@@ -147,7 +147,7 @@ func get_class(): return "ColumnItemList"
 		enable_multiselection = value
 		var node: ItemList = get_node_or_null("%ItemList")
 		if node:
-			node.select_mode = ItemList.SELECT_MULTI if value else ItemList.SELECT_SINGLE
+			node.select_mode = ItemList.SELECT_TOGGLE if value else ItemList.SELECT_SINGLE
 			notify_property_list_changed()
 
 ## Show a checkbox when multiselection is enabled

@@ -1353,17 +1353,23 @@ grow_vertical = 2
 [node name="VBoxContainer" type="VBoxContainer" parent="Overlay/CenterContainer" unique_id=379118647]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Overlay/CenterContainer/VBoxContainer" unique_id=1690994652]
+[node name="OverlayTitle" type="Label" parent="Overlay/CenterContainer/VBoxContainer" unique_id=1690994652]
+unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 26
+theme_override_font_sizes/font_size = 36
 text = "SAVING..."
 
+[node name="Control" type="Control" parent="Overlay/CenterContainer/VBoxContainer" unique_id=676182699]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+
 [node name="TextureRect" type="TextureRect" parent="Overlay/CenterContainer/VBoxContainer" unique_id=316859499]
-custom_minimum_size = Vector2(64, 64)
+custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 texture = SubResource("AnimatedTexture_hf2ss")
+expand_mode = 1
 
 [connection signal="item_selected" from="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/VBoxContainer/HBoxContainer/Palettes" to="." method="_on_palettes_item_selected"]
 [connection signal="item_selected" from="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/VBoxContainer/HBoxContainer2/Races" to="." method="_on_races_item_selected"]

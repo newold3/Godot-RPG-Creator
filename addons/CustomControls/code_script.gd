@@ -89,11 +89,11 @@ var command_codes = {
 	# Command Control Variables (Code 18)
 	# Code 18 (Parent) parameters { from, to, operation_type, operand_type, value1, value2, value3 }
 	13 : {"command_code" : 18, "dialog" : "control_variables_dialog"},
-	# Command Combar Experience Mode Leader (Code 61)
-	# Code 61 (Parent) parameters { id, value }
+	# Command Control Text Variables  (Code 61)
+	# Code 61 (Parent) parameters { id, value, operation, replace_value }
 	113 : {"command_code" : 61, "dialog" : "text_variable_dialog"},
 	# Command Control Self Switches (Code 19)
-	# Code 19 (Parent) parameters { operation_type, switch_id }
+	# Code 19 (Parent) parameters { event_id, operation_type, switch_id }
 	14 : {"command_code" : 19, "dialog" : "control_self_switches_dialog"},
 	# Command Change User Parameter (Code 302)
 	# Code 302 (Parent) parameters { target_id, param_id, value }

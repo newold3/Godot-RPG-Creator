@@ -13,13 +13,7 @@ func _command_0017() -> void:
 	var to = current_command.parameters.get("to", from)
 	
 	# Generate a script to iterate over the specified range of switches and set their values
-	var script: String = ""
-	script += "for i in range(%s, %s, 1): " % [from, to + 1]
-	script += "\n\tif GameManager.game_state.game_switches.size() > i: "
-	script += "\n\t\tGameManager.game_state.game_switches[i] = %s" % (true if operation_type == 0 else false)
-
-	# Execute the generated script
-	interpreter.code_eval.execute(script)
+	GameManager.set_switch_variable(from, to, operation_type == 0)
 
 	# Refresh the current map if it exists
 	if GameManager.current_map:
@@ -281,13 +275,7 @@ func _command_0018() -> void:
 		debug_print(str(["Error: Division or Modulo by Zero", GameInterpreter.current_command, GameInterpreter.current_interpreter.obj]))
 	else:
 		# Generate a script to iterate over the specified range of variables and apply the operation
-		var script: String = ""
-		script += "for i in range(%s, %s, 1): " % [from, to + 1]
-		script += "\n\tif GameManager.game_state.game_variables.size() > i: "
-		script += "\n\t\tGameManager.game_state.game_variables[i] %s " % operations[operation_type]
-		script += str(target_value)
-		#print(script)  # Debug: Print the generated script
-		interpreter.code_eval.execute(script)  # Execute the generated script
+		GameManager.set_variable(from, to, operation_type, target_value)
 	
 	# Refresh the current map if it exists
 	if GameManager.current_map:
@@ -296,6 +284,7 @@ func _command_0018() -> void:
 		await GameManager.current_map.get_tree().process_frame
 		await GameManager.current_map.get_tree().process_frame
 
+
 # Command Text Variable (Code 61), button_id = 113
 # Code 61 (Parent) parameters { id, value }
 func _command_0061() -> void:
@@ -303,9 +292,10 @@ func _command_0061() -> void:
 	
 	var id = current_command.parameters.get("id", 0)
 	var value = current_command.parameters.get("value", "")
+	var operation = current_command.parameters.get("operation", 0)
+	var replace_text = current_command.parameters.get("replace_text", "")
 	
-	if GameManager.game_state.game_text_variables.size() > id:
-		GameManager.game_state.game_text_variables[id] = value
+	GameManager.set_text_variable(id, value, operation, replace_text)
 
 
 # Command Control Self Switches (Code 19), button_id = 14
@@ -313,19 +303,15 @@ func _command_0061() -> void:
 func _command_0019() -> void:
 	debug_print("Processing command: Control Self Switches (code 19)")
 	
+	var target = current_command.parameters.get("event_id", 0)
 	var operation_type = current_command.parameters.get("operation_type", 0)
 	var switch_id = current_command.parameters.get("switch_id", 0)
 	
-	if GameManager.current_map:
-		var map_id = GameManager.current_map.internal_id
-		var switch_name = RPGSYSTEM.system.self_switches.get_self_switch_name(switch_id)
-		if switch_name:
-			var switch_key = "%s_%s" % [map_id, switch_id]
-			GameManager.game_state.game_self_switches[switch_key] = operation_type == 0
-			GameManager.current_map.need_refresh = true
-			await GameManager.current_map.get_tree().process_frame
-			await GameManager.current_map.get_tree().process_frame
-			await GameManager.current_map.get_tree().process_frame
+	if target == 0 and GameInterpreter.current_event:
+		target = GameInterpreter.current_event._uniq_id
+	
+	if target != 0:
+		GameManager.set_local_switch(switch_id, operation_type == 0, target)
 
 
 # Command Change User Parameter (Code 302), button_id = 130

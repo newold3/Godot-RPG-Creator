@@ -246,10 +246,34 @@ func get_switch(id: int) -> bool:
 	return false
 
 
+func set_switch_variable(from: int, to: int, value: bool) -> void:
+	if game_state:
+		var switches = GameManager.game_state.game_switches
+		for i in range(from, to + 1, 1):
+			if switches.size() > i:
+				switches[i] = 1 if value else 0
+		GameManager.current_map.need_refresh = true
+
+
 func get_variable(id: int) -> int:
 	if game_state and game_state.game_variables.size() > id:
 		return game_state.game_variables[id]
 	return 0
+
+
+func set_variable(from: int, to: int, operation_type: int, target_value: float) -> void:
+	if game_state:
+		var variables = GameManager.game_state.game_variables
+		for i in range(from, to + 1, 1):
+			if variables.size() > i:
+				match operation_type:
+					0: variables[i] = target_value
+					1: variables[i] += target_value
+					2: variables[i] -= target_value
+					3: variables[i] *= target_value
+					4: variables[i] /= target_value
+					5: variables[i] = fmod(variables[i], target_value)
+		GameManager.current_map.need_refresh = true
 
 
 func get_text_variable(id: int) -> String:
@@ -258,10 +282,42 @@ func get_text_variable(id: int) -> String:
 	return ""
 
 
-func get_local_switch(id: int) -> bool:
+func set_text_variable(id: int, value: String, operation: int = 0, replace_text = "") -> void:
+	var variables = game_state.game_text_variables
+	if game_state and variables.size() > id:
+		match operation:
+			0: # Set
+				variables[id] = value
+			1: # Add
+				variables[id] = variables[id] + value
+			_: # Replace
+				variables[id] = variables[id].replace(value, replace_text)
+
+
+func get_local_switch(switch_id: int, target: int) -> bool:
 	if game_state and current_map:
-		return game_state.game_self_switches.get("%s_%s" % [current_map.internal_id, id], false)
+		if target == 0 and GameInterpreter.current_event:
+			target = GameInterpreter.current_event._uniq_id
+		
+		if target != 0:
+			var switch_key = "%s_%s_%s" % [current_map.internal_id, target, switch_id]
+			return game_state.game_self_switches.get(switch_key, false)
+			
 	return false
+
+
+func set_local_switch(switch_id: int, value: bool, target: int = 0) -> void:
+	if GameManager.current_map:
+		var map_id = GameManager.current_map.internal_id
+		var switch_name = RPGSYSTEM.system.self_switches.get_self_switch_name(switch_id)
+		if switch_name:
+			if target == 0 and GameInterpreter.current_event:
+				target = GameInterpreter.current_event._uniq_id
+			
+			if target != 0:
+				var switch_key = "%s_%s_%s" % [map_id, target, switch_id]
+				GameManager.game_state.game_self_switches[switch_key] = value
+				GameManager.current_map.need_refresh = true
 
 
 func is_item_in_possesion(item_type, item_id) -> bool:
@@ -370,12 +426,18 @@ func regroup_followers(time: float = 0.6, remove_followers: bool = false) -> voi
 	if main_scene: main_scene.process_follower_command("regroup", time, remove_followers)
 
 
+func disable_followers_tracking(time: float) -> void:
+	if game_state: game_state.followers_tracking_enabled = false
+	if main_scene:
+		main_scene.process_follower_command("disable_tracking", time)
+
+
 func shift_up_follower() -> void:
-	if main_scene: main_scene.process_follower_command("shift_up")
+	if main_scene: await main_scene.process_follower_command("shift_up")
 
 
 func shift_down_follower() -> void:
-	if main_scene: main_scene.process_follower_command("shift_down")
+	if main_scene: await main_scene.process_follower_command("shift_down")
 
 
 func destroy_followers() -> void:

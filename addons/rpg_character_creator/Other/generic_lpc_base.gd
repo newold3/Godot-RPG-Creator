@@ -151,6 +151,17 @@ func _build_custom_scene() -> void:
 		instanced_scene.position = Vector2.ZERO
 
 
+func update_character_rect(region: Rect2) -> void:
+	var node = get_node_or_null("%MainTexture")
+	node.region_enabled = true
+	node.region_rect = region
+	
+	node.offset.y = -region.size.y / 2.0
+	if GameManager.current_map:
+		var tile_size: Vector2i = GameManager.get_map_tile_size()
+		node.offset.y += tile_size.y + 4
+
+
 func _ready() -> void:
 	super()
 	_build()

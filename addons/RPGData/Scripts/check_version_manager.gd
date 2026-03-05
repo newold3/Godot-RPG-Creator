@@ -10,7 +10,7 @@ signal update_found(new_version: String)
 
 const BLOCKING_GROUP: String = "startup_blocking_window"
 const SHA_RES_FILE: String = "res://addons/RPGData/version_sha.txt"
-const GITHUB_API_URL: String = "https://api.github.com/repos/newold3/Godot-RPG-Creator-4.5.6-/commits/master"
+const GITHUB_API_URL: String = "https://api.github.com/repos/newold3/Godot-RPG-Creator/commits/master"
 
 var _http_request: HTTPRequest
 var _http_dev: HTTPRequest
@@ -47,7 +47,7 @@ func _initialize_logic() -> void:
 	await get_tree().create_timer(1.0).timeout
 	
 	if not is_instance_valid(self) or not is_inside_tree(): return
-	
+
 	if DatabaseLoader.is_develop_build:
 		_setup_dev_autosync()
 	else:
@@ -75,6 +75,7 @@ func _check_github_sha_dev() -> void:
 	if _http_dev.get_http_client_status() != HTTPClient.STATUS_DISCONNECTED:
 		return
 	var headers = ["User-Agent: Godot-RPG-Creator-Dev-Sync"]
+
 	_http_dev.request(GITHUB_API_URL, headers)
 
 
@@ -89,7 +90,7 @@ func _on_dev_sha_received(_result: int, code: int, _headers: PackedStringArray, 
 	
 	if FileAccess.file_exists(SHA_RES_FILE):
 		local_sha = FileAccess.get_file_as_string(SHA_RES_FILE).strip_edges()
-	
+
 	if remote_sha != local_sha:
 		var f = FileAccess.open(SHA_RES_FILE, FileAccess.WRITE)
 		if f:

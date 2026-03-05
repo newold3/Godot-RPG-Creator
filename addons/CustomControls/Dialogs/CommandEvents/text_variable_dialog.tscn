@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://bmna3gdtqxo6l"]
+[gd_scene format=3 uid="uid://bmna3gdtqxo6l"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_pxdv0"]
 [ext_resource type="Script" uid="uid://cg4jam3xh23c7" path="res://addons/CustomControls/Dialogs/CommandEvents/text_variable_dialog.gd" id="2_21pgj"]
 [ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="3_t3wol"]
 [ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="4_0t2gq"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="4_h4wnt"]
 [ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="4_xeoay"]
 
 [sub_resource type="Gradient" id="Gradient_7ascj"]
@@ -14,10 +15,11 @@ gradient = SubResource("Gradient_7ascj")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
-[node name="SetTextVariable" type="Window"]
+[node name="SetTextVariable" type="Window" unique_id=267462201]
+oversampling_override = 1.0
 title = "Set Text Variable"
 position = Vector2i(0, 36)
-size = Vector2i(400, 190)
+size = Vector2i(400, 318)
 wrap_controls = true
 transient = true
 exclusive = true
@@ -25,7 +27,7 @@ unresizable = true
 theme = ExtResource("1_pxdv0")
 script = ExtResource("2_21pgj")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1409386226]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -33,7 +35,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_ourej")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2098754001]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -44,14 +46,14 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=320505554]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer" unique_id=526038264]
 layout_mode = 2
 text = "Select Variable:"
 
-[node name="Variable" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_t3wol")]
+[node name="Variable" parent="MarginContainer/VBoxContainer" unique_id=610663910 instance=ExtResource("3_t3wol")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -60,25 +62,57 @@ size_flags_vertical = 4
 tooltip_text = "Current Variable ID"
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer" unique_id=310842325]
+layout_mode = 2
+text = "Operation:"
+
+[node name="OperationType" parent="MarginContainer/VBoxContainer" unique_id=621784070 instance=ExtResource("4_h4wnt")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Type of operation to be performed (set, add, or replace)"
+selected = 0
+item_count = 3
+popup/item_0/text = "Set"
+popup/item_0/id = 0
+popup/item_1/text = "Add"
+popup/item_1/id = 1
+popup/item_2/text = "Replace"
+popup/item_2/id = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1852169638]
 layout_mode = 2
 text = "Value:"
 
-[node name="Value" parent="MarginContainer/VBoxContainer" instance=ExtResource("4_0t2gq")]
+[node name="Value" parent="MarginContainer/VBoxContainer" unique_id=2040355961 instance=ExtResource("4_0t2gq")]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Current Variable Value"
+tooltip_text = "Current Variable Value.
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[Note]: If the operation is \"to replace\", this value will be the text to be replaced."
+
+[node name="NewValueContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1211574554]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="MarginContainer/VBoxContainer/NewValueContainer" unique_id=723224278]
+layout_mode = 2
+text = "New Value:"
+
+[node name="NewValue" parent="MarginContainer/VBoxContainer/NewValueContainer" unique_id=1185101427 instance=ExtResource("4_0t2gq")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Replacement text for the selected content."
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1423335532]
 layout_mode = 2
 size_flags_vertical = 10
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=2016957011]
 layout_mode = 2
 size_flags_vertical = 10
 alignment = 1
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("4_xeoay")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=424703110 instance=ExtResource("4_xeoay")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -87,7 +121,7 @@ tooltip_text = "[title]Ok[/title]
 Saves all changes and closes the windows."
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("4_xeoay")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1284511647 instance=ExtResource("4_xeoay")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -97,5 +131,6 @@ Closes this window without saving any changes."
 text = "CANCEL"
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Variable" to="." method="_on_variable_pressed"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/OperationType" to="." method="_on_operation_type_item_selected"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/OKButton" to="." method="_on_ok_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/CancelButton" to="." method="_on_cancel_button_pressed"]

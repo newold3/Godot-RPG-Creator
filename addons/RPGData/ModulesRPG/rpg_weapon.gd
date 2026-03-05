@@ -64,6 +64,9 @@ func get_class(): return "RPGWeapon"
 ## animations when starting an attack, when hitting something, or when being destroyed.
 @export var lpc_part_custom_script: String = ""
 
+## Attack power used by this weapon when it is not used in battle.
+@export var map_damage: int = 1
+
 ## Add this weapon to one or more tools to trigger events in-game.
 @export var tools_family: PackedInt32Array = []
 

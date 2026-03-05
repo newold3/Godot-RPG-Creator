@@ -11,7 +11,8 @@ var particle_container: Node2D
 
 ## Array containing all instanced events in the current map that have at least one pressable page.
 var pressable_events: Array[int] = []
-var _pressure_cooldowns: Dictionary = {}
+var processing_task: bool = false
+var _initial_delay: float = 0.0
 
 ## Number of physics frames to wait before re-evaluating a pressure plate after a page change.
 const PRESSURE_COOLDOWN_FRAMES: int = 4
@@ -81,6 +82,8 @@ func setup_events() -> void:
 			page.id = ev.id
 			var ingame_event = create_ingame_event(ev, page)
 			register_pressable_event(ingame_event.event)
+			if map:
+				map.register_hp_page(ev._uniq_id, page._uniq_id, page.options.hp)
 			if ingame_event:
 				current_ingame_events[ev._uniq_id] = ingame_event
 				var interpreter_id = "event_" + str(ev._uniq_id)
@@ -91,6 +94,8 @@ func setup_events() -> void:
 	
 	if not automatic_events.is_empty():
 		GameInterpreter.auto_start_automatic_events(automatic_events)
+	
+	_initial_delay = 0.5
 
 
 func setup_extraction_events() -> void:
@@ -112,6 +117,8 @@ func refresh_events() -> void:
 		
 		if active_page and active_page.page_id != ev.page_id:
 			ev.refresh_page(active_page)
+			if map:
+				map.register_hp_page(ev.uniq_id, active_page._uniq_id, active_page.options.hp)
 	
 	for obj: CollisionShape2D in map.ingame_event_regions:
 		var region = obj.get_meta("region_data")
@@ -343,24 +350,27 @@ func register_pressable_event(event: RPGEvent) -> void:
 		if page.condition and page.condition.use_pressure:
 			if not event._uniq_id in pressable_events:
 				pressable_events.append(event._uniq_id)
-				
-				_pressure_cooldowns[event._uniq_id] = Engine.get_physics_frames() + (PRESSURE_COOLDOWN_FRAMES * 4)
 			return
 
 
 ## Evaluates pressure plates every physics tick, utilizing a frame-based cooldown to prevent flickering.
 func update_pressable_events() -> void:
-	if pressable_events.is_empty():
+	if pressable_events.is_empty() or processing_task:
 		return
 		
-	var current_frame: int = Engine.get_physics_frames()
+	var is_startup_phase: bool = false
+	if _initial_delay > 0.0:
+		_initial_delay -= GameManager.get_process_delta_time()
+		is_startup_phase = true
+	
+	if processing_task:
+		return
 	
 	for i in range(pressable_events.size() - 1, -1, -1):
 		var uniq_id: int = pressable_events[i]
 		
 		if not uniq_id in current_ingame_events:
 			pressable_events.remove_at(i)
-			_pressure_cooldowns.erase(uniq_id)
 			continue
 			
 		var ingame_event: IngameEvent = current_ingame_events[uniq_id]
@@ -369,57 +379,28 @@ func update_pressable_events() -> void:
 		
 		if not is_instance_valid(lpc_event):
 			continue
-			
-		var current_tile = lpc_event.get_current_tile()
-		var raw_entities = get_events_objects_in(current_tile)
-		var current_entities: Array[Node] = []
 		
-		for e in raw_entities:
-			if e != lpc_event and is_instance_valid(e):
-				current_entities.append(e)
-				
-		var previous_pressers: Array = lpc_event.get_meta("_pressers") if lpc_event.has_meta("_pressers") else []
-		var next_pressers: Array = []
-		var someone_left: Node = null
-		
-		for p in previous_pressers:
-			if is_instance_valid(p):
-				if not p in current_entities:
-					someone_left = p
-				else:
-					next_pressers.append(p)
-					
-		for e in current_entities:
-			if not e in next_pressers:
-				next_pressers.append(e)
-				
-		lpc_event.set_meta("_pressers", next_pressers)
-		
-		if is_instance_valid(someone_left):
-			var active_page = event.get_active_page()
-			if active_page and not active_page.options.fixed_direction:
-				if "current_direction" in someone_left:
-					lpc_event.current_direction = someone_left.current_direction
-					lpc_event.last_direction = someone_left.current_direction
-
-		if _pressure_cooldowns.has(uniq_id) and current_frame < _pressure_cooldowns[uniq_id]:
-			continue
-			
-		var old_page: RPGEventPage = event.get_last_page_used()
+		var old_page: RPGEventPage = lpc_event.current_event_page
 		var new_page: RPGEventPage = event.get_active_page()
 		
-		if old_page != new_page:
-			if old_page.condition.use_pressure or new_page.condition.use_pressure:
-				GameInterpreter.start_event(lpc_event, old_page.list, false, "pressed_event")
+		if new_page != old_page:
+			if is_startup_phase:
+				if ingame_event.has_method("refresh_page"):
+					ingame_event.refresh_page(new_page)
 
-			_pressure_cooldowns[uniq_id] = current_frame + PRESSURE_COOLDOWN_FRAMES
-			
-			if ingame_event.has_method("refresh_page"):
-				ingame_event.refresh_page(new_page)
+			else:
+				if old_page.condition.use_pressure or new_page.condition.use_pressure:
+					processing_task = true
+					
+					await GameInterpreter.start_event(lpc_event, old_page.list, false, "pressure_change")
+					
+					if ingame_event.has_method("refresh_page"):
+						ingame_event.refresh_page(new_page)
+					
+					processing_task = false
 
 
 ## Clears the list when changing maps.
 func clear_pressable_events() -> void:
 	pressable_events.clear()
-	_pressure_cooldowns.clear()
 #endregion

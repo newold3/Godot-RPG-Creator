@@ -23,6 +23,19 @@ var fixed_direction: bool = false
 var passable: bool = false
 
 
+func _ready() -> void:
+	super()
+	if not is_in_group("event"):
+		add_to_group("event")
+	
+	set_collision_layer_value(1, false)
+	set_collision_layer_value(3, true)
+	set_collision_mask_value(1, true)
+	set_collision_mask_value(2, true)
+	set_collision_mask_value(3, true)
+	set_collision_mask_value(4, true)
+
+
 func is_passable() -> bool:
 	return passable
 

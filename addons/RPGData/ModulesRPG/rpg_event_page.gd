@@ -71,6 +71,9 @@ enum LAUNCHER_MODE {ACTION_BUTTON, PLAYER_COLLISION, EVENT_COLLISION, AUTOMATIC,
 ## Path to the graphic or scene resource.
 @export var character_path: String
 
+## Rect used when character_path is image
+@export var character_region: Rect2 = Rect2()
+
 ## Starting orientation for the event's sprite.
 @export var direction: LPCCharacter.DIRECTIONS = LPCCharacter.DIRECTIONS.DOWN
 

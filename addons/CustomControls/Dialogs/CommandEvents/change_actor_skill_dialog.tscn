@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://dwrkcq0bjoj7y"]
+[gd_scene format=3 uid="uid://dwrkcq0bjoj7y"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_g0whi"]
 [ext_resource type="Script" uid="uid://bgtogqcl5owct" path="res://addons/CustomControls/Dialogs/CommandEvents/change_actor_skill_dialog.gd" id="2_fg11l"]
@@ -136,17 +136,19 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[node name="ChangeActorSkillDialog" type="Window"]
+[node name="ChangeActorSkillDialog" type="Window" unique_id=556803611]
+oversampling_override = 1.0
 title = "Change Skill"
 position = Vector2i(0, 36)
 size = Vector2i(400, 390)
+wrap_controls = true
 transient = true
 exclusive = true
 unresizable = true
 theme = ExtResource("1_g0whi")
 script = ExtResource("2_fg11l")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1528703484]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -154,7 +156,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_ourej")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1481020867]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -165,34 +167,34 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1317132562]
 layout_mode = 2
 
-[node name="ContentsPanel1" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_jihhm")]
+[node name="ContentsPanel1" parent="MarginContainer/VBoxContainer" unique_id=23630280 instance=ExtResource("3_jihhm")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_nj0fm")
 style1 = SubResource("StyleBoxFlat_nj0fm")
 style2 = SubResource("StyleBoxTexture_d8ie1")
 style3 = SubResource("StyleBoxFlat_mckj0")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/ContentsPanel1"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/ContentsPanel1" unique_id=75618523]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ContentsPanel1/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ContentsPanel1/MarginContainer" unique_id=336492007]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ContentsPanel1/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ContentsPanel1/MarginContainer/VBoxContainer" unique_id=1008474921]
 layout_mode = 2
 text = "Actor"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ContentsPanel1/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ContentsPanel1/MarginContainer/VBoxContainer" unique_id=1995597098]
 layout_mode = 2
 
-[node name="Fixed" type="CheckBox" parent="MarginContainer/VBoxContainer/ContentsPanel1/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Fixed" type="CheckBox" parent="MarginContainer/VBoxContainer/ContentsPanel1/MarginContainer/VBoxContainer/HBoxContainer" unique_id=408322230]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
@@ -202,7 +204,7 @@ button_pressed = true
 button_group = SubResource("ButtonGroup_x53ls")
 text = "Fixed"
 
-[node name="FixedValue" parent="MarginContainer/VBoxContainer/ContentsPanel1/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_6ljdc")]
+[node name="FixedValue" parent="MarginContainer/VBoxContainer/ContentsPanel1/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1989501859 instance=ExtResource("4_6ljdc")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -211,21 +213,21 @@ selected = 0
 item_count = 6
 popup/item_0/text = "Entire Party"
 popup/item_0/id = 0
-popup/item_1/text = "1: Aiden"
+popup/item_1/text = "1: Dadarian"
 popup/item_1/id = 1
-popup/item_2/text = "2: Elara"
+popup/item_2/text = "2: Mina"
 popup/item_2/id = 2
-popup/item_3/text = "3: Thorne"
+popup/item_3/text = "3: Elara"
 popup/item_3/id = 3
-popup/item_4/text = "4: Lyra"
+popup/item_4/text = "4: Berrick"
 popup/item_4/id = 4
-popup/item_5/text = "5: Gideon"
+popup/item_5/text = "5: Oracle"
 popup/item_5/id = 5
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ContentsPanel1/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ContentsPanel1/MarginContainer/VBoxContainer" unique_id=1872556524]
 layout_mode = 2
 
-[node name="Variable" type="CheckBox" parent="MarginContainer/VBoxContainer/ContentsPanel1/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Variable" type="CheckBox" parent="MarginContainer/VBoxContainer/ContentsPanel1/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1237529102]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
@@ -234,7 +236,7 @@ mouse_default_cursor_shape = 2
 button_group = SubResource("ButtonGroup_x53ls")
 text = "Variable"
 
-[node name="VariableValue" parent="MarginContainer/VBoxContainer/ContentsPanel1/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_aoueg")]
+[node name="VariableValue" parent="MarginContainer/VBoxContainer/ContentsPanel1/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1841502995 instance=ExtResource("5_aoueg")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -245,31 +247,31 @@ theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 disabled = true
 text = "1: "
 
-[node name="ContentsPanel2" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_jihhm")]
+[node name="ContentsPanel2" parent="MarginContainer/VBoxContainer" unique_id=107661485 instance=ExtResource("3_jihhm")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ph1tm")
 style1 = SubResource("StyleBoxFlat_ph1tm")
 style2 = SubResource("StyleBoxTexture_7bcpj")
 style3 = SubResource("StyleBoxFlat_mybxq")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/ContentsPanel2"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/ContentsPanel2" unique_id=1841379956]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ContentsPanel2/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ContentsPanel2/MarginContainer" unique_id=1385244550]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ContentsPanel2/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ContentsPanel2/MarginContainer/VBoxContainer" unique_id=1485845062]
 layout_mode = 2
 text = "Operation"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ContentsPanel2/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ContentsPanel2/MarginContainer/VBoxContainer" unique_id=1491653403]
 layout_mode = 2
 
-[node name="Add" type="CheckBox" parent="MarginContainer/VBoxContainer/ContentsPanel2/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Add" type="CheckBox" parent="MarginContainer/VBoxContainer/ContentsPanel2/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1456723923]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -279,7 +281,7 @@ button_pressed = true
 button_group = SubResource("ButtonGroup_u8n8i")
 text = "Learn"
 
-[node name="Remove" type="CheckBox" parent="MarginContainer/VBoxContainer/ContentsPanel2/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Remove" type="CheckBox" parent="MarginContainer/VBoxContainer/ContentsPanel2/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1796339376]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -288,31 +290,31 @@ mouse_default_cursor_shape = 2
 button_group = SubResource("ButtonGroup_u8n8i")
 text = "Forget"
 
-[node name="ContentsPanel3" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_jihhm")]
+[node name="ContentsPanel3" parent="MarginContainer/VBoxContainer" unique_id=1056693850 instance=ExtResource("3_jihhm")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_6vw1q")
 style1 = SubResource("StyleBoxFlat_6vw1q")
 style2 = SubResource("StyleBoxTexture_17ayj")
 style3 = SubResource("StyleBoxFlat_ye6vo")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/ContentsPanel3"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/ContentsPanel3" unique_id=684754790]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ContentsPanel3/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ContentsPanel3/MarginContainer" unique_id=2005298743]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ContentsPanel3/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ContentsPanel3/MarginContainer/VBoxContainer" unique_id=170811266]
 layout_mode = 2
 text = "Skill"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ContentsPanel3/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ContentsPanel3/MarginContainer/VBoxContainer" unique_id=1896512649]
 layout_mode = 2
 
-[node name="SkillSelected" parent="MarginContainer/VBoxContainer/ContentsPanel3/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_aoueg")]
+[node name="SkillSelected" parent="MarginContainer/VBoxContainer/ContentsPanel3/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1868235096 instance=ExtResource("5_aoueg")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -322,16 +324,16 @@ tooltip_text = "State to add or remove."
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 text = "1: uno"
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1106244775]
 layout_mode = 2
 size_flags_vertical = 10
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1466295675]
 layout_mode = 2
 size_flags_vertical = 10
 alignment = 1
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("6_qvcxh")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=454610384 instance=ExtResource("6_qvcxh")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -340,7 +342,7 @@ tooltip_text = "[title]Ok[/title]
 Saves all changes and closes the windows."
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("6_qvcxh")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=266725881 instance=ExtResource("6_qvcxh")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2

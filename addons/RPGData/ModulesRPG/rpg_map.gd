@@ -159,6 +159,8 @@ var moving_event: bool = false
 var rect_size_cache: Dictionary = {}
 var last_extraction_event_pasted_id: int
 
+var events_page_hp: Dictionary = {}
+
 var map_layout: MapLayout
 var shadow_manager: IngameMapShadowManager
 var editor_canvas: IneditorMapEditorCanvas
@@ -173,7 +175,6 @@ const GENERIC_EVENT_SCRIPT_PATH = "res://addons/rpg_character_creator/Other/gene
 #endregion
 
 signal map_started()
-
 
 
 #region Built-in Engine Methods
@@ -377,6 +378,8 @@ func _start_game_mode() -> void:
 	pathfinder.initialize(self)
 	event_offset = Vector2(tile_size.x * 0.5, tile_size.y - 4)
 	
+	events_page_hp = {}
+	
 	var parent = get_tree().get_first_node_in_group("start_scene_main")
 	if not parent or parent is not MainScene:
 		await get_tree().process_frame
@@ -464,6 +467,13 @@ func _start_game_mode() -> void:
 	GameManager.set_fx_busy(false)
 	map_started.emit()
 
+
+func register_hp_page(event_id: int, page_id: int, hp_value: int) -> void:
+	if not event_id in events_page_hp:
+		events_page_hp[event_id] = {}
+	
+	if not page_id in events_page_hp[event_id]:
+		events_page_hp[event_id][page_id] = hp_value
 
 
 func _on_child_entered_tree(node: Node) -> void:
@@ -894,6 +904,8 @@ func _update_depleted_items(delta: float) -> void:
 	if entity_manager: entity_manager.process_extraction_events(delta)
 
 
+func _update_pressed_events() -> void:
+	if entity_manager: entity_manager._update_pressed_events()
 
 func get_events_in_place(pos: Vector2i) -> int:
 	return entity_manager.get_events_in_place(pos) if entity_manager else 0

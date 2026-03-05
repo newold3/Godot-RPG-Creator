@@ -198,6 +198,10 @@ func process_follower_command(command_id: String, ...values: Array) -> void:
 				var time: float = values[0] if values.size() > 0 else 0.6
 				var delete_followers: bool = values[1] if values.size() > 1 else false
 				await %PartyManager.regroup(time, delete_followers)
+			
+			"disable_tracking":
+				var time: float = values[0] if values.size() > 0 else 0.5
+				await %PartyManager.disable_split_mode(time)
 				
 			"shift_up":
 				await %PartyManager.change_leader_to("up")

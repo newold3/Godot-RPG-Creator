@@ -31,6 +31,7 @@ func _process(delta: float) -> void:
 
 
 func set_day_color(new_color: Color) -> void:
+	new_color.a = 1.0
 	_day_color = new_color
 
 
@@ -39,10 +40,14 @@ func set_use_day_night(enabled: bool) -> void:
 
 
 func set_map_color(new_color: Color) -> void:
+	new_color.a = 1.0
+	
 	_map_color = new_color
 
 
 func set_weather_color(new_color: Color, duration: float) -> void:
+	new_color.a = 1.0
+	
 	if _weather_tween: _weather_tween.kill()
 	
 	if duration > 0.0:
@@ -96,6 +101,8 @@ func set_weather_flash(color: Color, duration: float) -> void:
 
 
 func set_tint_color(new_color: Color, duration: float) -> void:
+	new_color.a = 1.0
+	
 	if _tint_tween: _tint_tween.kill()
 
 	if duration > 0.0:
@@ -156,6 +163,8 @@ func get_modulate_scenes() -> Dictionary:
 
 
 func set_canvas_modulate_color(color: Color) -> void:
+	color.a = 1.0
+	
 	current_canvas_modulation = color
 	var brightness_factor = GameManager.current_game_options.brightness if GameManager.current_game_options else 1.0
 	
@@ -168,6 +177,8 @@ func set_canvas_modulate_color(color: Color) -> void:
 
 
 func set_weather_modulate_color(color: Color) -> void:
+	color.a = 1.0
+	
 	var node = get_node_or_null("%WeatherModulate")
 	if node:
 		node.get_material().set_shader_parameter("modulate", color)

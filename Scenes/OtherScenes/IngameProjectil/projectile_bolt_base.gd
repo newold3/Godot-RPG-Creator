@@ -6,16 +6,25 @@ extends ProjectileBase
 
 func setup(action_id: String, direction: String, start_pos: Vector2, custom_stats: Dictionary = {}) -> void:
 	super.setup(action_id, direction, start_pos, custom_stats)
-	
-	var x = 0
-	var y = 0
-	
-	if direction_string == "left" or direction_string == "right":
-		y -= 32
-	elif direction_string == "up":
-		y += 26
-		
-	position += Vector2(x, y)
+
+
+func shoot() -> void:
+	super.shoot()
+	position += _get_projectile_offset(direction_string)
+
+
+func _get_projectile_offset(direction: String) -> Vector2:
+	var offset := Vector2.ZERO
+	var dir_lower := direction.to_lower()
+	match dir_lower:
+		"left", "right":
+			offset.y -= 8
+		"up":
+			offset.y += 40
+		"down":
+			offset.y -= 8
+			
+	return offset
 
 
 func _play_initial_sound() -> void:

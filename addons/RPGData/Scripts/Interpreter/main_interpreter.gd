@@ -169,6 +169,10 @@ var _pending_automatic_events: Array
 var _pending_automatic_events_ids: Dictionary
 var _current_interpreters: Array
 
+var current_event: RPGEvent
+
+var async_scene_tasks: Array[Dictionary] = []
+
 const HANDLERS_PATH = "res://addons/RPGData/Scripts/Interpreter/ExtendedFunctions/"
 
 
@@ -222,12 +226,54 @@ func _load_command_handlers() -> void:
 
 # Main process loop, called every frame
 func _process(delta: float) -> void:
+	_process_async_tasks()
+	
 	# If busy with a auto run interpreter or parallel interpreter, don't process.
 	if is_busy() or interpreters.is_empty():
 		return
-	
+
 	await _process_sequential_interpreters()
 	await _process_parallel_interpreters()
+
+
+## Registers a new background loading task and returns immediately.
+func request_async_scene_load(scene_path: String, data: Dictionary, callback: Callable) -> void:
+	if not ResourceLoader.exists(scene_path):
+		print("Scene does not exist: ", scene_path)
+		return
+		
+	async_scene_tasks.append({
+		"scene_path": scene_path,
+		"state": "pending",
+		"data": data,
+		"callback": callback
+	})
+
+
+## Processes the queue every frame, starting loads and executing callbacks when ready.
+func _process_async_tasks() -> void:
+	if async_scene_tasks.is_empty():
+		return
+		
+	for i in range(async_scene_tasks.size() - 1, -1, -1):
+		var task = async_scene_tasks[i]
+		var path = task.scene_path
+		
+		if task.state == "pending":
+			ResourceLoader.load_threaded_request(path)
+			task.state = "loading"
+			
+		elif task.state == "loading":
+			var status = ResourceLoader.load_threaded_get_status(path)
+			
+			if status == ResourceLoader.THREAD_LOAD_LOADED:
+				var packed_scene = ResourceLoader.load_threaded_get(path)
+				task.callback.call(packed_scene, task.data)
+				async_scene_tasks.remove_at(i)
+				
+			elif status == ResourceLoader.THREAD_LOAD_FAILED or status == ResourceLoader.THREAD_LOAD_INVALID_RESOURCE:
+				print("Failed to load async scene: ", path)
+				async_scene_tasks.remove_at(i)
 
 
 func _process_sequential_interpreters() -> void:
@@ -570,6 +616,11 @@ func _process_automatic_events_queue() -> void:
 
 # Start processing an event using a new temporary interpreter
 func start_event(obj: Node, commands: Array[RPGEventCommand], automatic_is_enabled: bool = false, interpreter_id: String = "") -> void:
+	if obj and "current_event" in obj and obj.get("current_event") is RPGEvent:
+		current_event = obj.current_event
+	else:
+		current_event = null
+		
 	remove_interpreter_by_id(interpreter_id)
 	
 	if not automatic_is_enabled: 
@@ -607,6 +658,8 @@ func start_event(obj: Node, commands: Array[RPGEventCommand], automatic_is_enabl
 		
 	if not automatic_is_enabled: 
 		busy = false
+	
+	current_event = null
 
 
 #region Function used when load game to restore images and scenes
@@ -614,12 +667,14 @@ func create_load_interpreter(interpreter_id: String) -> void:
 	var interpreter = Interpreter.new(null, [], false, self, interpreter_id)
 	_current_interpreters.append(interpreter)
 
+
 func add_load_command(interpreter_id: String, code: int, params: Dictionary) -> void:
 	if _current_interpreters.is_empty(): return 
 	var interpreter = _current_interpreters[-1]
 	if interpreter.id == interpreter_id:
 		var cmd = RPGEventCommand.new(code, -1, params)
 		interpreter.commands.append(cmd)
+
 
 func execute_load_interpreter(interpreter_id: String) -> void:
 	if _current_interpreters.is_empty(): return 

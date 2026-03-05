@@ -96,6 +96,7 @@ var movement_tween: Tween
 var contact_area_tween: Tween
 
 var busy: bool = false
+var busy2: bool = false
 var force_animation_enabled: bool = false
 
 var targets_over_me: Array = []
@@ -153,7 +154,7 @@ func _on_character_options_changed() -> void:
 
 
 func _process(_delta: float) -> void:
-	if GameManager.loading_game or is_invalid_event:
+	if GameManager.loading_game or is_invalid_event or busy2:
 		return
 		
 	if is_in_group("player"):
@@ -161,7 +162,7 @@ func _process(_delta: float) -> void:
 
 
 func _physics_process(delta: float):
-	if GameManager.loading_game or is_invalid_event:
+	if GameManager.loading_game or is_invalid_event or busy2:
 		return
 	
 	if is_in_group("player"):
@@ -228,9 +229,13 @@ func _physics_process(delta: float):
 	
 	if not Engine.is_editor_hint() and is_in_group("player"):
 		if ControllerManager.is_action_just_pressed("Button L2"):
-			GameManager.shift_up_follower()
+			busy2 = true
+			await GameManager.shift_up_follower()
+			busy2 = false
 		elif ControllerManager.is_action_just_pressed("Button R2"):
-			GameManager.shift_down_follower()
+			busy2 = true
+			await GameManager.shift_down_follower()
+			busy2 = false
 
 
 func _smart_record_history() -> void:
@@ -1032,7 +1037,7 @@ func _process_event_contact(contacting_entities: Array, stop_movement_on_activat
 	var im_player = is_in_group("player")
 	var page = get("current_event_page")
 	
-	## If it's not the player and has no page, it can't interact
+	# If it's not the player and has no page, it can't interact
 	if not im_player and not page:
 		return false
 
@@ -1052,39 +1057,46 @@ func _process_event_contact(contacting_entities: Array, stop_movement_on_activat
 		var activate_self = false
 		var activate_other = false
 
-		## 1. Check if 'entity' activates 'self' (Only if self is an event)
+		# 1. Check if 'entity' activates 'self' (Only if self is an event)
 		if not im_player and not self_activated_this_check:
-			if self_launcher == RPGEventPage.LAUNCHER_MODE.PLAYER_COLLISION and entity.is_in_group("player"):
-				activate_self = true
-			elif self_launcher == RPGEventPage.LAUNCHER_MODE.ANY_CONTACT:
-				activate_self = true
-			elif self_launcher == RPGEventPage.LAUNCHER_MODE.EVENT_COLLISION and not entity.is_in_group("player"):
-				if "current_event_page" in entity and entity.current_event_page:
-					var other_id = entity.current_event_page.get("_uniq_id")
-					var event_trigger_list = page.get("event_trigger_list")
-					if other_id in event_trigger_list:
-						activate_self = true
+			# Pressure plates are handled exclusively by IngameMapEntityManager
+			var is_pressure = page.condition.use_pressure if page and page.condition else false
+			
+			if not is_pressure:
+				if self_launcher == RPGEventPage.LAUNCHER_MODE.PLAYER_COLLISION and entity.is_in_group("player"):
+					activate_self = true
+				elif self_launcher == RPGEventPage.LAUNCHER_MODE.ANY_CONTACT:
+					activate_self = true
+				elif self_launcher == RPGEventPage.LAUNCHER_MODE.EVENT_COLLISION and not entity.is_in_group("player"):
+					if "current_event_page" in entity and entity.current_event_page:
+						var other_id = entity.current_event_page.get("_uniq_id")
+						var event_trigger_list = page.get("event_trigger_list")
+						if other_id in event_trigger_list:
+							activate_self = true
 		
-		## 2. Check if 'self' (Player or Event) activates the 'entity'
+		# 2. Check if 'self' (Player or Event) activates the 'entity'
 		if "current_event_page" in entity and entity.current_event_page:
 			var other_page = entity.current_event_page
-			var other_launcher = other_page.launcher
+			var is_other_pressure = other_page.condition.use_pressure if other_page and other_page.condition else false
 			
-			if im_player:
-				## Player touching event logic
-				if other_launcher == RPGEventPage.LAUNCHER_MODE.ANY_CONTACT or \
-				   other_launcher == RPGEventPage.LAUNCHER_MODE.PLAYER_COLLISION:
-					activate_other = true
-			else:
-				## Event touching event logic
-				if other_launcher == RPGEventPage.LAUNCHER_MODE.ANY_CONTACT:
-					activate_other = true
-				elif other_launcher == RPGEventPage.LAUNCHER_MODE.EVENT_COLLISION:
-					var other_trigger_list = other_page.get("event_trigger_list")
-					if self_id in other_trigger_list:
+			if not is_other_pressure:
+				var other_launcher = other_page.launcher
+				
+				if im_player:
+					## Player touching event logic
+					if other_launcher == RPGEventPage.LAUNCHER_MODE.ANY_CONTACT or \
+					   other_launcher == RPGEventPage.LAUNCHER_MODE.PLAYER_COLLISION:
 						activate_other = true
+				else:
+					## Event touching event logic
+					if other_launcher == RPGEventPage.LAUNCHER_MODE.ANY_CONTACT:
+						activate_other = true
+					elif other_launcher == RPGEventPage.LAUNCHER_MODE.EVENT_COLLISION:
+						var other_trigger_list = other_page.get("event_trigger_list")
+						if self_id in other_trigger_list:
+							activate_other = true
 
-		## 3. Process activations and mutual ignore lists
+		# 3. Process activations and mutual ignore lists
 		if activate_self or activate_other:
 			_add_mutual_ignore(self, entity)
 
@@ -1094,12 +1106,11 @@ func _process_event_contact(contacting_entities: Array, stop_movement_on_activat
 				primary_target = entity
 				self_activated_this_check = true 
 
-
 			if activate_other:
 				if not entity in events_to_start:
 					events_to_start.append(entity)
 
-	## Start the collected events through the interpreter
+	# Start the collected events through the interpreter
 	if not events_to_start.is_empty():
 		var objs: Array[Dictionary] = []
 		for ev in events_to_start:
@@ -1935,6 +1946,8 @@ func free_movement(delta: float) -> void:
 	var possible_movements = get_possible_movements(movement_vector)
 	if possible_movements:
 		movement_vector *= Vector2(possible_movements)
+		if movement_vector.length_squared() > 0:
+			movement_vector = movement_vector.normalized()
 		movement_vector = movement_vector * (movement_speed if !is_running else running_speed)
 		velocity = movement_vector
 		move_and_slide()

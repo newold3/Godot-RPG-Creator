@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://qxsckjg44p30"]
+[gd_scene format=3 uid="uid://qxsckjg44p30"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_ptc4e"]
 [ext_resource type="Script" uid="uid://bj5rjyr6aotxh" path="res://addons/CustomControls/Dialogs/CommandEvents/change_leader_dialog.gd" id="2_obu7s"]
@@ -13,17 +13,19 @@ gradient = SubResource("Gradient_7ascj")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
-[node name="ChangeLeaderDialog" type="Window"]
+[node name="ChangeLeaderDialog" type="Window" unique_id=883856687]
+oversampling_override = 1.0
 title = "Change Leader"
 position = Vector2i(0, 36)
-size = Vector2i(400, 95)
+size = Vector2i(400, 101)
+wrap_controls = true
 transient = true
 exclusive = true
 unresizable = true
 theme = ExtResource("1_ptc4e")
 script = ExtResource("2_obu7s")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1216238748]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -31,7 +33,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_ourej")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=773061796]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -42,13 +44,13 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1633205732]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=529608237]
 layout_mode = 2
 
-[node name="ChoseActorButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_5i17t")]
+[node name="ChoseActorButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=2049844817 instance=ExtResource("3_5i17t")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -58,7 +60,7 @@ tooltip_text = "[title]Change Leader[/title]
 Choose a character to become the leader of the current party. The character will be added to the party if they are not already a member, and they will assume the role of leader. If the party exceeds the maximum allowed number of members, the characters in the last positions exceeding the limit will be placed in reserve."
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 
-[node name="Lock" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Lock" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1374631407]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "[title]Lock Leader[/title]
@@ -66,16 +68,16 @@ Prevents the player from changing this leader in the party menu. To remove this 
 mouse_default_cursor_shape = 2
 text = "Lock"
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=197609283]
 layout_mode = 2
 size_flags_vertical = 10
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1930192581]
 layout_mode = 2
 size_flags_vertical = 10
 alignment = 1
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("4_kbxi8")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=2014941719 instance=ExtResource("4_kbxi8")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -84,7 +86,7 @@ tooltip_text = "[title]Ok[/title]
 Saves all changes and closes the windows."
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("4_kbxi8")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=958453176 instance=ExtResource("4_kbxi8")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2

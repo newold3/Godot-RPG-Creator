@@ -12,6 +12,9 @@ var character_data: RPGLPCCharacter
 var page_id: int
 var lpc_event: Variant
 
+const EMPTY_LPC_EVENT = preload("uid://cxt2hyq05twny")
+
+
 
 func _init(p_map: RPGMap, p_event: RPGEvent, p_character_data: RPGLPCCharacter, p_lpc_event: Variant, p_map_id: int, p_relationship: GameRelationship = null, p_page_id: int = 1) -> void:
 	map = p_map
@@ -36,10 +39,20 @@ func update_page(new_page: RPGEventPage, new_character_data: RPGLPCCharacter) ->
 
 func refresh_page(page: RPGEventPage) -> void:
 	page.id = event.id
+	var index = lpc_event.get_index() if lpc_event else 0
 	if event.legacy_mode:
 		handle_legacy_refresh(page)
 	else:
 		handle_modern_refresh(page)
+		
+	if lpc_event:
+		lpc_event.get_parent().move_child(lpc_event, index)
+		lpc_event.z_index = page.z_index
+	
+		if page.condition.use_pressure:
+			lpc_event.z_index = 0
+		else:
+			lpc_event.z_index = page.z_index
 
 
 func handle_modern_refresh(page: RPGEventPage) -> void:
@@ -51,9 +64,8 @@ func handle_modern_refresh(page: RPGEventPage) -> void:
 	if ResourceLoader.exists(page.character_path):
 		new_char_data = load(page.character_path)
 	
-	update_page(page, new_char_data)
+	update_page(page, new_char_data if new_char_data is RPGLPCCharacter else null)
 	
-	# Determine proper direction: Use page default if fixed, otherwise inherit current direction.
 	var target_dir = page.direction if page.options.fixed_direction else lpc_event.current_direction
 	load_event_graphics(page, target_dir)
 	
@@ -72,14 +84,15 @@ func handle_legacy_refresh(page: RPGEventPage) -> void:
 	if ResourceLoader.exists(page.character_path):
 		new_char_data = load(page.character_path)
 	
-	update_page(page, new_char_data)
+	update_page(page, new_char_data if new_char_data is RPGLPCCharacter else null)
 	
-	# Determine proper direction: Use page default if fixed, otherwise inherit current direction.
 	var target_dir = page.direction if page.options.fixed_direction else lpc_event.current_direction
 	load_event_graphics(page, target_dir)
 	
 	if page.launcher == RPGEventPage.LAUNCHER_MODE.AUTOMATIC or page.launcher == RPGEventPage.LAUNCHER_MODE.PARALLEL:
 		inject_parallel_auto_after_interpreter(page)
+	
+	_final_update(page)
 
 
 func load_event_graphics(page: RPGEventPage, direction: int) -> void:
@@ -103,6 +116,8 @@ func load_event_graphics(page: RPGEventPage, direction: int) -> void:
 			if new_scene and ResourceLoader.exists(page.character_path):
 				if "custom_texture" in new_scene:
 					new_scene.custom_texture = load(page.character_path)
+					if new_scene.has_method("update_character_rect"):
+						new_scene.update_character_rect.call_deferred(page.character_region)
 					
 		2:
 			if ResourceLoader.exists(map.GENERIC_EVENT_SCENE_PATH):
@@ -115,7 +130,7 @@ func load_event_graphics(page: RPGEventPage, direction: int) -> void:
 					new_scene.custom_scene = load(page.character_path)
 
 	if not new_scene:
-		new_scene = EmptyLPCEvent.new()
+		new_scene = EMPTY_LPC_EVENT.new()
 		
 	map.add_child(new_scene)
 	
@@ -162,6 +177,18 @@ func load_event_graphics(page: RPGEventPage, direction: int) -> void:
 	else:
 		if valid_old_scene:
 			old_scene.queue_free()
+	
+	_final_update(page)
+
+
+func _final_update(page: RPGEventPage) -> void:
+	if lpc_event:
+		lpc_event.z_index = page.z_index
+	
+		if page.condition.use_pressure:
+			lpc_event.z_index = 0
+		else:
+			lpc_event.z_index = page.z_index
 
 
 func update_scene_properties(scene: Variant, page: RPGEventPage) -> void:
@@ -237,7 +264,7 @@ func is_pressed_by_targets(valid_groups: Array[String]) -> bool:
 			
 		if entity.has_method("get_current_tile") and entity.get_current_tile() == current_tile:
 			for group in valid_groups:
-				if entity.is_in_group(group):
+				if entity.is_in_group(group) or entity is RPGVehicle and GameManager.current_player.is_in_group(group):
 					return true
 					
 	return false

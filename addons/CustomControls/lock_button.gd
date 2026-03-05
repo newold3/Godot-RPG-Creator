@@ -9,7 +9,6 @@ func _ready() -> void:
 	toggled.connect(_on_toggled)
 
 
-
 func _on_toggled(value: bool) -> void:
 	if value:
 		%LockIcon.texture = MINI_PADLOCK
