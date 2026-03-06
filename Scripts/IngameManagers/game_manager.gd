@@ -344,6 +344,73 @@ func load_game(slot_id: int) -> void:
 
 
 #region UI, Menus & Shops
+## Performs a hard reset of the game state and recreates the main scene to return to the title.
+func restart() -> void:
+	if GameManager.hand_cursor and not GameManager.hand_cursor.is_ancestor_of(self):
+		GameManager.hand_cursor.reparent(self)
+		
+	force_hide_cursor()
+		
+	busy = true
+	var viewport_img = get_viewport().get_texture().get_image()
+	var static_tex = ImageTexture.create_from_image(viewport_img)
+	
+	var overlay_canvas = CanvasLayer.new()
+	overlay_canvas.layer = 128
+	
+	var bg_rect = ColorRect.new()
+	bg_rect.color = Color.BLACK
+	bg_rect.set_anchors_preset(Control.PRESET_FULL_RECT)
+	
+	var overlay_rect = TextureRect.new()
+	overlay_rect.texture = static_tex
+	overlay_rect.set_anchors_preset(Control.PRESET_FULL_RECT)
+	
+	var fade_rect = ColorRect.new()
+	fade_rect.color = Color(0, 0, 0, 0)
+	fade_rect.set_anchors_preset(Control.PRESET_FULL_RECT)
+	
+	overlay_canvas.add_child(bg_rect)
+	overlay_canvas.add_child(overlay_rect)
+	overlay_canvas.add_child(fade_rect)
+	get_tree().root.add_child(overlay_canvas)
+	
+	var fade_out_tween = create_tween()
+	fade_out_tween.tween_property(fade_rect, "color:a", 1.0, 0.4)
+	if main_scene and is_instance_valid(main_scene):
+		if main_scene.has_method("stop_bgm"): main_scene.stop_bgm(0.3)
+		if main_scene.has_method("stop_bgs"): main_scene.stop_bgs(0.3)
+		if main_scene.has_method("stop_se"): main_scene.stop_se()
+	await fade_out_tween.finished
+	
+	overlay_rect.visible = false
+	
+	game_started = false
+	GameInterpreter.clear()
+	
+	if main_scene and is_instance_valid(main_scene):
+		main_scene.get_parent().remove_child(main_scene)
+		main_scene.queue_free()
+		
+	main_scene = null
+	current_map = null
+	current_player = null
+	game_state = null
+	
+	await get_tree().process_frame
+	
+	var node = preload("res://Scenes/main_scene.tscn")
+	var ins = node.instantiate()
+	ins.initialize_title_scene = true
+	get_tree().root.add_child(ins)
+	
+	for i in range(5):
+		await get_tree().process_frame
+		
+	overlay_canvas.queue_free()
+	busy = false
+
+
 func add_shop_timer(shop_id: String, shop_timer: float, stock_data: Dictionary = {}) -> RPGShopTimer:
 	if game_state:
 		game_state.active_shop_timers[shop_id] = RPGShopTimer.new(shop_id, shop_timer, stock_data)
@@ -974,6 +1041,18 @@ func remove_scene(index: int) -> void:
 func get_scene_from_cache(cache_path: String, scene_path: String, type_required: String = "", cache_instance: bool = false) -> Node:
 	if dynamic_asset_manager: return await dynamic_asset_manager.get_scene_from_cache(cache_path, scene_path, type_required, cache_instance)
 	return null
+
+
+func get_current_ingame_scenes() -> Array:
+	if dynamic_asset_manager: return dynamic_asset_manager.current_ingame_scenes.values()
+	
+	return []
+
+
+func get_current_ingame_images() -> Array:
+	if dynamic_asset_manager: return dynamic_asset_manager.current_ingame_images.values()
+	
+	return []
 #endregion
 
 

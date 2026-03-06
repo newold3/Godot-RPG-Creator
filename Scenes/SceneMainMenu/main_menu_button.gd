@@ -63,6 +63,10 @@ signal animation_completed()
 
 func _ready() -> void:
 	if not Engine.is_editor_hint():
+		var mat = %Background.get_material().duplicate()
+		for node in [%Gear1, %Gear2, %Gear3, %Gear4, %Decoration, %Background]:
+			node.material = mat
+			
 		if button_group:
 			button_group.add_button(self)
 		
@@ -157,6 +161,9 @@ func _on_focus_entered() -> void:
 
 
 func _on_focus_exited() -> void:
+	if not keep_selected_state or not is_enabled:
+		cursor_selected.visible = false
+		
 	if busy2: return
 	
 	# Increment exit generation to invalidate focus_entered
@@ -164,8 +171,6 @@ func _on_focus_exited() -> void:
 	exit_generation += 1
 	var current_generation = exit_generation
 	
-	if not keep_selected_state:
-		cursor_selected.visible = false
 		
 	while busy or keep_selected_state:
 		if is_inside_tree():
@@ -213,16 +218,16 @@ func _on_focus_exited() -> void:
 
 
 func _on_mouse_entered() -> void:
+	cursor_hover.visible = true
 	if busy2 or GameManager.get_cursor_manipulator() != GameManager.MANIPULATOR_MODES.MAIN_MENU_MAIN_BUTTONS: return
 	mouse_inside = true
 	select()
-	cursor_hover.visible = true
 
 
 func _on_mouse_exited() -> void:
+	cursor_hover.visible = false
 	if busy2 or GameManager.get_cursor_manipulator() != GameManager.MANIPULATOR_MODES.MAIN_MENU_MAIN_BUTTONS: return
 	mouse_inside = false
-	cursor_hover.visible = false
 
 
 func set_hovered() -> void:
@@ -230,7 +235,7 @@ func set_hovered() -> void:
 
 
 func _gui_input(event: InputEvent) -> void:
-	if current_state == ButtonState.DISABLED: return
+	if current_state == ButtonState.DISABLED or not is_enabled: return
 	
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
@@ -284,6 +289,14 @@ func set_enabled() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	if is_selected:
 		_on_focus_entered()
+		
+	var mat = %Background.material as ShaderMaterial
+	if mat:
+		mat.set_shader_parameter("grayscale", false)
+	%ButtonLabel.set("theme_override_colors/font_color", Color.WHITE)
+	
+	mouse_filter = MOUSE_FILTER_STOP
+	focus_mode = Control.FOCUS_CLICK
 
 
 func set_disabled() -> void:
@@ -293,6 +306,14 @@ func set_disabled() -> void:
 	if not keep_selected_state:
 		cursor_selected.visible = false
 	cursor_hover.visible = false
+	
+	var mat = %Background.material as ShaderMaterial
+	if mat:
+		mat.set_shader_parameter("grayscale", true)
+	%ButtonLabel.set("theme_override_colors/font_color", Color.GRAY)
+	
+	mouse_filter = MOUSE_FILTER_IGNORE
+	focus_mode = Control.FOCUS_NONE
 
 
 func animate_gear(_direction: int, _timer: float = animation_timer, _delay: float = 0.0) -> void:

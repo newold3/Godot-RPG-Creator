@@ -6,6 +6,7 @@ extends GPUParticles2D
 var _initial_position: Vector2
 
 func _ready() -> void:
+	texture = load("res://Assets/EffekEffects/MAGICALxSPIRAL/Texture/smoke_01.png")
 	_initial_position = global_position
 	if not one_shot: return
 	emitting  = true

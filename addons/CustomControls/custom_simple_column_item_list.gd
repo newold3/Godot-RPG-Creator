@@ -216,6 +216,8 @@ var space_enabled: bool = true
 
 var current_filter: String = ""
 
+var metadata_list: Dictionary = {}
+
 const MINI_PADLOCK = preload("res://addons/CustomControls/Images/mini_padlock.png")
 
 
@@ -995,3 +997,20 @@ func _on_item_list_item_rect_changed() -> void:
 	var parent = get_parent()
 	if parent and parent is Container:
 		parent.queue_sort()
+
+
+func set_item_metadata(id: int, metadata: Variant) -> void:
+	if id < 0:
+		id = items.size() + id
+	id = clamp(id, 0, items.size() - 1)
+	
+	metadata_list[id] = metadata
+
+
+func get_item_metadata(id: int) -> Variant:
+	if id < 0:
+		id = items.size() + id
+	id = clamp(id, 0, items.size() - 1)
+	
+	
+	return metadata_list.get(id, null)

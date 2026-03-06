@@ -36,7 +36,7 @@ var movement_current_mode = MOVEMENTMODE.GRID :
 		if is_node_ready():
 			adjust_bounds()
 var movement_speed: float = 100
-var running_speed: float = 150
+var running_speed: float = 130
 var is_moving = false
 var is_jumping = false
 var can_move: bool = true
@@ -226,7 +226,7 @@ func _physics_process(delta: float):
 	
 	if movement_current_mode == MOVEMENTMODE.EVENT and GameManager.current_map:
 		GameManager.current_map.moving_event = false
-	
+
 	if not Engine.is_editor_hint() and is_in_group("player"):
 		if ControllerManager.is_action_just_pressed("Button L2"):
 			busy2 = true
@@ -270,7 +270,7 @@ func _add_snapshot(snapshot: Dictionary = {}) -> void:
 		}
 	
 	movement_history.push_back(snapshot)
-	_last_recorded_pos = global_position # Actualizamos referencia
+	_last_recorded_pos = snapshot.pos 
 	
 	if movement_history.size() > MAX_HISTORY_SIZE:
 		movement_history.pop_front()

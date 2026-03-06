@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://du3ba85wapl8t"]
+[gd_scene format=3 uid="uid://du3ba85wapl8t"]
 
 [ext_resource type="Script" uid="uid://vblwqlxpcifn" path="res://addons/RPGData/Scripts/terms_panel.gd" id="1_ggf3v"]
 [ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="2_5xcjv"]
@@ -32,7 +32,7 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0vmlt"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pfj2n"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -50,17 +50,17 @@ corner_radius_bottom_left = 12
 [sub_resource type="Gradient" id="Gradient_ctwx1"]
 colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_xvsyn"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_kd2ju"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_ctwx1")
 fill_from = Vector2(0.542735, 0.995726)
 fill_to = Vector2(0.58547, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pdijf"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3b4r4"]
 resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_xvsyn")
+texture = SubResource("GradientTexture2D_kd2ju")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w8bh8"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yqloq"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -109,7 +109,7 @@ gradient = SubResource("Gradient_8k375")
 fill_from = Vector2(0.547009, 1)
 fill_to = Vector2(0.559829, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pfj2n"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_l433a"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_v6eua")
 
@@ -122,7 +122,7 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0, 0, 0, 1)
 
-[node name="TermsPanel" type="HBoxContainer"]
+[node name="TermsPanel" type="HBoxContainer" unique_id=1527333982]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -132,27 +132,27 @@ theme_override_constants/separation = 8
 script = ExtResource("1_ggf3v")
 terms_title_style = SubResource("StyleBoxTexture_moko2")
 
-[node name="MainColumn" type="PanelContainer" parent="."]
+[node name="MainColumn" type="PanelContainer" parent="." unique_id=1312116758]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_0fgwc")
 
-[node name="MarginContainer" type="MarginContainer" parent="MainColumn"]
+[node name="MarginContainer" type="MarginContainer" parent="MainColumn" unique_id=1471183533]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="CustomPanel" parent="MainColumn/MarginContainer" instance=ExtResource("2_5xcjv")]
+[node name="CustomPanel" parent="MainColumn/MarginContainer" unique_id=561591948 instance=ExtResource("2_5xcjv")]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_0vmlt")
-style1 = SubResource("StyleBoxFlat_0vmlt")
-style2 = SubResource("StyleBoxTexture_pdijf")
-style3 = SubResource("StyleBoxFlat_w8bh8")
+theme_override_styles/panel = SubResource("StyleBoxFlat_pfj2n")
+style1 = SubResource("StyleBoxFlat_pfj2n")
+style2 = SubResource("StyleBoxTexture_3b4r4")
+style3 = SubResource("StyleBoxFlat_yqloq")
 
-[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/CustomPanel"]
+[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/CustomPanel" unique_id=1487591984]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -161,54 +161,54 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="PanelContainer" type="PanelContainer" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer" unique_id=1781703977]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_c424u")
 
-[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer" unique_id=373531205]
 layout_mode = 2
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer" unique_id=128576513]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=417394391]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=213266539]
 layout_mode = 2
 text = "Filter:"
 
-[node name="Filter" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_soxgs")]
+[node name="Filter" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1375589560 instance=ExtResource("3_soxgs")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 right_icon = ExtResource("4_0qk3h")
 
-[node name="FastSelection" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_pfj2n")]
+[node name="FastSelection" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=169784213 instance=ExtResource("5_pfj2n")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "[title]Diagonal Movement Mode[/title]
 Character will prioritize vertical or horizontal direction when moving diagonally or maintain direction before starting to move diagonally"
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1010846366]
 layout_mode = 2
 text = "Term List:"
 
-[node name="SmoothScrollContainer" type="ScrollContainer" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1075494787]
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("3_u3vo0")
 curve = SubResource("Curve_gwuns")
 
-[node name="TermList" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/SmoothScrollContainer" instance=ExtResource("4_n0dqb")]
+[node name="TermList" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/SmoothScrollContainer" unique_id=1703897042 instance=ExtResource("4_n0dqb")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
@@ -217,7 +217,7 @@ size_flags_vertical = 3
 odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
 event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 top_bar_style = SubResource("StyleBoxTexture_4hkyf")
-cursor_style = SubResource("StyleBoxTexture_pfj2n")
+cursor_style = SubResource("StyleBoxTexture_l433a")
 panel_style = SubResource("StyleBoxFlat_27vw3")
 columns = 2
 names = PackedStringArray("Type", "Text")

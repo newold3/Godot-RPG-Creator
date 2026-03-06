@@ -33,7 +33,8 @@ func _ready() -> void:
 	get_viewport().transparent_bg = false
 	preload_system_scenes()
 	GameManager.main_scene = self
-	GameManager.hand_cursor.reparent(self)
+	if GameManager.hand_cursor and not GameManager.hand_cursor.is_ancestor_of(self):
+		GameManager.hand_cursor.reparent(self)
 	
 	if not is_test_map:
 		if not initialize_title_scene:
@@ -176,9 +177,7 @@ func process_follower_command(command_id: String, ...values: Array) -> void:
 				var is_show: bool = values[0] if values.size() > 0 else true
 				var instant: bool = values[1] if values.size() > 1 else false
 				if is_show:
-					%PartyManager.update_party_visuals(instant)
-					
-					await %PartyManager.appear(instant)
+					await %PartyManager.show_followers(instant)
 				else:
 					await %PartyManager.disappear(instant, true)
 				
@@ -211,6 +210,11 @@ func process_follower_command(command_id: String, ...values: Array) -> void:
 				
 			"destroy":
 				%PartyManager.destroy()
+
+
+func restore_followers_from_save(data: Dictionary) -> void:
+	if has_node("%PartyManager"):
+		%PartyManager.load_followers_from_save(data)
 #endregion
 
 
@@ -263,6 +267,24 @@ func play_music(id: Variant) -> void:
 func get_fx_path(id: Variant) -> String:
 	if has_node("%SystemAudioManager"): return %SystemAudioManager.get_fx_path(id)
 	return ""
+
+
+func get_audio_players() -> Dictionary:
+	if has_node("%SystemAudioManager"): return %SystemAudioManager.audio_players
+	
+	return {}
+
+
+func get_current_bgm_player() -> AudioStreamPlayer:
+	if has_node("%SystemAudioManager"): return %SystemAudioManager.audio_players.bgm.current_player
+	
+	return null
+
+
+func get_current_bgs_player() -> AudioStreamPlayer:
+	if has_node("%SystemAudioManager"): return %SystemAudioManager.audio_players.bgs.current_player
+	
+	return null
 #endregion
 
 

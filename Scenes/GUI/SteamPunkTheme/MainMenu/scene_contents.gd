@@ -30,10 +30,12 @@ func restart():
 
 func _select_action_from_main_buttons(id: int) -> void:
 	var button: MainMenuButton = main_menu_items.get_button(id)
+	
+	if not button or not button.is_enabled:
+		return
 
-	if button:
-		button.keep_selected_state = true
-		button.perform_click()
+	button.keep_selected_state = true
+	button.perform_click()
 		
 	party_menu.set_order_mode(main_menu_items.current_button_index == 4)
 	match main_menu_items.current_button_index:
@@ -55,7 +57,7 @@ func _select_action_from_main_buttons(id: int) -> void:
 		7: # Options
 			pass
 		8: # Game End
-			pass
+			GameManager.restart()
 
 
 func select_party() -> void:

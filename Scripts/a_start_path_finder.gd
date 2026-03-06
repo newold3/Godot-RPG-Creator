@@ -259,3 +259,11 @@ func vector2_to_direction(motion: Vector2i) -> int:
 	# Fallback
 	if motion.x != 0: return CharacterBase.DIRECTIONS.RIGHT if motion.x > 0 else CharacterBase.DIRECTIONS.LEFT
 	return CharacterBase.DIRECTIONS.DOWN
+
+
+func direction_to_vector2i(search_dir: int) -> Vector2i:
+	match search_dir:
+		CharacterBase.DIRECTIONS.LEFT: return Vector2i.LEFT
+		CharacterBase.DIRECTIONS.RIGHT: return Vector2i.RIGHT
+		CharacterBase.DIRECTIONS.UP: return Vector2i.UP
+		_: return Vector2i.DOWN

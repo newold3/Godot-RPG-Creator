@@ -373,10 +373,12 @@ func get_valid_targets() -> Array[Dictionary]:
 	var valid_targets: Array[Dictionary] = []
 	
 	for target_data in targets:
-		if target_data.has("target") and target_data.has("priority") and target_data["target"].visible:
+		if target_data.has("target") and target_data.has("priority"):
 			if not is_instance_valid(target_data["target"]):
 				targets.erase(target_data)
 				continue
+			
+			if not target_data["target"].visible and not target_data["target"].get_class() == "EmptyPlayableCharacter": continue
 					
 			valid_targets.append(target_data)
 	

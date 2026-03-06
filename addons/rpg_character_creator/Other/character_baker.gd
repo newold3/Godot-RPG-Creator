@@ -473,11 +473,13 @@ func _get_projectile_id_from_part(part: RPGLPCEquipmentPart) -> String:
 
 
 func _get_img(vp: SubViewport) -> ImageTexture:
+	if not is_instance_valid(vp):
+		return ImageTexture.create_from_image(Image.create(1, 1, false, Image.FORMAT_BPTC_RGBA))
 	return ImageTexture.create_from_image(vp.get_texture().get_image())
 
 
-func _update_sprite(node: Sprite2D, texture: Texture2D) -> void:
-	if is_instance_valid(node): node.texture = texture
+func _update_sprite(node: Variant, texture: Texture2D) -> void:
+	if is_instance_valid(node) and node is Sprite2D: node.texture = texture
 
 
 func _clear_viewport(vp: SubViewport) -> void:

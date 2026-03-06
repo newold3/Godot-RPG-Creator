@@ -161,7 +161,8 @@ func _process(delta: float) -> void:
 				player_moved = true
 			_last_player_head_pos = head_snapshot.pos
 
-		var dist_per_follower = 30.0
+		var map_tile_size = GameManager.get_map_tile_size().x if GameManager.current_map else 64.0
+		var dist_per_follower = float(map_tile_size)
 		var total_needed_dist = follower_id * dist_per_follower
 
 		var dynamic_spacing_steps = _get_index_at_distance(total_needed_dist)
@@ -467,6 +468,7 @@ func get_shadow_data() -> Dictionary:
 func update_appearance_cascade(actor_id: int, instant: bool = false) -> void:
 	var actor = RPGSYSTEM.database.actors[actor_id]
 	name = "Follower_" + actor.name
+
 	var char_data: RPGLPCCharacter = load(actor.character_data_file)
 	
 	if FileAccess.file_exists(char_data.equipment_parts.mainhand.config_path):

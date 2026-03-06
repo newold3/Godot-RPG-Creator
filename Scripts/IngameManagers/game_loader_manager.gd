@@ -137,6 +137,8 @@ func load_game(data: RPGSavedGameData) -> void:
 		printerr("Invalid save data")
 		return
 
+	if GameManager.current_player:
+		prints(GameManager.current_player, GameManager.current_player.is_in_group("player"))
 	var main_scene = GameManager.main_scene
 	GameInterpreter.clear()
 	main_scene.busy = true
@@ -171,6 +173,16 @@ func load_game(data: RPGSavedGameData) -> void:
 	GameManager.set_deferred("game_started", true)
 	GameManager.set_deferred("busy", false)
 	game_state.current_events.clear()
+	main_scene.restore_followers_from_save(data.followers)
+	
+	if GameManager.current_player:
+		if not GameManager.current_player.is_in_group("player"):
+			GameManager.current_player.add_to_group("player")
+	
+	var tracking_enabled = GameManager.game_state.followers_tracking_enabled
+	for follower in GameManager.get_followers():
+		if follower.has_method("set_wait"):
+			follower.set_wait(!tracking_enabled)
 
 
 func _restore_game_scene_states(data: RPGSavedGameData) -> void:
