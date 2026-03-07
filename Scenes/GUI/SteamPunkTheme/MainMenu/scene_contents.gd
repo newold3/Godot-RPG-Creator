@@ -61,6 +61,9 @@ func _select_action_from_main_buttons(id: int) -> void:
 
 
 func select_party() -> void:
+	var button = main_menu_items.get_button(main_menu_items.current_button_index)
+	if button:
+		button.keep_selected_state = true
 	main_menu_items.disabled()
 	party_menu.select()
 	GameManager.play_fx("ok")

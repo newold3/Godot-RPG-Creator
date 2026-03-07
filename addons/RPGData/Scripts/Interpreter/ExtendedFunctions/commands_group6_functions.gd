@@ -154,6 +154,8 @@ func _perform_player_transfer(params: Dictionary) -> void:
 	interpreter.busy2 = true
 	interpreter.busy3 = true
 	if not transfer_on_same_map:
+		if GameManager.game_state:
+			GameManager.game_state.followers_tracking_enabled = false
 		await _transfer_to_oher_map(map_id, tile, direction, current_event, transfer_animation)
 	
 	interpreter.busy = backup_busys[0]

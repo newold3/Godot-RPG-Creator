@@ -1,0 +1,165 @@
+[gd_scene format=3 uid="uid://b430wi6kdccit"]
+
+[ext_resource type="Shader" uid="uid://chnvfbv408x5l" path="res://Assets/Shaders/simple_bubble_movement.gdshader" id="1_w8xr1"]
+[ext_resource type="Texture2D" uid="uid://duu13dsov6vp5" path="res://Assets/Images/GUI/main_gui.png" id="2_06jpt"]
+[ext_resource type="Texture2D" uid="uid://psnhcruo4fl6" path="res://Assets/Images/Particles/simple_water_bubble.png" id="2_fj44w"]
+[ext_resource type="Script" uid="uid://c3p3jk1krjj7m" path="res://Scenes/GUI/SteamPunkTheme/OtherScenes/particle_bubbles.gd" id="3_fj44w"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yr3nl"]
+shader = ExtResource("1_w8xr1")
+shader_parameter/bubble_texture = ExtResource("2_fj44w")
+shader_parameter/rect_size = Vector2(12, 200)
+shader_parameter/bubble_color = Color(0, 0.66, 0.24199994, 0.57254905)
+shader_parameter/bubble_count = 20
+shader_parameter/base_speed = 30.0
+shader_parameter/direction = -1.0
+shader_parameter/base_size = 1.0
+shader_parameter/oscillation_amplitude = 3.0
+shader_parameter/oscillation_frequency = 2.0
+
+[sub_resource type="Curve" id="Curve_fj44w"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.42774567, 0.7734077), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_06jpt"]
+curve = SubResource("Curve_fj44w")
+
+[sub_resource type="Curve" id="Curve_rmgms"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_063n8"]
+curve_y = SubResource("Curve_rmgms")
+
+[sub_resource type="Curve" id="Curve_8kgu5"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.5285171, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_ehm0f"]
+curve = SubResource("Curve_8kgu5")
+
+[sub_resource type="Curve" id="Curve_4nluj"]
+_limits = [-200.0, 200.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.24566478, 200), 0.0, 0.0, 0, 0, Vector2(0.52023125, -2.1899414), 0.0, 0.0, 0, 0, Vector2(0.7630058, -200), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 5
+
+[sub_resource type="CurveTexture" id="CurveTexture_uchl5"]
+curve = SubResource("Curve_4nluj")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_6gmme"]
+resource_local_to_scene = true
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(7, 270, 1)
+direction = Vector3(0, -1, 0)
+spread = 0.0
+initial_velocity_max = 100.0
+angular_velocity_min = -1.6093254e-05
+angular_velocity_max = 499.99997
+directional_velocity_min = 9.999984
+directional_velocity_max = 49.99998
+directional_velocity_curve = SubResource("CurveXYZTexture_063n8")
+gravity = Vector3(0, -60, 0)
+tangential_accel_min = -1.0000023
+tangential_accel_max = 0.99999774
+tangential_accel_curve = SubResource("CurveTexture_uchl5")
+damping_max = 18.976002
+scale_min = 0.19999999
+scale_max = 0.5
+scale_curve = SubResource("CurveTexture_ehm0f")
+color = Color(0.5294118, 1, 0.26666668, 1)
+alpha_curve = SubResource("CurveTexture_06jpt")
+hue_variation_min = -0.76
+hue_variation_max = 0.09999997
+turbulence_noise_scale = 2.494
+turbulence_influence_max = 0.43
+turbulence_initial_displacement_min = 1.490116e-06
+turbulence_initial_displacement_max = 50.800003
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_06jpt"]
+atlas = ExtResource("2_06jpt")
+region = Rect2(47, 454, 47, 17)
+
+[node name="ParticleBubbles" type="Control" unique_id=921577645]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 10.0
+offset_bottom = 528.0
+mouse_filter = 2
+script = ExtResource("3_fj44w")
+
+[node name="ParticleBubbles" type="MarginContainer" parent="." unique_id=360334830]
+clip_children = 1
+material = SubResource("ShaderMaterial_yr3nl")
+clip_contents = true
+layout_mode = 0
+offset_right = 14.0
+offset_bottom = 540.0
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 6
+
+[node name="ParticleContainer" type="Control" parent="ParticleBubbles" unique_id=1976917399]
+clip_contents = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Particles" type="GPUParticles2D" parent="ParticleBubbles/ParticleContainer" unique_id=880302668]
+unique_name_in_owner = true
+position = Vector2(5, 266)
+amount = 60
+texture = ExtResource("2_fj44w")
+lifetime = 1.8
+preprocess = 8.0
+explosiveness = 0.1
+randomness = 1.0
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_6gmme")
+
+[node name="Tube" type="NinePatchRect" parent="." unique_id=1764678442]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_06jpt")
+region_rect = Rect2(44, 384, 55, 40)
+patch_margin_left = 19
+patch_margin_top = 11
+patch_margin_right = 17
+patch_margin_bottom = 10
+
+[node name="BottomDecoration" type="TextureRect" parent="." unique_id=1117663173]
+custom_minimum_size = Vector2(0, 8)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+texture = SubResource("AtlasTexture_06jpt")
+expand_mode = 1
+
+[node name="MidDecoration" type="TextureRect" parent="." unique_id=779727313]
+custom_minimum_size = Vector2(0, 14)
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_06jpt")
+expand_mode = 1
+
+[node name="TopDecoration" type="TextureRect" parent="." unique_id=111268753]
+custom_minimum_size = Vector2(0, 8)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = SubResource("AtlasTexture_06jpt")
+expand_mode = 1

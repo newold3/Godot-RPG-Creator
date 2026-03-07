@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://clcx3f1jai82k" path="res://Assets/Images/Other/light_beam.png" id="5_qgjgh"]
 [ext_resource type="PackedScene" uid="uid://bhe278c8ompu1" path="res://Scenes/GUI/SteamPunkTheme/Equip/equipment_container.tscn" id="5_v1rh4"]
 [ext_resource type="FontFile" uid="uid://dvh0mi6yu0ywx" path="res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf" id="7_r2o83"]
+[ext_resource type="PackedScene" uid="uid://b430wi6kdccit" path="res://Scenes/GUI/SteamPunkTheme/OtherScenes/particle_bubbles.tscn" id="8_0kaj4"]
 [ext_resource type="PackedScene" uid="uid://dhayhpqxdxhub" path="res://Scenes/GUI/SteamPunkTheme/Equip/current_selected_equipment_container.tscn" id="9_x4so8"]
 [ext_resource type="PackedScene" uid="uid://cm3723njwglc8" path="res://Scenes/GUI/SteamPunkTheme/Equip/items_menu.tscn" id="15_ueivf"]
 
@@ -94,6 +95,7 @@ theme_override_constants/margin_top = 44
 [node name="SmoothScrollContainer" parent="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu/Contents" index="0"]
 custom_vscroll_size = Vector2(12, 366)
 custom_vscroll_offset = Vector2(70, -3)
+custom_scene_for_vertical_bar = ExtResource("8_0kaj4")
 
 [node name="BackgroundTop" parent="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu" index="3"]
 metadata/_edit_lock_ = true
@@ -287,6 +289,7 @@ grow_vertical = 2
 [node name="BottomContainer" parent="HBoxContainer/MainStatsContainer/Stats/StatsContainer/MarginContainer/VBoxContainer/MarginContainer" index="0"]
 custom_vscroll_size = Vector2(12, 346)
 custom_vscroll_offset = Vector2(347, -2)
+custom_scene_for_vertical_bar = ExtResource("8_0kaj4")
 
 [node name="StatsContainer" parent="HBoxContainer/MainStatsContainer/Stats/StatsContainer/MarginContainer/VBoxContainer/MarginContainer/BottomContainer" index="0"]
 custom_minimum_size = Vector2(0, 0)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://dw4la7k3nennr"]
+[gd_scene format=3 uid="uid://dw4la7k3nennr"]
 
 [ext_resource type="Script" uid="uid://bufr30r24ixhe" path="res://Scenes/GUI/SteamPunkTheme/MainMenu/hero_panel.gd" id="1_use6n"]
 [ext_resource type="Texture2D" uid="uid://c8guerd3v0l6t" path="res://Assets/Images/SceneMenu/part8.png" id="2_iuciu"]
@@ -127,7 +127,7 @@ func select():
 	grab_focus()
 "
 
-[node name="HeroPanel" type="Control"]
+[node name="HeroPanel" type="Control" unique_id=1953064713]
 custom_minimum_size = Vector2(550, 160)
 layout_mode = 3
 anchors_preset = 0
@@ -139,19 +139,19 @@ mouse_default_cursor_shape = 2
 script = ExtResource("1_use6n")
 initial_animation_delay = 0.04
 
-[node name="MaskViewport" type="SubViewport" parent="."]
+[node name="MaskViewport" type="SubViewport" parent="." unique_id=697351590]
 transparent_bg = true
 size = Vector2i(573, 160)
 
-[node name="Mask" type="Polygon2D" parent="MaskViewport"]
+[node name="Mask" type="Polygon2D" parent="MaskViewport" unique_id=302161402]
 scale = Vector2(1.04, 1)
 polygon = PackedVector2Array(43, 5, 13, 5, 12, 8, 8, 13, 7, 15, 4, 15, 6, 144, 9, 147, 12, 149, 12, 151, 26, 152, 25, 156, 28, 154, 29, 151, 43, 151, 44, 154, 113, 155, 115, 150, 129, 150, 131, 152, 319, 151, 321, 153, 535, 153, 535, 150, 541, 150, 543, 147, 544, 145, 547, 145, 547, 80, 546, 28, 534, 17, 521, 15, 515, 9, 488, 8, 487, 6)
 
-[node name="MainViewport" type="SubViewport" parent="."]
+[node name="MainViewport" type="SubViewport" parent="." unique_id=948239645]
 transparent_bg = true
 size = Vector2i(551, 180)
 
-[node name="Control" type="Control" parent="MainViewport"]
+[node name="Control" type="Control" parent="MainViewport" unique_id=2044242578]
 custom_minimum_size = Vector2(551, 163)
 layout_mode = 3
 anchors_preset = 0
@@ -159,7 +159,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 mouse_filter = 2
 
-[node name="MainLayout" type="Control" parent="MainViewport/Control"]
+[node name="MainLayout" type="Control" parent="MainViewport/Control" unique_id=771644905]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -171,7 +171,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="BackgroundShadow" type="NinePatchRect" parent="MainViewport/Control/MainLayout"]
+[node name="BackgroundShadow" type="NinePatchRect" parent="MainViewport/Control/MainLayout" unique_id=1871090614]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -185,7 +185,7 @@ patch_margin_top = 43
 patch_margin_right = 53
 patch_margin_bottom = 26
 
-[node name="Background" type="NinePatchRect" parent="MainViewport/Control/MainLayout"]
+[node name="Background" type="NinePatchRect" parent="MainViewport/Control/MainLayout" unique_id=967119705]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -199,7 +199,7 @@ patch_margin_top = 77
 patch_margin_right = 76
 patch_margin_bottom = 59
 
-[node name="Gears" type="Control" parent="MainViewport/Control/MainLayout"]
+[node name="Gears" type="Control" parent="MainViewport/Control/MainLayout" unique_id=2012377409]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -208,7 +208,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Control" type="Control" parent="MainViewport/Control/MainLayout/Gears"]
+[node name="Control" type="Control" parent="MainViewport/Control/MainLayout/Gears" unique_id=155880409]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -217,12 +217,12 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Mask" type="Polygon2D" parent="MainViewport/Control/MainLayout/Gears/Control"]
+[node name="Mask" type="Polygon2D" parent="MainViewport/Control/MainLayout/Gears/Control" unique_id=728279519]
 clip_children = 1
 position = Vector2(5, -15)
 polygon = PackedVector2Array(540, 63, 432, 63, 431, 160, 431, 165, 474, 165, 479, 163, 488, 164, 492, 160, 502, 159, 516, 159, 517, 161, 520, 158, 525, 159, 528, 162, 529, 165, 534, 165, 537, 163, 537, 160, 540, 161)
 
-[node name="Gear6" type="TextureRect" parent="MainViewport/Control/MainLayout/Gears/Control/Mask"]
+[node name="Gear6" type="TextureRect" parent="MainViewport/Control/MainLayout/Gears/Control/Mask" unique_id=1129746027]
 unique_name_in_owner = true
 modulate = Color(0.77, 0.77, 0.77, 1)
 offset_left = 509.0
@@ -233,7 +233,7 @@ pivot_offset = Vector2(19, 18)
 texture = SubResource("AtlasTexture_qrphq")
 expand_mode = 1
 
-[node name="Gear5" type="TextureRect" parent="MainViewport/Control/MainLayout/Gears/Control/Mask"]
+[node name="Gear5" type="TextureRect" parent="MainViewport/Control/MainLayout/Gears/Control/Mask" unique_id=187284843]
 unique_name_in_owner = true
 modulate = Color(0.77, 0.77, 0.77, 1)
 offset_left = 522.0
@@ -244,7 +244,7 @@ pivot_offset = Vector2(11.5, 11.5)
 texture = SubResource("AtlasTexture_4it6h")
 expand_mode = 1
 
-[node name="Gear4" type="TextureRect" parent="MainViewport/Control/MainLayout/Gears/Control/Mask"]
+[node name="Gear4" type="TextureRect" parent="MainViewport/Control/MainLayout/Gears/Control/Mask" unique_id=1921450201]
 unique_name_in_owner = true
 modulate = Color(0.77, 0.77, 0.77, 1)
 offset_left = 503.0
@@ -255,7 +255,7 @@ pivot_offset = Vector2(29.5, 28.5)
 texture = SubResource("AtlasTexture_qrphq")
 expand_mode = 1
 
-[node name="Gear3" type="TextureRect" parent="MainViewport/Control/MainLayout/Gears"]
+[node name="Gear3" type="TextureRect" parent="MainViewport/Control/MainLayout/Gears" unique_id=1572073466]
 unique_name_in_owner = true
 layout_mode = 1
 offset_left = 2.9999995
@@ -268,7 +268,7 @@ mouse_filter = 2
 texture = SubResource("AtlasTexture_773xp")
 expand_mode = 1
 
-[node name="TopFrame" type="NinePatchRect" parent="MainViewport/Control/MainLayout"]
+[node name="TopFrame" type="NinePatchRect" parent="MainViewport/Control/MainLayout" unique_id=467483094]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -283,7 +283,7 @@ patch_margin_right = 76
 patch_margin_bottom = 59
 metadata/_edit_lock_ = true
 
-[node name="CursorNormal" type="NinePatchRect" parent="MainViewport/Control/MainLayout"]
+[node name="CursorNormal" type="NinePatchRect" parent="MainViewport/Control/MainLayout" unique_id=1762718156]
 unique_name_in_owner = true
 visible = false
 modulate = Color(0.87522435, 0.36340213, 0.382199, 1)
@@ -300,7 +300,7 @@ patch_margin_top = 77
 patch_margin_right = 76
 patch_margin_bottom = 59
 
-[node name="CursorExtra" type="NinePatchRect" parent="MainViewport/Control/MainLayout/CursorNormal"]
+[node name="CursorExtra" type="NinePatchRect" parent="MainViewport/Control/MainLayout/CursorNormal" unique_id=996110213]
 z_index = 1
 layout_mode = 0
 offset_left = 26.0
@@ -314,7 +314,7 @@ patch_margin_top = 23
 patch_margin_right = 3
 patch_margin_bottom = 7
 
-[node name="CursorForceSelected" type="NinePatchRect" parent="MainViewport/Control/MainLayout"]
+[node name="CursorForceSelected" type="NinePatchRect" parent="MainViewport/Control/MainLayout" unique_id=474338215]
 unique_name_in_owner = true
 visible = false
 modulate = Color(0.96259046, 1, 0.5468543, 1)
@@ -331,7 +331,7 @@ patch_margin_top = 77
 patch_margin_right = 76
 patch_margin_bottom = 59
 
-[node name="CursorExtra" type="NinePatchRect" parent="MainViewport/Control/MainLayout/CursorForceSelected"]
+[node name="CursorExtra" type="NinePatchRect" parent="MainViewport/Control/MainLayout/CursorForceSelected" unique_id=1358191443]
 z_index = 1
 layout_mode = 0
 offset_left = 26.0
@@ -345,7 +345,7 @@ patch_margin_top = 23
 patch_margin_right = 3
 patch_margin_bottom = 7
 
-[node name="CursorHover" type="NinePatchRect" parent="MainViewport/Control/MainLayout"]
+[node name="CursorHover" type="NinePatchRect" parent="MainViewport/Control/MainLayout" unique_id=802574413]
 unique_name_in_owner = true
 visible = false
 modulate = Color(0.98504657, 0.7112516, 0.51977134, 1)
@@ -362,7 +362,7 @@ patch_margin_top = 77
 patch_margin_right = 76
 patch_margin_bottom = 59
 
-[node name="CursorExtra" type="NinePatchRect" parent="MainViewport/Control/MainLayout/CursorHover"]
+[node name="CursorExtra" type="NinePatchRect" parent="MainViewport/Control/MainLayout/CursorHover" unique_id=1679329653]
 z_index = 1
 layout_mode = 0
 offset_left = 26.0
@@ -376,7 +376,7 @@ patch_margin_top = 23
 patch_margin_right = 3
 patch_margin_bottom = 7
 
-[node name="Gear7" type="TextureRect" parent="MainViewport/Control/MainLayout"]
+[node name="Gear7" type="TextureRect" parent="MainViewport/Control/MainLayout" unique_id=1618106577]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 1
@@ -392,7 +392,7 @@ mouse_filter = 2
 texture = SubResource("AtlasTexture_4it6h")
 expand_mode = 1
 
-[node name="TopContainer" type="MarginContainer" parent="MainViewport/Control/MainLayout"]
+[node name="TopContainer" type="MarginContainer" parent="MainViewport/Control/MainLayout" unique_id=291115616]
 layout_mode = 0
 offset_left = 46.0
 offset_right = 507.0
@@ -400,11 +400,11 @@ offset_bottom = 41.0
 mouse_filter = 2
 theme_override_constants/margin_top = 7
 
-[node name="Contents" type="HBoxContainer" parent="MainViewport/Control/MainLayout/TopContainer"]
+[node name="Contents" type="HBoxContainer" parent="MainViewport/Control/MainLayout/TopContainer" unique_id=1552838098]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Lock" type="TextureRect" parent="MainViewport/Control/MainLayout/TopContainer/Contents"]
+[node name="Lock" type="TextureRect" parent="MainViewport/Control/MainLayout/TopContainer/Contents" unique_id=762751263]
 unique_name_in_owner = true
 visible = false
 z_index = 12
@@ -415,27 +415,27 @@ size_flags_vertical = 4
 texture = SubResource("AtlasTexture_eh0sd")
 expand_mode = 1
 
-[node name="Name" type="Label" parent="MainViewport/Control/MainLayout/TopContainer/Contents"]
+[node name="Name" type="Label" parent="MainViewport/Control/MainLayout/TopContainer/Contents" unique_id=478015821]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/outline_size = 12
 theme_override_font_sizes/font_size = 24
 text = "Name"
 
-[node name="Separator" type="Label" parent="MainViewport/Control/MainLayout/TopContainer/Contents"]
+[node name="Separator" type="Label" parent="MainViewport/Control/MainLayout/TopContainer/Contents" unique_id=1459358325]
 layout_mode = 2
 theme_override_constants/outline_size = 12
 theme_override_font_sizes/font_size = 24
 text = " - "
 
-[node name="Class" type="Label" parent="MainViewport/Control/MainLayout/TopContainer/Contents"]
+[node name="Class" type="Label" parent="MainViewport/Control/MainLayout/TopContainer/Contents" unique_id=186927660]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/outline_size = 12
 theme_override_font_sizes/font_size = 24
 text = "Class"
 
-[node name="LevelIcon" type="TextureRect" parent="MainViewport/Control/MainLayout/TopContainer/Contents"]
+[node name="LevelIcon" type="TextureRect" parent="MainViewport/Control/MainLayout/TopContainer/Contents" unique_id=219315504]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 size_flags_horizontal = 10
@@ -444,21 +444,21 @@ mouse_filter = 2
 texture = SubResource("AtlasTexture_hsxhh")
 expand_mode = 1
 
-[node name="LevelLabel" type="Label" parent="MainViewport/Control/MainLayout/TopContainer/Contents"]
+[node name="LevelLabel" type="Label" parent="MainViewport/Control/MainLayout/TopContainer/Contents" unique_id=2070582229]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/outline_size = 12
 theme_override_font_sizes/font_size = 24
 text = "Level:"
 
-[node name="LevelAmountLabel" type="Label" parent="MainViewport/Control/MainLayout/TopContainer/Contents"]
+[node name="LevelAmountLabel" type="Label" parent="MainViewport/Control/MainLayout/TopContainer/Contents" unique_id=633992569]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/outline_size = 12
 theme_override_font_sizes/font_size = 24
 text = "1"
 
-[node name="HeroPanel" type="TextureRect" parent="MainViewport/Control/MainLayout"]
+[node name="HeroPanel" type="TextureRect" parent="MainViewport/Control/MainLayout" unique_id=1058438848]
 layout_mode = 0
 offset_left = 26.0
 offset_top = 51.0
@@ -468,7 +468,7 @@ mouse_filter = 2
 texture = SubResource("AtlasTexture_gcrb0")
 expand_mode = 1
 
-[node name="ColumnLeft" type="TextureRect" parent="MainViewport/Control/MainLayout/HeroPanel"]
+[node name="ColumnLeft" type="TextureRect" parent="MainViewport/Control/MainLayout/HeroPanel" unique_id=130517160]
 layout_mode = 0
 offset_left = 6.0
 offset_top = 38.0
@@ -478,7 +478,7 @@ mouse_filter = 2
 texture = SubResource("AtlasTexture_f4mn4")
 expand_mode = 1
 
-[node name="Effect" type="ColorRect" parent="MainViewport/Control/MainLayout/HeroPanel/ColumnLeft"]
+[node name="Effect" type="ColorRect" parent="MainViewport/Control/MainLayout/HeroPanel/ColumnLeft" unique_id=1268484668]
 material = SubResource("ShaderMaterial_g4x2k")
 instance_shader_parameters/anim_offset = 0.494000023465
 instance_shader_parameters/direction = Vector2(0, -1)
@@ -495,7 +495,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Decoration" type="TextureRect" parent="MainViewport/Control/MainLayout/HeroPanel/ColumnLeft"]
+[node name="Decoration" type="TextureRect" parent="MainViewport/Control/MainLayout/HeroPanel/ColumnLeft" unique_id=472728732]
 layout_mode = 0
 offset_left = -4.0
 offset_top = 10.0
@@ -505,7 +505,7 @@ mouse_filter = 2
 texture = SubResource("AtlasTexture_fs03s")
 expand_mode = 1
 
-[node name="ColumnRight" type="TextureRect" parent="MainViewport/Control/MainLayout/HeroPanel"]
+[node name="ColumnRight" type="TextureRect" parent="MainViewport/Control/MainLayout/HeroPanel" unique_id=1837215196]
 layout_mode = 0
 offset_left = 100.0
 offset_top = 38.0
@@ -516,7 +516,7 @@ mouse_filter = 2
 texture = SubResource("AtlasTexture_f4mn4")
 expand_mode = 1
 
-[node name="Effect" type="ColorRect" parent="MainViewport/Control/MainLayout/HeroPanel/ColumnRight"]
+[node name="Effect" type="ColorRect" parent="MainViewport/Control/MainLayout/HeroPanel/ColumnRight" unique_id=358652942]
 material = SubResource("ShaderMaterial_g4x2k")
 instance_shader_parameters/direction = Vector2(0, -1)
 instance_shader_parameters/emitter_pos = Vector2(0, 3.265)
@@ -532,7 +532,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Decoration" type="TextureRect" parent="MainViewport/Control/MainLayout/HeroPanel/ColumnRight"]
+[node name="Decoration" type="TextureRect" parent="MainViewport/Control/MainLayout/HeroPanel/ColumnRight" unique_id=1343738790]
 layout_mode = 0
 offset_left = -4.0
 offset_top = 10.0
@@ -542,7 +542,7 @@ mouse_filter = 2
 texture = SubResource("AtlasTexture_fs03s")
 expand_mode = 1
 
-[node name="ContentsMargin" type="MarginContainer" parent="MainViewport/Control/MainLayout/HeroPanel"]
+[node name="ContentsMargin" type="MarginContainer" parent="MainViewport/Control/MainLayout/HeroPanel" unique_id=2126831422]
 show_behind_parent = true
 layout_mode = 1
 anchors_preset = 15
@@ -556,11 +556,11 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="Control" type="Control" parent="MainViewport/Control/MainLayout/HeroPanel/ContentsMargin"]
+[node name="Control" type="Control" parent="MainViewport/Control/MainLayout/HeroPanel/ContentsMargin" unique_id=324975428]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Mask" type="TextureRect" parent="MainViewport/Control/MainLayout/HeroPanel/ContentsMargin/Control"]
+[node name="Mask" type="TextureRect" parent="MainViewport/Control/MainLayout/HeroPanel/ContentsMargin/Control" unique_id=1150414713]
 clip_children = 1
 layout_mode = 0
 offset_left = 14.0
@@ -571,7 +571,7 @@ mouse_filter = 2
 texture = SubResource("AtlasTexture_7laf4")
 expand_mode = 1
 
-[node name="HeroFace" type="TextureRect" parent="MainViewport/Control/MainLayout/HeroPanel/ContentsMargin/Control/Mask"]
+[node name="HeroFace" type="TextureRect" parent="MainViewport/Control/MainLayout/HeroPanel/ContentsMargin/Control/Mask" unique_id=236340842]
 unique_name_in_owner = true
 texture_filter = 1
 layout_mode = 1
@@ -585,7 +585,7 @@ texture = SubResource("AtlasTexture_tpt2p")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="MidContainer" type="VBoxContainer" parent="MainViewport/Control/MainLayout"]
+[node name="MidContainer" type="VBoxContainer" parent="MainViewport/Control/MainLayout" unique_id=1179591302]
 layout_mode = 0
 offset_left = 144.0
 offset_top = 67.0
@@ -593,19 +593,19 @@ offset_right = 386.0
 offset_bottom = 151.0
 mouse_filter = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="MainViewport/Control/MainLayout/MidContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MainViewport/Control/MainLayout/MidContainer" unique_id=56938722]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 10
 
-[node name="HPContainer" type="HBoxContainer" parent="MainViewport/Control/MainLayout/MidContainer/MarginContainer"]
+[node name="HPContainer" type="HBoxContainer" parent="MainViewport/Control/MainLayout/MidContainer/MarginContainer" unique_id=1718172105]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 mouse_filter = 2
 theme_override_constants/separation = -19
 
-[node name="Icon" type="TextureRect" parent="MainViewport/Control/MainLayout/MidContainer/MarginContainer/HPContainer"]
+[node name="Icon" type="TextureRect" parent="MainViewport/Control/MainLayout/MidContainer/MarginContainer/HPContainer" unique_id=2047145650]
 z_index = 1
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
@@ -615,7 +615,7 @@ mouse_filter = 2
 texture = SubResource("AtlasTexture_t5m22")
 expand_mode = 1
 
-[node name="HPBar" type="TextureProgressBar" parent="MainViewport/Control/MainLayout/MidContainer/MarginContainer/HPContainer" node_paths=PackedStringArray("child")]
+[node name="HPBar" type="TextureProgressBar" parent="MainViewport/Control/MainLayout/MidContainer/MarginContainer/HPContainer" unique_id=1343487771 node_paths=PackedStringArray("child")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(186, 20)
 layout_mode = 2
@@ -629,7 +629,7 @@ texture_progress = SubResource("AtlasTexture_mne06")
 script = ExtResource("18_hsxhh")
 child = NodePath("HPBarEffect")
 
-[node name="MarginContainer" type="MarginContainer" parent="MainViewport/Control/MainLayout/MidContainer/MarginContainer/HPContainer/HPBar"]
+[node name="MarginContainer" type="MarginContainer" parent="MainViewport/Control/MainLayout/MidContainer/MarginContainer/HPContainer/HPBar" unique_id=2113520009]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -638,14 +638,14 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Background1" type="TextureRect" parent="MainViewport/Control/MainLayout/MidContainer/MarginContainer/HPContainer/HPBar/MarginContainer"]
+[node name="Background1" type="TextureRect" parent="MainViewport/Control/MainLayout/MidContainer/MarginContainer/HPContainer/HPBar/MarginContainer" unique_id=1724433922]
 modulate = Color(1, 1, 1, 0.12549)
 layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("2_iuciu")
 expand_mode = 1
 
-[node name="HPLabel" type="RichTextLabel" parent="MainViewport/Control/MainLayout/MidContainer/MarginContainer/HPContainer/HPBar/MarginContainer"]
+[node name="HPLabel" type="RichTextLabel" parent="MainViewport/Control/MainLayout/MidContainer/MarginContainer/HPContainer/HPBar/MarginContainer" unique_id=719035228]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
@@ -656,7 +656,7 @@ bbcode_enabled = true
 text = "[center]0 / 0 HP"
 fit_content = true
 
-[node name="HPBarEffect" type="ColorRect" parent="MainViewport/Control/MainLayout/MidContainer/MarginContainer/HPContainer/HPBar"]
+[node name="HPBarEffect" type="ColorRect" parent="MainViewport/Control/MainLayout/MidContainer/MarginContainer/HPContainer/HPBar" unique_id=1173686154]
 material = SubResource("ShaderMaterial_g4x2k")
 instance_shader_parameters/anim_offset = 0.0
 instance_shader_parameters/direction = Vector2(1, 0)
@@ -666,7 +666,7 @@ offset_right = 186.0
 offset_bottom = 18.0
 mouse_filter = 2
 
-[node name="BarDecoration" type="TextureRect" parent="MainViewport/Control/MainLayout/MidContainer/MarginContainer/HPContainer/HPBar"]
+[node name="BarDecoration" type="TextureRect" parent="MainViewport/Control/MainLayout/MidContainer/MarginContainer/HPContainer/HPBar" unique_id=1416642841]
 layout_mode = 0
 offset_left = 179.0
 offset_right = 219.0
@@ -675,18 +675,18 @@ scale = Vector2(0.42859954, 0.42859954)
 mouse_filter = 2
 texture = SubResource("AtlasTexture_g4x2k")
 
-[node name="Control" type="Control" parent="MainViewport/Control/MainLayout/MidContainer/MarginContainer/HPContainer"]
+[node name="Control" type="Control" parent="MainViewport/Control/MainLayout/MidContainer/MarginContainer/HPContainer" unique_id=842461225]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="ManaContainer" type="HBoxContainer" parent="MainViewport/Control/MainLayout/MidContainer"]
+[node name="ManaContainer" type="HBoxContainer" parent="MainViewport/Control/MainLayout/MidContainer" unique_id=915092556]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 mouse_filter = 2
 theme_override_constants/separation = -16
 
-[node name="Icon" type="TextureRect" parent="MainViewport/Control/MainLayout/MidContainer/ManaContainer"]
+[node name="Icon" type="TextureRect" parent="MainViewport/Control/MainLayout/MidContainer/ManaContainer" unique_id=705632837]
 z_index = 1
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
@@ -696,7 +696,7 @@ mouse_filter = 2
 texture = SubResource("AtlasTexture_nbiu1")
 expand_mode = 1
 
-[node name="MPBar" type="TextureProgressBar" parent="MainViewport/Control/MainLayout/MidContainer/ManaContainer" node_paths=PackedStringArray("child")]
+[node name="MPBar" type="TextureProgressBar" parent="MainViewport/Control/MainLayout/MidContainer/ManaContainer" unique_id=1668165091 node_paths=PackedStringArray("child")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(186, 20)
 layout_mode = 2
@@ -712,7 +712,7 @@ tint_progress = Color(0.209923, 0.660057, 0.730906, 1)
 script = ExtResource("18_hsxhh")
 child = NodePath("MpBarEffect")
 
-[node name="MarginContainer" type="MarginContainer" parent="MainViewport/Control/MainLayout/MidContainer/ManaContainer/MPBar"]
+[node name="MarginContainer" type="MarginContainer" parent="MainViewport/Control/MainLayout/MidContainer/ManaContainer/MPBar" unique_id=1682982848]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -721,14 +721,14 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Background1" type="TextureRect" parent="MainViewport/Control/MainLayout/MidContainer/ManaContainer/MPBar/MarginContainer"]
+[node name="Background1" type="TextureRect" parent="MainViewport/Control/MainLayout/MidContainer/ManaContainer/MPBar/MarginContainer" unique_id=2117122281]
 modulate = Color(1, 1, 1, 0.12549)
 layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("2_iuciu")
 expand_mode = 1
 
-[node name="MPLabel" type="RichTextLabel" parent="MainViewport/Control/MainLayout/MidContainer/ManaContainer/MPBar/MarginContainer"]
+[node name="MPLabel" type="RichTextLabel" parent="MainViewport/Control/MainLayout/MidContainer/ManaContainer/MPBar/MarginContainer" unique_id=1260771038]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
@@ -739,7 +739,7 @@ bbcode_enabled = true
 text = "[center]0 / 0 MP"
 fit_content = true
 
-[node name="MpBarEffect" type="ColorRect" parent="MainViewport/Control/MainLayout/MidContainer/ManaContainer/MPBar"]
+[node name="MpBarEffect" type="ColorRect" parent="MainViewport/Control/MainLayout/MidContainer/ManaContainer/MPBar" unique_id=1122954545]
 material = SubResource("ShaderMaterial_g4x2k")
 instance_shader_parameters/anim_offset = 0.238000011305
 instance_shader_parameters/direction = Vector2(1, 0)
@@ -749,7 +749,7 @@ offset_right = 182.0
 offset_bottom = 18.0
 mouse_filter = 2
 
-[node name="BarDecoration" type="TextureRect" parent="MainViewport/Control/MainLayout/MidContainer/ManaContainer/MPBar"]
+[node name="BarDecoration" type="TextureRect" parent="MainViewport/Control/MainLayout/MidContainer/ManaContainer/MPBar" unique_id=1980796742]
 layout_mode = 0
 offset_left = 179.0
 offset_right = 219.0
@@ -758,27 +758,35 @@ scale = Vector2(0.42859954, 0.42859954)
 mouse_filter = 2
 texture = SubResource("AtlasTexture_g4x2k")
 
-[node name="MarginContainer" type="MarginContainer" parent="MainViewport/Control/MainLayout"]
+[node name="ExperienceContainer" type="Control" parent="MainViewport/Control/MainLayout" unique_id=1449383566]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -84.0
-offset_top = -50.0
+offset_left = -141.0
+offset_top = -52.0
+offset_right = -101.00052
+offset_bottom = -12.000183
 grow_horizontal = 0
 grow_vertical = 0
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MainViewport/Control/MainLayout/ExperienceContainer" unique_id=1467710948]
+layout_mode = 1
+offset_right = 127.0
+offset_bottom = 40.0
 theme_override_constants/margin_top = -10
 theme_override_constants/margin_right = 35
 
-[node name="RightContainer" type="VBoxContainer" parent="MainViewport/Control/MainLayout/MarginContainer"]
+[node name="RightContainer" type="VBoxContainer" parent="MainViewport/Control/MainLayout/ExperienceContainer/MarginContainer" unique_id=413932537]
 z_index = 20
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 3
 
-[node name="NextLabel" type="Label" parent="MainViewport/Control/MainLayout/MarginContainer/RightContainer"]
+[node name="NextLabel" type="Label" parent="MainViewport/Control/MainLayout/ExperienceContainer/MarginContainer/RightContainer" unique_id=1201575701]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/outline_size = 12
@@ -786,12 +794,12 @@ theme_override_font_sizes/font_size = 16
 text = "NEXT:"
 horizontal_alignment = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainViewport/Control/MainLayout/MarginContainer/RightContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainViewport/Control/MainLayout/ExperienceContainer/MarginContainer/RightContainer" unique_id=1995501415]
 layout_mode = 2
 mouse_filter = 2
 alignment = 2
 
-[node name="ExperienceIcon" type="TextureRect" parent="MainViewport/Control/MainLayout/MarginContainer/RightContainer/HBoxContainer"]
+[node name="ExperienceIcon" type="TextureRect" parent="MainViewport/Control/MainLayout/ExperienceContainer/MarginContainer/RightContainer/HBoxContainer" unique_id=976523260]
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 size_flags_horizontal = 0
@@ -800,7 +808,7 @@ mouse_filter = 2
 texture = SubResource("AtlasTexture_y8dlr")
 expand_mode = 1
 
-[node name="NextExperienceLabel" type="Label" parent="MainViewport/Control/MainLayout/MarginContainer/RightContainer/HBoxContainer"]
+[node name="NextExperienceLabel" type="Label" parent="MainViewport/Control/MainLayout/ExperienceContainer/MarginContainer/RightContainer/HBoxContainer" unique_id=619401962]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0.6309812, 0.47528082, 0.27245867, 1)
@@ -810,7 +818,7 @@ text = "259.812"
 label_settings = SubResource("LabelSettings_xgsh2")
 horizontal_alignment = 2
 
-[node name="PartyIndicator" type="TextureRect" parent="MainViewport/Control/MainLayout"]
+[node name="PartyIndicator" type="TextureRect" parent="MainViewport/Control/MainLayout" unique_id=1012385458]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 1
@@ -822,7 +830,7 @@ texture = SubResource("AtlasTexture_ajjem")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="GreyScaleContainer" type="ColorRect" parent="MainViewport/Control/MainLayout"]
+[node name="GreyScaleContainer" type="ColorRect" parent="MainViewport/Control/MainLayout" unique_id=726914009]
 unique_name_in_owner = true
 z_index = 50
 material = SubResource("ShaderMaterial_eh0sd")
@@ -834,7 +842,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="HeroPanel" type="TextureRect" parent="."]
+[node name="HeroPanel" type="TextureRect" parent="." unique_id=1742580544]
 unique_name_in_owner = true
 layout_mode = 0
 offset_right = 40.0
@@ -844,7 +852,7 @@ mouse_default_cursor_shape = 2
 texture = SubResource("ViewportTexture_t2glj")
 script = SubResource("GDScript_ajjem")
 
-[node name="Gear8" type="TextureRect" parent="HeroPanel"]
+[node name="Gear8" type="TextureRect" parent="HeroPanel" unique_id=710358753]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 1
@@ -860,7 +868,7 @@ mouse_filter = 2
 texture = SubResource("AtlasTexture_4it6h")
 expand_mode = 1
 
-[node name="Gear2" type="TextureRect" parent="HeroPanel"]
+[node name="Gear2" type="TextureRect" parent="HeroPanel" unique_id=219077539]
 unique_name_in_owner = true
 z_index = 1
 layout_mode = 0
@@ -873,7 +881,7 @@ mouse_filter = 2
 texture = SubResource("AtlasTexture_4it6h")
 expand_mode = 1
 
-[node name="Gear1" type="TextureRect" parent="HeroPanel"]
+[node name="Gear1" type="TextureRect" parent="HeroPanel" unique_id=1299805671]
 unique_name_in_owner = true
 z_index = 1
 layout_mode = 1

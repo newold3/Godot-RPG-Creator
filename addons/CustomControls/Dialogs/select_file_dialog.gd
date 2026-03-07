@@ -25,6 +25,15 @@ class FileStruct:
 
 @export var ignore_folders: Array[String] = []
 
+## Toggle to allow multiple file selection in the custom dialog UI
+@export var allow_multiple_selection: bool = false
+
+## Stores the paths of currently selected files for multi-selection mode
+var current_files_selected: PackedStringArray = []
+
+## Reference to the last selected node to calculate shift-click ranges
+var last_selected_node: Control = null
+
 
 var target_callable: Callable
 
@@ -79,6 +88,10 @@ var file_mode: FILE_MODE = FILE_MODE.NAVIGABLE
 var current_file_type: int = 0 # 0 = fill_files, 1 = fill_files_by_extension, 2 = fill_mix_files
 var current_file_filters_data: Variant = ""
 
+var current_regex_cache_ids: PackedStringArray = []
+var cached_regex_results: Array[String] = []
+var last_regex_pattern: String = ""
+
 var favorite_button_enabled: bool = false
 var all_button_enabled: bool = false
 
@@ -130,16 +143,21 @@ func skip(_path: String) -> void:
 	pass
 
 
+## Resets the state of the dialog and clears all selections
 func reset() -> void:
 	_clear_current_files()
 	set_dialog_mode(0)
 	current_path = ""
 	current_file_selected = ""
+	current_files_selected.clear()
+	last_selected_node = null
 	current_directory = ""
 	current_directory_selected = ""
 	target_callable = skip
 	destroy_on_hide = false
 	file_count = 0
+	last_regex_pattern = ""
+	cached_regex_results.clear()
 	%Loading.visible = true
 	%NoFilesFound.visible = false
 	%OKButton.set_disabled(false)
@@ -148,7 +166,6 @@ func reset() -> void:
 	%Filename.text = ""
 	%FilterLineEdit.text = ""
 	_update_label_path_selected()
-	
 	if all_button_enabled:
 		%AllButton.set_pressed_no_signal(true)
 	elif favorite_button_enabled:
@@ -170,12 +187,13 @@ func _update_ui_controls() -> void:
 	%Next.visible = is_navigable
 
 
+## Sets a specific file as visually and logically selected
 func set_file_selected(path: String) -> void:
 	current_path = path
-	_update_label_path_selected()
 	current_file_selected = path
+	current_files_selected = [path]
+	_update_label_path_selected()
 	%CurrentPath.text = path
-	
 	if dialog_mode == 1:
 		var absolute_path = ProjectSettings.globalize_path(current_path)
 		if !DirAccess.dir_exists_absolute(absolute_path):
@@ -495,7 +513,6 @@ func _setup_file_node(node: Control, path: String) -> void:
 	var is_zipped: bool = not FileAccess.file_exists(path)
 	var zip_prefix: String = "📦\u00A0" if is_zipped else ""
 	var display_name: String = path.get_file().get_basename()
-	
 	if path in FileCache.cache.characters:
 		var res = load(path)
 		if res is RPGLPCCharacter:
@@ -522,13 +539,13 @@ func _setup_file_node(node: Control, path: String) -> void:
 			node.set_path(path, "", zip_prefix + display_name)
 	else:
 		node.set_path(path, "", zip_prefix + display_name)
-		
 	node.selected.connect(_on_file_selected)
 	node.double_click.connect(select_file)
 	node.add_to_favorite_requested.connect(_add_to_favorite)
 	node.show_favorite_button()
-	
-	if path.to_lower() == current_file_selected.to_lower():
+	if path in current_files_selected:
+		node.select()
+	elif path.to_lower() == current_file_selected.to_lower():
 		node.select()
 
 
@@ -573,13 +590,74 @@ func navigate_to_directory(path: String, add_to_history: bool = true) -> void:
 	_refresh_view()
 
 
+## Refreshes the current view based on the active file type and filters
 func _refresh_view() -> void:
 	var filter = %FilterLineEdit.text
-	
 	match current_file_type:
 		0: fill_files(current_file_filters_data, false, filter)
 		1: fill_files_by_extension(current_directory, current_file_filters_data, false, filter)
 		2: fill_mix_files(current_file_filters_data, false, filter)
+		3: fill_files_by_regex(current_directory, current_file_filters_data, current_regex_cache_ids, filter)
+
+
+## Recursively retrieves all file paths from a given directory
+func _get_all_files_recursive(path: String) -> Array[String]:
+	var files: Array[String] = []
+	var dir = DirAccess.open(path)
+	if dir:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while file_name != "":
+			if dir.current_is_dir():
+				if file_name != "." and file_name != "..":
+					files.append_array(_get_all_files_recursive(path + "/" + file_name))
+			else:
+				files.append(path + "/" + file_name)
+			file_name = dir.get_next()
+	return files
+
+
+## Searches for files matching a regex pattern using optional cache IDs or recursive fallback
+func search_files_by_regex(directory_path: String, regex_pattern: String, cache_ids: PackedStringArray = PackedStringArray()) -> Array[String]:
+	var result_paths: Array[String] = []
+	var regex = RegEx.new()
+	regex.compile(regex_pattern)
+	var all_files: Array[String] = []
+	if not cache_ids.is_empty():
+		for id in cache_ids:
+			var cache_files = await _get_files_in_cache(id)
+			all_files.append_array(Array(cache_files))
+	if all_files.is_empty():
+		all_files = _get_all_files_recursive(directory_path)
+	for file_path in all_files:
+		var file_name = file_path.get_file()
+		var match_result = regex.search(file_name)
+		if match_result:
+			result_paths.append(file_path)
+	return result_paths
+
+
+## Fills the file pool using a regex pattern search in the specified path, using a temporary cache for performance
+func fill_files_by_regex(path: String, regex_pattern: String, cache_ids: PackedStringArray = PackedStringArray(), filter_text: String = "") -> void:
+	current_file_type = 3
+	current_cache_key = regex_pattern
+	current_file_filters_data = current_cache_key
+	current_regex_cache_ids = cache_ids
+	_clear_current_files()
+	_update_ui_controls()
+	var base_dir = path if not all_button_enabled else "res://"
+	var current_token = _load_token
+	if regex_pattern != last_regex_pattern:
+		last_regex_pattern = regex_pattern
+		cached_regex_results = await search_files_by_regex(base_dir, regex_pattern, cache_ids)
+	if current_token != _load_token: return
+	for file in cached_regex_results:
+		if not filter_text.is_empty() and not filter_text.to_lower() in file.get_file().to_lower():
+			continue
+		filtered_files_pool.append(FileStruct.new(file, "file"))
+	_prioritize_recent_files()
+	_paginate_next_batch()
+	hide_loading()
 
 
 func _on_all_button_toggled(toggled_on: bool) -> void:
@@ -591,7 +669,6 @@ func _on_all_button_toggled(toggled_on: bool) -> void:
 	
 	if not toggled_on:
 		if not current_file_selected.is_empty():
-			# If we have a file selected, jump to its directory when switching view
 			current_directory = _clean_path(current_file_selected.get_base_dir())
 		elif current_directory.is_empty():
 			if not last_folder_visited.is_empty():
@@ -628,18 +705,39 @@ func _on_visibility_changed() -> void:
 		_refresh_view()
 
 
+## Handles the logic when the OK button is pressed considering multiple selection
 func _on_ok_button_pressed() -> void:
 	if dialog_mode == 1:
 		if not current_directory_selected.is_empty():
 			select_file(current_directory_selected)
 		else:
 			select_file(current_directory)
-			
 	else:
-		if not current_file_selected.is_empty():
+		if allow_multiple_selection and current_files_selected.size() > 0:
+			select_multiple_files(current_files_selected)
+		elif not current_file_selected.is_empty():
 			select_file(current_file_selected)
 		elif not current_directory_selected.is_empty():
 			navigate_to_directory(current_directory_selected)
+
+
+## Processes the final selection of multiple files and closes the dialog
+func select_multiple_files(paths: PackedStringArray) -> void:
+	if target_callable:
+		target_callable.call(paths)
+	if FileCache.options:
+		if not "recent_files" in FileCache.options:
+			FileCache.options.recent_files = []
+		var recent: Array = FileCache.options.recent_files
+		for path in paths:
+			if path in recent:
+				recent.erase(path)
+			recent.push_front(path)
+		if recent.size() > MAX_CACHE_LAST_SELECTION_FILES:
+			recent.resize(MAX_CACHE_LAST_SELECTION_FILES)
+	if audio_preview_player:
+		audio_preview_player.stop()
+	hide()
 
 
 func select_file(path: String) -> void:
@@ -701,36 +799,78 @@ func _prioritize_recent_files() -> void:
 	filtered_files_pool.append_array(normal_items)
 
 
-func _on_file_selected(node: Control) -> void:
-	for child in %FileContainer.get_children(): child.deselect()
-	node.select()
-	current_file_selected = node.path
-	current_path = node.path
+## Handles file selection and multi-selection logic based on keyboard modifiers
+func _on_file_selected(node: Control, shift_pressed: bool = false, ctrl_pressed: bool = false) -> void:
+	if allow_multiple_selection and dialog_mode == 0:
+		if shift_pressed and last_selected_node != null:
+			var children = %FileContainer.get_children()
+			var start_idx = children.find(last_selected_node)
+			var end_idx = children.find(node)
+			if start_idx != -1 and end_idx != -1:
+				current_files_selected.clear()
+				for child in children:
+					child.deselect()
+				var step = 1 if start_idx <= end_idx else -1
+				for i in range(start_idx, end_idx + step, step):
+					var child = children[i]
+					child.select()
+					current_files_selected.append(child.path)
+		elif ctrl_pressed:
+			if node.path in current_files_selected:
+				node.deselect()
+				var idx = current_files_selected.find(node.path)
+				if idx != -1:
+					current_files_selected.remove_at(idx)
+				if last_selected_node == node:
+					last_selected_node = null
+			else:
+				node.select()
+				current_files_selected.append(node.path)
+				last_selected_node = node
+		else:
+			current_files_selected.clear()
+			for child in %FileContainer.get_children():
+				child.deselect()
+			node.select()
+			current_files_selected.append(node.path)
+			last_selected_node = node
+	else:
+		for child in %FileContainer.get_children():
+			child.deselect()
+		node.select()
+		current_files_selected = [node.path]
+		last_selected_node = node
+	if current_files_selected.size() > 0:
+		current_file_selected = current_files_selected[-1]
+		current_path = current_file_selected
+	else:
+		current_file_selected = ""
+		current_path = current_directory
 	_update_label_path_selected()
-	
-	if auto_play_sounds:
-		_try_play_audio_preview(node.path)
+	if auto_play_sounds and not current_file_selected.is_empty():
+		_try_play_audio_preview(current_file_selected)
 
 
-func _on_directory_selected(node: Control) -> void:
+## Handles directory selection updating its style
+func _on_directory_selected(node: Control, _shift_pressed: bool = false, _ctrl_pressed: bool = false) -> void:
 	for child in %FileContainer.get_children():
 		if child != node: child.deselect()
-	
 	current_directory_selected = node.path
 	current_path = node.path
 	_update_label_path_selected()
 
 
+## Updates the UI label to reflect the current selection count or path
 func _update_label_path_selected() -> void:
 	var text_to_show = ""
-	
-	if not current_file_selected.is_empty():
+	if current_files_selected.size() > 1:
+		text_to_show = str(current_files_selected.size()) + " selected files"
+	elif not current_file_selected.is_empty():
 		text_to_show = current_file_selected
 	elif not current_directory_selected.is_empty():
 		text_to_show = current_directory_selected
 	else:
 		text_to_show = current_directory
-		
 	%PathSelected.text = " " + text_to_show if not text_to_show.is_empty() else " -"
 
 

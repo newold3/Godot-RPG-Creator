@@ -139,6 +139,7 @@ func _config_buttons() -> void:
 				current_button_index = real_button_index
 				current_button = button
 				selected.emit(b, button_container.get_child_count() - current_button.get_index() - 1)
+				b.keep_selected_state = false
 		)
 		button.begin_click.connect(
 			func(_i):

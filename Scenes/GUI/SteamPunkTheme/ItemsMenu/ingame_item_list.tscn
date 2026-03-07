@@ -1,0 +1,335 @@
+[gd_scene format=3 uid="uid://8nbobf0ta6dj"]
+
+[ext_resource type="Texture2D" uid="uid://duu13dsov6vp5" path="res://Assets/Images/GUI/main_gui.png" id="1_c7iu6"]
+[ext_resource type="FontFile" uid="uid://2okej4ay4kdb" path="res://addons/CustomControls/Resources/Fonts/unifont-13.0.01.ttf" id="2_2gnsa"]
+[ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="3_0d64t"]
+[ext_resource type="PackedScene" uid="uid://b430wi6kdccit" path="res://Scenes/GUI/SteamPunkTheme/OtherScenes/particle_bubbles.tscn" id="4_o5ikf"]
+[ext_resource type="Script" uid="uid://cystpli8ilymg" path="res://addons/CustomControls/Resources/Other/texture_stylebox.gd" id="5_oqmej"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0m31r"]
+atlas = ExtResource("1_c7iu6")
+region = Rect2(1028, 140, 51, 42)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r3qji"]
+atlas = ExtResource("1_c7iu6")
+region = Rect2(157, 423, 52, 64)
+
+[sub_resource type="LabelSettings" id="LabelSettings_r3qji"]
+font = ExtResource("2_2gnsa")
+font_size = 32
+font_color = Color(0.97497267, 0.71470463, 0.42453784, 1)
+outline_size = 16
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x1cck"]
+atlas = ExtResource("1_c7iu6")
+region = Rect2(229, 423, 52, 64)
+
+[sub_resource type="Animation" id="Animation_l66c2"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [SubResource("AtlasTexture_x1cck")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../LeftDecoration:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [SubResource("AtlasTexture_x1cck")]
+}
+
+[sub_resource type="Animation" id="Animation_p8ccs"]
+resource_name = "new_animation"
+length = 0.405
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.13333334),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [SubResource("AtlasTexture_r3qji"), SubResource("AtlasTexture_x1cck")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../LeftDecoration:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.13333334),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [SubResource("AtlasTexture_r3qji"), SubResource("AtlasTexture_x1cck")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bny3t"]
+_data = {
+&"RESET": SubResource("Animation_l66c2"),
+&"gears_on": SubResource("Animation_p8ccs")
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l66c2"]
+bg_color = Color(0.1882353, 0.09803922, 0.07450981, 1)
+
+[sub_resource type="Theme" id="Theme_r3qji"]
+VScrollBar/styles/scroll = SubResource("StyleBoxFlat_l66c2")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_l66c2"]
+texture = ExtResource("1_c7iu6")
+texture_margin_left = 23.026407
+texture_margin_top = 5.945786
+texture_margin_right = 23.458828
+texture_margin_bottom = 10.7024145
+axis_stretch_horizontal = 2
+region_rect = Rect2(36, 264, 70, 43)
+
+[sub_resource type="Texture2D" id="Texture2D_x1cck"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("5_oqmej")
+stylebox = SubResource("StyleBoxTexture_l66c2")
+texture_size = Vector2(427, 64)
+metadata/_custom_type_script = "uid://cystpli8ilymg"
+
+[sub_resource type="GDScript" id="GDScript_l66c2"]
+script/source = "extends TextureButton
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_RESIZED:
+		if texture_normal is TextureStyleBox:
+			texture_normal.texture_size = size
+"
+
+[node name="IngameItemList" type="MarginContainer" unique_id=1368998458]
+z_index = 3
+offset_right = 544.0
+offset_bottom = 542.0
+theme_override_constants/margin_left = 38
+theme_override_constants/margin_top = 102
+
+[node name="TopBorder" type="NinePatchRect" parent="." unique_id=163507125]
+layout_mode = 2
+texture = ExtResource("1_c7iu6")
+region_rect = Rect2(1004, 73, 100, 56)
+patch_margin_left = 61
+patch_margin_top = 10
+patch_margin_right = 63
+patch_margin_bottom = 55
+
+[node name="MarginContainer" type="MarginContainer" parent="TopBorder" unique_id=1837928735]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 66
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 20
+
+[node name="Background" type="NinePatchRect" parent="TopBorder/MarginContainer" unique_id=891826685]
+texture_repeat = 2
+layout_mode = 2
+texture = SubResource("AtlasTexture_0m31r")
+patch_margin_left = 4
+patch_margin_top = 2
+patch_margin_right = 3
+patch_margin_bottom = 3
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TopBorder" unique_id=1627179512]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TopBorder/VBoxContainer" unique_id=1642357906]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+
+[node name="TopContainer" type="MarginContainer" parent="TopBorder/VBoxContainer/VBoxContainer" unique_id=983202997]
+z_index = 2
+layout_mode = 2
+theme_override_constants/margin_left = -15
+theme_override_constants/margin_right = -15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TopBorder/VBoxContainer/VBoxContainer/TopContainer" unique_id=794067865]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TopBorder/VBoxContainer/VBoxContainer/TopContainer/VBoxContainer" unique_id=710065812]
+layout_mode = 2
+theme_override_constants/separation = -4
+
+[node name="LeftDecoration" type="TextureRect" parent="TopBorder/VBoxContainer/VBoxContainer/TopContainer/VBoxContainer/HBoxContainer" unique_id=1153815966]
+z_index = 10
+layout_mode = 2
+texture = SubResource("AtlasTexture_r3qji")
+
+[node name="MidDecoration" type="NinePatchRect" parent="TopBorder/VBoxContainer/VBoxContainer/TopContainer/VBoxContainer/HBoxContainer" unique_id=1356464296]
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("1_c7iu6")
+region_rect = Rect2(45, 264, 52, 43)
+patch_margin_left = 14
+patch_margin_top = 16
+patch_margin_right = 15
+patch_margin_bottom = 17
+axis_stretch_horizontal = 2
+
+[node name="TopButtonsContainer" type="HBoxContainer" parent="TopBorder/VBoxContainer/VBoxContainer/TopContainer/VBoxContainer/HBoxContainer/MidDecoration" unique_id=1191999946]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="TopBorder/VBoxContainer/VBoxContainer/TopContainer/VBoxContainer/HBoxContainer/MidDecoration/TopButtonsContainer" unique_id=797133402]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "ALL ITEMS"
+label_settings = SubResource("LabelSettings_r3qji")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RightDecoration" type="TextureRect" parent="TopBorder/VBoxContainer/VBoxContainer/TopContainer/VBoxContainer/HBoxContainer" unique_id=424116022]
+z_index = 10
+layout_mode = 2
+texture = SubResource("AtlasTexture_r3qji")
+flip_h = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TopBorder/VBoxContainer/VBoxContainer/TopContainer/VBoxContainer/HBoxContainer" unique_id=788676957]
+root_node = NodePath("../RightDecoration")
+libraries/ = SubResource("AnimationLibrary_bny3t")
+speed_scale = 0.0
+
+[node name="SeparatorContainer" type="MarginContainer" parent="TopBorder/VBoxContainer/VBoxContainer" unique_id=1331057617]
+layout_mode = 2
+theme_override_constants/margin_left = 21
+theme_override_constants/margin_top = -10
+theme_override_constants/margin_right = 21
+
+[node name="SeparatorTop" type="NinePatchRect" parent="TopBorder/VBoxContainer/VBoxContainer/SeparatorContainer" unique_id=1247167333]
+z_index = 1
+custom_minimum_size = Vector2(0, 19)
+layout_mode = 2
+size_flags_vertical = 0
+texture = ExtResource("1_c7iu6")
+region_rect = Rect2(1047, 39, 13, 19)
+
+[node name="BottomContainer" type="MarginContainer" parent="TopBorder/VBoxContainer/VBoxContainer" unique_id=513638111]
+clip_contents = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 23
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 35
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="TopBorder/VBoxContainer/VBoxContainer/BottomContainer" unique_id=1785571668]
+layout_mode = 2
+theme = SubResource("Theme_r3qji")
+script = ExtResource("3_0d64t")
+use_custom_vertical_scroll = true
+custom_vscroll_size = Vector2(12, 338.425)
+custom_vscroll_offset = Vector2(449.43, -3.615)
+custom_scene_for_vertical_bar = ExtResource("4_o5ikf")
+metadata/_custom_type_script = "uid://cs6g8remlafby"
+
+[node name="MarginContainer" type="MarginContainer" parent="TopBorder/VBoxContainer/VBoxContainer/BottomContainer/SmoothScrollContainer" unique_id=634420756]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_right = 18
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="TopBorder/VBoxContainer/VBoxContainer/BottomContainer/SmoothScrollContainer/MarginContainer" unique_id=1844666633]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TopBorder/VBoxContainer/VBoxContainer/BottomContainer/SmoothScrollContainer/MarginContainer/VBoxContainer2" unique_id=111848266]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+
+[node name="TextureButton" type="TextureButton" parent="TopBorder/VBoxContainer/VBoxContainer/BottomContainer/SmoothScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer" unique_id=388024748]
+texture_repeat = 2
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+texture_normal = SubResource("Texture2D_x1cck")
+script = SubResource("GDScript_l66c2")
+
+[node name="TextureButton2" type="TextureButton" parent="TopBorder/VBoxContainer/VBoxContainer/BottomContainer/SmoothScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer" unique_id=1652855433]
+texture_repeat = 2
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+texture_normal = SubResource("Texture2D_x1cck")
+script = SubResource("GDScript_l66c2")
+
+[node name="TextureButton3" type="TextureButton" parent="TopBorder/VBoxContainer/VBoxContainer/BottomContainer/SmoothScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer" unique_id=1085923176]
+texture_repeat = 2
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+texture_normal = SubResource("Texture2D_x1cck")
+script = SubResource("GDScript_l66c2")
+
+[node name="TextureButton4" type="TextureButton" parent="TopBorder/VBoxContainer/VBoxContainer/BottomContainer/SmoothScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer" unique_id=1676435690]
+texture_repeat = 2
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+texture_normal = SubResource("Texture2D_x1cck")
+script = SubResource("GDScript_l66c2")
+
+[node name="TextureButton5" type="TextureButton" parent="TopBorder/VBoxContainer/VBoxContainer/BottomContainer/SmoothScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer" unique_id=128024513]
+texture_repeat = 2
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+texture_normal = SubResource("Texture2D_x1cck")
+script = SubResource("GDScript_l66c2")
+
+[node name="TextureButton6" type="TextureButton" parent="TopBorder/VBoxContainer/VBoxContainer/BottomContainer/SmoothScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer" unique_id=150908412]
+texture_repeat = 2
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+texture_normal = SubResource("Texture2D_x1cck")
+script = SubResource("GDScript_l66c2")
+
+[node name="TextureButton7" type="TextureButton" parent="TopBorder/VBoxContainer/VBoxContainer/BottomContainer/SmoothScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer" unique_id=241204268]
+texture_repeat = 2
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+texture_normal = SubResource("Texture2D_x1cck")
+script = SubResource("GDScript_l66c2")
+
+[node name="TextureButton8" type="TextureButton" parent="TopBorder/VBoxContainer/VBoxContainer/BottomContainer/SmoothScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer" unique_id=524381505]
+texture_repeat = 2
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+texture_normal = SubResource("Texture2D_x1cck")
+script = SubResource("GDScript_l66c2")

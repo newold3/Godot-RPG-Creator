@@ -4,7 +4,7 @@ extends MarginContainer
 
 
 signal double_click(path: String)
-signal selected(node: FileSelector)
+signal selected(node: FileSelector, shift_pressed: bool, ctrl_pressed: bool)
 signal select_other(index: int, direction: int) # Direction -> 0 up, 1 left, 2 down, 3 right
 signal add_to_favorite_requested(path: String)
 signal remove_from_favorite_requested(path: String)
@@ -217,15 +217,14 @@ func _on_mouse_exited() -> void:
 		cursor.visible = false
 
 
+## Handles input events for file selection
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.is_double_click():
 				double_click.emit(path)
 			elif event.is_pressed():
-				if !is_selected:
-					selected.emit(self)
-					select()
+				selected.emit(self, event.shift_pressed, event.ctrl_pressed)
 
 
 func select() -> void:

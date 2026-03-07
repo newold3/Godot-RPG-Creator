@@ -7,8 +7,9 @@
 [ext_resource type="PackedScene" uid="uid://cytaey5habpud" path="res://Scenes/GUI/SteamPunkTheme/MainMenu/scene_contents.tscn" id="5_0m31r"]
 [ext_resource type="FontFile" uid="uid://dvh0mi6yu0ywx" path="res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf" id="6_l66c2"]
 [ext_resource type="PackedScene" uid="uid://bpskwto2as5rb" path="res://Scenes/GUI/SteamPunkTheme/MainMenu/bottom_panel.tscn" id="7_x1cck"]
+[ext_resource type="PackedScene" uid="uid://8nbobf0ta6dj" path="res://Scenes/GUI/SteamPunkTheme/ItemsMenu/ingame_item_list.tscn" id="8_mjrof"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_pxgpe"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_l66c2"]
 viewport_path = NodePath("SceneMainContainer/BottomLayer/SubViewport")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_cqufr"]
@@ -53,7 +54,7 @@ script = ExtResource("3_3uh6u")
 pivot_offset = Vector2(576.001, 320)
 
 [node name="Background" parent="SceneMainContainer/BottomLayer" index="1"]
-texture = SubResource("ViewportTexture_pxgpe")
+texture = SubResource("ViewportTexture_l66c2")
 
 [node name="ExtraDecoration" type="Control" parent="SceneMainContainer/BottomLayer" index="4" unique_id=16428217]
 modulate = Color(0.81, 0.81, 0.81, 1)
@@ -109,8 +110,12 @@ theme_override_constants/margin_right = -21
 initial_container = NodePath("../../../..")
 help_label = NodePath("../../../../MarginContainer/HelpLabel")
 
-[node name="MainContainer" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene/HBoxContainer/MarginContainer/PartyMenu" parent_id_path=PackedInt32Array(366509411, 2098459704) index="0"]
+[node name="MainContainer" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene/HBoxContainer/MarginContainer/PartyMenu" parent_id_path=PackedInt32Array(366509411, 2098459704) index="0" unique_id=1446304813]
+custom_vscroll_size = Vector2(12, 441)
 custom_vscroll_offset = Vector2(535.225, 27.18)
+
+[node name="TopFrame" parent="SceneMainContainer/MainContainer" index="1"]
+z_index = 10
 
 [node name="Title" parent="SceneMainContainer/MainContainer" index="2"]
 mouse_filter = 2
@@ -127,6 +132,8 @@ on_hover_selected_animation = 4
 mouse_filter = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="SceneMainContainer" index="5" unique_id=754646840]
+z_index = 100
+z_as_relative = false
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -176,6 +183,9 @@ expand_mode = 1
 unique_name_in_owner = true
 layout_mode = 1
 mouse_filter = 2
+
+[node name="IngameItemList" parent="." index="3" unique_id=1368998458 instance=ExtResource("8_mjrof")]
+layout_mode = 0
 
 [connection signal="visibility_changed" from="." to="ParentSignalManager" method="_on_parent_visibility_changed"]
 [connection signal="end" from="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene" to="ParentSignalManager" method="destroy"]

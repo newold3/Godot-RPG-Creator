@@ -161,7 +161,7 @@ func _on_focus_entered() -> void:
 
 
 func _on_focus_exited() -> void:
-	if not keep_selected_state or not is_enabled:
+	if not keep_selected_state:
 		cursor_selected.visible = false
 		
 	if busy2: return
@@ -305,11 +305,13 @@ func set_disabled() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	if not keep_selected_state:
 		cursor_selected.visible = false
+	else:
+		cursor_selected.visible = true
 	cursor_hover.visible = false
 	
 	var mat = %Background.material as ShaderMaterial
 	if mat:
-		mat.set_shader_parameter("grayscale", true)
+		mat.set_shader_parameter("grayscale", true if not keep_selected_state else false)
 	%ButtonLabel.set("theme_override_colors/font_color", Color.GRAY)
 	
 	mouse_filter = MOUSE_FILTER_IGNORE

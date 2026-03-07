@@ -42,19 +42,19 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="MainContainer" parent="HBoxContainer/MarginContainer/PartyMenu" index="0"]
+[node name="MainContainer" parent="HBoxContainer/MarginContainer/PartyMenu" index="0" unique_id=1446304813]
 offset_bottom = -34.0
 pivot_offset = Vector2(853, 191)
 vertical_scroll_mode = 4
-custom_vscroll_size = Vector2(12, 421.585)
+custom_vscroll_size = Vector2(12, 426)
 custom_vscroll_offset = Vector2(548, 27.18)
 
-[node name="VerticalExtraSizeTop" type="Control" parent="HBoxContainer/MarginContainer/PartyMenu/MainContainer/VBoxContainer" index="0" unique_id=778066787]
+[node name="VerticalExtraSizeTop" type="Control" parent="HBoxContainer/MarginContainer/PartyMenu/MainContainer/VBoxContainer" parent_id_path=PackedInt32Array(2098459704, 1122771897) index="0" unique_id=778066787]
 custom_minimum_size = Vector2(0, 28)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="MarginContainer" parent="HBoxContainer/MarginContainer/PartyMenu/MainContainer/VBoxContainer" index="1"]
+[node name="MarginContainer" parent="HBoxContainer/MarginContainer/PartyMenu/MainContainer/VBoxContainer" parent_id_path=PackedInt32Array(2098459704, 1122771897) index="1" unique_id=838214663]
 theme_override_constants/margin_right = 20
 
 [connection signal="button_hovered" from="HBoxContainer/MainMenuItems" to="." method="_on_main_menu_items_button_hovered"]
