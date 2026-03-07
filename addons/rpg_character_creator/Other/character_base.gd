@@ -495,13 +495,12 @@ func set_current_look(motion: Vector2) -> void:
 		set_vertical_look(motion)
 
 
+## Processes the current movement route command queue
 func update_process_route() -> void:
 	if is_moving or busy or is_jumping or _processing_command_route:
 		return
-
 	_processing_command_route = true
 	var result = await process_route_command()
-
 	if result.action:
 		match result.action:
 			"move":
@@ -521,7 +520,6 @@ func update_process_route() -> void:
 					await jump_to(result.value, result.route, result.start_fx, result.end_fx)
 				var steps = max(abs(result.value.x), abs(result.value.y))
 				GameManager.game_state.stats.steps += steps
-				
 	route_command_index += 1
 	if route_commands:
 		if route_command_index >= route_commands.list.size():
@@ -530,11 +528,13 @@ func update_process_route() -> void:
 			else:
 				var wrapped_position = GameManager.current_map.get_wrapped_position(position)
 				if wrapped_position != position:
+					var offset = wrapped_position - position
 					if is_in_group("player"):
 						var camera = GameManager.get_camera()
 						if camera:
-							camera.global_position += (wrapped_position - position)
+							camera.global_position += offset
 					position = wrapped_position
+					shift_history_and_followers(offset)
 				route_commands.finished.emit()
 				route_commands = null
 				if is_on_vehicle and current_vehicle:
@@ -544,7 +544,6 @@ func update_process_route() -> void:
 				current_vehicle.reset_force_movement()
 	elif is_on_vehicle and current_vehicle:
 		current_vehicle.reset_force_movement()
-
 	_processing_command_route = false
 
 
@@ -999,26 +998,25 @@ func run_animation() -> void:
 	pass
 
 
+## Called when grid movement successfully completes
 func _on_grid_movement_finished(target_position: Vector2) -> void:
-	# Ensure exact final position
 	var wrapped_position = GameManager.current_map.get_wrapped_position(target_position)
 	if wrapped_position != target_position:
+		var offset = wrapped_position - target_position
 		var camera = GameManager.get_camera()
 		if camera:
 			if camera.targets.size() > 1:
 				camera.instantaneous_positioning()
 			else:
-				camera.global_position += (wrapped_position - target_position)
+				camera.global_position += offset
 		position = wrapped_position
+		shift_history_and_followers(offset)
 	else:
 		position = target_position
 	
-	# update steps
 	GameManager.game_state.stats.steps += 1
-	
 	is_moving = false
 	movement_vector = Vector2.ZERO
-	
 	end_movement.emit()
 
 
@@ -1693,13 +1691,12 @@ func vehicle_movement(motion: Vector2, route: RPGMovementRoute = null, keep_dire
 	end_movement.emit()
 
 
+## Initiates movement to a specific offset for an event
 func move_event(new_pos: Vector2, route: RPGMovementRoute = null, keep_direction: bool = false) -> void:
 	if is_moving or busy or is_jumping: return
-	
 	var has_route = route_commands and not route_commands.list.is_empty()
 	if has_route and not route_commands.is_route_from_interpreter and GameInterpreter.is_busy():
 		return
-	
 	var motion_data = get_motion(new_pos)
 	var motion = motion_data.final_motion
 	if motion:
@@ -1718,20 +1715,70 @@ func move_event(new_pos: Vector2, route: RPGMovementRoute = null, keep_direction
 		call_deferred("_animation_to_idle")
 		_animate_contact_area.call_deferred(motion_data.current_motion)
 		return
-
-	# Start Movement
 	event_start_movement.emit()
 	start_movement(motion_data)
 	if movement_tween and movement_tween.is_valid():
 		movement_tween.tween_callback(
 			func():
-				# End movement
 				is_moving = false
 				call_deferred("_animation_to_idle")
 		)
 		await movement_tween.finished
-		
-		position = GameManager.current_map.get_wrapped_position(position)
+		var wrapped_position = GameManager.current_map.get_wrapped_position(position)
+		if wrapped_position != position:
+			var offset = wrapped_position - position
+			position = wrapped_position
+			shift_history_and_followers(offset)
+
+
+## Shifts the character's movement history and triggers the safe wrap for followers
+func shift_history_and_followers(offset: Vector2) -> void:
+	target_position += offset
+	_last_recorded_pos += offset
+	for snapshot in movement_history:
+		if snapshot.has("pos"): snapshot.pos += offset
+		if snapshot.has("jump_start_pos"): snapshot.jump_start_pos += offset
+		if snapshot.has("jump_target"): snapshot.jump_target += offset
+		if snapshot.has("followers_position"):
+			for key in snapshot.followers_position.keys():
+				snapshot.followers_position[key] += offset
+	if is_in_group("player"):
+		var followers = get_tree().get_nodes_in_group("follower")
+		for f in followers:
+			if f.has_method("apply_map_wrap_offset"):
+				f.apply_map_wrap_offset(offset)
+
+
+## Safely applies a geometric offset to a follower mid-movement, rebuilding its tween
+func apply_map_wrap_offset(offset: Vector2) -> void:
+	var was_moving = is_moving
+	if was_moving and movement_tween and movement_tween.is_valid():
+		movement_tween.kill()
+	position += offset
+	global_position += offset
+	target_position += offset
+	_last_recorded_pos += offset
+	for snapshot in movement_history:
+		if snapshot.has("pos"): snapshot.pos += offset
+		if snapshot.has("jump_start_pos"): snapshot.jump_start_pos += offset
+		if snapshot.has("jump_target"): snapshot.jump_target += offset
+		if snapshot.has("followers_position"):
+			for key in snapshot.followers_position.keys():
+				snapshot.followers_position[key] += offset
+	if was_moving:
+		var current_motion = target_position - position
+		if current_motion != Vector2.ZERO:
+			movement_tween = create_tween()
+			movement_tween.tween_interval(0.001)
+			var distance = current_motion.length()
+			var base_distance = current_map_tile_size.x
+			var max_movement_time = max(grid_move_duration.x, grid_move_duration.y)
+			var remaining_time = max_movement_time * (distance / base_distance)
+			movement_tween.tween_method(_update_position.bind([position]), position, target_position, remaining_time)
+			movement_tween.finished.connect(_on_grid_movement_finished.bind(target_position))
+		else:
+			is_moving = false
+			end_movement.emit()
 
 
 func get_body_region_rect() -> Rect2:
