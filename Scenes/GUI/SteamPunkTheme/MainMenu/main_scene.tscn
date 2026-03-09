@@ -5,11 +5,12 @@
 [ext_resource type="Script" uid="uid://ba7q1f1j8cky3" path="res://Scenes/GUI/SteamPunkTheme/MainMenu/parent_signal_manager.gd" id="3_3uh6u"]
 [ext_resource type="Texture2D" uid="uid://bfgr2ewrp6i0u" path="res://Assets/Images/GUI/party_menu.png" id="4_0vxhb"]
 [ext_resource type="PackedScene" uid="uid://cytaey5habpud" path="res://Scenes/GUI/SteamPunkTheme/MainMenu/scene_contents.tscn" id="5_0m31r"]
+[ext_resource type="Script" uid="uid://bhkluedefy5rg" path="res://Scripts/auto_scroll_container.gd" id="6_3uh6u"]
 [ext_resource type="FontFile" uid="uid://dvh0mi6yu0ywx" path="res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf" id="6_l66c2"]
 [ext_resource type="PackedScene" uid="uid://bpskwto2as5rb" path="res://Scenes/GUI/SteamPunkTheme/MainMenu/bottom_panel.tscn" id="7_x1cck"]
 [ext_resource type="PackedScene" uid="uid://8nbobf0ta6dj" path="res://Scenes/GUI/SteamPunkTheme/ItemsMenu/ingame_item_list.tscn" id="8_mjrof"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_l66c2"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_3uh6u"]
 viewport_path = NodePath("SceneMainContainer/BottomLayer/SubViewport")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_cqufr"]
@@ -24,6 +25,15 @@ region = Rect2(1379, 446, 374, 161)
 atlas = ExtResource("4_0vxhb")
 region = Rect2(1246, 218, 68, 297)
 
+[sub_resource type="Gradient" id="Gradient_0vxhb"]
+offsets = PackedFloat32Array(0, 0.4178082, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0.8835616, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_0m31r"]
+gradient = SubResource("Gradient_0vxhb")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
 [sub_resource type="LabelSettings" id="LabelSettings_2kikc"]
 font = ExtResource("6_l66c2")
 font_color = Color(0.76862746, 0.6, 0.09803922, 1)
@@ -32,9 +42,188 @@ outline_color = Color(0.49803922, 0.28627452, 0.19607843, 1)
 stacked_outline_count = 1
 stacked_outline_0/size = 6
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_mg7hj"]
-atlas = ExtResource("4_0vxhb")
-region = Rect2(1529, 321, 287, 39)
+[sub_resource type="Animation" id="Animation_0vxhb"]
+resource_name = "Hide Item menu"
+length = 0.5
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("IngameItemListContainer/IngameItemList:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 0.34151018),
+"update": 0,
+"values": [Vector2(-552, 0), Vector2(11.925, 0), Vector2(-13.375, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("IngameItemListContainer/IngameItemList:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.00519667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene/HBoxContainer/MarginContainer/PartyMenu/MainContainer:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.26, 0.33, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 2.5491211),
+"update": 0,
+"values": [Vector2(-12.5, 0), Vector2(1.425, 0), Vector2(-12.5, 0), Vector2(26.365, 0)]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("IngameItemListContainer/IngameItemList")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"end"
+}]
+}
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene/HBoxContainer/MarginContainer/PartyMenu")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.4),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"end_hit_animation"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_0m31r"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("IngameItemListContainer/IngameItemList:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("IngameItemListContainer/IngameItemList:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene/HBoxContainer/MarginContainer/PartyMenu/MainContainer:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-12.5, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_l66c2"]
+resource_name = "Show Item menu"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("IngameItemListContainer/IngameItemList:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 0.34151018),
+"update": 0,
+"values": [Vector2(-552, 0), Vector2(11.925, 0), Vector2(-13.375, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("IngameItemListContainer/IngameItemList:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.0022842868),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene/HBoxContainer/MarginContainer/PartyMenu/MainContainer:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.4, 0.5),
+"transitions": PackedFloat32Array(1, 2.5491211),
+"update": 0,
+"values": [Vector2(-12.5, 0), Vector2(26.365, 0)]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("IngameItemListContainer/IngameItemList")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"start"
+}]
+}
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene/HBoxContainer/MarginContainer/PartyMenu")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.4),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"start_hit_animation"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_x1cck"]
+_data = {
+&"Hide Item Menu": SubResource("Animation_0vxhb"),
+&"RESET": SubResource("Animation_0m31r"),
+&"Show Item Menu": SubResource("Animation_l66c2")
+}
 
 [node name="SceneMainMenu" unique_id=1847667251 instance=ExtResource("1_pxgpe")]
 offset_right = 0.001953125
@@ -47,14 +236,16 @@ move_out_direction = 2
 zoom_out_enabled = false
 fade_out_enabled = false
 
-[node name="ParentSignalManager" type="Node" parent="." index="0" unique_id=1500501253]
+[node name="SignalManager" type="Node" parent="." index="0" unique_id=1500501253 node_paths=PackedStringArray("animation_player", "help_label")]
 script = ExtResource("3_3uh6u")
+animation_player = NodePath("../ExternalAnimator")
+help_label = NodePath("../SceneMainContainer/MarginContainer/ChapterNameAutoScrollContainer/MarginContainer/HelpLabel")
 
 [node name="BottomLayer" parent="SceneMainContainer" index="0"]
 pivot_offset = Vector2(576.001, 320)
 
 [node name="Background" parent="SceneMainContainer/BottomLayer" index="1"]
-texture = SubResource("ViewportTexture_l66c2")
+texture = SubResource("ViewportTexture_3uh6u")
 
 [node name="ExtraDecoration" type="Control" parent="SceneMainContainer/BottomLayer" index="4" unique_id=16428217]
 modulate = Color(0.81, 0.81, 0.81, 1)
@@ -108,9 +299,12 @@ theme_override_constants/margin_left = -30
 theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = -21
 initial_container = NodePath("../../../..")
-help_label = NodePath("../../../../MarginContainer/HelpLabel")
+help_label = NodePath("../../../../MarginContainer/ChapterNameAutoScrollContainer/MarginContainer/HelpLabel")
 
 [node name="MainContainer" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene/HBoxContainer/MarginContainer/PartyMenu" parent_id_path=PackedInt32Array(366509411, 2098459704) index="0" unique_id=1446304813]
+offset_left = -12.5
+offset_right = 12.5
+offset_bottom = 0.0
 custom_vscroll_size = Vector2(12, 441)
 custom_vscroll_offset = Vector2(535.225, 27.18)
 
@@ -118,6 +312,7 @@ custom_vscroll_offset = Vector2(535.225, 27.18)
 z_index = 10
 
 [node name="Title" parent="SceneMainContainer/MainContainer" index="2"]
+z_index = 15
 mouse_filter = 2
 
 [node name="TitleContainer" parent="SceneMainContainer/MainContainer/Title" index="0"]
@@ -147,7 +342,37 @@ theme_override_constants/margin_left = 105
 theme_override_constants/margin_right = 122
 theme_override_constants/margin_bottom = 86
 
-[node name="HelpLabel" type="Label" parent="SceneMainContainer/MarginContainer" index="0" unique_id=770844966]
+[node name="MarginContainer" type="MarginContainer" parent="SceneMainContainer/MarginContainer" index="0" unique_id=647627442]
+z_as_relative = false
+layout_mode = 2
+theme_override_constants/margin_left = -59
+theme_override_constants/margin_top = -11
+theme_override_constants/margin_right = -61
+theme_override_constants/margin_bottom = -13
+
+[node name="TextureRect" type="TextureRect" parent="SceneMainContainer/MarginContainer/MarginContainer" index="0" unique_id=86077783]
+layout_mode = 2
+texture = SubResource("GradientTexture2D_0m31r")
+
+[node name="ChapterNameAutoScrollContainer" type="Container" parent="SceneMainContainer/MarginContainer" index="1" unique_id=578002997]
+unique_name_in_owner = true
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("6_3uh6u")
+scroll_direction = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="SceneMainContainer/MarginContainer/ChapterNameAutoScrollContainer" index="0" unique_id=1067341199]
+layout_mode = 2
+theme_override_constants/margin_top = 23
+metadata/current_size = Vector2(925, 40)
+metadata/current_size_flags = {
+"h": 1,
+"v": 1
+}
+metadata/base_position = Vector2(0, 0)
+
+[node name="HelpLabel" type="Label" parent="SceneMainContainer/MarginContainer/ChapterNameAutoScrollContainer/MarginContainer" index="0" unique_id=770844966]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.76862043, 0.60124344, 0.09985284, 1)
@@ -161,36 +386,40 @@ text = "Help"
 label_settings = SubResource("LabelSettings_2kikc")
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="Background" type="TextureRect" parent="SceneMainContainer/MarginContainer/HelpLabel" index="0" unique_id=1625151911]
-modulate = Color(1, 0.110000014, 0.110000014, 0.36078432)
-show_behind_parent = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -30.0
-offset_top = -6.0
-offset_right = 24.0
-offset_bottom = 11.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-texture = SubResource("AtlasTexture_mg7hj")
-expand_mode = 1
+metadata/current_size = Vector2(925, 16)
+metadata/current_size_flags = {
+"h": 1,
+"v": 4
+}
+metadata/base_position = Vector2(0, 12)
 
 [node name="BottomMainMenu" parent="SceneMainContainer" index="6" unique_id=509091457 instance=ExtResource("7_x1cck")]
 unique_name_in_owner = true
 layout_mode = 1
 mouse_filter = 2
 
-[node name="IngameItemList" parent="." index="3" unique_id=1368998458 instance=ExtResource("8_mjrof")]
+[node name="IngameItemListContainer" type="Control" parent="." index="3" unique_id=1741116604]
+layout_mode = 1
+anchors_preset = 0
+mouse_filter = 2
+
+[node name="IngameItemList" parent="IngameItemListContainer" index="0" unique_id=1368998458 instance=ExtResource("8_mjrof")]
+visible = false
 layout_mode = 0
 
-[connection signal="visibility_changed" from="." to="ParentSignalManager" method="_on_parent_visibility_changed"]
-[connection signal="end" from="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene" to="ParentSignalManager" method="destroy"]
+[node name="ExternalAnimator" type="AnimationPlayer" parent="." index="4" unique_id=1565637514]
+unique_name_in_owner = true
+libraries/ = SubResource("AnimationLibrary_x1cck")
+speed_scale = 1.7
+
+[connection signal="visibility_changed" from="." to="SignalManager" method="_on_parent_visibility_changed"]
+[connection signal="end" from="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene" to="SignalManager" method="destroy"]
+[connection signal="item_menu_requested" from="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene" to="SignalManager" method="show_item_menu"]
 [connection signal="sub_menu_closed" from="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene" to="SceneMainContainer/MainContainer/Title/TitleContainer" method="start"]
 [connection signal="sub_menu_opened" from="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene" to="SceneMainContainer/MainContainer/Title/TitleContainer" method="end"]
+[connection signal="close_requested" from="IngameItemListContainer/IngameItemList" to="SignalManager" method="hide_item_menu"]
+[connection signal="item_activated" from="IngameItemListContainer/IngameItemList" to="SignalManager" method="_on_item_list_item_activated"]
+[connection signal="item_focused" from="IngameItemListContainer/IngameItemList" to="SignalManager" method="_on_item_list_item_focused"]
 
 [editable path="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene"]
 [editable path="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene/HBoxContainer/MarginContainer/PartyMenu"]

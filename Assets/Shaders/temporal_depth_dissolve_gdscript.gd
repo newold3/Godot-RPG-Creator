@@ -23,8 +23,7 @@ var grid_cell_size: float = 20.0
 const MAX_POINTS = 500
 
 var _target_refresh_timer: float = 0.0
-const TARGET_REFRESH_RATE: float = 0.5
-
+const TARGET_REFRESH_RATE: float = 0.2
 
 
 func _ready() -> void:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://5svltfvmm6qc"]
+[gd_scene format=3 uid="uid://5svltfvmm6qc"]
 
 [ext_resource type="Shader" uid="uid://blw4u864xpd46" path="res://Assets/Shaders/heat_haze.gdshader" id="1_xge2l"]
 [ext_resource type="AudioStream" uid="uid://difa18j3yyfft" path="res://Assets/Sounds/SE/desert_wind.ogg" id="2_8o334"]
@@ -70,6 +70,7 @@ shader_parameter/strength = 1.70000002533204
 shader_parameter/uv_scaling = 0.30000000447036
 shader_parameter/movement_direction = Vector2(1, 0)
 shader_parameter/movement_speed = 0.18
+shader_parameter/scale = Vector2(1, 1)
 
 [sub_resource type="Curve" id="Curve_7r4y4"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.131579, 0.975746), 0.0, 0.0, 0, 0, Vector2(0.650718, 0.708955), 0.0, 0.0, 0, 0, Vector2(0.808612, 0.114739), 0.0, 0.0, 0, 0, Vector2(0.997608, 0), 0.0, 0.0, 0, 0]
@@ -134,18 +135,18 @@ turbulence_initial_displacement_min = -71.6
 turbulence_initial_displacement_max = 40.9
 turbulence_influence_over_life = SubResource("CurveTexture_1ivy3")
 
-[node name="HotDesertScene" type="Node2D"]
+[node name="HotDesertScene" type="Node2D" unique_id=1696975634]
 script = SubResource("GDScript_mjtd2")
-modulate_scene = Color(1.0503058, 0, 0.02043789, 0.12156863)
+modulate_scene = Color(1.05, 0.8295783, 0.7938637, 0.122)
 
-[node name="Mist" parent="." instance=ExtResource("2_wqa3t")]
+[node name="Mist" parent="." unique_id=952902707 instance=ExtResource("2_wqa3t")]
 z_index = 100
 z_as_relative = false
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=433521670]
 layer = 2
 
-[node name="HeatHaze" type="ColorRect" parent="CanvasLayer"]
+[node name="HeatHaze" type="ColorRect" parent="CanvasLayer" unique_id=1158467003]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_5wcnu")
 anchors_preset = 15
@@ -154,17 +155,16 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="LineContainer" type="Node2D" parent="."]
+[node name="LineContainer" type="Node2D" parent="." unique_id=82953970]
 unique_name_in_owner = true
 visible = false
 
-[node name="BGSPlayer" type="AudioStreamPlayer" parent="."]
+[node name="BGSPlayer" type="AudioStreamPlayer" parent="." unique_id=1296323568]
 unique_name_in_owner = true
 stream = ExtResource("2_8o334")
 autoplay = true
-bus = &"Ambient"
 
-[node name="Dust" type="GPUParticles2D" parent="."]
+[node name="Dust" type="GPUParticles2D" parent="." unique_id=1182280604]
 position = Vector2(576, 320)
 amount = 100
 texture = ExtResource("5_b1fr5")

@@ -67,8 +67,9 @@ func _process(_delta: float) -> void:
 		var particle_position: Vector2
 		var particle_container: Node
 		if dice < 30:
-			target = GameManager.current_player
-			if target.is_on_vehicle and target.current_vehicle and "player_position" in target.current_vehicle:
+			var targets = GameManager.get_followers() + [GameManager.current_player]
+			target = targets.pick_random()
+			if not target is SimpleFollower and target.is_on_vehicle and target.current_vehicle and "player_position" in target.current_vehicle:
 				pass
 			else:
 				particle_position = target.get_global_mouth_position()

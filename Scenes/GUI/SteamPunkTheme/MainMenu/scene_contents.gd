@@ -16,6 +16,7 @@ var VIEWPORT_SAFETY_MARGIN = 50 # extra margin to move nodes out of screen
 signal end()
 signal sub_menu_opened()
 signal sub_menu_closed()
+signal item_menu_requested(id: String)
 
 
 func _ready() -> void:
@@ -230,9 +231,9 @@ func _on_party_menu_clicked(id: int) -> void:
 	GameManager.play_fx("ok")
 	match main_menu_items.current_button_index:
 		0: # Items
-			pass
+			_show_item_menu("items")
 		1: # Skills
-			pass
+			_show_item_menu("skills")
 		2: # Equipment
 			_show_equip_menu()
 		3: # Status
@@ -248,6 +249,10 @@ func _on_party_menu_clicked(id: int) -> void:
 			pass
 		8: # Game End
 			pass
+
+
+func _show_item_menu(id: String) -> void:
+	item_menu_requested.emit(id)
 
 
 func _on_main_menu_items_button_hovered(_button: Control, _index: int, tooltip: String) -> void:

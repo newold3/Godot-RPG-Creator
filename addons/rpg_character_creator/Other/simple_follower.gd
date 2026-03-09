@@ -583,6 +583,14 @@ func appear(fade_time: float = 0.5) -> void:
 	tween.tween_property(self, "modulate:a", 1.0, fade_time)
 
 
+func get_global_mouth_position() -> Vector2:
+	var mouth = get_node_or_null("%Mouth")
+	if mouth:
+		return mouth.global_position
+	
+	return Vector2.ZERO
+
+
 func destroy(move_time: float = 0.5) -> void:
 	is_sync_active = false
 	var tween = create_tween().set_parallel(true)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://bko6bl4xo0071"]
+[gd_scene format=3 uid="uid://bko6bl4xo0071"]
 
 [ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="1_53yfb"]
 [ext_resource type="Script" uid="uid://vi2u21okdj1m" path="res://addons/CustomControls/Dialogs/CommandEvents/select_map_position_dialog.gd" id="1_c5lvj"]
@@ -22,7 +22,7 @@ gradient = SubResource("Gradient_66ll8")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1ew3s"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sg7bm"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -40,17 +40,17 @@ corner_radius_bottom_left = 12
 [sub_resource type="Gradient" id="Gradient_ctwx1"]
 colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_wvqwk"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ucyi4"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_ctwx1")
 fill_from = Vector2(0.542735, 0.995726)
 fill_to = Vector2(0.58547, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xugil"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4ie8p"]
 resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_wvqwk")
+texture = SubResource("GradientTexture2D_ucyi4")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lirhi"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_au7p7"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -63,7 +63,7 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fkivt"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pkttw"]
 resource_local_to_scene = true
 content_margin_left = 3.0
 content_margin_right = 3.0
@@ -75,7 +75,7 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.113725, 0.133333, 0.160784, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2gdb0"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a1tco"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 1
@@ -92,11 +92,11 @@ gradient = SubResource("Gradient_3obsl")
 fill_from = Vector2(0.547009, 1)
 fill_to = Vector2(0.559829, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nwxui"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ih58p"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_mtkxg")
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cqb1g"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7nr11"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_mtkxg")
 
@@ -119,6 +119,9 @@ border_color = Color(0.145098, 0.156863, 0.164706, 1)
 [sub_resource type="Curve" id="Curve_36j5v"]
 _data = [Vector2(0, 0), 0.0, 1.4, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 2
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_loriq"]
+viewport_path = NodePath("MapContainer")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mv677"]
 texture = ExtResource("8_1yx7c")
@@ -176,10 +179,10 @@ texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[node name="SelectMapPositionDialog" type="Window"]
+[node name="SelectMapPositionDialog" type="Window" unique_id=1112782496]
 oversampling_override = 1.0
 title = "Select Map Position"
-position = Vector2i(388, 106)
+position = Vector2i(0, 36)
 size = Vector2i(1190, 800)
 wrap_controls = true
 transient = true
@@ -187,13 +190,14 @@ exclusive = true
 min_size = Vector2i(800, 600)
 script = ExtResource("1_c5lvj")
 
-[node name="MapContainer" type="SubViewport" parent="."]
+[node name="MapContainer" type="SubViewport" parent="." unique_id=621652847]
 unique_name_in_owner = true
 process_mode = 4
 transparent_bg = true
 gui_disable_input = true
+size = Vector2i(502, 500)
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1573137190]
 material = SubResource("CanvasItemMaterial_sasrs")
 anchors_preset = 15
 anchor_right = 1.0
@@ -202,7 +206,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_yyl6r")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1762936951]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -215,68 +219,68 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1598911417]
 layout_mode = 2
 
-[node name="CustomPanel" parent="MarginContainer/VBoxContainer" instance=ExtResource("1_53yfb")]
+[node name="CustomPanel" parent="MarginContainer/VBoxContainer" unique_id=555711083 instance=ExtResource("1_53yfb")]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_1ew3s")
-style1 = SubResource("StyleBoxFlat_1ew3s")
-style2 = SubResource("StyleBoxTexture_xugil")
-style3 = SubResource("StyleBoxFlat_lirhi")
+theme_override_styles/panel = SubResource("StyleBoxFlat_sg7bm")
+style1 = SubResource("StyleBoxFlat_sg7bm")
+style2 = SubResource("StyleBoxTexture_4ie8p")
+style3 = SubResource("StyleBoxFlat_au7p7")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/CustomPanel"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/CustomPanel" unique_id=1961638015]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer" unique_id=1015712781]
 layout_mode = 2
 
-[node name="MapListContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/HBoxContainer"]
+[node name="MapListContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/HBoxContainer" unique_id=651896170]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(240, 0)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/MapListContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/MapListContainer" unique_id=1843346583]
 layout_mode = 2
 text = "Map List:"
 
-[node name="MapList" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/MapListContainer" instance=ExtResource("2_aqben")]
+[node name="MapList" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/MapListContainer" unique_id=1590234723 instance=ExtResource("2_aqben")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_fkivt")
-theme_override_styles/focus = SubResource("StyleBoxFlat_fkivt")
-theme_override_styles/hovered = SubResource("StyleBoxFlat_2gdb0")
-theme_override_styles/selected = SubResource("StyleBoxTexture_nwxui")
-theme_override_styles/selected_focus = SubResource("StyleBoxTexture_cqb1g")
+theme_override_styles/panel = SubResource("StyleBoxFlat_pkttw")
+theme_override_styles/focus = SubResource("StyleBoxFlat_pkttw")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_a1tco")
+theme_override_styles/selected = SubResource("StyleBoxTexture_ih58p")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_7nr11")
 item_count = 2
-item_0/text = "TestMap"
-item_1/text = "RpgMapPrueba2"
+item_0/text = "DefaultMap"
+item_1/text = "TestMap"
 
-[node name="CurrentMapContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/HBoxContainer"]
+[node name="CurrentMapContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/HBoxContainer" unique_id=589850302]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="TopContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/CurrentMapContainer"]
+[node name="TopContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/CurrentMapContainer" unique_id=206872313]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/CurrentMapContainer/TopContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/CurrentMapContainer/TopContainer" unique_id=732950061]
 layout_mode = 2
 text = "Current Map Selected:"
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/CurrentMapContainer/TopContainer"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/CurrentMapContainer/TopContainer" unique_id=13635360]
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Allowed Terrains:"
 
-[node name="TerrainAllowed" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/CurrentMapContainer/TopContainer" instance=ExtResource("4_sg7bm")]
+[node name="TerrainAllowed" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/CurrentMapContainer/TopContainer" unique_id=1087146558 instance=ExtResource("4_sg7bm")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "List of teleportable terrains:
@@ -292,7 +296,7 @@ popup/item_0/id = 0
 popup/item_1/text = "All"
 popup/item_1/id = 1
 
-[node name="Info" type="TextureButton" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/CurrentMapContainer/TopContainer"]
+[node name="Info" type="TextureButton" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/CurrentMapContainer/TopContainer" unique_id=1178249359]
 layout_mode = 2
 size_flags_horizontal = 8
 tooltip_text = "[title]Select Map Position[/title]
@@ -303,13 +307,13 @@ mouse_default_cursor_shape = 16
 texture_normal = SubResource("AtlasTexture_vrgit")
 texture_hover = SubResource("AtlasTexture_1lw1e")
 
-[node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/CurrentMapContainer"]
+[node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/CurrentMapContainer" unique_id=1962397971]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_m5xv0")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/CurrentMapContainer/Panel"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/CurrentMapContainer/Panel" unique_id=1751198036]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -321,78 +325,79 @@ theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 2
 
-[node name="SmoothScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/CurrentMapContainer/Panel/MarginContainer"]
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/CurrentMapContainer/Panel/MarginContainer" unique_id=1391937386]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("3_ou384")
 curve = SubResource("Curve_36j5v")
 
-[node name="MainCanvasContainer" type="Control" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/CurrentMapContainer/Panel/MarginContainer/SmoothScrollContainer"]
+[node name="MainCanvasContainer" type="Control" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/CurrentMapContainer/Panel/MarginContainer/SmoothScrollContainer" unique_id=671711044]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="MainCanvas" type="TextureRect" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/CurrentMapContainer/Panel/MarginContainer/SmoothScrollContainer/MainCanvasContainer"]
+[node name="MainCanvas" type="TextureRect" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/CurrentMapContainer/Panel/MarginContainer/SmoothScrollContainer/MainCanvasContainer" unique_id=614747036]
 unique_name_in_owner = true
 layout_mode = 0
 offset_right = 512.0
 offset_bottom = 512.0
+texture = SubResource("ViewportTexture_loriq")
 stretch_mode = 2
 
-[node name="CursorCanvas" type="Control" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/CurrentMapContainer/Panel/MarginContainer/SmoothScrollContainer/MainCanvasContainer/MainCanvas"]
+[node name="CursorCanvas" type="Control" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/HBoxContainer/CurrentMapContainer/Panel/MarginContainer/SmoothScrollContainer/MainCanvasContainer/MainCanvas" unique_id=1957221034]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 0
 mouse_default_cursor_shape = 2
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=808415377]
 layout_mode = 2
 size_flags_vertical = 8
 theme_override_constants/separation = 12
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=2095738655]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 alignment = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=571003594]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=420128913]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.435192, 0.435192, 0.435192, 1)
 text = "Hover cell:"
 
-[node name="HoverCell" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer"]
+[node name="HoverCell" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=1178722426]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.627696, 0.802896, 0.877219, 1)
 text = "(-1, -1)"
 
-[node name="TerrainName" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer"]
+[node name="TerrainName" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=1198750784]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.250196, 0.48842, 0.416462, 1)
 text = "()"
 
-[node name="SelectedCellTitle" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer"]
+[node name="SelectedCellTitle" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=1080120637]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.435192, 0.435192, 0.435192, 1)
 text = "Selected cell:"
 
-[node name="SelectedCell" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer"]
+[node name="SelectedCell" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=87455063]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.999961, 0.61408, 0.55597, 1)
 text = "(0, 0)"
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_xr5qb")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=21968719 instance=ExtResource("4_xr5qb")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
@@ -404,7 +409,7 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_yp6ij")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_vfxcg")
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_xr5qb")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=414235078 instance=ExtResource("4_xr5qb")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2

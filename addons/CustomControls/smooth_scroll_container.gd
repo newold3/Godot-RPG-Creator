@@ -20,6 +20,12 @@ extends ScrollContainer
 ## Duration of the scroll when triggered instantly
 @export var instant_scroll_duration: float = 0.1
 
+## Minimum length for the custom vertical grabber
+@export var custom_vscroll_min_grabber_size: int = 24 : set = _set_custom_vscroll_min_grabber_size
+
+## Minimum length for the custom horizontal grabber
+@export var custom_hscroll_min_grabber_size: int = 24 : set = _set_custom_hscroll_min_grabber_size
+
 @export_group("Custom Vertical Scrollbar")
 
 ## Z-index for the custom vertical scrollbar
@@ -123,11 +129,12 @@ func _build_custom_bars() -> void:
 			custom_vbar_grabber = Panel.new()
 			custom_bars_container.add_child(custom_vbar_bg)
 			custom_vbar_bg.add_child(custom_vbar_grabber)
-			custom_vbar_bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			custom_vbar_bg.mouse_filter = Control.MOUSE_FILTER_STOP
 			custom_vbar_grabber.mouse_filter = Control.MOUSE_FILTER_STOP
 			custom_vbar_grabber.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 			custom_vbar_grabber.clip_contents = true
 			if not Engine.is_editor_hint():
+				custom_vbar_bg.gui_input.connect(_on_v_bg_gui_input)
 				custom_vbar_grabber.gui_input.connect(_on_v_grabber_gui_input)
 				custom_vbar_grabber.mouse_entered.connect(_on_v_grabber_mouse_entered)
 				custom_vbar_grabber.mouse_exited.connect(_on_v_grabber_mouse_exited)
@@ -150,11 +157,12 @@ func _build_custom_bars() -> void:
 			custom_hbar_grabber = Panel.new()
 			custom_bars_container.add_child(custom_hbar_bg)
 			custom_hbar_bg.add_child(custom_hbar_grabber)
-			custom_hbar_bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			custom_hbar_bg.mouse_filter = Control.MOUSE_FILTER_STOP
 			custom_hbar_grabber.mouse_filter = Control.MOUSE_FILTER_STOP
 			custom_hbar_grabber.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 			custom_hbar_grabber.clip_contents = true
 			if not Engine.is_editor_hint():
+				custom_hbar_bg.gui_input.connect(_on_h_bg_gui_input)
 				custom_hbar_grabber.gui_input.connect(_on_h_grabber_gui_input)
 				custom_hbar_grabber.mouse_entered.connect(_on_h_grabber_mouse_entered)
 				custom_hbar_grabber.mouse_exited.connect(_on_h_grabber_mouse_exited)
@@ -172,6 +180,44 @@ func _build_custom_bars() -> void:
 		get_h_scroll_bar().modulate.a = 1.0
 		get_h_scroll_bar().mouse_filter = Control.MOUSE_FILTER_STOP
 	_sync_custom_bars()
+
+
+## Handles clicks on the custom vertical background to jump to a scroll position
+func _on_v_bg_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
+			var vscroll = get_v_scroll_bar()
+			var click_y = custom_vbar_bg.get_local_mouse_position().y
+			var bg_style = vscroll.get_theme_stylebox("scroll", "VScrollBar")
+			var bg_m_top = bg_style.get_margin(SIDE_TOP) if bg_style else 0.0
+			var bg_m_bottom = bg_style.get_margin(SIDE_BOTTOM) if bg_style else 0.0
+			var grabber_h = custom_vbar_grabber.size.y
+			var track_height = custom_vbar_bg.size.y - bg_m_top - bg_m_bottom
+			var available_track = track_height - grabber_h
+			var usable_click_y = clamp(click_y - bg_m_top - (grabber_h / 2.0), 0.0, available_track)
+			var ratio = usable_click_y / available_track if available_track > 0 else 0.0
+			var scroll_range = (vscroll.max_value - vscroll.min_value) - vscroll.page
+			if scroll_range > 0:
+				scroll_vertical = vscroll.min_value + (ratio * scroll_range)
+
+
+## Handles clicks on the custom horizontal background to jump to a scroll position
+func _on_h_bg_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
+			var hscroll = get_h_scroll_bar()
+			var click_x = custom_hbar_bg.get_local_mouse_position().x
+			var bg_style = hscroll.get_theme_stylebox("scroll", "HScrollBar")
+			var bg_m_left = bg_style.get_margin(SIDE_LEFT) if bg_style else 0.0
+			var bg_m_right = bg_style.get_margin(SIDE_RIGHT) if bg_style else 0.0
+			var grabber_w = custom_hbar_grabber.size.x
+			var track_width = custom_hbar_bg.size.x - bg_m_left - bg_m_right
+			var available_track = track_width - grabber_w
+			var usable_click_x = clamp(click_x - bg_m_left - (grabber_w / 2.0), 0.0, available_track)
+			var ratio = usable_click_x / available_track if available_track > 0 else 0.0
+			var scroll_range = (hscroll.max_value - hscroll.min_value) - hscroll.page
+			if scroll_range > 0:
+				scroll_horizontal = hscroll.min_value + (ratio * scroll_range)
 
 
 ## Calculates effective margins combining internal style margins and expand margins
@@ -212,15 +258,16 @@ func _sync_custom_bars() -> void:
 		custom_vbar_bg.position = custom_vscroll_offset - Vector2(bg_m.left, bg_m.top)
 		var bg_min_y = bg_style.get_minimum_size().y if bg_style else 0.0
 		var grabber_min_y = grabber_style.get_minimum_size().y if grabber_style else 0.0
+		var absolute_min_y = max(grabber_min_y, float(custom_vscroll_min_grabber_size))
 		var area = custom_vscroll_size.y - bg_min_y
 		var max_val = vscroll.max_value
 		var min_val = vscroll.min_value
 		var page_val = vscroll.page
 		var range_val = max_val - min_val
-		var grabber_height = grabber_min_y
+		var grabber_height = absolute_min_y
 		if range_val > 0 and page_val > 0:
 			grabber_height = (page_val / range_val) * area
-		grabber_height = max(grabber_height, grabber_min_y)
+		grabber_height = max(grabber_height, absolute_min_y)
 		var scroll_range = range_val - page_val
 		var offset_ratio = 0.0
 		if scroll_range > 0:
@@ -251,15 +298,16 @@ func _sync_custom_bars() -> void:
 		custom_hbar_bg.position = custom_hscroll_offset - Vector2(bg_m.left, bg_m.top)
 		var bg_min_x = bg_style.get_minimum_size().x if bg_style else 0.0
 		var grabber_min_x = grabber_style.get_minimum_size().x if grabber_style else 0.0
+		var absolute_min_x = max(grabber_min_x, float(custom_hscroll_min_grabber_size))
 		var area = custom_hscroll_size.x - bg_min_x
 		var max_val = hscroll.max_value
 		var min_val = hscroll.min_value
 		var page_val = hscroll.page
 		var range_val = max_val - min_val
-		var grabber_width = grabber_min_x
+		var grabber_width = absolute_min_x
 		if range_val > 0 and page_val > 0:
 			grabber_width = (page_val / range_val) * area
-		grabber_width = max(grabber_width, grabber_min_x)
+		grabber_width = max(grabber_width, absolute_min_x)
 		var scroll_range = range_val - page_val
 		var offset_ratio = 0.0
 		if scroll_range > 0:
@@ -272,6 +320,20 @@ func _sync_custom_bars() -> void:
 		hscroll.modulate.a = 0.0
 		hscroll.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		custom_hbar_bg.visible = hscroll.visible
+
+
+## Sets the minimum size of the custom vertical grabber
+func _set_custom_vscroll_min_grabber_size(value: int) -> void:
+	custom_vscroll_min_grabber_size = value
+	if is_node_ready():
+		_sync_custom_bars()
+
+
+## Sets the minimum size of the custom horizontal grabber
+func _set_custom_hscroll_min_grabber_size(value: int) -> void:
+	custom_hscroll_min_grabber_size = value
+	if is_node_ready():
+		_sync_custom_bars()
 
 
 ## Handles mouse enter event for the vertical grabber

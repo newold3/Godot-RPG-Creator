@@ -24,7 +24,15 @@ const MANIPULATOR_MODES = {
 	"EQUIP_MENU_SUB_MENU": "equip menu sub menu",
 	"SAVELOAD": "main menu save/load",
 	"CONFIRM": "main confirm window",
-	"GUI_SCENE": "standard gui scene"
+	"GUI_SCENE": "standard gui scene",
+	"ITEM_MENU1": "select item list 1",
+	"ITEM_MENU2": "select item list 2",
+	"ITEM_MENU3": "select item list 3",
+	"ITEM_MENU4": "select item list 4",
+	"PAGINATOR1": "select paginator 1",
+	"PAGINATOR2": "select paginator 2",
+	"PAGINATOR3": "select paginator 3",
+	"PAGINATOR4": "select paginator 4"
 }
 
 var game_started: bool = false

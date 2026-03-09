@@ -81,6 +81,7 @@ func validate_and_clean_project() -> void:
 		print("[MapInfos] Clean project.")
 
 
+## Updates internal map data from a provided array of RPGMap nodes and removes missing ones safely.
 func fix_maps(data: Array) -> void:
 	for map: RPGMap in data:
 		var map_path = map.get_scene_file_path()
@@ -89,21 +90,41 @@ func fix_maps(data: Array) -> void:
 		set_map_name(map_path, map.name)
 		set_map_id(map_path, map.internal_id)
 		set_map_events(map.internal_id, map.events)
-
-	for map in maps:
-		if !map in data and !ResourceLoader.exists(map):
-			maps.erase(map)
-			map_names.erase(map)
-			map_ids.erase(map)
-			
-			if map_events.has(map):
-				for item in map_events[map]:
+		set_map_extraction_events(map.internal_id, map.extraction_events)
+	for i in range(maps.size() - 1, -1, -1):
+		var map_path = maps[i]
+		var map_in_data = false
+		for map_node: RPGMap in data:
+			if map_node.get_scene_file_path() == map_path:
+				map_in_data = true
+				break
+		if !map_in_data and !ResourceLoader.exists(map_path):
+			maps.remove_at(i)
+			map_names.erase(map_path)
+			map_ids.erase(map_path)
+			if map_events.has(map_path):
+				for item in map_events[map_path]:
 					if item.has("uid"):
 						global_event_lookup.erase(item["uid"])
-						
-			map_events.erase(map)
-			map_extraction_events.erase(map)
+			map_events.erase(map_path)
+			map_extraction_events.erase(map_path)
 	save.call_deferred()
+
+
+## Updates the dictionary containing all extraction event IDs for a specific map.
+func set_map_extraction_events(map_id: int, extraction_events: Array) -> void:
+	var map_path_key: String = ""
+	for key in map_ids:
+		if map_ids[key] == map_id:
+			map_path_key = key
+			break
+	if map_path_key == "":
+		return
+	var ids: PackedInt32Array = PackedInt32Array()
+	for item in extraction_events:
+		if item != null:
+			ids.append(item.id)
+	map_extraction_events[map_path_key] = ids
 
 
 func set_map_name(map_path: String, map_name: String) -> void:

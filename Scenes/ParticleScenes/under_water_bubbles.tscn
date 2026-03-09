@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://c5iocv6kds537"]
+[gd_scene format=3 uid="uid://c5iocv6kds537"]
 
 [ext_resource type="Texture2D" uid="uid://psnhcruo4fl6" path="res://Assets/Images/Particles/simple_water_bubble.png" id="1_7byn3"]
 [ext_resource type="Script" uid="uid://b1m7vwkaelnsa" path="res://Scenes/ParticleScenes/default_particles_script.gd" id="2_13fmh"]
@@ -19,7 +19,7 @@ damping_max = 12.424
 scale_min = 0.2
 scale_curve = SubResource("CurveTexture_epvrv")
 
-[node name="UnderWaterBubbles" type="GPUParticles2D"]
+[node name="UnderWaterBubbles" type="GPUParticles2D" unique_id=2040290753]
 emitting = false
 amount = 1
 texture = ExtResource("1_7byn3")

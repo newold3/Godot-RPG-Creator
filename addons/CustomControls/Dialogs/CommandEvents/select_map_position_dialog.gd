@@ -74,7 +74,7 @@ func set_terrain_restrictions(terrains: PackedStringArray) -> void:
 func _process(delta: float) -> void:
 	%HoverCell.text = str(hover_position)
 	_set_select_cell_text()
-	%TerrainName.text = "(" + _get_tile_terrain_name(hover_position) + ")" 
+	%TerrainName.text = "(" + _get_tile_terrain_name(hover_position) + ")"
 
 
 func _set_select_cell_text() -> void:
@@ -249,10 +249,11 @@ func fill_map_list() -> void:
 	node.clear()
 	
 	var test_map_id = 8017326834547071
+	var default_map_id = 8600607177269889
 	
 
 	for id: int in RPGMapsInfo.map_infos.map_ids.values():
-		if id == test_map_id: continue
+		if id == test_map_id or id == default_map_id: continue
 		
 		var map: String = RPGMapsInfo.map_infos.get_map_name_from_id(id) 
 		var path: String = RPGMapsInfo.map_infos.get_path_from_id(id)
@@ -279,12 +280,11 @@ func _on_map_list_item_selected(index: int) -> void:
 	
 	var map: RPGMap = ResourceLoader.load(map_path).instantiate()
 	map.preview_map_only_enabled = true
-	var rect = map.get_used_rect(false)
-
-	map.position -= Vector2(rect.position)
 	disable_cameras_in_node(map)
-	map_container.size = rect.size
 	map_container.add_child(map)
+	var rect = map.get_used_rect(false)
+	map.position -= Vector2(rect.position)
+	map_container.size = rect.size
 	var s = rect.size
 	cursor_canvas.custom_minimum_size = s
 	cursor_canvas.size = s

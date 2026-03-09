@@ -330,7 +330,7 @@ func set_event_position(target: Node, tile: Vector2i, direction: LPCCharacter.DI
 	
 	set_event_direction(target, direction)
 	if center_camera:
-		GameManager.camera_fast_reposition()
+		GameManager.get_camera().fast_reposition()
 
 
 func set_event_direction(target: Variant, direction: LPCCharacter.DIRECTIONS) -> void:

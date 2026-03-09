@@ -155,7 +155,7 @@ func _perform_player_transfer(params: Dictionary) -> void:
 	interpreter.busy3 = true
 	if not transfer_on_same_map:
 		if GameManager.game_state:
-			GameManager.game_state.followers_tracking_enabled = false
+			GameManager.game_state.followers_tracking_enabled = true
 		await _transfer_to_oher_map(map_id, tile, direction, current_event, transfer_animation)
 	
 	interpreter.busy = backup_busys[0]
@@ -197,6 +197,10 @@ func _transfer_to_oher_map(map_id: int, tile: Vector2i, direction: int, current_
 					current_event.current_vehicle = vehicle
 					vehicle.start(current_event)
 					_set_start_tranfer_end_values(vehicle, transfer_animation)
+			
+			GameManager.destroy_followers()
+			if GameManager.game_state.followers_enabled:
+				GameManager.show_followers(true, true)
 				
 	, CONNECT_ONE_SHOT)
 	var start_map_path = RPGSYSTEM.map_infos.get_map_by_id(map_id)

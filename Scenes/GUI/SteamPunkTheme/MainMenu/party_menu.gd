@@ -296,5 +296,15 @@ func _on_panel_clicked(panel_id: int) -> void:
 	var t = create_tween()
 	t.tween_method(_set_panel_selected_on_position.bind(panel), panel.position, Vector2(10, 0), 0.25)
 
+
 func _set_panel_selected_on_position(value: Vector2, panel: Control) -> void:
 	panel.position = value
+
+
+func start_hit_animation() -> void:
+	pass
+
+
+func end_hit_animation() -> void:
+	pass
+	
