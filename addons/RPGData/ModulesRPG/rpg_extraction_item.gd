@@ -45,7 +45,7 @@ extends Resource
 @export var experience_base: int = 1
 
 
-func _init(p_id: int = 1, px: int = 0, py: int = 0) -> void:
+func _init(p_id: int = 0, px: int = 0, py: int = 0) -> void:
 	id = p_id
 	x = px
 	y = py

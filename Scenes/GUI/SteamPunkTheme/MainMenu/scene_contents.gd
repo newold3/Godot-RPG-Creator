@@ -253,8 +253,3 @@ func _on_party_menu_clicked(id: int) -> void:
 
 func _show_item_menu(id: String) -> void:
 	item_menu_requested.emit(id)
-
-
-func _on_main_menu_items_button_hovered(_button: Control, _index: int, tooltip: String) -> void:
-	if help_label:
-		help_label.text = tooltip

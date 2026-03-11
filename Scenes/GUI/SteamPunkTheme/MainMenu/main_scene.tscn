@@ -236,8 +236,12 @@ move_out_direction = 2
 zoom_out_enabled = false
 fade_out_enabled = false
 
-[node name="SignalManager" type="Node" parent="." index="0" unique_id=1500501253 node_paths=PackedStringArray("animation_player", "help_label")]
+[node name="SceneDirectorManager" type="Node" parent="." index="0" unique_id=1500501253 node_paths=PackedStringArray("main_scene", "left_buttons_scene", "party_scene", "items_menu_scene", "animation_player", "help_label")]
 script = ExtResource("3_3uh6u")
+main_scene = NodePath("../SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene")
+left_buttons_scene = NodePath("../SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene/HBoxContainer/MainMenuItems")
+party_scene = NodePath("../SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene/HBoxContainer/MarginContainer/PartyMenu")
+items_menu_scene = NodePath("../IngameItemListContainer/IngameItemList")
 animation_player = NodePath("../ExternalAnimator")
 help_label = NodePath("../SceneMainContainer/MarginContainer/ChapterNameAutoScrollContainer/MarginContainer/HelpLabel")
 
@@ -412,14 +416,17 @@ unique_name_in_owner = true
 libraries/ = SubResource("AnimationLibrary_x1cck")
 speed_scale = 1.7
 
-[connection signal="visibility_changed" from="." to="SignalManager" method="_on_parent_visibility_changed"]
-[connection signal="end" from="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene" to="SignalManager" method="destroy"]
-[connection signal="item_menu_requested" from="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene" to="SignalManager" method="show_item_menu"]
+[connection signal="visibility_changed" from="." to="SceneDirectorManager" method="_on_parent_visibility_changed"]
+[connection signal="end" from="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene" to="SceneDirectorManager" method="destroy"]
+[connection signal="item_menu_requested" from="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene" to="SceneDirectorManager" method="show_item_menu"]
 [connection signal="sub_menu_closed" from="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene" to="SceneMainContainer/MainContainer/Title/TitleContainer" method="start"]
 [connection signal="sub_menu_opened" from="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene" to="SceneMainContainer/MainContainer/Title/TitleContainer" method="end"]
-[connection signal="close_requested" from="IngameItemListContainer/IngameItemList" to="SignalManager" method="hide_item_menu"]
-[connection signal="item_activated" from="IngameItemListContainer/IngameItemList" to="SignalManager" method="_on_item_list_item_activated"]
-[connection signal="item_focused" from="IngameItemListContainer/IngameItemList" to="SignalManager" method="_on_item_list_item_focused"]
+[connection signal="button_hovered" from="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene/HBoxContainer/MainMenuItems" to="SceneDirectorManager" method="_on_main_menu_items_button_hovered"]
+[connection signal="clicked" from="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene/HBoxContainer/MainMenuItems" to="SceneDirectorManager" method="_on_main_menu_items_clicked"]
+[connection signal="finish" from="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene/HBoxContainer/MainMenuItems" to="SceneDirectorManager" method="_on_main_menu_items_finish"]
+[connection signal="close_requested" from="IngameItemListContainer/IngameItemList" to="SceneDirectorManager" method="hide_item_menu"]
+[connection signal="item_activated" from="IngameItemListContainer/IngameItemList" to="SceneDirectorManager" method="_on_item_list_item_activated"]
+[connection signal="item_focused" from="IngameItemListContainer/IngameItemList" to="SceneDirectorManager" method="_on_item_list_item_focused"]
 
 [editable path="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene"]
 [editable path="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene/HBoxContainer/MarginContainer/PartyMenu"]

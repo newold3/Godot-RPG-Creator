@@ -390,6 +390,9 @@ func get_real_size() -> Vector2:
 
 
 func _process(delta: float) -> void:
+	if is_floating:
+		set_position_over_node()
+		
 	if editor_refresh_timer > 0.0 and Engine.is_editor_hint():
 		editor_refresh_timer -= delta
 		if editor_refresh_timer <= 0.0:
@@ -410,7 +413,6 @@ func _process(delta: float) -> void:
 		return
 	
 	if is_floating:
-		set_position_over_node()
 		if busy and instant_text_enabled: return
 	else:
 		if instant_text_enabled and busy_until_resume and not busy:

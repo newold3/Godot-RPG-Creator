@@ -6,22 +6,15 @@ extends Resource
 func get_class(): return "RPGMovementRoute"
 
 
-@export var target: int
-@export var repeat: bool
-@export var skippable: bool
-@export var wait: bool
-@export var list: Array[RPGMovementCommand]
+@export var target: int = -1
+@export var repeat: bool = false
+@export var skippable: bool = false
+@export var wait: bool = false
+@export var list: Array[RPGMovementCommand] = []
 
 var is_route_from_interpreter: bool = false
 
 signal finished()
-
-
-func _init() -> void:
-	repeat = false
-	skippable = true
-	wait = false
-	list = []
 
 
 func clone(value: bool = true) -> RPGMovementRoute:

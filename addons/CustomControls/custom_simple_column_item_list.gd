@@ -215,8 +215,8 @@ var lock_enter: bool
 var space_enabled: bool = true
 
 var current_filter: String = ""
-
 var metadata_list: Dictionary = {}
+var last_clicked_index: int = -1
 
 const MINI_PADLOCK = preload("res://addons/CustomControls/Images/mini_padlock.png")
 
@@ -363,6 +363,14 @@ func select(index: int, single: bool = true) -> void:
 			%ItemList.get_v_scroll_bar().value = %ItemList.get_v_scroll_bar().max_value
 
 
+func select_current() -> void:
+	var idxs = %ItemList.get_selected_items()
+	deselect_all()
+	for idx in idxs:
+		select(idx, false)
+	%ItemList.grab_focus()
+
+
 func deselect(index: int) -> void:
 	%ItemList.deselect(index)
 
@@ -501,6 +509,7 @@ func update_name_and_sizes(step = 50) -> void:
 	queue_redraw()
 
 
+## Clears the list and resets internal variables
 func clear() -> void:
 	set_process(true)
 	queue_fill_delay = fill_delay_max_time
@@ -508,6 +517,7 @@ func clear() -> void:
 	row_colors.clear()
 	custom_icons.clear()
 	items.clear()
+	last_clicked_index = -1
 	%ItemList.clear()
 
 
@@ -524,27 +534,52 @@ func get_column(id: int) -> PackedStringArray:
 		return []
 
 
+## Handles GUI input for the internal ItemList
 func _on_itemlist_gui_input(event: InputEvent) -> void:
 	if %ItemList.get_item_count() == 0:
 		return
-	
-	if show_checkboxes and enable_multiselection and event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
-		var checkbox_width = 24
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
 		var mouse_pos = %ItemList.get_local_mouse_position()
-		
-		if mouse_pos.x <= checkbox_width + text_margin_left:
-			var index = get_item_at_position(mouse_pos)
-			if index != -1:
-				if %ItemList.is_selected(index):
-					%ItemList.deselect(index)
-					multi_selected.emit(index, false)
+		var index = get_item_at_position(mouse_pos)
+		if index != -1:
+			if enable_multiselection:
+				if (event.shift_pressed or event.ctrl_pressed):
+					if last_clicked_index == -1:
+						last_clicked_index = index
+					var start_idx = min(last_clicked_index, index)
+					var end_idx = max(last_clicked_index, index)
+					var all_selected = true
+					for i in range(start_idx, end_idx + 1):
+						if not %ItemList.is_selected(i):
+							all_selected = false
+							break
+					for i in range(start_idx, end_idx + 1):
+						if all_selected:
+							%ItemList.deselect(i)
+							multi_selected.emit(i, false)
+						else:
+							%ItemList.select(i, false)
+							multi_selected.emit(i, true)
+					last_clicked_index = index
+					get_viewport().set_input_as_handled()
+					return
 				else:
-					%ItemList.select(index, false)
-					multi_selected.emit(index, true)
+					last_clicked_index = index
+					if show_checkboxes and enable_multiselection:
+						var checkbox_width = 24
+						if mouse_pos.x <= checkbox_width + text_margin_left:
+							if %ItemList.is_selected(index):
+								%ItemList.deselect(index)
+								multi_selected.emit(index, false)
+							else:
+								%ItemList.select(index, false)
+								multi_selected.emit(index, true)
+							get_viewport().set_input_as_handled()
+							return
+			else:
+				item_selected.emit(index)
+				multi_selected.emit(index, true)
 				
-				get_viewport().set_input_as_handled()
-				return
-
 	if %ItemList.is_anything_selected() and event is InputEventKey and event.is_pressed():
 		if event.keycode == KEY_DELETE or event.keycode == KEY_BACKSPACE:
 			delete_pressed.emit(%ItemList.get_selected_items())
@@ -562,7 +597,11 @@ func _on_itemlist_gui_input(event: InputEvent) -> void:
 			if indexes.size() > 0:
 				var new_index = max(0, indexes[0] - 1)
 				%ItemList.select(new_index)
-				multi_selected.emit(new_index, true)
+				if enable_multiselection:
+					multi_selected.emit(new_index, true)
+				else:
+					item_selected.emit(new_index)
+					multi_selected.emit(new_index, true)
 			else:
 				get_viewport().set_input_as_handled()
 		elif event.keycode == KEY_DOWN:
@@ -570,14 +609,17 @@ func _on_itemlist_gui_input(event: InputEvent) -> void:
 			if indexes.size() > 0:
 				var new_index = min(%ItemList.get_item_count() - 1, indexes[-1] + 1)
 				%ItemList.select(new_index)
-				multi_selected.emit(new_index, true)
+				if enable_multiselection:
+					multi_selected.emit(new_index, true)
+				else:
+					item_selected.emit(new_index)
+					multi_selected.emit(new_index, true)
 			else:
 				get_viewport().set_input_as_handled()
 		elif space_enabled and event.keycode == KEY_SPACE:
 			get_viewport().set_input_as_handled()
 			var index = %ItemList.get_selected_items()[-1]
 			%ItemList.item_activated.emit(index)
-	
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
 		var index = get_item_at_position(%ItemList.get_local_mouse_position())
 		if index != -1:
@@ -585,7 +627,6 @@ func _on_itemlist_gui_input(event: InputEvent) -> void:
 			if selected_items_amount <= 1:
 				select(index)
 			button_right_pressed.emit(%ItemList.get_selected_items())
-	
 	if event is InputEventMouseMotion:
 		get_custom_tooltip()
 
@@ -1014,3 +1055,19 @@ func get_item_metadata(id: int) -> Variant:
 	
 	
 	return metadata_list.get(id, null)
+
+
+## Scrolls the list to ensure the given item index is visible.
+func ensure_current_is_visible(index: int) -> void:
+	var node = %ItemList
+	if index < 0 or index >= node.get_item_count():
+		return
+	var scroll = node.get_v_scroll_bar()
+	var rect = get_item_rect(index)
+	var list_height = node.size.y
+	var item_top = rect.position.y
+	var item_bottom = item_top + rect.size.y
+	if item_top < scroll.value:
+		scroll.value = item_top
+	elif item_bottom > scroll.value + list_height:
+		scroll.value = item_bottom - list_height

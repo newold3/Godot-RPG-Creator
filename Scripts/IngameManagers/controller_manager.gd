@@ -41,6 +41,14 @@ class RegisterKey extends KeyBase:
 		initial_delay = p_initial_delay
 		echo_interval = p_echo_interval
 		initialize = true
+	
+	func _to_string() -> String:
+		return "Keycode = %s,
+		initialize = %s,
+		initial_delay = %s,
+		echo_interval = %s,
+		registered_frame = %s
+		" % [keycode, initialize, initial_delay, echo_interval, registered_frame]
 
 
 ## Class to handle analog triggers with repeat functionality

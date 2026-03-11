@@ -14,6 +14,13 @@ var backup_mouse_position: Vector2
 
 var current_data: Array = []
 
+var backup_indexes = {
+	"Switch": 0,
+	"Variable": 0,
+	"Text Variable": 0,
+	"Self Switch": 0,
+}
+
 @onready var data_list: VBoxContainer = %DataList
 
 
@@ -25,24 +32,48 @@ func _ready() -> void:
 	%DataList.get_item_list().focus_entered.connect(_on_item_list_focus_entered)
 	create_tabs()
 	%FunctionButtonContainer.visible = false
+	visibility_changed.connect(func(): GameManager.set_cursor_manipulator(GameManager.MANIPULATOR_MODES.NONE))
 	hide()
 
 
+## Manages cursor manipulation and focus switching based on controller input
 func _process(_delta: float) -> void:
 	if not visible or not is_enabled: return
 	
-	if data_list and not data_list.get_item_list().has_focus():
-		var direction = ControllerManager.get_pressed_direction()
+	var manipulator = GameManager.get_cursor_manipulator()
+	var direction = ControllerManager.get_pressed_direction()
+	
+	if manipulator == GameManager.MANIPULATOR_MODES.MAIN_MENU_MAIN_BUTTONS:
 		if direction:
 			if ["up", "down"].has(direction):
 				var current_button = get_viewport().gui_get_focus_owner()
-				#var next_control = GameManager.controller.get_closest_focusable_control(current_button, direction)
-				var next_control = ControllerManager.get_closest_focusable_control(current_button, direction)
-				if next_control:
+				var next_control = GameManager.controller.get_closest_focusable_control(current_button, direction)
+				if next_control and next_control != current_button:
 					next_control.grab_focus()
+					get_viewport().set_input_as_handled()
+			if ["left", "right"].has(direction):
+				%DataList.select_current()
+				get_viewport().set_input_as_handled()
+		elif ControllerManager.is_action_just_pressed("Button R1 Extra"):
+				%DataList.select_current()
+				get_viewport().set_input_as_handled()
+		elif ControllerManager.is_confirm_just_pressed(false, [KEY_KP_ENTER, KEY_SPACE]):
+			var button = get_viewport().gui_get_focus_owner()
+			if button and button is Button:
+				if button == %CloseButton:
+					end()
+				else:
+					button.set_pressed(true)
+	elif manipulator == GameManager.MANIPULATOR_MODES.ITEM_MENU4:
+		if data_list:
+			if ControllerManager.is_action_just_pressed("Button R1 Extra"):
+				var button = %TabContainer.get_child(0).button_group.get_pressed_button()
+				if button:
+					button.grab_focus()
 
 
 func _on_item_list_focus_entered() -> void:
+	_config_hand_over_list()
 	if current_data.size() == 0:
 		var button = %TabContainer.get_child(0).button_group.get_pressed_button()
 		button.grab_focus()
@@ -116,52 +147,84 @@ func create_tabs() -> void:
 		button.modulate = Color("#d19b7e")
 		button.toggled.connect(_load_data.bind(tabs_singular[i]))
 		node.add_child(button)
+		button.focus_entered.connect(_config_hand_over_menu_main_buttons)
 	
 	node.get_child(0).set_pressed(true)
+
+
+func _config_hand_over_menu_main_buttons() -> void:
+	var hand_manipulator = GameManager.MANIPULATOR_MODES.MAIN_MENU_MAIN_BUTTONS
+	GameManager.set_cursor_manipulator(hand_manipulator)
+	GameManager.set_confin_area(Rect2(), hand_manipulator)
+	GameManager.set_hand_position(MainHandCursor.HandPosition.LEFT, hand_manipulator)
+	GameManager.set_cursor_offset(Vector2(8, 0), hand_manipulator)
+	ControllerManager.set_focusable_control_threshold(150, 150)
+	GameManager.force_show_cursor()
+	
+	var text = "Enter to view data selected"
+	text += " " + tr("Use Tab to change beetween left buttons or list.")
+	_set_label_info(text)
+
+
+func _config_hand_over_list() -> void:
+	var hand_manipulator = GameManager.MANIPULATOR_MODES.ITEM_MENU4
+	GameManager.set_cursor_manipulator(hand_manipulator)
+	var rect = data_list.get_parent().get_global_rect()
+	rect.size.y -= 22
+	GameManager.set_confin_area(rect, hand_manipulator)
+	GameManager.set_hand_position(MainHandCursor.HandPosition.LEFT, hand_manipulator)
+	GameManager.set_cursor_offset(Vector2(8, 0), hand_manipulator)
+	ControllerManager.set_focusable_control_threshold(150, 150)
+	GameManager.force_show_cursor()
 
 
 func _set_label_info(text: String) -> void:
 	%BottomLabelInfo.text = text
 
 
-func _load_data(value: bool, tab: String, selected_id: int = 0) -> void:
+func _load_data(value: bool, tab: String) -> void:
 	backup_mouse_position = %DataList.get_local_mouse_position()
 	if value:
 		current_tab = tab
+		
 	if value and GameManager.game_state:
 		var data
 		var real_data
+		var text = ""
 		match tab:
 			"Switch":
 				data = GameManager.game_state.game_switches
 				real_data = RPGSYSTEM.system.switches
-				_set_label_info("Use 🢀 Left or 🢂 Right To change the value.")
+				text = tr("Use 🢀 Left or 🢂 Right To change the value.")
 			"Variable":
 				data = GameManager.game_state.game_variables
 				real_data = RPGSYSTEM.system.variables
-				_set_label_info("Use 🢀 Left or 🢂 Right To change the value. Or double click to enter value manually")
+				text = tr("Use 🢀 Left or 🢂 Right To change the value. Or double click to enter value manually")
 			"Text Variable":
 				data = GameManager.game_state.game_text_variables
 				real_data = RPGSYSTEM.system.text_variables
-				_set_label_info("Double click to enter value manually")
+				text = tr("Double click to enter value manually")
 			"Self Switch":
 				data = GameManager.game_state.game_self_switches
 				real_data = RPGSYSTEM.system.self_switches
-				_set_label_info("Use 🢀 Left or 🢂 Right To change the value.")
+				text = tr("Use 🢀 Left or 🢂 Right To change the value.")
 		
+		text += " " + tr("Use Tab to change beetween left buttons or list.")
+		_set_label_info(text)
+		
+		var selected_id = backup_indexes[current_tab]
 		await fill_data(tab, data, real_data, selected_id)
 
 
-func fill_data(tab: String, data : Variant, real_data: Variant, selected_id: int) -> void:
+## Fills the list with the current tab data and manages cursor repositioning to prevent visual jumps
+func fill_data(tab: String, data: Variant, real_data: Variant, selected_id: int) -> void:
 	var node = %DataList
 	var scroll_bar_y_value = node.get_v_scroll_bar().value
 	var last_selected_index = node.get_selected_items()
 	var last_item_count = node.get_item_count()
+	GameManager.hand_cursor.pause_reposition = true
 	node.clear()
 	current_data.clear()
-	
-	GameManager.hand_cursor.pause_reposition = true
-	
 	if ["Switch", "Variable", "Text Variable"].has(tab):
 		for i in range(1, data.size()):
 			var data_name: String = ""
@@ -173,45 +236,40 @@ func fill_data(tab: String, data : Variant, real_data: Variant, selected_id: int
 				data_name = "%s ID %s" % [tab, i]
 			node.add_column([data_name, value])
 			current_data.append(data[i])
-	
 		await node.columns_setted
-		
 	elif tab == "Self Switch":
 		for key: String in data:
 			var map_id = int(key.get_slice("_", 0))
-			var switch_id = int(key.get_slice("_", 1))
+			var event_id = int(key.get_slice("_", 1))
+			var switch_id = int(key.get_slice("_", 2))
 			var map_name = RPGSYSTEM.map_infos.get_map_name_from_id(map_id)
 			var switch_name = RPGSYSTEM.system.self_switches.get_self_switch_name(switch_id).to_upper()
+			var event_name = RPGSYSTEM.map_infos.get_event_name(map_id, event_id)
 			var switch_value = data[key]
 			current_data.append(key)
-			node.add_column(["Map %s: Switch %s" % [map_name, switch_name], switch_value])
-		
+			node.add_column(["Map %s: <Event %s> Switch %s" % [map_name, event_name, switch_name], switch_value])
 		await node.columns_setted
-	
 	if node.get_item_count() > selected_id:
 		node.select(selected_id)
 	elif node.get_item_count() > 0:
 		node.select(0)
-	
 	if current_data.size() > 0:
 		node.get_item_list().grab_focus()
-	
-	GameManager.hand_cursor.pause_reposition = false
-	
 	var new_selected_index = node.get_selected_items()
 	var new_item_count = node.get_item_count()
-	
 	if new_item_count == last_item_count and last_selected_index and new_selected_index and last_selected_index[0] == new_selected_index[0]:
 		await get_tree().process_frame
 		node.get_v_scroll_bar().value = scroll_bar_y_value
 		await get_tree().process_frame
 		node.warp_mouse(backup_mouse_position)
+	GameManager.hand_cursor.pause_reposition = false
 
 
 func _on_close_button_pressed() -> void:
 	end()
 
 
+## Handles GUI input for the data list to prevent double focus jumping
 func _on_data_list_gui_input(event: InputEvent) -> void:
 	if is_enabled:
 		if event is InputEventMouseMotion:
@@ -219,8 +277,12 @@ func _on_data_list_gui_input(event: InputEvent) -> void:
 		else:
 			if event.is_action_pressed("ui_left", true):
 				call_deferred("change_value", -1)
+				get_viewport().set_input_as_handled()
 			elif event.is_action_pressed("ui_right", true):
 				call_deferred("change_value", 1)
+				get_viewport().set_input_as_handled()
+			elif event.is_action_pressed("ui_up", true) or event.is_action_pressed("ui_down", true):
+				get_viewport().set_input_as_handled()
 
 
 func update_function_button() -> void:
@@ -270,7 +332,7 @@ func change_value(target_value: Variant) -> void:
 			"Variable":
 				GameManager.game_state.game_variables[item_id] += int(target_value)
 	
-		await _load_data(true, current_tab, item_id - 1)
+		await _load_data(true, current_tab)
 	
 	get_viewport().set_input_as_handled()
 
@@ -404,3 +466,8 @@ func _on_remove_value_pressed() -> void:
 		var data = GameManager.game_state.game_self_switches
 		var real_data = RPGSYSTEM.system.self_switches
 		fill_data("Self Switch", data, real_data, index)
+
+
+func _on_data_list_item_selected(index: int) -> void:
+	backup_indexes[current_tab] = index
+	%DataList.ensure_current_is_visible(index)

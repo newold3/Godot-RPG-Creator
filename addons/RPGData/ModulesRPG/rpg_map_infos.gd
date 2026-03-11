@@ -239,6 +239,15 @@ func get_map_events(map_id: int) -> Array:
 	return events
 
 
+func get_event_name(map_id: int, event_id: int) -> String:
+	var map_name = get_map_name_from_id(map_id)
+	var events = get_map_events(map_id)
+	for event_data in events:
+		if event_data.has("id") and event_data["id"] == event_id:
+			return event_data.get("name", "")
+	return ""
+
+
 func get_map_path_for_event(event_uniq_id: int) -> String:
 	return global_event_lookup.get(event_uniq_id, "")
 

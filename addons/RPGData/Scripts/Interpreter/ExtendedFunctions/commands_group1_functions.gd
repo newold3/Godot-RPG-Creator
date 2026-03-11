@@ -91,10 +91,10 @@ func _command_0002() -> void:
 	var is_floating = current_message_config.get("is_floating_dialog", false)
 	if is_floating:
 		var target = current_message_config.get("floating_target", 0)
-		if target == -1 or not GameManager.current_map:
+		if target == -1 or target == 0 or not GameManager.current_map:
 			current_message_config.anchor_node = current_interpreter.obj
 		else:
-			var real_target = GameManager.current_map.get_in_game_event_by_id(target)
+			var real_target = GameManager.current_map.get_in_game_event_by_uniq_id(target)
 			current_message_config.anchor_node = real_target
 		
 		for child in GameManager.over_message_layer.get_children():

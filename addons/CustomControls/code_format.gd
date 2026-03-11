@@ -425,8 +425,20 @@ func _format_command_2(data: FormatData) -> Array:
 	var face_size: String = "%sx%s" % [face_width, face_height]
 	var is_floating_dialog = data.command.parameters.get("is_floating_dialog", false)
 	var is_floating_string: String = "" if not is_floating_dialog else "floating dialog"
+
 	if not is_floating_string.is_empty():
-		is_floating_string += " (over #%s)" % data.command.parameters.floating_target
+		var target = data.command.parameters.get("floating_target", 0)
+		var target_str = ""
+		if target == 0:
+			target_str = "This Event"
+		else:
+			var edited_scene = RPGSYSTEM.editor_interface.get_edited_scene_root()
+			if edited_scene and edited_scene is RPGMap:
+				target_str = RPGSYSTEM.map_infos.get_event_name(edited_scene.internal_id, target)
+			else:
+				target_str = "?"
+				
+		is_floating_string += " (over #%s)" % target_str
 	
 	formatted_text.append({
 		"texts": [

@@ -619,8 +619,9 @@ func _recalculate_cache() -> void:
 	var col_width = int((max_width - (columns - 1) * horizontal_separation) / float(columns))
 	var row_height: int = button_height + vertical_separation
 	for i in range(count):
-		var row = i / columns
-		var col = i % columns
+		@warning_ignore("integer_division")
+		var row: int = i / columns
+		var col: int = i % columns
 		var item_local_y: int = row * row_height
 		var item_local_x: int = col * (col_width + horizontal_separation)
 		item_rects.append(Rect2(item_local_x, item_local_y, col_width, button_height))

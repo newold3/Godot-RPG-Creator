@@ -465,6 +465,7 @@ func _start_game_mode() -> void:
 	visible = true
 	await get_tree().create_timer(0.04).timeout
 	GameManager.set_fx_busy(false)
+	GameManager.set_cursor_manipulator(GameManager.MANIPULATOR_MODES.NONE)
 	map_started.emit()
 
 

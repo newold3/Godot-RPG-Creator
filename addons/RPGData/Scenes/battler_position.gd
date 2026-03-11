@@ -232,6 +232,7 @@ func _on_close_button_pressed() -> void:
 
 
 func select() -> void:
+	if not is_node_ready(): return
 	%Selection1.visible = true
 	%Selection2.visible = true
 	is_selected = true
@@ -239,6 +240,8 @@ func select() -> void:
 
 
 func deselect() -> void:
+	if not is_node_ready() or not is_instance_valid(self) or is_queued_for_deletion(): return
+	
 	if not Input.is_key_pressed(KEY_CTRL):
 		%Selection1.visible = false
 		%Selection2.visible = false

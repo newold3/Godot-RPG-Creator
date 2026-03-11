@@ -47,11 +47,21 @@ func _physics_process(delta: float) -> void:
 	for up in extra_ripple_points:
 		up.update(delta * 0.5)
 		
-	if GameManager.current_player and GameManager.current_map:
+	var obj: Variant = null
+	if randi() % 100 > 35:
+		var followers = GameManager.get_followers() + [GameManager.current_player]
+		obj = followers.pick_random()
+	else:
+		var events = GameManager.get_ingame_events()
+		if not events.is_empty():
+			var ingame_event: IngameEvent = events.pick_random()
+			obj = ingame_event.lpc_event
+				
+	if is_instance_valid(obj) and GameManager.current_map:
 		var add_ripple: bool = false
 		var point: Vector2
-		if GameManager.current_player.is_moving:
-			var p1 = (GameManager.current_player.global_position - global_position)
+		if obj is SimpleFollower or obj.is_moving:
+			var p1 = (obj.global_position - global_position)
 			var p2 = GameManager.current_map.get_wrapped_position(p1)
 			point = p2
 			add_ripple = true
@@ -69,8 +79,8 @@ func _physics_process(delta: float) -> void:
 				extra_ripple_points.append(user_ripple)
 				if randi() % 6 == 0:
 					var particle = RIPPLE_PARTICLE.instantiate()
-					particle.position = GameManager.current_player.position
-					GameManager.current_player.get_parent().add_child(particle)
+					particle.position = obj.position
+					obj.get_parent().add_child(particle)
 			
 	var mat: ShaderMaterial = %MainSprite.get_material()
 	if mat:

@@ -1693,6 +1693,7 @@ func vehicle_movement(motion: Vector2, route: RPGMovementRoute = null, keep_dire
 
 ## Initiates movement to a specific offset for an event
 func move_event(new_pos: Vector2, route: RPGMovementRoute = null, keep_direction: bool = false) -> void:
+	if route: print(self, route.skippable)
 	if is_moving or busy or is_jumping: return
 	var has_route = route_commands and not route_commands.list.is_empty()
 	if has_route and not route_commands.is_route_from_interpreter and GameInterpreter.is_busy():

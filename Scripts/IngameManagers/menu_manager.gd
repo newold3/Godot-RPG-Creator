@@ -8,6 +8,7 @@ var starting_menu: SCENE_TITTLE
 
 func show_menu() -> void:
 	if main_menu and main_menu.visible: return
+
 	if not GameManager.busy and not GameInterpreter.is_busy() and GameManager.game_state and not GameManager.game_state.menu_scene_prohibited:
 		GameManager.busy = true
 		if RPGSYSTEM.database.system.pause_day_night_in_menu:
