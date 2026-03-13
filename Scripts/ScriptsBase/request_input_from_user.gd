@@ -241,6 +241,14 @@ func _config_buttons() -> void:
 		if not button.is_in_group("key_button"):
 			button.add_to_group("key_button")
 		
+		#var path = button.get_path()
+		#button.set("focus_neighbor_left", path)
+		#button.set("focus_neighbor_top", path)
+		#button.set("focus_neighbor_right", path)
+		#button.set("focus_neighbor_bottom", path)
+		#button.set("focus_next", path)
+		#button.set("focus_previous", path)
+		
 		button.focus_entered.connect(
 			func():
 				button.pivot_offset = button.size * 0.5
@@ -418,6 +426,7 @@ func _animate_button_click(button: BaseButton) -> void:
 ## Configures the custom cursor position and behavior for this UI
 func _config_hand() -> void:
 	GameManager.set_cursor_manipulator(manipulator)
+	GameManager.set_focusable_control_threshold(42, 42)
 	GameManager.set_confin_area(Rect2(), manipulator)
 	GameManager.set_hand_position(MainHandCursor.HandPosition.LEFT, manipulator)
 	GameManager.set_cursor_offset(Vector2(32, 0), manipulator)

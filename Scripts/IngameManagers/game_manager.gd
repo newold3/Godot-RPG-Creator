@@ -851,8 +851,14 @@ func get_hand_style() -> MainHandCursor.HandPosition:
 	return MainHandCursor.HandPosition.LEFT
 
 
-func set_cursor_manipulator(manipulator_context: Variant = null) -> void:
+func set_focusable_control_threshold(horizontal: int = 30, vertical: int = 30):
+	ControllerManager.set_focusable_control_threshold(horizontal, vertical)
+
+
+func set_cursor_manipulator(manipulator_context: Variant = null, reset_control_threshold: bool = true) -> void:
 	if cursor_manager: cursor_manager.set_cursor_manipulator(manipulator_context)
+	if reset_control_threshold:
+		set_focusable_control_threshold(30, 30)
 
 
 func get_cursor_manipulator() -> Variant:

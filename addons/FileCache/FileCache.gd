@@ -538,33 +538,31 @@ func classify_scene_file(file_path: String) -> void:
 
 ## Helper to identify script class (including inheritance) and update cache.
 func _check_and_cache_script(file_path: String, script_res: Resource) -> bool:
-	# 1. Try to get direct name (class_name)
 	var class_identifier = script_res.get_global_name()
-
-	# 2. If no class_name, look for get_class() overrides using Regex
+	
 	if class_identifier == "":
-		var source = script_res.source_code
-		var regex_match = _class_regex.search(source)
-		if regex_match:
-			class_identifier = regex_match.get_string(1)
-
-	# 3. If still empty, look at inheritance (Script Inheritance)
-	# Critical for scripts that only use "extends Custom ClassName" without a class_name
+		var current_script = script_res
+		while current_script:
+			var source = current_script.source_code
+			var regex_match = _class_regex.search(source)
+			if regex_match:
+				class_identifier = regex_match.get_string(1)
+				break
+			current_script = current_script.get_base_script()
+			
 	if class_identifier == "":
 		var base_script = script_res.get_base_script()
 		while base_script:
 			var base_name = base_script.get_global_name()
 			if base_name != "":
-				# Check if parent is one of the classes we are interested in
 				if _is_valid_cache_class(base_name):
 					class_identifier = base_name
 					break
 			base_script = base_script.get_base_script()
-
-	# 4. Verify and Cache
+			
 	if class_identifier != "":
 		return _match_identifier_to_cache(file_path, class_identifier)
-
+		
 	return false
 
 

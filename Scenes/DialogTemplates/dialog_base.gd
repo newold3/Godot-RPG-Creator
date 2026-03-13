@@ -327,7 +327,8 @@ var time: float:
 				return (float(current_character) / float(max_characters))
 			else:
 				return (0)
-		
+
+var current_dialog_size
 
 # Reference self for use in transition effects.
 static var instance
@@ -834,6 +835,7 @@ func reset() -> void:
 				if tweens[key] is Tween and tweens[key].is_valid() and tweens[key].is_running():
 					tweens[key].kill()
 				tweens[key] = null
+		
 		set("custom_minimum_size", Vector2.ZERO)
 		message.set("custom_minimum_size", Vector2.ZERO)
 		message.size = Vector2.ZERO
@@ -852,7 +854,6 @@ func reset() -> void:
 	busy_when_preview = false
 	busy_until_resume = false
 	is_new_dialog = true
-	is_multi_dialog = false
 	is_editor_prevew = false
 	current_delay = 0.0
 	delay_for_input = 0.0
@@ -1190,7 +1191,7 @@ func setup_text(text: String, use_soft_reset: bool = false, _is_additional_text:
 		text = "[color=#%s]" % speaker_text_color.to_html() + text + "[/color]"
 	text = parse_text(text)
 	
-	modulate.a = 0.0
+	modulate.a = 1.0
 	message.text = text
 	
 	if message.get_parsed_text().strip_edges().is_empty():
@@ -1203,7 +1204,12 @@ func setup_text(text: String, use_soft_reset: bool = false, _is_additional_text:
 			all_messages_finished.emit()
 		return
 	
-	await precalculate_dialog_size(use_soft_reset)
+	if not is_multi_dialog:
+		await precalculate_dialog_size(use_soft_reset)
+	else:
+		size = current_dialog_size
+	
+	current_dialog_size = size
 	
 	#if (!is_additional_text and is_new_dialog) or is_editor_prevew or Engine.is_editor_hint():
 		#await precalculate_dialog_size(use_soft_reset)

@@ -84,6 +84,7 @@ func _setup_game_managers() -> void:
 	GameManager.options_layer = main_scene.get_node_or_null("%OptionsCanvas")
 	GameManager.gui_canvas_layer = main_scene.get_node_or_null("%GUICanvas")
 	GameManager.over_message_layer = main_scene.get_node_or_null("%OverMessageCanvas")
+	#dialog.all_messages_finished.connect(GameInterpreter.set.bind("showing_message", false))
 
 
 func _setup_debug_scene() -> void:

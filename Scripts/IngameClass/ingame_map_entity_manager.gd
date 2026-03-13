@@ -111,12 +111,18 @@ func setup_extraction_events() -> void:
 
 
 func refresh_events() -> void:
+	await GameManager.get_tree().process_frame
 	for ev: IngameEvent in current_ingame_events.values():
 		if not ev: continue
 		var active_page = ev.event.get_active_page()
 		
 		if active_page and active_page.page_id != ev.page_id:
+			var is_message_node = false
+			if GameManager.message and GameManager.message.anchor_node == ev.lpc_event:
+				is_message_node = true
 			ev.refresh_page(active_page)
+			if is_message_node:
+				GameManager.message.anchor_node = ev.lpc_event
 			if map:
 				map.register_hp_page(ev.uniq_id, active_page._uniq_id, active_page.options.hp)
 	

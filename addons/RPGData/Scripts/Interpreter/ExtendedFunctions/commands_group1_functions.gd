@@ -49,6 +49,7 @@ func _command_0001() -> void:
 			var new_message = load(scene_path).instantiate()
 			parent.add_child(new_message)
 			GameManager.message = new_message
+			new_message.all_messages_finished.connect(GameInterpreter.set.bind("showing_message", false), CONNECT_DEFERRED)
 			new_message.setup()
 		
 		# Update the current message configuration in the game state
@@ -91,12 +92,17 @@ func _command_0002() -> void:
 	var is_floating = current_message_config.get("is_floating_dialog", false)
 	if is_floating:
 		var target = current_message_config.get("floating_target", 0)
-		if target == -1 or target == 0 or not GameManager.current_map:
+		if not GameManager.current_map or not is_instance_valid(current_interpreter.obj):
 			current_message_config.anchor_node = current_interpreter.obj
+		elif target == -1 or target == 0:
+			if "current_event" in current_interpreter.obj:
+				current_message_config.anchor_node = GameManager.current_map.get_in_game_event_by_uniq_id(current_interpreter.obj.current_event._uniq_id, true)
+			else:
+				current_message_config.anchor_node = current_interpreter.obj
 		else:
-			var real_target = GameManager.current_map.get_in_game_event_by_uniq_id(target)
+			var real_target = GameManager.current_map.get_in_game_event_by_uniq_id(target, true)
 			current_message_config.anchor_node = real_target
-		
+
 		for child in GameManager.over_message_layer.get_children():
 			if child is DialogBase and child.anchor_node == current_message_config.anchor_node:
 				child.queue_free()
@@ -142,7 +148,7 @@ func _command_0002() -> void:
 
 		# Determine if the dialog is part of a multi-dialog sequence or a new dialog
 		if not is_floating:
-			current_message_box.is_multi_dialog = (next_command and next_command.code == 2)
+			current_message_box.is_multi_dialog = (previous_command and previous_command.code == 2)
 			current_message_box.is_new_dialog = (start_command_index == 0) or (previous_command and not [2, 3].has(previous_command.code))
 		else:
 			current_message_box.is_multi_dialog = false
@@ -192,94 +198,69 @@ func _command_0095() -> void:
 # Code 5 (When) parameters { name }
 # Code 6 (Cancel) parameters { }
 # Code 7 (End) parameters { }
+## Command Show Choices (Codes 4, 5, 6, 7).
 func _command_0004() -> void:
-	debug_print("Processing command: Show Choices Dialog (code 4)")
-	
-	# Get the current indentation level of the command
 	var current_indent = current_command.indent
-	
-	# Start processing commands from the next index
 	var current_index = current_interpreter.command_index + 1
 	var choices: PackedStringArray = []
-
-	# Collect all choices (Code 5) until the end of the choice block (Code 7)
 	while true:
 		var command = current_interpreter.get_command(current_index)
 		if command:
 			if command.indent == current_indent:
-				if command.code == 5: # "When" branch
+				if command.code == 5:
 					choices.append(command.parameters.get("name", ""))
-				elif command.code == 7: # End of choices block
+				elif command.code == 7:
 					break
 		else:
 			break
-			
 		current_index += 1
-	
-	# Reset the index to start processing again
 	current_index = current_interpreter.command_index + 1
-	
-	# Disable waiting for user option selection if enabled
 	if GameManager.message.wait_for_user_option_selected_enabled:
 		GameManager.message.wait_for_user_option_selected_enabled = false
-	
-	# If there are choices available, load the choice dialog scene
 	if choices.size() > 0:
 		var scene_path = current_command.parameters.get("scene_path", "res://Scenes/DialogTemplates/choice_scene_1.tscn")
 		if ResourceLoader.exists(scene_path):
-			# Initialize the selected choice ID
 			interpreter.selected_choice_id = -2
 			var scene = load(scene_path).instantiate()
-			
-			# Connect cancel and option selection signals
 			scene.cancel.connect(func(): interpreter.selected_choice_id = -1)
 			scene.option_selected.connect(func(id): interpreter.selected_choice_id = id)
-			
-			# Position the scene in the viewport
 			scene.position = interpreter.get_viewport().size / 0.5
-			
-			# Add the scene to the options layer and set its data
 			GameManager.over_message_layer.add_child(scene)
 			scene.set_data(current_command.parameters, choices)
-			
-			# Show the options layer and wait for the user to finish
 			await scene.finish
-
-			# Handle the user's choice
-			if interpreter.selected_choice_id == -1: # User canceled
+			if interpreter.selected_choice_id == -1:
 				while true:
 					var command = current_interpreter.get_command(current_index)
 					if command:
 						if command.indent == current_indent:
-							if command.code == 6: # Cancel branch
-								break
-							elif command.code == 7: # End of choices block
+							if command.code == 6 or command.code == 7:
 								break
 					else:
 						break
 					current_index += 1
-			elif interpreter.selected_choice_id >= 0: # User selected an option
+			elif interpreter.selected_choice_id >= 0:
 				var current_choice_id = 0
 				while true:
 					var command = current_interpreter.get_command(current_index)
 					if command:
 						if command.indent == current_indent:
-							if command.code == 5: # Target "When" branch
+							if command.code == 5:
 								if current_choice_id == interpreter.selected_choice_id:
 									break
 								else:
 									current_choice_id += 1
-							elif command.code == 7: # End of choices block
+							elif command.code == 7:
 								break
 					else: 
 						break
 					current_index += 1
-
-	# Update the interpreter to the new command index
 	current_interpreter.go_to(current_index)
-	
-	# End the message processing
-	await end_message()
+	if "showing_message" in self:
+		self.showing_message = false
+	elif "showing_message" in interpreter:
+		interpreter.showing_message = false
+	GameManager.message.waiting_for_input = false
+	await interpreter.end_message()
 
 
 # Command Input text/Number (Code 8)

@@ -33,6 +33,13 @@ class Interpreter:
 		all_commands_processed.connect(
 			func(_interpreter: Interpreter):
 				completed = true
+				var message = GameManager.message
+				if message and message.dialog_is_started and not message.dialog_is_paused:
+					message.waiting_for_input = false
+					message.is_new_dialog = false
+					message.is_multi_dialog = false
+					message.show_close_animation()
+					GameInterpreter.showing_message = false
 		)
 		main_interpreter = main
 
@@ -447,12 +454,13 @@ func clear() -> void:
 
 # Ends and hides a message in process
 func end_message() -> void:
+	if not GameManager.message or GameManager.message.is_multi_dialog or GameManager.message.dialog_is_paused: return
+
 	if not current_interpreter:
 		GameManager.message.is_new_dialog = false
 		GameManager.message.is_multi_dialog = false
 		if GameManager.message_container.visible:
 			showing_message = false
-			GameManager.message.show_close_animation()
 			await GameManager.message.all_messages_finished
 			GameManager.message.reset()
 			GameManager.message.clear_text()
