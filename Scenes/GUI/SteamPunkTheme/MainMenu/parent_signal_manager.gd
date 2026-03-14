@@ -48,7 +48,7 @@ func _on_item_list_item_focused(_item_type: int, _item_id: int) -> void:
 
 
 #region Left Buttons
-func _on_main_menu_items_button_hovered(button: Control, index: int, tooltip: String) -> void:
+func _on_main_menu_items_button_hovered(_button: Control, _index: int, tooltip: String) -> void:
 	if help_label:
 		help_label.text = tooltip
 

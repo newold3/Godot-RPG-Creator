@@ -556,6 +556,7 @@ func click_on_command_image(command: Dictionary) -> void:
 		img.image_type = 0
 		var rex = "([^\\s]+)\\s*=\\s*(\"[^\"]+\"|[^\\s\\]]+)"
 		regex.compile(rex)
+
 		var matches = regex.search_all(command.args)
 		for m in matches:
 			if m.get_string(1).to_lower() == "path":
@@ -643,6 +644,7 @@ func click_on_command_image(command: Dictionary) -> void:
 	
 	var icon = RPGIcon.new(img.get("path", ""), img.get("region", Rect2()))
 	img.path = icon
+
 	_on_image_pressed(img, command.command_name.to_lower() == "face")
 
 
@@ -1156,7 +1158,7 @@ func _on_image_selected(img: Dictionary) -> void:
 			if img.face_position == 0:
 				bbcode = "[face path=\"%s\"%s" % [face.path, arg6]
 			else:
-				bbcode = "[face path=\"%s\"%s position=1" % [img.path, arg6]
+				bbcode = "[face path=\"%s\"%s position=1" % [img.path.path, arg6]
 			bbcode += arg1 + arg2 + arg3 + arg4 + arg5 + "]"
 		elif img.image_type == 1: # Background Character
 			var character: RPGIcon = img.path

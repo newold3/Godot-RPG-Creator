@@ -28,6 +28,8 @@ class FileStruct:
 ## Toggle to allow multiple file selection in the custom dialog UI
 @export var allow_multiple_selection: bool = false
 
+@export var icon_size_slider: Slider
+
 ## Stores the paths of currently selected files for multi-selection mode
 var current_files_selected: PackedStringArray = []
 
@@ -75,6 +77,8 @@ var auto_play_sounds: bool = false
 
 var current_cache_key: Variant = null
 
+var current_icon_size: int = 96
+
 
 const MAX_CACHE_LAST_SELECTION_FILES = 20
 
@@ -113,7 +117,6 @@ func _ready() -> void:
 	tree_exiting.connect(_save_last_folder_visited)
 	close_requested.connect(_on_cancel_button_pressed)
 	%FileContainer.item_rect_changed.connect(set_all_files_visibility_timer)
-	
 	if FileCache.options:
 		var p_favorite_button_enabled = FileCache.options.get("file_dialog_favorite_toggled", false)
 		%FavoriteButton.set_pressed_no_signal(p_favorite_button_enabled)
@@ -121,6 +124,11 @@ func _ready() -> void:
 		%AllButton.set_pressed_no_signal(p_all_button_enabled)
 		favorite_button_enabled = p_favorite_button_enabled
 		all_button_enabled = p_all_button_enabled
+		if FileCache.options.has("file_dialog_icon_size"):
+			current_icon_size = FileCache.options.file_dialog_icon_size
+	if icon_size_slider:
+		icon_size_slider.value_changed.connect(_on_icon_size_changed)
+		icon_size_slider.value = current_icon_size
 
 
 func _try_play_audio_preview(path: String) -> void:
@@ -481,22 +489,16 @@ func _paginate_next_batch() -> void:
 
 func populate_files() -> void:
 	if queue_files.is_empty(): return
-	
 	%Loading.visible = false
 	%NoFilesFound.visible = false
-	
-	# Priority: Folders first
 	var folders = queue_files.filter(func(f): return f.type == "directory")
 	folders.sort_custom(func(a, b): return a.path.naturalnocasecmp_to(b.path) < 0)
-	
-	# Process batch limit for frames
 	for i in range(min(15, queue_files.size())):
 		if queue_files.is_empty(): break
 		var file = queue_files.pop_front()
-		
 		var file_selector = FILE_SELECTOR.instantiate()
 		%FileContainer.add_child(file_selector)
-		
+		file_selector.set_icon_size(current_icon_size)
 		if file.type == "file":
 			_setup_file_node(file_selector, file.path)
 		else:
@@ -505,8 +507,17 @@ func populate_files() -> void:
 			file_selector.selected.connect(_on_directory_selected)
 			if !all_button_enabled:
 				%FileContainer.move_child(file_selector, 0)
-
 	refresh_delay_timer = 0.05
+
+
+func _on_icon_size_changed(value: float) -> void:
+	current_icon_size = int(value)
+	if FileCache.options != null:
+		FileCache.options.file_dialog_icon_size = current_icon_size
+	for child in %FileContainer.get_children():
+		if child.has_method("set_icon_size"):
+			child.set_icon_size(current_icon_size)
+	_check_all_nodes_visibility()
 
 
 func _setup_file_node(node: Control, path: String) -> void:

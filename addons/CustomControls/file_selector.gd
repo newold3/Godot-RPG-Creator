@@ -288,3 +288,11 @@ func _on_favorite_button_toggled(toggled_on: bool) -> void:
 		add_to_favorite_requested.emit(path)
 	else:
 		remove_from_favorite_requested.emit(path)
+
+
+func set_icon_size(new_size: int) -> void:
+	var size_vec = Vector2(new_size, new_size)
+	custom_minimum_size = size_vec + Vector2(20, 40)
+	if icon:
+		icon.custom_minimum_size = size_vec
+		icon.size = size_vec

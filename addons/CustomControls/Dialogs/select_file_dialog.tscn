@@ -171,7 +171,7 @@ animations = [{
 "speed": 15.0
 }]
 
-[node name="SelectFileDialog" type="Window" unique_id=396582144 groups=["custom_file_dialog"]]
+[node name="SelectFileDialog" type="Window" unique_id=396582144 node_paths=PackedStringArray("icon_size_slider") groups=["custom_file_dialog"]]
 disable_3d = true
 snap_2d_transforms_to_pixel = true
 snap_2d_vertices_to_pixel = true
@@ -186,6 +186,7 @@ min_size = Vector2i(900, 725)
 theme = ExtResource("1_dbw7k")
 script = ExtResource("2_ofpbr")
 ignore_folders = Array[String](["res://addons/effekseer/", "res://Assets/EffekEffects/"])
+icon_size_slider = NodePath("MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer2/IconsSizeSlider")
 
 [node name="Background" type="TextureRect" parent="." unique_id=146094923]
 anchors_preset = 15
@@ -282,6 +283,22 @@ button_pressed = true
 texture_normal = ExtResource("9_56g62")
 texture_pressed = ExtResource("10_umg3t")
 texture_hover = ExtResource("11_of5pj")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer" unique_id=377473746]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1237662456]
+layout_mode = 2
+text = "Icons Size"
+
+[node name="IconsSizeSlider" type="HSlider" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=957775913]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+mouse_default_cursor_shape = 2
+min_value = 96.0
+max_value = 384.0
+value = 96.0
 
 [node name="Control" type="Control" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer" unique_id=1010675120]
 custom_minimum_size = Vector2(0, 4)
@@ -465,6 +482,7 @@ text = "CANCEL"
 
 [node name="Loading" type="Control" parent="MarginContainer" unique_id=1205325084]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 metadata/_edit_group_ = true
 metadata/_edit_lock_ = true
@@ -509,7 +527,7 @@ position = Vector2(-1, 0.5)
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_wjcc4")
 autoplay = "default"
-frame_progress = 0.43547386
+frame_progress = 0.48035714
 
 [node name="Label" type="Label" parent="MarginContainer/Loading/Control" unique_id=2123952533]
 layout_mode = 1

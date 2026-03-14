@@ -27,7 +27,7 @@ func _process(delta: float) -> void:
 func set_data(img: Dictionary) -> void:
 	var current_file
 	busy = true
-
+	
 	if "image_type" in img:
 		img.image_type = clamp(img.image_type, 0, %ImageType.get_item_count() - 1)
 		%ImageType.select(img.image_type)
