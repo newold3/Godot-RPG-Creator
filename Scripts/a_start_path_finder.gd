@@ -18,88 +18,6 @@ func initialize(map: RPGMap) -> void:
 	
 	_build_graph()
 
-func _build_graph() -> void:
-	# 1. Add points
-	for x in range(_map_size.x):
-		for y in range(_map_size.y):
-			var tile = Vector2i(x, y)
-			add_point(_get_id_from_tile(tile), Vector2(x, y))
-
-	# 2. Connect neighbors
-	for x in range(_map_size.x):
-		for y in range(_map_size.y):
-			var current_tile = Vector2i(x, y)
-			
-			if not _is_tile_passable_static(current_tile):
-				continue
-
-			# --- straight neighbors ---
-			_try_connect(current_tile, Vector2i(1, 0), COST_STRAIGHT)  # Right
-			_try_connect(current_tile, Vector2i(0, 1), COST_STRAIGHT)  # Down
-			
-			# --- diagonal neighbors ---
-			_try_connect_diagonal(current_tile, Vector2i(1, 1))   # Down-Right
-			_try_connect_diagonal(current_tile, Vector2i(-1, 1))  # Down-Left
-
-# Attempt to connect with a relative tile (dx, dy)
-func _try_connect(origin: Vector2i, offset: Vector2i, _cost: float) -> void:
-	var target_x = origin.x + offset.x
-	var target_y = origin.y + offset.y
-	var _wrap_h = false
-	var _wrap_v = false
-	
-	# Wrapping X
-	if target_x >= _map_size.x:
-		if _infinite_x: 
-			target_x -= _map_size.x
-			_wrap_h = true
-		else: return
-	elif target_x < 0:
-		if _infinite_x: 
-			target_x += _map_size.x
-			_wrap_h = true
-		else: return
-	
-	# Wrapping Y
-	if target_y >= _map_size.y:
-		if _infinite_y: 
-			target_y -= _map_size.y
-			_wrap_v = true
-		else: return
-	elif target_y < 0:
-		if _infinite_y: 
-			target_y += _map_size.y
-			_wrap_v = true
-		else: return
-
-	var target_tile = Vector2i(target_x, target_y)
-	
-	# Verify that the destination is reachable
-	if _is_tile_passable_static(target_tile):
-		var from_id = _get_id_from_tile(origin)
-		var to_id = _get_id_from_tile(target_tile)
-		
-		# We connect. AStar2D is bidirectional by default.
-		if not are_points_connected(from_id, to_id):
-			connect_points(from_id, to_id, true)
-
-# Special logic for diagonals (avoids cutting corners of walls)
-func _try_connect_diagonal(origin: Vector2i, offset: Vector2i) -> void:
-	var target_x = origin.x + offset.x
-	var target_y = origin.y + offset.y
-	
-	# Quick check of limits before calculating complex logic
-	if not _infinite_x and (target_x < 0 or target_x >= _map_size.x): return
-	if not _infinite_y and (target_y < 0 or target_y >= _map_size.y): return
-	
-	# We obtain the adjacent tiles to see if there is a blocked corner.
-	# Example: If I go Right-Down (1,1), I check Right (1,0) and Down (0,1).
-	var neighbor_h = _get_wrapped_tile(origin + Vector2i(offset.x, 0))
-	var neighbor_v = _get_wrapped_tile(origin + Vector2i(0, offset.y))
-	
-	# Rule: We only connect diagonally if both sides are passable (without cutting through walls).
-	if _is_tile_passable_static(neighbor_h) and _is_tile_passable_static(neighbor_v):
-		_try_connect(origin, offset, COST_DIAGONAL)
 
 func _get_wrapped_tile(tile: Vector2i) -> Vector2i:
 	var x = tile.x
@@ -142,84 +60,21 @@ func _compute_cost(from_id: int, to_id: int) -> float:
 		return COST_DIAGONAL
 	return COST_STRAIGHT
 
+
 func get_next_tile(character: Node2D, current_tile: Vector2i, target_tile: Vector2i) -> Variant:
-	if not _map: return null
-	
+	if not _map:
+		return null
 	var start_id = _get_id_from_tile(current_tile)
 	var end_id = _get_id_from_tile(target_tile)
-	
-	if not has_point(start_id) or not has_point(end_id): return null
-	
+	if start_id < 0 or end_id < 0 or not has_point(start_id) or not has_point(end_id):
+		return null
 	var disabled_points = _disable_dynamic_obstacles(character, target_tile)
-	
-	# Important: get_id_path uses the weights defined in _compute_cost
 	var path_ids = get_id_path(start_id, end_id)
-	
 	_restore_dynamic_obstacles(disabled_points)
-	
 	if path_ids.size() > 1:
 		var next_point_pos = get_point_position(path_ids[1])
 		return Vector2i(next_point_pos)
-	
 	return null
-
-func _disable_dynamic_obstacles(me: Node2D, target_tile: Vector2i) -> Array[int]:
-	var disabled_ids: Array[int] = []
-	
-	# We use a Dictionary to quickly avoid duplicates 
-	# (an event could be close to both the beginning and the end)
-	var obstacles_map: Dictionary = {} 
-	
-	#1. Get events near ME (so I don't crash when I start walking)
-	var nearby_start = _map.map_layout.get_events_near_position(me.global_position)
-	for ev in nearby_start:
-		obstacles_map[ev] = true
-		
-	#2. Obtain events near the DESTINATION (so as not to plan a route to an occupied tile).
-	var target_pos_world = _map.map_to_local(target_tile)
-	var nearby_end = _map.map_layout.get_events_near_position(target_pos_world)
-	for ev in nearby_end:
-		obstacles_map[ev] = true
-
-	# Add vehicles and player
-	var extra_obstacles: Array = []
-	if not me.is_in_group("player") and GameManager.current_player:
-		extra_obstacles.append(GameManager.current_player)
-	extra_obstacles.append_array(_map.get_in_game_vehicles())
-	
-	for obj in extra_obstacles:
-		obstacles_map[obj] = true
-
-	# --- Processing (same as before, but with the reduced list) ---
-	for obj in obstacles_map.keys():
-		var entity = obj
-		
-		# Unwrap if necessary
-		if obj is Object and obj.has_method("get_class") and obj.get_class() == "IngameEvent":
-			entity = obj.lpc_event
-			
-		if not is_instance_valid(entity) or entity == me:
-			continue
-			
-		if not "visible" in entity or not entity.visible:
-			continue
-			
-		# Check solidity
-		var is_solid = true
-		if entity.has_method("is_passable"):
-			is_solid = not entity.is_passable()
-		elif "character_options" in entity:
-			is_solid = not entity.character_options.passable
-			
-		if is_solid:
-			var tile = entity.get_current_tile()
-			if tile != target_tile:
-				var id = _get_id_from_tile(tile)
-				if has_point(id) and not is_point_disabled(id):
-					set_point_disabled(id, true)
-					disabled_ids.append(id)
-					
-	return disabled_ids
 
 
 func _restore_dynamic_obstacles(ids: Array[int]) -> void:
@@ -227,15 +82,28 @@ func _restore_dynamic_obstacles(ids: Array[int]) -> void:
 		if has_point(id):
 			set_point_disabled(id, false)
 
+
 func _get_id_from_tile(tile: Vector2i) -> int:
-	var x = tile.x % _map_size.x
-	var y = tile.y % _map_size.y
-	if x < 0: x += _map_size.x
-	if y < 0: y += _map_size.y
+	var x = tile.x
+	var y = tile.y
+	if _infinite_x:
+		x = x % _map_size.x
+		if x < 0:
+			x += _map_size.x
+	elif x < 0 or x >= _map_size.x:
+		return -1
+	if _infinite_y:
+		y = y % _map_size.y
+		if y < 0:
+			y += _map_size.y
+	elif y < 0 or y >= _map_size.y:
+		return -1
 	return y * _map_size.x + x
 
+
 func _is_tile_passable_static(tile: Vector2i) -> bool:
-	return _map.is_tile_passable_from_direction(tile, 2) # 2 = DOWN as a reference
+	return _map.is_tile_passable_from_direction(tile, 2)
+
 
 func vector2_to_direction(motion: Vector2i) -> int:
 	if _infinite_x:
@@ -267,3 +135,144 @@ func direction_to_vector2i(search_dir: int) -> Vector2i:
 		CharacterBase.DIRECTIONS.RIGHT: return Vector2i.RIGHT
 		CharacterBase.DIRECTIONS.UP: return Vector2i.UP
 		_: return Vector2i.DOWN
+
+
+func update_tile_connections(tile: Vector2i) -> void:
+	var id = _get_id_from_tile(tile)
+	if not has_point(id):
+		return
+	for connected_id in get_point_connections(id):
+		disconnect_points(id, connected_id)
+	if not _is_tile_passable_static(tile):
+		return
+	_try_connect(tile, Vector2i(1, 0))
+	_try_connect(tile, Vector2i(-1, 0))
+	_try_connect(tile, Vector2i(0, 1))
+	_try_connect(tile, Vector2i(0, -1))
+	_try_connect_diagonal(tile, Vector2i(1, 1))
+	_try_connect_diagonal(tile, Vector2i(-1, 1))
+	_try_connect_diagonal(tile, Vector2i(1, -1))
+	_try_connect_diagonal(tile, Vector2i(-1, -1))
+
+
+func _disable_dynamic_obstacles(me: Node2D, target_tile: Vector2i) -> Array[int]:
+	var disabled_ids: Array[int] = []
+	var obstacles_to_disable: Array[Dictionary] = []
+	if not me.is_in_group("player") and GameManager.current_player:
+		var add_player = true
+		if GameManager.current_player.is_on_vehicle and GameManager.current_player.current_vehicle == me:
+			add_player = false
+		if add_player:
+			obstacles_to_disable.append({
+				"tile": GameManager.current_player.get_current_tile(),
+				"entity": GameManager.current_player
+			})
+	if "entity_manager" in _map and _map.entity_manager and "current_ingame_vehicles" in _map.entity_manager:
+		for vehicle in _map.entity_manager.current_ingame_vehicles:
+			var v_tile = _map.local_to_map(Vector2i(vehicle.global_position))
+			obstacles_to_disable.append({"tile": v_tile, "entity": vehicle})
+			if vehicle.get("extra_dimensions"):
+				var extra = vehicle.extra_dimensions
+				var v_left = v_tile.x - extra.grow_left
+				var v_right = v_tile.x + extra.grow_right + 1
+				var v_up = v_tile.y - extra.grow_up
+				var v_down = v_tile.y + extra.grow_down + 1
+				for x in range(v_left, v_right):
+					for y in range(v_up, v_down):
+						obstacles_to_disable.append({"tile": Vector2i(x, y), "entity": vehicle})
+	for ev in me.get_tree().get_nodes_in_group("extraction_event"):
+		if "is_started" in ev and ev.is_started:
+			var ev_tile = _map.local_to_map(Vector2i(ev.global_position))
+			obstacles_to_disable.append({"tile": ev_tile, "entity": ev})
+	if "entity_manager" in _map and _map.entity_manager and "current_ingame_events" in _map.entity_manager:
+		for ev in _map.entity_manager.current_ingame_events.values():
+			if not ev:
+				continue
+			var lpc = ev.get("lpc_event") if "lpc_event" in ev else null
+			if lpc and is_instance_valid(lpc):
+				var is_solid = true
+				if lpc.has_method("is_passable"):
+					is_solid = not lpc.is_passable()
+				elif "character_options" in lpc and lpc.character_options:
+					is_solid = not lpc.character_options.passable
+				if is_solid:
+					obstacles_to_disable.append({"tile": lpc.get_current_tile(), "entity": lpc})
+	if "ingame_event_regions" in _map:
+		for shape in _map.ingame_event_regions:
+			if is_instance_valid(shape) and not shape.disabled and shape.has_meta("type") and shape.get_meta("type") == "collision_region":
+				var region_data = shape.get_meta("region_data")
+				var rect = region_data.rect
+				for x in range(int(rect.position.x), int(rect.position.x + rect.size.x)):
+					for y in range(int(rect.position.y), int(rect.position.y + rect.size.y)):
+						obstacles_to_disable.append({"tile": Vector2i(x, y), "entity": shape})
+	for obs in obstacles_to_disable:
+		var tile = obs["tile"]
+		var entity = obs["entity"]
+		if entity == me:
+			continue
+		if tile != target_tile:
+			var id = _get_id_from_tile(tile)
+			if has_point(id) and not is_point_disabled(id):
+				set_point_disabled(id, true)
+				disabled_ids.append(id)
+	return disabled_ids
+
+
+func _try_connect(origin: Vector2i, offset: Vector2i) -> void:
+	var target_x = origin.x + offset.x
+	var target_y = origin.y + offset.y
+	if target_x >= _map_size.x:
+		if _infinite_x:
+			target_x -= _map_size.x
+		else:
+			return
+	elif target_x < 0:
+		if _infinite_x:
+			target_x += _map_size.x
+		else:
+			return
+	if target_y >= _map_size.y:
+		if _infinite_y:
+			target_y -= _map_size.y
+		else:
+			return
+	elif target_y < 0:
+		if _infinite_y:
+			target_y += _map_size.y
+		else:
+			return
+	var target_tile = Vector2i(target_x, target_y)
+	if _is_tile_passable_static(target_tile):
+		var from_id = _get_id_from_tile(origin)
+		var to_id = _get_id_from_tile(target_tile)
+		if not are_points_connected(from_id, to_id):
+			connect_points(from_id, to_id, true)
+
+
+func _try_connect_diagonal(origin: Vector2i, offset: Vector2i) -> void:
+	var target_x = origin.x + offset.x
+	var target_y = origin.y + offset.y
+	if not _infinite_x and (target_x < 0 or target_x >= _map_size.x):
+		return
+	if not _infinite_y and (target_y < 0 or target_y >= _map_size.y):
+		return
+	var neighbor_h = _get_wrapped_tile(origin + Vector2i(offset.x, 0))
+	var neighbor_v = _get_wrapped_tile(origin + Vector2i(0, offset.y))
+	if _is_tile_passable_static(neighbor_h) and _is_tile_passable_static(neighbor_v):
+		_try_connect(origin, offset)
+
+
+func _build_graph() -> void:
+	for x in range(_map_size.x):
+		for y in range(_map_size.y):
+			var tile = Vector2i(x, y)
+			add_point(_get_id_from_tile(tile), Vector2(x, y))
+	for x in range(_map_size.x):
+		for y in range(_map_size.y):
+			var current_tile = Vector2i(x, y)
+			if not _is_tile_passable_static(current_tile):
+				continue
+			_try_connect(current_tile, Vector2i(1, 0))
+			_try_connect(current_tile, Vector2i(0, 1))
+			_try_connect_diagonal(current_tile, Vector2i(1, 1))
+			_try_connect_diagonal(current_tile, Vector2i(-1, 1))

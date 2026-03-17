@@ -29,38 +29,6 @@ func restart():
 		main_menu_items.restart()
 
 
-func _select_action_from_main_buttons(id: int) -> void:
-	var button: MainMenuButton = main_menu_items.get_button(id)
-	
-	if not button or not button.is_enabled:
-		return
-
-	button.keep_selected_state = true
-	button.perform_click()
-		
-	party_menu.set_order_mode(main_menu_items.current_button_index == 4)
-	match main_menu_items.current_button_index:
-		0: # Items
-			select_party()
-		1: # Skills
-			select_party()
-		2: # Equipment
-			select_party()
-		3: # Status
-			select_party()
-		4: # Formation
-			select_party()
-			current_party_buttons_selected.clear()
-		5: # Quests
-			pass
-		6: # Save
-			_show_save_menu(button)
-		7: # Options
-			pass
-		8: # Game End
-			GameManager.restart()
-
-
 func select_party() -> void:
 	var button = main_menu_items.get_button(main_menu_items.current_button_index)
 	if button:
@@ -199,56 +167,11 @@ func _on_main_menu_items_begin_click(id: int) -> void:
 			busy = false
 
 
-func _cancel_party_menu() -> void:
-	if current_party_buttons_selected:
-		for id in current_party_buttons_selected:
-			party_menu.clear_force_selection(id)
-		current_party_buttons_selected.clear()
-	GameManager.play_fx("cancel")
-	party_menu.disabled()
-	main_menu_items.remove_any_keep_state()
-	main_menu_items.disable_animations()
-	main_menu_items.enabled()
-	await main_menu_items.select_button()
-	main_menu_items.enable_animations()
-
-
 func _on_main_menu_items_finish() -> void:
 	main_menu_items.disabled()
 	party_menu.disabled()
 	end.emit()
 	party_menu.end()
-
-
-func _on_party_formation_request(_id: int) -> void:
-	var last_party_button_selected = party_menu.current_panel_selected
-	party_menu.force_selection(last_party_button_selected)
-	party_menu.current_panel_selected = last_party_button_selected
-	_on_main_menu_items_begin_click(last_party_button_selected)
-
-
-func _on_party_menu_clicked(id: int) -> void:
-	GameManager.play_fx("ok")
-	match main_menu_items.current_button_index:
-		0: # Items
-			_show_item_menu("items")
-		1: # Skills
-			_show_item_menu("skills")
-		2: # Equipment
-			_show_equip_menu()
-		3: # Status
-			pass
-		4: # Formation
-			_on_party_formation_request(id)
-			pass
-		5: # Quests
-			pass
-		6: # Save
-			pass
-		7: # Options
-			pass
-		8: # Game End
-			pass
 
 
 func _show_item_menu(id: String) -> void:

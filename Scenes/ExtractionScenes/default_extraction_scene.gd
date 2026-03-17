@@ -30,6 +30,9 @@ func _ready() -> void:
 	if not Engine.is_editor_hint():
 		%FinalShadow.texture = %ViewportTextures.get_texture()
 		%FinalSprite.texture = %ViewportTextures.get_texture()
+	
+	if not is_in_group("extraction_event"):
+		add_to_group("extraction_event")
 
 	start()
 

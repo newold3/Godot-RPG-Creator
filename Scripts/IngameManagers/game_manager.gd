@@ -768,6 +768,11 @@ func show_menu() -> void:
 
 func create_main_menu() -> void:
 	if menu_manager: menu_manager.create_main_menu()
+
+
+func get_items(include_hidden_items: bool = false, sort_mode: int = 0, collection: int = 0) -> Array:
+	if inventory_manager: return inventory_manager.get_items(include_hidden_items, sort_mode, collection)
+	return []
 #endregion
 
 

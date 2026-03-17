@@ -28,8 +28,6 @@ func ignore_start_animation() -> void:
 	for t in tweens:
 		if t.is_valid() and t.has_meta("underwater_start_tween"):
 			t.kill()
-	if GameManager.main_scene:
-		GameManager.main_scene.modulate = modulate_scene
 
 
 func set_repeat_and_foam() -> void:

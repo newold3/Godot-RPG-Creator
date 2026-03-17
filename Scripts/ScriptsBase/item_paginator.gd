@@ -58,8 +58,9 @@ var current_page: int = 0
 var total_items: int = 0
 var inner_panel: PanelContainer
 var hbox: HBoxContainer
+var enabled: bool = false
 
-var manipulator = GameManager.MANIPULATOR_MODES.PAGINATOR1
+var manipulator: String
 
 
 ## Configures the internal layout container structure
@@ -89,6 +90,8 @@ func setup_pagination(total: int) -> void:
 
 ## Handles the internal page assignment and emits the signal to external listeners
 func _set_page(page: int) -> void:
+	if not enabled or GameManager.get_cursor_manipulator() != manipulator: return
+	
 	var total_pages = 1
 	if items_per_page > 0:
 		total_pages = max(1, int(ceil(total_items / float(items_per_page))))

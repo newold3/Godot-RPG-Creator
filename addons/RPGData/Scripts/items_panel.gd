@@ -40,7 +40,7 @@ func _update_data_fields() -> void:
 		%ItemTypeOptions.select(current_data.item_type)
 
 		%PriceSpinBox.value = current_data.price
-		%ConsumableOptions.select(current_data.consumable)
+		%ConsumableOptions.select(0 if current_data.consumable else 1)
 		%OccasionOptions.select(current_data.occasion)
 		%SpeedSpinBox.value = current_data.invocation.speed
 		%SuccessSpinBox.value = current_data.invocation.success
@@ -411,7 +411,7 @@ func _on_price_spin_box_value_changed(value: float) -> void:
 
 
 func _on_consumable_options_item_selected(index: int) -> void:
-	get_data().consumable = index
+	get_data().consumable = index == 0
 
 
 func _on_occasion_options_item_selected(index: int) -> void:

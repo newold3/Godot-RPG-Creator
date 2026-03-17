@@ -13,6 +13,7 @@ func get_class(): return "IngameGearSet"
 @export var quantity: int = 0 # Number of items in possession of this type
 @export var type: int # Indicates the type of equipment (0 = IngameCostume, 1 = IngameGearSet)
 @export var newly_added: bool = false
+@export var last_added_date: int = 0 # Date of most recent acquisition
 
 
 func clear() -> void:

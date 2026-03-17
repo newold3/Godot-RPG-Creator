@@ -213,8 +213,6 @@ grow_vertical = 2
 
 [node name="Dialog" parent="MessageCanvas/Control" unique_id=1651516393 node_paths=PackedStringArray("character_container") instance=ExtResource("4_re3ur")]
 unique_name_in_owner = true
-modulate = Color(1, 1, 1, 0)
-custom_minimum_size = Vector2(0, 0)
 layout_mode = 2
 character_container = NodePath("../../MessageCharacterImages")
 
@@ -222,7 +220,14 @@ character_container = NodePath("../../MessageCharacterImages")
 unique_name_in_owner = true
 layer = 121
 
-[node name="AnimateItems" parent="OverMessageCanvas" unique_id=540726037 instance=ExtResource("8_huasi")]
+[node name="GUICanvas" type="CanvasLayer" parent="." unique_id=964964266]
+unique_name_in_owner = true
+layer = 125
+
+[node name="TopLayer" type="CanvasLayer" parent="." unique_id=433255389]
+layer = 1000
+
+[node name="AnimateItems" parent="TopLayer" unique_id=540726037 instance=ExtResource("8_huasi")]
 unique_name_in_owner = true
 icon_size = Vector2(22, 22)
 move_duration = 0.5
@@ -230,10 +235,6 @@ bounce_distance = 5.0
 vertical_spacing = -10.0
 horizontal_offset = -2.0
 spawn_delay = 0.15
-
-[node name="GUICanvas" type="CanvasLayer" parent="." unique_id=964964266]
-unique_name_in_owner = true
-layer = 125
 
 [node name="AudioPlayerContainer" type="Node" parent="." unique_id=1894868300]
 
@@ -266,3 +267,5 @@ unique_name_in_owner = true
 
 [node name="SEPlayer5" type="AudioStreamPlayer" parent="AudioPlayerContainer" unique_id=1388112149]
 unique_name_in_owner = true
+
+[connection signal="item_rect_changed" from="MessageCanvas/Control/Dialog/@CanvasLayer@19291/Message" to="MessageCanvas/Control/Dialog" method="_on_message_item_rect_changed"]

@@ -3,11 +3,23 @@
 [ext_resource type="Script" uid="uid://dsgyai8wihrkl" path="res://Scenes/GUI/SteamPunkTheme/Dialogs/steam_punk_dialog.gd" id="1_nionb"]
 [ext_resource type="Texture2D" uid="uid://duu13dsov6vp5" path="res://Assets/Images/GUI/main_gui.png" id="2_0lvpg"]
 [ext_resource type="Texture2D" uid="uid://deswo4ps8byb3" path="res://Scenes/GUI/SteamPunkTheme/Assets/steampunk_elements2.png" id="3_7mx6h"]
-[ext_resource type="Texture2D" uid="uid://bm0yrsmhngopc" path="res://icon.png" id="5_fmaof"]
+[ext_resource type="Texture2D" uid="uid://bm0yrsmhngopc" path="res://icon.png" id="4_7mx6h"]
 [ext_resource type="Texture2D" uid="uid://bhqd5ifsmvk80" path="res://Scenes/GUI/SteamPunkTheme/Assets/dialog_advance_button.png" id="5_vcjpn"]
 [ext_resource type="AudioStream" uid="uid://c3u4nydr45dly" path="res://Assets/Sounds/typewrite2.ogg" id="29_am4vp"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0aoe3"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vcjpn"]
+atlas = ExtResource("3_7mx6h")
+region = Rect2(51, 30, 198, 21)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_joi3w"]
+atlas = ExtResource("3_7mx6h")
+region = Rect2(267, 30, 19, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xblmr"]
+atlas = ExtResource("3_7mx6h")
+region = Rect2(336, 30, 172, 20)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jkrir"]
 
@@ -86,19 +98,19 @@ func _process(delta: float) -> void:
 "
 
 [node name="SteamPunkDialog" type="PanelContainer" unique_id=1723936875]
-custom_minimum_size = Vector2(184, 68)
+custom_minimum_size = Vector2(147, 31)
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -226.0
+offset_left = -204.5
 offset_top = -170.0
-offset_right = 226.0
+offset_right = 204.5
 offset_bottom = -38.0
 grow_horizontal = 2
 grow_vertical = 0
-pivot_offset = Vector2(226, 66)
+pivot_offset = Vector2(204.5, 66)
 size_flags_horizontal = 4
 size_flags_vertical = 10
 theme_override_styles/panel = SubResource("StyleBoxEmpty_0aoe3")
@@ -108,6 +120,8 @@ test_dialog_box = "[showbox type=0 val=\"Left name\" pos=0]
 [face path=\"res://icon.png\" trans_type=1 trans_time=0 trans_wait=0]
 [face path=\"res://icon.png\" position=1 trans_type=1 trans_time=0 trans_wait=0]
 Test Message."
+minimun_dialog_width = 60
+minimun_dialog_height = 8
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=378078240]
 layer = 0
@@ -154,11 +168,11 @@ layout_mode = 2
 texture = ExtResource("2_0lvpg")
 region_rect = Rect2(436, 94, 110, 132)
 patch_margin_left = 31
-patch_margin_top = 37
+patch_margin_top = 50
 patch_margin_right = 30
-patch_margin_bottom = 40
-axis_stretch_horizontal = 1
-axis_stretch_vertical = 1
+patch_margin_bottom = 46
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
 
 [node name="DecorationTop1" type="MarginContainer" parent="MainMargin/BackgroundContainer" unique_id=1426843620]
 layout_mode = 2
@@ -201,14 +215,33 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 14
 theme_override_constants/margin_bottom = -2
 
-[node name="NinePatchRect" type="NinePatchRect" parent="MainMargin/BackgroundContainer/DecorationBotton" unique_id=1022291401]
-custom_minimum_size = Vector2(0, 10.725)
+[node name="HBoxContainer" type="HBoxContainer" parent="MainMargin/BackgroundContainer/DecorationBotton" unique_id=587780278]
 layout_mode = 2
-size_flags_vertical = 8
-texture = ExtResource("3_7mx6h")
-region_rect = Rect2(51, 30, 457, 20)
-patch_margin_left = 216
-patch_margin_right = 208
+theme_override_constants/separation = 0
+
+[node name="TextureRect" type="TextureRect" parent="MainMargin/BackgroundContainer/DecorationBotton/HBoxContainer" unique_id=1341325615]
+custom_minimum_size = Vector2(0, 11)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.2
+texture = SubResource("AtlasTexture_vcjpn")
+expand_mode = 1
+
+[node name="TextureRect3" type="TextureRect" parent="MainMargin/BackgroundContainer/DecorationBotton/HBoxContainer" unique_id=1827033765]
+custom_minimum_size = Vector2(0, 11)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.6
+texture = SubResource("AtlasTexture_joi3w")
+expand_mode = 1
+
+[node name="TextureRect2" type="TextureRect" parent="MainMargin/BackgroundContainer/DecorationBotton/HBoxContainer" unique_id=878944156]
+custom_minimum_size = Vector2(0, 11)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.2
+texture = SubResource("AtlasTexture_xblmr")
+expand_mode = 1
 
 [node name="NameContainer" type="MarginContainer" parent="MainMargin" unique_id=2043527956]
 unique_name_in_owner = true
@@ -368,7 +401,7 @@ unique_name_in_owner = true
 show_behind_parent = true
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("5_fmaof")
+texture = ExtResource("4_7mx6h")
 expand_mode = 1
 stretch_mode = 5
 
@@ -379,16 +412,16 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 mouse_filter = 2
-theme_override_constants/margin_left = 0
+theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 8
-theme_override_constants/margin_right = 0
+theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 12
 
 [node name="Message" type="RichTextLabel" parent="MainMargin/DialogMainContainer/HBoxContainer/MessageContainer" unique_id=281319225]
 unique_name_in_owner = true
 process_priority = 12
 clip_children = 2
-custom_minimum_size = Vector2(184, 68)
+custom_minimum_size = Vector2(147, 31)
 layout_mode = 2
 mouse_filter = 2
 theme_override_colors/default_color = Color(1, 1, 1, 1)
@@ -401,7 +434,6 @@ bbcode_enabled = true
 text = "[transition_fade duration=0.3][font=\"res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf\"][font_size=22][color=\"#ffffffff\"]Test Message.[/color][/font_size][/font][/transition_fade]"
 fit_content = true
 scroll_active = false
-custom_effects = []
 visible_characters = 13
 visible_characters_behavior = 1
 
@@ -425,7 +457,7 @@ unique_name_in_owner = true
 show_behind_parent = true
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("5_fmaof")
+texture = ExtResource("4_7mx6h")
 expand_mode = 1
 stretch_mode = 5
 flip_h = true
@@ -445,17 +477,18 @@ mouse_filter = 2
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="MainMargin/AdvanceCursorContainer/Control" unique_id=1593193539]
 position = Vector2(0, -4.3397465)
-rotation = 1165.8938
+rotation = 5275.0054
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_xblmr")
 autoplay = "default"
-frame_progress = 0.622981
+frame_progress = 0.30852747
 speed_scale = 6.0
 script = SubResource("GDScript_8ogf7")
 
 [node name="TypeWritePlayer" type="AudioStreamPlayer" parent="." unique_id=1053585720]
 unique_name_in_owner = true
 stream = ExtResource("29_am4vp")
-pitch_scale = 0.8504127
+pitch_scale = 0.8924465
 
 [connection signal="item_rect_changed" from="MainMargin/DialogMainContainer/HBoxContainer/MessageContainer/Message" to="." method="_on_message_item_rect_changed"]
+[connection signal="item_rect_changed" from="@CanvasLayer@19399/Message" to="." method="_on_message_item_rect_changed"]

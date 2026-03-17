@@ -292,6 +292,7 @@ var wait_for_user_option_selected_enabled: bool = false
 
 var is_new_dialog: bool = true
 var is_multi_dialog: bool = false
+var has_next_dialog: bool = false
 var is_editor_prevew: bool = false
 
 var speaker_text_color: Color = Color.TRANSPARENT
@@ -334,6 +335,9 @@ var time: float:
 
 var current_dialog_size
 
+var size_canvas_layer: CanvasLayer
+var size_message: RichTextLabel
+
 # Reference self for use in transition effects.
 static var instance
 
@@ -354,7 +358,23 @@ func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	instance = self
 	perform_resume_dialog.connect(_on_resume_dialog)
+	update_ghost_size_node()
 	reset()
+
+
+func update_ghost_size_node() -> void:
+	if not size_canvas_layer:
+		size_canvas_layer = CanvasLayer.new()
+		size_canvas_layer.layer = -1
+		add_child(size_canvas_layer)
+	if size_message:
+		size_message.queue_free()
+	size_message = message.duplicate()
+	size_canvas_layer.add_child(size_message)
+	size_message.modulate.a = 0.0
+	size_message.visible_characters = -1
+	size_message.custom_minimum_size = Vector2.ZERO
+	size_message.size = Vector2.ZERO
 
 
 func resume() -> void:
@@ -418,6 +438,8 @@ func _process(delta: float) -> void:
 		return
 	
 	if is_floating:
+		if is_instance_valid(anchor_node):
+			set_position_over_node()
 		if busy and instant_text_enabled: return
 	else:
 		if instant_text_enabled and busy_until_resume and not busy:
@@ -520,7 +542,7 @@ func setup() -> void:
 		message_finished.connect(_show_wait_form_input_cursor)
 
 
-func setup_effects():
+func setup_effects() -> void:
 	var paths = [
 		"res://addons/CustomControls/Resources/RichTextEffects/ColorMod.gd",
 		"res://addons/CustomControls/Resources/RichTextEffects/Cuss.gd",
@@ -539,11 +561,11 @@ func setup_effects():
 	
 	for path in paths:
 		var effect = load(path).new()
-		if !message: return
-		message.install_effect(effect)
+		if message: message.install_effect(effect)
+		if size_message: size_message.install_effect(effect)
 
 
-func setup_transitions():
+func setup_transitions() -> void:
 	var paths = [
 		"res://addons/CustomControls/Resources/RichTextEffects/Transitions/Bounce.gd",
 		"res://addons/CustomControls/Resources/RichTextEffects/Transitions/Console.gd",
@@ -559,11 +581,15 @@ func setup_transitions():
 	
 	for path in paths:
 		var effect = load(path).new()
-		if !message: return
-		message.install_effect(effect)
+		if message: message.install_effect(effect)
+		if size_message: size_message.install_effect(effect)
 	
 	for effect in message.custom_effects:
 		effect.set_meta("dialog", self)
+		
+	if size_message:
+		for effect in size_message.custom_effects:
+			effect.set_meta("dialog", self)
 
 
 func parse_text(text: String) -> String:
@@ -767,12 +793,11 @@ func parse_args(command: String) -> Dictionary:
 		args[command_name] = value
 	return args
 
-# Borrar 1
-# Borrar 2
+
 func reset() -> void:
 	if not message: return
-	message.text = ""
 	if (is_new_dialog and not is_multi_dialog) or is_editor_prevew:
+		message.text = ""
 		modulate.a = 0.0
 		for key in tweens:
 			if key == "others":
@@ -810,26 +835,27 @@ func reset() -> void:
 	wait_for_input_enabled = true
 	wait_for_input_time = 0.0
 
-	for obj in images.duplicate():
-		obj.kill()
+	if not is_multi_dialog:
+		for obj in images.duplicate():
+			obj.kill()
+		%NameLeftContainer.visible = false
+		%NameRightContainer.visible = false
+		%LeftIconFace.get_parent().visible = false
+		%RightIconFace.get_parent().visible = false
+		%LeftIconFace.texture = null
+		%RightIconFace.texture = null
+		%NameLeft.text = ""
+		%NameRight.text = ""
 
 	special_commands.clear()
 	for obj in sounds: obj.queue_free()
 	sounds.clear()
 	paragraphs.clear()
 	%TypeWritePlayer.stop()
-	%NameLeftContainer.visible = false
-	%NameLeft.text = ""
-	%NameRightContainer.visible = false
-	%NameRight.text = ""
 	
-	%LeftIconFace.texture = null
-	%LeftIconFace.get_parent().visible = false
 	%LeftIconFace.get_parent().modulate = Color.WHITE
 	%LeftIconFace.get_parent().scale = Vector2.ONE
 	
-	%RightIconFace.texture = null
-	%RightIconFace.get_parent().visible = false
 	%RightIconFace.get_parent().modulate = Color.WHITE
 	%RightIconFace.get_parent().scale = Vector2.ONE
 	
@@ -919,7 +945,6 @@ func try_select_bbcode(text: String, cursor_pos: int) -> String:
 
 func set_message_config(config: Dictionary) -> void:
 	if not message: return
-
 	var target_scene_path = config.get("scene_path", "")
 	if target_scene_path and target_scene_path != scene_file_path:
 		var new_scene = load(target_scene_path)
@@ -929,10 +954,8 @@ func set_message_config(config: Dictionary) -> void:
 			if parent:
 				parent.add_child(new_dialog)
 				parent.move_child(new_dialog, get_index())
-			
 			new_dialog.name = name
 			new_dialog.unique_name_in_owner = true
-			
 			var signals = get_signal_list()
 			for sig in signals:
 				var sig_name = sig.name
@@ -943,14 +966,11 @@ func set_message_config(config: Dictionary) -> void:
 						if target_callable.get_object() != self:
 							if not new_dialog.is_connected(sig_name, target_callable):
 								new_dialog.connect(sig_name, target_callable, conn.flags)
-			
 			new_dialog.setup()
 			GameManager.message = new_dialog
-			
 			new_dialog.set_message_config(config)
 			queue_free()
 			return
-	
 	message_max_lines = config.get("max_lines", 4)
 	message_max_width = config.get("max_width", 800)
 	max_character_delay = config.get("character_delay", 0.03)
@@ -974,11 +994,9 @@ func set_message_config(config: Dictionary) -> void:
 		text_fx = load(fx)
 	else:
 		text_fx = null
-		
 	text_fx_volume = config.get("fx_volume", 0.0)
 	text_fx_min_pitch = config.get("fx_pitch_min", 0.7)
 	text_fx_max_pitch = config.get("fx_pitch_max", 1.1)
-	
 	current_text_fx = text_fx
 	current_text_fx_volume = text_fx_volume
 	current_text_fx_min_pitch = text_fx_min_pitch
@@ -987,25 +1005,22 @@ func set_message_config(config: Dictionary) -> void:
 	backup_blip.current_text_fx_min_pitch = current_text_fx_min_pitch
 	backup_blip.current_text_fx_max_pitch = current_text_fx_max_pitch
 	backup_blip.current_text_fx_volume = current_text_fx_volume
-	
 	default_font = config.get("font", DEFAULTFONT)
 	default_text_color = config.get("text_color", Color.WHITE)
 	default_text_size = config.get("text_size", 22)
 	default_text_align = config.get("text_align", 0)
-	
 	text_box_margin_left = config.get("text_box_margin_left", 16)
 	text_box_margin_right = config.get("text_box_margin_right", 16)
 	text_box_margin_top = config.get("text_box_margin_top", 16)
 	text_box_margin_bottom = config.get("text_box_margin_bottom", 16)
 	text_box_position = config.get("text_box_position", 7)
-	
 	message.set("theme_override_constants/outline_size", config.get("outline_size", 2))
 	var shadow_offset = config.get("shadow_offset", Vector2(2, 2))
 	message.set("theme_override_constants/shadow_offset_x", shadow_offset.x)
 	message.set("theme_override_constants/shadow_offset_y", shadow_offset.y)
 	message.set("theme_override_colors/font_outline_color", config.get("outline_color", Color.BLACK))
 	message.set("theme_override_colors/font_shadow_color", config.get("outline_color", Color("#00000093")))
-	
+	update_ghost_size_node()
 	if not is_floating:
 		set_position_preset()
 	else:
@@ -1057,14 +1072,15 @@ func set_position_preset() -> void:
 
 
 func set_position_over_node() -> void:
-	if anchor_node:
+	if is_instance_valid(anchor_node) and anchor_node.is_inside_tree():
 		var up_node = anchor_node.get_node_or_null("%Up")
 		var p: Vector2
 		if up_node:
 			p = up_node.get_global_transform_with_canvas().origin
 		else:
 			p = anchor_node.get_global_transform_with_canvas().origin
-		position = p - Vector2(size.x * 0.5, size.y) * scale
+		position = p - Vector2(size.x * 0.5, size.y)
+
 
 
 func get_parameters(index: int, _parameters: Dictionary) -> Dictionary:
@@ -1099,7 +1115,12 @@ func set_initial_config(config: Dictionary) -> void:
 	force_no_wait_for_input = initial_config.get("no_wait_for_input", false)
 	#if is_floating:
 		#instant_text_enabled = true
-	anchor_node = initial_config.get("anchor_node", null)
+		
+	anchor_node = null
+	var new_anchor_node = initial_config.get("anchor_node", null)
+	if is_instance_valid(new_anchor_node) and is_instance_valid(new_anchor_node.lpc_event):
+		anchor_node = new_anchor_node.lpc_event
+		
 	if is_floating:
 		%BackgroundContainer.set("theme_override_constants/margin_left", 0)
 		%BackgroundContainer.set("theme_override_constants/margin_top", 0)
@@ -1149,9 +1170,12 @@ func _get_initial_config_commands() -> String:
 
 	return commands
 
-# print("Parsed text:\n______________\n", text, "\n______________")
 func setup_text(text: String, use_soft_reset: bool = false, _is_additional_text: bool = false) -> void:
 	if not is_inside_tree() or is_queued_for_deletion(): return
+	
+	var ini_size_self = self.size
+	var ini_size_message = message.size
+	
 	if not instant_text_enabled: busy_until_resume = true
 	if !use_soft_reset:
 		reset()
@@ -1162,18 +1186,49 @@ func setup_text(text: String, use_soft_reset: bool = false, _is_additional_text:
 			text = clean_structural_newlines(text)
 	else:
 		soft_reset()
+	
 	await get_tree().process_frame
+	
 	if !use_soft_reset:
 		setup_paragraphs(text)
+	
 	if paragraphs.is_empty(): return
+	
 	text = paragraphs.pop_front()
 	text = text.strip_edges()
+	
 	if speaker_text_color != Color.TRANSPARENT:
 		text = "[color=#%s]" % speaker_text_color.to_html() + text + "[/color]"
+	
 	text = parse_text(text)
 	modulate.a = 1.0
-	message.text = text
-	if message.get_parsed_text().strip_edges().is_empty():
+	
+	var measure_text = text
+	var align_tags = ["[center]", "[/center]", "[right]", "[/right]", "[fill]", "[/fill]"]
+	for tag in align_tags:
+		measure_text = measure_text.replace(tag, "")
+
+	size_message.custom_minimum_size = Vector2(message_max_width, 0)
+	size_message.size = Vector2(message_max_width, 0)
+	size_message.text = measure_text
+	size_message.visible_characters = -1
+	
+	await get_tree().process_frame
+	
+	var raw_width = size_message.get_content_width()
+	var final_text_width = clamp(raw_width, minimun_dialog_width, message_max_width)
+	size_message.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	size_message.custom_minimum_size = Vector2(final_text_width, 0)
+	size_message.size = Vector2(final_text_width, 0)
+	message.autowrap_mode = TextServer.AUTOWRAP_OFF
+	
+	await get_tree().process_frame
+	
+	var final_text_height = max(minimun_dialog_height, size_message.get_content_height())
+	size_message.set_meta("optimal_width", final_text_width)
+	size_message.set_meta("optimal_height", final_text_height)
+	
+	if size_message.get_parsed_text().strip_edges().is_empty():
 		for command in special_commands:
 			if not command.completed:
 				await start_special_command(command)
@@ -1182,19 +1237,14 @@ func setup_text(text: String, use_soft_reset: bool = false, _is_additional_text:
 		else:
 			all_messages_finished.emit()
 		return
-	if not is_multi_dialog:
-		await precalculate_dialog_size(use_soft_reset)
-	else:
-		size = current_dialog_size
-	current_dialog_size = size
-	message.visible_characters = -1
-	var current_lines = message.get_line_count()
+	
+	var current_lines = size_message.get_line_count()
 	if current_lines > 1:
 		var indexes = []
 		var current_line = 0
-		var text_parsed = message.get_parsed_text()
+		var text_parsed = size_message.get_parsed_text()
 		for i in range(1, text_parsed.length(), 1):
-			var letter_line = message.get_character_line(i)
+			var letter_line = size_message.get_character_line(i)
 			if letter_line != current_line and letter_line != -1:
 				current_line = letter_line
 				var prev_char = text_parsed[i - 1]
@@ -1246,28 +1296,81 @@ func setup_text(text: String, use_soft_reset: bool = false, _is_additional_text:
 						j += 1
 				else:
 					break
-	text = text.replace("  ", " ")
+	
+	text = text.replace("  ", " ")
+	
+	if is_multi_dialog:
+		var has_l_face = false
+		var has_r_face = false
+		var has_l_name = false
+		var has_r_name = false
+		for c in special_commands:
+			if c.name == "face":
+				if c.parameters.get("position", 0) == 1: has_r_face = true
+				else: has_l_face = true
+			elif c.name == "showbox":
+				if c.parameters.get("pos", 0) == 1: has_r_name = true
+				else: has_l_name = true
+		
+		if not has_l_face:
+			%LeftIconFace.get_parent().visible = false
+			%LeftIconFace.texture = null
+		if not has_r_face:
+			%RightIconFace.get_parent().visible = false
+			%RightIconFace.texture = null
+		if not has_l_name:
+			%NameLeftContainer.visible = false
+			%NameLeft.text = ""
+		if not has_r_name:
+			%NameRightContainer.visible = false
+			%NameRight.text = ""
+
+	var real_size = precalculate_dialog_size(use_soft_reset)
+	message.fit_content = false
 	message.text = text
 	message.visible_characters = 0
+	
+	if not is_multi_dialog:
+		current_dialog_size = real_size
+	else:
+		current_dialog_size = size
+		
 	if use_soft_reset:
 		modulate.a = 1.0
+		
 	max_characters = message.get_parsed_text().length()
 	var player = %TypeWritePlayer
 	player.stream = current_text_fx
 	player.volume_db = current_text_fx_volume
+	
 	if is_floating:
 		player.stop()
+		
 	if force_no_wait_for_input:
 		wait_for_input_enabled = false
-	if !use_soft_reset:
+		
+	if !use_soft_reset and not is_multi_dialog:
 		show_open_animation()
 	else:
 		busy = false
+		if ini_size_self != real_size and ini_size_self != Vector2.ZERO:
+			animate_to_new_size(real_size, ini_size_self, ini_size_message)
+		else:
+			custom_minimum_size = real_size
+			size = real_size
+			pivot_offset = real_size * 0.5
+			message.custom_minimum_size = real_size
+			message.size = real_size
+			message.pivot_offset = real_size * 0.5
+		
+		dialog_is_started = true
 		await show_next_character()
 		if instant_text_enabled:
 			message.set_deferred("visible_characters", -1)
+			
 	busy_until_resume = false
 	message_started.emit()
+	is_new_dialog = false
 
 
 func clean_structural_newlines(t: String) -> String:
@@ -1616,49 +1719,49 @@ func fix_tags(text: String) -> String:
 	return result
 
 
-func precalculate_dialog_size(is_soft_reset: bool = false) -> void:
-	message.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	message.visible_characters_behavior = TextServer.VC_CHARS_AFTER_SHAPING
-	message.visible_characters = -1
-
-	message.custom_minimum_size = Vector2(message_max_width, 0)
-	message.size = Vector2(message_max_width, 0)
-
-	custom_minimum_size = Vector2.ZERO
-	size = Vector2.ZERO
-
+func precalculate_dialog_size(is_soft_reset: bool = false) -> Vector2:
 	if not is_floating:
 		for command in special_commands:
 			if command.name == "showbox":
 				start_command_showbox(command, true)
 			elif command.name == "face":
 				start_command_face(command, true)
-
-	await get_tree().process_frame
-	var content_width = message.get_content_width()
-	var content_height = message.get_content_height()
-
+	var content_width = size_message.get_content_width()
+	var content_height = size_message.get_content_height()
 	var final_width = max(minimun_dialog_width, min(content_width, message_max_width))
 	var final_height = max(minimun_dialog_height, content_height)
-
 	var real_size = Vector2(final_width, final_height) + Vector2(4, 8)
-
-	message.custom_minimum_size = real_size
-	message.size = real_size
-
-	if not is_soft_reset:
+	if is_new_dialog and not is_multi_dialog and not is_soft_reset:
+		message.custom_minimum_size = real_size
+		message.size = real_size
+		message.pivot_offset = real_size * 0.5
+		custom_minimum_size = real_size
+		size = real_size
+		pivot_offset = real_size * 0.5
 		%NameLeftContainer.modulate.a = 0.0
 		%NameRightContainer.modulate.a = 0.0
 		%LeftIconFace.get_parent().modulate.a = 0.0
 		%RightIconFace.get_parent().modulate.a = 0.0
+	return real_size
 
-	custom_minimum_size = real_size
-	size = real_size
 
-	message.pivot_offset = message.size * 0.5
-	pivot_offset = size * 0.5
-
-	message.visible_characters = 0
+func animate_to_new_size(target_size: Vector2, ini_size_self: Vector2, ini_size_message: Vector2) -> void:
+	if is_floating:
+		size = Vector2.ZERO
+		pivot_offset = size * 0.5
+		return
+		
+	var distance = ini_size_self.distance_to(target_size)
+	var animation_duration = clamp(0.2 + (distance / 500.0) * 0.4, 0.2, 0.6)
+	
+	var t = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	t.set_parallel(true)
+	t.tween_property(self, "custom_minimum_size", target_size, animation_duration).from(ini_size_self)
+	t.tween_property(self, "size", target_size, animation_duration).from(ini_size_self)
+	t.tween_property(self, "pivot_offset", target_size * 0.5, animation_duration)
+	t.tween_property(message, "custom_minimum_size", target_size, animation_duration).from(ini_size_message)
+	t.tween_property(message, "size", target_size, animation_duration).from(ini_size_message)
+	t.tween_property(message, "pivot_offset", target_size * 0.5, animation_duration)
 
 
 func get_final_text(text: String) -> String:
@@ -1738,9 +1841,21 @@ func show_open_animation() -> void:
 	var current_animation = animations[clamp(start_animation_id, 0, animations.size() - 1)]
 	
 	var node = self
-	node.modulate.a = 1.0
-	node.pivot_offset = node.size * 0.5
+	node.modulate.a = 0.0
+	if is_floating:
+		node.pivot_offset = Vector2(node.size.x * 0.5, node.size.y)
+	else:
+		node.pivot_offset = node.size * 0.5
 	node.scale = Vector2.ONE
+	
+	if is_floating:
+		node.size = Vector2.ZERO
+		await get_tree().process_frame
+		node.size = message.get_combined_minimum_size()
+		node.pivot_offset = Vector2(node.size.x * 0.5, node.size.y)
+		set_position_over_node()
+	
+	node.modulate.a = 1.0
 	
 	await get_tree().process_frame
 	
@@ -1797,12 +1912,12 @@ func show_open_animation() -> void:
 func show_close_animation() -> void:
 	if waiting_for_input:
 		return
-		
-	if is_new_dialog or is_multi_dialog:
+
+	if has_next_dialog or wait_for_user_option_selected_enabled:
 		await get_tree().process_frame
 		all_messages_finished.emit()
 		return
-	
+
 	if tweens.message:
 		tweens.message.kill()
 	

@@ -246,8 +246,9 @@ func _gui_input(event: InputEvent) -> void:
 				if is_toggle_button and (not is_selected or is_untoggleable):
 					is_selected = !is_selected
 					toggled.emit(is_selected)
+					print("emito toggled")
 				begin_click.emit(get_index())
-
+				print("emito begin click")
 				current_state = ButtonState.HOVER if mouse_inside else ButtonState.NORMAL
 				if is_selected:
 					current_state = ButtonState.SELECTED
@@ -357,6 +358,7 @@ func deselect() -> void:
 func select() -> void:
 	if not has_focus():
 		grab_focus()
+
 	is_selected = true
 	current_state = ButtonState.SELECTED if selected else ButtonState.NORMAL
 	selected.emit(self)

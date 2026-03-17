@@ -148,6 +148,7 @@ func _initialize_hero_panels() -> void:
 
 func restart() -> void:
 	_initialize_hero_panels.call_deferred()
+	disabled.call_deferred()
 
 
 func setup_panels() -> void:
@@ -251,6 +252,12 @@ func enabled() -> void:
 func disabled() -> void:
 	for child in hero_panel_container.get_children():
 		child.set_disabled()
+
+
+func hightlight_selected():
+	for child in hero_panel_container.get_children():
+		if child.is_selected:
+			child.hightlight()
 
 
 func show_all() -> void:

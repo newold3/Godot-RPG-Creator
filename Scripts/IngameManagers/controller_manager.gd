@@ -407,6 +407,8 @@ func get_trigger_value(trigger_axis: int) -> float:
 func is_mouse_button_pressed(keycode: int) -> bool:
 	if is_mouse_button_just_pressed(keycode): return true
 	
+	if Input.is_mouse_button_pressed(keycode): return true
+	
 	if not Input.is_mouse_button_pressed(keycode):
 		if keycode in key_states.mouse_buttons:
 			key_states.mouse_buttons.erase(keycode)
@@ -1214,6 +1216,17 @@ func is_action_just_pressed(action: String) -> bool:
 				action_states[action].refresh()
 				get_viewport().set_input_as_handled()
 				result = true
+	
+	cache[cache_key] = result
+	return result
+
+
+func is_action_just_released(action: String) -> bool:
+	var cache_key = "action_just_released_" + action
+	if cache.has(cache_key):
+		return cache[cache_key]
+	
+	var result = Input.is_action_just_released(action)
 	
 	cache[cache_key] = result
 	return result

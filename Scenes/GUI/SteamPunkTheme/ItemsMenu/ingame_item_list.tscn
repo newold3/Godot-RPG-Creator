@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://b430wi6kdccit" path="res://Scenes/GUI/SteamPunkTheme/OtherScenes/particle_bubbles.tscn" id="4_o5ikf"]
 [ext_resource type="Script" uid="uid://bnp2jyc55rj13" path="res://Scripts/ScriptsBase/circular_tabs.gd" id="5_4j785"]
 [ext_resource type="Script" uid="uid://dneru3t17pta6" path="res://Scripts/ScriptsBase/ingame_item_list.gd" id="6_2gnsa"]
+[ext_resource type="Texture2D" uid="uid://deswo4ps8byb3" path="res://Scenes/GUI/SteamPunkTheme/Assets/steampunk_elements2.png" id="7_6kl3u"]
 [ext_resource type="Texture2D" uid="uid://d0esjdfvft73e" path="res://Scenes/GUI/SteamPunkTheme/Assets/item_list_default_icons.png" id="7_oblbm"]
 [ext_resource type="Script" uid="uid://b45bm7x3cmiao" path="res://Scripts/ScriptsBase/item_paginator.gd" id="10_8yqpp"]
 [ext_resource type="PackedScene" uid="uid://b66i5x8dg6bml" path="res://Scenes/GUI/SteamPunkTheme/ItemsMenu/simple_button.tscn" id="11_4j785"]
@@ -64,7 +65,9 @@ texture_margin_left = 16.0
 texture_margin_top = 11.0
 texture_margin_right = 15.0
 texture_margin_bottom = 12.0
+axis_stretch_horizontal = 2
 region_rect = Rect2(45, 264, 51, 43)
+modulate_color = Color(0.7882353, 0.7882353, 0.7882353, 0.73333335)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6kl3u"]
 texture = ExtResource("1_c7iu6")
@@ -72,7 +75,26 @@ texture_margin_left = 16.0
 texture_margin_top = 11.0
 texture_margin_right = 15.0
 texture_margin_bottom = 12.0
+axis_stretch_horizontal = 2
 region_rect = Rect2(45, 322, 52, 43)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6x48j"]
+atlas = ExtResource("1_c7iu6")
+region = Rect2(43, 575, 214, 8)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_25pgl"]
+texture = ExtResource("7_6kl3u")
+texture_margin_left = 5.7296724
+texture_margin_top = 9.885021
+texture_margin_right = 5.2265596
+texture_margin_bottom = 8.2897625
+region_rect = Rect2(126, 93, 38, 27)
+
+[sub_resource type="LabelSettings" id="LabelSettings_f5tdb"]
+font = ExtResource("2_2gnsa")
+font_color = Color(0.92156863, 0.84705883, 0.6784314, 1)
+outline_size = 8
+outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_x1cck"]
 atlas = ExtResource("1_c7iu6")
@@ -90,7 +112,7 @@ texture_margin_left = 24.173018
 texture_margin_top = 6.0432544
 texture_margin_right = 24.02913
 texture_margin_bottom = 10.503752
-axis_stretch_horizontal = 1
+axis_stretch_horizontal = 2
 region_rect = Rect2(36, 264, 70, 43)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_oblbm"]
@@ -99,7 +121,7 @@ texture_margin_left = 24.173018
 texture_margin_top = 6.0432544
 texture_margin_right = 24.02913
 texture_margin_bottom = 10.503752
-axis_stretch_horizontal = 1
+axis_stretch_horizontal = 2
 region_rect = Rect2(36, 322, 70, 43)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kyvpd"]
@@ -134,6 +156,38 @@ texture_margin_top = 7.236752
 texture_margin_right = 8.487549
 texture_margin_bottom = 9.291633
 region_rect = Rect2(631, 20, 32, 31)
+
+[sub_resource type="GDScript" id="GDScript_6kl3u"]
+script/source = "extends Button
+
+@export var main_parent: Node
+@export_enum(\"Left\", \"Right\") var direction: int = 0
+@export var click_fx: AudioStream
+
+var enabled: bool = false
+
+var manipulator: String
+
+
+func _ready() -> void:
+	pressed.connect(_on_pressed)
+
+
+func _on_pressed() -> void:
+	if not enabled or GameManager.get_cursor_manipulator() != manipulator: return
+	
+	if main_parent:
+		if direction == 0:
+			main_parent.pivot_offset = Vector2(main_parent.size.x, main_parent.size.y * 0.5)
+		else:
+			main_parent.pivot_offset = Vector2(0, main_parent.size.y * 0.5)
+		var t = create_tween()
+		t.tween_property(main_parent, \"scale:x\", 1.1, 0.1)
+		t.tween_property(main_parent, \"scale:x\", 1.0, 0.2)
+		
+		if click_fx:
+			GameManager.play_se(click_fx)
+"
 
 [sub_resource type="Animation" id="Animation_l66c2"]
 length = 0.001
@@ -524,7 +578,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 66
+theme_override_constants/margin_top = 65
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 20
 
@@ -547,6 +601,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TopBorder/VBoxContainer" unique_id=1642357906]
 layout_mode = 2
@@ -577,6 +632,7 @@ patch_margin_top = 16
 patch_margin_right = 15
 patch_margin_bottom = 17
 axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
 
 [node name="TopButtonsContainer" type="HBoxContainer" parent="TopBorder/VBoxContainer/VBoxContainer/TopContainer/VBoxContainer/HBoxContainer/MidDecoration" unique_id=1191999946]
 visible = false
@@ -597,6 +653,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="CircularTabs" type="Control" parent="TopBorder/VBoxContainer/VBoxContainer/TopContainer/VBoxContainer/HBoxContainer/MidDecoration" unique_id=23250776]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -615,7 +672,65 @@ spin_fx = ExtResource("14_5w0j5")
 tabs = PackedStringArray("All Items", "Items", "Weapons", "Armors", "Costumes", "Key Items")
 metadata/_custom_type_script = "uid://bnp2jyc55rj13"
 
+[node name="TextureRect2" type="TextureRect" parent="TopBorder/VBoxContainer/VBoxContainer/TopContainer/VBoxContainer/HBoxContainer/MidDecoration" unique_id=1277891741]
+layout_mode = 0
+offset_left = 421.0
+offset_top = 32.0
+offset_right = 464.0
+offset_bottom = 40.0
+mouse_filter = 2
+texture = SubResource("AtlasTexture_6x48j")
+expand_mode = 1
+
+[node name="TextureRect" type="TextureRect" parent="TopBorder/VBoxContainer/VBoxContainer/TopContainer/VBoxContainer/HBoxContainer/MidDecoration" unique_id=688120252]
+z_index = 19
+layout_mode = 0
+offset_left = 7.0
+offset_top = 32.0
+offset_right = 52.0
+offset_bottom = 40.0
+mouse_filter = 2
+texture = SubResource("AtlasTexture_6x48j")
+expand_mode = 1
+
+[node name="PanelL2Tab" type="PanelContainer" parent="TopBorder/VBoxContainer/VBoxContainer/TopContainer/VBoxContainer/HBoxContainer/MidDecoration" unique_id=511159240]
+unique_name_in_owner = true
+z_index = 19
+layout_mode = 0
+offset_left = 12.0
+offset_top = 17.0
+offset_right = 73.0
+offset_bottom = 51.17478
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_25pgl")
+
+[node name="L2Tab" type="Label" parent="TopBorder/VBoxContainer/VBoxContainer/TopContainer/VBoxContainer/HBoxContainer/MidDecoration/PanelL2Tab" unique_id=2045054806]
+layout_mode = 2
+text = "L2"
+label_settings = SubResource("LabelSettings_f5tdb")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PanelR2Tab" type="PanelContainer" parent="TopBorder/VBoxContainer/VBoxContainer/TopContainer/VBoxContainer/HBoxContainer/MidDecoration" unique_id=618631776]
+unique_name_in_owner = true
+z_index = 19
+layout_mode = 0
+offset_left = 399.0
+offset_top = 17.0
+offset_right = 459.0
+offset_bottom = 51.17478
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_25pgl")
+
+[node name="R2Tab" type="Label" parent="TopBorder/VBoxContainer/VBoxContainer/TopContainer/VBoxContainer/HBoxContainer/MidDecoration/PanelR2Tab" unique_id=752336457]
+layout_mode = 2
+text = "R2"
+label_settings = SubResource("LabelSettings_f5tdb")
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="RightDecoration" type="TextureRect" parent="TopBorder/VBoxContainer/VBoxContainer/TopContainer/VBoxContainer/HBoxContainer" unique_id=424116022]
+unique_name_in_owner = true
 z_index = 10
 layout_mode = 2
 texture = SubResource("AtlasTexture_x1cck")
@@ -644,8 +759,11 @@ theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 35
 
 [node name="MainScrollContainer" type="ScrollContainer" parent="TopBorder/VBoxContainer/VBoxContainer/BottomContainer" unique_id=1785571668 node_paths=PackedStringArray("single_target_focus")]
+unique_name_in_owner = true
 layout_mode = 2
+mouse_filter = 0
 theme = SubResource("Theme_r3qji")
+scroll_vertical_custom_step = 54.0
 script = ExtResource("3_0d64t")
 single_target_focus = NodePath("MarginContainer/ItemList/GhostCursor")
 use_custom_vertical_scroll = true
@@ -677,9 +795,9 @@ default_armor_icon = SubResource("AtlasTexture_0n3oq")
 default_custome_icon = SubResource("AtlasTexture_aorh7")
 vertical_separation = 6
 font = ExtResource("2_2gnsa")
+new_item_offset = Vector2(-25, 4)
 scroll_container_node = NodePath("../..")
-right_offset_correction = 9
-max_dummy_items = null
+right_offset_correction = -11
 
 [node name="MarginContainer" type="MarginContainer" parent="TopBorder/VBoxContainer/VBoxContainer/BottomContainer" unique_id=328558192]
 layout_mode = 2
@@ -689,6 +807,7 @@ theme_override_constants/margin_right = 1
 theme_override_constants/margin_bottom = -3
 
 [node name="ItemPaginator" type="PanelContainer" parent="TopBorder/VBoxContainer/VBoxContainer/BottomContainer/MarginContainer" unique_id=42692824]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 size_flags_vertical = 8
@@ -703,6 +822,87 @@ prev_button_margin = Vector4i(-43, -8, 19, -10)
 next_button_margin = Vector4i(4, -8, 17, -10)
 metadata/_custom_type_script = "uid://b45bm7x3cmiao"
 
+[node name="MarginContainer2" type="MarginContainer" parent="TopBorder" unique_id=238278998]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -105.5
+offset_top = -63.0
+offset_right = 105.5
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/margin_top = 46
+theme_override_constants/margin_bottom = -5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TopBorder/MarginContainer2" unique_id=1756630597]
+z_index = 40
+z_as_relative = false
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = -2
+alignment = 1
+
+[node name="Panel" type="PanelContainer" parent="TopBorder/MarginContainer2/HBoxContainer" unique_id=2087355170]
+z_index = 19
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_25pgl")
+
+[node name="L1Tab" type="Label" parent="TopBorder/MarginContainer2/HBoxContainer/Panel" unique_id=1682566781]
+layout_mode = 2
+text = "L1"
+label_settings = SubResource("LabelSettings_f5tdb")
+
+[node name="OrderLeft" type="Button" parent="TopBorder/MarginContainer2/HBoxContainer/Panel" unique_id=631372162 node_paths=PackedStringArray("main_parent")]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+flat = true
+script = SubResource("GDScript_6kl3u")
+main_parent = NodePath("..")
+click_fx = ExtResource("14_5w0j5")
+
+[node name="Panel3" type="PanelContainer" parent="TopBorder/MarginContainer2/HBoxContainer" unique_id=183018439]
+z_index = 19
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_25pgl")
+
+[node name="OrderTab" type="Label" parent="TopBorder/MarginContainer2/HBoxContainer/Panel3" unique_id=857570832]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Order: Newly"
+label_settings = SubResource("LabelSettings_f5tdb")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Panel2" type="PanelContainer" parent="TopBorder/MarginContainer2/HBoxContainer" unique_id=75900952]
+z_index = 19
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_25pgl")
+
+[node name="R1Tab" type="Label" parent="TopBorder/MarginContainer2/HBoxContainer/Panel2" unique_id=1848216054]
+layout_mode = 2
+text = "R1"
+label_settings = SubResource("LabelSettings_f5tdb")
+
+[node name="OrderRight" type="Button" parent="TopBorder/MarginContainer2/HBoxContainer/Panel2" unique_id=276262410 node_paths=PackedStringArray("main_parent")]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+flat = true
+script = SubResource("GDScript_6kl3u")
+main_parent = NodePath("..")
+direction = 1
+click_fx = ExtResource("14_5w0j5")
+
 [node name="MainAnimator" type="AnimationPlayer" parent="." unique_id=788676957]
 unique_name_in_owner = true
 root_node = NodePath("../TopBorder/VBoxContainer/VBoxContainer/TopContainer/VBoxContainer/HBoxContainer/RightDecoration")
@@ -710,6 +910,9 @@ libraries/ = SubResource("AnimationLibrary_bny3t")
 autoplay = &"gears_on"
 speed_scale = 0.0
 
+[connection signal="tab_selected" from="TopBorder/VBoxContainer/VBoxContainer/TopContainer/VBoxContainer/HBoxContainer/MidDecoration/CircularTabs" to="." method="_on_circular_tabs_tab_selected"]
 [connection signal="close_requested" from="TopBorder/VBoxContainer/VBoxContainer/BottomContainer/MainScrollContainer/MarginContainer/ItemList" to="." method="_on_item_list_close_requested"]
 [connection signal="item_activated" from="TopBorder/VBoxContainer/VBoxContainer/BottomContainer/MainScrollContainer/MarginContainer/ItemList" to="." method="_on_item_list_item_activated"]
 [connection signal="item_focused" from="TopBorder/VBoxContainer/VBoxContainer/BottomContainer/MainScrollContainer/MarginContainer/ItemList" to="." method="_on_item_list_item_focused"]
+[connection signal="pressed" from="TopBorder/MarginContainer2/HBoxContainer/Panel/OrderLeft" to="." method="_on_sort_selected" binds= [-1]]
+[connection signal="pressed" from="TopBorder/MarginContainer2/HBoxContainer/Panel2/OrderRight" to="." method="_on_sort_selected" binds= [1]]

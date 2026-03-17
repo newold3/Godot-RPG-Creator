@@ -6,9 +6,10 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_b8dvk"]
 shader = ExtResource("2_w0ruk")
-shader_parameter/grayscale = false
-shader_parameter/brightness = 0.0
-shader_parameter/opacity = 1.0
+shader_parameter/grayscale = true
+shader_parameter/intensity = 0.72400003439
+shader_parameter/brightness = -0.03599995421000002
+shader_parameter/opacity = 0.999999977648
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dqfph"]
 atlas = ExtResource("2_b8dvk")
@@ -236,6 +237,7 @@ pivot_offset = Vector2(4, 17)
 focus_mode = 1
 mouse_default_cursor_shape = 2
 script = ExtResource("1_vuijs")
+allow_multi_click = null
 
 [node name="ButtonContainer" type="Control" parent="." unique_id=1997230460]
 layout_mode = 1

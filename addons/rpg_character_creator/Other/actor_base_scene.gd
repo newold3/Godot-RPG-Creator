@@ -96,18 +96,13 @@ func maintain_current_look() -> void:
 
 func _process(delta: float) -> void:
 	if busy2: return
-	
 	super(delta)
 	if GameManager.loading_game or is_invalid_event:
 		return
-		
 	if frame_delay <= 0.0:
 		run_animation()
-		
 		var current_anim_data = get_current_animation()
-		
 		var target_fps = current_anim_data.get("fps", 0)
-		
 		if target_fps > 0:
 			frame_delay = 1.0 / float(target_fps)
 		else:
@@ -119,27 +114,26 @@ func _process(delta: float) -> void:
 				frame_delay = frame_delay_max
 	else:
 		frame_delay = max(0.0, frame_delay - delta)
-	
-	
 	if force_animation_enabled or !can_perform_action() or is_on_vehicle:
 		return
-
-	if not character_options.fixed_direction:
-		var diagonal_movement_direction_mode = RPGSYSTEM.database.system.options.get("movement_mode", 0)
-		match diagonal_movement_direction_mode:
-			0: prioritize_vertical_look()
-			1: prioritize_horizontal_look()
-			2: maintain_current_look()
-		current_direction = last_direction
-	
-	movement_vector = Vector2(Input.get_axis("ui_left", "ui_right"), Input.get_axis("ui_up", "ui_down"))
-
-	if movement_vector != Vector2.ZERO:
+	var input_vector = Vector2(Input.get_axis("ui_left", "ui_right"), Input.get_axis("ui_up", "ui_down"))
+	if input_vector != Vector2.ZERO:
+		movement_vector = input_vector
+		_auto_target_tile = Vector2i(-1, -1)
+		_auto_target_event = null
+		if not character_options.fixed_direction:
+			var diagonal_movement_direction_mode = RPGSYSTEM.database.system.options.get("movement_mode", 0)
+			match diagonal_movement_direction_mode:
+				0: prioritize_vertical_look()
+				1: prioritize_horizontal_look()
+				2: maintain_current_look()
+			current_direction = last_direction
+	if Vector2(movement_vector) != Vector2.ZERO:
 		current_animation = "walk"
-		movement_vector = movement_vector.normalized()
+		movement_vector = Vector2(movement_vector).normalized()
 	else:
-		current_animation = "idle"
-	
+		if _auto_target_tile == Vector2i(-1, -1):
+			current_animation = "idle"
 	if current_animation == "walk":
 		var last_is_running = is_running
 		is_running = Input.is_action_pressed("running")
@@ -148,7 +142,6 @@ func _process(delta: float) -> void:
 	elif is_running:
 		is_running = false
 		calculate_grid_move_duration()
-	
 	if Input.is_key_pressed(KEY_CTRL) and OS.is_debug_build() and not ctrl_pressed:
 		ctrl_pressed = true
 		call_deferred("propagate_call", "set_disabled", [true])
@@ -160,10 +153,11 @@ func _process(delta: float) -> void:
 func _input(event: InputEvent) -> void:
 	if GameManager.loading_game or is_invalid_event:
 		return
-	
+	if event.is_action_pressed("ui_up") or event.is_action_pressed("ui_down") or event.is_action_pressed("ui_left") or event.is_action_pressed("ui_right") or event.is_action_pressed("ui_select"):
+		_auto_target_tile = Vector2i(-1, -1)
+		_auto_target_event = null
 	if !can_perform_action():
 		return
-	
 	if event.is_action_pressed("ui_select") and can_attack and not active_boomerang:
 		_reset()
 		var node = get_event_at_adjacent_tile()
@@ -190,7 +184,6 @@ func _input(event: InputEvent) -> void:
 				if not node.extraction_data.is_depleted():
 					GameManager.manage_extraction_scene(node)
 					action_found = true
-					
 		if not action_found:
 			if current_weapon_data and current_weapon_data.get("id", "none") != "none":
 				attack_with_weapon()

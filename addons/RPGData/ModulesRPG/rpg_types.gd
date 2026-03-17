@@ -85,6 +85,25 @@ func _init() -> void:
 		icons.main_parameters_icons.append(RPGIcon.new())
 
 
+func get_item_color(item_type: Variant, rarity_type: int) -> Color:
+	var color = Color.WHITE
+	
+	var type = str(item_type).to_lower()
+	
+	match type:
+		"0", "item", "items":
+			if item_rarity_color_types.size() > rarity_type:
+				color = item_rarity_color_types[rarity_type]
+		"1", "weapon", "weapons":
+			if weapon_rarity_color_types.size() > rarity_type:
+				color = weapon_rarity_color_types[rarity_type]
+		"2", "armor", "armor":
+			if armor_rarity_color_types.size() > rarity_type:
+				color = armor_rarity_color_types[rarity_type]
+	
+	return color
+
+
 func get_user_parameters_name(param_id: int) -> String:
 	var result: String = ""
 	if user_parameters.size() > param_id and param_id >= 0:

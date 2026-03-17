@@ -10,6 +10,9 @@ func get_custom_class() -> String: return "CharacterBase"
 ## (Use a "*" at the beginning to include any terrain whose name contains the specified terrain name, or use a “” at the beginning to exclude any terrain whose name contains the specified terrain name. or "all" to include any terrain.)
 @export var can_move_on_terrains: PackedStringArray = ["^lava", "^water"]
 
+## Visual indicator scene instantiated when the player clicks on a map tile
+@export var click_indicator_scene: PackedScene = preload("res://Scenes/OtherScenes/click_on_map.tscn")
+
 
 enum DIRECTIONS {
 	LEFT = RPGMapPassability.DIR_LEFT,
@@ -105,6 +108,10 @@ var movement_history: Array[Dictionary] = []
 var _last_recorded_pos: Vector2 = Vector2.ZERO
 var _last_recorded_scale: Vector2 = Vector2.ONE
 
+var _auto_target_tile: Vector2i = Vector2i(-1, -1)
+var _auto_target_event: Node = null
+var _click_indicator_cooldown: float = 0.0
+
 const MAX_HISTORY_SIZE: int = 300
 const MIN_RECORD_DIST_SQ: float = 2.0
 
@@ -156,34 +163,47 @@ func _on_character_options_changed() -> void:
 func _process(_delta: float) -> void:
 	if GameManager.loading_game or is_invalid_event or busy2:
 		return
-		
 	if is_in_group("player"):
 		_smart_record_history()
 
 
+## Handle physics processing and triggers automatic path movement if a target tile is set
 func _physics_process(delta: float):
 	if GameManager.loading_game or is_invalid_event or busy2:
 		return
-	
 	if is_in_group("player"):
 		_save_player_position_into_game_state()
-	
+	if _click_indicator_cooldown > 0.0:
+		_click_indicator_cooldown -= delta
+	if ControllerManager.is_action_just_released("Mouse Left"):
+		_click_indicator_cooldown = 0.0
+	if not Engine.is_editor_hint() and is_in_group("player"):
+		if ControllerManager.is_action_just_pressed("Button L2"):
+			busy2 = true
+			await GameManager.shift_up_follower()
+			busy2 = false
+		elif ControllerManager.is_action_just_pressed("Button R2"):
+			busy2 = true
+			await GameManager.shift_down_follower()
+			busy2 = false
+		elif GameManager.current_map and ControllerManager.is_action_pressed("Mouse Left"):
+			if not GameInterpreter.is_busy() and not GameManager.busy and not busy2:
+				var is_new_click = ControllerManager.is_action_just_pressed("Mouse Left")
+				var mouse_pos = GameManager.current_map.get_local_mouse_position()
+				var tile: Vector2i = GameManager.current_map.local_to_map(mouse_pos)
+				if is_new_click or (tile != _auto_target_tile and _click_indicator_cooldown <= 0.0):
+					_set_target_destination(tile, is_new_click)
 	activated_this_frame = false
-	
 	if not busy and _contact_activation_delay > 0:
 		_contact_activation_delay -= delta
-	
 	if not _ignore_events_contact.is_empty():
 		for i in range(_ignore_events_contact.size() - 1, -1, -1):
 			var obj = _ignore_events_contact[i]
-			
 			if not is_instance_valid(obj) or obj == self:
 				_ignore_events_contact.remove_at(i)
 				continue
-			
 			if position.distance_squared_to(obj.position) > _squared_tile_size:
 				_ignore_events_contact.remove_at(i)
-	
 	if not targets_over_me.is_empty():
 		var current_tile = get_current_tile()
 		for i in range(targets_over_me.size() - 1, -1, -1):
@@ -192,21 +212,18 @@ func _physics_process(delta: float):
 					targets_over_me.remove_at(i)
 			else:
 				targets_over_me.remove_at(i)
-	
 	if is_on_vehicle:
 		if route_commands:
 			update_process_route()
 		return
-				
 	if is_inside_tree():
 		queue_redraw()
-		
 	if busy or is_attacking or is_jumping or is_moving or force_locked:
 		return
-	
+	if is_in_group("player") and _auto_target_tile != Vector2i(-1, -1):
+		_process_auto_movement()
 	if movement_current_mode == MOVEMENTMODE.EVENT and GameManager.current_map:
 		GameManager.current_map.moving_event = true
-		
 	match movement_current_mode:
 		MOVEMENTMODE.GRID:
 			if route_commands:
@@ -219,23 +236,142 @@ func _physics_process(delta: float):
 			else:
 				free_movement(delta)
 		MOVEMENTMODE.EVENT:
-			event_movement_frame_count +=  1
+			event_movement_frame_count += 1
 			if event_movement_frame_count >= event_movement_frequency:
 				event_movement()
 				event_movement_frame_count = 0
-	
 	if movement_current_mode == MOVEMENTMODE.EVENT and GameManager.current_map:
 		GameManager.current_map.moving_event = false
 
-	if not Engine.is_editor_hint() and is_in_group("player"):
-		if ControllerManager.is_action_just_pressed("Button L2"):
-			busy2 = true
-			await GameManager.shift_up_follower()
-			busy2 = false
-		elif ControllerManager.is_action_just_pressed("Button R2"):
-			busy2 = true
-			await GameManager.shift_down_follower()
-			busy2 = false
+
+## Sets the target destination for pathfinding and instantiates a visual click indicator
+func _set_target_destination(tile: Vector2i, is_new_click: bool = true) -> void:
+	if not GameManager.current_map:
+		return
+	_auto_target_tile = tile
+	_auto_target_event = null
+	if not is_new_click:
+		return
+	if click_indicator_scene and _click_indicator_cooldown <= 0.0:
+		_click_indicator_cooldown = 0.1
+		var indicator = click_indicator_scene.instantiate()
+		GameManager.current_map.add_child(indicator)
+		var map = GameManager.current_map
+		indicator.global_position = map.get_tile_position(tile) - Vector2(0, map.tile_size.y / 2 - 8.0)
+	var map = GameManager.current_map
+	var events = map.get_in_game_events_in(tile)
+	for ev in events:
+		if ev is LPCEvent or ev is EmptyLPCEvent or ev is GenericLPCEvent or ev.get_class() == "RPGExtractionScene" or ev is RPGVehicle:
+			_auto_target_event = ev
+			break
+	if not _auto_target_event and map.has_method("get_in_game_vehicle_in"):
+		var vehicle = map.get_in_game_vehicle_in(tile)
+		if vehicle:
+			_auto_target_event = vehicle
+
+
+## Processes pathfinding logic and event interactions step by step
+func _process_auto_movement() -> void:
+	var current_tile = get_current_tile()
+	if current_tile == _auto_target_tile:
+		_auto_target_tile = Vector2i(-1, -1)
+		movement_vector = Vector2.ZERO
+		current_animation = "idle"
+		run_animation()
+		if _auto_target_event and is_instance_valid(_auto_target_event):
+			_interact_with_click_target()
+		return
+	if _auto_target_event and is_instance_valid(_auto_target_event):
+		var is_adjacent = false
+		var diff = Vector2i.ZERO
+		var my_tiles = [current_tile]
+		if has_method("get_current_tiles"):
+			my_tiles = call("get_current_tiles")
+		var target_tiles = []
+		if _auto_target_event.has_method("get_current_tiles"):
+			target_tiles = _auto_target_event.get_current_tiles()
+		elif _auto_target_event.has_method("get_current_tile"):
+			target_tiles = [_auto_target_event.get_current_tile()]
+		else:
+			target_tiles = [_auto_target_tile]
+		for my_t in my_tiles:
+			for tgt_t in target_tiles:
+				var temp_diff = tgt_t - my_t
+				if abs(temp_diff.x) + abs(temp_diff.y) == 1:
+					is_adjacent = true
+					diff = temp_diff
+					break
+			if is_adjacent:
+				break
+		if is_adjacent:
+			_auto_target_tile = Vector2i(-1, -1)
+			movement_vector = Vector2.ZERO
+			if not character_options.fixed_direction:
+				_look_at_tile_direction(diff)
+			current_animation = "idle"
+			run_animation()
+			_interact_with_click_target()
+			return
+	var next_step = _get_next_move_toward_target(_auto_target_tile, Vector2.ZERO)
+	if next_step != Vector2i.ZERO:
+		movement_vector = next_step
+		if not character_options.fixed_direction:
+			var diagonal_movement_direction_mode = RPGSYSTEM.database.system.options.get("movement_mode", 0)
+			match diagonal_movement_direction_mode:
+				0: set_vertical_look(movement_vector)
+				1: set_horizontal_look(movement_vector)
+				2: set_current_look(movement_vector)
+			current_direction = last_direction
+		current_animation = "walk"
+		run_animation()
+	else:
+		_auto_target_tile = Vector2i(-1, -1)
+		movement_vector = Vector2.ZERO
+		current_animation = "idle"
+		run_animation()
+
+
+## Updates character facing direction based on a tile difference vector
+func _look_at_tile_direction(diff: Vector2i) -> void:
+	if diff.x > 0:
+		current_direction = DIRECTIONS.RIGHT
+	elif diff.x < 0:
+		current_direction = DIRECTIONS.LEFT
+	elif diff.y > 0:
+		current_direction = DIRECTIONS.DOWN
+	elif diff.y < 0:
+		current_direction = DIRECTIONS.UP
+	last_direction = current_direction
+	run_animation()
+
+
+## Triggers standard interaction logic with the clicked target event upon arrival
+func _interact_with_click_target() -> void:
+	if not is_instance_valid(_auto_target_event):
+		return
+	var node = _auto_target_event
+	_auto_target_event = null
+	if node is RPGVehicle:
+		_reset(true)
+		node.start(self)
+	elif node is LPCEvent or node is EmptyLPCEvent or node is GenericLPCEvent:
+		_reset(true)
+		is_moving = false
+		current_animation = "idle"
+		current_frame = 0
+		run_animation()
+		await node.start(self, RPGEventPage.LAUNCHER_MODE.ACTION_BUTTON)
+	elif node.get_class() == "RPGExtractionScene":
+		if not node.extraction_data.is_depleted():
+			GameManager.manage_extraction_scene(node)
+
+
+func attack_with_weapon() -> void:
+	pass
+
+
+func attack_without_weapon() -> void:
+	pass
 
 
 func _smart_record_history() -> void:
@@ -549,31 +685,30 @@ func update_process_route() -> void:
 
 func _get_next_move_toward_target(target: Vector2i, target_screen_position: Vector2) -> Vector2i:
 	var map = GameManager.current_map
-	
 	if map:
 		var current = get_current_tile()
+		if Input.is_key_pressed(KEY_CTRL) and OS.is_debug_build():
+			var diff = target - current
+			var step_x = sign(diff.x)
+			var step_y = sign(diff.y)
+			return Vector2i(step_x, step_y)
 		var next = map.pathfinder.get_next_tile(self, current, target)
-		
 		if next != null:
 			var diff = next - current
 			var map_size = map.get_map_size_in_tiles()
-			
 			if map.infinite_horizontal_scroll:
 				var half_width = map_size.x / 2
 				if diff.x > half_width:
 					diff.x -= map_size.x
 				elif diff.x < -half_width:
 					diff.x += map_size.x
-			
 			if map.infinite_vertical_scroll:
 				var half_height = map_size.y / 2
 				if diff.y > half_height:
 					diff.y -= map_size.y
 				elif diff.y < -half_height:
 					diff.y += map_size.y
-			
 			return diff
-	
 	return Vector2i.ZERO
 
 
@@ -1308,6 +1443,9 @@ func _check_contact_before_move(tile: Vector2i, is_after_move: bool = false) -> 
 
 
 	var im_player = is_in_group("player")
+	if im_player and is_on_vehicle and GameManager.current_vehicle and GameManager.current_vehicle.flying_object:
+		return false
+		
 	var all_entities_on_tile: Array = GameManager.current_map.get_in_game_events_in(tile, false)
 	
 	if not im_player and GameManager.current_player:

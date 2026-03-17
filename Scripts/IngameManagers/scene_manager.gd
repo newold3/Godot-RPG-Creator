@@ -60,11 +60,27 @@ func enable_map_repeating() -> void:
 	var map_container = GameManager.main_scene.get_node_or_null("%MapContainer")
 	var shadows = GameManager.main_scene.get_node_or_null("%DynamicShadows")
 	
+	var repeat_times = get_map_repeat_times()
 	if map_container:
-		map_container.repeat_times = 4
+		map_container.repeat_times = repeat_times
 		
 	if shadows:
-		shadows.enable_map_repeating()
+		shadows.enable_map_repeating(repeat_times)
+
+
+func get_map_repeat_times() -> int:
+	var map = GameManager.current_map
+	if map:
+		var viewport_size = map.get_viewport_rect().size / GameManager.get_camera_zoom()
+		var map_pixel_size = Vector2(map.get_map_size_in_tiles() * map.tile_size)
+		var repeat_x = ceil(viewport_size.x / map_pixel_size.x) + 1
+		var repeat_y = ceil(viewport_size.y / map_pixel_size.y) + 1
+		var optimal_repeat = max(repeat_x, repeat_y)
+		optimal_repeat = clamp(optimal_repeat, 2, 8)
+		
+		return optimal_repeat
+	
+	return 2
 
 
 func _configure_map_scrolling(map: RPGMap) -> void:

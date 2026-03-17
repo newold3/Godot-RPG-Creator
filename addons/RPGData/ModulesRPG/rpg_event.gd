@@ -274,6 +274,13 @@ func _is_pressed(targets: PackedInt64Array) -> bool:
 
 	if targets.has(0):
 		if GameManager.current_player:
+			if (
+				GameManager.current_player.is_on_vehicle and
+				GameManager.current_vehicle and
+				GameManager.current_vehicle.flying_object
+			):
+				return false
+				
 			var real_player = GameManager.current_player
 			if GameManager.current_player.is_on_vehicle and GameManager.current_vehicle:
 				real_player = GameManager.current_vehicle

@@ -37,9 +37,13 @@ func clear():
 	rarity_type = 0
 	item_category = 0
 	price = 0
-	consumable = false
+	consumable = true
 	occasion = 0
 	icon.clear()
+
+
+func _to_string() -> String:
+	return "<RPGIItem name=%s ID=%s>" % [name, id]
 
 
 func clone(value: bool = true) -> RPGItem:

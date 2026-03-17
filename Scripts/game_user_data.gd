@@ -48,6 +48,7 @@ extends Resource
 # This list must be cleared whenever the player changes maps (transfer),
 # but MUST be saved/loaded to persist within the same map session.
 @export var erased_events: Array[int] = []
+@export var in_game_options: Dictionary = {}
 
 
 # When load this variable is populated and events used it to determine active page and position

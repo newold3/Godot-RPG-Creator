@@ -73,9 +73,9 @@ func clear_map_repeating() -> void:
 	%Canvas2Parallax.repeat_size = Vector2.ZERO
 
 
-func enable_map_repeating() -> void:
-	%Canvas1Parallax.repeat_times = 4
-	%Canvas2Parallax.repeat_times = 4
+func enable_map_repeating(repeat_times: int = 2) -> void:
+	%Canvas1Parallax.repeat_times = repeat_times
+	%Canvas2Parallax.repeat_times = repeat_times
 
 
 func set_current_map_rect(rect: Rect2) -> void:
@@ -154,14 +154,14 @@ func get_screen_tiles_size(current_map: RPGMap) -> Vector2i:
 	var main_camera: Camera2D = get_viewport().get_camera_2d()
 	if main_camera == null and not in_editor_map:
 		return Vector2i.ZERO
-	elif in_editor_map:
-		return Vector2i(get_editor_visible_rect().size)
 	var tile_size = current_map.tile_size
-	var tiles = Vector2(ceil(Vector2(get_viewport().size) / Vector2(tile_size)))
-	
-	tiles += tiles * 1.5 
-	
-	tiles /= main_camera.zoom
+	var tiles: Vector2
+	if in_editor_map:
+		tiles = get_editor_visible_rect().size / Vector2(tile_size)
+	else:
+		var zoom = main_camera.zoom
+		tiles = (Vector2(get_viewport().size) / zoom) / Vector2(tile_size)
+	tiles += Vector2(10, 10)
 	return Vector2i(tiles)
 
 
@@ -262,20 +262,16 @@ func _draw_safe_polygon(canvas: Node2D, points: PackedVector2Array, colors: Pack
 func set_drawing_textures() -> void:
 	_rt.current_drawing_shadows.tiles.clear()
 	_rt.current_drawing_shadows.masks.clear()
-
 	var current_map: RPGMap
 	if in_editor_map:
 		current_map = in_editor_map
 	else:
 		current_map = GameManager.current_map
-
 	var day_night_data = DayNightManager.get_data()
 	var using_data = day_night_data
 	var start_id = "shadow_" if using_data == day_night_data else ""
-
 	if not using_data or not current_map or (not GameManager.current_player and not in_editor_map):
 		return
-
 	if using_data is RPGDayNightComponent:
 		var mat: ShaderMaterial = %ShadowLayer.get_material()
 		var visibility := _get_shadow_visibility(using_data)
@@ -285,7 +281,6 @@ func set_drawing_textures() -> void:
 		var sk = using_data[start_id + "dynamic_skew"]
 		var sun_vec = Vector2(sk, 1.0).normalized()
 		mat.set_shader_parameter("shadow_direction", sun_vec)
-
 	@warning_ignore_start("integer_division")
 	var screen_tiles_size = get_screen_tiles_size(current_map) / 2
 	var player_current_tile: Vector2i
@@ -296,22 +291,17 @@ func set_drawing_textures() -> void:
 			player_current_tile = Vector2i(GameManager.current_player.current_vehicle.global_position) / current_map.tile_size
 		else:
 			player_current_tile = Vector2i(GameManager.current_player.global_position) / current_map.tile_size
-
 	var map_rect: Rect2 = current_map.get_used_rect(false)
 	var viewport_size: Vector2i = map_rect.size
 	var screen_height = float(viewport_size.y)
 	if screen_height < get_viewport_rect().size.y:
 		screen_height = get_viewport_rect().size.y
-
 	var screen_rect = Rect2() if not in_editor_map else get_visible_area_with_margin(EXTRA_MARGIN)
-
 	var composite_correction_offset = Vector2(-current_map.tile_size.x, -current_map.tile_size.y)
 	var single_correction_offset = Vector2(current_map.tile_size.x * 0.5, current_map.tile_size.y)
-
 	var map_size_tiles = current_map.get_map_size_in_tiles()
 	var infinite_x = current_map.infinite_horizontal_scroll
 	var infinite_y = current_map.infinite_vertical_scroll
-
 	for data: Dictionary in shadow_data:
 		if ("texture" in data and not is_instance_valid(data.texture)) or \
 			("main_node" in data and not is_instance_valid(data.main_node)) or \
@@ -320,10 +310,8 @@ func set_drawing_textures() -> void:
 			continue
 		if "main_texture" in data and (not is_instance_valid(data.main_texture) or data.main_texture.has_meta("_disable_shadow")):
 			continue
-
 		var tile_cell = data.cell
 		var inside_main_map = false
-
 		if in_editor_map:
 			var data_offset = data.get("offset", Vector2.ZERO)
 			if screen_rect.has_point(data.position - data_offset):
@@ -332,43 +320,33 @@ func set_drawing_textures() -> void:
 			var diff_x = abs(tile_cell.x - player_current_tile.x)
 			if infinite_x:
 				diff_x = min(diff_x, abs(diff_x - map_size_tiles.x))
-			
 			var diff_y = abs(tile_cell.y - player_current_tile.y)
 			if infinite_y:
 				diff_y = min(diff_y, abs(diff_y - map_size_tiles.y))
-
 			if diff_x <= screen_tiles_size.x and diff_y <= screen_tiles_size.y:
 				inside_main_map = true
-
 		if not inside_main_map:
 			continue
-
 		if data.has("sprites") and data.has("main_node") and not data.sprites.is_empty():
 			var m_scale = data.main_node.scale
 			var m_rot = data.main_node.rotation
 			var sk = using_data[start_id + "dynamic_skew"]
 			var elongation = using_data[start_id + "elongation"]
 			var base_pos = data.position
-			
 			var alpha_depth = _encode_y_position_as_alpha(base_pos.y + map_rect.position.y, screen_height)
 			var color = Color(alpha_depth, 1.0, 1.0, 0.11)
 			var mask_color = color
-
 			for sprite in data.sprites:
 				if not is_instance_valid(sprite) or not is_instance_valid(sprite.texture): continue
-				
 				var region = sprite.region_rect
 				var final_uvs = _get_uvs_from_rect(region, sprite.texture.get_size())
-				
 				var w_half = region.size.x / 2.0
 				var h_half = region.size.y / 2.0
 				var sprite_pos = sprite.position
 				var local_points = [Vector2(-w_half, -h_half), Vector2(w_half, -h_half), Vector2(w_half, h_half), Vector2(-w_half, h_half)]
-				
 				var final_points = PackedVector2Array()
 				var final_colors = PackedColorArray()
 				var feet_offset: int = data.get("feet_offset", 0)
-
 				for i in local_points.size():
 					var p = local_points[i]
 					p += sprite_pos
@@ -383,7 +361,6 @@ func set_drawing_textures() -> void:
 					trans_p += base_pos
 					final_points.append(trans_p)
 					final_colors.append(color)
-
 				_rt.current_drawing_shadows.tiles.append({
 					"main_texture": data.get("main_texture", null),
 					"type": "polygon",
@@ -392,7 +369,6 @@ func set_drawing_textures() -> void:
 					"uvs": final_uvs,
 					"texture": sprite.texture
 				})
-				
 				_rt.current_drawing_shadows.masks.append({
 					"main_texture": data.get("main_texture", null),
 					"texture": sprite.texture,
@@ -404,10 +380,8 @@ func set_drawing_textures() -> void:
 		else:
 			var st: Texture = data.get("texture", null)
 			if not is_instance_valid(st): continue
-
 			var q_points = []
 			var is_auto_cropped = false
-			
 			if "quad_points" in data:
 				q_points = data.quad_points.duplicate()
 			else:
@@ -415,71 +389,54 @@ func set_drawing_textures() -> void:
 				var used_rect = _get_smart_used_rect(st)
 				var full_size = st.get_size()
 				var texture_center = full_size / 2.0
-				
 				var pos = data.position
 				var s_scale = data.get("sprite_scale", Vector2.ONE) * data.get("scale", Vector2.ONE)
 				var offset = data.get("offset", Vector2.ZERO)
-				
 				var tl_offset = used_rect.position - texture_center
 				var tr_offset = Vector2(used_rect.end.x, used_rect.position.y) - texture_center
 				var br_offset = used_rect.end - texture_center
 				var bl_offset = Vector2(used_rect.position.x, used_rect.end.y) - texture_center
-				
 				var center_pos = pos + offset + single_correction_offset
-				
 				if data.get("is_tileset", false):
 					center_pos = pos + offset + (full_size / 2.0)
 				else:
 					center_pos = pos + offset + single_correction_offset
-				
 				var p_tl = center_pos + (tl_offset * s_scale)
 				var p_tr = center_pos + (tr_offset * s_scale)
 				var p_br = center_pos + (br_offset * s_scale)
 				var p_bl = center_pos + (bl_offset * s_scale)
-				
 				var f_off = data.get("feet_offset", 0)
 				p_bl.x += f_off
 				p_br.x -= f_off
-				
 				q_points = [p_bl, p_br, p_tr, p_tl]
-
 			var p_bl = q_points[0]
 			var p_br = q_points[1]
 			var p_tr = q_points[2]
 			var p_tl = q_points[3]
-			
 			var height = p_bl.y - p_tl.y
 			var sk = using_data[start_id + "dynamic_skew"]
 			var skew_offset = -height * sk
-			
 			var s_tl = p_tl + Vector2(skew_offset, 0)
 			var s_tr = p_tr + Vector2(skew_offset, 0)
-			
 			var elongation = using_data[start_id + "elongation"]
 			var vec_l = s_tl - p_bl
 			var vec_r = s_tr - p_br
-			
 			if typeof(elongation) == TYPE_VECTOR2:
 				s_tl = p_bl + (vec_l * Vector2(1, elongation.y))
 				s_tr = p_br + (vec_r * Vector2(1, elongation.y))
 			else:
 				s_tl = p_bl + (vec_l * elongation)
 				s_tr = p_br + (vec_r * elongation)
-			
 			var final_h = p_bl.y - s_tl.y
 			var final_skew = -final_h * sk
-			
 			s_tl.x = p_tl.x + final_skew
 			s_tr.x = p_tr.x + final_skew
-			
 			var shadow_points = PackedVector2Array([s_tl, s_tr, p_br, p_bl])
-			
 			var base_y = p_bl.y
 			var alpha_depth = _encode_y_position_as_alpha(base_y, screen_height)
 			var color = Color(alpha_depth, 1.0, 1.0, 0.1)
 			var colors = PackedColorArray([color, color, color, color])
 			var uvs = PackedVector2Array([Vector2(0, 0), Vector2(1, 0), Vector2(1, 1), Vector2(0, 1)])
-
 			_rt.current_drawing_shadows.tiles.append({
 				"main_texture": data.get("main_texture", null),
 				"type": "polygon",
@@ -489,15 +446,14 @@ func set_drawing_textures() -> void:
 				"texture": st,
 				"is_cropped": is_auto_cropped
 			})
-			
 			var mask_nudge = Vector2(1, -2)
+			var m_offset = data.get("mask_offset", Vector2.ZERO)
 			var mask_points = PackedVector2Array([
-				q_points[3] + mask_nudge,
-				q_points[2] - mask_nudge,
-				q_points[1] + mask_nudge,
-				q_points[0] - mask_nudge
+				q_points[3] + mask_nudge + m_offset,
+				q_points[2] - mask_nudge + m_offset,
+				q_points[1] + mask_nudge + m_offset,
+				q_points[0] - mask_nudge + m_offset
 			])
-
 			_rt.current_drawing_shadows.masks.append({
 				"main_texture": data.get("main_texture", null),
 				"type": "polygon",
@@ -507,6 +463,8 @@ func set_drawing_textures() -> void:
 				"color": Color.WHITE,
 				"is_cropped": is_auto_cropped
 			})
+	_rt.current_drawing_shadows.tiles.sort_custom(func(a, b): return a.texture.get_rid().get_id() < b.texture.get_rid().get_id())
+	_rt.current_drawing_shadows.masks.sort_custom(func(a, b): return a.texture.get_rid().get_id() < b.texture.get_rid().get_id())
 
 
 func _on_canvas1_draw():

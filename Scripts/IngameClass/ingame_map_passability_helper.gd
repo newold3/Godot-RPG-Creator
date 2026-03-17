@@ -34,6 +34,12 @@ func is_passable(tile_position: Vector2i, player_direction: int, ignore_node: No
 			if tile_position.x >= vehicle_left and tile_position.x < vehicle_right and \
 			   tile_position.y >= vehicle_up and tile_position.y < vehicle_down:
 				return false
+	
+	for extraction_event in map.get_tree().get_nodes_in_group("extraction_event"):
+		if "is_started" in extraction_event and extraction_event.is_started:
+			var event_position = map.local_to_map(Vector2i(extraction_event.global_position))
+			if tile_position == event_position:
+				return false
 		
 	var result = is_tile_passable_from_direction(tile_position, player_direction)
 	

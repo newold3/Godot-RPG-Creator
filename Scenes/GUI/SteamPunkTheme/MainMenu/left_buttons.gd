@@ -97,6 +97,10 @@ func _config_hand_over_menu_main_buttons() -> void:
 	ControllerManager.set_focusable_control_threshold(150, 150)
 
 
+func config_cursor() -> void:
+	_config_hand_over_menu_main_buttons()
+
+
 func _process(_delta: float) -> void:
 	if busy: return
 

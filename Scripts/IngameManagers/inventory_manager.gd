@@ -4,7 +4,42 @@ extends Node
 
 var over_flow_bag: Array = []
 var create_over_flow_bag: bool = false
+var active_perishable_items: Array[GameItem] = []
 
+
+func sync_perishable_items() -> void:
+	active_perishable_items.clear()
+	if not GameManager.game_state:
+		return
+	for item_list in GameManager.game_state.items.values():
+		for item in item_list:
+			if item.get("is_perishable") and item.lifetime > 0:
+				active_perishable_items.append(item)
+
+
+func _process(delta: float) -> void:
+	if active_perishable_items.is_empty():
+		return
+	for i in range(active_perishable_items.size() - 1, -1, -1):
+		var item = active_perishable_items[i]
+		item.update_lifetime(delta)
+		if item.lifetime <= 0:
+			active_perishable_items.remove_at(i)
+			_handle_rotted_item(item)
+
+
+func _handle_rotted_item(item: GameItem) -> void:
+	var item_id = item.id
+	if GameManager.game_state.items.has(item_id):
+		var item_list = GameManager.game_state.items[item_id]
+		item_list.erase(item)
+		if item_list.is_empty():
+			GameManager.game_state.items.erase(item_id)
+	var real_data = item.get_real_data()
+	if real_data and "perishable" in real_data and real_data.perishable is RPGPerishable:
+		var obj: RPGPerishable = real_data.perishable
+		if obj.action == 1 and obj.conversion_item_id > 0:
+			add_item_amount(real_data.perishable.conversion_item_id, 1)
 
 
 ## Helper function to count total used slots across all inventories
@@ -55,6 +90,7 @@ func _add_generic_amount(collection: Dictionary, data: Array, id: int, amount: i
 	var max_per_stack = RPGSYSTEM.database.system.max_items_per_stack
 	var remaining_amount = amount
 	var added_amount = 0
+	var current_time = int(Time.get_unix_time_from_system())
 	
 	if not collection.has(id):
 		collection[id] = []
@@ -89,6 +125,8 @@ func _add_generic_amount(collection: Dictionary, data: Array, id: int, amount: i
 			item.quantity += can_add
 			remaining_amount -= can_add
 			added_amount += can_add
+			item.newly_added = true
+			item.last_added_date = current_time
 	
 	if remaining_amount > 0:
 		var current_slots = _get_total_used_slots()
@@ -108,6 +146,9 @@ func _add_generic_amount(collection: Dictionary, data: Array, id: int, amount: i
 				if not real_item.perishable.is_enabled():
 					var game_item = GameItem.new(id, stack_amount, 0)
 					game_item.is_perishable = false
+					game_item.newly_added = true
+					if "last_added_date" in game_item:
+						game_item.last_added_date = current_time
 					item_list.append(game_item)
 					added_amount += stack_amount
 				else:
@@ -121,6 +162,9 @@ func _add_generic_amount(collection: Dictionary, data: Array, id: int, amount: i
 						var game_item = GameItem.new(id, 1, 0)
 						game_item.is_perishable = true
 						game_item.lifetime = real_item.perishable.duration
+						game_item.newly_added = true
+						if "last_added_date" in game_item:
+							game_item.last_added_date = current_time
 						item_list.append(game_item)
 						added_amount += 1
 			else:
@@ -131,6 +175,9 @@ func _add_generic_amount(collection: Dictionary, data: Array, id: int, amount: i
 					else:
 						game_item = GameArmor.new(id, stack_amount, 2)
 					game_item.current_level = max(1, min(level, real_item.upgrades.max_levels))
+					game_item.newly_added = true
+					if "last_added_date" in game_item:
+						game_item.last_added_date = current_time
 					item_list.append(game_item)
 					added_amount += stack_amount
 				else:
@@ -147,9 +194,14 @@ func _add_generic_amount(collection: Dictionary, data: Array, id: int, amount: i
 						else:
 							game_item = GameArmor.new(id, 1, 2)
 						game_item.current_level = max(1, min(level, real_item.upgrades.max_levels))
+						game_item.newly_added = true
+						if "last_added_date" in game_item:
+							game_item.last_added_date = current_time
 						item_list.append(game_item)
 						added_amount += 1
 
+	sync_perishable_items()
+	
 	return added_amount
 
 
@@ -251,6 +303,171 @@ func _remove_generic_amount(collection: Dictionary, id: int, amount: int, includ
 	
 	if item_list.is_empty():
 		collection.erase(id)
+	
+	sync_perishable_items()
+
+
+## Sort modes: 0 = Smart/Default, 1 = A-Z, 2 = Z-A, 3 = Usable first + A-Z, 4 = Rarity + A-Z, 5 = Quantity + A-Z
+## collection: 0 = items + weapons + armors + sets, 1 = items, 2 = weapons, 3 = armors, 4 = sets, 5 = key items
+func get_items(include_hidden_items: bool = false, sort_mode: int = 0, collection: int = 0) -> Array:
+	var items: Array = []
+	var grouped_items: Dictionary = {}
+	
+	if GameManager.game_state:
+		var raw_items: Array = []
+		var state = GameManager.game_state
+		
+		match collection:
+			0: # All
+				raw_items.append_array(_extract_items_from_dict(state.items))
+				raw_items.append_array(_extract_items_from_dict(state.weapons))
+				raw_items.append_array(_extract_items_from_dict(state.armors))
+				raw_items.append_array(_extract_items_from_dict(state.sets))
+			2: # Weapons
+				raw_items.append_array(_extract_items_from_dict(state.weapons))
+			3: # Armors
+				raw_items.append_array(_extract_items_from_dict(state.armors))
+			4: # Sets
+				raw_items.append_array(_extract_items_from_dict(state.sets))
+			_: # Items, key items
+				raw_items.append_array(_extract_items_from_dict(state.items))
+		
+		for item in raw_items:
+			var real_data = item.get_real_data()
+			if (
+				not real_data or
+				(real_data is RPGItem and real_data.item_category > 1 and not include_hidden_items) or
+				(real_data is RPGItem and real_data.item_category != 1 and collection == 5)
+			):
+				continue
+				
+			var item_type: int = 0
+			if item is GameWeapon:
+				item_type = 1
+			elif item is GameArmor:
+				item_type = 2
+			elif item is IngameCostume or item is IngameGearSet:
+				item_type = 3
+			elif real_data is RPGItem and real_data.item_category == 1:
+				item_type = 4
+
+			var level = -1 if not "current_level" in item else item.current_level
+			var group_key = str(item_type) + "_" + str(item.id) + "_" + str(level)
+			var equipped = " E" if "equipped" in item and item.equipped else ""
+			var is_disabled = not _is_item_usable_in_menu(real_data) or (
+				not equipped.is_empty() and not item is GameItem)
+
+			if grouped_items.has(group_key):
+				grouped_items[group_key].quantity += item.quantity
+				grouped_items[group_key].is_new = grouped_items[group_key].is_new or item.newly_added
+				if item.last_added_date > grouped_items[group_key].date_added:
+					grouped_items[group_key].date_added = item.last_added_date
+			else:
+				var dict_item = {
+					"item": item,
+					"real_item": real_data,
+					"name": real_data.name + (" ⬥" + str(level) if level != -1 else "") + equipped,
+					"icon": real_data.icon,
+					"item_color": _get_item_color_for_item(real_data),
+					"quantity": item.quantity,
+					"item_type": item_type,
+					"item_id": item.id,
+					"is_disabled": is_disabled,
+					"is_new": item.newly_added,
+					"date_added": item.last_added_date,
+					"is_perishable": real_data is RPGItem and real_data.perishable.is_perishable,
+					"description": real_data.description
+				}
+				grouped_items[group_key] = dict_item
+				items.append(dict_item)
+	
+	var sort_func: Callable
+	match sort_mode:
+		1: # A-Z
+			sort_func = func(a, b): return a.name.nocasecmp_to(b.name) < 0
+		2: # Z-A
+			sort_func = func(a, b): return a.name.nocasecmp_to(b.name) > 0
+		3: # Usable First
+			sort_func = func(a, b):
+				if a.is_disabled != b.is_disabled: return not a.is_disabled
+				return a.name.nocasecmp_to(b.name) < 0
+		4: # Rarity
+			sort_func = func(a, b):
+				var rar_a = a.real_item.rarity_type if a.real_item else 0
+				var rar_b = b.real_item.rarity_type if b.real_item else 0
+				if rar_a != rar_b: return rar_a > rar_b
+				return a.name.nocasecmp_to(b.name) < 0
+		5: # Quantity
+			sort_func = func(a, b):
+				if a.quantity != b.quantity: return a.quantity > b.quantity
+				return a.name.nocasecmp_to(b.name) < 0
+		0, _: # Smart/Default
+			sort_func = func(a, b):
+				if a.is_new != b.is_new: return a.is_new
+				if a.is_new and b.is_new and a.date_added != b.date_added: return a.date_added > b.date_added
+				if a.is_disabled != b.is_disabled: return not a.is_disabled
+				if a.item_type != b.item_type: return a.item_type < b.item_type
+				return a.name.nocasecmp_to(b.name) < 0
+				
+	items.sort_custom(sort_func)
+	
+	return items
+
+
+func _get_item_color_for_item(item: Variant) -> Color:
+	var color = Color.WHITE
+	
+	if item is RPGItem:
+		color = RPGSYSTEM.database.types.get_item_color("item", item.rarity_type)
+	elif item is RPGWeapon:
+		color = RPGSYSTEM.database.types.get_item_color("weapon", item.rarity_type)
+	elif item is RPGArmor:
+		color = RPGSYSTEM.database.types.get_item_color("armor", item.rarity_type)
+	
+	return color
+	
+
+
+## Determines if an item can be used directly from the menu screen.
+func _is_item_usable_in_menu(item_data: Variant) -> bool:
+	if not item_data is RPGItem:
+		return true
+		
+	var occasion = item_data.occasion
+	# Occasion: 0 = Always, 1 = Battle Screen, 2 = Menu Screen, 3 = Never
+	if occasion == 1 or occasion == 3:
+		return false
+		
+	if not item_data.consumable:
+		var has_menu_effect = false
+		for effect in item_data.effects:
+			# Common recovery effect codes (HP, MP, State removal, etc.)
+			if effect.code in [11, 12, 13, 21, 22, 31, 32, 33, 34, 41, 42, 43, 44]:
+				has_menu_effect = true
+				break
+		if not has_menu_effect:
+			return false
+
+	# Optional: Check if the party actually needs the item's effects
+	# var party_needs_it = false
+	# for actor_id in GameManager.game_state.current_party:
+	# 	var actor = RPGSYSTEM.database.actors[actor_id] # Fetch real GameActor from state
+	# 	if does_target_need_recovery(actor, item_data.effects):
+	# 		party_needs_it = true
+	# 		break
+	# if not party_needs_it:
+	# 	return false
+	return true
+
+
+## Helper to extract valid items (quantity > 0) from a state dictionary.
+func _extract_items_from_dict(source_dict: Dictionary) -> Array:
+	var result: Array = []
+	for item_arr in source_dict.values():
+		for item in item_arr:
+			if item.quantity > 0:
+				result.append(item)
+	return result
 
 
 func get_item_amount(id: int) -> int:

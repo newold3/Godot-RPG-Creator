@@ -74,9 +74,9 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	if Engine.is_editor_hint() or !enabled:
+		if not Engine.is_editor_hint(): _update_position()
 		return
 	
-	_update_position()
 	
 	_check_button_pressed()
 
@@ -140,6 +140,8 @@ func end() -> void:
 		main_tween.kill()
 		
 	enabled = false
+	
+	GameManager.set_cursor_manipulator(GameManager.MANIPULATOR_MODES.NONE)
 	
 	GameManager.hide_cursor(false, self)
 	main_tween = create_tween()
