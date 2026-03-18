@@ -102,7 +102,7 @@ Open an **[Issue]** with the `enhancement` or `suggestion` label. I am open to d
 3. Import the project (`project.godot`) into the engine.
 4. Run and start creating!
 
-*(Note: The project is not yet compatible with Godot 4.6)*
+*(Note: The project is only compatible with Godot 4.6+)*
 
 ---
 
