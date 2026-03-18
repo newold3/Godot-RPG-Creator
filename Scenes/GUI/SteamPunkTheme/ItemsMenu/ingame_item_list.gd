@@ -62,8 +62,8 @@ func set_disabled() -> void:
 	%ItemList.set_enabled(false)
 
 
-func set_tabs(tabs: PackedStringArray) -> void:
-	%CircularTabs.add_tabs(tabs)
+func set_tabs(tabs: PackedStringArray, selected_index: int = 0) -> void:
+	%CircularTabs.add_tabs(tabs, selected_index)
 	if tabs.size() <= 1:
 		%PanelL2Tab.modulate = Color(0.65, 0.65, 0.65)
 		%PanelR2Tab.modulate = Color(0.65, 0.65, 0.65)

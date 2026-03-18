@@ -131,9 +131,16 @@ func add_tab(text: String) -> void:
 
 
 ## Adds multiple tabs to the list
-func add_tabs(new_tabs: PackedStringArray) -> void:
+func add_tabs(new_tabs: PackedStringArray, _selected_index: int = 0) -> void:
 	tabs.clear()
 	tabs = new_tabs
+	selected_index = _selected_index
+	if tabs.size() > 0:
+		var step = 2.0 * PI / tabs.size()
+		current_angle = (PI / 2.0) - (float(selected_index) * step)
+	else:
+		current_angle = PI / 2.0
+	target_angle = current_angle
 	_update_max_size()
 	queue_redraw()
 
