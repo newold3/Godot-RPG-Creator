@@ -164,17 +164,19 @@ func show_item_menu(id: String) -> void:
 		items_menu_scene.itemlist_id = id
 		var cache = items_menu_scene.get_list_cache()
 		var items = []
+		var collection = 0
 		if id == "items":
 			var tabs: PackedStringArray = [
 				tr("All Itens"), tr("Items"), tr("Weapons"), tr("Armors"), tr("Costumes"), tr("key Items")
 			]
-			items_menu_scene.set_tabs(tabs)
-			items = GameManager.get_items(false, cache.get("sort_type", 0), cache.get("collection", 0))
+			collection = cache.get("collection", 0)
+			items_menu_scene.set_tabs(tabs, collection)
+			items = GameManager.get_items(false, cache.get("sort_type", 0), collection)
 		elif id == "skills":
 			var tabs: PackedStringArray = [
 				tr("Skills")
 			]
-			items_menu_scene.set_tabs(tabs)
+			items_menu_scene.set_tabs(tabs, 0)
 			if party_scene:
 				var actor: GameActor = party_scene.get_actor_selected()
 				items = GameManager.get_skills_for_actor(actor, cache.get("sort_type", 0))
