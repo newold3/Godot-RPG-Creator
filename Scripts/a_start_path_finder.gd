@@ -1,152 +1,278 @@
 class_name AStarPathfinder
-extends Node
+extends AStar2D
 
-var game_map: RPGMap
-var node_data: Dictionary = {} # {node_id: {target: Vector2i, history: Array[Vector2i], last_pos: Vector2i, stuck_frames: int}}
-var MAX_HISTORY: int = 15
-var STUCK_THRESHOLD: int = 30 # frames without moving before considering stuck
+var _map: RPGMap
+var _map_size: Vector2i
+var _infinite_x: bool
+var _infinite_y: bool
 
-func _init(map: Object) -> void:
-	game_map = map
+const COST_STRAIGHT = 1.0
+const COST_DIAGONAL = 1.4142
 
-## Returns the best neighbor tile towards the target, or null if it shouldn't move
-func get_next_tile(moving_node: Node, current_pos: Vector2i, target_pos: Vector2i) -> Variant:
-	if not game_map:
-		return Vector2i.ZERO
+func initialize(map: RPGMap) -> void:
+	clear()
+	_map = map
+	_map_size = map.get_map_size_in_tiles()
+	_infinite_x = map.infinite_horizontal_scroll
+	_infinite_y = map.infinite_vertical_scroll
 	
-	var node_id = moving_node.get_instance_id()
+	_build_graph()
+
+
+func _get_wrapped_tile(tile: Vector2i) -> Vector2i:
+	var x = tile.x
+	var y = tile.y
+	if _infinite_x: x = posmod(x, _map_size.x)
+	if _infinite_y: y = posmod(y, _map_size.y)
+	return Vector2i(x, y)
+
+# “Octile” heuristic for 8-direction movement on a grid
+func _estimate_cost(from_id: int, to_id: int) -> float:
+	var from_pos = get_point_position(from_id)
+	var to_pos = get_point_position(to_id)
 	
-	# If target changed, clear history
-	if node_id in node_data and node_data[node_id]["target"] != target_pos:
-		node_data[node_id]["history"].clear()
+	var dx = abs(from_pos.x - to_pos.x)
+	var dy = abs(from_pos.y - to_pos.y)
 	
-	# Initialize node data if it doesn't exist
-	if not node_id in node_data:
-		node_data[node_id] = {
-			"target": target_pos,
-			"history": [],
-			"last_pos": current_pos,
-			"stuck_frames": 0
-		}
-	else:
-		node_data[node_id]["target"] = target_pos
+	if _infinite_x: dx = min(dx, _map_size.x - dx)
+	if _infinite_y: dy = min(dy, _map_size.y - dy)
 	
-	# If already adjacent to target, clear history and don't move
-	if _is_adjacent(current_pos, target_pos):
-		node_data[node_id]["history"].clear()
+	var min_delta = min(dx, dy)
+	var max_delta = max(dx, dy)
+	
+	# Cost: Diagonal steps * 1,414 + Remaining straight steps * 1
+	return (min_delta * COST_DIAGONAL) + (max_delta - min_delta)
+
+func _compute_cost(from_id: int, to_id: int) -> float:
+	# Detect whether it is diagonal or straight to apply the correct weight
+	var from_pos = get_point_position(from_id)
+	var to_pos = get_point_position(to_id)
+	
+	var dx = abs(from_pos.x - to_pos.x)
+	var dy = abs(from_pos.y - to_pos.y)
+	
+	# Wrapping adjustment
+	if _infinite_x: dx = min(dx, _map_size.x - dx)
+	if _infinite_y: dy = min(dy, _map_size.y - dy)
+
+	# If it moves on both axes, it is diagonal.
+	if dx > 0.1 and dy > 0.1: # We use 0.1 for floats, even though they are integers in grid.
+		return COST_DIAGONAL
+	return COST_STRAIGHT
+
+
+func get_next_tile(character: Node2D, current_tile: Vector2i, target_tile: Vector2i) -> Variant:
+	if not _map:
 		return null
-	
-	var history = node_data[node_id]["history"]
-	var is_stuck = false
-	
-	# Detect if node is stuck
-	if current_pos == node_data[node_id]["last_pos"]:
-		node_data[node_id]["stuck_frames"] += 1
-		# If stuck too long, clear history to force another path
-		if node_data[node_id]["stuck_frames"] > STUCK_THRESHOLD:
-			history.clear()
-			node_data[node_id]["stuck_frames"] = 0
-			is_stuck = true
-	else:
-		node_data[node_id]["stuck_frames"] = 0
-	
-	node_data[node_id]["last_pos"] = current_pos
-	
-	# Get 8 neighbors
-	var neighbors = _get_8_neighbors(current_pos)
-	var valid_neighbors: Array = []
-	
-	# Filter valid neighbors
-	for neighbor_pos in neighbors:
-		# If not stuck, avoid history
-		if not is_stuck and neighbor_pos in history:
-			continue
-		
-		# Check if walkable
-		if not _is_valid_move(moving_node, neighbor_pos):
-			continue
-		
-		valid_neighbors.append(neighbor_pos)
-	
-	# If no valid neighbors
-	if valid_neighbors.is_empty():
+	var start_id = _get_id_from_tile(current_tile)
+	var end_id = _get_id_from_tile(target_tile)
+	if start_id < 0 or end_id < 0 or not has_point(start_id) or not has_point(end_id):
 		return null
-	
-	# Sort by distance to target (lower distance = better)
-	valid_neighbors.sort_custom(func(a, b):
-		return _manhattan(a, target_pos) < _manhattan(b, target_pos)
-	)
-	
-	# Return the best (first in sorted list)
-	var best_tile = valid_neighbors[0]
-	
-	# Add current position to history
-	history.append(current_pos)
-	
-	# Limit history size
-	if history.size() > MAX_HISTORY:
-		history.pop_front()
-	
-	return best_tile
-
-func _get_8_neighbors(pos: Vector2i) -> Array[Vector2i]:
-	return [
-		pos + Vector2i.RIGHT,
-		pos + Vector2i.LEFT,
-		pos + Vector2i.DOWN,
-		pos + Vector2i.UP,
-		pos + Vector2i(1, 1),
-		pos + Vector2i(1, -1),
-		pos + Vector2i(-1, 1),
-		pos + Vector2i(-1, -1)
-	]
-
-func _is_adjacent(pos: Vector2i, target: Vector2i) -> bool:
-	if not game_map:
-		return false
-	
-	pos = game_map.get_wrapped_tile(pos)
-	target = game_map.get_wrapped_tile(target)
-	
-	var distance = abs(pos.x - target.x) + abs(pos.y - target.y)
-	return distance <= 1
-
-func _is_valid_move(moving_node: Node, tile_pos: Vector2i) -> bool:
-	if not game_map:
-		return true
-	
-	tile_pos = game_map.get_wrapped_position(tile_pos)
-	
-	# Check if passable according to node direction
-	if not game_map.is_passable(tile_pos, moving_node.current_direction, moving_node, true):
-		return false
-	
-	# Check if node can walk over terrain
-	if not game_map.can_move_over_terrain(tile_pos, moving_node.can_move_on_terrains):
-		return false
-	
-	return true
-
-func _manhattan(a: Vector2i, b: Vector2i) -> float:
-	if not game_map:
-		return float(abs(a.x - b.x) + abs(a.y - b.y))
-	
-	var dx = abs(a.x - b.x)
-	var dy = abs(a.y - b.y)
-	var map_size = game_map.get_used_rect(false).size
-	
-	if dx > map_size.x / 2:
-		dx = map_size.x - dx
-	if dy > map_size.y / 2:
-		dy = map_size.y - dy
-	
-	return float(dx + dy)
+	var disabled_points = _disable_dynamic_obstacles(character, target_tile)
+	var path_ids = get_id_path(start_id, end_id)
+	_restore_dynamic_obstacles(disabled_points)
+	if path_ids.size() > 1:
+		var next_point_pos = get_point_position(path_ids[1])
+		return Vector2i(next_point_pos)
+	return null
 
 
-func vector2_to_direction(vec: Vector2i) -> int:
-	# Converts a Vector2i to a 4-direction direction
-	if vec == Vector2i(0, -1): return 4 # North
-	if vec == Vector2i(1, 0): return 2 # East
-	if vec == Vector2i(0, 1): return 8 # South
-	if vec == Vector2i(-1, 0): return 1 # West
-	return 0 # Unknown
+func _restore_dynamic_obstacles(ids: Array[int]) -> void:
+	for id in ids:
+		if has_point(id):
+			set_point_disabled(id, false)
+
+
+func _get_id_from_tile(tile: Vector2i) -> int:
+	var x = tile.x
+	var y = tile.y
+	if _infinite_x:
+		x = x % _map_size.x
+		if x < 0:
+			x += _map_size.x
+	elif x < 0 or x >= _map_size.x:
+		return -1
+	if _infinite_y:
+		y = y % _map_size.y
+		if y < 0:
+			y += _map_size.y
+	elif y < 0 or y >= _map_size.y:
+		return -1
+	return y * _map_size.x + x
+
+
+func _is_tile_passable_static(tile: Vector2i) -> bool:
+	return _map.is_tile_passable_from_direction(tile, 2)
+
+
+func vector2_to_direction(motion: Vector2i) -> int:
+	if _infinite_x:
+		if motion.x > 1: motion.x = -1
+		elif motion.x < -1: motion.x = 1
+	if _infinite_y:
+		if motion.y > 1: motion.y = -1
+		elif motion.y < -1: motion.y = 1
+	
+	# Logic to return diagonal address if it exists
+	if motion.x < 0 and motion.y < 0: return 7 # UP-LEFT (8 directions)
+	
+	# (4 directions)
+	if abs(motion.x) > abs(motion.y):
+		if motion.x < 0: return CharacterBase.DIRECTIONS.LEFT
+		if motion.x > 0: return CharacterBase.DIRECTIONS.RIGHT
+	else:
+		if motion.y < 0: return CharacterBase.DIRECTIONS.UP
+		if motion.y > 0: return CharacterBase.DIRECTIONS.DOWN
+	
+	# Fallback
+	if motion.x != 0: return CharacterBase.DIRECTIONS.RIGHT if motion.x > 0 else CharacterBase.DIRECTIONS.LEFT
+	return CharacterBase.DIRECTIONS.DOWN
+
+
+func direction_to_vector2i(search_dir: int) -> Vector2i:
+	match search_dir:
+		CharacterBase.DIRECTIONS.LEFT: return Vector2i.LEFT
+		CharacterBase.DIRECTIONS.RIGHT: return Vector2i.RIGHT
+		CharacterBase.DIRECTIONS.UP: return Vector2i.UP
+		_: return Vector2i.DOWN
+
+
+func update_tile_connections(tile: Vector2i) -> void:
+	var id = _get_id_from_tile(tile)
+	if not has_point(id):
+		return
+	for connected_id in get_point_connections(id):
+		disconnect_points(id, connected_id)
+	if not _is_tile_passable_static(tile):
+		return
+	_try_connect(tile, Vector2i(1, 0))
+	_try_connect(tile, Vector2i(-1, 0))
+	_try_connect(tile, Vector2i(0, 1))
+	_try_connect(tile, Vector2i(0, -1))
+	_try_connect_diagonal(tile, Vector2i(1, 1))
+	_try_connect_diagonal(tile, Vector2i(-1, 1))
+	_try_connect_diagonal(tile, Vector2i(1, -1))
+	_try_connect_diagonal(tile, Vector2i(-1, -1))
+
+
+func _disable_dynamic_obstacles(me: Node2D, target_tile: Vector2i) -> Array[int]:
+	var disabled_ids: Array[int] = []
+	var obstacles_to_disable: Array[Dictionary] = []
+	if not me.is_in_group("player") and GameManager.current_player:
+		var add_player = true
+		if GameManager.current_player.is_on_vehicle and GameManager.current_player.current_vehicle == me:
+			add_player = false
+		if add_player:
+			obstacles_to_disable.append({
+				"tile": GameManager.current_player.get_current_tile(),
+				"entity": GameManager.current_player
+			})
+	if "entity_manager" in _map and _map.entity_manager and "current_ingame_vehicles" in _map.entity_manager:
+		for vehicle in _map.entity_manager.current_ingame_vehicles:
+			var v_tile = _map.local_to_map(Vector2i(vehicle.global_position))
+			obstacles_to_disable.append({"tile": v_tile, "entity": vehicle})
+			if vehicle.get("extra_dimensions"):
+				var extra = vehicle.extra_dimensions
+				var v_left = v_tile.x - extra.grow_left
+				var v_right = v_tile.x + extra.grow_right + 1
+				var v_up = v_tile.y - extra.grow_up
+				var v_down = v_tile.y + extra.grow_down + 1
+				for x in range(v_left, v_right):
+					for y in range(v_up, v_down):
+						obstacles_to_disable.append({"tile": Vector2i(x, y), "entity": vehicle})
+	for ev in me.get_tree().get_nodes_in_group("extraction_event"):
+		if "is_started" in ev and ev.is_started:
+			var ev_tile = _map.local_to_map(Vector2i(ev.global_position))
+			obstacles_to_disable.append({"tile": ev_tile, "entity": ev})
+	if "entity_manager" in _map and _map.entity_manager and "current_ingame_events" in _map.entity_manager:
+		for ev in _map.entity_manager.current_ingame_events.values():
+			if not ev:
+				continue
+			var lpc = ev.get("lpc_event") if "lpc_event" in ev else null
+			if lpc and is_instance_valid(lpc):
+				var is_solid = true
+				if lpc.has_method("is_passable"):
+					is_solid = not lpc.is_passable()
+				elif "character_options" in lpc and lpc.character_options:
+					is_solid = not lpc.character_options.passable
+				if is_solid:
+					obstacles_to_disable.append({"tile": lpc.get_current_tile(), "entity": lpc})
+	if "ingame_event_regions" in _map:
+		for shape in _map.ingame_event_regions:
+			if is_instance_valid(shape) and not shape.disabled and shape.has_meta("type") and shape.get_meta("type") == "collision_region":
+				var region_data = shape.get_meta("region_data")
+				var rect = region_data.rect
+				for x in range(int(rect.position.x), int(rect.position.x + rect.size.x)):
+					for y in range(int(rect.position.y), int(rect.position.y + rect.size.y)):
+						obstacles_to_disable.append({"tile": Vector2i(x, y), "entity": shape})
+	for obs in obstacles_to_disable:
+		var tile = obs["tile"]
+		var entity = obs["entity"]
+		if entity == me:
+			continue
+		if tile != target_tile:
+			var id = _get_id_from_tile(tile)
+			if has_point(id) and not is_point_disabled(id):
+				set_point_disabled(id, true)
+				disabled_ids.append(id)
+	return disabled_ids
+
+
+func _try_connect(origin: Vector2i, offset: Vector2i) -> void:
+	var target_x = origin.x + offset.x
+	var target_y = origin.y + offset.y
+	if target_x >= _map_size.x:
+		if _infinite_x:
+			target_x -= _map_size.x
+		else:
+			return
+	elif target_x < 0:
+		if _infinite_x:
+			target_x += _map_size.x
+		else:
+			return
+	if target_y >= _map_size.y:
+		if _infinite_y:
+			target_y -= _map_size.y
+		else:
+			return
+	elif target_y < 0:
+		if _infinite_y:
+			target_y += _map_size.y
+		else:
+			return
+	var target_tile = Vector2i(target_x, target_y)
+	if _is_tile_passable_static(target_tile):
+		var from_id = _get_id_from_tile(origin)
+		var to_id = _get_id_from_tile(target_tile)
+		if not are_points_connected(from_id, to_id):
+			connect_points(from_id, to_id, true)
+
+
+func _try_connect_diagonal(origin: Vector2i, offset: Vector2i) -> void:
+	var target_x = origin.x + offset.x
+	var target_y = origin.y + offset.y
+	if not _infinite_x and (target_x < 0 or target_x >= _map_size.x):
+		return
+	if not _infinite_y and (target_y < 0 or target_y >= _map_size.y):
+		return
+	var neighbor_h = _get_wrapped_tile(origin + Vector2i(offset.x, 0))
+	var neighbor_v = _get_wrapped_tile(origin + Vector2i(0, offset.y))
+	if _is_tile_passable_static(neighbor_h) and _is_tile_passable_static(neighbor_v):
+		_try_connect(origin, offset)
+
+
+func _build_graph() -> void:
+	for x in range(_map_size.x):
+		for y in range(_map_size.y):
+			var tile = Vector2i(x, y)
+			add_point(_get_id_from_tile(tile), Vector2(x, y))
+	for x in range(_map_size.x):
+		for y in range(_map_size.y):
+			var current_tile = Vector2i(x, y)
+			if not _is_tile_passable_static(current_tile):
+				continue
+			_try_connect(current_tile, Vector2i(1, 0))
+			_try_connect(current_tile, Vector2i(0, 1))
+			_try_connect_diagonal(current_tile, Vector2i(1, 1))
+			_try_connect_diagonal(current_tile, Vector2i(-1, 1))

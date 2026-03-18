@@ -35,6 +35,9 @@ func get_class():
 ## List of armors.
 @export var armors: Array[RPGArmor] = []
 
+## List of armors.
+@export var costumes: Array[RPGCostume] = []
+
 ## List of enemies.
 @export var enemies: Array[RPGEnemy] = []
 
@@ -141,6 +144,8 @@ func initialize() -> void:
 	armors.clear()
 	armors.append(null)
 	armors.append(RPGArmor.new())
+	# costumes
+	costumes.clear()
 	# Enemies
 	enemies.clear()
 	enemies.append(null)
@@ -247,7 +252,7 @@ func clone(value: bool = true) -> RPGDATA:
 	var new_data = RPGDATA.new()
 
 	var arrs = [
-		"actors", "classes", "professions", "skills", "items", "weapons", "armors",
+		"actors", "classes", "professions", "skills", "items", "weapons", "armors", "costumes",
 		"enemies", "troops", "states", "animations", "common_events", "speakers", "quests"]
 	for v in arrs:
 		var current_data = get(v)
@@ -270,7 +275,7 @@ func clone(value: bool = true) -> RPGDATA:
 func update_with_other_db(other: RPGDATA) -> void:
 	var arrs = [
 		"actors", "classes", "professions", "skills", "items", "weapons", "armors",
-		"enemies", "troops", "states", "animations", "common_events",
+		"costumes", "enemies", "troops", "states", "animations", "common_events",
 		"system", "types", "terms", "speakers", "quests", "_id_version"
 	]
 
@@ -286,75 +291,65 @@ func is_equal_to(other: RPGDATA) -> bool:
 	if not other:
 		return false
 
-	var bd1 = inst_to_dict(self)
-	var bd2 = inst_to_dict(other)
-	return _recursive_diff_search(bd1, bd2, "root")
+	return _recursive_diff_search(self, other)
 
 
-func _recursive_diff_search(val_a: Variant, val_b: Variant, path: String) -> bool:
-	# 1. Check Types
+func _recursive_diff_search(val_a: Variant, val_b: Variant) -> bool:
 	if typeof(val_a) != typeof(val_b):
-		# If one is an object and the other is a dictionary, it might be due to previous recursion,
-		# but strictly speaking types must match.
-		#print("Diff found at [%s]: Type mismatch. A is %s, B is %s" % [path, type_string(typeof(val_a)), type_string(typeof(val_b))])
 		return false
 
-	# 2. Check Objects (Deep Compare)
-	if typeof(val_a) == TYPE_OBJECT:
-		# If they point to the exact same instance, they are equal.
-		if val_a == val_b:
-			return true
-		
-		# If one is null and the other is not (handled by type check usually, but good for safety).
-		if not val_a or not val_b:
-			#print("Diff found at [%s]: One object is null." % path)
-			return false
-		
-		# Convert nested objects to dictionaries to inspect their properties.
-		var dict_a = inst_to_dict(val_a)
-		var dict_b = inst_to_dict(val_b)
-		
-		# Recurse using the dictionary representation of these objects.
-		return _recursive_diff_search(dict_a, dict_b, path + " -> (Object)")
-
-	# 3. Check Dictionaries (Recursion)
-	elif typeof(val_a) == TYPE_DICTIONARY:
-		var keys_a: Array = val_a.keys()
-		var keys_b: Array = val_b.keys()
-
-		if keys_a.size() != keys_b.size():
-			#print("Diff found at [%s]: Dictionary size mismatch. A has %d keys, B has %d keys." % [path, keys_a.size(), keys_b.size()])
-			return false
-
-		for key in keys_a:
-			if not val_b.has(key):
-				#print("Diff found at [%s]: Key '%s' is missing in B." % [path, str(key)])
+	match typeof(val_a):
+		TYPE_OBJECT:
+			if val_a == val_b:
+				return true
+			
+			if val_a == null or val_b == null:
 				return false
 			
-			if not _recursive_diff_search(val_a[key], val_b[key], path + "." + str(key)):
+			if val_a is Resource and val_b is Resource:
+				if val_a.resource_path != "" and val_a.resource_path == val_b.resource_path:
+					return true
+			
+			var props = val_a.get_property_list()
+			for prop in props:
+				var usage = prop["usage"]
+				if (usage & PROPERTY_USAGE_STORAGE) == 0:
+					continue
+				
+				var p_name = prop["name"]
+				if p_name in ["resource_path", "resource_local_to_scene", "resource_scene_unique_id", "resource_name", "script"]:
+					continue
+					
+				if not _recursive_diff_search(val_a.get(p_name), val_b.get(p_name)):
+					return false
+			
+			return true
+
+		TYPE_DICTIONARY:
+			if val_a.size() != val_b.size():
 				return false
-		
-		return true
+			
+			var keys_a = val_a.keys()
+			for key in keys_a:
+				if not val_b.has(key):
+					return false
+				if not _recursive_diff_search(val_a[key], val_b[key]):
+					return false
+			
+			return true
 
-	# 4. Check Arrays (Recursion)
-	elif typeof(val_a) == TYPE_ARRAY:
-		if val_a.size() != val_b.size():
-			#print("Diff found at [%s]: Array size mismatch. A: %d, B: %d" % [path, val_a.size(), val_b.size()])
-			return false
-
-		for i in range(val_a.size()):
-			if not _recursive_diff_search(val_a[i], val_b[i], path + "[%d]" % i):
+		TYPE_ARRAY:
+			if val_a.size() != val_b.size():
 				return false
+			
+			for i in range(val_a.size()):
+				if not _recursive_diff_search(val_a[i], val_b[i]):
+					return false
+			
+			return true
 
-		return true
-
-	# 5. Check Primitive Values
-	else:
-		if val_a != val_b:
-			#print("Diff found at [%s]: Values differ. A: %s vs B: %s" % [path, str(val_a), str(val_b)])
-			return false
-
-	return true
+		_:
+			return val_a == val_b
 
 
 ## Migrates the database to a target version, applying upgrades sequentially.
@@ -388,6 +383,13 @@ func _apply_upgrade(version_index: int) -> void:
 				item.recipes = new_list
 				var _disassemble_materials: Array[RPGGearUpgradeComponent] = []
 				item.disassemble_materials = _disassemble_materials
+		11:
+			if types.tool_types == null or types.tool_types.size() == 0:
+				types.tool_types = []
+				types.icons.tool_icons = []
+			for weapon: RPGWeapon in weapons:
+				if weapon.tools_family == null:
+					weapon.tools_family = []
+			costumes = []
 		_:
-			# Default case for versions without specific structural changes
 			pass

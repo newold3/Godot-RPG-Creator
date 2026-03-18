@@ -60,6 +60,16 @@ func get_class(): return "RPGWeapon"
 ## Part of the weapon in LPC format.
 @export var lpc_part: String = ""
 
+## Script of type "CombatActionBase" used by this weapon to load different
+## animations when starting an attack, when hitting something, or when being destroyed.
+@export var lpc_part_custom_script: String = ""
+
+## Attack power used by this weapon when it is not used in battle.
+@export var map_damage: int = 1
+
+## Add this weapon to one or more tools to trigger events in-game.
+@export var tools_family: PackedInt32Array = []
+
 ## Additional notes about the weapon.
 @export var notes: String = ""
 
@@ -130,6 +140,8 @@ func clone(value: bool = true) -> RPGWeapon:
 		new_weapon.craft_materials[i] = new_weapon.craft_materials[i].clone(value)
 	for i in new_weapon.disassemble_materials.size():
 		new_weapon.disassemble_materials[i] = new_weapon.disassemble_materials[i].clone(value)
+	
+	new_weapon.tools_family = tools_family.duplicate()
 		
 	new_weapon.upgrades = new_weapon.upgrades.clone(value)
 	

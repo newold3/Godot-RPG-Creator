@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://6erjlil1ucrr"]
+[gd_scene format=3 uid="uid://6erjlil1ucrr"]
 
 [ext_resource type="Shader" uid="uid://c0rcvcbe0qvjh" path="res://Assets/Shaders/colorize.gdshader" id="1_0cek7"]
 [ext_resource type="Texture2D" uid="uid://by5msssxinwb4" path="res://addons/rpg_character_creator/textures/projectiles/arrow.png" id="2_hpomq"]
@@ -69,7 +69,7 @@ animations = [{
 "speed": 10.0
 }]
 
-[node name="Arrow" type="AnimatedSprite2D"]
+[node name="Arrow" type="AnimatedSprite2D" unique_id=1725529875]
 material = SubResource("ShaderMaterial_evgvv")
 sprite_frames = SubResource("SpriteFrames_7ewuj")
 animation = &"Up"

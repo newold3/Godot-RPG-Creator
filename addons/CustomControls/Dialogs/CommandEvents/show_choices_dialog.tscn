@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://c1gbt74kari06"]
+[gd_scene format=3 uid="uid://c1gbt74kari06"]
 
 [ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="1_juv0y"]
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_y0qr0"]
@@ -23,7 +23,7 @@ gradient = SubResource("Gradient_radtc")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x7d3x"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g725q"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -41,17 +41,17 @@ corner_radius_bottom_left = 12
 [sub_resource type="Gradient" id="Gradient_ctwx1"]
 colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_d435o"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_41lay"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_ctwx1")
 fill_from = Vector2(0.542735, 0.995726)
 fill_to = Vector2(0.58547, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2td28"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lw1sf"]
 resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_d435o")
+texture = SubResource("GradientTexture2D_41lay")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5qoxi"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ce5hi"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -64,7 +64,7 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xr2tm"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8itao"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -79,17 +79,17 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_rv7bq"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ul0sp"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_ctwx1")
 fill_from = Vector2(0.542735, 0.995726)
 fill_to = Vector2(0.58547, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_62tm0"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1r7b1"]
 resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_rv7bq")
+texture = SubResource("GradientTexture2D_ul0sp")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u0g43"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oe2bh"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -102,15 +102,8 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3vry3"]
-texture = ExtResource("8_kjolb")
-texture_margin_left = 6.0
-texture_margin_top = 6.0
-texture_margin_right = 6.0
-texture_margin_bottom = 6.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_abrir"]
-texture = ExtResource("6_tg3u3")
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ocmii"]
+texture = ExtResource("5_drm4p")
 texture_margin_left = 6.0
 texture_margin_top = 6.0
 texture_margin_right = 6.0
@@ -123,25 +116,34 @@ texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ocmii"]
-texture = ExtResource("5_drm4p")
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_abrir"]
+texture = ExtResource("6_tg3u3")
 texture_margin_left = 6.0
 texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[node name="ShowChoicesDialog" type="Window"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3vry3"]
+texture = ExtResource("8_kjolb")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[node name="ShowChoicesDialog" type="Window" unique_id=586848625]
+oversampling_override = 1.0
 title = "Show Choices"
 position = Vector2i(0, 36)
-size = Vector2i(900, 507)
+size = Vector2i(900, 512)
+wrap_controls = true
 transient = true
 exclusive = true
+unresizable = true
 min_size = Vector2i(0, 330)
-max_size = Vector2i(16384, 512)
 theme = ExtResource("1_y0qr0")
 script = ExtResource("2_nm8qk")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=348720596]
 material = SubResource("CanvasItemMaterial_vljj6")
 anchors_preset = 15
 anchor_right = 1.0
@@ -150,7 +152,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_ri5qi")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=17629112]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -163,48 +165,48 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1271799758]
 layout_mode = 2
 
-[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=883049621]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer" unique_id=1460808130]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Choices" parent="MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer" instance=ExtResource("1_juv0y")]
+[node name="Choices" parent="MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer" unique_id=542291879 instance=ExtResource("1_juv0y")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_x7d3x")
-style1 = SubResource("StyleBoxFlat_x7d3x")
-style2 = SubResource("StyleBoxTexture_2td28")
-style3 = SubResource("StyleBoxFlat_5qoxi")
+theme_override_styles/panel = SubResource("StyleBoxFlat_g725q")
+style1 = SubResource("StyleBoxFlat_g725q")
+style2 = SubResource("StyleBoxTexture_lw1sf")
+style3 = SubResource("StyleBoxFlat_ce5hi")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer/Choices"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer/Choices" unique_id=531248886]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer/Choices/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer/Choices/MarginContainer" unique_id=2120440981]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer/Choices/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer/Choices/MarginContainer/VBoxContainer" unique_id=1667024433]
 layout_mode = 2
 text = "Choices:"
 
-[node name="ChoiceScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer/Choices/MarginContainer/VBoxContainer"]
+[node name="ChoiceScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer/Choices/MarginContainer/VBoxContainer" unique_id=865565089]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 follow_focus = true
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer/Choices/MarginContainer/VBoxContainer/ChoiceScrollContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer/Choices/MarginContainer/VBoxContainer/ChoiceScrollContainer" unique_id=1306612377]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -213,23 +215,23 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="ChoiceContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer/Choices/MarginContainer/VBoxContainer/ChoiceScrollContainer/MarginContainer"]
+[node name="ChoiceContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer/Choices/MarginContainer/VBoxContainer/ChoiceScrollContainer/MarginContainer" unique_id=2005776403]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer/Choices/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer/Choices/MarginContainer/VBoxContainer" unique_id=1707976547]
 layout_mode = 2
 
-[node name="AddChoice" parent="MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer/Choices/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_5cibl")]
+[node name="AddChoice" parent="MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer/Choices/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1360196777 instance=ExtResource("4_5cibl")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 tooltip_text = "Add a new choice to the list"
 text = "Add Choice"
 
-[node name="TextFormat" parent="MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer/Choices/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_5cibl")]
+[node name="TextFormat" parent="MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer/Choices/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1512012844 instance=ExtResource("4_5cibl")]
 modulate = Color(0.792157, 0.792157, 0.984314, 1)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -239,39 +241,39 @@ tooltip_text = "Edits text formatting settings (font, size, color)
 [Note]: By default, the current settings of the message dialog will be used if no other settings are specified."
 text = "Text Format..."
 
-[node name="ConfigPanel" parent="MarginContainer/VBoxContainer/VBoxContainer" instance=ExtResource("1_juv0y")]
+[node name="ConfigPanel" parent="MarginContainer/VBoxContainer/VBoxContainer" unique_id=1120691742 instance=ExtResource("1_juv0y")]
 custom_minimum_size = Vector2(450, 0)
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_xr2tm")
-style1 = SubResource("StyleBoxFlat_xr2tm")
-style2 = SubResource("StyleBoxTexture_62tm0")
-style3 = SubResource("StyleBoxFlat_u0g43")
+theme_override_styles/panel = SubResource("StyleBoxFlat_8itao")
+style1 = SubResource("StyleBoxFlat_8itao")
+style2 = SubResource("StyleBoxTexture_1r7b1")
+style3 = SubResource("StyleBoxFlat_oe2bh")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel" unique_id=665802704]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer" unique_id=625764643]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer" unique_id=803367701]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 text = "Config:"
 
-[node name="HBoxContainer7" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer7" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer" unique_id=1544342148]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer7"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer7" unique_id=831802044]
 custom_minimum_size = Vector2(188, 0)
 layout_mode = 2
 text = "Scene Path:"
 
-[node name="ScenePath" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer7" instance=ExtResource("5_06ceu")]
+[node name="ScenePath" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer7" unique_id=733190119 instance=ExtResource("5_06ceu")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -281,15 +283,15 @@ tooltip_text = "Select the choice scene to display these choices."
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 text = "choice_scene_1.tscn"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer" unique_id=1280193840]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=678114005]
 custom_minimum_size = Vector2(188, 0)
 layout_mode = 2
 text = "Position:"
 
-[node name="Position" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_q3vei")]
+[node name="Position" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=139069377 instance=ExtResource("5_q3vei")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -315,11 +317,11 @@ popup/item_7/id = 7
 popup/item_8/text = "Bottom Right"
 popup/item_8/id = 8
 
-[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer" unique_id=216698113]
 layout_mode = 2
 alignment = 2
 
-[node name="UseMessageBounds" type="CheckBox" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer6"]
+[node name="UseMessageBounds" type="CheckBox" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer6" unique_id=1190525298]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Use the boundaries of the text box to position the election dialogue"
@@ -327,48 +329,50 @@ mouse_default_cursor_shape = 2
 button_pressed = true
 text = "Use the message boundaries"
 
-[node name="HBoxContainer11" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer11" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer" unique_id=375075572]
 layout_mode = 2
 alignment = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer11"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer11" unique_id=1055189186]
 custom_minimum_size = Vector2(188, 0)
 layout_mode = 2
 text = "Offset:"
 
-[node name="OffsetX" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer11" instance=ExtResource("6_kln47")]
+[node name="OffsetX" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer11" unique_id=757539764 instance=ExtResource("6_kln47")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Moves the choice box dialog along the X-axis from the final position."
 allow_greater = true
 allow_lesser = true
+_custom_value = 0.0
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer11"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer11" unique_id=1366497822]
 layout_mode = 2
 text = " X "
 
-[node name="OffsetY" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer11" instance=ExtResource("6_kln47")]
+[node name="OffsetY" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer11" unique_id=743074301 instance=ExtResource("6_kln47")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Moves the choice box dialog along the Y-axis from the final position."
 allow_greater = true
 allow_lesser = true
+_custom_value = 0.0
 
-[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer11"]
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer11" unique_id=138339160]
 layout_mode = 2
 text = " Y"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer" unique_id=1008565581]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=2137090863]
 custom_minimum_size = Vector2(188, 0)
 layout_mode = 2
 text = "Default:"
 
-[node name="DefaultChoice" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_q3vei")]
+[node name="DefaultChoice" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1021146599 instance=ExtResource("5_q3vei")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -394,15 +398,15 @@ popup/item_7/id = 7
 popup/item_8/text = "#8"
 popup/item_8/id = 8
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer" unique_id=1869066919]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer3"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1623844602]
 custom_minimum_size = Vector2(188, 0)
 layout_mode = 2
 text = "Cancel:"
 
-[node name="CancelChoice" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("5_q3vei")]
+[node name="CancelChoice" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=2020993099 instance=ExtResource("5_q3vei")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -430,15 +434,15 @@ popup/item_8/id = 8
 popup/item_9/text = "#8"
 popup/item_9/id = 9
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer" unique_id=1019261076]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer4"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer4" unique_id=1062670781]
 custom_minimum_size = Vector2(188, 0)
 layout_mode = 2
 text = "Max Choices:"
 
-[node name="MaxChoices" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer4" instance=ExtResource("6_kln47")]
+[node name="MaxChoices" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer4" unique_id=280505417 instance=ExtResource("6_kln47")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -446,40 +450,40 @@ tooltip_text = "Specifies the maximum number of choices that are displayed at th
 
 If there are more choices, they will be divided into pages and \"next\" and \"previous\" buttons will be displayed to navigate through the pages."
 min_value = 2.0
-value = 4.0
 allow_greater = true
+_custom_value = 0.0
 
-[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer" unique_id=815020706]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer5"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer5" unique_id=744272244]
 custom_minimum_size = Vector2(188, 0)
 layout_mode = 2
 text = "Previous / Next:"
 
-[node name="PreviousChoice" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer5" instance=ExtResource("7_n71ao")]
+[node name="PreviousChoice" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer5" unique_id=616497623 instance=ExtResource("7_n71ao")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "When you are on a page other than the first page, this option is displayed to allow you to return to the previous page choices."
 text = "Previous"
 
-[node name="NextChoice" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer5" instance=ExtResource("7_n71ao")]
+[node name="NextChoice" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer5" unique_id=1773303899 instance=ExtResource("7_n71ao")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "When there are more choices than specified in \"Max Choices\", this new option appears to navigate to the next page of choices."
 text = "Next"
 
-[node name="HBoxContainer8" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer8" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer" unique_id=1183274166]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer8"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer8" unique_id=1293930603]
 custom_minimum_size = Vector2(188, 0)
 layout_mode = 2
 text = "Cursor Move FX: "
 
-[node name="CursorMoveFx" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer8" instance=ExtResource("5_06ceu")]
+[node name="CursorMoveFx" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer8" unique_id=1893597441 instance=ExtResource("5_06ceu")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -490,15 +494,15 @@ tooltip_text = "Sound Played When Moving the Cursor.
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 text = "button_hover_se.wav"
 
-[node name="HBoxContainer9" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer9" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer" unique_id=1074822095]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer9"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer9" unique_id=808897128]
 custom_minimum_size = Vector2(188, 0)
 layout_mode = 2
 text = "Selection FX: "
 
-[node name="SelectionFx" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer9" instance=ExtResource("5_06ceu")]
+[node name="SelectionFx" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer9" unique_id=1538510206 instance=ExtResource("5_06ceu")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -509,15 +513,15 @@ tooltip_text = "Sound Played When select an option.
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 text = "button_click_se.wav"
 
-[node name="HBoxContainer10" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer10" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer" unique_id=1033615004]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer10"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer10" unique_id=668126320]
 custom_minimum_size = Vector2(188, 0)
 layout_mode = 2
 text = "Cancel FX: "
 
-[node name="CancelFx" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer10" instance=ExtResource("5_06ceu")]
+[node name="CancelFx" parent="MarginContainer/VBoxContainer/VBoxContainer/ConfigPanel/MarginContainer/VBoxContainer/HBoxContainer10" unique_id=1308515794 instance=ExtResource("5_06ceu")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -528,39 +532,39 @@ tooltip_text = "Sound Played When \"Cancel Button\" is pressed.
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 text = "cancel1.ogg"
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=455235544]
 layout_mode = 2
 size_flags_vertical = 8
 theme_override_constants/separation = 12
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=2006239154]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 alignment = 1
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_5cibl")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1255582390 instance=ExtResource("4_5cibl")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 tooltip_text = "[title]Ok[/title]
 Saves all changes and closes the windows."
-theme_override_styles/disabled = SubResource("StyleBoxTexture_3vry3")
-theme_override_styles/hover = SubResource("StyleBoxTexture_abrir")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_0yl4v")
 theme_override_styles/normal = SubResource("StyleBoxTexture_ocmii")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_0yl4v")
+theme_override_styles/hover = SubResource("StyleBoxTexture_abrir")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_3vry3")
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_5cibl")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1204578918 instance=ExtResource("4_5cibl")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 tooltip_text = "[title]Cancel[/title]
 Closes this window without saving any changes."
-theme_override_styles/disabled = SubResource("StyleBoxTexture_3vry3")
-theme_override_styles/hover = SubResource("StyleBoxTexture_abrir")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_0yl4v")
 theme_override_styles/normal = SubResource("StyleBoxTexture_ocmii")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_0yl4v")
+theme_override_styles/hover = SubResource("StyleBoxTexture_abrir")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_3vry3")
 text = "CANCEL"
 
 [connection signal="item_rect_changed" from="MarginContainer/VBoxContainer/VBoxContainer/VBoxContainer/Choices" to="." method="_on_choices_item_rect_changed"]

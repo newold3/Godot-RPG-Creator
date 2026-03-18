@@ -145,6 +145,7 @@ func copy_image() -> void:
 			if %MainImage.texture.atlas:
 				var clipboard = StaticEditorVars.CLIPBOARD
 				clipboard[clipboard_key] = {"icon": %MainImage.texture.atlas, "region": %MainImage.texture.region}
+				RPGEditorToast.show_message("image copied into Clipboard\n  %s" % %MainImage.texture.atlas.get_path())
 
 
 func paste_image() -> void:

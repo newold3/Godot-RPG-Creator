@@ -1,0 +1,162 @@
+[gd_scene format=3 uid="uid://pbm7vnwv6qll"]
+
+[ext_resource type="Script" uid="uid://plprq13jb6ol" path="res://addons/rpg_character_creator/Other/simple_follower.gd" id="1_lt3p5"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_xbtvb"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4ncqf"]
+radius = 5.0
+height = 10.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fk01f"]
+size = Vector2(26, 26)
+
+[sub_resource type="Animation" id="Animation_qldby"]
+resource_name = "Breathing"
+length = 0.8
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.8),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"_manage_animator"
+}]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("FullBody:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.33333337, 0.8000001),
+"transitions": PackedFloat32Array(0.5, -2, -2),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1, 0.984), Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_368bl"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FullBody:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_w2gn3"]
+_data = {
+&"Breathing": SubResource("Animation_qldby"),
+&"RESET": SubResource("Animation_368bl")
+}
+
+[node name="Actor" type="CharacterBody2D" unique_id=1192192268 groups=["follower"]]
+z_index = 1
+y_sort_enabled = true
+collision_mask = 14
+script = ExtResource("1_lt3p5")
+
+[node name="FullBody" type="Marker2D" parent="." unique_id=706445823]
+unique_name_in_owner = true
+
+[node name="WingsBack" type="Sprite2D" parent="FullBody" unique_id=1076590408]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_xbtvb")
+position = Vector2(0, -32)
+region_enabled = true
+region_rect = Rect2(0, 640, 64, 64)
+region_filter_clip_enabled = true
+
+[node name="OffhandBack" type="Sprite2D" parent="FullBody" unique_id=2063912392]
+unique_name_in_owner = true
+position = Vector2(0, -32)
+region_enabled = true
+
+[node name="MainHandBack" type="Sprite2D" parent="FullBody" unique_id=283143339]
+unique_name_in_owner = true
+position = Vector2(0, -32)
+region_enabled = true
+region_rect = Rect2(0, 384, 192, 192)
+region_filter_clip_enabled = true
+
+[node name="Body" type="Sprite2D" parent="FullBody" unique_id=1186427588]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_xbtvb")
+position = Vector2(0, -32)
+region_enabled = true
+region_rect = Rect2(0, 640, 64, 64)
+region_filter_clip_enabled = true
+
+[node name="MainHandFront" type="Sprite2D" parent="FullBody" unique_id=1933319267]
+unique_name_in_owner = true
+position = Vector2(0, -32)
+region_enabled = true
+region_rect = Rect2(0, 384, 192, 192)
+region_filter_clip_enabled = true
+
+[node name="OffhandFront" type="Sprite2D" parent="FullBody" unique_id=2047226948]
+unique_name_in_owner = true
+position = Vector2(0, -32)
+region_enabled = true
+
+[node name="CollisionShape" type="CollisionShape2D" parent="." unique_id=1095088791]
+unique_name_in_owner = true
+position = Vector2(0, -7)
+shape = SubResource("CapsuleShape2D_4ncqf")
+disabled = true
+
+[node name="Bounds" type="Node2D" parent="." unique_id=520309795]
+
+[node name="Down" type="Marker2D" parent="Bounds" unique_id=2101670708]
+unique_name_in_owner = true
+
+[node name="Up" type="Marker2D" parent="Bounds" unique_id=899824502]
+unique_name_in_owner = true
+position = Vector2(0, -49)
+
+[node name="Left" type="Marker2D" parent="Bounds" unique_id=966145222]
+unique_name_in_owner = true
+position = Vector2(-15, -24)
+
+[node name="Right" type="Marker2D" parent="Bounds" unique_id=1726274585]
+unique_name_in_owner = true
+position = Vector2(15, -24)
+
+[node name="Feet" type="Marker2D" parent="Bounds" unique_id=2019415099]
+unique_name_in_owner = true
+
+[node name="Mouth" type="Marker2D" parent="Bounds" unique_id=1611085020]
+unique_name_in_owner = true
+position = Vector2(0, -29)
+
+[node name="ContactArea" type="Area2D" parent="." unique_id=266394253]
+unique_name_in_owner = true
+collision_layer = 64
+collision_mask = 64
+monitoring = false
+monitorable = false
+
+[node name="AreaShape" type="CollisionShape2D" parent="ContactArea" unique_id=166973827]
+unique_name_in_owner = true
+position = Vector2(0, -13)
+shape = SubResource("RectangleShape2D_fk01f")
+disabled = true
+debug_color = Color(0.7580552, 0.44811207, 0.2082015, 0.41960785)
+
+[node name="MainAnimator" type="AnimationPlayer" parent="." unique_id=1266908216]
+unique_name_in_owner = true
+libraries/ = SubResource("AnimationLibrary_w2gn3")
+autoplay = &"Breathing"
+speed_scale = 0.6

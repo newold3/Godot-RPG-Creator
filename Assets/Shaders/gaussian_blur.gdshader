@@ -4,6 +4,8 @@ render_mode blend_mix;
 
 uniform float blur_size : hint_range(0.0, 5.0) = 1.0;
 uniform vec4 overlay_color : source_color = vec4(0.0, 0.0, 0.0, 0.5);
+uniform vec4 debug_color : source_color = vec4(0.0, 0.0, 1.0, 0.5);
+uniform bool enable_debug = false;
 
 void fragment() {
 	vec2 pixel_size = TEXTURE_PIXEL_SIZE;
@@ -39,5 +41,11 @@ void fragment() {
 
 	// Assign overlay color with calculated alpha (blurred)
 	// Multiply also by overlay alpha if you want to control global opacity
-	COLOR = vec4(overlay_color.rgb, final_alpha * overlay_color.a);
+	if (!enable_debug){
+		vec4 color = texture(TEXTURE, UV);
+		COLOR = vec4(overlay_color.rgb, final_alpha * overlay_color.a);
+	}
+	else {
+		COLOR = debug_color;
+	}
 }

@@ -146,27 +146,27 @@ func _command_0015() -> void:
 # Command Change Party Members (Code 16), button_id = 11
 # Code 16 (Parent) parameters { operation_type, actor_id, initialize }
 func _command_0016() -> void:
+	# Command Change Party Members (Code 16) - operation_type: 0 = add, 1 = remove
 	debug_print("Processing command: Change Party Member (code 16)")
 	
-	# Get the operation type: 0 = add member, 1 = remove member
 	var operation_type = current_command.parameters.get("operation_type")
-	
-	# Get the actor ID to add or remove
 	var actor_id = current_command.parameters.get("actor_id")
-	
-	# Determine whether to initialize the actor when adding
 	var initialize = current_command.parameters.get("initialize", false)
 
 	if operation_type == 0:
-		# Add the actor to the party, initializing if specified
 		GameManager.add_party_member(actor_id, initialize)
 	else:
-		# Remove the actor from the party
 		GameManager.remove_party_member(actor_id)
 	
-	# Refresh the map if it exists
 	if GameManager.current_map:
 		GameManager.current_map.need_refresh = true
+		
+	var party_manager = GameManager.main_scene.get_node_or_null("%PartyManager")
+	if party_manager:
+		if GameManager.game_state.followers_enabled:
+			await party_manager.show_followers(true, false)
+		else:
+			await party_manager.update_party_visuals(true)
 
 
 # Command Change Leader (Code 36), button_id = 109

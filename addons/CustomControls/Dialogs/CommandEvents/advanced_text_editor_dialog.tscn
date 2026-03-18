@@ -1,4 +1,4 @@
-[gd_scene load_steps=106 format=3 uid="uid://f3dvroy0ce3d"]
+[gd_scene format=3 uid="uid://f3dvroy0ce3d"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_6ke1q"]
 [ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="1_acjup"]
@@ -20,7 +20,7 @@ gradient = SubResource("Gradient_dputo")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_15lj3"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f5f5i"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -38,17 +38,17 @@ corner_radius_bottom_left = 12
 [sub_resource type="Gradient" id="Gradient_ctwx1"]
 colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_44nyg"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7wx46"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_ctwx1")
 fill_from = Vector2(0.542735, 0.995726)
 fill_to = Vector2(0.58547, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1vd02"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rdg4x"]
 resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_44nyg")
+texture = SubResource("GradientTexture2D_7wx46")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8i8up"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_icrmr"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -370,7 +370,7 @@ color_regions = {
 "[ ]": Color(0.32156864, 0.95686275, 0, 0.96862745)
 }
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cgv1w"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jqunv"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -385,17 +385,17 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_ibo3p"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ltl1e"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_ctwx1")
 fill_from = Vector2(0.542735, 0.995726)
 fill_to = Vector2(0.58547, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lebf0"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_otyxs"]
 resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_ibo3p")
+texture = SubResource("GradientTexture2D_ltl1e")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7xlph"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pjut6"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -420,7 +420,7 @@ region = Rect2(144, 0, 24, 24)
 atlas = ExtResource("10_5v5mo")
 region = Rect2(168, 0, 24, 24)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nj0p3"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pitus"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -435,17 +435,17 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_7dyc4"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_nvxo1"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_ctwx1")
 fill_from = Vector2(0.542735, 0.995726)
 fill_to = Vector2(0.58547, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_f1diu"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_n7oyi"]
 resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_7dyc4")
+texture = SubResource("GradientTexture2D_nvxo1")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cedvw"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3sxuo"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -458,7 +458,7 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[node name="AdvancedTextEditorDialog" type="Window"]
+[node name="AdvancedTextEditorDialog" type="Window" unique_id=1886097728]
 process_priority = 10
 oversampling_override = 1.0
 title = "Advanced Text Editor"
@@ -469,7 +469,7 @@ min_size = Vector2i(900, 700)
 theme = ExtResource("1_6ke1q")
 script = ExtResource("2_1tk32")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=61995563]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -477,7 +477,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_7hdl3")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=394328247]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -490,24 +490,24 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1370007644]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer" unique_id=1336059367]
 layout_mode = 2
 theme_override_constants/margin_left = -12
 theme_override_constants/margin_top = -12
 theme_override_constants/margin_right = -12
 
-[node name="TopButtonContainer" parent="MarginContainer/VBoxContainer/MarginContainer" instance=ExtResource("1_acjup")]
+[node name="TopButtonContainer" parent="MarginContainer/VBoxContainer/MarginContainer" unique_id=332301700 instance=ExtResource("1_acjup")]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_15lj3")
-style1 = SubResource("StyleBoxFlat_15lj3")
-style2 = SubResource("StyleBoxTexture_1vd02")
-style3 = SubResource("StyleBoxFlat_8i8up")
+theme_override_styles/panel = SubResource("StyleBoxFlat_f5f5i")
+style1 = SubResource("StyleBoxFlat_f5f5i")
+style2 = SubResource("StyleBoxTexture_rdg4x")
+style3 = SubResource("StyleBoxFlat_icrmr")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer" unique_id=16987572]
 z_index = 1
 layout_mode = 2
 theme_override_constants/margin_left = 16
@@ -515,12 +515,12 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="VBoxContainer" type="HFlowContainer" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer"]
+[node name="VBoxContainer" type="HFlowContainer" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer" unique_id=2054596911]
 custom_minimum_size = Vector2(688, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="FontName" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="FontName" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=697931233]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 tooltip_text = "Select font"
@@ -529,7 +529,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_gxwyh")
 texture_hover = SubResource("AtlasTexture_8deuu")
 
-[node name="FontSize" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="FontSize" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=498639179]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 tooltip_text = "Select Font Size"
@@ -538,7 +538,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_x130w")
 texture_hover = SubResource("AtlasTexture_hxc8k")
 
-[node name="Bold" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="Bold" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=1817673951]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 tooltip_text = "Activates bold text"
@@ -547,7 +547,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_sprwd")
 texture_hover = SubResource("AtlasTexture_5mw7p")
 
-[node name="Italic" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="Italic" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=1770197341]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 tooltip_text = "Activates italic text"
@@ -556,7 +556,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_rvv4l")
 texture_hover = SubResource("AtlasTexture_c6rxc")
 
-[node name="Underline" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="Underline" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=268458616]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 tooltip_text = "Activates underline text"
@@ -565,7 +565,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_4ks3y")
 texture_hover = SubResource("AtlasTexture_lsxmd")
 
-[node name="Strikethrough" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="Strikethrough" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=2056889765]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 tooltip_text = "Activates strikethrough text"
@@ -574,7 +574,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_cwaak")
 texture_hover = SubResource("AtlasTexture_cngi0")
 
-[node name="TextColor" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="TextColor" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=400556488]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 tooltip_text = "Change the text color"
@@ -583,7 +583,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_nfst7")
 texture_hover = SubResource("AtlasTexture_khopc")
 
-[node name="BackgroundTextColor" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="BackgroundTextColor" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=960643354]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 tooltip_text = "Change the background color of the text"
@@ -592,7 +592,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_8naf5")
 texture_hover = SubResource("AtlasTexture_bye05")
 
-[node name="EnterSpeaker" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="EnterSpeaker" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=193527570]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -604,7 +604,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_ss8pt")
 texture_hover = SubResource("AtlasTexture_8y3bg")
 
-[node name="ExitSpeaker" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="ExitSpeaker" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=952030274]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -614,7 +614,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_e763o")
 texture_hover = SubResource("AtlasTexture_8685o")
 
-[node name="ChangeBlipFx" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="ChangeBlipFx" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=1581758250]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -624,7 +624,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_h6em7")
 texture_hover = SubResource("AtlasTexture_sgrno")
 
-[node name="ChangeSpeakerActive" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="ChangeSpeakerActive" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=1651117704]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -634,7 +634,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_f5f5i")
 texture_hover = SubResource("AtlasTexture_7wx46")
 
-[node name="Image" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="Image" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=1634918197]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -644,7 +644,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_x363a")
 texture_hover = SubResource("AtlasTexture_31qmn")
 
-[node name="ImageEffect" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="ImageEffect" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=429323869]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -654,7 +654,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_7l8vw")
 texture_hover = SubResource("AtlasTexture_ktrag")
 
-[node name="RemoveImage" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="RemoveImage" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=691020344]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -664,7 +664,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_rhh8n")
 texture_hover = SubResource("AtlasTexture_slf52")
 
-[node name="ShowNameBox" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="ShowNameBox" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=285725641]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -674,7 +674,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_ra2wn")
 texture_hover = SubResource("AtlasTexture_aswk6")
 
-[node name="RemoveNameBox" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="RemoveNameBox" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=1087295671]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -684,7 +684,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_be7gg")
 texture_hover = SubResource("AtlasTexture_e6xee")
 
-[node name="Sound" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="Sound" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=1673276577]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -694,7 +694,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_14ccc")
 texture_hover = SubResource("AtlasTexture_hail5")
 
-[node name="Emote" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="Emote" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=491343308]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 tooltip_text = "Add an emote"
@@ -703,7 +703,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_kun81")
 texture_hover = SubResource("AtlasTexture_uifr6")
 
-[node name="ShakeMessage" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="ShakeMessage" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=749551173]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -713,7 +713,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_3w5m0")
 texture_hover = SubResource("AtlasTexture_4q5g8")
 
-[node name="FX" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="FX" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=961009859]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 tooltip_text = "Choose one of the available effects to animate the text"
@@ -722,7 +722,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_0axw3")
 texture_hover = SubResource("AtlasTexture_0sbfd")
 
-[node name="Others" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="Others" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=4172159]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 tooltip_text = "Choose from a list of commands to add the text"
@@ -731,7 +731,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_2253c")
 texture_hover = SubResource("AtlasTexture_yk7c3")
 
-[node name="LeftAlign" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="LeftAlign" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=1097147404]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 tooltip_text = "Left alignment aligns text along the left margin for a clean appearance."
@@ -740,7 +740,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_whw0m")
 texture_hover = SubResource("AtlasTexture_ivq3v")
 
-[node name="CenterAlign" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="CenterAlign" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=193275432]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 tooltip_text = "Center alignment centers text between the left and right margins for balance."
@@ -749,7 +749,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_q0ywf")
 texture_hover = SubResource("AtlasTexture_p3chv")
 
-[node name="RightAlign" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="RightAlign" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=533320618]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 tooltip_text = "Right alignment aligns text along the right margin for a tidy layout."
@@ -758,7 +758,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_b243w")
 texture_hover = SubResource("AtlasTexture_lew4g")
 
-[node name="JustifiedText" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="JustifiedText" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=2073187570]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 tooltip_text = "Justified alignment evenly aligns text along both left and right margins for a polished appearance."
@@ -767,7 +767,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_56qlc")
 texture_hover = SubResource("AtlasTexture_kmrtp")
 
-[node name="PauseText" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="PauseText" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=1287285667]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -777,7 +777,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_8ajqw")
 texture_hover = SubResource("AtlasTexture_2wtxb")
 
-[node name="ShowWholeLine" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="ShowWholeLine" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=905043546]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -787,7 +787,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_7s6td")
 texture_hover = SubResource("AtlasTexture_drw81")
 
-[node name="DontWaitPlayerInput" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="DontWaitPlayerInput" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=1104427891]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -797,7 +797,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_3bejx")
 texture_hover = SubResource("AtlasTexture_4uive")
 
-[node name="NewParagraph" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="NewParagraph" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=1325465384]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -807,7 +807,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_qnlcj")
 texture_hover = SubResource("AtlasTexture_refvn")
 
-[node name="NewLine" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="NewLine" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=1230513454]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -817,7 +817,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_icrmr")
 texture_hover = SubResource("AtlasTexture_jqunv")
 
-[node name="ResetConfig" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="ResetConfig" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=927370934]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -827,7 +827,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_ml5iy")
 texture_hover = SubResource("AtlasTexture_gsuex")
 
-[node name="PauseDialog" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="PauseDialog" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=555266086]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -837,7 +837,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_yty5h")
 texture_hover = SubResource("AtlasTexture_qvsmu")
 
-[node name="HighlightCommands" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="HighlightCommands" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=1390327742]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -849,7 +849,7 @@ texture_normal = SubResource("AtlasTexture_st73b")
 texture_pressed = SubResource("AtlasTexture_mm1xp")
 texture_hover = SubResource("AtlasTexture_esmfc")
 
-[node name="WordWrapText" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="WordWrapText" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=2099763565]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -862,7 +862,7 @@ texture_normal = SubResource("AtlasTexture_xw4y7")
 texture_pressed = SubResource("AtlasTexture_x0rdl")
 texture_hover = SubResource("AtlasTexture_lyd8b")
 
-[node name="PreviewText" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="PreviewText" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=1169601583]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -876,7 +876,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_ftd5p")
 texture_hover = SubResource("AtlasTexture_3438f")
 
-[node name="PreviewScrollText" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="PreviewScrollText" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=790156613]
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(50, 50)
@@ -887,7 +887,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_ftd5p")
 texture_hover = SubResource("AtlasTexture_3438f")
 
-[node name="DisplayAsFloatingDialog" type="CheckBox" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="DisplayAsFloatingDialog" type="CheckBox" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=249378049]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
@@ -897,7 +897,7 @@ tooltip_text = "Show this message as a floating dialog above the speaker. It wil
 mouse_default_cursor_shape = 2
 text = "Display as floating dialog"
 
-[node name="Target" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" instance=ExtResource("8_vhr1d")]
+[node name="Target" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=1125182875 instance=ExtResource("8_vhr1d")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
@@ -911,7 +911,7 @@ popup/item_0/id = 0
 popup/item_1/id = 1
 popup/item_1/separator = true
 
-[node name="InstantText" type="CheckBox" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="InstantText" type="CheckBox" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=1964701407]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
@@ -919,7 +919,7 @@ tooltip_text = "This option will make the message ignore the text letter by lett
 mouse_default_cursor_shape = 2
 text = "Instant Text"
 
-[node name="NowaitForInput" type="CheckBox" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="NowaitForInput" type="CheckBox" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=387828052]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
@@ -929,7 +929,7 @@ tooltip_text = "This option makes the message proceed without waiting for user i
 mouse_default_cursor_shape = 2
 text = "No Wait For Input"
 
-[node name="Help" type="TextureRect" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer"]
+[node name="Help" type="TextureRect" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=445299535]
 layout_mode = 2
 size_flags_vertical = 4
 tooltip_text = "⚬ ESCAPE: Exit without saving changes
@@ -940,7 +940,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 16
 texture = SubResource("AtlasTexture_rdg4x")
 
-[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer" unique_id=1001249031]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 6
@@ -948,11 +948,11 @@ theme_override_constants/margin_top = -4
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 0
 
-[node name="MainTextEditContainer" type="Control" parent="MarginContainer/VBoxContainer/MarginContainer2"]
+[node name="MainTextEditContainer" type="Control" parent="MarginContainer/VBoxContainer/MarginContainer2" unique_id=711499602]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="TextEdit" parent="MarginContainer/VBoxContainer/MarginContainer2/MainTextEditContainer" instance=ExtResource("5_2pvr4")]
+[node name="TextEdit" parent="MarginContainer/VBoxContainer/MarginContainer2/MainTextEditContainer" unique_id=38137315 instance=ExtResource("5_2pvr4")]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -970,7 +970,7 @@ wrap_mode = 1
 syntax_highlighter = SubResource("CodeHighlighter_hifp8")
 show_expand_icon = false
 
-[node name="BottomButtonContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+[node name="BottomButtonContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer" unique_id=1496197101]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/margin_left = -12
@@ -978,64 +978,64 @@ theme_override_constants/margin_top = -4
 theme_override_constants/margin_right = -12
 theme_override_constants/margin_bottom = -12
 
-[node name="InitialConfigContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer" instance=ExtResource("1_acjup")]
+[node name="InitialConfigContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer" unique_id=273568112 instance=ExtResource("1_acjup")]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_cgv1w")
-style1 = SubResource("StyleBoxFlat_cgv1w")
-style2 = SubResource("StyleBoxTexture_lebf0")
-style3 = SubResource("StyleBoxFlat_7xlph")
+theme_override_styles/panel = SubResource("StyleBoxFlat_jqunv")
+style1 = SubResource("StyleBoxFlat_jqunv")
+style2 = SubResource("StyleBoxTexture_otyxs")
+style3 = SubResource("StyleBoxFlat_pjut6")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer" unique_id=669667256]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer" unique_id=1172529585]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer" unique_id=2072027277]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.683386, 0.996094, 0.680923, 1)
 text = "Initial Config:"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer" unique_id=1238836159]
 layout_mode = 2
 
-[node name="Label4" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Label4" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=77740819]
 layout_mode = 2
 text = "Face:"
 
-[node name="InitialFace" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("6_76v3n")]
+[node name="InitialFace" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1937239928 instance=ExtResource("6_76v3n")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_vertical = 6
 tooltip_text = "The face to be displayed at the beginning of the message.
 
-Mouse wheel click to erase de current image.
+Mouse wheel click to erase the current image.
 
 [Note]:Leave empty so as not to show any face at the beginning."
 
-[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1013673966]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1715855361]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer" unique_id=2145520299]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer" unique_id=5708535]
 custom_minimum_size = Vector2(105, 0)
 layout_mode = 2
 text = "Name:"
 
-[node name="InitialName" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer" instance=ExtResource("7_154nb")]
+[node name="InitialName" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer" unique_id=473862831 instance=ExtResource("7_154nb")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -1049,15 +1049,15 @@ Mouse wheel click to erase de current name.
 "
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer" unique_id=60138520]
 layout_mode = 2
 
-[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer2" unique_id=2008271752]
 custom_minimum_size = Vector2(105, 0)
 layout_mode = 2
 text = "Position:"
 
-[node name="InitialPosition" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("8_vhr1d")]
+[node name="InitialPosition" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer2" unique_id=571119910 instance=ExtResource("8_vhr1d")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1075,19 +1075,19 @@ popup/item_0/id = 0
 popup/item_1/text = "Right"
 popup/item_1/id = 1
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=879949530]
 visible = false
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer2" unique_id=73281730]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer2/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer2/HBoxContainer" unique_id=43513950]
 custom_minimum_size = Vector2(95, 0)
 layout_mode = 2
 text = " Width:"
 
-[node name="Width" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer2/HBoxContainer" instance=ExtResource("9_16841")]
+[node name="Width" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer2/HBoxContainer" unique_id=1926898730 instance=ExtResource("9_16841")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
@@ -1097,15 +1097,15 @@ tooltip_text = "Defines the width of the image displayed in the text window (or 
 allow_greater = true
 _custom_value = 0.0
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer2"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer2" unique_id=1169485778]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer2/HBoxContainer2"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer2/HBoxContainer2" unique_id=1564596416]
 custom_minimum_size = Vector2(95, 0)
 layout_mode = 2
 text = " Height:"
 
-[node name="Height" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer2/HBoxContainer2" instance=ExtResource("9_16841")]
+[node name="Height" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer2/HBoxContainer2" unique_id=1587689751 instance=ExtResource("9_16841")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
@@ -1115,12 +1115,12 @@ tooltip_text = "Defines the height of the image displayed in the text window (or
 allow_greater = true
 _custom_value = 0.0
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1122274648]
 visible = false
 layout_mode = 2
 theme_override_constants/margin_top = -11
 
-[node name="ChainSize" type="TextureButton" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer"]
+[node name="ChainSize" type="TextureButton" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer" unique_id=267248839]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -1133,59 +1133,58 @@ texture_normal = SubResource("AtlasTexture_crnyd")
 texture_pressed = SubResource("AtlasTexture_i3der")
 texture_hover = SubResource("AtlasTexture_1y020")
 
-[node name="ScrollConfigContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer" instance=ExtResource("1_acjup")]
+[node name="ScrollConfigContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer" unique_id=1101739200 instance=ExtResource("1_acjup")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_nj0p3")
-style1 = SubResource("StyleBoxFlat_nj0p3")
-style2 = SubResource("StyleBoxTexture_f1diu")
-style3 = SubResource("StyleBoxFlat_cedvw")
+theme_override_styles/panel = SubResource("StyleBoxFlat_pitus")
+style1 = SubResource("StyleBoxFlat_pitus")
+style2 = SubResource("StyleBoxTexture_n7oyi")
+style3 = SubResource("StyleBoxFlat_3sxuo")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer" unique_id=1420587630]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer" unique_id=685820389]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer" unique_id=1584430422]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.683386, 0.996094, 0.680923, 1)
 text = "Config:"
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer" unique_id=1850446901]
 layout_mode = 2
 
-[node name="HBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+[node name="HBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1963426638]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer2"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer2" unique_id=803333375]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 text = "Scroll Speed:"
 
-[node name="ScrollSpeed" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer2" instance=ExtResource("9_16841")]
+[node name="ScrollSpeed" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer2" unique_id=1272864463 instance=ExtResource("9_16841")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 tooltip_text = "Scroll at whitch text scrolls"
 min_value = 1.0
-value = 1.0
 allow_greater = true
 _custom_value = 0.0
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer2"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer2" unique_id=799512084]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 text = "Scroll Scene:"
 
-[node name="ScenePath" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer2" instance=ExtResource("7_154nb")]
+[node name="ScenePath" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer2" unique_id=201710463 instance=ExtResource("7_154nb")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1194,16 +1193,16 @@ tooltip_text = "Indicate the scene to be used to display the text. The scene mus
 Click the middle button to use the default scene."
 text = "Default"
 
-[node name="HBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+[node name="HBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=426262834]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer"]
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer" unique_id=172795001]
 custom_minimum_size = Vector2(205, 0)
 layout_mode = 2
 text = " Scroll Direction:"
 
-[node name="ScrollType" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer" instance=ExtResource("8_vhr1d")]
+[node name="ScrollType" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer" unique_id=1617599356 instance=ExtResource("8_vhr1d")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1215,15 +1214,15 @@ popup/item_0/id = 0
 popup/item_1/text = "Top To Bottom"
 popup/item_1/id = 1
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer" unique_id=183488907]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer/HBoxContainer2"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer/HBoxContainer2" unique_id=1931002324]
 custom_minimum_size = Vector2(205, 0)
 layout_mode = 2
 text = " Fast Forward:"
 
-[node name="FastForward" type="CheckBox" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer/HBoxContainer2"]
+[node name="FastForward" type="CheckBox" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer/HBoxContainer2" unique_id=165174496]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1231,18 +1230,18 @@ tooltip_text = "Enable the fast-scrolling feature when the OK button is pressed"
 mouse_default_cursor_shape = 2
 text = "Enabled"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer" unique_id=1145688957]
 layout_mode = 2
 
-[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer/HBoxContainer"]
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer/HBoxContainer" unique_id=715854240]
 custom_minimum_size = Vector2(205, 0)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer/HBoxContainer" unique_id=78263494]
 layout_mode = 2
 text = "Speed Multiplier:  "
 
-[node name="MultiplySpeed" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer/HBoxContainer" instance=ExtResource("9_16841")]
+[node name="MultiplySpeed" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer/HBoxContainer" unique_id=1863351683 instance=ExtResource("9_16841")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
@@ -1251,27 +1250,26 @@ a speed increased by the factor indicated here."
 mouse_filter = 2
 min_value = 1.2
 step = 0.01
-value = 1.2
 rounded = false
 editable = false
 prefix = "x "
 disabled = true
 _custom_value = 0.0
 
-[node name="Control" type="Control" parent="MarginContainer/VBoxContainer"]
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer" unique_id=1464384854]
 custom_minimum_size = Vector2(0, 12)
 layout_mode = 2
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=2015750134]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=921615929]
 layout_mode = 2
 size_flags_vertical = 8
 alignment = 2
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_t2i2e")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=145112280 instance=ExtResource("5_t2i2e")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
@@ -1281,7 +1279,7 @@ Saves all changes and closes the windows.
 [Note]: You can press the Enter key with the control key held down to accept the changes in this dialog and exit this dialog quickly."
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_t2i2e")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1926043547 instance=ExtResource("5_t2i2e")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
@@ -1289,7 +1287,7 @@ tooltip_text = "[title]Cancel[/title]
 Closes this window without saving any changes."
 text = "CANCEL"
 
-[node name="Timer" type="Timer" parent="."]
+[node name="Timer" type="Timer" parent="." unique_id=441849401]
 unique_name_in_owner = true
 wait_time = 0.3
 

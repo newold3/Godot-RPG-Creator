@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://b2fv4o2whabfq"]
+[gd_scene format=3 uid="uid://b2fv4o2whabfq"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_b7qjj"]
 [ext_resource type="Script" uid="uid://dqdm1ni85erim" path="res://addons/CustomControls/Dialogs/select_item_drop_dialog.gd" id="2_tnsso"]
@@ -15,7 +15,8 @@ gradient = SubResource("Gradient_vvvrv")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
-[node name="SelectItemDropDialog" type="Window"]
+[node name="SelectItemDropDialog" type="Window" unique_id=1852263218]
+oversampling_override = 1.0
 title = "Drop Item"
 position = Vector2i(0, 36)
 size = Vector2i(380, 388)
@@ -26,7 +27,7 @@ unresizable = true
 theme = ExtResource("1_b7qjj")
 script = ExtResource("2_tnsso")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=600800616]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -34,7 +35,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_ykjfa")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1725528078]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -45,42 +46,44 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1079124174]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer" unique_id=607685933]
 layout_mode = 2
 text = "Item Type:"
 
-[node name="DataType" type="OptionButton" parent="MarginContainer/VBoxContainer"]
+[node name="DataType" type="OptionButton" parent="MarginContainer/VBoxContainer" unique_id=927326249]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Select material type (Items, Weapons or Armors)"
 mouse_default_cursor_shape = 2
 selected = 0
-item_count = 3
+item_count = 4
 popup/item_0/text = "Items"
 popup/item_0/id = 0
 popup/item_1/text = "Weapons"
 popup/item_1/id = 1
 popup/item_2/text = "Armors"
 popup/item_2/id = 2
+popup/item_3/text = "Sets / Costumes"
+popup/item_3/id = 3
 script = ExtResource("3_g5udq")
 
-[node name="LevelContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="LevelContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1362087311]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/LevelContainer"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/LevelContainer" unique_id=1891044367]
 layout_mode = 2
 text = "Item Level:"
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/LevelContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/LevelContainer" unique_id=477290070]
 layout_mode = 2
 
-[node name="MinLevel" parent="MarginContainer/VBoxContainer/LevelContainer/HBoxContainer3" instance=ExtResource("4_5vc5n")]
+[node name="MinLevel" parent="MarginContainer/VBoxContainer/LevelContainer/HBoxContainer3" unique_id=382418768 instance=ExtResource("4_5vc5n")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -89,17 +92,16 @@ The rewarded weapon or item will be at the level specified here (or at the weapo
 
 [Note]: If the maximum level is greater than the minimum level, the final amount will be a random value between the minimum and the maximum."
 min_value = 1.0
-value = 1.0
-rounded = true
 allow_greater = true
 prefix = "min:"
+_custom_value = 0.0
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/LevelContainer/HBoxContainer3"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/LevelContainer/HBoxContainer3" unique_id=1492252113]
 layout_mode = 2
 size_flags_vertical = 8
 text = " ~ "
 
-[node name="MaxLevel" parent="MarginContainer/VBoxContainer/LevelContainer/HBoxContainer3" instance=ExtResource("4_5vc5n")]
+[node name="MaxLevel" parent="MarginContainer/VBoxContainer/LevelContainer/HBoxContainer3" unique_id=1095693240 instance=ExtResource("4_5vc5n")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -109,16 +111,15 @@ The rewarded weapon or item will be at the level specified here (or at the weapo
 
 [Note]: If the maximum level is greater than the minimum level, the final amount will be a random value between the minimum and the maximum."
 min_value = 1.0
-value = 1.0
-rounded = true
 allow_greater = true
 prefix = "max:"
+_custom_value = 0.0
 
-[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer" unique_id=496463377]
 layout_mode = 2
 text = "Selected Item"
 
-[node name="ItemType" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_82vii")]
+[node name="ItemType" parent="MarginContainer/VBoxContainer" unique_id=396494675 instance=ExtResource("3_82vii")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -127,21 +128,21 @@ size_flags_vertical = 4
 tooltip_text = "Select one of the items of the selected type"
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 
-[node name="HBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1410507849]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=673134323]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=1408149868]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer/VBoxContainer" unique_id=1057820621]
 layout_mode = 2
 text = "Quantity:"
 
-[node name="Quantity" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer/VBoxContainer" instance=ExtResource("4_5vc5n")]
+[node name="Quantity" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer/VBoxContainer" unique_id=1551676268 instance=ExtResource("4_5vc5n")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "[title]Min Quantity[/title]
@@ -150,16 +151,16 @@ Selects the quantity of the selected material.
 [Note]: If the maximum amount is greater than the minimum amount, the final amount will be a random value between the minimum and the maximum."
 min_value = 1.0
 value = 1.0
-rounded = true
 allow_greater = true
 prefix = "min:"
+_custom_value = 0.0
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=660421278]
 layout_mode = 2
 size_flags_vertical = 8
 text = " ~ "
 
-[node name="Quantity2" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer" instance=ExtResource("4_5vc5n")]
+[node name="Quantity2" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=763420164 instance=ExtResource("4_5vc5n")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -169,39 +170,39 @@ Selects the quantity of the selected material.
 
 [Note]: If the maximum amount is greater than the minimum amount, the final amount will be a random value between the minimum and the maximum."
 min_value = 1.0
-value = 1.0
-rounded = true
 allow_greater = true
 prefix = "max:"
+_custom_value = 0.0
 
-[node name="PercentContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="PercentContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1468763465]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/PercentContainer"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/PercentContainer" unique_id=1561944593]
 layout_mode = 2
 text = "Drop percentage:"
 
-[node name="DropPercent" parent="MarginContainer/VBoxContainer/HBoxContainer/PercentContainer" instance=ExtResource("4_5vc5n")]
+[node name="DropPercent" parent="MarginContainer/VBoxContainer/HBoxContainer/PercentContainer" unique_id=1118774373 instance=ExtResource("4_5vc5n")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Selects the required quantity of the selected material"
 step = 0.01
-value = 100.0
+rounded = false
 suffix = " %"
+_custom_value = 0.0
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=266314537]
 layout_mode = 2
 size_flags_vertical = 10
 theme_override_constants/separation = 12
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1038503352]
 layout_mode = 2
 size_flags_vertical = 10
 alignment = 2
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_fccui")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=118887959 instance=ExtResource("5_fccui")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(140, 0)
 layout_mode = 2
@@ -210,7 +211,7 @@ Saves all changes and closes the windows."
 text = "OK"
 text_overrun_behavior = 3
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_fccui")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=322998043 instance=ExtResource("5_fccui")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(140, 0)
 layout_mode = 2

@@ -1,0 +1,65 @@
+[gd_scene format=3 uid="uid://fyydv1ar20a"]
+
+[ext_resource type="Texture2D" uid="uid://cpwnnitcrjea4" path="res://addons/rpg_character_creator/textures/projectiles/glow.png" id="1_aapfp"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_aapfp"]
+blend_mode = 1
+
+[sub_resource type="Curve" id="Curve_v3iug"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.142857, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_0rdtq"]
+curve = SubResource("Curve_v3iug")
+
+[sub_resource type="Gradient" id="Gradient_ju224"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.184314)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ed4t4"]
+gradient = SubResource("Gradient_ju224")
+
+[sub_resource type="Curve" id="Curve_4626h"]
+_data = [Vector2(0.0222222, 0), 0.0, 0.0, 0, 0, Vector2(0.193651, 1), 0.0, 0.0, 0, 0, Vector2(0.346032, 0.317952), 0.0, 0.0, 0, 0, Vector2(0.47619, 0.663085), 0.0, 0.0, 0, 0, Vector2(0.612698, 0.153603), 0.0, 0.0, 0, 0, Vector2(0.784127, 0.408344), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 7
+
+[sub_resource type="Curve" id="Curve_jyai6"]
+resource_local_to_scene = true
+_data = [Vector2(0.0031746, 0), 0.0, 0.0, 0, 0, Vector2(0.4, 0.482301), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_hoku4"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_c7k1y"]
+curve_x = SubResource("Curve_4626h")
+curve_y = SubResource("Curve_jyai6")
+curve_z = SubResource("Curve_hoku4")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_i5l5h"]
+particle_flag_disable_z = true
+angle_min = 1.07288e-05
+angle_max = 224.4
+inherit_velocity_ratio = 0.126
+velocity_pivot = Vector3(39.3, 17.225, 0)
+direction = Vector3(0, 0, 0)
+spread = 180.0
+initial_velocity_max = 19.48
+angular_velocity_min = -1.60933e-05
+angular_velocity_max = 215.07
+gravity = Vector3(0, 0, 0)
+linear_accel_min = -2.23517e-06
+linear_accel_max = 58.44
+radial_accel_min = -2.23517e-06
+radial_accel_max = 62.34
+scale_curve = SubResource("CurveXYZTexture_c7k1y")
+color = Color(0, 0, 0, 1)
+color_ramp = SubResource("GradientTexture1D_ed4t4")
+alpha_curve = SubResource("CurveTexture_0rdtq")
+
+[node name="GPUParticles2D" type="GPUParticles2D" unique_id=1034764148]
+material = SubResource("CanvasItemMaterial_aapfp")
+amount = 60
+texture = ExtResource("1_aapfp")
+lifetime = 0.35
+process_material = SubResource("ParticleProcessMaterial_i5l5h")

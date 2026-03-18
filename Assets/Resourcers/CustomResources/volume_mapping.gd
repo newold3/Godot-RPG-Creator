@@ -18,5 +18,5 @@ func set_volume_from_slider(bus_id: int, slider_value: float):
 	slider_value = clamp(slider_value, 0.0, 1.0)
 	var curved_value = volume_curve.sample(slider_value)
 	var db_value = linear_to_db(curved_value)
-	
-	AudioServer.set_bus_volume_db(bus_id, db_value)
+	if bus_id != -1:
+		AudioServer.set_bus_volume_db(bus_id, db_value)

@@ -54,7 +54,7 @@ func _fill_actors() -> void:
 				var current_icon: RPGIcon = real_actor.face_preview
 				var tex = null
 				
-				if current_icon and ResourceLoader.exists(current_icon.path):
+				if current_icon and AssetManager.exists(current_icon.path):
 					tex = ResourceLoader.load(current_icon.path)
 					
 				textures.append({"texture": tex, "region": current_icon.region})

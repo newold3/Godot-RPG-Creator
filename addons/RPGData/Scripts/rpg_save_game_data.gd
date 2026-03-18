@@ -21,8 +21,11 @@ extends Resource
 # saves the status of the main scene (camera, modulation, scenes)
 @export var main_scene_config: Dictionary = {}
 
+# saves engine version
 @export var engine_version: String
 
+# saves followers states
+@export var followers: Dictionary
 
 
 # Internal ID mainly for runtime reference, the file name dictates the actual slot on disk.
@@ -50,9 +53,7 @@ func set_map_events(current_map: RPGMap) -> void:
 	if not current_map: return
 	
 	# Iterate over the dictionary of currently loaded runtime events
-	for event_id in current_map.current_ingame_events.keys():
-		var ingame_event: RPGMap.IngameEvent = current_map.current_ingame_events[event_id]
-		
+	for ingame_event: IngameEvent in current_map.get_in_game_events():
 		# Ensure the runtime object is valid and has directional state
 		if ingame_event and ingame_event.lpc_event and "current_direction" in ingame_event.lpc_event:
 			
@@ -60,11 +61,11 @@ func set_map_events(current_map: RPGMap) -> void:
 			
 			# The page ID is retrieved from the IngameEvent wrapper
 			save_data.position = ingame_event.lpc_event.position
-			save_data.event_id = ingame_event.event.id
+			save_data.event_id = ingame_event.uniq_id
 			save_data.direction = ingame_event.lpc_event.current_direction
 			save_data.active_page_id = ingame_event.page_id
 			
-			current_map_events[event_id] = save_data
+			current_map_events[ingame_event.uniq_id] = save_data
 
 #endregion
 
@@ -75,7 +76,7 @@ func set_map_events(current_map: RPGMap) -> void:
 ## Returns true if any valid save file is found. Useful for enabling "Continue" buttons.
 static func has_any_save_file() -> bool:
 	var paths = _get_paths_for_slot(AUTO_SAVE_SLOT_ID)
-	var base_dir = paths["dir"] 
+	var base_dir = paths["dir"]
 
 	var dir = DirAccess.open(base_dir)
 	if dir:
@@ -172,7 +173,7 @@ static func _serialize_camera_target(obj: Variant) -> Dictionary:
 		return {"type": "player", "priority": priority}
 	
 	if node is LPCEvent:
-		return {"type": "event", "id": node.current_event.id, "priority": priority}
+		return {"type": "event", "id": node.current_event._uniq_id, "priority": priority}
 	
 	if node is RPGVehicle:
 		return {"type": "vehicle", "id": node.vehicle_type, "priority": priority} # O un ID único si hay varios
@@ -217,7 +218,7 @@ static func save_to_slot(slot_id: int, game_data: GameUserData, current_map: RPG
 		# Set modulate
 		data_to_save.main_scene_config.modulates = main_scene.get_modulate_scenes()
 		# set BGM
-		var current_bgm_player = main_scene.audio_players.bgm.current_player
+		var current_bgm_player = main_scene.get_current_bgm_player()
 		if current_bgm_player and current_bgm_player.is_playing() and current_bgm_player.stream:
 			var obj = {
 				"volume": current_bgm_player.volume_db,
@@ -227,7 +228,7 @@ static func save_to_slot(slot_id: int, game_data: GameUserData, current_map: RPG
 			}
 			data_to_save.current_map_bgm = obj
 		# set BGS
-		var current_bgs_player = main_scene.audio_players.bgs.current_player
+		var current_bgs_player = main_scene.get_current_bgs_player()
 		if current_bgs_player and current_bgs_player.is_playing() and current_bgs_player.stream:
 			var obj = {
 				"volume": current_bgs_player.volume_db,
@@ -248,11 +249,11 @@ static func save_to_slot(slot_id: int, game_data: GameUserData, current_map: RPG
 					var vehicle_position: RPGMapPosition = RPGMapPosition.new(map_id, vehicle.get_current_tile())
 					GameManager.game_state.set(vehicles[vehicle_id], vehicle_position)
 		# Set Screen Scenes (extra config if scene has method get_custom_save_data)
-		var scenes = GameManager.current_ingame_scenes.values()
+		var scenes = GameManager.get_current_ingame_scenes()
 		data_to_save.main_scene_config.ingame_scenes = []
 		populate_scene_data(scenes, data_to_save.main_scene_config.ingame_scenes)
 		# Set image Scenes (extra config if scene has method get_custom_save_data)
-		var images = GameManager.current_ingame_images.values()
+		var images = GameManager.get_current_ingame_images()
 		data_to_save.main_scene_config.ingame_images = []
 		for img in images:
 			if is_instance_valid(img) and not img.is_queued_for_deletion():
@@ -274,6 +275,21 @@ static func save_to_slot(slot_id: int, game_data: GameUserData, current_map: RPG
 		var video_scenes = main_scene.get_tree().get_nodes_in_group("_map_video_scene")
 		data_to_save.main_scene_config.video_scenes = []
 		populate_scene_data(video_scenes, data_to_save.main_scene_config.video_scenes)
+		# Save followers state
+		data_to_save.followers = {
+			"enabled": GameManager.game_state.followers_enabled,
+			"follower_list": []
+		}
+		if GameManager.game_state.followers_enabled:
+			var followers = GameManager.get_followers()
+			for follower in followers:
+				var follower_data = {
+					"direction": follower.current_direction,
+					"position": follower.global_position,
+					"actor_id": follower.get_meta("actor_id"),
+					"party_id": follower.get_meta("party_id")
+				}
+				data_to_save.followers.follower_list.append(follower_data)
 	
 	# 1. Determine Paths
 	var paths = _get_paths_for_slot(slot_id)

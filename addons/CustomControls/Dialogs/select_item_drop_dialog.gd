@@ -57,6 +57,8 @@ func fill_item() -> void:
 		current_data = database.weapons
 	elif data.item.data_id == 2:
 		current_data = database.armors
+	elif data.item.data_id == 3:
+		current_data = database.costumes
 	
 	if current_data.size() > data.item.item_id:
 		var item_name = current_data[data.item.item_id].name
@@ -85,6 +87,10 @@ func _on_item_type_pressed() -> void:
 	elif data.item.data_id == 2:
 		current_data = database.armors
 		title = TranslationManager.tr("Armors")
+	elif data.item.data_id == 3:
+		current_data = database.costumes
+		title = TranslationManager.tr("Costumes")
+	
 	var id_selected = data.item.item_id
 	var target = self
 	dialog.selected.connect(_on_item_selected, CONNECT_ONE_SHOT)
@@ -100,12 +106,12 @@ func _on_data_type_item_selected(index: int) -> void:
 	data.item.data_id = index
 	data.item.item_id = 1
 	fill_item()
-	%LevelContainer.visible = index > 0
+	%LevelContainer.visible = index > 0 and index < 3
 	size.y = 0
 
 
 func _on_quantity_value_changed(value: float) -> void:
-	if busy: return
+	if busy or not data: return
 	busy = true
 	
 	data.quantity = value
@@ -118,7 +124,7 @@ func _on_quantity_value_changed(value: float) -> void:
 
 
 func _on_quantity_2_value_changed(value: float) -> void:
-	if busy: return
+	if busy or not data: return
 	busy = true
 	
 	data.quantity2 = value
@@ -131,11 +137,12 @@ func _on_quantity_2_value_changed(value: float) -> void:
 
 
 func _on_drop_percent_value_changed(value: float) -> void:
+	if not data: return
 	data.percent = value
 
 
 func _on_min_level_value_changed(value: float) -> void:
-	if busy: return
+	if busy or not data: return
 	busy = true
 	
 	data.min_level = value
@@ -148,7 +155,7 @@ func _on_min_level_value_changed(value: float) -> void:
 
 
 func _on_max_level_value_changed(value: float) -> void:
-	if busy: return
+	if busy or not data: return
 	busy = true
 	
 	data.max_level = value
@@ -168,6 +175,7 @@ func _on_ok_button_pressed() -> void:
 	%MaxLevel.apply()
 	if real_data:
 		real_data.item.data_id = data.item.data_id
+		real_data.item.item_id = data.item.item_id
 		real_data.quantity = data.quantity
 		real_data.quantity2 = data.quantity2
 		real_data.percent = data.percent

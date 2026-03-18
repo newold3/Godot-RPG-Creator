@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://c27jqf82o4t60"]
+[gd_scene format=3 uid="uid://c27jqf82o4t60"]
 
 [ext_resource type="PackedScene" uid="uid://m3vvhpbeu3uy" path="res://Scenes/WeatherScenes/SnowScenes/trail_scene.tscn" id="1_1bw8m"]
 [ext_resource type="Script" uid="uid://65tcuva1hv78" path="res://Scenes/WeatherScenes/SnowScenes/snow_compose_scene.gd" id="1_6i41d"]
@@ -17,40 +17,39 @@ blend_mode = 1
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_kjp5p"]
 blend_mode = 1
 
-[node name="SnowComposeScene" type="Node2D"]
+[node name="SnowComposeScene" type="Node2D" unique_id=1866632277]
 z_as_relative = false
 script = ExtResource("1_6i41d")
-modulate_scene = Color(0.52, 0.52, 0.52, 0.60784316)
+modulate_scene = Color(0.52, 0.52, 0.52, 1)
 
-[node name="TrailScene" parent="." instance=ExtResource("1_1bw8m")]
+[node name="TrailScene" parent="." unique_id=1656552679 instance=ExtResource("1_1bw8m")]
 unique_name_in_owner = true
 self_modulate = Color(1, 1, 1, 0.477)
 material = SubResource("CanvasItemMaterial_kv720")
 position = Vector2(0, -1)
 texture = SubResource("ViewportTexture_1qbv1")
 
-[node name="SnowScene" parent="." instance=ExtResource("2_q71wq")]
+[node name="SnowScene" parent="." unique_id=400606771 instance=ExtResource("2_q71wq")]
 unique_name_in_owner = true
 material = SubResource("CanvasItemMaterial_hclb4")
 
-[node name="TileableSnow" parent="." instance=ExtResource("5_jyh6l")]
+[node name="TileableSnow" parent="." unique_id=461204709 instance=ExtResource("5_jyh6l")]
 unique_name_in_owner = true
 self_modulate = Color(1, 1, 1, 0.025)
 z_index = 120
 z_as_relative = false
 material = SubResource("CanvasItemMaterial_kjp5p")
 
-[node name="ImpacstGroup" type="Node2D" parent="."]
+[node name="ImpacstGroup" type="Node2D" parent="." unique_id=558046555]
 unique_name_in_owner = true
 z_index = 1
 z_as_relative = false
 
-[node name="BGSPlayer" type="AudioStreamPlayer" parent="."]
+[node name="BGSPlayer" type="AudioStreamPlayer" parent="." unique_id=1351014779]
 unique_name_in_owner = true
 stream = ExtResource("4_ldfpy")
 pitch_scale = 1.45139
 
-[node name="SEPlayer" type="AudioStreamPlayer" parent="."]
+[node name="SEPlayer" type="AudioStreamPlayer" parent="." unique_id=242815823]
 unique_name_in_owner = true
 volume_db = -20.03
-bus = &"SE"

@@ -6,6 +6,11 @@ var database: RPGDATA
 
 var busy: bool = false
 
+var _preset_file_dialog: FileDialog
+var _confirm_dialog: ConfirmationDialog
+var _pending_import_path: String
+var _exported_scenes: PackedInt32Array = []
+
 
 func set_data(real_data: RPGSystem) -> void:
 	data = real_data
@@ -13,7 +18,119 @@ func set_data(real_data: RPGSystem) -> void:
 
 func _ready() -> void:
 	visibility_changed.connect(_on_visibility_changed)
+	_setup_file_dialog()
+	_setup_confirm_dialog()
 	_update_data_fields()
+
+
+func _setup_file_dialog() -> void:
+	_preset_file_dialog = FileDialog.new()
+	_preset_file_dialog.name = "PresetFileDialog"
+	_preset_file_dialog.access = FileDialog.ACCESS_FILESYSTEM
+	_preset_file_dialog.filters = ["*.rpgpack ; RPG Creator Preset"]
+	add_child(_preset_file_dialog)
+
+
+func _setup_confirm_dialog() -> void:
+	_confirm_dialog = ConfirmationDialog.new()
+	_confirm_dialog.name = "ConflictConfirmationDialog"
+
+	_confirm_dialog.title = "File Conflicts Detected"
+	_confirm_dialog.ok_button_text = "Overwrite Files"
+	_confirm_dialog.cancel_button_text = "Cancel Import"
+	_confirm_dialog.initial_position = Window.WINDOW_INITIAL_POSITION_CENTER_MAIN_WINDOW_SCREEN
+
+	_confirm_dialog.confirmed.connect(_on_overwrite_confirmed)
+	
+	add_child(_confirm_dialog)
+
+
+func _on_file_selected(path: String, is_export: bool, _scenes: PackedInt32Array) -> void:
+	var target_extension = "rpgpack"
+	if path.get_extension() != target_extension:
+		path = path.get_basename() + "." + target_extension
+		
+	if is_export:
+		var scenes: Dictionary = {}
+		var keys = data.game_scenes.keys()
+		for i in data.game_scenes.keys().size():
+			if not i in _scenes: continue
+			var key = keys[i]
+			scenes[key] = data.game_scenes[key]
+		if not scenes.is_empty():
+			PresetExporter.export_preset_package(scenes, path)
+	else:
+		var conflicts = PresetInstaller.check_package_conflicts(path)
+		if conflicts.size() > 0:
+			_pending_import_path = path
+			_show_conflict_dialog(conflicts)
+		else:
+			_finalize_installation(path)
+
+
+func _show_conflict_dialog(conflicts: Array[String]) -> void:
+	var text = "Existing files have been detected.:\n\n"
+	
+	for i in range(min(conflicts.size(), 10)):
+		text += "- " + conflicts[i] + "\n"
+	
+	if conflicts.size() > 10:
+		text += "... and " + str(conflicts.size() - 10) + " more."
+		
+	text += "\n\n¿Do you want to overwrite them? This action cannot be undone?"
+	
+	_confirm_dialog.dialog_text = text
+		
+	_confirm_dialog.title = "File Conflicts"
+	_confirm_dialog.popup_centered()
+
+
+func _on_overwrite_confirmed() -> void:
+	if _pending_import_path != "":
+		_finalize_installation(_pending_import_path)
+		_pending_import_path = ""
+
+
+func _finalize_installation(path: String) -> void:
+	print(path)
+	return
+	var new_scenes = PresetInstaller.install_package(path)
+	
+	if not new_scenes.is_empty():
+		# inject new scenes
+		print("Import completed successfully.")
+
+
+func open_select_scene_dialog() -> void:
+	_exported_scenes = []
+	
+	var path = "res://addons/CustomControls/Dialogs/select_scene_preset_dialog.tscn"
+	var dialog = RPGDialogFunctions.open_dialog(path)
+	
+	dialog.OK.connect(
+		func(_scenes: PackedInt32Array) -> void:
+			_exported_scenes = _scenes
+	)
+
+	await dialog.tree_exited
+
+
+func open_preset_manager_dialog(is_export: bool, _scenes: PackedInt32Array = []) -> void:
+	if is_export:
+		_preset_file_dialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
+		_preset_file_dialog.title = "Export Preset Package"
+		_preset_file_dialog.ok_button_text = "Export"
+	else:
+		_preset_file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+		_preset_file_dialog.title = "Import Preset Package"
+		_preset_file_dialog.ok_button_text = "Import"
+		
+	if _preset_file_dialog.file_selected.is_connected(_on_file_selected):
+		_preset_file_dialog.file_selected.disconnect(_on_file_selected)
+		
+	_preset_file_dialog.file_selected.connect(_on_file_selected.bind(is_export, _scenes), CONNECT_ONE_SHOT)
+
+	_preset_file_dialog.popup_centered_ratio(0.6)
 
 
 func _update_data_fields() -> void:
@@ -41,6 +158,8 @@ func _update_data_fields() -> void:
 		%AutoShowPopups.set_pressed_no_signal(options.get("auto_popup_on_pick_up_items", true))
 		%PauseInMenu.set_pressed_no_signal(data.pause_day_night_in_menu)
 		%FollowersEnabled.set_pressed_no_signal(data.followers_enabled)
+		%LegacyMode.set_pressed_no_signal(data.legacy_mode == true)
+		%FadePageSwap.set_pressed_no_signal(data.fade_page_swap_enabled == true)
 		
 		var movement_mode_index = max(0, min(data.movement_mode, 1))
 		%MovementMode.select(movement_mode_index)
@@ -274,6 +393,7 @@ func fill_day_night() -> void:
 	%DuskColor.set_pick_color(config.dusk_color)
 	%NightColor.set_pick_color(config.night_color)
 	%ShadowColor.set_pick_color(config.shadow_color)
+	%ShadowBlurSize.value = config.blur_size
 	%DayVolume.value = config.day_audio_volume
 	%NightVolume.value = config.night_audio_volume
 	%AudioTransitionSpeed.value = config.audio_transition_speed
@@ -1008,3 +1128,25 @@ func _on_followers_enabled_toggled(value: bool) -> void:
 
 func _on_shadow_color_color_changed(color: Color) -> void:
 	data.day_night_config.shadow_color = color
+
+
+func _on_legacy_mode_toggled(toggled_on: bool) -> void:
+	data.legacy_mode = toggled_on
+
+
+func _on_fade_page_swap_toggled(toggled_on: bool) -> void:
+	data.fade_page_swap_enabled = toggled_on
+
+
+func _on_export_scenes_pressed() -> void:
+	await open_select_scene_dialog()
+	if not _exported_scenes.is_empty():
+		open_preset_manager_dialog(true, _exported_scenes)
+
+
+func _on_import_scenes_pressed() -> void:
+	open_preset_manager_dialog(false)
+
+
+func _on_shadow_blur_size_value_changed(value: float) -> void:
+	data.day_night_config.blur_size = value

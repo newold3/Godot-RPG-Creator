@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://j6wvddd3h0wo"]
+
+[ext_resource type="Texture2D" uid="uid://duu13dsov6vp5" path="res://Assets/Images/GUI/main_gui.png" id="1_2gpu8"]
+[ext_resource type="Script" uid="uid://pp3xwn0kxcex" path="res://Scenes/GUI/SteamPunkTheme/ItemsMenu/next_and_back_button.gd" id="2_f54jb"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oblbm"]
+atlas = ExtResource("1_2gpu8")
+region = Rect2(602, 60, 37, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kyvpd"]
+atlas = ExtResource("1_2gpu8")
+region = Rect2(676, 9, 37, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2gpu8"]
+atlas = ExtResource("1_2gpu8")
+region = Rect2(528, 14, 37, 32)
+
+[node name="BackButton" type="TextureButton" unique_id=1160309940]
+offset_right = 37.0
+offset_bottom = 32.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_oblbm")
+texture_hover = SubResource("AtlasTexture_kyvpd")
+texture_disabled = SubResource("AtlasTexture_2gpu8")
+stretch_mode = 0
+script = ExtResource("2_f54jb")

@@ -7,6 +7,7 @@ extends Resource
 @export var quantity: int = 0 # Number of items in possession of this type
 @export var type: int # Indicates the type of equipment (0 = item, 1 = weapon, 2 = armor piece)
 @export var newly_added: bool = false # This flag is activated when the item is created and will be deactivated when the player selects this item in a menu.
+@export var last_added_date: int = 0 # Date of most recent acquisition
 
 
 var _name: String

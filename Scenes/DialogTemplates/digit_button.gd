@@ -122,6 +122,7 @@ func _process(delta: float) -> void:
 	var direction = ControllerManager.get_pressed_direction()
 	if direction:
 		var bind: Node = ControllerManager.get_closest_focusable_control(self, direction, true, all_digits)
+		print(bind, all_digits)
 		if bind is DigitButton:
 			bind.select()
 		elif bind is Button:

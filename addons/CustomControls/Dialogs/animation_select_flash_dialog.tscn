@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bplil7eswyk58"]
+[gd_scene format=3 uid="uid://bplil7eswyk58"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_icvuo"]
 [ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="1_ov6xf"]
@@ -14,17 +14,19 @@ gradient = SubResource("Gradient_vvvrv")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
-[node name="AnimationSelectFlashDialog" type="Window"]
+[node name="AnimationSelectFlashDialog" type="Window" unique_id=1213046877]
+oversampling_override = 1.0
 title = "Animation Flash"
 position = Vector2i(0, 36)
 size = Vector2i(480, 210)
+wrap_controls = true
 transient = true
 exclusive = true
 unresizable = true
 theme = ExtResource("1_icvuo")
 script = ExtResource("2_hnx4k")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1831634193]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -32,7 +34,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_n4cyl")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1784435545]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -43,52 +45,54 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=2077949375]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=269461865]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=2095493728]
 custom_minimum_size = Vector2(105, 0)
 layout_mode = 2
 text = "Frame:"
 
-[node name="Frame" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_ctk2q")]
+[node name="Frame" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=291720915 instance=ExtResource("3_ctk2q")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Select the frame where this flash will be displayed"
 allow_greater = true
+_custom_value = 0.0
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1950287402]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=109216978]
 custom_minimum_size = Vector2(105, 0)
 layout_mode = 2
 text = "Duration:"
 
-[node name="Duration" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("3_ctk2q")]
+[node name="Duration" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=457195219 instance=ExtResource("3_ctk2q")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Select the time that this flash will stay on the screen."
 min_value = 0.01
 step = 0.01
-value = 0.1
+rounded = false
 allow_greater = true
 suffix = " second/s"
+_custom_value = 0.0
 
-[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1734558341]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer5"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer5" unique_id=1247191067]
 custom_minimum_size = Vector2(105, 0)
 layout_mode = 2
 text = "Target:"
 
-[node name="Target" type="OptionButton" parent="MarginContainer/VBoxContainer/HBoxContainer5"]
+[node name="Target" type="OptionButton" parent="MarginContainer/VBoxContainer/HBoxContainer5" unique_id=657646687]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -102,15 +106,15 @@ popup/item_1/text = "Screen"
 popup/item_1/id = 1
 script = ExtResource("4_d7wq7")
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=2066861435]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=1165863924]
 custom_minimum_size = Vector2(105, 0)
 layout_mode = 2
 text = "Color:"
 
-[node name="ColorPickerButton" type="ColorPickerButton" parent="MarginContainer/VBoxContainer/HBoxContainer4"]
+[node name="ColorPickerButton" type="ColorPickerButton" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=459837185]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 34)
 layout_mode = 2
@@ -119,11 +123,11 @@ tooltip_text = "[title]Flash Color[/title]
 Select the flash color."
 mouse_default_cursor_shape = 2
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=964856095]
 layout_mode = 2
 text = "Blend Type: "
 
-[node name="BlendType" type="OptionButton" parent="MarginContainer/VBoxContainer/HBoxContainer4"]
+[node name="BlendType" type="OptionButton" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=1898647642]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Choose the fusion mode for this flash (Only applicable when the target is the screen)."
@@ -140,14 +144,14 @@ popup/item_3/text = "Multiply"
 popup/item_3/id = 3
 script = ExtResource("4_d7wq7")
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1693593603]
 layout_mode = 2
 size_flags_vertical = 10
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=570411437]
 layout_mode = 2
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("1_ov6xf")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer3" unique_id=550226342 instance=ExtResource("1_ov6xf")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -156,7 +160,7 @@ tooltip_text = "[title]Ok[/title]
 Saves all changes and closes the windows."
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("1_ov6xf")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer3" unique_id=936607455 instance=ExtResource("1_ov6xf")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2

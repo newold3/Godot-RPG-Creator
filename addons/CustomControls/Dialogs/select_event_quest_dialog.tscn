@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://ckrfwyptunm0y"]
+[gd_scene format=3 uid="uid://ckrfwyptunm0y"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_4g1gv"]
 [ext_resource type="Script" uid="uid://cgt07ptu16bqo" path="res://addons/CustomControls/Dialogs/select_event_quest_dialog.gd" id="2_yipy6"]
@@ -16,11 +16,11 @@ gradient = SubResource("Gradient_vvvrv")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
-[node name="SelectEventQuestDialog" type="Window"]
+[node name="SelectEventQuestDialog" type="Window" unique_id=1889744440]
 oversampling_override = 1.0
 title = "Event Quests"
 position = Vector2i(0, 36)
-size = Vector2i(640, 582)
+size = Vector2i(800, 586)
 wrap_controls = true
 transient = true
 exclusive = true
@@ -28,7 +28,7 @@ unresizable = true
 theme = ExtResource("1_4g1gv")
 script = ExtResource("2_yipy6")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1726189444]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -36,7 +36,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_ykjfa")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=182531473]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -47,100 +47,66 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=349477682]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1165034738]
 layout_mode = 2
 text = "Quest:"
 
-[node name="QuestID" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_sc7n4")]
+[node name="QuestID" parent="MarginContainer/VBoxContainer" unique_id=1105414119 instance=ExtResource("3_sc7n4")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Choose one of the available quests."
 text = "Select Quest"
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=467236479]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=1547335366]
 custom_minimum_size = Vector2(220, 0)
 layout_mode = 2
-text = "Enable Self Switch:"
+text = "Start Page:"
 
-[node name="EnableSelfSwitch" parent="MarginContainer/VBoxContainer/HBoxContainer4" instance=ExtResource("4_5ove5")]
+[node name="StartPage" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=706305679 instance=ExtResource("3_sc7n4")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-tooltip_text = "Self switch that is activated when this quest is given to the player
-(this may activate other pages of the event if they have that switch as their start condition).
-You can choose not to activate any self switches.
+tooltip_text = "Page that will be activated when talking to this event while having this quest active.
 
-[Note]: You can use this option to change the active page of this NPC while you are on a quest assigned by them. (Remember to add that page to the list of active pages for this quest so the player can turn in the completed quest to this NPC."
-selected = 0
-item_count = 27
-popup/item_0/text = "Do Not Activate Any Switch."
-popup/item_0/id = 0
-popup/item_1/text = "Switch A"
-popup/item_1/id = 1
-popup/item_2/text = "Switch B"
-popup/item_2/id = 2
-popup/item_3/text = "Switch C"
-popup/item_3/id = 3
-popup/item_4/text = "Switch D"
-popup/item_4/id = 4
-popup/item_5/text = "Switch E"
-popup/item_5/id = 5
-popup/item_6/text = "Switch F"
-popup/item_6/id = 6
-popup/item_7/text = "Switch G"
-popup/item_7/id = 7
-popup/item_8/text = "Switch H"
-popup/item_8/id = 8
-popup/item_9/text = "Switch I"
-popup/item_9/id = 9
-popup/item_10/text = "Switch J"
-popup/item_10/id = 10
-popup/item_11/text = "Switch K"
-popup/item_11/id = 11
-popup/item_12/text = "Switch L"
-popup/item_12/id = 12
-popup/item_13/text = "Switch M"
-popup/item_13/id = 13
-popup/item_14/text = "Switch N"
-popup/item_14/id = 14
-popup/item_15/text = "Switch O"
-popup/item_15/id = 15
-popup/item_16/text = "Switch P"
-popup/item_16/id = 16
-popup/item_17/text = "Switch Q"
-popup/item_17/id = 17
-popup/item_18/text = "Switch R"
-popup/item_18/id = 18
-popup/item_19/text = "Switch S"
-popup/item_19/id = 19
-popup/item_20/text = "Switch T"
-popup/item_20/id = 20
-popup/item_21/text = "Switch U"
-popup/item_21/id = 21
-popup/item_22/text = "Switch V"
-popup/item_22/id = 22
-popup/item_23/text = "Switch W"
-popup/item_23/id = 23
-popup/item_24/text = "Switch X"
-popup/item_24/id = 24
-popup/item_25/text = "Switch Y"
-popup/item_25/id = 25
-popup/item_26/text = "Switch Z"
-popup/item_26/id = 26
+[Note]: The page must be a quest page, and you must manually add the event command \"accept mission\" to start the mission. If no page is specified, the dialogue defined in \"Start Message\" will be used, and the quest will be accepted immediately upon completion.
 
-[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[Note2]: Middle Click to erase."
+text = "Select page"
+clip_text = true
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=177425258]
 layout_mode = 2
 
-[node name="UseCustomTimer" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer5"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6" unique_id=1534985699]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Target Event Page:"
+
+[node name="TargetEventPage" parent="MarginContainer/VBoxContainer/HBoxContainer6" unique_id=1065295141 instance=ExtResource("3_sc7n4")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Event and page required to turn in this mission once completed to receive the reward.
+
+[Note]: The page must be a quest page, and you must manually add the event command \"complete mission\" to turn in the mission. If no page is specified, the dialogue defined in \"Success Message\" will be used, and the quest will be turned in immediately upon completion.
+
+[Note2]: Middle Click to erase."
+text = "Select page"
+clip_text = true
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1786053292]
+layout_mode = 2
+
+[node name="UseCustomTimer" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer5" unique_id=256424170]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(220, 0)
 layout_mode = 2
@@ -148,7 +114,7 @@ tooltip_text = "Enable overwrite the timer to complete this quest defined in the
 mouse_default_cursor_shape = 2
 text = "Use Custom Timer:"
 
-[node name="CustomTimer" parent="MarginContainer/VBoxContainer/HBoxContainer5" instance=ExtResource("4_iju2i")]
+[node name="CustomTimer" parent="MarginContainer/VBoxContainer/HBoxContainer5" unique_id=2117744857 instance=ExtResource("4_iju2i")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -158,45 +124,44 @@ tooltip_text = "Time limit to complete the quest. A value of 0 means there is no
 mouse_filter = 2
 editable = false
 disabled = true
+_custom_value = 0.0
 
-[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=564004961]
 layout_mode = 2
 size_flags_vertical = 10
 theme_override_constants/separation = 12
 
-[node name="Lavel3" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="Lavel3" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1824902918]
 layout_mode = 2
 text = "Requisites"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1773064639]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=2012280779]
 custom_minimum_size = Vector2(220, 0)
 layout_mode = 2
 text = "Active Pages:"
 
-[node name="PageList" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_5ove5")]
+[node name="PageList" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1750538660 instance=ExtResource("4_5ove5")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Select the pages that must be activated in order to receive this quest.
 
-[Note]: Any page that is activated and on this list will enable this NPC to give you this quest.
-
-[Note 2]: Use Shift or Control to select multiple pages."
+[Note]: Any page that is activated and included in this list will allow this NPC to give you this quest."
 enable_multi_selection = true
 multi_selection_prefix = "Page/s "
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=350904404]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer3" unique_id=594611130]
 custom_minimum_size = Vector2(220, 0)
 layout_mode = 2
 text = "Relationship level:"
 
-[node name="RelationshipLevel" parent="MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("4_5ove5")]
+[node name="RelationshipLevel" parent="MarginContainer/VBoxContainer/HBoxContainer3" unique_id=243844809 instance=ExtResource("4_5ove5")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -206,102 +171,95 @@ item_count = 1
 popup/item_0/text = "No Level Needed"
 popup/item_0/id = 0
 
-[node name="HSeparator3" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator3" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1646689468]
 layout_mode = 2
 size_flags_vertical = 10
 theme_override_constants/separation = 12
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1416330066]
 layout_mode = 2
-text = "Messages"
+text = "Fallback Messages"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=287902285]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer" unique_id=1355496464]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer" unique_id=1538726378]
 custom_minimum_size = Vector2(220, 0)
 layout_mode = 2
 text = "Start Message:"
 
-[node name="StartMessage" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_sc7n4")]
+[node name="StartMessage" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer" unique_id=1843616652 instance=ExtResource("3_sc7n4")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-tooltip_text = "Initial dialogue that this event will reproduce before giving this quest to the player."
+tooltip_text = "Initial dialogue that this event will reproduce before giving this quest to the player.
+
+[Note]: This is a fallback dialog; it will only start if there is no page defined for this action."
 clip_text = true
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer" unique_id=715649687]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2"]
-custom_minimum_size = Vector2(220, 0)
-layout_mode = 2
-text = "End Message:"
-
-[node name="EndMessage" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("3_sc7n4")]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-tooltip_text = "Dialogue that this event will reproduce if this mission has already been given to the player and is in progress."
-clip_text = true
-
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer3"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer3" unique_id=27953693]
 custom_minimum_size = Vector2(220, 0)
 layout_mode = 2
 text = "Success Message:"
 
-[node name="SuccessMessage" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("3_sc7n4")]
+[node name="SuccessMessage" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer3" unique_id=1979495823 instance=ExtResource("3_sc7n4")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-tooltip_text = "Dialogue that this event will reproduce when delivering the completed quest."
+tooltip_text = "Dialogue that this event will reproduce when delivering the completed quest.
+
+[Note]: This is a fallback dialog; it will only start if there is no page defined for this action."
 clip_text = true
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer" unique_id=397479111]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer4"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer4" unique_id=2118912299]
 custom_minimum_size = Vector2(220, 0)
 layout_mode = 2
 text = "Failure Message:"
 
-[node name="FailureMessage" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer4" instance=ExtResource("3_sc7n4")]
+[node name="FailureMessage" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer4" unique_id=770524050 instance=ExtResource("3_sc7n4")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-tooltip_text = "Dialogue that this event will reproduce if this quest was given to the player and they failed to complete it."
+tooltip_text = "Dialogue that will reproduce if this quest was given to the player and they failed to complete it."
 clip_text = true
 
-[node name="HSeparator4" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator4" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=562385656]
 layout_mode = 2
 size_flags_vertical = 10
 theme_override_constants/separation = 12
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=2040722726]
 layout_mode = 2
 
-[node name="UseConfirm" type="CheckBox" parent="MarginContainer/VBoxContainer/VBoxContainer2"]
+[node name="UseConfirm" type="CheckBox" parent="MarginContainer/VBoxContainer/VBoxContainer2" unique_id=1000972523]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Display a confirmation message to the player to accept this quest. If this option is disabled, after the start message, the quest will be given to the player automatically."
+tooltip_text = "Display a confirmation message to the player to accept this quest. If this option is disabled, after the start message, the quest will be given to the player automatically.
+
+[Note]: This only occurs if no starting page is defined and the fallback message \"Start Message\" is used.
+
+[note2]: If this option is disabled, the quest will start immediately after completing the fallback message."
 mouse_default_cursor_shape = 2
 text = "Use “Confirm” to give this quest to the player."
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer2" unique_id=582361506]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer" unique_id=693838499]
 custom_minimum_size = Vector2(220, 0)
 layout_mode = 2
 text = "Accept Option:"
 
-[node name="ConfirmOK" parent="MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer" instance=ExtResource("6_sc7n4")]
+[node name="ConfirmOK" parent="MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer" unique_id=144135685 instance=ExtResource("6_sc7n4")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -309,15 +267,15 @@ tooltip_text = "Message displayed in the quest \"accept\" option"
 text = "Accept quest"
 metadata/original_text = "Accept quest"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer2"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer2" unique_id=1599952102]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer2"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer2" unique_id=678727961]
 custom_minimum_size = Vector2(220, 0)
 layout_mode = 2
 text = "Cancel Option:"
 
-[node name="ConfirmCancel" parent="MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer2" instance=ExtResource("6_sc7n4")]
+[node name="ConfirmCancel" parent="MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer2" unique_id=1487824622 instance=ExtResource("6_sc7n4")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -325,17 +283,17 @@ tooltip_text = "Message displayed in the quest \"cancel\" option"
 text = "Decline"
 metadata/original_text = "Decline"
 
-[node name="HSeparator6" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator6" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=699218174]
 layout_mode = 2
 size_flags_vertical = 10
 theme_override_constants/separation = 12
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=456132333]
 layout_mode = 2
 size_flags_vertical = 10
 alignment = 2
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_5ove5")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1279697547 instance=ExtResource("5_5ove5")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -344,7 +302,7 @@ tooltip_text = "[title]Ok[/title]
 Saves all changes and closes the windows."
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_5ove5")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1703386620 instance=ExtResource("5_5ove5")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -353,12 +311,14 @@ Closes this window without saving any changes."
 text = "CANCEL"
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/QuestID" to="." method="_on_quest_id_pressed"]
-[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer4/EnableSelfSwitch" to="." method="_on_enable_self_switch_item_selected"]
+[connection signal="middle_click_pressed" from="MarginContainer/VBoxContainer/HBoxContainer4/StartPage" to="." method="_on_start_page_middle_click_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer4/StartPage" to="." method="_on_start_page_pressed"]
+[connection signal="middle_click_pressed" from="MarginContainer/VBoxContainer/HBoxContainer6/TargetEventPage" to="." method="_on_target_event_page_middle_click_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer6/TargetEventPage" to="." method="_on_target_event_page_pressed"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/HBoxContainer5/UseCustomTimer" to="." method="_on_use_custom_timer_toggled"]
 [connection signal="multi_selection_changed" from="MarginContainer/VBoxContainer/HBoxContainer/PageList" to="." method="_on_page_list_multi_selection_changed"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer3/RelationshipLevel" to="." method="_on_relationship_level_item_selected"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/StartMessage" to="." method="_on_start_message_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2/EndMessage" to="." method="_on_end_message_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer3/SuccessMessage" to="." method="_on_success_message_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer4/FailureMessage" to="." method="_on_failure_message_pressed"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/VBoxContainer2/UseConfirm" to="." method="_on_use_confirm_toggled"]

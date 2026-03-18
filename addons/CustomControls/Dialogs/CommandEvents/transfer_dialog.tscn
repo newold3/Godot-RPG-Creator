@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://dqrm4jllqw1un"]
+[gd_scene format=3 uid="uid://dqrm4jllqw1un"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_p5pir"]
 [ext_resource type="Script" uid="uid://bdvfm1d37ry85" path="res://addons/CustomControls/Dialogs/CommandEvents/transfer_dialog.gd" id="2_m3cwy"]
@@ -51,7 +51,7 @@ texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[node name="TransferDialog" type="Window"]
+[node name="TransferDialog" type="Window" unique_id=682519491]
 oversampling_override = 1.0
 title = "Transfer"
 position = Vector2i(0, 36)
@@ -63,7 +63,7 @@ unresizable = true
 theme = ExtResource("1_p5pir")
 script = ExtResource("2_m3cwy")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=424251807]
 material = SubResource("CanvasItemMaterial_erns2")
 anchors_preset = 15
 anchor_right = 1.0
@@ -72,7 +72,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_2105m")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1558909093]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -85,19 +85,19 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1551698005]
 layout_mode = 2
 
-[node name="VehicleContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="VehicleContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1474064378]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VehicleContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VehicleContainer" unique_id=511389343]
 layout_mode = 2
 text = "Vehicle:"
 
-[node name="VehicleOptions" parent="MarginContainer/VBoxContainer/VehicleContainer" instance=ExtResource("3_8erjd")]
+[node name="VehicleOptions" parent="MarginContainer/VBoxContainer/VehicleContainer" unique_id=366258093 instance=ExtResource("3_8erjd")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Choose the transport to be transferred"
@@ -112,16 +112,16 @@ popup/item_1/id = 1
 popup/item_2/text = "Air Transport"
 popup/item_2/id = 2
 
-[node name="EventContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="EventContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1963313568]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/EventContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/EventContainer" unique_id=12184357]
 layout_mode = 2
 text = "Event target:"
 
-[node name="EventOptions" parent="MarginContainer/VBoxContainer/EventContainer" instance=ExtResource("3_8erjd")]
+[node name="EventOptions" parent="MarginContainer/VBoxContainer/EventContainer" unique_id=361848232 instance=ExtResource("3_8erjd")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Choose the event to be transferred"
@@ -132,46 +132,46 @@ item_count = 1
 popup/item_0/text = "This Event"
 popup/item_0/id = 0
 
-[node name="PlayerContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="PlayerContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=133843715]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="DelayTransfer" type="CheckBox" parent="MarginContainer/VBoxContainer/PlayerContainer"]
+[node name="DelayTransfer" type="CheckBox" parent="MarginContainer/VBoxContainer/PlayerContainer" unique_id=1739588324]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "This ensures that the current page processes all commands before transitioning. If disabled, the transfer will happen immediately, and if transferring to a new map, any remaining commands on the page will not be executed."
 mouse_default_cursor_shape = 2
 text = "Delay Transfer"
 
-[node name="DestinationContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="DestinationContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1531389265]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/DestinationContainer"]
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/DestinationContainer" unique_id=1814279582]
 custom_minimum_size = Vector2(0, 11)
 layout_mode = 2
 
-[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/DestinationContainer"]
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/DestinationContainer" unique_id=1431322694]
 layout_mode = 2
 text = "Destination:"
 
-[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer/DestinationContainer"]
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer/DestinationContainer" unique_id=1603127495]
 layout_mode = 2
 
-[node name="Control3" type="Control" parent="MarginContainer/VBoxContainer/DestinationContainer"]
+[node name="Control3" type="Control" parent="MarginContainer/VBoxContainer/DestinationContainer" unique_id=478463652]
 custom_minimum_size = Vector2(0, 11)
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/DestinationContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/DestinationContainer" unique_id=902819836]
 layout_mode = 2
 theme_override_constants/separation = 22
 
-[node name="ManualSettingContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/DestinationContainer/VBoxContainer"]
+[node name="ManualSettingContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/DestinationContainer/VBoxContainer" unique_id=130185980]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ManualSettingChecker" type="CheckBox" parent="MarginContainer/VBoxContainer/DestinationContainer/VBoxContainer/ManualSettingContainer"]
+[node name="ManualSettingChecker" type="CheckBox" parent="MarginContainer/VBoxContainer/DestinationContainer/VBoxContainer/ManualSettingContainer" unique_id=609719982]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "[title]Manual Setting[/title]
@@ -181,7 +181,7 @@ button_pressed = true
 button_group = SubResource("ButtonGroup_mlbsh")
 text = "Manual Setting:"
 
-[node name="ManualSettingButton1" parent="MarginContainer/VBoxContainer/DestinationContainer/VBoxContainer/ManualSettingContainer" instance=ExtResource("4_yqa0e")]
+[node name="ManualSettingButton1" parent="MarginContainer/VBoxContainer/DestinationContainer/VBoxContainer/ManualSettingContainer" unique_id=205062621 instance=ExtResource("4_yqa0e")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -192,11 +192,11 @@ Click to select map and position."
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 text = "Current Map (0, 0)"
 
-[node name="VariableSettingContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/DestinationContainer/VBoxContainer"]
+[node name="VariableSettingContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/DestinationContainer/VBoxContainer" unique_id=48683356]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="VariableSettingChecker" type="CheckBox" parent="MarginContainer/VBoxContainer/DestinationContainer/VBoxContainer/VariableSettingContainer"]
+[node name="VariableSettingChecker" type="CheckBox" parent="MarginContainer/VBoxContainer/DestinationContainer/VBoxContainer/VariableSettingContainer" unique_id=901892723]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "[title]Variable Setting[/title]
@@ -205,17 +205,17 @@ mouse_default_cursor_shape = 2
 button_group = SubResource("ButtonGroup_mlbsh")
 text = "Variable Setting:"
 
-[node name="MapIDContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/DestinationContainer/VBoxContainer/VariableSettingContainer"]
+[node name="MapIDContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/DestinationContainer/VBoxContainer/VariableSettingContainer" unique_id=1305720226]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/DestinationContainer/VBoxContainer/VariableSettingContainer/MapIDContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/DestinationContainer/VBoxContainer/VariableSettingContainer/MapIDContainer" unique_id=263716938]
 custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
 text = "Map ID: "
 horizontal_alignment = 2
 
-[node name="VariableSettingButton1" parent="MarginContainer/VBoxContainer/DestinationContainer/VBoxContainer/VariableSettingContainer/MapIDContainer" instance=ExtResource("4_yqa0e")]
+[node name="VariableSettingButton1" parent="MarginContainer/VBoxContainer/DestinationContainer/VBoxContainer/VariableSettingContainer/MapIDContainer" unique_id=1854653321 instance=ExtResource("4_yqa0e")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -225,18 +225,18 @@ tooltip_text = "[title]Map ID[/title]
 The ID of the traget map."
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 disabled = true
-text = "0001:1"
+text = "0001:"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/DestinationContainer/VBoxContainer/VariableSettingContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/DestinationContainer/VBoxContainer/VariableSettingContainer" unique_id=2010379454]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/DestinationContainer/VBoxContainer/VariableSettingContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/DestinationContainer/VBoxContainer/VariableSettingContainer/HBoxContainer2" unique_id=698959340]
 custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
 text = "Axis X: "
 horizontal_alignment = 2
 
-[node name="VariableSettingButton2" parent="MarginContainer/VBoxContainer/DestinationContainer/VBoxContainer/VariableSettingContainer/HBoxContainer2" instance=ExtResource("4_yqa0e")]
+[node name="VariableSettingButton2" parent="MarginContainer/VBoxContainer/DestinationContainer/VBoxContainer/VariableSettingContainer/HBoxContainer2" unique_id=1427159982 instance=ExtResource("4_yqa0e")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -246,18 +246,18 @@ tooltip_text = "[title]X Coordinate[/title]
 X coordinate of the transfer."
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 disabled = true
-text = "0001:1"
+text = "0001:"
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/DestinationContainer/VBoxContainer/VariableSettingContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/DestinationContainer/VBoxContainer/VariableSettingContainer" unique_id=1718207470]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/DestinationContainer/VBoxContainer/VariableSettingContainer/HBoxContainer3"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/DestinationContainer/VBoxContainer/VariableSettingContainer/HBoxContainer3" unique_id=907329923]
 custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
 text = "Axis Y: "
 horizontal_alignment = 2
 
-[node name="VariableSettingButton3" parent="MarginContainer/VBoxContainer/DestinationContainer/VBoxContainer/VariableSettingContainer/HBoxContainer3" instance=ExtResource("4_yqa0e")]
+[node name="VariableSettingButton3" parent="MarginContainer/VBoxContainer/DestinationContainer/VBoxContainer/VariableSettingContainer/HBoxContainer3" unique_id=614317208 instance=ExtResource("4_yqa0e")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -267,13 +267,13 @@ tooltip_text = "[title]Y Coordinate[/title]
 Y coordinate of the transfer."
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 disabled = true
-text = "0001:1"
+text = "0001:"
 
-[node name="EventExtraContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/DestinationContainer/VBoxContainer"]
+[node name="EventExtraContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/DestinationContainer/VBoxContainer" unique_id=1806463978]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="SwapEventChecker" type="CheckBox" parent="MarginContainer/VBoxContainer/DestinationContainer/VBoxContainer/EventExtraContainer"]
+[node name="SwapEventChecker" type="CheckBox" parent="MarginContainer/VBoxContainer/DestinationContainer/VBoxContainer/EventExtraContainer" unique_id=679032390]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "[title]Swap[/title]
@@ -282,7 +282,7 @@ mouse_default_cursor_shape = 2
 button_group = SubResource("ButtonGroup_mlbsh")
 text = "Swap for another event"
 
-[node name="SwapEventButton" parent="MarginContainer/VBoxContainer/DestinationContainer/VBoxContainer/EventExtraContainer" instance=ExtResource("3_8erjd")]
+[node name="SwapEventButton" parent="MarginContainer/VBoxContainer/DestinationContainer/VBoxContainer/EventExtraContainer" unique_id=641721014 instance=ExtResource("3_8erjd")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "[title]Event List[/title]
@@ -293,27 +293,27 @@ item_count = 1
 popup/item_0/text = "This Event"
 popup/item_0/id = 0
 
-[node name="DirectionContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/DestinationContainer"]
+[node name="DirectionContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/DestinationContainer" unique_id=1493680447]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer"]
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer" unique_id=1693835048]
 custom_minimum_size = Vector2(0, 11)
 layout_mode = 2
 
-[node name="HboxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer"]
+[node name="HboxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer" unique_id=1827782191]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer" unique_id=1401234040]
 layout_mode = 2
 text = "Direction: "
 
-[node name="Control3" type="Control" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer"]
+[node name="Control3" type="Control" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer" unique_id=1527802996]
 custom_minimum_size = Vector2(0, 11)
 layout_mode = 2
 
-[node name="DirectionButton" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer" instance=ExtResource("3_8erjd")]
+[node name="DirectionButton" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer" unique_id=707867329 instance=ExtResource("3_8erjd")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -334,125 +334,131 @@ popup/item_3/id = 3
 popup/item_4/text = "Right"
 popup/item_4/id = 4
 
-[node name="Control2" type="Control" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer"]
+[node name="Control2" type="Control" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer" unique_id=1787090043]
 custom_minimum_size = Vector2(0, 11)
 layout_mode = 2
 
-[node name="HboxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer"]
+[node name="HboxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer" unique_id=928287220]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer2"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer2" unique_id=1155413805]
 layout_mode = 2
 text = "Transfer Animation: "
 
-[node name="Control3" type="Control" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer2"]
+[node name="Control3" type="Control" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer2" unique_id=564600783]
 custom_minimum_size = Vector2(0, 11)
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer2" unique_id=730413211]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer2/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer2/HBoxContainer" unique_id=747178067]
 custom_minimum_size = Vector2(110, 0)
 layout_mode = 2
 text = "Exit: "
 
-[node name="TransferExitAnimation" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer2/HBoxContainer" instance=ExtResource("3_8erjd")]
+[node name="TransferExitAnimation" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer2/HBoxContainer" unique_id=427868041 instance=ExtResource("3_8erjd")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Transfer Exit Animation[/title]
 Play an exit animation right before starting the player’s or event’s teleport (e.g. fade out, scale, rotation, or any mix)."
 selected = 0
-item_count = 8
+item_count = 9
 popup/item_0/text = "Instant"
 popup/item_0/id = 0
-popup/item_1/text = "Fade Out Glow"
+popup/item_1/text = "Fade Out"
 popup/item_1/id = 1
-popup/item_2/text = "Energy Pulse"
+popup/item_2/text = "Stretch Up"
 popup/item_2/id = 2
-popup/item_3/text = "Spiral Out"
+popup/item_3/text = "Squash Down"
 popup/item_3/id = 3
-popup/item_4/text = "Vortex Sink"
+popup/item_4/text = "Implode"
 popup/item_4/id = 4
-popup/item_5/text = "Blink Out"
+popup/item_5/text = "Spin Implode"
 popup/item_5/id = 5
-popup/item_6/text = "Energy Lift Up"
+popup/item_6/text = "Elastic Snap"
 popup/item_6/id = 6
-popup/item_7/text = "Stretching Out"
+popup/item_7/text = "Flatten H"
 popup/item_7/id = 7
+popup/item_8/text = "Flatten V"
+popup/item_8/id = 8
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer2/HBoxContainer"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer2/HBoxContainer" unique_id=1001997673]
 layout_mode = 2
 text = "Time:"
 
-[node name="AnimationExitTime" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer2/HBoxContainer" instance=ExtResource("5_mlbsh")]
+[node name="AnimationExitTime" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer2/HBoxContainer" unique_id=1068582945 instance=ExtResource("5_mlbsh")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 step = 0.01
 rounded = false
 allow_greater = true
+_custom_value = 0.0
 
-[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer2/HBoxContainer"]
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer2/HBoxContainer" unique_id=560456591]
 layout_mode = 2
 text = "second/s"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer2"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer2" unique_id=705219671]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer2/HBoxContainer2"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer2/HBoxContainer2" unique_id=1936105207]
 custom_minimum_size = Vector2(110, 0)
 layout_mode = 2
 text = "Entry: "
 
-[node name="TransferEntryAnimation" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer2/HBoxContainer2" instance=ExtResource("3_8erjd")]
+[node name="TransferEntryAnimation" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer2/HBoxContainer2" unique_id=528488251 instance=ExtResource("3_8erjd")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Transfer Entry Animation[/title]
 Play an entry animation right after the player or event finishes teleporting (e.g. fade in, scale, rotation, or any mix)."
 selected = 0
-item_count = 8
+item_count = 9
 popup/item_0/text = "Instant"
 popup/item_0/id = 0
-popup/item_1/text = "Fade In Glow"
+popup/item_1/text = "Fade In"
 popup/item_1/id = 1
-popup/item_2/text = "Energy Pulse Reverse"
+popup/item_2/text = "Pop In"
 popup/item_2/id = 2
-popup/item_3/text = "Spiral In"
+popup/item_3/text = "Drop Squash"
 popup/item_3/id = 3
-popup/item_4/text = "Vortex Rise"
+popup/item_4/text = "Explode"
 popup/item_4/id = 4
-popup/item_5/text = "Blink In"
+popup/item_5/text = "Spin Pop"
 popup/item_5/id = 5
-popup/item_6/text = "Energy Land Down"
+popup/item_6/text = "Elastic Wobble"
 popup/item_6/id = 6
-popup/item_7/text = "Stretching In"
+popup/item_7/text = "Unflatten H"
 popup/item_7/id = 7
+popup/item_8/text = "Unflatten V"
+popup/item_8/id = 8
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer2/HBoxContainer2"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer2/HBoxContainer2" unique_id=885745764]
 layout_mode = 2
 text = "Time:"
 
-[node name="AnimationEntryTime" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer2/HBoxContainer2" instance=ExtResource("5_mlbsh")]
+[node name="AnimationEntryTime" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer2/HBoxContainer2" unique_id=337981518 instance=ExtResource("5_mlbsh")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 step = 0.01
 rounded = false
 allow_greater = true
+_custom_value = 0.0
 
-[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer2/HBoxContainer2"]
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer2/HBoxContainer2" unique_id=585521620]
 layout_mode = 2
 text = "second/s"
 
-[node name="WaitAnimationContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer2"]
+[node name="WaitAnimationContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer2" unique_id=489708904]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="WaitAnimationFinished" type="CheckBox" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer2/WaitAnimationContainer"]
+[node name="WaitAnimationFinished" type="CheckBox" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer2/WaitAnimationContainer" unique_id=1414470327]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -460,22 +466,22 @@ tooltip_text = "Wait for the animation to finish (both the exit and entry animat
 button_pressed = true
 text = "Wait for the animation to complete"
 
-[node name="Control2" type="Control" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer2"]
+[node name="Control2" type="Control" parent="MarginContainer/VBoxContainer/DestinationContainer/DirectionContainer/HboxContainer2" unique_id=899426496]
 custom_minimum_size = Vector2(0, 11)
 layout_mode = 2
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1174347471]
 layout_mode = 2
 size_flags_vertical = 8
 theme_override_constants/separation = 12
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=443071012]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 alignment = 1
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_p56ut")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1078789988 instance=ExtResource("4_p56ut")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
@@ -487,7 +493,7 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_cr2q0")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_nv5ev")
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_p56ut")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=507807719 instance=ExtResource("4_p56ut")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2

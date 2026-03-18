@@ -53,5 +53,5 @@ void fragment() {
     vec4 foam_color = texture(foam_gradient, vec2(foam_intensity, 0.5));
 
     vec4 final_color = mix(water_color_final, foam_color, foam_intensity);
-    COLOR = mix(original_color, final_color, blue_factor);
+    COLOR = mix(original_color, final_color, blue_factor * original_color.a);
 }

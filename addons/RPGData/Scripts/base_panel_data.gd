@@ -19,6 +19,8 @@ var locked_items: Array = [0]
 
 var is_disabled: bool = false
 
+var _current_data_string: String = ""
+
 var main_list_popup_menu: PopupMenu
 const MAIN_LIST_POPUP_MENU = preload("res://addons/RPGData/Scenes/main_list_popup_menu.tscn")
 
@@ -38,7 +40,16 @@ func _ready() -> void:
 
 func set_data(_data: Array) -> void:
 	data = _data
-	fill_main_list(0)
+	var current_id = 0
+	if data.size() > 1:
+		var c = str(data[1].get_class())
+		if c == str(_current_data_string) and %MainList.is_anything_selected():
+			current_id = %MainList.get_selected_items()[0]
+		_current_data_string = c
+	else:
+		_current_data_string = ""
+		
+	fill_main_list(current_id)
 	%AddDataButton.set_disabled(data.size() == 10000)
 	%RemoveDataButton.set_disabled(locked_items.has(0) or data.size() <= 1 )
 	
@@ -47,7 +58,6 @@ func set_data(_data: Array) -> void:
 
 
 func fill_main_list(selected_index: int) -> void:
-
 	var node: ItemList = %MainList
 
 	if selected_index == -1 and node.is_anything_selected():
@@ -216,7 +226,7 @@ func reset_values(node: Node) -> void:
 		node.value = 0
 	elif node is OptionButton and node.get_item_count() > 0:
 		node.select(0)
-	elif "text" in node:
+	elif "text" in node and not node is Label and not node is RichTextLabel:
 		node.text = ""
 	elif node.get_class() in ["ColumnItemList", "CurveParameter"]:
 		node.clear()

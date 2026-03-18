@@ -83,29 +83,40 @@ func _on_item_list_paste_requested(index: int) -> void:
 
 
 func _on_item_list_multi_selected(index: int, selected: bool, erase_enabled: bool = true) -> void:
-	var items_to_erase = []
-	if not (Input.is_key_pressed(KEY_CTRL) or Input.is_key_pressed(KEY_SHIFT)) and selected and erase_enabled:
-		for item in current_data:
-			if item.get("type", 0) == current_type:
-				items_to_erase.append(item)
-
-		for item in items_to_erase:
-			current_data.erase(item)
-		
-	var real_index = index + 1
-	if selected:
-		if not current_data.any(func(item: Dictionary): return item.get("id", 1) == real_index and item.get("type", 0) == current_type):
-			current_data.append({"type": current_type, "id": real_index})
-	else:
-		for item in current_data:
-			if item.get("id", 1) == real_index and item.get("type", 0) == current_type:
-				current_data.erase(item)
-				%ItemList.deselect(index)
-				break
 	
-	if items_to_erase:
-		for item in items_to_erase:
-			%ItemList.deselect(item.id)
+	var real_index = index + 1
+	var has_index = current_data.any(func(d: Dictionary): return d.type == current_type and d.id == real_index)
+	if selected and not has_index:
+		current_data.append({"type": current_type, "id": real_index})
+	elif not selected and has_index:
+		for d: Dictionary in current_data:
+			if d.type == current_type and d.id == real_index:
+				current_data.erase(d)
+				break
+
+	#var items_to_erase = []
+	#if not (Input.is_key_pressed(KEY_CTRL) or Input.is_key_pressed(KEY_SHIFT)) and selected and erase_enabled:
+		#for item in current_data:
+			#if item.get("type", 0) == current_type:
+				#items_to_erase.append(item)
+#
+		#for item in items_to_erase:
+			#current_data.erase(item)
+		#
+	#var real_index = index + 1
+	#if selected:
+		#if not current_data.any(func(item: Dictionary): return item.get("id", 1) == real_index and item.get("type", 0) == current_type):
+			#current_data.append({"type": current_type, "id": real_index})
+	#else:
+		#for item in current_data:
+			#if item.get("id", 1) == real_index and item.get("type", 0) == current_type:
+				#current_data.erase(item)
+				#%ItemList.deselect(index)
+				#break
+	#
+	#if items_to_erase:
+		#for item in items_to_erase:
+			#%ItemList.deselect(item.id)
 
 
 func _on_select_all_toggled(toggled_on: bool) -> void:

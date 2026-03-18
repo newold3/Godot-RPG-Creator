@@ -10,6 +10,7 @@ var preview_texture_rect: TextureRect
 var update_timer: Timer
 var saving_scene: Node2D
 
+
 func _enter_tree() -> void:
 	_setup_saving_scene()
 	_setup_preview_button()
@@ -19,6 +20,7 @@ func _enter_tree() -> void:
 
 func _exit_tree() -> void:
 	update_timer.stop()
+	remove_control_from_container(EditorPlugin.CONTAINER_CANVAS_EDITOR_MENU, preview_button)
 	preview_button.queue_free()
 	preview_window.queue_free()
 	saving_scene.queue_free()
@@ -60,7 +62,7 @@ func _setup_preview_window() -> void:
 	# Position window bottom right
 	var screen_size := DisplayServer.screen_get_size()
 	preview_window.position = Vector2(
-		screen_size.x - preview_window.size.x - 20,
+		screen_size.x - preview_window.size.x - 40,
 		screen_size.y - preview_window.size.y - 100
 	)
 	
@@ -73,13 +75,25 @@ func _setup_preview_window() -> void:
 	preview_window.add_child(preview_texture_rect)
 	add_child(preview_window)
 	
+	var margin_container = MarginContainer.new()
+	margin_container.set_anchors_preset(Control.PRESET_FULL_RECT)
+	margin_container.mouse_filter = Control.MOUSE_FILTER_PASS
+	
+	margin_container.add_theme_constant_override("margin_right", 20)
+	margin_container.add_theme_constant_override("margin_bottom", 20)
+	
+	preview_window.add_child(margin_container)
+	
 	var button = preload("res://addons/CustomControls/custom_button.tscn").instantiate()
 	button.text = tr("Generate Preview")
 	button.name = tr("SavePreview")
 	button.tooltip_text = tr("Generate a preview image with the same name as the scene, plus \"_preview\", and save it in the same folder as the scene")
 	button.pressed.connect(_save_preview)
-	preview_window.add_child(button)
-	button.position = preview_window.size - Vector2i(button.size) - Vector2i(10, 10)
+	
+	button.size_flags_horizontal = Control.SIZE_SHRINK_END
+	button.size_flags_vertical = Control.SIZE_SHRINK_END
+	
+	margin_container.add_child(button)
 	CustomTooltipManager.replace_all_tooltips_with_custom(button)
 
 

@@ -37,7 +37,7 @@ func set_actor(p_actor: GameActor) -> void:
 	var real_actor: RPGActor = GameManager.get_real_actor(actor.id)
 	if real_actor:
 		%ActorName.text = real_actor.name
-		if ResourceLoader.exists(real_actor.face_preview.path):
+		if AssetManager.exists(real_actor.face_preview.path):
 			%ActorImage.texture.atlas = load(real_actor.face_preview.path)
 			%ActorImage.texture.region = real_actor.face_preview.region
 

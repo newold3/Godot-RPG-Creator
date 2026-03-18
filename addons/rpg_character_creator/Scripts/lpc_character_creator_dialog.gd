@@ -1,5 +1,5 @@
 @tool
-class_name LPCEditorDialog
+class_name LPCEditorDialog2
 extends Window
 
 var busy: bool = false
@@ -42,6 +42,7 @@ func _ready() -> void:
 
 
 func _on_window_input(event: InputEvent) -> void:
+	return
 	if event is InputEventMouseMotion:
 		try_focus_palette_window()
 
@@ -97,7 +98,7 @@ func _on_focus_exited() -> void:
 	DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_ALWAYS_ON_TOP, false, get_window_id())
 
 
-func grab_focus() -> void:
+func grab_focus(_hide_focus: bool = false) -> void:
 	if DisplayServer.window_get_active_popup() != -1:
 		return
 		

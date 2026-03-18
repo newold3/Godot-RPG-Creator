@@ -111,6 +111,7 @@ func _on_type_item_selected(index: int) -> void:
 
 
 func _on_custom_price_value_value_changed(value: float) -> void:
+	if not current_data or not "price" in current_data: return
 	current_data.price = value
 	if current_data.price_mode == 1:
 		current_price = value

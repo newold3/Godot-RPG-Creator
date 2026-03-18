@@ -27,7 +27,7 @@ func _set_gold() -> void:
 	
 	var icon_path: String = RPGSYSTEM.database.system.currency_info.get("icon", "")
 	var icon_name: String = RPGSYSTEM.database.system.currency_info.get("name", "")
-	if ResourceLoader.exists(icon_path):
+	if AssetManager.exists(icon_path):
 		%GoldIcon.texture = load(icon_path)
 	else:
 		%GoldIcon.texture = null

@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://be6h27ee3aauh"]
+[gd_scene format=3 uid="uid://be6h27ee3aauh"]
 
 [ext_resource type="Script" uid="uid://b5wpf100sin34" path="res://Scenes/GUI/SteamPunkTheme/MainMenu/left_buttons.gd" id="1_aeacu"]
 [ext_resource type="Script" uid="uid://dwat6uscnl7vl" path="res://Scenes/GUI/staggered_button_container.gd" id="2_mk1op"]
@@ -9,13 +9,13 @@
 script = ExtResource("4_m2ro0")
 metadata/_custom_type_script = "uid://cn435xxs5g3f"
 
-[node name="MainMenuItems" type="MarginContainer"]
+[node name="MainMenuItems" type="MarginContainer" unique_id=429619574]
 custom_minimum_size = Vector2(356, 386)
 offset_right = 352.0
 offset_bottom = 360.0
 script = ExtResource("1_aeacu")
 
-[node name="ButtonContainer" type="Container" parent="."]
+[node name="ButtonContainer" type="Container" parent="." unique_id=292468970]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(387.69922, 420)
 layout_mode = 2
@@ -25,63 +25,63 @@ vertical_separation = 12
 animation_duration = 0.45
 metadata/_custom_type_script = "uid://dwat6uscnl7vl"
 
-[node name="Button1" parent="ButtonContainer" instance=ExtResource("3_gouna")]
+[node name="Button1" parent="ButtonContainer" unique_id=984836140 instance=ExtResource("3_gouna")]
 unique_name_in_owner = true
 layout_mode = 2
 button_text = "Items10"
 is_toggle_button = true
 button_group = SubResource("Resource_c26y3")
 
-[node name="Button2" parent="ButtonContainer" instance=ExtResource("3_gouna")]
+[node name="Button2" parent="ButtonContainer" unique_id=1325600429 instance=ExtResource("3_gouna")]
 unique_name_in_owner = true
 layout_mode = 2
 button_text = "Items10"
 is_toggle_button = true
 button_group = SubResource("Resource_c26y3")
 
-[node name="Button3" parent="ButtonContainer" instance=ExtResource("3_gouna")]
+[node name="Button3" parent="ButtonContainer" unique_id=1703691996 instance=ExtResource("3_gouna")]
 unique_name_in_owner = true
 layout_mode = 2
 button_text = "Items10"
 is_toggle_button = true
 button_group = SubResource("Resource_c26y3")
 
-[node name="Button4" parent="ButtonContainer" instance=ExtResource("3_gouna")]
+[node name="Button4" parent="ButtonContainer" unique_id=1700838175 instance=ExtResource("3_gouna")]
 unique_name_in_owner = true
 layout_mode = 2
 button_text = "Items10"
 is_toggle_button = true
 button_group = SubResource("Resource_c26y3")
 
-[node name="Button5" parent="ButtonContainer" instance=ExtResource("3_gouna")]
+[node name="Button5" parent="ButtonContainer" unique_id=92637865 instance=ExtResource("3_gouna")]
 unique_name_in_owner = true
 layout_mode = 2
 button_text = "Items10"
 is_toggle_button = true
 button_group = SubResource("Resource_c26y3")
 
-[node name="Button6" parent="ButtonContainer" instance=ExtResource("3_gouna")]
+[node name="Button6" parent="ButtonContainer" unique_id=318665747 instance=ExtResource("3_gouna")]
 unique_name_in_owner = true
 layout_mode = 2
 button_text = "Items10"
 is_toggle_button = true
 button_group = SubResource("Resource_c26y3")
 
-[node name="Button7" parent="ButtonContainer" instance=ExtResource("3_gouna")]
+[node name="Button7" parent="ButtonContainer" unique_id=343482202 instance=ExtResource("3_gouna")]
 unique_name_in_owner = true
 layout_mode = 2
 button_text = "Items10"
 is_toggle_button = true
 button_group = SubResource("Resource_c26y3")
 
-[node name="Button8" parent="ButtonContainer" instance=ExtResource("3_gouna")]
+[node name="Button8" parent="ButtonContainer" unique_id=884150777 instance=ExtResource("3_gouna")]
 unique_name_in_owner = true
 layout_mode = 2
 button_text = "Items10"
 is_toggle_button = true
 button_group = SubResource("Resource_c26y3")
 
-[node name="Button9" parent="ButtonContainer" instance=ExtResource("3_gouna")]
+[node name="Button9" parent="ButtonContainer" unique_id=470534224 instance=ExtResource("3_gouna")]
 unique_name_in_owner = true
 layout_mode = 2
 button_text = "Items10"

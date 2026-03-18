@@ -26,6 +26,7 @@ func _update_data_fields() -> void:
 		fill_invocation_animation()
 		fill_required_equipment()
 		fill_scope()
+		fill_evolve_skills()
 		var current_data = get_data()
 		%NameLineEdit.text = current_data.name
 		%IconPicker.set_icon(current_data.icon.path, current_data.icon.region)
@@ -53,6 +54,11 @@ func _update_data_fields() -> void:
 			%Sequence.texture_normal.region.position.x = 216
 		else:
 			%Sequence.texture_normal.region.position.x = 168
+		
+		var evolve_selection = max(0, min(%EvolveOptions.get_item_count(), int(current_data.evolve_to)))
+		%EvolveOptions.select(evolve_selection)
+		%EvolveSpinBox.value = int(current_data.evolve_required_uses)
+		%EvolveSpinBox.set_disabled(%EvolveOptions.get_selected_id() <= 0)
 			
 	else:
 		disable_all(true)
@@ -89,6 +95,20 @@ func fill_scope() -> void:
 			button.text = TranslationManager.tr("All Allies and Enemies")
 		elif scope.faction == 4:
 			button.text = TranslationManager.tr("The User")
+
+
+func fill_evolve_skills() -> void:
+	var current_id = get_data().id
+	var node = %EvolveOptions
+	node.clear()
+	
+	node.add_item("None")
+	
+	for i in range(1, database.skills.size()):
+		var skill = database.skills[i]
+		node.add_item("%s: %s" % [skill.id, skill.name])
+		if i == current_id:
+			node.set_item_disabled(i, true)
 
 
 func _on_auto_message_options_item_selected(index: int) -> void:
@@ -201,6 +221,7 @@ func _on_visibility_changed() -> void:
 		fill_element_types()
 		fill_invocation_animation()
 		fill_required_equipment()
+		fill_evolve_skills()
 		if current_selected_index != -1:
 			%EffectsPanel.set_data(database, get_data().effects)
 		else:
@@ -428,3 +449,12 @@ func _on_icon_picker_paste_requested(icon: String, region: Rect2) -> void:
 	data_icon.path = icon
 	data_icon.region = region
 	%IconPicker.set_icon(data_icon.path, data_icon.region)
+
+
+func _on_evolve_options_item_selected(index: int) -> void:
+	get_data().evolve_to = index
+	%EvolveSpinBox.set_disabled(index == 0)
+
+
+func _on_evolve_spin_box_value_changed(value: float) -> void:
+	get_data().evolve_required_uses = int(value)

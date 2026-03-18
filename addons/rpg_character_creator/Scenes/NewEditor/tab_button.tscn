@@ -1,0 +1,108 @@
+[gd_scene format=3 uid="uid://yq58jhw5uhf1"]
+
+[ext_resource type="Texture2D" uid="uid://oagj8xxxu65q" path="res://addons/CustomControls/Images/master_button_rounded_tab.png" id="1_ln6jt"]
+[ext_resource type="Script" uid="uid://bq0d74lhnxxj2" path="res://addons/rpg_character_creator/Scenes/NewEditor/tab_button.gd" id="2_gkug8"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="2_klj00"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ml17y"]
+texture = ExtResource("1_ln6jt")
+texture_margin_left = 7.0
+texture_margin_top = 7.0
+texture_margin_right = 7.0
+texture_margin_bottom = 7.0
+region_rect = Rect2(0, 0, 60, 25)
+modulate_color = Color(0.66, 0.6534, 0.65351003, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_itlh1"]
+texture = ExtResource("1_ln6jt")
+texture_margin_left = 7.0
+texture_margin_top = 7.0
+texture_margin_right = 7.0
+texture_margin_bottom = 7.0
+region_rect = Rect2(0, 0, 60, 25)
+modulate_color = Color(0.9526532, 0.49303722, 0.5323511, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5tkkc"]
+texture = ExtResource("1_ln6jt")
+texture_margin_left = 7.0
+texture_margin_top = 7.0
+texture_margin_right = 7.0
+texture_margin_bottom = 7.0
+region_rect = Rect2(0, 0, 60, 25)
+modulate_color = Color(0.90607613, 0.55825835, 0.27199066, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0oti0"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_8ovvn"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gkug8"]
+atlas = ExtResource("2_klj00")
+region = Rect2(168, 240, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0421g"]
+atlas = ExtResource("2_klj00")
+region = Rect2(192, 240, 24, 24)
+
+[sub_resource type="Gradient" id="Gradient_gkug8"]
+offsets = PackedFloat32Array(0, 0.53571427, 0.58458644, 0.61466163, 0.67105263, 0.75, 0.86278194, 0.91917294, 1)
+colors = PackedColorArray(0.5837601, 1.2883568, 0.5116044, 1, 0.23276837, 0.5486573, 0.20283818, 0.94924814, 0.24636722, 0.54460406, 0.23240295, 0, 0, 0, 0, 1, 0.028842995, 0.06375853, 0.027208153, 0.8829268, 1, 1, 1, 0.6262747, 0.4527226, 0.9579199, 0.42956367, 0.09586054, 0.41268334, 0.91844827, 0.39103335, 0.0583978, 0.42185077, 0.9338257, 0.39955, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_0421g"]
+gradient = SubResource("Gradient_gkug8")
+fill = 1
+fill_from = Vector2(0.51452994, 0.52478635)
+fill_to = Vector2(0.4974359, 0)
+
+[node name="Button" type="Button" unique_id=666775824]
+size_flags_horizontal = 3
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath(".")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath(".")
+focus_next = NodePath(".")
+focus_previous = NodePath(".")
+focus_mode = 1
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.26488, 0.08461995, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxTexture_ml17y")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_itlh1")
+theme_override_styles/hover = SubResource("StyleBoxTexture_5tkkc")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_0oti0")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_8ovvn")
+text = "TAB"
+script = ExtResource("2_gkug8")
+
+[node name="Lock" type="TextureButton" parent="." unique_id=2081284057]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -26.0
+offset_top = -12.0
+offset_right = -2.0
+offset_bottom = 12.0
+grow_horizontal = 0
+grow_vertical = 2
+tooltip_text = "Lock this part so that it cannot be changed when using random selection."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+toggle_mode = true
+texture_normal = SubResource("AtlasTexture_gkug8")
+texture_pressed = SubResource("AtlasTexture_0421g")
+
+[node name="Partinstalled" type="TextureRect" parent="." unique_id=1348767531]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 1
+offset_left = 3.0
+offset_top = 1.0
+offset_right = 23.0
+offset_bottom = 21.0
+texture = SubResource("GradientTexture2D_0421g")
+expand_mode = 1
+
+[connection signal="toggled" from="Lock" to="." method="_on_lock_toggled"]

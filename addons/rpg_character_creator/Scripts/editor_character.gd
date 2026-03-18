@@ -572,6 +572,7 @@ func set_highlight_color(part_id: String, palette_id: int, color_id: int) -> voi
 	var texture_parts = get_textures_with_id(part_id)
 	for texture in texture_parts:
 		var mat: ShaderMaterial = texture.get_material()
+		print([color_id, palette_id])
 		mat.set_shader_parameter("highlight_color", color_id)
 		mat.set_shader_parameter("highlight_palette_id", palette_id)
 

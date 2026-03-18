@@ -122,6 +122,19 @@ func load_character(character: RPGLPCCharacter, clone: bool = false) -> EditorCh
 	
 	return editor_data
 
+func get_textures_from_part(part_id: String) -> Dictionary:
+	var key_normal = part_id + "_texture"
+	var key_front = part_id + "_texture_front"
+	var key_back = part_id + "_texture_back"
+	
+	var front = textures[key_front] if key_front in textures else textures[key_normal]
+	var back = textures[key_back] if key_back in textures else textures[key_normal]
+	
+	return {
+		"front": front,
+		"back": back
+	}
+
 # Función auxiliar para obtener textura de una parte del cuerpo
 func get_texture_from_part(part: RPGLPCBodyPart, texture_type: String = "normal") -> CharacterPart:
 	var character_part = CharacterPart.new(texture_type)
@@ -172,3 +185,6 @@ func get_texture_from_equipment(equipment: RPGLPCEquipmentPart, texture_type: St
 	character_part.palette3.lightness = equipment.palette3.lightness
 	
 	return character_part
+
+func _to_string() -> String:
+	return str(textures)

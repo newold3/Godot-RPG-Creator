@@ -6,11 +6,11 @@ func get_class(): return "RPGMapEventID"
 
 ## Indicates a event on a specific map
 
-## Destination map id
+## Destination map id (uniq_id)
 @export var map_id: int = -1
-## Current event on the map
+## Current event on the map (uniq_id)
 @export var event_id: int = -1
-## Current page for the event
+## Current page for the event (uniq_id)
 @export var event_page_id: int = -1
 
 

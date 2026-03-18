@@ -4,7 +4,7 @@ extends EditorPlugin
 
 var character_creator_button: Button
 var interface
-var database_scene_path := "res://addons/rpg_character_creator/Scenes/lpc_character_creator_dialog.tscn"
+var database_scene_path := "res://addons/rpg_character_creator/Scenes/NewEditor/editor_character_dialog.tscn"
 
 func _enter_tree() -> void:
 	var path = "res://addons/rpg_character_creator/Scenes/character_creator_button.tscn"
@@ -54,7 +54,8 @@ func _on_interface_visibility_changed() -> void:
 	if !interface.visible or interface.is_queued_for_deletion():
 		FileCache.options.lpc_character_creator_dialog = {"position": interface.position, "size": interface.size}
 	elif interface.visible:
-		interface.update_controls()
+		pass
+		#interface.update_controls()
 		#interface.propagate_call("set_focus_mode", [Control.FOCUS_NONE])
 
 
@@ -62,3 +63,5 @@ func _exit_tree() -> void:
 	if character_creator_button:
 		remove_control_from_container(EditorPlugin.CONTAINER_CANVAS_EDITOR_MENU, character_creator_button)
 		character_creator_button.queue_free()
+	if interface:
+		interface.queue_free()

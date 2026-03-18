@@ -29,7 +29,14 @@ func _command_0071() -> void:
 	debug_print("Processing command: Followers Leader Tracking (code 71)")
 
 	var value = current_command.parameters.get("value", true)
-	GameManager.game_state.followers_tracking_enabled = false
+	if value != GameManager.game_state.followers_tracking_enabled:
+		GameManager.game_state.followers_tracking_enabled = value
+		if value:
+			await GameManager.disable_followers_tracking(0.5)
+	
+	var followers = GameManager.get_followers()
+	for follower in followers:
+		follower.set_wait(!value)
 
 
 # Command Show Animation (Code 72), button_id = 55
@@ -45,13 +52,13 @@ func _command_0072() -> void:
 
 	if GameManager.current_map: # Show animation on map
 		match target_id:
-			0: # Current player
+			-1: # Current player
 				if GameManager.current_player:
 					target = GameManager.current_player
-			1: # This event:
+			0: # This event:
 				target = current_interpreter.obj
-			_: # event with id target_id - 1
-				target = GameManager.current_map.get_in_game_event_by_pos(target_id - 2)
+			_: # event with id target_id (uniq_id)
+				target = GameManager.current_map.get_in_game_event_by_uniq_id(target_id)
 
 	elif GameManager.current_battle_scene: # Show animation on battle scene
 		return # TODO
@@ -136,24 +143,37 @@ func _command_0073() -> void:
 	if ResourceLoader.exists(scene_path):
 		var target: Variant
 		match target_id:
-			0: # Current player
+			-1: # Current player
 				if GameManager.current_player:
 					target = GameManager.current_player
-			1: # This event:
+			0: # This event:
 				target = current_interpreter.obj
-			_: # event with id target_id - 1
-				target = GameManager.current_map.get_in_game_event_by_pos(target_id - 2)
+			_: # event with id target_id (uniq_id)
+				target = GameManager.current_map.get_in_game_event_by_uniq_id(target_id)
 		if target:
-			var scene = load(scene_path).instantiate()
-			scene.z_as_relative = false
-			scene.z_index = 50
-			var node = target.get_node_or_null("%Up")
-			if node:
-				scene.position = node.position
-			target.add_child(scene)
-		
 			if wait:
-				await scene.tree_exited
+				var scene = load(scene_path).instantiate()
+				scene.z_as_relative = false
+				scene.z_index = 50
+				var node = target.get_node_or_null("%Up")
+				if node:
+					scene.position = node.position
+				target.add_child(scene)
+			
+				if wait:
+					await scene.tree_exited
+			else:
+				interpreter.request_async_scene_load(scene_path, current_command.parameters, _on_balloon_loaded.bind(target))
+
+
+func _on_balloon_loaded(scene: PackedScene, data: Dictionary, target: Node2D) -> void:
+	var balloon_scene = scene.instantiate()
+	balloon_scene.z_as_relative = false
+	balloon_scene.z_index = 50
+	var node = target.get_node_or_null("%Up")
+	if node:
+		balloon_scene.position = node.position
+	target.add_child(balloon_scene)
 
 
 # Command Show Player Action (Code 74), button_id = 57

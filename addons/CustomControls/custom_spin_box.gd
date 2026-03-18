@@ -91,6 +91,10 @@ func _ready() -> void:
 	
 	# Initial text update
 	_on_text_changed(lineedit.text)
+	
+	await RenderingServer.frame_post_draw
+	await RenderingServer.frame_post_draw
+	CustomTooltipManager.replace_all_tooltips_with_custom(self)
 
 
 func _on_changed() -> void:
@@ -100,7 +104,7 @@ func _on_changed() -> void:
 		rounded = false
 
 
-func grab_focus() -> void:
+func grab_focus(_hide_focus: bool = false) -> void:
 	if !is_editable() or disabled: return
 	super()
 

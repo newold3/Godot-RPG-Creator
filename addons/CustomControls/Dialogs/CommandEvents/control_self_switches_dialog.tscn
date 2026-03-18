@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://ccoqks2olgmc3"]
+[gd_scene format=3 uid="uid://ccoqks2olgmc3"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_1kxqb"]
 [ext_resource type="Script" uid="uid://d1dw884o5hi3j" path="res://addons/CustomControls/Dialogs/CommandEvents/control_self_switches_dialog.gd" id="2_ogo75"]
@@ -99,17 +99,48 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_obxpy"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_rcbpo"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1e1th"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_rcbpo")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8k7n6"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
 [sub_resource type="ButtonGroup" id="ButtonGroup_wby2p"]
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_umt67"]
-texture = ExtResource("10_3m5tq")
-texture_margin_left = 6.0
-texture_margin_top = 6.0
-texture_margin_right = 6.0
-texture_margin_bottom = 6.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8632l"]
-texture = ExtResource("8_k2jug")
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_s0hl2"]
+texture = ExtResource("7_c8n02")
 texture_margin_left = 6.0
 texture_margin_top = 6.0
 texture_margin_right = 6.0
@@ -122,29 +153,15 @@ texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_s0hl2"]
-texture = ExtResource("7_c8n02")
-texture_margin_left = 6.0
-texture_margin_top = 6.0
-texture_margin_right = 6.0
-texture_margin_bottom = 6.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_56t2m"]
-texture = ExtResource("10_3m5tq")
-texture_margin_left = 6.0
-texture_margin_top = 6.0
-texture_margin_right = 6.0
-texture_margin_bottom = 6.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_el6ll"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8632l"]
 texture = ExtResource("8_k2jug")
 texture_margin_left = 6.0
 texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ep53t"]
-texture = ExtResource("9_x2kw5")
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_umt67"]
+texture = ExtResource("10_3m5tq")
 texture_margin_left = 6.0
 texture_margin_top = 6.0
 texture_margin_right = 6.0
@@ -157,10 +174,32 @@ texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[node name="ControlSelfSwitchesDialog" type="Window"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ep53t"]
+texture = ExtResource("9_x2kw5")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_el6ll"]
+texture = ExtResource("8_k2jug")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_56t2m"]
+texture = ExtResource("10_3m5tq")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[node name="ControlSelfSwitchesDialog" type="Window" unique_id=1584385370]
+oversampling_override = 1.0
 title = "Control Self Switches"
 position = Vector2i(0, 36)
-size = Vector2i(448, 247)
+size = Vector2i(448, 333)
 wrap_controls = true
 transient = true
 exclusive = true
@@ -168,7 +207,7 @@ unresizable = true
 theme = ExtResource("1_1kxqb")
 script = ExtResource("2_ogo75")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=2112947703]
 material = SubResource("CanvasItemMaterial_mv5b2")
 anchors_preset = 15
 anchor_right = 1.0
@@ -177,7 +216,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_ogwiw")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1534442028]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -190,79 +229,146 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1150839285]
 layout_mode = 2
 
-[node name="Item" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_vua30")]
+[node name="target" parent="MarginContainer/VBoxContainer" unique_id=1844143999 instance=ExtResource("3_vua30")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_4wafg")
 style1 = SubResource("StyleBoxFlat_4wafg")
 style2 = SubResource("StyleBoxTexture_jjwey")
 style3 = SubResource("StyleBoxFlat_6uepr")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Item"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/target" unique_id=212542118]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/target/MarginContainer" unique_id=540887607]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/target/MarginContainer/VBoxContainer" unique_id=1998278659]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-text = "Self Switch"
+text = "Event"
 
-[node name="SelfSwitch" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer" instance=ExtResource("4_o3u2f")]
+[node name="Event" parent="MarginContainer/VBoxContainer/target/MarginContainer/VBoxContainer" unique_id=621784070 instance=ExtResource("4_o3u2f")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Select the desired self switch"
 selected = 0
-item_count = 8
-popup/item_0/text = "Switch a"
+item_count = 1
+popup/item_0/text = "Self"
 popup/item_0/id = 0
-popup/item_1/text = "Switch b"
-popup/item_1/id = 1
-popup/item_2/text = "Switch c"
-popup/item_2/id = 2
-popup/item_3/text = "Switch d"
-popup/item_3/id = 3
-popup/item_4/text = "Switch e"
-popup/item_4/id = 4
-popup/item_5/text = "Switch f"
-popup/item_5/id = 5
-popup/item_6/text = "Switch g"
-popup/item_6/id = 6
-popup/item_7/text = "Switch h"
-popup/item_7/id = 7
 
-[node name="Operation" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_vua30")]
+[node name="Item" parent="MarginContainer/VBoxContainer" unique_id=1038581007 instance=ExtResource("3_vua30")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_u5fwj")
 style1 = SubResource("StyleBoxFlat_u5fwj")
 style2 = SubResource("StyleBoxTexture_13ryd")
 style3 = SubResource("StyleBoxFlat_c2yb3")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Operation"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Item" unique_id=726538583]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Operation/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer" unique_id=83453271]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer" unique_id=1224914703]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Self Switch"
+
+[node name="SelfSwitch" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer" unique_id=99037313 instance=ExtResource("4_o3u2f")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Select the desired self switch"
+selected = 0
+item_count = 26
+popup/item_0/text = "Switch A"
+popup/item_0/id = 0
+popup/item_1/text = "Switch B"
+popup/item_1/id = 1
+popup/item_2/text = "Switch C"
+popup/item_2/id = 2
+popup/item_3/text = "Switch D"
+popup/item_3/id = 3
+popup/item_4/text = "Switch E"
+popup/item_4/id = 4
+popup/item_5/text = "Switch F"
+popup/item_5/id = 5
+popup/item_6/text = "Switch G"
+popup/item_6/id = 6
+popup/item_7/text = "Switch H"
+popup/item_7/id = 7
+popup/item_8/text = "Switch I"
+popup/item_8/id = 8
+popup/item_9/text = "Switch J"
+popup/item_9/id = 9
+popup/item_10/text = "Switch K"
+popup/item_10/id = 10
+popup/item_11/text = "Switch L"
+popup/item_11/id = 11
+popup/item_12/text = "Switch M"
+popup/item_12/id = 12
+popup/item_13/text = "Switch N"
+popup/item_13/id = 13
+popup/item_14/text = "Switch O"
+popup/item_14/id = 14
+popup/item_15/text = "Switch P"
+popup/item_15/id = 15
+popup/item_16/text = "Switch Q"
+popup/item_16/id = 16
+popup/item_17/text = "Switch R"
+popup/item_17/id = 17
+popup/item_18/text = "Switch S"
+popup/item_18/id = 18
+popup/item_19/text = "Switch T"
+popup/item_19/id = 19
+popup/item_20/text = "Switch U"
+popup/item_20/id = 20
+popup/item_21/text = "Switch V"
+popup/item_21/id = 21
+popup/item_22/text = "Switch W"
+popup/item_22/id = 22
+popup/item_23/text = "Switch X"
+popup/item_23/id = 23
+popup/item_24/text = "Switch Y"
+popup/item_24/id = 24
+popup/item_25/text = "Switch Z"
+popup/item_25/id = 25
+
+[node name="Operation" parent="MarginContainer/VBoxContainer" unique_id=126769208 instance=ExtResource("3_vua30")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_obxpy")
+style1 = SubResource("StyleBoxFlat_obxpy")
+style2 = SubResource("StyleBoxTexture_1e1th")
+style3 = SubResource("StyleBoxFlat_8k7n6")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Operation" unique_id=377066366]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Operation/MarginContainer" unique_id=1742528935]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer" unique_id=199815395]
 layout_mode = 2
 text = "Operation"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer" unique_id=1037243449]
 layout_mode = 2
 
-[node name="OperationON" type="CheckBox" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="OperationON" type="CheckBox" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1880227170]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -272,7 +378,7 @@ button_pressed = true
 button_group = SubResource("ButtonGroup_wby2p")
 text = "ON"
 
-[node name="OperationOFF" type="CheckBox" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="OperationOFF" type="CheckBox" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer" unique_id=277219338]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -281,41 +387,42 @@ mouse_default_cursor_shape = 2
 button_group = SubResource("ButtonGroup_wby2p")
 text = "OFF"
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1172783770]
 layout_mode = 2
 size_flags_vertical = 10
 theme_override_constants/separation = 12
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=134577619]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 alignment = 1
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("6_qvdmc")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=351023418 instance=ExtResource("6_qvdmc")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 tooltip_text = "[title]Ok[/title]
 Saves all changes and closes the windows."
-theme_override_styles/disabled = SubResource("StyleBoxTexture_umt67")
-theme_override_styles/hover = SubResource("StyleBoxTexture_8632l")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_xnmr8")
 theme_override_styles/normal = SubResource("StyleBoxTexture_s0hl2")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_xnmr8")
+theme_override_styles/hover = SubResource("StyleBoxTexture_8632l")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_umt67")
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("6_qvdmc")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1318609678 instance=ExtResource("6_qvdmc")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 tooltip_text = "[title]Cancel[/title]
 Closes this window without saving any changes."
-theme_override_styles/disabled = SubResource("StyleBoxTexture_56t2m")
-theme_override_styles/hover = SubResource("StyleBoxTexture_el6ll")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_ep53t")
 theme_override_styles/normal = SubResource("StyleBoxTexture_qu15e")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_ep53t")
+theme_override_styles/hover = SubResource("StyleBoxTexture_el6ll")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_56t2m")
 text = "CANCEL"
 
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/target/MarginContainer/VBoxContainer/Event" to="." method="_on_event_item_selected"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/SelfSwitch" to="." method="_on_self_switch_item_selected"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer/OperationON" to="." method="_on_operation_on_toggled" binds= [0]]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer/OperationOFF" to="." method="_on_operation_off_toggled" binds= [1]]

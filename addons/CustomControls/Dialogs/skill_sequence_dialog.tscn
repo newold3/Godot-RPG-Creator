@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://qy21tdqcowp"]
+[gd_scene format=3 uid="uid://qy21tdqcowp"]
 
 [ext_resource type="PackedScene" uid="uid://dxcyqc2dscbvw" path="res://addons/CustomControls/custom_simple_column_item_list.tscn" id="1_67h6q"]
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_d374g"]
@@ -79,7 +79,7 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0, 0, 0, 1)
 
-[node name="SkillSequenceDialog" type="Window"]
+[node name="SkillSequenceDialog" type="Window" unique_id=1582520858]
 oversampling_override = 1.0
 title = "Edit Skill In - Battle Sequence"
 position = Vector2i(0, 36)
@@ -90,7 +90,7 @@ exclusive = true
 theme = ExtResource("1_d374g")
 script = ExtResource("1_qqphp")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1591444002]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -98,7 +98,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_5miof")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1870023229]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -109,18 +109,18 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=161533937]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1925129732]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=513028475]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.61339, 0.61339, 0.61339, 1)
 text = "🟢 Start Sequence Command"
 
-[node name="CopyParameters" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="CopyParameters" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=275426527]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
@@ -132,7 +132,7 @@ texture_normal = SubResource("AtlasTexture_1fx8v")
 texture_hover = SubResource("AtlasTexture_foskl")
 texture_disabled = SubResource("AtlasTexture_8q7go")
 
-[node name="PasteParameters" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="PasteParameters" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1578030705]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -146,7 +146,7 @@ texture_normal = SubResource("AtlasTexture_f4ovi")
 texture_hover = SubResource("AtlasTexture_db2ub")
 texture_disabled = SubResource("AtlasTexture_qqygu")
 
-[node name="SequenceEditor" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="SequenceEditor" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=641129771]
 layout_mode = 2
 size_flags_vertical = 4
 tooltip_text = "Add commands by double-clicking or pressing Enter, and edit any command by pressing Space. Right-click for additional options."
@@ -155,7 +155,7 @@ mouse_default_cursor_shape = 16
 texture_normal = SubResource("AtlasTexture_p47kp")
 texture_hover = SubResource("AtlasTexture_ikcav")
 
-[node name="SequenceList" parent="MarginContainer/VBoxContainer" instance=ExtResource("1_67h6q")]
+[node name="SequenceList" parent="MarginContainer/VBoxContainer" unique_id=1050929224 instance=ExtResource("1_67h6q")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -172,31 +172,31 @@ itemlist_tooltip = "[title]Sequence List[/title]
 List of commands that will be displayed one after the other when this skill is launched. If the list of commands is empty, the animation defined in “Animation” will be used.
 "
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer" unique_id=2143758103]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.61339, 0.61339, 0.61339, 1)
 text = "👊 Applies Remaining Damage/Healing"
 
-[node name="Label4" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="Label4" type="Label" parent="MarginContainer/VBoxContainer" unique_id=871827584]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.61339, 0.61339, 0.61339, 1)
 text = "🚶 Return To Default Position Command"
 
-[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1465448044]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.61339, 0.61339, 0.61339, 1)
 text = "🔴 End Sequence Command"
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1124910591]
 layout_mode = 2
 size_flags_vertical = 8
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=220503192]
 layout_mode = 2
 size_flags_vertical = 8
 alignment = 1
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("2_qqphp")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1111166995 instance=ExtResource("2_qqphp")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -205,7 +205,7 @@ tooltip_text = "[title]Ok[/title]
 Saves all changes and closes the windows."
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("2_qqphp")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1885913299 instance=ExtResource("2_qqphp")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -214,7 +214,7 @@ tooltip_text = "[title]Cancel[/title]
 Closes this window without saving any changes."
 text = "CANCEL"
 
-[node name="CommandMenu" type="PopupMenu" parent="."]
+[node name="CommandMenu" type="PopupMenu" parent="." unique_id=1575941705]
 unique_name_in_owner = true
 size = Vector2i(394, 305)
 item_count = 12
@@ -243,7 +243,7 @@ item_10/id = 10
 item_11/text = "Wait"
 item_11/id = 11
 
-[node name="CustomTooltip" type="Control" parent="CommandMenu"]
+[node name="CustomTooltip" type="Control" parent="CommandMenu" unique_id=1083967795]
 unique_name_in_owner = true
 layout_mode = 3
 anchors_preset = 15
@@ -253,7 +253,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 
-[node name="RightClickPopup" type="PopupMenu" parent="."]
+[node name="RightClickPopup" type="PopupMenu" parent="." unique_id=1689538867]
 unique_name_in_owner = true
 size = Vector2i(383, 120)
 item_count = 5
@@ -268,7 +268,7 @@ item_3/separator = true
 item_4/text = "Remove Selected Parameters"
 item_4/id = 4
 
-[node name="CustomTooltip2" type="Control" parent="RightClickPopup"]
+[node name="CustomTooltip2" type="Control" parent="RightClickPopup" unique_id=373615050]
 unique_name_in_owner = true
 layout_mode = 3
 anchors_preset = 15

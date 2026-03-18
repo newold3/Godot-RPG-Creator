@@ -1,0 +1,93 @@
+[gd_scene format=3 uid="uid://bw3qjvfmb10wx"]
+
+[ext_resource type="Texture2D" uid="uid://duu13dsov6vp5" path="res://Assets/Images/GUI/main_gui.png" id="1_ad3kh"]
+[ext_resource type="Theme" uid="uid://cp5rfiijsw4j4" path="res://Assets/Themes/in_game_theme.tres" id="1_edcmn"]
+[ext_resource type="Script" uid="uid://qm03mooq1snp" path="res://Scenes/DialogTemplates/choice_scene_1.gd" id="2_qy3gm"]
+[ext_resource type="PackedScene" uid="uid://bdnd67xb736pw" path="res://Scenes/GUI/button_gui3.tscn" id="3_yjd12"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cnffx"]
+content_margin_left = 12.0
+content_margin_top = 12.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+texture = ExtResource("1_ad3kh")
+texture_margin_left = 30.908213
+texture_margin_top = 40.16202
+texture_margin_right = 32.243404
+texture_margin_bottom = 40.73614
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+region_rect = Rect2(866, 562, 44, 54)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_8wxt7"]
+blend_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_h2wid"]
+offsets = PackedFloat32Array(0, 0.534884, 1)
+colors = PackedColorArray(0.6432853, 0.12247754, 0.16941723, 0.556863, 0.56445676, 0.2309578, 0.2653285, 0.313726, 0.5344248, 0.2080912, 0.47611928, 0.0509804)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_d0wjj"]
+gradient = SubResource("Gradient_h2wid")
+fill = 2
+fill_from = Vector2(0.482906, 0.508547)
+fill_to = Vector2(1, 0.465812)
+
+[node name="ChoiceScene1" type="PanelContainer" unique_id=99877789]
+offset_right = 190.0
+offset_bottom = 111.0
+theme = ExtResource("1_edcmn")
+theme_override_styles/panel = SubResource("StyleBoxTexture_cnffx")
+script = ExtResource("2_qy3gm")
+
+[node name="MainContainer" type="VBoxContainer" parent="." unique_id=1747158896]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="OptionsContainer" type="VBoxContainer" parent="MainContainer" unique_id=699897325]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath(".")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath(".")
+focus_next = NodePath(".")
+focus_previous = NodePath(".")
+focus_mode = 2
+
+[node name="ButtonContainer" type="HBoxContainer" parent="MainContainer" unique_id=2077045249]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ButtonBack" parent="MainContainer/ButtonContainer" unique_id=685954075 instance=ExtResource("3_yjd12")]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+label_text = "Back"
+background_modulate = Color(0.96426374, 0.3074718, 0.15378967, 1)
+
+[node name="ButtonNext" parent="MainContainer/ButtonContainer" unique_id=1842015906 instance=ExtResource("3_yjd12")]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+label_text = "Next"
+background_modulate = Color(0.96426374, 0.3074718, 0.15378967, 1)
+
+[node name="PageLabel" type="Label" parent="MainContainer/ButtonContainer" unique_id=598055335]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
+text = "0 / 0"
+
+[node name="Selector" type="TextureRect" parent="." unique_id=294982620]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_8wxt7")
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = SubResource("GradientTexture2D_d0wjj")
+expand_mode = 1
+
+[node name="AudioPlayer" type="AudioStreamPlayer" parent="." unique_id=267002750]
+unique_name_in_owner = true
+bus = &"SE"

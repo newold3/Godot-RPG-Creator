@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bfdywaeoyjj3f"]
+[gd_scene format=3 uid="uid://bfdywaeoyjj3f"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_eptml"]
 [ext_resource type="Script" uid="uid://djw8j8g6ppg7y" path="res://addons/CustomControls/Dialogs/select_required_item_dialog.gd" id="1_g8w5r"]
@@ -15,7 +15,7 @@ gradient = SubResource("Gradient_vvvrv")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
-[node name="SelectRequiredItemDialog" type="Window"]
+[node name="SelectRequiredItemDialog" type="Window" unique_id=1155831817]
 oversampling_override = 1.0
 title = "Component"
 position = Vector2i(0, 36)
@@ -27,7 +27,7 @@ unresizable = true
 theme = ExtResource("1_eptml")
 script = ExtResource("1_g8w5r")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=827840519]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -35,7 +35,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_ykjfa")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=12988389]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -46,16 +46,16 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=768188561]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1388853232]
 layout_mode = 2
 text = "Item Type:"
 
-[node name="DataType" type="OptionButton" parent="MarginContainer/VBoxContainer"]
+[node name="DataType" type="OptionButton" parent="MarginContainer/VBoxContainer" unique_id=51645826]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Select material type (Items, Weapons or Armors)"
@@ -70,11 +70,11 @@ popup/item_2/text = "Armors"
 popup/item_2/id = 2
 script = ExtResource("3_cpfs2")
 
-[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1571316445]
 layout_mode = 2
 text = "Selected Item"
 
-[node name="ItemType" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_gac2d")]
+[node name="ItemType" parent="MarginContainer/VBoxContainer" unique_id=788197098 instance=ExtResource("3_gac2d")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -83,29 +83,28 @@ size_flags_vertical = 4
 tooltip_text = "Select one of the items of the selected type"
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer" unique_id=326325592]
 layout_mode = 2
 text = "Quantity:"
 
-[node name="Quantity" parent="MarginContainer/VBoxContainer" instance=ExtResource("2_fleir")]
+[node name="Quantity" parent="MarginContainer/VBoxContainer" unique_id=1590013378 instance=ExtResource("2_fleir")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Selects the required quantity of the selected material"
 min_value = 1.0
-value = 1.0
 allow_greater = true
 _custom_value = 0.0
 
-[node name="PercentContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="PercentContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=2130225576]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PercentContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PercentContainer" unique_id=1861891476]
 layout_mode = 2
 text = "Drop Rate:"
 
-[node name="Percent" parent="MarginContainer/VBoxContainer/PercentContainer" instance=ExtResource("2_fleir")]
+[node name="Percent" parent="MarginContainer/VBoxContainer/PercentContainer" unique_id=1801784471 instance=ExtResource("2_fleir")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Determines the chance for this material to be obtained when dismantling an item."
@@ -114,17 +113,17 @@ rounded = false
 allow_greater = true
 _custom_value = 0.0
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1734652604]
 layout_mode = 2
 size_flags_vertical = 10
 theme_override_constants/separation = 12
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=2132702301]
 layout_mode = 2
 size_flags_vertical = 10
 alignment = 2
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("3_5jwqa")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1907235772 instance=ExtResource("3_5jwqa")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(140, 0)
 layout_mode = 2
@@ -133,7 +132,7 @@ Saves all changes and closes the windows."
 text = "OK"
 text_overrun_behavior = 3
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("3_5jwqa")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=124854307 instance=ExtResource("3_5jwqa")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(140, 0)
 layout_mode = 2

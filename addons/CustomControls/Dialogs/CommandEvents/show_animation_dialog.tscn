@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://bs4j234pa4eow"]
+[gd_scene format=3 uid="uid://bs4j234pa4eow"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_6l707"]
 [ext_resource type="Script" uid="uid://d1yym2ggebsvn" path="res://addons/CustomControls/Dialogs/CommandEvents/show_animation_dialog.gd" id="2_8kdce"]
@@ -21,7 +21,7 @@ gradient = SubResource("Gradient_u5yrp")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1n5o8"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_340q4"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -39,17 +39,17 @@ corner_radius_bottom_left = 12
 [sub_resource type="Gradient" id="Gradient_ctwx1"]
 colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_06ps3"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_d3s1i"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_ctwx1")
 fill_from = Vector2(0.542735, 0.995726)
 fill_to = Vector2(0.58547, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_p7bkc"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_s2cp4"]
 resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_06ps3")
+texture = SubResource("GradientTexture2D_d3s1i")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uxgbc"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8nfnl"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -62,7 +62,7 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_340q4"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hj5c8"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -77,17 +77,17 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_d3s1i"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_gnxvy"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_ctwx1")
 fill_from = Vector2(0.542735, 0.995726)
 fill_to = Vector2(0.58547, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_s2cp4"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ukq04"]
 resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_d3s1i")
+texture = SubResource("GradientTexture2D_gnxvy")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8nfnl"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jng5k"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -156,7 +156,7 @@ texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[node name="ShowAnimationDialog" type="Window"]
+[node name="ShowAnimationDialog" type="Window" unique_id=1158185525]
 oversampling_override = 1.0
 title = "Show Animation"
 position = Vector2i(0, 36)
@@ -168,7 +168,7 @@ unresizable = true
 theme = ExtResource("1_6l707")
 script = ExtResource("2_8kdce")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1732211340]
 material = SubResource("CanvasItemMaterial_mv5b2")
 anchors_preset = 15
 anchor_right = 1.0
@@ -177,7 +177,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_ogwiw")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=614383479]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -190,31 +190,31 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1988821105]
 layout_mode = 2
 
-[node name="Target" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_ccgq8")]
+[node name="Target" parent="MarginContainer/VBoxContainer" unique_id=1303585746 instance=ExtResource("3_ccgq8")]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_1n5o8")
-style1 = SubResource("StyleBoxFlat_1n5o8")
-style2 = SubResource("StyleBoxTexture_p7bkc")
-style3 = SubResource("StyleBoxFlat_uxgbc")
+theme_override_styles/panel = SubResource("StyleBoxFlat_340q4")
+style1 = SubResource("StyleBoxFlat_340q4")
+style2 = SubResource("StyleBoxTexture_s2cp4")
+style3 = SubResource("StyleBoxFlat_8nfnl")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Target"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Target" unique_id=2085782853]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Target/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Target/MarginContainer" unique_id=1086050223]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Target/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Target/MarginContainer/VBoxContainer" unique_id=1496478743]
 layout_mode = 2
 text = "Target"
 
-[node name="TargetOptions" parent="MarginContainer/VBoxContainer/Target/MarginContainer/VBoxContainer" instance=ExtResource("4_me4wf")]
+[node name="TargetOptions" parent="MarginContainer/VBoxContainer/Target/MarginContainer/VBoxContainer" unique_id=1134153584 instance=ExtResource("4_me4wf")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "[title]Target[/title]
@@ -225,28 +225,28 @@ item_count = 1
 popup/item_0/text = "Player"
 popup/item_0/id = 0
 
-[node name="Animation" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_ccgq8")]
+[node name="Animation" parent="MarginContainer/VBoxContainer" unique_id=1450197994 instance=ExtResource("3_ccgq8")]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_340q4")
-style1 = SubResource("StyleBoxFlat_340q4")
-style2 = SubResource("StyleBoxTexture_s2cp4")
-style3 = SubResource("StyleBoxFlat_8nfnl")
+theme_override_styles/panel = SubResource("StyleBoxFlat_hj5c8")
+style1 = SubResource("StyleBoxFlat_hj5c8")
+style2 = SubResource("StyleBoxTexture_ukq04")
+style3 = SubResource("StyleBoxFlat_jng5k")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Animation"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Animation" unique_id=1222099919]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Animation/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Animation/MarginContainer" unique_id=923112771]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Animation/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Animation/MarginContainer/VBoxContainer" unique_id=68901705]
 layout_mode = 2
 text = "Animation"
 
-[node name="AnimationButton" parent="MarginContainer/VBoxContainer/Animation/MarginContainer/VBoxContainer" instance=ExtResource("5_hseeu")]
+[node name="AnimationButton" parent="MarginContainer/VBoxContainer/Animation/MarginContainer/VBoxContainer" unique_id=113515002 instance=ExtResource("5_hseeu")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -257,25 +257,25 @@ Select an animation to show"
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 text = "Select Animation File"
 
-[node name="Wait" type="CheckBox" parent="MarginContainer/VBoxContainer/Animation/MarginContainer/VBoxContainer"]
+[node name="Wait" type="CheckBox" parent="MarginContainer/VBoxContainer/Animation/MarginContainer/VBoxContainer" unique_id=430304152]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Wait for the animation to complete (This will stop the flow of the game until the animation completes)."
 mouse_default_cursor_shape = 2
 text = "Wait"
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1738795067]
 layout_mode = 2
 size_flags_vertical = 10
 theme_override_constants/separation = 12
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1175318397]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 alignment = 1
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_woom0")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1490583282 instance=ExtResource("4_woom0")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
@@ -287,7 +287,7 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_8632l")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_umt67")
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_woom0")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=2014428488 instance=ExtResource("4_woom0")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2

@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://crv00irbonpyn"]
+[gd_scene format=3 uid="uid://crv00irbonpyn"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_1u7n8"]
 [ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="1_klj1w"]
@@ -65,7 +65,7 @@ region = Rect2(144, 0, 24, 24)
 atlas = ExtResource("6_wc6ge")
 region = Rect2(168, 0, 24, 24)
 
-[node name="SelectDialogTextImage" type="Window"]
+[node name="SelectDialogTextImage" type="Window" unique_id=1390149834]
 oversampling_override = 1.0
 title = "Select Text Image"
 position = Vector2i(0, 36)
@@ -78,7 +78,7 @@ min_size = Vector2i(0, 145)
 theme = ExtResource("1_1u7n8")
 script = ExtResource("2_al7op")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1679127906]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -86,7 +86,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_quppr")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=66629877]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -97,14 +97,14 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=212395894]
 layout_mode = 2
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1566129796]
 layout_mode = 2
 alignment = 2
 
-[node name="CopyParameters" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer4"]
+[node name="CopyParameters" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=1612201102]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -115,7 +115,7 @@ texture_normal = SubResource("AtlasTexture_86k6f")
 texture_hover = SubResource("AtlasTexture_47ri7")
 texture_disabled = SubResource("AtlasTexture_51q05")
 
-[node name="PasteParameters" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer4"]
+[node name="PasteParameters" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=1543712298]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -127,19 +127,19 @@ texture_normal = SubResource("AtlasTexture_b0y8e")
 texture_hover = SubResource("AtlasTexture_xok0q")
 texture_disabled = SubResource("AtlasTexture_wuhcm")
 
-[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1550554192]
 layout_mode = 2
 size_flags_vertical = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1429836671]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=651758661]
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 text = "Image Type:"
 
-[node name="ImageType" type="OptionButton" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="ImageType" type="OptionButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=635666066]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -160,15 +160,15 @@ popup/item_2/text = "Inline Image"
 popup/item_2/id = 2
 script = ExtResource("3_oqe5u")
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1433446122]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1052062143]
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 text = "Image Path:"
 
-[node name="Filename" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("3_rwmya")]
+[node name="Filename" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=714934452 instance=ExtResource("3_rwmya")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -179,19 +179,19 @@ tooltip_text = "Click to select an image
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 text = "Select Image File"
 
-[node name="ExtraControls0" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="ExtraControls0" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1462329952]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls0"]
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls0" unique_id=65598976]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ExtraControls0/HBoxContainer4"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ExtraControls0/HBoxContainer4" unique_id=1180487492]
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 text = "Start Position:"
 
-[node name="FacePosition" type="OptionButton" parent="MarginContainer/VBoxContainer/ExtraControls0/HBoxContainer4"]
+[node name="FacePosition" type="OptionButton" parent="MarginContainer/VBoxContainer/ExtraControls0/HBoxContainer4" unique_id=2103354403]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -205,15 +205,15 @@ popup/item_1/text = "Right"
 popup/item_1/id = 2
 script = ExtResource("3_oqe5u")
 
-[node name="ExtraControls1" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="ExtraControls1" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=313186804]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls1"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls1" unique_id=684205247]
 layout_mode = 2
 
-[node name="SetDefaultConfig" parent="MarginContainer/VBoxContainer/ExtraControls1/HBoxContainer" instance=ExtResource("1_klj1w")]
+[node name="SetDefaultConfig" parent="MarginContainer/VBoxContainer/ExtraControls1/HBoxContainer" unique_id=58833498 instance=ExtResource("1_klj1w")]
 unique_name_in_owner = true
 modulate = Color(0.6975663, 0.9621759, 0.9999996, 1)
 custom_minimum_size = Vector2(160, 0)
@@ -225,7 +225,7 @@ text = "Set As Default"
 icon = SubResource("AtlasTexture_rj3t0")
 icon_alignment = 2
 
-[node name="EraseDefaultConfig" parent="MarginContainer/VBoxContainer/ExtraControls1/HBoxContainer" instance=ExtResource("1_klj1w")]
+[node name="EraseDefaultConfig" parent="MarginContainer/VBoxContainer/ExtraControls1/HBoxContainer" unique_id=587720501 instance=ExtResource("1_klj1w")]
 unique_name_in_owner = true
 modulate = Color(0.99999946, 0.85537183, 0.85426146, 1)
 custom_minimum_size = Vector2(160, 0)
@@ -235,7 +235,7 @@ text = "Erase As Default"
 icon = SubResource("AtlasTexture_cpa13")
 icon_alignment = 2
 
-[node name="SelectPositionAndSize" parent="MarginContainer/VBoxContainer/ExtraControls1/HBoxContainer" instance=ExtResource("1_klj1w")]
+[node name="SelectPositionAndSize" parent="MarginContainer/VBoxContainer/ExtraControls1/HBoxContainer" unique_id=1261621573 instance=ExtResource("1_klj1w")]
 unique_name_in_owner = true
 modulate = Color(0.93690866, 0.9902237, 0.99999994, 1)
 custom_minimum_size = Vector2(160, 0)
@@ -246,14 +246,14 @@ text = "Visual Configuration"
 icon = SubResource("AtlasTexture_y3goc")
 icon_alignment = 2
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls1"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls1" unique_id=1370393354]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ExtraControls1/HBoxContainer3"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ExtraControls1/HBoxContainer3" unique_id=552435288]
 layout_mode = 2
 text = "Link Character To:"
 
-[node name="CharacterLinkedTo" parent="MarginContainer/VBoxContainer/ExtraControls1/HBoxContainer3" instance=ExtResource("7_47ri7")]
+[node name="CharacterLinkedTo" parent="MarginContainer/VBoxContainer/ExtraControls1/HBoxContainer3" unique_id=2049677637 instance=ExtResource("7_47ri7")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -268,15 +268,15 @@ popup/item_1/id = 1
 popup/item_2/text = "Character Right"
 popup/item_2/id = 2
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls1"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls1" unique_id=1621933194]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ExtraControls1/HBoxContainer2"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ExtraControls1/HBoxContainer2" unique_id=766543113]
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 text = "Image ID:"
 
-[node name="ImageID" parent="MarginContainer/VBoxContainer/ExtraControls1/HBoxContainer2" instance=ExtResource("4_a4bvc")]
+[node name="ImageID" parent="MarginContainer/VBoxContainer/ExtraControls1/HBoxContainer2" unique_id=412643731 instance=ExtResource("4_a4bvc")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -287,30 +287,30 @@ tooltip_text = "ID to identify this image (used by the \"animate image\" command
 allow_greater = true
 _custom_value = 0.0
 
-[node name="HorizontalFlip" type="CheckBox" parent="MarginContainer/VBoxContainer/ExtraControls1/HBoxContainer2"]
+[node name="HorizontalFlip" type="CheckBox" parent="MarginContainer/VBoxContainer/ExtraControls1/HBoxContainer2" unique_id=1558288235]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Inverts the image horizontally"
 text = "Flip Horizontal"
 
-[node name="VerticalFlip" type="CheckBox" parent="MarginContainer/VBoxContainer/ExtraControls1/HBoxContainer2"]
+[node name="VerticalFlip" type="CheckBox" parent="MarginContainer/VBoxContainer/ExtraControls1/HBoxContainer2" unique_id=702079006]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Inverts the image vertically"
 text = "Flip Vertical"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls1"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls1" unique_id=175515768]
 layout_mode = 2
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls1/VBoxContainer"]
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls1/VBoxContainer" unique_id=379761718]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ExtraControls1/VBoxContainer/HBoxContainer4"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ExtraControls1/VBoxContainer/HBoxContainer4" unique_id=20244057]
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 text = "Start Position:"
 
-[node name="ImagePosition" type="OptionButton" parent="MarginContainer/VBoxContainer/ExtraControls1/VBoxContainer/HBoxContainer4"]
+[node name="ImagePosition" type="OptionButton" parent="MarginContainer/VBoxContainer/ExtraControls1/VBoxContainer/HBoxContainer4" unique_id=69408611]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -344,15 +344,15 @@ popup/item_11/text = "Custom"
 popup/item_11/id = 11
 script = ExtResource("3_oqe5u")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls1/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls1/VBoxContainer" unique_id=1769435908]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/ExtraControls1/VBoxContainer/HBoxContainer"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/ExtraControls1/VBoxContainer/HBoxContainer" unique_id=1795973233]
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 text = "Offset"
 
-[node name="OffsetX" parent="MarginContainer/VBoxContainer/ExtraControls1/VBoxContainer/HBoxContainer" instance=ExtResource("4_a4bvc")]
+[node name="OffsetX" parent="MarginContainer/VBoxContainer/ExtraControls1/VBoxContainer/HBoxContainer" unique_id=1959792595 instance=ExtResource("4_a4bvc")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -362,7 +362,7 @@ allow_lesser = true
 prefix = "x: "
 _custom_value = 0.0
 
-[node name="OffsetY" parent="MarginContainer/VBoxContainer/ExtraControls1/VBoxContainer/HBoxContainer" instance=ExtResource("4_a4bvc")]
+[node name="OffsetY" parent="MarginContainer/VBoxContainer/ExtraControls1/VBoxContainer/HBoxContainer" unique_id=615321270 instance=ExtResource("4_a4bvc")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -372,18 +372,18 @@ allow_lesser = true
 prefix = "y: "
 _custom_value = 0.0
 
-[node name="IdleAnimationContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls1"]
+[node name="IdleAnimationContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls1" unique_id=982876444]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Idle" type="Label" parent="MarginContainer/VBoxContainer/ExtraControls1/IdleAnimationContainer"]
+[node name="Idle" type="Label" parent="MarginContainer/VBoxContainer/ExtraControls1/IdleAnimationContainer" unique_id=6137383]
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 tooltip_text = "Fade in/out of the image"
 mouse_default_cursor_shape = 2
 text = "Idle Animation:"
 
-[node name="IdleAnimation" type="OptionButton" parent="MarginContainer/VBoxContainer/ExtraControls1/IdleAnimationContainer"]
+[node name="IdleAnimation" type="OptionButton" parent="MarginContainer/VBoxContainer/ExtraControls1/IdleAnimationContainer" unique_id=1891768612]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -416,24 +416,24 @@ popup/item_8/text = "Squash & Stretch"
 popup/item_8/id = 8
 script = ExtResource("3_oqe5u")
 
-[node name="ExtraControls2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="ExtraControls2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=855803236]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls2" unique_id=1481218129]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls2/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls2/VBoxContainer" unique_id=1999960831]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ExtraControls2/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ExtraControls2/VBoxContainer/HBoxContainer2" unique_id=580891671]
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 text = "Width:"
 
-[node name="Width" parent="MarginContainer/VBoxContainer/ExtraControls2/VBoxContainer/HBoxContainer2" instance=ExtResource("4_a4bvc")]
+[node name="Width" parent="MarginContainer/VBoxContainer/ExtraControls2/VBoxContainer/HBoxContainer2" unique_id=1711419824 instance=ExtResource("4_a4bvc")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -442,15 +442,15 @@ tooltip_text = "Defines the width of the image displayed in the text window (or 
 allow_greater = true
 _custom_value = 0.0
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls2/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls2/VBoxContainer" unique_id=1132107109]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ExtraControls2/VBoxContainer/HBoxContainer3"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ExtraControls2/VBoxContainer/HBoxContainer3" unique_id=1387633591]
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 text = "Height:"
 
-[node name="Height" parent="MarginContainer/VBoxContainer/ExtraControls2/VBoxContainer/HBoxContainer3" instance=ExtResource("4_a4bvc")]
+[node name="Height" parent="MarginContainer/VBoxContainer/ExtraControls2/VBoxContainer/HBoxContainer3" unique_id=1093151821 instance=ExtResource("4_a4bvc")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -459,7 +459,7 @@ tooltip_text = "Defines the height of the image displayed in the text window (or
 allow_greater = true
 _custom_value = 0.0
 
-[node name="ChainSize" type="TextureButton" parent="MarginContainer/VBoxContainer/ExtraControls2"]
+[node name="ChainSize" type="TextureButton" parent="MarginContainer/VBoxContainer/ExtraControls2" unique_id=1064919119]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
@@ -471,20 +471,20 @@ texture_normal = SubResource("AtlasTexture_7y7wr")
 texture_pressed = SubResource("AtlasTexture_jg1bq")
 texture_hover = SubResource("AtlasTexture_wdi45")
 
-[node name="ExtraControls3" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="ExtraControls3" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=299130316]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls3"]
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls3" unique_id=1629659324]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ExtraControls3/HBoxContainer5"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ExtraControls3/HBoxContainer5" unique_id=1784651765]
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 text = "Start Transition:"
 
-[node name="CharacterTransitionType" type="OptionButton" parent="MarginContainer/VBoxContainer/ExtraControls3/HBoxContainer5"]
+[node name="CharacterTransitionType" type="OptionButton" parent="MarginContainer/VBoxContainer/ExtraControls3/HBoxContainer5" unique_id=1093335175]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -516,7 +516,7 @@ popup/item_6/text = "Move To Position Right"
 popup/item_6/id = 6
 script = ExtResource("3_oqe5u")
 
-[node name="FaceTransitionType" type="OptionButton" parent="MarginContainer/VBoxContainer/ExtraControls3/HBoxContainer5"]
+[node name="FaceTransitionType" type="OptionButton" parent="MarginContainer/VBoxContainer/ExtraControls3/HBoxContainer5" unique_id=1376860709]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
@@ -541,11 +541,11 @@ popup/item_3/text = "Zoom Out"
 popup/item_3/id = 3
 script = ExtResource("3_oqe5u")
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/ExtraControls3/HBoxContainer5"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/ExtraControls3/HBoxContainer5" unique_id=1369744644]
 layout_mode = 2
 text = "Time:"
 
-[node name="TransitionTime" parent="MarginContainer/VBoxContainer/ExtraControls3/HBoxContainer5" instance=ExtResource("4_a4bvc")]
+[node name="TransitionTime" parent="MarginContainer/VBoxContainer/ExtraControls3/HBoxContainer5" unique_id=2010823953 instance=ExtResource("4_a4bvc")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -556,16 +556,16 @@ allow_greater = true
 suffix = " seconds"
 _custom_value = 0.0
 
-[node name="EndTransitionContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls3"]
+[node name="EndTransitionContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls3" unique_id=402043061]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ExtraControls3/EndTransitionContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ExtraControls3/EndTransitionContainer" unique_id=1334094953]
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 text = "End Transition:"
 
-[node name="CharacterEndTransitionType" type="OptionButton" parent="MarginContainer/VBoxContainer/ExtraControls3/EndTransitionContainer"]
+[node name="CharacterEndTransitionType" type="OptionButton" parent="MarginContainer/VBoxContainer/ExtraControls3/EndTransitionContainer" unique_id=1784180066]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
@@ -590,11 +590,11 @@ popup/item_3/text = "Move To Right"
 popup/item_3/id = 3
 script = ExtResource("3_oqe5u")
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/ExtraControls3/EndTransitionContainer"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/ExtraControls3/EndTransitionContainer" unique_id=181640370]
 layout_mode = 2
 text = "Time:"
 
-[node name="TransitionEndTime" parent="MarginContainer/VBoxContainer/ExtraControls3/EndTransitionContainer" instance=ExtResource("4_a4bvc")]
+[node name="TransitionEndTime" parent="MarginContainer/VBoxContainer/ExtraControls3/EndTransitionContainer" unique_id=533480538 instance=ExtResource("4_a4bvc")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -605,10 +605,10 @@ allow_greater = true
 suffix = " seconds"
 _custom_value = 0.0
 
-[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls3"]
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ExtraControls3" unique_id=604423916]
 layout_mode = 2
 
-[node name="Wait" type="CheckBox" parent="MarginContainer/VBoxContainer/ExtraControls3/HBoxContainer6"]
+[node name="Wait" type="CheckBox" parent="MarginContainer/VBoxContainer/ExtraControls3/HBoxContainer6" unique_id=901039889]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -616,14 +616,14 @@ tooltip_text = "Text flow stops for the duration of the appear animation."
 mouse_default_cursor_shape = 2
 text = "Wait to finish"
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=372299779]
 layout_mode = 2
 size_flags_vertical = 10
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1998683272]
 layout_mode = 2
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("1_klj1w")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer3" unique_id=127428305 instance=ExtResource("1_klj1w")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -632,7 +632,7 @@ tooltip_text = "[title]Ok[/title]
 Saves all changes and closes the windows."
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("1_klj1w")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer3" unique_id=856334140 instance=ExtResource("1_klj1w")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2

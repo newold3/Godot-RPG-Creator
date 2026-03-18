@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://cdw3c84bjti02"]
+[gd_scene format=3 uid="uid://cdw3c84bjti02"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_7ay0s"]
 [ext_resource type="Script" uid="uid://cqgulkiqjqlpc" path="res://addons/CustomControls/Dialogs/fine_tune_palette_colors.gd" id="2_1k738"]
@@ -135,7 +135,7 @@ keycode = 4194310
 [sub_resource type="Shortcut" id="Shortcut_yldtf"]
 events = [SubResource("InputEventKey_ueikt"), SubResource("InputEventKey_6sxke")]
 
-[node name="FineTunePaletteDialog" type="Window" node_paths=PackedStringArray("hue_slider", "hue_spinbox", "result_hue_strip", "saturation_slider", "saturation_spinbox", "brightness_slider", "brightness_spinbox", "channel_option", "colorize_checkbox")]
+[node name="FineTunePaletteDialog" type="Window" unique_id=1454702691 node_paths=PackedStringArray("hue_slider", "hue_spinbox", "result_hue_strip", "saturation_slider", "saturation_spinbox", "brightness_slider", "brightness_spinbox", "channel_option", "colorize_checkbox", "uniform_checkbox", "apply_to_all_checkbox")]
 oversampling_override = 1.0
 title = "Fine Tune Colors"
 position = Vector2i(0, 36)
@@ -156,8 +156,10 @@ brightness_slider = NodePath("MarginContainer/HBoxContainer/BRIGHNESS/HBoxContai
 brightness_spinbox = NodePath("MarginContainer/HBoxContainer/BRIGHNESS/HBoxContainer/CustomSpinBox")
 channel_option = NodePath("MarginContainer/HBoxContainer/CHANNEL/Channels")
 colorize_checkbox = NodePath("MarginContainer/HBoxContainer/CHANNEL/ColorizeMode")
+uniform_checkbox = NodePath("MarginContainer/HBoxContainer/SPECIALMODE/SingleColorMode")
+apply_to_all_checkbox = NodePath("MarginContainer/HBoxContainer/SPECIALMODE/ApplyAllPalette")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1965104313]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -165,7 +167,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_a3inn")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2120601722]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -176,18 +178,18 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="HBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="HBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=932143881]
 layout_mode = 2
 
-[node name="CHANNEL" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
+[node name="CHANNEL" type="HBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=1814380968]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/CHANNEL"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/CHANNEL" unique_id=742912152]
 layout_mode = 2
 text = "Channel:"
 
-[node name="Channels" parent="MarginContainer/HBoxContainer/CHANNEL" instance=ExtResource("3_7ay0s")]
+[node name="Channels" parent="MarginContainer/HBoxContainer/CHANNEL" unique_id=1212442093 instance=ExtResource("3_7ay0s")]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Select the color channel you want to modify."
@@ -208,25 +210,42 @@ popup/item_5/id = 5
 popup/item_6/text = "Magentas"
 popup/item_6/id = 6
 
-[node name="ColorizeMode" type="CheckBox" parent="MarginContainer/HBoxContainer/CHANNEL"]
+[node name="ColorizeMode" type="CheckBox" parent="MarginContainer/HBoxContainer/CHANNEL" unique_id=2082400861]
 layout_mode = 2
 tooltip_text = "Apply a monochromatic dye over the base colors."
 mouse_default_cursor_shape = 2
 text = "Colorize"
 
-[node name="HUE" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+[node name="SPECIALMODE" type="HBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=1038620160]
+layout_mode = 2
+
+[node name="SingleColorMode" type="CheckBox" parent="MarginContainer/HBoxContainer/SPECIALMODE" unique_id=1482975031]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Make the entire palette a single flat color (Uniform)"
+mouse_default_cursor_shape = 2
+text = "Single Color Mode"
+
+[node name="ApplyAllPalette" type="CheckBox" parent="MarginContainer/HBoxContainer/SPECIALMODE" unique_id=1388697708]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Apply changes to the 3 palettes (Primary, Secondary, Tertiary)"
+mouse_default_cursor_shape = 2
+text = "Apply All Palette"
+
+[node name="HUE" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=901710252]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HUE"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HUE" unique_id=2092307563]
 custom_minimum_size = Vector2(158, 0)
 layout_mode = 2
 text = "Hue:"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/HUE"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/HUE" unique_id=772863081]
 layout_mode = 2
 
-[node name="HueSlider" type="HSlider" parent="MarginContainer/HBoxContainer/HUE/HBoxContainer"]
+[node name="HueSlider" type="HSlider" parent="MarginContainer/HBoxContainer/HUE/HBoxContainer" unique_id=209496516]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Hue[/title]
@@ -238,7 +257,7 @@ theme_override_styles/slider = SubResource("StyleBoxTexture_8chai")
 min_value = -180.0
 max_value = 180.0
 
-[node name="PreviewHue" type="TextureRect" parent="MarginContainer/HBoxContainer/HUE/HBoxContainer/HueSlider"]
+[node name="PreviewHue" type="TextureRect" parent="MarginContainer/HBoxContainer/HUE/HBoxContainer/HueSlider" unique_id=2091186644]
 show_behind_parent = true
 material = SubResource("ShaderMaterial_7ay0s")
 custom_minimum_size = Vector2(0, 5)
@@ -252,7 +271,7 @@ grow_vertical = 0
 texture = SubResource("PlaceholderTexture2D_j55ky")
 expand_mode = 1
 
-[node name="CustomSpinBox" parent="MarginContainer/HBoxContainer/HUE/HBoxContainer" instance=ExtResource("4_8chai")]
+[node name="CustomSpinBox" parent="MarginContainer/HBoxContainer/HUE/HBoxContainer" unique_id=1396986545 instance=ExtResource("4_8chai")]
 layout_mode = 2
 tooltip_text = "[title]Hue[/title]
 Shifts the overall color tint along the spectrum (e.g., changing Red to Blue)"
@@ -260,19 +279,19 @@ min_value = -180.0
 max_value = 180.0
 _custom_value = 0.0
 
-[node name="SATURATION" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+[node name="SATURATION" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=658852940]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/SATURATION"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/SATURATION" unique_id=1320606941]
 custom_minimum_size = Vector2(158, 0)
 layout_mode = 2
 text = "Saturation:"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/SATURATION"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/SATURATION" unique_id=1858430144]
 layout_mode = 2
 
-[node name="SaturationSlider" type="HSlider" parent="MarginContainer/HBoxContainer/SATURATION/HBoxContainer"]
+[node name="SaturationSlider" type="HSlider" parent="MarginContainer/HBoxContainer/SATURATION/HBoxContainer" unique_id=1194266999]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Saturation[/title]
@@ -283,26 +302,26 @@ theme_override_icons/grabber_highlight = SubResource("AtlasTexture_7ay0s")
 theme_override_styles/slider = SubResource("StyleBoxTexture_o0t16")
 min_value = -100.0
 
-[node name="CustomSpinBox" parent="MarginContainer/HBoxContainer/SATURATION/HBoxContainer" instance=ExtResource("4_8chai")]
+[node name="CustomSpinBox" parent="MarginContainer/HBoxContainer/SATURATION/HBoxContainer" unique_id=2095415488 instance=ExtResource("4_8chai")]
 layout_mode = 2
 tooltip_text = "[title]Saturation[/title]
 Adjusts color intensity. Lower values create grayish tones; higher values make colors vivid."
 min_value = -100.0
 _custom_value = 0.0
 
-[node name="BRIGHNESS" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+[node name="BRIGHNESS" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=146607569]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/BRIGHNESS"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/BRIGHNESS" unique_id=1368162483]
 custom_minimum_size = Vector2(158, 0)
 layout_mode = 2
 text = "Brightness:"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/BRIGHNESS"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/BRIGHNESS" unique_id=525974358]
 layout_mode = 2
 
-[node name="BrightnessSlide" type="HSlider" parent="MarginContainer/HBoxContainer/BRIGHNESS/HBoxContainer"]
+[node name="BrightnessSlide" type="HSlider" parent="MarginContainer/HBoxContainer/BRIGHNESS/HBoxContainer" unique_id=1590262492]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Brightness[/title]
@@ -313,25 +332,25 @@ theme_override_icons/grabber_highlight = SubResource("AtlasTexture_7ay0s")
 theme_override_styles/slider = SubResource("StyleBoxTexture_w6qrp")
 min_value = -100.0
 
-[node name="CustomSpinBox" parent="MarginContainer/HBoxContainer/BRIGHNESS/HBoxContainer" instance=ExtResource("4_8chai")]
+[node name="CustomSpinBox" parent="MarginContainer/HBoxContainer/BRIGHNESS/HBoxContainer" unique_id=1386339842 instance=ExtResource("4_8chai")]
 layout_mode = 2
 tooltip_text = "[title]Brightness[/title]
 Controls how light or dark the colors appear."
 min_value = -100.0
 _custom_value = 0.0
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/HBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/HBoxContainer" unique_id=1750335826]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="VBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
+[node name="VBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=1058340996]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 theme_override_constants/separation = 16
 alignment = 1
 
-[node name="OKButton" parent="MarginContainer/HBoxContainer/VBoxContainer2" instance=ExtResource("3_gacs8")]
+[node name="OKButton" parent="MarginContainer/HBoxContainer/VBoxContainer2" unique_id=1917279330 instance=ExtResource("3_gacs8")]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Ok[/title]
@@ -339,7 +358,7 @@ Saves all changes and closes the windows."
 shortcut = SubResource("Shortcut_yldtf")
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/HBoxContainer/VBoxContainer2" instance=ExtResource("3_gacs8")]
+[node name="CancelButton" parent="MarginContainer/HBoxContainer/VBoxContainer2" unique_id=824413562 instance=ExtResource("3_gacs8")]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Cancel[/title]

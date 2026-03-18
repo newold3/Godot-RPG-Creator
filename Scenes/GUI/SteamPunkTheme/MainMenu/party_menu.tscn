@@ -1,15 +1,19 @@
-[gd_scene load_steps=6 format=3 uid="uid://c8j4gm2va2bbr"]
+[gd_scene format=3 uid="uid://c8j4gm2va2bbr"]
 
 [ext_resource type="Script" uid="uid://byu3y88ykmvs2" path="res://Scenes/GUI/SteamPunkTheme/MainMenu/party_menu.gd" id="1_h5wlt"]
 [ext_resource type="Theme" uid="uid://ctpmflgnlpkjg" path="res://Assets/Themes/in_game_theme2.tres" id="1_mq5s8"]
 [ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="3_ls1jh"]
 [ext_resource type="PackedScene" uid="uid://dw4la7k3nennr" path="res://Scenes/GUI/SteamPunkTheme/MainMenu/hero_panel.tscn" id="4_b2wum"]
+[ext_resource type="PackedScene" uid="uid://b430wi6kdccit" path="res://Scenes/GUI/SteamPunkTheme/OtherScenes/particle_bubbles.tscn" id="4_yr3nl"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_yiofa"]
+blend_mode = 1
 
 [sub_resource type="Curve" id="Curve_jn3jj"]
 _data = [Vector2(0, 0), 0.0, 1.4, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[node name="PartyMenu" type="Control"]
+[node name="PartyMenu" type="Control" unique_id=668303594]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -20,8 +24,9 @@ mouse_filter = 2
 theme = ExtResource("1_mq5s8")
 script = ExtResource("1_h5wlt")
 
-[node name="MainContainer" type="ScrollContainer" parent="."]
+[node name="MainContainer" type="ScrollContainer" parent="." unique_id=1446304813]
 unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_yiofa")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -38,13 +43,14 @@ instant_scroll_duration = 0.25
 use_custom_vertical_scroll = true
 custom_vscroll_size = Vector2(12, 606.37)
 custom_vscroll_offset = Vector2(1033, 22.32)
+custom_scene_for_vertical_bar = ExtResource("4_yr3nl")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer" unique_id=1122771897]
 layout_mode = 2
 size_flags_horizontal = 10
 size_flags_vertical = 3
 
-[node name="MarginContainer" type="MarginContainer" parent="MainContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MainContainer/VBoxContainer" unique_id=838214663]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -52,29 +58,29 @@ mouse_filter = 2
 theme_override_constants/margin_left = 0
 theme_override_constants/margin_right = 10
 
-[node name="HeroPanelContainer" type="VBoxContainer" parent="MainContainer/VBoxContainer/MarginContainer"]
+[node name="HeroPanelContainer" type="VBoxContainer" parent="MainContainer/VBoxContainer/MarginContainer" unique_id=571320638]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 theme_override_constants/separation = 18
 
-[node name="HeroPanel" parent="MainContainer/VBoxContainer/MarginContainer/HeroPanelContainer" instance=ExtResource("4_b2wum")]
+[node name="HeroPanel" parent="MainContainer/VBoxContainer/MarginContainer/HeroPanelContainer" unique_id=344389648 instance=ExtResource("4_b2wum")]
 layout_mode = 2
 
-[node name="HeroPanel2" parent="MainContainer/VBoxContainer/MarginContainer/HeroPanelContainer" instance=ExtResource("4_b2wum")]
+[node name="HeroPanel2" parent="MainContainer/VBoxContainer/MarginContainer/HeroPanelContainer" unique_id=7736759 instance=ExtResource("4_b2wum")]
 layout_mode = 2
 
-[node name="HeroPanel3" parent="MainContainer/VBoxContainer/MarginContainer/HeroPanelContainer" instance=ExtResource("4_b2wum")]
+[node name="HeroPanel3" parent="MainContainer/VBoxContainer/MarginContainer/HeroPanelContainer" unique_id=1900485116 instance=ExtResource("4_b2wum")]
 layout_mode = 2
 
-[node name="HeroPanel4" parent="MainContainer/VBoxContainer/MarginContainer/HeroPanelContainer" instance=ExtResource("4_b2wum")]
+[node name="HeroPanel4" parent="MainContainer/VBoxContainer/MarginContainer/HeroPanelContainer" unique_id=1850046598 instance=ExtResource("4_b2wum")]
 layout_mode = 2
 
-[node name="HeroPanel5" parent="MainContainer/VBoxContainer/MarginContainer/HeroPanelContainer" instance=ExtResource("4_b2wum")]
+[node name="HeroPanel5" parent="MainContainer/VBoxContainer/MarginContainer/HeroPanelContainer" unique_id=1667125780 instance=ExtResource("4_b2wum")]
 layout_mode = 2
 
-[node name="VerticalExtraSize" type="Control" parent="MainContainer/VBoxContainer"]
+[node name="VerticalExtraSize" type="Control" parent="MainContainer/VBoxContainer" unique_id=576172672]
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 mouse_filter = 2

@@ -26,7 +26,7 @@ func _ready() -> void:
 func load_options() -> void:
 	var path = "user://game_options.res"
 	var current_options: RPGGameOptions
-	if ResourceLoader.exists(path):
+	if AssetManager.exists(path):
 		current_options = load(path)
 	else:
 		current_options = RPGGameOptions.new()

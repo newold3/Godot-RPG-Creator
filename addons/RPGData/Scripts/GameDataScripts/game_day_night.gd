@@ -54,6 +54,8 @@ extends Resource
 @export var shadow_max_length: float = 3.0
 ## Minimum length shadows can shrink to
 @export var shadow_min_length: float = 0.3
+## Controls how strong the blur effect is. Higher values make the blur softer and more spread out; lower values keep it subtle and sharp.
+@export var blur_size: float = 2.5
 
 @export_group("Time Switches")
 ## Switch activated/deactivated when lights are turned on or off
@@ -72,6 +74,7 @@ func clear() -> void:
 	day_color = Color(1.0, 1.0, 1.0, 1.0)
 	dusk_color = Color(1.0, 0.5, 0.3, 1.0)
 	night_color = Color(0.2, 0.3, 0.6, 1.0)
+	blur_size = 2.5
 	day_audio_volume = 0.8
 	night_audio_volume = 0.3
 	audio_transition_speed = 2.0

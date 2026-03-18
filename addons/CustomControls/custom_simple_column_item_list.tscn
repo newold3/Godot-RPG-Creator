@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dxcyqc2dscbvw"]
+[gd_scene format=3 uid="uid://dxcyqc2dscbvw"]
 
 [ext_resource type="Script" uid="uid://cen40u84x3odv" path="res://addons/CustomControls/custom_simple_column_item_list.gd" id="1_8itpf"]
 
@@ -30,7 +30,7 @@ func get_custom_tooltip() -> String:
 	return get_parent().get_custom_tooltip()
 "
 
-[node name="CustomSimpleColumnItemList" type="VBoxContainer"]
+[node name="CustomSimpleColumnItemList" type="VBoxContainer" unique_id=29010192]
 offset_right = 1148.0
 offset_bottom = 23.0
 theme_override_constants/separation = 0
@@ -38,14 +38,14 @@ script = ExtResource("1_8itpf")
 names = PackedStringArray("")
 sizes = PackedInt32Array(0)
 
-[node name="TopMenu" type="Control" parent="."]
+[node name="TopMenu" type="Control" parent="." unique_id=1016134933]
 unique_name_in_owner = true
 show_behind_parent = true
 custom_minimum_size = Vector2(0, 23)
 layout_mode = 2
 size_flags_vertical = 0
 
-[node name="ItemList" type="ItemList" parent="."]
+[node name="ItemList" type="ItemList" parent="." unique_id=1009261976]
 unique_name_in_owner = true
 show_behind_parent = true
 layout_mode = 2

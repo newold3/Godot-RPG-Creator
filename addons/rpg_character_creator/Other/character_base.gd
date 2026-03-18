@@ -10,6 +10,9 @@ func get_custom_class() -> String: return "CharacterBase"
 ## (Use a "*" at the beginning to include any terrain whose name contains the specified terrain name, or use a “” at the beginning to exclude any terrain whose name contains the specified terrain name. or "all" to include any terrain.)
 @export var can_move_on_terrains: PackedStringArray = ["^lava", "^water"]
 
+## Visual indicator scene instantiated when the player clicks on a map tile
+@export var click_indicator_scene: PackedScene = preload("res://Scenes/OtherScenes/click_on_map.tscn")
+
 
 enum DIRECTIONS {
 	LEFT = RPGMapPassability.DIR_LEFT,
@@ -36,7 +39,7 @@ var movement_current_mode = MOVEMENTMODE.GRID :
 		if is_node_ready():
 			adjust_bounds()
 var movement_speed: float = 100
-var running_speed: float = 150
+var running_speed: float = 130
 var is_moving = false
 var is_jumping = false
 var can_move: bool = true
@@ -48,6 +51,8 @@ var current_map_tile_size: Vector2i = Vector2i.ZERO
 var map_offset: Vector2i
 var cumulative_steps: float = 0
 
+var is_invalid_event: bool = false
+
 var current_direction: DIRECTIONS = DIRECTIONS.DOWN
 var last_direction: DIRECTIONS = DIRECTIONS.DOWN
 
@@ -56,6 +61,7 @@ var event_movement_frequency: int = 10
 var event_movement_frame_count: int = 0
 var route_commands: RPGMovementRoute
 var route_command_index: int = 0
+var _processing_command_route: bool = false
 
 var update_texture_timer: float = 0.0
 var current_frame: int = -1
@@ -63,6 +69,7 @@ var current_animation: String = "idle"
 var frame_delay: float = 0.0
 var frame_delay_max: float = 0.1
 var frame_delay_max_running: float = 0.05
+var frame_delay_max_attacking: float = 0.05
 var previous_tile: Vector2i
 var is_attacking: bool = false
 var can_attack: bool = true
@@ -84,12 +91,6 @@ var _contact_activation_cooldown: float = 1.0
 var _ignore_events_contact: Array = []
 var _squared_tile_size: int
 
-var _visual_history: Array[Dictionary] = []
-var _max_history_size: int = 300 
-var _last_recorded_pos: Vector2 = Vector2.ZERO
-var _last_recorded_direction: int = -1
-var _record_threshold_squared: float = 16.0
-
 
 # Must be serialized and deserialized in save file
 @onready var character_options: CharacterOptions
@@ -98,9 +99,21 @@ var movement_tween: Tween
 var contact_area_tween: Tween
 
 var busy: bool = false
+var busy2: bool = false
 var force_animation_enabled: bool = false
 
 var targets_over_me: Array = []
+
+var movement_history: Array[Dictionary] = []
+var _last_recorded_pos: Vector2 = Vector2.ZERO
+var _last_recorded_scale: Vector2 = Vector2.ONE
+
+var _auto_target_tile: Vector2i = Vector2i(-1, -1)
+var _auto_target_event: Node = null
+var _click_indicator_cooldown: float = 0.0
+
+const MAX_HISTORY_SIZE: int = 300
+const MIN_RECORD_DIST_SQ: float = 2.0
 
 const MAX_FLEE_DISTANCE_SQUARED: int = 25
 const MAX_JUMP_HEIGHT: int = 48
@@ -113,6 +126,7 @@ signal attack(animation: String)
 signal start_motion(motion: Vector2)
 signal end_movement()
 signal event_start_movement()
+signal idle_setted()
 
 
 func _ready() -> void:
@@ -121,10 +135,9 @@ func _ready() -> void:
 	end_movement.connect(_on_end_movement)
 	initialize_virtual_tile()
 	if GameManager.current_map:
-		_squared_tile_size = GameManager.current_map.tile_size.length_squared()
+		var tile_size: Vector2i = GameManager.get_map_tile_size()
+		_squared_tile_size = tile_size.length_squared()
 		GameManager.current_map.update_event_position_in_layout(self)
-	if is_in_group("player") and GameManager.game_state and GameManager.game_state.followers_enabled:
-		_initialize_visual_history()
 
 
 func _on_end_movement() -> void:
@@ -133,7 +146,7 @@ func _on_end_movement() -> void:
 
 	call_deferred("_check_contact_after_move")
 	previous_tile = get_current_tile()
-	#_check_nearby_events_for_activation()
+	_check_nearby_events_for_activation()
 
 
 func set_character_options(new_options: CharacterOptions) -> void:
@@ -147,29 +160,51 @@ func _on_character_options_changed() -> void:
 	calculate_grid_move_duration()
 
 
+func _process(_delta: float) -> void:
+	if GameManager.loading_game or is_invalid_event or busy2 or Engine.is_editor_hint():
+		return
+	if is_in_group("player"):
+		_smart_record_history()
+
+
+## Handle physics processing and triggers automatic path movement if a target tile is set
 func _physics_process(delta: float):
-	if GameManager.loading_game:
-		return 
-	
+	if GameManager.loading_game or is_invalid_event or busy2 or Engine.is_editor_hint():
+		return
+		
 	if is_in_group("player"):
 		_save_player_position_into_game_state()
-	
+	if _click_indicator_cooldown > 0.0:
+		_click_indicator_cooldown -= delta
+	if ControllerManager.is_action_just_released("Mouse Left"):
+		_click_indicator_cooldown = 0.0
+	if not Engine.is_editor_hint() and is_in_group("player"):
+		if ControllerManager.is_action_just_pressed("Button L2"):
+			busy2 = true
+			await GameManager.shift_up_follower()
+			busy2 = false
+		elif ControllerManager.is_action_just_pressed("Button R2"):
+			busy2 = true
+			await GameManager.shift_down_follower()
+			busy2 = false
+		elif GameManager.current_map and ControllerManager.is_action_pressed("Mouse Left"):
+			if not GameInterpreter.is_busy() and not GameManager.busy and not busy2:
+				var is_new_click = ControllerManager.is_action_just_pressed("Mouse Left")
+				var mouse_pos = GameManager.current_map.get_local_mouse_position()
+				var tile: Vector2i = GameManager.current_map.local_to_map(mouse_pos)
+				if is_new_click or (tile != _auto_target_tile and _click_indicator_cooldown <= 0.0):
+					_set_target_destination(tile, is_new_click)
 	activated_this_frame = false
-	
 	if not busy and _contact_activation_delay > 0:
 		_contact_activation_delay -= delta
-	
 	if not _ignore_events_contact.is_empty():
 		for i in range(_ignore_events_contact.size() - 1, -1, -1):
 			var obj = _ignore_events_contact[i]
-			
 			if not is_instance_valid(obj) or obj == self:
 				_ignore_events_contact.remove_at(i)
 				continue
-			
 			if position.distance_squared_to(obj.position) > _squared_tile_size:
 				_ignore_events_contact.remove_at(i)
-	
 	if not targets_over_me.is_empty():
 		var current_tile = get_current_tile()
 		for i in range(targets_over_me.size() - 1, -1, -1):
@@ -178,18 +213,18 @@ func _physics_process(delta: float):
 					targets_over_me.remove_at(i)
 			else:
 				targets_over_me.remove_at(i)
-	
-	if is_on_vehicle: return
-				
+	if is_on_vehicle:
+		if route_commands:
+			update_process_route()
+		return
 	if is_inside_tree():
 		queue_redraw()
-		
 	if busy or is_attacking or is_jumping or is_moving or force_locked:
 		return
-	
+	if is_in_group("player") and _auto_target_tile != Vector2i(-1, -1):
+		_process_auto_movement()
 	if movement_current_mode == MOVEMENTMODE.EVENT and GameManager.current_map:
 		GameManager.current_map.moving_event = true
-		
 	match movement_current_mode:
 		MOVEMENTMODE.GRID:
 			if route_commands:
@@ -202,82 +237,197 @@ func _physics_process(delta: float):
 			else:
 				free_movement(delta)
 		MOVEMENTMODE.EVENT:
-			event_movement_frame_count +=  1
+			event_movement_frame_count += 1
 			if event_movement_frame_count >= event_movement_frequency:
 				event_movement()
 				event_movement_frame_count = 0
-	
 	if movement_current_mode == MOVEMENTMODE.EVENT and GameManager.current_map:
 		GameManager.current_map.moving_event = false
-	
-	if is_in_group("player") and GameManager.game_state and GameManager.game_state.followers_enabled:
-		_record_visual_state_conditional()
 
 
-#region History Recorder
-func _record_visual_state_conditional() -> void:
+## Sets the target destination for pathfinding and instantiates a visual click indicator
+func _set_target_destination(tile: Vector2i, is_new_click: bool = true) -> void:
+	if not GameManager.current_map:
+		return
+	_auto_target_tile = tile
+	_auto_target_event = null
+	if not is_new_click:
+		return
+	if click_indicator_scene and _click_indicator_cooldown <= 0.0:
+		_click_indicator_cooldown = 0.1
+		var indicator = click_indicator_scene.instantiate()
+		GameManager.current_map.add_child(indicator)
+		var map = GameManager.current_map
+		indicator.global_position = map.get_tile_position(tile) - Vector2(0, map.tile_size.y / 2 - 8.0)
+	var map = GameManager.current_map
+	var events = map.get_in_game_events_in(tile)
+	for ev in events:
+		if ev is LPCEvent or ev is EmptyLPCEvent or ev is GenericLPCEvent or ev.get_class() == "RPGExtractionScene" or ev is RPGVehicle:
+			_auto_target_event = ev
+			break
+	if not _auto_target_event and map.has_method("get_in_game_vehicle_in"):
+		var vehicle = map.get_in_game_vehicle_in(tile)
+		if vehicle:
+			_auto_target_event = vehicle
+
+
+## Processes pathfinding logic and event interactions step by step
+func _process_auto_movement() -> void:
+	var current_tile = get_current_tile()
+	if current_tile == _auto_target_tile:
+		_auto_target_tile = Vector2i(-1, -1)
+		movement_vector = Vector2.ZERO
+		current_animation = "idle"
+		run_animation()
+		if _auto_target_event and is_instance_valid(_auto_target_event):
+			_interact_with_click_target()
+		return
+	if _auto_target_event and is_instance_valid(_auto_target_event):
+		var is_adjacent = false
+		var diff = Vector2i.ZERO
+		var my_tiles = [current_tile]
+		if has_method("get_current_tiles"):
+			my_tiles = call("get_current_tiles")
+		var target_tiles = []
+		if _auto_target_event.has_method("get_current_tiles"):
+			target_tiles = _auto_target_event.get_current_tiles()
+		elif _auto_target_event.has_method("get_current_tile"):
+			target_tiles = [_auto_target_event.get_current_tile()]
+		else:
+			target_tiles = [_auto_target_tile]
+		for my_t in my_tiles:
+			for tgt_t in target_tiles:
+				var temp_diff = tgt_t - my_t
+				if abs(temp_diff.x) + abs(temp_diff.y) == 1:
+					is_adjacent = true
+					diff = temp_diff
+					break
+			if is_adjacent:
+				break
+		if is_adjacent:
+			_auto_target_tile = Vector2i(-1, -1)
+			movement_vector = Vector2.ZERO
+			if not character_options.fixed_direction:
+				_look_at_tile_direction(diff)
+			current_animation = "idle"
+			run_animation()
+			_interact_with_click_target()
+			return
+	var next_step = _get_next_move_toward_target(_auto_target_tile, Vector2.ZERO)
+	if next_step != Vector2i.ZERO:
+		movement_vector = next_step
+		if not character_options.fixed_direction:
+			var diagonal_movement_direction_mode = RPGSYSTEM.database.system.options.get("movement_mode", 0)
+			match diagonal_movement_direction_mode:
+				0: set_vertical_look(movement_vector)
+				1: set_horizontal_look(movement_vector)
+				2: set_current_look(movement_vector)
+			current_direction = last_direction
+		current_animation = "walk"
+		run_animation()
+	else:
+		_auto_target_tile = Vector2i(-1, -1)
+		movement_vector = Vector2.ZERO
+		current_animation = "idle"
+		run_animation()
+
+
+## Updates character facing direction based on a tile difference vector
+func _look_at_tile_direction(diff: Vector2i) -> void:
+	if diff.x > 0:
+		current_direction = DIRECTIONS.RIGHT
+	elif diff.x < 0:
+		current_direction = DIRECTIONS.LEFT
+	elif diff.y > 0:
+		current_direction = DIRECTIONS.DOWN
+	elif diff.y < 0:
+		current_direction = DIRECTIONS.UP
+	last_direction = current_direction
+	run_animation()
+
+
+## Triggers standard interaction logic with the clicked target event upon arrival
+func _interact_with_click_target() -> void:
+	if not is_instance_valid(_auto_target_event):
+		return
+	var node = _auto_target_event
+	_auto_target_event = null
+	if node is RPGVehicle:
+		_reset(true)
+		node.start(self)
+	elif node is LPCEvent or node is EmptyLPCEvent or node is GenericLPCEvent:
+		_reset(true)
+		is_moving = false
+		current_animation = "idle"
+		current_frame = 0
+		run_animation()
+		await node.start(self, RPGEventPage.LAUNCHER_MODE.ACTION_BUTTON)
+	elif node.get_class() == "RPGExtractionScene":
+		if not node.extraction_data.is_depleted():
+			GameManager.manage_extraction_scene(node)
+
+
+func attack_with_weapon() -> void:
+	pass
+
+
+func attack_without_weapon() -> void:
+	pass
+
+
+func _smart_record_history() -> void:
 	var dist_sq = global_position.distance_squared_to(_last_recorded_pos)
+	var has_moved = dist_sq > MIN_RECORD_DIST_SQ
 	
-	if dist_sq < _record_threshold_squared and current_direction == _last_recorded_direction:
-		return 
+	var scale_diff = (scale - _last_recorded_scale).length_squared()
+	var has_scaled = scale_diff > 0.0001
+	
+	if has_moved or is_jumping or has_scaled or movement_history.is_empty():
+		_add_snapshot()
 
-	var snapshot = {
-		"pos": global_position,
-		"z": z_index,
-		"scale": scale,
-		"modulate": modulate,
-		"dir": current_direction,
-		"rotation": rotation,
-		"skew": skew
-	}
+
+func _add_snapshot(snapshot: Dictionary = {}) -> void:
+	var visual_rect = Rect2()
+	var body_node = get_node_or_null("%Body")
+	if body_node:
+		visual_rect = body_node.region_rect
 	
-	if has_method("get_character_sprite"):
-		var sprite: Sprite2D = call("get_character_sprite")
-		if sprite:
-			snapshot.centered = sprite.centered
-			snapshot.offset = sprite.offset
-			snapshot.flip_h = sprite.flip_h
-			snapshot.flip_v = sprite.flip_v
+	if not snapshot:
+		snapshot = {
+			"pos": global_position,
+			"scale": scale,
+			"modulate": modulate,
+			"z_index": z_index,
+			"region_rect": visual_rect,
+			"flip_h": body_node.flip_h if body_node else false,
+			"direction": current_direction,
+			"rotation": rotation,
+			"animation": current_animation,
+			"is_jumping": is_jumping
+		}
 	
-	_visual_history.push_front(snapshot)
-	if _visual_history.size() > _max_history_size:
-		_visual_history.pop_back()
+	movement_history.push_back(snapshot)
+	_last_recorded_pos = snapshot.pos 
 	
+	if movement_history.size() > MAX_HISTORY_SIZE:
+		movement_history.pop_front()
+
+
+func clear_movement_history() -> void:
+	movement_history.clear()
 	_last_recorded_pos = global_position
-	_last_recorded_direction = current_direction
 
 
-func _initialize_visual_history() -> void:
-	var initial_snapshot = {
-		"pos": global_position,
-		"z": z_index,
-		"scale": scale,
-		"modulate": modulate,
-		"dir": current_direction,
-		"rotation": rotation,
-		"skew": skew
-	}
+func get_history_step(step_offset: int) -> Dictionary:
+	if movement_history.is_empty():
+		return {}
 	
-	if has_method("get_character_sprite"):
-		var sprite: Sprite2D = call("get_character_sprite")
-		if sprite:
-			initial_snapshot.centered = sprite.centered
-			initial_snapshot.offset = sprite.offset
-			initial_snapshot.flip_h = sprite.flip_h
-			initial_snapshot.flip_v = sprite.flip_v
-			
-	_last_recorded_pos = global_position
-	_last_recorded_direction = current_direction
+	var index = movement_history.size() - 1 - step_offset
 	
-	for i in range(_max_history_size):
-		_visual_history.append(initial_snapshot)
-
-func get_visual_snapshot(lag_steps: int) -> Dictionary:
-	if _visual_history.is_empty(): return {}
-	var index = clampi(lag_steps, 0, _visual_history.size() - 1)
-	return _visual_history[index]
-
-#endregion
+	if index < 0:
+		return movement_history[0]
+	
+	return movement_history[index]
 
 
 func _should_check_nearby_events() -> bool:
@@ -288,7 +438,6 @@ func _should_check_nearby_events() -> bool:
 	return page.launcher == RPGEventPage.LAUNCHER_MODE.ANY_CONTACT or \
 		   page.launcher == RPGEventPage.LAUNCHER_MODE.EVENT_COLLISION or \
 		   page.launcher == RPGEventPage.LAUNCHER_MODE.PLAYER_COLLISION
-
 
 
 func _draw() -> void:
@@ -483,12 +632,12 @@ func set_current_look(motion: Vector2) -> void:
 		set_vertical_look(motion)
 
 
+## Processes the current movement route command queue
 func update_process_route() -> void:
-	if is_moving or busy or is_jumping:
+	if is_moving or busy or is_jumping or _processing_command_route:
 		return
-		
+	_processing_command_route = true
 	var result = await process_route_command()
-
 	if result.action:
 		match result.action:
 			"move":
@@ -500,7 +649,6 @@ func update_process_route() -> void:
 				if result.keep_direction:
 					current_direction = backup_direction
 					run_animation()
-					
 				GameManager.game_state.stats.steps += 1
 			"jump":
 				if is_on_vehicle and current_vehicle:
@@ -509,7 +657,6 @@ func update_process_route() -> void:
 					await jump_to(result.value, result.route, result.start_fx, result.end_fx)
 				var steps = max(abs(result.value.x), abs(result.value.y))
 				GameManager.game_state.stats.steps += steps
-				
 	route_command_index += 1
 	if route_commands:
 		if route_command_index >= route_commands.list.size():
@@ -518,11 +665,13 @@ func update_process_route() -> void:
 			else:
 				var wrapped_position = GameManager.current_map.get_wrapped_position(position)
 				if wrapped_position != position:
+					var offset = wrapped_position - position
 					if is_in_group("player"):
 						var camera = GameManager.get_camera()
 						if camera:
-							camera.global_position += (wrapped_position - position)
+							camera.global_position += offset
 					position = wrapped_position
+					shift_history_and_followers(offset)
 				route_commands.finished.emit()
 				route_commands = null
 				if is_on_vehicle and current_vehicle:
@@ -532,17 +681,35 @@ func update_process_route() -> void:
 				current_vehicle.reset_force_movement()
 	elif is_on_vehicle and current_vehicle:
 		current_vehicle.reset_force_movement()
+	_processing_command_route = false
 
 
 func _get_next_move_toward_target(target: Vector2i, target_screen_position: Vector2) -> Vector2i:
 	var map = GameManager.current_map
-	
 	if map:
 		var current = get_current_tile()
+		if Input.is_key_pressed(KEY_CTRL) and OS.is_debug_build():
+			var diff = target - current
+			var step_x = sign(diff.x)
+			var step_y = sign(diff.y)
+			return Vector2i(step_x, step_y)
 		var next = map.pathfinder.get_next_tile(self, current, target)
 		if next != null:
-			return next - current
-	
+			var diff = next - current
+			var map_size = map.get_map_size_in_tiles()
+			if map.infinite_horizontal_scroll:
+				var half_width = map_size.x / 2
+				if diff.x > half_width:
+					diff.x -= map_size.x
+				elif diff.x < -half_width:
+					diff.x += map_size.x
+			if map.infinite_vertical_scroll:
+				var half_height = map_size.y / 2
+				if diff.y > half_height:
+					diff.y -= map_size.y
+				elif diff.y < -half_height:
+					diff.y += map_size.y
+			return diff
 	return Vector2i.ZERO
 
 
@@ -560,7 +727,7 @@ func _get_next_move_toward_event() -> Vector2i:
 	var target_screen_position: Vector2 = Vector2.ZERO
 	var page = get("current_event_page")
 	if page and GameManager.current_map:
-		var event = GameManager.current_map.get_in_game_event_by_pos(page.movement_to_target - 1)
+		var event = GameManager.current_map.get_in_game_event_by_uniq_id(page.movement_to_target)
 		if event and event.has_method("get_current_tile"):
 			goal = event.get_current_tile()
 			target_screen_position = event.get_global_transform_with_canvas().origin
@@ -580,22 +747,38 @@ func _get_next_move_away_from_player() -> Vector2i:
 	
 	var my_tile: Vector2i = get_current_tile()
 	var player_tile = GameManager.current_player.get_current_tile() if not GameManager.current_player.is_on_vehicle else GameManager.current_player.current_vehicle.get_current_tile()
-
-	var furthest_tile := my_tile
-	var max_distance := my_tile.distance_squared_to(player_tile)
 	
-	if max_distance >= MAX_FLEE_DISTANCE_SQUARED:
+	var map = GameManager.current_map
+	var map_size = map.get_map_size_in_tiles()
+	var infinite_x = map.infinite_horizontal_scroll
+	var infinite_y = map.infinite_vertical_scroll
+
+	var current_dist_sq = _get_wrapped_distance_sq(my_tile, player_tile, map_size, infinite_x, infinite_y)
+	
+	if current_dist_sq >= MAX_FLEE_DISTANCE_SQUARED:
 		return Vector2i(0, 0)
 
+	var best_move = Vector2i.ZERO
+	var max_distance = current_dist_sq
+
 	for dir in directions:
-		var neighbor = my_tile + dir
-		if GameManager.current_map.is_passable(neighbor, GameManager.current_map.pathfinder.vector2_to_direction(dir), self):
-			var dist = neighbor.distance_squared_to(player_tile)
+		var raw_neighbor = my_tile + dir
+		
+		var wrapped_neighbor = raw_neighbor
+		if infinite_x:
+			wrapped_neighbor.x = posmod(wrapped_neighbor.x, map_size.x)
+		if infinite_y:
+			wrapped_neighbor.y = posmod(wrapped_neighbor.y, map_size.y)
+			
+		if map.is_passable(wrapped_neighbor, map.pathfinder.vector2_to_direction(dir), self):
+			
+			var dist = _get_wrapped_distance_sq(wrapped_neighbor, player_tile, map_size, infinite_x, infinite_y)
+			
 			if dist > max_distance:
 				max_distance = dist
-				furthest_tile = neighbor
+				best_move = dir
 	
-	var motion = furthest_tile - my_tile
+	var motion = best_move
 	if motion:
 		if motion.x == 0:
 			current_direction = DIRECTIONS.UP if motion.y < 0 else DIRECTIONS.DOWN
@@ -604,6 +787,17 @@ func _get_next_move_away_from_player() -> Vector2i:
 		last_direction = current_direction
 
 	return motion
+
+func _get_wrapped_distance_sq(from_pos: Vector2i, to_pos: Vector2i, size: Vector2i, inf_x: bool, inf_y: bool) -> float:
+	var dx = abs(from_pos.x - to_pos.x)
+	var dy = abs(from_pos.y - to_pos.y)
+	
+	if inf_x:
+		dx = min(dx, size.x - dx)
+	if inf_y:
+		dy = min(dy, size.y - dy)
+		
+	return float(dx * dx + dy * dy)
 
 
 func _is_movement_route_command(command: RPGMovementCommand) -> bool:
@@ -713,7 +907,8 @@ func process_route_command() -> Dictionary:
 				var timer = get_tree().create_timer(wait_time)
 				timer.timeout.connect(
 					func():
-						result.target.busy = false
+						if is_instance_valid(result.target):
+							result.target.busy = false
 						busy = false
 				)
 			46: # Change Z-Index
@@ -793,7 +988,7 @@ func process_route_command() -> Dictionary:
 				if result.target == self and not is_in_group("player"):
 					var new_movement_frequency: float = command.parameters[0]
 					event_movement_frequency = new_movement_frequency
-					character_options.movenet_frequency = new_movement_frequency
+					character_options.movement_frequency = new_movement_frequency
 			# Column 3
 			3: # Walking Animation ON
 				character_options.walking_animation = true
@@ -934,32 +1129,30 @@ func get_global_mouth_position() -> Vector2:
 	
 	return Vector2.ZERO
 
-
 #region movement
 func run_animation() -> void:
 	pass
 
 
+## Called when grid movement successfully completes
 func _on_grid_movement_finished(target_position: Vector2) -> void:
-	# Ensure exact final position
 	var wrapped_position = GameManager.current_map.get_wrapped_position(target_position)
 	if wrapped_position != target_position:
+		var offset = wrapped_position - target_position
 		var camera = GameManager.get_camera()
 		if camera:
 			if camera.targets.size() > 1:
 				camera.instantaneous_positioning()
 			else:
-				camera.global_position += (wrapped_position - target_position)
+				camera.global_position += offset
 		position = wrapped_position
+		shift_history_and_followers(offset)
 	else:
 		position = target_position
 	
-	# update steps
 	GameManager.game_state.stats.steps += 1
-	
 	is_moving = false
 	movement_vector = Vector2.ZERO
-	
 	end_movement.emit()
 
 
@@ -971,20 +1164,23 @@ func _animation_to_idle() -> void:
 	if not is_moving:
 		current_animation = "idle"
 		#current_frame = 0
+	idle_setted.emit()
 
 
 func _process_event_contact(contacting_entities: Array, stop_movement_on_activate: bool) -> bool:
+	var im_player = is_in_group("player")
 	var page = get("current_event_page")
-	if not page:
+	
+	# If it's not the player and has no page, it can't interact
+	if not im_player and not page:
 		return false
 
 	var events_to_start: Array = []
-	var self_id = page.get("id") if page else -1
-	var self_launcher = page.launcher
+	var self_id = page.get("_uniq_id") if page else -1
+	var self_launcher = page.launcher if page else -1
 	var primary_target = contacting_entities[0] if not contacting_entities.is_empty() else null
 	var self_activated_this_check = false
 
-	# Single loop for bidirectional logic
 	for entity in contacting_entities:
 		if entity in _ignore_events_contact:
 			continue
@@ -995,49 +1191,60 @@ func _process_event_contact(contacting_entities: Array, stop_movement_on_activat
 		var activate_self = false
 		var activate_other = false
 
-		# 1. Check if 'entity' activates 'self'
-		if not self_activated_this_check:
-			if self_launcher == RPGEventPage.LAUNCHER_MODE.PLAYER_COLLISION and entity.is_in_group("player"):
-				activate_self = true
-			elif self_launcher == RPGEventPage.LAUNCHER_MODE.ANY_CONTACT:
-				activate_self = true
-			elif self_launcher == RPGEventPage.LAUNCHER_MODE.EVENT_COLLISION and not entity.is_in_group("player"):
-				if "current_event_page" in entity and entity.current_event_page:
-					var other_id = entity.current_event_page.get("id")
-					var event_trigger_list = page.get("event_trigger_list")
-					if other_id in event_trigger_list:
-						activate_self = true
+		# 1. Check if 'entity' activates 'self' (Only if self is an event)
+		if not im_player and not self_activated_this_check:
+			# Pressure plates are handled exclusively by IngameMapEntityManager
+			var is_pressure = page.condition.use_pressure if page and page.condition else false
+			
+			if not is_pressure:
+				if self_launcher == RPGEventPage.LAUNCHER_MODE.PLAYER_COLLISION and entity.is_in_group("player"):
+					activate_self = true
+				elif self_launcher == RPGEventPage.LAUNCHER_MODE.ANY_CONTACT:
+					activate_self = true
+				elif self_launcher == RPGEventPage.LAUNCHER_MODE.EVENT_COLLISION and not entity.is_in_group("player"):
+					if "current_event_page" in entity and entity.current_event_page:
+						var other_id = entity.current_event_page.get("_uniq_id")
+						var event_trigger_list = page.get("event_trigger_list")
+						if other_id in event_trigger_list:
+							activate_self = true
 		
-		# 2. Check if 'self' activates 'entity'
-		if not entity.is_in_group("player"):
-			if "current_event_page" in entity and entity.current_event_page:
-				var other_page = entity.current_event_page
+		# 2. Check if 'self' (Player or Event) activates the 'entity'
+		if "current_event_page" in entity and entity.current_event_page:
+			var other_page = entity.current_event_page
+			var is_other_pressure = other_page.condition.use_pressure if other_page and other_page.condition else false
+			
+			if not is_other_pressure:
 				var other_launcher = other_page.launcher
 				
-				if other_launcher == RPGEventPage.LAUNCHER_MODE.ANY_CONTACT or \
-				   other_launcher == RPGEventPage.LAUNCHER_MODE.PLAYER_COLLISION:
-					activate_other = true
-				elif other_launcher == RPGEventPage.LAUNCHER_MODE.EVENT_COLLISION:
-					var other_trigger_list = other_page.get("event_trigger_list")
-					if self_id in other_trigger_list:
+				if im_player:
+					## Player touching event logic
+					if other_launcher == RPGEventPage.LAUNCHER_MODE.ANY_CONTACT or \
+					   other_launcher == RPGEventPage.LAUNCHER_MODE.PLAYER_COLLISION:
 						activate_other = true
+				else:
+					## Event touching event logic
+					if other_launcher == RPGEventPage.LAUNCHER_MODE.ANY_CONTACT:
+						activate_other = true
+					elif other_launcher == RPGEventPage.LAUNCHER_MODE.EVENT_COLLISION:
+						var other_trigger_list = other_page.get("event_trigger_list")
+						if self_id in other_trigger_list:
+							activate_other = true
 
-		# 3. Process activations and ignores
+		# 3. Process activations and mutual ignore lists
 		if activate_self or activate_other:
-			_ignore_events_contact.append(entity)
-			entity._ignore_events_contact.append(self)
+			_add_mutual_ignore(self, entity)
 
 			if activate_self:
 				if not self in events_to_start:
 					events_to_start.append(self)
 				primary_target = entity
-				self_activated_this_check = true # Avoid 'self' being activated by multiple events
+				self_activated_this_check = true 
 
 			if activate_other:
 				if not entity in events_to_start:
 					events_to_start.append(entity)
 
-	# start events
+	# Start the collected events through the interpreter
 	if not events_to_start.is_empty():
 		var objs: Array[Dictionary] = []
 		for ev in events_to_start:
@@ -1142,12 +1349,14 @@ func _check_contact(tile: Vector2i, check_passable: bool = false) -> bool:
 func _check_nearby_events_for_activation() -> void:
 	if activated_this_frame:
 		return
-		
+
+
 	var valid_contacts: Array = []
 	var self_pos = position
 	
 	var nearby_entities: Array = GameManager.current_map.get_events_near_position(self_pos)
-	
+
+
 	if GameManager.current_player:
 		nearby_entities.append(GameManager.current_player)
 	
@@ -1170,10 +1379,17 @@ func _check_nearby_events_for_activation() -> void:
 		_:
 			return
 
+
 	const AXIS_TOLERANCE = 4.0
 
+
 	for entity in nearby_entities:
-		if entity == self:
+		if entity == self or not is_instance_valid(entity):
+			continue
+			
+		# Passable events should not be activated by bumping into them from adjacent tiles.
+		# They will be activated by _check_contact_after_move when overlapping the tile.
+		if not _is_solid(entity):
 			continue
 			
 		var entity_pos = entity.position
@@ -1191,15 +1407,28 @@ func _check_nearby_events_for_activation() -> void:
 			if is_on_axis and is_in_front:
 				valid_contacts.append(entity)
 
+
 	if not valid_contacts.is_empty():
 		# 'false' = Do not stop movement for this type of activation ("touch")
 		_process_event_contact(valid_contacts, false)
 
 
 func look_at_event(event: Variant) -> void:
-	if event == self: return
+	if event == self: 
+		return
+		
+	if character_options and character_options.fixed_direction:
+		return
 	
-	var direction = (event.global_position - global_position).normalized()
+	var diff = event.global_position - global_position
+	
+	if diff.length_squared() < 4.0:
+		if "current_direction" in event:
+			current_direction = get_opposite_direction(event.current_direction)
+			last_direction = current_direction
+		return
+	
+	var direction = diff.normalized()
 	if abs(direction.x) > abs(direction.y):
 		current_direction = DIRECTIONS.RIGHT if direction.x > 0 else DIRECTIONS.LEFT
 	else:
@@ -1209,95 +1438,64 @@ func look_at_event(event: Variant) -> void:
 
 
 # Check contact before move
-# Check contact before move
 func _check_contact_before_move(tile: Vector2i, is_after_move: bool = false) -> bool:
-	return true
-	var my = self
-	var my_is_solid = _is_solid(my)
-	var my_is_moving = my.is_moving if "is_moving" in my else false
-	var my_is_player = my.is_in_group("player")
-	
-	# Recolectar todas las entities en el tile destino
+	if not GameManager.current_map:
+		return true
+
+
+	var im_player = is_in_group("player")
+	if im_player and is_on_vehicle and GameManager.current_vehicle and GameManager.current_vehicle.flying_object:
+		return false
+		
 	var all_entities_on_tile: Array = GameManager.current_map.get_in_game_events_in(tile, false)
 	
-	# Agregar player si es necesario
-	if not my_is_player and GameManager.current_player:
+	if not im_player and GameManager.current_player:
 		if GameManager.current_player.get_current_tile() == tile:
 			all_entities_on_tile.append(GameManager.current_player)
 	
-	# Limpiar duplicados
-	all_entities_on_tile = _remove_duplicates(all_entities_on_tile)
-	
-	var i_can_move: bool = true
+	var can_continue_movement: bool = true
 	var valid_contacts: Array = []
-	
-	# === PROCESAR CADA ENTITY ===
+
+
 	for entity in all_entities_on_tile:
-		if entity == my:
+		if entity == self:
 			continue
 		
 		var entity_is_solid = _is_solid(entity)
-		var entity_is_moving = entity.is_moving if "is_moving" in entity else false
-		var entity_is_player = entity.is_in_group("player")
 		
-		# Determinar qué hacer basado en los estados
-		var can_move_result: bool
-		var contacts_result: Array
-		
-		if my_is_player:
-			# PLAYER vs ENTITY
-			var result = _handle_player_contact(my, entity, entity_is_player)
-			can_move_result = result["can_move"]
-			contacts_result = result["contacts"]
-		elif entity_is_player:
-			# EVENT vs PLAYER
-			var result = _handle_event_vs_player(my, entity, my_is_solid, my_is_moving)
-			can_move_result = result["can_move"]
-			contacts_result = result["contacts"]
-		elif my_is_solid and entity_is_solid:
-			# SOLID vs SOLID
-			var result = _handle_solid_vs_solid(my, entity, my_is_moving, entity_is_moving)
-			can_move_result = result["can_move"]
-			contacts_result = result["contacts"]
-		elif my_is_solid and not entity_is_solid:
-			# SOLID vs PASSABLE
-			var result = _handle_solid_vs_passable(my, entity, my_is_moving, entity_is_moving)
-			can_move_result = result["can_move"]
-			contacts_result = result["contacts"]
-		elif not my_is_solid and entity_is_solid:
-			# PASSABLE vs SOLID
-			var result = _handle_passable_vs_solid(my, entity, entity_is_moving)
-			can_move_result = result["can_move"]
-			contacts_result = result["contacts"]
+		if entity_is_solid:
+			if not (character_options.passable or (im_player and Input.is_key_pressed(KEY_CTRL) and OS.is_debug_build())):
+				can_continue_movement = false
+			
+			## Solid events trigger upon physical contact (bumping), before the move is complete
+			if not is_after_move and not entity in _ignore_events_contact:
+				valid_contacts.append(entity)
 		else:
-			# PASSABLE vs PASSABLE
-			var result = _handle_passable_vs_passable(my, entity)
-			can_move_result = result["can_move"]
-			contacts_result = result["contacts"]
-		
-		i_can_move = i_can_move and can_move_result
-		valid_contacts.append_array(contacts_result)
-	
-	# === Deduplicar contactos ===
-	valid_contacts = _remove_duplicates(valid_contacts)
-	
-	# === Activar eventos ===
-	_trigger_events(valid_contacts)
-	
-	return i_can_move
+			## Passable events trigger upon overlapping, after the move is complete
+			if is_after_move and not entity in _ignore_events_contact:
+				valid_contacts.append(entity)
+
+
+	if not valid_contacts.is_empty():
+		var trigger_result = _process_event_contact(valid_contacts, not is_after_move)
+		if trigger_result and not is_after_move:
+			return false
+
+
+	return can_continue_movement
 
 
 # === HELPERS DE DETECCIÓN ===
-func _is_solid(entity) -> bool:
+func _is_solid(entity: Node) -> bool:
 	if entity.is_in_group("player") or entity is RPGVehicle:
 		if entity.has_method("is_passable"):
-			return entity.is_passable()
+			return not entity.is_passable()
 		return true
-	else:
-		if "character_options" in entity and entity.character_options:
-			var passable = not entity.character_options.passable
-			return passable
-		return false
+	
+	if "character_options" in entity and entity.character_options:
+		return not entity.character_options.passable
+		
+	return false
 
 
 func _can_activate_event(my_entity, other_entity) -> bool:
@@ -1314,7 +1512,7 @@ func _can_activate_event(my_entity, other_entity) -> bool:
 			if my_launcher == RPGEventPage.LAUNCHER_MODE.ANY_CONTACT:
 				return true
 			elif other_page:
-				var other_id = other_page.get("id")
+				var other_id = other_page.get("_uniq_id")
 				var my_trigger_list = my_page.get("event_trigger_list")
 				if other_id in my_trigger_list:
 					return true
@@ -1326,7 +1524,7 @@ func _can_activate_event(my_entity, other_entity) -> bool:
 			if other_launcher == RPGEventPage.LAUNCHER_MODE.ANY_CONTACT:
 				return true
 			elif my_page:
-				var my_id = my_page.get("id")
+				var my_id = my_page.get("_uniq_id")
 				var other_trigger_list = other_page.get("event_trigger_list")
 				if my_id in other_trigger_list:
 					return true
@@ -1448,21 +1646,7 @@ func _trigger_events(valid_contacts: Array) -> void:
 	if valid_contacts.is_empty():
 		return
 	
-	var valid_objs: Array[Dictionary] = []
-	var used: Array = []
-	
-	for ev in valid_contacts:
-		if not ev in used:
-			used.append(ev)
-			if ev.get("current_event_page"):
-				valid_objs.append({
-					"obj": ev,
-					"commands": ev.current_event_page.list,
-					"id": str(ev.get_rid())
-				})
-	
-	if valid_objs:
-		GameInterpreter.auto_start_automatic_events(valid_objs)
+	_process_event_contact(valid_contacts, true)
 
 
 # Check contact after move
@@ -1544,10 +1728,9 @@ func start_movement(motion_data: Dictionary) -> void:
 		movement_tween.kill()
 
 	movement_tween = create_tween()
-	movement_tween.tween_interval(0.0)
+	movement_tween.tween_interval(0.001)
 	
 	is_moving = true
-	#previous_tile = get_current_tile()
 	var final_motion = motion_data.final_motion
 	var current_motion = motion_data.current_motion
 	var map = GameManager.current_map
@@ -1555,7 +1738,7 @@ func start_movement(motion_data: Dictionary) -> void:
 	if not final_motion:
 		is_moving = false
 		return
-		
+
 	target_position = position + final_motion
 	var start_position = position
 	var max_movement_time = max(grid_move_duration.x, grid_move_duration.y)
@@ -1586,7 +1769,7 @@ func _animate_contact_area(final_motion: Vector2) -> void:
 				collision_shape.set_meta("_original_position_and_size",
 					{"position": collision_shape.position, "size": collision_shape.shape.size}
 				)
-			var tile_size = Vector2(GameManager.current_map.tile_size)
+			var tile_size: Vector2 = GameManager.get_map_tile_size()
 				
 			contact_area_tween = create_tween()
 			contact_area_tween.set_parallel(true)
@@ -1647,16 +1830,14 @@ func vehicle_movement(motion: Vector2, route: RPGMovementRoute = null, keep_dire
 	end_movement.emit()
 
 
+## Initiates movement to a specific offset for an event
 func move_event(new_pos: Vector2, route: RPGMovementRoute = null, keep_direction: bool = false) -> void:
 	if is_moving or busy or is_jumping: return
-	
 	var has_route = route_commands and not route_commands.list.is_empty()
 	if has_route and not route_commands.is_route_from_interpreter and GameInterpreter.is_busy():
 		return
-	
 	var motion_data = get_motion(new_pos)
 	var motion = motion_data.final_motion
-	
 	if motion:
 		if not character_options.fixed_direction and not keep_direction:
 			var diagonal_movement_direction_mode = RPGSYSTEM.database.system.options.get("movement_mode", 0)
@@ -1673,31 +1854,90 @@ func move_event(new_pos: Vector2, route: RPGMovementRoute = null, keep_direction
 		call_deferred("_animation_to_idle")
 		_animate_contact_area.call_deferred(motion_data.current_motion)
 		return
-
-	# Start Movement
 	event_start_movement.emit()
 	start_movement(motion_data)
 	if movement_tween and movement_tween.is_valid():
 		movement_tween.tween_callback(
 			func():
-				# End movement
 				is_moving = false
 				call_deferred("_animation_to_idle")
 		)
 		await movement_tween.finished
-		
-		position = GameManager.current_map.get_wrapped_position(position)
+		var wrapped_position = GameManager.current_map.get_wrapped_position(position)
+		if wrapped_position != position:
+			var offset = wrapped_position - position
+			position = wrapped_position
+			shift_history_and_followers(offset)
+
+
+## Shifts the character's movement history and triggers the safe wrap for followers
+func shift_history_and_followers(offset: Vector2) -> void:
+	target_position += offset
+	_last_recorded_pos += offset
+	for snapshot in movement_history:
+		if snapshot.has("pos"): snapshot.pos += offset
+		if snapshot.has("jump_start_pos"): snapshot.jump_start_pos += offset
+		if snapshot.has("jump_target"): snapshot.jump_target += offset
+		if snapshot.has("followers_position"):
+			for key in snapshot.followers_position.keys():
+				snapshot.followers_position[key] += offset
+	if is_in_group("player"):
+		var followers = get_tree().get_nodes_in_group("follower")
+		for f in followers:
+			if f.has_method("apply_map_wrap_offset"):
+				f.apply_map_wrap_offset(offset)
+
+
+## Safely applies a geometric offset to a follower mid-movement, rebuilding its tween
+func apply_map_wrap_offset(offset: Vector2) -> void:
+	var was_moving = is_moving
+	if was_moving and movement_tween and movement_tween.is_valid():
+		movement_tween.kill()
+	position += offset
+	global_position += offset
+	target_position += offset
+	_last_recorded_pos += offset
+	for snapshot in movement_history:
+		if snapshot.has("pos"): snapshot.pos += offset
+		if snapshot.has("jump_start_pos"): snapshot.jump_start_pos += offset
+		if snapshot.has("jump_target"): snapshot.jump_target += offset
+		if snapshot.has("followers_position"):
+			for key in snapshot.followers_position.keys():
+				snapshot.followers_position[key] += offset
+	if was_moving:
+		var current_motion = target_position - position
+		if current_motion != Vector2.ZERO:
+			movement_tween = create_tween()
+			movement_tween.tween_interval(0.001)
+			var distance = current_motion.length()
+			var base_distance = current_map_tile_size.x
+			var max_movement_time = max(grid_move_duration.x, grid_move_duration.y)
+			var remaining_time = max_movement_time * (distance / base_distance)
+			movement_tween.tween_method(_update_position.bind([position]), position, target_position, remaining_time)
+			movement_tween.finished.connect(_on_grid_movement_finished.bind(target_position))
+		else:
+			is_moving = false
+			end_movement.emit()
+
+
+func get_body_region_rect() -> Rect2:
+	var node = get_node_or_null("%Body")
+	if node:
+		return node.region_rect
+
+	return Rect2()
 
 
 func jump_to(new_pos: Vector2, route: RPGMovementRoute = null, start_fx: Dictionary = {}, end_fx: Dictionary = {}) -> void:
 	if is_moving or busy or is_jumping:
 		return
 	
-	var possible_movement = get_possible_movements(new_pos)
+	var possible_movement = get_possible_movements(new_pos, true)
 	var motion = null if !possible_movement else new_pos * Vector2(current_map_tile_size)
 	
 	if motion:
 		update_virtual_tile(motion)
+		
 		if not character_options.fixed_direction:
 			match RPGSYSTEM.database.system.options.get("movement_mode", 0):
 				0: set_vertical_look(motion)
@@ -1709,38 +1949,65 @@ func jump_to(new_pos: Vector2, route: RPGMovementRoute = null, start_fx: Diction
 		var end_pos = position + motion
 		var distance = motion.length()
 		var jump_height = min(MAX_JUMP_HEIGHT, distance * 0.5)
-		var jump_duration = clamp(distance * 0.1, 0.2, 0.35)
-		
+		var jump_duration = clamp(distance * 0.1, 0.25, 0.45) 
+
 		if "get_shadow_data" in self:
 			var shadow_data = call("get_shadow_data")
 			if shadow_data is Dictionary and "sprite_shadow" in shadow_data and shadow_data.sprite_shadow is Node:
 				var is_horizontal_jump = (motion.y == 0)
-				shadow_data.sprite_shadow.set_meta("is_jumping", true)
-				shadow_data.sprite_shadow.set_meta("jumping_shadow_global_position", global_position)
-				shadow_data.sprite_shadow.set_meta("jumping_shadow_parent", self)
-				shadow_data.sprite_shadow.set_meta("jumping_horizontal_mode", is_horizontal_jump)
-				shadow_data.sprite_shadow.set_meta("jumping_start_position", start_pos)
-				shadow_data.sprite_shadow.set_meta("jumping_target_position", end_pos)
+				var s = shadow_data.sprite_shadow
+				s.set_meta("is_jumping", true)
+				s.set_meta("jumping_shadow_global_position", global_position)
+				s.set_meta("jumping_shadow_parent", self)
+				s.set_meta("jumping_horizontal_mode", is_horizontal_jump)
+				s.set_meta("jumping_start_position", start_pos)
+				s.set_meta("jumping_target_position", end_pos)
 
 		is_jumping = true
-		
+		force_animation_enabled = true
 		current_animation = "start_jump"
 		current_frame = 0
-		force_animation_enabled = true
+		var followers = get_tree().get_nodes_in_group("follower")
+		var map = {}
+		for f in followers:
+			map[f.follower_id] = f.global_position
+		var visual_rect = Rect2()
+		var body_node = get_node_or_null("%Body")
+		if body_node:
+			visual_rect = body_node.region_rect
+		_add_snapshot({
+			"event": "start_jump",
+			"jump_start_pos": start_pos,
+			"jump_target": end_pos,
+			"jump_height": jump_height,
+			"jump_duration": jump_duration,
+			"followers_position": map,
+			"pos": global_position,
+			"scale": scale,
+			"modulate": modulate,
+			"z_index": z_index,
+			"region_rect": visual_rect,
+			"flip_h": body_node.flip_h if body_node else false,
+			"direction": current_direction,
+			"rotation": rotation,
+			"animation": current_animation,
+			"is_jumping": is_jumping
+		})
 		
 		if movement_tween:
 			movement_tween.kill()
 		
 		movement_tween = create_tween()
+		movement_tween.set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
 
 		if start_fx:
 			movement_tween.tween_callback(GameManager.play_se.bind(
 				start_fx.get("path", ""), start_fx.get("volume", 0.0), start_fx.get("pitch", 1.0)
 			))
 		
-		# Squash before jump
-		movement_tween.tween_property(self, "scale", Vector2(0.94, 0.55), 0.12).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
-		movement_tween.tween_interval(0.01)
+		movement_tween.tween_property(self, "scale", Vector2(0.94, 0.55), 0.15).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+		movement_tween.tween_callback(_smart_record_history) 
+		movement_tween.tween_interval(0.02)
 		
 		movement_tween.tween_callback(
 			func():
@@ -1752,19 +2019,18 @@ func jump_to(new_pos: Vector2, route: RPGMovementRoute = null, start_fx: Diction
 		movement_tween.tween_interval(0.001)
 		movement_tween.set_parallel(true)
 		
-		movement_tween.tween_property(self, "scale", Vector2(1.02, 1.04), 0.06).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		movement_tween.tween_property(self, "scale", Vector2(1.02, 1.04), 0.1).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
-		# Simulated parabola motion using custom tween (position + y arc)
 		movement_tween.tween_method(
-			func(t): position = start_pos.lerp(end_pos, t) - Vector2(0, sin(t * PI) * jump_height),
-			0.0, 1.0, jump_duration
+			func(t): 
+				position = start_pos.lerp(end_pos, t) - Vector2(0, sin(t * PI) * jump_height)
+		, 0.0, 1.0, jump_duration
 		).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 		
-		# Land sound
 		if end_fx:
 			movement_tween.tween_callback(GameManager.play_se.bind(
 				end_fx.get("path", ""), end_fx.get("volume", 0.0), end_fx.get("pitch", 1.0)
-			)).set_delay(jump_duration - 0.03)
+			)).set_delay(jump_duration - 0.05)
 		
 		movement_tween.tween_callback(set.bind("current_frame", 0)).set_delay(jump_duration * 0.65)
 		movement_tween.tween_callback(
@@ -1783,18 +2049,22 @@ func jump_to(new_pos: Vector2, route: RPGMovementRoute = null, start_fx: Diction
 				get_parent().add_child(dust)
 		)
 
-		# Compress and return to normal scale
-		movement_tween.tween_property(self, "scale", Vector2(1.0, 0.92), 0.15).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CIRC)
-		movement_tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.2).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_EXPO)
+		movement_tween.tween_property(self, "scale", Vector2(1.1, 0.90), 0.1).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CIRC)
+		movement_tween.tween_callback(_smart_record_history)
+		movement_tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.15).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
 
 		movement_tween.tween_callback(
 			func():
 				is_jumping = false
 				force_animation_enabled = false
+				_add_snapshot({"event": "end_jump"})
+				
 				if "get_shadow_data" in self:
 					var shadow_data = call("get_shadow_data")
 					if shadow_data is Dictionary and "sprite_shadow" in shadow_data and shadow_data.sprite_shadow is Node:
 						shadow_data.sprite_shadow.set_meta("is_jumping", false)
+				
+				scale = Vector2.ONE 
 		)
 
 		await movement_tween.finished
@@ -1805,7 +2075,7 @@ func vehicle_jump_to(new_pos: Vector2, route: RPGMovementRoute = null, start_fx:
 		return
 	
 	is_jumping = true
-		
+
 	await current_vehicle.jump_to(new_pos, route, start_fx, end_fx)
 	
 	is_jumping = false
@@ -1862,6 +2132,8 @@ func free_movement(delta: float) -> void:
 	var possible_movements = get_possible_movements(movement_vector)
 	if possible_movements:
 		movement_vector *= Vector2(possible_movements)
+		if movement_vector.length_squared() > 0:
+			movement_vector = movement_vector.normalized()
 		movement_vector = movement_vector * (movement_speed if !is_running else running_speed)
 		velocity = movement_vector
 		move_and_slide()
@@ -1873,12 +2145,12 @@ func free_movement(delta: float) -> void:
 	# update steps
 	if GameManager.current_map:
 		update_virtual_tile(velocity * delta)
-		
+		var tile_size: Vector2 = GameManager.get_map_tile_size()
 		cumulative_steps += (movement_vector * delta).length()
-		var steps_to_add = int(cumulative_steps / GameManager.current_map.tile_size.x)
+		var steps_to_add = int(cumulative_steps / tile_size.x)
 		if steps_to_add > 0:
 			GameManager.game_state.stats.steps += steps_to_add
-			cumulative_steps = int(cumulative_steps) % GameManager.current_map.tile_size.x
+			cumulative_steps = int(cumulative_steps) % int(tile_size.x)
 	
 	end_movement.emit()
 
@@ -1911,7 +2183,7 @@ func _try_move_with_free_mode(current_tile: Vector2i, motion: Vector2) -> Vector
 	return result
 
 
-func get_possible_movements(motion: Vector2) -> Vector2i:
+func get_possible_movements(motion: Vector2, is_jump_action: bool = false) -> Vector2i:
 	var result: Vector2i = Vector2i.ZERO
 
 	# Redondear el motion hacia afuera
@@ -1943,6 +2215,44 @@ func get_possible_movements(motion: Vector2) -> Vector2i:
 	var can_move_horizontally = dx != 0 and get_tile_passability(horizontal_tile, motion) != Vector2i.ZERO
 	var can_move_vertically = dy != 0 and get_tile_passability(vertical_tile, motion) != Vector2i.ZERO
 	var can_move_diagonally = dx != 0 and dy != 0 and get_tile_passability(diagonal_tile, motion) != Vector2i.ZERO
+	
+	if is_jump_action:
+		# For jumping, we need strict passability (no sliding)
+		var is_target_passable = true
+		var target_tile_for_check = Vector2i.ZERO
+
+		if dx != 0 and dy != 0:
+			if not can_move_diagonally: is_target_passable = false
+			target_tile_for_check = diagonal_tile
+		elif dx != 0:
+			if not can_move_horizontally: is_target_passable = false
+			target_tile_for_check = horizontal_tile
+		elif dy != 0:
+			if not can_move_vertically: is_target_passable = false
+			target_tile_for_check = vertical_tile
+		
+		# If map blocks it, return ZERO
+		if not is_target_passable:
+			return Vector2i.ZERO
+			
+		# Check for solid events at the target tile (since jump bypasses physics collision)
+		var events_at_target = map.get_in_game_events_in(target_tile_for_check)
+		if not is_in_group("player") and GameManager.current_player and GameManager.current_player.get_current_tile() == target_tile_for_check:
+			events_at_target.append(GameManager.current_player)
+			
+		for entity in events_at_target:
+			if entity == self: continue
+			
+			var is_solid_entity = false
+			if entity.is_in_group("player") or entity is RPGVehicle:
+				is_solid_entity = !entity.is_passable() if entity.has_method("is_passable") else true
+			elif "character_options" in entity and entity.character_options:
+				is_solid_entity = not entity.character_options.passable
+			
+			if is_solid_entity:
+				return Vector2i.ZERO
+		
+		return Vector2i(1 if dx != 0 else 0, 1 if dy != 0 else 0)
 
 	if can_move_horizontally and can_move_vertically and can_move_diagonally:
 		result = Vector2i(1, 1)
@@ -1957,7 +2267,6 @@ func get_possible_movements(motion: Vector2) -> Vector2i:
 	if result.y != 0 and not map.is_tile_passable_from_direction(get_current_tile(), current_direction, true):
 		result.y = 0
 
-	# Modo libre: intenta moverse aunque no esté alineado al grid
 	if movement_current_mode == MOVEMENTMODE.FREE:
 		if result == Vector2i.ZERO:
 			result = _try_move_with_free_mode(current_tile, motion)

@@ -41,7 +41,7 @@ func _ready() -> void:
 func _set_gold() -> void:
 	var icon_path: String = RPGSYSTEM.database.system.currency_info.get("icon", "")
 	var icon_name: String = RPGSYSTEM.database.system.currency_info.get("name", "")
-	if ResourceLoader.exists(icon_path):
+	if AssetManager.exists(icon_path):
 		%GoldIcon.texture = load(icon_path)
 	else:
 		%GoldIcon.texture = null
@@ -87,7 +87,7 @@ func start() -> void:
 	
 	super()
 	
-	ControllerManager.set_focusable_control_threshold(500, 500)
+	ControllerManager.set_focusable_control_threshold(150, 150)
 	
 	main_menu_items.start()
 	party_menu.restart()

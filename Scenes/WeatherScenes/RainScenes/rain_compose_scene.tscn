@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://d10wcige8rrvx"]
+[gd_scene format=3 uid="uid://d10wcige8rrvx"]
 
 [ext_resource type="Script" uid="uid://dknujm3i5cfja" path="res://Scenes/WeatherScenes/RainScenes/rain_compose_scene.gd" id="1_mqhdu"]
 [ext_resource type="PackedScene" uid="uid://c0ropdtr1ajl2" path="res://Scenes/WeatherScenes/RainScenes/water_ripples_scene.tscn" id="2_f88oc"]
@@ -14,39 +14,39 @@ blend_mode = 1
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_mmpyy"]
 blend_mode = 1
 
-[node name="RainComposeScene" type="Node2D"]
+[node name="RainComposeScene" type="Node2D" unique_id=1366758243]
 script = ExtResource("1_mqhdu")
 modulate_scene = Color(0.68902165, 0.69662315, 0.7472667, 0.77254903)
 
-[node name="WaterRipplesScene" parent="." instance=ExtResource("2_f88oc")]
+[node name="WaterRipplesScene" parent="." unique_id=1415278438 instance=ExtResource("2_f88oc")]
 unique_name_in_owner = true
 material = SubResource("CanvasItemMaterial_5h8a0")
 script = ExtResource("3_g8df1")
 
-[node name="RainScene" parent="." instance=ExtResource("2_jqvxy")]
+[node name="RainScene" parent="." unique_id=1840083656 instance=ExtResource("2_jqvxy")]
 unique_name_in_owner = true
 z_index = 100
 z_as_relative = false
 material = SubResource("CanvasItemMaterial_mmpyy")
 
-[node name="Ray" parent="." instance=ExtResource("4_pukin")]
+[node name="Ray" parent="." unique_id=693859658 instance=ExtResource("4_pukin")]
 unique_name_in_owner = true
 z_index = 1
 z_as_relative = false
 
-[node name="ImpacstGroup" type="Node2D" parent="."]
+[node name="ImpacstGroup" type="Node2D" parent="." unique_id=539824143]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.278431)
 z_index = 1
 z_as_relative = false
 
-[node name="BGSPlayer" type="AudioStreamPlayer" parent="."]
+[node name="BGSPlayer" type="AudioStreamPlayer" parent="." unique_id=1669404863]
 unique_name_in_owner = true
 stream = ExtResource("5_un8ib")
 autoplay = true
 bus = &"Ambient"
 
-[node name="SEPlayer" type="AudioStreamPlayer" parent="."]
+[node name="SEPlayer" type="AudioStreamPlayer" parent="." unique_id=1434800809]
 unique_name_in_owner = true
 stream = ExtResource("6_fmleh")
 volume_db = -14.3885

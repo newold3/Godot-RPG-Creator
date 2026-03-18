@@ -50,6 +50,19 @@ func get_class():
 ## Folder path for equipment data.
 @export var equipment_folder: String = "res://Data/Equipment/"
 
+## Whether to create equipment set.
+@export var create_equipment_set: bool = false
+
+## Whether to create ingame custome.
+@export var create_ingame_costume: bool = false
+
+## Recording mode for the set[br]
+## 0 = FULL_STRICT: Delete everything that is not included in the set (including weapons).[br]
+## 1 = FULL_HYBRID: Delete all clothing that is not brought, but KEEP previous weapons.[br]
+## 2 = PARTIAL: Solo sustituye lo que trae, mantiene todo lo demás (capa)
+## 3 = INGAME CUSTOME: Solo sustituye lo que trae, mantiene todo lo demás (capa)
+@export var set_mode: int = 0 
+
 ## Dictionary of parts to save.
 @export var save_parts: Dictionary = {"mask": true, "hat": true, "glasses": true, "suit": true, "jacket": true, "shirt": true, "gloves": true, "belt": true, "pants": true, "shoes": true, "back": true, "mainhand": true, "offhand": true, "ammo": true}
 

@@ -3,6 +3,9 @@ class_name CustomSimpleButton
 extends Button
 
 
+## Extra tags for the search filter. Separate them by spaces, commas or new lines.
+@export_multiline var custom_search_tags: String = ""
+
 var tween: Tween
 var last_state: bool
 

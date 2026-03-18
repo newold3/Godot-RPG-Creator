@@ -1,11 +1,12 @@
 @tool
 class_name RPGLPCCharacter
-extends  Resource
+extends Resource
 
 
 func get_class(): return "RPGLPCCharacter"
 
 
+@export var body_id: String = ""
 @export var body_type: String = ""
 @export var head_type: String = ""
 @export var palette: String = ""
@@ -22,10 +23,25 @@ func get_class(): return "RPGLPCCharacter"
 @export var scene_path: String = ""
 @export var hidden_items: Array = []
 
+## Dictionary that stores metadata exclusive to the Editor (color cache, families, raws).
+## Does not affect the final game, but is vital for being able to re-edit the character without losing data.
+@export var editor_color_data: Dictionary = {}
+
+
+func clear() -> void:
+	for key in ["body_type", "head_type", "palette", "race", "gender", "face_preview", "character_preview", "battler_preview", "event_preview", "scene_path", "body_id"]:
+		set(key, "")
+
+	always_show_weapon = false
+	inmutable = false
+	equipment_parts.clear()
+	body_parts.clear()
+	hidden_items.clear()
+
 
 func set_generic_config() -> void:
-	equipment_parts = null
-	body_parts = null
+	equipment_parts.clear()
+	body_parts.clear()
 	hidden_items.clear()
 
 
@@ -37,6 +53,39 @@ func _to_string() -> String:
 		"Race = %s" % race,
 		"Gender = %s" % gender
 	])
+
+
+## Creates a new IngameCostume instance based on an existing character.
+## Uses reflection to automatically copy all storage properties.
+static func create_from_costume(source: IngameCostume) -> RPGLPCCharacter:
+	var character = RPGLPCCharacter.new()
+
+	# Iterate over all properties of the source object
+	for prop in source.get_property_list():
+		if not (prop.usage & PROPERTY_USAGE_STORAGE):
+			continue
+
+		var name: String = prop.name
+		
+		# Skip internal Godot properties that we should not overwrite
+		if name in ["script", "resource_path", "resource_local_to_scene", "resource_name"]:
+			continue
+
+		# Get the value from the source
+		var value = source.get(name)
+
+		# HANDLE DEEP COPIES
+		# If it is a Resource (like EquipmentData) or a collection (Array/Dictionary),
+		# we must duplicate it to avoid shared references.
+		if value is Resource and value.has_method("duplicate"):
+			character.set(name, value.duplicate_deep(DEEP_DUPLICATE_ALL))
+		elif value is Array or value is Dictionary:
+			character.set(name, value.duplicate_deep(DEEP_DUPLICATE_ALL))
+		else:
+			# For primitive types (String, int, bool), simple assignment is fine
+			character.set(name, value)
+
+	return character
 
 
 func serialize_character_to_database() -> Dictionary:

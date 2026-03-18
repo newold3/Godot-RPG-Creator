@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://cnwjhxxk2r4m1"]
+[gd_scene format=3 uid="uid://cnwjhxxk2r4m1"]
 
 [ext_resource type="Shader" uid="uid://cyhg8fota2yr6" path="res://Assets/Shaders/animated_progress_bar.gdshader" id="1_1ugvk"]
 [ext_resource type="Theme" uid="uid://cp5rfiijsw4j4" path="res://Assets/Themes/in_game_theme.tres" id="1_ljfav"]
@@ -210,7 +210,7 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="DefaultManagerExtractionScene" type="MarginContainer"]
+[node name="DefaultManagerExtractionScene" type="MarginContainer" unique_id=608541572]
 custom_minimum_size = Vector2(365, 155)
 anchors_preset = 7
 anchor_left = 0.5
@@ -226,7 +226,7 @@ grow_vertical = 0
 theme = ExtResource("1_ljfav")
 script = ExtResource("2_tjtcq")
 
-[node name="Background" type="NinePatchRect" parent="."]
+[node name="Background" type="NinePatchRect" parent="." unique_id=23083059]
 layout_mode = 2
 texture = ExtResource("2_plq3n")
 patch_margin_left = 41
@@ -234,34 +234,34 @@ patch_margin_top = 49
 patch_margin_right = 41
 patch_margin_bottom = 40
 
-[node name="Contents" type="MarginContainer" parent="."]
+[node name="Contents" type="MarginContainer" parent="." unique_id=1750493088]
 layout_mode = 2
 theme_override_constants/margin_left = 14
 theme_override_constants/margin_top = 27
 theme_override_constants/margin_right = 14
 theme_override_constants/margin_bottom = 20
 
-[node name="PanelContainer" type="PanelContainer" parent="Contents"]
+[node name="PanelContainer" type="PanelContainer" parent="Contents" unique_id=1467587371]
 z_index = 10
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_o68ga")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Contents/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Contents/PanelContainer" unique_id=595273931]
 layout_mode = 2
 
-[node name="ResourceInfo" type="MarginContainer" parent="Contents/PanelContainer/VBoxContainer"]
+[node name="ResourceInfo" type="MarginContainer" parent="Contents/PanelContainer/VBoxContainer" unique_id=670382996]
 layout_mode = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_right = 5
 
-[node name="HboxContainer" type="HBoxContainer" parent="Contents/PanelContainer/VBoxContainer/ResourceInfo"]
+[node name="HboxContainer" type="HBoxContainer" parent="Contents/PanelContainer/VBoxContainer/ResourceInfo" unique_id=1485712379]
 layout_mode = 2
 
-[node name="Control" type="Control" parent="Contents/PanelContainer/VBoxContainer/ResourceInfo/HboxContainer"]
+[node name="Control" type="Control" parent="Contents/PanelContainer/VBoxContainer/ResourceInfo/HboxContainer" unique_id=1557118497]
 custom_minimum_size = Vector2(70, 48)
 layout_mode = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="Contents/PanelContainer/VBoxContainer/ResourceInfo/HboxContainer/Control"]
+[node name="PanelContainer" type="PanelContainer" parent="Contents/PanelContainer/VBoxContainer/ResourceInfo/HboxContainer/Control" unique_id=307469724]
 custom_minimum_size = Vector2(48, 48)
 layout_mode = 1
 anchors_preset = 8
@@ -277,21 +277,21 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_fwwox")
 
-[node name="Icon" type="TextureRect" parent="Contents/PanelContainer/VBoxContainer/ResourceInfo/HboxContainer/Control/PanelContainer"]
+[node name="Icon" type="TextureRect" parent="Contents/PanelContainer/VBoxContainer/ResourceInfo/HboxContainer/Control/PanelContainer" unique_id=572367624]
 unique_name_in_owner = true
 layout_mode = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Contents/PanelContainer/VBoxContainer/ResourceInfo/HboxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Contents/PanelContainer/VBoxContainer/ResourceInfo/HboxContainer" unique_id=1640437310]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Contents/PanelContainer/VBoxContainer/ResourceInfo/HboxContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Contents/PanelContainer/VBoxContainer/ResourceInfo/HboxContainer/VBoxContainer" unique_id=672739230]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="Profession" type="Label" parent="Contents/PanelContainer/VBoxContainer/ResourceInfo/HboxContainer/VBoxContainer/HBoxContainer"]
+[node name="Profession" type="Label" parent="Contents/PanelContainer/VBoxContainer/ResourceInfo/HboxContainer/VBoxContainer/HBoxContainer" unique_id=2138557850]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -301,7 +301,7 @@ theme_override_constants/shadow_offset_y = 2
 theme_override_fonts/font = ExtResource("4_metoo")
 text = "Profession"
 
-[node name="Label" type="Label" parent="Contents/PanelContainer/VBoxContainer/ResourceInfo/HboxContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="Contents/PanelContainer/VBoxContainer/ResourceInfo/HboxContainer/VBoxContainer/HBoxContainer" unique_id=223971810]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5764706)
@@ -310,7 +310,7 @@ theme_override_constants/shadow_offset_y = 2
 theme_override_fonts/font = ExtResource("4_metoo")
 text = " - "
 
-[node name="LevelName" type="Label" parent="Contents/PanelContainer/VBoxContainer/ResourceInfo/HboxContainer/VBoxContainer/HBoxContainer"]
+[node name="LevelName" type="Label" parent="Contents/PanelContainer/VBoxContainer/ResourceInfo/HboxContainer/VBoxContainer/HBoxContainer" unique_id=1594485484]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -320,11 +320,11 @@ theme_override_constants/shadow_offset_y = 2
 theme_override_fonts/font = ExtResource("4_metoo")
 text = "Level"
 
-[node name="Control" type="Control" parent="Contents/PanelContainer/VBoxContainer/ResourceInfo/HboxContainer/VBoxContainer/HBoxContainer"]
+[node name="Control" type="Control" parent="Contents/PanelContainer/VBoxContainer/ResourceInfo/HboxContainer/VBoxContainer/HBoxContainer" unique_id=717040935]
 custom_minimum_size = Vector2(8, 0)
 layout_mode = 2
 
-[node name="PlayerLevel" type="Label" parent="Contents/PanelContainer/VBoxContainer/ResourceInfo/HboxContainer/VBoxContainer/HBoxContainer"]
+[node name="PlayerLevel" type="Label" parent="Contents/PanelContainer/VBoxContainer/ResourceInfo/HboxContainer/VBoxContainer/HBoxContainer" unique_id=199716121]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -334,10 +334,10 @@ theme_override_constants/shadow_offset_y = 2
 theme_override_fonts/font = ExtResource("4_metoo")
 text = "1"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="Contents/PanelContainer/VBoxContainer/ResourceInfo/HboxContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="Contents/PanelContainer/VBoxContainer/ResourceInfo/HboxContainer/VBoxContainer" unique_id=888727163]
 layout_mode = 2
 
-[node name="ItemName" type="Label" parent="Contents/PanelContainer/VBoxContainer/ResourceInfo/HboxContainer/VBoxContainer/HBoxContainer2"]
+[node name="ItemName" type="Label" parent="Contents/PanelContainer/VBoxContainer/ResourceInfo/HboxContainer/VBoxContainer/HBoxContainer2" unique_id=1894304537]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -347,7 +347,7 @@ theme_override_constants/shadow_offset_y = 2
 theme_override_fonts/font = ExtResource("4_metoo")
 text = "Resource"
 
-[node name="ItemLevel" type="Label" parent="Contents/PanelContainer/VBoxContainer/ResourceInfo/HboxContainer/VBoxContainer/HBoxContainer2"]
+[node name="ItemLevel" type="Label" parent="Contents/PanelContainer/VBoxContainer/ResourceInfo/HboxContainer/VBoxContainer/HBoxContainer2" unique_id=565614843]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5764706)
@@ -356,29 +356,29 @@ theme_override_constants/shadow_offset_y = 2
 theme_override_fonts/font = ExtResource("4_metoo")
 text = "(1)"
 
-[node name="Separator" type="MarginContainer" parent="Contents/PanelContainer/VBoxContainer"]
+[node name="Separator" type="MarginContainer" parent="Contents/PanelContainer/VBoxContainer" unique_id=26199389]
 layout_mode = 2
 theme_override_constants/margin_left = -3
 theme_override_constants/margin_right = -3
 
-[node name="HSeparator" type="TextureRect" parent="Contents/PanelContainer/VBoxContainer/Separator"]
+[node name="HSeparator" type="TextureRect" parent="Contents/PanelContainer/VBoxContainer/Separator" unique_id=805457296]
 z_index = 1
 z_as_relative = false
 layout_mode = 2
 texture = SubResource("GradientTexture2D_tjtcq")
 
-[node name="Bars" type="MarginContainer" parent="Contents/PanelContainer/VBoxContainer"]
+[node name="Bars" type="MarginContainer" parent="Contents/PanelContainer/VBoxContainer" unique_id=952508601]
 layout_mode = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_right = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Contents/PanelContainer/VBoxContainer/Bars"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Contents/PanelContainer/VBoxContainer/Bars" unique_id=1278054645]
 layout_mode = 2
 
-[node name="SucessBar" type="HBoxContainer" parent="Contents/PanelContainer/VBoxContainer/Bars/VBoxContainer"]
+[node name="SucessBar" type="HBoxContainer" parent="Contents/PanelContainer/VBoxContainer/Bars/VBoxContainer" unique_id=320507729]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Contents/PanelContainer/VBoxContainer/Bars/VBoxContainer/SucessBar"]
+[node name="Label" type="Label" parent="Contents/PanelContainer/VBoxContainer/Bars/VBoxContainer/SucessBar" unique_id=1482593525]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5764706)
@@ -387,28 +387,28 @@ theme_override_constants/shadow_offset_y = 2
 theme_override_fonts/font = ExtResource("4_metoo")
 text = "Success:"
 
-[node name="Panel" type="PanelContainer" parent="Contents/PanelContainer/VBoxContainer/Bars/VBoxContainer/SucessBar"]
+[node name="Panel" type="PanelContainer" parent="Contents/PanelContainer/VBoxContainer/Bars/VBoxContainer/SucessBar" unique_id=1191481905]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_qbd8u")
 
-[node name="Panel" type="PanelContainer" parent="Contents/PanelContainer/VBoxContainer/Bars/VBoxContainer/SucessBar/Panel"]
+[node name="Panel" type="PanelContainer" parent="Contents/PanelContainer/VBoxContainer/Bars/VBoxContainer/SucessBar/Panel" unique_id=868938468]
 clip_children = 1
 clip_contents = true
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_i07gg")
 
-[node name="SuccessProgressBar" type="ColorRect" parent="Contents/PanelContainer/VBoxContainer/Bars/VBoxContainer/SucessBar/Panel/Panel"]
+[node name="SuccessProgressBar" type="ColorRect" parent="Contents/PanelContainer/VBoxContainer/Bars/VBoxContainer/SucessBar/Panel/Panel" unique_id=1610056273]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_qbd8u")
 custom_minimum_size = Vector2(240, 10)
 layout_mode = 2
 
-[node name="FailureBar" type="HBoxContainer" parent="Contents/PanelContainer/VBoxContainer/Bars/VBoxContainer"]
+[node name="FailureBar" type="HBoxContainer" parent="Contents/PanelContainer/VBoxContainer/Bars/VBoxContainer" unique_id=1362240817]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Contents/PanelContainer/VBoxContainer/Bars/VBoxContainer/FailureBar"]
+[node name="Label" type="Label" parent="Contents/PanelContainer/VBoxContainer/Bars/VBoxContainer/FailureBar" unique_id=1926260922]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5764706)
@@ -417,31 +417,31 @@ theme_override_constants/shadow_offset_y = 2
 theme_override_fonts/font = ExtResource("4_metoo")
 text = "Failure:"
 
-[node name="Panel" type="PanelContainer" parent="Contents/PanelContainer/VBoxContainer/Bars/VBoxContainer/FailureBar"]
+[node name="Panel" type="PanelContainer" parent="Contents/PanelContainer/VBoxContainer/Bars/VBoxContainer/FailureBar" unique_id=485374849]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_qbd8u")
 
-[node name="Panel" type="PanelContainer" parent="Contents/PanelContainer/VBoxContainer/Bars/VBoxContainer/FailureBar/Panel"]
+[node name="Panel" type="PanelContainer" parent="Contents/PanelContainer/VBoxContainer/Bars/VBoxContainer/FailureBar/Panel" unique_id=1475419968]
 clip_children = 1
 clip_contents = true
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_i07gg")
 
-[node name="FailureProgressBar" type="ColorRect" parent="Contents/PanelContainer/VBoxContainer/Bars/VBoxContainer/FailureBar/Panel/Panel"]
+[node name="FailureProgressBar" type="ColorRect" parent="Contents/PanelContainer/VBoxContainer/Bars/VBoxContainer/FailureBar/Panel/Panel" unique_id=1404038451]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_i07gg")
 custom_minimum_size = Vector2(240, 10)
 layout_mode = 2
 
-[node name="TopFrameAndDecorations" type="MarginContainer" parent="."]
+[node name="TopFrameAndDecorations" type="MarginContainer" parent="." unique_id=1088688501]
 z_index = 50
 layout_mode = 2
 metadata/_edit_group_ = true
 metadata/_edit_lock_ = true
 
-[node name="Borders" type="NinePatchRect" parent="TopFrameAndDecorations"]
+[node name="Borders" type="NinePatchRect" parent="TopFrameAndDecorations" unique_id=654220672]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -452,19 +452,19 @@ patch_margin_top = 49
 patch_margin_right = 41
 patch_margin_bottom = 40
 
-[node name="DecorationTop" type="MarginContainer" parent="TopFrameAndDecorations"]
+[node name="DecorationTop" type="MarginContainer" parent="TopFrameAndDecorations" unique_id=1311784571]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 theme_override_constants/margin_top = 1
 
-[node name="TextureRect" type="TextureRect" parent="TopFrameAndDecorations/DecorationTop"]
+[node name="TextureRect" type="TextureRect" parent="TopFrameAndDecorations/DecorationTop" unique_id=1570950707]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
 texture = ExtResource("9_48mul")
 
-[node name="MarginContainer" type="MarginContainer" parent="TopFrameAndDecorations/DecorationTop/TextureRect"]
+[node name="MarginContainer" type="MarginContainer" parent="TopFrameAndDecorations/DecorationTop/TextureRect" unique_id=585151214]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -473,47 +473,47 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_top = -3
 
-[node name="WindowIcon" type="TextureRect" parent="TopFrameAndDecorations/DecorationTop/TextureRect/MarginContainer"]
+[node name="WindowIcon" type="TextureRect" parent="TopFrameAndDecorations/DecorationTop/TextureRect/MarginContainer" unique_id=263203592]
 unique_name_in_owner = true
 layout_mode = 2
 texture = ExtResource("10_metoo")
 expand_mode = 1
 stretch_mode = 3
 
-[node name="DecorationBottom" type="MarginContainer" parent="TopFrameAndDecorations"]
+[node name="DecorationBottom" type="MarginContainer" parent="TopFrameAndDecorations" unique_id=261418427]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
 theme_override_constants/margin_top = -26
 
-[node name="TextureRect" type="TextureRect" parent="TopFrameAndDecorations/DecorationBottom"]
+[node name="TextureRect" type="TextureRect" parent="TopFrameAndDecorations/DecorationBottom" unique_id=733288802]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 texture = ExtResource("11_0dr3x")
 
-[node name="DecorationLeft" type="MarginContainer" parent="TopFrameAndDecorations"]
+[node name="DecorationLeft" type="MarginContainer" parent="TopFrameAndDecorations" unique_id=234154261]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
 theme_override_constants/margin_left = 10
 
-[node name="TextureRect" type="TextureRect" parent="TopFrameAndDecorations/DecorationLeft"]
+[node name="TextureRect" type="TextureRect" parent="TopFrameAndDecorations/DecorationLeft" unique_id=1460050103]
 layout_mode = 2
 texture = ExtResource("12_72qtt")
 
-[node name="DecorationRight" type="MarginContainer" parent="TopFrameAndDecorations"]
+[node name="DecorationRight" type="MarginContainer" parent="TopFrameAndDecorations" unique_id=1515904522]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
 theme_override_constants/margin_left = 0
 theme_override_constants/margin_right = 10
 
-[node name="TextureRect" type="TextureRect" parent="TopFrameAndDecorations/DecorationRight"]
+[node name="TextureRect" type="TextureRect" parent="TopFrameAndDecorations/DecorationRight" unique_id=1138289483]
 layout_mode = 2
 texture = ExtResource("12_72qtt")
 
-[node name="EnergyBall" type="AnimatedSprite2D" parent="."]
+[node name="EnergyBall" type="AnimatedSprite2D" parent="." unique_id=2011305366]
 unique_name_in_owner = true
 modulate = Color(0.58, 0.86, 1, 0)
 z_index = 200

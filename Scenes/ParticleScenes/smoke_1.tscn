@@ -1,6 +1,5 @@
-[gd_scene load_steps=11 format=3 uid="uid://cuj4amehob67d"]
+[gd_scene format=3 uid="uid://cuj4amehob67d"]
 
-[ext_resource type="Texture2D" uid="uid://btc0ajprot5r" path="res://Assets/EffekEffects/MAGICALxSPIRAL/Texture/smoke_01.png" id="1_0wo5b"]
 [ext_resource type="Script" uid="uid://b1m7vwkaelnsa" path="res://Scenes/ParticleScenes/default_particles_script.gd" id="2_il66u"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_0cgt8"]
@@ -48,13 +47,12 @@ scale_curve = SubResource("CurveTexture_72ubp")
 color_ramp = SubResource("GradientTexture1D_da2c3")
 alpha_curve = SubResource("CurveTexture_2qtqf")
 
-[node name="Smoke1" type="GPUParticles2D"]
+[node name="Smoke1" type="GPUParticles2D" unique_id=1085192386]
 z_index = 1
 z_as_relative = false
 material = SubResource("CanvasItemMaterial_0cgt8")
 emitting = false
 amount = 45
-texture = ExtResource("1_0wo5b")
 lifetime = 3.0
 one_shot = true
 explosiveness = 1.0

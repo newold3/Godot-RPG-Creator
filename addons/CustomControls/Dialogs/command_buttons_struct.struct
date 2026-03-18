@@ -1,0 +1,175 @@
+## Configuración maestra con IDs y Emojis ÚNICOS para Godot RPG CREATOR
+const COMMANDS_CONFIG: Dictionary = {
+	"Tab1": {
+		"Messages:": [
+			{"id": "Button1", "text": "⚙️ Dialog Settings", "tooltip": "[title]Dialog Settings[/title]\nConfigures the dialogue box settings, including text speed, position, and appearance."},
+			{"id": "Button2", "text": "💬 Show Dialog Text", "tooltip": "[title]Show Dialog Text[/title]\nDisplays text in a dialogue box for character interactions or narrative."},
+			{"id": "Button117", "text": "⏯️ Resume Dialog", "tooltip": "[title]Resume Dialog[/title]\nResumes a paused or interrupted dialogue sequence."},
+			{"id": "Button3", "text": "❓ Show Choices", "tooltip": "[title]Show Choices[/title]\nPresents the player with selectable options to influence the story or gameplay."},
+			{"id": "Button4", "text": "⌨️ Text / Numerical Input", "tooltip": "[title]Text / Numerical Input[/title]\nAllows the player to input text or numbers via an on-screen interface."},
+			{"id": "Button5", "text": "⭐ Select Important Item", "tooltip": "[title]Select Important Item[/title]\nPrompts the player to choose a key item for a specific action."},
+			{"id": "Button6", "text": "📜 Display Scrolling Text", "tooltip": "[title]Display Scrolling Text[/title]\nDisplays scrolling text box"},
+			{"id": "Button108", "text": "⚡ Show Quick Text", "tooltip": "[title]Show Quick Text[/title]\nShows text immediately without gradual display or delay."}
+		],
+		"Game Progress:": [
+			{"id": "Button12", "text": "🎛️ Switch Control", "tooltip": "[title]Switch Control[/title]\nManages boolean switches (On/Off) to track game progress or trigger events."},
+			{"id": "Button13", "text": "🔢 Number Variable Control", "tooltip": "[title]Number Variable Control[/title]\nAdjusts numerical variables used for tracking scores, timers, or other quantifiable data."},
+			{"id": "Button113", "text": "✍️ Text Variable Control", "tooltip": "[title]Text Variable Control[/title]\nModifies text-based variables for dynamic dialogue, names, or custom messages."},
+			{"id": "Button14", "text": "📍 Local Switch Control", "tooltip": "[title]Local Switch Control[/title]\nControls switches limited to a specific map or event, rather than global states."},
+			{"id": "Button130", "text": "🎚️ User Parameter", "tooltip": "[title]User Parameter Control[/title]\nChange the value of any user parameter added to the database"},
+			{"id": "Button131", "text": "🥧 Stats", "tooltip": "[title]Stats[/title]\nView and manage player or global statistical data."},
+			{"id": "Button15", "text": "⏰ Set Timer", "tooltip": "[title]Set Timer[/title]\nStarts or adjusts a countdown timer for time-limited challenges or events."},
+			{"id": "Button125", "text": "📋 Manage Quest", "tooltip": "[title]Manage Quest[/title]\nUnlock, Start, Cancel, Fail, Complete, or Restart a Mission."}
+		],
+		"Flow Control:": [
+			{"id": "Button16", "text": "⚖️ Conditional Separation", "tooltip": "[title]Conditional Separation[/title]\nCreates branching logic based on conditions (e.g., \"if X, then Y\")."},
+			{"id": "Button17", "text": "🔁 Cycle", "tooltip": "[title]Cycle[/title]\nRepeats a set of actions or commands until a condition is met."},
+			{"id": "Button18", "text": "💥 Break Cycle", "tooltip": "[title]Break Cycle[/title]\nExits a repeating loop or cycle prematurely."},
+			{"id": "Button19", "text": "⏹️ Stop Event", "tooltip": "[title]Stop Event[/title]\nHalts the execution of the current event or script."},
+			{"id": "Button20", "text": "🌐 Call Global Event", "tooltip": "[title]Call Global Event[/title]\nTriggers a pre-defined event shared across multiple scenarios."},
+			{"id": "Button21", "text": "🚩 Marker", "tooltip": "[title]Marker[/title]\nMarks a specific point in the event code for reference."},
+			{"id": "Button22", "text": "⏩ Go To Marker", "tooltip": "[title]Go To Marker[/title]\nJumps the event execution to a predefined marked point."},
+			{"id": "Button23", "text": "💭 Comment", "tooltip": "[title]Comment[/title]\nAdds non-executable notes or descriptions for organizational purposes."},
+			{"id": "Button24", "text": "⏸️ Wait", "tooltip": "[title]Wait[/title]\nPauses event execution for a specified number of frames or seconds."}
+		],
+		"Party Management:": [
+			{"id": "Button7", "text": "🪙 Change Gold", "tooltip": "[title]Change Gold[/title]\nAdjusts the amount of in-game currency the party possesses."},
+			{"id": "Button8", "text": "📦 Change Items", "tooltip": "[title]Change Items[/title]\nModifies the inventory by adding, removing, or altering items."},
+			{"id": "Button9", "text": "🗡️ Change Weapons", "tooltip": "[title]Change Weapons[/title]\nModifies the inventory by adding, removing, or altering weapons."},
+			{"id": "Button10", "text": "🛡️ Change Armors", "tooltip": "[title]Change Armors[/title]\nModifies the inventory by adding, removing, or altering armors."},
+			{"id": "Button11", "text": "👥 Change Group Members", "tooltip": "[title]Change Group Members[/title]\nAdds, or removes party members in the active group."},
+			{"id": "Button109", "text": "👑 Change Party Leader", "tooltip": "[title]Change Party Leader[/title]\nSets a new character to lead the party in exploration or interactions."},
+			{"id": "Button115", "text": "🎮 Experience Mode", "tooltip": "[title]Experience Mode[/title]\nChange the way experience is gained in battle."}
+		],
+		"Actor Management": [
+			{"id": "Button25", "text": "❤️ Change HP", "tooltip": "[title]Change HP[/title]\nAdjusts a character’s Health Points, either increasing or decreasing them."},
+			{"id": "Button26", "text": "💙 Change MP", "tooltip": "[title]Change MP[/title]\nModifies a character’s Magic Points, used for casting spells or skills."},
+			{"id": "Button27", "text": "🎯 Change TP", "tooltip": "[title]Change TP[/title]\nAlters a character’s Technique Points (TP)."},
+			{"id": "Button28", "text": "✨ Change State", "tooltip": "[title]Change State[/title]\nApplies or removes status effects (e.g., poison, paralysis)."},
+			{"id": "Button29", "text": "🌟 Full Recovery", "tooltip": "[title]Full Recovery[/title]\nRestores a character’s HP, MP, and statuses to maximum."},
+			{"id": "Button30", "text": "📈 Change Experience", "tooltip": "[title]Change Experience[/title]\nIncreases or decreases a character’s accumulated experience points (EXP)."},
+			{"id": "Button31", "text": "📊 Change Level", "tooltip": "[title]Change Level[/title]\nSets or modifies a character’s current level."},
+			{"id": "Button32", "text": "💪 Change Parameter", "tooltip": "[title]Change Parameter[/title]\nAdjusts core stats like strength, defense, agility..."},
+			{"id": "Button33", "text": "🎪 Change Skills", "tooltip": "[title]Change Skills[/title]\nAdds, removes, or modifies skills available to a character."},
+			{"id": "Button34", "text": "🎒 Change Equipment", "tooltip": "[title]Change Equipment[/title]\nEquips or unequips gear (weapons, armor) for a character."},
+			{"id": "Button35", "text": "🏷️ Change Name", "tooltip": "[title]Change Name[/title]\nRenames a character, item, or other entity."},
+			{"id": "Button36", "text": "👤 Change Class", "tooltip": "[title]Change Class[/title]\nSwitches a character’s job or class."},
+			{"id": "Button37", "text": "🗣️ Change Nickname", "tooltip": "[title]Change Nickname[/title]\nSets or modifies a character’s secondary name or alias."},
+			{"id": "Button38", "text": "📸 Change Profile", "tooltip": "[title]Change Profile[/title]\nEdits a character’s biography or descriptive text."},
+			{"id": "Button128", "text": "⛏️ Change Profession", "tooltip": "[title]Change Profession[/title]\nProfessions determine which resources your character is able to collect."},
+			{"id": "Button129", "text": "⚒️ Upgrade Profession", "tooltip": "[title]Upgrade Profession[/title]\nPromote a profession to the next level."},
+			{"id": "Button114", "text": "➕ Add / Remove Trait", "tooltip": "[title]Add / Remove Trait[/title]\nGrants or revokes passive abilities or traits."}
+		]
+	},
+	"Tab2": {
+		"Movement:": [
+			{"id": "Button39", "text": "🚀 Set Transition", "tooltip": "[title]Set Transition[/title]\nDefines visual transitions between maps or battles"},
+			{"id": "Button40", "text": "🚶 Transfer Player", "tooltip": "[title]Transfer Player[/title]\nMoves the player character to a specified location or map."},
+			{"id": "Button41", "text": "🚗 Set vehicle Location", "tooltip": "[title]Set Vehicle Location[/title]\nPositions a vehicle (e.g., boat, car) on the map."},
+			{"id": "Button42", "text": "🧭 Set Event Location", "tooltip": "[title]Set Event Location[/title]\nPlaces or moves an event to a specific coordinate."},
+			{"id": "Button43", "text": "🗺️ Scroll / Zoom Map", "tooltip": "[title]Scroll / Zoom Map[/title]\nAdjusts the scroll or camera or zoom in/out on the map."},
+			{"id": "Button44", "text": "🛤️ Set Move Route", "tooltip": "[title]Set Move Route[/title]\nAssigns a custom movement path for characters or objects."},
+			{"id": "Button45", "text": "🚶‍♂️↔️🚗 Get In/Out Vehicle", "tooltip": "[title]Get In/Out Vehicle[/title]\nEnter or exit a vehicle."}
+		],
+		"Character:": [
+			{"id": "Button52", "text": "👻 Change Transparency", "tooltip": "[title]Change Transparency[/title]\nMakes characters or objects partially or fully invisible."},
+			{"id": "Button53", "text": "👥 Change Player Followers", "tooltip": "[title]Change Player Followers[/title]\nAdjusts which characters follow the player during exploration."},
+			{"id": "Button54", "text": "🔄 Followers Leader Tracking", "tooltip": "[title]Party Leader Tracking[/title]\nEnables/Disables follower tracking of the leader"},
+			{"id": "Button55", "text": "💫 Show Animation", "tooltip": "[title]Show Animation[/title]\nPlays a visual animation on a character or object."},
+			{"id": "Button56", "text": "🗯️ Show Ballon Icon", "tooltip": "[title]Show Balloon Icon[/title]\nDisplays a thought or emotion bubble above a character's head."},
+			{"id": "Button57", "text": "🕺 Show Player Action", "tooltip": "[title]Show Player Action[/title]\nTriggers a specific action or gesture from the player character."}
+		],
+		"Picture And Scenes:": [
+			{"id": "Button58", "text": "🖼️ Show Picture", "tooltip": "[title]Show Picture[/title]\nDisplays a static or animated image on the screen."},
+			{"id": "Button59", "text": "✋➡️🖼️ Move Picture", "tooltip": "[title]Move Picture[/title]\nAnimates a displayed picture to move across the screen."},
+			{"id": "Button60", "text": "🔃 Rotate Picture", "tooltip": "[title]Rotate Picture[/title]\nSpins or rotates a displayed image."},
+			{"id": "Button116", "text": "⬛↔️⬜ Scale Picture", "tooltip": "[title]Scale Picture[/title]\nAdjusts the size of a displayed image (enlarge or shrink)."},
+			{"id": "Button61", "text": "🎨 Tint Picture", "tooltip": "[title]Tint Picture[/title]\nApplies a color filter to a specific image."},
+			{"id": "Button62", "text": "🧹 Erase Picture", "tooltip": "[title]Erase Picture[/title]\nRemoves a displayed image from the screen."},
+			{"id": "Button63", "text": "🎬➕ Add Scene", "tooltip": "[title]Add Scene[/title]\nLoads or overlays a new scene or interface element."},
+			{"id": "Button127", "text": "🔧🎬 Manipulate Scene", "tooltip": "[title]Manipulate Scene[/title]\nAllows you to call a function from a scene added with the \"Add Scene\" command."},
+			{"id": "Button64", "text": "🎬➖ Remove Scene", "tooltip": "[title]Remove Scene[/title]\nCloses or removes an active scene or interface element."}
+		],
+		"Screen Effects:": [
+			{"id": "Button46", "text": "🌑 Fadeout Screen", "tooltip": "[title]Fadeout Screen[/title]\nGradually darkens the screen to black for transitions or scene changes."},
+			{"id": "Button47", "text": "🌕 Fadein Screen", "tooltip": "[title]Fadein Screen[/title]\nGradually brightens the screen from black to restore visibility."},
+			{"id": "Button124", "text": "🔁 Perform Transition", "tooltip": "[title]Perform Transition[/title]\nDisplays the configured transition effect between maps and battles."},
+			{"id": "Button48", "text": "🌈 Tint Screen", "tooltip": "[title]Tint Screen[/title]\nApplies a color filter to the entire screen for mood or time-of-day effects."},
+			{"id": "Button49", "text": "⚡ Flash Screen", "tooltip": "[title]Flash Screen[/title]\nCreates a brief bright flash for dramatic or combat effects."},
+			{"id": "Button50", "text": "📳 Shake Screen", "tooltip": "[title]Shake Screen[/title]\nSimulates screen shaking for earthquakes, explosions, or impacts."},
+			{"id": "Button51", "text": "🌦️ Set Weather Effects", "tooltip": "[title]Set Weather Effects[/title]\nActivates environmental effects like rain, snow, or fog."}
+		],
+		"Music And Sounds:": [
+			{"id": "Button65", "text": "🎵 Play BGM", "tooltip": "[title]Play BGM[/title]\nStarts playing background music (BGM) for ambiance or mood."},
+			{"id": "Button66", "text": "⏹️ Stop BGM", "tooltip": "[title]Stop BGM[/title]\nHalts the currently playing background music."},
+			{"id": "Button67", "text": "💾🎵 Save BGM", "tooltip": "[title]Save BGM[/title]\nSaves the current BGM state to resume later."},
+			{"id": "Button68", "text": "▶️🎵 Resume BGM", "tooltip": "[title]Resume BGM[/title]\nResumes previously saved background music"},
+			{"id": "Button69", "text": "🌊 Play BGS", "tooltip": "[title]Play BGS[/title]\nPlays background sounds (BGS) like environmental noise."},
+			{"id": "Button70", "text": "🚫🌊 Stop BGS", "tooltip": "[title]Stop BGS[/title]\nStops all background sound effects."},
+			{"id": "Button71", "text": "📯 Play ME", "tooltip": "[title]Play ME[/title]\nPlays a short music effect (ME) for cutscenes or events."},
+			{"id": "Button72", "text": "🔊 Play SE", "tooltip": "[title]Play SE[/title]\nTriggers a sound effect (SE) for actions or interactions."},
+			{"id": "Button73", "text": "🔇 Stop SE", "tooltip": "[title]Stop SE[/title]\nStops all active sound effects."}
+		],
+		"Movie:": [
+			{"id": "Button74", "text": "📽️ Play Movie", "tooltip": "[title]Play Movie[/title]\nPlays a pre-recorded video or cutscene."},
+			{"id": "Button75", "text": "⏹️ Stop Movie", "tooltip": "[title]Stop Movie[/title]\nEnds playback of the current movie."}
+		],
+		"Miscellaneous:": [
+			{"id": "Button126", "text": "🎥 Manage Camera Targets", "tooltip": "[title]Manage Camera Targets[/title]\nAdd or remove targets from the current camera."},
+			{"id": "Button107", "text": "❌📅 Erase Event", "tooltip": "[title]Erase Event[/title]\nPermanently deletes an event from the game."}
+		]
+	},
+	"Tab3": {
+		"Scene Control:": [
+			{"id": "Button76", "text": "🛒 Open Shop", "tooltip": "[title]Open Shop[/title]\nOpens a shop interface for buying or selling items."},
+			{"id": "Button118", "text": "⚒️ Open Blacksmith Shop", "tooltip": "[title]Open Blacksmith Shop[/title]\nOpen the blacksmithing interface to upgrade equipment"},
+			{"id": "Button119", "text": "🎖️ Class Upgrade Shop", "tooltip": "[title]Class upgrade shop[/title]\nOpens the store interface to evolve or change a character's class."},
+			{"id": "Button77", "text": "✒️ Open Name Input Dialog", "tooltip": "[title]Open Name Input Dialog[/title]\nAllows the player to name a character"},
+			{"id": "Button78", "text": "🏠 Open Menu Screen", "tooltip": "[title]Open Menu Screen[/title]\nDisplays the in-game menu (items, skills, settings, etc.)."},
+			{"id": "Button79", "text": "💾 Open Save Screen", "tooltip": "[title]Open Save Screen[/title]\nOpens the save/load interface to manage game progress."},
+			{"id": "Button80", "text": "☠️ Game Over", "tooltip": "[title]Game Over[/title]\nTriggers a game over screen."},
+			{"id": "Button81", "text": "🚪 Return To Tittle Screen", "tooltip": "[title]Return To Title Screen[/title]\nExits to the main title screen, ending the current session."}
+		],
+		"Map:": [
+			{"id": "Button82", "text": "🗺️ Change Map Name Display", "tooltip": "[title]Change Map Name Display[/title]\nEnable or disable displaying the map name when entering a new map."},
+			{"id": "Button83", "text": "🌄 Change Battle Background", "tooltip": "[title]Change Battle Background[/title]\nSets the visual background for combat encounters."},
+			{"id": "Button84", "text": "🌀 Change Parallax Background", "tooltip": "[title]Change Parallax Background[/title]\nAdjusts the layered scrolling background for map."},
+			{"id": "Button85", "text": "❓ Get Location Info", "tooltip": "[title]Get Location Info[/title]\nFetches data about the player's current coordinates or map."},
+			{"id": "Button111", "text": "🧱 Change Tileset", "tooltip": "[title]Change Tileset[/title]\nSwaps the visual tileset used for the current map."},
+			{"id": "Button132", "text": "🧩 Set Tile State", "tooltip": "[title]Set Tile State[/title]\nChange the active state of a tile."}
+		],
+		"Battle:": [
+			{"id": "Button96", "text": "⚔️ Start Battle", "tooltip": "[title]Start Battle[/title]\nInitiates a combat encounter with enemies."},
+			{"id": "Button97", "text": "🩸 Change Enemy HP", "tooltip": "[title]Change Enemy HP[/title]\nModifies an enemy's health points during battle."},
+			{"id": "Button98", "text": "💧 Change Enemy MP", "tooltip": "[title]Change Enemy MP[/title]\nAdjusts an enemy's magic points during battle."},
+			{"id": "Button120", "text": "👹 Change Enemy Parameter", "tooltip": "[title]Change Enemy Parameter[/title]\nChange a specific enemy parameter."},
+			{"id": "Button99", "text": "🧬 Change Enemy State", "tooltip": "[title]Change Enemy State[/title]\nApplies or removes status effects (e.g., poison) on enemies."},
+			{"id": "Button100", "text": "💊 Enemy Recover All", "tooltip": "[title]Enemy Recover All[/title]\nRestores all enemies' HP, MP, and statuses to full."},
+			{"id": "Button101", "text": "👾 Enemy Appear", "tooltip": "[title]Enemy Appear[/title]\nSpawns a new enemy into the current battle."},
+			{"id": "Button102", "text": "🧟➡️🐉 Enemy Transform", "tooltip": "[title]Enemy Transform[/title]\nChanges an enemy's appearance"},
+			{"id": "Button103", "text": "🎞️ Show Battle Animation", "tooltip": "[title]Show Battle Animation[/title]\nPlays a visual effect or skill animation during combat."},
+			{"id": "Button104", "text": "👊 Force Action", "tooltip": "[title]Force Action[/title]\nCompels a character or enemy to perform a specific action."},
+			{"id": "Button105", "text": "🛑 Abort Battle", "tooltip": "[title]Abort Battle[/title]\nEnds the current battle prematurely without a result."},
+			{"id": "Button121", "text": "⏳ Active Time Battle", "tooltip": "[title]Active Time Battle[/title]\nA turn-based system where characters act as soon as their time gauge fills."}
+		],
+		"System Setting:": [
+			{"id": "Button86", "text": "🎵 Change Battle BGM", "tooltip": "[title]Change Battle BGM[/title]\nSets the music track played during battles."},
+			{"id": "Button87", "text": "🎶 Change Victory ME", "tooltip": "[title]Change Victory ME[/title]\nUpdates the music effect played after winning a battle."},
+			{"id": "Button88", "text": "☠️ Change Defeat ME", "tooltip": "[title]Change Defeat ME[/title]\nUpdates the music effect played after losing a battle."},
+			{"id": "Button110", "text": "🚗 Change Vehicle BGM", "tooltip": "[title]Change Vehicle BGM[/title]\nSets the music played while using a vehicle."},
+			{"id": "Button89", "text": "💾🚫 Change Save Access", "tooltip": "[title]Change Save Access[/title]\nEnables or disables the ability to save the game."},
+			{"id": "Button90", "text": "📋🚫 Change Menu Access", "tooltip": "[title]Change Menu Access[/title]\nToggles whether the player can open the in-game menu."},
+			{"id": "Button91", "text": "🎲 Change Encounter Rate", "tooltip": "[title]Change Encounter[/title]\nMultiplies the base battle rates."},
+			{"id": "Button92", "text": "👥♻️ Change Formation Access", "tooltip": "[title]Change Formation Access[/title]\nAllows or restricts party formation adjustments."},
+			{"id": "Button93", "text": "🐢⚡ Change Game Speed", "tooltip": "[title]Change Game Speed[/title]\nThe speed multiplier at which the in-game clock updates."},
+			{"id": "Button94", "text": "👤🎭 Change Actor Scene", "tooltip": "[title]Change Actor Graphic[/title]\nUpdates the visual sprite of a character."},
+			{"id": "Button95", "text": "🚗 Change Vehicle Scene", "tooltip": "[title]Change Vehicle Graphic[/title]\nAlters the appearance of a vehicle's sprite."},
+			{"id": "Button112", "text": "🗣️ Change Language", "tooltip": "[title]Change Language[/title]\nSwitches the game's text and audio to a different language."},
+			{"id": "Button122", "text": "💾 Toggle Auto-Save", "tooltip": "[title]Toggle Auto-Save[/title]\nEnables or disables autosave at key points."},
+			{"id": "Button123", "text": "🧾🏆 Post-Battle Summary", "tooltip": "[title]Post-Battle Summary[/title]\nShow or hide detailed results after battles."}
+		],
+		"Advanced:": [
+			{"id": "Button106", "text": "💻 Script", "tooltip": "[title]Script[/title]\nExecutes custom code or scripts for advanced functionality."}
+		]
+	}
+}

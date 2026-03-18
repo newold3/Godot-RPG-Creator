@@ -30,6 +30,9 @@ func _ready() -> void:
 	if not Engine.is_editor_hint():
 		%FinalShadow.texture = %ViewportTextures.get_texture()
 		%FinalSprite.texture = %ViewportTextures.get_texture()
+	
+	if not is_in_group("extraction_event"):
+		add_to_group("extraction_event")
 
 	start()
 
@@ -175,7 +178,8 @@ func get_shadow_data() -> Dictionary:
 		"feet_offset": 12
 	}
 	if GameManager.current_map:
-		shadow.cell = Vector2i(global_position / Vector2(GameManager.current_map.tile_size))
+		var tile_size: Vector2 = GameManager.get_map_tile_size()
+		shadow.cell = Vector2i(global_position / tile_size)
 	
 	return shadow
 

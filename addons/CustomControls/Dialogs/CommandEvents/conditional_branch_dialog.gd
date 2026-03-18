@@ -104,11 +104,15 @@ func fill_characters() -> void:
 	list.clear()
 	
 	list.add_item("Player")
+	list.set_item_metadata(-1, -1)
 	
 	if node:
 		list.add_item("This Event")
+		list.set_item_metadata(-1, 0)
+		
 		for ev: RPGEvent in node.events.get_events():
 			list.add_item("%s: %s" % [ev.id, ev.name])
+			list.set_item_metadata(-1, ev._uniq_id)
 
 
 func set_data() -> void:
@@ -321,14 +325,18 @@ func update_controls() -> void:
 	buttons[cache_data.enemy_item_selected].set_pressed(false)
 	buttons[cache_data.enemy_item_selected].set_pressed(true)
 
-	var character_id = cache_data.character_selected
-	if %CharacterID.get_item_count() > character_id:
-		%CharacterID.select(character_id)
-	else:
-		cache_data.character_selected = 0
+	var items = %CharacterID.get_item_count()
+	if items > 0:
 		%CharacterID.select(0)
+		for i in %CharacterID.get_item_count():
+			var real_index = %CharacterID.get_item_metadata(i)
+			if real_index == cache_data.character_selected:
+				%CharacterID.select(i)
+				break
+	
 	%CharacterState.select(cache_data.character_direction)
-	%CharacterState.set_item_disabled(-1, %CharacterID.get_selected_id() != 0)
+	%CharacterState.set_item_disabled(-2, %CharacterID.get_selected_id() != 0)
+	%CharacterState.set_item_disabled(-1, %CharacterID.get_selected_id() == 0)
 	%VehicleID.select(cache_data.vehicle_selected)
 	
 	%GoldCondition.select(cache_data.gold_condition)
@@ -444,7 +452,7 @@ func _set_data_name(data_key: Variant, id: int, target: Node) -> void:
 
 func build_command_list() -> Array[RPGEventCommand]:
 	var commands: Array[RPGEventCommand] = []
-	
+
 	var item_selected = cache_data.item_selected
 	var value1; var value2; var value3; var value4; var value5; var value6;
 	match item_selected:
@@ -490,6 +498,7 @@ func build_command_list() -> Array[RPGEventCommand]:
 		6: # Character
 			value1 = cache_data.character_selected
 			value2 = cache_data.character_direction
+			print("Character = ", value1)
 		7: # Vehicle
 			value1 = cache_data.vehicle_selected
 		8: # gold
@@ -898,8 +907,13 @@ func _on_enemy_state_pressed() -> void:
 
 
 func _on_character_id_item_selected(index: int) -> void:
-	cache_data.character_selected = index
-	%CharacterState.set_item_disabled(-1, index != 0)
+	var target_id = %CharacterID.get_item_metadata(index)
+	cache_data.character_selected = target_id
+	%CharacterState.set_item_disabled(-2, index != 0)
+	%CharacterState.set_item_disabled(-1, index == 0)
+	if index == 0 and %CharacterState.get_selected_id() == %CharacterState.get_item_count() -1:
+		%CharacterState.select(0)
+		_on_character_direction_item_selected(0)
 
 
 func _on_character_direction_item_selected(index: int) -> void:

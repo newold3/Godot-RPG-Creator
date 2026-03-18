@@ -192,12 +192,16 @@ class TagInfo:
 @export_multiline var test_dialog_box: String = "":
 	set(value):
 		test_dialog_box = value
-		if Engine.is_editor_hint() and is_node_ready():
-			if not editor_setup_initialized:
-				setup()
-			if not test_dialog_box.is_empty():
-				editor_refresh_timer = 0.5
-				print("The message will be tested with the text of the variable “test_dialog_box” after 0.5 seconds...")
+		if is_node_ready():
+			if Engine.is_editor_hint():
+				if not editor_setup_initialized:
+					setup()
+				if not test_dialog_box.is_empty():
+					editor_refresh_timer = 0.5
+					print("The message will be tested with the text of the variable “test_dialog_box” after 0.5 seconds...")
+				else:
+					reset()
+					editor_refresh_timer = 0.0
 			else:
 				reset()
 				editor_refresh_timer = 0.0
@@ -288,6 +292,7 @@ var wait_for_user_option_selected_enabled: bool = false
 
 var is_new_dialog: bool = true
 var is_multi_dialog: bool = false
+var has_next_dialog: bool = false
 var is_editor_prevew: bool = false
 
 var speaker_text_color: Color = Color.TRANSPARENT
@@ -327,7 +332,11 @@ var time: float:
 				return (float(current_character) / float(max_characters))
 			else:
 				return (0)
-		
+
+var current_dialog_size
+
+var size_canvas_layer: CanvasLayer
+var size_message: RichTextLabel
 
 # Reference self for use in transition effects.
 static var instance
@@ -349,7 +358,23 @@ func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	instance = self
 	perform_resume_dialog.connect(_on_resume_dialog)
+	update_ghost_size_node()
 	reset()
+
+
+func update_ghost_size_node() -> void:
+	if not size_canvas_layer:
+		size_canvas_layer = CanvasLayer.new()
+		size_canvas_layer.layer = -1
+		add_child(size_canvas_layer)
+	if size_message:
+		size_message.queue_free()
+	size_message = message.duplicate()
+	size_canvas_layer.add_child(size_message)
+	size_message.modulate.a = 0.0
+	size_message.visible_characters = -1
+	size_message.custom_minimum_size = Vector2.ZERO
+	size_message.size = Vector2.ZERO
 
 
 func resume() -> void:
@@ -390,6 +415,9 @@ func get_real_size() -> Vector2:
 
 
 func _process(delta: float) -> void:
+	if is_floating:
+		set_position_over_node()
+		
 	if editor_refresh_timer > 0.0 and Engine.is_editor_hint():
 		editor_refresh_timer -= delta
 		if editor_refresh_timer <= 0.0:
@@ -410,7 +438,8 @@ func _process(delta: float) -> void:
 		return
 	
 	if is_floating:
-		set_position_over_node()
+		if is_instance_valid(anchor_node):
+			set_position_over_node()
 		if busy and instant_text_enabled: return
 	else:
 		if instant_text_enabled and busy_until_resume and not busy:
@@ -503,6 +532,8 @@ func get_message_box() -> RichTextLabel:
 
 
 func setup() -> void:
+	if message:
+		message.custom_effects.clear()
 	setup_effects()
 	setup_transitions()
 	if Engine.is_editor_hint():
@@ -511,7 +542,7 @@ func setup() -> void:
 		message_finished.connect(_show_wait_form_input_cursor)
 
 
-func setup_effects():
+func setup_effects() -> void:
 	var paths = [
 		"res://addons/CustomControls/Resources/RichTextEffects/ColorMod.gd",
 		"res://addons/CustomControls/Resources/RichTextEffects/Cuss.gd",
@@ -530,11 +561,11 @@ func setup_effects():
 	
 	for path in paths:
 		var effect = load(path).new()
-		if !message: return
-		message.install_effect(effect)
+		if message: message.install_effect(effect)
+		if size_message: size_message.install_effect(effect)
 
 
-func setup_transitions():
+func setup_transitions() -> void:
 	var paths = [
 		"res://addons/CustomControls/Resources/RichTextEffects/Transitions/Bounce.gd",
 		"res://addons/CustomControls/Resources/RichTextEffects/Transitions/Console.gd",
@@ -550,59 +581,26 @@ func setup_transitions():
 	
 	for path in paths:
 		var effect = load(path).new()
-		if !message: return
-		message.install_effect(effect)
+		if message: message.install_effect(effect)
+		if size_message: size_message.install_effect(effect)
 	
 	for effect in message.custom_effects:
 		effect.set_meta("dialog", self)
+		
+	if size_message:
+		for effect in size_message.custom_effects:
+			effect.set_meta("dialog", self)
 
 
 func parse_text(text: String) -> String:
 	var t = text
 	t = t.strip_edges()
-	
 	var regex = RegEx.new()
-	
-	# clean \n after special command
-	var special_tags = "character|face|imgfx|img_remove|showbox|hidebox|sound|wait|no_wait_input|dialog_shake|blip|highlight_character|speaker_entry|speaker_entry_end|speaker_exit|freeze"
-	regex.compile("(\\[(?:" + special_tags + ")[^\\]]*\\])\\n")
-	t = regex.sub(t, "$1", true)
-	
-	# Clean \n before special command
-	regex.compile("\\n(\\[(?:" + special_tags + ")[^\\]]*\\])")
-	t = regex.sub(t, "$1", true)
-	
-	t = t.strip_edges()
-	
-	# Consolidate consecutive newlines (if more than 1, leave 1)
-	regex.compile("\\n{2,}")
-	t = regex.sub(t, "\n", true)
-	
-	# Remove newlines immediately following any command closing bracket
-	regex.compile("(\\])\\n")
-	t = regex.sub(t, "$1", true)
-	
-	# Transform [newline] tag into actual line break
-	t = t.replace("[newline]", "\n")
-	
-	## Insert a space after a period or comma if one was not already present.
-	## It now only adds a space if the following character is NOT a lowercase letter or digit.
-	#regex.compile("(?![^\\[\\]]*\\])([,.])([^a-z0-9\\s])")
-	#t = regex.sub(t, "$1 $2", true)
-	
-	# Replace the . with wait commands with a dot_pause_delay duration.
-	# FIX: Added (?![a-z0-9]) lookahead to avoid adding pauses inside file paths or numbers.
 	regex.compile("(?![^\\[\\]]*\\])(\\.)(?![a-z0-9])")
 	t = regex.sub(t, ".[wait type=0 seconds=%s _is_script_command=true]" % dot_pause_delay, true)
-	
-	# Replace the , with wait commands with a comma_pause_delay duration.
-	# FIX: Added (?![a-z0-9]) lookahead here as well for consistency.
 	regex.compile("(?![^\\[\\]]*\\])(,)(?![a-z0-9])")
 	t = regex.sub(t, ",[wait type=0 seconds=%s _is_script_command=true]" % comma_pause_delay, true)
-	
-	# Replaces the speaker command with several commands
 	regex.compile("\\[speaker index=(\\d+)\\]")
-	
 	var matches = regex.search_all(t)
 	for i in range(matches.size() - 1, -1, -1):
 		var m: RegExMatch = matches[i]
@@ -611,8 +609,6 @@ func parse_text(text: String) -> String:
 		var start_pos = m.get_start()
 		var end_pos = m.get_end()
 		t = regex.sub(t, replace_text, false, start_pos, end_pos)
-
-	# Replaces the hide_speaker command with several commands
 	regex.compile("\\[hide_speaker index=(\\d+)\\]")
 	matches = regex.search_all(t)
 	for i in range(matches.size() - 1, -1, -1):
@@ -622,11 +618,8 @@ func parse_text(text: String) -> String:
 		var start_pos = m.get_start()
 		var end_pos = m.get_end()
 		t = regex.sub(t, replace_text, false, start_pos, end_pos)
-	# Replaces the reset command with several commands
 	t = t.replace("[r]", get_reset_commands())
-	
 	regex.compile("(\\[(\\w+)\\s*[^]]*\\])|(\\[/\\w+\\])")
-	
 	var command_list = []
 	var special_command_list = [
 		"character", "face", "imgfx", "img_remove", "showbox", "hidebox", "sound", "wait",
@@ -637,14 +630,12 @@ func parse_text(text: String) -> String:
 	]
 	var offset = 0
 	var image_found = 0
-	
 	matches = regex.search_all(t)
 	for m in matches:
 		var command_name = m.get_string(2).to_lower()
 		var command_start = m.get_start() - offset - 1
 		if "_is_script_command" in m.get_string(0):
 			command_start += 1
-		#var command_end = m.get_end() - offset
 		if command_name in special_command_list:
 			if command_name in ["variable", "actor", "party", "gold", "class", "item", "weapon",
 		"profession_name", "profession_level", "armor", "enemy", "state"]:
@@ -689,7 +680,6 @@ func parse_text(text: String) -> String:
 						var gold_value = 0 if Engine.is_editor_hint() else GameManager.game_state.current_gold
 						obj_value = "%s%s" % [gold_value, gold_name]
 						offset += gold_name.length()
-						
 						if extra2 == 1:
 							currency_info = RPGSYSTEM.database.system.currency_info
 							var icon_path = currency_info.get("icon", "")
@@ -706,7 +696,6 @@ func parse_text(text: String) -> String:
 								if not actor_name.is_empty():
 									obj_value = actor_name
 									offset += obj_value.length()
-							
 				offset += m.get_string(0).length() - obj_value.length()
 				var c = {
 					"start": m.get_start(),
@@ -725,7 +714,6 @@ func parse_text(text: String) -> String:
 				special_commands.append(
 					SpecialEffectCommand.new(command_name, parse_args(m.get_string(0)), command_start
 				))
-
 		if m.get_string(3).to_lower() == "[/img]" and image_found:
 			offset += m.get_start() - image_found
 			image_found = 0
@@ -733,22 +721,11 @@ func parse_text(text: String) -> String:
 			if command_name == "img":
 				image_found = m.get_start()
 			offset += m.get_string(0).length()
-		
 	for i in range(command_list.size() - 1, -1, -1):
 		var c = command_list[i]
 		t = t.substr(0, c["start"]) + c.text + t.substr(c["end"], t.length())
-	
-
 	t = get_final_text(t)
 	t = fix_tags(t)
-	
-	#regex.compile("\\.(\\s+)\\.")
-	#var match_point = regex.search(t)
-	#while match_point:
-		#var i = match_point.get_start()
-		#var e = match_point.get_end()
-		#t = t.substr(0, i + 1) + t.substr(e - 1)
-		#match_point = regex.search(t)
 	return t.strip_edges()
 
 
@@ -819,8 +796,8 @@ func parse_args(command: String) -> Dictionary:
 
 func reset() -> void:
 	if not message: return
-	message.text = ""
 	if (is_new_dialog and not is_multi_dialog) or is_editor_prevew:
+		message.text = ""
 		modulate.a = 0.0
 		for key in tweens:
 			if key == "others":
@@ -832,6 +809,7 @@ func reset() -> void:
 				if tweens[key] is Tween and tweens[key].is_valid() and tweens[key].is_running():
 					tweens[key].kill()
 				tweens[key] = null
+		
 		set("custom_minimum_size", Vector2.ZERO)
 		message.set("custom_minimum_size", Vector2.ZERO)
 		message.size = Vector2.ZERO
@@ -850,7 +828,6 @@ func reset() -> void:
 	busy_when_preview = false
 	busy_until_resume = false
 	is_new_dialog = true
-	is_multi_dialog = false
 	is_editor_prevew = false
 	current_delay = 0.0
 	delay_for_input = 0.0
@@ -858,22 +835,30 @@ func reset() -> void:
 	wait_for_input_enabled = true
 	wait_for_input_time = 0.0
 
-	for obj in images.duplicate():
-		obj.kill()
+	if not is_multi_dialog:
+		for obj in images.duplicate():
+			obj.kill()
+		%NameLeftContainer.visible = false
+		%NameRightContainer.visible = false
+		%LeftIconFace.get_parent().visible = false
+		%RightIconFace.get_parent().visible = false
+		%LeftIconFace.texture = null
+		%RightIconFace.texture = null
+		%NameLeft.text = ""
+		%NameRight.text = ""
 
 	special_commands.clear()
 	for obj in sounds: obj.queue_free()
 	sounds.clear()
 	paragraphs.clear()
 	%TypeWritePlayer.stop()
-	%NameLeftContainer.visible = false
-	%NameLeft.text = ""
-	%NameRightContainer.visible = false
-	%NameRight.text = ""
-	%LeftIconFace.texture = null
-	%LeftIconFace.get_parent().get_parent().visible = false
-	%RightIconFace.texture = null
-	%RightIconFace.get_parent().get_parent().visible = false
+	
+	%LeftIconFace.get_parent().modulate = Color.WHITE
+	%LeftIconFace.get_parent().scale = Vector2.ONE
+	
+	%RightIconFace.get_parent().modulate = Color.WHITE
+	%RightIconFace.get_parent().scale = Vector2.ONE
+	
 	%AdvanceCursorContainer.visible = false
 	
 	if Engine.is_editor_hint():
@@ -892,10 +877,10 @@ func reset() -> void:
 	
 	%NameLeft.self_modulate.a = 1.0
 	%NameLeftBackground.self_modulate.a = 1.0
-	%LeftIconFace.self_modulate.a = 1.0
+	%LeftIconFace.get_parent().modulate.a = 1.0
 	%NameRight.self_modulate.a = 1.0
 	%NameRightBackground.self_modulate.a = 1.0
-	%RightIconFace.self_modulate.a = 1.0
+	%RightIconFace.get_parent().modulate.a = 1.0
 
 
 func soft_reset() -> void:
@@ -960,8 +945,32 @@ func try_select_bbcode(text: String, cursor_pos: int) -> String:
 
 func set_message_config(config: Dictionary) -> void:
 	if not message: return
-
-	config.get("scene_path", null)
+	var target_scene_path = config.get("scene_path", "")
+	if target_scene_path and target_scene_path != scene_file_path:
+		var new_scene = load(target_scene_path)
+		if new_scene:
+			var new_dialog = new_scene.instantiate()
+			var parent = get_parent()
+			if parent:
+				parent.add_child(new_dialog)
+				parent.move_child(new_dialog, get_index())
+			new_dialog.name = name
+			new_dialog.unique_name_in_owner = true
+			var signals = get_signal_list()
+			for sig in signals:
+				var sig_name = sig.name
+				if new_dialog.has_signal(sig_name):
+					var connections = get_signal_connection_list(sig_name)
+					for conn in connections:
+						var target_callable = conn.callable
+						if target_callable.get_object() != self:
+							if not new_dialog.is_connected(sig_name, target_callable):
+								new_dialog.connect(sig_name, target_callable, conn.flags)
+			new_dialog.setup()
+			GameManager.message = new_dialog
+			new_dialog.set_message_config(config)
+			queue_free()
+			return
 	message_max_lines = config.get("max_lines", 4)
 	message_max_width = config.get("max_width", 800)
 	max_character_delay = config.get("character_delay", 0.03)
@@ -981,15 +990,13 @@ func set_message_config(config: Dictionary) -> void:
 	start_transition_id = config.get("text_transition", 0)
 	start_transition_parameters = get_parameters(start_transition_id, config.get("text_transition_parameters", {}))
 	var fx = config.get("fx_path", "res://Assets/Sounds/typewrite2.ogg")
-	if ResourceLoader.exists(fx):
+	if AssetManager.exists(fx):
 		text_fx = load(fx)
 	else:
 		text_fx = null
-		
 	text_fx_volume = config.get("fx_volume", 0.0)
 	text_fx_min_pitch = config.get("fx_pitch_min", 0.7)
 	text_fx_max_pitch = config.get("fx_pitch_max", 1.1)
-	
 	current_text_fx = text_fx
 	current_text_fx_volume = text_fx_volume
 	current_text_fx_min_pitch = text_fx_min_pitch
@@ -998,25 +1005,22 @@ func set_message_config(config: Dictionary) -> void:
 	backup_blip.current_text_fx_min_pitch = current_text_fx_min_pitch
 	backup_blip.current_text_fx_max_pitch = current_text_fx_max_pitch
 	backup_blip.current_text_fx_volume = current_text_fx_volume
-	
 	default_font = config.get("font", DEFAULTFONT)
 	default_text_color = config.get("text_color", Color.WHITE)
 	default_text_size = config.get("text_size", 22)
 	default_text_align = config.get("text_align", 0)
-	
 	text_box_margin_left = config.get("text_box_margin_left", 16)
 	text_box_margin_right = config.get("text_box_margin_right", 16)
 	text_box_margin_top = config.get("text_box_margin_top", 16)
 	text_box_margin_bottom = config.get("text_box_margin_bottom", 16)
 	text_box_position = config.get("text_box_position", 7)
-	
 	message.set("theme_override_constants/outline_size", config.get("outline_size", 2))
 	var shadow_offset = config.get("shadow_offset", Vector2(2, 2))
 	message.set("theme_override_constants/shadow_offset_x", shadow_offset.x)
 	message.set("theme_override_constants/shadow_offset_y", shadow_offset.y)
 	message.set("theme_override_colors/font_outline_color", config.get("outline_color", Color.BLACK))
 	message.set("theme_override_colors/font_shadow_color", config.get("outline_color", Color("#00000093")))
-	
+	update_ghost_size_node()
 	if not is_floating:
 		set_position_preset()
 	else:
@@ -1068,14 +1072,15 @@ func set_position_preset() -> void:
 
 
 func set_position_over_node() -> void:
-	if anchor_node:
+	if is_instance_valid(anchor_node) and anchor_node.is_inside_tree():
 		var up_node = anchor_node.get_node_or_null("%Up")
 		var p: Vector2
 		if up_node:
 			p = up_node.get_global_transform_with_canvas().origin
 		else:
 			p = anchor_node.get_global_transform_with_canvas().origin
-		position = p - Vector2(size.x * 0.5, size.y) * scale
+		position = p - Vector2(size.x * 0.5, size.y)
+
 
 
 func get_parameters(index: int, _parameters: Dictionary) -> Dictionary:
@@ -1110,7 +1115,12 @@ func set_initial_config(config: Dictionary) -> void:
 	force_no_wait_for_input = initial_config.get("no_wait_for_input", false)
 	#if is_floating:
 		#instant_text_enabled = true
-	anchor_node = initial_config.get("anchor_node", null)
+		
+	anchor_node = null
+	var new_anchor_node = initial_config.get("anchor_node", null)
+	if is_instance_valid(new_anchor_node) and is_instance_valid(new_anchor_node.lpc_event):
+		anchor_node = new_anchor_node.lpc_event
+		
 	if is_floating:
 		%BackgroundContainer.set("theme_override_constants/margin_left", 0)
 		%BackgroundContainer.set("theme_override_constants/margin_top", 0)
@@ -1160,17 +1170,20 @@ func _get_initial_config_commands() -> String:
 
 	return commands
 
-
 func setup_text(text: String, use_soft_reset: bool = false, _is_additional_text: bool = false) -> void:
 	if not is_inside_tree() or is_queued_for_deletion(): return
-	if not instant_text_enabled: busy_until_resume = true
 	
+	var ini_size_self = self.size
+	var ini_size_message = message.size
+	
+	if not instant_text_enabled: busy_until_resume = true
 	if !use_soft_reset:
 		reset()
 		if not text.is_empty():
 			var init_cmds = _get_initial_config_commands()
 			if not init_cmds.is_empty():
 				text = init_cmds + text
+			text = clean_structural_newlines(text)
 	else:
 		soft_reset()
 	
@@ -1178,20 +1191,44 @@ func setup_text(text: String, use_soft_reset: bool = false, _is_additional_text:
 	
 	if !use_soft_reset:
 		setup_paragraphs(text)
-
+	
 	if paragraphs.is_empty(): return
 	
 	text = paragraphs.pop_front()
 	text = text.strip_edges()
-
+	
 	if speaker_text_color != Color.TRANSPARENT:
 		text = "[color=#%s]" % speaker_text_color.to_html() + text + "[/color]"
+	
 	text = parse_text(text)
+	modulate.a = 1.0
 	
-	modulate.a = 0.0
-	message.text = text
+	var measure_text = text
+	var align_tags = ["[center]", "[/center]", "[right]", "[/right]", "[fill]", "[/fill]"]
+	for tag in align_tags:
+		measure_text = measure_text.replace(tag, "")
+
+	size_message.custom_minimum_size = Vector2(message_max_width, 0)
+	size_message.size = Vector2(message_max_width, 0)
+	size_message.text = measure_text
+	size_message.visible_characters = -1
 	
-	if message.get_parsed_text().strip_edges().is_empty():
+	await get_tree().process_frame
+	
+	var raw_width = size_message.get_content_width()
+	var final_text_width = clamp(raw_width, minimun_dialog_width, message_max_width)
+	size_message.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	size_message.custom_minimum_size = Vector2(final_text_width, 0)
+	size_message.size = Vector2(final_text_width, 0)
+	message.autowrap_mode = TextServer.AUTOWRAP_OFF
+	
+	await get_tree().process_frame
+	
+	var final_text_height = max(minimun_dialog_height, size_message.get_content_height())
+	size_message.set_meta("optimal_width", final_text_width)
+	size_message.set_meta("optimal_height", final_text_height)
+	
+	if size_message.get_parsed_text().strip_edges().is_empty():
 		for command in special_commands:
 			if not command.completed:
 				await start_special_command(command)
@@ -1201,58 +1238,106 @@ func setup_text(text: String, use_soft_reset: bool = false, _is_additional_text:
 			all_messages_finished.emit()
 		return
 	
-	await precalculate_dialog_size(use_soft_reset)
-	
-	#if (!is_additional_text and is_new_dialog) or is_editor_prevew or Engine.is_editor_hint():
-		#await precalculate_dialog_size(use_soft_reset)
-	#if (!is_additional_text and is_new_dialog) or (Engine.is_editor_hint() and not use_soft_reset):
-		#await precalculate_dialog_size()
-
-	var current_lines = message.get_line_count()
+	var current_lines = size_message.get_line_count()
 	if current_lines > 1:
-		# Ensure that words that do not fit on the same line have a line break added at the beginning.
 		var indexes = []
 		var current_line = 0
-		var text_parsed = message.get_parsed_text()
-		for i in range(1, text.length(), 1):
-			var letter_line = message.get_character_line(i)
+		var text_parsed = size_message.get_parsed_text()
+		for i in range(1, text_parsed.length(), 1):
+			var letter_line = size_message.get_character_line(i)
 			if letter_line != current_line and letter_line != -1:
 				current_line = letter_line
-				if text_parsed[i - 1] != "\n":
-					indexes.append(i)
+				var prev_char = text_parsed[i - 1]
+				if prev_char == "\n" or prev_char.unicode_at(0) == 0x2029:
+					continue
+				var word_start = i
+				while word_start > 0:
+					var p_char = text_parsed[word_start - 1]
+					if p_char in [" ", "\n", "-"] or p_char.unicode_at(0) == 0x2029:
+						break
+					word_start -= 1
+				var is_first_word = true
+				for k in range(0, word_start):
+					var c = text_parsed[k]
+					if c != "\n" and c.unicode_at(0) != 0x2029 and c != " ":
+						is_first_word = false
+						break
+				if not is_first_word and not indexes.has(word_start):
+					indexes.append(word_start)
+		indexes.sort()
 		for i in range(indexes.size() - 1, -1, -1):
-			# Search the original text for the correct position, adding an offset
-			# that increments as bbcodes are encountered.
-			#var bbcode_found = 0
-			var count = 0
-			var offset = 0
-			for j in range(0, text.length(), 1):
+			var target_parsed_index = indexes[i]
+			var p = 0
+			var j = 0
+			var visual_count = 0
+			while j < text.length() and p <= target_parsed_index:
 				if text[j] == "[":
 					var current_bbcode = try_select_bbcode(text, j + 1)
 					if current_bbcode.length() > 0:
-						offset += current_bbcode.length()
+						j += current_bbcode.length()
+						continue
+				if p == target_parsed_index:
+					var character = "\n"
+					text = text.insert(j, character)
+					for command in special_commands:
+						if command.start >= visual_count:
+							command.start += 1
+					break
+				if p < text_parsed.length():
+					if text_parsed[p].unicode_at(0) == 0x2029:
+						p += 1
+					elif text_parsed[p] == text[j]:
+						p += 1
+						visual_count += 1
+						j += 1
 					else:
-						offset += text[j].length()
+						p += 1
+						visual_count += 1
+						j += 1
 				else:
-					if count == indexes[i] + offset:
-						var character = "\n"
-						text = text.insert(indexes[i] + offset, character)
-						var insertion_visual_point = indexes[i]
-						for command in special_commands:
-							if command.start >= insertion_visual_point:
-								command.start += 1
-						offset += character.length()
-						break
-					else:
-						count += 1
-
+					break
+	
 	text = text.replace("  ", " ")
-	message.text = text
+	
+	if is_multi_dialog:
+		var has_l_face = false
+		var has_r_face = false
+		var has_l_name = false
+		var has_r_name = false
+		for c in special_commands:
+			if c.name == "face":
+				if c.parameters.get("position", 0) == 1: has_r_face = true
+				else: has_l_face = true
+			elif c.name == "showbox":
+				if c.parameters.get("pos", 0) == 1: has_r_name = true
+				else: has_l_name = true
+		
+		if not has_l_face:
+			%LeftIconFace.get_parent().visible = false
+			%LeftIconFace.texture = null
+		if not has_r_face:
+			%RightIconFace.get_parent().visible = false
+			%RightIconFace.texture = null
+		if not has_l_name:
+			%NameLeftContainer.visible = false
+			%NameLeft.text = ""
+		if not has_r_name:
+			%NameRightContainer.visible = false
+			%NameRight.text = ""
 
+	var real_size = precalculate_dialog_size(use_soft_reset)
+	message.fit_content = false
+	message.text = text
 	message.visible_characters = 0
+	
+	if not is_multi_dialog:
+		current_dialog_size = real_size
+	else:
+		current_dialog_size = size
+		
 	if use_soft_reset:
 		modulate.a = 1.0
-
+		
 	max_characters = message.get_parsed_text().length()
 	var player = %TypeWritePlayer
 	player.stream = current_text_fx
@@ -1260,20 +1345,56 @@ func setup_text(text: String, use_soft_reset: bool = false, _is_additional_text:
 	
 	if is_floating:
 		player.stop()
-	
+		
 	if force_no_wait_for_input:
 		wait_for_input_enabled = false
-	if !use_soft_reset:
+		
+	if !use_soft_reset and not is_multi_dialog:
 		show_open_animation()
 	else:
 		busy = false
+		if ini_size_self != real_size and ini_size_self != Vector2.ZERO:
+			animate_to_new_size(real_size, ini_size_self, ini_size_message)
+		else:
+			custom_minimum_size = real_size
+			size = real_size
+			pivot_offset = real_size * 0.5
+			message.custom_minimum_size = real_size
+			message.size = real_size
+			message.pivot_offset = real_size * 0.5
+		
+		dialog_is_started = true
 		await show_next_character()
 		if instant_text_enabled:
 			message.set_deferred("visible_characters", -1)
-		
+			
 	busy_until_resume = false
-	
 	message_started.emit()
+	is_new_dialog = false
+
+
+func clean_structural_newlines(t: String) -> String:
+	t = t.strip_edges()
+	var lines = t.split("\n")
+	var new_lines: Array[String] = []
+	var only_commands_regex = RegEx.new()
+	only_commands_regex.compile("^\\s*(\\[[^\\]]+\\]\\s*)+$")
+	for i in range(lines.size()):
+		var line = lines[i]
+		if only_commands_regex.search(line) != null:
+			new_lines.append(line.strip_edges())
+		else:
+			new_lines.append(line)
+	var result = ""
+	for i in range(new_lines.size()):
+		var is_current_only_cmd = only_commands_regex.search(lines[i]) != null
+		result += new_lines[i]
+		if not is_current_only_cmd and i < new_lines.size() - 1:
+			result += "\n"
+	var final_regex = RegEx.new()
+	final_regex.compile("\\n{2,}")
+	result = final_regex.sub(result, "\n", true)
+	return result.replace("[newline]", "\n").strip_edges()
 
 
 ## Splits the text into paragraphs based on the [p] tag and message_max_lines.
@@ -1360,7 +1481,7 @@ func get_speaker_commands(speaker_id: int) -> String:
 			new_text += get_image_or_face_command(speaker.character)
 			
 			# Letter-By-Letter Sound
-			if ResourceLoader.exists(speaker.text_fx.filename):
+			if AssetManager.exists(speaker.text_fx.filename):
 				var arg1 = "path=\"%s\"" % speaker.text_fx.filename
 				var arg2 = "" if speaker.text_fx.volume_db == 0.0 else " volume=%s" % speaker.text_fx.volume_db
 				var arg3 = "" if speaker.text_fx.pitch_scale == 1.0 else " pitch=%s" % speaker.text_fx.pitch_scale
@@ -1399,7 +1520,7 @@ func get_hide_speaker_commands(speaker_id: int) -> String:
 				
 			new_text += "[hidebox=%s _is_script_command=true]" % speaker.name.pos
 			
-			if ResourceLoader.exists(speaker.text_fx.filename):
+			if AssetManager.exists(speaker.text_fx.filename):
 				var arg1 = "" if !text_fx else "path=\"%s\"" % text_fx.resource_path
 				var arg2 = " volume=%s" % text_fx_volume
 				var arg3 = " pitch=%s" % text_fx_min_pitch
@@ -1605,49 +1726,49 @@ func fix_tags(text: String) -> String:
 	return result
 
 
-func precalculate_dialog_size(is_soft_reset: bool = false) -> void:
-	message.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	message.visible_characters_behavior = TextServer.VC_CHARS_AFTER_SHAPING
-	message.visible_characters = -1
-
-	message.custom_minimum_size = Vector2(message_max_width, 0)
-	message.size = Vector2(message_max_width, 0)
-
-	custom_minimum_size = Vector2.ZERO
-	size = Vector2.ZERO
-
+func precalculate_dialog_size(is_soft_reset: bool = false) -> Vector2:
 	if not is_floating:
 		for command in special_commands:
 			if command.name == "showbox":
 				start_command_showbox(command, true)
 			elif command.name == "face":
 				start_command_face(command, true)
-
-	await get_tree().process_frame
-	var content_width = message.get_content_width()
-	var content_height = message.get_content_height()
-
+	var content_width = size_message.get_content_width()
+	var content_height = size_message.get_content_height()
 	var final_width = max(minimun_dialog_width, min(content_width, message_max_width))
 	var final_height = max(minimun_dialog_height, content_height)
-
 	var real_size = Vector2(final_width, final_height) + Vector2(4, 8)
-
-	message.custom_minimum_size = real_size
-	message.size = real_size
-
-	if not is_soft_reset:
+	if is_new_dialog and not is_multi_dialog and not is_soft_reset:
+		message.custom_minimum_size = real_size
+		message.size = real_size
+		message.pivot_offset = real_size * 0.5
+		custom_minimum_size = real_size
+		size = real_size
+		pivot_offset = real_size * 0.5
 		%NameLeftContainer.modulate.a = 0.0
 		%NameRightContainer.modulate.a = 0.0
-		%LeftIconFace.modulate.a = 0.0
-		%RightIconFace.modulate.a = 0.0
+		%LeftIconFace.get_parent().modulate.a = 0.0
+		%RightIconFace.get_parent().modulate.a = 0.0
+	return real_size
 
-	custom_minimum_size = real_size
-	size = real_size
 
-	message.pivot_offset = message.size * 0.5
-	pivot_offset = size * 0.5
-
-	message.visible_characters = 0
+func animate_to_new_size(target_size: Vector2, ini_size_self: Vector2, ini_size_message: Vector2) -> void:
+	if is_floating:
+		size = Vector2.ZERO
+		pivot_offset = size * 0.5
+		return
+		
+	var distance = ini_size_self.distance_to(target_size)
+	var animation_duration = clamp(0.2 + (distance / 500.0) * 0.4, 0.2, 0.6)
+	
+	var t = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	t.set_parallel(true)
+	t.tween_property(self, "custom_minimum_size", target_size, animation_duration).from(ini_size_self)
+	t.tween_property(self, "size", target_size, animation_duration).from(ini_size_self)
+	t.tween_property(self, "pivot_offset", target_size * 0.5, animation_duration)
+	t.tween_property(message, "custom_minimum_size", target_size, animation_duration).from(ini_size_message)
+	t.tween_property(message, "size", target_size, animation_duration).from(ini_size_message)
+	t.tween_property(message, "pivot_offset", target_size * 0.5, animation_duration)
 
 
 func get_final_text(text: String) -> String:
@@ -1727,9 +1848,21 @@ func show_open_animation() -> void:
 	var current_animation = animations[clamp(start_animation_id, 0, animations.size() - 1)]
 	
 	var node = self
-	node.modulate.a = 1.0
-	node.pivot_offset = node.size * 0.5
+	node.modulate.a = 0.0
+	if is_floating:
+		node.pivot_offset = Vector2(node.size.x * 0.5, node.size.y)
+	else:
+		node.pivot_offset = node.size * 0.5
 	node.scale = Vector2.ONE
+	
+	if is_floating:
+		node.size = Vector2.ZERO
+		await get_tree().process_frame
+		node.size = message.get_combined_minimum_size()
+		node.pivot_offset = Vector2(node.size.x * 0.5, node.size.y)
+		set_position_over_node()
+	
+	node.modulate.a = 1.0
 	
 	await get_tree().process_frame
 	
@@ -1786,12 +1919,12 @@ func show_open_animation() -> void:
 func show_close_animation() -> void:
 	if waiting_for_input:
 		return
-		
-	if is_new_dialog or is_multi_dialog:
+
+	if has_next_dialog or wait_for_user_option_selected_enabled:
 		await get_tree().process_frame
 		all_messages_finished.emit()
 		return
-	
+
 	if tweens.message:
 		tweens.message.kill()
 	
@@ -1851,7 +1984,7 @@ func show_close_animation() -> void:
 
 func start_command_character(command: SpecialEffectCommand) -> void:
 	if is_floating: return
-	if "path" in command.parameters and ResourceLoader.exists(command.parameters.path):
+	if "path" in command.parameters and AssetManager.exists(command.parameters.path):
 		var is_speaker: bool = command.parameters.get("is_character", false)
 		var id = int(command.parameters.get("id", 0))
 		var image_position = command.parameters.get("position", "left")
@@ -2066,13 +2199,12 @@ func start_command_face(command: SpecialEffectCommand, force_run: bool = false) 
 	if is_floating and not force_run: return
 	
 	if "path" in command.parameters:
-		if ResourceLoader.exists(command.parameters.path):
+		if AssetManager.exists(command.parameters.path):
 			var region_data = command.parameters.get("region", "0,0,0,0").split(",")
 			var region = Rect2(int(region_data[0]), int(region_data[1]), int(region_data[2]), int(region_data[3]))
 			var is_speaker = command.parameters.get("is_character", false)
 			var img
 			
-			## FIX: "if region:" is always true for Rect2. We must check if it has dimensions.
 			if region.has_area():
 				img = AtlasTexture.new()
 				img.atlas = load(command.parameters.path)
@@ -2080,25 +2212,26 @@ func start_command_face(command: SpecialEffectCommand, force_run: bool = false) 
 			else:
 				img = load(command.parameters.path)
 				
-			var obj = %LeftIconFace
+			var face_texture = %LeftIconFace
 			if "position" in command.parameters and command.parameters.position == 1:
-				obj = %RightIconFace
+				face_texture = %RightIconFace
+				
+			var obj = face_texture.get_parent()
 			
-			## Check if it is the same texture to avoid reloading/animating
 			if (is_speaker and
-				obj.get_texture() and
-				((img is AtlasTexture and obj.get_texture() is AtlasTexture and obj.get_texture().atlas.resource_path == command.parameters.path and obj.get_texture().region == region) or
-				(img is Texture2D and obj.get_texture().resource_path == command.parameters.path)) and
-				obj.get_parent().get_parent().visible == true
+				face_texture.get_texture() and
+				((img is AtlasTexture and face_texture.get_texture() is AtlasTexture and face_texture.get_texture().atlas.resource_path == command.parameters.path and face_texture.get_texture().region == region) or
+				(img is Texture2D and face_texture.get_texture().resource_path == command.parameters.path)) and
+				obj.visible == true
 			):
-				var key = "left_face" if obj == %LeftIconFace else "right_face"
+				var key = "left_face" if face_texture == %LeftIconFace else "right_face"
 				var t: Tween = tweens.get(key)
 				if (not t or (t and not t.is_valid())) and (obj.modulate.a != 1.0 or obj.scale != Vector2.ONE):
 					pass
 				else:
 					return
 				
-			obj.get_parent().get_parent().visible = true
+			obj.visible = true
 			
 			if img is PackedScene:
 				var img2 = img.instantiate()
@@ -2107,30 +2240,30 @@ func start_command_face(command: SpecialEffectCommand, force_run: bool = false) 
 				img = img2.texture
 				img2.queue_free()
 			
-			obj.texture = img
+			face_texture.texture = img
 			
 			if not force_run:
-				obj.pivot_offset = obj.size / 2
+				obj.pivot_offset = obj.size / 2.0
 				
 				var trans = command.parameters.trans_type if "trans_type" in command.parameters else 0
 				@warning_ignore("shadowed_variable")
 				var time = command.parameters.trans_time if "trans_time" in command.parameters else 0
 				var wait = command.parameters.trans_wait if "trans_wait" in command.parameters else 0
 				if trans and time:
-					var key = "left_face" if obj == %LeftIconFace else "right_face"
+					var key = "left_face" if face_texture == %LeftIconFace else "right_face"
 					if tweens[key]:
 						tweens[key].kill()
 					tweens[key] = create_tween()
 					match trans:
-						2: # Zoom In
+						2:
 							obj.modulate.a = 1.0
 							obj.scale = Vector2(0.6, 0.6)
 							tweens[key].tween_property(obj, "scale", Vector2.ONE, time)
-						3: # Zoom Out
+						3:
 							obj.modulate.a = 1.0
 							obj.scale = Vector2(1.4, 1.4)
 							tweens[key].tween_property(obj, "scale", Vector2.ONE, time)
-						_: # Fade In
+						_:
 							if trans != 0:
 								obj.modulate.a = 0.0
 								tweens[key].tween_property(obj, "modulate:a", 1.0, time)
@@ -2158,10 +2291,10 @@ func start_command_highlight_character(command: SpecialEffectCommand) -> void:
 	
 	var name_left = %NameLeft
 	var name_left_background = %NameLeftBackground
-	var face_left = %LeftIconFace
+	var face_left = %LeftIconFace.get_parent()
 	var name_right = %NameRight
 	var name_right_background = %NameRightBackground
-	var face_right = %RightIconFace
+	var face_right = %RightIconFace.get_parent()
 	
 	highlight_character_tween = create_tween()
 	highlight_character_tween.set_parallel(true)
@@ -2170,18 +2303,18 @@ func start_command_highlight_character(command: SpecialEffectCommand) -> void:
 	var modulation_right = Color.WHITE
 	var attenuation_color = Color(0.565, 0.565, 0.565, 0.396)
 	
-	if p_mode == 0: # Enable highlight
-		if p_pos == 0: # Highlight Left, Right attenuation
+	if p_mode == 0:
+		if p_pos == 0:
 			modulation_right = attenuation_color
-		else: # Highlight Right, Left attenuation
+		else:
 			modulation_left = attenuation_color
 	
 	highlight_character_tween.tween_property(name_left, "self_modulate", modulation_left, 0.35)
 	highlight_character_tween.tween_property(name_left_background, "self_modulate", modulation_left, 0.35)
-	highlight_character_tween.tween_property(face_left, "self_modulate", modulation_left, 0.35)
+	highlight_character_tween.tween_property(face_left, "modulate", modulation_left, 0.35)
 	highlight_character_tween.tween_property(name_right, "self_modulate", modulation_right, 0.35)
 	highlight_character_tween.tween_property(name_right_background, "self_modulate", modulation_right, 0.35)
-	highlight_character_tween.tween_property(face_right, "self_modulate", modulation_right, 0.35)
+	highlight_character_tween.tween_property(face_right, "modulate", modulation_right, 0.35)
 	
 	for image in images:
 		if image.character_linked_to == 0:
@@ -2204,9 +2337,9 @@ func start_command_image_remove(command: SpecialEffectCommand) -> void:
 		if id == 0:
 			var target_id = int(command.parameters.id) if "id" in command.parameters else 0
 			if target_id == 0:
-				%LeftIconFace.get_parent().get_parent().visible = false
+				%LeftIconFace.get_parent().visible = false
 			else:
-				%RightIconFace.get_parent().get_parent().visible = false
+				%RightIconFace.get_parent().visible = false
 		elif id == 1:
 			var target_id = int(command.parameters.id) if "id" in command.parameters else 0
 			var to_delete: Array = []
@@ -2233,9 +2366,10 @@ func start_command_imgfx(command: SpecialEffectCommand) -> void:
 					obj_parent = img
 					break
 		else:
-			obj = %LeftIconFace
+			var face_node = %LeftIconFace
 			if "position" in command.parameters and command.parameters.position == 1:
-				obj = %RightIconFace
+				face_node = %RightIconFace
+			obj = face_node.get_parent()
 		
 		if obj:
 			var use_tween = false
@@ -2287,23 +2421,23 @@ func start_command_imgfx(command: SpecialEffectCommand) -> void:
 			if "transition_type" in command.parameters and command.parameters.type == 1 and command.parameters.transition_type > 0:
 				var t = create_tween()
 				match command.parameters.transition_type:
-					1: # Fade Out
+					1:
 						t.tween_property(obj, "modulate:a", 0.0, duration)
-					2: # Move To Left Position
+					2:
 						var p = - obj.custom_minimum_size.x * 0.5
 						t.tween_property(obj, "position:x", p, duration)
 						t.tween_callback(obj.set_anchors_preset.bind(Control.PRESET_BOTTOM_LEFT))
-					3: # Move To Center Position
+					3:
 						var p = %Message.size.x * 0.5 - obj.custom_minimum_size.x * 0.5
 						t.tween_property(obj, "position:x", p, duration)
 						t.tween_callback(obj.set_anchors_preset.bind(Control.PRESET_CENTER_BOTTOM))
-					4: # Move To Right Position
+					4:
 						var p = %Message.size.x - obj.custom_minimum_size.x * 0.5
 						t.tween_property(obj, "position:x", p, duration)
 						t.tween_callback(obj.set_anchors_preset.bind(Control.PRESET_BOTTOM_RIGHT))
-					5: # Horizontal Flip
+					5:
 						obj.flip_h = !obj.flip_h
-					6: # Jump
+					6:
 						var d1 = duration * 0.2
 						var d2 = duration * 0.4
 						var p1 = obj.position.y - 100
@@ -2312,15 +2446,15 @@ func start_command_imgfx(command: SpecialEffectCommand) -> void:
 						t.tween_property(obj, "position:y", p1, d2)
 						t.tween_property(obj, "position:y", obj.position.y, d1)
 						t.tween_property(obj, "scale:y", 1.0, d1)
-					7: # Zoom In - Out
+					7:
 						var d = duration / 2
 						t.tween_property(obj, "scale:y", 1.2, d)
 						t.tween_property(obj, "scale:y", 1.0, d)
-					8: # Zoom Out - In
+					8:
 						var d = duration / 2
 						t.tween_property(obj, "scale:y", 0.8, d)
 						t.tween_property(obj, "scale:y", 1.0, d)
-					_: # Fade In
+					_:
 						t.tween_property(obj, "modulate:a", 1.0, duration)
 							
 				
@@ -2390,7 +2524,7 @@ func start_command_hidebox(command: SpecialEffectCommand) -> void:
 
 
 func start_command_sound(command: SpecialEffectCommand) -> void:
-	if "path" in command.parameters and ResourceLoader.exists(command.parameters.path):
+	if "path" in command.parameters and AssetManager.exists(command.parameters.path):
 		var stream: AudioStream = load(command.parameters.path)
 		var volume_db: float = 0.0
 		var pitch: float = 1.0
@@ -2500,7 +2634,7 @@ func start_command_change_blip(command: SpecialEffectCommand) -> void:
 	
 	var path = command.parameters.get("path", "")
 
-	if ResourceLoader.exists(path):
+	if AssetManager.exists(path):
 		current_text_fx = load(path)
 		current_text_fx_min_pitch = command.parameters.get("pitch", 1.0)
 		current_text_fx_max_pitch = command.parameters.get("pitch2", 1.0)
@@ -2719,3 +2853,13 @@ func get_visible_characters() -> int:
 
 func get_characters_delay() -> float:
 	return max_character_delay
+
+
+func _notification(what: int) -> void:
+	if Engine.is_editor_hint():
+		if what == Node.NOTIFICATION_EDITOR_PRE_SAVE:
+			if message:
+				message.custom_effects.clear()
+		elif what == Node.NOTIFICATION_EDITOR_POST_SAVE:
+			setup_effects()
+			setup_transitions()

@@ -6,6 +6,10 @@ extends OptionButton
 @export var can_select_item_with_button_wheel: bool = true
 @export var can_click_with_button_middle: bool = true
 
+var _sync_timer: Timer
+const SYNC_DELAY: float = 0.025
+var _is_dirty: bool = false
+
 # Multi-selection variables
 var selected_items: PackedInt32Array = []
 var custom_popup: PopupPanel
@@ -17,6 +21,12 @@ signal middle_click()
 signal multi_selection_changed(selected_ids: Array[int])
 
 func _ready() -> void:
+	_sync_timer = Timer.new()
+	_sync_timer.one_shot = true
+	_sync_timer.wait_time = SYNC_DELAY
+	_sync_timer.timeout.connect(_perform_full_sync)
+	add_child(_sync_timer)
+	
 	gui_input.connect(_on_gui_input)
 	
 	var popup = get_popup()
@@ -37,6 +47,45 @@ func _ready() -> void:
 	for i in get_item_count():
 		var t = _clean_item_name(get_item_text(i))
 		set_item_text(i, t)
+
+
+func _request_sync() -> void:
+	if not enable_multi_selection: return
+	
+	_is_dirty = true
+	_sync_timer.start()
+
+
+func _perform_full_sync() -> void:
+	_is_dirty = false
+	if not item_list: return
+	
+	item_list.clear()
+	var popup = get_popup()
+	
+	for i in popup.get_item_count():
+		var text = popup.get_item_text(i)
+		var icon = popup.get_item_icon(i)
+		item_list.add_item(text, icon)
+		
+		if popup.is_item_disabled(i):
+			item_list.set_item_disabled(i, true)
+	
+	item_list.deselect_all()
+	
+	var valid_selection: PackedInt32Array = []
+	var count = item_list.get_item_count()
+	
+	for id in selected_items:
+		if id < count:
+			item_list.select(id, false)
+			valid_selection.append(id)
+	
+	if valid_selection.size() != selected_items.size():
+		selected_items = valid_selection
+
+	_update_button_text()
+
 
 func _set_multi_selection(value: bool) -> void:
 	enable_multi_selection = value
@@ -69,11 +118,17 @@ func _create_custom_popup() -> void:
 	
 	# Crear ItemList
 	item_list = preload("res://addons/CustomControls/custom_simple_item_list.tscn").instantiate()
-	item_list.select_mode = ItemList.SELECT_MULTI
+	item_list.select_mode = ItemList.SELECT_TOGGLE
 	item_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	item_list.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	item_list.theme = load("res://addons/RPGMap/Assets/Themes/dialog_theme.tres")
 	item_list.position.y = size.y
+	
+	var current_font: Font = item_list.get_theme_font("font")
+	var current_size: int = item_list.get_theme_font_size("font_size")
+	var icon_res: int = int(current_font.get_height(current_size))
+	item_list.fixed_icon_size = Vector2i(icon_res, icon_res)
+	
 	custom_popup.add_child(item_list)
 	
 	# Configurar tamaño del popup basado en el control padre
@@ -134,6 +189,10 @@ func _on_button_pressed() -> void:
 func _show_custom_popup() -> void:
 	if not custom_popup or is_popup_open:
 		return
+	
+	if _is_dirty or not _sync_timer.is_stopped():
+		_sync_timer.stop()
+		_perform_full_sync()
 	
 	is_popup_open = true
 	
@@ -248,9 +307,7 @@ func add_item(label: String, id: int = -1) -> void:
 	label = _clean_item_name(label)
 	super(label, id)
 	
-	# Si está en modo multi-selección, sincronizar con ItemList
-	if enable_multi_selection and item_list:
-		_sync_items_to_list()
+	_request_sync()
 
 # Override para interceptar clicks del mouse cuando está en multi-selección
 func _gui_input(event: InputEvent) -> void:
@@ -296,7 +353,7 @@ func _input(event: InputEvent) -> void:
 			
 			if not popup_rect.has_point(mouse_pos) and not button_rect.has_point(mouse_pos):
 				_hide_custom_popup()
-				get_viewport().set_input_as_handled()
+				accept_event()
 
 func _clean_item_name(item: String) -> String:
 	var regex = RegEx.new()
@@ -352,6 +409,7 @@ func _on_gui_input(event: InputEvent) -> void:
 				change_index(-1)
 			elif event.button_index == MOUSE_BUTTON_MIDDLE and can_click_with_button_middle:
 				middle_click.emit()
+				accept_event()
 
 func change_index(mod: int) -> void:
 	var bak = can_select_item_with_button_wheel
@@ -443,8 +501,19 @@ func change_index(mod: int) -> void:
 # ===== FUNCIONES PARA MULTI-SELECCIÓN =====
 
 # Obtener los IDs de los items seleccionados
-func get_selected_items() -> Array[int]:
-	return selected_items.duplicate()
+func get_selected_items() -> PackedInt32Array:
+	var items: PackedInt32Array = PackedInt32Array(selected_items.duplicate())
+	return items
+
+
+func get_hovered_item_index() -> int:
+	if not item_list or not item_list.visible:
+		return -1
+	
+	var local_mouse_pos = item_list.get_local_mouse_position()
+	
+	return item_list.get_item_at_position(local_mouse_pos, true)
+
 
 # Obtener los textos de los items seleccionados
 func get_selected_texts() -> Array[String]:
@@ -455,21 +524,55 @@ func get_selected_texts() -> Array[String]:
 			texts.append(popup.get_item_text(id))
 	return texts
 
-# Seleccionar/deseleccionar un item programáticamente
-func set_item_selected(id: int, selected: bool = true) -> void:
-	if not enable_multi_selection:
+
+func set_item_text(idx: int, text: String) -> void:
+	super(idx, text)
+	_request_sync()
+
+
+func remove_item(idx: int) -> void:
+	super(idx)
+
+	if idx in selected_items:
+		var new_sel: PackedInt32Array = []
+		for i in selected_items:
+			if i != idx: 
+				new_sel.append(i if i < idx else i - 1)
+		selected_items = new_sel
+	_request_sync()
+
+
+func clear() -> void:
+	super()
+	selected_items.clear()
+	_update_button_text()
+	_request_sync()
+
+
+func set_item_selected(id: int, selected: bool = true, force_selection: bool = false) -> void:
+	if not enable_multi_selection and not force_selection:
 		return
 		
 	var popup = get_popup()
 	if id < 0 or id >= popup.get_item_count():
 		return
-		
-	if selected and id not in selected_items:
-		selected_items.append(id)
-	elif not selected and id in selected_items:
-		selected_items.erase(id)
 	
-	# Sincronizar con ItemList si existe
+	var changed = false
+	if selected:
+		if id not in selected_items:
+			selected_items.append(id)
+			changed = true
+	else:
+		if id in selected_items:
+			selected_items.erase(id)
+			changed = true
+	
+	if not changed: return
+
+	if not _sync_timer.is_stopped():
+		_update_button_text()
+		return
+		
 	if item_list:
 		if selected:
 			item_list.select(id, false)
@@ -478,6 +581,7 @@ func set_item_selected(id: int, selected: bool = true) -> void:
 	
 	_update_button_text()
 	multi_selection_changed.emit(selected_items.duplicate())
+
 
 # Limpiar toda la selección
 func clear_selection() -> void:

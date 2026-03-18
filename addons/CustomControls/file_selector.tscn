@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bpkccvkafldfq"]
+[gd_scene format=3 uid="uid://bpkccvkafldfq"]
 
 [ext_resource type="Texture2D" uid="uid://k427d0tgpa8n" path="res://addons/CustomControls/Images/loading_file_icon.png" id="1_a1cou"]
 [ext_resource type="Script" uid="uid://dugycnkaq5bfj" path="res://addons/CustomControls/file_selector.gd" id="1_v5bhg"]
@@ -8,7 +8,7 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ardcy"]
 
-[node name="FileSelector" type="MarginContainer"]
+[node name="FileSelector" type="MarginContainer" unique_id=382133910]
 offset_right = 128.0
 offset_bottom = 158.0
 focus_mode = 2
@@ -20,11 +20,11 @@ theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 2
 script = ExtResource("1_v5bhg")
 
-[node name="VboxContainer" type="VBoxContainer" parent="."]
+[node name="VboxContainer" type="VBoxContainer" parent="." unique_id=2047284360]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Icon" type="TextureRect" parent="VboxContainer"]
+[node name="Icon" type="TextureRect" parent="VboxContainer" unique_id=1633684349]
 unique_name_in_owner = true
 texture_filter = 3
 custom_minimum_size = Vector2(124, 124)
@@ -35,7 +35,7 @@ texture = ExtResource("1_a1cou")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Label" type="RichTextLabel" parent="VboxContainer"]
+[node name="Label" type="RichTextLabel" parent="VboxContainer" unique_id=454774613]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
@@ -44,21 +44,22 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_ardcy")
 bbcode_enabled = true
 text = "[center]Filename[/center]"
 fit_content = true
+custom_effects = []
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2057312342]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_top = -4
 theme_override_constants/margin_bottom = -4
 
-[node name="Cursor" type="ColorRect" parent="MarginContainer"]
+[node name="Cursor" type="ColorRect" parent="MarginContainer" unique_id=2141219785]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 mouse_filter = 2
 color = Color(0.898039, 0.631373, 0, 0.152941)
 
-[node name="FavoriteButton" type="TextureButton" parent="."]
+[node name="FavoriteButton" type="TextureButton" parent="." unique_id=100646264]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2

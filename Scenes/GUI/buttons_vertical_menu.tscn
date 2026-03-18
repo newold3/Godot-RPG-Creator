@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bmrg358vj720"]
+[gd_scene format=3 uid="uid://bmrg358vj720"]
 
 [ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="1_3mekj"]
 [ext_resource type="Script" uid="uid://ddcp4e5phofqo" path="res://Scenes/GUI/buttons_vertical_menu.gd" id="1_tmtgg"]
@@ -70,7 +70,7 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
-[node name="ButtonsVerticalMenu" type="PanelContainer"]
+[node name="ButtonsVerticalMenu" type="PanelContainer" unique_id=609780412]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -82,17 +82,17 @@ theme_override_styles/panel = SubResource("StyleBoxTexture_8a8cv")
 script = ExtResource("1_tmtgg")
 button_size = Vector2(48, 48)
 
-[node name="MarginContainer2" type="MarginContainer" parent="."]
+[node name="MarginContainer2" type="MarginContainer" parent="." unique_id=1623871157]
 clip_contents = true
 layout_mode = 2
 theme_override_constants/margin_top = 8
 theme_override_constants/margin_bottom = 8
 
-[node name="BackgroundClip" type="Control" parent="MarginContainer2"]
+[node name="BackgroundClip" type="Control" parent="MarginContainer2" unique_id=1687064087]
 clip_contents = true
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer2/BackgroundClip"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer2/BackgroundClip" unique_id=1182227682]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -102,7 +102,7 @@ grow_vertical = 2
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="SmoothScrollContainer" type="ScrollContainer" parent="MarginContainer2/BackgroundClip/MarginContainer" node_paths=PackedStringArray("single_target_focus")]
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="MarginContainer2/BackgroundClip/MarginContainer" unique_id=1368581319 node_paths=PackedStringArray("single_target_focus")]
 unique_name_in_owner = true
 clip_contents = false
 layout_mode = 2
@@ -112,7 +112,7 @@ script = ExtResource("1_3mekj")
 single_target_focus = NodePath("ButtonsVerticalMenuContainer/FocusControl")
 metadata/_custom_type_script = "uid://cs6g8remlafby"
 
-[node name="ButtonsVerticalMenuContainer" type="Control" parent="MarginContainer2/BackgroundClip/MarginContainer/SmoothScrollContainer"]
+[node name="ButtonsVerticalMenuContainer" type="Control" parent="MarginContainer2/BackgroundClip/MarginContainer/SmoothScrollContainer" unique_id=829324988]
 unique_name_in_owner = true
 texture_filter = 5
 custom_minimum_size = Vector2(55.2, 577.2)
@@ -125,14 +125,14 @@ normal_style = SubResource("StyleBoxFlat_ituw3")
 hover_style = SubResource("StyleBoxFlat_8a8cv")
 selected_style = SubResource("StyleBoxFlat_suvof")
 
-[node name="Gear" type="Control" parent="."]
+[node name="Gear" type="Control" parent="." unique_id=1641352805]
 unique_name_in_owner = true
 show_behind_parent = true
 z_index = 1
 layout_mode = 2
 mouse_filter = 2
 
-[node name="GearTop" type="Control" parent="Gear"]
+[node name="GearTop" type="Control" parent="Gear" unique_id=2035275376]
 unique_name_in_owner = true
 z_index = 10
 layout_mode = 1
@@ -144,7 +144,7 @@ offset_bottom = 21.999996
 scale = Vector2(0.1, 0.1)
 mouse_filter = 2
 
-[node name="Part1" type="TextureRect" parent="Gear/GearTop"]
+[node name="Part1" type="TextureRect" parent="Gear/GearTop" unique_id=759848381]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -160,7 +160,7 @@ grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("6_k4hpw")
 
-[node name="Part2" type="TextureRect" parent="Gear/GearTop"]
+[node name="Part2" type="TextureRect" parent="Gear/GearTop" unique_id=1725734181]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -178,7 +178,7 @@ pivot_offset = Vector2(117, 120)
 mouse_filter = 2
 texture = ExtResource("7_1kff4")
 
-[node name="GearBottom" type="Control" parent="Gear"]
+[node name="GearBottom" type="Control" parent="Gear" unique_id=103221709]
 unique_name_in_owner = true
 z_index = 10
 layout_mode = 1
@@ -193,7 +193,7 @@ grow_vertical = 0
 scale = Vector2(0.1, 0.1)
 mouse_filter = 2
 
-[node name="Part1" type="TextureRect" parent="Gear/GearBottom"]
+[node name="Part1" type="TextureRect" parent="Gear/GearBottom" unique_id=353897252]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -209,7 +209,7 @@ grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("6_k4hpw")
 
-[node name="Part2" type="TextureRect" parent="Gear/GearBottom"]
+[node name="Part2" type="TextureRect" parent="Gear/GearBottom" unique_id=905623436]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5

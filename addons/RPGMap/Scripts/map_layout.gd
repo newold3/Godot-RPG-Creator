@@ -3,7 +3,7 @@ class_name MapLayout
 
 ## The size (in pixels) of each cell in the spatial grid.
 ## Adjust based on your game's size and event density. 256 or 512 is a good start.
-@export var quadrant_size: int = 50
+@export var quadrant_size: int = 256
 
 ## Stores events by quadrant.
 ## Format: { Vector2i(quad_id): [event1, event2, ...] }

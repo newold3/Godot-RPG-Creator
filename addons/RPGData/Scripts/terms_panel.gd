@@ -1,27 +1,25 @@
 @tool
 extends HBoxContainer
 
-
+## The style applied to the title of the terms.
 @export var terms_title_style: StyleBox
 
 var data: RPGTerms
 var database: RPGDATA
-
-var real_indexes: Dictionary
-
 var filter_update_timer: float = 0.0
-
 var can_delete_message: bool = false
 
 const CLOSE_ICON = preload("res://addons/CustomControls/Images/close_icon.png")
 
 
+
+## Initializes the term list and connects inputs.
 func _ready() -> void:
-	# Prevents the dialog from closing automatically when pressing enter if this control is set to on.
 	%TermList.lock_enter = true
 	%TermList.get_item_list().gui_input.connect(_on_term_list_gui_input)
 
 
+## Processes the filter timer.
 func _process(delta: float) -> void:
 	if filter_update_timer > 0:
 		filter_update_timer -= delta
@@ -30,6 +28,7 @@ func _process(delta: float) -> void:
 			update_terms_by_filter()
 
 
+## Refreshes the terms list applying the current filter text.
 func update_terms_by_filter() -> void:
 	var node = %TermList
 	node.set_filter(%Filter.text)
@@ -38,9 +37,9 @@ func update_terms_by_filter() -> void:
 	await fill_terms_list()
 	
 	node.set_selected_items(selected_items)
-	
 
 
+## Sets the real term data and populates the visual list.
 func set_data(real_data: RPGTerms) -> void:
 	if !is_inside_tree():
 		return
@@ -49,15 +48,12 @@ func set_data(real_data: RPGTerms) -> void:
 	
 	await get_tree().process_frame
 	await fill_terms_list()
-	
-	#data.messages.resize(real_indexes.size())
 
 
+## Fills the term list applying styles to headers and metadata to selectable items.
 func fill_terms_list() -> void:
 	var node = %TermList
 	node.clear()
-	
-	real_indexes.clear()
 	
 	%TermList.get_item_list().mouse_default_cursor_shape = Control.CURSOR_ARROW
 	can_delete_message = false
@@ -73,16 +69,13 @@ func fill_terms_list() -> void:
 	fast_selection.set_item_disabled(-1, true)
 	
 	var current_header = null
-	var current_header_index = -1
 	var items_in_current_category: Array = []
 	
 	for message: RPGTerm in data.messages:
 		var columns: Array
 		
 		if message.unselectable:
-			# Procesar la categoría anterior antes de empezar una nueva
 			if current_header != null and items_in_current_category.size() > 0:
-				# Añadir el encabezado
 				unselectable_items.append(current_index)
 				columns = [current_header.id, current_header.text]
 				node.add_column(columns)
@@ -90,32 +83,26 @@ func fill_terms_list() -> void:
 				fast_selection.add_item(current_header.id)
 				current_index += 1
 				
-				# Añadir los items que pasaron el filtro
 				for item_data in items_in_current_category:
 					node.add_column(item_data.columns)
 					if item_data.is_user_message:
 						node.add_custom_icon(current_index, CLOSE_ICON)
-					real_indexes[current_index] = item_data.real_index
+					node.set_item_metadata(current_index, item_data.real_index)
 					current_index += 1
 			
-			# Guardar el nuevo encabezado y limpiar items temporales
 			current_header = message
-			current_header_index = current_index
 			items_in_current_category.clear()
 		else:
-			# Verificar si el item pasa el filtro
 			if filter.length() == 0 or message.text.to_lower().find(filter) != -1 or message.id.to_lower().find(filter) != -1:
-				# Guardar el item temporalmente
 				var item_data = {
 					"columns": [message.id, message.text],
 					"is_user_message": message.is_user_message,
 					"real_index": real_index
 				}
 				items_in_current_category.append(item_data)
-			
-			real_index += 1
+				
+		real_index += 1
 	
-	# Procesar la última categoría
 	if current_header != null and items_in_current_category.size() > 0:
 		unselectable_items.append(current_index)
 		var columns = [current_header.id, current_header.text]
@@ -128,7 +115,7 @@ func fill_terms_list() -> void:
 			node.add_column(item_data.columns)
 			if item_data.is_user_message:
 				node.add_custom_icon(current_index, CLOSE_ICON)
-			real_indexes[current_index] = item_data.real_index
+			node.set_item_metadata(current_index, item_data.real_index)
 			current_index += 1
 	
 	fast_selection.select(0)
@@ -139,49 +126,53 @@ func fill_terms_list() -> void:
 		node.set_item_selectable(i, false)
 
 
+## Handles the deletion of selected items via input.
 func _on_term_list_delete_pressed(indexes: PackedInt32Array) -> void:
 	for index in indexes:
-		data.update_message(real_indexes[index], "")
+		data.update_message(%TermList.get_item_metadata(index), "")
 	
 	var selected_items = %TermList.get_selected_items()
 	await fill_terms_list()
 	%TermList.select_items(selected_items)
 
 
+## Triggers edition or creation of a term when activated.
 func _on_term_list_item_activated(index: int) -> void:
+	var real_idx = %TermList.get_item_metadata(index)
 	
-	if real_indexes.has(index):
+	if real_idx != null:
 		if %TermList.is_item_selectable(index):
-			# edit message
 			var path = "res://addons/CustomControls/Dialogs/select_text_dialog.tscn"
 			var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
 			var item_name = %TermList.get_column(index)[0]
 			dialog.title = TranslationManager.tr(item_name)
-			dialog.set_text(data.get_message(real_indexes[index]))
+			dialog.set_text(data.get_message(real_idx))
 			dialog.text_selected.connect(_update_term.bind(index))
 	else:
-		# create new message
 		var path = "res://addons/CustomControls/Dialogs/create_term_dialog.tscn"
 		var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
 		dialog.message_selected.connect(_create_new_message)
 
 
+## Updates an existing term message and reloads the list.
 func _update_term(text: String, index: int) -> void:
-	data.update_message(real_indexes[index], text)
+	data.update_message(%TermList.get_item_metadata(index), text)
 	await fill_terms_list()
 	%TermList.select(index)
 
 
+## Creates a new term message dynamically.
 func _create_new_message(id: String, text: String) -> void:
 	if id:
 		var message = data.create_message(id, text, false, true, false)
 		if message:
 			await fill_terms_list()
 			var selected_id = %TermList.get_item_list().get_item_count() - 2
-			real_indexes[selected_id] = data.messages.size() - 1
+			%TermList.set_item_metadata(selected_id, data.messages.size() - 1)
 			%TermList.select(selected_id)
 
 
+## Prompts a confirmation dialog before removing a message.
 func _confirm_remove_message(index: int) -> void:
 	var confirm_dialog := ConfirmationDialog.new()
 	confirm_dialog.title = "Confirm Remove Message"
@@ -192,13 +183,15 @@ func _confirm_remove_message(index: int) -> void:
 	confirm_dialog.popup_centered()
 
 
+## Deletes the message based on its metadata index.
 func _remove_message(index: int) -> void:
-	var real_index = real_indexes[index]
-	data.remove_message_at(real_index)
+	var real_idx = %TermList.get_item_metadata(index)
+	data.remove_message_at(real_idx)
 	await fill_terms_list()
 	%TermList.select(index)
 
 
+## Intercepts inputs to handle fast selection and deletion.
 func _on_term_list_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("EnterKey") and !event.is_ctrl_pressed():
 		var selected_items = %TermList.get_selected_items()
@@ -207,8 +200,9 @@ func _on_term_list_gui_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 	elif event is InputEventMouseMotion:
 		var index = %TermList.get_item_at_position(event.position)
-		if index != -1 and index in real_indexes:
-			var message: RPGTerm = data.get_message_obj(real_indexes[index])
+		if index != -1 and %TermList.get_item_metadata(index) != null:
+			var real_idx = %TermList.get_item_metadata(index)
+			var message: RPGTerm = data.get_message_obj(real_idx)
 			if message and message.is_user_message:
 				if event.position.x <= CLOSE_ICON.get_width():
 					%TermList.get_item_list().mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
@@ -221,6 +215,7 @@ func _on_term_list_gui_input(event: InputEvent) -> void:
 		_confirm_remove_message(index)
 
 
+## Switches the filter icon and starts the timer.
 func _on_filter_text_changed(new_text: String) -> void:
 	if new_text.length() != 0:
 		%Filter.right_icon = ResourceLoader.load("res://addons/CustomControls/Images/filter_reset.png")
@@ -229,6 +224,7 @@ func _on_filter_text_changed(new_text: String) -> void:
 	filter_update_timer = 0.25
 
 
+## Clears the filter text if the clear icon is clicked.
 func _on_filter_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.is_pressed():
@@ -244,6 +240,7 @@ func _on_filter_gui_input(event: InputEvent) -> void:
 			%Filter.mouse_default_cursor_shape = Control.CURSOR_IBEAM
 
 
+## Navigates directly to the specified term section.
 func _on_fast_selection_item_selected(index: int) -> void:
 	if index > 0:
 		var node1 = %FastSelection

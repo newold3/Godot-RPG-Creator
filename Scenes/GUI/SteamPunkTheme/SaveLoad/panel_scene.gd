@@ -170,7 +170,7 @@ func _update_party_icons(party_ids: Array) -> void:
 			var actor: RPGActor = RPGSYSTEM.database.actors[id]
 			var scene = actor.character_scene
 			var image_path = scene.trim_suffix(".tscn") + "_character.png"
-			if ResourceLoader.exists(image_path):
+			if AssetManager.exists(image_path):
 				var tex = load(image_path)
 				var node = TextureRect.new()
 				node.expand_mode = TextureRect.EXPAND_IGNORE_SIZE

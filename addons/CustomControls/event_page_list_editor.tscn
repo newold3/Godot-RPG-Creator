@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://u75p1b2dn3yq"]
+[gd_scene format=3 uid="uid://u75p1b2dn3yq"]
 
 [ext_resource type="Script" uid="uid://d1qbe60rp3rd0" path="res://addons/CustomControls/event_page_list_editor.gd" id="1_qgd1y"]
 [ext_resource type="PackedScene" uid="uid://7bb05tatss36" path="res://addons/CustomControls/custom_edit_item_list.tscn" id="2_8pm0n"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://cq8wt1ftsmf0v" path="res://addons/CustomControls/formatter.gd" id="4_21dn8"]
 [ext_resource type="Texture2D" uid="uid://dwcnj2mbl2v2y" path="res://addons/CustomControls/Images/magnifying_glass.png" id="4_fqmnf"]
 [ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="5_a58qb"]
+[ext_resource type="Script" uid="uid://c7kwutiivrd7j" path="res://addons/CustomControls/simple_texture_button.gd" id="8_3rpwi"]
 [ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="8_pjfad"]
 [ext_resource type="Texture2D" uid="uid://cxgtc7fff3htb" path="res://addons/CustomControls/Images/collapsable_button.png" id="9_kwkeb"]
 [ext_resource type="PackedScene" uid="uid://cq3w1n33om8lf" path="res://addons/CustomControls/favorite_button_command_container.tscn" id="9_oqr0o"]
@@ -161,7 +162,7 @@ func setup_tree_item(item: TreeItem, command: RPGEventCommand, index: int, font:
 	item.set_collapsed(!command.is_expanded)
 "
 
-[node name="EventPageListEditor" type="Control" node_paths=PackedStringArray("code_script")]
+[node name="EventPageListEditor" type="Control" unique_id=638048893 node_paths=PackedStringArray("code_script")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -174,13 +175,13 @@ script = ExtResource("1_qgd1y")
 main_theme = ExtResource("2_w3fgj")
 code_script = NodePath("CodeScript")
 
-[node name="CodeScript" type="Node" parent="."]
+[node name="CodeScript" type="Node" parent="." unique_id=827492161]
 script = ExtResource("3_xuggb")
 
-[node name="Formatter" type="Node" parent="."]
+[node name="Formatter" type="Node" parent="." unique_id=342472420]
 script = ExtResource("4_21dn8")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1492811992]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -188,61 +189,62 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=1540548586]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=1954331266]
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
 text = "Find command:"
 
-[node name="Filter" parent="VBoxContainer/HBoxContainer" instance=ExtResource("3_3hynw")]
+[node name="Filter" parent="VBoxContainer/HBoxContainer" unique_id=689273308 instance=ExtResource("3_3hynw")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Search for any command in the list that matches this pattern. Use F3 to navigate through all found commands. (You can search by both command name and the content shown in this editor)"
 right_icon = ExtResource("4_fqmnf")
 
-[node name="FindPreviousCommand" type="TextureButton" parent="VBoxContainer/HBoxContainer"]
+[node name="FindPreviousCommand" type="TextureButton" parent="VBoxContainer/HBoxContainer" unique_id=1902945653]
 layout_mode = 2
 size_flags_vertical = 4
 tooltip_text = "Finds the previous command that matches the search pattern [color=red](Shift + F3)[/color]"
 mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_7mjtw")
 texture_pressed = SubResource("AtlasTexture_ld3bn")
+script = ExtResource("8_3rpwi")
 
-[node name="FindNextCommand" type="TextureButton" parent="VBoxContainer/HBoxContainer"]
+[node name="FindNextCommand" type="TextureButton" parent="VBoxContainer/HBoxContainer" unique_id=750881547]
 layout_mode = 2
 size_flags_vertical = 4
 tooltip_text = "Finds the next command that matches the search pattern [color=red](F3)[/color]"
 mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_r7sb2")
 texture_pressed = SubResource("AtlasTexture_qcaeu")
+script = ExtResource("8_3rpwi")
 
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer" unique_id=306595910]
 layout_mode = 2
 
-[node name="FastCommands" type="HBoxContainer" parent="VBoxContainer"]
+[node name="FastCommands" type="HBoxContainer" parent="VBoxContainer" unique_id=1178743447]
 custom_minimum_size = Vector2(0, 42)
 layout_mode = 2
 mouse_filter = 0
 
-[node name="Label" type="Label" parent="VBoxContainer/FastCommands"]
+[node name="Label" type="Label" parent="VBoxContainer/FastCommands" unique_id=569894524]
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
 size_flags_vertical = 0
 text = "Fast Commands:"
 
-[node name="FavoriteButtonScrollContainer" type="ScrollContainer" parent="VBoxContainer/FastCommands"]
+[node name="FavoriteButtonScrollContainer" type="ScrollContainer" parent="VBoxContainer/FastCommands" unique_id=1068940186]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 41)
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 0
 script = ExtResource("8_pjfad")
 metadata/_custom_type_script = "uid://cs6g8remlafby"
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/FastCommands/FavoriteButtonScrollContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/FastCommands/FavoriteButtonScrollContainer" unique_id=1797494353]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -251,31 +253,31 @@ theme_override_constants/margin_top = 3
 theme_override_constants/margin_right = 22
 theme_override_constants/margin_bottom = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/FastCommands/FavoriteButtonScrollContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/FastCommands/FavoriteButtonScrollContainer/MarginContainer" unique_id=500156104]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="FavoriteButtonContainer" parent="VBoxContainer/FastCommands/FavoriteButtonScrollContainer/MarginContainer/VBoxContainer" instance=ExtResource("9_oqr0o")]
+[node name="FavoriteButtonContainer" parent="VBoxContainer/FastCommands/FavoriteButtonScrollContainer/MarginContainer/VBoxContainer" unique_id=67879649 instance=ExtResource("9_oqr0o")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 0
 
-[node name="HSeparator2" type="HSeparator" parent="VBoxContainer"]
+[node name="HSeparator2" type="HSeparator" parent="VBoxContainer" unique_id=1181200147]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer" unique_id=157608652]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="EventListContainer" type="ScrollContainer" parent="VBoxContainer/VBoxContainer"]
+[node name="EventListContainer" type="ScrollContainer" parent="VBoxContainer/VBoxContainer" unique_id=1781089663]
 unique_name_in_owner = true
 clip_children = 2
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer/EventListContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer/EventListContainer" unique_id=709193264]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -285,11 +287,11 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/VBoxContainer/EventListContainer/MarginContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/VBoxContainer/EventListContainer/MarginContainer" unique_id=2076922914]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_oqr0o")
 
-[node name="EventPageList" parent="VBoxContainer/VBoxContainer/EventListContainer/MarginContainer/PanelContainer" node_paths=PackedStringArray("code_format") instance=ExtResource("2_8pm0n")]
+[node name="EventPageList" parent="VBoxContainer/VBoxContainer/EventListContainer/MarginContainer/PanelContainer" unique_id=365690422 node_paths=PackedStringArray("code_format") instance=ExtResource("2_8pm0n")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(1152, 543)
 layout_mode = 2
@@ -313,7 +315,7 @@ default_text = "▶"
 default_no_editable_text = "▷"
 scroll_container = NodePath("../../..")
 
-[node name="CollabsableCommands" type="TextureButton" parent="VBoxContainer/VBoxContainer/EventListContainer/MarginContainer/PanelContainer/EventPageList"]
+[node name="CollabsableCommands" type="TextureButton" parent="VBoxContainer/VBoxContainer/EventListContainer/MarginContainer/PanelContainer/EventPageList" unique_id=1397663582]
 unique_name_in_owner = true
 visible = false
 layout_mode = 0
@@ -325,14 +327,14 @@ texture_normal = SubResource("AtlasTexture_pjfad")
 texture_pressed = SubResource("AtlasTexture_oqr0o")
 texture_hover = SubResource("AtlasTexture_3rpwi")
 
-[node name="Tree" type="Tree" parent="VBoxContainer/VBoxContainer/EventListContainer/MarginContainer" node_paths=PackedStringArray("code_format")]
+[node name="Tree" type="Tree" parent="VBoxContainer/VBoxContainer/EventListContainer/MarginContainer" unique_id=636776651 node_paths=PackedStringArray("code_format")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 script = SubResource("GDScript_kwkeb")
 code_format = NodePath("../../../../../Formatter")
 
-[node name="RightMenu" type="PopupMenu" parent="."]
+[node name="RightMenu" type="PopupMenu" parent="." unique_id=1727991476]
 unique_name_in_owner = true
 size = Vector2i(231, 286)
 item_count = 13

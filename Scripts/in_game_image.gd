@@ -15,7 +15,7 @@ func _init(p_id: int, p_image_path: String) -> void:
 	material = CanvasItemMaterial.new()
 	id = p_id
 	image_path = p_image_path
-	if ResourceLoader.exists(image_path):
+	if AssetManager.exists(image_path):
 		texture = load(image_path)
 
 

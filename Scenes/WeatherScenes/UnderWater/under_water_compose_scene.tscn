@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://dk1kebmf260v4"]
+[gd_scene format=3 uid="uid://dk1kebmf260v4"]
 
 [ext_resource type="Script" uid="uid://vo2ib3pfnxml" path="res://Scenes/WeatherScenes/UnderWater/under_water_compose_scene.gd" id="1_3fctx"]
 [ext_resource type="Shader" uid="uid://blw4u864xpd46" path="res://Assets/Shaders/heat_haze.gdshader" id="2_3fctx"]
@@ -86,14 +86,14 @@ viewport_path = NodePath("SubViewport2")
 [sub_resource type="ViewportTexture" id="ViewportTexture_pasoe"]
 viewport_path = NodePath("SubViewport")
 
-[node name="UnderWaterComposeScene" type="Node2D"]
+[node name="UnderWaterComposeScene" type="Node2D" unique_id=144147116]
 script = ExtResource("1_3fctx")
-modulate_scene = Color(0.27451, 0.470588, 0.964706, 1)
+modulate_scene = Color(0.08627451, 0.34901962, 0.9098039, 0.654902)
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1986657751]
 layer = 2
 
-[node name="MainSprite" type="ColorRect" parent="CanvasLayer"]
+[node name="MainSprite" type="ColorRect" parent="CanvasLayer" unique_id=449906738]
 unique_name_in_owner = true
 z_index = 2
 material = SubResource("ShaderMaterial_qb56a")
@@ -103,17 +103,16 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="BGSPlayer" type="AudioStreamPlayer" parent="."]
+[node name="BGSPlayer" type="AudioStreamPlayer" parent="." unique_id=77105534]
 unique_name_in_owner = true
 stream = ExtResource("3_qb56a")
 autoplay = true
-bus = &"Ambient"
 
-[node name="SubViewport2" type="SubViewport" parent="."]
+[node name="SubViewport2" type="SubViewport" parent="." unique_id=548823565]
 transparent_bg = true
 size = Vector2i(1152, 640)
 
-[node name="Fish" type="ColorRect" parent="SubViewport2"]
+[node name="Fish" type="ColorRect" parent="SubViewport2" unique_id=1594019308]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_judjj")
 anchors_preset = 15
@@ -122,17 +121,17 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="SubViewport" type="SubViewport" parent="."]
+[node name="SubViewport" type="SubViewport" parent="." unique_id=1072171665]
 transparent_bg = true
 size = Vector2i(1152, 640)
 
-[node name="Foam" type="ColorRect" parent="SubViewport"]
+[node name="Foam" type="ColorRect" parent="SubViewport" unique_id=1579149990]
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_b1fr5")
 offset_right = 1152.0
 offset_bottom = 640.0
 
-[node name="FishFinal" type="Sprite2D" parent="."]
+[node name="FishFinal" type="Sprite2D" parent="." unique_id=1790045137]
 unique_name_in_owner = true
 z_index = 3
 z_as_relative = false
@@ -141,7 +140,7 @@ material = SubResource("ShaderMaterial_ucngf")
 texture = SubResource("ViewportTexture_f371h")
 centered = false
 
-[node name="FoamFinal" type="Sprite2D" parent="."]
+[node name="FoamFinal" type="Sprite2D" parent="." unique_id=1096550763]
 unique_name_in_owner = true
 z_index = 5
 texture = SubResource("ViewportTexture_pasoe")

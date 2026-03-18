@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://bmdlf4gnofwd0"]
+[gd_scene format=3 uid="uid://bmdlf4gnofwd0"]
 
 [ext_resource type="Script" uid="uid://ceovd56yy0n2n" path="res://Scripts/debug_scene.gd" id="1_81ui7"]
 [ext_resource type="Texture2D" uid="uid://bvc2gub3sa2wm" path="res://Assets/Images/GUI/window2.png" id="2_ueffu"]
@@ -138,14 +138,14 @@ region = Rect2(0, 48, 24, 24)
 atlas = ExtResource("5_4wq3s")
 region = Rect2(24, 48, 24, 24)
 
-[node name="DebugScene" type="CanvasLayer"]
+[node name="DebugScene" type="CanvasLayer" unique_id=599120607]
 layer = 127
 script = ExtResource("1_81ui7")
 window_focused_style = SubResource("StyleBoxFlat_mb2j1")
 window_unfocused_style = SubResource("StyleBoxFlat_desc1")
 fill_texture = SubResource("GradientTexture2D_v2j78")
 
-[node name="MainContainer" type="Control" parent="."]
+[node name="MainContainer" type="Control" parent="." unique_id=243854294]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -153,7 +153,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Background" type="ColorRect" parent="MainContainer"]
+[node name="Background" type="ColorRect" parent="MainContainer" unique_id=1808118651]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -162,7 +162,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.168627, 0.0588235, 0, 1)
 
-[node name="BackgroundDecoration" type="NinePatchRect" parent="MainContainer"]
+[node name="BackgroundDecoration" type="NinePatchRect" parent="MainContainer" unique_id=1588166420]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -176,7 +176,7 @@ patch_margin_top = 24
 patch_margin_right = 30
 patch_margin_bottom = 24
 
-[node name="MarginContainer" type="MarginContainer" parent="MainContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MainContainer" unique_id=974281]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -188,49 +188,50 @@ theme_override_constants/margin_top = 32
 theme_override_constants/margin_right = 32
 theme_override_constants/margin_bottom = 32
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/MarginContainer" unique_id=456761592]
 layout_mode = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="MainContainer/MarginContainer/HBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="MainContainer/MarginContainer/HBoxContainer" unique_id=1194123301]
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_pxllp")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer" unique_id=1400498260]
 layout_mode = 2
 
-[node name="TabContainer" type="VBoxContainer" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer"]
+[node name="TabContainer" type="VBoxContainer" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer" unique_id=2042591544]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="CloseButton" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer" instance=ExtResource("3_cp7oy")]
+[node name="CloseButton" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer" unique_id=834012436 instance=ExtResource("3_cp7oy")]
+unique_name_in_owner = true
 modulate = Color(0.820313, 0.608375, 0.493469, 1)
 layout_mode = 2
 focus_mode = 1
-theme_override_colors/font_hover_color = Color(25, 25, 25, 1)
 theme_override_colors/font_color = Color(66.478, 89.772, 28.409, 1)
 theme_override_colors/font_pressed_color = Color(23.295, 22.159, 24.432, 1)
+theme_override_colors/font_hover_color = Color(25, 25, 25, 1)
 text = "Close"
 
-[node name="PanelContainer2" type="PanelContainer" parent="MainContainer/MarginContainer/HBoxContainer"]
+[node name="PanelContainer2" type="PanelContainer" parent="MainContainer/MarginContainer/HBoxContainer" unique_id=1174845779]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_pxllp")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2" unique_id=1213821650]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer"]
+[node name="Label" type="Label" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer" unique_id=1072964374]
 layout_mode = 2
 text = "DEBUG"
 horizontal_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer" unique_id=946266038]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="BackgroundDecoration" type="NinePatchRect" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer"]
+[node name="BackgroundDecoration" type="NinePatchRect" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer" unique_id=1993799080]
 layout_mode = 2
 texture = ExtResource("2_ueffu")
 patch_margin_left = 30
@@ -238,7 +239,7 @@ patch_margin_top = 24
 patch_margin_right = 30
 patch_margin_bottom = 24
 
-[node name="MarginContainer" type="MarginContainer" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration"]
+[node name="MarginContainer" type="MarginContainer" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration" unique_id=1994027108]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -250,13 +251,13 @@ theme_override_constants/margin_top = 32
 theme_override_constants/margin_right = 32
 theme_override_constants/margin_bottom = 32
 
-[node name="ClippingArea" type="ColorRect" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer"]
+[node name="ClippingArea" type="ColorRect" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer" unique_id=512832024]
 clip_children = 1
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="DataList" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer" instance=ExtResource("4_r6wuy")]
+[node name="DataList" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer" unique_id=1250084832 instance=ExtResource("4_r6wuy")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -272,9 +273,8 @@ columns = 2
 names = PackedStringArray("ID", "Current Value")
 sizes = PackedInt32Array(400, 0)
 text_margin_left = 20
-enable_multiselection = true
 
-[node name="FunctionButtonContainer" type="Control" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer"]
+[node name="FunctionButtonContainer" type="Control" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer" unique_id=1279345176]
 unique_name_in_owner = true
 visible = false
 material = SubResource("CanvasItemMaterial_emih4")
@@ -282,14 +282,14 @@ layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/FunctionButtonContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/FunctionButtonContainer" unique_id=474189887]
 layout_mode = 0
 offset_right = 24.0
 offset_bottom = 24.0
 mouse_filter = 2
 theme_override_constants/separation = 2
 
-[node name="AddValue" type="TextureButton" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/FunctionButtonContainer/HBoxContainer"]
+[node name="AddValue" type="TextureButton" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/FunctionButtonContainer/HBoxContainer" unique_id=1018790123]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -300,7 +300,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_hh0t4")
 texture_hover = SubResource("AtlasTexture_jyand")
 
-[node name="SubtractValue" type="TextureButton" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/FunctionButtonContainer/HBoxContainer"]
+[node name="SubtractValue" type="TextureButton" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/FunctionButtonContainer/HBoxContainer" unique_id=541543066]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -311,7 +311,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_3juw2")
 texture_hover = SubResource("AtlasTexture_yfyof")
 
-[node name="ToggleValue" type="TextureButton" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/FunctionButtonContainer/HBoxContainer"]
+[node name="ToggleValue" type="TextureButton" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/FunctionButtonContainer/HBoxContainer" unique_id=1124049933]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -322,7 +322,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_y81n6")
 texture_hover = SubResource("AtlasTexture_4x7kf")
 
-[node name="EditValue" type="TextureButton" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/FunctionButtonContainer/HBoxContainer"]
+[node name="EditValue" type="TextureButton" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/FunctionButtonContainer/HBoxContainer" unique_id=1705101911]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -333,7 +333,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_hyywn")
 texture_hover = SubResource("AtlasTexture_mlgt4")
 
-[node name="RemoveValue" type="TextureButton" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/FunctionButtonContainer/HBoxContainer"]
+[node name="RemoveValue" type="TextureButton" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/FunctionButtonContainer/HBoxContainer" unique_id=842730101]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -344,7 +344,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_ry66v")
 texture_hover = SubResource("AtlasTexture_qibq2")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer" unique_id=2126440105]
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -354,20 +354,17 @@ offset_top = -33.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="Control" type="Control" parent="MainContainer/HBoxContainer"]
-custom_minimum_size = Vector2(195, 0)
-layout_mode = 2
-
-[node name="BottomLabelInfo" type="Label" parent="MainContainer/HBoxContainer"]
+[node name="BottomLabelInfo" type="Label" parent="MainContainer/HBoxContainer" unique_id=1374952351]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 33)
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Use 🢀 Left or 🢂 Right To change the value. Or double click to enter value manually"
+text = "Use 🢀 Left or 🢂 Right To change the value. Or double click to enter value manually."
 horizontal_alignment = 1
 
 [connection signal="pressed" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/CloseButton" to="." method="_on_close_button_pressed"]
 [connection signal="item_activated" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/DataList" to="." method="_on_data_list_item_activated"]
+[connection signal="item_selected" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/DataList" to="." method="_on_data_list_item_selected"]
 [connection signal="pressed" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/FunctionButtonContainer/HBoxContainer/AddValue" to="." method="_on_add_value_pressed"]
 [connection signal="pressed" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/FunctionButtonContainer/HBoxContainer/SubtractValue" to="." method="_on_subtract_value_pressed"]
 [connection signal="pressed" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/FunctionButtonContainer/HBoxContainer/ToggleValue" to="." method="_on_toggle_value_pressed"]

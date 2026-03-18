@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://dlocm6qhhp61i"]
+[gd_scene format=3 uid="uid://dlocm6qhhp61i"]
 
 [ext_resource type="PackedScene" uid="uid://pc2xir2w2ox2" path="res://addons/RPGData/Scenes/panel_title.tscn" id="1_8pgtu"]
 [ext_resource type="Script" uid="uid://cnd3le3r76wd2" path="res://addons/RPGData/Scripts/speakers_panel.gd" id="1_56xie"]
@@ -14,7 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://duykjs55o5h2m" path="res://addons/CustomControls/custom_image_picker.tscn" id="10_c6c50"]
 [ext_resource type="PackedScene" uid="uid://barmev3c3hfbu" path="res://addons/CustomControls/custom_text_edit.tscn" id="11_utr8h"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uoecs"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2vwoa"]
 resource_local_to_scene = true
 content_margin_left = 3.0
 content_margin_right = 3.0
@@ -26,7 +26,7 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.113725, 0.133333, 0.160784, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7kdov"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_56gwj"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 1
@@ -43,11 +43,11 @@ gradient = SubResource("Gradient_hlxny")
 fill_from = Vector2(0.547009, 1)
 fill_to = Vector2(0.559829, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4f7lr"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fl2sj"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_oswm7")
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xsory"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yxw0o"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_oswm7")
 
@@ -68,7 +68,7 @@ texture = ExtResource("6_56gwj")
 texture_margin_left = 18.0
 texture_margin_right = 18.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fl2sj"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_70ex8"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -119,7 +119,7 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_op6wf"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_to8kl"]
 resource_local_to_scene = true
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 4
@@ -129,7 +129,7 @@ border_width_bottom = 3
 border_color = Color(0, 0, 0, 1)
 border_blend = true
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fsa4b"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mm37q"]
 resource_local_to_scene = true
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 4
@@ -139,7 +139,7 @@ border_width_bottom = 4
 border_color = Color(0, 0, 0, 1)
 border_blend = true
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rddkj"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cmg4w"]
 resource_local_to_scene = true
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 4
@@ -149,7 +149,7 @@ border_width_bottom = 4
 border_color = Color(0.94902, 0.627451, 0.0117647, 1)
 border_blend = true
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_655wm"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xw4yd"]
 resource_local_to_scene = true
 content_margin_left = 8.0
 content_margin_top = 4.0
@@ -157,7 +157,7 @@ content_margin_right = 21.0
 content_margin_bottom = 4.0
 bg_color = Color(0.184314, 0.196078, 0.203922, 1)
 
-[node name="SpeakersPanel" type="HBoxContainer"]
+[node name="SpeakersPanel" type="HBoxContainer" unique_id=828397112]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -166,16 +166,16 @@ grow_vertical = 2
 theme_override_constants/separation = 8
 script = ExtResource("1_56xie")
 
-[node name="LeftColumn" type="VBoxContainer" parent="."]
+[node name="LeftColumn" type="VBoxContainer" parent="." unique_id=2110072473]
 custom_minimum_size = Vector2(280, 0)
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="PanelTitle" parent="LeftColumn" instance=ExtResource("1_8pgtu")]
+[node name="PanelTitle" parent="LeftColumn" unique_id=1827760165 instance=ExtResource("1_8pgtu")]
 layout_mode = 2
 text = "Talkers"
 
-[node name="MainList" parent="LeftColumn" instance=ExtResource("2_t4oyw")]
+[node name="MainList" parent="LeftColumn" unique_id=833025402 instance=ExtResource("2_t4oyw")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -184,19 +184,19 @@ Contains the list of talkers created. Select one to edit its properties.
 
 \"Note\": These characters are used in the dialog box. When a character enters the scene, the dialog will show its name, face and body image and additionally can change the letter-by-letter sound."
 theme_override_constants/v_separation = -1
-theme_override_styles/panel = SubResource("StyleBoxFlat_uoecs")
-theme_override_styles/focus = SubResource("StyleBoxFlat_uoecs")
-theme_override_styles/hovered = SubResource("StyleBoxFlat_7kdov")
-theme_override_styles/selected = SubResource("StyleBoxTexture_4f7lr")
-theme_override_styles/selected_focus = SubResource("StyleBoxTexture_xsory")
+theme_override_styles/panel = SubResource("StyleBoxFlat_2vwoa")
+theme_override_styles/focus = SubResource("StyleBoxFlat_2vwoa")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_56gwj")
+theme_override_styles/selected = SubResource("StyleBoxTexture_fl2sj")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_yxw0o")
 select_mode = 1
 odd_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 event_line_color = Color(0.145098, 0.156863, 0.164706, 1)
 
-[node name="HBoxContainer" type="HBoxContainer" parent="LeftColumn"]
+[node name="HBoxContainer" type="HBoxContainer" parent="LeftColumn" unique_id=711835171]
 layout_mode = 2
 
-[node name="AddDataButton" parent="LeftColumn/HBoxContainer" instance=ExtResource("3_hvve1")]
+[node name="AddDataButton" parent="LeftColumn/HBoxContainer" unique_id=1184959660 instance=ExtResource("3_hvve1")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -206,7 +206,7 @@ text = "Add
 Talker"
 text_overrun_behavior = 3
 
-[node name="RemoveDataButton" parent="LeftColumn/HBoxContainer" instance=ExtResource("3_hvve1")]
+[node name="RemoveDataButton" parent="LeftColumn/HBoxContainer" unique_id=1906868874 instance=ExtResource("3_hvve1")]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.65)
 layout_mode = 2
@@ -218,31 +218,31 @@ text = "Delete
 Talker"
 text_overrun_behavior = 3
 
-[node name="RightColumn" type="PanelContainer" parent="."]
+[node name="RightColumn" type="PanelContainer" parent="." unique_id=732992205]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_1573j")
 
-[node name="MarginContainer" type="MarginContainer" parent="RightColumn"]
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn" unique_id=1388542377]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer" unique_id=212112285]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer" unique_id=901521013]
 layout_mode = 2
 
-[node name="Control" type="Control" parent="RightColumn/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Control" type="Control" parent="RightColumn/MarginContainer/VBoxContainer/HBoxContainer" unique_id=62904238]
 custom_minimum_size = Vector2(16, 0)
 layout_mode = 2
 
-[node name="ConfigDataTabs" parent="RightColumn/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_2vwoa")]
+[node name="ConfigDataTabs" parent="RightColumn/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1136306228 instance=ExtResource("5_2vwoa")]
 unique_name_in_owner = true
 clip_children = 0
 layout_mode = 2
@@ -254,54 +254,54 @@ background_color = Color(0, 0, 0, 0)
 tab_selected = null
 stylebox_tab_selected = SubResource("StyleBoxTexture_u5dgi")
 
-[node name="ControlContainer" parent="RightColumn/MarginContainer/VBoxContainer" instance=ExtResource("5_7nujf")]
+[node name="ControlContainer" parent="RightColumn/MarginContainer/VBoxContainer" unique_id=45380448 instance=ExtResource("5_7nujf")]
 custom_minimum_size = Vector2(510, 160)
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_fl2sj")
-style1 = SubResource("StyleBoxFlat_fl2sj")
+theme_override_styles/panel = SubResource("StyleBoxFlat_70ex8")
+style1 = SubResource("StyleBoxFlat_70ex8")
 style2 = SubResource("StyleBoxTexture_70ex8")
 style3 = SubResource("StyleBoxFlat_ai2ta")
 
-[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer" unique_id=635884657]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="Tab1" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer"]
+[node name="Tab1" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer" unique_id=532866826]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="General" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1"]
+[node name="General" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1" unique_id=329342043]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_qh56l")
 
-[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General"]
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General" unique_id=415923223]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="GeneralSettings" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer"]
+[node name="GeneralSettings" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer" unique_id=1161774070]
 layout_mode = 2
 size_flags_stretch_ratio = 0.4
 
-[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings"]
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings" unique_id=11105693]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="LabelT1" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer"]
+[node name="LabelT1" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer" unique_id=869214381]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Select Name:"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer" unique_id=1074160145]
 layout_mode = 2
 
-[node name="Name" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer/HBoxContainer" instance=ExtResource("8_3pg5w")]
+[node name="Name" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer/HBoxContainer" unique_id=596014156 instance=ExtResource("8_3pg5w")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -313,11 +313,11 @@ tooltip_text = "Assign a name to this character. The name will be displayed in o
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 text = "Select Name"
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer/HBoxContainer" unique_id=1949983280]
 layout_mode = 2
 text = "   Position:  "
 
-[node name="Position" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer/HBoxContainer" instance=ExtResource("7_v61bk")]
+[node name="Position" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer/HBoxContainer" unique_id=1320954790 instance=ExtResource("7_v61bk")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Choose the position where this character's face and name will appear (The positions selected in the face and name command will be ignored, and this one will be used instead)."
@@ -328,15 +328,15 @@ popup/item_0/id = 0
 popup/item_1/text = "Right"
 popup/item_1/id = 1
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings" unique_id=1415762624]
 layout_mode = 2
 
-[node name="LabelT2" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer2"]
+[node name="LabelT2" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer2" unique_id=1630983862]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Text Type Fx:"
 
-[node name="TypeFx" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer2" instance=ExtResource("8_3pg5w")]
+[node name="TypeFx" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer2" unique_id=1179047376 instance=ExtResource("8_3pg5w")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -348,37 +348,37 @@ tooltip_text = "Sound played when each letter is displayed. When the character e
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 text = "Select Type Fx"
 
-[node name="VBoxContainer5" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings"]
+[node name="VBoxContainer5" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings" unique_id=286455254]
 layout_mode = 2
 
-[node name="LabelT3" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer5"]
+[node name="LabelT3" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer5" unique_id=36411125]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Text Color:"
 
-[node name="TextColor" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer5" instance=ExtResource("9_jmxux")]
+[node name="TextColor" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer5" unique_id=1685422550 instance=ExtResource("9_jmxux")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "When this character enters the dialog, the current color of the text will change to the one defined here
 
 \"Caution\": The text will be drawn in this color until another color command changes it."
-theme_override_styles/normal = SubResource("StyleBoxFlat_op6wf")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_fsa4b")
-theme_override_styles/hover = SubResource("StyleBoxFlat_rddkj")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_655wm")
+theme_override_styles/normal = SubResource("StyleBoxFlat_to8kl")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_mm37q")
+theme_override_styles/hover = SubResource("StyleBoxFlat_cmg4w")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_xw4yd")
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings" unique_id=488713268]
 layout_mode = 2
 text = "Font:"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings"]
+[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings" unique_id=701071800]
 layout_mode = 2
 
-[node name="VBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer"]
+[node name="VBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer" unique_id=2095730663]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="FontName" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer" instance=ExtResource("8_3pg5w")]
+[node name="FontName" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer" unique_id=1179031883 instance=ExtResource("8_3pg5w")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 30)
 layout_mode = 2
@@ -391,39 +391,39 @@ theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 text = "Select Font (Default Selected)"
 clip_text = true
 
-[node name="VBoxContainer2" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer"]
+[node name="VBoxContainer2" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer" unique_id=623223992]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer2"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer2" unique_id=419510084]
 layout_mode = 2
 text = " Size:"
 horizontal_alignment = 1
 
-[node name="FontSize" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer2" instance=ExtResource("8_di4iy")]
+[node name="FontSize" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer2" unique_id=797749797 instance=ExtResource("8_di4iy")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Size for text displayed when this character speaks"
-value = 22.0
+_custom_value = 0.0
 
-[node name="BoldText" type="CheckBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer"]
+[node name="BoldText" type="CheckBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer" unique_id=407520713]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Write the text in bold when this character speaks"
 mouse_default_cursor_shape = 2
 text = "Is bold"
 
-[node name="ItalicText" type="CheckBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer"]
+[node name="ItalicText" type="CheckBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer" unique_id=71602315]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Write the text in italics when this character is speaking."
 mouse_default_cursor_shape = 2
 text = "Is italic"
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer" unique_id=374772668]
 layout_mode = 2
 text = "Wait on finish"
 
-[node name="WaitOnFinish" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer" instance=ExtResource("8_di4iy")]
+[node name="WaitOnFinish" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer" unique_id=1114673803 instance=ExtResource("8_di4iy")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "When this character finishes speaking, there will be a pause for the time indicated here.
@@ -432,41 +432,42 @@ tooltip_text = "When this character finishes speaking, there will be a pause for
 step = 0.01
 rounded = false
 allow_greater = true
+_custom_value = 0.0
 
-[node name="Images" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1"]
+[node name="Images" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1" unique_id=607467670]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_qh56l")
 
-[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images"]
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images" unique_id=1113974276]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images/MarginContainer" unique_id=1040818513]
 layout_mode = 2
 
-[node name="LabelT4" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images/MarginContainer/VBoxContainer"]
+[node name="LabelT4" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images/MarginContainer/VBoxContainer" unique_id=2087344189]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Images:"
 
-[node name="ImagesScenes" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images/MarginContainer/VBoxContainer"]
+[node name="ImagesScenes" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images/MarginContainer/VBoxContainer" unique_id=1011134954]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images/MarginContainer/VBoxContainer/ImagesScenes"]
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images/MarginContainer/VBoxContainer/ImagesScenes" unique_id=1466456872]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="LabelT5" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer"]
+[node name="LabelT5" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer" unique_id=2058087025]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Face:"
 
-[node name="FacePicker" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer" instance=ExtResource("10_c6c50")]
+[node name="FacePicker" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer" unique_id=1696060193 instance=ExtResource("10_c6c50")]
 unique_name_in_owner = true
 texture_filter = 1
 custom_minimum_size = Vector2(64, 64)
@@ -479,16 +480,16 @@ tooltip_text = "Shows the face of this character in the dialog box.
 \"Caution\": The face will be displayed in one of the two available positions in the dialog box. If the chosen position is already displaying a face, it will be replaced with the face of this character."
 custom_copy_and_paste_enabled = true
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images/MarginContainer/VBoxContainer/ImagesScenes"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images/MarginContainer/VBoxContainer/ImagesScenes" unique_id=1407129271]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="LabelT6" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer2"]
+[node name="LabelT6" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer2" unique_id=673577861]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Character:"
 
-[node name="CharacterPicker" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer2" instance=ExtResource("10_c6c50")]
+[node name="CharacterPicker" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Images/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer2" unique_id=2095070862 instance=ExtResource("10_c6c50")]
 unique_name_in_owner = true
 texture_filter = 1
 custom_minimum_size = Vector2(64, 64)
@@ -501,31 +502,31 @@ tooltip_text = "Displays the character image for this character.
 \"Caution\": This image uses an ID shared with other images. If an image with this ID is already displayed, it will be replaced by the new image."
 custom_copy_and_paste_enabled = true
 
-[node name="Tab2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer"]
+[node name="Tab2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer" unique_id=1454313864]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="Notes" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2"]
+[node name="Notes" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2" unique_id=249369511]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_qh56l")
 
-[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Notes"]
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Notes" unique_id=281726367]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Notes/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Notes/MarginContainer" unique_id=1002413194]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Notes/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Notes/MarginContainer/VBoxContainer" unique_id=1526265344]
 layout_mode = 2
 text = "Notes:"
 
-[node name="Notes" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Notes/MarginContainer/VBoxContainer" instance=ExtResource("11_utr8h")]
+[node name="Notes" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Notes/MarginContainer/VBoxContainer" unique_id=2099034488 instance=ExtResource("11_utr8h")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2

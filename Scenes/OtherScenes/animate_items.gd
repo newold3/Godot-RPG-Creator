@@ -152,9 +152,9 @@ func has_valid_icon(icon_path) -> bool:
 		return false
 	
 	if icon_path is String:
-		return ResourceLoader.exists(icon_path)
+		return AssetManager.exists(icon_path)
 	elif icon_path is RPGIcon:
-		return ResourceLoader.exists(icon_path.path)
+		return AssetManager.exists(icon_path.path)
 	
 	return false
 
@@ -257,11 +257,11 @@ func load_icon(icon_path) -> Texture2D:
 	
 	var tex: Texture2D = null
 	
-	if icon_path is String and ResourceLoader.exists(icon_path):
+	if icon_path is String and AssetManager.exists(icon_path):
 		tex = ResourceLoader.load(icon_path)
 	elif icon_path is RPGIcon:
 		var icon: RPGIcon = icon_path
-		if ResourceLoader.exists(icon.path):
+		if AssetManager.exists(icon.path):
 			var base_tex = ResourceLoader.load(icon.path)
 			if icon.region:
 				tex = ImageTexture.create_from_image(base_tex.get_image().get_region(icon.region))

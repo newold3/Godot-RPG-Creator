@@ -14,7 +14,6 @@ func _start_showing_message() -> void:
 	
 	interpreter.showing_message = true
 	GameManager.message_container.visible = true
-	
 	if current_index >= current_interpreter.commands.size() - 1:
 		var is_still_busy = interpreter.interpreters.any(
 			func(interpreter):
@@ -50,6 +49,7 @@ func _command_0001() -> void:
 			var new_message = load(scene_path).instantiate()
 			parent.add_child(new_message)
 			GameManager.message = new_message
+			new_message.all_messages_finished.connect(GameInterpreter.set.bind("showing_message", false), CONNECT_DEFERRED)
 			new_message.setup()
 		
 		# Update the current message configuration in the game state
@@ -59,47 +59,123 @@ func _command_0001() -> void:
 		GameManager.message.set_message_config(config)
 
 
+## Gets the next valid command, skipping structural and ignored commands.
+func _get_next_dialog_command(from_index: int):
+	var look_idx = from_index
+	while true:
+		var cmd = current_interpreter.get_command(look_idx)
+		if not cmd:
+			return null
+		
+		if cmd.get("ignore_command") or cmd.code == 0:
+			look_idx += 1
+			continue
+		
+		if cmd.code in [5, 6]:
+			var target_indent = cmd.indent
+			while true:
+				look_idx += 1
+				var skip_cmd = current_interpreter.get_command(look_idx)
+				if not skip_cmd:
+					break
+				if skip_cmd.code == 7 and skip_cmd.indent == target_indent:
+					break
+			look_idx += 1
+			continue
+		
+		if cmd.code == 7:
+			look_idx += 1
+			continue
+		
+		return cmd
+
+
+## Gets the previous valid dialog command, skipping structural, ignored, and input commands.
+func _get_previous_dialog_command(from_index: int):
+	var look_idx = from_index
+	while look_idx >= 0:
+		var cmd = current_interpreter.get_command(look_idx)
+		if not cmd:
+			return null
+		
+		if cmd.get("ignore_command") or cmd.code == 0:
+			look_idx -= 1
+			continue
+		
+		if cmd.code in [5, 6, 7]:
+			var target_indent = cmd.indent
+			while look_idx >= 0:
+				look_idx -= 1
+				var skip_cmd = current_interpreter.get_command(look_idx)
+				if not skip_cmd:
+					break
+				if skip_cmd.code == 4 and skip_cmd.indent == target_indent:
+					break
+			continue
+		
+		if cmd.code in [4, 8, 9]:
+			look_idx -= 1
+			continue
+		
+		return cmd
+
+
+func _update_dialog_state_for_next_command(current_idx: int) -> bool:
+	var next_cmd = _get_next_dialog_command(current_idx)
+	var is_dialog = next_cmd != null and next_cmd.code in [2, 3]
+	var is_input = next_cmd != null and next_cmd.code in [4, 8, 9]
+	
+	if GameManager.message:
+		GameManager.message.set("has_next_dialog", is_dialog)
+		GameManager.message.wait_for_user_option_selected_enabled = is_input
+	
+	return is_dialog or is_input
+
+
 # Command Text Dialog (Codes 2, 3)
 # Code 2 (Parent) parameters: { position, face, character_name -> { type, value } }
 # Code 3 (Text Line) parameters: { line }
 func _command_0002() -> void:
-	debug_print("Processing command: Show Text Dialog (code 2)")
-	
-	# Store the starting command index and initialize variables
 	var start_command_index = current_interpreter.command_index
 	var current_index = current_interpreter.command_index + 1
 	var lines = []
 	var current_message_config = current_command.parameters.duplicate()
 
-	# Collect all lines of text (Code 3) until a different configuration or an invalid command is encountered
 	while true:
 		var command = current_interpreter.get_command(current_index)
 		if command:
-			if command.code == 3:  # Text line command
+			if command.get("ignore_command"):
+				current_index += 1
+				continue
+			if command.code == 3:
 				lines.append(command.parameters.get("line", ""))
-			elif command.code == 2 and command.parameters != current_message_config:  # Different configuration
+			elif command.code == 2 and command.parameters != current_message_config:
 				break
-			else:  # Invalid command
+			else:
 				break
 		else:
 			break
-		
 		current_index += 1
 	
-	# Adjust the interpreter to the last valid command index
 	current_interpreter.go_to(current_index - 1)
 	
 	var is_floating = current_message_config.get("is_floating_dialog", false)
 	if is_floating:
 		var target = current_message_config.get("floating_target", 0)
-		if target == -1 or not GameManager.current_map:
-			current_message_config.anchor_node = current_interpreter.obj
+		if not GameManager.current_map:
+			current_message_config.anchor_node = null
+		elif target == -1 or target == 0:
+			if "current_event" in current_interpreter.obj:
+				current_message_config.anchor_node = GameManager.current_map.get_in_game_event_by_uniq_id(current_interpreter.obj.current_event._uniq_id, true)
+			else:
+				current_message_config.anchor_node = current_interpreter.obj
 		else:
-			var real_target = GameManager.current_map.get_in_game_event_by_id(target)
+			var real_target = GameManager.current_map.get_in_game_event_by_uniq_id(target, true)
 			current_message_config.anchor_node = real_target
-		
+
+		var target_event = current_message_config.anchor_node if not "lpc_event" in current_message_config.anchor_node else current_message_config.anchor_node.lpc_event
 		for child in GameManager.over_message_layer.get_children():
-			if child is DialogBase and child.anchor_node == current_message_config.anchor_node:
+			if child is DialogBase and (child.anchor_node == current_message_config.anchor_node or child.anchor_node == target_event):
 				child.queue_free()
 			
 	var current_message_box
@@ -118,54 +194,51 @@ func _command_0002() -> void:
 			GameManager.over_message_layer.add_child(current_message_box)
 			current_message_box.setup()
 			current_message_box.set_message_config(message_config)
-			
+			current_message_box.propagate_call("set", ["size", Vector2.ZERO])
 			current_message_box.floating_initialize = true
 		else:
 			return
 	
-	# If there are lines to display and the message system is available
 	if lines.size() > 0 and current_message_box:
-		# Determine the configuration of the text dialog and whether to keep it open
-		var previous_command = current_interpreter.get_command(start_command_index - 1)
-		var command_index = current_interpreter.command_index + 1
-		var next_command = current_interpreter.get_command(current_index)
-		var is_next_command_request_user_action = next_command and [4, 8].has(next_command.code)
+		var prev_cmd = _get_previous_dialog_command(start_command_index - 1)
+		var is_multi = prev_cmd != null and prev_cmd.code in [2, 3]
+		
+		var next_command = _get_next_dialog_command(current_index)
 
-		# Enable or disable waiting for user action based on the next command
-		current_message_box.wait_for_user_option_selected_enabled = is_next_command_request_user_action
-
-		# Combine all collected lines into a single text block
 		var text = "\n".join(lines)
-
-		# Set the initial configuration for the message
 		current_message_box.set_initial_config(current_message_config)
 		current_message_box.dialog_is_paused = false
 
-		# Determine if the dialog is part of a multi-dialog sequence or a new dialog
 		if not is_floating:
-			current_message_box.is_multi_dialog = (next_command and next_command.code == 2)
-			current_message_box.is_new_dialog = (start_command_index == 0) or (previous_command and not [2, 3].has(previous_command.code))
+			current_message_box.is_multi_dialog = is_multi
+			current_message_box.is_new_dialog = not is_multi
 		else:
 			current_message_box.is_multi_dialog = false
 			current_message_box.is_new_dialog = true
 		
-		# Set up the text in the message system and wait for it to finish
-
+		var is_next_command_request_user_action = next_command != null and next_command.code in [4, 8, 9]
+		var has_next_dialog = next_command != null and next_command.code == 2
+		
+		current_message_box.wait_for_user_option_selected_enabled = is_next_command_request_user_action
+		current_message_box.set("has_next_dialog", has_next_dialog)
+		
 		await current_message_box.setup_text(text)
 		
-		# ensure interpreter is active
+		current_message_box.wait_for_user_option_selected_enabled = is_next_command_request_user_action
+		current_message_box.set("has_next_dialog", has_next_dialog)
+		
 		if current_interpreter:
 			if not is_floating:
-				_start_showing_message() # Show the message dialog and set signals
+				_start_showing_message()
 			else:
 				current_message_box.set_position_over_node()
 				current_message_box.visible = true
 				return
 			
-			# Wait for all messages to finish before ending the message processing
 			await current_message_box.all_messages_finished
 
-		await end_message()
+		if not has_next_dialog and not is_next_command_request_user_action:
+			await end_message()
 
 
 # Command Resume Dialog (Code 95)
@@ -194,108 +267,85 @@ func _command_0095() -> void:
 # Code 6 (Cancel) parameters { }
 # Code 7 (End) parameters { }
 func _command_0004() -> void:
-	debug_print("Processing command: Show Choices Dialog (code 4)")
-	
-	# Get the current indentation level of the command
 	var current_indent = current_command.indent
-	
-	# Start processing commands from the next index
 	var current_index = current_interpreter.command_index + 1
 	var choices: PackedStringArray = []
-
-	# Collect all choices (Code 5) until the end of the choice block (Code 7)
 	while true:
 		var command = current_interpreter.get_command(current_index)
 		if command:
 			if command.indent == current_indent:
-				if command.code == 5: # "When" branch
+				if command.code == 5:
 					choices.append(command.parameters.get("name", ""))
-				elif command.code == 7: # End of choices block
+				elif command.code == 7:
 					break
 		else:
 			break
-			
 		current_index += 1
 	
-	# Reset the index to start processing again
 	current_index = current_interpreter.command_index + 1
 	
-	# Disable waiting for user option selection if enabled
-	if GameManager.message.wait_for_user_option_selected_enabled:
-		GameManager.message.wait_for_user_option_selected_enabled = false
-	
-	# If there are choices available, load the choice dialog scene
 	if choices.size() > 0:
 		var scene_path = current_command.parameters.get("scene_path", "res://Scenes/DialogTemplates/choice_scene_1.tscn")
 		if ResourceLoader.exists(scene_path):
-			# Initialize the selected choice ID
 			interpreter.selected_choice_id = -2
 			var scene = load(scene_path).instantiate()
-			
-			# Connect cancel and option selection signals
 			scene.cancel.connect(func(): interpreter.selected_choice_id = -1)
 			scene.option_selected.connect(func(id): interpreter.selected_choice_id = id)
-			
-			# Position the scene in the viewport
 			scene.position = interpreter.get_viewport().size / 0.5
-			
-			# Add the scene to the options layer and set its data
 			GameManager.over_message_layer.add_child(scene)
 			scene.set_data(current_command.parameters, choices)
-			
-			# Show the options layer and wait for the user to finish
 			await scene.finish
-
-			# Handle the user's choice
-			if interpreter.selected_choice_id == -1: # User canceled
+			
+			if interpreter.selected_choice_id == -1:
 				while true:
 					var command = current_interpreter.get_command(current_index)
 					if command:
 						if command.indent == current_indent:
-							if command.code == 6: # Cancel branch
-								break
-							elif command.code == 7: # End of choices block
+							if command.code == 6 or command.code == 7:
 								break
 					else:
 						break
 					current_index += 1
-			elif interpreter.selected_choice_id >= 0: # User selected an option
+			elif interpreter.selected_choice_id >= 0:
 				var current_choice_id = 0
 				while true:
 					var command = current_interpreter.get_command(current_index)
 					if command:
 						if command.indent == current_indent:
-							if command.code == 5: # Target "When" branch
+							if command.code == 5:
 								if current_choice_id == interpreter.selected_choice_id:
 									break
 								else:
 									current_choice_id += 1
-							elif command.code == 7: # End of choices block
+							elif command.code == 7:
 								break
-					else: 
+					else:
 						break
 					current_index += 1
-
-	# Update the interpreter to the new command index
+	
 	current_interpreter.go_to(current_index)
 	
-	# End the message processing
-	await end_message()
+	var will_continue = _update_dialog_state_for_next_command(current_index + 1)
+	
+	if not will_continue:
+		if "showing_message" in self:
+			self.showing_message = false
+		elif "showing_message" in interpreter:
+			interpreter.showing_message = false
+		GameManager.message.waiting_for_input = false
+		await interpreter.end_message()
+	else:
+		GameManager.message.waiting_for_input = false
 
 
 # Command Input text/Number (Code 8)
 # Code 8 (Parent) parameters { type, variable_id, digits, text_format }
 func _command_0008() -> void:
-	debug_print("Processing command: Input Number/text (code 8)")
-	
-	# Disable waiting for user option selection if enabled
 	if GameManager.message.wait_for_user_option_selected_enabled:
 		GameManager.message.wait_for_user_option_selected_enabled = false
 	
-	# Get the scene path from the command parameters
 	var scene_path = current_command.parameters.get("scene_path", "")
 	if ResourceLoader.exists(scene_path):
-		# Determine the type of variable to update (game variables or text variables)
 		var type = current_command.parameters.get("type", 0)
 		var var_data: String
 		if type == 0:
@@ -303,32 +353,33 @@ func _command_0008() -> void:
 		else:
 			var_data = "game_text_variables"
 		
-		# Get the variable ID to update
 		var variable_id = current_command.parameters.get("variable_id", 1)
-		
-		# Load and instantiate the input scene
 		var scene = load(scene_path).instantiate()
-		scene.position = Vector2(100000, 100000)  # Position the scene off-screen initially
-			
-		# Connect the value_selected signal to update the variable
+		scene.position = Vector2(100000, 100000)
 		scene.value_selected.connect(GameManager.update_data.bind(var_data, variable_id))
-		
-		# Add the scene to the options layer and set its data
 		GameManager.over_message_layer.add_child(scene)
 		scene.set_data(current_command.parameters)
-
-		# Show the options layer and wait for the user to select a value
 		GameManager.hide_cursor()
 		await scene.value_selected
 	
-	# End the message processing
-	await end_message()
+	var next_cmd = _get_next_dialog_command(current_interpreter.command_index + 1)
+	var next_is_dialog = next_cmd != null and next_cmd.code in [2, 4, 8, 9]
+	
+	if not next_is_dialog:
+		await end_message()
 
 
 # Command Select Important Item (Code 9)
 # Code 9 (Parent) parameters { variable_id, item_type }
 func _command_0009() -> void:
-	debug_print("Processing command: Select Important Item (code 9)")
+	var next_cmd = _get_next_dialog_command(current_interpreter.command_index + 1)
+	var next_is_dialog = next_cmd != null and next_cmd.code in [2, 4, 8, 9]
+	
+	if not next_is_dialog:
+		if current_interpreter.has_method("end_message"):
+			await current_interpreter.end_message()
+		else:
+			await end_message()
 
 
 # Comand Scrolling Dialog (Codes 10, 11)

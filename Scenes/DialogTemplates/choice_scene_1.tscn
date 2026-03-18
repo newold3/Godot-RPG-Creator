@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://sj2xbt8xhcyj"]
+[gd_scene format=3 uid="uid://sj2xbt8xhcyj"]
 
 [ext_resource type="Texture2D" uid="uid://8moslxf3ru1y" path="res://Assets/Images/Other/dialog_skin2.png" id="1_xl18h"]
 [ext_resource type="Script" uid="uid://qm03mooq1snp" path="res://Scenes/DialogTemplates/choice_scene_1.gd" id="2_3on0n"]
@@ -28,17 +28,17 @@ fill = 2
 fill_from = Vector2(0.482906, 0.508547)
 fill_to = Vector2(1, 0.465812)
 
-[node name="ChoiceScene1" type="PanelContainer"]
+[node name="ChoiceScene1" type="PanelContainer" unique_id=99877789]
 offset_right = 190.0
 offset_bottom = 111.0
 theme_override_styles/panel = SubResource("StyleBoxTexture_cnffx")
 script = ExtResource("2_3on0n")
 
-[node name="MainContainer" type="VBoxContainer" parent="."]
+[node name="MainContainer" type="VBoxContainer" parent="." unique_id=1747158896]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="OptionsContainer" type="VBoxContainer" parent="MainContainer"]
+[node name="OptionsContainer" type="VBoxContainer" parent="MainContainer" unique_id=699897325]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -50,11 +50,11 @@ focus_next = NodePath(".")
 focus_previous = NodePath(".")
 focus_mode = 2
 
-[node name="ButtonContainer" type="HBoxContainer" parent="MainContainer"]
+[node name="ButtonContainer" type="HBoxContainer" parent="MainContainer" unique_id=2077045249]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ButtonBack" parent="MainContainer/ButtonContainer" instance=ExtResource("3_qs0v4")]
+[node name="ButtonBack" parent="MainContainer/ButtonContainer" unique_id=685954075 instance=ExtResource("3_qs0v4")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -62,7 +62,7 @@ focus_mode = 0
 label_text = "Back"
 background_modulate = Color(0.325987, 0.393175, 0.467947, 1)
 
-[node name="ButtonNext" parent="MainContainer/ButtonContainer" instance=ExtResource("3_qs0v4")]
+[node name="ButtonNext" parent="MainContainer/ButtonContainer" unique_id=1842015906 instance=ExtResource("3_qs0v4")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -70,13 +70,13 @@ focus_mode = 0
 label_text = "Next"
 background_modulate = Color(0.32549, 0.392157, 0.466667, 1)
 
-[node name="PageLabel" type="Label" parent="MainContainer/ButtonContainer"]
+[node name="PageLabel" type="Label" parent="MainContainer/ButtonContainer" unique_id=598055335]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
 text = "0 / 0"
 
-[node name="Selector" type="TextureRect" parent="."]
+[node name="Selector" type="TextureRect" parent="." unique_id=294982620]
 unique_name_in_owner = true
 material = SubResource("CanvasItemMaterial_8wxt7")
 layout_mode = 2
@@ -85,6 +85,6 @@ size_flags_vertical = 0
 texture = SubResource("GradientTexture2D_d0wjj")
 expand_mode = 1
 
-[node name="AudioPlayer" type="AudioStreamPlayer" parent="."]
+[node name="AudioPlayer" type="AudioStreamPlayer" parent="." unique_id=267002750]
 unique_name_in_owner = true
 bus = &"SE"

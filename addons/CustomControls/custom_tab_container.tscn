@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://ccipi0sikmjuu"]
+[gd_scene format=3 uid="uid://ccipi0sikmjuu"]
 
 [ext_resource type="Script" uid="uid://djlfn41c3laum" path="res://addons/CustomControls/custom_tab_container.gd" id="1_8d180"]
 [ext_resource type="Texture2D" uid="uid://dcpncbwq8u3mc" path="res://addons/CustomControls/Images/triangle_left_disabled.png" id="2_ch0v0"]
@@ -11,15 +11,41 @@
 [ext_resource type="Texture2D" uid="uid://df5ova1ajs0h2" path="res://addons/CustomControls/Images/triangle_right_normal.png" id="6_5viob"]
 [ext_resource type="Texture2D" uid="uid://bc00qs21pak7x" path="res://addons/CustomControls/Images/triangle_right_hover.png" id="7_sbfxo"]
 
-[node name="CustomTabContainer" type="MarginContainer"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bxgn4"]
+bg_color = Color(0.92941177, 0.34509805, 0.69411767, 0.48235294)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rwi3v"]
+bg_color = Color(0.45251936, 0.61520386, 0.78818655, 0.48235294)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[node name="CustomTabContainer" type="MarginContainer" unique_id=1235141476]
 clip_children = 2
 custom_minimum_size = Vector2(120, 32)
 offset_right = 179.0
 offset_bottom = 32.0
 script = ExtResource("1_8d180")
+style_drag_from = SubResource("StyleBoxFlat_bxgn4")
+style_drag_to = SubResource("StyleBoxFlat_rwi3v")
+drag_threshold = null
 unselected_color = Color(0.215686, 0.215686, 0.215686, 1)
+current_tab_unselected_text_outline_color = null
 tabs_movement_speed = 1000.0
-tab_name_base = "Page"
+tab_name_base = null
 tab_name_margins = 8
 text_selected_offset_y = 8
 text_unselected_offset_y = 11

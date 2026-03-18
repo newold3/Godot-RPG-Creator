@@ -256,7 +256,7 @@ func _on_profession_list_item_selected(index: int) -> void:
 
 
 func _on_min_required_level_value_changed(value: float) -> void:
-	if busy: return
+	if busy or not current_event: return
 	busy = true
 	
 	current_event.max_required_profession_level = max(current_event.max_required_profession_level,value)
@@ -268,7 +268,7 @@ func _on_min_required_level_value_changed(value: float) -> void:
 
 
 func _on_max_required_level_value_changed(value: float) -> void:
-	if busy: return
+	if busy or not current_event: return
 	busy = true
 	
 	current_event.min_required_profession_level = min(current_event.min_required_profession_level, value)
@@ -280,7 +280,7 @@ func _on_max_required_level_value_changed(value: float) -> void:
 
 
 func _on_current_item_level_value_changed(value: float) -> void:
-	if busy: return
+	if busy or not current_event: return
 	busy = true
 	
 	current_event.current_level = value
@@ -289,10 +289,12 @@ func _on_current_item_level_value_changed(value: float) -> void:
 
 
 func _on_max_uses_value_changed(value: float) -> void:
+	if not current_event: return
 	current_event.max_uses = value
 
 
 func _on_respawn_time_value_changed(value: float) -> void:
+	if not current_event: return
 	current_event.respawn_time = value
 
 
@@ -471,6 +473,7 @@ func _on_drop_list_paste_requested(index: int) -> void:
 
 
 func _on_experience_base_value_changed(value: float) -> void:
+	if not current_event: return
 	current_event.experience_base = value
 
 

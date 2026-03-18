@@ -102,14 +102,19 @@ func get_item_data_name(data: Array, id: int) -> String:
 	return "< %s: %s >" % [id, data[id].name] if id < data.size() else "⚠ Invalid Data"
 
 func get_event_name(id: int) -> String:
-	var data = ["Player"]
-	var edited_scene = RPGSYSTEM.editor_interface.get_edited_scene_root()
-	if edited_scene and edited_scene is RPGMap:
-		data.append("This Event")
-		for ev: RPGEvent in edited_scene.events.get_events():
-			data.append("%s: %s" % [ev.id, ev.name])
+	match id:
+		-1: # PLAYER
+			return "Player"
+		0: # This Event
+			return "This Event"
+		_: # Event _uniq_id
+			var edited_scene = RPGSYSTEM.editor_interface.get_edited_scene_root()
+			if edited_scene and edited_scene is RPGMap:
+				for ev: RPGEvent in edited_scene.events.get_events():
+					if ev._uniq_id == id:
+						return("%s: %s" % [ev.id, ev.name])
 
-	return data[id] if id < data.size() else "⚠ Invalid Data"
+	return "⚠ Invalid Data"
 
 func get_actor_name(id: int) -> String:
 	if id > 0 && RPGSYSTEM.database.actors.size() > id:
@@ -420,8 +425,20 @@ func _format_command_2(data: FormatData) -> Array:
 	var face_size: String = "%sx%s" % [face_width, face_height]
 	var is_floating_dialog = data.command.parameters.get("is_floating_dialog", false)
 	var is_floating_string: String = "" if not is_floating_dialog else "floating dialog"
+
 	if not is_floating_string.is_empty():
-		is_floating_string += " (over #%s)" % data.command.parameters.floating_target
+		var target = data.command.parameters.get("floating_target", 0)
+		var target_str = ""
+		if target == 0:
+			target_str = "This Event"
+		else:
+			var edited_scene = RPGSYSTEM.editor_interface.get_edited_scene_root()
+			if edited_scene and edited_scene is RPGMap:
+				target_str = RPGSYSTEM.map_infos.get_event_name(edited_scene.internal_id, target)
+			else:
+				target_str = "?"
+				
+		is_floating_string += " (over #%s)" % target_str
 	
 	formatted_text.append({
 		"texts": [
@@ -868,7 +885,7 @@ func _format_command_17(data: FormatData) -> Array:
 	formatted_text.append({
 		"texts": [
 			{
-				"text": data.tabs + default_text + " Control Switches : [%s] is %s" % [switch_name, operation],
+				"text": data.tabs + default_text + " Control Switches : <%s> set to %s" % [switch_name, operation],
 				"color": color_theme.get("color6", Color.WHITE)
 			}
 		],
@@ -1065,7 +1082,7 @@ func _format_command_18(data: FormatData) -> Array:
 	formatted_text.append({
 		"texts": [
 			{
-				"text": data.tabs + default_text + " Control Variables : < %s > %s= %s" % [variable_name, operation, text],
+				"text": data.tabs + default_text + " Control Variables : <%s> %s= %s" % [variable_name, operation, text],
 				"color": color_theme.get("color6", Color.WHITE)
 			}
 		],
@@ -1078,13 +1095,27 @@ func _format_command_18(data: FormatData) -> Array:
 func _format_command_19(data: FormatData) -> Array:
 	var formatted_text = []
 	var switch_id = data.command.parameters.get("switch_id", 0)
-	var switch_name = ["A", "B", "C", "D", "E", "F", "G", "H"][switch_id]
+	var switch_name = RPGSYSTEM.system.self_switches.get_switch_names()[switch_id]
 	var operation = "ON" if data.command.parameters.get("operation_type", 0) == 0 else "OFF"
+	
+	var target = data.command.parameters.get("event_id", 0)
+	var event_str = ""
+	
+	var edited_scene = RPGSYSTEM.editor_interface.get_edited_scene_root()
+	if edited_scene and edited_scene is RPGMap:
+		if target == 0:
+			event_str = "This Event"
+		else:
+			var event = edited_scene.events.get_event_by_uniq_id(target)
+			if event:
+				event_str = "[%s: %s]" % [event.id, event.name]
+	else:
+		event_str = "This Event"
 	
 	formatted_text.append({
 		"texts": [
 			{
-				"text": data.tabs + default_text + " Control Self Switch %s is %s" % [switch_name, operation],
+				"text": data.tabs + default_text + " Control Self Switch <%s> %s event = <%s>" % [switch_name, operation, event_str],
 				"color": color_theme.get("color6", Color.WHITE)
 			}
 		],
@@ -1291,7 +1322,7 @@ func _format_command_21(data: FormatData) -> Array:
 			var character_name = get_event_name(character_id)
 			var param = [
 				"Looking At Down", "Looking At Left", "Looking At Right", "Looking At Up",
-				"Is In My Tile", "Is Out Of My Tile", "Is Jumping", "Is Passable", "Is On Vehicle"
+				"Is In My Tile", "Is Out Of My Tile", "Is Jumping", "Is Passable", "Is On Vehicle", "is Pressed"
 			][data.command.parameters.get("value2", 0)]
 			text = character_name + " " + param
 		7: # Vehicle
@@ -1982,10 +2013,7 @@ func _format_command_53(data: FormatData) -> Array:
 			target = "Air Transport"
 	elif target_id == 2:
 		var event_id = pa.get("event_id", 0)
-		if event_id <= 0:
-			target = "This Event"
-		else:
-			target = "Event " + str(event_id)
+		target = get_event_name(event_id)
 
 	if type == 0:
 		var map_id = pa.get("assigned_map_id", 0)
@@ -2017,7 +2045,8 @@ func _format_command_53(data: FormatData) -> Array:
 		value = "%s, x = %s, y = %s" % [variable_name1, variable_name2, variable_name3]
 	elif type == 2:
 		var swap_event_id = pa.get("swap_event_id", 0)
-		value = "Swap position with < event %s >" % [swap_event_id]
+		var target_swap = get_event_name(swap_event_id)
+		value = "Swap position with < event %s >" % [target_swap]
 
 	var current_direction = data.command.parameters.get("direction", 0)
 	var direction = "Hold direction" if current_direction == 0 else \
@@ -2114,7 +2143,7 @@ func _format_command_57(data: FormatData) -> Array:
 		elif target == 0:
 			n1 = "This Event"
 		else:
-			var event = edited_scene.events.get_event_by_id(target)
+			var event = edited_scene.events.get_event_by_uniq_id(target)
 			if event:
 				n1 = "[%s: %s]" % [event.id, event.name]
 			else:
@@ -2188,12 +2217,22 @@ func _format_command_60(data: FormatData) -> Array:
 func _format_command_61(data: FormatData) -> Array:
 	var variable_id = data.command.parameters.get("id", 0)
 	var value = data.command.parameters.get("value", "")
+	var operations = ["==", "+=", "-="]
+	var operation_type = max(0, min(operations.size() - 1, data.command.parameters.get("operation", 0)))
 	var id = str(variable_id).pad_zeros(str(RPGSYSTEM.system.text_variables.size()).length())
 	var variable_name = id + ": " + RPGSYSTEM.system.text_variables.get_item_name(variable_id)
+	
+	var final_text = ""
+	if operation_type != 2:
+		final_text = " Text Variable <%s> %s %s" % [variable_name, operations[operation_type], value]
+	else:
+		var new_value = data.command.parameters.get("replace_text", "")
+		final_text = " Text Variable <%s> replace '%s' with '%s'" % [variable_name, value, new_value]
+
 	return [{
 		"texts": [
 			{
-				"text": data.tabs + default_text + " Text Variable %s = %s" % [variable_name, value],
+				"text": data.tabs + default_text + final_text,
 				"color": color_theme.get("color6", Color.WHITE)
 			}
 		],
@@ -2404,6 +2443,9 @@ func _format_command_73(data: FormatData) -> Array:
 	var path = data.command.parameters.get("path", "")
 	var wait = data.command.parameters.get("wait", false)
 	var wait_text = _get_wait_text(wait)
+	var file = path.get_file()
+	if file.is_empty():
+		file = "⚠️" + tr("Unselected scene")
 	return [{
 		"texts": [
 			{
@@ -2411,7 +2453,7 @@ func _format_command_73(data: FormatData) -> Array:
 				"color": color_theme.get("color10", Color.WHITE)
 			},
 			{
-				"text": "[%s, %s%s]" % [target_name, path.get_file(), wait_text],
+				"text": "[%s, %s%s]" % [target_name, file, wait_text],
 				"color": color_theme.get("color3", Color.WHITE)
 			}
 		],
@@ -2896,12 +2938,15 @@ func _format_command_93(data: FormatData) -> Array:
 
 # Manage Camera Targets
 func _format_command_123(data: FormatData) -> Array:
-	var targets = data.command.parameters.get("targets", [])
+	var targets = data.command.parameters.get("legacy_targets", [])
 	var targets_str = ""
 	if targets.has(0):
 		targets_str += "player"
 	for target in targets:
-		if target != 0:
+		if target == 0: continue
+		if targets_str.is_empty():
+			targets_str = "ev #%s" % target
+		else:
 			targets_str += ", ev #%s" % target
 	
 	var target_color = color_theme.get("color3", Color.WHITE)

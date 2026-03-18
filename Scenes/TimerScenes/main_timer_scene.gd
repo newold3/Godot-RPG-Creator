@@ -748,7 +748,7 @@ func set_config(timer_id: int, timer_new_name: String, config: Dictionary) -> vo
 	background_width = background_size.x
 	background_height = background_size.y
 	var background_path = config.get("timer_background", default_background)
-	var tex = null if not ResourceLoader.exists(background_path) else load(background_path)
+	var tex = null if not AssetManager.exists(background_path) else load(background_path)
 	background_texture = tex
 	timer_name_align = config.get("title_align", 2)
 	timer_name_modulate = config.get("title_modulate", Color("#9da9d5"))
@@ -760,29 +760,29 @@ func set_config(timer_id: int, timer_new_name: String, config: Dictionary) -> vo
 	margin_vertical = margin.y
 	screen_position = config.get("position_index", 1)
 	var text_font_path = config.get("timer_font", font_base)
-	text_font = null if not ResourceLoader.exists(text_font_path) else load(text_font_path)
+	text_font = null if not AssetManager.exists(text_font_path) else load(text_font_path)
 	timer_text_size = config.get("timer_font_size", 48)
 	timer_title_text_size = config.get("title_font_size", 32)
 	text_outline_size = config.get("outline_size", 8)
 	text_outline_color = config.get("outline_color", Color.BLACK)
 	var text_gradient_path = config.get("text_gradient", text_gradient_base)
-	var gradient = null if not ResourceLoader.exists(text_gradient_path) else load(text_gradient_path)
+	var gradient = null if not AssetManager.exists(text_gradient_path) else load(text_gradient_path)
 	text_gradient = gradient
 	var start_fx_path = config.get("start_fx", "")
-	start_fx = null if not ResourceLoader.exists(start_fx_path) else load(start_fx_path)
+	start_fx = null if not AssetManager.exists(start_fx_path) else load(start_fx_path)
 	var timeout_fx_path = config.get("timeout_fx", "")
-	timeout_fx = null if not ResourceLoader.exists(timeout_fx_path) else load(timeout_fx_path)
+	timeout_fx = null if not AssetManager.exists(timeout_fx_path) else load(timeout_fx_path)
 	var warning_fx_path = config.get("warning_fx", "")
-	warning_fx = null if not ResourceLoader.exists(warning_fx_path) else load(warning_fx_path)
+	warning_fx = null if not AssetManager.exists(warning_fx_path) else load(warning_fx_path)
 	var tick_fx_path = config.get("tick_fx", "")
-	tick_fx = null if not ResourceLoader.exists(tick_fx_path) else load(tick_fx_path)
+	tick_fx = null if not AssetManager.exists(tick_fx_path) else load(tick_fx_path)
 	warning_start_time = config.get("warning_start_time", 10)
 	var warning_curve_path = config.get("warning_curve", default_curve)
-	warning_curve = null if not ResourceLoader.exists(warning_curve_path) else load(warning_curve_path)
+	warning_curve = null if not AssetManager.exists(warning_curve_path) else load(warning_curve_path)
 	enable_blink_animation = config.get("enable_blink", true)
 	blink_animation_start_time = config.get("blink_start_time", 10)
 	var blink_curve_path = config.get("blink_curve", default_curve)
-	blink_speed_curve = null if not ResourceLoader.exists(blink_curve_path) else load(blink_curve_path)
+	blink_speed_curve = null if not AssetManager.exists(blink_curve_path) else load(blink_curve_path)
 	
 	_update_position()
 

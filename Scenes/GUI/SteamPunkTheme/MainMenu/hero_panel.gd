@@ -111,7 +111,7 @@ func refresh() -> void:
 		%MPBar.max_value = current_actor.get_parameter("mp")
 		%MPBar.value = current_actor.params.mp
 		%NextExperienceLabel.text = current_actor.get_remaining_exp_to_level()
-		if ResourceLoader.exists(real_actor.face_preview.path):
+		if AssetManager.exists(real_actor.face_preview.path):
 			%HeroFace.texture.atlas = load(real_actor.face_preview.path)
 			%HeroFace.texture.region = real_actor.face_preview.region
 		else:
@@ -264,11 +264,18 @@ func to_gray(value: bool) -> void:
 func set_enabled() -> void:
 	is_enabled = true
 	hero_panel.mouse_filter = Control.MOUSE_FILTER_STOP
+	modulate = Color.WHITE
 
 
 func set_disabled() -> void:
 	is_enabled = false
 	hero_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	modulate = Color(0.65, 0.65, 0.65)
+
+
+func hightlight() -> void:
+	modulate = Color(1.2, 1.2, 1.2)
+	
 
 
 func select(force_focus: bool = false) -> void:

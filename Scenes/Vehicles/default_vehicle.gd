@@ -2,6 +2,7 @@
 class_name RPGVehicle
 extends CharacterBody2D
 
+
 ## Vehicle type (This information is used by the "conditional separation" command when the "vehicle being driven" option is selected).
 @export_enum("Land Vehicle", "Sea Vehicle", "Air Veicle") var vehicle_type: int = 0
 
@@ -47,6 +48,12 @@ extends CharacterBody2D
 ## Indicate whether or not this vehicle can be traversed.
 @export var is_passable: bool = false: set = _set_passable
 
+## Indicates if the vehicle should show a visual marker where the player will disembark
+@export var show_disembark_indicator: bool = false
+
+## Texture used for the disembark indicator, defaults to a simple rect if empty
+@export var disembark_indicator_texture: Texture2D
+
 
 var player: LPCCharacter
 var current_map: RPGMap
@@ -69,6 +76,12 @@ var movement_tween: Tween
 
 var ctrl_pressed: bool = false
 
+var _auto_target_tile: Vector2i = Vector2i(-1, -1)
+var _auto_target_event: Node = null
+var _click_indicator_cooldown: float = 0.0
+
+var is_mouse_moving: bool = false
+
 const MAX_JUMP_HEIGHT: int = 48
 const JUMP_PARTICLES = preload("res://Scenes/ParticleScenes/jump_particles2.tscn")
 
@@ -76,9 +89,15 @@ const JUMP_PARTICLES = preload("res://Scenes/ParticleScenes/jump_particles2.tscn
 signal starting()
 signal ending()
 signal start_movement()
-#signal position_changed()
 signal end_movement()
 signal start_direction_changed()
+
+signal mouse_movement_started()
+signal mouse_movement_ended()
+
+
+func get_class() -> String:
+	return "RPGVehicle"
 
 
 func _ready() -> void:
@@ -115,15 +134,15 @@ func get_direction_name() -> String:
 	for key in LPCCharacter.DIRECTIONS.keys():
 		if LPCCharacter.DIRECTIONS.get(key) == current_direction:
 			return (key.capitalize())
-		
 	return ""
 
 
 func add_player(passenger: LPCCharacter) -> void:
 	if player and passenger == player: return
-	
 	var node = get_node_or_null(player_container_node)
 	if node:
+		if GameManager.game_state.followers_enabled:
+			await GameManager.disappear_followers(0.1, true)
 		player = passenger
 		await _set_initial_player_position(player_position)
 		current_map = passenger.get_parent()
@@ -144,44 +163,59 @@ func add_player(passenger: LPCCharacter) -> void:
 func _set_initial_player_position(_target_position: Vector2) -> void:
 	if player:
 		player.position = _target_position
-	
 	await get_tree().process_frame
 
 
 func _set_player_position(_target_position: Vector2) -> void:
 	if player:
-		player.position = _target_position
-	
-	await get_tree().process_frame
+		var t = create_tween()
+		t.set_trans(Tween.TRANS_CIRC)
+		player.z_index = 10
+		var start_pos = player.position
+		match current_direction:
+			LPCCharacter.DIRECTIONS.LEFT:
+				t.tween_property(player, "position", start_pos + Vector2(-16, -12), 0.08)
+			LPCCharacter.DIRECTIONS.RIGHT:
+				t.tween_property(player, "position", start_pos + Vector2(16, -12), 0.08)
+			LPCCharacter.DIRECTIONS.UP:
+				player.z_index = 1
+				t.tween_property(player, "position", start_pos + Vector2(-1, -12), 0.08)
+			LPCCharacter.DIRECTIONS.DOWN:
+				t.tween_property(player, "position", start_pos + Vector2(1, -12), 0.08)
+		t.tween_property(player, "position", _target_position, 0.06)
+		t.tween_property(player, "scale:y", 0.9, 0.05)
+		t.tween_property(player, "scale:y", 1.0, 0.05)
+		await t.finished
+		if GameManager.current_player:
+			GameManager.current_player.z_index = 1
 
 
 func _get_player_position() -> Vector2:
 	return global_position
 
 
+func get_player_visual_offset() -> Vector2:
+	return Vector2.ZERO
+
+
 func remove_player() -> void:
 	if player and current_map:
-		var current_global_position = _get_player_position()
-		player.reparent(current_map)
-		player.global_position = current_global_position
-		
-		var current_tile = current_map.local_to_map(global_position)
+		var current_tile = get_current_tile()
 		if current_direction == LPCCharacter.DIRECTIONS.LEFT:
 			current_tile.x -= (extra_dimensions.grow_left + 1)
 		elif current_direction == LPCCharacter.DIRECTIONS.RIGHT:
 			current_tile.x += (extra_dimensions.grow_right + 1)
-		if current_direction == LPCCharacter.DIRECTIONS.UP:
+		elif current_direction == LPCCharacter.DIRECTIONS.UP:
 			current_tile.y -= (extra_dimensions.grow_up + 1)
 		elif current_direction == LPCCharacter.DIRECTIONS.DOWN:
 			current_tile.y += (extra_dimensions.grow_down + 1)
-
-		var _target_position = current_map.get_tile_position(current_tile)
+		var _target_position = current_map.get_tile_position(current_tile).round()
 		current_map.set_event_direction(player, current_direction)
+		var real_start_pos = self.global_position + get_player_visual_offset()
+		player.reparent(current_map, false)
+		player.global_position = real_start_pos
 		await _set_player_position(_target_position)
 		player.position = _target_position
-
-		player.set_process(true)
-		player.set_process_input(true)
 		var camera = GameManager.get_camera()
 		if camera:
 			camera.remove_target_from_array(self)
@@ -190,12 +224,37 @@ func remove_player() -> void:
 		player.last_direction = current_direction
 		var t = create_tween()
 		player.modulate.a = 0.8
+		t.tween_property(player, "modulate:a", 1.0, 0.25)
+		await t.finished
+		if player.has_method("kill_movement"):
+			player.kill_movement()
+		if "is_attacking" in player:
+			player.is_attacking = false
+		if player.has_method("_reset"):
+			player._reset(true)
+		if "target_position" in player:
+			player.target_position = _target_position
+		if "previous_tile" in player:
+			player.previous_tile = current_tile
+		if "teleport" in player:
+			player.teleport = _target_position
+		if player.has_method("initialize_virtual_tile"):
+			player.initialize_virtual_tile()
+		player._auto_target_tile = Vector2i(-1, -1)
+		player._auto_target_event = null
+		player.movement_vector = Vector2.ZERO
+		player.is_moving = false
+		if "is_mouse_moving" in player:
+			player.is_mouse_moving = false
+		if "_click_indicator_cooldown" in player:
+			player._click_indicator_cooldown = 0.5
 		player.is_on_vehicle = false
 		player.current_vehicle = null
-		t.tween_property(player, "modulate:a", 1.0, 0.25)
+		player.set_process(true)
+		player.set_process_input(true)
 		player = null
-		
 	disembark_passenger()
+	GameManager.appear_followers()
 
 
 func board_passenger(passenger: LPCCharacter) -> void:
@@ -208,7 +267,6 @@ func board_passenger(passenger: LPCCharacter) -> void:
 	player.current_vehicle = self
 	player.current_direction = current_direction
 	player.last_direction = current_direction
-	#current_direction = player.current_direction
 	player.run_animation()
 	initial_delay = 0.06
 	is_enabled = true
@@ -224,52 +282,44 @@ func can_disembark() -> bool:
 		motion.y = -1
 	elif current_direction == LPCCharacter.DIRECTIONS.DOWN:
 		motion.y = 1
-
 	var movement1 = get_possible_movement(motion)
 	var movement2: Vector2i = Vector2i.ONE
 	if player:
 		movement2 = get_player_possible_movement(motion)
-		#movement2 = player.get_possible_movements(motion)
-
 	return movement1 != Vector2i.ZERO and movement2 != Vector2i.ZERO
 
 
 func get_adjacent_event() -> Variant:
 	var current_tile = current_map.local_to_map(global_position)
 	var event = null
-	
 	if current_direction == LPCCharacter.DIRECTIONS.LEFT:
 		var max_distance = extra_dimensions.grow_left + 1
-		for distance in range(max_distance, 0, -1): # From furthest to 1
+		for distance in range(max_distance, 0, -1):
 			var adjacent_tile = Vector2(current_tile.x - distance, current_tile.y)
 			event = current_map.get_in_game_event_in(adjacent_tile)
 			if event:
 				break
-				
 	elif current_direction == LPCCharacter.DIRECTIONS.RIGHT:
 		var max_distance = extra_dimensions.grow_right + 1
-		for distance in range(max_distance, 0, -1): # From furthest to 1
+		for distance in range(max_distance, 0, -1):
 			var adjacent_tile = Vector2(current_tile.x + distance, current_tile.y)
 			event = current_map.get_in_game_event_in(adjacent_tile)
 			if event:
 				break
-				
 	elif current_direction == LPCCharacter.DIRECTIONS.UP:
 		var max_distance = extra_dimensions.grow_up + 1
-		for distance in range(max_distance, 0, -1): # From furthest to 1
+		for distance in range(max_distance, 0, -1):
 			var adjacent_tile = Vector2(current_tile.x, current_tile.y - distance)
 			event = current_map.get_in_game_event_in(adjacent_tile)
 			if event:
 				break
-				
 	elif current_direction == LPCCharacter.DIRECTIONS.DOWN:
 		var max_distance = extra_dimensions.grow_down + 1
-		for distance in range(max_distance, 0, -1): # From furthest to 1
+		for distance in range(max_distance, 0, -1):
 			var adjacent_tile = Vector2(current_tile.x, current_tile.y + distance)
 			event = current_map.get_in_game_event_in(adjacent_tile)
 			if event:
 				break
-	
 	return event
 
 
@@ -278,10 +328,8 @@ func disembark_passenger() -> void:
 		player.set_process(true)
 		player.set_process_input(true)
 		player = null
-	
 	var vehicles = ["land_transport_start_position", "sea_transport_start_position", "air_transport_start_position"]
 	var id = clamp(int(vehicle_type), 0, 2)
-	
 	if GameManager.current_map:
 		var vehicle_position: RPGMapPosition = RPGMapPosition.new(GameManager.current_map.internal_id, get_current_tile())
 		GameManager.game_state.set(vehicles[id], vehicle_position)
@@ -290,14 +338,20 @@ func disembark_passenger() -> void:
 func _process(delta: float) -> void:
 	if GameManager.busy or GameInterpreter.busy or force_movement_enabled or is_jumping or force_jump_enabled or GameManager.loading_game:
 		return
-	
 	if Input.is_key_pressed(KEY_CTRL) and OS.is_debug_build() and not ctrl_pressed:
 		ctrl_pressed = true
 		call_deferred("propagate_call", "set_disabled", [true])
 	elif ctrl_pressed and not Input.is_key_pressed(KEY_CTRL):
 		ctrl_pressed = false
 		call_deferred("propagate_call", "set_disabled", [false])
-
+	if _click_indicator_cooldown > 0.0:
+		_click_indicator_cooldown -= delta
+	if ControllerManager.is_action_just_released("Mouse Left"):
+		_click_indicator_cooldown = 0.0
+	var input_vector = Vector2(Input.get_axis("ui_left", "ui_right"), Input.get_axis("ui_up", "ui_down"))
+	if input_vector != Vector2.ZERO:
+		_auto_target_tile = Vector2i(-1, -1)
+		_auto_target_event = null
 	movement_vector = Vector2.ZERO
 	if !is_enabled:
 		fix_offsets()
@@ -305,6 +359,14 @@ func _process(delta: float) -> void:
 	elif initial_delay > 0:
 		initial_delay -= delta
 		return
+	if is_enabled and not is_moving and not busy and ControllerManager.is_action_pressed("Mouse Left"):
+		var is_new_click = ControllerManager.is_action_just_pressed("Mouse Left")
+		var mouse_pos = current_map.get_local_mouse_position()
+		var tile: Vector2i = current_map.local_to_map(mouse_pos)
+		if is_new_click or (tile != _auto_target_tile and _click_indicator_cooldown <= 0.0):
+			_set_target_destination(tile, is_new_click)
+	if _auto_target_tile != Vector2i(-1, -1) and not is_moving and not busy:
+		_process_auto_movement()
 	elif !is_moving:
 		if Input.is_action_just_pressed("ui_select"):
 			if can_disembark():
@@ -313,62 +375,184 @@ func _process(delta: float) -> void:
 				var event = get_adjacent_event()
 				if event and "start" in event and not event.get_class() == "RPGExtractionScene":
 					event.start(player, RPGEventPage.LAUNCHER_MODE.ACTION_BUTTON)
-		
 		if player:
 			player.current_direction = current_direction
 			player.run_animation()
-		
-		movement_vector = Vector2(Input.get_axis("ui_left", "ui_right"), Input.get_axis("ui_up", "ui_down"))
+		if input_vector != Vector2.ZERO:
+			movement_vector = input_vector
+	if movement_vector != Vector2.ZERO:
+		var diagonal_movement_direction_mode = RPGSYSTEM.database.system.options.get("movement_mode", 0)
+		match diagonal_movement_direction_mode:
+			0: prioritize_vertical_look(true, movement_vector)
+			1: prioritize_horizontal_look(true, movement_vector)
+			2: maintain_current_look(true, movement_vector)
+		current_direction = last_direction
+	if is_mouse_moving:
+		var is_click_held = Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
+		var path_ended = (_auto_target_tile == Vector2i(-1, -1))
+		var interrupted_by_keys = (input_vector != Vector2.ZERO)
+		if interrupted_by_keys or (path_ended and not is_click_held):
+			is_mouse_moving = false
+			mouse_movement_ended.emit()
+	if show_disembark_indicator and is_enabled:
+		queue_redraw()
 
-	var diagonal_movement_direction_mode = RPGSYSTEM.database.system.options.get("movement_mode", 0)
-	match diagonal_movement_direction_mode:
-		0: prioritize_vertical_look()
-		1: prioritize_horizontal_look()
-		2: maintain_current_look()
-	
-	current_direction = last_direction
-	
-	var direction_name = get_direction_name()
-	var animation_name = %AnimationPlayer.get_current_animation()
-	if not direction_name in animation_name:
-		_update_animation(animation_name, direction_name)
+
+func _draw() -> void:
+	if not show_disembark_indicator or not is_enabled or not current_map:
+		return
+	var target_tile = get_current_tile()
+	if current_direction == LPCCharacter.DIRECTIONS.LEFT:
+		target_tile.x -= (extra_dimensions.grow_left + 1)
+	elif current_direction == LPCCharacter.DIRECTIONS.RIGHT:
+		target_tile.x += (extra_dimensions.grow_right + 1)
+	elif current_direction == LPCCharacter.DIRECTIONS.UP:
+		target_tile.y -= (extra_dimensions.grow_up + 1)
+	elif current_direction == LPCCharacter.DIRECTIONS.DOWN:
+		target_tile.y += (extra_dimensions.grow_down + 1)
+	var target_global_pos = current_map.get_tile_position(target_tile)
+	var local_pos = to_local(target_global_pos)
+	var tile_size = Vector2(current_map.tile_size)
+	var rect = Rect2(local_pos - Vector2(tile_size.x / 2.0, tile_size.y), tile_size)
+	if disembark_indicator_texture:
+		draw_texture_rect(disembark_indicator_texture, rect, false)
+	else:
+		draw_rect(rect, Color(0.0, 1.0, 0.0, 0.4), true)
+		draw_rect(rect, Color(0.0, 1.0, 0.0, 0.8), false, 2.0)
 
 
-func _update_animation(animation_name: String, direction_name: String) -> void:
-	var regex = RegEx.new()
-	regex.compile("[A-Z]")
-	var matchs = regex.search_all(animation_name)
-	
-	var arr = []
-	var s = 0
-	
-	for m in matchs:
-		if m.get_start() > s:
-			arr.append(animation_name.substr(s, m.get_start() - s))
-		s = m.get_start()
-	
-	if arr.size() > 0:
-		arr.pop_back()
-	
-	current_animation = "".join(arr) + direction_name
-	if %AnimationPlayer.has_animation(current_animation):
-		%AnimationPlayer.play(current_animation)
+func _set_target_destination(tile: Vector2i, is_new_click: bool = true) -> void:
+	if not current_map:
+		return
+	_auto_target_tile = tile
+	_auto_target_event = null
+	if not is_new_click:
+		return
+	if player and player.click_indicator_scene and _click_indicator_cooldown <= 0.0:
+		_click_indicator_cooldown = 0.1
+		var indicator = player.click_indicator_scene.instantiate()
+		current_map.add_child(indicator)
+		indicator.global_position = current_map.get_tile_position(tile) - Vector2(0, current_map.tile_size.y / 2.0 - 8.0)
+	var events = current_map.get_in_game_events_in(tile)
+	for ev in events:
+		if ev is LPCEvent or ev is EmptyLPCEvent or ev is GenericLPCEvent or ev.get_class() == "RPGExtractionScene":
+			_auto_target_event = ev
+			break
+	if not _auto_target_event and current_map.has_method("get_in_game_vehicle_in"):
+		var vehicle = current_map.get_in_game_vehicle_in(tile)
+		if vehicle == self:
+			_auto_target_event = self
+
+
+func _process_auto_movement() -> void:
+	var current_tile = get_current_tile()
+	if current_tile == _auto_target_tile:
+		_auto_target_tile = Vector2i(-1, -1)
+		movement_vector = Vector2.ZERO
+		if _auto_target_event and is_instance_valid(_auto_target_event) and player and can_interact_from_the_vehicle:
+			_interact_with_click_target()
+		return
+	if _auto_target_event and is_instance_valid(_auto_target_event):
+		var is_adjacent = false
+		var diff = Vector2i.ZERO
+		var my_tiles = get_current_tiles()
+		var target_tiles = []
+		if _auto_target_event.has_method("get_current_tiles"):
+			target_tiles = _auto_target_event.get_current_tiles()
+		elif _auto_target_event.has_method("get_current_tile"):
+			target_tiles = [_auto_target_event.get_current_tile()]
+		else:
+			target_tiles = [_auto_target_tile]
+		for my_t in my_tiles:
+			for tgt_t in target_tiles:
+				var temp_diff = tgt_t - my_t
+				if abs(temp_diff.x) + abs(temp_diff.y) == 1:
+					is_adjacent = true
+					diff = temp_diff
+					break
+			if is_adjacent:
+				break
+		if is_adjacent:
+			_auto_target_tile = Vector2i(-1, -1)
+			movement_vector = Vector2.ZERO
+			if diff.x > 0: current_direction = LPCCharacter.DIRECTIONS.RIGHT
+			elif diff.x < 0: current_direction = LPCCharacter.DIRECTIONS.LEFT
+			elif diff.y > 0: current_direction = LPCCharacter.DIRECTIONS.DOWN
+			elif diff.y < 0: current_direction = LPCCharacter.DIRECTIONS.UP
+			last_direction = current_direction
+			if player:
+				player.current_direction = current_direction
+			if player and can_interact_from_the_vehicle:
+				_interact_with_click_target()
+			return
+	var target_screen_position = Vector2.ZERO
+	if _auto_target_event and is_instance_valid(_auto_target_event) and _auto_target_event.has_method("get_global_transform_with_canvas"):
+		target_screen_position = _auto_target_event.get_global_transform_with_canvas().origin
+	var next_step = _get_next_move_toward_target(_auto_target_tile, target_screen_position)
+	if next_step != Vector2i.ZERO:
+		movement_vector = next_step
+		if not is_mouse_moving:
+			is_mouse_moving = true
+			mouse_movement_started.emit()
+		var diagonal_movement_direction_mode = RPGSYSTEM.database.system.options.get("movement_mode", 0)
+		match diagonal_movement_direction_mode:
+			0: prioritize_vertical_look(true, movement_vector)
+			1: prioritize_horizontal_look(true, movement_vector)
+			2: maintain_current_look(true, movement_vector)
+		current_direction = last_direction
+		if player:
+			player.current_direction = current_direction
+	else:
+		_auto_target_tile = Vector2i(-1, -1)
+		movement_vector = Vector2.ZERO
+
+
+func _get_next_move_toward_target(target: Vector2i, _target_screen_position: Vector2) -> Vector2i:
+	var map = current_map
+	if map:
+		var current = get_current_tile()
+		if (Input.is_key_pressed(KEY_CTRL) and OS.is_debug_build()) or flying_object:
+			var diff = target - current
+			if diff != Vector2i.ZERO:
+				return Vector2i(sign(diff.x), sign(diff.y))
+			return Vector2i.ZERO
+		var next = map.pathfinder.get_next_tile(self, current, target)
+		if next != null:
+			var diff = next - current
+			var map_size = map.get_map_size_in_tiles()
+			if map.infinite_horizontal_scroll:
+				var half_width = map_size.x / 2
+				if diff.x > half_width: diff.x -= map_size.x
+				elif diff.x < -half_width: diff.x += map_size.x
+			if map.infinite_vertical_scroll:
+				var half_height = map_size.y / 2
+				if diff.y > half_height: diff.y -= map_size.y
+				elif diff.y < -half_height: diff.y += map_size.y
+			return diff
+	return Vector2i.ZERO
+
+
+func _interact_with_click_target() -> void:
+	if not is_instance_valid(_auto_target_event):
+		return
+	var node = _auto_target_event
+	_auto_target_event = null
+	if node is LPCEvent or node is EmptyLPCEvent or node is GenericLPCEvent:
+		_reset(true)
+		is_moving = false
+		await node.start(player, RPGEventPage.LAUNCHER_MODE.ACTION_BUTTON)
 
 
 func force_movement(motion: Vector2, keep_direction: bool = false) -> void:
 	movement_vector = motion
 	force_movement_enabled = true
-	
 	if not keep_direction:
 		var diagonal_movement_direction_mode = RPGSYSTEM.database.system.options.get("movement_mode", 0)
 		match diagonal_movement_direction_mode:
 			0: prioritize_vertical_look(true, movement_vector)
 			1: prioritize_horizontal_look(true, movement_vector)
 			2: maintain_current_look(true, movement_vector)
-		
 		current_direction = last_direction
-	
-	
 	await move_vehicle()
 
 
@@ -377,20 +561,25 @@ func reset_force_movement() -> void:
 	force_jump_enabled = false
 
 
+func _reset(force_reset: bool = false) -> void:
+	is_moving = false
+	velocity = Vector2.ZERO
+	if force_reset:
+		pass
+	is_moving = false
+	movement_vector = Vector2.ZERO
+
+
 func _physics_process(_delta: float) -> void:
 	if GameManager.loading_game:
 		return
-		
 	_fix_z_ordering()
-	
 	if is_moving or movement_vector == Vector2.ZERO or not is_enabled or is_jumping or force_movement_enabled or force_jump_enabled:
 		return
-	
 	move_vehicle()
 
 
 func prioritize_vertical_look(use_motion: bool = false, motion: Vector2 = Vector2.ZERO) -> void:
-	# Preferred vertical direction when moving diagonally
 	if use_motion:
 		if motion.y < 0:
 			last_direction = LPCCharacter.DIRECTIONS.UP
@@ -412,7 +601,6 @@ func prioritize_vertical_look(use_motion: bool = false, motion: Vector2 = Vector
 
 
 func prioritize_horizontal_look(use_motion: bool = false, motion: Vector2 = Vector2.ZERO) -> void:
-	# Preferred horizontal direction when moving diagonally
 	if use_motion:
 		if motion.x < 0:
 			last_direction = LPCCharacter.DIRECTIONS.LEFT
@@ -434,9 +622,7 @@ func prioritize_horizontal_look(use_motion: bool = false, motion: Vector2 = Vect
 
 
 func maintain_current_look(use_motion: bool = false, motion: Vector2 = Vector2.ZERO) -> void:
-	# Preferred current direction used when moving diagonally
 	var dir_pressed_count = 0
-	
 	if use_motion:
 		if motion.x < 0: dir_pressed_count += 1
 		if motion.x > 0: dir_pressed_count += 1
@@ -447,21 +633,8 @@ func maintain_current_look(use_motion: bool = false, motion: Vector2 = Vector2.Z
 		if Input.is_action_pressed("ui_right"): dir_pressed_count += 1
 		if Input.is_action_pressed("ui_up"): dir_pressed_count += 1
 		if Input.is_action_pressed("ui_down"): dir_pressed_count += 1
-		
 	if dir_pressed_count == 1:
 		prioritize_vertical_look()
-
-
-#await result.target.move_event(result.value, result.route)
-				#GameManager.game_state.stats.steps += 1
-			#"jump":
-				#await result.target.jump_to(result.value, result.route, result.start_fx, result.end_fx)
-				#
-#func move_event() -> void:
-	#pass
-#
-#
-#func jump_to
 
 
 func move_vehicle() -> void:
@@ -472,44 +645,33 @@ func start_vehicle_movement() -> void:
 	previous_tile = get_current_tile()
 	if is_moving or movement_vector == Vector2.ZERO or busy:
 		return
-
-	# Verify if the movement is possible
 	var possible_movements = get_possible_movement(movement_vector)
 	if !possible_movements:
 		return
-	
 	start_movement.emit()
-	
-	# Calculate the target position
 	movement_vector.x = floor(movement_vector.x) if movement_vector.x < 0 else ceil(movement_vector.x)
 	movement_vector.y = floor(movement_vector.y) if movement_vector.y < 0 else ceil(movement_vector.y)
 	movement_vector *= Vector2(possible_movements)
-	
-	var motion = movement_vector * Vector2(GameManager.current_map.tile_size)
+	var tile_size: Vector2 = GameManager.get_map_tile_size()
+	var motion = movement_vector * Vector2(tile_size)
 	if motion.x != 0:
 		var collision_x: KinematicCollision2D = move_and_collide(Vector2(motion.x, 0), true)
-		if collision_x:
+		if collision_x and not flying_object:
 			motion.x = 0
 	if motion.y != 0:
 		var collision_y: KinematicCollision2D = move_and_collide(Vector2(0, motion.y), true)
-		if collision_y:
+		if collision_y and not flying_object:
 			motion.y = 0
-	
 	if !motion:
 		return
-	
-	# Start Movement
 	is_moving = true
 	var _target_position = position + motion
 	var time = max(grid_move_duration.x, grid_move_duration.y)
-	
 	if movement_tween:
 		movement_tween.kill()
-	
 	movement_tween = create_tween()
 	movement_tween.tween_property(self, "position", _target_position, time)
 	movement_tween.finished.connect(_on_grid_movement_finished.bind(_target_position))
-	
 	await movement_tween.finished
 
 
@@ -521,7 +683,6 @@ func get_tile_passability(target_tile: Vector2i, motion: Vector2) -> Vector2i:
 			if map.can_move_over_terrain(target_tile, can_move_on_terrains):
 				result.x = 1 if motion.x != 0 else 0
 				result.y = 1 if motion.y != 0 else 0
-	
 	return result
 
 
@@ -534,112 +695,114 @@ func get_player_possible_movement(motion: Vector2) -> Vector2i:
 		motion.y -= extra_dimensions.grow_up
 	elif motion.y > 0 and extra_dimensions.grow_down > 0:
 		motion.y += extra_dimensions.grow_down
-		
 	var result = player.get_possible_movements(motion)
-
 	return result
 
 
-func get_possible_movement(motion: Vector2) -> Vector2i:
+func get_possible_movement(motion: Vector2, is_jump_action: bool = false) -> Vector2i:
 	var result: Vector2i = Vector2i.ZERO
-	
-	# Check if there is movement and if it can move
 	if motion.is_zero_approx():
 		return Vector2i.ZERO
-		
-	# Round motion
 	motion.x = floor(motion.x) if motion.x < 0 else ceil(motion.x)
 	motion.y = floor(motion.y) if motion.y < 0 else ceil(motion.y)
-	
-	# Debug shortcut
-	if Input.is_key_pressed(KEY_CTRL) and OS.is_debug_build():
+	if (Input.is_key_pressed(KEY_CTRL) and OS.is_debug_build()) or flying_object:
 		return Vector2i(
 			1 if motion.x != 0 else 0,
 			1 if motion.y != 0 else 0
 		)
-	
-	var real_motion = motion * Vector2(GameManager.current_map.tile_size)
+	var tile_size: Vector2 = GameManager.get_map_tile_size()
+	var real_motion = motion * tile_size
 	var collision: KinematicCollision2D = move_and_collide(real_motion, true)
 	if collision:
 		return (Vector2i.ZERO)
-		
 	var map = GameManager.current_map
 	if not map:
 		return result
-		
 	var current_tile = get_current_tile()
 	var dx = int(motion.x)
 	var dy = int(motion.y)
-	
-	# First check without extra size
 	var horizontal_tile = map.get_wrapped_tile(current_tile + Vector2i(dx, 0))
 	var vertical_tile = map.get_wrapped_tile(current_tile + Vector2i(0, dy))
 	var diagonal_tile = map.get_wrapped_tile(current_tile + Vector2i(dx, dy))
-	
 	var can_move_horizontally = dx != 0 and get_tile_passability(horizontal_tile, motion) != Vector2i.ZERO
 	var can_move_vertically = dy != 0 and get_tile_passability(vertical_tile, motion) != Vector2i.ZERO
 	var can_move_diagonally = dx != 0 and dy != 0 and get_tile_passability(diagonal_tile, motion) != Vector2i.ZERO
-	
+	if is_jump_action:
+		var is_target_passable = true
+		var target_tile_for_check = Vector2i.ZERO
+		if dx != 0 and dy != 0:
+			if not can_move_diagonally: is_target_passable = false
+			target_tile_for_check = diagonal_tile
+		elif dx != 0:
+			if not can_move_horizontally: is_target_passable = false
+			target_tile_for_check = horizontal_tile
+		elif dy != 0:
+			if not can_move_vertically: is_target_passable = false
+			target_tile_for_check = vertical_tile
+		if not is_target_passable:
+			return Vector2i.ZERO
+		var events_at_target = map.get_in_game_events_in(target_tile_for_check)
+		if not is_in_group("player") and GameManager.current_player and GameManager.current_player.get_current_tile() == target_tile_for_check:
+			events_at_target.append(GameManager.current_player)
+		for entity in events_at_target:
+			if entity == self: continue
+			var is_solid_entity = false
+			if entity.is_in_group("player") or entity is RPGVehicle:
+				is_solid_entity = !entity.is_passable() if entity.has_method("is_passable") else true
+			elif "character_options" in entity and entity.character_options:
+				is_solid_entity = not entity.character_options.passable
+			if is_solid_entity:
+				return Vector2i.ZERO
+		return Vector2i(1 if dx != 0 else 0, 1 if dy != 0 else 0)
 	if can_move_horizontally and can_move_vertically and can_move_diagonally:
 		result = Vector2i(1, 1)
 	elif can_move_horizontally:
 		result.x = 1
 	elif can_move_vertically:
 		result.y = 1
-		
-	# If center cannot move, no need to check further
 	if result == Vector2i.ZERO:
 		return result
-		
-	# Check if there are extra dimensions in the movement direction
 	var has_extra_dimension = (
 		(extra_dimensions.grow_left > 0 and motion.x < 0) or
 		(extra_dimensions.grow_right > 0 and motion.x > 0) or
 		(extra_dimensions.grow_up > 0 and motion.y < 0) or
 		(extra_dimensions.grow_down > 0 and motion.y > 0)
 	)
-	
 	if has_extra_dimension:
-		# Now check all tiles between center and edge
-		if motion.x < 0: # Move left
+		if motion.x < 0:
 			for i in range(1, extra_dimensions.grow_left + 1):
 				var test_tile = current_tile + Vector2i(-i, 0)
 				if get_tile_passability(map.get_wrapped_tile(test_tile + Vector2i(dx, 0)), motion) == Vector2i.ZERO:
 					result.x = 0
 					break
-		elif motion.x > 0: # Move right
+		elif motion.x > 0:
 			for i in range(1, extra_dimensions.grow_right + 1):
 				var test_tile = current_tile + Vector2i(i, 0)
 				if get_tile_passability(map.get_wrapped_tile(test_tile + Vector2i(dx, 0)), motion) == Vector2i.ZERO:
 					result.x = 0
 					break
-		if motion.y < 0: # Move up
+		if motion.y < 0:
 			for i in range(1, extra_dimensions.grow_up + 1):
 				var test_tile = current_tile + Vector2i(0, -i)
 				if get_tile_passability(map.get_wrapped_tile(test_tile + Vector2i(0, dy)), motion) == Vector2i.ZERO:
 					result.y = 0
 					break
-		elif motion.y > 0: # Move down
+		elif motion.y > 0:
 			for i in range(1, extra_dimensions.grow_down + 1):
 				var test_tile = current_tile + Vector2i(0, i)
 				if get_tile_passability(map.get_wrapped_tile(test_tile + Vector2i(0, dy)), motion) == Vector2i.ZERO:
 					result.y = 0
 					break
-		
-		# For diagonal movements, check additional corners
 		if dx != 0 and dy != 0 and result.x != 0 and result.y != 0:
 			var corner_x = current_tile.x + (extra_dimensions.grow_right if dx > 0 else -extra_dimensions.grow_left)
 			var corner_y = current_tile.y + (extra_dimensions.grow_down if dy > 0 else -extra_dimensions.grow_up)
 			var corner_tile = Vector2i(corner_x, corner_y)
-			
 			if get_tile_passability(map.get_wrapped_tile(corner_tile + Vector2i(dx, dy)), motion) == Vector2i.ZERO:
 				result = Vector2i.ZERO
-	
 	return result
 
 
 func _on_grid_movement_finished(_target_position: Vector2) -> void:
-	# Ensure exact final position
 	var wrapped_position = GameManager.current_map.get_wrapped_position(_target_position)
 	if wrapped_position != _target_position:
 		var camera = GameManager.get_camera()
@@ -648,13 +811,9 @@ func _on_grid_movement_finished(_target_position: Vector2) -> void:
 		position = wrapped_position
 	else:
 		position = _target_position
-	
-	# update steps
 	GameManager.game_state.stats.steps += 1
-	
 	is_moving = false
 	movement_vector = Vector2.ZERO
-	
 	end_movement.emit()
 
 
@@ -665,7 +824,6 @@ func get_player() -> LPCCharacter:
 		var node = get_tree().get_first_node_in_group("player")
 		if node and node is LPCCharacter:
 			return node
-	
 	return null
 
 
@@ -684,10 +842,11 @@ func fix_offsets() -> void:
 
 
 func start(passenger: LPCCharacter) -> void:
-	#passenger.set_process(false)
-	#passenger.set_process_input(false)
+	if busy:
+		return
+	busy = true
 	GameManager.busy = true
-	add_player(passenger)
+	await add_player(passenger)
 	GameManager.busy = false
 	GameManager.current_vehicle = self
 	get_viewport().set_input_as_handled()
@@ -698,15 +857,27 @@ func start(passenger: LPCCharacter) -> void:
 	starting.emit()
 	set_process(true)
 	set_process_input(true)
+	busy = false
+	queue_redraw()
 
 
 func end() -> void:
+	if busy:
+		return
+	busy = true
 	set_process(false)
 	set_process_input(false)
+	_auto_target_tile = Vector2i(-1, -1)
+	_auto_target_event = null
+	movement_vector = Vector2.ZERO
+	is_mouse_moving = false
+	_click_indicator_cooldown = 0.5
 	GameManager.current_vehicle = null
 	is_enabled = false
+	queue_redraw()
 	ending.emit()
-	remove_player()
+	await remove_player()
+	busy = false
 
 
 func set_shadow(_color: Color, _offset: Vector2, _skew: float, _scale: Vector2, _parent: SubViewport, _map_offset: Vector2) -> void:
@@ -715,17 +886,21 @@ func set_shadow(_color: Color, _offset: Vector2, _skew: float, _scale: Vector2, 
 
 func get_current_tile() -> Vector2i:
 	if GameManager.current_map:
-		return Vector2i(Vector2i(global_position) / GameManager.current_map.tile_size)
+		var tile_size: Vector2i = GameManager.get_map_tile_size()
+		@warning_ignore("integer_division")
+		return Vector2i(Vector2i(global_position) / tile_size)
 	else:
 		return Vector2i()
 
 
+func get_current_virtual_tile() -> Vector2i:
+	return get_current_tile()
+
+
 func get_current_tiles() -> Array[Vector2i]:
 	var tiles: Array[Vector2i] = []
-	
 	var vehicle_tile_position = get_current_tile()
 	tiles.append(vehicle_tile_position)
-	
 	if extra_dimensions:
 		var vehicle_left = vehicle_tile_position.x - extra_dimensions.grow_left
 		if vehicle_left != vehicle_tile_position.x: tiles.append(Vector2i(vehicle_left, vehicle_tile_position.y))
@@ -735,59 +910,45 @@ func get_current_tiles() -> Array[Vector2i]:
 		if vehicle_up != vehicle_tile_position.y: tiles.append(Vector2i(vehicle_tile_position.x, vehicle_up))
 		var vehicle_down = vehicle_tile_position.y + extra_dimensions.grow_down + 1
 		if vehicle_down != vehicle_tile_position.y: tiles.append(Vector2i(vehicle_tile_position.x, vehicle_down))
-	
 	return tiles
 
 
 func _fix_z_ordering() -> void:
 	if not GameManager.current_map:
 		return
-	
-	# 1. RECOVER MY BASE Z (NATURAL)
 	var my_base_z = z_index
 	if has_meta("_backup_z_index"):
 		my_base_z = get_meta("_backup_z_index")
-	
 	var vehicle_tiles = get_current_tiles()
-	
 	var tiles_to_check_up: int = 2
 	var max_floor_z: int = -99999
 	var found_floor: bool = false
-	
 	for tile_feet in vehicle_tiles:
 		for i in range(0, tiles_to_check_up + 1):
 			var tile_to_check = tile_feet - Vector2i(0, i)
-			
 			var cell_data: Dictionary = GameManager.current_map.get_cell_data(tile_to_check)
 			if cell_data.get("keep_events_on_top", false):
 				found_floor = true
 				max_floor_z = max(max_floor_z, cell_data.get("layer_z_index", 0))
-			
 			var entities = GameManager.current_map.get_events_objects_in(tile_to_check)
 			for entity in entities:
 				if entity == self: continue
-				
 				if entity.has_meta("_current_floor_z"):
 					found_floor = true
 					max_floor_z = max(max_floor_z, entity.get_meta("_current_floor_z"))
-
 	if found_floor:
 		set_meta("_current_floor_z", max_floor_z)
-		
 		var terrain_required_z = max_floor_z + 1
 		var final_z = max(my_base_z, terrain_required_z)
-		
 		if z_index != final_z:
 			if not has_meta("_backup_z_index"):
 				set_meta("_backup_z_index", my_base_z)
 			z_index = final_z
-			
 		elif z_index == my_base_z and has_meta("_backup_z_index"):
 			remove_meta("_backup_z_index")
 	else:
 		if has_meta("_current_floor_z"):
 			remove_meta("_current_floor_z")
-			
 		if has_meta("_backup_z_index"):
 			z_index = get_meta("_backup_z_index")
 			remove_meta("_backup_z_index")
@@ -804,20 +965,17 @@ func run_animation() -> void:
 func jump_to(new_pos: Vector2, _route: RPGMovementRoute = null, start_fx: Dictionary = {}, end_fx: Dictionary = {}) -> void:
 	if is_moving or busy or is_jumping:
 		return
-		
-	var possible_movement = get_possible_movement(new_pos)
+	var possible_movement = get_possible_movement(new_pos, true)
+	var tile_size: Vector2 = GameManager.get_map_tile_size()
 	@warning_ignore("incompatible_ternary")
-	var motion = null if !possible_movement else new_pos * Vector2(GameManager.current_map.tile_size)
-	
+	var motion = null if !possible_movement else new_pos * tile_size
 	if !motion:
 		return
-		
 	match RPGSYSTEM.database.system.options.get("movement_mode", 0):
 		0: prioritize_vertical_look(true, motion)
 		1: prioritize_horizontal_look(true, motion)
 		2: maintain_current_look(true, motion)
 	current_direction = last_direction
-	
 	var start_pos = position
 	var end_pos = position + motion
 	var distance = motion.length()
@@ -825,10 +983,8 @@ func jump_to(new_pos: Vector2, _route: RPGMovementRoute = null, start_fx: Dictio
 	var jump_duration = clamp(distance * 0.1, 0.2, 0.35)
 	is_jumping = true
 	force_jump_enabled = true
-	
 	current_animation = "start_jump"
 	run_animation()
-	
 	if "get_shadow_data" in self:
 		var shadow_data = call("get_shadow_data")
 		if shadow_data is Dictionary and "sprite_shadow" in shadow_data and shadow_data.sprite_shadow is Node:
@@ -839,75 +995,58 @@ func jump_to(new_pos: Vector2, _route: RPGMovementRoute = null, start_fx: Dictio
 			shadow_data.sprite_shadow.set_meta("jumping_horizontal_mode", is_horizontal_jump)
 			shadow_data.sprite_shadow.set_meta("jumping_start_position", start_pos)
 			shadow_data.sprite_shadow.set_meta("jumping_target_position", end_pos)
-	
 	if movement_tween:
 		movement_tween.kill()
-		
-		movement_tween = create_tween()
-
-		if start_fx:
-			movement_tween.tween_callback(GameManager.play_se.bind(
-				start_fx.get("path", ""), start_fx.get("volume", 0.0), start_fx.get("pitch", 1.0)
-			))
-		
-		# Squash before jump
-		movement_tween.tween_property(self, "scale", Vector2(0.94, 0.8), 0.12).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
-		movement_tween.tween_interval(0.01)
-		
-		movement_tween.tween_callback(
-			func():
-				var dust = JUMP_PARTICLES.instantiate()
-				dust.position = position
-				get_parent().add_child(dust)
-		)
-		
-		movement_tween.tween_interval(0.001)
-		movement_tween.set_parallel(true)
-		
-		movement_tween.tween_property(self, "scale", Vector2(1.02, 1.04), 0.06).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-
-		# Simulated parabola motion using custom tween (position + y arc)
-		movement_tween.tween_method(
-			func(t): position = start_pos.lerp(end_pos, t) - Vector2(0, sin(t * PI) * jump_height),
-			0.0, 1.0, jump_duration
-		).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-		
-		# Land sound
-		if end_fx:
-			movement_tween.tween_callback(GameManager.play_se.bind(
-				end_fx.get("path", ""), end_fx.get("volume", 0.0), end_fx.get("pitch", 1.0)
-			)).set_delay(jump_duration - 0.03)
-		
-		movement_tween.tween_callback(
-			func():
-				current_animation = "end_jump"
-				run_animation()
-		).set_delay(jump_duration * 0.75)
-		
-		movement_tween.set_parallel(false)
-		movement_tween.tween_interval(0.01)
-		
-		movement_tween.tween_callback(
-			func():
-				var dust = JUMP_PARTICLES.instantiate()
-				dust.position = position
-				get_parent().add_child(dust)
-		)
-
-		# Compress and return to normal scale
-		movement_tween.tween_property(self, "scale", Vector2(1.0, 0.92), 0.15).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CIRC)
-		movement_tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.2).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_EXPO)
-
-		movement_tween.tween_callback(
-			func():
-				is_jumping = false
-				if "get_shadow_data" in self:
-					var shadow_data = call("get_shadow_data")
-					if shadow_data is Dictionary and "sprite_shadow" in shadow_data and shadow_data.sprite_shadow is Node:
-						shadow_data.sprite_shadow.set_meta("is_jumping", false)
-		)
-
-		await movement_tween.finished
+	movement_tween = create_tween()
+	var base_scale = scale
+	if start_fx:
+		movement_tween.tween_callback(GameManager.play_se.bind(
+			start_fx.get("path", ""), start_fx.get("volume", 0.0), start_fx.get("pitch", 1.0)
+		))
+	movement_tween.tween_property(self, "scale", base_scale * Vector2(0.94, 0.8), 0.12).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	movement_tween.tween_interval(0.01)
+	movement_tween.tween_callback(
+		func():
+			var dust = JUMP_PARTICLES.instantiate()
+			dust.position = position
+			get_parent().add_child(dust)
+	)
+	movement_tween.tween_interval(0.001)
+	movement_tween.set_parallel(true)
+	movement_tween.tween_property(self, "scale", base_scale * Vector2(1.02, 1.04), 0.06).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	movement_tween.tween_method(
+		func(t): position = start_pos.lerp(end_pos, t) - Vector2(0, sin(t * PI) * jump_height),
+		0.0, 1.0, jump_duration
+	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	if end_fx:
+		movement_tween.tween_callback(GameManager.play_se.bind(
+			end_fx.get("path", ""), end_fx.get("volume", 0.0), end_fx.get("pitch", 1.0)
+		)).set_delay(jump_duration - 0.03)
+	movement_tween.tween_callback(
+		func():
+			current_animation = "end_jump"
+			run_animation()
+	).set_delay(jump_duration * 0.75)
+	movement_tween.set_parallel(false)
+	movement_tween.tween_interval(0.01)
+	movement_tween.tween_callback(
+		func():
+			var dust = JUMP_PARTICLES.instantiate()
+			dust.position = position
+			get_parent().add_child(dust)
+	)
+	movement_tween.tween_property(self, "scale", base_scale * Vector2(1.0, 0.92), 0.15).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CIRC)
+	movement_tween.tween_property(self, "scale", base_scale, 0.2).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_EXPO)
+	movement_tween.tween_callback(
+		func():
+			is_jumping = false
+			force_jump_enabled = false
+			if "get_shadow_data" in self:
+				var shadow_data = call("get_shadow_data")
+				if shadow_data is Dictionary and "sprite_shadow" in shadow_data and shadow_data.sprite_shadow is Node:
+					shadow_data.sprite_shadow.set_meta("is_jumping", false)
+	)
+	await movement_tween.finished
 
 
 func _on_end_movement() -> void:
@@ -927,7 +1066,6 @@ func get_mouth_position() -> Vector2:
 	var mouth = get_node_or_null("%Mouth")
 	if mouth:
 		return mouth.position
-	
 	return Vector2.ZERO
 
 
@@ -935,5 +1073,4 @@ func get_global_mouth_position() -> Vector2:
 	var mouth = get_node_or_null("%Mouth")
 	if mouth:
 		return mouth.global_position
-	
 	return Vector2.ZERO

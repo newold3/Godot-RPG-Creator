@@ -197,3 +197,7 @@ func clear() -> void:
 	palette3.blend_color = 0
 	palette3.lightness = 0.0
 	palette3.colors.clear()
+
+
+func _to_string() -> String:
+	return "palette1: %s, palette2: %s, palette3 %s" % [palette1, palette2, palette3]

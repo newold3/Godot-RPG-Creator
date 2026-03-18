@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://c8ca1gmcbbb86"]
+[gd_scene format=3 uid="uid://c8ca1gmcbbb86"]
 
 [ext_resource type="Texture2D" uid="uid://duu13dsov6vp5" path="res://Assets/Images/GUI/main_gui.png" id="1_b6kvl"]
 [ext_resource type="Texture2D" uid="uid://bfgr2ewrp6i0u" path="res://Assets/Images/GUI/party_menu.png" id="2_4ah3h"]
@@ -64,7 +64,7 @@ stacked_outline_2/size = 6
 stacked_outline_2/color = Color(0.18874526, 0.059626155, 6.016344e-08, 1)
 stacked_outline_3/size = 8
 
-[node name="SaveLoadPanel" type="NinePatchRect"]
+[node name="SaveLoadPanel" type="NinePatchRect" unique_id=1941189621]
 custom_minimum_size = Vector2(0, 150)
 anchors_preset = 10
 anchor_right = 1.0
@@ -76,12 +76,14 @@ mouse_default_cursor_shape = 2
 texture = ExtResource("1_b6kvl")
 region_rect = Rect2(436, 94, 110, 132)
 patch_margin_left = 31
-patch_margin_top = 21
+patch_margin_top = 50
 patch_margin_right = 31
-patch_margin_bottom = 28
+patch_margin_bottom = 46
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
 script = ExtResource("2_tj3jl")
 
-[node name="ContentsContainer" type="MarginContainer" parent="."]
+[node name="ContentsContainer" type="MarginContainer" parent="." unique_id=2091302835]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
@@ -93,7 +95,7 @@ grow_vertical = 2
 pivot_offset = Vector2(0, 75)
 mouse_filter = 2
 
-[node name="MarginContainer2" type="MarginContainer" parent="ContentsContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="ContentsContainer" unique_id=243602997]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 16
@@ -101,17 +103,17 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 20
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ContentsContainer/MarginContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="ContentsContainer/MarginContainer2" unique_id=120285778]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 0
 
-[node name="Column1" type="PanelContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer"]
+[node name="Column1" type="PanelContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer" unique_id=1482511736]
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_mby50")
 
-[node name="MapFrame" type="TextureRect" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column1"]
+[node name="MapFrame" type="TextureRect" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column1" unique_id=90946950]
 z_index = 1
 custom_minimum_size = Vector2(164, 0)
 layout_mode = 2
@@ -119,13 +121,13 @@ mouse_filter = 2
 texture = SubResource("AtlasTexture_ho65x")
 expand_mode = 1
 
-[node name="Polygon2D" type="Polygon2D" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column1/MapFrame"]
+[node name="Polygon2D" type="Polygon2D" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column1/MapFrame" unique_id=1947040485]
 show_behind_parent = true
 clip_children = 1
 polygon = PackedVector2Array(4, 4, 158, 4, 162, 11, 163, 21, 163, 93, 161, 105, 152, 105, 8, 106, 2, 103, 1, 13)
 uv = PackedVector2Array(4, 4, 158, 4, 162, 11, 163, 21, 162, 96, 160, 103, 148, 103, 4, 103, 1, 94, 1, 13)
 
-[node name="Map" type="TextureRect" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column1/MapFrame/Polygon2D"]
+[node name="Map" type="TextureRect" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column1/MapFrame/Polygon2D" unique_id=692699022]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(164, 108)
 anchors_preset = 15
@@ -139,67 +141,67 @@ mouse_filter = 2
 texture = SubResource("PlaceholderTexture2D_t6sup")
 expand_mode = 1
 
-[node name="Separator1" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer"]
+[node name="Separator1" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer" unique_id=2070962971]
 custom_minimum_size = Vector2(18, 0)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Column2" type="PanelContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer"]
+[node name="Column2" type="PanelContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer" unique_id=1111085950]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_mby50")
 
-[node name="MarginContainer" type="MarginContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2"]
+[node name="MarginContainer" type="MarginContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2" unique_id=676683824]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = -20
 theme_override_constants/margin_right = -8
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/MarginContainer" unique_id=1852640775]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
-[node name="Top" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/MarginContainer/VBoxContainer"]
+[node name="Top" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/MarginContainer/VBoxContainer" unique_id=1723021772]
 custom_minimum_size = Vector2(0, 31)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Separator1" type="TextureRect" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/MarginContainer/VBoxContainer"]
+[node name="Separator1" type="TextureRect" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/MarginContainer/VBoxContainer" unique_id=864701366]
 texture_repeat = 2
 layout_mode = 2
 mouse_filter = 2
 texture = SubResource("AtlasTexture_an46y")
 stretch_mode = 1
 
-[node name="Mid" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/MarginContainer/VBoxContainer"]
+[node name="Mid" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/MarginContainer/VBoxContainer" unique_id=842570050]
 custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Separator2" type="TextureRect" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/MarginContainer/VBoxContainer"]
+[node name="Separator2" type="TextureRect" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/MarginContainer/VBoxContainer" unique_id=78599982]
 texture_repeat = 2
 layout_mode = 2
 mouse_filter = 2
 texture = SubResource("AtlasTexture_an46y")
 stretch_mode = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2" unique_id=1010371600]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/HBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/HBoxContainer" unique_id=283397600]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
-[node name="Separator1" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/HBoxContainer/VBoxContainer2"]
+[node name="Separator1" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/HBoxContainer/VBoxContainer2" unique_id=889957145]
 custom_minimum_size = Vector2(0, 2)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="ChapterName" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/HBoxContainer/VBoxContainer2" instance=ExtResource("3_tj3jl")]
+[node name="ChapterName" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/HBoxContainer/VBoxContainer2" unique_id=129854488 instance=ExtResource("3_tj3jl")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
@@ -208,17 +210,17 @@ label_text = "Title"
 text_gradient = ExtResource("5_x3our")
 horizontal_align = 0
 
-[node name="Separator2" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/HBoxContainer/VBoxContainer2"]
+[node name="Separator2" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/HBoxContainer/VBoxContainer2" unique_id=1078390495]
 custom_minimum_size = Vector2(0, 28)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/HBoxContainer/VBoxContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/HBoxContainer/VBoxContainer2" unique_id=714486752]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 10
 
-[node name="ClockIcon" type="TextureRect" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/HBoxContainer/VBoxContainer2/HBoxContainer"]
+[node name="ClockIcon" type="TextureRect" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/HBoxContainer/VBoxContainer2/HBoxContainer" unique_id=1974760976]
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 mouse_filter = 2
@@ -226,7 +228,7 @@ texture = SubResource("AtlasTexture_brgku")
 expand_mode = 1
 stretch_mode = 3
 
-[node name="Timer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/HBoxContainer/VBoxContainer2/HBoxContainer" instance=ExtResource("3_tj3jl")]
+[node name="Timer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/HBoxContainer/VBoxContainer2/HBoxContainer" unique_id=159911617 instance=ExtResource("3_tj3jl")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
@@ -236,80 +238,80 @@ label_text = "00H:00M:00S"
 text_gradient = ExtResource("5_x3our")
 horizontal_align = 0
 
-[node name="Separator" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/HBoxContainer"]
+[node name="Separator" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/HBoxContainer" unique_id=61999052]
 custom_minimum_size = Vector2(12, 0)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Column3" type="PanelContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer"]
+[node name="Column3" type="PanelContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer" unique_id=1606138782]
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_mby50")
 
-[node name="MarginContainer" type="MarginContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column3"]
+[node name="MarginContainer" type="MarginContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column3" unique_id=117152138]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_top = -3
 theme_override_constants/margin_bottom = -8
 
-[node name="TextureRect" type="TextureRect" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column3/MarginContainer"]
+[node name="TextureRect" type="TextureRect" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column3/MarginContainer" unique_id=1371058058]
 layout_mode = 2
 mouse_filter = 2
 texture = SubResource("AtlasTexture_omr7l")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column3"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column3" unique_id=1170825647]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 0
 
-[node name="Separator1" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column3/VBoxContainer"]
+[node name="Separator1" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column3/VBoxContainer" unique_id=1688236151]
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Decoration1" type="TextureRect" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column3/VBoxContainer"]
+[node name="Decoration1" type="TextureRect" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column3/VBoxContainer" unique_id=1362748755]
 layout_mode = 2
 mouse_filter = 2
 texture = SubResource("AtlasTexture_vjcfd")
 
-[node name="Separator2" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column3/VBoxContainer"]
+[node name="Separator2" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column3/VBoxContainer" unique_id=910772251]
 custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Decoration2" type="TextureRect" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column3/VBoxContainer"]
+[node name="Decoration2" type="TextureRect" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column3/VBoxContainer" unique_id=80286985]
 layout_mode = 2
 mouse_filter = 2
 texture = SubResource("AtlasTexture_vjcfd")
 
-[node name="Separator3" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column3/VBoxContainer"]
+[node name="Separator3" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column3/VBoxContainer" unique_id=1608985910]
 custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Decoration3" type="TextureRect" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column3/VBoxContainer"]
+[node name="Decoration3" type="TextureRect" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column3/VBoxContainer" unique_id=303095005]
 layout_mode = 2
 mouse_filter = 2
 texture = SubResource("AtlasTexture_vjcfd")
 
-[node name="Column4" type="PanelContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer"]
+[node name="Column4" type="PanelContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer" unique_id=1684210418]
 custom_minimum_size = Vector2(252, 0)
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_mby50")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4" unique_id=1277642312]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/VBoxContainer" unique_id=1792456034]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
 theme_override_constants/margin_top = 65
 theme_override_constants/margin_right = -3
 
-[node name="Separator1" type="TextureRect" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/VBoxContainer/MarginContainer"]
+[node name="Separator1" type="TextureRect" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/VBoxContainer/MarginContainer" unique_id=1516492988]
 texture_repeat = 2
 layout_mode = 2
 size_flags_vertical = 0
@@ -317,31 +319,31 @@ mouse_filter = 2
 texture = SubResource("AtlasTexture_an46y")
 stretch_mode = 1
 
-[node name="Separator" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/VBoxContainer"]
+[node name="Separator" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/VBoxContainer" unique_id=1576542683]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="TimerContainer" type="PanelContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/VBoxContainer"]
+[node name="TimerContainer" type="PanelContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/VBoxContainer" unique_id=59249699]
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_a1nji")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4"]
+[node name="HBoxContainer" type="HBoxContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4" unique_id=658841121]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Separator1" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/HBoxContainer"]
+[node name="Separator1" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/HBoxContainer" unique_id=1738238293]
 custom_minimum_size = Vector2(6, 0)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/HBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/HBoxContainer" unique_id=2064928469]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 theme_override_constants/separation = 0
 
-[node name="HeroContainer" type="HBoxContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/HBoxContainer/VBoxContainer2"]
+[node name="HeroContainer" type="HBoxContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/HBoxContainer/VBoxContainer2" unique_id=1621959805]
 unique_name_in_owner = true
 modulate = Color(0.86898494, 0.8689849, 0.8689849, 1)
 custom_minimum_size = Vector2(0, 60)
@@ -349,19 +351,19 @@ layout_mode = 2
 mouse_filter = 2
 alignment = 2
 
-[node name="Separator" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/HBoxContainer/VBoxContainer2"]
+[node name="Separator" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/HBoxContainer/VBoxContainer2" unique_id=2074495659]
 custom_minimum_size = Vector2(0, 12)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="TimerContainer" type="HBoxContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/HBoxContainer/VBoxContainer2"]
+[node name="TimerContainer" type="HBoxContainer" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/HBoxContainer/VBoxContainer2" unique_id=1703568671]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
 theme_override_constants/separation = 10
 alignment = 2
 
-[node name="Gold" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/HBoxContainer/VBoxContainer2/TimerContainer" instance=ExtResource("3_tj3jl")]
+[node name="Gold" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/HBoxContainer/VBoxContainer2/TimerContainer" unique_id=206407662 instance=ExtResource("3_tj3jl")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
@@ -371,7 +373,7 @@ label_text = "0"
 text_gradient = ExtResource("5_x3our")
 horizontal_align = 2
 
-[node name="ClockIcon" type="TextureRect" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/HBoxContainer/VBoxContainer2/TimerContainer"]
+[node name="ClockIcon" type="TextureRect" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/HBoxContainer/VBoxContainer2/TimerContainer" unique_id=1668721947]
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 mouse_filter = 2
@@ -379,12 +381,12 @@ texture = ExtResource("8_nq44c")
 expand_mode = 1
 stretch_mode = 3
 
-[node name="Separator2" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/HBoxContainer"]
+[node name="Separator2" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/HBoxContainer" unique_id=1406363332]
 custom_minimum_size = Vector2(12, 0)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="NoDataContainer" type="MarginContainer" parent="."]
+[node name="NoDataContainer" type="MarginContainer" parent="." unique_id=1185567482]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -398,11 +400,11 @@ theme_override_constants/margin_top = 24
 theme_override_constants/margin_right = 48
 theme_override_constants/margin_bottom = 24
 
-[node name="Control" type="Control" parent="NoDataContainer"]
+[node name="Control" type="Control" parent="NoDataContainer" unique_id=2026651525]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="ChapterName" parent="NoDataContainer/Control" instance=ExtResource("3_tj3jl")]
+[node name="ChapterName" parent="NoDataContainer/Control" unique_id=1877332447 instance=ExtResource("3_tj3jl")]
 modulate = Color(1, 1, 1, 0.24705882)
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 0
@@ -418,7 +420,7 @@ mouse_filter = 2
 label_text = "NO DATA"
 text_gradient = ExtResource("5_x3our")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=684922441]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -435,7 +437,7 @@ theme_override_constants/margin_bottom = -17
 metadata/_edit_lock_ = true
 metadata/_edit_group_ = true
 
-[node name="Gear" type="TextureRect" parent="MarginContainer"]
+[node name="Gear" type="TextureRect" parent="MarginContainer" unique_id=1624866270]
 unique_name_in_owner = true
 z_index = 1
 custom_minimum_size = Vector2(48, 48)
@@ -446,12 +448,12 @@ mouse_filter = 2
 texture = SubResource("AtlasTexture_w6ka3")
 expand_mode = 1
 
-[node name="SlotPosition" type="Control" parent="."]
+[node name="SlotPosition" type="Control" parent="." unique_id=1689915511]
 unique_name_in_owner = true
 anchors_preset = 0
 mouse_filter = 2
 
-[node name="Slot" type="NinePatchRect" parent="."]
+[node name="Slot" type="NinePatchRect" parent="." unique_id=1298947151]
 unique_name_in_owner = true
 z_index = 2
 layout_mode = 1
@@ -465,7 +467,7 @@ patch_margin_top = 10
 patch_margin_right = 36
 patch_margin_bottom = 9
 
-[node name="MarginContainer" type="MarginContainer" parent="Slot"]
+[node name="MarginContainer" type="MarginContainer" parent="Slot" unique_id=1240190951]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -478,7 +480,7 @@ theme_override_constants/margin_top = 11
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 11
 
-[node name="MarginContainer2" type="MarginContainer" parent="Slot/MarginContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="Slot/MarginContainer" unique_id=1864804082]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 11
@@ -486,7 +488,7 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 11
 theme_override_constants/margin_bottom = 13
 
-[node name="SlotName" parent="Slot/MarginContainer/MarginContainer2" instance=ExtResource("3_tj3jl")]
+[node name="SlotName" parent="Slot/MarginContainer/MarginContainer2" unique_id=211635022 instance=ExtResource("3_tj3jl")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(69, 25)
 layout_mode = 2
@@ -497,6 +499,7 @@ text_gradient = ExtResource("5_x3our")
 
 [node name="ButtonName" parent="Slot/MarginContainer/MarginContainer2/SlotName" index="0"]
 material = SubResource("ShaderMaterial_x3our")
+custom_minimum_size = Vector2(69, 25)
 offset_right = 69.0
 offset_bottom = 25.0
 pivot_offset = Vector2(34.5, 12.5)
@@ -512,10 +515,9 @@ theme_override_font_sizes/font_size = 14
 text = "AUTO SAVE"
 label_settings = SubResource("LabelSettings_kta0e")
 
-[node name="Cursor" type="NinePatchRect" parent="."]
+[node name="Cursor" type="NinePatchRect" parent="." unique_id=1041175162]
 unique_name_in_owner = true
 visible = false
-modulate = Color(1, 1, 1, 0.8223774)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

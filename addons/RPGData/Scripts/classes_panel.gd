@@ -390,6 +390,7 @@ func _on_copy_parameters_pressed() -> void:
 		"experience": current_data.experience.clone(true)
 	}
 	%PasteParameters.set_disabled(false)
+	RPGEditorToast.show_message("Class Parameters copied into Clipboard")
 
 
 func _on_paste_parameters_pressed() -> void:
@@ -462,6 +463,7 @@ func _on_copy_weights_pressed() -> void:
 	var weights: Dictionary = current_data.weights.duplicate()
 	StaticEditorVars.CLIPBOARD.class_weights = weights
 	%PasteWeights.set_disabled(false)
+	RPGEditorToast.show_message("Class parameter weights copied into Clipboard")
 
 
 func _on_paste_weights_pressed() -> void:
@@ -475,6 +477,7 @@ func _on_paste_weights_pressed() -> void:
 func _on_reset_weights_pressed() -> void:
 	get_data().set_param_weights()
 	fill_weights()
+	RPGEditorToast.show_message("Class parameter weights reset!")
 
 
 func _on_icon_picker_paste_requested(icon: String, region: Rect2) -> void:

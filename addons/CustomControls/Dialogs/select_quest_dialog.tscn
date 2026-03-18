@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dmkkdf4onk3to"]
+[gd_scene format=3 uid="uid://dmkkdf4onk3to"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_aqgsc"]
 [ext_resource type="Script" uid="uid://xbotuldducx1" path="res://addons/CustomControls/Dialogs/select_quest_dialog.gd" id="2_aqgsc"]
@@ -13,7 +13,7 @@ gradient = SubResource("Gradient_vvvrv")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y6qwe"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aqgsc"]
 resource_local_to_scene = true
 content_margin_left = 3.0
 content_margin_right = 3.0
@@ -25,7 +25,7 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.113725, 0.133333, 0.160784, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mopbk"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4h67l"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 1
@@ -42,15 +42,16 @@ gradient = SubResource("Gradient_earww")
 fill_from = Vector2(0.547009, 1)
 fill_to = Vector2(0.559829, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_exses"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_y6qwe"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_oswm7")
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vf6bb"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mopbk"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_oswm7")
 
-[node name="SelectQuestDialog" type="Window"]
+[node name="SelectQuestDialog" type="Window" unique_id=1962030971]
+oversampling_override = 1.0
 title = "Select Quests"
 position = Vector2i(0, 36)
 size = Vector2i(640, 320)
@@ -60,7 +61,7 @@ exclusive = true
 theme = ExtResource("1_aqgsc")
 script = ExtResource("2_aqgsc")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=436414442]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -68,7 +69,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_fg0k8")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=105852806]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -79,37 +80,34 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1808379132]
 layout_mode = 2
 
-[node name="QuestList" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_4h67l")]
+[node name="QuestList" parent="MarginContainer/VBoxContainer" unique_id=944907912 instance=ExtResource("3_4h67l")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 tooltip_text = "[title]Quest List[/title]
 Contains the list of quests created."
 theme_override_constants/v_separation = -1
-theme_override_styles/focus = SubResource("StyleBoxFlat_y6qwe")
-theme_override_styles/panel = SubResource("StyleBoxFlat_y6qwe")
-theme_override_styles/hovered = SubResource("StyleBoxFlat_mopbk")
-theme_override_styles/selected = SubResource("StyleBoxTexture_exses")
-theme_override_styles/selected_focus = SubResource("StyleBoxTexture_vf6bb")
+theme_override_styles/panel = SubResource("StyleBoxFlat_aqgsc")
+theme_override_styles/focus = SubResource("StyleBoxFlat_aqgsc")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_4h67l")
+theme_override_styles/selected = SubResource("StyleBoxTexture_y6qwe")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_mopbk")
 select_mode = 2
-item_count = 4
-item_0/text = "1: Quest 1"
-item_1/text = "2: Quest 2"
-item_2/text = "3: Quest 3"
-item_3/text = "4: Quest 4"
+item_count = 1
+item_0/text = "1: Mi quest"
 odd_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 event_line_color = Color(0.145098, 0.156863, 0.164706, 1)
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=505098214]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1761537843]
 layout_mode = 2
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_mopbk")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=2062116137 instance=ExtResource("4_mopbk")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -118,7 +116,7 @@ tooltip_text = "[title]Ok[/title]
 Saves all changes and closes the windows."
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_mopbk")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=645926517 instance=ExtResource("4_mopbk")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2

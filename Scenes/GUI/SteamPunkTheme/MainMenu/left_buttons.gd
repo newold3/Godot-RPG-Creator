@@ -17,6 +17,8 @@ var current_button
 var current_button_index: int = 0
 var busy = false
 
+var fixed_disabled_buttons: Array[Node] = []
+
 signal button_hovered(button: Control, index: int, tooltip: String)
 signal selected(obj: Control, real_index: int)
 signal begin_click(id: int)
@@ -28,6 +30,7 @@ signal finish()
 
 
 func _ready() -> void:
+	_prepare_fixed_disabled_buttons()
 	_disabled()
 	_config_buttons()
 	start()
@@ -36,8 +39,32 @@ func _ready() -> void:
 		restart()
 
 
+func _prepare_fixed_disabled_buttons() -> void:
+	fixed_disabled_buttons.clear()
+	
+	if not GameManager.game_state or GameManager.game_state.current_party.is_empty():
+		for i in [3, 4, 5, 6, 7, 8, 9]:
+			var button_name = "%%Button%s" % i
+			var node = get_node_or_null(button_name)
+			if node:
+				fixed_disabled_buttons.append(node)
+	
+	if GameManager.game_state:
+		if GameManager.game_state.save_scene_prohibited:
+			var button_name = "%Button3"
+			var node = get_node_or_null(button_name)
+			if node and not node in fixed_disabled_buttons:
+				fixed_disabled_buttons.append(node)
+		if GameManager.game_state.formation_scene_prohibited:
+			var button_name = "%Button5"
+			var node = get_node_or_null(button_name)
+			if node and not node in fixed_disabled_buttons:
+				fixed_disabled_buttons.append(node)
+
+
 func restart() -> void:
 	busy = false
+	_prepare_fixed_disabled_buttons()
 	_disabled()
 	start()
 	await get_tree().create_timer(initial_selection_delay).timeout
@@ -67,7 +94,11 @@ func _config_hand_over_menu_main_buttons() -> void:
 	GameManager.set_confin_area(Rect2(), hand_manipulator)
 	GameManager.set_hand_position(MainHandCursor.HandPosition.RIGHT, hand_manipulator)
 	GameManager.set_cursor_offset(Vector2(-16, 0), hand_manipulator)
-	ControllerManager.set_focusable_control_threshold(500, 500)
+	ControllerManager.set_focusable_control_threshold(150, 150)
+
+
+func config_cursor() -> void:
+	_config_hand_over_menu_main_buttons()
 
 
 func _process(_delta: float) -> void:
@@ -112,6 +143,7 @@ func _config_buttons() -> void:
 				current_button_index = real_button_index
 				current_button = button
 				selected.emit(b, button_container.get_child_count() - current_button.get_index() - 1)
+				b.keep_selected_state = false
 		)
 		button.begin_click.connect(
 			func(_i):
@@ -152,12 +184,27 @@ func disabled() -> void:
 
 func _enabled():
 	for button in button_container.get_children():
-		button.set_enabled()
+		if not button in fixed_disabled_buttons:
+			button.set_enabled()
 
 
 func _disabled():
 	for button in button_container.get_children():
 		button.set_disabled()
+
+
+func disable_button(index: int) -> void:
+	var button_name = "%%Button%s" % index
+	var node = get_node_or_null(button_name)
+	if node:
+		node.set_disabled()
+
+
+func enable_button(index: int) -> void:
+	var button_name = "%%Button%s" % index
+	var node = get_node_or_null(button_name)
+	if node and not node in fixed_disabled_buttons:
+		node.set_enabled()
 
 
 func remove_any_keep_state() -> void:
@@ -200,8 +247,19 @@ func select_button() -> void:
 	if current_button_index >= 0 and current_button_index < button_container.get_child_count():
 		var real_index = button_container.get_child_count() - current_button_index - 1
 		var button = button_container.get_child(real_index)
-		button.busy = false
-		button.select()
+		if button.is_enabled:
+			button.busy = false
+			button.select()
+		else:
+			for i in range(9, 0, -1):
+				var button_name = "%%Button%s" % i
+				var node = get_node_or_null(button_name)
+				if node and node.is_enabled:
+					node.busy = false
+					node.select()
+					current_button_index = button_container.get_child_count() - i - 1
+					break
+				
 		await get_tree().process_frame
 		await get_tree().process_frame
 		await get_tree().process_frame

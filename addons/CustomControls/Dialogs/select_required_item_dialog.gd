@@ -95,6 +95,7 @@ func _on_data_type_item_selected(index: int) -> void:
 
 
 func _on_quantity_value_changed(value: float) -> void:
+	if not data: return
 	data.quantity = value
 
 

@@ -91,10 +91,7 @@ func _on_parent_visibility_changed() -> void:
 			%LeftMenu.get_child(current_tab).set_pressed_no_signal(true)
 		CustomTooltipManager.replace_all_tooltips_with_custom(self)
 	else:
-		if !data_saved:
-			show_confirm_save_dialog()
-		else:
-			data = null
+		data = null
 		data_saved = false
 		CustomTooltipManager.restore_all_tooltips_for(self)
 		notify_property_list_changed()
@@ -110,10 +107,13 @@ func set_tool_connections() -> void:
 func setup_button_groups() -> void:
 	var button_group = ButtonGroup.new()
 	var index = 0
+	var child_count = %LeftMenu.get_child_count()
 	for child in %LeftMenu.get_children():
 		if "button_group" in child:
 			child.button_group = button_group
-			child.pressed.connect(_on_button_pressed.bind(child, index))
+			var real_index = index if child.get_index() < child_count - 2 else \
+				5000 if child.get_index() == child_count - 2 else 6000
+			child.pressed.connect(_on_button_pressed.bind(child, real_index))
 			index += 1
 
 
@@ -123,10 +123,10 @@ func start() -> void:
 
 
 func _on_button_pressed(_button: CustomSimpleButton, index: int) -> void:
-	if index == %LeftMenu.get_child_count() - 2:
+	if index == 5000:
 		_on_ok_pressed()
 		return
-	elif index == %LeftMenu.get_child_count() - 1:
+	elif index == 6000:
 		_on_cancel_pressed()
 		return
 		
@@ -164,18 +164,17 @@ func get_current_data(index: int) -> Variant:
 	elif index == 2: current_data = data.professions
 	elif index == 3: current_data = data.skills
 	elif index == 4: current_data = data.items
-	elif index == 5: current_data = data.weapons
-	elif index == 6: current_data = data.armors
-	elif index == 7: current_data = data.enemies
-	elif index == 8: current_data = data.troops
-	elif index == 9: current_data = data.states
-	elif index == 10: current_data = data.animations
-	elif index == 11: current_data = data.common_events
-	elif index == 12: current_data = data.types
-	elif index == 13: current_data = data.terms
-	elif index == 14: current_data = data.system
-	elif index == 15: current_data = data.speakers
-	elif index == 16: current_data = data.quests
+	elif index == 5: current_data = []
+	elif index == 6: current_data = data.enemies
+	elif index == 7: current_data = data.troops
+	elif index == 8: current_data = data.states
+	elif index == 9: current_data = data.animations
+	elif index == 10: current_data = data.common_events
+	elif index == 11: current_data = data.types
+	elif index == 12: current_data = data.terms
+	elif index == 13: current_data = data.system
+	elif index == 14: current_data = data.speakers
+	elif index == 15: current_data = data.quests
 	
 	return current_data
 
@@ -193,29 +192,29 @@ func get_panel(index) -> Control:
 	elif index == 4:
 		node = await load_panel("res://addons/RPGData/Scenes/items_panel.tscn", data.items)
 	elif index == 5:
-		node = await load_panel("res://addons/RPGData/Scenes/weapons_panel.tscn", data.weapons)
+		node = await load_panel("res://addons/RPGData/Scenes/equipment_panel.tscn", [])
 	elif index == 6:
-		node = await load_panel("res://addons/RPGData/Scenes/armors_panel.tscn", data.armors)
-	elif index == 7:
 		node = await load_panel("res://addons/RPGData/Scenes/enemies_panel.tscn", data.enemies)
-	elif index == 8:
+	elif index == 7:
 		node = await load_panel("res://addons/RPGData/Scenes/troops_panel.tscn", data.troops)
-	elif index == 9:
+	elif index == 8:
 		node = await load_panel("res://addons/RPGData/Scenes/states_panel.tscn", data.states)
-	elif index == 10:
+	elif index == 9:
 		node = await load_panel("res://addons/RPGData/Scenes/animations_panel.tscn", data.animations)
-	elif index == 11:
+	elif index == 10:
 		node = await load_panel("res://addons/RPGData/Scenes/common_events_panel.tscn", data.common_events)
-	elif index == 12:
+	elif index == 11:
 		node = await load_panel("res://addons/RPGData/Scenes/types_panel.tscn", data.types)
-	elif index == 13:
+	elif index == 12:
 		node = await load_panel("res://addons/RPGData/Scenes/terms_panel.tscn", data.terms)
-	elif index == 14:
+	elif index == 13:
 		node = await load_panel("res://addons/RPGData/Scenes/system_panel.tscn", data.system)
-	elif index == 15:
+	elif index == 14:
 		node = await load_panel("res://addons/RPGData/Scenes/speakers_panel.tscn", data.speakers)
-	elif index == 16:
+	elif index == 15:
 		node = await load_panel("res://addons/RPGData/Scenes/quests_panel.tscn", data.quests)
+		
+	return node
 		
 	
 	return node
@@ -254,33 +253,61 @@ func _on_ok_pressed() -> void:
 
 
 func _on_cancel_pressed() -> void:
+	discard_changes()
+		
+	#RPGSYSTEM.database = real_data
+	#cancel.emit()
+	#get_parent().hide()
+
+
+func discard_changes() -> void:
+	accept_event()
+	var database_changed = !data.is_equal_to(real_data)
+	if database_changed:
+		var path = "res://addons/CustomControls/Dialogs/confirm_dialog.tscn"
+		var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
+		dialog.set_text(TranslationManager.tr("You have unsaved changes.\n\nDo you want to exit and discard the changes?\n"))
+		dialog.title = TranslationManager.tr("Unsaved Changes")
+
+		dialog.tree_exiting.connect(
+			func():
+				if dialog.result:
+					cancel_dialog()
+		)
+	else:
+		cancel_dialog()
+
+
+func cancel_dialog() -> void:
 	RPGSYSTEM.database = real_data
 	cancel.emit()
 	get_parent().hide()
 
 
 func show_confirm_save_dialog() -> void:
-	get_viewport().set_input_as_handled()
-	var database_changed = !data.is_equal_to(real_data)
-	if database_changed:
-		var confirm_dialog := ConfirmationDialog.new()
-		confirm_dialog.title = "Confirm Save Data"
-		confirm_dialog.dialog_text = "The database has changed and has not been saved, do you want to save it before closing it?"
-		confirm_dialog.ok_button_text = "Save"
-		confirm_dialog.confirmed.connect(_on_save_confirm_save_data)
-		confirm_dialog.visibility_changed.connect(
-			func():
-				if !confirm_dialog.visible:
-					await get_tree().process_frame
-					RPGSYSTEM.database = real_data
-					data = null
-		)
-		get_parent().get_parent().add_child(confirm_dialog)
-		confirm_dialog.popup_centered()
+	return
+	#get_viewport().set_input_as_handled()
+	#var database_changed = !data.is_equal_to(real_data)
+	#if database_changed:
+		#var confirm_dialog := ConfirmationDialog.new()
+		#confirm_dialog.title = "Confirm Save Data"
+		#confirm_dialog.dialog_text = "The database has changed and has not been saved, do you want to save it before closing it?"
+		#confirm_dialog.ok_button_text = "Save"
+		#confirm_dialog.confirmed.connect(_on_save_confirm_save_data)
+		#confirm_dialog.visibility_changed.connect(
+			#func():
+				#if !confirm_dialog.visible:
+					#await get_tree().process_frame
+					#RPGSYSTEM.database = real_data
+					#data = null
+		#)
+		#get_parent().get_parent().add_child(confirm_dialog)
+		#confirm_dialog.popup_centered()
 
 
 func _on_save_confirm_save_data() -> void:
 	real_data.update_with_other_db(data)
+	RPGEditorToast.show_message("Database saved!")
 
 
 func _on_options_pressed() -> void:

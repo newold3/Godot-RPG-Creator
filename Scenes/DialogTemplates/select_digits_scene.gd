@@ -219,7 +219,7 @@ func set_data(config: Dictionary) -> void:
 		if fx in config:
 			var data = config.get(fx, {})
 			var audio_path = data.get("path", "")
-			if ResourceLoader.exists(audio_path):
+			if AssetManager.exists(audio_path):
 				set(fx, {
 					"stream": load(audio_path),
 					"volume": data.get("volume", 0),
@@ -266,7 +266,7 @@ func _update_config() -> void:
 	var font = format_config.get("font")
 	if font == null:
 		font = "res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf"
-	if ResourceLoader.exists(font):
+	if AssetManager.exists(font):
 		current_text_font = load(font)
 	var text_color = format_config.get("text_color")
 	if text_color == null:

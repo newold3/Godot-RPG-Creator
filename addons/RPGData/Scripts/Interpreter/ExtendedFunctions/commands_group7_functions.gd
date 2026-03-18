@@ -127,16 +127,22 @@ func _command_0068() -> void:
 	var id = current_command.parameters.get("id", 0)
 	var scene = current_command.parameters.get("scene", "")
 
-	if type == 0: # Add Wheather Scene
-		if not ResourceLoader.exists(scene):
-			debug_print("Weather scene does not exist: " + scene)
-			return
+	if type == 0:
+		interpreter.request_async_scene_load(scene, current_command.parameters, _on_weather_scene_loaded)
 
-		var weather_scene = load(scene).instantiate()
-		weather_scene.set_meta("creation_properties", current_command.parameters)
-		weather_scene.add_to_group("_map_weather_scene")
-		GameManager.current_map.add_weather_scene(id, weather_scene)
-		GameManager.interpreter_last_scene_created = weather_scene
-
-	elif type == 1: # Remove Weather Scene
+	elif type == 1:
 		GameManager.current_map.remove_weather_scene(id)
+
+
+## Callback executed by the interpreter when the weather scene is fully loaded in memory.
+func _on_weather_scene_loaded(packed_scene: PackedScene, data: Dictionary) -> void:
+	if not GameManager.current_map:
+		return
+		
+	var weather_scene = packed_scene.instantiate()
+	weather_scene.set_meta("creation_properties", data)
+	weather_scene.add_to_group("_map_weather_scene")
+	
+	var id = data.get("id", 0)
+	GameManager.current_map.add_weather_scene(id, weather_scene)
+	GameManager.interpreter_last_scene_created = weather_scene

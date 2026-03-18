@@ -182,6 +182,13 @@ func disable_button(button_type: ButtonType, value: bool = true) -> void:
 			%LockButton.set_disabled(value)
 
 
+func perform_update() -> void:
+	var id = get_selected_id()
+	var meta = %Options.get_item_metadata(id) if id != -1 else ""
+	if meta:
+		item_selected.emit(part_id, meta)
+
+
 func lock() -> void:
 	soft_lock()
 	%Options.text = TranslationManager.tr("none")

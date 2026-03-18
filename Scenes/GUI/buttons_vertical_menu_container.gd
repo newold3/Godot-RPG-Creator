@@ -115,7 +115,7 @@ func select_button_by_index(index: int, skip_animation: bool = false) -> void:
 		_select_button(index, not skip_animation)
 
 
-func grab_focus() -> void:
+func grab_focus(_hide_focus: bool = false) -> void:
 	if focus_control:
 		focus_control.grab_focus()
 

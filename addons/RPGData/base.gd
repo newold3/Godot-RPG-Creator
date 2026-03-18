@@ -154,29 +154,36 @@ func _create_new_map() -> void:
 	RPGMapsInfo.fix_maps([EditorInterface.get_edited_scene_root()])
 
 
-func _find_create_root_container(node: Node) -> Node:
-	if node.name == "Scene":
-		var container = _get_create_container(node)
-		if container: return container
-	
+func _find_create_root_container(node: Node) -> Control:
+	# 1. Check if this node is a candidate (has enough children).
+	if node.get_child_count() >= 2:
+		var target_2d_text := tr("2D Scene")
+		var target_3d_text := tr("3D Scene")
+		
+		var found_2d := false
+		
+		# Iterate through children to find the specific sequence.
+		for child in node.get_children():
+			# We only care about Buttons.
+			if child is Button:
+				if child.text == target_2d_text:
+					found_2d = true
+				elif found_2d and child.text == target_3d_text:
+					# Found "2D Scene" followed immediately by "3D Scene".
+					return node as Control
+				elif found_2d and child.text != target_3d_text:
+					# Sequence broken (e.g. found 2D scene, but next wasn't 3D scene).
+					found_2d = false
+			else:
+				# If we hit a separator or other node, reset the sequence search.
+				found_2d = false
+
+	# 2. Recursive step: Search inside children.
 	for child in node.get_children():
-		var container = _find_create_root_container(child)
-		if container: return container
-	
-	return null
+		var result := _find_create_root_container(child)
+		if result:
+			return result
 
-
-func _get_create_container(node: Node) -> Node:
-	if node and node.name == "Scene" and node.get_class() == "SceneTreeDock" and node.get_child_count() > 2:
-		var c1 = node.get_child(2)
-		if c1.get_child_count() == 2 and c1.get_child(1) is ScrollContainer:
-			var c2 = c1.get_child(1)
-			if c2.get_child_count() > 0 and c2.get_child(0) is VBoxContainer:
-				var c3 = c2.get_child(0)
-				if c3.get_child_count() > 0 and c3.get_child(0) is VBoxContainer:
-					var c4 = c3.get_child(0)
-					if c4.get_children().all(func(child: Node): return child is Button):
-						return c4
 	return null
 
 

@@ -62,7 +62,8 @@ func set_disabled(value: bool) -> void:
 		if text.length() > 0:
 			set_meta("original_text", text)
 		text = ""
-		back_normal_style = get("theme_override_styles/normal")
+		if not back_normal_style:
+			back_normal_style = get("theme_override_styles/normal")
 		set("theme_override_styles/normal", StyleBoxEmpty.new())
 
 

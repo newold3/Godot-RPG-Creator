@@ -1,0 +1,811 @@
+[gd_scene format=3 uid="uid://c7nrlvywu3al0"]
+
+[ext_resource type="Script" uid="uid://bfr4whpwjagqu" path="res://addons/rpg_character_creator/Scenes/NewEditor/character.gd" id="1_cde47"]
+[ext_resource type="PackedScene" uid="uid://dy6oyqv8yyw7r" path="res://addons/rpg_character_creator/Scenes/part_texture.tscn" id="1_oogbp"]
+[ext_resource type="Shader" uid="uid://c0rcvcbe0qvjh" path="res://Assets/Shaders/colorize.gdshader" id="2_cde47"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wun8s"]
+shader = ExtResource("2_cde47")
+shader_parameter/palette1 = PackedColorArray()
+shader_parameter/palette2 = PackedColorArray()
+shader_parameter/palette3 = PackedColorArray()
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_roc3e"]
+shader = ExtResource("2_cde47")
+shader_parameter/palette1 = PackedColorArray()
+shader_parameter/palette2 = PackedColorArray()
+shader_parameter/palette3 = PackedColorArray()
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = 0
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qof1o"]
+shader = ExtResource("2_cde47")
+shader_parameter/palette1 = PackedColorArray()
+shader_parameter/palette2 = PackedColorArray()
+shader_parameter/palette3 = PackedColorArray()
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = 0
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vy5wx"]
+shader = ExtResource("2_cde47")
+shader_parameter/palette1 = PackedColorArray()
+shader_parameter/palette2 = PackedColorArray()
+shader_parameter/palette3 = PackedColorArray()
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = 0
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_j2uty"]
+shader = ExtResource("2_cde47")
+shader_parameter/palette1 = PackedColorArray()
+shader_parameter/palette2 = PackedColorArray()
+shader_parameter/palette3 = PackedColorArray()
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xovw2"]
+shader = ExtResource("2_cde47")
+shader_parameter/palette1 = PackedColorArray()
+shader_parameter/palette2 = PackedColorArray()
+shader_parameter/palette3 = PackedColorArray()
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = 0
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_t716e"]
+shader = ExtResource("2_cde47")
+shader_parameter/palette1 = PackedColorArray()
+shader_parameter/palette2 = PackedColorArray()
+shader_parameter/palette3 = PackedColorArray()
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_br735"]
+shader = ExtResource("2_cde47")
+shader_parameter/palette1 = PackedColorArray()
+shader_parameter/palette2 = PackedColorArray()
+shader_parameter/palette3 = PackedColorArray()
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = 0
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fm5df"]
+shader = ExtResource("2_cde47")
+shader_parameter/palette1 = PackedColorArray()
+shader_parameter/palette2 = PackedColorArray()
+shader_parameter/palette3 = PackedColorArray()
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wegu7"]
+shader = ExtResource("2_cde47")
+shader_parameter/palette1 = PackedColorArray()
+shader_parameter/palette2 = PackedColorArray()
+shader_parameter/palette3 = PackedColorArray()
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = 0
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hvdj8"]
+shader = ExtResource("2_cde47")
+shader_parameter/palette1 = PackedColorArray()
+shader_parameter/palette2 = PackedColorArray()
+shader_parameter/palette3 = PackedColorArray()
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8apsm"]
+shader = ExtResource("2_cde47")
+shader_parameter/palette1 = PackedColorArray()
+shader_parameter/palette2 = PackedColorArray()
+shader_parameter/palette3 = PackedColorArray()
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = 0
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3juwh"]
+shader = ExtResource("2_cde47")
+shader_parameter/palette1 = PackedColorArray()
+shader_parameter/palette2 = PackedColorArray()
+shader_parameter/palette3 = PackedColorArray()
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3qpj6"]
+shader = ExtResource("2_cde47")
+shader_parameter/palette1 = PackedColorArray()
+shader_parameter/palette2 = PackedColorArray()
+shader_parameter/palette3 = PackedColorArray()
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iq8g1"]
+shader = ExtResource("2_cde47")
+shader_parameter/palette1 = PackedColorArray()
+shader_parameter/palette2 = PackedColorArray()
+shader_parameter/palette3 = PackedColorArray()
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fl0h6"]
+shader = ExtResource("2_cde47")
+shader_parameter/palette1 = PackedColorArray()
+shader_parameter/palette2 = PackedColorArray()
+shader_parameter/palette3 = PackedColorArray()
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_305qu"]
+shader = ExtResource("2_cde47")
+shader_parameter/palette1 = PackedColorArray()
+shader_parameter/palette2 = PackedColorArray()
+shader_parameter/palette3 = PackedColorArray()
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = 0
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_litpl"]
+shader = ExtResource("2_cde47")
+shader_parameter/palette1 = PackedColorArray()
+shader_parameter/palette2 = PackedColorArray()
+shader_parameter/palette3 = PackedColorArray()
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_12s7a"]
+shader = ExtResource("2_cde47")
+shader_parameter/palette1 = PackedColorArray()
+shader_parameter/palette2 = PackedColorArray()
+shader_parameter/palette3 = PackedColorArray()
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vxe7s"]
+shader = ExtResource("2_cde47")
+shader_parameter/palette1 = PackedColorArray()
+shader_parameter/palette2 = PackedColorArray()
+shader_parameter/palette3 = PackedColorArray()
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_reyt0"]
+shader = ExtResource("2_cde47")
+shader_parameter/palette1 = PackedColorArray()
+shader_parameter/palette2 = PackedColorArray()
+shader_parameter/palette3 = PackedColorArray()
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rs0a2"]
+shader = ExtResource("2_cde47")
+shader_parameter/palette1 = PackedColorArray()
+shader_parameter/palette2 = PackedColorArray()
+shader_parameter/palette3 = PackedColorArray()
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jydl7"]
+shader = ExtResource("2_cde47")
+shader_parameter/palette1 = PackedColorArray()
+shader_parameter/palette2 = PackedColorArray()
+shader_parameter/palette3 = PackedColorArray()
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iby4b"]
+shader = ExtResource("2_cde47")
+shader_parameter/palette1 = PackedColorArray()
+shader_parameter/palette2 = PackedColorArray()
+shader_parameter/palette3 = PackedColorArray()
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = 0
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mke48"]
+shader = ExtResource("2_cde47")
+shader_parameter/palette1 = PackedColorArray()
+shader_parameter/palette2 = PackedColorArray()
+shader_parameter/palette3 = PackedColorArray()
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6jw4o"]
+shader = ExtResource("2_cde47")
+shader_parameter/palette1 = PackedColorArray()
+shader_parameter/palette2 = PackedColorArray()
+shader_parameter/palette3 = PackedColorArray()
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = 0
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1cajx"]
+shader = ExtResource("2_cde47")
+shader_parameter/palette1 = PackedColorArray()
+shader_parameter/palette2 = PackedColorArray()
+shader_parameter/palette3 = PackedColorArray()
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ewxul"]
+shader = ExtResource("2_cde47")
+shader_parameter/palette1 = PackedColorArray()
+shader_parameter/palette2 = PackedColorArray()
+shader_parameter/palette3 = PackedColorArray()
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = 0
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8rovr"]
+shader = ExtResource("2_cde47")
+shader_parameter/palette1 = PackedColorArray()
+shader_parameter/palette2 = PackedColorArray()
+shader_parameter/palette3 = PackedColorArray()
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fv5lq"]
+shader = ExtResource("2_cde47")
+shader_parameter/palette1 = PackedColorArray()
+shader_parameter/palette2 = PackedColorArray()
+shader_parameter/palette3 = PackedColorArray()
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k7khj"]
+shader = ExtResource("2_cde47")
+shader_parameter/palette1 = PackedColorArray()
+shader_parameter/palette2 = PackedColorArray()
+shader_parameter/palette3 = PackedColorArray()
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = 0
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_e5egq"]
+shader = ExtResource("2_cde47")
+shader_parameter/palette1 = PackedColorArray()
+shader_parameter/palette2 = PackedColorArray()
+shader_parameter/palette3 = PackedColorArray()
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = 0
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g1dng"]
+shader = ExtResource("2_cde47")
+shader_parameter/palette1 = PackedColorArray()
+shader_parameter/palette2 = PackedColorArray()
+shader_parameter/palette3 = PackedColorArray()
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = 0
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pihnm"]
+shader = ExtResource("2_cde47")
+shader_parameter/palette1 = PackedColorArray()
+shader_parameter/palette2 = PackedColorArray()
+shader_parameter/palette3 = PackedColorArray()
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = 0
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_wun8s"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_cde47"]
+viewport_path = NodePath("WingsBack")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_wun8s"]
+viewport_path = NodePath("OffhandBack")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_roc3e"]
+viewport_path = NodePath("WeaponBack")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_qof1o"]
+viewport_path = NodePath("Body")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_vy5wx"]
+viewport_path = NodePath("OffHandFront")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_j2uty"]
+viewport_path = NodePath("WeaponFront")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_t716e"]
+viewport_path = NodePath("Ammo")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_xovw2"]
+viewport_path = NodePath("FullBody")
+
+[node name="Character" type="Control" unique_id=410136974]
+layout_mode = 3
+anchors_preset = 0
+scale = Vector2(4, 4)
+script = ExtResource("1_cde47")
+
+[node name="WingsBack" type="SubViewport" parent="." unique_id=1186627879]
+unique_name_in_owner = true
+transparent_bg = true
+size = Vector2i(832, 1344)
+render_target_update_mode = 4
+
+[node name="WingsBack" parent="WingsBack" unique_id=1333932863 instance=ExtResource("1_oogbp")]
+material = SubResource("ShaderMaterial_wun8s")
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="OffhandBack" type="SubViewport" parent="." unique_id=138830043]
+transparent_bg = true
+size = Vector2i(832, 1344)
+render_target_update_mode = 4
+
+[node name="OffHandBack" parent="OffhandBack" unique_id=1897701707 instance=ExtResource("1_oogbp")]
+material = SubResource("ShaderMaterial_roc3e")
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="WeaponBack" type="SubViewport" parent="." unique_id=1544240724]
+unique_name_in_owner = true
+transparent_bg = true
+render_target_update_mode = 4
+
+[node name="MainHandBack" parent="WeaponBack" unique_id=1891547495 instance=ExtResource("1_oogbp")]
+material = SubResource("ShaderMaterial_qof1o")
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="Body" type="SubViewport" parent="." unique_id=1342628677]
+transparent_bg = true
+size = Vector2i(832, 1344)
+render_target_update_mode = 4
+
+[node name="BackBack" parent="Body" unique_id=2027783045 instance=ExtResource("1_oogbp")]
+material = SubResource("ShaderMaterial_vy5wx")
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="TailBack" parent="Body" unique_id=1754530266 instance=ExtResource("1_oogbp")]
+material = SubResource("ShaderMaterial_j2uty")
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="Body" parent="Body" unique_id=886936090 instance=ExtResource("1_oogbp")]
+material = SubResource("ShaderMaterial_xovw2")
+offset_left = 64.0
+offset_top = 64.0
+offset_right = 64.0
+offset_bottom = 64.0
+
+[node name="Add2" parent="Body" unique_id=831484945 instance=ExtResource("1_oogbp")]
+material = SubResource("ShaderMaterial_t716e")
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="Suit" parent="Body" unique_id=512525143 instance=ExtResource("1_oogbp")]
+material = SubResource("ShaderMaterial_br735")
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="Pants" parent="Body" unique_id=1302314291 instance=ExtResource("1_oogbp")]
+material = SubResource("ShaderMaterial_fm5df")
+offset_left = 64.0
+offset_top = 64.0
+offset_right = 64.0
+offset_bottom = 64.0
+
+[node name="Shoes" parent="Body" unique_id=1012812917 instance=ExtResource("1_oogbp")]
+material = SubResource("ShaderMaterial_wegu7")
+offset_left = 64.0
+offset_top = 64.0
+offset_right = 64.0
+offset_bottom = 64.0
+
+[node name="Gloves" parent="Body" unique_id=1533102013 instance=ExtResource("1_oogbp")]
+material = SubResource("ShaderMaterial_hvdj8")
+offset_left = 64.0
+offset_top = 64.0
+offset_right = 64.0
+offset_bottom = 64.0
+
+[node name="Shirt" parent="Body" unique_id=779812599 instance=ExtResource("1_oogbp")]
+material = SubResource("ShaderMaterial_8apsm")
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="Belt" parent="Body" unique_id=1173243727 instance=ExtResource("1_oogbp")]
+material = SubResource("ShaderMaterial_3juwh")
+offset_left = 64.0
+offset_top = 64.0
+offset_right = 64.0
+offset_bottom = 64.0
+
+[node name="Add3" parent="Body" unique_id=252527176 instance=ExtResource("1_oogbp")]
+material = SubResource("ShaderMaterial_3qpj6")
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="Jacket" parent="Body" unique_id=572039885 instance=ExtResource("1_oogbp")]
+material = SubResource("ShaderMaterial_iq8g1")
+offset_left = 64.0
+offset_top = 64.0
+offset_right = 64.0
+offset_bottom = 64.0
+
+[node name="Head" parent="Body" unique_id=680618516 instance=ExtResource("1_oogbp")]
+material = SubResource("ShaderMaterial_fl0h6")
+offset_left = 64.0
+offset_top = 64.0
+offset_right = 64.0
+offset_bottom = 64.0
+
+[node name="Eyes" parent="Body" unique_id=1573255172 instance=ExtResource("1_oogbp")]
+material = SubResource("ShaderMaterial_305qu")
+offset_left = 64.0
+offset_top = 64.0
+offset_right = 64.0
+offset_bottom = 64.0
+
+[node name="Facial" parent="Body" unique_id=396606491 instance=ExtResource("1_oogbp")]
+material = SubResource("ShaderMaterial_litpl")
+offset_left = 64.0
+offset_top = 64.0
+offset_right = 64.0
+offset_bottom = 64.0
+
+[node name="Ears" parent="Body" unique_id=1472826004 instance=ExtResource("1_oogbp")]
+material = SubResource("ShaderMaterial_12s7a")
+offset_left = 64.0
+offset_top = 64.0
+offset_right = 64.0
+offset_bottom = 64.0
+
+[node name="Nose" parent="Body" unique_id=2138801155 instance=ExtResource("1_oogbp")]
+material = SubResource("ShaderMaterial_vxe7s")
+offset_left = 64.0
+offset_top = 64.0
+offset_right = 64.0
+offset_bottom = 64.0
+
+[node name="Add1" parent="Body" unique_id=1527733922 instance=ExtResource("1_oogbp")]
+material = SubResource("ShaderMaterial_reyt0")
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="Mask" parent="Body" unique_id=855772657 instance=ExtResource("1_oogbp")]
+material = SubResource("ShaderMaterial_rs0a2")
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="Glasses" parent="Body" unique_id=389964055 instance=ExtResource("1_oogbp")]
+material = SubResource("ShaderMaterial_jydl7")
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="Hair" parent="Body" unique_id=233429603 instance=ExtResource("1_oogbp")]
+material = SubResource("ShaderMaterial_iby4b")
+offset_left = 64.0
+offset_top = 64.0
+offset_right = 64.0
+offset_bottom = 64.0
+
+[node name="HairAdd" parent="Body" unique_id=1076442622 instance=ExtResource("1_oogbp")]
+material = SubResource("ShaderMaterial_mke48")
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="Hat" parent="Body" unique_id=1202928906 instance=ExtResource("1_oogbp")]
+material = SubResource("ShaderMaterial_6jw4o")
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="TailFront" parent="Body" unique_id=231290419 instance=ExtResource("1_oogbp")]
+material = SubResource("ShaderMaterial_1cajx")
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="BackFront" parent="Body" unique_id=1106059339 instance=ExtResource("1_oogbp")]
+material = SubResource("ShaderMaterial_ewxul")
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="WingsFront" parent="Body" unique_id=106904450 instance=ExtResource("1_oogbp")]
+material = SubResource("ShaderMaterial_8rovr")
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="Horns" parent="Body" unique_id=1393200143 instance=ExtResource("1_oogbp")]
+material = SubResource("ShaderMaterial_fv5lq")
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="OffHandFront" type="SubViewport" parent="." unique_id=85664469]
+transparent_bg = true
+size = Vector2i(832, 1344)
+render_target_update_mode = 4
+
+[node name="OffHandFront" parent="OffHandFront" unique_id=939630701 instance=ExtResource("1_oogbp")]
+material = SubResource("ShaderMaterial_k7khj")
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="WeaponFront" type="SubViewport" parent="." unique_id=402280568]
+unique_name_in_owner = true
+transparent_bg = true
+render_target_update_mode = 4
+
+[node name="MainHandFront" parent="WeaponFront" unique_id=1190518590 instance=ExtResource("1_oogbp")]
+material = SubResource("ShaderMaterial_e5egq")
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="Ammo" type="SubViewport" parent="." unique_id=728122459]
+transparent_bg = true
+size = Vector2i(832, 1344)
+render_target_update_mode = 4
+
+[node name="AmmoBack" parent="Ammo" unique_id=2030655015 instance=ExtResource("1_oogbp")]
+material = SubResource("ShaderMaterial_g1dng")
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="AmmoFront" parent="Ammo" unique_id=1099358547 instance=ExtResource("1_oogbp")]
+material = SubResource("ShaderMaterial_pihnm")
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="FullBody" type="SubViewport" parent="." unique_id=438485248]
+transparent_bg = true
+size = Vector2i(192, 192)
+
+[node name="FullBody" type="Control" parent="FullBody" unique_id=1944523391]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="WingsBack" type="Sprite2D" parent="FullBody/FullBody" unique_id=1382056879]
+material = SubResource("CanvasItemMaterial_wun8s")
+texture = SubResource("ViewportTexture_cde47")
+region_enabled = true
+region_rect = Rect2(0, 640, 64, 64)
+region_filter_clip_enabled = true
+
+[node name="OffhandBack" type="Sprite2D" parent="FullBody/FullBody" unique_id=1612019737]
+unique_name_in_owner = true
+texture = SubResource("ViewportTexture_wun8s")
+region_enabled = true
+
+[node name="MainHandBack" type="Sprite2D" parent="FullBody/FullBody" unique_id=1174385203]
+unique_name_in_owner = true
+z_index = 10
+texture = SubResource("ViewportTexture_roc3e")
+region_enabled = true
+region_rect = Rect2(0, 384, 192, 192)
+region_filter_clip_enabled = true
+
+[node name="Body" type="Sprite2D" parent="FullBody/FullBody" unique_id=1861262958]
+material = SubResource("CanvasItemMaterial_wun8s")
+texture = SubResource("ViewportTexture_qof1o")
+region_enabled = true
+region_rect = Rect2(0, 640, 64, 64)
+region_filter_clip_enabled = true
+
+[node name="OffhandFront" type="Sprite2D" parent="FullBody/FullBody" unique_id=1177205215]
+unique_name_in_owner = true
+z_index = 9
+texture = SubResource("ViewportTexture_vy5wx")
+region_enabled = true
+
+[node name="MainHandFront" type="Sprite2D" parent="FullBody/FullBody" unique_id=1882431170]
+unique_name_in_owner = true
+z_index = 10
+texture = SubResource("ViewportTexture_j2uty")
+region_enabled = true
+region_rect = Rect2(0, 384, 192, 192)
+region_filter_clip_enabled = true
+
+[node name="AmmoNode" type="Sprite2D" parent="FullBody/FullBody" unique_id=1362356144]
+unique_name_in_owner = true
+visible = false
+material = SubResource("CanvasItemMaterial_wun8s")
+texture = SubResource("ViewportTexture_t716e")
+region_enabled = true
+region_rect = Rect2(0, 640, 64, 64)
+region_filter_clip_enabled = true
+
+[node name="FinalImage" type="Sprite2D" parent="." unique_id=395766909]
+texture = SubResource("ViewportTexture_xovw2")

@@ -10,6 +10,22 @@ extends MarginContainer
 		if is_inside_tree():
 			force_refresh_tabs_timer = 0.1
 
+@export_category("Drag and Drop")
+## Activa el sistema de arrastre de pestañas.
+@export var allow_drag_and_drop: bool = false
+## Estilo o textura que se dibuja sobre la tab que estamos moviendo (From)
+@export var style_drag_from: Variant :
+	set(value):
+		style_drag_from = value
+		queue_redraw()
+## Estilo o textura que se dibuja sobre la tab donde se soltaría (To)
+@export var style_drag_to: Variant :
+	set(value):
+		style_drag_to = value
+		queue_redraw()
+## Píxeles que debe moverse el ratón para confirmar que es un arrastre y no un click.
+@export var drag_threshold: float = 10.0
+
 @export_category("Text Data")
 
 @export_subgroup("Font")
@@ -175,16 +191,21 @@ var button_right_rect: Rect2
 var button_left_disabled: bool = false
 var button_right_disabled: bool = true
 var offset: float = 0.0
-var tabs_data: Array[Dictionary] # Dictionary = {"rect" : rect2, "index" : int, "visible" : bool, "text" : String}
+var tabs_data: Array[Dictionary]
 
 var force_refresh_tabs_timer: float = 0.0
 
+# Drag and Drop internal
+var dragging_tab_index: int = -1
+var potential_drop_index: int = -1
+var is_dragging: bool = false
+var drag_start_position: Vector2 = Vector2.ZERO
 
-## Name for each tab. If a tab does not have a name defined here, the default name will be used.
 var tabs_names: Array = []
 
 
 signal tab_changed(index: int)
+signal tabs_changed(from: int, to: int)
 
 
 func _ready() -> void:
@@ -205,16 +226,21 @@ func _process(delta: float) -> void:
 		force_refresh_tabs_timer -= delta
 		if force_refresh_tabs_timer <= 0:
 			if not default_tabs.is_empty():
-				clear()
-				for tab in default_tabs:
-					add_tab(tab)
-				refresh()
+				create_tabs(PackedStringArray(default_tabs))
 		
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		if current_button_pressed == 0 and !button_left_disabled:
 			move_tabs(delta, 1)
 		elif current_button_pressed == 1 and !button_right_disabled:
 			move_tabs(delta, -1)
+	
+	if is_dragging and using_arrows and allow_drag_and_drop:
+		var m_x = get_local_mouse_position().x
+		var limit = size.x - arrow_buttons_size.x * 2 + separator
+		if m_x < 50 and !button_left_disabled:
+			move_tabs(delta, 1.5)
+		elif m_x > limit - 50 and !button_right_disabled:
+			move_tabs(delta, -1.5)
 
 
 func move_tabs(delta: float, direction: int) -> void:
@@ -249,72 +275,73 @@ func move_tabs(delta: float, direction: int) -> void:
 
 
 func _on_gui_input(event: InputEvent) -> void:
-	if using_arrows:
-		if event is InputEventMouseMotion:
-			mouse_hover_button_index = -1
-			tab_hover_index = -1
+	if event is InputEventMouseMotion:
+		mouse_hover_button_index = -1
+		tab_hover_index = -1
+		potential_drop_index = -1
+		
+		if using_arrows:
 			if button_left_rect.has_point(event.position):
 				mouse_hover_button_index = 0
 				mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 			elif button_right_rect.has_point(event.position):
 				mouse_hover_button_index = 1
 				mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-			elif current_button_pressed == -1:
-				tab_hover_index = -1
-				for data in tabs_data:
-					var rect = data.rect
-					rect.position.x += offset
-					if rect.has_point(event.position):
-						tab_hover_index = data.index
-						mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-						break
-			queue_redraw()
-		elif event is InputEventMouseButton:
-			if event.button_index == MOUSE_BUTTON_LEFT:
-				current_button_pressed = -1
-				if  event.is_pressed():
-					if button_left_rect.has_point(event.position):
-						current_button_pressed = 0
-						mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-					elif button_right_rect.has_point(event.position):
-						current_button_pressed = 1
-						mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-					else:
-						for data in tabs_data:
-							var rect = data.rect
-							rect.position.x += offset
-							if rect.has_point(event.position):
-								selected_tab = data.index
-								tab_changed.emit(selected_tab)
-								break
-				queue_redraw()
-			elif event.button_index == MOUSE_BUTTON_WHEEL_UP:
-				move_tabs(get_process_delta_time(), 1)
-			elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-				move_tabs(get_process_delta_time(), -1)
 				
-	else:
-		if event is InputEventMouseMotion:
-			mouse_hover_button_index = -1
-			tab_hover_index = -1
+		if mouse_hover_button_index == -1:
 			for data in tabs_data:
 				var rect = data.rect
 				rect.position.x += offset
 				if rect.has_point(event.position):
 					tab_hover_index = data.index
 					mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+					if is_dragging: potential_drop_index = data.index
 					break
-			queue_redraw()
-		elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-			current_button_pressed = -1
-			for data in tabs_data:
-				var rect = data.rect
-				rect.position.x += offset
-				if rect.has_point(event.position):
-					selected_tab = data.index
+		
+		if dragging_tab_index != -1 and allow_drag_and_drop and !is_dragging:
+			if event.position.distance_to(drag_start_position) > drag_threshold:
+				is_dragging = true
+		
+		if is_dragging: mouse_default_cursor_shape = Control.CURSOR_MOVE
+		queue_redraw()
+
+	elif event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if event.is_pressed():
+				current_button_pressed = -1
+				drag_start_position = event.position
+				if using_arrows:
+					if button_left_rect.has_point(event.position):
+						current_button_pressed = 0
+						return
+					elif button_right_rect.has_point(event.position):
+						current_button_pressed = 1
+						return
+				
+				for data in tabs_data:
+					var rect = data.rect
+					rect.position.x += offset
+					if rect.has_point(event.position):
+						dragging_tab_index = data.index
+						break
+			else:
+				if is_dragging and dragging_tab_index != -1 and allow_drag_and_drop:
+					if potential_drop_index != -1 and potential_drop_index != dragging_tab_index:
+						tabs_changed.emit(dragging_tab_index, potential_drop_index)
+				elif dragging_tab_index != -1:
+					selected_tab = dragging_tab_index
 					tab_changed.emit(selected_tab)
-					break
-			queue_redraw()
+				
+				dragging_tab_index = -1
+				potential_drop_index = -1
+				is_dragging = false
+				current_button_pressed = -1
+				queue_redraw()
+				
+		elif event.button_index == MOUSE_BUTTON_WHEEL_UP:
+			move_tabs(get_process_delta_time(), 1)
+		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			move_tabs(get_process_delta_time(), -1)
 
 
 func refresh():
@@ -328,6 +355,7 @@ func clear() -> void:
 
 func update_tabs(current_tabs: int = 0, index: int = 0, force_selection: bool = false) -> void:
 	tabs_data.clear()
+	using_arrows = false
 	if default_tabs:
 		for i in default_tabs.size():
 			var tab_text: String = default_tabs[i]
@@ -338,8 +366,14 @@ func update_tabs(current_tabs: int = 0, index: int = 0, force_selection: bool = 
 			add_tab(tab_text, i)
 	
 	move_tabs(0, 0)
-	
 	select(index, force_selection)
+
+
+func create_tabs(_tabs: PackedStringArray) -> void:
+	default_tabs = Array(_tabs)
+	clear()
+	for tab in _tabs:
+		add_tab(tab)
 
 
 func add_tab(tab_text: String, index: int = -1) -> void:
@@ -347,11 +381,8 @@ func add_tab(tab_text: String, index: int = -1) -> void:
 	var s: int = font_size if font_size else get_theme_default_font_size()
 	var align = HORIZONTAL_ALIGNMENT_CENTER
 	var width = size.x - arrow_buttons_size.x * 2 + separator
-	var offset = 0
 	custom_minimum_size = minimum_tab_size
-	using_arrows = false
 	
-
 	var current_x = 0
 	if tabs_data.size() > 0:
 		for i in tabs_data.size():
@@ -380,11 +411,11 @@ func add_tab(tab_text: String, index: int = -1) -> void:
 	
 	if using_arrows:
 		button_left_rect = Rect2(Vector2(width, 0), arrow_buttons_size)
-		button_right_rect = Rect2(Vector2(width + arrow_buttons_size.x  + separator, 0), arrow_buttons_size)
+		button_right_rect = Rect2(Vector2(width + arrow_buttons_size.x + separator, 0), arrow_buttons_size)
 	
 	if tabs_names.size() < tabs_data.size():
 		tabs_names.resize(tabs_data.size())
-		tabs_names[-1] = tab_text
+		tabs_names[tabs_data.size() - 1] = tab_text
 
 
 func _on_tab_changed(_index: int) -> void:
@@ -438,6 +469,9 @@ func _draw() -> void:
 			draw_partial_mode = true
 
 		if data_pass:
+			rect = data.rect
+			rect.position.x += offset
+			
 			if data.index != selected_tab:
 				if tab_hover_index == data.index:
 					texture = tab_hover if not stylebox_tab_hover else stylebox_tab_hover
@@ -451,18 +485,25 @@ func _draw() -> void:
 				texture = tab_selected if not stylebox_tab_selected else stylebox_tab_selected
 				outline_color = selected_outline_color
 				offset_y = text_selected_offset_y
-			rect = data.rect
+			
 			if draw_partial_mode:
-				var x = button_left_rect.position.x - (rect.position.x + offset) - 5
-				if x > 0:
-					rect.size.x = x
-				else:
-					continue
-			rect.position.x += offset
+				var x = button_left_rect.position.x - rect.position.x - 5
+				if x > 0: rect.size.x = x
+				else: continue
+
 			if texture is Texture:
 				draw_texture_rect(texture, rect, false)
 			elif texture is StyleBox:
 				(texture as StyleBox).draw(get_canvas_item(), rect)
+				
+			# Dibujo de estilos Drag (From/To)
+			if is_dragging and allow_drag_and_drop:
+				if dragging_tab_index == data.index and style_drag_from:
+					_draw_drag_style(style_drag_from, rect)
+				elif potential_drop_index == data.index and style_drag_to:
+					_draw_drag_style(style_drag_to, rect)
+
+			# Fórmula de dibujo original exacta
 			var p = data.rect.position
 			p.x += tab_name_margins + offset
 			p.y += font.get_ascent() + offset_y
@@ -471,11 +512,10 @@ func _draw() -> void:
 				width = data.rect.size.x - (tab_name_margins * 2)
 			else:
 				width = button_left_rect.position.x - p.x - 5 - tab_name_margins
-				if width < 0:
-					width = 1
+				if width < 0: width = 1
 			draw_string(font, p, data.text, align, width, s, color)
 			if font_size > 0:
-				draw_string_outline(font, p, data.text, align, width, s, font_size, color)
+				draw_string_outline(font, p, data.text, align, width, s, font_outline_size, outline_color)
 	
 	if using_arrows:
 		if button_left_disabled:
@@ -501,3 +541,10 @@ func _draw() -> void:
 		RenderingServer.canvas_item_set_clip(get_canvas_item(),true)
 	else:
 		RenderingServer.canvas_item_set_clip(get_canvas_item(),false)
+
+
+func _draw_drag_style(style: Variant, rect: Rect2) -> void:
+	if style is StyleBox:
+		style.draw(get_canvas_item(), rect)
+	elif style is Texture:
+		draw_texture_rect(style, rect, false)

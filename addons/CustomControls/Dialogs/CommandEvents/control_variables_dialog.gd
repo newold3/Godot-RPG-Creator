@@ -146,14 +146,14 @@ func _set_variable_name() -> void:
 
 
 func _on_from_value_changed(value: float) -> void:
-	if busy: return
+	if busy or not current_data: return
 	if value > current_data.to:
 		%To.value = value
 	current_data.from = value
 
 
 func _on_to_value_changed(value: float) -> void:
-	if busy: return
+	if busy or not current_data: return
 	if value < current_data.from:
 		%From.value = current_data.to
 	current_data.to = value
@@ -213,8 +213,8 @@ func _on_operand_constant_value_changed(value: float) -> void:
 
 
 func _on_operand_from_value_changed(value: float) -> void:
-	if busy: return
-	if value > current_data.value2:
+	if busy or not current_data: return
+	if "value2" in current_data and  value > current_data.value2:
 		%OperandTo.value = value
 	current_data.value1 = value
 	cache_data.random[0] = value

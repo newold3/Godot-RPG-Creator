@@ -1,0 +1,1396 @@
+[gd_scene format=3 uid="uid://dbmedskp7yjjk"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_7l0sp"]
+[ext_resource type="Script" uid="uid://fypxj0frlar2" path="res://addons/rpg_character_creator/Scenes/NewEditor/editor_character.gd" id="1_750hs"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="2_1xyyu"]
+[ext_resource type="Shader" uid="uid://c0rcvcbe0qvjh" path="res://Assets/Shaders/colorize.gdshader" id="2_750hs"]
+[ext_resource type="Texture2D" uid="uid://c1co7gsx6wth7" path="res://addons/CustomControls/Images/palette_icon.png" id="4_0oti0"]
+[ext_resource type="Texture2D" uid="uid://bfvirbwko5v4o" path="res://addons/CustomControls/Images/palette_icon_hover.png" id="5_8ovvn"]
+[ext_resource type="Texture2D" uid="uid://dx3qljqfo2npj" path="res://addons/CustomControls/Images/palette_icon_disabled.png" id="6_e5quv"]
+[ext_resource type="Texture2D" uid="uid://f0vjtj8a80t0" path="res://addons/CustomControls/Images/empty_1x1.png" id="7_8ovvn"]
+[ext_resource type="Texture2D" uid="uid://oagj8xxxu65q" path="res://addons/CustomControls/Images/master_button_rounded_tab.png" id="7_e5quv"]
+[ext_resource type="PackedScene" uid="uid://c7nrlvywu3al0" path="res://addons/rpg_character_creator/Scenes/NewEditor/character.tscn" id="8_ans2u"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="8_e5quv"]
+[ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="8_ilb35"]
+[ext_resource type="Texture2D" uid="uid://ykjs5474fuqm" path="res://addons/RPGData/Assets/Images/eyes_button.png" id="8_pe070"]
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="9_pe070"]
+[ext_resource type="Texture2D" uid="uid://bnlqbcjsao0c2" path="res://addons/rpg_character_creator/textures/other_icons/d8_normal.png" id="11_3y7dv"]
+[ext_resource type="Texture2D" uid="uid://dydn6txigu6sw" path="res://addons/rpg_character_creator/textures/other_icons/d8_hover.png" id="12_bpu0w"]
+[ext_resource type="Texture2D" uid="uid://bnfb7u5j2x4pq" path="res://addons/CustomControls/Images/loading_icon.png" id="15_t157f"]
+[ext_resource type="Texture2D" uid="uid://c87u13cng51iv" path="res://addons/rpg_character_creator/textures/other_icons/Loading_icon_0008_Capa-1.png" id="18_ckavm"]
+[ext_resource type="Texture2D" uid="uid://dinul67r7u8ys" path="res://addons/rpg_character_creator/textures/other_icons/Loading_icon_0007_Capa-2.png" id="19_y5s15"]
+[ext_resource type="Texture2D" uid="uid://beemjqtaeg2pm" path="res://addons/rpg_character_creator/textures/other_icons/Loading_icon_0006_Capa-3.png" id="20_8i5af"]
+[ext_resource type="Texture2D" uid="uid://cdy5mvjsmext7" path="res://addons/rpg_character_creator/textures/other_icons/Loading_icon_0005_Capa-4.png" id="21_24crn"]
+[ext_resource type="Texture2D" uid="uid://cnie2y4awqu21" path="res://addons/rpg_character_creator/textures/other_icons/Loading_icon_0004_Capa-5.png" id="22_jbni3"]
+[ext_resource type="Texture2D" uid="uid://bg63cn1ggafb" path="res://addons/rpg_character_creator/textures/other_icons/Loading_icon_0003_Capa-6.png" id="23_1dcs6"]
+[ext_resource type="Texture2D" uid="uid://drsrdnqun7i04" path="res://addons/rpg_character_creator/textures/other_icons/Loading_icon_0002_Capa-7.png" id="24_swomd"]
+[ext_resource type="Texture2D" uid="uid://br1low6pctama" path="res://addons/rpg_character_creator/textures/other_icons/Loading_icon_0001_Capa-8.png" id="25_cuiex"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hpjyg"]
+shader = ExtResource("2_750hs")
+shader_parameter/palette1 = PackedColorArray()
+shader_parameter/palette2 = PackedColorArray()
+shader_parameter/palette3 = PackedColorArray()
+shader_parameter/lightness1 = 0.0
+shader_parameter/lightness2 = 0.0
+shader_parameter/lightness3 = 0.0
+shader_parameter/use_custom_alpha = false
+shader_parameter/alpha = 1.0
+shader_parameter/use_recolor = true
+shader_parameter/highlight_color = -1
+shader_parameter/highlight_palette_id = 0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hpjyg"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.11372549, 0.13333334, 0.16078432, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.21176471, 0.23921569, 0.2901961, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e5quv"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.1136, 0.13293333, 0.16, 0.6862745)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.14509805, 0.16862746, 0.20392157, 1)
+border_blend = true
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jbni3"]
+atlas = ExtResource("8_e5quv")
+region = Rect2(0, 216, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1dcs6"]
+atlas = ExtResource("8_e5quv")
+region = Rect2(24, 216, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e5quv"]
+atlas = ExtResource("8_e5quv")
+region = Rect2(168, 240, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vv0y5"]
+atlas = ExtResource("8_e5quv")
+region = Rect2(192, 240, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ekg8f"]
+atlas = ExtResource("8_pe070")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ckavm"]
+atlas = ExtResource("8_pe070")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t157f"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.21230483, 0.21230483, 0.21230483, 0.6)
+border_width_left = 1
+border_width_top = 2
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.21950099, 0.21950105, 0.21950084, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gpmkp"]
+bg_color = Color(0.17218807, 0.55091107, 0.3462639, 1)
+draw_center = false
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7l0sp"]
+content_margin_left = 10.0
+content_margin_top = 7.0
+content_margin_right = 10.0
+bg_color = Color(0.1, 0.1, 0.1, 0.22745098)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 0.7490196)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_detail = 1
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3y7dv"]
+content_margin_left = 10.0
+content_margin_top = 4.0
+content_margin_right = 10.0
+content_margin_bottom = 4.0
+bg_color = Color(0.027285304, 0.12446996, 0.06662016, 0.6)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.48528117, 0.98770994, 0.5766501, 0.7490196)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_detail = 1
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gpmkp"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y5s15"]
+atlas = ExtResource("8_e5quv")
+region = Rect2(216, 72, 24, 24)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7l0sp"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ml17y"]
+texture = ExtResource("7_e5quv")
+texture_margin_left = 7.0
+texture_margin_top = 7.0
+texture_margin_right = 7.0
+texture_margin_bottom = 7.0
+region_rect = Rect2(0, 0, 60, 25)
+modulate_color = Color(0.66, 0.6534, 0.65351003, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_itlh1"]
+texture = ExtResource("7_e5quv")
+texture_margin_left = 7.0
+texture_margin_top = 7.0
+texture_margin_right = 7.0
+texture_margin_bottom = 7.0
+region_rect = Rect2(0, 0, 60, 25)
+modulate_color = Color(0.9526532, 0.49303722, 0.5323511, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5tkkc"]
+texture = ExtResource("7_e5quv")
+texture_margin_left = 7.0
+texture_margin_top = 7.0
+texture_margin_right = 7.0
+texture_margin_bottom = 7.0
+region_rect = Rect2(0, 0, 60, 25)
+modulate_color = Color(0.90607613, 0.55825835, 0.27199066, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0oti0"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8i5af"]
+atlas = ExtResource("8_e5quv")
+region = Rect2(192, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_24crn"]
+atlas = ExtResource("8_e5quv")
+region = Rect2(216, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dexev"]
+atlas = ExtResource("8_e5quv")
+region = Rect2(168, 240, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_80m8u"]
+atlas = ExtResource("8_e5quv")
+region = Rect2(192, 240, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_belam"]
+atlas = ExtResource("8_e5quv")
+region = Rect2(216, 48, 24, 24)
+
+[sub_resource type="Theme" id="Theme_ans2u"]
+PopupMenu/colors/font_disabled_color = Color(1, 0.195887, 0.128866, 1)
+PopupMenu/colors/font_separator_color = Color(0.80254, 0.0449895, 0, 1)
+PopupMenu/colors/font_separator_outline_color = Color(0.803922, 0.0431373, 0, 1)
+PopupMenu/icons/radio_checked_disabled = ExtResource("7_8ovvn")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ans2u"]
+bg_color = Color(0.21176471, 0.23921569, 0.2901961, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ilb35"]
+bg_color = Color(4.6205523e-06, 0.72658587, 0.15652943, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pe070"]
+bg_color = Color(0.25565878, 0.2556588, 0.25565875, 0.22352941)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 0.12156863)
+border_blend = true
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_e5quv"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_e5quv"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ans2u"]
+atlas = ExtResource("8_e5quv")
+region = Rect2(168, 48, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ilb35"]
+atlas = ExtResource("8_e5quv")
+region = Rect2(192, 48, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pe070"]
+atlas = ExtResource("8_e5quv")
+region = Rect2(144, 240, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7l0sp"]
+atlas = ExtResource("8_e5quv")
+region = Rect2(168, 192, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t157f"]
+atlas = ExtResource("8_e5quv")
+region = Rect2(144, 192, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gpmkp"]
+atlas = ExtResource("8_e5quv")
+region = Rect2(168, 168, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3y7dv"]
+atlas = ExtResource("8_e5quv")
+region = Rect2(120, 192, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bpu0w"]
+atlas = ExtResource("8_e5quv")
+region = Rect2(96, 192, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5pv3w"]
+atlas = ExtResource("8_e5quv")
+region = Rect2(72, 192, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wkjry"]
+atlas = ExtResource("15_t157f")
+region = Rect2(600, 300, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_goxh6"]
+atlas = ExtResource("15_t157f")
+region = Rect2(0, 0, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uwjbp"]
+atlas = ExtResource("15_t157f")
+region = Rect2(300, 0, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qe788"]
+atlas = ExtResource("15_t157f")
+region = Rect2(600, 0, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n0ojs"]
+atlas = ExtResource("15_t157f")
+region = Rect2(900, 0, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o15lp"]
+atlas = ExtResource("15_t157f")
+region = Rect2(0, 300, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jbx63"]
+atlas = ExtResource("15_t157f")
+region = Rect2(300, 300, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dbb1o"]
+atlas = ExtResource("15_t157f")
+region = Rect2(900, 300, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g0vwv"]
+atlas = ExtResource("15_t157f")
+region = Rect2(0, 600, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p71ux"]
+atlas = ExtResource("15_t157f")
+region = Rect2(300, 600, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_enu6e"]
+atlas = ExtResource("15_t157f")
+region = Rect2(600, 600, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2eurm"]
+atlas = ExtResource("15_t157f")
+region = Rect2(900, 600, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_km4c5"]
+atlas = ExtResource("15_t157f")
+region = Rect2(0, 900, 300, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o8kil"]
+atlas = ExtResource("15_t157f")
+region = Rect2(300, 900, 300, 300)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_gru0i"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wkjry")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_goxh6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uwjbp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qe788")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n0ojs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o15lp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jbx63")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dbb1o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g0vwv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p71ux")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_enu6e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2eurm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_km4c5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o8kil")
+}],
+"loop": true,
+"name": &"default",
+"speed": 15.0
+}]
+
+[sub_resource type="AnimatedTexture" id="AnimatedTexture_hf2ss"]
+frames = 8
+frame_0/texture = ExtResource("18_ckavm")
+frame_0/duration = 0.15
+frame_1/texture = ExtResource("19_y5s15")
+frame_1/duration = 0.15
+frame_2/texture = ExtResource("20_8i5af")
+frame_2/duration = 0.15
+frame_3/texture = ExtResource("21_24crn")
+frame_3/duration = 0.15
+frame_4/texture = ExtResource("22_jbni3")
+frame_4/duration = 0.15
+frame_5/texture = ExtResource("23_1dcs6")
+frame_5/duration = 0.15
+frame_6/texture = ExtResource("24_swomd")
+frame_6/duration = 0.15
+frame_7/texture = ExtResource("25_cuiex")
+frame_7/duration = 0.15
+
+[node name="EditorCharacter" type="MarginContainer" unique_id=1710952908]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_7l0sp")
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+script = ExtResource("1_750hs")
+main_material = SubResource("ShaderMaterial_hpjyg")
+
+[node name="PreviewPartViewport" type="SubViewport" parent="." unique_id=1590789561]
+unique_name_in_owner = true
+transparent_bg = true
+
+[node name="PreviewPartTexture" type="TextureRect" parent="PreviewPartViewport" unique_id=1869096776]
+unique_name_in_owner = true
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=304514512]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="TabsContainer" type="HFlowContainer" parent="VBoxContainer" unique_id=1719513570]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
+alignment = 1
+
+[node name="VBoxContainer" type="VSplitContainer" parent="VBoxContainer" unique_id=2144381204]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/VBoxContainer" unique_id=1937373107]
+custom_minimum_size = Vector2(0, 144)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_hpjyg")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/VBoxContainer/PanelContainer" unique_id=2063282864]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+follow_focus = true
+
+[node name="PartsContainer" type="HFlowContainer" parent="VBoxContainer/VBoxContainer/PanelContainer/ScrollContainer" unique_id=1319802240]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer" unique_id=1513842653]
+layout_mode = 2
+
+[node name="PanelContainer2" type="PanelContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer" unique_id=1702530068]
+z_index = 500
+custom_minimum_size = Vector2(460, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_e5quv")
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2" unique_id=814792512]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2" unique_id=194737807]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/VBoxContainer" unique_id=2020357336]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/VBoxContainer/HBoxContainer" unique_id=300447598]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "Default Palette:"
+
+[node name="Palettes" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/VBoxContainer/HBoxContainer" unique_id=1210799589 instance=ExtResource("2_1xyyu")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+focus_mode = 0
+selected = 1
+item_count = 5
+popup/item_0/text = "Aurora"
+popup/item_0/id = 0
+popup/item_1/text = "Default"
+popup/item_1/id = 1
+popup/item_2/text = "Duel"
+popup/item_2/id = 2
+popup/item_3/text = "Lpc 512"
+popup/item_3/id = 3
+popup/item_4/text = "Sonic Robo Blast 2"
+popup/item_4/id = 4
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/VBoxContainer" unique_id=1759798937]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/VBoxContainer/HBoxContainer2" unique_id=433064775]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "Race:"
+
+[node name="Races" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/VBoxContainer/HBoxContainer2" unique_id=859633779 instance=ExtResource("2_1xyyu")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+focus_mode = 0
+selected = 12
+item_count = 29
+popup/item_0/text = "Alien"
+popup/item_0/id = 0
+popup/item_1/text = "Boarman"
+popup/item_1/id = 1
+popup/item_2/text = "Cyclops"
+popup/item_2/id = 2
+popup/item_3/text = "Dark Elf"
+popup/item_3/id = 3
+popup/item_4/text = "Demon"
+popup/item_4/id = 4
+popup/item_5/text = "Drake"
+popup/item_5/id = 5
+popup/item_6/text = "Fairy"
+popup/item_6/id = 6
+popup/item_7/text = "Faun"
+popup/item_7/id = 7
+popup/item_8/text = "Frankenstein"
+popup/item_8/id = 8
+popup/item_9/text = "Goblin"
+popup/item_9/id = 9
+popup/item_10/text = "Half Bird"
+popup/item_10/id = 10
+popup/item_11/text = "Half Cat"
+popup/item_11/id = 11
+popup/item_12/text = "Human"
+popup/item_12/id = 12
+popup/item_13/text = "Half Wolf"
+popup/item_13/id = 13
+popup/item_14/text = "Lizard"
+popup/item_14/id = 14
+popup/item_15/text = "Marked"
+popup/item_15/id = 15
+popup/item_16/text = "Minotaur"
+popup/item_16/id = 16
+popup/item_17/text = "Mouse"
+popup/item_17/id = 17
+popup/item_18/text = "Orc"
+popup/item_18/id = 18
+popup/item_19/text = "Pig"
+popup/item_19/id = 19
+popup/item_20/text = "Rabbit"
+popup/item_20/id = 20
+popup/item_21/text = "Rat"
+popup/item_21/id = 21
+popup/item_22/text = "Sheep"
+popup/item_22/id = 22
+popup/item_23/text = "Skeleton"
+popup/item_23/id = 23
+popup/item_24/text = "Troll"
+popup/item_24/id = 24
+popup/item_25/text = "Vampire"
+popup/item_25/id = 25
+popup/item_26/text = "Wartotaur"
+popup/item_26/id = 26
+popup/item_27/text = "Wolf"
+popup/item_27/id = 27
+popup/item_28/text = "Zombie"
+popup/item_28/id = 28
+
+[node name="UnrestrictedMode" type="TextureButton" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/VBoxContainer/HBoxContainer2" unique_id=843654933]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Enable this to bypass race-specific limitations. This allows you to browse and equip all available body parts (wings, horns, tails, etc.) for any character."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+toggle_mode = true
+texture_normal = SubResource("AtlasTexture_jbni3")
+texture_pressed = SubResource("AtlasTexture_1dcs6")
+
+[node name="RaceLock" type="TextureButton" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/VBoxContainer/HBoxContainer2" unique_id=735528481]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Lock this part so that it cannot be changed when using random selection."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+toggle_mode = true
+texture_normal = SubResource("AtlasTexture_e5quv")
+texture_pressed = SubResource("AtlasTexture_vv0y5")
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/VBoxContainer" unique_id=1336711822]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/VBoxContainer/HBoxContainer3" unique_id=441278885]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "Gender:"
+
+[node name="Gender" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/VBoxContainer/HBoxContainer3" unique_id=590053403 instance=ExtResource("2_1xyyu")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+focus_mode = 0
+selected = 0
+item_count = 2
+popup/item_0/text = "Male"
+popup/item_0/id = 0
+popup/item_1/text = "Female"
+popup/item_1/id = 1
+
+[node name="GenderLock" type="TextureButton" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/VBoxContainer/HBoxContainer3" unique_id=1050071006]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+tooltip_text = "Lock this part so that it cannot be changed when using random selection."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+toggle_mode = true
+texture_normal = SubResource("AtlasTexture_e5quv")
+texture_pressed = SubResource("AtlasTexture_vv0y5")
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/VBoxContainer" unique_id=607387343]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/VBoxContainer/HBoxContainer4" unique_id=91411186]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "Body:"
+
+[node name="Body" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/VBoxContainer/HBoxContainer4" unique_id=262516133 instance=ExtResource("2_1xyyu")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+focus_mode = 0
+selected = 0
+item_count = 8
+popup/item_0/text = "Regular"
+popup/item_0/id = 0
+popup/item_1/text = "Muscular"
+popup/item_1/id = 1
+popup/item_2/text = "Child"
+popup/item_2/id = 2
+popup/item_3/text = "Gaunt"
+popup/item_3/id = 3
+popup/item_4/text = "Musc. Gaunt"
+popup/item_4/id = 4
+popup/item_5/text = "Elderly"
+popup/item_5/id = 5
+popup/item_6/text = "Musc. Elderly"
+popup/item_6/id = 6
+popup/item_7/text = "Jack"
+popup/item_7/id = 7
+
+[node name="DisableBodyVisibility" type="TextureButton" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/VBoxContainer/HBoxContainer4" unique_id=396747258]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "[title]Body And Head Visibility[/title]
+Show or hide the body and head layers."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+toggle_mode = true
+button_pressed = true
+texture_normal = SubResource("AtlasTexture_ekg8f")
+texture_pressed = SubResource("AtlasTexture_ckavm")
+metadata/primarycolors = {
+"data": [{
+"color": 4140350000.0,
+"colors": [0.0, 0.0, 29.0, 840312000.0, 94.0, 2553560000.0, 152.0, 3498730000.0, 179.0, 3785060000.0, 220.0, 4140350000.0, 239.0, 4008640000.0],
+"id": "human_skin_light",
+"name": "Light"
+}, {
+"color": 4290740000.0,
+"colors": [0.0, 0.0, 29.0, 840312000.0, 94.0, 2689270000.0, 152.0, 3498730000.0, 179.0, 4289020000.0, 220.0, 4290740000.0, 239.0, 4140350000.0],
+"id": "human_skin_peach",
+"name": "Peach"
+}, {
+"color": 3498730000.0,
+"colors": [0.0, 0.0, 29.0, 840312000.0, 94.0, 1463500000.0, 152.0, 2387960000.0, 179.0, 2691260000.0, 220.0, 3498730000.0, 239.0, 3416950000.0],
+"id": "human_skin_olive",
+"name": "Olive"
+}, {
+"color": 3212790000.0,
+"colors": [0.0, 0.0, 29.0, 840312000.0, 94.0, 1427380000.0, 152.0, 1463500000.0, 179.0, 1933660000.0, 220.0, 3212790000.0, 239.0, 3212790000.0],
+"id": "human_skin_brown",
+"name": "Brown"
+}, {
+"color": 1463500000.0,
+"colors": [0.0, 0.0, 29.0, 840312000.0, 94.0, 286331000.0, 152.0, 840312000.0, 179.0, 992813000.0, 220.0, 1463500000.0, 239.0, 1933660000.0],
+"id": "human_skin_black",
+"name": "Black"
+}],
+"palette": {
+"current_gradient": PackedColorArray(0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.196078, 0.0862745, 0.137255, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.596078, 0.203922, 0.301961, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.815686, 0.541176, 0.454902, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.882353, 0.607843, 0.490196, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.964706, 0.784314, 0.686275, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.933333, 0.933333, 0.933333, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1),
+"custom_colors": {
+"color": 4140350000.0,
+"colors": [0.0, 0.0, 29.0, 840312000.0, 94.0, 2553560000.0, 152.0, 3498730000.0, 179.0, 3785060000.0, 220.0, 4140350000.0, 239.0, 4008640000.0],
+"id": "human_skin_light",
+"name": "Light"
+},
+"item_selected": 0,
+"lightness": 0.0
+},
+"target": Object(TextureRect,"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":1,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":1,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(832, 1344),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":832.0,"offset_bottom":1344.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"pivot_offset_ratio":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","texture":Resource("res://addons/rpg_character_creator/textures/character/body/humanoid_m1.png"),"expand_mode":0,"stretch_mode":0,"flip_h":false,"flip_v":false,"script":null)
+
+}
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="PaletteButton" type="TextureButton" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/VBoxContainer/HBoxContainer4" unique_id=2008014847]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "[title]Edit Part Colors[/title]
+Edit the colors of this part of the character."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("4_0oti0")
+texture_hover = ExtResource("5_8ovvn")
+texture_disabled = ExtResource("6_e5quv")
+metadata/primarycolors = {
+"data": [{
+"color": 4140350000.0,
+"colors": [0.0, 0.0, 29.0, 840312000.0, 94.0, 2553560000.0, 152.0, 3498730000.0, 179.0, 3785060000.0, 220.0, 4140350000.0, 239.0, 4008640000.0],
+"id": "human_skin_light",
+"name": "Light"
+}, {
+"color": 4290740000.0,
+"colors": [0.0, 0.0, 29.0, 840312000.0, 94.0, 2689270000.0, 152.0, 3498730000.0, 179.0, 4289020000.0, 220.0, 4290740000.0, 239.0, 4140350000.0],
+"id": "human_skin_peach",
+"name": "Peach"
+}, {
+"color": 3498730000.0,
+"colors": [0.0, 0.0, 29.0, 840312000.0, 94.0, 1463500000.0, 152.0, 2387960000.0, 179.0, 2691260000.0, 220.0, 3498730000.0, 239.0, 3416950000.0],
+"id": "human_skin_olive",
+"name": "Olive"
+}, {
+"color": 3212790000.0,
+"colors": [0.0, 0.0, 29.0, 840312000.0, 94.0, 1427380000.0, 152.0, 1463500000.0, 179.0, 1933660000.0, 220.0, 3212790000.0, 239.0, 3212790000.0],
+"id": "human_skin_brown",
+"name": "Brown"
+}, {
+"color": 1463500000.0,
+"colors": [0.0, 0.0, 29.0, 840312000.0, 94.0, 286331000.0, 152.0, 840312000.0, 179.0, 992813000.0, 220.0, 1463500000.0, 239.0, 1933660000.0],
+"id": "human_skin_black",
+"name": "Black"
+}],
+"palette": {
+"current_gradient": PackedColorArray(0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.196078, 0.0862745, 0.137255, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.596078, 0.203922, 0.301961, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.815686, 0.541176, 0.454902, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.882353, 0.607843, 0.490196, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.964706, 0.784314, 0.686275, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.933333, 0.933333, 0.933333, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1),
+"custom_colors": {
+"color": 4140350000.0,
+"colors": [0.0, 0.0, 29.0, 840312000.0, 94.0, 2553560000.0, 152.0, 3498730000.0, 179.0, 3785060000.0, 220.0, 4140350000.0, 239.0, 4008640000.0],
+"id": "human_skin_light",
+"name": "Light"
+},
+"item_selected": 0,
+"lightness": 0.0
+},
+"target": Object(TextureRect,"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":1,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":1,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(832, 1344),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":832.0,"offset_bottom":1344.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"pivot_offset_ratio":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","texture":Resource("res://addons/rpg_character_creator/textures/character/body/humanoid_m1.png"),"expand_mode":0,"stretch_mode":0,"flip_h":false,"flip_v":false,"script":null)
+
+}
+metadata/secondarycolors = -1
+metadata/fixedcolors = -1
+
+[node name="BodyLock" type="TextureButton" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/VBoxContainer/HBoxContainer4" unique_id=1564689964]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Lock this part so that it cannot be changed when using random selection."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+toggle_mode = true
+texture_normal = SubResource("AtlasTexture_e5quv")
+texture_pressed = SubResource("AtlasTexture_vv0y5")
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2" unique_id=1495288011]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="SaveAndImportContainer" type="VBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2" unique_id=121619899]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SaveTabContainer" type="TabContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/SaveAndImportContainer" unique_id=372083462]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 280)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_t157f")
+theme_override_styles/tabbar_background = SubResource("StyleBoxFlat_gpmkp")
+theme_override_styles/tab_unselected = SubResource("StyleBoxFlat_7l0sp")
+theme_override_styles/tab_selected = SubResource("StyleBoxFlat_3y7dv")
+theme_override_styles/tab_focus = SubResource("StyleBoxEmpty_gpmkp")
+current_tab = 0
+all_tabs_in_front = true
+use_hidden_tabs_for_min_size = true
+
+[node name="Save Options" type="VBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/SaveAndImportContainer/SaveTabContainer" unique_id=1938504478]
+layout_mode = 2
+theme_override_constants/separation = 10
+metadata/_tab_index = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/SaveAndImportContainer/SaveTabContainer/Save Options" unique_id=181067967]
+layout_mode = 2
+theme_override_constants/margin_bottom = -6
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/SaveAndImportContainer/SaveTabContainer/Save Options/MarginContainer" unique_id=1664287994]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/SaveAndImportContainer/SaveTabContainer/Save Options/MarginContainer/HBoxContainer3" unique_id=337287672]
+custom_minimum_size = Vector2(85, 0)
+layout_mode = 2
+text = "Mode: "
+
+[node name="SaveMode" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/SaveAndImportContainer/SaveTabContainer/Save Options/MarginContainer/HBoxContainer3" unique_id=148385507 instance=ExtResource("2_1xyyu")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Save Modes:
+
+[ul]
+\"Save Character\": Saves the playable character with all equipped gear and body parts, regardless of any layer visibility changes made in the editor.
+
+\"Save Event\": Saves the non-playable character with all equipped gear and body parts, regardless of any layer visibility changes made in the editor.
+
+\"Set\": Saves the installed gear pieces into a configuration file. Body parts are ignored. When applied to a character, only the defined gear parts update their visuals.
+
+\"Save Costume\": Saves the final visual configuration shown in the editor, including manually hidden layers. When applied to a character, all of its visuals are replaced by the costume.
+[/ul]
+
+[Note]: Some layers may be automatically hidden by equipped items (for example, a helmet hiding the hair). These automatic visibility changes are respected by all save modes. Manually hidden layers, however, only affect Save Costume. Other save modes ignore manual layer visibility."
+focus_mode = 0
+selected = 0
+item_count = 4
+popup/item_0/text = "Save Character"
+popup/item_0/id = 0
+popup/item_1/text = "Save Event"
+popup/item_1/id = 1
+popup/item_2/text = "Save Set"
+popup/item_2/id = 2
+popup/item_3/text = "Save Costume"
+popup/item_3/id = 3
+
+[node name="SaveOptions1" type="VBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/SaveAndImportContainer/SaveTabContainer/Save Options" unique_id=2133716843]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/SaveAndImportContainer/SaveTabContainer/Save Options/SaveOptions1" unique_id=1575969633]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/SaveAndImportContainer/SaveTabContainer/Save Options/SaveOptions1/HBoxContainer" unique_id=677056214]
+custom_minimum_size = Vector2(85, 0)
+layout_mode = 2
+text = "Name:"
+
+[node name="CharacterName" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/SaveAndImportContainer/SaveTabContainer/Save Options/SaveOptions1/HBoxContainer" unique_id=1565905019 instance=ExtResource("8_ilb35")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Assign a name to this character. The save files will be a combination of this name plus the file type (name_actor, name_face_preview, name_character_preview, and name_battler_preview)."
+placeholder_text = "character name"
+
+[node name="CharacterRandomNameButton" type="TextureButton" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/SaveAndImportContainer/SaveTabContainer/Save Options/SaveOptions1/HBoxContainer" unique_id=1835178319]
+unique_name_in_owner = true
+texture_filter = 1
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+tooltip_text = "Write a random name for the character, using the current race to define some rules for how the name is formed."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("11_3y7dv")
+texture_hover = ExtResource("12_bpu0w")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="FolderContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/SaveAndImportContainer/SaveTabContainer/Save Options/SaveOptions1" unique_id=2071395977]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/SaveAndImportContainer/SaveTabContainer/Save Options/SaveOptions1/FolderContainer" unique_id=1302954920]
+custom_minimum_size = Vector2(85, 0)
+layout_mode = 2
+text = "Folder:"
+
+[node name="CharacterFolder" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/SaveAndImportContainer/SaveTabContainer/Save Options/SaveOptions1/FolderContainer" unique_id=1305970491 instance=ExtResource("9_pe070")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "[title]Directory of storage[/title]
+Choose the directory where the files are to be saved, by default the directory \"Data/Characters/\" is selected."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+text = "Scenes/NPCs/"
+
+[node name="CreateSubFolder" type="CheckBox" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/SaveAndImportContainer/SaveTabContainer/Save Options/SaveOptions1/FolderContainer" unique_id=1050040547]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "A folder will be created in the selected directory using the character’s name as the folder name."
+mouse_default_cursor_shape = 2
+button_pressed = true
+icon = SubResource("AtlasTexture_y5s15")
+
+[node name="SaveOptions2" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/SaveAndImportContainer/SaveTabContainer/Save Options" unique_id=968476794]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ShowWeapon" type="CheckBox" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/SaveAndImportContainer/SaveTabContainer/Save Options/SaveOptions2" unique_id=525984235]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Weapon Visibility[/title]
+The character is always shown with his weapon visible."
+mouse_default_cursor_shape = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_7l0sp")
+text = "Show Weapon"
+
+[node name="MakeInmutable" type="CheckBox" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/SaveAndImportContainer/SaveTabContainer/Save Options/SaveOptions2" unique_id=1602199026]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Inmutable Character[/title]
+Mark this character as immutable, meaning that his appearance will never change regardless of the equipment he wears.
+
+\"Note\": Weapons will be displayed as long as the equipped weapon is compatible with this character's texture."
+mouse_default_cursor_shape = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_7l0sp")
+text = "Make Inmutable"
+
+[node name="CustomeLabel" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/SaveAndImportContainer/SaveTabContainer/Save Options" unique_id=264603990]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(366, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.66656864, 0.6665687, 0.66656864, 1)
+text = "(Hide unwanted parts of the costume before saving)"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="SaveData" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/SaveAndImportContainer/SaveTabContainer/Save Options" unique_id=1618700930]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 10
+tooltip_text = "Save a playable character, an event (non-playable character), or a costume.
+
+[Note]: Costumes will be saved in the folder \"res://Assets/Parts/Customes/\", and characters and events in the selected folder."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxTexture_ml17y")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_itlh1")
+theme_override_styles/hover = SubResource("StyleBoxTexture_5tkkc")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_0oti0")
+text = "💾 SAVE"
+icon_alignment = 1
+
+[node name="Import Options" type="VBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/SaveAndImportContainer/SaveTabContainer" unique_id=175803658]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="Import" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/SaveAndImportContainer/SaveTabContainer/Import Options" unique_id=536482075]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+tooltip_text = "Import a playable character, an event, an individual part, or a costume.
+
+[Note]: When importing a part, it will be discarded if it is not compatible with the selected body or head. Importing a character, event, or costume will fully configure the editor character using the data from those files, overwriting any existing changes."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxTexture_ml17y")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_itlh1")
+theme_override_styles/hover = SubResource("StyleBoxTexture_5tkkc")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_0oti0")
+text = "📥 IMPORT CHARACTER"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer" unique_id=818140243]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="CharacterContainer" type="Control" parent="VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1858644655]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Character" parent="VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CharacterContainer" unique_id=630147344 instance=ExtResource("8_ans2u")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureButton" type="TextureButton" parent="VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CharacterContainer" unique_id=376736692]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -24.0
+offset_bottom = 24.0
+grow_horizontal = 0
+tooltip_text = "[title]Help[/title]
+The following controls are available:
+
+[ul]
+UP, DOWN, LEFT, RIGHT: Hold any of these keys to preview the character’s walking animation in the corresponding direction.
+SPACE: Displays the attack animation of the currently equipped weapon.
+Mouse Wheel (Up/Down): Zoom in or out on the character preview in the editor.
+Right Mouse Button (Parts tab): Toggle the visibility of any layer in the editor (costumes are saved with hidden layers set to \"none\").
+Middle Mouse Button (Parts tab): Set the selected part to \"none\".
+[/ul]"
+mouse_default_cursor_shape = 16
+texture_normal = SubResource("AtlasTexture_8i5af")
+texture_hover = SubResource("AtlasTexture_24crn")
+
+[node name="Randomize" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1193977018]
+layout_mode = 2
+size_flags_vertical = 8
+tooltip_text = "Randomize the character’s unfixed parts.
+
+[Note]: You can lock/unlock each part using the padlock available on the right side of each part’s tab."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxTexture_ml17y")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_itlh1")
+theme_override_styles/hover = SubResource("StyleBoxTexture_5tkkc")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_0oti0")
+text = "🎲 RANDOMIZE"
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer" unique_id=1107749460]
+z_index = 500
+custom_minimum_size = Vector2(460, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_styles/panel = SubResource("StyleBoxFlat_e5quv")
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer" unique_id=1343936684]
+custom_minimum_size = Vector2(380, 0)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3" unique_id=2137462059]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/HBoxContainer" unique_id=39588714]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.995239, 0.695313, 1)
+text = "Palette For: "
+
+[node name="PartsGroup" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/HBoxContainer" unique_id=797214643 instance=ExtResource("2_1xyyu")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Select the group item to modify its color palettes."
+focus_mode = 0
+mouse_filter = 2
+disabled = true
+selected = 0
+item_count = 1
+popup/item_0/text = "Eyes"
+popup/item_0/id = 0
+metadata/original_focus_mode = 2
+metadata/original_mouse_filer = 0
+
+[node name="SynchronizePalettes" type="TextureButton" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/HBoxContainer" unique_id=1402737852]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "[ul]
+ \"Locked padlock\": When selecting a part that can be merged with others, the “Sync Layers” option is checked.
+ \"Unlocked padlock\": When selecting a part that can be merged with others, the “layer id” option specific to that layer is checked.
+[/ul]"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+disabled = true
+toggle_mode = true
+button_pressed = true
+texture_normal = SubResource("AtlasTexture_dexev")
+texture_pressed = SubResource("AtlasTexture_80m8u")
+texture_disabled = SubResource("AtlasTexture_belam")
+
+[node name="AllPresets" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3" unique_id=1484543855 instance=ExtResource("2_1xyyu")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Displays all colors from the selected palette."
+focus_mode = 0
+theme = SubResource("Theme_ans2u")
+can_select_item_with_button_wheel = false
+can_click_with_button_middle = false
+
+[node name="PaletteSelector" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3" unique_id=1121134647 instance=ExtResource("2_1xyyu")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Select which palette you want to edit the colors of."
+focus_mode = 0
+theme = SubResource("Theme_ans2u")
+selected = 0
+item_count = 3
+popup/item_0/text = "Primary Colors"
+popup/item_0/id = 0
+popup/item_1/text = "Secondary Colors"
+popup/item_1/id = 1
+popup/item_1/disabled = true
+popup/item_2/text = "Tertiary Colors"
+popup/item_2/id = 2
+popup/item_2/disabled = true
+can_select_item_with_button_wheel = false
+can_click_with_button_middle = false
+
+[node name="PalettePresets" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3" unique_id=1843201477 instance=ExtResource("2_1xyyu")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Select a color preset for the selected palette."
+focus_mode = 0
+theme = SubResource("Theme_ans2u")
+can_select_item_with_button_wheel = false
+can_click_with_button_middle = false
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3" unique_id=1402415572]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3" unique_id=312943424]
+layout_mode = 2
+
+[node name="GradientLabel" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/HBoxContainer2" unique_id=965735618]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.995239, 0.695313, 1)
+text = "Primary Gradient"
+
+[node name="GradientFastButton1" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/HBoxContainer2" unique_id=428283958]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+tooltip_text = "Show the \"Primary Colors\" palette."
+mouse_default_cursor_shape = 2
+theme_override_colors/font_focus_color = Color(0, 0.8976866, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_ans2u")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ilb35")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_pe070")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_e5quv")
+toggle_mode = true
+button_pressed = true
+button_group = SubResource("ButtonGroup_e5quv")
+text = "1"
+
+[node name="GradientFastButton2" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/HBoxContainer2" unique_id=1923917912]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+tooltip_text = "Show the \"Secondary Colors\" palette."
+mouse_default_cursor_shape = 2
+theme_override_colors/font_focus_color = Color(0, 0.8976866, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_ans2u")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ilb35")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_pe070")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_e5quv")
+disabled = true
+toggle_mode = true
+button_group = SubResource("ButtonGroup_e5quv")
+text = "2"
+
+[node name="GradientFastButton3" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/HBoxContainer2" unique_id=1453535948]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+tooltip_text = "Show the \"tertiary Colors\" palette."
+mouse_default_cursor_shape = 2
+theme_override_colors/font_focus_color = Color(0, 0.8976866, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_ans2u")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ilb35")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_pe070")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_e5quv")
+disabled = true
+toggle_mode = true
+button_group = SubResource("ButtonGroup_e5quv")
+text = "3"
+
+[node name="FineTune" type="TextureButton" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/HBoxContainer2" unique_id=160357150]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+tooltip_text = "Edit the hue, brightness, and saturation of the selected colors."
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_ans2u")
+texture_hover = SubResource("AtlasTexture_ilb35")
+texture_disabled = SubResource("AtlasTexture_pe070")
+
+[node name="CopyColors" type="TextureButton" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/HBoxContainer2" unique_id=1305044274]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Copy the list of colors to the clipboard. This list can be pasted into any palette."
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_7l0sp")
+texture_hover = SubResource("AtlasTexture_t157f")
+texture_disabled = SubResource("AtlasTexture_gpmkp")
+
+[node name="PasteColors" type="TextureButton" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/HBoxContainer2" unique_id=210101683]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Paste a list of previously saved palette colors from the clipboard"
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_3y7dv")
+texture_hover = SubResource("AtlasTexture_bpu0w")
+texture_disabled = SubResource("AtlasTexture_5pv3w")
+
+[node name="CurentColorConatiner" type="HFlowContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3" unique_id=644942633]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/h_separation = 12
+
+[node name="SavingLayer" type="Control" parent="." unique_id=326270472]
+unique_name_in_owner = true
+visible = false
+z_index = 100
+layout_mode = 2
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
+
+[node name="SavingBackground" type="TextureRect" parent="SavingLayer" unique_id=1121417459]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+
+[node name="SavingbackgroundColor" type="ColorRect" parent="SavingLayer" unique_id=1013549754]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.76862746)
+
+[node name="Label" type="Label" parent="SavingLayer" unique_id=882773021]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -302.5
+offset_top = 137.5
+offset_right = 302.5
+offset_bottom = 182.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 32
+text = "One moment please, saving..."
+horizontal_alignment = 1
+
+[node name="Control" type="Control" parent="SavingLayer" unique_id=969653263]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="SavingLayer/Control" unique_id=1773016485]
+unique_name_in_owner = true
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_gru0i")
+autoplay = "default"
+
+[node name="Overlay" type="CanvasLayer" parent="." unique_id=416427992]
+unique_name_in_owner = true
+layer = 100
+visible = false
+
+[node name="OverlayTexture" type="TextureRect" parent="Overlay" unique_id=693419113]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dark" type="ColorRect" parent="Overlay" unique_id=1096494281]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.4745098)
+
+[node name="CenterContainer" type="CenterContainer" parent="Overlay" unique_id=1303526557]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Overlay/CenterContainer" unique_id=379118647]
+layout_mode = 2
+
+[node name="OverlayTitle" type="Label" parent="Overlay/CenterContainer/VBoxContainer" unique_id=1690994652]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "SAVING..."
+
+[node name="Control" type="Control" parent="Overlay/CenterContainer/VBoxContainer" unique_id=676182699]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Overlay/CenterContainer/VBoxContainer" unique_id=316859499]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = SubResource("AnimatedTexture_hf2ss")
+expand_mode = 1
+
+[connection signal="item_selected" from="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/VBoxContainer/HBoxContainer/Palettes" to="." method="_on_palettes_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/VBoxContainer/HBoxContainer2/Races" to="." method="_on_races_item_selected"]
+[connection signal="toggled" from="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/VBoxContainer/HBoxContainer2/UnrestrictedMode" to="." method="_on_unrestricted_mode_toggled"]
+[connection signal="item_selected" from="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/VBoxContainer/HBoxContainer3/Gender" to="." method="_on_gender_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/VBoxContainer/HBoxContainer4/Body" to="." method="_on_body_item_selected"]
+[connection signal="toggled" from="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/VBoxContainer/HBoxContainer4/DisableBodyVisibility" to="." method="_on_disable_body_visibility_toggled"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/VBoxContainer/HBoxContainer4/PaletteButton" to="." method="_on_body_palette_button_pressed"]
+[connection signal="item_selected" from="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/SaveAndImportContainer/SaveTabContainer/Save Options/MarginContainer/HBoxContainer3/SaveMode" to="." method="_on_save_mode_item_selected"]
+[connection signal="text_changed" from="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/SaveAndImportContainer/SaveTabContainer/Save Options/SaveOptions1/HBoxContainer/CharacterName" to="." method="_on_character_name_text_changed"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/SaveAndImportContainer/SaveTabContainer/Save Options/SaveOptions1/HBoxContainer/CharacterRandomNameButton" to="." method="_on_character_random_name_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/SaveAndImportContainer/SaveTabContainer/Save Options/SaveOptions1/FolderContainer/CharacterFolder" to="." method="_on_character_folder_pressed"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/SaveAndImportContainer/SaveTabContainer/Save Options/SaveData" to="." method="_on_save_data_pressed"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/VBoxContainer2/SaveAndImportContainer/SaveTabContainer/Import Options/Import" to="." method="_on_import_pressed"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/Randomize" to="." method="_on_randomize_pressed"]
+[connection signal="item_selected" from="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/HBoxContainer/PartsGroup" to="." method="_on_part_list_options_item_selected"]
+[connection signal="toggled" from="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/HBoxContainer/SynchronizePalettes" to="." method="_on_synchronize_palettes_toggled"]
+[connection signal="item_selected" from="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/AllPresets" to="." method="_on_all_presets_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/PaletteSelector" to="." method="_on_palette_selector_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/PalettePresets" to="." method="_on_palette_presets_item_selected"]
+[connection signal="toggled" from="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/HBoxContainer2/GradientFastButton1" to="." method="_on_gradient_fast_button_1_toggled"]
+[connection signal="toggled" from="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/HBoxContainer2/GradientFastButton2" to="." method="_on_gradient_fast_button_2_toggled"]
+[connection signal="toggled" from="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/HBoxContainer2/GradientFastButton3" to="." method="_on_gradient_fast_button_3_toggled"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer3/HBoxContainer2/FineTune" to="." method="_open_fine_tune_dialog"]

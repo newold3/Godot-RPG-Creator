@@ -6,6 +6,12 @@ var current_page: RPGEventPage
 var current_event: RPGEvent
 var current_event_list: Array
 
+var path_cache: Dictionary = {
+	"lpc_event": "",
+	"image": "",
+	"scene": ""
+}
+
 var busy: bool = false
 
 var last_item_type_selected: int
@@ -31,20 +37,46 @@ func _fill_events(p_current_event: RPGEvent, event_list: Array, selected_id: int
 	if event_list.is_empty():
 		node.add_item("none")
 		node.set_item_disabled(-1, true)
+		node.set_item_metadata(-1, -1)
+		selected_id = 0
 	elif event_list.size() == 1:
 		node.add_item("Event %s: %s" % [current_event.id, current_event.name])
 		node.set_item_disabled(-1, true)
+		node.set_item_metadata(-1, current_event._uniq_id)
+		selected_id = 0
 	else:
-		for ev: RPGEvent in event_list:
+		for i in event_list.size():
+			var ev: RPGEvent = event_list[i]
 			node.add_item("Event %s: %s" % [ev.id, ev.name])
 			node.set_item_disabled(-1, ev.id == current_event.id)
-	
+			node.set_item_metadata(-1, ev._uniq_id)
+			if selected_id == ev._uniq_id: selected_id = i
+
 	if selected_id >= 0 and event_list.size() > selected_id:
 		node.select(selected_id)
 	else:
 		node.select(0)
 	
 	current_event_list = event_list
+
+
+func _fill_pressure_targets(p_current_event: RPGEvent, event_list: Array, selected_ids: PackedInt64Array) -> void:
+	var node = %AllowPressureTargets
+	node.clear()
+
+	node.add_item("player")
+	node.set_item_metadata(-1, 0)
+	if 0 in selected_ids:
+		node.set_item_selected(0, true)
+	
+	for i in event_list.size():
+		var event: RPGEvent = event_list[i]
+		if event == p_current_event: continue
+		
+		node.add_item("Event %s: %s" % [event.id, event.name])
+		node.set_item_metadata(-1, event._uniq_id)
+		if event._uniq_id in selected_ids:
+			node.set_item_selected(i+1, true)
 
 
 func fill_local_switches() -> void:
@@ -60,6 +92,16 @@ func fill_page(page: RPGEventPage) -> void:
 	if page:
 		fill_local_switches()
 		current_page = page
+		if current_page.event_tool_list == null: current_page.event_tool_list = []
+		if current_page.event_signal_list == null: current_page.event_signal_list = []
+		if current_page.character_type == null: current_page.character_type = 0
+		
+		path_cache = {
+			"lpc_event": "",
+			"image": "",
+			"scene": ""
+		}
+		
 		%Condition1Pressed.set_pressed(current_page.condition.use_switch1)
 		%Condition2Pressed.set_pressed(current_page.condition.use_switch2)
 		%Condition3Pressed.set_pressed(current_page.condition.use_local_switch)
@@ -84,11 +126,8 @@ func fill_page(page: RPGEventPage) -> void:
 		%PageName.text = current_page.name
 		%MarkAsQuestPage.set_pressed_no_signal(current_page.is_quest_page)
 		
-		if current_page.character_path in FileCache.cache.events:
-			var res: RPGLPCCharacter = load(current_page.character_path)
-			%CharacterImage.set_icon(res.event_preview)
-		else:
-			%CharacterImage.set_icon("")
+		_update_graphic()
+			
 		var local_switch_id = max(0, min(%Condition3Value.get_item_count() - 1, current_page.condition.local_switch_id))
 		current_page.condition.local_switch_id = local_switch_id 
 		%Condition3Value.select(local_switch_id)
@@ -98,8 +137,7 @@ func fill_page(page: RPGEventPage) -> void:
 		%Condition4Value3.value = current_page.condition.variable_value
 		var launcher = max(0, min(%Launcher.get_item_count() - 1, current_page.launcher))
 		current_page.launcher = launcher
-		%Launcher.select(launcher)
-		%TriggerEventList.visible = (launcher == 2)
+	
 		%ZIndex.set_value(current_page.z_index)
 		var movement_type = max(0, min(%MovementType.get_item_count() - 1, current_page.movement_type))
 		current_page.movement_type = movement_type
@@ -123,23 +161,165 @@ func fill_page(page: RPGEventPage) -> void:
 		%CharacterImage.set_blend_color(current_page.modulate)
 		var window: Window = get_window()
 		if window and window is EditEventEditor:
-			var movement_to_target = current_page.movement_to_target - 1
+			var movement_to_target = current_page.movement_to_target
 			_fill_events(window.current_event, window.events.get_events(), movement_to_target)
+			_fill_pressure_targets(window.current_event, window.events.get_events(), current_page.condition.pressure_targets)
 		else:
 			_fill_events(null, [], -1)
+			_fill_pressure_targets(null, [], [])
+		
+		%Condition7Pressed.set_pressed_no_signal(current_page.condition.use_pressure)
+		%AllowPressureTargets.set_disabled(!current_page.condition.use_pressure)
+		
+		_set_pressed_mode(current_page.condition.use_pressure)
 		
 		%MovementRouteButton.visible = movement_type == 4
 		%SelectTargetEvent.visible = movement_type == 5
 		
-		#if (
-			#current_page.launcher == current_page.LAUNCHER_MODE.UNDER_PLAYER or
-			#current_page.launcher == current_page.LAUNCHER_MODE.UNDER_EVENT or
-			#current_page.launcher == current_page.LAUNCHER_MODE.ANY_CONTACT or
-			#current_page.launcher == current_page.LAUNCHER_MODE.CALLER
-		#):
-			#%EventOption4.set_disabled(true)
-		#else:
-			#%EventOption4.set_disabled(false)
+		%Launcher.select(launcher)
+		%TriggerEventList.visible = launcher in [2, 7, 8]
+		%PlaceHolderLauncher.visible = !%TriggerEventList.visible
+		_configure_launcher()
+		%Launcher.item_selected.emit(launcher)
+
+
+func _update_graphic() -> void:
+	%DataTypeSelected.select(current_page.character_type)
+
+	%CharacterImage.set_icon("")
+	
+	match current_page.character_type:
+		0:
+			path_cache.lpc_event = current_page.character_path
+			if current_page.character_path in FileCache.cache.events:
+				var res: RPGLPCCharacter = load(current_page.character_path)
+				%CharacterImage.set_icon(res.event_preview)
+		1:
+			path_cache.image = current_page.character_path
+			%CharacterImage.set_icon(current_page.character_path, current_page.character_region)
+		2:
+			path_cache.scene = current_page.character_path
+			_set_icon_from_scene(current_page.character_path)
+
+
+func _set_icon_from_scene(path: String) -> void:
+	var preview_path = path.get_basename() + "_preview.png"
+	if FileAccess.file_exists(preview_path):
+		%CharacterImage.set_icon(preview_path)
+	else:
+		var event_editor = get_tree().get_nodes_in_group("event_editor")
+		if event_editor:
+			event_editor = event_editor[0]
+			event_editor.resource_previewer.queue_resource_preview(path, self, "_update_image", true)
+
+
+func _update_image(_path: String, preview: Texture, thumbnail_preview, using_counter: bool = false) -> void:
+	if preview is Texture:
+		%CharacterImage.set_main_texture(preview, Rect2())
+	elif thumbnail_preview:
+		%CharacterImage.set_main_texture(thumbnail_preview, Rect2())
+
+
+func _fill_trigger_list() -> void:
+	var node = %TriggerEventList
+	
+	if not current_page:
+		node.text = ""
+		node.set_disabled(true)
+		return
+	
+	match current_page.launcher:
+		2: # Events
+			node.text = "Select Events"
+			var events = current_event_list
+			var text = "Event"
+			var valid_events: PackedStringArray = []
+			for ev: RPGEvent in events:
+				if ev._uniq_id in current_page.event_trigger_list:
+					valid_events.append("%s: %s" % [ev.id, ev.name])
+			if not valid_events.is_empty():
+				for i in valid_events.size():
+					if i == 0:
+						if valid_events.size() == 1:
+							text += ": " + valid_events[i]
+						else:
+							text += "s: " + valid_events[i]
+					else:
+						text += ", " + valid_events[i]
+				node.text = text
+		7: # Tools
+			node.text = "Select Tools"
+			var list = RPGSYSTEM.database.types.tool_types
+			var text = "Tool"
+			var valid_events: PackedStringArray = []
+			for i in list.size():
+				if i in current_page.event_tool_list:
+					valid_events.append("%s: %s" % [i + 1, list[i]])
+			if not valid_events.is_empty():
+				for i in valid_events.size():
+					if i == 0:
+						if valid_events.size() == 1:
+							text += ": " + valid_events[i]
+						else:
+							text += "s: " + valid_events[i]
+					else:
+						text += ", " + valid_events[i]
+				node.text = text
+		8: # Signals
+			node.text = "Select Signals"
+			var list = RPGSYSTEM.database.system.custom_signal_list
+			var text = "Signal"
+			var valid_events: PackedStringArray = []
+			for i in list.size():
+				if i in current_page.event_signal_list:
+					valid_events.append("%s: %s" % [i + 1, list[i]])
+			if not valid_events.is_empty():
+				for i in valid_events.size():
+					if i == 0:
+						if valid_events.size() == 1:
+							text += ": " + valid_events[i]
+						else:
+							text += "s: " + valid_events[i]
+					else:
+						text += ", " + valid_events[i]
+				node.text = text
+
+
+func _configure_launcher() -> void:
+	var node = %TriggerEventList
+	node.set_disabled(!node.visible)
+	
+	var _is_valid: bool = false
+	
+	if node.pressed.is_connected(_on_trigger_event_list_pressed):
+		node.pressed.disconnect(_on_trigger_event_list_pressed)
+	
+	if node.pressed.is_connected(_on_trigger_tool_list_pressed):
+		node.pressed.disconnect(_on_trigger_tool_list_pressed)
+	
+	if node.pressed.is_connected(_on_trigger_signal_list_pressed):
+		node.pressed.disconnect(_on_trigger_signal_list_pressed)
+	
+	match current_page.launcher:
+		2: # Events
+			node.text = ""
+			node.tooltip_text = "[title]Trigger Event List[/title]\nSelect the events that can trigger this event."
+			_is_valid = true
+			node.pressed.connect(_on_trigger_event_list_pressed)
+		7: # Tools
+			node.text = ""
+			node.tooltip_text = "[title]Trigger Tool List[/title]\nSelect the tools that can trigger this event."
+			_is_valid = true
+			node.pressed.connect(_on_trigger_tool_list_pressed)
+		8: # Signals
+			node.text = ""
+			node.tooltip_text = "[title]Trigger Signal List[/title]\nSelect the signals that can trigger this event."
+			_is_valid = true
+			node.pressed.connect(_on_trigger_signal_list_pressed)
+	
+	if _is_valid:
+		CustomTooltipManager.replace_all_tooltips_with_custom(node)
+		_fill_trigger_list()
 
 
 func _on_condition_1_pressed_toggled(toggled_on: bool) -> void:
@@ -268,17 +448,9 @@ func _on_launcher_item_selected(index: int) -> void:
 	if current_page:
 		current_page.launcher = index
 	
-	#if (
-		#current_page.launcher == current_page.LAUNCHER_MODE.UNDER_PLAYER or
-		#current_page.launcher == current_page.LAUNCHER_MODE.UNDER_EVENT or
-		#current_page.launcher == current_page.LAUNCHER_MODE.ANY_CONTACT or
-		#current_page.launcher == current_page.LAUNCHER_MODE.CALLER
-	#):
-		#%EventOption4.set_disabled(true)
-	#else:
-		#%EventOption4.set_disabled(false)
-	
-	%TriggerEventList.visible = (index == 2)
+	%TriggerEventList.visible = index in [2, 7, 8]
+	%PlaceHolderLauncher.visible = !%TriggerEventList.visible
+	_configure_launcher()
 	
 	changed.emit()
 
@@ -463,29 +635,64 @@ func _on_movement_route_button_pressed() -> void:
 
 
 func _on_character_image_clicked() -> void:
+	if current_page.character_type == 1:
+		_on_character_picker_clicked()
+		return
+		
 	var path = "res://addons/CustomControls/Dialogs/select_file_dialog.tscn"
 	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
 	
 	await get_tree().process_frame
 	
+	var current_path: String
+	match current_page.character_type:
+		0: current_path = path_cache.lpc_event
+		2: current_path = path_cache.scene
+	
 	dialog.destroy_on_hide = true
 	dialog.target_callable = _update_character_image
-	dialog.set_file_selected(current_page.character_path)
+	dialog.set_file_selected(current_path)
 	dialog.set_dialog_mode(0)
 	
-	dialog.fill_mix_files(["events"])
+	match current_page.character_type:
+		0: dialog.fill_mix_files(["events"])
+		2: dialog.fill_files_by_extension(current_path, ["tscn"])
 
 
 func _update_character_image(path: String) -> void:
-	if path in FileCache.cache.events:
-		current_page.character_path = path
+	current_page.character_path = path
+	
+	if current_page.character_type == 0 and path in FileCache.cache.events:
 		var res: RPGLPCCharacter = load(path)
 		%CharacterImage.set_icon(res.event_preview)
+		path_cache.lpc_event = path
 		changed.emit()
+	elif current_page.character_type == 2 and path.get_extension() == "tscn":
+		_set_icon_from_scene(current_page.character_path)
+		path_cache.scene = path
+		changed.emit()
+
+
+func _on_character_picker_clicked() -> void:
+	var path = "res://addons/CustomControls/Dialogs/select_icon_dialog.tscn"
+	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
+	var icon = RPGIcon.new(path_cache.image, current_page.character_region)
+	dialog.set_data(icon)
+	
+	dialog.icon_changed.connect(update_character_image.bind(icon))
+
+
+func update_character_image(icon: RPGIcon) -> void:
+	%CharacterImage.set_icon(icon.path, icon.region)
+	path_cache.image = icon.path
+	current_page.character_path = icon.path
+	current_page.character_region = icon.region
+	changed.emit()
 
 
 func _on_character_image_remove_requested() -> void:
 	current_page.character_path = ""
+	current_page.character_region = Rect2()
 	%CharacterImage.set_icon("")
 	changed.emit()
 
@@ -540,7 +747,7 @@ func _on_frequency_value_changed(value: float) -> void:
 
 func _on_select_target_event_item_selected(index: int) -> void:
 	if current_page:
-		current_page.movement_to_target = index + 1
+		current_page.movement_to_target = %SelectTargetEvent.get_item_metadata(index)
 
 
 func _on_trigger_event_list_pressed() -> void:
@@ -549,14 +756,60 @@ func _on_trigger_event_list_pressed() -> void:
 	
 	var items = []
 	for ev: RPGEvent in current_event_list:
-		items.append({"name": ev.name, "id": ev.id})
+		items.append({"name": ev.name, "id": ev.id, "uniq_id": ev._uniq_id})
 	
-	dialog.fill_events(items, current_event.id)
+	dialog.fill_events(items, current_event._uniq_id)
 	dialog.select_events(current_page.event_trigger_list)
 	
 	dialog.events_selected.connect(
-		func(list: PackedInt32Array):
+		func(list: PackedInt64Array):
 			current_page.event_trigger_list = list
+			_fill_trigger_list()
+	)
+
+
+func _on_trigger_tool_list_pressed() -> void:
+	if not current_page: return
+	
+	var path = "res://addons/CustomControls/Dialogs/select_any_multiple_data_dialog.tscn"
+	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
+	
+	dialog.set_texts("Select Tools", "Current Tool List", "[title]Tool List[/title]\nList of tools added to the database")
+	var data: PackedStringArray = RPGSYSTEM.database.types.tool_types.duplicate()
+	var selected_ids = current_page.event_tool_list
+	
+	for i in data.size():
+		data[i] = "%s: %s" % [i + 1, data[i]]
+	
+	dialog.fill_data(data, selected_ids)
+	
+	dialog.items_selected.connect(
+		func(list: PackedInt32Array):
+			current_page.event_tool_list = list
+			_fill_trigger_list()
+	)
+
+
+func _on_trigger_signal_list_pressed() -> void:
+	if not current_page: return
+	
+	var path = "res://addons/CustomControls/Dialogs/select_any_multiple_data_dialog.tscn"
+	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
+	
+	dialog.set_texts("Select Signals", "Current Signal List", "[title]Signal List[/title]\nList of signals added to the database")
+
+	var data: PackedStringArray = RPGSYSTEM.database.system.custom_signal_list.duplicate()
+	var selected_ids = current_page.event_signal_list
+	
+	for i in data.size():
+		data[i] = "%s: %s" % [i + 1, data[i]]
+	
+	dialog.fill_data(data, selected_ids)
+	
+	dialog.items_selected.connect(
+		func(list: PackedInt32Array):
+			current_page.event_signal_list = list
+			_fill_trigger_list()
 	)
 
 
@@ -568,16 +821,123 @@ func _on_page_name_text_changed(new_text: String) -> void:
 func _on_mark_as_quest_page_toggled(toggled_on: bool) -> void:
 	if current_page:
 		current_page.is_quest_page = toggled_on
-	
 
 
 func _on_character_image_custom_copy(node: Control, clipboard_key: String) -> void:
 	if not current_page.character_path.is_empty():
 		var clipboard = StaticEditorVars.CLIPBOARD
-		clipboard[clipboard_key] = current_page.character_path
+		var data_copied = {}
+		data_copied.character_path = current_page.character_path
+		data_copied.character_region = current_page.character_region
+		data_copied.character_type = current_page.character_type
+		clipboard[clipboard_key] = data_copied
 
 
 func _on_character_image_custom_paste(node: Control, clipboard_key: String) -> void:
 	var clipboard = StaticEditorVars.CLIPBOARD
 	if clipboard_key in clipboard:
-		_update_character_image(clipboard[clipboard_key])
+		var data_copied = clipboard[clipboard_key]
+		current_page.character_path = data_copied.character_path
+		current_page.character_region = data_copied.character_region
+		current_page.character_type = data_copied.character_type
+		_update_graphic()
+
+
+func _on_data_type_selected_item_selected(index: int) -> void:
+	if current_page:
+		current_page.character_type = index
+		
+		%CharacterImage.set_icon("")
+		match current_page.character_type:
+			0:
+				current_page.character_path = path_cache.lpc_event
+				if current_page.character_path in FileCache.cache.events:
+					var res: RPGLPCCharacter = load(current_page.character_path)
+					%CharacterImage.set_icon(res.event_preview)
+			1:
+				current_page.character_path = path_cache.image
+				%CharacterImage.set_icon(current_page.character_path)
+			2:
+				current_page.character_path = path_cache.scene
+				_set_icon_from_scene(current_page.character_path)
+
+
+func _on_page_extra_options_pressed() -> void:
+	var path = "res://addons/CustomControls/Dialogs/event_extra_options_dialog.tscn"
+	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
+	
+	dialog.set_page_options(current_page.options, current_page.condition.use_pressure)
+	dialog.OK.connect(_set_pressed_mode.bind(current_page.condition.use_pressure))
+
+
+func _on_condition_7_pressed_toggled(toggled_on: bool) -> void:
+	if current_page:
+		current_page.condition.use_pressure = toggled_on
+		_set_pressed_mode(toggled_on)
+		if current_page.condition.pressure_targets.is_empty():
+			_on_allow_pressure_targets_multi_selection_changed([])
+		if toggled_on:
+			current_page.options.event_type = 0	
+
+
+func _set_pressed_mode(value: bool) -> void:
+	var launcher = %Launcher
+	var selected_index = launcher.get_selected_id()
+	var active_indexes: Array = []
+	
+	# PRIORITY 1: Pressed Mode (Pressure Plate)
+	# This mode forces the event to be a trigger/sensor on the floor.
+	if value:
+		%AllowPressureTargets.set_disabled(false)
+		%EventOption4.set_pressed(true) # Force Traversable
+		%EventOption4.set_disabled(true)
+		
+		# Restricted to contact-based triggers
+		active_indexes = [1, 2, 6]
+		if not selected_index in active_indexes:
+			selected_index = active_indexes[0]
+			
+		for i in launcher.get_item_count():
+			launcher.set_item_disabled(i, not i in active_indexes)
+			
+	# PRIORITY 2: Extra Options (Pickable / Moveable)
+	# Only active if Pressed mode is NOT enabled.
+	elif current_page.options.event_type != 0:
+		%AllowPressureTargets.set_disabled(true)
+		%EventOption4.set_pressed(false)
+		%EventOption4.set_disabled(true)
+		
+		if current_page.options.event_type == 1: # Pickable
+			active_indexes = [0] # 'Press Button'
+		elif current_page.options.event_type == 2: # Moveable
+			active_indexes = [1] # 'Player Touch'
+			
+		if not selected_index in active_indexes and not active_indexes.is_empty():
+			selected_index = active_indexes[0]
+			
+		for i in launcher.get_item_count():
+			launcher.set_item_disabled(i, not i in active_indexes)
+			
+	# PRIORITY 3: Default / Manual Mode
+	# Full freedom for the user when no special modes are active.
+	else:
+		%AllowPressureTargets.set_disabled(true)
+		%EventOption4.set_disabled(false)
+		
+		for i in launcher.get_item_count():
+			launcher.set_item_disabled(i, false)
+	
+	launcher.select(selected_index)
+	launcher.item_selected.emit(selected_index)
+
+
+func _on_allow_pressure_targets_multi_selection_changed(selected_ids: Array[int]) -> void:
+	current_page.condition.pressure_targets.clear()
+	var node = %AllowPressureTargets
+	if selected_ids.is_empty():
+		current_page.condition.pressure_targets.append(0)
+		node.set_item_selected(0, true)
+	else:
+		for id in selected_ids:
+			var real_id = node.get_item_metadata(id)
+			current_page.condition.pressure_targets.append(real_id)

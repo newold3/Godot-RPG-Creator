@@ -109,6 +109,9 @@ func _set_item_info(data: RPGExtractionItem) -> void:
 		%PlayerLevel.text = str(actor_profession_level)
 		
 		var text_color: Color = profession.get_interpolated_color(data.current_level, actor_profession_level)
+		
+		var level_name = profession.levels[data.current_level].name if  profession.levels.size() > data.current_level and data.current_level >= 0 else tr("Level")
+		%LevelName.text = level_name
 
 		# Set Label Colors
 		name_label.set("theme_override_colors/font_color", text_color)
@@ -116,7 +119,7 @@ func _set_item_info(data: RPGExtractionItem) -> void:
 
 	# Draw Item Icon
 	var scene_path = data.scene_path.get_basename() + "_preview" + ".png"
-	if ResourceLoader.exists(scene_path):
+	if AssetManager.exists(scene_path):
 		var contents: Texture = ResourceLoader.load(scene_path)
 		%Icon.texture = contents
 

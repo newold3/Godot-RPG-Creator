@@ -159,8 +159,14 @@ func _command_0021() -> void:
 			if value1 == 0:
 				target = GameManager.current_player
 			elif GameManager.current_map:
-				var event_id = 0 if value1 == 1 else value1 - 2
-				target = GameManager.current_map.get_in_game_event_by_pos(event_id)
+				match value1:
+					-1: # Current player
+						if GameManager.current_player:
+							target = GameManager.current_player
+					0: # This event:
+						target = current_interpreter.obj
+					_: # event with id target_id (uniq_id)
+						target = GameManager.current_map.get_in_game_event_by_uniq_id(value1)
 			if target:
 				if value2 < 4:
 					var direction = GameManager.current_player.DIRECTIONS.DOWN if value2 == 0 \
@@ -186,6 +192,11 @@ func _command_0021() -> void:
 						8: # Is On Vehicle
 							if target == GameManager.current_player and target.is_on_vehicle:
 								condition_met = true
+						9: # Is Pressed:
+							if target.has_method("is_pressed"):
+								print(target.is_pressed())
+								condition_met = target.is_pressed()
+								
 		7: # Vehicle
 			if GameManager.current_vehicle and GameManager.current_vehicle.vahicle_type == value1:
 				condition_met = true
@@ -542,13 +553,12 @@ func _command_0033() -> void:
 	# Retrieve the duration parameter from the command
 	var duration = current_command.parameters.get("duration", 0)
 	var is_local_wait = current_command.parameters.get("is_local", false)
-	
 	# Check if the duration is greater than 0 and the interpreter object exists
-	if duration > 0 and current_interpreter.obj:
+	if duration > 0:
 		# Create a timer for the specified duration and wait for it to timeout
 		if current_interpreter.is_parallel() and is_local_wait:
 			current_interpreter.paused = true
-			var t = current_interpreter.obj.get_tree().create_timer(duration)
+			var t = GameManager.get_tree().create_timer(duration)
 			t.timeout.connect(current_interpreter.set.bind("paused", false))
 		else:
-			await current_interpreter.obj.get_tree().create_timer(duration).timeout
+			await GameManager.get_tree().create_timer(duration).timeout

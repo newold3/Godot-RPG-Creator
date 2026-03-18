@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://b37tl2hhs6avo"]
+[gd_scene format=3 uid="uid://b37tl2hhs6avo"]
 
 [ext_resource type="Texture2D" uid="uid://d4krfboycghn2" path="res://Assets/Images/Icons/icon_pack3.png" id="1_t1vcu"]
 [ext_resource type="Script" uid="uid://bt4spfcvxp3b7" path="res://Scenes/ExtractionScenes/default_extraction_scene.gd" id="1_uvmr6"]
@@ -34,7 +34,7 @@ alpha_curve = SubResource("CurveTexture_eetwj")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_uvmr6"]
 size = Vector2(20, 5)
 
-[node name="DefaultExtractionScene" type="StaticBody2D" node_paths=PackedStringArray("main_node", "depleted_node", "particle_node", "extraction_particles", "name_label", "collision_shape")]
+[node name="DefaultExtractionScene" type="StaticBody2D" unique_id=695156088 node_paths=PackedStringArray("main_node", "depleted_node", "particle_node", "extraction_particles", "name_label", "collision_shape")]
 z_index = 1
 y_sort_enabled = true
 collision_layer = 2
@@ -47,12 +47,12 @@ extraction_particles = NodePath("ExtractionParticles")
 name_label = NodePath("ItemName")
 collision_shape = NodePath("CollisionShape2D")
 
-[node name="ViewportTextures" type="SubViewport" parent="."]
+[node name="ViewportTextures" type="SubViewport" parent="." unique_id=1666848379]
 unique_name_in_owner = true
 transparent_bg = true
 size = Vector2i(200, 200)
 
-[node name="DepletedNode" type="Sprite2D" parent="ViewportTextures"]
+[node name="DepletedNode" type="Sprite2D" parent="ViewportTextures" unique_id=1231846721]
 visible = false
 position = Vector2(85, 85)
 texture = ExtResource("1_t1vcu")
@@ -60,12 +60,12 @@ centered = false
 region_enabled = true
 region_rect = Rect2(478, 103, 30, 30)
 
-[node name="Shadow" type="SubViewport" parent="."]
+[node name="Shadow" type="SubViewport" parent="." unique_id=1818995898]
 unique_name_in_owner = true
 transparent_bg = true
 size = Vector2i(200, 200)
 
-[node name="FinalShadow" type="Sprite2D" parent="Shadow"]
+[node name="FinalShadow" type="Sprite2D" parent="Shadow" unique_id=10871343]
 unique_name_in_owner = true
 modulate = Color(0, 0, 0, 1)
 position = Vector2(100, 101)
@@ -73,57 +73,57 @@ texture = SubResource("ViewportTexture_uvmr6")
 centered = false
 offset = Vector2(-100, -113)
 
-[node name="Foot" type="Marker2D" parent="."]
+[node name="Foot" type="Marker2D" parent="." unique_id=1372128789]
 unique_name_in_owner = true
 
-[node name="MainNode" type="Sprite2D" parent="Foot"]
+[node name="MainNode" type="Sprite2D" parent="Foot" unique_id=1370001819]
 unique_name_in_owner = true
 position = Vector2(0, -12)
 texture = ExtResource("1_t1vcu")
 region_enabled = true
 region_rect = Rect2(478, 103, 30, 30)
 
-[node name="FinalSprite" type="Sprite2D" parent="."]
+[node name="FinalSprite" type="Sprite2D" parent="." unique_id=1326673425]
 unique_name_in_owner = true
 visible = false
 position = Vector2(0, -12)
 texture = SubResource("ViewportTexture_eetwj")
 
-[node name="MarkParticles" type="GPUParticles2D" parent="."]
+[node name="MarkParticles" type="GPUParticles2D" parent="." unique_id=345464638]
 position = Vector2(0, -15)
 explosiveness = 0.27
 randomness = 1.0
 process_material = SubResource("ParticleProcessMaterial_a7lg0")
 
-[node name="ExtractionParticles" parent="." instance=ExtResource("4_a7lg0")]
+[node name="ExtractionParticles" parent="." unique_id=2051196544 instance=ExtResource("4_a7lg0")]
 unique_name_in_owner = true
 position = Vector2(1, -15)
 emitting = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=242582604]
 unique_name_in_owner = true
 position = Vector2(0, -3.5)
 shape = SubResource("RectangleShape2D_uvmr6")
 
-[node name="Edges" type="Node2D" parent="."]
+[node name="Edges" type="Node2D" parent="." unique_id=421751949]
 
-[node name="Top" type="Marker2D" parent="Edges"]
+[node name="Top" type="Marker2D" parent="Edges" unique_id=1616058507]
 unique_name_in_owner = true
 position = Vector2(0, -19)
 
-[node name="Bottom" type="Marker2D" parent="Edges"]
+[node name="Bottom" type="Marker2D" parent="Edges" unique_id=1416738636]
 unique_name_in_owner = true
 position = Vector2(0, -4)
 
-[node name="Left" type="Marker2D" parent="Edges"]
+[node name="Left" type="Marker2D" parent="Edges" unique_id=1308492520]
 unique_name_in_owner = true
 position = Vector2(-8, -11)
 
-[node name="Right" type="Marker2D" parent="Edges"]
+[node name="Right" type="Marker2D" parent="Edges" unique_id=960896567]
 unique_name_in_owner = true
 position = Vector2(6, -11)
 
-[node name="ItemName" type="Label" parent="."]
+[node name="ItemName" type="Label" parent="." unique_id=1011566347]
 unique_name_in_owner = true
 z_index = 100
 z_as_relative = false

@@ -7,3 +7,4 @@ extends Resource
 @export var items: Array = [] # [ID Item]
 @export var weapons: Array = [] # [ID Weapon]
 @export var armors: Array = [] # [ID Armor]
+@export var costume: Array = [] # [ID Costume/Set]

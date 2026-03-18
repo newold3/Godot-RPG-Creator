@@ -13,6 +13,10 @@ func _ready() -> void:
 func set_data() -> void:
 	%Value.text = parameters[0].parameters.get("value", "")
 	current_variable_id = parameters[0].parameters.get("id", 1)
+	var operation = parameters[0].parameters.get("operation", 0)
+	%OperationType.select(max(0, min(%OperationType.get_item_count() - 1, operation)))
+	%NewValue.text = parameters[0].parameters.get("replace_text", "")
+	_set_extra_value_visible()
 	_set_variable_name()
 
 
@@ -30,6 +34,10 @@ func build_command_list() -> Array[RPGEventCommand]:
 	var commands: Array[RPGEventCommand] = super()
 
 	commands[-1].parameters.id = current_variable_id
+	var operation = %OperationType.get_selected_id()
+	commands[-1].parameters.operation = operation
+	if operation == 2:
+		commands[-1].parameters.replace_text = %NewValue.text
 	commands[-1].parameters.value = %Value.text
 	
 	return commands
@@ -47,3 +55,13 @@ func _on_variable_pressed() -> void:
 func _on_variable_selected(id: int, target) -> void:
 	current_variable_id = id
 	_set_variable_name()
+
+
+func _set_extra_value_visible() -> void:
+	var id = %OperationType.get_selected_id()
+	%NewValueContainer.visible = id == 2
+	size.y = get_contents_minimum_size().y
+
+
+func _on_operation_type_item_selected(index: int) -> void:
+	_set_extra_value_visible()

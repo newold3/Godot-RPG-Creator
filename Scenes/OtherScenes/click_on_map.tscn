@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://be5g0pttoiwse"]
+
+[ext_resource type="Texture2D" uid="uid://dmnkpruaoupkj" path="res://Assets/Images/Other/ripple.png" id="1_gq5rl"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_gq5rl"]
+blend_mode = 1
+
+[sub_resource type="Curve" id="Curve_j5rpv"]
+_data = [Vector2(0, 0), 0.0, 1.4, 0, 0, Vector2(0.2509091, 0.19506848), 0.0, 0.0, 0, 0, Vector2(1, 0.0011730194), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_n1qen"]
+curve = SubResource("Curve_j5rpv")
+
+[sub_resource type="Curve" id="Curve_g32nd"]
+_data = [Vector2(0, 0), 0.0, 1.4, 0, 0, Vector2(1, 0.7255132), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_gq5rl"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_j5rpv"]
+curve_x = SubResource("Curve_g32nd")
+curve_y = SubResource("Curve_g32nd")
+curve_z = SubResource("Curve_gq5rl")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_a1ldv"]
+particle_flag_disable_z = true
+direction = Vector3(0, 0, 0)
+spread = 0.0
+gravity = Vector3(0, 0, 0)
+scale_max = 2.0
+scale_curve = SubResource("CurveXYZTexture_j5rpv")
+alpha_curve = SubResource("CurveTexture_n1qen")
+
+[sub_resource type="GDScript" id="GDScript_gt7rb"]
+script/source = "extends GPUParticles2D
+
+
+func _ready() -> void:
+	finished.connect(queue_free)
+	emitting = true
+"
+
+[node name="ClickOnMap" type="GPUParticles2D" unique_id=125015288]
+material = SubResource("CanvasItemMaterial_gq5rl")
+emitting = false
+amount = 2
+texture = ExtResource("1_gq5rl")
+one_shot = true
+explosiveness = 0.45
+randomness = 0.9
+process_material = SubResource("ParticleProcessMaterial_a1ldv")
+script = SubResource("GDScript_gt7rb")

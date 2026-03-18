@@ -14,21 +14,24 @@ func get_class(): return "RPGEventPQuest"
 ## Level of relationship you must have with this NPC for
 ## this quest to be available (0 = no requirements).
 @export var relationship_requeriment_level: int = 0
+## Page that will be activated when talking to this event while having this quest active.
+@export var start_page: RPGMapEventID = RPGMapEventID.new()
+## Event and page required to complete this quest.
+@export var target_page: RPGMapEventID = RPGMapEventID.new()
 ## Initial dialogue that this event will reproduce before giving
 ## this quest to the player.
 @export var dialogue_on_start: String = ""
-## Dialogue that this event will reproduce if this mission has already
-## been given to the player and is in progress.
-@export var dialogue_in_progress: String = ""
 ## Dialogue that this event will reproduce when delivering the completed quest
 @export var dialogue_on_finish: String = ""
 ## Dialogue that this event will reproduce if this quest was given
 ## to the player and they failed to complete it.
 @export var dialogue_on_failure: String = ""
-## Self switch that is activated when this quest is given to the player
-## (this may activate other pages of the event if they have that switch
-## as their start condition). You can choose not to activate any self switches.
-@export var self_switch_enabled: int = -1
+## Start the specified event page if it exists and is set as the mission page when the mission begins.
+@export var on_start_quest_page: int = -1
+## Start the specified event page if it exists and is set as the mission page when the mission ends.
+@export var on_finish_quest_page: int = -1
+## Start the specified event page if it exists and is set as the mission page when the mission fails.
+@export var on_failure_quest_page: int = -1
 ## Overwrite the timer to complete this quest defined in the
 ## database with a specific timer.
 @export var use_custom_timer: bool = false

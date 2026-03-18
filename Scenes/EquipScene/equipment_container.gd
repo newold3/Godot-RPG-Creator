@@ -89,7 +89,7 @@ func create_slots() -> void:
 		var icon: RPGIcon = icons[i]
 		var type_name = equipment[i]
 		var tex = null
-		if ResourceLoader.exists(icon.path):
+		if AssetManager.exists(icon.path):
 			var t = ResourceLoader.load(icon.path)
 			
 			if icon.region:
@@ -168,7 +168,7 @@ func _get_item_display_data(gear: Variant, slot_index: int) -> Dictionary:
 		result.item_color = data2[real_item.rarity_type]
 	
 	var icon: RPGIcon = real_item.icon
-	if ResourceLoader.exists(icon.path):
+	if AssetManager.exists(icon.path):
 		var t = ResourceLoader.load(icon.path)
 		if icon.region:
 			result.tex = ImageTexture.create_from_image(t.get_image().get_region(icon.region))

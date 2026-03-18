@@ -20,6 +20,7 @@ extends Resource
 ## Array of currently equipped gear (index 0 = weapon, others = armor slots).
 ## Weapon = [GameWeapon], Armor = [GameArmor]
 @export var current_gear: Array = []
+@export var current_set: Variant = null # IngameCostume, IngameGearSet or null
 ## Current name of the actor (can be changed during gameplay).
 @export var current_name: String = ""
 ## Actor’s nickname or title (used in menus or dialog).

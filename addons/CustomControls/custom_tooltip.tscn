@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://b015fv21alcoi"]
+[gd_scene format=3 uid="uid://b015fv21alcoi"]
 
 [ext_resource type="Script" uid="uid://ibdxv0rrn54g" path="res://addons/CustomControls/custom_tooltip.gd" id="1_yk7o8"]
 
@@ -37,7 +37,7 @@ border_blend = true
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_thyqx"]
 
-[node name="CustomTooltip" type="Window"]
+[node name="CustomTooltip" type="Window" unique_id=531407379]
 physics_interpolation_mode = 2
 disable_3d = true
 transparent_bg = true
@@ -57,7 +57,7 @@ popup_wm_hint = true
 max_size = Vector2i(1200, 16384)
 script = ExtResource("1_yk7o8")
 
-[node name="MainContainer" type="PanelContainer" parent="."]
+[node name="MainContainer" type="PanelContainer" parent="." unique_id=673661328]
 unique_name_in_owner = true
 process_mode = 4
 modulate = Color(1, 1, 1, 0)
@@ -70,27 +70,27 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_gw11s")
 
-[node name="PanelContainer2" type="PanelContainer" parent="MainContainer"]
+[node name="PanelContainer2" type="PanelContainer" parent="MainContainer" unique_id=1804420671]
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_r2l2g")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer" unique_id=1281728525]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 0
 
-[node name="PanelContainer" type="PanelContainer" parent="MainContainer/VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="MainContainer/VBoxContainer" unique_id=468114031]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_1d6xl")
 
-[node name="Control" type="Control" parent="MainContainer/VBoxContainer/PanelContainer"]
+[node name="Control" type="Control" parent="MainContainer/VBoxContainer/PanelContainer" unique_id=1086783888]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Title" type="Label" parent="MainContainer/VBoxContainer/PanelContainer/Control"]
+[node name="Title" type="Label" parent="MainContainer/VBoxContainer/PanelContainer/Control" unique_id=188544486]
 unique_name_in_owner = true
 layout_mode = 0
 offset_right = 1.0
@@ -98,12 +98,12 @@ offset_bottom = 23.0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MarginContainer" type="Control" parent="MainContainer/VBoxContainer"]
+[node name="MarginContainer" type="Control" parent="MainContainer/VBoxContainer" unique_id=466225002]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
 
-[node name="Contents" type="RichTextLabel" parent="MainContainer/VBoxContainer/MarginContainer"]
+[node name="Contents" type="RichTextLabel" parent="MainContainer/VBoxContainer/MarginContainer" unique_id=1609071187]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(1200, 0)
 layout_mode = 0

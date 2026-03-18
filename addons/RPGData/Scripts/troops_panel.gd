@@ -395,3 +395,47 @@ func _on_edit_battler_presets_aligment_requested(align: EditBattlerPresets.ALIGN
 						bottommost_y = candidate.position.y
 				for candidate in candidates:
 					candidate.position.y = bottommost_y
+
+
+func _on_clear_pressed() -> void:
+	get_data()._create_initial_members()
+	_update_data_fields()
+
+
+func _on_auto_name_pressed() -> void:
+	var current_name_data = {}
+	var members = get_data().members.filter(
+		func(member: RPGTroopMember):
+			return member.type == 1
+	)
+	for enemy: RPGTroopMember in members:
+		var enemy_id = enemy.id
+		var enemies = RPGSYSTEM.database.enemies
+		if enemy_id > 0 and enemies.size() > enemy_id:
+			var enemy_data: RPGEnemy = enemies[enemy_id]
+			if not enemy_id in current_name_data:
+				current_name_data[enemy_id] = {
+					"name": enemy_data.name,
+					"quantity": 0
+				}
+			current_name_data[enemy_id].quantity += 1
+		else:
+			if not enemy_id in current_name_data:
+				current_name_data[enemy_id] = {
+					"name": tr("Enemy unknown"),
+					"quantity": 0
+				}
+				current_name_data[enemy_id].quantity += 1
+	
+	var new_name = ""
+	if not current_name_data.is_empty():
+		var current_name = ""
+		for obj in current_name_data.values():
+			if not current_name.is_empty():
+				current_name += ", "
+			current_name += obj.name + "x" + str(obj.quantity)
+		new_name = current_name
+	
+	%NameLineEdit.text = new_name
+	%NameLineEdit.text_changed.emit(new_name)
+		

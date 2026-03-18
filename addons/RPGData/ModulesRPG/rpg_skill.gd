@@ -19,6 +19,8 @@ func get_class(): return "RPGSkill"
 @export var battle_message: String = ""
 @export var required_weapons: Array[RPGSkillRequiredWeapon] = []
 @export var damage: RPGDamage = RPGDamage.new()
+@export var evolve_to: int = 0
+@export var evolve_required_uses: int = 1
 @export var effects: Array[RPGEffect] = []
 @export var notes: String = ""
 

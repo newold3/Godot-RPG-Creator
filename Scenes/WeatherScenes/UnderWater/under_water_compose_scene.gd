@@ -28,8 +28,6 @@ func ignore_start_animation() -> void:
 	for t in tweens:
 		if t.is_valid() and t.has_meta("underwater_start_tween"):
 			t.kill()
-	if GameManager.main_scene:
-		GameManager.main_scene.modulate = modulate_scene
 
 
 func set_repeat_and_foam() -> void:
@@ -67,8 +65,9 @@ func _process(_delta: float) -> void:
 		var particle_position: Vector2
 		var particle_container: Node
 		if dice < 30:
-			target = GameManager.current_player
-			if target.is_on_vehicle and target.current_vehicle and "player_position" in target.current_vehicle:
+			var targets = GameManager.get_followers() + [GameManager.current_player]
+			target = targets.pick_random()
+			if not target is SimpleFollower and target.is_on_vehicle and target.current_vehicle and "player_position" in target.current_vehicle:
 				pass
 			else:
 				particle_position = target.get_global_mouth_position()
@@ -78,7 +77,7 @@ func _process(_delta: float) -> void:
 			var objs: Array
 			if randi() % 2 == 0:
 				var events = GameManager.current_map.get_in_game_events()
-				objs = events.map(func(obj: RPGMap.IngameEvent): return obj.lpc_event)
+				objs = events.map(func(obj: IngameEvent): return obj.lpc_event)
 			else:
 				var vehicles = GameManager.current_map.get_in_game_vehicles()
 				objs = []

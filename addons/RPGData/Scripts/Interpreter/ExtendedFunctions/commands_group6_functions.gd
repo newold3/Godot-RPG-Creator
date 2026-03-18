@@ -154,6 +154,8 @@ func _perform_player_transfer(params: Dictionary) -> void:
 	interpreter.busy2 = true
 	interpreter.busy3 = true
 	if not transfer_on_same_map:
+		if GameManager.game_state:
+			GameManager.game_state.followers_tracking_enabled = true
 		await _transfer_to_oher_map(map_id, tile, direction, current_event, transfer_animation)
 	
 	interpreter.busy = backup_busys[0]
@@ -195,6 +197,10 @@ func _transfer_to_oher_map(map_id: int, tile: Vector2i, direction: int, current_
 					current_event.current_vehicle = vehicle
 					vehicle.start(current_event)
 					_set_start_tranfer_end_values(vehicle, transfer_animation)
+			
+			GameManager.destroy_followers()
+			if GameManager.game_state.followers_enabled:
+				GameManager.show_followers(true, true)
 				
 	, CONNECT_ONE_SHOT)
 	var start_map_path = RPGSYSTEM.map_infos.get_map_by_id(map_id)
@@ -333,7 +339,11 @@ func _transfer_event(params: Dictionary) -> void:
 		debug_print("Invalid event ID for transfer")
 		return
 
-	var current_event = GameManager.current_map.get_in_game_event_by_pos(event_id - 1) if event_id > 0 else current_interpreter.obj
+	var current_event
+	if event_id == 0:
+		current_event = current_interpreter.obj
+	else: # _uniq_id
+		current_event = GameManager.current_map.get_in_game_event_by_uniq_id(event_id)
 	
 	var direction1: LPCCharacter.DIRECTIONS = _get_direction(direction, current_event)
 
@@ -342,7 +352,12 @@ func _transfer_event(params: Dictionary) -> void:
 		return
 
 	if swap_event_id != -1:
-		var swap_event = GameManager.current_map.get_in_game_event_by_pos(swap_event_id - 1) if event_id > 0 else current_interpreter.obj
+		var swap_event = 0
+		if swap_event == 0:
+			current_event = current_interpreter.obj
+		else: # _uniq_id
+			current_event = GameManager.current_map.get_in_game_event_by_uniq_id(swap_event)
+
 		if not swap_event:
 			debug_print("Swap event not found in map with ID: %s" % swap_event_id)
 			return
@@ -464,7 +479,7 @@ func _command_0057() -> void:
 				target = GameManager.current_player
 		0: # This event:
 			target = current_interpreter.obj
-		_: # event with id target_id
+		_: # event with id target_id (uniq id)
 			if GameManager.current_map:
 				target = GameManager.current_map.get_in_game_event_by_id(target_id)
 			else:
@@ -481,6 +496,7 @@ func _command_0057() -> void:
 		for c: RPGEventCommand in command_list:
 			var route_command = c.parameters.get("movement_command", null)
 			list.append(route_command)
+
 		route.list = list
 		target.route_command_index = 0
 		target.route_commands = route
@@ -542,9 +558,9 @@ func _command_0123() -> void:
 	
 	camera.clear_targets()
 		
-	var targets: PackedInt32Array = current_command.parameters.get("targets", [])
+	var targets: PackedInt64Array = current_command.parameters.get("targets", [])
 	var priorities: PackedInt32Array = current_command.parameters.get("priorities", [])
-	
+
 	for i: int in targets.size():
 		var target = targets[i]
 		if target == 0 and GameManager.current_player:
@@ -552,7 +568,7 @@ func _command_0123() -> void:
 			var node = GameManager.current_player if not GameManager.current_player.is_on_vehicle else GameManager.current_player.current_vehicle
 			camera.add_target_to_array(node, priority)
 		elif target > 0 and GameManager.current_map:
-			var event = GameManager.current_map.get_in_game_event_by_pos(target - 1)
+			var event = GameManager.current_map.get_in_game_event_by_uniq_id(target)
 			if event:
 				var priority = 5 if priorities.size() <= i else priorities[i]
 				camera.add_target_to_array(event, priority)

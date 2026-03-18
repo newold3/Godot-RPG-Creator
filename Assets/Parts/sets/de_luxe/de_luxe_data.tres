@@ -1,0 +1,374 @@
+[gd_resource type="Resource" script_class="IngameGearSet" format=3 uid="uid://cy0mjx8qmwdtv"]
+
+[ext_resource type="Script" uid="uid://cqx1cnfjmgp73" path="res://addons/RPGData/ModulesRPG/rpg_lpc_palette.gd" id="1_h7wxk"]
+[ext_resource type="Script" uid="uid://der67xririmwh" path="res://addons/RPGData/ModulesRPG/rpg_lpc_equipment_part.gd" id="2_d46kg"]
+[ext_resource type="Script" uid="uid://um8ybms51wt1" path="res://addons/RPGData/ModulesRPG/rpg_lpc_equipment_data.gd" id="3_5ec10"]
+[ext_resource type="Script" uid="uid://bxgf4lbnwp24x" path="res://addons/RPGData/ModulesRPG/rpg_ingame_gear_set.gd" id="4_b67at"]
+
+[sub_resource type="Resource" id="Resource_c445h"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_i3712"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_86mp4"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_o6mwg"]
+script = ExtResource("2_d46kg")
+config_path = "res://addons/rpg_character_creator/Data/gear/ammo/none.lcc"
+part_id = "none"
+layer_id = "ammo"
+palette1 = SubResource("Resource_c445h")
+palette2 = SubResource("Resource_i3712")
+palette3 = SubResource("Resource_86mp4")
+gradient1 = PackedColorArray()
+gradient2 = PackedColorArray()
+gradient3 = PackedColorArray()
+
+[sub_resource type="Resource" id="Resource_ud7hj"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_1m3yc"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_cfice"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_ysvvq"]
+script = ExtResource("2_d46kg")
+config_path = "res://addons/rpg_character_creator/Data/gear/back/none.lcc"
+part_id = "none"
+layer_id = "back"
+palette1 = SubResource("Resource_ud7hj")
+palette2 = SubResource("Resource_1m3yc")
+palette3 = SubResource("Resource_cfice")
+gradient1 = PackedColorArray()
+gradient2 = PackedColorArray()
+gradient3 = PackedColorArray()
+
+[sub_resource type="Resource" id="Resource_ixf7y"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_1tb65"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_yxqrb"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_rwqng"]
+script = ExtResource("2_d46kg")
+config_path = "res://addons/rpg_character_creator/Data/gear/belt/none.lcc"
+part_id = "none"
+layer_id = "belt"
+palette1 = SubResource("Resource_ixf7y")
+palette2 = SubResource("Resource_1tb65")
+palette3 = SubResource("Resource_yxqrb")
+gradient1 = PackedColorArray()
+gradient2 = PackedColorArray()
+gradient3 = PackedColorArray()
+
+[sub_resource type="Resource" id="Resource_fvxw3"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_2ugnk"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_12qql"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_6gky5"]
+script = ExtResource("2_d46kg")
+config_path = "res://addons/rpg_character_creator/Data/gear/glasses/none.lcc"
+part_id = "none"
+layer_id = "glasses"
+palette1 = SubResource("Resource_fvxw3")
+palette2 = SubResource("Resource_2ugnk")
+palette3 = SubResource("Resource_12qql")
+gradient1 = PackedColorArray()
+gradient2 = PackedColorArray()
+gradient3 = PackedColorArray()
+
+[sub_resource type="Resource" id="Resource_7yhj0"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_xxgli"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_arkcv"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_ifujq"]
+script = ExtResource("2_d46kg")
+config_path = "res://addons/rpg_character_creator/Data/gear/gloves/none.lcc"
+part_id = "none"
+layer_id = "gloves"
+palette1 = SubResource("Resource_7yhj0")
+palette2 = SubResource("Resource_xxgli")
+palette3 = SubResource("Resource_arkcv")
+gradient1 = PackedColorArray()
+gradient2 = PackedColorArray()
+gradient3 = PackedColorArray()
+
+[sub_resource type="Resource" id="Resource_rhcic"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_4dyci"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_5nctp"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_18ku3"]
+script = ExtResource("2_d46kg")
+config_path = "res://addons/rpg_character_creator/Data/gear/hat/none.lcc"
+part_id = "none"
+layer_id = "hat"
+palette1 = SubResource("Resource_rhcic")
+palette2 = SubResource("Resource_4dyci")
+palette3 = SubResource("Resource_5nctp")
+gradient1 = PackedColorArray()
+gradient2 = PackedColorArray()
+gradient3 = PackedColorArray()
+
+[sub_resource type="Resource" id="Resource_sdgiw"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_h538p"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_20kem"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_7jm2m"]
+script = ExtResource("2_d46kg")
+config_path = "res://addons/rpg_character_creator/Data/gear/jacket/none.lcc"
+part_id = "none"
+layer_id = "jacket"
+palette1 = SubResource("Resource_sdgiw")
+palette2 = SubResource("Resource_h538p")
+palette3 = SubResource("Resource_20kem")
+gradient1 = PackedColorArray()
+gradient2 = PackedColorArray()
+gradient3 = PackedColorArray()
+
+[sub_resource type="Resource" id="Resource_3ih4f"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_5fgvq"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_rjllf"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_bst5n"]
+script = ExtResource("2_d46kg")
+config_path = "res://addons/rpg_character_creator/Data/gear/mainhand/none.lcc"
+part_id = "none"
+layer_id = "mainhand"
+palette1 = SubResource("Resource_3ih4f")
+palette2 = SubResource("Resource_5fgvq")
+palette3 = SubResource("Resource_rjllf")
+gradient1 = PackedColorArray()
+gradient2 = PackedColorArray()
+gradient3 = PackedColorArray()
+
+[sub_resource type="Resource" id="Resource_y8eu2"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_bhwcf"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_bvcx2"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_qsf02"]
+script = ExtResource("2_d46kg")
+config_path = "res://addons/rpg_character_creator/Data/gear/mask/none.lcc"
+part_id = "none"
+layer_id = "mask"
+palette1 = SubResource("Resource_y8eu2")
+palette2 = SubResource("Resource_bhwcf")
+palette3 = SubResource("Resource_bvcx2")
+gradient1 = PackedColorArray()
+gradient2 = PackedColorArray()
+gradient3 = PackedColorArray()
+
+[sub_resource type="Resource" id="Resource_qsl08"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_mv0bk"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_wlk5g"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_wwvbk"]
+script = ExtResource("2_d46kg")
+config_path = "res://addons/rpg_character_creator/Data/gear/offhand/none.lcc"
+part_id = "none"
+layer_id = "offhand"
+palette1 = SubResource("Resource_qsl08")
+palette2 = SubResource("Resource_mv0bk")
+palette3 = SubResource("Resource_wlk5g")
+gradient1 = PackedColorArray()
+gradient2 = PackedColorArray()
+gradient3 = PackedColorArray()
+
+[sub_resource type="Resource" id="Resource_aplx0"]
+script = ExtResource("1_h7wxk")
+blend_color = 993804543
+colors = PackedInt64Array(0, 0, 16, 50397439, 23, 67240191, 27, 134745599, 66, 219157759, 133, 488449023, 161, 606350335, 183, 724316927, 228, 993804543, 255, 1212829183)
+
+[sub_resource type="Resource" id="Resource_0ip2m"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_xfh2w"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_t54pn"]
+script = ExtResource("2_d46kg")
+config_path = "res://addons/rpg_character_creator/Data/gear/pants/pants.lcc"
+part_id = "pants"
+layer_id = "pants"
+body_type = "hm1"
+head_type = "hm1"
+name = "Pants"
+front_texture = "res://addons/rpg_character_creator/textures/gear/pants/pants/pants_m1.png"
+palette1 = SubResource("Resource_aplx0")
+palette2 = SubResource("Resource_0ip2m")
+palette3 = SubResource("Resource_xfh2w")
+gradient1 = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.011764706, 0.003921569, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.015686275, 0.007843138, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.03137255, 0.03137255, 0.050980393, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.050980393, 0.0627451, 0.078431375, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.11372549, 0.11372549, 0.13725491, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14117648, 0.14117648, 0.16862746, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.16862746, 0.17254902, 0.19607843, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.23137255, 0.23529412, 0.2509804, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.28235295, 0.2901961, 0.3019608, 1)
+gradient2 = PackedColorArray()
+gradient3 = PackedColorArray()
+
+[sub_resource type="Resource" id="Resource_k6aq8"]
+script = ExtResource("1_h7wxk")
+blend_color = 993804543
+colors = PackedInt64Array(0, 0, 16, 50397439, 23, 67240191, 27, 134745599, 66, 219157759, 133, 488449023, 161, 606350335, 183, 724316927, 228, 993804543, 255, 1212829183)
+
+[sub_resource type="Resource" id="Resource_aq6p4"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_uig3d"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_0ew0b"]
+script = ExtResource("2_d46kg")
+config_path = "res://addons/rpg_character_creator/Data/gear/shirt/shirt1.lcc"
+part_id = "shirt1"
+layer_id = "shirt"
+body_type = "hm1"
+head_type = "hm1"
+name = "Shirt"
+front_texture = "res://addons/rpg_character_creator/textures/gear/shirt/shirt/sleeveless1_m1.png"
+palette1 = SubResource("Resource_k6aq8")
+palette2 = SubResource("Resource_aq6p4")
+palette3 = SubResource("Resource_uig3d")
+gradient1 = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.011764706, 0.003921569, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.015686275, 0.007843138, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.03137255, 0.03137255, 0.050980393, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.050980393, 0.0627451, 0.078431375, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.11372549, 0.11372549, 0.13725491, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14117648, 0.14117648, 0.16862746, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.16862746, 0.17254902, 0.19607843, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.23137255, 0.23529412, 0.2509804, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.28235295, 0.2901961, 0.3019608, 1)
+gradient2 = PackedColorArray()
+gradient3 = PackedColorArray()
+
+[sub_resource type="Resource" id="Resource_2qmqj"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_bfo5v"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_heiq8"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_mwtfp"]
+script = ExtResource("2_d46kg")
+config_path = "res://addons/rpg_character_creator/Data/gear/shoes/none.lcc"
+part_id = "none"
+layer_id = "shoes"
+palette1 = SubResource("Resource_2qmqj")
+palette2 = SubResource("Resource_bfo5v")
+palette3 = SubResource("Resource_heiq8")
+gradient1 = PackedColorArray()
+gradient2 = PackedColorArray()
+gradient3 = PackedColorArray()
+
+[sub_resource type="Resource" id="Resource_1128c"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_d3fnv"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_ev4xp"]
+script = ExtResource("1_h7wxk")
+colors = PackedInt64Array()
+
+[sub_resource type="Resource" id="Resource_u14sq"]
+script = ExtResource("2_d46kg")
+config_path = "res://addons/rpg_character_creator/Data/gear/suit/none.lcc"
+part_id = "none"
+layer_id = "suit"
+palette1 = SubResource("Resource_1128c")
+palette2 = SubResource("Resource_d3fnv")
+palette3 = SubResource("Resource_ev4xp")
+gradient1 = PackedColorArray()
+gradient2 = PackedColorArray()
+gradient3 = PackedColorArray()
+
+[sub_resource type="Resource" id="Resource_p2ir1"]
+script = ExtResource("3_5ec10")
+mask = SubResource("Resource_qsf02")
+hat = SubResource("Resource_18ku3")
+glasses = SubResource("Resource_6gky5")
+suit = SubResource("Resource_u14sq")
+jacket = SubResource("Resource_7jm2m")
+shirt = SubResource("Resource_0ew0b")
+gloves = SubResource("Resource_ifujq")
+belt = SubResource("Resource_rwqng")
+pants = SubResource("Resource_t54pn")
+shoes = SubResource("Resource_mwtfp")
+back = SubResource("Resource_ysvvq")
+mainhand = SubResource("Resource_bst5n")
+offhand = SubResource("Resource_wwvbk")
+ammo = SubResource("Resource_o6mwg")
+
+[resource]
+script = ExtResource("4_b67at")
+equipment_parts = SubResource("Resource_p2ir1")
+set_preview = "res://Assets/Parts/sets/de_luxe/de_luxe_preview.png"

@@ -1,15 +1,15 @@
-[gd_scene load_steps=27 format=3 uid="uid://71nknyfc6ldi"]
+[gd_scene format=3 uid="uid://71nknyfc6ldi"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_s1crn"]
 [ext_resource type="Script" uid="uid://b6b7j5oppyogg" path="res://addons/rpg_character_creator/Scripts/lpc_character_creator_dialog.gd" id="1_tcbu7"]
 [ext_resource type="PackedScene" uid="uid://dwupjod8sfjgd" path="res://addons/rpg_character_creator/Scenes/main_panel.tscn" id="3_7cjrd"]
 [ext_resource type="Texture2D" uid="uid://bnfb7u5j2x4pq" path="res://addons/CustomControls/Images/loading_icon.png" id="4_kpth6"]
 
-[sub_resource type="Gradient" id="Gradient_tgvw3"]
+[sub_resource type="Gradient" id="Gradient_gqdpf"]
 colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_1scyp"]
-gradient = SubResource("Gradient_tgvw3")
+gradient = SubResource("Gradient_gqdpf")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
@@ -160,7 +160,7 @@ _data = {
 &"saving": SubResource("Animation_xv26p")
 }
 
-[node name="LPCCharacterCreatorDialog" type="Window" groups=["lpc_character_creator_main_dialog"]]
+[node name="LPCCharacterCreatorDialog" type="Window" unique_id=113717706 groups=["lpc_character_creator_main_dialog"]]
 canvas_item_default_texture_filter = 3
 oversampling_override = 1.0
 title = "LPC Character And Equipment Creator"
@@ -170,7 +170,7 @@ min_size = Vector2i(1300, 880)
 theme = ExtResource("1_s1crn")
 script = ExtResource("1_tcbu7")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1209579322]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -178,7 +178,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_1scyp")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=582346344]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -189,17 +189,17 @@ theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
-[node name="CharacterCreatorMainPanel" parent="MarginContainer" instance=ExtResource("3_7cjrd")]
+[node name="CharacterCreatorMainPanel" parent="MarginContainer" unique_id=1764412225 instance=ExtResource("3_7cjrd")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="SavingContainer" type="CanvasLayer" parent="MarginContainer"]
+[node name="SavingContainer" type="CanvasLayer" parent="MarginContainer" unique_id=1288596492]
 unique_name_in_owner = true
 process_mode = 3
 layer = 100
 visible = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/SavingContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/SavingContainer" unique_id=84407671]
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -219,7 +219,7 @@ autowrap_mode = 0
 visible_characters = 11
 visible_ratio = 0.78571427
 
-[node name="ProgressBar" type="ProgressBar" parent="MarginContainer/SavingContainer"]
+[node name="ProgressBar" type="ProgressBar" parent="MarginContainer/SavingContainer" unique_id=1856205897]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(220, 0)
 anchors_preset = 7
@@ -237,7 +237,7 @@ step = 1.0
 value = 100.0
 show_percentage = false
 
-[node name="Control" type="Control" parent="MarginContainer/SavingContainer"]
+[node name="Control" type="Control" parent="MarginContainer/SavingContainer" unique_id=1245401252]
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -249,22 +249,20 @@ offset_bottom = 120.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="MarginContainer/SavingContainer/Control"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="MarginContainer/SavingContainer/Control" unique_id=1406724552]
 unique_name_in_owner = true
 position = Vector2(-17.485, 0)
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_nel5g")
 autoplay = "default"
-frame_progress = 0.040396925
+frame_progress = 0.8148779
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="MarginContainer/SavingContainer"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="MarginContainer/SavingContainer" unique_id=1045766955]
 unique_name_in_owner = true
-libraries = {
-&"": SubResource("AnimationLibrary_40sw1")
-}
-autoplay = "saving"
+libraries/ = SubResource("AnimationLibrary_40sw1")
+autoplay = &"saving"
 
-[node name="BlockMouse" type="Control" parent="MarginContainer/SavingContainer"]
+[node name="BlockMouse" type="Control" parent="MarginContainer/SavingContainer" unique_id=1520071524]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

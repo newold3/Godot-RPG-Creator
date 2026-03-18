@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://dsgpu3n3ttyss"]
+[gd_scene format=3 uid="uid://dsgpu3n3ttyss"]
 
 [ext_resource type="Script" uid="uid://3is2jp50lvs3" path="res://addons/RPGData/Scripts/actors_panel.gd" id="1_na7a6"]
 [ext_resource type="PackedScene" uid="uid://pc2xir2w2ox2" path="res://addons/RPGData/Scenes/panel_title.tscn" id="1_teb60"]
@@ -16,7 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="9_8sfum"]
 [ext_resource type="PackedScene" uid="uid://os7clwyqwlka" path="res://addons/RPGData/Scenes/traits_panel.tscn" id="11_h6502"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6s3bo"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b25ih"]
 resource_local_to_scene = true
 content_margin_left = 3.0
 content_margin_right = 3.0
@@ -28,7 +28,7 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.113725, 0.133333, 0.160784, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kihu1"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8w0ni"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 1
@@ -45,11 +45,11 @@ gradient = SubResource("Gradient_3obsl")
 fill_from = Vector2(0.547009, 1)
 fill_to = Vector2(0.559829, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rxxl6"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3r2jt"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_j11wx")
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_844mk"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_oif3a"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_j11wx")
 
@@ -70,7 +70,7 @@ texture = ExtResource("6_1whuk")
 texture_margin_left = 18.0
 texture_margin_right = 18.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c3mw1"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ccbhk"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -96,7 +96,7 @@ fill_to = Vector2(0.58547, 0)
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ppivh"]
 texture = SubResource("GradientTexture2D_1whuk")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_smbtw"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_18yhx"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -153,7 +153,7 @@ gradient = SubResource("Gradient_ms84r")
 fill_from = Vector2(0.547009, 1)
 fill_to = Vector2(0.559829, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_b25ih"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dqo7e"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_8w0ni")
 
@@ -175,11 +175,11 @@ gradient = SubResource("Gradient_88iys")
 fill_from = Vector2(0.547009, 1)
 fill_to = Vector2(0.559829, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8w0ni"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kn0p6"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_oif3a")
 
-[node name="ActorsPanel" type="HBoxContainer"]
+[node name="ActorsPanel" type="HBoxContainer" unique_id=606326738]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -190,35 +190,35 @@ grow_vertical = 2
 theme_override_constants/separation = 8
 script = ExtResource("1_na7a6")
 
-[node name="LeftColumn" type="VBoxContainer" parent="."]
+[node name="LeftColumn" type="VBoxContainer" parent="." unique_id=98006338]
 custom_minimum_size = Vector2(280, 0)
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="PanelTitle" parent="LeftColumn" instance=ExtResource("1_teb60")]
+[node name="PanelTitle" parent="LeftColumn" unique_id=1538591682 instance=ExtResource("1_teb60")]
 layout_mode = 2
 text = "Heroes"
 
-[node name="MainList" parent="LeftColumn" instance=ExtResource("2_d716f")]
+[node name="MainList" parent="LeftColumn" unique_id=187288552 instance=ExtResource("2_d716f")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 tooltip_text = "[title]Actors List[/title]
 Contains the list of actors created. Select one to edit its properties."
 theme_override_constants/v_separation = -1
-theme_override_styles/panel = SubResource("StyleBoxFlat_6s3bo")
-theme_override_styles/focus = SubResource("StyleBoxFlat_6s3bo")
-theme_override_styles/hovered = SubResource("StyleBoxFlat_kihu1")
-theme_override_styles/selected = SubResource("StyleBoxTexture_rxxl6")
-theme_override_styles/selected_focus = SubResource("StyleBoxTexture_844mk")
+theme_override_styles/panel = SubResource("StyleBoxFlat_b25ih")
+theme_override_styles/focus = SubResource("StyleBoxFlat_b25ih")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_8w0ni")
+theme_override_styles/selected = SubResource("StyleBoxTexture_3r2jt")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_oif3a")
 select_mode = 1
 odd_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 event_line_color = Color(0.145098, 0.156863, 0.164706, 1)
 
-[node name="HBoxContainer" type="HBoxContainer" parent="LeftColumn"]
+[node name="HBoxContainer" type="HBoxContainer" parent="LeftColumn" unique_id=489088891]
 layout_mode = 2
 
-[node name="AddDataButton" parent="LeftColumn/HBoxContainer" instance=ExtResource("3_5ymlj")]
+[node name="AddDataButton" parent="LeftColumn/HBoxContainer" unique_id=1457551221 instance=ExtResource("3_5ymlj")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -228,7 +228,7 @@ text = "Add
 Actor"
 text_overrun_behavior = 3
 
-[node name="RemoveDataButton" parent="LeftColumn/HBoxContainer" instance=ExtResource("3_5ymlj")]
+[node name="RemoveDataButton" parent="LeftColumn/HBoxContainer" unique_id=1750062411 instance=ExtResource("3_5ymlj")]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.65)
 layout_mode = 2
@@ -240,89 +240,91 @@ text = "Delete
 Actor"
 text_overrun_behavior = 3
 
-[node name="RightColumn" type="PanelContainer" parent="."]
+[node name="RightColumn" type="PanelContainer" parent="." unique_id=1460068691]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_0fgwc")
 
-[node name="MarginContainer" type="MarginContainer" parent="RightColumn"]
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn" unique_id=1741247126]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer" unique_id=1506041307]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer" unique_id=928391671]
 layout_mode = 2
 
-[node name="Control" type="Control" parent="RightColumn/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Control" type="Control" parent="RightColumn/MarginContainer/VBoxContainer/HBoxContainer" unique_id=749010614]
 custom_minimum_size = Vector2(16, 0)
 layout_mode = 2
 
-[node name="ConfigDataTabs" parent="RightColumn/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_k8dgj")]
+[node name="ConfigDataTabs" parent="RightColumn/MarginContainer/VBoxContainer/HBoxContainer" unique_id=108017207 instance=ExtResource("5_k8dgj")]
 unique_name_in_owner = true
 clip_children = 0
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 default_tabs = Array[String](["General", "Properties", "Other"])
+drag_threshold = 10.0
+current_tab_unselected_text_outline_color = Color(0, 0, 0, 1)
 tab_name_base = ""
 background_color = Color(0, 0, 0, 0)
 tab_selected = null
 stylebox_tab_selected = SubResource("StyleBoxTexture_1whuk")
 
-[node name="ControlContainer" parent="RightColumn/MarginContainer/VBoxContainer" instance=ExtResource("4_n7yrj")]
+[node name="ControlContainer" parent="RightColumn/MarginContainer/VBoxContainer" unique_id=352504381 instance=ExtResource("4_n7yrj")]
 custom_minimum_size = Vector2(510, 160)
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_c3mw1")
-style1 = SubResource("StyleBoxFlat_c3mw1")
+theme_override_styles/panel = SubResource("StyleBoxFlat_ccbhk")
+style1 = SubResource("StyleBoxFlat_ccbhk")
 style2 = SubResource("StyleBoxTexture_ppivh")
-style3 = SubResource("StyleBoxFlat_smbtw")
+style3 = SubResource("StyleBoxFlat_18yhx")
 
-[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer" unique_id=921017522]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="Tab1" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer"]
+[node name="Tab1" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer" unique_id=1720355529]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="General" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1"]
+[node name="General" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1" unique_id=1554961959]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_1whuk")
 
-[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General"]
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General" unique_id=203397297]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="GeneralSettings" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer"]
+[node name="GeneralSettings" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer" unique_id=1094855705]
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.4
 
-[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings"]
+[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings" unique_id=266438621]
 layout_mode = 2
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer"]
+[node name="VBoxContainer3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer" unique_id=370409829]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer3"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer3" unique_id=710773164]
 layout_mode = 2
 text = "Icon:"
 
-[node name="IconPicker" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer3" instance=ExtResource("5_adgnd")]
+[node name="IconPicker" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer3" unique_id=1190774683 instance=ExtResource("5_adgnd")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
@@ -330,50 +332,50 @@ size_flags_vertical = 6
 tooltip_text = "[title]Actor Icon[/title]
 The image that is displayed together with the actor name during gameplay. You can select an image in the [Select an Image] window that appears after clicking on this control.
 
-Mouse wheel click to erase de current image."
+Mouse wheel click to erase the current image."
 
-[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer" unique_id=924093441]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer" unique_id=558133385]
 layout_mode = 2
 text = "Name:"
 
-[node name="NameLineEdit" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer" instance=ExtResource("6_7lyu0")]
+[node name="NameLineEdit" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer" unique_id=845070526 instance=ExtResource("6_7lyu0")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 6
 tooltip_text = "[title]Hero Name[/title]
 Is the actor's name, displayed during gameplay. If the name is too long, the player name may not be fully visible in game menus and in battle."
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer" unique_id=1064011186]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer2"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer2" unique_id=2055410903]
 layout_mode = 2
 text = "Alias:"
 
-[node name="NicknameLineEdit" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer2" instance=ExtResource("6_7lyu0")]
+[node name="NicknameLineEdit" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer2" unique_id=904760391 instance=ExtResource("6_7lyu0")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 6
 tooltip_text = "[title]Alias[/title]
 The alias of the actor. This will be displayed on the status screen in the upper right."
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings" unique_id=578399850]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2" unique_id=1997162728]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer" unique_id=1999019682]
 layout_mode = 2
 text = "Class:"
 
-[node name="ClassOptions" type="OptionButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer"]
+[node name="ClassOptions" type="OptionButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer" unique_id=794075709]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -384,47 +386,50 @@ text_overrun_behavior = 3
 clip_text = true
 script = ExtResource("7_i5gwo")
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2" unique_id=1806945265]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer2"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer2" unique_id=1182222498]
 layout_mode = 2
 text = "Initial Level:"
 
-[node name="InitialLevelSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer2" instance=ExtResource("7_omxlk")]
+[node name="InitialLevelSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer2" unique_id=1809505374 instance=ExtResource("7_omxlk")]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_vertical = 3
 tooltip_text = "[title]Initial Level[/title]
 Is the level of the actor at the start of game."
 _custom_value = 0.0
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2"]
+[node name="VBoxContainer3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2" unique_id=265401823]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer3"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer3" unique_id=26744162]
 layout_mode = 2
 text = "Max Level:"
 
-[node name="MaxLevelSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer3" instance=ExtResource("7_omxlk")]
+[node name="MaxLevelSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer3" unique_id=1505783791 instance=ExtResource("7_omxlk")]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_vertical = 3
 tooltip_text = "[title]Max Level[/title]
 Is the maximum level an actor can be. An actor will never level up beyond its [Max Level]."
 _custom_value = 0.0
 
-[node name="VBoxContainer4" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2"]
+[node name="VBoxContainer4" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2" unique_id=478920705]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer4"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer4" unique_id=1993660005]
 layout_mode = 2
 text = "Tick Interval:"
 
-[node name="TickInterval" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer4" instance=ExtResource("7_omxlk")]
+[node name="TickInterval" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer4" unique_id=889515317 instance=ExtResource("7_omxlk")]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_vertical = 3
 tooltip_text = "If the actor has hp or mp regeneration traits and you are out of battle, this value is used to perform the ticks.
 
 [Note]: In battle, regeneration traits are triggered every turn."
@@ -433,15 +438,15 @@ allow_greater = true
 suffix = " second/s"
 _custom_value = 0.0
 
-[node name="HBoxContainer3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings"]
+[node name="HBoxContainer3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings" unique_id=1387865129]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3" unique_id=1450291712]
 layout_mode = 2
 text = "Description:"
 
-[node name="ProfileTextEdit" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3" instance=ExtResource("6_a5fwg")]
+[node name="ProfileTextEdit" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3" unique_id=1523572780 instance=ExtResource("6_a5fwg")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
@@ -450,28 +455,28 @@ tooltip_text = "[title]Description[/title]
 The actor's introductory text. This will be displayed at the bottom of the status screen."
 wrap_mode = 1
 
-[node name="Scenes" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1"]
+[node name="Scenes" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1" unique_id=1760150300]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_j4uwv")
 
-[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes"]
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes" unique_id=403439521]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer" unique_id=880558699]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer" unique_id=341564538]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1120013058]
 layout_mode = 2
 text = "Character Scene:"
 
-[node name="CharacterSceneButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("9_8sfum")]
+[node name="CharacterSceneButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1655761638 instance=ExtResource("9_8sfum")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -486,19 +491,19 @@ Select the character scene. The scene must be an \"LPC Character\" created with 
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 text = "Select Character Scene"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer" unique_id=683835072]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=2048439036]
 layout_mode = 2
 text = "Images:"
 
-[node name="Label2" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label2" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=727844514]
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Pose Vertical Offset:"
 
-[node name="PoseVerticalOffset" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("7_omxlk")]
+[node name="PoseVerticalOffset" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=178247561 instance=ExtResource("7_omxlk")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -507,87 +512,87 @@ allow_greater = true
 allow_lesser = true
 _custom_value = 0.0
 
-[node name="ImagesScenes" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer"]
+[node name="ImagesScenes" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer" unique_id=2024387473]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/ImagesScenes"]
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/ImagesScenes" unique_id=904496774]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer" unique_id=1414535337]
 layout_mode = 2
 text = "Face:"
 
-[node name="FacePicker" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer" instance=ExtResource("5_adgnd")]
+[node name="FacePicker" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer" unique_id=1569684641 instance=ExtResource("5_adgnd")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
 tooltip_text = "Image displayed on the menu screen. You can select an optional image in the [Select an Image] window that appears after clicking on this control.
 
-Mouse wheel click to erase de current image."
+Mouse wheel click to erase the current image."
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/ImagesScenes"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/ImagesScenes" unique_id=1895262322]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer2"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer2" unique_id=1352104100]
 layout_mode = 2
 text = "Character:"
 
-[node name="CharacterPicker" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer2" instance=ExtResource("5_adgnd")]
+[node name="CharacterPicker" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer2" unique_id=1603861664 instance=ExtResource("5_adgnd")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
 tooltip_text = "[title]Character Image Preview[/title]
 Shows a preview of the character when not in battle.
 
-Mouse wheel click to erase de current image."
+Mouse wheel click to erase the current image."
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/ImagesScenes"]
+[node name="VBoxContainer3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/ImagesScenes" unique_id=1845737100]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer3"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer3" unique_id=738464710]
 layout_mode = 2
 text = "Battler:"
 
-[node name="BattlerPicker" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer3" instance=ExtResource("5_adgnd")]
+[node name="BattlerPicker" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer/ImagesScenes/VBoxContainer3" unique_id=1646784237 instance=ExtResource("5_adgnd")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
 tooltip_text = "[title]Battler Image Preview[/title]
 Shows a preview of the character when is in battle.
 
-Mouse wheel click to erase de current image."
+Mouse wheel click to erase the current image."
 
-[node name="Equipment" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1"]
+[node name="Equipment" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1" unique_id=570587601]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_1whuk")
 
-[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Equipment"]
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Equipment" unique_id=770863407]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="InitialEquipment" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Equipment/MarginContainer"]
+[node name="InitialEquipment" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Equipment/MarginContainer" unique_id=592586418]
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.6
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Equipment/MarginContainer/InitialEquipment"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Equipment/MarginContainer/InitialEquipment" unique_id=1048754678]
 layout_mode = 2
 text = "Initial Equipment:"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Equipment/MarginContainer/InitialEquipment"]
+[node name="ScrollContainer" type="ScrollContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Equipment/MarginContainer/InitialEquipment" unique_id=509542430]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="EquipmentList" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Equipment/MarginContainer/InitialEquipment/ScrollContainer" instance=ExtResource("6_um0l1")]
+[node name="EquipmentList" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Equipment/MarginContainer/InitialEquipment/ScrollContainer" unique_id=434127461 instance=ExtResource("6_um0l1")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -596,7 +601,7 @@ odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
 event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 top_bar_style = SubResource("StyleBoxTexture_2s8e2")
 columns_text_colors = PackedColorArray(0.72549, 0.992157, 0.772549, 1)
-cursor_style = SubResource("StyleBoxTexture_b25ih")
+cursor_style = SubResource("StyleBoxTexture_dqo7e")
 panel_style = SubResource("StyleBoxFlat_261u5")
 columns = 3
 names = PackedStringArray("Type", "Equipment Item", "Initial Level")
@@ -605,75 +610,75 @@ enable_multiselection = true
 itemlist_tooltip = "[title]Initial Equipment[/title]
 The actor's equipment at the start of the game. Select one item for each slot from the pull-down list. Selectable equipment is limited to what their class is able to equip. Setting this to [None] will cause nothing to be equipped in that location."
 
-[node name="Tab2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer"]
+[node name="Tab2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer" unique_id=149999599]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="Properties" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2"]
+[node name="Properties" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2" unique_id=1086686346]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_1whuk")
 
-[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Properties"]
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Properties" unique_id=2030792013]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="Properties" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Properties/MarginContainer"]
+[node name="Properties" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Properties/MarginContainer" unique_id=574967143]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Properties/MarginContainer/Properties"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Properties/MarginContainer/Properties" unique_id=757926218]
 layout_mode = 2
 text = "Properties"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Properties/MarginContainer/Properties"]
+[node name="ScrollContainer" type="ScrollContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Properties/MarginContainer/Properties" unique_id=1242094333]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="TraitsPanel" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Properties/MarginContainer/Properties/ScrollContainer" instance=ExtResource("11_h6502")]
+[node name="TraitsPanel" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Properties/MarginContainer/Properties/ScrollContainer" unique_id=1640488211 instance=ExtResource("11_h6502")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(796, 765)
 layout_mode = 2
 itemlist_tooltip = "[title]Properties List[/title]
 An actor's unique properties. Define the details in the window that appears when double-clicking each row of the settings field."
 
-[node name="Tab3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer"]
+[node name="Tab3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer" unique_id=1602728716]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="Battle" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3"]
+[node name="Battle" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3" unique_id=1103071773]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_1whuk")
 
-[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Battle"]
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Battle" unique_id=333150351]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="BattleActions" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Battle/MarginContainer"]
+[node name="BattleActions" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Battle/MarginContainer" unique_id=619005142]
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.6
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Battle/MarginContainer/BattleActions"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Battle/MarginContainer/BattleActions" unique_id=284963284]
 layout_mode = 2
 text = "Battle Actions:"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Battle/MarginContainer/BattleActions"]
+[node name="ScrollContainer" type="ScrollContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Battle/MarginContainer/BattleActions" unique_id=2038695401]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="BattleActionList" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Battle/MarginContainer/BattleActions/ScrollContainer" instance=ExtResource("6_um0l1")]
+[node name="BattleActionList" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Battle/MarginContainer/BattleActions/ScrollContainer" unique_id=884341660 instance=ExtResource("6_um0l1")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 69)
 layout_mode = 2
@@ -683,7 +688,7 @@ odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
 event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 top_bar_style = SubResource("StyleBoxTexture_2s8e2")
 columns_text_colors = PackedColorArray(0.72549, 0.992157, 0.772549, 1)
-cursor_style = SubResource("StyleBoxTexture_8w0ni")
+cursor_style = SubResource("StyleBoxTexture_kn0p6")
 panel_style = SubResource("StyleBoxFlat_261u5")
 columns = 3
 names = PackedStringArray("Occasion", "Action", "Rate")
@@ -694,28 +699,28 @@ itemlist_tooltip = "[title]Battle Actions[/title]
 Specifies the random actions of the character during battle, including the emission of sounds (a.k.a. battle cries or dialogues) (e.g. when attacking, casting skills, defeating enemies, healing allies, etc...), or the activation of common events (which pause the battle until the event concludes, 
 and they could be used to display a character animation before using a powerful skill, for example.)."
 
-[node name="Notes" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3"]
+[node name="Notes" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3" unique_id=1492769210]
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.45
 theme_override_styles/panel = SubResource("StyleBoxFlat_1whuk")
 
-[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Notes"]
+[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Notes" unique_id=912794154]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="Notes" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Notes/MarginContainer"]
+[node name="Notes" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Notes/MarginContainer" unique_id=946563793]
 custom_minimum_size = Vector2(0, 240)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Notes/MarginContainer/Notes"]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Notes/MarginContainer/Notes" unique_id=51083984]
 layout_mode = 2
 text = "Notes"
 
-[node name="NoteTextEdit" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Notes/MarginContainer/Notes" instance=ExtResource("6_a5fwg")]
+[node name="NoteTextEdit" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Notes/MarginContainer/Notes" unique_id=1921476849 instance=ExtResource("6_a5fwg")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3

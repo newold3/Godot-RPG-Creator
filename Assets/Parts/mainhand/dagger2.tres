@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="RPGLPCEquipmentPart" format=3 uid="uid://cb4rpuu841cw1"]
+
+[ext_resource type="Script" uid="uid://cqx1cnfjmgp73" path="res://addons/RPGData/ModulesRPG/rpg_lpc_palette.gd" id="1_ydmam"]
+[ext_resource type="Script" uid="uid://der67xririmwh" path="res://addons/RPGData/ModulesRPG/rpg_lpc_equipment_part.gd" id="2_4hto2"]
+
+[sub_resource type="Resource" id="Resource_123tu"]
+script = ExtResource("1_ydmam")
+blend_color = 1751212799
+colors = PackedInt64Array(0, 0, 21, 370087935, 50, 605890559, 78, 993609983, 91, 1228881919, 114, 1481859583, 135, 1751212799, 173, 2306242047, 199, 2542566399, 247, 2981272319, 254, 3318072831)
+
+[sub_resource type="Resource" id="Resource_udxm7"]
+script = ExtResource("1_ydmam")
+blend_color = 1631529983
+colors = PackedInt64Array(0, 0, 16, 117703935, 23, 184944383, 27, 420547839, 66, 403967487, 133, 756880895, 161, 908270079, 183, 1025973247, 228, 1631529983, 255, 1917465855)
+
+[sub_resource type="Resource" id="Resource_pad03"]
+script = ExtResource("1_ydmam")
+colors = PackedInt64Array()
+
+[resource]
+script = ExtResource("2_4hto2")
+config_path = "res://addons/rpg_character_creator/Data/gear/mainhand/dagger2.lcc"
+part_id = "dagger2"
+layer_id = "mainhand"
+body_type = "hm1"
+head_type = "hm1"
+equipment_preview = "res://Assets/Parts/mainhand/dagger2_preview.png"
+name = "Long Knife"
+front_texture = "res://addons/rpg_character_creator/textures/gear/mainhand/dagger/knife_walk_mf.png"
+back_texture = "res://addons/rpg_character_creator/textures/gear/mainhand/dagger/knife_walk_mb.png"
+is_large_texture = true
+tags = PackedStringArray("mainhand", "weapon", "sword", "large")
+palette1 = SubResource("Resource_123tu")
+palette2 = SubResource("Resource_udxm7")
+palette3 = SubResource("Resource_pad03")

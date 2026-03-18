@@ -48,7 +48,7 @@ func _draw() -> void:
 		draw_rect(Rect2(2, 2, size.x - 4, size.y - 4), Color(0.097, 0.225, 0.443), false, 2, true)
 	elif !is_selected:
 		draw_rect(Rect2(0, 0, size.x, size.y), Color("#000000"), false, 2, true)
-		draw_rect(Rect2(2, 2, size.x - 4, size.y - 4), Color("#161616"), false, 2, true)
+		draw_rect(Rect2(2, 2, size.x - 4, size.y - 4), Color(0.573, 0.573, 0.573), false, 2, true)
 	else:
 		draw_rect(Rect2(0, 0, size.x, size.y), Color(0.86, 0.395, 0.218), false, 2, true)
 		draw_rect(Rect2(2, 2, size.x - 4, size.y - 4), Color(0.391, 0.149, 0.053), false, 2, true)

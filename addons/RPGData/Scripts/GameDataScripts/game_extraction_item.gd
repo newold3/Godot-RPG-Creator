@@ -93,7 +93,6 @@ func calculate_failure_rate(character_level: int) -> float:
 func can_harvest(character_level: int) -> bool:
 	var current_item = get_item()
 	if not current_item: return -1
-	
 	var level_difference = current_item.current_level - character_level
 	return level_difference < 10
 

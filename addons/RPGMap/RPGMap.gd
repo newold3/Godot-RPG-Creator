@@ -28,10 +28,10 @@ var resize_start_rect: Rect2
 var current_cursor: Control.CursorShape = RESIZE_CURSORS.arrow
 
 
-var event_button: Button
-var extraction_event_button: Button
-var enemy_spawn_region_button: Button
-var event_region_button: Button
+var events_dock: EditorDock
+var extraction_events_dock: EditorDock
+var enemy_spawn_regions_dock: EditorDock
+var event_regions_dock: EditorDock
 var event_container_control: MarginContainer
 var extraction_event_container_control: MarginContainer
 var enemy_spawn_container_control: MarginContainer
@@ -122,7 +122,7 @@ var edit_configs = {
 		"dialog_option": "enemy_spawn_region_dialog",
 		"detach_method": "_on_detach_enemy_spawn_container_control",
 		"window_title": "Enemy Spawn Region List",
-		"show_regions": false
+		"show_regions": true
 	},
 	MODE.EVENT_REGION: {
 		"mode": MODE.EVENT_REGION,
@@ -135,7 +135,7 @@ var edit_configs = {
 		"dialog_option": "event_region_dialog",
 		"detach_method": "_on_detach_region_event_container_control",
 		"window_title": "Event Region List",
-		"show_regions": false
+		"show_regions": true
 	}
 }
 
@@ -162,76 +162,103 @@ static func reload_inputs_safely():
 				InputMap.action_add_event(action_name, event)
 
 
+func _create_editor_dock(title: String, content: Control) -> EditorDock:
+	var dock = EditorDock.new()
+	dock.name = title
+	dock.title = title
+	dock.default_slot = EditorDock.DOCK_SLOT_BOTTOM
+	dock.available_layouts = EditorDock.DOCK_LAYOUT_HORIZONTAL
+	dock.focus_entered.connect(func(): print("selected ", title))
+	dock.focus_exited.connect(func(): print("unselected ", title))
+	dock.add_child(content)
+	content.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	return dock
+
+
 func _enter_tree() -> void:
 	tree_exiting.connect(_tree_exiting)
 	
 	#add_autoload_singleton("RPGMapsInfo", "res://addons/RPGMap/Scripts/maps_info.gd")
 	#add_autoload_singleton("RPGSYSTEM", "res://addons/RPGMap/Scripts/system.gd")
 
+	# --------------------------------------------------------------------------------------
+	# Events
+	# --------------------------------------------------------------------------------------
 	event_container_control = preload("res://addons/RPGMap/Scenes/event_container.tscn").instantiate()
 	event_container_control.requested_edit_event.connect(_on_event_container_requested_edit)
 	event_container_control.requested_remove_event.connect(_on_event_container_requested_remove)
 	event_container_control.item_selected.connect(_on_event_container_item_selected)
 	event_container_control.detach_panel.connect(_on_detach_event_container_control)
 
-	event_button = add_control_to_bottom_panel(event_container_control, "Events")
-	event_button.toggled.connect(_on_event_button_toggled)
-
+	events_dock = _create_editor_dock("Events", event_container_control)
+	add_dock(events_dock)
+	events_dock.visibility_changed.connect(_on_events_dock_visibility_changed)
 	event_container_control.enable_plugin()
 	
-	CustomTooltipManager.plugin_replace_all_tooltips_with_custom.call_deferred(event_container_control)
+	event_container_control.visibility_changed.connect(_set_custom_tooltip.bind(event_container_control))
 	
+	# --------------------------------------------------------------------------------------
+	# Extraction Events
+	# --------------------------------------------------------------------------------------
 	extraction_event_container_control = preload("res://addons/RPGMap/Scenes/extraction_event_container.tscn").instantiate()
 	extraction_event_container_control.requested_edit_event.connect(_on_extraction_event_container_requested_edit)
 	extraction_event_container_control.requested_remove_event.connect(_on_extraction_event_container_requested_remove)
 	extraction_event_container_control.item_selected.connect(_on_extraction_event_container_item_selected)
 	extraction_event_container_control.detach_panel.connect(_on_detach_extraction_event_container_control)
 
-	extraction_event_button = add_control_to_bottom_panel(extraction_event_container_control, "Extraction Events")
-	extraction_event_button.toggled.connect(_on_extraction_event_button_toggled)
+	extraction_events_dock = _create_editor_dock("Extraction Events", extraction_event_container_control)
+	extraction_events_dock.visibility_changed.connect(_on_extraction_events_dock_visibility_changed)
+	add_dock(extraction_events_dock)
 
 	extraction_event_container_control.enable_plugin()
 	
-	CustomTooltipManager.plugin_replace_all_tooltips_with_custom.call_deferred(extraction_event_container_control)
+	extraction_event_container_control.visibility_changed.connect(_set_custom_tooltip.bind(extraction_event_container_control))
 
+	# --------------------------------------------------------------------------------------
+	# Enemy Regions
+	# --------------------------------------------------------------------------------------
+	enemy_spawn_regions_dock
 	enemy_spawn_container_control = preload("res://addons/RPGMap/Scenes/enemy_spawn_region_container.tscn").instantiate()
 	enemy_spawn_container_control.requested_edit_region.connect(_on_enemy_spawn_region_container_requested_edit)
 	enemy_spawn_container_control.requested_remove_region.connect(_on_enemy_spawn_region_container_requested_remove)
 	enemy_spawn_container_control.item_selected.connect(_on_enemy_spawn_region_container_item_selected)
 	enemy_spawn_container_control.detach_panel.connect(_on_detach_enemy_spawn_container_control)
 
-	enemy_spawn_region_button = add_control_to_bottom_panel(enemy_spawn_container_control, "Enemy Spawn Regions")
-	enemy_spawn_region_button.toggled.connect(_on_enemy_spawn_region_button_toggled)
-
+	enemy_spawn_regions_dock = _create_editor_dock("Enemy Spawn Regions", enemy_spawn_container_control)
+	enemy_spawn_regions_dock.visibility_changed.connect(_on_enemy_spawn_regions_dock_visibility_changed)
+	add_dock(enemy_spawn_regions_dock)
 	enemy_spawn_container_control.enable_plugin()
 	
-	CustomTooltipManager.plugin_replace_all_tooltips_with_custom.call_deferred(enemy_spawn_container_control)
+	enemy_spawn_container_control.visibility_changed.connect(_set_custom_tooltip.bind(enemy_spawn_container_control))
 
+	# --------------------------------------------------------------------------------------
+	# Event Regions
+	# --------------------------------------------------------------------------------------
 	event_region_container_control = preload("res://addons/RPGMap/Scenes/event_region_container.tscn").instantiate()
 	event_region_container_control.requested_edit_region.connect(_on_region_event_container_requested_edit)
 	event_region_container_control.requested_remove_region.connect(_on_region_event_container_requested_remove)
 	event_region_container_control.item_selected.connect(_on_region_event_container_item_selected)
 	event_region_container_control.detach_panel.connect(_on_detach_region_event_container_control)
 
-	event_region_button = add_control_to_bottom_panel(event_region_container_control, "Region Events")
-	event_region_button.toggled.connect(_on_event_region_button_toggled)
-
+	event_regions_dock = _create_editor_dock("Event Regions", event_region_container_control)
+	event_regions_dock.visibility_changed.connect(_on_event_regions_dock_visibility_changed)
+	add_dock(event_regions_dock)
 	event_region_container_control.enable_plugin()
 	
-	CustomTooltipManager.plugin_replace_all_tooltips_with_custom.call_deferred(event_region_container_control)
+	event_region_container_control.visibility_changed.connect(_set_custom_tooltip.bind(event_region_container_control))
 
 	var selected_nodes = get_editor_interface().get_selection().get_selected_nodes()
 	if selected_nodes.size() > 0:
 		var buttons_visibility: bool = selected_nodes[0] is RPGMap and selected_nodes[0].can_add_events
-		event_button.visible = buttons_visibility
-		extraction_event_button.visible = buttons_visibility
-		enemy_spawn_region_button.visible = buttons_visibility
-		event_region_button.visible = buttons_visibility
+		events_dock.visible = buttons_visibility
+		extraction_events_dock.visible = buttons_visibility
+		enemy_spawn_regions_dock.visible = buttons_visibility
+		event_regions_dock.visible = buttons_visibility
 	else:
-		event_button.visible = false
-		extraction_event_button.visible = false
-		enemy_spawn_region_button.visible = false
-		event_region_button.visible = false
+		events_dock.visible = false
+		extraction_events_dock.visible = false
+		enemy_spawn_regions_dock.visible = false
+		event_regions_dock.visible = false
 
 	set_force_draw_over_forwarding_enabled()
 	scene_preview = get_editor_interface().get_resource_previewer()
@@ -293,6 +320,39 @@ func _enter_tree() -> void:
 		EditorInterface.edit_node(nodes_selected[0])
 	
 	DETACHABLE_WINDOW = load("res://addons/CustomControls/detachable_window.tscn")
+
+
+func _set_custom_tooltip(container: Control) -> void:
+	if container.visible:
+		CustomTooltipManager.plugin_replace_all_tooltips_with_custom(container)
+
+
+func _on_events_dock_visibility_changed() -> void:
+	if extraction_events_dock: extraction_events_dock.visible = false
+	if enemy_spawn_regions_dock: enemy_spawn_regions_dock.visible = false
+	if event_regions_dock: event_regions_dock.visible = false
+	_on_event_button_toggled.call_deferred(events_dock.visible)
+
+
+func _on_extraction_events_dock_visibility_changed() -> void:
+	if events_dock: events_dock.visible = false
+	if enemy_spawn_regions_dock: enemy_spawn_regions_dock.visible = false
+	if event_regions_dock: event_regions_dock.visible = false
+	_on_extraction_event_button_toggled.call_deferred(extraction_events_dock.visible)
+
+
+func _on_enemy_spawn_regions_dock_visibility_changed() -> void:
+	if events_dock: events_dock.visible = false
+	if extraction_events_dock: extraction_events_dock.visible = false
+	if event_regions_dock: event_regions_dock.visible = false
+	_on_enemy_spawn_region_button_toggled.call_deferred(enemy_spawn_regions_dock.visible)
+
+
+func _on_event_regions_dock_visibility_changed() -> void:
+	if events_dock: events_dock.visible = false
+	if extraction_events_dock: extraction_events_dock.visible = false
+	if enemy_spawn_regions_dock: enemy_spawn_regions_dock.visible = false
+	_on_event_region_button_toggled.call_deferred(event_regions_dock.visible)
 
 
 func _populate_event_presets_menu() -> void:
@@ -399,6 +459,8 @@ func _on_toggled_regions_draw_butto_pressed(value: bool) -> void:
 	if current_object:
 		current_object.force_show_regions = value
 		current_object.queue_redraw()
+	
+	FileCache.options.show_regions_toggled = value
 
 
 func _tree_exiting() -> void:
@@ -410,49 +472,42 @@ func _exit_tree() -> void:
 	#remove_autoload_singleton("RPGMapsInfo")
 	#remove_autoload_singleton("RPGSYSTEM")
 	get_tree().node_added.disconnect(_on_node_added)
-
-	if event_container_control:
-		if event_button:
-			remove_control_from_bottom_panel(event_container_control)
+	
+	if events_dock:
+		remove_dock(events_dock)
 		CustomTooltipManager.restore_all_tooltips_for(event_container_control)
 		if FileCache.options.event_dialog.detached:
 			event_container_control.get_parent().queue_free()
 		else:
 			event_container_control.queue_free()
+		events_dock.queue_free()
 	
-	if extraction_event_container_control:
-		if extraction_event_button:
-			remove_control_from_bottom_panel(extraction_event_container_control)
+	if extraction_events_dock:
+		remove_dock(extraction_events_dock)
 		CustomTooltipManager.restore_all_tooltips_for(extraction_event_container_control)
-		if FileCache.options.extraction_event_dialog.detached:
+		if FileCache.options.event_dialog.detached:
 			extraction_event_container_control.get_parent().queue_free()
 		else:
 			extraction_event_container_control.queue_free()
+		extraction_events_dock.queue_free()
 	
-	if enemy_spawn_container_control:
-		if enemy_spawn_region_button:
-			remove_control_from_bottom_panel(enemy_spawn_container_control)
+	if enemy_spawn_regions_dock:
+		remove_dock(enemy_spawn_regions_dock)
 		CustomTooltipManager.restore_all_tooltips_for(enemy_spawn_container_control)
-		if FileCache.options.enemy_spawn_region_dialog.detached:
+		if FileCache.options.event_dialog.detached:
 			enemy_spawn_container_control.get_parent().queue_free()
 		else:
 			enemy_spawn_container_control.queue_free()
+		enemy_spawn_regions_dock.queue_free()
 	
-	if event_button:
-		remove_control_from_bottom_panel(event_button)
-		event_button.queue_free()
-	
-	if extraction_event_button:
-		remove_control_from_bottom_panel(extraction_event_button)
-		extraction_event_button.queue_free()
-	
-	if enemy_spawn_region_button:
-		remove_control_from_bottom_panel(enemy_spawn_region_button)
-		enemy_spawn_region_button.queue_free()
-	
-	if event_region_button:
-		remove_control_from_bottom_panel(event_region_button)
-		event_region_button.queue_free()
+	if event_regions_dock:
+		remove_dock(event_regions_dock)
+		CustomTooltipManager.restore_all_tooltips_for(event_region_container_control)
+		if FileCache.options.event_dialog.detached:
+			event_region_container_control.get_parent().queue_free()
+		else:
+			event_region_container_control.queue_free()
+		event_regions_dock.queue_free()
 	
 	if current_object and current_object is RPGMap:
 		current_object.editing_events = false
@@ -522,7 +577,9 @@ func _handle_regions_button(config: Dictionary, toggled_on: bool) -> void:
 	if not toggled_regions_button or not config.show_regions:
 		if toggled_regions_button:
 			toggled_regions_button.visible = false
-			toggled_regions_button.toggled.emit(false)
+			var last_state = FileCache.options.get("show_regions_toggled", false)
+			toggled_regions_button.set_pressed_no_signal(last_state)
+			toggled_regions_button.toggled.emit(last_state)
 		return
 	
 	toggled_regions_button.visible = current_object != null and current_object.current_edit_button_pressed == config.button_index and toggled_on
@@ -827,23 +884,23 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	if current_edit_mode == MODE.EVENT and !event_button.is_pressed():
+	if current_edit_mode == MODE.EVENT and !events_dock.visible:
 		_on_event_button_toggled(false)
 	
-	if current_edit_mode == MODE.EXTRACTION_EVENT and !extraction_event_button.is_pressed():
+	if current_edit_mode == MODE.EXTRACTION_EVENT and !extraction_events_dock.visible:
 		_on_extraction_event_button_toggled(false)
 	
-	elif current_edit_mode == MODE.ENEMY_SPAWN and !enemy_spawn_region_button.is_pressed():
+	elif current_edit_mode == MODE.ENEMY_SPAWN and !enemy_spawn_regions_dock.visible:
 		_on_enemy_spawn_region_button_toggled(false)
 	
-	elif current_edit_mode == MODE.EVENT_REGION and !event_region_button.is_pressed():
+	elif current_edit_mode == MODE.EVENT_REGION and !event_regions_dock.visible:
 		_on_event_region_button_toggled(false)
 	
 	if (
-		not event_button.is_pressed() and
-		not extraction_event_button.is_pressed() and
-		not enemy_spawn_region_button.is_pressed() and
-		not event_region_button.is_pressed() and
+		not events_dock.visible and
+		not extraction_events_dock.visible and
+		not enemy_spawn_regions_dock.visible and
+		not event_regions_dock.visible and
 		current_object and
 		"current_edit_button_pressed" in current_object
 	):
@@ -899,19 +956,11 @@ func _edit(object: Object) -> void:
 		event_region_container_control_window.hide()
 		
 	if !object or object.get_class() == "EditorDebuggerRemoteObject":
-		if event_button:
-			event_button.visible = false
-			event_button.toggled.emit(false)
-			extraction_event_button.visible = false
-			extraction_event_button.toggled.emit(false)
-			enemy_spawn_region_button.visible = false
-			enemy_spawn_region_button.toggled.emit(false)
-			event_region_button.visible = false
-			event_region_button.toggled.emit(false)
-			toggled_regions_button.visible = false
-			var output_button: Button = event_button.get_parent().get_child(0)
-			if output_button:
-				output_button.toggled.emit(true)
+		if events_dock and events_dock.get_parent() != null:
+			event_regions_dock.close()
+			enemy_spawn_regions_dock.close()
+			extraction_events_dock.close()
+			events_dock.close()
 		return
 
 	if current_object and is_instance_valid(current_object) and "set_editing_events" in current_object:
@@ -924,76 +973,87 @@ func _edit(object: Object) -> void:
 	
 	if current_object and !"set_editing_events" in current_object:
 		current_object = null
-		#return
-	if event_button:
+
+	if events_dock:
 		if current_object:
-			event_button.visible = true
-			extraction_event_button.visible = true
-			enemy_spawn_region_button.visible = true
-			event_region_button.visible = true
+			events_dock.open()
+			extraction_events_dock.open()
+			enemy_spawn_regions_dock.open()
+			event_regions_dock.open()
 			if "current_edit_button_pressed" in current_object and current_object.current_edit_button_pressed != -1:
 				if current_object.current_edit_button_pressed == 0:
-					event_button.set_pressed(false)
-					event_button.set_pressed(true)
-					event_button.toggled.emit(true)
+					events_dock.make_visible()
 				elif current_object.current_edit_button_pressed == 1:
-					extraction_event_button.set_pressed(false)
-					extraction_event_button.set_pressed(true)
-					extraction_event_button.toggled.emit(true)
+					extraction_events_dock.make_visible()
 				elif current_object.current_edit_button_pressed == 2:
-					enemy_spawn_region_button.set_pressed(false)
-					enemy_spawn_region_button.set_pressed(true)
-					enemy_spawn_region_button.toggled.emit(true)
+					enemy_spawn_regions_dock.make_visible()
 				else:
-					event_region_button.set_pressed(false)
-					event_region_button.set_pressed(true)
-					event_region_button.toggled.emit(true)
+					event_regions_dock.make_visible()
 				current_object.refresh_canvas()
 			elif current_object.can_add_events:
 				get_viewport().set_input_as_handled()
-				event_button.visible = true
-				extraction_event_button.visible = true
-				enemy_spawn_region_button.visible = true
-				event_region_button.visible = true
-				event_button.set_pressed(false)
-				event_button.set_pressed(true)
-				event_button.toggled.emit(true)
+				events_dock.open()
+				extraction_events_dock.open()
+				enemy_spawn_regions_dock.open()
+				event_regions_dock.open()
+				events_dock.make_visible()
 		else:
-			event_button.visible = false
-			event_button.toggled.emit(false)
-			extraction_event_button.visible = false
-			extraction_event_button.toggled.emit(false)
-			enemy_spawn_region_button.visible = false
-			enemy_spawn_region_button.toggled.emit(false)
-			event_region_button.visible = true
-			event_region_button.toggled.emit(false)
+			event_regions_dock.close()
+			enemy_spawn_regions_dock.close()
+			extraction_events_dock.close()
+			events_dock.close()
 	
 	if current_object:
 		if Engine.is_editor_hint():
 			if current_object.property_list_changed.is_connected(_on_map_property_changed):
 				current_object.property_list_changed.disconnect(_on_map_property_changed)
 			current_object.property_list_changed.connect(_on_map_property_changed.bind(current_object))
-		var bottom_panel = event_button.get_parent()
+		var bottom_panel = events_dock.get_parent()
 		if bottom_panel:
 			for child in bottom_panel.get_children():
 				if child is Button and child.text == "TileSet":
 					child.visible = false
 	
 	if (
-		not event_button.is_pressed() and
-		not extraction_event_button.is_pressed() and
-		not enemy_spawn_region_button.is_pressed() and
-		not event_region_button.is_pressed() and
+		not events_dock.visible and
+		not extraction_events_dock.visible and
+		not enemy_spawn_regions_dock.visible and
+		not event_regions_dock.visible and
 		current_object and
 		"current_edit_button_pressed" in current_object
 	):
 		current_object.current_edit_button_pressed = -1
+
+	if current_object:
+		_sync_initial_edit_mode.call_deferred()
+
+
+func _sync_initial_edit_mode() -> void:
+	if not is_instance_valid(current_object):
+		return
 	
-	if toggled_regions_button:
-		toggled_regions_button.visible = current_object != null and current_object.current_edit_button_pressed == 0
-		if toggled_regions_button.visible:
-			_force_toggled_regions_button_position()
-		toggled_regions_button.toggled.emit(toggled_regions_button.is_pressed())
+	var last_state = FileCache.options.get("show_regions_toggled", false)
+	
+	if events_dock.visible:
+		_on_event_button_toggled(true)
+	elif extraction_events_dock.visible:
+		_on_extraction_event_button_toggled(true)
+	elif enemy_spawn_regions_dock.visible:
+		_on_enemy_spawn_region_button_toggled(true)
+	elif event_regions_dock.visible:
+		_on_event_region_button_toggled(true)
+	
+	if toggled_regions_button and toggled_regions_button.visible:
+
+		_force_toggled_regions_button_position()
+		
+		toggled_regions_button.set_pressed_no_signal(last_state)
+		
+		if current_object:
+			current_object.force_show_regions = last_state
+			current_object.queue_redraw()
+
+		toggled_regions_button.toggled.emit(last_state)
 
 
 func _force_toggled_regions_button_position() -> void:
@@ -1028,26 +1088,24 @@ func _handles(object: Object) -> bool:
 		return false
 	
 	if result:
-		if object.has_method("set_force_update_shadow"):
-			object.set_force_update_shadow(false)
-			return true
-		return false
+		if "shadow_manager" in object and object.shadow_manager:
+			object.shadow_manager.set_force_update_shadow(false)
+		return true
 	else:
-		if event_button:
-			event_button.visible = false
-			event_button.toggled.emit(false)
-		if extraction_event_button:
-			extraction_event_button.visible = false
-			extraction_event_button.toggled.emit(false)
-		if enemy_spawn_region_button:
-			enemy_spawn_region_button.visible = false
-			enemy_spawn_region_button.toggled.emit(false)
-		if event_region_button:
-			event_region_button.visible = false
-			event_region_button.toggled.emit(false)
+		if events_dock:
+			events_dock.visible = false
+		if extraction_events_dock:
+			extraction_events_dock.visible = false
+		if enemy_spawn_regions_dock:
+			enemy_spawn_regions_dock.visible = false
+		if event_regions_dock:
+			event_regions_dock.visible = false
+
 		if current_object:
-			current_object.set_force_update_shadow(true)
-			current_object.set_editing_events(false)
+			if "shadow_manager" in current_object and current_object.shadow_manager:
+				current_object.shadow_manager.set_force_update_shadow(true)
+			if current_object.has_method("set_editing_events"):
+				current_object.set_editing_events(false)
 			current_object.current_event = null
 			current_object = null
 		return false
@@ -2239,12 +2297,14 @@ func _on_tile_popup_menu_index_pressed(index: int) -> void:
 		var event_copy = event_to_cut.duplicate(true)
 		var event_id = event_copy.id
 		var event_pos = Vector2i(event_copy.x, event_copy.y)
+		event_copy._uniq_id = event_to_cut._uniq_id
+		event_copy.set_meta("is_original_event", true)
 		
 		undo_redo.create_action("Cut Event", UndoRedo.MERGE_DISABLE, current_object)
 		
 		# DO
 		undo_redo.add_do_method(self, "_force_mode_switch", MODE.EVENT)
-		undo_redo.add_do_method(self, "copy_tile_into_clipboard", event_copy)
+		undo_redo.add_do_method(self, "copy_tile_into_clipboard", event_copy, true)
 		undo_redo.add_do_method(current_object, "remove_event_in", event_pos)
 		undo_redo.add_do_method(get_editor_interface(), "mark_scene_as_unsaved")
 		undo_redo.add_do_method(event_container_control, "refresh", true)
@@ -2451,6 +2511,8 @@ func create_tile_from_preset(preset_path: String) -> void:
 		return
 	
 	var event_copy = preset.preset.duplicate(true)
+	if "_uniq_id" in event_copy and event_copy.has_method("_generate_16_digit_id"):
+		event_copy._uniq_id = event_copy._generate_16_digit_id()
 	
 	var undo_redo = get_undo_redo()
 	undo_redo.create_action("Create Event from Preset", UndoRedo.MERGE_DISABLE, current_object)
@@ -2850,10 +2912,15 @@ func _select_extraction_event_after_creation(pos: Vector2i):
 	current_object.select_extraction_event(pos)
 
 
-func copy_tile_into_clipboard(default_event: RPGEvent = null) -> void:
+func copy_tile_into_clipboard(default_event: RPGEvent = null, preserve_id: bool = false) -> void:
 	var event = current_object.get_event_in(current_tile_pos) if !default_event else default_event
 	if event:
+		var preserve_id_cache = -1
+		if preserve_id:
+			preserve_id_cache = event._uniq_id 
 		StaticEditorVars.CLIPBOARD["event"] = event.clone(true)
+		if preserve_id_cache != -1:
+			StaticEditorVars.CLIPBOARD["event"]._uniq_id = preserve_id_cache
 
 
 func copy_extraction_tile_into_clipboard(default_event: RPGExtractionItem = null) -> void:
@@ -2882,8 +2949,15 @@ func paste_tile() -> void:
 	if !event_to_paste:
 		return
 		
-	var event_copy = event_to_paste.duplicate(true)
+	var event_copy: RPGEvent = event_to_paste.duplicate(true)
 	event_copy.id = current_object.events.get_next_id()
+	
+	var is_original = event_copy.has_meta("is_original_event")
+	
+	if not is_original:
+		event_copy._uniq_id = event_copy._generate_16_digit_id()
+	elif event_copy.has_meta("is_original_event"):
+		event_copy.remove_meta("is_original_event")
 	
 	var undo_redo = get_undo_redo()
 
@@ -2895,6 +2969,8 @@ func paste_tile() -> void:
 	undo_redo.add_do_method(get_editor_interface(), "mark_scene_as_unsaved")
 	undo_redo.add_do_method(event_container_control, "refresh", true)
 	undo_redo.add_do_method(event_container_control, "select", event_copy.id, true, true)
+	if is_original:
+		undo_redo.add_do_method(self, "_set_cache_original_event", false)
 	
 	# UNDO
 	undo_redo.add_undo_method(self, "_force_mode_switch", MODE.EVENT)
@@ -2902,8 +2978,19 @@ func paste_tile() -> void:
 	undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
 	undo_redo.add_undo_method(event_container_control, "refresh", true)
 	undo_redo.add_undo_method(event_container_control, "select", -1, true, true)
+	if is_original:
+		undo_redo.add_undo_method(self, "_set_cache_original_event", true)
 
 	undo_redo.commit_action()
+
+
+func _set_cache_original_event(value: bool) -> void:
+	var event_into_clipboard = StaticEditorVars.CLIPBOARD.get("event")
+	if event_into_clipboard:
+		if value and !event_into_clipboard.has_meta("is_original_event"):
+			event_into_clipboard.set_meta("is_original_event", true)
+		elif !value and event_into_clipboard.has_meta("is_original_event"):
+			event_into_clipboard.remove_meta("is_original_event")
 
 
 func paste_extraction_tile() -> void:
@@ -3192,6 +3279,7 @@ func show_edit_event_dialog() -> void:
 	dialog.set_event(current_event)
 	dialog.set_events(current_object.events)
 	dialog.changed.connect(get_editor_interface().mark_scene_as_unsaved)
+	dialog.event_updated.connect(_on_edit_event_dialog_changed.bind(current_object))
 	dialog.size_changed.connect(_on_dialog_size_changed.bind(path, dialog))
 	dialog.tree_exited.connect(_on_dialog_tree_exited)
 	dialog.tree_exiting.connect(
@@ -3209,6 +3297,13 @@ func show_edit_event_dialog() -> void:
 	else:
 		dialog.size = state.size
 		dialog.position = state.position
+
+
+func _on_edit_event_dialog_changed(event: RPGEvent, obj: RPGMap) -> void:
+	if is_instance_valid(obj) and is_instance_valid(event):
+		var rpg_map_info = get_node_or_null("/root/RPGMapsInfo")
+		if rpg_map_info:
+			rpg_map_info.update_single_event(obj.internal_id, event)
 
 
 func _on_dialog_tree_exited() -> void:
@@ -3434,28 +3529,24 @@ func _force_mode_switch(mode_to_force: MODE) -> void:
 	# This function forces the UI to switch to a specific mode.
 	# We set other buttons to false first to avoid multiple signals.
 	if mode_to_force != MODE.EVENT:
-		event_button.set_pressed(false)
+		events_dock.visible = false
 	if mode_to_force != MODE.EXTRACTION_EVENT:
-		extraction_event_button.set_pressed(false)
+		extraction_events_dock.visible = false
 	if mode_to_force != MODE.ENEMY_SPAWN:
-		enemy_spawn_region_button.set_pressed(false)
+		enemy_spawn_regions_dock.visible = false
 	if mode_to_force != MODE.EVENT_REGION:
-		event_region_button.set_pressed(false)
+		event_regions_dock.visible = false
 	
 	# Now press the correct one. Its 'toggled' signal will fire.
 	match mode_to_force:
 		MODE.EVENT:
-			if !event_button.is_pressed():
-				event_button.set_pressed(true)
+			events_dock.make_visible()
 		MODE.EXTRACTION_EVENT:
-			if !extraction_event_button.is_pressed():
-				extraction_event_button.set_pressed(true)
+			extraction_events_dock.make_visible()
 		MODE.ENEMY_SPAWN:
-			if !enemy_spawn_region_button.is_pressed():
-				enemy_spawn_region_button.set_pressed(true)
+			enemy_spawn_regions_dock.make_visible()
 		MODE.EVENT_REGION:
-			if !event_region_button.is_pressed():
-				event_region_button.set_pressed(true)
+			event_regions_dock.make_visible()
 
 
 func _save_external_data() -> void:

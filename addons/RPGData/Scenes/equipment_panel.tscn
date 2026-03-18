@@ -1,0 +1,79 @@
+[gd_scene format=3 uid="uid://deb08h0fasvba"]
+
+[ext_resource type="Script" uid="uid://cy5igysqwhsg5" path="res://addons/RPGData/Scenes/equipment_panel.gd" id="1_eca8n"]
+[ext_resource type="Script" uid="uid://d0kowhkcjb7kv" path="res://addons/CustomControls/custom_option_button.gd" id="1_wb74y"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eca8n"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.039215688, 0.3647059, 0.039215688, 0.11764706)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[node name="EquipmentPanel" type="Control" unique_id=497830252]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_eca8n")
+
+[node name="MainPanelContainer" type="Control" parent="." unique_id=1019039951]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=725042460]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -293.0
+offset_bottom = 49.0
+grow_horizontal = 0
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 40
+
+[node name="PanelSelected" type="OptionButton" parent="MarginContainer" unique_id=675060156]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "[title]Data Selector[/title]
+Switch between editing \"weapons\", \"armor\", or \"sets/costumes\"."
+mouse_default_cursor_shape = 2
+text_overrun_behavior = 3
+clip_text = true
+selected = 0
+item_count = 3
+popup/item_0/text = "Weapons"
+popup/item_0/id = 0
+popup/item_1/text = "Armors"
+popup/item_1/id = 1
+popup/item_2/text = "Sets / Costumes"
+popup/item_2/id = 2
+script = ExtResource("1_wb74y")
+
+[node name="Panel" type="Panel" parent="MarginContainer/PanelSelected" unique_id=2060628601]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_eca8n")
