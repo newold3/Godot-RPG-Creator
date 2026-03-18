@@ -96,6 +96,7 @@ func _on_actors_menu_button_selected(_actor_index: int) -> void:
 
 
 func set_actor(actor: GameActor) -> void:
+	if not is_inside_tree(): return
 	current_actor = actor
 	stats_container.set_actor(actor)
 	equipment_container.set_actor(actor)

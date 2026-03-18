@@ -91,6 +91,7 @@ var text_manager: TextManager
 var timer_manager: TimerManager
 var input_manager: InputManager
 var menu_manager: MenuManager
+var toast_manager: ToastManager
 
 var hand_cursor_path: String = "res://Scenes/GUI/default_hand_cursor.tscn"
 #endregion
@@ -186,6 +187,10 @@ func _ready() -> void:
 		menu_manager = MenuManager.new()
 		menu_manager.name = "MenuManager"
 		add_child(menu_manager)
+		
+		toast_manager = ToastManager.new()
+		toast_manager.name = "ToastManager"
+		add_child(toast_manager)
 		
 		controller = KeyController.new()
 
@@ -477,14 +482,17 @@ func show_followers(value: bool, instant: bool = false) -> void:
 		main_scene.process_follower_command("show", value, instant)
 
 
-func disappear_followers() -> void:
+func disappear_followers(time: float = 0.5, reset_followers_tracking: bool = false) -> void:
 	if main_scene: main_scene.process_follower_command("disappear")
 	if current_player and current_player.has_method("clear_movement_history"):
 		current_player.clear_movement_history()
 	var followers = get_followers()
 	if followers:
 		for follower in followers:
-			follower.disappear()
+			follower.disappear(time)
+	if reset_followers_tracking:
+		await get_tree().create_timer(time).timeout
+		disable_followers_tracking(0.0)
 
 
 func appear_followers() -> void:
@@ -501,7 +509,7 @@ func regroup_followers(time: float = 0.6, remove_followers: bool = false) -> voi
 	if main_scene: main_scene.process_follower_command("regroup", time, remove_followers)
 
 
-func disable_followers_tracking(time: float) -> void:
+func disable_followers_tracking(time: float = 0.5) -> void:
 	if game_state: game_state.followers_tracking_enabled = false
 	if main_scene:
 		main_scene.process_follower_command("disable_tracking", time)
@@ -772,6 +780,11 @@ func create_main_menu() -> void:
 
 func get_items(include_hidden_items: bool = false, sort_mode: int = 0, collection: int = 0) -> Array:
 	if inventory_manager: return inventory_manager.get_items(include_hidden_items, sort_mode, collection)
+	return []
+
+
+func get_skills_for_actor(actor: GameActor, sort_mode: int = 0) -> Array:
+	if actor_stats_manager: return actor_stats_manager.get_skills_for_actor(actor, sort_mode)
 	return []
 #endregion
 
@@ -1076,6 +1089,10 @@ func get_current_ingame_images() -> Array:
 
 
 #region GUIManager Wrappers
+func toast_message(_message: String, start_position: ToastManager.ToastPos = ToastManager.ToastPos.BOTTOM_RIGHT) -> void:
+	if toast_manager: toast_manager.show_message(_message, start_position)
+
+
 func _create_popup_message(type: int, item_id: int, quantity: int, popup_prefix = "", level = -1) -> void:
 	if gui_manager: gui_manager._create_popup_message(type, item_id, quantity, popup_prefix, level)
 

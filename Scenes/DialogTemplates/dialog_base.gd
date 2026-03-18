@@ -1375,19 +1375,26 @@ func setup_text(text: String, use_soft_reset: bool = false, _is_additional_text:
 
 func clean_structural_newlines(t: String) -> String:
 	t = t.strip_edges()
-	var regex = RegEx.new()
-	var special_tags = "character|face|imgfx|img_remove|showbox|hidebox|sound|wait|no_wait_input|dialog_shake|blip|highlight_character|speaker_entry|speaker_entry_end|speaker_exit|freeze|speaker|hide_speaker|r"
-	regex.compile("(\\[(?:" + special_tags + ")[^\\]]*\\])\\n")
-	t = regex.sub(t, "$1", true)
-	regex.compile("\\n(\\[(?:" + special_tags + ")[^\\]]*\\])")
-	t = regex.sub(t, "$1", true)
-	t = t.strip_edges()
-	regex.compile("\\n{2,}")
-	t = regex.sub(t, "\n", true)
-	regex.compile("(\\])\\n")
-	t = regex.sub(t, "$1", true)
-	t = t.replace("[newline]", "\n")
-	return t.strip_edges()
+	var lines = t.split("\n")
+	var new_lines: Array[String] = []
+	var only_commands_regex = RegEx.new()
+	only_commands_regex.compile("^\\s*(\\[[^\\]]+\\]\\s*)+$")
+	for i in range(lines.size()):
+		var line = lines[i]
+		if only_commands_regex.search(line) != null:
+			new_lines.append(line.strip_edges())
+		else:
+			new_lines.append(line)
+	var result = ""
+	for i in range(new_lines.size()):
+		var is_current_only_cmd = only_commands_regex.search(lines[i]) != null
+		result += new_lines[i]
+		if not is_current_only_cmd and i < new_lines.size() - 1:
+			result += "\n"
+	var final_regex = RegEx.new()
+	final_regex.compile("\\n{2,}")
+	result = final_regex.sub(result, "\n", true)
+	return result.replace("[newline]", "\n").strip_edges()
 
 
 ## Splits the text into paragraphs based on the [p] tag and message_max_lines.

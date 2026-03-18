@@ -485,7 +485,7 @@ func _on_scrollbar_changed(_value: float) -> void:
 	if child:
 		var h = get_h_scroll_bar()
 		var v = get_v_scroll_bar()
-		current_position = target_position
+		current_position = child.position
 		target_position.x = -h.value if h and h.visible else 0
 		target_position.y = -v.value if v and v.visible else 0
 		_start_animation()
@@ -608,53 +608,51 @@ func _is_descendant_of_container(control: Control) -> bool:
 
 ## Calculates required scroll to ensure the target is completely visible
 func _bring_control_into_view(target: Control, instant: bool = true, instant_smooth: bool = true) -> void:
-	if not target or not is_instance_valid(target) or not visible:
+	if not target or not is_instance_valid(target) or not visible or not child:
 		return
 	var parent_cursor = target.get_parent()
 	while parent_cursor and parent_cursor != self:
-		if parent_cursor is ScrollContainer or parent_cursor.has_method("_bring_control_into_view"):
+		if parent_cursor is ScrollContainer and parent_cursor != self:
 			return 
 		parent_cursor = parent_cursor.get_parent()
 	var target_rect = target.get_global_rect()
+	var child_rect = child.get_global_rect()
 	var container_rect = get_global_rect()
-	var local_target_pos = target_rect.position - container_rect.position
-	var local_target_end = local_target_pos + target_rect.size
+	var canvas_pos = target_rect.position - child_rect.position
+	var canvas_end = canvas_pos + target_rect.size
 	var h = get_h_scroll_bar()
 	var v = get_v_scroll_bar()
 	var new_h_scroll = scroll_horizontal
 	var new_v_scroll = scroll_vertical
 	if h and h.visible:
-		if local_target_pos.x < focus_scroll_offset.x:
-			new_h_scroll += local_target_pos.x - focus_scroll_offset.x
-		elif local_target_end.x > container_rect.size.x - focus_scroll_offset.x:
-			new_h_scroll += local_target_end.x - (container_rect.size.x - focus_scroll_offset.x)
+		if canvas_pos.x < new_h_scroll + focus_scroll_offset.x:
+			new_h_scroll = canvas_pos.x - focus_scroll_offset.x
+		elif canvas_end.x > new_h_scroll + container_rect.size.x - focus_scroll_offset.x:
+			new_h_scroll = canvas_end.x - container_rect.size.x + focus_scroll_offset.x
 		new_h_scroll = clamp(new_h_scroll, h.min_value, h.max_value - h.page)
 	if v and v.visible:
-		if local_target_pos.y < focus_scroll_offset.y:
-			new_v_scroll += local_target_pos.y - focus_scroll_offset.y
-		elif local_target_end.y > container_rect.size.y - focus_scroll_offset.y:
-			new_v_scroll += local_target_end.y - (container_rect.size.y - focus_scroll_offset.y)
+		if canvas_pos.y < new_v_scroll + focus_scroll_offset.y:
+			new_v_scroll = canvas_pos.y - focus_scroll_offset.y
+		elif canvas_end.y > new_v_scroll + container_rect.size.y - focus_scroll_offset.y:
+			new_v_scroll = canvas_end.y - container_rect.size.y + focus_scroll_offset.y
 		new_v_scroll = clamp(new_v_scroll, v.min_value, v.max_value - v.page)
 	if new_h_scroll != scroll_horizontal or new_v_scroll != scroll_vertical:
 		if instant and instant_smooth:
 			var original_duration = scroll_duration
 			scroll_duration = instant_scroll_duration
 			current_position = child.position
-			target_position = Vector2(-new_h_scroll if h and h.visible else 0,  
-									   -new_v_scroll if v and v.visible else 0)
+			target_position = Vector2(-new_h_scroll if h and h.visible else 0, -new_v_scroll if v and v.visible else 0)
 			_start_animation()
 			scroll_duration = original_duration
 		elif instant:
 			busy = true
-			h.set_deferred("value", new_h_scroll)
-			v.set_deferred("value", new_v_scroll)
-			_sync_child_to_scrollbar.call_deferred()
+			if h and h.visible: h.value = new_h_scroll
+			if v and v.visible: v.value = new_v_scroll
+			_sync_child_to_scrollbar()
 			child.position = target_position
 		else:
-			if h and h.visible:
-				h.value = new_h_scroll
-			if v and v.visible:
-				v.value = new_v_scroll
+			if h and h.visible: h.value = new_h_scroll
+			if v and v.visible: v.value = new_v_scroll
 
 
 ## Handles instant scroll updates ensuring frame renders first

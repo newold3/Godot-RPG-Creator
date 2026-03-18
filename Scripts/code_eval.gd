@@ -43,7 +43,7 @@ func execute(code: String) -> Variant:
 		"PacketPeerUDP", "TCPServer", "StreamPeerTCP", "WebSocket",
 		"Thread", "Mutex", "Semaphore", "WorkerThreadPool", "MultiplayerAPI",
 		"Input", "ClassDB", "assert", "get_script", "set_script",
-		"free", "queue_free", "SceneTree", "add_child", "remove_child", "move_child",
+		"SceneTree", "add_child", "remove_child", "move_child",
 		"popagate_call", "propagate_notification", "rpc"
 	]
 	
@@ -60,7 +60,7 @@ func execute(code: String) -> Variant:
 		if result:
 			forbidden_words.append(keyword)
 	
-	if not forbidden_words.is_empty():
+	if not forbidden_words.is_empty() or "free()" in code or "queue_free()" in code:
 		push_error("Error compiling script: ", code)
 		var fws = str(forbidden_words)
 		push_error("Code contains one or more forbidden keyword: %s" % fws)

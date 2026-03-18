@@ -2,7 +2,8 @@
 class_name IngameItemList
 extends Control
 
-@export_category("Pagination")
+@export_category("Required Nodes")
+
 ## External paginator control to handle page splitting
 @export var paginator: ItemPaginator:
 	set(value):
@@ -15,52 +16,66 @@ extends Control
 			paginator.setup_pagination(items.size())
 		refresh()
 
+## External scroll container to use its scroll bar for offset calculations
+@export var scroll_container_node: ScrollContainer
+
 @export_category("Buttons")
+
 ## Normal background style for the item
 @export var normal_style: StyleBox:
 	set(value):
 		normal_style = value
 		refresh()
+
 ## Background style when the item is selected
 @export var selected_style: StyleBox:
 	set(value):
 		selected_style = value
 		refresh()
+
 ## Background style when the mouse hovers the item
 @export var hover_style: StyleBox:
 	set(value):
 		hover_style = value
 		refresh()
+
 ## Background style when the item is disabled
 @export var disabled_style: StyleBox:
 	set(value):
 		disabled_style = value
 		refresh()
+
 ## Base height of each drawn button
 @export var button_height: int = 32:
 	set(value):
 		button_height = value
 		_update_minimum_size()
 		refresh()
+
 ## Sound effect when moving the cursor
 @export var cursor_fx: AudioStream
+
 ## Sound effect when selecting or clicking an item
 @export var select_fx: AudioStream
+
 ## Default texture for normal items
 @export var default_item_icon: Texture2D:
 	set(value):
 		default_item_icon = value
 		refresh()
+
 ## Default texture for weapons
 @export var default_weapon_icon: Texture2D:
 	set(value):
 		default_weapon_icon = value
 		refresh()
+
 ## Default texture for armors
 @export var default_armor_icon: Texture2D:
 	set(value):
 		default_armor_icon = value
 		refresh()
+
 ## Default texture for costumes
 @export var default_custome_icon: Texture2D:
 	set(value):
@@ -68,28 +83,33 @@ extends Control
 		refresh()
 
 @export_category("Visual")
+
 ## Number of columns for the list
 @export var columns: int = 1:
 	set(value):
 		columns = max(1, value)
 		_update_minimum_size()
 		refresh()
+
 ## Horizontal separation between items
 @export var horizontal_separation: int = 4:
 	set(value):
 		horizontal_separation = value
 		refresh()
+
 ## Vertical separation between rows
 @export var vertical_separation: int = 4:
 	set(value):
 		vertical_separation = value
 		_update_minimum_size()
 		refresh()
+
 ## Size of the drawn icons
 @export var icon_size: Vector2 = Vector2(26, 26):
 	set(value):
 		icon_size = value
 		refresh()
+
 ## Extra vertical padding added at the end for scrolling
 @export var extra_bottom_padding: int = 32:
 	set(value):
@@ -101,53 +121,61 @@ extends Control
 	set(value):
 		font = value
 		refresh()
+
 ## Size of the font
 @export_range(8, 256) var font_size: int = 26:
 	set(value):
 		font_size = value
 		refresh()
+
 ## Text color for the item name
 @export var name_color: Color = Color.WHITE:
 	set(value):
 		name_color = value
 		refresh()
+
 ## Text color when the item is hovered or selected
 @export var hover_text_color: Color = Color.WHITE:
 	set(value):
 		hover_text_color = value
 		refresh()
+
 ## Text color when the item is disabled
 @export var disabled_text_color: Color = Color(0.5, 0.5, 0.5, 1.0):
 	set(value):
 		disabled_text_color = value
 		refresh()
+
 ## Font outline thickness
 @export var font_outline: int = 8:
 	set(value):
 		font_outline = value
 		refresh()
+
 ## Font outline color
 @export var font_outline_color: Color = Color.BLACK:
 	set(value):
 		font_outline_color = value
 		refresh()
+
 ## Text color for the quantity
 @export var quantity_color: Color = Color.WHITE:
 	set(value):
 		quantity_color = value
 		refresh()
+
 ## Texture used to indicate a newly added item. If empty, a red dot is drawn instead.
 @export var new_item_texture: Texture2D:
 	set(value):
 		new_item_texture = value
 		refresh()
+
 ## Offset applied to the new item indicator position (top right corner).
 @export var new_item_offset: Vector2 = Vector2.ZERO:
 	set(value):
 		new_item_offset = value
 		refresh()
-## External scroll container to use its scroll bar for offset calculations
-@export var scroll_container_node: ScrollContainer
+
 ## Correction applied to the right margin when the scrollbar is visible
 @export var right_offset_correction: int = 12:
 	set(value):
@@ -155,27 +183,14 @@ extends Control
 		refresh()
 
 @export_category("In-Editor only")
+
 ## Enable this in the editor to generate dummy buttons
 @export var max_dummy_items: int = 600
+
+## Triggers the creation of dummy items
 @export var add_dummy_items: bool : set = _create_dummy_buttons
 
-## Emitted when the player confirms or clicks an item
-signal item_activated(obj: Dictionary)
-## Emitted when an item receives focus
-signal item_focused(obj: Dictionary)
-## Signal emitted when the dialog requests to be closed
-signal close_requested()
-
-#{
-	#"name": string,
-	#"icon": Texture or null,
-	#"item_color": Color or null,
-	#"quantity": int,
-	# 0 = items, 1 = weapons, 2 = armors, 3 = costumes, 4 = key item, 5 = skills
-	#"item_type": int,
-	#"item_id": int (real database id),
-	#"is_disabled": bool
-#}
+## Array of dictionaries containing item data
 var items: Array = []
 var current_used_icons: Dictionary = {}
 var item_rects: Array[Rect2] = []
@@ -187,16 +202,40 @@ var anim_states: Array[float] = []
 var _last_scroll_offset: float = -999999.0
 var _last_real_mouse_pos: Vector2 = Vector2.INF
 var enabled: bool = false
-
 var manipulator: String
+var itemlist_id: String = ""
+var target_uid: String = ""
+var target_global_index: int = 0
+var is_restoring: bool = false
+var activated_item_uid: String = ""
+var dirty_refresh_time: float = 0.0
+var input_cooldown: int = 0
 
+
+## Emitted when the player confirms or clicks an item
+signal item_activated(obj: Dictionary)
+
+## Emitted when an item receives focus
+signal item_focused(obj: Dictionary)
+
+## Signal emitted when the dialog requests to be closed
+signal close_requested()
+
+## Signal emitted when an item being actively used rots
+signal active_item_rotted()
+
+## Signal emitted when an item is confirmed for use
+signal use_item(item_data: Dictionary)
+
+## Signal emitted when a skill is confirmed for use
+signal use_skill(skill_data: Dictionary)
 
 
 ## Configures internal nodes and establishes the base logic for inputs
 func _ready() -> void:
 	ghost_cursor = Control.new()
 	ghost_cursor.name = "GhostCursor"
-	ghost_cursor.focus_mode = Control.FOCUS_ALL
+	ghost_cursor.focus_mode = Control.FOCUS_CLICK
 	ghost_cursor.mouse_filter = Control.MOUSE_FILTER_PASS
 	ghost_cursor.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	add_child(ghost_cursor, false, Node.INTERNAL_MODE_FRONT)
@@ -210,11 +249,17 @@ func _ready() -> void:
 	if scroll_node and scroll_node.has_method("set_focus_target"):
 		scroll_node.set_focus_target(ghost_cursor)
 	item_focused.connect(_remove_is_new_label)
+	focus_entered.connect(select_current)
 
 
+
+## Removes the newly added flag safely from focused items
 func _remove_is_new_label(obj: Dictionary) -> void:
-	obj.is_new = false
-	obj.item.newly_added = false
+	obj["is_new"] = false
+	var real_item = obj.get("item")
+	if real_item:
+		real_item.newly_added = false
+
 
 
 ## Configures the main hand cursor visual position
@@ -249,6 +294,7 @@ func _notification(what: int) -> void:
 
 ## Receives dynamic page updates from the external paginator node
 func _on_page_changed(_page: int) -> void:
+	if is_restoring: return
 	selected_index = -1
 	pressed_index = -1
 	_update_minimum_size()
@@ -262,16 +308,25 @@ func _on_page_changed(_page: int) -> void:
 
 ## Updates item zoom animations in real time tracking local changes and custom controller inputs
 func _process(delta: float) -> void:
-	if Engine.is_editor_hint() or not enabled or GameManager.get_cursor_manipulator() != manipulator: return
-	
-	_handle_controller_input()
+	if Engine.is_editor_hint(): return
+	if dirty_refresh_time > 0.0:
+		dirty_refresh_time -= delta
+		if dirty_refresh_time <= 0.0:
+			_fetch_and_refresh_data()
+	if not is_visible_in_tree(): return
+	var screen_rect = get_viewport_rect()
+	if not screen_rect.intersects(get_global_rect()): return
+	var is_active = enabled and GameManager.get_cursor_manipulator() == manipulator
+	if is_active:
+		_handle_controller_input()
 	var needs_redraw = false
 	var current_offset = _get_local_scroll_offset()
 	if current_offset != _last_scroll_offset:
 		_last_scroll_offset = current_offset
 		needs_redraw = true
-		_update_ghost_cursor()
-	if not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and not Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE):
+		if is_active:
+			_update_ghost_cursor()
+	if is_active and not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and not Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE):
 		var current_global_mouse = get_global_mouse_position()
 		if current_global_mouse == _last_real_mouse_pos:
 			var scroll_node = _get_valid_scroll_node()
@@ -288,6 +343,9 @@ func _process(delta: float) -> void:
 	var visible_range = _get_visible_row_range()
 	var start_idx = visible_range.x * columns
 	var end_idx = min(count, visible_range.y * columns)
+	var has_perishable = false
+	var ipp = _get_items_per_page()
+	var page_offset = 0 if ipp <= 0 else _get_current_page() * ipp
 	for i in range(start_idx, end_idx):
 		var target_scale = 1.0
 		if i == pressed_index:
@@ -299,6 +357,8 @@ func _process(delta: float) -> void:
 			needs_redraw = true
 		else:
 			anim_states[i] = target_scale
+		if (page_offset + i) < items.size() and items[page_offset + i].get("is_perishable", false):
+			has_perishable = true
 	if selected_index >= 0 and selected_index < count and (selected_index < start_idx or selected_index >= end_idx):
 		if abs(anim_states[selected_index] - 1.05) > 0.005:
 			anim_states[selected_index] = lerpf(anim_states[selected_index], 1.05, 15.0 * delta)
@@ -311,9 +371,52 @@ func _process(delta: float) -> void:
 			needs_redraw = true
 		else:
 			anim_states[pressed_index] = 0.95
+	if has_perishable:
+		needs_redraw = true
 	if needs_redraw:
 		queue_redraw()
 
+
+func clear_activated_item() -> void:
+	activated_item_uid = ""
+
+
+## Finds and selects the next perishable item of the same type with the lowest lifetime
+func select_next_perishable(target_item_id: int) -> Dictionary:
+	is_restoring = true
+	var best_idx = -1
+	var min_life = 999999.0
+	for i in range(items.size()):
+		var item = items[i]
+		if item.get("item_id", -1) == target_item_id and item.get("is_perishable", false):
+			var life = item.get("lifetime", 999999.0)
+			if life < min_life:
+				min_life = life
+				best_idx = i
+	if best_idx != -1:
+		var local_idx = best_idx
+		var ipp = _get_items_per_page()
+		if ipp > 0:
+			@warning_ignore("integer_division")
+			var target_page = best_idx / ipp
+			local_idx = best_idx % ipp
+			if is_instance_valid(paginator) and paginator.current_page != target_page:
+				paginator.current_page = target_page
+				if paginator.has_method("setup_pagination"):
+					paginator.setup_pagination(items.size())
+				var scroll = _get_valid_scroll_node()
+				if scroll:
+					scroll.scroll_vertical = 0
+		await get_tree().process_frame
+		await get_tree().process_frame
+		refresh()
+		select_item(local_idx, true)
+		var best_item = items[best_idx]
+		activated_item_uid = str(best_item.get("item_type", -1)) + "_" + str(best_item.get("item_id", -1))
+		is_restoring = false
+		return best_item
+	is_restoring = false
+	return {}
 
 
 ## Draws the items pulling exact local coordinates directly from the precomputed cache.
@@ -332,6 +435,8 @@ func _draw() -> void:
 		var item = items[page_offset + i]
 		var is_disabled = item.get("is_disabled", false)
 		var is_new = item.get("is_new", false)
+		var is_empty_item = item.get("is_empty", false)
+		var item_type = item.get("item_type", 0)
 		var item_rect = item_rects[i]
 		var current_scale = anim_states[i] if i < anim_states.size() else 1.0
 		var local_rect = item_rect
@@ -358,39 +463,43 @@ func _draw() -> void:
 			content_rect.size.y -= style.get_margin(SIDE_TOP) + style.get_margin(SIDE_BOTTOM)
 		var icon = item.get("icon")
 		if not icon:
-			var type = item.get("item_type", 0)
-			if type == 0:
+			if item_type == 0:
 				icon = default_item_icon
-			elif type == 1:
+			elif item_type == 1:
 				icon = default_weapon_icon
-			elif type == 2:
+			elif item_type == 2:
 				icon = default_armor_icon
-			elif type == 3:
+			elif item_type == 3:
 				icon = default_custome_icon
-		
 		var icon_modulate = Color(1.0, 1.0, 1.0, 0.5) if is_disabled else Color.WHITE
 		var icon_rect = Rect2(content_rect.position.x, content_rect.position.y + (content_rect.size.y - icon_size.y) / 2.0, icon_size.x, icon_size.y)
-		if icon is Texture2D:
-			icon.draw_rect(get_canvas_item(), icon_rect, false, icon_modulate)
-		elif icon is RPGIcon:
-			if not icon.path in current_used_icons and AssetManager.exists(icon.path):
-				var img = load(icon.path)
-				current_used_icons[icon.path] = img
-			var img: Texture2D = current_used_icons.get(icon.path)
-			if img:
-				if not icon.region:
-					img.draw_rect(get_canvas_item(), icon_rect, false, icon_modulate)
-				else:
-					img.draw_rect_region(get_canvas_item(), icon_rect, icon.region, icon_modulate)
-				
-		var text_x = content_rect.position.x + icon_size.x + 8.0
+		if not is_empty_item:
+			if icon is Texture2D:
+				icon.draw_rect(get_canvas_item(), icon_rect, false, icon_modulate)
+			elif icon is RPGIcon:
+				if not icon.path in current_used_icons and AssetManager.exists(icon.path):
+					var img = load(icon.path)
+					current_used_icons[icon.path] = img
+				var img: Texture2D = current_used_icons.get(icon.path)
+				if img:
+					if not icon.region:
+						img.draw_rect(get_canvas_item(), icon_rect, false, icon_modulate)
+					else:
+						img.draw_rect_region(get_canvas_item(), icon_rect, icon.region, icon_modulate)
+		var text_x = content_rect.position.x + (0.0 if is_empty_item else icon_size.x + 8.0)
 		var text_y = content_rect.position.y + (content_rect.size.y / 2.0) + (font_size / 3.0)
 		var current_font = font
 		if not current_font:
 			current_font = ThemeDB.fallback_font
 		if current_font:
-			var qty_text = "x" + str(item.get("quantity", 0))
-			var qty_size = current_font.get_string_size(qty_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size)
+			var qty_text = ""
+			if not is_empty_item:
+				if item_type == 5:
+					qty_text = str(item.get("mp_cost", 0)) + " MP"
+				else:
+					var q = 1 if item.get("is_perishable", false) else item.get("quantity", 0)
+					qty_text = "x" + str(q)
+			var qty_size = current_font.get_string_size(qty_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size) if not is_empty_item else Vector2.ZERO
 			var qty_x = content_rect.position.x + content_rect.size.x - qty_size.x
 			var color = item.get("item_color")
 			var final_qty_color = quantity_color
@@ -408,10 +517,31 @@ func _draw() -> void:
 			if font_outline > 0:
 				draw_string_outline(current_font, Vector2(text_x, text_y), name_str, HORIZONTAL_ALIGNMENT_LEFT, max_name_width, font_size, font_outline, font_outline_color)
 			draw_string(current_font, Vector2(text_x, text_y), name_str, HORIZONTAL_ALIGNMENT_LEFT, max_name_width, font_size, color)
-			if font_outline > 0:
-				draw_string_outline(current_font, Vector2(qty_x, text_y), qty_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, font_outline, font_outline_color)
-			draw_string(current_font, Vector2(qty_x, text_y), qty_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, final_qty_color)
-		if is_new:
+			if not is_empty_item:
+				if font_outline > 0:
+					draw_string_outline(current_font, Vector2(qty_x, text_y), qty_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, font_outline, font_outline_color)
+				draw_string(current_font, Vector2(qty_x, text_y), qty_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, final_qty_color)
+		if item.get("is_perishable", false) and not is_empty_item:
+			var real_item_ref = item.get("item")
+			var max_life = item.get("max_lifetime", 1.0)
+			var life = real_item_ref.lifetime if real_item_ref else item.get("lifetime", 1.0)
+			var ratio = clampf(life / max_life, 0.0, 1.0) if max_life > 0.0 else 0.0
+			var bar_h = 3.0
+			var bar_w = content_rect.size.x - icon_size.x - 12.0
+			var bar_x = content_rect.position.x + icon_size.x + 8.0
+			var bar_y = content_rect.position.y + content_rect.size.y - bar_h - 2.0
+			var bg_rect = Rect2(bar_x, bar_y, bar_w, bar_h)
+			draw_rect(bg_rect, Color(0.1, 0.1, 0.1, 0.6))
+			var fill_rect = Rect2(bar_x, bar_y, bar_w * ratio, bar_h)
+			var bar_color = Color(0.2, 0.8, 0.2, 1.0)
+			if ratio < 0.25:
+				bar_color = Color(0.8, 0.2, 0.2, 1.0)
+			elif ratio < 0.5:
+				bar_color = Color(0.8, 0.8, 0.2, 1.0)
+			if is_disabled:
+				bar_color.a = 0.5
+			draw_rect(fill_rect, bar_color)
+		if is_new and not is_empty_item:
 			var indicator_pos = Vector2(local_rect.position.x + local_rect.size.x, local_rect.position.y) + new_item_offset
 			if new_item_texture:
 				var tex_size = new_item_texture.get_size()
@@ -449,7 +579,6 @@ func _get_current_page_count() -> int:
 ## Processes mouse input differentiating physical interaction from passive overlap
 func _gui_input(event: InputEvent) -> void:
 	if not enabled or GameManager.get_cursor_manipulator() != manipulator: return
-	
 	if Engine.is_editor_hint(): return
 	if event is InputEventMouseMotion:
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) or Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE):
@@ -480,14 +609,23 @@ func _gui_input(event: InputEvent) -> void:
 				pressed_index = -1
 
 
+func set_enabled(value: bool) -> void:
+	var mode = Control.MOUSE_FILTER_IGNORE if not value else Control.MOUSE_FILTER_STOP
+	mouse_filter = mode
+	enabled = value
+	var focus = Control.FOCUS_CLICK if value else Control.FOCUS_NONE
+	focus_mode = focus
+	if ghost_cursor:
+		ghost_cursor.focus_mode = focus
+		mode = Control.MOUSE_FILTER_PASS if value else Control.MOUSE_FILTER_IGNORE
+		ghost_cursor.mouse_filter = mode
+
 
 ## Handles gamepad and keyboard inputs via the custom ControllerManager
 func _handle_controller_input() -> void:
 	if not enabled or GameManager.get_cursor_manipulator() != manipulator: return
-	
 	if GameManager.get_cursor_manipulator() != manipulator:
 		return
-
 	var direction = ControllerManager.get_pressed_direction()
 	var count = _get_current_page_count()
 	if direction and count > 0:
@@ -592,17 +730,18 @@ func _get_item_at_pos(pos: Vector2) -> int:
 
 
 ## Selects an item forcefully based on index
-func select_item(idx: int) -> void:
-	_select_item(idx, true)
+func select_item(idx: int, snap_camera: bool = false) -> void:
+	_select_item(idx, true, snap_camera)
 	_config_hand_cursor()
 	GameManager.force_hand_position_over_node(manipulator)
 
 
 
 ## Updates selection and synchronizes the cursor and sounds based on true interaction
-func _select_item(idx: int, force_focus: bool = false) -> void:
+func _select_item(idx: int, force_focus: bool = false, snap_camera: bool = false) -> void:
 	if selected_index == idx:
-		_focus_ghost_cursor(true)
+		if force_focus:
+			_focus_ghost_cursor(true)
 		return
 	selected_index = idx
 	_update_ghost_cursor()
@@ -614,20 +753,30 @@ func _select_item(idx: int, force_focus: bool = false) -> void:
 	var page_offset = 0 if ipp <= 0 else _get_current_page() * ipp
 	if idx >= 0 and idx < count and (page_offset + idx) < items.size():
 		var item = items[page_offset + idx]
+		target_uid = str(item.get("item_type", -1)) + "_" + str(item.get("item_id", -1))
+		target_global_index = page_offset + idx
 		item_focused.emit(item)
+	if scroll_container_node and scroll_container_node.has_method("bring_focus_target_into_view"):
+		var smooth = not snap_camera
+		scroll_container_node.call_deferred("bring_focus_target_into_view", true, smooth)
 
 
+## Selects the current stored index manually
 func select_current() -> void:
 	_select_item(selected_index, true)
 
 
+
+## Regains control of the ghost cursor safely
 func _focus_ghost_cursor(force_focus: bool = false) -> void:
 	if is_instance_valid(ghost_cursor):
-		if not ghost_cursor.has_focus():
-			ghost_cursor.grab_focus()
-		elif force_focus:
-			ghost_cursor.release_focus()
-			ghost_cursor.grab_focus()
+		if ghost_cursor.focus_mode != Control.FOCUS_NONE:
+			if not ghost_cursor.has_focus():
+				ghost_cursor.grab_focus()
+			elif force_focus:
+				ghost_cursor.release_focus()
+				ghost_cursor.grab_focus()
+
 
 
 ## Triggers the activation of an item
@@ -639,9 +788,14 @@ func _activate_item(idx: int) -> void:
 		var item = items[page_offset + idx]
 		if item.get("is_disabled", false):
 			return
+		activated_item_uid = str(item.get("item_type", -1)) + "_" + str(item.get("item_id", -1))
 		_play_sound(select_fx)
-
 		item_activated.emit(item)
+		var i_type = item.get("item_type", 0)
+		if i_type == 5:
+			use_skill.emit(item)
+		else:
+			use_item.emit(item)
 
 
 
@@ -655,6 +809,7 @@ func _update_ghost_cursor() -> void:
 	if ghost_cursor.size != rect.size:
 		ghost_cursor.size = rect.size
 	_focus_ghost_cursor()
+
 
 
 ## Caches the Rect2 configurations natively mapping items to perfect grid positions
@@ -675,9 +830,64 @@ func _recalculate_cache() -> void:
 		item_rects.append(Rect2(item_local_x, item_local_y, col_width, button_height))
 
 
+
+## Restores the selection based on the cached target ID and item type, adapting to pagination
+func restore_selection() -> void:
+	is_restoring = true
+	var found_global_idx = -1
+	if target_uid != "":
+		for i in range(items.size()):
+			var uid = str(items[i].get("item_type", -1)) + "_" + str(items[i].get("item_id", -1))
+			if uid == target_uid:
+				found_global_idx = i
+				if i == target_global_index:
+					break
+	if found_global_idx == -1 or target_uid == "-1_-1":
+		if target_global_index >= 0 and target_global_index < items.size():
+			found_global_idx = target_global_index
+		elif items.size() > 0:
+			found_global_idx = items.size() - 1
+		else:
+			found_global_idx = 0
+	var local_idx = found_global_idx
+	var ipp = _get_items_per_page()
+	if ipp > 0:
+		@warning_ignore("integer_division")
+		var target_page = found_global_idx / ipp
+		local_idx = found_global_idx % ipp
+		if is_instance_valid(paginator) and paginator.current_page != target_page:
+			paginator.current_page = target_page
+			if paginator.has_method("setup_pagination"):
+				paginator.setup_pagination(items.size())
+			var scroll = _get_valid_scroll_node()
+			if scroll:
+				scroll.scroll_vertical = 0
+	await get_tree().process_frame
+	await get_tree().process_frame
+	refresh()
+	var count = _get_current_page_count()
+	if count > 0 and local_idx >= count:
+		local_idx = count - 1
+	if count > 0:
+		select_item(local_idx, true)
+	is_restoring = false
+
+
 ## Replaces all current items with a new array of items
 func add_items(new_items: Array) -> void:
+	is_restoring = true
 	items = new_items.duplicate(true)
+	if items.is_empty():
+		items.append({
+			"name": "Empty",
+			"icon": null,
+			"item_color": null,
+			"quantity": 0,
+			"item_type": 0,
+			"item_id": -1,
+			"is_disabled": true,
+			"is_empty": true
+		})
 	selected_index = -1
 	pressed_index = -1
 	if is_instance_valid(paginator):
@@ -685,6 +895,8 @@ func add_items(new_items: Array) -> void:
 	_update_minimum_size()
 	_set_item_connections(items)
 	refresh()
+	call_deferred("restore_selection")
+
 
 
 ## Adds a single item to the current list
@@ -697,23 +909,42 @@ func add_item(item: Dictionary) -> void:
 	refresh()
 
 
+
+## Clears all rotting signal connections from the current item list
 func _clear_connections() -> void:
 	for obj in items:
-		if obj.has("item") and obj.item is GameItem and obj.get("is_perishable", false):
-			if obj.item.it_rotted.is_connected(_on_item_rotted):
-				obj.item.it_rotted.disconnect(_on_item_rotted)
+		var real_item = obj.get("item")
+		if real_item and real_item is GameItem and obj.get("is_perishable", false):
+			if real_item.it_rotted.is_connected(_on_item_rotted):
+				real_item.it_rotted.disconnect(_on_item_rotted)
 
 
+
+## Establishes rotting signal connections for a given array of items
 func _set_item_connections(objs: Array) -> void:
 	for obj in objs:
-		if obj.has("item") and obj.item is GameItem and obj.get("is_perishable", false):
-			if not obj.item.it_rotted.is_connected(_on_item_rotted):
-				obj.item.it_rotted.connect(_on_item_rotted.bind(obj), CONNECT_DEFERRED)
+		var real_item = obj.get("item")
+		if real_item and real_item is GameItem and obj.get("is_perishable", false):
+			if not real_item.it_rotted.is_connected(_on_item_rotted):
+				real_item.it_rotted.connect(_on_item_rotted.bind(obj), CONNECT_DEFERRED)
 
 
+
+## Handles when an item decays and refreshes the list
 func _on_item_rotted(_real_item: GameItem, _item: Dictionary) -> void:
-	var sort_type = GameManager.game_state.in_game_options.get("sort_type", 0)
-	var collection = GameManager.game_state.in_game_options.get("collection", 0)
+	var rotted_uid = str(_item.get("item_type", -1)) + "_" + str(_item.get("item_id", -1))
+	if rotted_uid == activated_item_uid:
+		active_item_rotted.emit()
+		activated_item_uid = ""
+	dirty_refresh_time = 0.1
+
+
+func _fetch_and_refresh_data() -> void:
+	var cache = {}
+	if GameManager.game_state.in_game_options.has("lists_cache") and GameManager.game_state.in_game_options["lists_cache"].has(itemlist_id):
+		cache = GameManager.game_state.in_game_options["lists_cache"][itemlist_id]
+	var sort_type = cache.get("sort_type", 0)
+	var collection = cache.get("collection", 0)
 	var new_items = GameManager.inventory_manager.get_items(false, sort_type, collection)
 	add_items(new_items)
 
@@ -735,11 +966,13 @@ func clear() -> void:
 ## Forces a clean frame redraw and regenerates positional math
 func refresh() -> void:
 	_recalculate_cache()
-	_update_minimum_size()
-	_apply_scrollbar_snapping()
+	call_deferred("_update_minimum_size")
+	call_deferred("_apply_scrollbar_snapping")
 	queue_redraw()
 
 
+
+## Configures scrollbar steps to match item height
 func _apply_scrollbar_snapping() -> void:
 	var scroll = _get_valid_scroll_node()
 	if scroll:
@@ -748,6 +981,7 @@ func _apply_scrollbar_snapping() -> void:
 		var v_bar = scroll.get_v_scroll_bar()
 		if v_bar:
 			v_bar.step = row_height
+
 
 
 ## Plays an audio stream directly

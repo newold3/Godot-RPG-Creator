@@ -311,36 +311,27 @@ func _remove_generic_amount(collection: Dictionary, id: int, amount: int, includ
 ## collection: 0 = items + weapons + armors + sets, 1 = items, 2 = weapons, 3 = armors, 4 = sets, 5 = key items
 func get_items(include_hidden_items: bool = false, sort_mode: int = 0, collection: int = 0) -> Array:
 	var items: Array = []
-	var grouped_items: Dictionary = {}
-	
 	if GameManager.game_state:
 		var raw_items: Array = []
 		var state = GameManager.game_state
-		
 		match collection:
-			0: # All
+			0:
 				raw_items.append_array(_extract_items_from_dict(state.items))
 				raw_items.append_array(_extract_items_from_dict(state.weapons))
 				raw_items.append_array(_extract_items_from_dict(state.armors))
 				raw_items.append_array(_extract_items_from_dict(state.sets))
-			2: # Weapons
+			2:
 				raw_items.append_array(_extract_items_from_dict(state.weapons))
-			3: # Armors
+			3:
 				raw_items.append_array(_extract_items_from_dict(state.armors))
-			4: # Sets
+			4:
 				raw_items.append_array(_extract_items_from_dict(state.sets))
-			_: # Items, key items
+			_:
 				raw_items.append_array(_extract_items_from_dict(state.items))
-		
 		for item in raw_items:
 			var real_data = item.get_real_data()
-			if (
-				not real_data or
-				(real_data is RPGItem and real_data.item_category > 1 and not include_hidden_items) or
-				(real_data is RPGItem and real_data.item_category != 1 and collection == 5)
-			):
+			if not real_data or (real_data is RPGItem and real_data.item_category > 1 and not include_hidden_items) or (real_data is RPGItem and real_data.item_category != 1 and collection == 5):
 				continue
-				
 			var item_type: int = 0
 			if item is GameWeapon:
 				item_type = 1
@@ -350,67 +341,63 @@ func get_items(include_hidden_items: bool = false, sort_mode: int = 0, collectio
 				item_type = 3
 			elif real_data is RPGItem and real_data.item_category == 1:
 				item_type = 4
-
 			var level = -1 if not "current_level" in item else item.current_level
-			var group_key = str(item_type) + "_" + str(item.id) + "_" + str(level)
 			var equipped = " E" if "equipped" in item and item.equipped else ""
-			var is_disabled = not _is_item_usable_in_menu(real_data) or (
-				not equipped.is_empty() and not item is GameItem)
-
-			if grouped_items.has(group_key):
-				grouped_items[group_key].quantity += item.quantity
-				grouped_items[group_key].is_new = grouped_items[group_key].is_new or item.newly_added
-				if item.last_added_date > grouped_items[group_key].date_added:
-					grouped_items[group_key].date_added = item.last_added_date
-			else:
-				var dict_item = {
-					"item": item,
-					"real_item": real_data,
-					"name": real_data.name + (" ⬥" + str(level) if level != -1 else "") + equipped,
-					"icon": real_data.icon,
-					"item_color": _get_item_color_for_item(real_data),
-					"quantity": item.quantity,
-					"item_type": item_type,
-					"item_id": item.id,
-					"is_disabled": is_disabled,
-					"is_new": item.newly_added,
-					"date_added": item.last_added_date,
-					"is_perishable": real_data is RPGItem and real_data.perishable.is_perishable,
-					"description": real_data.description
-				}
-				grouped_items[group_key] = dict_item
-				items.append(dict_item)
-	
+			var is_disabled = not _is_item_usable_in_menu(real_data) or (not equipped.is_empty() and not item is GameItem)
+			var is_perish = false
+			var life = 0.0
+			var max_life = 0.0
+			if real_data is RPGItem and real_data.perishable.is_perishable:
+				is_perish = true
+				life = item.lifetime
+				max_life = real_data.perishable.duration
+			var item_qty = 1 if is_perish else item.quantity
+			var dict_item = {
+				"item": item,
+				"real_item": real_data,
+				"name": real_data.name + (" ⬥" + str(level) if level != -1 else "") + equipped,
+				"icon": real_data.icon,
+				"item_color": _get_item_color_for_item(real_data),
+				"quantity": item_qty,
+				"item_type": item_type,
+				"item_id": item.id,
+				"is_disabled": is_disabled,
+				"is_new": item.newly_added,
+				"date_added": item.last_added_date,
+				"is_perishable": is_perish,
+				"lifetime": life,
+				"max_lifetime": max_life,
+				"mp_cost": real_data.mp_cost if "mp_cost" in real_data else 0,
+				"description": real_data.description
+			}
+			items.append(dict_item)
 	var sort_func: Callable
 	match sort_mode:
-		1: # A-Z
+		1:
 			sort_func = func(a, b): return a.name.nocasecmp_to(b.name) < 0
-		2: # Z-A
+		2:
 			sort_func = func(a, b): return a.name.nocasecmp_to(b.name) > 0
-		3: # Usable First
+		3:
 			sort_func = func(a, b):
 				if a.is_disabled != b.is_disabled: return not a.is_disabled
 				return a.name.nocasecmp_to(b.name) < 0
-		4: # Rarity
+		4:
 			sort_func = func(a, b):
 				var rar_a = a.real_item.rarity_type if a.real_item else 0
 				var rar_b = b.real_item.rarity_type if b.real_item else 0
 				if rar_a != rar_b: return rar_a > rar_b
 				return a.name.nocasecmp_to(b.name) < 0
-		5: # Quantity
+		5:
 			sort_func = func(a, b):
 				if a.quantity != b.quantity: return a.quantity > b.quantity
 				return a.name.nocasecmp_to(b.name) < 0
-		0, _: # Smart/Default
+		0, _:
 			sort_func = func(a, b):
 				if a.is_new != b.is_new: return a.is_new
 				if a.is_new and b.is_new and a.date_added != b.date_added: return a.date_added > b.date_added
 				if a.is_disabled != b.is_disabled: return not a.is_disabled
-				if a.item_type != b.item_type: return a.item_type < b.item_type
 				return a.name.nocasecmp_to(b.name) < 0
-				
 	items.sort_custom(sort_func)
-	
 	return items
 
 

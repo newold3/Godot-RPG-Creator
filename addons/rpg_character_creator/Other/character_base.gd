@@ -161,7 +161,7 @@ func _on_character_options_changed() -> void:
 
 
 func _process(_delta: float) -> void:
-	if GameManager.loading_game or is_invalid_event or busy2:
+	if GameManager.loading_game or is_invalid_event or busy2 or Engine.is_editor_hint():
 		return
 	if is_in_group("player"):
 		_smart_record_history()
@@ -169,8 +169,9 @@ func _process(_delta: float) -> void:
 
 ## Handle physics processing and triggers automatic path movement if a target tile is set
 func _physics_process(delta: float):
-	if GameManager.loading_game or is_invalid_event or busy2:
+	if GameManager.loading_game or is_invalid_event or busy2 or Engine.is_editor_hint():
 		return
+		
 	if is_in_group("player"):
 		_save_player_position_into_game_state()
 	if _click_indicator_cooldown > 0.0:

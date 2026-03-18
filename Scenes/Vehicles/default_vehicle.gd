@@ -141,7 +141,8 @@ func add_player(passenger: LPCCharacter) -> void:
 	if player and passenger == player: return
 	var node = get_node_or_null(player_container_node)
 	if node:
-		GameManager.disappear_followers()
+		if GameManager.game_state.followers_enabled:
+			await GameManager.disappear_followers(0.1, true)
 		player = passenger
 		await _set_initial_player_position(player_position)
 		current_map = passenger.get_parent()
@@ -208,11 +209,9 @@ func remove_player() -> void:
 			current_tile.y -= (extra_dimensions.grow_up + 1)
 		elif current_direction == LPCCharacter.DIRECTIONS.DOWN:
 			current_tile.y += (extra_dimensions.grow_down + 1)
-		var _target_position = current_map.get_tile_position(current_tile)
+		var _target_position = current_map.get_tile_position(current_tile).round()
 		current_map.set_event_direction(player, current_direction)
 		var real_start_pos = self.global_position + get_player_visual_offset()
-		player.is_on_vehicle = false
-		player.current_vehicle = null
 		player.reparent(current_map, false)
 		player.global_position = real_start_pos
 		await _set_player_position(_target_position)
@@ -229,6 +228,8 @@ func remove_player() -> void:
 		await t.finished
 		if player.has_method("kill_movement"):
 			player.kill_movement()
+		if "is_attacking" in player:
+			player.is_attacking = false
 		if player.has_method("_reset"):
 			player._reset(true)
 		if "target_position" in player:
@@ -237,6 +238,8 @@ func remove_player() -> void:
 			player.previous_tile = current_tile
 		if "teleport" in player:
 			player.teleport = _target_position
+		if player.has_method("initialize_virtual_tile"):
+			player.initialize_virtual_tile()
 		player._auto_target_tile = Vector2i(-1, -1)
 		player._auto_target_event = null
 		player.movement_vector = Vector2.ZERO
@@ -245,6 +248,8 @@ func remove_player() -> void:
 			player.is_mouse_moving = false
 		if "_click_indicator_cooldown" in player:
 			player._click_indicator_cooldown = 0.5
+		player.is_on_vehicle = false
+		player.current_vehicle = null
 		player.set_process(true)
 		player.set_process_input(true)
 		player = null
@@ -427,7 +432,7 @@ func _set_target_destination(tile: Vector2i, is_new_click: bool = true) -> void:
 		_click_indicator_cooldown = 0.1
 		var indicator = player.click_indicator_scene.instantiate()
 		current_map.add_child(indicator)
-		indicator.global_position = current_map.get_tile_position(tile) - Vector2(0, current_map.tile_size.y / 2 - 8.0)
+		indicator.global_position = current_map.get_tile_position(tile) - Vector2(0, current_map.tile_size.y / 2.0 - 8.0)
 	var events = current_map.get_in_game_events_in(tile)
 	for ev in events:
 		if ev is LPCEvent or ev is EmptyLPCEvent or ev is GenericLPCEvent or ev.get_class() == "RPGExtractionScene":
@@ -502,7 +507,7 @@ func _process_auto_movement() -> void:
 		movement_vector = Vector2.ZERO
 
 
-func _get_next_move_toward_target(target: Vector2i, target_screen_position: Vector2) -> Vector2i:
+func _get_next_move_toward_target(target: Vector2i, _target_screen_position: Vector2) -> Vector2i:
 	var map = current_map
 	if map:
 		var current = get_current_tile()

@@ -152,12 +152,19 @@ func rotate_to(direction: int) -> void:
 			GameManager.play_se(spin_fx)
 
 
+func _input(_event: InputEvent) -> void:
+	if GameManager.get_cursor_manipulator() == manipulator:
+		if ControllerManager.is_action_just_pressed("Button R2"):
+			rotate_to(1)
+		elif ControllerManager.is_action_just_pressed("Button L2"):
+			rotate_to(-1)
+
 
 func _gui_input(event: InputEvent) -> void:
 	if not enabled or GameManager.get_cursor_manipulator() != manipulator or get_tab_count() <= 1: return
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.position.x < size.x / 2.0:
-				rotate_to(1)
-			else:
 				rotate_to(-1)
+			else:
+				rotate_to(1)

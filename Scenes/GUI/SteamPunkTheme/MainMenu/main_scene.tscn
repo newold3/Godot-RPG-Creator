@@ -427,9 +427,11 @@ speed_scale = 1.7
 [connection signal="finish" from="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene/HBoxContainer/MainMenuItems" to="SceneDirectorManager" method="_on_main_menu_items_finish"]
 [connection signal="cancel" from="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene/HBoxContainer/MarginContainer/PartyMenu" to="SceneDirectorManager" method="_on_party_menu_cancel"]
 [connection signal="clicked" from="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene/HBoxContainer/MarginContainer/PartyMenu" to="SceneDirectorManager" method="_on_party_menu_clicked"]
+[connection signal="active_item_rotted" from="IngameItemListContainer/IngameItemList" to="SceneDirectorManager" method="_on_ingame_item_list_active_item_rotted"]
 [connection signal="close_requested" from="IngameItemListContainer/IngameItemList" to="SceneDirectorManager" method="hide_item_menu"]
-[connection signal="item_activated" from="IngameItemListContainer/IngameItemList" to="SceneDirectorManager" method="_on_item_list_item_activated"]
 [connection signal="item_focused" from="IngameItemListContainer/IngameItemList" to="SceneDirectorManager" method="_on_item_list_item_focused"]
+[connection signal="use_item" from="IngameItemListContainer/IngameItemList" to="SceneDirectorManager" method="_on_items_menu_use_item"]
+[connection signal="use_skill" from="IngameItemListContainer/IngameItemList" to="SceneDirectorManager" method="_on_items_menu_use_skill"]
 
 [editable path="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene"]
 [editable path="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene/HBoxContainer/MarginContainer/PartyMenu"]

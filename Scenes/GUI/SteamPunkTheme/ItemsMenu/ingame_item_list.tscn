@@ -764,6 +764,8 @@ layout_mode = 2
 mouse_filter = 0
 theme = SubResource("Theme_r3qji")
 scroll_vertical_custom_step = 54.0
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
 script = ExtResource("3_0d64t")
 single_target_focus = NodePath("MarginContainer/ItemList/GhostCursor")
 use_custom_vertical_scroll = true
@@ -781,11 +783,12 @@ theme_override_constants/margin_right = 18
 
 [node name="ItemList" type="Control" parent="TopBorder/VBoxContainer/VBoxContainer/BottomContainer/MainScrollContainer/MarginContainer" unique_id=57789859 node_paths=PackedStringArray("paginator", "scroll_container_node")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 27090)
+custom_minimum_size = Vector2(0, 674)
 layout_mode = 2
 focus_mode = 1
 script = ExtResource("6_2gnsa")
 paginator = NodePath("../../../MarginContainer/ItemPaginator")
+scroll_container_node = NodePath("../..")
 normal_style = SubResource("StyleBoxTexture_8yqpp")
 hover_style = SubResource("StyleBoxTexture_oblbm")
 button_height = 48
@@ -796,8 +799,8 @@ default_custome_icon = SubResource("AtlasTexture_aorh7")
 vertical_separation = 6
 font = ExtResource("2_2gnsa")
 new_item_offset = Vector2(-25, 4)
-scroll_container_node = NodePath("../..")
 right_offset_correction = -11
+max_dummy_items = 12
 
 [node name="MarginContainer" type="MarginContainer" parent="TopBorder/VBoxContainer/VBoxContainer/BottomContainer" unique_id=328558192]
 layout_mode = 2
@@ -808,6 +811,8 @@ theme_override_constants/margin_bottom = -3
 
 [node name="ItemPaginator" type="PanelContainer" parent="TopBorder/VBoxContainer/VBoxContainer/BottomContainer/MarginContainer" unique_id=42692824]
 unique_name_in_owner = true
+process_mode = 3
+visible = false
 custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 size_flags_vertical = 8
@@ -822,7 +827,8 @@ prev_button_margin = Vector4i(-43, -8, 19, -10)
 next_button_margin = Vector4i(4, -8, 17, -10)
 metadata/_custom_type_script = "uid://b45bm7x3cmiao"
 
-[node name="MarginContainer2" type="MarginContainer" parent="TopBorder" unique_id=238278998]
+[node name="SortContainer" type="MarginContainer" parent="TopBorder" unique_id=238278998]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -834,10 +840,11 @@ offset_top = -63.0
 offset_right = 105.5
 grow_horizontal = 2
 grow_vertical = 0
+mouse_filter = 2
 theme_override_constants/margin_top = 46
 theme_override_constants/margin_bottom = -5
 
-[node name="HBoxContainer" type="HBoxContainer" parent="TopBorder/MarginContainer2" unique_id=1756630597]
+[node name="HBoxContainer" type="HBoxContainer" parent="TopBorder/SortContainer" unique_id=1756630597]
 z_index = 40
 z_as_relative = false
 layout_mode = 2
@@ -845,18 +852,18 @@ size_flags_vertical = 8
 theme_override_constants/separation = -2
 alignment = 1
 
-[node name="Panel" type="PanelContainer" parent="TopBorder/MarginContainer2/HBoxContainer" unique_id=2087355170]
+[node name="Panel" type="PanelContainer" parent="TopBorder/SortContainer/HBoxContainer" unique_id=2087355170]
 z_index = 19
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_25pgl")
 
-[node name="L1Tab" type="Label" parent="TopBorder/MarginContainer2/HBoxContainer/Panel" unique_id=1682566781]
+[node name="L1Tab" type="Label" parent="TopBorder/SortContainer/HBoxContainer/Panel" unique_id=1682566781]
 layout_mode = 2
 text = "L1"
 label_settings = SubResource("LabelSettings_f5tdb")
 
-[node name="OrderLeft" type="Button" parent="TopBorder/MarginContainer2/HBoxContainer/Panel" unique_id=631372162 node_paths=PackedStringArray("main_parent")]
+[node name="OrderLeft" type="Button" parent="TopBorder/SortContainer/HBoxContainer/Panel" unique_id=631372162 node_paths=PackedStringArray("main_parent")]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
@@ -866,14 +873,14 @@ script = SubResource("GDScript_6kl3u")
 main_parent = NodePath("..")
 click_fx = ExtResource("14_5w0j5")
 
-[node name="Panel3" type="PanelContainer" parent="TopBorder/MarginContainer2/HBoxContainer" unique_id=183018439]
+[node name="Panel3" type="PanelContainer" parent="TopBorder/SortContainer/HBoxContainer" unique_id=183018439]
 z_index = 19
 custom_minimum_size = Vector2(220, 0)
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_25pgl")
 
-[node name="OrderTab" type="Label" parent="TopBorder/MarginContainer2/HBoxContainer/Panel3" unique_id=857570832]
+[node name="OrderTab" type="Label" parent="TopBorder/SortContainer/HBoxContainer/Panel3" unique_id=857570832]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Order: Newly"
@@ -881,18 +888,18 @@ label_settings = SubResource("LabelSettings_f5tdb")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Panel2" type="PanelContainer" parent="TopBorder/MarginContainer2/HBoxContainer" unique_id=75900952]
+[node name="Panel2" type="PanelContainer" parent="TopBorder/SortContainer/HBoxContainer" unique_id=75900952]
 z_index = 19
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_25pgl")
 
-[node name="R1Tab" type="Label" parent="TopBorder/MarginContainer2/HBoxContainer/Panel2" unique_id=1848216054]
+[node name="R1Tab" type="Label" parent="TopBorder/SortContainer/HBoxContainer/Panel2" unique_id=1848216054]
 layout_mode = 2
 text = "R1"
 label_settings = SubResource("LabelSettings_f5tdb")
 
-[node name="OrderRight" type="Button" parent="TopBorder/MarginContainer2/HBoxContainer/Panel2" unique_id=276262410 node_paths=PackedStringArray("main_parent")]
+[node name="OrderRight" type="Button" parent="TopBorder/SortContainer/HBoxContainer/Panel2" unique_id=276262410 node_paths=PackedStringArray("main_parent")]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
@@ -911,8 +918,11 @@ autoplay = &"gears_on"
 speed_scale = 0.0
 
 [connection signal="tab_selected" from="TopBorder/VBoxContainer/VBoxContainer/TopContainer/VBoxContainer/HBoxContainer/MidDecoration/CircularTabs" to="." method="_on_circular_tabs_tab_selected"]
+[connection signal="active_item_rotted" from="TopBorder/VBoxContainer/VBoxContainer/BottomContainer/MainScrollContainer/MarginContainer/ItemList" to="." method="_on_item_list_active_item_rotted"]
 [connection signal="close_requested" from="TopBorder/VBoxContainer/VBoxContainer/BottomContainer/MainScrollContainer/MarginContainer/ItemList" to="." method="_on_item_list_close_requested"]
 [connection signal="item_activated" from="TopBorder/VBoxContainer/VBoxContainer/BottomContainer/MainScrollContainer/MarginContainer/ItemList" to="." method="_on_item_list_item_activated"]
 [connection signal="item_focused" from="TopBorder/VBoxContainer/VBoxContainer/BottomContainer/MainScrollContainer/MarginContainer/ItemList" to="." method="_on_item_list_item_focused"]
-[connection signal="pressed" from="TopBorder/MarginContainer2/HBoxContainer/Panel/OrderLeft" to="." method="_on_sort_selected" binds= [-1]]
-[connection signal="pressed" from="TopBorder/MarginContainer2/HBoxContainer/Panel2/OrderRight" to="." method="_on_sort_selected" binds= [1]]
+[connection signal="use_item" from="TopBorder/VBoxContainer/VBoxContainer/BottomContainer/MainScrollContainer/MarginContainer/ItemList" to="." method="_on_item_list_use_item"]
+[connection signal="use_skill" from="TopBorder/VBoxContainer/VBoxContainer/BottomContainer/MainScrollContainer/MarginContainer/ItemList" to="." method="_on_item_list_use_skill"]
+[connection signal="pressed" from="TopBorder/SortContainer/HBoxContainer/Panel/OrderLeft" to="." method="_on_sort_selected" binds= [-1]]
+[connection signal="pressed" from="TopBorder/SortContainer/HBoxContainer/Panel2/OrderRight" to="." method="_on_sort_selected" binds= [1]]

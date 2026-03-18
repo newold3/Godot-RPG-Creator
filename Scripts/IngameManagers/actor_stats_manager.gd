@@ -61,6 +61,47 @@ func set_actor_parameter(actor: GameActor, parameter_id: String, operation: int,
 	actor.parameter_changed.emit()
 
 
+func get_skills_for_actor(actor: GameActor, _sort_mode: int = 0) -> Array:
+	var items: Array = []
+	if not actor: 
+		return items
+	var raw_skills = actor.get_skills()
+	for skill_id in raw_skills:
+		var skill_info = raw_skills[skill_id]
+		var real_skill: RPGSkill = actor.get_real_skill(skill_id)
+		if not real_skill:
+			continue
+		var mp_cost = real_skill.mp_cost if "mp_cost" in real_skill else 0
+		var usable_in_menu = true
+		if "occasion" in real_skill:
+			usable_in_menu = real_skill.occasion == 0 or real_skill.occasion == 2
+		var current_mp = actor.get_parameter("mp")
+		var has_enough_mp = current_mp >= mp_cost
+		var is_disabled = skill_info.get("sealed", false) or not usable_in_menu or not has_enough_mp
+		var dict_item = {
+			"item": null,
+			"real_item": real_skill,
+			"name": skill_info.get("name", ""),
+			"icon": skill_info.get("icon"),
+			"item_color": Color.WHITE,
+			"quantity": 0,
+			"item_type": 5,
+			"item_id": skill_info.get("id", 0),
+			"is_disabled": is_disabled,
+			"is_new": false,
+			"date_added": 0,
+			"is_perishable": false,
+			"mp_cost": mp_cost,
+			"description": skill_info.get("description", "")
+		}
+		items.append(dict_item)
+	var sort_func: Callable = func(a, b):
+		if a.is_disabled != b.is_disabled: return not a.is_disabled
+		return a.name.nocasecmp_to(b.name) < 0
+	items.sort_custom(sort_func)
+	return items
+
+
 func get_enemy_parameter(enemy_id: int, parameter_id: String) -> int:
 	## Retrieves a parameter value from a specific enemy in the database.
 	var result: int = 0

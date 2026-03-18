@@ -106,13 +106,13 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -163.5
-offset_top = -268.0
-offset_right = 163.5
+offset_left = -53.5
+offset_top = -170.0
+offset_right = 53.5
 offset_bottom = -38.0
 grow_horizontal = 2
 grow_vertical = 0
-pivot_offset = Vector2(163.5, 115)
+pivot_offset = Vector2(53.5, 66)
 size_flags_horizontal = 4
 size_flags_vertical = 10
 theme_override_styles/panel = SubResource("StyleBoxEmpty_0aoe3")
@@ -365,10 +365,10 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="MainMargin/AdvanceCursorContainer/Control" unique_id=515389805]
-position = Vector2(0, -0.08685994)
+position = Vector2(0, 2.1954696)
 sprite_frames = SubResource("SpriteFrames_m3qel")
 autoplay = "default"
-frame_progress = 0.7460382
+frame_progress = 0.40343896
 speed_scale = 6.0
 script = SubResource("GDScript_c8yyc")
 amplitude = 5.0
@@ -380,4 +380,4 @@ stream = ExtResource("29_i2qsa")
 pitch_scale = 0.87559193
 
 [connection signal="item_rect_changed" from="MainMargin/DialogMainContainer/HBoxContainer/MessageContainer/Message" to="." method="_on_message_item_rect_changed"]
-[connection signal="item_rect_changed" from="@CanvasLayer@19394/Message" to="." method="_on_message_item_rect_changed"]
+[connection signal="item_rect_changed" from="@CanvasLayer@188544/Message" to="." method="_on_message_item_rect_changed"]

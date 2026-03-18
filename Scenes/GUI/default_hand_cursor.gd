@@ -71,7 +71,7 @@ func _process(delta: float) -> void:
 		elif focus_owner and not is_hidden and cursor.self_modulate.a < 1.0:
 			cursor.self_modulate.a += delta * 5
 	
-	if confined_area and not confined_area.has_point(%Cursor.position):
+	if confined_area and not confined_area.abs().has_point(%Cursor.position):
 		cursor.self_modulate.a = 0
 		is_force_hidden = true
 		if hand_tween:
