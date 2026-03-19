@@ -448,8 +448,14 @@ func _process(delta: float) -> void:
 	if delay_for_input > 0:
 		delay_for_input -= delta
 		
-	if (busy or waiting_for_input) and not get_viewport().is_input_handled():
-		if waiting_for_input and (Input.is_action_just_pressed("ui_select") or Input.is_action_just_pressed("Mouse Left")):
+	var continue_key: bool
+	if Engine.is_editor_hint() and not get_viewport().is_input_handled():
+		continue_key = Input.is_action_just_pressed("ui_select") or Input.is_action_just_pressed("Mouse Left")
+	else:
+		continue_key = ControllerManager.is_confirm_just_pressed(false, [], false)
+
+	if (busy or waiting_for_input):
+		if waiting_for_input and continue_key:
 			if busy_when_preview:
 				return
 			get_viewport().set_input_as_handled()
@@ -2724,7 +2730,12 @@ func _animate_shake_dialog(time: float, node: Node, magnitude: float, frequency:
 
 func show_next_character() -> void:
 	var ignore_commands: bool = false
-	if !busy_when_preview and delay_for_input <= 0 and skip_type != SkipMode.FAST_MESSAGE and Input.is_action_pressed("ui_select") and not is_floating:
+	var confirm_pressed: bool
+	if Engine.is_editor_hint():
+		confirm_pressed = Input.is_action_pressed("ui_select")
+	else:
+		confirm_pressed = ControllerManager.is_confirm_held(false, [], false)
+	if !busy_when_preview and delay_for_input <= 0 and skip_type != SkipMode.FAST_MESSAGE and confirm_pressed and not is_floating:
 		if !waiting_for_input and !busy:
 			if skip_type == SkipMode.SHOW_ALL_IGNORE_COMMANDS:
 				current_character = max_characters
@@ -2780,7 +2791,11 @@ func show_next_character() -> void:
 	
 	if current_character < max_characters:
 		var delay = max_character_delay
-		if !busy_when_preview and skip_type == SkipMode.FAST_MESSAGE and Input.is_action_pressed("ui_select") and not is_floating:
+		if Engine.is_editor_hint():
+			confirm_pressed = Input.is_action_pressed("ui_select")
+		else:
+			confirm_pressed = ControllerManager.is_confirm_held(false, [], false)
+		if !busy_when_preview and skip_type == SkipMode.FAST_MESSAGE and confirm_pressed and not is_floating:
 			delay = skip_speed
 
 		current_delay = delay

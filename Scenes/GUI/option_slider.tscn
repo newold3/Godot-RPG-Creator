@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://bg6k5nxoyrikr"]
+[gd_scene format=3 uid="uid://bg6k5nxoyrikr"]
 
 [ext_resource type="Script" uid="uid://cu2m36bucror1" path="res://Scenes/GUI/option_slider.gd" id="1_kydf6"]
 [ext_resource type="Texture2D" uid="uid://duu13dsov6vp5" path="res://Assets/Images/GUI/main_gui.png" id="2_24747"]
@@ -48,7 +48,7 @@ region = Rect2(820, 50, 38, 38)
 atlas = ExtResource("2_24747")
 region = Rect2(757, 49, 38, 38)
 
-[node name="OptionCheckBox" type="Control"]
+[node name="OptionCheckBox" type="Control" unique_id=555301762]
 custom_minimum_size = Vector2(0, 62)
 layout_mode = 3
 anchors_preset = 0
@@ -65,7 +65,7 @@ slider_panel_height = 21
 vertical_extra_margin = 6
 mod_value_curve = SubResource("Curve_8bumk")
 
-[node name="SlideButton" type="Control" parent="."]
+[node name="SlideButton" type="Control" parent="." unique_id=1182823774]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 1
@@ -94,3 +94,6 @@ min_texture_size_pressed = Vector2(50, 50)
 grow_scale = 1.01
 on_select_animation = 11
 on_hover_animation = 11
+
+[connection signal="focus_entered" from="SlideButton" to="." method="_on_slide_button_focus_entered"]
+[connection signal="mouse_entered" from="SlideButton" to="." method="_on_slide_button_mouse_entered"]

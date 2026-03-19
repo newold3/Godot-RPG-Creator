@@ -30,6 +30,7 @@ var reset_value: float
 
 
 signal changed(value: float)
+signal button_focused()
 
 
 func _ready() -> void:
@@ -213,3 +214,11 @@ func _draw() -> void:
 
 func _on_slide_button_draw() -> void:
 	pass
+
+
+func _on_slide_button_focus_entered() -> void:
+	button_focused.emit()
+
+
+func _on_slide_button_mouse_entered() -> void:
+	button_focused.emit()

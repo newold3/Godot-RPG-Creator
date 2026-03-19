@@ -197,6 +197,15 @@ func _config_hand_in_other_button() -> void:
 	GameManager.force_show_cursor()
 
 
+func _config_hand_in_slider_button() -> void:
+	var manipulator = scene_manipulator
+	GameManager.set_cursor_manipulator(manipulator)
+	GameManager.set_hand_position(MainHandCursor.HandPosition.RIGHT, manipulator)
+	GameManager.set_cursor_offset(Vector2(8, 0), manipulator)
+	GameManager.set_confin_area(Rect2(), manipulator)
+	GameManager.force_show_cursor()
+
+
 func _check_button_pressed() -> void:
 	if busy: return
 	

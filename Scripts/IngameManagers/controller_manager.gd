@@ -125,6 +125,9 @@ var is_caps_lock_on: bool = false :
 
 var last_checked_frame: int = -1
 
+## Toggles typing mode. When true, directional echoes ignore WASD keys to prevent virtual cursor movement while typing.
+var is_typing_mode: bool = false
+
 # Cache system for frame-consistent results
 var cache = {}
 
@@ -320,6 +323,11 @@ func is_key_pressed(keycode: int) -> bool:
 	return result
 
 
+## Check if a keyboard key is continuously held down bypassing echo
+func is_key_held(keycode: int) -> bool:
+	return key_states.keys.has(keycode)
+
+
 # Check if a joystick/gamepad button is pressed with repeat handling
 func is_joy_button_pressed(keycode: int) -> bool:
 	if is_joy_button_just_pressed(keycode): return true
@@ -331,6 +339,11 @@ func is_joy_button_pressed(keycode: int) -> bool:
 		result = true
 	
 	return result
+
+
+## Check if a joystick/gamepad button is continuously held down bypassing echo
+func is_joy_button_held(keycode: int) -> bool:
+	return key_states.joy_buttons.has(keycode)
 
 
 # Check if action is pressed with repeat handling
@@ -352,6 +365,17 @@ func is_action_pressed(action: String) -> bool:
 			get_viewport().set_input_as_handled()
 			result = true
 	
+	cache[cache_key] = result
+	return result
+
+
+## Check if an action is continuously held down bypassing echo
+func is_action_held(action: String) -> bool:
+	var cache_key = "action_held_" + action
+	if cache.has(cache_key):
+		return cache[cache_key]
+	
+	var result = Input.is_action_pressed(action)
 	cache[cache_key] = result
 	return result
 
@@ -407,8 +431,6 @@ func get_trigger_value(trigger_axis: int) -> float:
 func is_mouse_button_pressed(keycode: int) -> bool:
 	if is_mouse_button_just_pressed(keycode): return true
 	
-	if Input.is_mouse_button_pressed(keycode): return true
-	
 	if not Input.is_mouse_button_pressed(keycode):
 		if keycode in key_states.mouse_buttons:
 			key_states.mouse_buttons.erase(keycode)
@@ -420,6 +442,11 @@ func is_mouse_button_pressed(keycode: int) -> bool:
 		get_viewport().set_input_as_handled()
 		result = true
 	return result
+
+
+## Check if a mouse button is continuously held down bypassing echo
+func is_mouse_button_held(keycode: int) -> bool:
+	return key_states.mouse_buttons.has(keycode)
 
 
 # Check if a confirm action is pressed (Enter, Space, A button, left click, etc.)
@@ -434,13 +461,11 @@ func is_confirm_pressed(ignore_mouse_left: bool = false, extra_keys: PackedInt32
 	
 	var result = false
 	
-	# Check keyboard confirm keys
 	for key_code in CONFIRM_INPUTS.keys:
 		if is_key_pressed(key_code):
 			result = true
 			break
-	
-	# Check mouse confirm buttons if no keyboard key was pressed
+			
 	if not result:
 		for button in CONFIRM_INPUTS.mouse:
 			if button == MOUSE_BUTTON_LEFT and ignore_mouse_left:
@@ -450,24 +475,64 @@ func is_confirm_pressed(ignore_mouse_left: bool = false, extra_keys: PackedInt32
 					break
 				result = true
 				break
-	
-	# Check gamepad confirm buttons if no keyboard/mouse button was pressed
+				
 	if not result:
 		for button in CONFIRM_INPUTS.joy:
 			if is_joy_button_pressed(button):
 				result = true
 				break
-	
-	# Check extra keys if any
+				
 	if not result and not extra_keys.is_empty():
 		for key in extra_keys:
 			if is_key_pressed(key):
 				result = true
 				break
-	
+				
 	if result:
 		get_viewport().set_input_as_handled()
+		
+	cache[cache_key] = result
+	return result
+
+
+func is_confirm_held(ignore_mouse_left: bool = false, extra_keys: PackedInt32Array = [], mouse_left_require_focusable: bool = true) -> bool:
+	var cache_key = "confirm_held_" + str(ignore_mouse_left) + "_" + str(extra_keys)
+	if cache.has(cache_key):
+		return cache[cache_key]
 	
+	if Input.is_key_pressed(KEY_ALT):
+		cache[cache_key] = false
+		return false
+	
+	var result = false
+	
+	for key_code in CONFIRM_INPUTS.keys:
+		if key_states.keys.has(key_code):
+			result = true
+			break
+			
+	if not result:
+		for button in CONFIRM_INPUTS.mouse:
+			if button == MOUSE_BUTTON_LEFT and ignore_mouse_left:
+				continue
+			if key_states.mouse_buttons.has(button):
+				if mouse_left_require_focusable and not GameManager.is_mouse_over_current_control_focused():
+					break
+				result = true
+				break
+				
+	if not result:
+		for button in CONFIRM_INPUTS.joy:
+			if key_states.joy_buttons.has(button):
+				result = true
+				break
+				
+	if not result and not extra_keys.is_empty():
+		for key in extra_keys:
+			if key_states.keys.has(key):
+				result = true
+				break
+				
 	cache[cache_key] = result
 	return result
 
@@ -475,13 +540,24 @@ func is_confirm_pressed(ignore_mouse_left: bool = false, extra_keys: PackedInt32
 func is_force_confirm_pressed() -> bool:
 	if cache.has("force_confirm"):
 		return cache.force_confirm
-	
+		
 	var result = false
-	if Input.is_action_just_pressed("ForceConfirm"):
-		get_viewport().set_input_as_handled()
-		result = true
 	
+	if is_action_pressed("ForceConfirm"):
+		result = true
+		
 	cache.force_confirm = result
+	return result
+
+
+## Check if force confirm action is continuously held down bypassing echo
+func is_force_confirm_held() -> bool:
+	var cache_key = "force_confirm_held"
+	if cache.has(cache_key):
+		return cache[cache_key]
+	
+	var result = Input.is_action_pressed("ForceConfirm")
+	cache[cache_key] = result
 	return result
 
 
@@ -542,6 +618,41 @@ func is_cancel_pressed(extra_keys: PackedInt32Array = []) -> bool:
 	return result
 
 
+## Check if a cancel action is continuously held down bypassing echo
+func is_cancel_held(extra_keys: PackedInt32Array = []) -> bool:
+	var cache_key = "cancel_held_" + str(extra_keys)
+	if cache.has(cache_key):
+		return cache[cache_key]
+	
+	var result = false
+	
+	for key_code in CANCEL_INPUTS.keys:
+		if key_states.keys.has(key_code):
+			result = true
+			break
+			
+	if not result:
+		for button in CANCEL_INPUTS.mouse:
+			if key_states.mouse_buttons.has(button):
+				result = true
+				break
+				
+	if not result:
+		for button in CANCEL_INPUTS.joy:
+			if key_states.joy_buttons.has(button):
+				result = true
+				break
+				
+	if not result and not extra_keys.is_empty():
+		for key in extra_keys:
+			if key_states.keys.has(key):
+				result = true
+				break
+				
+	cache[cache_key] = result
+	return result
+
+
 # Remove erase letter action (BACKSPACE, B Button, Right Mouse Button)
 func remove_cancel() -> void:
 	# Check keyboard confirm keys
@@ -588,6 +699,35 @@ func is_erase_letter_pressed() -> bool:
 		get_viewport().set_input_as_handled()
 	
 	cache.erase_letter = result
+	return result
+
+
+## Check if an erase letter action is continuously held down bypassing echo
+func is_erase_letter_held() -> bool:
+	var cache_key = "erase_letter_held"
+	if cache.has(cache_key):
+		return cache[cache_key]
+	
+	var result = false
+	
+	for key_code in ERASE_LETTER_INPUTS.keys:
+		if key_states.keys.has(key_code):
+			result = true
+			break
+			
+	if not result:
+		for button in ERASE_LETTER_INPUTS.mouse:
+			if key_states.mouse_buttons.has(button):
+				result = true
+				break
+				
+	if not result:
+		for button in ERASE_LETTER_INPUTS.joy:
+			if key_states.joy_buttons.has(button):
+				result = true
+				break
+				
+	cache[cache_key] = result
 	return result
 
 
@@ -941,12 +1081,13 @@ func set_input_delays(initial_delay: float, repeat_delay: float) -> void:
 	echo_key_delay = safe_repeat
 
 
+## Gets the current pressed direction, ignoring WASD keys if typing mode is active
 func _get_current_direction(ignore_opposite_keys = true) -> String:
 	if cache.has("pressed_direction"):
 		return cache.pressed_direction
-	
+		
 	var result = ""
-	# Check keyboard arrow keys and WASD
+	
 	if key_states.keys.has(KEY_LEFT) and key_states.keys[KEY_LEFT].is_active():
 		key_states.keys[KEY_LEFT].refresh()
 		result = "left"
@@ -959,20 +1100,19 @@ func _get_current_direction(ignore_opposite_keys = true) -> String:
 	elif key_states.keys.has(KEY_DOWN) and key_states.keys[KEY_DOWN].is_active():
 		key_states.keys[KEY_DOWN].refresh()
 		result = "down"
-	elif key_states.keys.has(KEY_A) and key_states.keys[KEY_A].is_active():
+	elif not is_typing_mode and key_states.keys.has(KEY_A) and key_states.keys[KEY_A].is_active():
 		key_states.keys[KEY_A].refresh()
 		result = "left"
-	elif key_states.keys.has(KEY_D) and key_states.keys[KEY_D].is_active():
+	elif not is_typing_mode and key_states.keys.has(KEY_D) and key_states.keys[KEY_D].is_active():
 		key_states.keys[KEY_D].refresh()
 		result = "right"
-	elif key_states.keys.has(KEY_W) and key_states.keys[KEY_W].is_active():
+	elif not is_typing_mode and key_states.keys.has(KEY_W) and key_states.keys[KEY_W].is_active():
 		key_states.keys[KEY_W].refresh()
 		result = "up"
-	elif key_states.keys.has(KEY_S) and key_states.keys[KEY_S].is_active():
+	elif not is_typing_mode and key_states.keys.has(KEY_S) and key_states.keys[KEY_S].is_active():
 		key_states.keys[KEY_S].refresh()
 		result = "down"
-
-	# If no keyboard direction, check gamepad D-pad
+		
 	if result.is_empty():
 		if key_states.joy_buttons.has(JOY_BUTTON_DPAD_LEFT) and key_states.joy_buttons[JOY_BUTTON_DPAD_LEFT].is_active():
 			key_states.joy_buttons[JOY_BUTTON_DPAD_LEFT].refresh()
@@ -986,38 +1126,37 @@ func _get_current_direction(ignore_opposite_keys = true) -> String:
 		elif key_states.joy_buttons.has(JOY_BUTTON_DPAD_DOWN) and key_states.joy_buttons[JOY_BUTTON_DPAD_DOWN].is_active():
 			key_states.joy_buttons[JOY_BUTTON_DPAD_DOWN].refresh()
 			result = "down"
-
-	# If no keyboard or D-pad direction, check left analog stick with repeat handling
+			
 	if result.is_empty() and stick_left_direction.direction != "" and stick_left_direction.current_delay <= 0:
 		stick_left_direction.refresh()
 		result = stick_left_direction.direction
-	
+		
 	if result and ignore_opposite_keys:
 		var opposite_active = false
 		match result:
 			"left":
 				opposite_active = key_states.keys.has(KEY_RIGHT) or \
-								key_states.keys.has(KEY_D) or \
+								(not is_typing_mode and key_states.keys.has(KEY_D)) or \
 								key_states.joy_buttons.has(JOY_BUTTON_DPAD_RIGHT) or \
 								stick_left_direction.direction == "right"
 			"right":
 				opposite_active = key_states.keys.has(KEY_LEFT) or \
-								key_states.keys.has(KEY_A) or \
+								(not is_typing_mode and key_states.keys.has(KEY_A)) or \
 								key_states.joy_buttons.has(JOY_BUTTON_DPAD_LEFT) or \
 								stick_left_direction.direction == "left"
 			"up":
 				opposite_active = key_states.keys.has(KEY_DOWN) or \
-								key_states.keys.has(KEY_S) or \
+								(not is_typing_mode and key_states.keys.has(KEY_S)) or \
 								key_states.joy_buttons.has(JOY_BUTTON_DPAD_DOWN) or \
 								stick_left_direction.direction == "down"
 			"down":
 				opposite_active = key_states.keys.has(KEY_UP) or \
-								key_states.keys.has(KEY_W) or \
+								(not is_typing_mode and key_states.keys.has(KEY_W)) or \
 								key_states.joy_buttons.has(JOY_BUTTON_DPAD_UP) or \
 								stick_left_direction.direction == "up"
 		if opposite_active:
 			result = ""
-	
+			
 	cache.pressed_direction = result
 	return result
 
@@ -1338,6 +1477,20 @@ func is_enter_pressed() -> bool:
 	if result:
 		get_viewport().set_input_as_handled()
 		
+	return result
+
+
+## Check if either Enter or Numpad Enter is continuously held down bypassing echo
+func is_enter_held() -> bool:
+	var cache_key = "enter_held"
+	if cache.has(cache_key):
+		return cache[cache_key]
+		
+	var result = false
+	if key_states.keys.has(KEY_ENTER) or key_states.keys.has(KEY_KP_ENTER):
+		result = true
+		
+	cache[cache_key] = result
 	return result
 
 

@@ -489,7 +489,7 @@ func _check_button_pressed() -> void:
 			selected_next_option(step)
 		if direction in ["left", "right"]:
 			show_previous_page() if direction == "left" else show_next_page()
-	elif ControllerManager.is_confirm_pressed(true):
+	elif ControllerManager.is_confirm_pressed():
 		ControllerManager.remove_last_action_registered()
 		option_selected.emit(current_selected)
 		play_fx(select_fx)

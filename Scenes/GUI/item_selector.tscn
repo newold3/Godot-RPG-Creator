@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dj2hqj4x1ve7p"]
+[gd_scene format=3 uid="uid://dj2hqj4x1ve7p"]
 
 [ext_resource type="Script" uid="uid://xn74e85fxj2k" path="res://Scenes/GUI/item_selector.gd" id="1_ml80v"]
 [ext_resource type="Texture2D" uid="uid://duu13dsov6vp5" path="res://Assets/Images/GUI/main_gui.png" id="2_e3iru"]
@@ -28,17 +28,17 @@ region = Rect2(1039, 350, 64, 57)
 atlas = ExtResource("2_e3iru")
 region = Rect2(1039, 414, 64, 57)
 
-[node name="ItemSelector" type="HBoxContainer"]
+[node name="ItemSelector" type="HBoxContainer" unique_id=68884975]
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_ml80v")
 slide_fx = ExtResource("2_ptgna")
 
-[node name="Separator0" type="Control" parent="."]
+[node name="Separator0" type="Control" parent="." unique_id=55280481]
 custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
 
-[node name="PreviousItem" type="TextureButton" parent="."]
+[node name="PreviousItem" type="TextureButton" parent="." unique_id=1976233919]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
@@ -48,21 +48,21 @@ texture_normal = SubResource("AtlasTexture_ptgna")
 texture_hover = SubResource("AtlasTexture_xfw0k")
 texture_disabled = SubResource("AtlasTexture_uvxhp")
 
-[node name="Separator1" type="Control" parent="."]
+[node name="Separator1" type="Control" parent="." unique_id=1030938839]
 custom_minimum_size = Vector2(8, 0)
 layout_mode = 2
 
-[node name="Canvas" type="Control" parent="."]
+[node name="Canvas" type="Control" parent="." unique_id=1927378283]
 unique_name_in_owner = true
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Separator2" type="Control" parent="."]
+[node name="Separator2" type="Control" parent="." unique_id=2053802214]
 custom_minimum_size = Vector2(8, 0)
 layout_mode = 2
 
-[node name="NextItem" type="TextureButton" parent="."]
+[node name="NextItem" type="TextureButton" parent="." unique_id=822929562]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
@@ -72,7 +72,7 @@ texture_normal = SubResource("AtlasTexture_t6ixw")
 texture_hover = SubResource("AtlasTexture_ggre1")
 texture_disabled = SubResource("AtlasTexture_ra1rh")
 
-[node name="MainFormatLabel" type="Label" parent="."]
+[node name="MainFormatLabel" type="Label" parent="." unique_id=1465304741]
 unique_name_in_owner = true
 layout_mode = 2
 

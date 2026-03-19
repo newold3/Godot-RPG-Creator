@@ -3,6 +3,9 @@ class_name RequestInputFromUser
 extends PanelContainer
 
 
+## Indicates if this interface is purely for numeric input, allowing WASD navigation
+@export var is_numeric_input: bool = false
+
 ## Array containing all the interactive key buttons of the virtual keyboard
 @export var buttons: Array[BaseButton] = []
 
@@ -211,6 +214,8 @@ func play_fx(fx_data: Dictionary) -> void:
 
 ## Activates the input system and grabs initial focus
 func start() -> void:
+	if not is_numeric_input:
+		ControllerManager.is_typing_mode = true
 	await _start_animation()
 	started = true
 	if initial_selected_button:
@@ -220,6 +225,7 @@ func start() -> void:
 
 
 func end() -> void:
+	ControllerManager.is_typing_mode = false
 	started = false
 	await _end_animation()
 	queue_free()
@@ -447,22 +453,34 @@ func _process(delta: float) -> void:
 	if not started or not current_button: return
 
 	if GameManager.get_cursor_manipulator() == manipulator:
-		
-		var key = ControllerManager.get_any_key_just_pressed()
-		if key:
-			if key == " " and space_button:
-				space_button.grab_focus()
-				current_button = space_button
+		if ControllerManager.is_force_confirm_pressed():
+			get_viewport().set_input_as_handled()
+			if ok_button and not ok_button.disabled:
+				ok_button.grab_focus()
+				current_button = ok_button
 				_on_button_pressed(current_button)
-				return
-				
+			return
+			
+		var key = ControllerManager.get_any_key_just_pressed()
+		
+		if key:
+			if key == " ":
+				if current_button == ok_button and not ok_button.disabled:
+					_on_button_pressed(current_button)
+					return
+				elif space_button:
+					space_button.grab_focus()
+					current_button = space_button
+					_on_button_pressed(current_button)
+					return
+					
 			for button: BaseButton in buttons:
 				if button.name.to_lower() == key.to_lower():
 					button.grab_focus()
 					current_button = button
 					_on_button_pressed(current_button)
 					return
-		
+					
 		if ControllerManager.is_erase_letter_pressed():
 			if back_button:
 				back_button.grab_focus()
@@ -482,17 +500,8 @@ func _process(delta: float) -> void:
 
 		if ControllerManager.is_enter_just_pressed() or ControllerManager.is_confirm_pressed():
 			get_viewport().set_input_as_handled()
-			if ok_button and ControllerManager.is_key_pressed(KEY_CTRL):
-				ok_button.grab_focus()
-				current_button = ok_button
+			if current_button:
 				_on_button_pressed(current_button)
-			elif current_button:
-				if ControllerManager.is_key_pressed(KEY_SPACE) and space_button:
-					space_button.grab_focus()
-					current_button = space_button
-					_on_button_pressed(current_button)
-				else:
-					_on_button_pressed(current_button)
 			return
 		
 		var new_control: Node = _get_next_control()
