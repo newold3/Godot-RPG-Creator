@@ -391,5 +391,7 @@ func _apply_upgrade(version_index: int) -> void:
 				if weapon.tools_family == null:
 					weapon.tools_family = []
 			costumes = []
+		12:
+			var scenes = [""]
 		_:
 			pass

@@ -773,6 +773,9 @@ func show_menu() -> void:
 	if menu_manager: menu_manager.show_menu()
 
 
+func show_save_menu(hide_load: bool = true) -> void:
+	if menu_manager: await menu_manager.show_save_menu(hide_load)
+
 
 func create_main_menu() -> void:
 	if menu_manager: menu_manager.create_main_menu()

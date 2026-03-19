@@ -29,6 +29,23 @@ func show_menu() -> void:
 				main_menu.start()
 
 
+func show_save_menu(hide_load: bool = true) -> void:
+	if GameManager.gui_canvas_layer:
+		var scene_path = RPGSYSTEM.database.system.game_scenes["Scene Load Game"]
+		if AssetManager.exists(scene_path):
+			var scn = load(scene_path)
+			var save_menu = scn.instantiate()
+			save_menu.end.connect(_on_main_menu_end)
+			
+			GameManager.gui_canvas_layer.add_child(save_menu)
+			
+			save_menu.get_main_scene().set_save_mode()
+
+			await save_menu.end
+			
+			save_menu.queue_free()
+
+
 func create_main_menu() -> void:
 	if GameManager.gui_canvas_layer:
 		var scene_path = RPGSYSTEM.database.system.game_scenes["Scene Main Menu"]

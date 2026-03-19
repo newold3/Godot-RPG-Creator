@@ -191,6 +191,8 @@ func create_depth_point(pos: Vector2, _owner: Node2D, mode: int) -> void:
 
 
 func _process(_delta: float) -> void:
+	if GameManager.busy: return
+	
 	var current_time = Time.get_ticks_msec() / 1000.0
 	
 	for i in range(MAX_POINTS):

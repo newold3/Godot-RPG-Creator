@@ -103,7 +103,11 @@ func set_saveload_current_mode(mode: MODE) -> void:
 		update_title(tr("LOAD GAME"))
 	else:
 		update_title(tr("SAVE GAME"))
-		
+
+
+func set_save_mode() -> void:
+	set_saveload_current_mode(MODE.SAVE)
+	tabs.visible = false
 
 
 func _process(_delta: float) -> void:

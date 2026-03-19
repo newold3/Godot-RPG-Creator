@@ -21,7 +21,7 @@ func _command_0099() -> void:
 # Command Show Save Scene (Code 100), button_id = 79
 # Code 100 parameters { }
 func _command_0100() -> void:
-	debug_print("Command 100 is not implemented")
+	await GameManager.show_save_menu()
 
 
 # Command Show Game Over Scene (Code 101), button_id = 80
