@@ -4,6 +4,8 @@
 
 > ⚠️ **STATUS: ALPHA**
 > This project is currently in an early development stage (Alpha). It is functional but may contain bugs, incomplete features, or mechanics subject to change. Use it at your own risk and remember to make backups!
+> Until we reach the beta phase, it won’t be safe to start any project. But you can try these alpha versions to give me feedback on whether you like the added systems, report any bugs that appear, or any strange behavior.
+> If you want to make an RPG right now, you wouldn’t be able to with the current state of the tool. However, you can create a walking simulator with dialogues and cutscenes, avoiding most commands (you can still use switches, variables, conditionals, loops, jump to labels, play sounds, and even give and use items controlled by variables, but without the supporting visual interface for item usage).
 
 Video on youtube: https://youtu.be/1eVzQd9EiM4
 
@@ -50,20 +52,21 @@ What you will find in this Alpha version:
 
 ## 🚀 Roadmap & Upcoming Features
 
-Here is the development plan. I have reorganized the priorities to ensure a stable core before adding complex mechanics like combat.
-
 ### 🔥 Immediate Priority (Current Focus)
-* **Steampunk UI Completion:** My main goal right now is to finish and polish all the menus in the Steampunk theme (Shops, Themed Dialogues, Item Menu, Skill Menu, and Status Menu).
+* **Steampunk UI Completion:** Design all the menus in a steampunk style and create the ones that are still missing.
 * **Missing Event Commands:** Implementation of the remaining logic and event commands (excluding Battle-specific commands).
 
 ### 🚧 Upcoming Features (Mid-term)
-* **Simplified UI Templates:** Development of a standard, simplified version of the menus. The current Steampunk theme uses complex animations and custom scripts; this alternative will be easier to edit and customize for users with less experience.
 * **Event Systems:** Integration of the Event Quest System and a Relationship/Reputation system.
 * **Vehicles:** Creation of the gameplay scene for the **Water Vehicle**.
 
 ### 🔮 Scheduled for Final Phase (Late Alpha)
 * **Advanced Battle System:** The logic and visual implementation of the Battle System (Turn-Based/ATB) will be one of the last features to be added.
 * **Final Content Polish:** The final configuration of the Database, Tilesets, and Animations will be addressed towards the end of development to ensure they match all implemented systems.
+
+### 🎉 On release
+* **Simplified UI Templates:** Development of a standard, simplified version of the menus. The current Steampunk theme uses complex animations and custom scripts; this alternative will be easier to edit and customize for users with less experience.
+* **New additions** Add new cool weather scene types, new event commands, new systems, new themed menus and community requests.
 
 > *Ongoing tasks include continuous bug fixing, code refactoring, and polishing of existing scenes.*
 
