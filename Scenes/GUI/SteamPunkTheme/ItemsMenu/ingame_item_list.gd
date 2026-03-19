@@ -37,7 +37,22 @@ func _ready() -> void:
 	%ItemList.manipulator = manipulator
 	%OrderLeft.manipulator = manipulator
 	%OrderRight.manipulator = manipulator
+	ControllerManager.controller_changed.connect(_on_controlled_changed)
+	_on_controlled_changed(ControllerManager.current_controller)
 	set_disabled()
+
+
+func _on_controlled_changed(controller_type: ControllerManager.CONTROLLER_TYPE) -> void:
+	if controller_type == ControllerManager.CONTROLLER_TYPE.Keyboard or controller_type == ControllerManager.CONTROLLER_TYPE.Mouse:
+		%L2Tab.text = "⇧+Q"
+		%R2Tab.text = "⇧+E"
+		%L1Tab.text = "⌃+Q"
+		%R1Tab.text = "^+E"
+	else:
+		%L2Tab.text = "L2"
+		%R2Tab.text = "R2"
+		%L1Tab.text = "L1"
+		%R1Tab.text = "R1"
 
 
 func set_enabled() -> void:
@@ -65,11 +80,19 @@ func set_disabled() -> void:
 func set_tabs(tabs: PackedStringArray, selected_index: int = 0) -> void:
 	%CircularTabs.add_tabs(tabs, selected_index)
 	if tabs.size() <= 1:
-		%PanelL2Tab.modulate = Color(0.65, 0.65, 0.65)
-		%PanelR2Tab.modulate = Color(0.65, 0.65, 0.65)
+		#%PanelL2Tab.modulate = Color(0.65, 0.65, 0.65)
+		#%PanelR2Tab.modulate = Color(0.65, 0.65, 0.65)
+		%PanelL2Tab.visible = false
+		%PanelR2Tab.visible = false
+		%DecorationTabRight.visible = false
+		%DecorationTabLeft.visible = false
 	else:
-		%PanelL2Tab.modulate = Color.WHITE
-		%PanelR2Tab.modulate = Color.WHITE
+		#%PanelL2Tab.modulate = Color.WHITE
+		#%PanelR2Tab.modulate = Color.WHITE
+		%PanelL2Tab.visible = true
+		%PanelR2Tab.visible = true
+		%DecorationTabRight.visible = true
+		%DecorationTabLeft.visible = true
 
 
 func start() -> void:
@@ -133,9 +156,8 @@ func _on_circular_tabs_tab_selected(tab_index: int, direction: String) -> void:
 		set_items(items)
 
 
-
 func _input(_event: InputEvent) -> void:
-	if GameManager.get_cursor_manipulator() == manipulator:
+	if GameManager.get_cursor_manipulator() == manipulator and %SortContainer.visible:
 		if ControllerManager.is_action_just_pressed("Button R1"):
 			%OrderRight._on_pressed()
 			_on_sort_selected(1)
@@ -165,6 +187,8 @@ func _update_sort_ui() -> void:
 # 0 = Smart/Default,	1 = A-Z,		2 = Z-A,		3 = Usable first + A-Z,
 # 4 = Rarity + A-Z,		5 = Quantity + A-Z
 func _on_sort_selected(mod: int) -> void:
+	if not %SortContainer.visible: return
+	
 	if GameManager.game_state and itemlist_id != "skills":
 		var cache = get_list_cache()
 		var sort_type = wrapi(cache.get("sort_type", 0) + mod, 0, 6)
@@ -216,7 +240,7 @@ func _animate_spin(direction: String) -> void:
 	right_decoration_spin.tween_property(node, "speed_scale", 0.0, 0.35).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_EXPO)
 	
 	var panel: Node
-	if direction == "left":
+	if direction == "right":
 		panel = %PanelL2Tab
 		panel.pivot_offset = Vector2(panel.size.x, panel.size.y * 0.5)
 	else:

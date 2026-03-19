@@ -668,11 +668,13 @@ selected_text_color = Color(0.91764706, 0.8039216, 0.63529414, 1)
 button_style_normal = SubResource("StyleBoxTexture_5w0j5")
 button_style_selected = SubResource("StyleBoxTexture_6kl3u")
 radius_h_ratio = 0.303
+spin_offset = Vector2(0, -6)
 spin_fx = ExtResource("14_5w0j5")
 tabs = PackedStringArray("All Items", "Items", "Weapons", "Armors", "Costumes", "Key Items")
 metadata/_custom_type_script = "uid://bnp2jyc55rj13"
 
-[node name="TextureRect2" type="TextureRect" parent="TopBorder/VBoxContainer/VBoxContainer/TopContainer/VBoxContainer/HBoxContainer/MidDecoration" unique_id=1277891741]
+[node name="DecorationTabRight" type="TextureRect" parent="TopBorder/VBoxContainer/VBoxContainer/TopContainer/VBoxContainer/HBoxContainer/MidDecoration" unique_id=1277891741]
+unique_name_in_owner = true
 layout_mode = 0
 offset_left = 421.0
 offset_top = 32.0
@@ -682,7 +684,8 @@ mouse_filter = 2
 texture = SubResource("AtlasTexture_6x48j")
 expand_mode = 1
 
-[node name="TextureRect" type="TextureRect" parent="TopBorder/VBoxContainer/VBoxContainer/TopContainer/VBoxContainer/HBoxContainer/MidDecoration" unique_id=688120252]
+[node name="DecorationTabLeft" type="TextureRect" parent="TopBorder/VBoxContainer/VBoxContainer/TopContainer/VBoxContainer/HBoxContainer/MidDecoration" unique_id=688120252]
+unique_name_in_owner = true
 z_index = 19
 layout_mode = 0
 offset_left = 7.0
@@ -705,6 +708,7 @@ mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_25pgl")
 
 [node name="L2Tab" type="Label" parent="TopBorder/VBoxContainer/VBoxContainer/TopContainer/VBoxContainer/HBoxContainer/MidDecoration/PanelL2Tab" unique_id=2045054806]
+unique_name_in_owner = true
 layout_mode = 2
 text = "L2"
 label_settings = SubResource("LabelSettings_f5tdb")
@@ -723,6 +727,7 @@ mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_25pgl")
 
 [node name="R2Tab" type="Label" parent="TopBorder/VBoxContainer/VBoxContainer/TopContainer/VBoxContainer/HBoxContainer/MidDecoration/PanelR2Tab" unique_id=752336457]
+unique_name_in_owner = true
 layout_mode = 2
 text = "R2"
 label_settings = SubResource("LabelSettings_f5tdb")
@@ -859,6 +864,7 @@ mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_25pgl")
 
 [node name="L1Tab" type="Label" parent="TopBorder/SortContainer/HBoxContainer/Panel" unique_id=1682566781]
+unique_name_in_owner = true
 layout_mode = 2
 text = "L1"
 label_settings = SubResource("LabelSettings_f5tdb")
@@ -895,6 +901,7 @@ mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_25pgl")
 
 [node name="R1Tab" type="Label" parent="TopBorder/SortContainer/HBoxContainer/Panel2" unique_id=1848216054]
+unique_name_in_owner = true
 layout_mode = 2
 text = "R1"
 label_settings = SubResource("LabelSettings_f5tdb")

@@ -34,7 +34,6 @@ func load_data() -> void:
 
 func _inject_extra_data() -> void:
 	if not database: return
-	print(DatabaseLoader.get_master_version())
 	database.migrate_to_version(DatabaseLoader.get_master_version())
 	
 	

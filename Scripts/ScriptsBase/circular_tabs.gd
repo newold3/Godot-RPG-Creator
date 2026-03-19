@@ -29,6 +29,8 @@ signal tab_selected(tab_index: int, direction: String)
 ## Speed of the circular scroll
 @export var scroll_speed: float = 5.0
 
+@export var spin_offset: Vector2 = Vector2.ZERO
+
 ## Sound played when clicking to select another item from this menu.
 @export var spin_fx: AudioStream
 
@@ -75,7 +77,7 @@ func _draw() -> void:
 		return
 	if _max_tab_size == Vector2.ZERO:
 		_update_max_size()
-	var center = size / 2.0
+	var center = size / 2.0 + spin_offset
 	var r_h = size.x * radius_h_ratio
 	var r_v = size.y * radius_v_ratio
 	var items_data = []
@@ -160,6 +162,7 @@ func rotate_to(direction: int) -> void:
 
 
 func _input(_event: InputEvent) -> void:
+	if not enabled or GameManager.get_cursor_manipulator() != manipulator or get_tab_count() <= 1: return
 	if GameManager.get_cursor_manipulator() == manipulator:
 		if ControllerManager.is_action_just_pressed("Button R2"):
 			rotate_to(1)
