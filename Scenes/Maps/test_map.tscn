@@ -20,7 +20,6 @@
 [ext_resource type="Script" uid="uid://cxflyuts5e3t5" path="res://addons/RPGData/ModulesRPG/rpg_item_drop.gd" id="16_m0d5v"]
 [ext_resource type="Script" uid="uid://bvjjq6wigbjit" path="res://addons/RPGData/ModulesRPG/rpg_component.gd" id="17_m0d5v"]
 [ext_resource type="Script" uid="uid://btwxgat1h51k6" path="res://addons/RPGData/ModulesRPG/rpg_sound.gd" id="17_mppu7"]
-[ext_resource type="Texture2D" uid="uid://di65e6xp5sgey" path="res://Assets/Images/Backgrounds/tileable_snow2.png" id="21_mppu7"]
 [ext_resource type="Script" uid="uid://45qsey742juw" path="res://addons/RPGMap/Scripts/floor_auto_shaders.gd" id="23_bvf2a"]
 
 [sub_resource type="Resource" id="Resource_ik3hy"]
@@ -3106,184 +3105,6 @@ extraction_fx = SubResource("Resource_2r2f5")
 x = 7
 y = 11
 
-[sub_resource type="GDScript" id="GDScript_vu4kc"]
-script/source = "extends Node2D
-
-## Array of texture paths to use for the snow holes
-@export_file(\"*.png\", \"*.jpg\", \"*.webp\") var hole_texture_paths: Array[String] = []
-## Texture path to use for the recovering snow cover
-@export_file(\"*.png\", \"*.jpg\", \"*.webp\") var snow_cover_texture_path: String
-## Common delay between draw passes for both snow and holes
-@export var update_delay: float = 0.05
-## Alpha value applied to the snow cover each pass (minimum safe value is 0.007)
-@export var snow_alpha: float = 0.007
-## Alpha value applied to the holes each pass
-@export var hole_alpha: float = 0.8
-## The scale factor to map global positions to the 1152x640 viewport
-@export var map_scale: Vector2 = Vector2.ONE
-## The top-left global position of the map
-@export var map_origin: Vector2 = Vector2.ZERO
-## Margin in pixels to consider an entity visible off-screen
-@export var visibility_margin: float = 100.0
-
-var _entities_data: Dictionary = {}
-var _loaded_hole_textures: Array[Texture2D] = []
-var _loaded_snow_texture: Texture2D
-var _timer: float = 0.0
-var _is_first_frame: bool = true
-var _should_draw_snow: bool = false
-var _should_draw_holes: bool = false
-
-
-## Initializes the snow system, loading textures from paths
-func _ready() -> void:
-	if not snow_cover_texture_path.is_empty() and ResourceLoader.exists(snow_cover_texture_path):
-		_loaded_snow_texture = load(snow_cover_texture_path)
-		
-	for path in hole_texture_paths:
-		if not path.is_empty() and ResourceLoader.exists(path):
-			_loaded_hole_textures.append(load(path))
-			
-	_timer = update_delay
-
-
-## Updates timers and the entities dictionary, triggering a single viewport update
-func _physics_process(delta: float) -> void:
-	if GameManager.current_map:
-		var map_rect = Vector2(GameManager.current_map.get_used_rect(false).size)
-		map_scale = map_rect / Vector2(1152, 640)
-		
-	if _is_first_frame:
-		queue_redraw()
-		get_viewport().render_target_update_mode = SubViewport.UPDATE_ONCE
-		return
-		
-	_timer -= delta
-	
-	if _timer <= 0.0:
-		_timer = update_delay
-		var dice = randi() % 100
-		
-		if dice <= 12:
-			_should_draw_snow = true
-			
-		if dice <= 85:
-			_should_draw_holes = true
-			
-			var current_entities = get_tree().get_nodes_in_group(\"player\")
-			current_entities += get_tree().get_nodes_in_group(\"follower\")
-			current_entities += get_tree().get_nodes_in_group(\"event\")
-			current_entities += get_tree().get_nodes_in_group(\"vehicle\")
-			
-			var current_entities_set = {}
-			var visible_rect = get_canvas_transform().affine_inverse() * get_viewport_rect()
-			visible_rect = visible_rect.grow(visibility_margin)
-			
-			for entity in current_entities:
-				if not visible_rect.has_point(entity.global_position):
-					continue
-				current_entities_set[entity] = true
-				if not _entities_data.has(entity):
-					_entities_data[entity] = {
-						\"last_position\": entity.global_position,
-						\"last_texture\": _get_random_texture()
-					}
-				else:
-					var data = _entities_data[entity]
-					if entity.global_position != data.last_position:
-						data.last_position = entity.global_position
-						data.last_texture = _get_random_texture()
-						
-			var keys_to_remove = []
-			for entity in _entities_data.keys():
-				if not current_entities_set.has(entity) or not is_instance_valid(entity):
-					keys_to_remove.append(entity)
-					
-			for key in keys_to_remove:
-				_entities_data.erase(key)
-				
-		if _should_draw_snow or _should_draw_holes:
-			queue_redraw()
-			get_viewport().render_target_update_mode = SubViewport.UPDATE_ONCE
-
-
-## Draws the snow overlay and the scaled holes exactly once per triggered update
-func _draw() -> void:
-	var bg_rect = Rect2(0, 0, 1152, 640)
-	
-	if _is_first_frame:
-		_is_first_frame = false
-		draw_rect(bg_rect, Color.WHITE)
-		return
-		
-	if _should_draw_snow:
-		if _loaded_snow_texture:
-			draw_texture_rect(_loaded_snow_texture, bg_rect, false, Color(1.0, 1.0, 1.0, snow_alpha))
-		else:
-			draw_rect(bg_rect, Color(1.0, 1.0, 1.0, snow_alpha))
-		_should_draw_snow = false
-		
-	if _should_draw_holes:
-		for entity in _entities_data.keys():
-			var data = _entities_data[entity]
-			if data.last_texture:
-				var mapped_pos = (data.last_position - map_origin) * map_scale
-				var mapped_size = data.last_texture.get_size() * map_scale
-				var draw_rect_dest = Rect2(mapped_pos - mapped_size * 0.5, mapped_size)
-				draw_texture_rect(data.last_texture, draw_rect_dest, false, Color(0.0, 0.0, 0.0, hole_alpha))
-		_should_draw_holes = false
-
-
-## Returns a random loaded texture from the array
-func _get_random_texture() -> Texture2D:
-	if _loaded_hole_textures.is_empty():
-		return null
-	return _loaded_hole_textures[randi() % _loaded_hole_textures.size()]
-"
-
-[sub_resource type="Shader" id="Shader_m0d5v"]
-code = "shader_type canvas_item;
-
-//* The seamless snow texture to be drawn over the map */
-uniform sampler2D snow_texture : repeat_enable;
-//* Tiling factor to scale the snow texture independently of the mask */
-uniform vec2 snow_uv_scale = vec2(5.0, 5.0);
-//* Maximum opacity of the snow layer over the map (0.0 to 1.0) */
-uniform float max_snow_alpha : hint_range(0.0, 1.0) = 1.0;
-//* Thickness of the simulated wall edge inside the trails */
-uniform float edge_thickness : hint_range(0.0, 0.05) = 0.003;
-//* Opacity of the depth shadow created by the edge detection */
-uniform float shadow_opacity : hint_range(0.0, 1.0) = 0.8;
-
-
-void fragment() {
-	vec2 base_uv = UV;
-	float mask_value = texture(TEXTURE, base_uv).r;
-	
-	vec2 offset_uv = base_uv - vec2(edge_thickness, edge_thickness);
-	float offset_mask_value = texture(TEXTURE, offset_uv).r;
-	
-	float depth_shadow = clamp((mask_value - offset_mask_value) * 10.0, 0.0, 1.0);
-	depth_shadow *= shadow_opacity;
-	
-	vec4 snow_color = texture(snow_texture, base_uv * snow_uv_scale);
-	snow_color.rgb -= depth_shadow;
-	
-	float final_alpha = mask_value * snow_color.a * max_snow_alpha;
-	COLOR = vec4(snow_color.rgb, final_alpha);
-}"
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_mppu7"]
-shader = SubResource("Shader_m0d5v")
-shader_parameter/snow_texture = ExtResource("21_mppu7")
-shader_parameter/snow_uv_scale = Vector2(5, 5)
-shader_parameter/max_snow_alpha = 0.5450000258875
-shader_parameter/edge_thickness = 0.003
-shader_parameter/shadow_opacity = 0.1850000087875
-
-[sub_resource type="ViewportTexture" id="ViewportTexture_bvf2a"]
-viewport_path = NodePath("SubViewport")
-
 [node name="TestMap" type="Node2D" unique_id=264368788]
 y_sort_enabled = true
 script = ExtResource("1_didij")
@@ -3293,17 +3114,6 @@ events = SubResource("Resource_xn408")
 extraction_events = Array[ExtResource("15_otpcx")]([SubResource("Resource_o6ncs"), SubResource("Resource_bsx76")])
 internal_id = 2651459344452080
 current_edit_button_pressed = 0
-
-[node name="SubViewport" type="SubViewport" parent="." unique_id=666077640]
-transparent_bg = true
-size = Vector2i(1152, 640)
-render_target_clear_mode = 1
-render_target_update_mode = 1
-
-[node name="Node2D" type="Node2D" parent="SubViewport" unique_id=969175376]
-script = SubResource("GDScript_vu4kc")
-hole_texture_paths = Array[String](["uid://dwo61qsg7gxr5", "uid://dpn7o50gjc3rj", "uid://bj4vwy7j25so8", "uid://do0ea06qj2bpd", "uid://bm2iara0x6s1f"])
-snow_alpha = 0.09
 
 [node name="GroundBase" type="TileMapLayer" parent="." unique_id=1610878107]
 unique_name_in_owner = true
@@ -3317,14 +3127,6 @@ metadata/original_opacity = 1.0
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.21)
 tile_set = ExtResource("4_j28jb")
-metadata/original_opacity = 1.0
-
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1482968613]
-modulate = Color(1, 1, 1, 0.21)
-material = SubResource("ShaderMaterial_mppu7")
-scale = Vector2(1.0008681, 1)
-texture = SubResource("ViewportTexture_bvf2a")
-centered = false
 metadata/original_opacity = 1.0
 
 [node name="Environment" type="TileMapLayer" parent="." unique_id=197981873]

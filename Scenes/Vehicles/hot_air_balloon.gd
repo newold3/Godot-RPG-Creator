@@ -120,8 +120,7 @@ func get_shadow_data() -> Dictionary:
 	quad_points[1].y -= 1
 	@warning_ignore("incompatible_ternary")
 	var tile_size: Vector2 = GameManager.get_map_tile_size() if GameManager.current_map else Vector2(32, 32)
-	var sprite_visual = %FinalShadow
-	var current_mask_offset = sprite_visual.global_position - global_position
+	var current_mask_offset = %Vehicle.global_position - global_position
 	return {
 		"main_node": self,
 		"texture": atlas,

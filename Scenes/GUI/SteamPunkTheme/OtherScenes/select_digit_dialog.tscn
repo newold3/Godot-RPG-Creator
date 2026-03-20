@@ -113,6 +113,17 @@ region = Rect2(711, 103.5, 74, 74)
 atlas = ExtResource("1_03vxj")
 region = Rect2(359, 285, 19, 19)
 
+[sub_resource type="LabelSettings" id="LabelSettings_v4bg5"]
+font = ExtResource("2_6a1p6")
+font_color = Color(0.8156863, 0.73333335, 0, 1)
+stacked_outline_count = 3
+stacked_outline_0/size = 6
+stacked_outline_0/color = Color(0.8156863, 0.2509804, 0, 0.78431374)
+stacked_outline_1/size = 9
+stacked_outline_1/color = Color(0.6392157, 0.3254902, 0, 0.4)
+stacked_outline_2/size = 16
+stacked_outline_2/color = Color(0.6392157, 0.3254902, 0, 0.13333334)
+
 [sub_resource type="Animation" id="Animation_f8n7v"]
 length = 0.001
 tracks/0/type = "value"
@@ -967,6 +978,34 @@ rotation = 1.6364543
 size_flags_horizontal = 0
 size_flags_vertical = 0
 texture = SubResource("AtlasTexture_qyx2o")
+
+[node name="Control" type="Control" parent="MainFrame" unique_id=1294116369]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -55.0
+offset_bottom = -33.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="HelpLabel" parent="MainFrame/Control" unique_id=1655060378 instance=ExtResource("3_6a1p6")]
+custom_minimum_size = Vector2(333, 22)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(166.5, 11)
+theme_override_font_sizes/font_size = 16
+text = "L1/R1 CURSOR POSITION"
+label_settings = SubResource("LabelSettings_v4bg5")
+metadata/original_size = Vector2(1, 23)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1023464588]
 libraries/ = SubResource("AnimationLibrary_v4bg5")

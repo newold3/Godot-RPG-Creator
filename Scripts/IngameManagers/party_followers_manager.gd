@@ -148,20 +148,19 @@ func show_followers(instant: bool = false, force_regroup: bool = true) -> void:
 		return
 		
 	game_state.followers_enabled = true
-	
-	# SIEMPRE refrescar nodos para asegurar que los que sobran se borren
+
+	if game_state.followers_tracking_enabled and force_regroup:
+		if player.has_method("clear_movement_history"):
+			player.clear_movement_history()
+
 	_refresh_follower_nodes(instant)
 	await update_party_visuals(instant)
 	
-	# Ahora sí, si no hay suficientes miembros para hacer seguimiento, salimos limpios
 	if game_state.current_party.size() <= 1:
 		return
 	
 	if game_state.followers_tracking_enabled:
 		if force_regroup:
-			if player.has_method("clear_movement_history"):
-				player.clear_movement_history()
-				
 			for f in followers:
 				f.global_position = player.global_position
 				f.current_direction = player.current_direction

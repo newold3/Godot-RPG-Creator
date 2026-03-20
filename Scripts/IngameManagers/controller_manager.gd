@@ -359,6 +359,8 @@ func is_action_pressed(action: String) -> bool:
 	if Input.is_action_pressed(action):
 		if not action_states.has(action):
 			_register_action(action)
+			if not Input.is_action_just_pressed(action):
+				action_states[action].initialize = false
 		
 		if action_states[action].is_active():
 			action_states[action].refresh()
@@ -1346,9 +1348,12 @@ func is_action_just_pressed(action: String) -> bool:
 	
 	var current_frame = Engine.get_physics_frames()
 	var result = false
+	
 	if Input.is_action_pressed(action):
 		if not action_states.has(action):
 			_register_action(action)
+			if not Input.is_action_just_pressed(action):
+				action_states[action].initialize = false
 		
 		if action_states[action].initialize and action_states[action].current_delay <= 0:
 			if action_states[action].registered_frame == current_frame or action_states[action].registered_frame == -1:

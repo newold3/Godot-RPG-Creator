@@ -275,12 +275,13 @@ func _config_buttons() -> void:
 
 ## Specialized bridge for key selection following strict navigation rules
 func _on_key_selected_base(key: String) -> void:
+	var was_at_end: bool = (current_index == max_chars - 1)
+	
 	_handle_insertion(key)
-	if _is_input_complete():
+	
+	if was_at_end and _is_input_complete():
 		_select_ok_button.call_deferred()
 	else:
-		if current_index < max_chars - 1:
-			current_index += 1
 		_update_label()
 
 
@@ -303,7 +304,6 @@ func _on_back_selected_base() -> void:
 		
 	play_fx(remove_fx)
 	_handle_deletion()
-	_update_label()
 
 
 ## Bridge for the confirmation logic
@@ -318,21 +318,15 @@ func _update_label() -> void:
 	
 	if not entry_label: return
 	
-	var display_list = buffer.duplicate()
-	
-	while display_list.size() > 0 and display_list[0] == empty_char and display_list.back() != empty_char:
-		display_list.pop_front()
-		display_list.append(empty_char)
-	
 	var text_result = ""
 	var focus_owner = get_viewport().gui_get_focus_owner()
 	var is_ok_focused = (focus_owner == ok_button)
 	
-	for i in range(display_list.size()):
+	for i in range(buffer.size()):
 		if i == current_index and not is_ok_focused:
-			text_result += "[" + display_list[i] + "]"
+			text_result += "[" + buffer[i] + "]"
 		else:
-			text_result += display_list[i]
+			text_result += buffer[i]
 	
 	entry_label.text = text_result
 
@@ -350,21 +344,23 @@ func get_text() -> Variant:
 func _handle_insertion(key: String) -> void:
 	if current_index == max_chars - 1:
 		if buffer[current_index] != empty_char and buffer[0] == empty_char:
-			for i in range(max_chars - 1):
+			for i in range(0, max_chars - 1):
 				buffer[i] = buffer[i + 1]
-		buffer[max_chars - 1] = key
+		buffer[current_index] = key
 	else:
 		buffer[current_index] = key
-
+		current_index += 1
 
 ## Functional deletion logic: clear and ALWAYS shift cursor if possible
 func _handle_deletion() -> void:
-	if buffer[current_index] != empty_char:
-		buffer[current_index] = empty_char
-	elif current_index > 0:
-		current_index -= 1
-		buffer[current_index] = empty_char
-	
+	if buffer.count(empty_char) == buffer.size():
+		return
+		
+	if current_index > 0:
+		for i in range(current_index, 0, -1):
+			buffer[i] = buffer[i - 1]
+			
+	buffer[0] = empty_char
 	_update_label()
 
 
@@ -409,13 +405,31 @@ func _find_label(node: Node) -> Control:
 
 
 func _move_cursor_left() -> void:
-	current_index = clampi(current_index - 1, 0, max_chars - 1)
+	if current_index == 0:
+		return
+		
+	if current_button == ok_button and buttons.size() > 0:
+		var target = initial_selected_button if initial_selected_button else buttons[0]
+		if target:
+			target.grab_focus()
+			current_button = target
+			
+	current_index -= 1
 	_update_label()
 	play_fx(move_fx)
 
 
 func _move_cursor_right() -> void:
-	current_index = clampi(current_index + 1, 0, max_chars - 1)
+	if current_index == max_chars - 1:
+		return
+		
+	if current_button == ok_button and buttons.size() > 0:
+		var target = initial_selected_button if initial_selected_button else buttons[0]
+		if target:
+			target.grab_focus()
+			current_button = target
+			
+	current_index += 1
 	_update_label()
 	play_fx(move_fx)
 
@@ -479,6 +493,7 @@ func _process(delta: float) -> void:
 					button.grab_focus()
 					current_button = button
 					_on_button_pressed(current_button)
+					get_viewport().set_input_as_handled()
 					return
 					
 		if ControllerManager.is_erase_letter_pressed():
@@ -488,20 +503,19 @@ func _process(delta: float) -> void:
 				_on_button_pressed(current_button)
 			return
 
-		var is_tab_just_pressed = Input.is_key_pressed(KEY_TAB) and ControllerManager.is_action_just_pressed("ui_focus_next")
-		var is_shift_pressed = Input.is_key_pressed(KEY_SHIFT)
-
-		if ControllerManager.is_action_just_pressed("Button L1") or (is_tab_just_pressed and is_shift_pressed) or ControllerManager.is_action_just_pressed("Button L1 Extra"):
-			_move_cursor_left()
-			return
-		elif ControllerManager.is_action_just_pressed("Button R1") or (is_tab_just_pressed and not is_shift_pressed) or (ControllerManager.is_action_just_pressed("Button R1 Extra") and not Input.is_key_pressed(KEY_SHIFT)):
-			_move_cursor_right()
-			return
-
 		if ControllerManager.is_enter_just_pressed() or ControllerManager.is_confirm_pressed():
 			get_viewport().set_input_as_handled()
 			if current_button:
 				_on_button_pressed(current_button)
+			return
+		
+		if ControllerManager.is_action_just_pressed("Button L1") or  ControllerManager.is_action_just_pressed("Button L1 Extra"):
+			get_viewport().set_input_as_handled()
+			_move_cursor_left()
+			return
+		elif ControllerManager.is_action_just_pressed("Button R1") or ControllerManager.is_action_just_pressed("Button R1 Extra"):
+			get_viewport().set_input_as_handled()
+			_move_cursor_right()
 			return
 		
 		var new_control: Node = _get_next_control()

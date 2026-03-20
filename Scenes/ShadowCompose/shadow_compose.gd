@@ -283,14 +283,18 @@ func set_drawing_textures() -> void:
 		mat.set_shader_parameter("shadow_direction", sun_vec)
 	@warning_ignore_start("integer_division")
 	var screen_tiles_size = get_screen_tiles_size(current_map) / 2
-	var player_current_tile: Vector2i
+	screen_tiles_size += Vector2i(15, 15)
+	var center_tile: Vector2i
 	if in_editor_map:
-		player_current_tile = Vector2i()
+		center_tile = Vector2i()
 	else:
-		if GameManager.current_player.is_on_vehicle and GameManager.current_player.current_vehicle:
-			player_current_tile = Vector2i(GameManager.current_player.current_vehicle.global_position) / current_map.tile_size
-		else:
-			player_current_tile = Vector2i(GameManager.current_player.global_position) / current_map.tile_size
+		var main_cam = GameManager.get_camera()
+		if main_cam:
+			center_tile = Vector2i(main_cam.get_screen_center_position()) / current_map.tile_size
+		elif GameManager.current_player and GameManager.current_player.is_on_vehicle and GameManager.current_player.current_vehicle:
+			center_tile = Vector2i(GameManager.current_player.current_vehicle.global_position) / current_map.tile_size
+		elif GameManager.current_player:
+			center_tile = Vector2i(GameManager.current_player.global_position) / current_map.tile_size
 	var map_rect: Rect2 = current_map.get_used_rect(false)
 	var viewport_size: Vector2i = map_rect.size
 	var screen_height = float(viewport_size.y)
@@ -317,10 +321,10 @@ func set_drawing_textures() -> void:
 			if screen_rect.has_point(data.position - data_offset):
 				inside_main_map = true
 		else:
-			var diff_x = abs(tile_cell.x - player_current_tile.x)
+			var diff_x = abs(tile_cell.x - center_tile.x)
 			if infinite_x:
 				diff_x = min(diff_x, abs(diff_x - map_size_tiles.x))
-			var diff_y = abs(tile_cell.y - player_current_tile.y)
+			var diff_y = abs(tile_cell.y - center_tile.y)
 			if infinite_y:
 				diff_y = min(diff_y, abs(diff_y - map_size_tiles.y))
 			if diff_x <= screen_tiles_size.x and diff_y <= screen_tiles_size.y:
