@@ -171,7 +171,6 @@ func _process(_delta: float) -> void:
 func _physics_process(delta: float):
 	if GameManager.loading_game or is_invalid_event or busy2 or Engine.is_editor_hint() or GameManager.busy or GameInterpreter.is_busy():
 		return
-		
 	if is_in_group("player"):
 		_save_player_position_into_game_state()
 	if _click_indicator_cooldown > 0.0:
@@ -193,7 +192,7 @@ func _physics_process(delta: float):
 				var mouse_pos = GameManager.current_map.get_local_mouse_position()
 				var tile: Vector2i = GameManager.current_map.local_to_map(mouse_pos)
 				if is_new_click or (tile != _auto_target_tile and _click_indicator_cooldown <= 0.0):
-					_set_target_destination(tile, is_new_click)
+					_set_target_destination(tile)
 	activated_this_frame = false
 	if not busy and _contact_activation_delay > 0:
 		_contact_activation_delay -= delta
@@ -246,13 +245,11 @@ func _physics_process(delta: float):
 
 
 ## Sets the target destination for pathfinding and instantiates a visual click indicator
-func _set_target_destination(tile: Vector2i, is_new_click: bool = true) -> void:
+func _set_target_destination(tile: Vector2i) -> void:
 	if not GameManager.current_map:
 		return
 	_auto_target_tile = tile
 	_auto_target_event = null
-	if not is_new_click:
-		return
 	if click_indicator_scene and _click_indicator_cooldown <= 0.0:
 		_click_indicator_cooldown = 0.1
 		var indicator = click_indicator_scene.instantiate()
@@ -283,36 +280,37 @@ func _process_auto_movement() -> void:
 			_interact_with_click_target()
 		return
 	if _auto_target_event and is_instance_valid(_auto_target_event):
-		var is_adjacent = false
-		var diff = Vector2i.ZERO
-		var my_tiles = [current_tile]
-		if has_method("get_current_tiles"):
-			my_tiles = call("get_current_tiles")
-		var target_tiles = []
-		if _auto_target_event.has_method("get_current_tiles"):
-			target_tiles = _auto_target_event.get_current_tiles()
-		elif _auto_target_event.has_method("get_current_tile"):
-			target_tiles = [_auto_target_event.get_current_tile()]
-		else:
-			target_tiles = [_auto_target_tile]
-		for my_t in my_tiles:
-			for tgt_t in target_tiles:
-				var temp_diff = tgt_t - my_t
-				if abs(temp_diff.x) + abs(temp_diff.y) == 1:
-					is_adjacent = true
-					diff = temp_diff
+		if _is_solid(_auto_target_event):
+			var is_adjacent = false
+			var diff = Vector2i.ZERO
+			var my_tiles = [current_tile]
+			if has_method("get_current_tiles"):
+				my_tiles = call("get_current_tiles")
+			var target_tiles = []
+			if _auto_target_event.has_method("get_current_tiles"):
+				target_tiles = _auto_target_event.get_current_tiles()
+			elif _auto_target_event.has_method("get_current_tile"):
+				target_tiles = [_auto_target_event.get_current_tile()]
+			else:
+				target_tiles = [_auto_target_tile]
+			for my_t in my_tiles:
+				for tgt_t in target_tiles:
+					var temp_diff = tgt_t - my_t
+					if abs(temp_diff.x) + abs(temp_diff.y) == 1:
+						is_adjacent = true
+						diff = temp_diff
+						break
+				if is_adjacent:
 					break
 			if is_adjacent:
-				break
-		if is_adjacent:
-			_auto_target_tile = Vector2i(-1, -1)
-			movement_vector = Vector2.ZERO
-			if not character_options.fixed_direction:
-				_look_at_tile_direction(diff)
-			current_animation = "idle"
-			run_animation()
-			_interact_with_click_target()
-			return
+				_auto_target_tile = Vector2i(-1, -1)
+				movement_vector = Vector2.ZERO
+				if not character_options.fixed_direction:
+					_look_at_tile_direction(diff)
+				current_animation = "idle"
+				run_animation()
+				_interact_with_click_target()
+				return
 	var next_step = _get_next_move_toward_target(_auto_target_tile, Vector2.ZERO)
 	if next_step != Vector2i.ZERO:
 		movement_vector = next_step

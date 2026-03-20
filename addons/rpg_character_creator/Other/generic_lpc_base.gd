@@ -290,7 +290,7 @@ func get_shadow_data() -> Dictionary:
 				if %MainTexture.texture:
 					var tile_size = GameManager.get_map_tile_size()
 					shadow_data.position.y += %MainTexture.offset.y - %MainTexture.texture.get_height() * 0.5 + tile_size.y - 4
-					shadow_data.position.x -= tile_size.x / 2
+					shadow_data.position.x += tile_size.x / 2
 					shadow_data.feet_offset = %MainTexture.texture.get_width() / 2
 				
 		DisplayMode.CUSTOM_SCENE:

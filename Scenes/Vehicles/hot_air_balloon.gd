@@ -91,14 +91,28 @@ func _on_disembark() -> void:
 
 
 func get_shadow_data() -> Dictionary:
-	var tex = %Ballon.get_texture()
+	var tex = %FinalBalloon.texture
 	if not tex: return {}
-	var img = tex.get_image()
-	if not img: return {}
-	var used_rect = img.get_used_rect()
-	var atlas = AtlasTexture.new()
-	atlas.atlas = tex
-	atlas.region = used_rect
+	if not has_meta("_cached_balloon_rect"):
+		var img = tex.get_image()
+		if not img or img.get_used_rect().get_area() == 0: return {}
+		set_meta("_cached_balloon_rect", img.get_used_rect())
+		var atlas = AtlasTexture.new()
+		atlas.atlas = tex
+		atlas.region = get_meta("_cached_balloon_rect")
+		set_meta("_cached_balloon_atlas", atlas)
+		var basket_tex = %Vehicle.texture
+		if basket_tex:
+			var b_img = basket_tex.get_image()
+			if b_img:
+				var b_rect = b_img.get_used_rect()
+				set_meta("_cached_basket_rect", b_rect)
+				var m_atlas = AtlasTexture.new()
+				m_atlas.atlas = basket_tex
+				m_atlas.region = b_rect
+				set_meta("_cached_mask_atlas", m_atlas)
+	var used_rect: Rect2 = get_meta("_cached_balloon_rect")
+	var atlas: AtlasTexture = get_meta("_cached_balloon_atlas")
 	var tex_size = tex.get_size()
 	var tex_top_left_offset = -(Vector2(tex_size) / 2.0)
 	var center_x_local = tex_top_left_offset.x + used_rect.position.x + (used_rect.size.x / 2.0)
@@ -110,22 +124,35 @@ func get_shadow_data() -> Dictionary:
 	var p_br = shadow_center_world + Vector2(half_w, half_h)
 	var p_tr = shadow_center_world + Vector2(half_w, -half_h)
 	var p_tl = shadow_center_world + Vector2(-half_w, -half_h)
-	var quad_points = [
-		p_bl,
-		p_br,
-		p_tr,
-		p_tl
-	]
+	var quad_points = [p_bl, p_br, p_tr, p_tl]
 	quad_points[0].y -= 1
 	quad_points[1].y -= 1
+	var basket_node = %Vehicle
+	var basket_tex = basket_node.texture
+	if not basket_tex or not has_meta("_cached_basket_rect"): return {}
+	var used_rect_basket: Rect2 = get_meta("_cached_basket_rect")
+	var mask_atlas: AtlasTexture = get_meta("_cached_mask_atlas")
+	var tex_origin_basket = basket_node.offset - (basket_tex.get_size() / 2.0)
+	var basket_l_x_min = tex_origin_basket.x + used_rect_basket.position.x
+	var basket_l_x_max = tex_origin_basket.x + used_rect_basket.position.x + used_rect_basket.size.x
+	var basket_l_y_min = tex_origin_basket.y + used_rect_basket.position.y
+	var basket_l_y_max = tex_origin_basket.y + used_rect_basket.position.y + used_rect_basket.size.y
+	var m_bl = basket_node.to_global(Vector2(basket_l_x_min, basket_l_y_max))
+	var m_br = basket_node.to_global(Vector2(basket_l_x_max, basket_l_y_max))
+	var m_tr = basket_node.to_global(Vector2(basket_l_x_max, basket_l_y_min))
+	var m_tl = basket_node.to_global(Vector2(basket_l_x_min, basket_l_y_min))
+	var mask_points = PackedVector2Array([m_tl, m_tr, m_br, m_bl])
+	var mask_uvs = PackedVector2Array([Vector2(0, 0), Vector2(1, 0), Vector2(1, 1), Vector2(0, 1)])
 	@warning_ignore("incompatible_ternary")
 	var tile_size: Vector2 = GameManager.get_map_tile_size() if GameManager.current_map else Vector2(32, 32)
-	var current_mask_offset = %Vehicle.global_position - global_position
 	return {
 		"main_node": self,
 		"texture": atlas,
 		"quad_points": quad_points,
+		"mask_points": mask_points,
+		"mask_texture": mask_atlas,
+		"mask_uvs": mask_uvs,
 		"position": global_position,
-		"mask_offset": current_mask_offset,
+		"mask_offset": Vector2.ZERO,
 		"cell": Vector2i(global_position / tile_size) if GameManager.current_map else Vector2i()
 	}
