@@ -38,6 +38,10 @@ var _real_cursor_time_to_hide: float = 0.0
 
 var busy: bool = false
 
+var forced_target: Control = null
+
+var multi_enabled: bool = false
+
 @onready var cursor: Sprite2D = %Cursor
 
 
@@ -49,6 +53,10 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	if multi_enabled:
+		visible = false
+		return
+		
 	if _real_cursor_time_to_hide > 0.0:
 		_real_cursor_time_to_hide -= delta
 		if _real_cursor_time_to_hide <= 0:
@@ -60,7 +68,7 @@ func _process(delta: float) -> void:
 		cursor.visible = false
 		return
 	
-	var focus_owner = get_viewport().gui_get_focus_owner()
+	var focus_owner = forced_target if forced_target else get_viewport().gui_get_focus_owner()
 
 	if not focus_owner and cursor.self_modulate.a > 0:
 		cursor.self_modulate.a -= delta * 10
@@ -119,8 +127,10 @@ func _animate_fade_cursor(final_color: Color, duration: float, set_hidden_value:
 
 func _update_hand_position(delta: float, force_position: bool = false) -> void:
 	if pause_reposition and is_inside_tree() or not get_viewport(): return
+	
 	if cursor:
-		var focus_owner = get_viewport().gui_get_focus_owner()
+		var focus_owner = forced_target if forced_target else get_viewport().gui_get_focus_owner()
+		
 		if focus_owner:
 			var target_position: Vector2
 			var target_rotation: float
@@ -156,17 +166,15 @@ func _update_hand_position(delta: float, force_position: bool = false) -> void:
 					target_scale = Vector2(-1, 1)
 
 			if not force_position:
-				# Adaptive speed: faster when far away
 				var distance_to_target = cursor.global_position.distance_to(target_position)
 				var pos_speed = HAND_POSITION_LERP_SPEED
-				if distance_to_target > 300.0:
-					pos_speed = HAND_POSITION_LERP_SPEED * 2.5 # Faster at long distance
 				
-				# Correct smoothing factor independent of FPS
+				if distance_to_target > 300.0:
+					pos_speed = HAND_POSITION_LERP_SPEED * 2.5
+				
 				var pos_weight = 1.0 - exp(-delta * pos_speed)
 				var rot_weight = 1.0 - exp(-delta * HAND_ROTATION_LERP_SPEED)
 				
-				# Smoothly interpolate to target position
 				cursor.global_position = lerp(cursor.global_position, target_position + hand_offset, pos_weight)
 				cursor.rotation = lerp_angle(cursor.rotation, target_rotation, rot_weight)
 				cursor.scale = lerp(cursor.scale, target_scale, rot_weight)
@@ -174,11 +182,6 @@ func _update_hand_position(delta: float, force_position: bool = false) -> void:
 				cursor.global_position = target_position + hand_offset
 				cursor.rotation = target_rotation
 				cursor.scale = target_scale
-		#if not _is_real_cursor_visible:
-			#Input.warp_mouse(cursor.position)
-			#DisplayServer.mouse_set_mode(DisplayServer.MOUSE_MODE_VISIBLE)
-			#DisplayServer.mouse_set_mode(DisplayServer.MOUSE_MODE_HIDDEN)
-			#get_viewport().set_input_as_handled()
 			
 #endregion
 

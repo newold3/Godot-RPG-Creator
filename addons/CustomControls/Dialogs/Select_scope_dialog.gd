@@ -104,7 +104,8 @@ func _on_right_toggled(toggled_on: bool, id: int) -> void:
 
 
 func _on_random_spin_box_value_changed(value: float) -> void:
-	data.random = value
+	if data:
+		data.random = value
 
 
 func _on_ok_button_pressed() -> void:

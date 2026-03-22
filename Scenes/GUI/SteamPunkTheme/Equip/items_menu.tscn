@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://cm3723njwglc8"]
+[gd_scene format=3 uid="uid://cm3723njwglc8"]
 
 [ext_resource type="Texture2D" uid="uid://bfgr2ewrp6i0u" path="res://Assets/Images/GUI/party_menu.png" id="1_1rdo5"]
 [ext_resource type="Script" uid="uid://b8vm8gqseu2lq" path="res://Scenes/GUI/SteamPunkTheme/Equip/items_menu.gd" id="1_knrlo"]
@@ -92,7 +92,7 @@ region = Rect2(26, 28, 25, 28)
 atlas = ExtResource("5_0ylrt")
 region = Rect2(689, 319, 35, 35)
 
-[node name="ItemsMenu" type="Control"]
+[node name="ItemsMenu" type="Control" unique_id=1094403720]
 z_index = 10
 custom_minimum_size = Vector2(416, 0)
 layout_mode = 3
@@ -104,7 +104,7 @@ mouse_filter = 2
 script = ExtResource("1_knrlo")
 metadata/_edit_group_ = true
 
-[node name="BackgroundBottom" type="NinePatchRect" parent="."]
+[node name="BackgroundBottom" type="NinePatchRect" parent="." unique_id=494091107]
 clip_children = 2
 custom_minimum_size = Vector2(416, 0)
 layout_mode = 1
@@ -120,7 +120,7 @@ patch_margin_top = 45
 patch_margin_bottom = 47
 axis_stretch_vertical = 2
 
-[node name="Gear" type="Control" parent="."]
+[node name="Gear" type="Control" parent="." unique_id=2069994098]
 show_behind_parent = true
 layout_mode = 1
 anchors_preset = 15
@@ -130,7 +130,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Gear1" type="Control" parent="Gear"]
+[node name="Gear1" type="Control" parent="Gear" unique_id=553080477]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 0
@@ -141,7 +141,7 @@ offset_bottom = 17.0
 scale = Vector2(0.1, 0.1)
 mouse_filter = 2
 
-[node name="Part" type="TextureRect" parent="Gear/Gear1"]
+[node name="Part" type="TextureRect" parent="Gear/Gear1" unique_id=1642950542]
 z_index = 10
 layout_mode = 1
 anchors_preset = 8
@@ -159,7 +159,7 @@ pivot_offset = Vector2(239.99997, 229.99997)
 mouse_filter = 2
 texture = SubResource("AtlasTexture_0ylrt")
 
-[node name="Gear2" type="Control" parent="Gear"]
+[node name="Gear2" type="Control" parent="Gear" unique_id=1674993760]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 1
@@ -173,7 +173,7 @@ grow_horizontal = 0
 scale = Vector2(0.1, 0.1)
 mouse_filter = 2
 
-[node name="Part" type="TextureRect" parent="Gear/Gear2"]
+[node name="Part" type="TextureRect" parent="Gear/Gear2" unique_id=659847467]
 z_index = 10
 layout_mode = 1
 anchors_preset = 8
@@ -191,7 +191,7 @@ pivot_offset = Vector2(240, 230)
 mouse_filter = 2
 texture = SubResource("AtlasTexture_0ylrt")
 
-[node name="Gear3" type="Control" parent="Gear"]
+[node name="Gear3" type="Control" parent="Gear" unique_id=1024949882]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 2
@@ -205,7 +205,7 @@ grow_vertical = 0
 scale = Vector2(0.1, 0.1)
 mouse_filter = 2
 
-[node name="Part" type="TextureRect" parent="Gear/Gear3"]
+[node name="Part" type="TextureRect" parent="Gear/Gear3" unique_id=1195692808]
 z_index = 10
 layout_mode = 1
 anchors_preset = 8
@@ -223,7 +223,7 @@ pivot_offset = Vector2(239.99997, 229.99997)
 mouse_filter = 2
 texture = SubResource("AtlasTexture_ehgam")
 
-[node name="TopContainer" type="MarginContainer" parent="."]
+[node name="TopContainer" type="MarginContainer" parent="." unique_id=647517514]
 z_index = 1
 layout_mode = 1
 anchors_preset = 10
@@ -236,7 +236,7 @@ theme_override_constants/margin_top = 14
 theme_override_constants/margin_right = 52
 theme_override_constants/margin_bottom = 5
 
-[node name="Name" type="Label" parent="TopContainer"]
+[node name="Name" type="Label" parent="TopContainer" unique_id=847759126]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
@@ -251,7 +251,7 @@ text = "EQUIPMENT"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Contents" type="MarginContainer" parent="."]
+[node name="Contents" type="MarginContainer" parent="." unique_id=86549717]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -264,7 +264,7 @@ theme_override_constants/margin_top = 45
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 43
 
-[node name="MainScene" type="Control" parent="Contents"]
+[node name="MainScene" type="Control" parent="Contents" unique_id=1983451043]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -281,7 +281,7 @@ equip_icon = SubResource("AtlasTexture_rbj62")
 font = ExtResource("3_0ylrt")
 font_size = 16
 
-[node name="BackgroundTop" type="NinePatchRect" parent="."]
+[node name="BackgroundTop" type="NinePatchRect" parent="." unique_id=628988324]
 custom_minimum_size = Vector2(416, 0)
 layout_mode = 1
 anchors_preset = 15
@@ -295,7 +295,7 @@ region_rect = Rect2(1871, 396, 302, 107)
 patch_margin_top = 47
 patch_margin_bottom = 45
 
-[node name="Decoration" type="TextureRect" parent="."]
+[node name="Decoration" type="TextureRect" parent="." unique_id=1259143768]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
