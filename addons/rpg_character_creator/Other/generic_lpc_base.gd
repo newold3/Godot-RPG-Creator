@@ -266,6 +266,7 @@ func _sync_custom_scene_state(delta: float) -> void:
 		instanced_scene.call("process_event_state", state)
 
 
+## Formats and returns the shadow data array based on the current event display mode
 func get_shadow_data() -> Dictionary:
 	if is_on_vehicle or is_queued_for_deletion() or has_meta("_disable_shadow"):
 		return {}
@@ -274,45 +275,75 @@ func get_shadow_data() -> Dictionary:
 	if not parent_body:
 		parent_body = self
 		
-	var shadow_data = {
-		"main_node": parent_body,
-		"position": parent_body.global_position,
-		"feet_offset": 16,
-		"sprites": []
+	var global_pos = parent_body.global_position
+	
+	var shadow_dict = {
+		"is_new_system": true,
+		"position": global_pos,
+		"textures": [],
+		"positions": [],
+		"regions": [],
+		"feet_offsets": [],
+		"mask_offsets": [],
+		"alpha": parent_body.modulate.a,
+		"scale": parent_body.scale,
+		"rotation": parent_body.rotation,
+		"flip_h": false
 	}
-		
+	
+	var sprites_to_process = []
+	var is_custom_image = (display_mode == DisplayMode.CUSTOM_IMAGE)
+	var custom_global_pos = global_pos
 	
 	match display_mode:
 		DisplayMode.CUSTOM_IMAGE:
-			if has_node("%MainTexture"):
-				shadow_data.sprites.append(%MainTexture)
-				shadow_data.event_type = "CUSTOM_IMAGE"
-				if %MainTexture.texture:
-					var tile_size = GameManager.get_map_tile_size()
-					shadow_data.position.y += %MainTexture.offset.y - %MainTexture.texture.get_height() * 0.5 + tile_size.y - 4
-					shadow_data.position.x += tile_size.x / 2
-					shadow_data.feet_offset = %MainTexture.texture.get_width() / 2
+			var main_tex: Sprite2D = get_node_or_null("%MainTexture")
+			if main_tex and main_tex.texture:
+				sprites_to_process.append(main_tex)
+				var tile_size = GameManager.get_map_tile_size()
+				custom_global_pos.y -= tile_size.y - 2
+				shadow_dict.position = custom_global_pos
 				
 		DisplayMode.CUSTOM_SCENE:
 			if instanced_scene:
-				# If the scene wants to handle its own shadow data completely
-				if instanced_scene.has_method("get_shadow_sprites"):
-					shadow_data.sprites = instanced_scene.call("get_shadow_sprites")
-				else:
-					# Fallback: treat the scene root as the main object
-					shadow_data.main_node = instanced_scene
-					shadow_data.position = instanced_scene.global_position
-				shadow_data.event_type = "CUSTOM_SCENE"
-		_: # Default behavior (Legacy/LPC)
-			if has_node("%MainTexture"):
-				shadow_data.sprites.append(%MainTexture)
-				shadow_data.event_type = "EDITOR_LPC"
-
-	if GameManager.current_map:
-		var tile_size: Vector2 = GameManager.get_map_tile_size()
-		shadow_data.cell = Vector2i(parent_body.global_position / tile_size)
-	
-	return shadow_data
+				if instanced_scene.has_method("get_shadow_data"):
+					return instanced_scene.get_shadow_data()
+				elif instanced_scene.has_method("get_shadow_sprites"):
+					var scene_sprites = instanced_scene.call("get_shadow_sprites")
+					if scene_sprites is Array:
+						sprites_to_process.append_array(scene_sprites)
+						
+		_:
+			var main_tex: Sprite2D = get_node_or_null("%MainTexture")
+			if main_tex and main_tex.texture:
+				sprites_to_process.append(main_tex)
+				
+	for s in sprites_to_process:
+		if is_instance_valid(s) and s is Sprite2D and s.visible and s.texture:
+			shadow_dict.textures.append(s.texture)
+			if is_custom_image:
+				shadow_dict.positions.append(custom_global_pos)
+				shadow_dict.mask_offsets.append(s.offset)
+			else:
+				shadow_dict.positions.append(s.global_position)
+				shadow_dict.mask_offsets.append(s.offset)
+			var h_half = s.texture.get_size().y / 2.0
+			var region_rect = Rect2(Vector2.ZERO, s.texture.get_size())
+			if s.region_enabled:
+				region_rect = s.region_rect
+				h_half = region_rect.size.y / 2.0
+			shadow_dict.regions.append(region_rect)
+			if is_custom_image:
+				shadow_dict.feet_offsets.append(h_half)
+			else:
+				shadow_dict.feet_offsets.append(16.0)
+			if s.flip_h:
+				shadow_dict.flip_h = true
+				
+	if shadow_dict.textures.is_empty():
+		return {}
+		
+	return shadow_dict
 
 
 func _get_next_move_toward_event() -> Vector2i:

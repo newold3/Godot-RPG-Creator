@@ -257,37 +257,31 @@ func is_any_direction_pressed() -> bool:
 
 
 func get_shadow_data() -> Dictionary:
-	var sprite = %FinalVehicle
+	var sprite = get_node_or_null("%FinalVehicle")
+	if not sprite or not sprite.texture:
+		return {}
+		
 	var tex = sprite.texture
-	if not tex: return {}
 	var img = tex.get_image()
-	if not img: return {}
+	if not img:
+		return {}
+		
 	var used_rect = img.get_used_rect()
-	var atlas = AtlasTexture.new()
-	atlas.atlas = tex
-	atlas.region = used_rect
-	var tex_origin = sprite.offset - (tex.get_size() / 2.0)
-	var local_x_min = tex_origin.x + used_rect.position.x
-	var local_x_max = tex_origin.x + used_rect.position.x + used_rect.size.x
-	var local_y_min = tex_origin.y + used_rect.position.y
-	var local_y_max = tex_origin.y + used_rect.position.y + used_rect.size.y
-	var p_bl_local = Vector2(local_x_min, local_y_max)
-	var p_br_local = Vector2(local_x_max, local_y_max)
-	var p_tr_local = Vector2(local_x_max, local_y_min)
-	var p_tl_local = Vector2(local_x_min, local_y_min)
-	var quad_points = [
-		sprite.to_global(p_bl_local),
-		sprite.to_global(p_br_local),
-		sprite.to_global(p_tr_local),
-		sprite.to_global(p_tl_local)
-	]
-	quad_points[0].y -= 1
-	quad_points[1].y -= 1
-	var tile_size: Vector2 = GameManager.get_map_tile_size()
-	return {
-		"main_node": self,
-		"texture": atlas,
-		"quad_points": quad_points,
+	var tex_size = tex.get_size()
+	var calculated_feet_y = used_rect.end.y - (tex_size.y / 2.0) - 1.0
+	
+	var shadow_dict = {
+		"is_new_system": true,
 		"position": global_position,
-		"cell": Vector2i(global_position / tile_size)
+		"textures": [tex],
+		"positions": [sprite.global_position],
+		"regions": [Rect2(Vector2.ZERO, tex_size)],
+		"feet_offsets": [calculated_feet_y],
+		"mask_offsets": [sprite.offset],
+		"alpha": sprite.modulate.a,
+		"scale": scale,
+		"rotation": sprite.rotation,
+		"flip_h": sprite.flip_h
 	}
+	
+	return shadow_dict

@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://powuheliwl5j" path="res://Scenes/Vehicles/hot_air_balloon.gd" id="1_xt8wq"]
 [ext_resource type="Texture2D" uid="uid://bp3gp81dj2tod" path="res://Assets/Images/Vehicles/hot_air_balloon.png" id="2_acxxb"]
 [ext_resource type="Script" uid="uid://450mjutneyod" path="res://addons/RPGData/ModulesRPG/rpg_dimension.gd" id="2_v8jne"]
+[ext_resource type="Texture2D" uid="uid://denhhg8ng2ipw" path="res://Assets/Images/Other/floor_selector_frame0.png" id="3_hqx3u"]
 
 [sub_resource type="Resource" id="Resource_5ekhm"]
 script = ExtResource("2_v8jne")
@@ -216,7 +217,7 @@ _data = {
 &"land": SubResource("Animation_okd4u")
 }
 
-[node name="HotAirBalloon" type="CharacterBody2D" unique_id=648688192]
+[node name="HotAirBalloon" type="CharacterBody2D" unique_id=648688192 node_paths=PackedStringArray("camera_focus_node")]
 z_index = 1
 y_sort_enabled = true
 texture_filter = 1
@@ -229,11 +230,13 @@ offset_view_from_bottom = -132
 offset_view_from_top = -800
 vehicle_speed = 300.0
 player_container_node = NodePath("Ballon/Node2D/BalloonBase/Character")
+camera_focus_node = NodePath("CameraTarget")
 extra_dimensions = SubResource("Resource_5ekhm")
 can_move_on_terrains = PackedStringArray("all")
 can_disembark_on_terrains = PackedStringArray("^water", "all")
 flying_object = true
 show_disembark_indicator = true
+disembark_indicator_texture = ExtResource("3_hqx3u")
 
 [node name="Ballon" type="SubViewport" parent="." unique_id=200181185]
 unique_name_in_owner = true
@@ -290,20 +293,6 @@ centered = false
 region_enabled = true
 region_rect = Rect2(437, 301, 153, 209)
 
-[node name="Shadow" type="SubViewport" parent="." unique_id=1441111068]
-unique_name_in_owner = true
-transparent_bg = true
-canvas_item_default_texture_filter = 0
-size = Vector2i(1024, 1024)
-
-[node name="FinalShadow" type="Sprite2D" parent="Shadow" unique_id=458642695]
-unique_name_in_owner = true
-modulate = Color(0, 0, 0, 1)
-position = Vector2(513, 511)
-texture = SubResource("ViewportTexture_gjnqj")
-centered = false
-offset = Vector2(-512, -510)
-
 [node name="VehicleContainer" type="Node2D" parent="." unique_id=482508345]
 unique_name_in_owner = true
 
@@ -346,3 +335,6 @@ position = Vector2(-17, -1)
 [node name="FootRight" type="Marker2D" parent="." unique_id=1091758726]
 unique_name_in_owner = true
 position = Vector2(19, -1)
+
+[node name="CameraTarget" type="Marker2D" parent="." unique_id=1308914111]
+position = Vector2(0, -134)

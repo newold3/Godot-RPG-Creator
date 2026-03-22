@@ -217,7 +217,7 @@ func _setup_map_scene(map_scene: RPGMap) -> void:
 	
 	if canvas:
 		for child in canvas.get_children():
-			if child != shadows:
+			if child is RPGMap:
 				child.queue_free()
 	
 	set_map(map_scene)

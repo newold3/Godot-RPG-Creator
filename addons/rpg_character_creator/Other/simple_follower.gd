@@ -448,21 +448,44 @@ func get_character_sprite() -> Sprite2D:
 func get_shadow_data() -> Dictionary:
 	if is_queued_for_deletion() or has_meta("_disable_shadow"):
 		return {}
+		
+	var tile_size = GameManager.get_map_tile_size()
+	var base_pos = body.global_position
+	#base_pos.y += tile_size.y * 0.5
 	
-	var shadow = {
-		"main_node": body,
-		"sprites": [wings, mainhand_back, body, offhand_front],
-		"position": body.global_position,
-		"feet_offset": 16
+	var shadow_dict = {
+		"is_new_system": true,
+		"position": base_pos,
+		"textures": [],
+		"positions": [],
+		"regions": [],
+		"feet_offsets": [[4, 4, 0]],
+		"mask_offsets": [],
+		"alpha": body.modulate.a,
+		"scale": body.scale,
+		"rotation": body.rotation,
+		"flip_h": false
 	}
 	
-	var tile_size = GameManager.get_map_tile_size()
-	shadow.position.y += tile_size.y + 2
+	var sprites_to_check = [wings, mainhand_back, body, offhand_front]
 	
-	if GameManager.current_map:
-		shadow.cell = Vector2i(global_position / Vector2(tile_size))
-	
-	return shadow
+	for s in sprites_to_check:
+		if is_instance_valid(s) and s.visible and s.modulate.a > 0.0 and s.texture:
+			shadow_dict.textures.append(s.texture)
+			shadow_dict.positions.append(base_pos)
+			if s.region_enabled:
+				shadow_dict.regions.append(s.region_rect)
+			else:
+				shadow_dict.regions.append(Rect2(Vector2.ZERO, s.texture.get_size()))
+			shadow_dict.feet_offsets.append(16.0)
+			shadow_dict.mask_offsets.append(Vector2.ZERO)
+			if s.flip_h:
+				shadow_dict.flip_h = true
+				
+	if shadow_dict.textures.is_empty():
+		return {}
+		
+	return shadow_dict
 
 
 func update_appearance_cascade(actor_id: int, instant: bool = false) -> void:

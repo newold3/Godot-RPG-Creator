@@ -175,34 +175,26 @@ func draw_shadow(layer: TileMapLayer, cell: Vector2i, shadow_info, offset: Vecto
 	var atlas_source = layer.tile_set.get_source(layer.get_cell_source_id(cell))
 	var atlas_coords = layer.get_cell_atlas_coords(cell)
 	var texture_region = atlas_source.get_tile_texture_region(atlas_coords)
+	var original_size = Vector2(texture_region.size)
 	if shadow_info:
 		texture_region.size *= Vector2i(shadow_info.width, shadow_info.height)
-
-	var tile_position = layer.map_to_local(cell) - map.tile_size * 0.5 - offset + Vector2(0, 2)
-
-	var key = "%s_%s" % [atlas_source.texture.get_rid().get_id(), texture_region]
-	var shadow
-	if not cached_environment_textures.has(key):
-		var tex = ImageTexture.create_from_image(atlas_source.texture.get_image().get_region(texture_region))
-		shadow = {
-			"texture": tex,
-			"position": tile_position,
-			"cell": cell,
-			"feet_offset": shadow_info.feet_offset,
-			"is_tileset": true,
-			"width": shadow_info.width - 1
-		}
-		cached_environment_textures[key] = tex
-	else:
-		shadow = {
-			"texture": cached_environment_textures[key],
-			"position": tile_position,
-			"cell": cell,
-			"feet_offset": shadow_info.feet_offset,
-			"is_tileset": true,
-			"width": shadow_info.width - 1
-		}
-
+	var expanded_size = Vector2(texture_region.size)
+	var center_shift = (expanded_size - original_size) / 2.0
+	var local_pos = layer.map_to_local(cell)
+	var exact_center = local_pos - offset + center_shift
+	exact_center.y += float(shadow_info.feet_offset)
+	var global_pos = layer.to_global(exact_center)
+	var shadow = {
+		"is_new_system": true,
+		"cell": cell,
+		"position": global_pos,
+		"textures": [atlas_source.texture],
+		"positions": [global_pos],
+		"regions": [texture_region],
+		"feet_offsets": [[4.0, 4.0]],
+		"alpha": 1.0,
+		"is_tileset": true
+	}
 	return shadow
 
 

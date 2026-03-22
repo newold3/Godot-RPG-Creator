@@ -68,10 +68,18 @@ extends Node2D
 		update_modulate_color()
 
 ## Makes the map infinitely scrollable horizontally (useful for world maps)
-@export var infinite_horizontal_scroll: bool = false
+@export var infinite_horizontal_scroll: bool = false :
+	set(value):
+		infinite_horizontal_scroll = value
+		notify_property_list_changed()
+		update_configuration_warnings()
 
 ## Makes the map infinitely scrollable vertically (useful for world maps)
-@export var infinite_vertical_scroll: bool = false
+@export var infinite_vertical_scroll: bool = false :
+	set(value):
+		infinite_vertical_scroll = value
+		notify_property_list_changed()
+		update_configuration_warnings()
 
 ## Limits camera panning to map width on maps that do not have infinite horizontal scroll
 @export var auto_set_horizontal_camera_limits: bool = true
@@ -89,6 +97,7 @@ extends Node2D
 		draw_shadows = value
 		if shadow_manager: shadow_manager.update_shadows()
 		notify_property_list_changed()
+		update_configuration_warnings()
 
 ## Enable integrated Day/Night usage (configurable in [System] within the database).
 @export var use_dynamic_day_night: bool = false:
@@ -311,7 +320,15 @@ func _get_configuration_warnings() -> PackedStringArray:
 				break
 	if layers == 0:
 		warnings.append("The map must have at least one TileMapLayer.")
-	
+		
+	if draw_shadows:
+		if infinite_horizontal_scroll and infinite_vertical_scroll:
+			warnings.append("Warning: Enabling dynamic shadows on fully infinite maps (X and Y) may affect performance.")
+		elif infinite_horizontal_scroll:
+			warnings.append("Warning: Enabling dynamic shadows on horizontal infinite maps may affect performance.")
+		elif infinite_vertical_scroll:
+			warnings.append("Warning: Enabling dynamic shadows on vertical infinite maps may affect performance.")
+			
 	can_add_events = warnings.size() == 0
 	
 	return warnings

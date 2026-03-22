@@ -192,7 +192,7 @@ func _physics_process(delta: float):
 				var mouse_pos = GameManager.current_map.get_local_mouse_position()
 				var tile: Vector2i = GameManager.current_map.local_to_map(mouse_pos)
 				if is_new_click or (tile != _auto_target_tile and _click_indicator_cooldown <= 0.0):
-					_set_target_destination(tile)
+					_set_target_destination(tile, is_new_click)
 	activated_this_frame = false
 	if not busy and _contact_activation_delay > 0:
 		_contact_activation_delay -= delta
@@ -245,7 +245,7 @@ func _physics_process(delta: float):
 
 
 ## Sets the target destination for pathfinding and instantiates a visual click indicator
-func _set_target_destination(tile: Vector2i) -> void:
+func _set_target_destination(tile: Vector2i, is_new_click: bool = true) -> void:
 	if not GameManager.current_map:
 		return
 	_auto_target_tile = tile
@@ -256,6 +256,8 @@ func _set_target_destination(tile: Vector2i) -> void:
 		GameManager.current_map.add_child(indicator)
 		var map = GameManager.current_map
 		indicator.global_position = map.get_tile_position(tile) - Vector2(0, map.tile_size.y / 2 - 8.0)
+	if not is_new_click:
+		return
 	var map = GameManager.current_map
 	var events = map.get_in_game_events_in(tile)
 	for ev in events:

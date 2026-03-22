@@ -160,28 +160,32 @@ func get_shadow_data() -> Dictionary:
 	if is_queued_for_deletion() or has_meta("_disable_shadow"):
 		return {}
 		
-	#var tex = %ViewportTextures.get_texture() # Texture of the obejct character that is embedded in a viewport
+	var foot_node = get_node_or_null("%Foot")
+	var main_sprite = get_node_or_null("%MainNode")
 	
-	#var shadow = {
-		#"main_node": self,
-		#"texture": tex,
-		#"position": global_position - tex.get_size() * 0.5 + %FinalSprite.position + %FinalSprite.offset,
-		#"is_shadow_viewport": true,
-		#"texture_viewport": %Shadow.get_texture(),
-		#"sprite_shadow": %FinalShadow,
-		#"shadow_position": global_position - %Shadow.get_texture().get_size() * 0.5,
-	#}
-	var shadow = {
-		"main_node": %Foot,
-		"sprites": [%MainNode],
-		"position": %Foot.global_position,
-		"feet_offset": 12
+	if not foot_node or not main_sprite or not main_sprite.texture:
+		return {}
+		
+	var shadow_dict = {
+		"is_new_system": true,
+		"position": foot_node.global_position,
+		"textures": [main_sprite.texture],
+		"positions": [main_sprite.global_position],
+		"regions": [],
+		"feet_offsets": [12.0],
+		"mask_offsets": [main_sprite.offset],
+		"alpha": main_sprite.modulate.a,
+		"scale": main_sprite.scale,
+		"rotation": main_sprite.rotation,
+		"flip_h": main_sprite.flip_h
 	}
-	if GameManager.current_map:
-		var tile_size: Vector2 = GameManager.get_map_tile_size()
-		shadow.cell = Vector2i(global_position / tile_size)
 	
-	return shadow
+	if main_sprite.region_enabled:
+		shadow_dict.regions.append(main_sprite.region_rect)
+	else:
+		shadow_dict.regions.append(Rect2(Vector2.ZERO, main_sprite.texture.get_size()))
+		
+	return shadow_dict
 
 
 func get_current_tile() -> Vector2i:

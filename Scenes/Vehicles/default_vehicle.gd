@@ -30,6 +30,8 @@ extends CharacterBody2D
 ## Specifies the position of the player inside the container.
 @export var player_position: Vector2i
 
+@export var camera_focus_node: Marker2D
+
 ## Offset the size of this vehicle (by default they measure 1x1 tile). Use this to make the vehicle wider or longer.
 @export var extra_dimensions: RPGDimension = RPGDimension.new()
 
@@ -218,24 +220,22 @@ func remove_player() -> void:
 		var _target_position = current_map.get_tile_position(current_tile).round()
 		current_map.set_event_direction(player, current_direction)
 		var real_start_pos = self.global_position + get_player_visual_offset()
-		
 		player.reparent(current_map, false)
 		player.global_position = real_start_pos
 		await _set_player_position(_target_position)
 		player.position = _target_position
-		
 		var camera = GameManager.get_camera()
-		if camera:
-			camera.remove_target_from_array(self)
-			camera.add_target_to_array(player)
-			
+		if camera and camera.has_method("has_target"):
+			var cam_target = camera_focus_node if is_instance_valid(camera_focus_node) else self
+			if camera.has_target(cam_target):
+				camera.remove_target_from_array(cam_target)
+				camera.add_target_to_array(player)
 		player.current_direction = current_direction
 		player.last_direction = current_direction
 		var t = create_tween()
 		player.modulate.a = 0.8
 		t.tween_property(player, "modulate:a", 1.0, 0.25)
 		await t.finished
-		
 		if player.has_method("kill_movement"):
 			player.kill_movement()
 		if "is_attacking" in player:
@@ -248,10 +248,8 @@ func remove_player() -> void:
 			player.previous_tile = current_tile
 		if "teleport" in player:
 			player.teleport = _target_position
-			
 		if player.has_method("initialize_virtual_tile"):
 			player.initialize_virtual_tile()
-			
 		player._auto_target_tile = Vector2i(-1, -1)
 		player._auto_target_event = null
 		player.movement_vector = Vector2.ZERO
@@ -262,16 +260,12 @@ func remove_player() -> void:
 			player._click_indicator_cooldown = 0.5
 		player.is_on_vehicle = false
 		player.current_vehicle = null
-		
 		if player.has_method("clear_movement_history"):
 			player.clear_movement_history()
-			
 		player.set_process(true)
 		player.set_process_input(true)
 		player = null
-		
 	disembark_passenger()
-	
 	GameManager.appear_followers()
 
 
@@ -868,9 +862,10 @@ func start(passenger: LPCCharacter) -> void:
 	GameManager.current_vehicle = self
 	get_viewport().set_input_as_handled()
 	var camera = GameManager.get_camera()
-	if camera:
+	if camera and camera.has_method("has_target") and camera.has_target(passenger):
 		camera.remove_target_from_array(passenger)
-		camera.add_target_to_array(self)
+		var cam_target = camera_focus_node if is_instance_valid(camera_focus_node) else self
+		camera.add_target_to_array(cam_target)
 	starting.emit()
 	set_process(true)
 	set_process_input(true)

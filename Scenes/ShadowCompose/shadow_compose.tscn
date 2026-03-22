@@ -16,7 +16,8 @@ shader = ExtResource("3_ir3x7")
 shader_parameter/shadow_texture = SubResource("ViewportTexture_5q4qg")
 shader_parameter/mask_texture = SubResource("ViewportTexture_8iou7")
 shader_parameter/overlay_color = Color(0, 0, 0, 0.5)
-shader_parameter/debug_color = Color(0, 0.43783325, 0.71, 0.9372549)
+shader_parameter/debug_mask_color = Color(0, 0.6392157, 0.3764706, 0.8980392)
+shader_parameter/debug_shadow_color = Color(0, 0, 1, 0.5)
 shader_parameter/debug_enabled = false
 shader_parameter/shadow_direction = Vector2(0.36, 0.24)
 shader_parameter/overlap_threshold = 0.1030000048925
@@ -27,9 +28,8 @@ viewport_path = NodePath("ShadowSubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rqcww"]
 shader = ExtResource("4_ju3o3")
-shader_parameter/blur_size = 1.0
-shader_parameter/overlay_color = Color(0.840625, 0.06830079, 0.06830079, 0.50980395)
-shader_parameter/debug_color = Color(0, 0, 1, 0.5)
+shader_parameter/blur_size = 2.5
+shader_parameter/overlay_color = Color(0, 0, 0, 0.38039216)
 shader_parameter/enable_debug = false
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_j5kux"]
@@ -55,35 +55,27 @@ script = ExtResource("1_njyuq")
 unique_name_in_owner = true
 transparent_bg = true
 canvas_item_default_texture_filter = 0
-size = Vector2i(1544, 1083)
-render_target_update_mode = 1
+size = Vector2i(1444, 1083)
+render_target_update_mode = 4
 
-[node name="Canvas1Parallax" type="Parallax2D" parent="ShadowSubViewport" unique_id=1131042118]
-unique_name_in_owner = true
-repeat_times = 4
-
-[node name="Canvas1" type="Node2D" parent="ShadowSubViewport/Canvas1Parallax" unique_id=1962145625]
+[node name="Canvas1" type="Node2D" parent="ShadowSubViewport" unique_id=1962145625]
 unique_name_in_owner = true
 
 [node name="MaskSubViewport" type="SubViewport" parent="." unique_id=962747054]
 unique_name_in_owner = true
 transparent_bg = true
 canvas_item_default_texture_filter = 0
-size = Vector2i(1544, 1083)
+size = Vector2i(1444, 1083)
 render_target_update_mode = 1
 
-[node name="Canvas2Parallax" type="Parallax2D" parent="MaskSubViewport" unique_id=1740337686]
-unique_name_in_owner = true
-repeat_times = 4
-
-[node name="Canvas2" type="Node2D" parent="MaskSubViewport/Canvas2Parallax" unique_id=498547639]
+[node name="Canvas2" type="Node2D" parent="MaskSubViewport" unique_id=498547639]
 unique_name_in_owner = true
 
 [node name="ShadowFinalMix" type="SubViewport" parent="." unique_id=1933239785]
 unique_name_in_owner = true
 transparent_bg = true
 canvas_item_default_texture_filter = 0
-size = Vector2i(1544, 1083)
+size = Vector2i(1444, 1083)
 render_target_update_mode = 4
 
 [node name="ShadowsFinalSprite" type="Sprite2D" parent="ShadowFinalMix" unique_id=774285177]
@@ -96,7 +88,7 @@ centered = false
 unique_name_in_owner = true
 transparent_bg = true
 canvas_item_default_texture_filter = 0
-size = Vector2i(1544, 1083)
+size = Vector2i(1444, 1083)
 render_target_update_mode = 4
 
 [node name="ShadowLayer" type="Sprite2D" parent="ShadowFinal" unique_id=191682031]

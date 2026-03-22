@@ -884,21 +884,40 @@ func can_perform_action() -> bool:
 func get_shadow_data() -> Dictionary:
 	if is_on_vehicle or is_queued_for_deletion() or has_meta("_disable_shadow"):
 		return {}
-	var sprites = []
-	for s in [wings_back, offhand_back, mainhand_back, body, offhand_front, mainhand_front]:
-		if s.visible and s.modulate.a > 0.0 and s.self_modulate.a > 0.0: sprites.append(s)
+		
 	var parent_body = full_body
-	var shadow = {
-		"main_node": parent_body,
-		"sprites": sprites,
-		"position": parent_body.global_position,
-		"feet_offset": 16
-	}
-	if GameManager.current_map:
-		var tile_size: Vector2 = GameManager.get_map_tile_size()
-		shadow.cell = Vector2i(parent_body.global_position / tile_size)
+	var global_pos = parent_body.global_position
 	
-	return shadow
+	var shadow_dict = {
+		"is_new_system": true,
+		"position": global_pos,
+		"textures": [],
+		"positions": [],
+		"regions": [],
+		"feet_offsets": [],
+		"alpha": parent_body.modulate.a,
+		"scale": parent_body.scale,
+		"rotation": parent_body.rotation
+	}
+	
+	var sprites_to_check = [wings_back, offhand_back, mainhand_back, body, offhand_front, mainhand_front]
+	
+	for s in sprites_to_check:
+		if s and is_instance_valid(s) and s.visible and s.modulate.a > 0.0 and s.self_modulate.a > 0.0 and s.texture:
+			shadow_dict.textures.append(s.texture)
+			shadow_dict.positions.append(s.global_position)
+			
+			if s.region_enabled:
+				shadow_dict.regions.append(s.region_rect)
+			else:
+				shadow_dict.regions.append(Rect2(Vector2.ZERO, s.texture.get_size()))
+				
+			shadow_dict.feet_offsets.append(16.0)
+			
+	if shadow_dict.textures.is_empty():
+		return {}
+		
+	return shadow_dict
 
 
 func shake(shake_offset: Vector2) -> void:
