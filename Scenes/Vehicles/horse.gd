@@ -271,7 +271,6 @@ func get_shadow_data() -> Dictionary:
 	var calculated_feet_y = used_rect.end.y - (tex_size.y / 2.0) - 1.0
 	
 	var shadow_dict = {
-		"is_new_system": true,
 		"position": global_position,
 		"textures": [tex],
 		"positions": [sprite.global_position],

@@ -454,7 +454,6 @@ func get_shadow_data() -> Dictionary:
 	#base_pos.y += tile_size.y * 0.5
 	
 	var shadow_dict = {
-		"is_new_system": true,
 		"position": base_pos,
 		"textures": [],
 		"positions": [],

@@ -278,7 +278,6 @@ func get_shadow_data() -> Dictionary:
 	var global_pos = parent_body.global_position
 	
 	var shadow_dict = {
-		"is_new_system": true,
 		"position": global_pos,
 		"textures": [],
 		"positions": [],

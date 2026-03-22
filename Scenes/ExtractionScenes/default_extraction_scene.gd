@@ -167,7 +167,6 @@ func get_shadow_data() -> Dictionary:
 		return {}
 		
 	var shadow_dict = {
-		"is_new_system": true,
 		"position": foot_node.global_position,
 		"textures": [main_sprite.texture],
 		"positions": [main_sprite.global_position],

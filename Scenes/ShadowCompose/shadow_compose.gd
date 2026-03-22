@@ -324,9 +324,6 @@ func set_drawing_textures() -> void:
 			view_rects.append({"rect": shifted, "offset": off_vec})
 			
 	for data: Dictionary in shadow_data:
-		if not data.get("is_new_system", false):
-			continue
-			
 		var textures: Array = data.get("textures", [])
 		var positions: Array = data.get("positions", [])
 		var regions: Array = data.get("regions", [])

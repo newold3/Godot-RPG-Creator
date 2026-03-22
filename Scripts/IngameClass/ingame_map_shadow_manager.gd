@@ -185,7 +185,6 @@ func draw_shadow(layer: TileMapLayer, cell: Vector2i, shadow_info, offset: Vecto
 	exact_center.y += float(shadow_info.feet_offset)
 	var global_pos = layer.to_global(exact_center)
 	var shadow = {
-		"is_new_system": true,
 		"cell": cell,
 		"position": global_pos,
 		"textures": [atlas_source.texture],
