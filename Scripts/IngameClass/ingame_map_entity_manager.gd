@@ -91,6 +91,7 @@ func setup_events() -> void:
 					automatic_events.append({"obj": ingame_event.lpc_event, "commands": page.list, "id": interpreter_id})
 				elif page.launcher == RPGEventPage.LAUNCHER_MODE.PARALLEL:
 					GameInterpreter.register_interpreter(ingame_event.lpc_event, page.list, true, interpreter_id)
+			ingame_event.update_label_name(page)
 	
 	if not automatic_events.is_empty():
 		GameInterpreter.auto_start_automatic_events(automatic_events)

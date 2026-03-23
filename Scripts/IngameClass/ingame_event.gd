@@ -11,8 +11,10 @@ var event: RPGEvent
 var character_data: RPGLPCCharacter
 var page_id: int
 var lpc_event: Variant
+var name_label: Label
 
 const EMPTY_LPC_EVENT = preload("uid://cxt2hyq05twny")
+const DEFAULT_NAMELABEL_SETTING = "uid://dedssgyoqloq"
 
 
 
@@ -44,15 +46,43 @@ func refresh_page(page: RPGEventPage) -> void:
 		handle_legacy_refresh(page)
 	else:
 		handle_modern_refresh(page)
-		
+	
 	if lpc_event:
 		lpc_event.get_parent().move_child(lpc_event, index)
 		lpc_event.z_index = page.z_index
 	
-		if page.condition.use_pressure:
-			lpc_event.z_index = 0
-		else:
-			lpc_event.z_index = page.z_index
+	
+	
+	update_label_name(page)
+
+
+func update_label_name(page: RPGEventPage) -> void:
+	if name_label:
+		name_label.queue_free()
+	
+	if page.options.show_name_in_map:
+		var new_name = page.name if not page.name.is_empty() else \
+			event.name if not event.name.is_empty() else ""
+		if not new_name.is_empty():
+			name_label = Label.new()
+			name_label.text = new_name
+			if AssetManager.exists(page.options.name_config_path):
+				var config: LabelSettings = load(page.options.name_config_path)
+				name_label.label_settings = config
+			elif AssetManager.exists(DEFAULT_NAMELABEL_SETTING):
+				name_label.label_settings = load(DEFAULT_NAMELABEL_SETTING)
+			name_label.modulate.a = 0.0
+			lpc_event.add_child(name_label)
+			await lpc_event.get_tree().process_frame
+			var p: Vector2 = Vector2(0, -16)
+			var up_node = lpc_event.get_node_or_null("%Up")
+			if up_node:
+				p += up_node.position
+				p.x -= name_label.size.x / 2.0
+				p.y -= name_label.size.y
+			name_label.position = p
+			var t = lpc_event.create_tween()
+			t.tween_property(name_label, "modulate:a", 1.0, 0.5)
 
 
 func handle_modern_refresh(page: RPGEventPage) -> void:
