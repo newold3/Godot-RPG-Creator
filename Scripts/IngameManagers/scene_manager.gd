@@ -213,7 +213,6 @@ func _setup_map_scene(map_scene: RPGMap) -> void:
 		main_scene.current_scene.queue_free()
 	
 	var canvas = main_scene.get_node_or_null("%MapContainer")
-	var shadows = main_scene.get_node_or_null("%ShadowContainer")
 	
 	if canvas:
 		for child in canvas.get_children():

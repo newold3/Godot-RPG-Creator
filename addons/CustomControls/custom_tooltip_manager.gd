@@ -240,7 +240,7 @@ func show_tooltip_from_node(node: Node) -> void:
 
 
 ## Create and configure a new custom tooltip with rich text formatting
-func _create_tooltip(title: String, contents: String, parent_node: Node) -> void:
+func _create_tooltip(title: String, contents: String, parent_node) -> void:
 	if not is_instance_valid(parent_node):
 		return
 		

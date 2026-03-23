@@ -4,6 +4,8 @@
 [ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="1_jbg6b"]
 [ext_resource type="Script" uid="uid://hylp5tkvl2c0" path="res://addons/CustomControls/Dialogs/edit_event_dialog.gd" id="2_76sai"]
 [ext_resource type="PackedScene" uid="uid://ccipi0sikmjuu" path="res://addons/CustomControls/custom_tab_container.tscn" id="2_dyjno"]
+[ext_resource type="Texture2D" uid="uid://bxjph5um3iiu6" path="res://addons/RPGMap/Assets/Images/no_eye.png" id="4_f0bo5"]
+[ext_resource type="Texture2D" uid="uid://dg6n6y38ggxlw" path="res://addons/RPGMap/Assets/Images/save.png" id="4_fys7c"]
 [ext_resource type="Texture2D" uid="uid://cdrbqebe0wwuf" path="res://addons/CustomControls/Images/button1_background2.png" id="4_l7i8v"]
 [ext_resource type="Texture2D" uid="uid://3jfwca2m08uh" path="res://addons/CustomControls/Images/button1_background_selected2.png" id="5_d6ss7"]
 [ext_resource type="PackedScene" uid="uid://da1n7ig83tsok" path="res://addons/CustomControls/Dialogs/edit_event_page.tscn" id="6_wi52r"]
@@ -54,7 +56,7 @@ canvas_item_default_texture_filter = 3
 oversampling_override = 1.0
 title = "Edit Event"
 position = Vector2i(0, 36)
-size = Vector2i(1400, 1015)
+size = Vector2i(1400, 1016)
 wrap_controls = true
 transient = true
 exclusive = true
@@ -113,6 +115,7 @@ layout_mode = 2
 tooltip_text = "[title]Save As Preset[/title]
 Save this event as a preset so you can create it quickly whenever you want."
 text = "Save As Preset"
+icon = ExtResource("4_fys7c")
 
 [node name="LegacyMode" type="CheckBox" parent="MarginContainer/VBoxContainer/TopContainer/VBoxContainer" unique_id=705539076]
 unique_name_in_owner = true
@@ -123,7 +126,7 @@ When disabled, any command that changes the active page will interrupt the curre
 
 [Note]: This setting can be configured as the default in the System section of the database for newly created events. The event’s Legacy setting applies only to that specific event."
 mouse_default_cursor_shape = 2
-text = "Legacy Mode Enabled"
+text = "Legacy Mode"
 
 [node name="FadePageSwap" type="CheckBox" parent="MarginContainer/VBoxContainer/TopContainer/VBoxContainer" unique_id=386877441]
 unique_name_in_owner = true
@@ -133,7 +136,15 @@ When an event command changes the active page for that event, the graph for the 
 
 [Note]: This setting can be configured as the default in the System section of the database for newly created events. The event’s fade page swap setting applies only to that specific event."
 mouse_default_cursor_shape = 2
-text = "Enable Fade Page Swap"
+text = "Fade Page Swap"
+
+[node name="HideIngameName" parent="MarginContainer/VBoxContainer/TopContainer/VBoxContainer" unique_id=225668214 instance=ExtResource("1_jbg6b")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+tooltip_text = "Set all pages for this event so that they do not display the name"
+text = "Hide Name"
+icon = ExtResource("4_f0bo5")
 
 [node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1912928101]
 layout_mode = 2
@@ -377,6 +388,7 @@ text = "APPLY"
 [connection signal="pressed" from="MarginContainer/VBoxContainer/TopContainer/VBoxContainer/SaveAsPresetButton" to="." method="_on_save_as_preset_button_pressed"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/TopContainer/VBoxContainer/LegacyMode" to="." method="_on_legacy_mode_toggled"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/TopContainer/VBoxContainer/FadePageSwap" to="." method="_on_fade_page_swap_toggled"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/TopContainer/VBoxContainer/HideIngameName" to="." method="_on_hide_ingame_name_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer/NewPageButton" to="." method="_on_new_page_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer/CopyPageButton" to="." method="_on_copy_page_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer/PastePageButton" to="." method="_on_paste_page_button_pressed"]

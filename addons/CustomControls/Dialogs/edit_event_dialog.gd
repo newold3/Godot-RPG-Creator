@@ -15,6 +15,12 @@ var plugin: RPGMapPlugin
 
 var busy: bool
 
+var show_button_state: int = 0
+
+const EYE = preload("uid://sjh2egwgtqpx")
+const NO_EYE = preload("uid://bxjph5um3iiu6")
+
+
 signal changed()
 signal event_updated(event: RPGEvent)
 
@@ -54,6 +60,14 @@ func setup() -> void:
 	%EventPageContainer.select(tab_selected, true)
 
 	%ApplyButton.set_disabled(true)
+	
+	show_button_state = 1
+	for page: RPGEventPage in current_event.pages:
+		if page.options.show_name_in_map:
+			show_button_state = 0
+			break
+	
+	_config_show_name_button()
 
 
 func _fix_clone_event(new_event: RPGEvent, event: RPGEvent) -> void:
@@ -383,3 +397,30 @@ func _on_event_page_container_tabs_changed(from: int, to: int) -> void:
 					quest.required_pages[i] = from
 	
 	fill_pages(to)
+
+
+func _on_hide_ingame_name_pressed() -> void:
+	if current_event:
+		var value: bool = false if show_button_state == 0 else true
+		var text = "All pages have been configured not to display the in-game name!" \
+			if show_button_state == 0 else \
+			 "All pages have been configured to display the in-game name!"
+		for page: RPGEventPage in current_event.pages:
+			page.options.show_name_in_map = value
+		RPGEditorToast.show_message(TranslationManager.tr(text))
+		show_button_state = wrapi(show_button_state + 1, 0, 2)
+		_config_show_name_button()
+
+
+func _config_show_name_button() -> void:
+	var tooltip = "Set all pages for this event so that they do not display the name ingame" \
+			if show_button_state == 0 else \
+			"Set all pages for this event so that they do display the name ingame"
+	var icon = NO_EYE if show_button_state == 0 else EYE
+	var button_text = "Hide Name" if show_button_state == 0 else "Show Name"
+	if show_button_state == 1:
+		tooltip = "[title]%s[/title]\n%s" % [tr("Show Ingame Name"), tooltip]
+	%HideIngameName.text = tr(button_text)
+	%HideIngameName.icon = icon
+	%HideIngameName.tooltip_text = tooltip
+	CustomTooltipManager.replace_all_tooltips_with_custom(%HideIngameName)

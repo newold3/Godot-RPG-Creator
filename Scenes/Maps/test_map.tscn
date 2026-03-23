@@ -22,16 +22,52 @@
 [ext_resource type="Script" uid="uid://btwxgat1h51k6" path="res://addons/RPGData/ModulesRPG/rpg_sound.gd" id="17_mppu7"]
 [ext_resource type="Script" uid="uid://45qsey742juw" path="res://addons/RPGMap/Scripts/floor_auto_shaders.gd" id="23_bvf2a"]
 
-[sub_resource type="Resource" id="Resource_ik3hy"]
+[sub_resource type="Resource" id="Resource_m0d5v"]
 script = ExtResource("4_htxeb")
 pressure_targets = PackedInt64Array(0)
 
-[sub_resource type="Resource" id="Resource_c7oc2"]
+[sub_resource type="Resource" id="Resource_mppu7"]
 script = ExtResource("5_fiyda")
 code = 19
 parameters = {
 &"operation_type": 0,
 &"switch_id": 0
+}
+
+[sub_resource type="Resource" id="Resource_vu4kc"]
+script = ExtResource("6_ewx0n")
+
+[sub_resource type="Resource" id="Resource_bvf2a"]
+script = ExtResource("5_fiyda")
+code = 2
+parameters = {
+&"character_name": {
+"type": 0,
+"value": ""
+},
+&"face": SubResource("Resource_vu4kc"),
+&"floating_target": -1,
+&"height": 0.0,
+&"is_floating_dialog": false,
+&"position": 0,
+&"width": 0.0
+}
+
+[sub_resource type="Resource" id="Resource_ik3hy"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "There was nothing inside!... Wait, I think I see something shining over there..."
+}
+
+[sub_resource type="Resource" id="Resource_c7oc2"]
+script = ExtResource("5_fiyda")
+code = 90
+parameters = {
+&"path": "res://Assets/Sounds/SE/buy.ogg",
+&"pitch": 1.0,
+&"pitch2": 1.0,
+&"volume": 0.0
 }
 
 [sub_resource type="Resource" id="Resource_hyo3o"]
@@ -57,46 +93,10 @@ parameters = {
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
-"line": "There was nothing inside!... Wait, I think I see something shining over there..."
-}
-
-[sub_resource type="Resource" id="Resource_md2m7"]
-script = ExtResource("5_fiyda")
-code = 90
-parameters = {
-&"path": "res://Assets/Sounds/SE/buy.ogg",
-&"pitch": 1.0,
-&"pitch2": 1.0,
-&"volume": 0.0
-}
-
-[sub_resource type="Resource" id="Resource_apcmq"]
-script = ExtResource("6_ewx0n")
-
-[sub_resource type="Resource" id="Resource_wa2g7"]
-script = ExtResource("5_fiyda")
-code = 2
-parameters = {
-&"character_name": {
-"type": 0,
-"value": ""
-},
-&"face": SubResource("Resource_apcmq"),
-&"floating_target": -1,
-&"height": 0.0,
-&"is_floating_dialog": false,
-&"position": 0,
-&"width": 0.0
-}
-
-[sub_resource type="Resource" id="Resource_iarn2"]
-script = ExtResource("5_fiyda")
-code = 3
-parameters = {
 "line": "You found 1 gold coin [img]res://Assets/Images/Other/gold_icon.png[/img]!!"
 }
 
-[sub_resource type="Resource" id="Resource_12lnd"]
+[sub_resource type="Resource" id="Resource_md2m7"]
 script = ExtResource("5_fiyda")
 code = 12
 parameters = {
@@ -105,13 +105,13 @@ parameters = {
 &"value_type": 0
 }
 
-[sub_resource type="Resource" id="Resource_wp5be"]
+[sub_resource type="Resource" id="Resource_apcmq"]
 script = ExtResource("5_fiyda")
 
-[sub_resource type="Resource" id="Resource_0sq6r"]
+[sub_resource type="Resource" id="Resource_wa2g7"]
 script = ExtResource("8_didij")
 
-[sub_resource type="Resource" id="Resource_y1ngj"]
+[sub_resource type="Resource" id="Resource_iarn2"]
 script = ExtResource("9_uohsy")
 show_name_in_map = true
 walking_animation = false
@@ -121,14 +121,14 @@ use_extra_config = true
 is_inmortal = false
 hp = 5
 
-[sub_resource type="Resource" id="Resource_i1mnv"]
+[sub_resource type="Resource" id="Resource_12lnd"]
 script = ExtResource("3_nd5sh")
 _uniq_id = 1888355637294685
 id = 0
-list = Array[ExtResource("5_fiyda")]([SubResource("Resource_c7oc2"), SubResource("Resource_850m1"), SubResource("Resource_hhio5"), SubResource("Resource_md2m7"), SubResource("Resource_wa2g7"), SubResource("Resource_iarn2"), SubResource("Resource_12lnd"), SubResource("Resource_wp5be")])
-condition = SubResource("Resource_ik3hy")
-movement_route = SubResource("Resource_0sq6r")
-options = SubResource("Resource_y1ngj")
+list = Array[ExtResource("5_fiyda")]([SubResource("Resource_mppu7"), SubResource("Resource_bvf2a"), SubResource("Resource_ik3hy"), SubResource("Resource_c7oc2"), SubResource("Resource_850m1"), SubResource("Resource_hhio5"), SubResource("Resource_md2m7"), SubResource("Resource_apcmq")])
+condition = SubResource("Resource_m0d5v")
+movement_route = SubResource("Resource_wa2g7")
+options = SubResource("Resource_iarn2")
 event_trigger_list = PackedInt64Array()
 event_tool_list = PackedInt32Array()
 event_signal_list = PackedInt32Array()
@@ -137,15 +137,15 @@ character_path = "res://Assets/Images/Other/chest.png"
 character_region = Rect2(0, 0, 32, 32)
 direction = 1
 
-[sub_resource type="Resource" id="Resource_cg0aq"]
+[sub_resource type="Resource" id="Resource_wp5be"]
 script = ExtResource("4_htxeb")
 use_local_switch = true
 pressure_targets = PackedInt64Array(0)
 
-[sub_resource type="Resource" id="Resource_l770y"]
+[sub_resource type="Resource" id="Resource_0sq6r"]
 script = ExtResource("6_ewx0n")
 
-[sub_resource type="Resource" id="Resource_b0ns3"]
+[sub_resource type="Resource" id="Resource_y1ngj"]
 script = ExtResource("5_fiyda")
 code = 2
 parameters = {
@@ -153,7 +153,7 @@ parameters = {
 "type": 0,
 "value": ""
 },
-&"face": SubResource("Resource_l770y"),
+&"face": SubResource("Resource_0sq6r"),
 &"floating_target": -1,
 &"height": 0.0,
 &"is_floating_dialog": false,
@@ -161,20 +161,20 @@ parameters = {
 &"width": 0.0
 }
 
-[sub_resource type="Resource" id="Resource_d6l5l"]
+[sub_resource type="Resource" id="Resource_i1mnv"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "The chest is already empty..."
 }
 
-[sub_resource type="Resource" id="Resource_xaydv"]
+[sub_resource type="Resource" id="Resource_cg0aq"]
 script = ExtResource("5_fiyda")
 
-[sub_resource type="Resource" id="Resource_bqmor"]
+[sub_resource type="Resource" id="Resource_l770y"]
 script = ExtResource("8_didij")
 
-[sub_resource type="Resource" id="Resource_dcx4u"]
+[sub_resource type="Resource" id="Resource_b0ns3"]
 script = ExtResource("9_uohsy")
 show_name_in_map = true
 walking_animation = false
@@ -184,14 +184,14 @@ use_extra_config = true
 is_inmortal = false
 hp = 5
 
-[sub_resource type="Resource" id="Resource_3pw1c"]
+[sub_resource type="Resource" id="Resource_d6l5l"]
 script = ExtResource("3_nd5sh")
 _uniq_id = 1681887173930781
 id = 0
-list = Array[ExtResource("5_fiyda")]([SubResource("Resource_b0ns3"), SubResource("Resource_d6l5l"), SubResource("Resource_xaydv")])
-condition = SubResource("Resource_cg0aq")
-movement_route = SubResource("Resource_bqmor")
-options = SubResource("Resource_dcx4u")
+list = Array[ExtResource("5_fiyda")]([SubResource("Resource_y1ngj"), SubResource("Resource_i1mnv"), SubResource("Resource_cg0aq")])
+condition = SubResource("Resource_wp5be")
+movement_route = SubResource("Resource_l770y")
+options = SubResource("Resource_b0ns3")
 event_trigger_list = PackedInt64Array()
 event_tool_list = PackedInt32Array()
 event_signal_list = PackedInt32Array()
@@ -200,22 +200,22 @@ character_path = "res://Assets/Images/Other/chest.png"
 character_region = Rect2(32, 0, 32, 32)
 direction = 1
 
-[sub_resource type="Resource" id="Resource_gnx7h"]
+[sub_resource type="Resource" id="Resource_xaydv"]
 script = ExtResource("11_dhmk3")
 
-[sub_resource type="Resource" id="Resource_mwk4m"]
+[sub_resource type="Resource" id="Resource_bqmor"]
 script = ExtResource("12_yak7x")
-levels = Array[ExtResource("11_dhmk3")]([SubResource("Resource_gnx7h")])
+levels = Array[ExtResource("11_dhmk3")]([SubResource("Resource_xaydv")])
 
-[sub_resource type="Resource" id="Resource_uqj4g"]
+[sub_resource type="Resource" id="Resource_dcx4u"]
 script = ExtResource("13_11apb")
 _uniq_id = 8527936703464669
-name = "EV0001"
+name = "Chest"
 id = 1
 x = 22
 y = 17
-pages = Array[ExtResource("3_nd5sh")]([SubResource("Resource_i1mnv"), SubResource("Resource_3pw1c")])
-relationship = SubResource("Resource_mwk4m")
+pages = Array[ExtResource("3_nd5sh")]([SubResource("Resource_12lnd"), SubResource("Resource_d6l5l")])
+relationship = SubResource("Resource_bqmor")
 legacy_mode = true
 
 [sub_resource type="Resource" id="Resource_6yorc"]
@@ -258,7 +258,6 @@ skippable = true
 
 [sub_resource type="Resource" id="Resource_e3wx2"]
 script = ExtResource("9_uohsy")
-show_name_in_map = true
 passable = true
 use_extra_config = true
 is_inmortal = false
@@ -322,7 +321,6 @@ skippable = true
 
 [sub_resource type="Resource" id="Resource_hyodt"]
 script = ExtResource("9_uohsy")
-show_name_in_map = true
 passable = true
 event_type = null
 use_extra_config = true
@@ -509,14 +507,14 @@ pages = Array[ExtResource("3_nd5sh")]([SubResource("Resource_kbl5u"), SubResourc
 relationship = SubResource("Resource_mg7jm")
 legacy_mode = true
 
-[sub_resource type="Resource" id="Resource_m0d5v"]
+[sub_resource type="Resource" id="Resource_3pw1c"]
 script = ExtResource("4_htxeb")
 pressure_targets = PackedInt64Array(0)
 
-[sub_resource type="Resource" id="Resource_mppu7"]
+[sub_resource type="Resource" id="Resource_gnx7h"]
 script = ExtResource("6_ewx0n")
 
-[sub_resource type="Resource" id="Resource_vu4kc"]
+[sub_resource type="Resource" id="Resource_mwk4m"]
 script = ExtResource("5_fiyda")
 code = 2
 parameters = {
@@ -524,7 +522,7 @@ parameters = {
 "type": 0,
 "value": ""
 },
-&"face": SubResource("Resource_mppu7"),
+&"face": SubResource("Resource_gnx7h"),
 &"floating_target": -1,
 &"height": 0.0,
 &"is_floating_dialog": false,
@@ -532,7 +530,7 @@ parameters = {
 &"width": 0.0
 }
 
-[sub_resource type="Resource" id="Resource_bvf2a"]
+[sub_resource type="Resource" id="Resource_uqj4g"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
@@ -547,7 +545,9 @@ script = ExtResource("8_didij")
 
 [sub_resource type="Resource" id="Resource_abbut"]
 script = ExtResource("9_uohsy")
-show_name_in_map = true
+type_params = {
+&"initial_delay": 0.0
+}
 use_extra_config = true
 is_inmortal = false
 hp = 5
@@ -556,8 +556,8 @@ hp = 5
 script = ExtResource("3_nd5sh")
 _uniq_id = 2891899866650527
 id = 0
-list = Array[ExtResource("5_fiyda")]([SubResource("Resource_vu4kc"), SubResource("Resource_bvf2a"), SubResource("Resource_ov42u")])
-condition = SubResource("Resource_m0d5v")
+list = Array[ExtResource("5_fiyda")]([SubResource("Resource_mwk4m"), SubResource("Resource_uqj4g"), SubResource("Resource_ov42u")])
+condition = SubResource("Resource_3pw1c")
 movement_route = SubResource("Resource_hlnrr")
 options = SubResource("Resource_abbut")
 event_trigger_list = PackedInt64Array()
@@ -581,8 +581,10 @@ script = ExtResource("8_didij")
 
 [sub_resource type="Resource" id="Resource_te067"]
 script = ExtResource("9_uohsy")
-show_name_in_map = true
 passable = true
+type_params = {
+&"initial_delay": 0.0
+}
 use_extra_config = true
 is_inmortal = false
 hp = 5
@@ -1703,6 +1705,7 @@ enable_self_switch_on_dead_id = 10
 script = ExtResource("3_nd5sh")
 _uniq_id = 2026260476780230
 id = 0
+name = "NPC Guay"
 list = Array[ExtResource("5_fiyda")]([SubResource("Resource_eu5nv"), SubResource("Resource_bbwwk"), SubResource("Resource_64tee"), SubResource("Resource_c30ta"), SubResource("Resource_paa2j"), SubResource("Resource_ug546"), SubResource("Resource_fk6ie"), SubResource("Resource_0jiwo"), SubResource("Resource_r3rve"), SubResource("Resource_iu46p"), SubResource("Resource_jtkyu"), SubResource("Resource_qfjyi"), SubResource("Resource_iqi6h"), SubResource("Resource_64057"), SubResource("Resource_vipxv"), SubResource("Resource_glslw"), SubResource("Resource_plbte"), SubResource("Resource_f81rn"), SubResource("Resource_pfxga"), SubResource("Resource_prvut"), SubResource("Resource_ko7xv"), SubResource("Resource_slgv0"), SubResource("Resource_7ejhu"), SubResource("Resource_odw3b"), SubResource("Resource_y4eqh"), SubResource("Resource_wntvk"), SubResource("Resource_jlemv"), SubResource("Resource_4nhwl"), SubResource("Resource_01l5p"), SubResource("Resource_sy4ih"), SubResource("Resource_5ofjd"), SubResource("Resource_ltk8i"), SubResource("Resource_g8ouj"), SubResource("Resource_rho7m"), SubResource("Resource_67sxk"), SubResource("Resource_t3gw3"), SubResource("Resource_odfni"), SubResource("Resource_1228q"), SubResource("Resource_s2fxt"), SubResource("Resource_drp4j"), SubResource("Resource_44as2"), SubResource("Resource_hih7c"), SubResource("Resource_qdbl8"), SubResource("Resource_x41qh"), SubResource("Resource_djc0j"), SubResource("Resource_syo5f"), SubResource("Resource_ipces"), SubResource("Resource_lgud1"), SubResource("Resource_kim7v"), SubResource("Resource_ja5jv"), SubResource("Resource_6xu06"), SubResource("Resource_26tpd"), SubResource("Resource_ftalb"), SubResource("Resource_0ihy7"), SubResource("Resource_alr0h"), SubResource("Resource_h0r60"), SubResource("Resource_a0gg0"), SubResource("Resource_mlaqm"), SubResource("Resource_x8nh3"), SubResource("Resource_mt8sb"), SubResource("Resource_2en6b"), SubResource("Resource_4shha"), SubResource("Resource_nou3g"), SubResource("Resource_go7qo"), SubResource("Resource_30l0e"), SubResource("Resource_14fiy"), SubResource("Resource_j63ta"), SubResource("Resource_pgrv3"), SubResource("Resource_1fnfn"), SubResource("Resource_p2k1x"), SubResource("Resource_8ih1c"), SubResource("Resource_8psj0"), SubResource("Resource_fem50"), SubResource("Resource_bpp8n"), SubResource("Resource_gw2x3"), SubResource("Resource_56rkx"), SubResource("Resource_uh0lc"), SubResource("Resource_0dkr8"), SubResource("Resource_pkrvo"), SubResource("Resource_06off"), SubResource("Resource_gxfe6"), SubResource("Resource_vakvp"), SubResource("Resource_jkm4e"), SubResource("Resource_dnfwv"), SubResource("Resource_456um"), SubResource("Resource_60awo"), SubResource("Resource_q2osw"), SubResource("Resource_ygae5"), SubResource("Resource_ssb8u"), SubResource("Resource_do6cf"), SubResource("Resource_yyltp"), SubResource("Resource_rx4l4"), SubResource("Resource_7lqqg"), SubResource("Resource_16pvg")])
 condition = SubResource("Resource_2mltf")
 movement_route = SubResource("Resource_fc2vd")
@@ -2282,7 +2285,6 @@ x = 13
 y = 12
 pages = Array[ExtResource("3_nd5sh")]([SubResource("Resource_xywgm"), SubResource("Resource_ho4x6")])
 relationship = SubResource("Resource_31gct")
-_editor_last_page_used = 1
 legacy_mode = true
 metadata/is_original_event = true
 
@@ -2324,7 +2326,9 @@ script = ExtResource("8_didij")
 
 [sub_resource type="Resource" id="Resource_cds6s"]
 script = ExtResource("9_uohsy")
-show_name_in_map = true
+type_params = {
+&"initial_delay": 0.0
+}
 use_extra_config = true
 is_inmortal = false
 hp = 5
@@ -2358,8 +2362,10 @@ script = ExtResource("8_didij")
 
 [sub_resource type="Resource" id="Resource_c2j7w"]
 script = ExtResource("9_uohsy")
-show_name_in_map = true
 passable = true
+type_params = {
+&"initial_delay": 0.0
+}
 use_extra_config = true
 is_inmortal = false
 hp = 5
@@ -2392,7 +2398,6 @@ x = 22
 y = 16
 pages = Array[ExtResource("3_nd5sh")]([SubResource("Resource_2ugs3"), SubResource("Resource_wpj7l")])
 relationship = SubResource("Resource_jxqpu")
-_editor_last_page_used = 1
 legacy_mode = true
 
 [sub_resource type="Resource" id="Resource_i7n2w"]
@@ -2433,7 +2438,9 @@ script = ExtResource("8_didij")
 
 [sub_resource type="Resource" id="Resource_lchvb"]
 script = ExtResource("9_uohsy")
-show_name_in_map = true
+type_params = {
+&"initial_delay": 0.0
+}
 use_extra_config = true
 is_inmortal = false
 hp = 5
@@ -2467,8 +2474,10 @@ script = ExtResource("8_didij")
 
 [sub_resource type="Resource" id="Resource_x2rnv"]
 script = ExtResource("9_uohsy")
-show_name_in_map = true
 passable = true
+type_params = {
+&"initial_delay": 0.0
+}
 use_extra_config = true
 is_inmortal = false
 hp = 5
@@ -2501,7 +2510,6 @@ x = 23
 y = 16
 pages = Array[ExtResource("3_nd5sh")]([SubResource("Resource_es2lg"), SubResource("Resource_ulcso")])
 relationship = SubResource("Resource_byax8")
-_editor_last_page_used = 1
 legacy_mode = true
 
 [sub_resource type="Resource" id="Resource_xfs8f"]
@@ -2542,7 +2550,9 @@ script = ExtResource("8_didij")
 
 [sub_resource type="Resource" id="Resource_0s0q6"]
 script = ExtResource("9_uohsy")
-show_name_in_map = true
+type_params = {
+&"initial_delay": 0.0
+}
 use_extra_config = true
 is_inmortal = false
 hp = 5
@@ -2576,8 +2586,10 @@ script = ExtResource("8_didij")
 
 [sub_resource type="Resource" id="Resource_xg0vy"]
 script = ExtResource("9_uohsy")
-show_name_in_map = true
 passable = true
+type_params = {
+&"initial_delay": 0.0
+}
 use_extra_config = true
 is_inmortal = false
 hp = 5
@@ -2610,7 +2622,6 @@ x = 23
 y = 17
 pages = Array[ExtResource("3_nd5sh")]([SubResource("Resource_wwiel"), SubResource("Resource_gu00f")])
 relationship = SubResource("Resource_ox40j")
-_editor_last_page_used = 1
 legacy_mode = true
 
 [sub_resource type="Resource" id="Resource_uthsd"]
@@ -2651,7 +2662,9 @@ script = ExtResource("8_didij")
 
 [sub_resource type="Resource" id="Resource_s7jci"]
 script = ExtResource("9_uohsy")
-show_name_in_map = true
+type_params = {
+&"initial_delay": 0.0
+}
 use_extra_config = true
 is_inmortal = false
 hp = 5
@@ -2685,8 +2698,10 @@ script = ExtResource("8_didij")
 
 [sub_resource type="Resource" id="Resource_x83sy"]
 script = ExtResource("9_uohsy")
-show_name_in_map = true
 passable = true
+type_params = {
+&"initial_delay": 0.0
+}
 use_extra_config = true
 is_inmortal = false
 hp = 5
@@ -2719,7 +2734,6 @@ x = 23
 y = 18
 pages = Array[ExtResource("3_nd5sh")]([SubResource("Resource_j060y"), SubResource("Resource_l1ofi")])
 relationship = SubResource("Resource_sa3ey")
-_editor_last_page_used = 1
 legacy_mode = true
 
 [sub_resource type="Resource" id="Resource_3ojcm"]
@@ -2760,7 +2774,9 @@ script = ExtResource("8_didij")
 
 [sub_resource type="Resource" id="Resource_6f7np"]
 script = ExtResource("9_uohsy")
-show_name_in_map = true
+type_params = {
+&"initial_delay": 0.0
+}
 use_extra_config = true
 is_inmortal = false
 hp = 5
@@ -2794,8 +2810,10 @@ script = ExtResource("8_didij")
 
 [sub_resource type="Resource" id="Resource_tf4tm"]
 script = ExtResource("9_uohsy")
-show_name_in_map = true
 passable = true
+type_params = {
+&"initial_delay": 0.0
+}
 use_extra_config = true
 is_inmortal = false
 hp = 5
@@ -2828,7 +2846,6 @@ x = 22
 y = 18
 pages = Array[ExtResource("3_nd5sh")]([SubResource("Resource_j4vlr"), SubResource("Resource_2y1du")])
 relationship = SubResource("Resource_45if0")
-_editor_last_page_used = 1
 legacy_mode = true
 
 [sub_resource type="Resource" id="Resource_goy6n"]
@@ -2869,7 +2886,9 @@ script = ExtResource("8_didij")
 
 [sub_resource type="Resource" id="Resource_8i8ty"]
 script = ExtResource("9_uohsy")
-show_name_in_map = true
+type_params = {
+&"initial_delay": 0.0
+}
 use_extra_config = true
 is_inmortal = false
 hp = 5
@@ -2903,8 +2922,10 @@ script = ExtResource("8_didij")
 
 [sub_resource type="Resource" id="Resource_7olne"]
 script = ExtResource("9_uohsy")
-show_name_in_map = true
 passable = true
+type_params = {
+&"initial_delay": 0.0
+}
 use_extra_config = true
 is_inmortal = false
 hp = 5
@@ -2937,7 +2958,6 @@ x = 21
 y = 18
 pages = Array[ExtResource("3_nd5sh")]([SubResource("Resource_rj0ri"), SubResource("Resource_ml0qv")])
 relationship = SubResource("Resource_yt7s7")
-_editor_last_page_used = 1
 legacy_mode = true
 
 [sub_resource type="Resource" id="Resource_faowb"]
@@ -2978,7 +2998,9 @@ script = ExtResource("8_didij")
 
 [sub_resource type="Resource" id="Resource_a3mlf"]
 script = ExtResource("9_uohsy")
-show_name_in_map = true
+type_params = {
+&"initial_delay": 0.0
+}
 use_extra_config = true
 is_inmortal = false
 hp = 5
@@ -3012,8 +3034,10 @@ script = ExtResource("8_didij")
 
 [sub_resource type="Resource" id="Resource_2owtj"]
 script = ExtResource("9_uohsy")
-show_name_in_map = true
 passable = true
+type_params = {
+&"initial_delay": 0.0
+}
 use_extra_config = true
 is_inmortal = false
 hp = 5
@@ -3046,12 +3070,11 @@ x = 21
 y = 17
 pages = Array[ExtResource("3_nd5sh")]([SubResource("Resource_0fv3w"), SubResource("Resource_6koe4")])
 relationship = SubResource("Resource_8hkq8")
-_editor_last_page_used = 1
 legacy_mode = true
 
 [sub_resource type="Resource" id="Resource_xn408"]
 script = ExtResource("3_kxphi")
-events = Array[ExtResource("13_11apb")]([SubResource("Resource_uqj4g"), SubResource("Resource_8k1bg"), SubResource("Resource_p8uxl"), SubResource("Resource_ixleh"), SubResource("Resource_r52wh"), SubResource("Resource_fxc3q"), SubResource("Resource_61jql"), SubResource("Resource_m64xv"), SubResource("Resource_063iu"), SubResource("Resource_jp37q"), SubResource("Resource_ww6ku"), SubResource("Resource_3ufao")])
+events = Array[ExtResource("13_11apb")]([SubResource("Resource_dcx4u"), SubResource("Resource_8k1bg"), SubResource("Resource_p8uxl"), SubResource("Resource_ixleh"), SubResource("Resource_r52wh"), SubResource("Resource_fxc3q"), SubResource("Resource_61jql"), SubResource("Resource_m64xv"), SubResource("Resource_063iu"), SubResource("Resource_jp37q"), SubResource("Resource_ww6ku"), SubResource("Resource_3ufao")])
 
 [sub_resource type="Resource" id="Resource_67g10"]
 script = ExtResource("17_m0d5v")

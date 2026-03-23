@@ -113,13 +113,16 @@ func _disable_fields() -> void:
 
 func _on_ok_button_pressed() -> void:
 	propagate_call("apply")
-	real_options.use_extra_config = options.use_extra_config
-	real_options.is_inmortal = options.is_inmortal
-	real_options.hp = options.hp
-	real_options.enable_self_switch_on_hit_id = options.enable_self_switch_on_hit_id
-	real_options.enable_self_switch_on_dead_id = options.enable_self_switch_on_dead_id
-	real_options.event_type = options.event_type
-	real_options.type_params = options.type_params
+	
+	var keys = [
+		"show_name_in_map", "name_config_path", "event_type", "type_params",
+		"use_extra_config", "is_inmortal", "hp", "enable_self_switch_on_hit_id",
+		"enable_self_switch_on_dead_id"
+	]
+	
+	for key in keys:
+		real_options[key] = options[key]
+
 	OK.emit()
 	queue_free()
 

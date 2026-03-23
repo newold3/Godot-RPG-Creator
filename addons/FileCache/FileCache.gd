@@ -268,7 +268,7 @@ func build_cache() -> void:
 		"vehicles": {}, "weather": {}, "expressive_bubbles": {}, "numerical_input_scenes": {},
 		"text_input_scenes": {}, "transition_scenes": {}, "videos": {}, "map_parallax_scenes": {},
 		"battle_background_scenes": {}, "tilesets": {}, "timer_scenes": {},
-		"shop_scene": {}, "extraction_scenes": {}, "weapon_attack_scripts": {}
+		"shop_scene": {}, "extraction_scenes": {}, "weapon_attack_scripts": {}, "label_settings": {}
 	}
 	
 	# Use EditorFileSystem memory for physical files
@@ -455,6 +455,8 @@ func classify_resource_file(file_path: String) -> void:
 			cache.curves[file_path] = true; return
 		"VideoStreamTheora":
 			cache.videos[file_path] = true; return
+		"LabelSettings":
+			cache.label_settings[file_path] = true; return
 	
 	var res = load(file_path)
 	if res == null:

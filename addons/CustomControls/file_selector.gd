@@ -90,6 +90,9 @@ func _request_update_preview(_preview: String) -> void:
 			elif path.get_extension() == "tres" and FileCache.cache.images.has(path):
 				var img = load(path)
 				_update_image("", img, img, true)
+			elif path.get_extension() == "tres" and FileCache.cache.label_settings.has(path):
+				var img = preload("uid://ddlpcxm6gvrvp")
+				_update_image("", img, img, true)
 			elif path.get_extension() == "tres" and FileCache.cache.costumes.has(path):
 				var res: IngameCostume = load(path)
 				if FileAccess.file_exists(res.character_preview):

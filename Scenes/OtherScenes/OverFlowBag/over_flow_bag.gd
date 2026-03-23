@@ -62,7 +62,7 @@ func interact() -> void:
 				})
 		
 		if not failed_items.is_empty() and GameManager.get("toast_manager"):
-			GameManager.toast_overflow_message(failed_items, 8, self, -120.0)
+			GameManager.toast_overflow_message(failed_items, ToastManager.ToastPos.BOTTOM_RIGHT, self, -120.0)
 
 
 func _on_area_2d_body_entered(body: Node2D) -> void:

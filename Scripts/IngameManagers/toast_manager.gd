@@ -26,7 +26,7 @@ func _ready() -> void:
 
 
 ## Updates the position of node-anchored toasts every frame to follow camera or node movement
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	for toast in active_toasts:
 		if is_instance_valid(toast) and toast.get_meta("is_node_anchored", false):
 			var node = toast.get_meta("anchor_node")

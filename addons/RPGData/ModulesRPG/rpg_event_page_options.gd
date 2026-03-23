@@ -50,18 +50,19 @@ func get_class(): return "RPGEventPageOptions"
 @export var enable_self_switch_on_dead_id: int = -1
 
 
-func _init() -> void:
-	if FileCache and FileCache.options:
-		var _config = FileCache.options.get("event_general_options", {})
-		show_name_in_map = _config.get("show_name_in_map", false)
-		name_config_path = _config.get("name_config_path", "")
-		
-		_config = FileCache.options.get("event_extra_options", {})
-		use_extra_config = _config.get("use_extra_config", false)
-		is_inmortal = _config.get("is_inmortal", false)
-		hp = _config.get("hp", 1)
-		enable_self_switch_on_hit_id = _config.get("enable_self_switch_on_hit_id", -1)
-		enable_self_switch_on_dead_id = _config.get("enable_self_switch_on_dead_id", -1)
+func _init(is_new: bool = false) -> void:
+	if is_new:
+		if FileCache and FileCache.options:
+			var _config = FileCache.options.get("event_general_options", {})
+			show_name_in_map = _config.get("show_name_in_map", false)
+			name_config_path = _config.get("name_config_path", "")
+			
+			_config = FileCache.options.get("event_extra_options", {})
+			use_extra_config = _config.get("use_extra_config", false)
+			is_inmortal = _config.get("is_inmortal", false)
+			hp = _config.get("hp", 1)
+			enable_self_switch_on_hit_id = _config.get("enable_self_switch_on_hit_id", -1)
+			enable_self_switch_on_dead_id = _config.get("enable_self_switch_on_dead_id", -1)
 
 
 func clone(value: bool = true) -> RPGEventPageOptions:

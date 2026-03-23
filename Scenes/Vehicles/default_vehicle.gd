@@ -226,6 +226,7 @@ func remove_player() -> void:
 		player.position = _target_position
 		var camera = GameManager.get_camera()
 		if camera and camera.has_method("has_target"):
+			@warning_ignore("incompatible_ternary")
 			var cam_target = camera_focus_node if is_instance_valid(camera_focus_node) else self
 			if camera.has_target(cam_target):
 				camera.remove_target_from_array(cam_target)
@@ -864,6 +865,7 @@ func start(passenger: LPCCharacter) -> void:
 	var camera = GameManager.get_camera()
 	if camera and camera.has_method("has_target") and camera.has_target(passenger):
 		camera.remove_target_from_array(passenger)
+		@warning_ignore("incompatible_ternary")
 		var cam_target = camera_focus_node if is_instance_valid(camera_focus_node) else self
 		camera.add_target_to_array(cam_target)
 	starting.emit()

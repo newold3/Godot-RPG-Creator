@@ -29,7 +29,7 @@ func show_menu() -> void:
 				main_menu.start()
 
 
-func show_save_menu(hide_load: bool = true) -> void:
+func show_save_menu(_hide_load: bool = true) -> void:
 	if GameManager.gui_canvas_layer:
 		var scene_path = RPGSYSTEM.database.system.game_scenes["Scene Load Game"]
 		if AssetManager.exists(scene_path):
