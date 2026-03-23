@@ -30,6 +30,8 @@ func get_class(): return "RPGWeapon"
 ## Price of the weapon.
 @export var price: int = 0
 
+@export var max_quantity: int = 0 # 0 = Infinite, + = limit
+
 ## Animation when attacking with this weapon.
 @export var animation: int = 0
 

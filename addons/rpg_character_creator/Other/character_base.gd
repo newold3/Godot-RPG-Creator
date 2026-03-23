@@ -112,6 +112,8 @@ var _auto_target_tile: Vector2i = Vector2i(-1, -1)
 var _auto_target_event: Node = null
 var _click_indicator_cooldown: float = 0.0
 
+var interactive_event: Node
+
 const MAX_HISTORY_SIZE: int = 300
 const MIN_RECORD_DIST_SQ: float = 2.0
 
@@ -250,20 +252,25 @@ func _set_target_destination(tile: Vector2i, is_new_click: bool = true) -> void:
 		return
 	_auto_target_tile = tile
 	_auto_target_event = null
+	
 	if click_indicator_scene and _click_indicator_cooldown <= 0.0:
 		_click_indicator_cooldown = 0.1
 		var indicator = click_indicator_scene.instantiate()
 		GameManager.current_map.add_child(indicator)
 		var map = GameManager.current_map
 		indicator.global_position = map.get_tile_position(tile) - Vector2(0, map.tile_size.y / 2 - 8.0)
+	
 	if not is_new_click:
 		return
+	
 	var map = GameManager.current_map
 	var events = map.get_in_game_events_in(tile)
+	
 	for ev in events:
-		if ev is LPCEvent or ev is EmptyLPCEvent or ev is GenericLPCEvent or ev.get_class() == "RPGExtractionScene" or ev is RPGVehicle:
+		if ev is LPCEvent or ev is EmptyLPCEvent or ev is GenericLPCEvent or ev.get_class() == "RPGExtractionScene" or ev is RPGVehicle or ev.has_method("interact"):
 			_auto_target_event = ev
 			break
+	
 	if not _auto_target_event and map.has_method("get_in_game_vehicle_in"):
 		var vehicle = map.get_in_game_vehicle_in(tile)
 		if vehicle:
@@ -278,23 +285,30 @@ func _process_auto_movement() -> void:
 		movement_vector = Vector2.ZERO
 		current_animation = "idle"
 		run_animation()
-		if _auto_target_event and is_instance_valid(_auto_target_event):
-			_interact_with_click_target()
+		_interact_with_click_target()
 		return
+	
 	if _auto_target_event and is_instance_valid(_auto_target_event):
-		if _is_solid(_auto_target_event):
+		if _is_solid(_auto_target_event) or _auto_target_event.has_method("interact"):
 			var is_adjacent = false
 			var diff = Vector2i.ZERO
 			var my_tiles = [current_tile]
+			
 			if has_method("get_current_tiles"):
 				my_tiles = call("get_current_tiles")
+			
 			var target_tiles = []
 			if _auto_target_event.has_method("get_current_tiles"):
 				target_tiles = _auto_target_event.get_current_tiles()
 			elif _auto_target_event.has_method("get_current_tile"):
 				target_tiles = [_auto_target_event.get_current_tile()]
 			else:
-				target_tiles = [_auto_target_tile]
+				var map = GameManager.current_map
+				if map:
+					target_tiles = [map.local_to_map(_auto_target_event.global_position)]
+				else:
+					target_tiles = [_auto_target_tile]
+			
 			for my_t in my_tiles:
 				for tgt_t in target_tiles:
 					var temp_diff = tgt_t - my_t
@@ -304,6 +318,7 @@ func _process_auto_movement() -> void:
 						break
 				if is_adjacent:
 					break
+			
 			if is_adjacent:
 				_auto_target_tile = Vector2i(-1, -1)
 				movement_vector = Vector2.ZERO
@@ -313,6 +328,7 @@ func _process_auto_movement() -> void:
 				run_animation()
 				_interact_with_click_target()
 				return
+	
 	var next_step = _get_next_move_toward_target(_auto_target_tile, Vector2.ZERO)
 	if next_step != Vector2i.ZERO:
 		movement_vector = next_step
@@ -348,10 +364,20 @@ func _look_at_tile_direction(diff: Vector2i) -> void:
 
 ## Triggers standard interaction logic with the clicked target event upon arrival
 func _interact_with_click_target() -> void:
-	if not is_instance_valid(_auto_target_event):
-		return
 	var node = _auto_target_event
 	_auto_target_event = null
+	
+	await get_tree().create_timer(0.05).timeout
+	
+	if not ControllerManager.is_action_pressed("Mouse Left"):
+		if is_instance_valid(interactive_event) and interactive_event.has_method("interact"):
+			_reset(true)
+			interactive_event.interact()
+			return
+	
+	if not is_instance_valid(node):
+		return
+	
 	if node is RPGVehicle:
 		_reset(true)
 		node.start(self)

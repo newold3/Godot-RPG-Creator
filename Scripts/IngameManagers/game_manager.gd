@@ -106,13 +106,13 @@ var backup_hand_data: Array:
 	get: return cursor_manager.backup_hand_data if cursor_manager else []
 	set(value): if cursor_manager: cursor_manager.backup_hand_data = value
 
-var over_flow_bag: Array:
-	get: return inventory_manager.over_flow_bag if inventory_manager else []
-	set(value): if inventory_manager: inventory_manager.over_flow_bag = value
-
-var create_over_flow_bag: bool:
-	get: return inventory_manager.create_over_flow_bag if inventory_manager else false
-	set(value): if inventory_manager: inventory_manager.create_over_flow_bag = value
+#var over_flow_bag: Array:
+	#get: return inventory_manager.over_flow_bag if inventory_manager else []
+	#set(value): if inventory_manager: inventory_manager.over_flow_bag = value
+#
+#var create_over_flow_bag: bool:
+	#get: return inventory_manager.create_over_flow_bag if inventory_manager else false
+	#set(value): if inventory_manager: inventory_manager.create_over_flow_bag = value
 
 var temporally_popup_disabled: bool:
 	get: return gui_manager.temporally_popup_disabled if gui_manager else false
@@ -222,11 +222,11 @@ func _process(delta: float) -> void:
 	
 	_refresh_play_time(delta)
 	
-	if create_over_flow_bag and over_flow_bag.size() > 0:
-		if current_player:
-			_spawn_overflow_bag(current_player.global_position, over_flow_bag)
-		over_flow_bag.clear()
-		create_over_flow_bag = false
+	#if create_over_flow_bag and over_flow_bag.size() > 0:
+		#if current_player:
+			#_spawn_overflow_bag(current_player.global_position, over_flow_bag)
+		#over_flow_bag.clear()
+		#create_over_flow_bag = false
 
 	if ControllerManager.is_cancel_just_pressed([KEY_0, KEY_KP_0]) and not busy and !get_cursor_manipulator():
 		get_viewport().set_input_as_handled()
@@ -1092,8 +1092,12 @@ func get_current_ingame_images() -> Array:
 
 
 #region GUIManager Wrappers
-func toast_message(_message: String, start_position: ToastManager.ToastPos = ToastManager.ToastPos.BOTTOM_RIGHT) -> void:
-	if toast_manager: toast_manager.show_message(_message, start_position)
+func toast_message(_message: String, start_position: ToastManager.ToastPos = ToastManager.ToastPos.BOTTOM_RIGHT, target_node: Node = null, y_offset: float = 0.0) -> void:
+	if toast_manager: toast_manager.show_message(_message, start_position, target_node, y_offset)
+
+
+func toast_overflow_message(items, start_position: ToastManager.ToastPos = ToastManager.ToastPos.BOTTOM_RIGHT, target_node: Node = null, y_offset: float = 0.0) -> void:
+	if toast_manager: toast_manager.show_overflow_error(items, start_position, target_node, y_offset)
 
 
 func _create_popup_message(type: int, item_id: int, quantity: int, popup_prefix = "", level = -1) -> void:

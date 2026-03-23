@@ -40,6 +40,7 @@ func _update_data_fields() -> void:
 		%ItemTypeOptions.select(current_data.item_type)
 
 		%PriceSpinBox.value = current_data.price
+		%MaxQuantity.value = current_data.max_quantity
 		%ConsumableOptions.select(0 if current_data.consumable else 1)
 		%OccasionOptions.select(current_data.occasion)
 		%SpeedSpinBox.value = current_data.invocation.speed
@@ -552,3 +553,8 @@ func _on_craft_material_changed(new_mats: Array[RPGGearUpgradeComponent], cost: 
 	real_mats.clear()
 	for mat in new_mats:
 		real_mats.append(mat)
+
+
+func _on_max_quantity_value_changed(value: float) -> void:
+	if get_data():
+		get_data().max_quantity = value

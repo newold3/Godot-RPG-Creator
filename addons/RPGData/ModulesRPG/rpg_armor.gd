@@ -34,6 +34,8 @@ func get_class():
 ## Price of the armor.
 @export var price: int = 0
 
+@export var max_quantity: int = 0 # 0 = Infinite, + = limit
+
 ## Parameters of the armor.
 @export var params: PackedInt32Array = PackedInt32Array([0, 0, 0, 0, 0, 0, 0, 0])
 

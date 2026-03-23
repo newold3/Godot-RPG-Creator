@@ -2,9 +2,38 @@ class_name InventoryManager
 extends Node
 
 
-var over_flow_bag: Array = []
-var create_over_flow_bag: bool = false
 var active_perishable_items: Array[GameItem] = []
+var active_overflow_bags: Array[OverflowBag] = []
+var interacting_bag: OverflowBag = null
+
+const OVER_FLOW_BAG = preload("uid://bsnxdk683a0qq")
+
+
+func _handle_overflow(type: int, id: int, amount: int, level: int, auto_popup_enabled: bool, popup_prefix: String) -> void:
+	if interacting_bag != null:
+		interacting_bag.add_item(type, id, amount, level, auto_popup_enabled, popup_prefix)
+		return
+		
+	var player_pos = Vector2.ZERO
+	if GameManager.current_player and is_instance_valid(GameManager.current_player):
+		player_pos = GameManager.current_player.global_position
+		
+	var target_bag: OverflowBag = null
+	
+	for bag in active_overflow_bags:
+		if is_instance_valid(bag) and bag.global_position.distance_to(player_pos) < 10.0:
+			target_bag = bag
+			break
+			
+	if target_bag != null:
+		target_bag.add_item(type, id, amount, level, auto_popup_enabled, popup_prefix)
+	else:
+		var new_bag = OVER_FLOW_BAG.instantiate()
+		
+		new_bag.global_position = player_pos
+		GameManager.current_map.add_child(new_bag)
+		new_bag.add_item(type, id, amount, level, auto_popup_enabled, popup_prefix)
+		active_overflow_bags.append(new_bag)
 
 
 func sync_perishable_items() -> void:
@@ -88,7 +117,21 @@ func _add_generic_amount(collection: Dictionary, data: Array, id: int, amount: i
 	var real_item = data[id]
 	var max_inventory = RPGSYSTEM.database.system.max_items_in_inventory
 	var max_per_stack = RPGSYSTEM.database.system.max_items_per_stack
+	var current_total_quantity = 0
+
+	if collection.has(id):
+		for item in collection[id]:
+			current_total_quantity += item.quantity
+
 	var remaining_amount = amount
+
+	if "max_quantity" in real_item and real_item.max_quantity > 0:
+		var space_left = real_item.max_quantity - current_total_quantity
+		if space_left <= 0:
+			return 0
+		if remaining_amount > space_left:
+			remaining_amount = space_left
+
 	var added_amount = 0
 	var current_time = int(Time.get_unix_time_from_system())
 	
@@ -479,16 +522,7 @@ func add_item_amount(id: int, amount: int, auto_popup_enabled: bool = false, pop
 		GameManager.game_state.stats.items_found[item_id] += added
 	
 	if added != amount:
-		over_flow_bag.append(
-			{
-				"type": 0,
-				"id": id,
-				"amount": amount - added,
-				"auto_popup_enabled": auto_popup_enabled,
-				"popup_prefix": popup_prefix,
-			}
-		)
-		create_over_flow_bag = true
+		_handle_overflow(0, id, amount - added, 0, auto_popup_enabled, popup_prefix)
 	
 	return added
 
@@ -519,17 +553,7 @@ func add_weapon_amount(id: int, amount: int, level: int = 1, auto_popup_enabled:
 		GameManager.game_state.stats.items_found[item_id] += added
 	
 	if added != amount:
-		over_flow_bag.append(
-			{
-				"type": 1,
-				"id": id,
-				"amount": amount - added,
-				"level": level,
-				"auto_popup_enabled": auto_popup_enabled,
-				"popup_prefix": popup_prefix,
-			}
-		)
-		create_over_flow_bag = true
+		_handle_overflow(1, id, amount - added, level, auto_popup_enabled, popup_prefix)
 	
 	return added
 
@@ -560,17 +584,7 @@ func add_armor_amount(id: int, amount: int, level: int = 1, auto_popup_enabled: 
 		GameManager.game_state.stats.items_found[item_id] += added
 	
 	if added != amount:
-		over_flow_bag.append(
-			{
-				"type": 2,
-				"id": id,
-				"amount": amount - added,
-				"level": level,
-				"auto_popup_enabled": auto_popup_enabled,
-				"popup_prefix": popup_prefix,
-			}
-		)
-		create_over_flow_bag = true
+		_handle_overflow(2, id, amount - added, level, auto_popup_enabled, popup_prefix)
 	
 	return added
 

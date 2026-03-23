@@ -485,6 +485,23 @@ popup/item_1/text = "No"
 popup/item_1/id = 1
 script = ExtResource("9_mb5nf")
 
+[node name="VBoxContainer5" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3" unique_id=1789108163]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3/VBoxContainer5" unique_id=292834174]
+layout_mode = 2
+text = "Max quantity:"
+
+[node name="MaxQuantity" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3/VBoxContainer5" unique_id=2065925917 instance=ExtResource("9_peh6x")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Maximum number of items you can have in your inventory.
+
+[Note]: 0 = Unlimited items"
+allow_greater = true
+_custom_value = 0.0
+
 [node name="HboxContainer2" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings" unique_id=290183406]
 layout_mode = 2
 
@@ -1209,6 +1226,7 @@ wrap_mode = 1
 [connection signal="item_selected" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3/VBoxContainer3/ItemRarityTypeOptions" to="." method="_on_item_rarity_type_options_item_selected"]
 [connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3/VBoxContainer2/PriceSpinBox" to="." method="_on_price_spin_box_value_changed"]
 [connection signal="item_selected" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3/VBoxContainer4/ConsumableOptions" to="." method="_on_consumable_options_item_selected"]
+[connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3/VBoxContainer5/MaxQuantity" to="." method="_on_max_quantity_value_changed"]
 [connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HboxContainer2/VBoxContainer/ScopeButton" to="." method="_on_scope_button_pressed"]
 [connection signal="item_selected" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HboxContainer2/VBoxContainer2/OccasionOptions" to="." method="_on_occasion_options_item_selected"]
 [connection signal="item_selected" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Perishable/MarginContainer/Perishable/HboxContainer/VBoxContainer/IsPerishableOptionButton" to="." method="_on_is_perishable_option_button_item_selected"]

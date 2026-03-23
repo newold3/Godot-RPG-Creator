@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://bsnxdk683a0qq"]
+
+[ext_resource type="Texture2D" uid="uid://lvsxmqbdxeru" path="res://Assets/Images/Other/bag.png" id="1_5b8jp"]
+[ext_resource type="Script" uid="uid://cfyfyr1cp0dab" path="res://Scenes/OtherScenes/OverFlowBag/over_flow_bag.gd" id="2_4qkir"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5b8jp"]
+size = Vector2(64, 64)
+
+[node name="OverFlowBag" type="Sprite2D" unique_id=1456479371]
+texture = ExtResource("1_5b8jp")
+offset = Vector2(0, -16)
+script = ExtResource("2_4qkir")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=643302813]
+collision_layer = 16384
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1589629283]
+position = Vector2(-0.5, -11.5)
+shape = SubResource("RectangleShape2D_5b8jp")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

@@ -15,6 +15,7 @@ func get_class(): return "RPGItem"
 @export var item_category: int = 0
 @export var price: int = 0
 @export var consumable: bool = true
+@export var max_quantity: int = 0 # 0 = Infinite, + = limit
 @export var scope: RPGScope = RPGScope.new()
 @export var occasion: int = 0
 @export var invocation: RPGInvocation = RPGInvocation.new()
@@ -39,6 +40,7 @@ func clear():
 	price = 0
 	consumable = true
 	occasion = 0
+	max_quantity = 0
 	icon.clear()
 
 

@@ -150,6 +150,7 @@ func _process(delta: float) -> void:
 		call_deferred("propagate_call", "set_disabled", [false])
 
 
+## Handles player input events for movement cancellation and interaction
 func _input(event: InputEvent) -> void:
 	if GameManager.loading_game or is_invalid_event:
 		return
@@ -160,6 +161,30 @@ func _input(event: InputEvent) -> void:
 		return
 	if event.is_action_pressed("ui_select") and can_attack and not active_boomerang:
 		_reset()
+		if interactive_event and is_instance_valid(interactive_event) and interactive_event.has_method("interact"):
+			var dist = global_position.distance_to(interactive_event.global_position)
+			var can_activate = false
+			if dist < GameManager.get_map_tile_size().length() / 2:
+				can_activate = true
+			else:
+				var diff = interactive_event.global_position - global_position
+				match current_direction:
+					DIRECTIONS.LEFT:
+						if diff.x < 0 and abs(diff.x) >= abs(diff.y) * 0.5:
+							can_activate = true
+					DIRECTIONS.RIGHT:
+						if diff.x > 0 and abs(diff.x) >= abs(diff.y) * 0.5:
+							can_activate = true
+					DIRECTIONS.UP:
+						if diff.y < 0 and abs(diff.y) >= abs(diff.x) * 0.5:
+							can_activate = true
+					DIRECTIONS.DOWN:
+						if diff.y > 0 and abs(diff.y) >= abs(diff.x) * 0.5:
+							can_activate = true
+			if can_activate:
+				_reset(true)
+				interactive_event.interact()
+				return
 		var node = get_event_at_adjacent_tile()
 		var action_found: bool = false
 		if node:

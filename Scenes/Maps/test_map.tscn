@@ -958,16 +958,9 @@ parameters = {
 }
 
 [sub_resource type="Resource" id="Resource_o8ip1"]
-script = ExtResource("5_fiyda")
-code = 29
-parameters = {
-&"text": "skip all"
-}
-
-[sub_resource type="Resource" id="Resource_odw3b"]
 script = ExtResource("6_ewx0n")
 
-[sub_resource type="Resource" id="Resource_y4eqh"]
+[sub_resource type="Resource" id="Resource_odw3b"]
 script = ExtResource("5_fiyda")
 code = 2
 parameters = {
@@ -975,7 +968,7 @@ parameters = {
 "type": 0,
 "value": ""
 },
-&"face": SubResource("Resource_odw3b"),
+&"face": SubResource("Resource_o8ip1"),
 &"floating_target": -1,
 &"height": 0.0,
 &"is_floating_dialog": false,
@@ -983,14 +976,14 @@ parameters = {
 &"width": 0.0
 }
 
-[sub_resource type="Resource" id="Resource_wntvk"]
+[sub_resource type="Resource" id="Resource_y4eqh"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "What do you think of this scene for selecting a number?"
 }
 
-[sub_resource type="Resource" id="Resource_5cdw8"]
+[sub_resource type="Resource" id="Resource_wntvk"]
 script = ExtResource("5_fiyda")
 code = 8
 parameters = {
@@ -1021,10 +1014,10 @@ parameters = {
 &"variable_id": 1
 }
 
-[sub_resource type="Resource" id="Resource_jlemv"]
+[sub_resource type="Resource" id="Resource_5cdw8"]
 script = ExtResource("6_ewx0n")
 
-[sub_resource type="Resource" id="Resource_4nhwl"]
+[sub_resource type="Resource" id="Resource_jlemv"]
 script = ExtResource("5_fiyda")
 code = 2
 parameters = {
@@ -1032,7 +1025,7 @@ parameters = {
 "type": 0,
 "value": ""
 },
-&"face": SubResource("Resource_jlemv"),
+&"face": SubResource("Resource_5cdw8"),
 &"floating_target": -1,
 &"height": 0.0,
 &"is_floating_dialog": false,
@@ -1040,14 +1033,14 @@ parameters = {
 &"width": 0.0
 }
 
-[sub_resource type="Resource" id="Resource_01l5p"]
+[sub_resource type="Resource" id="Resource_4nhwl"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "How does this work for selecting text?"
 }
 
-[sub_resource type="Resource" id="Resource_j06s6"]
+[sub_resource type="Resource" id="Resource_01l5p"]
 script = ExtResource("5_fiyda")
 code = 8
 parameters = {
@@ -1078,10 +1071,10 @@ parameters = {
 &"variable_id": 1
 }
 
-[sub_resource type="Resource" id="Resource_sy4ih"]
+[sub_resource type="Resource" id="Resource_j06s6"]
 script = ExtResource("6_ewx0n")
 
-[sub_resource type="Resource" id="Resource_5ofjd"]
+[sub_resource type="Resource" id="Resource_sy4ih"]
 script = ExtResource("5_fiyda")
 code = 2
 parameters = {
@@ -1089,7 +1082,7 @@ parameters = {
 "type": 0,
 "value": ""
 },
-&"face": SubResource("Resource_sy4ih"),
+&"face": SubResource("Resource_j06s6"),
 &"floating_target": -1,
 &"height": 0.0,
 &"is_floating_dialog": false,
@@ -1097,11 +1090,18 @@ parameters = {
 &"width": 0.0
 }
 
-[sub_resource type="Resource" id="Resource_ltk8i"]
+[sub_resource type="Resource" id="Resource_5ofjd"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "What do you want to do now?"
+}
+
+[sub_resource type="Resource" id="Resource_ltk8i"]
+script = ExtResource("5_fiyda")
+code = 29
+parameters = {
+&"text": "skip all"
 }
 
 [sub_resource type="Resource" id="Resource_g8ouj"]
@@ -1430,7 +1430,7 @@ indent = 1
 parameters = {
 &"item_id": 6,
 &"operation_type": 0,
-&"value": 5.0,
+&"value": 20.0,
 &"value_type": 0
 }
 
@@ -1703,7 +1703,7 @@ enable_self_switch_on_dead_id = 10
 script = ExtResource("3_nd5sh")
 _uniq_id = 2026260476780230
 id = 0
-list = Array[ExtResource("5_fiyda")]([SubResource("Resource_eu5nv"), SubResource("Resource_bbwwk"), SubResource("Resource_64tee"), SubResource("Resource_c30ta"), SubResource("Resource_paa2j"), SubResource("Resource_ug546"), SubResource("Resource_fk6ie"), SubResource("Resource_0jiwo"), SubResource("Resource_r3rve"), SubResource("Resource_iu46p"), SubResource("Resource_jtkyu"), SubResource("Resource_qfjyi"), SubResource("Resource_iqi6h"), SubResource("Resource_64057"), SubResource("Resource_vipxv"), SubResource("Resource_glslw"), SubResource("Resource_plbte"), SubResource("Resource_f81rn"), SubResource("Resource_pfxga"), SubResource("Resource_prvut"), SubResource("Resource_ko7xv"), SubResource("Resource_slgv0"), SubResource("Resource_7ejhu"), SubResource("Resource_o8ip1"), SubResource("Resource_y4eqh"), SubResource("Resource_wntvk"), SubResource("Resource_5cdw8"), SubResource("Resource_4nhwl"), SubResource("Resource_01l5p"), SubResource("Resource_j06s6"), SubResource("Resource_5ofjd"), SubResource("Resource_ltk8i"), SubResource("Resource_g8ouj"), SubResource("Resource_rho7m"), SubResource("Resource_67sxk"), SubResource("Resource_t3gw3"), SubResource("Resource_odfni"), SubResource("Resource_1228q"), SubResource("Resource_s2fxt"), SubResource("Resource_drp4j"), SubResource("Resource_44as2"), SubResource("Resource_hih7c"), SubResource("Resource_qdbl8"), SubResource("Resource_x41qh"), SubResource("Resource_djc0j"), SubResource("Resource_syo5f"), SubResource("Resource_ipces"), SubResource("Resource_lgud1"), SubResource("Resource_kim7v"), SubResource("Resource_ja5jv"), SubResource("Resource_6xu06"), SubResource("Resource_26tpd"), SubResource("Resource_ftalb"), SubResource("Resource_0ihy7"), SubResource("Resource_alr0h"), SubResource("Resource_h0r60"), SubResource("Resource_a0gg0"), SubResource("Resource_mlaqm"), SubResource("Resource_x8nh3"), SubResource("Resource_mt8sb"), SubResource("Resource_2en6b"), SubResource("Resource_4shha"), SubResource("Resource_nou3g"), SubResource("Resource_go7qo"), SubResource("Resource_30l0e"), SubResource("Resource_14fiy"), SubResource("Resource_j63ta"), SubResource("Resource_pgrv3"), SubResource("Resource_1fnfn"), SubResource("Resource_p2k1x"), SubResource("Resource_8ih1c"), SubResource("Resource_8psj0"), SubResource("Resource_fem50"), SubResource("Resource_bpp8n"), SubResource("Resource_gw2x3"), SubResource("Resource_56rkx"), SubResource("Resource_uh0lc"), SubResource("Resource_0dkr8"), SubResource("Resource_pkrvo"), SubResource("Resource_06off"), SubResource("Resource_gxfe6"), SubResource("Resource_vakvp"), SubResource("Resource_jkm4e"), SubResource("Resource_dnfwv"), SubResource("Resource_456um"), SubResource("Resource_60awo"), SubResource("Resource_q2osw"), SubResource("Resource_ygae5"), SubResource("Resource_ssb8u"), SubResource("Resource_do6cf"), SubResource("Resource_yyltp"), SubResource("Resource_rx4l4"), SubResource("Resource_7lqqg"), SubResource("Resource_16pvg")])
+list = Array[ExtResource("5_fiyda")]([SubResource("Resource_eu5nv"), SubResource("Resource_bbwwk"), SubResource("Resource_64tee"), SubResource("Resource_c30ta"), SubResource("Resource_paa2j"), SubResource("Resource_ug546"), SubResource("Resource_fk6ie"), SubResource("Resource_0jiwo"), SubResource("Resource_r3rve"), SubResource("Resource_iu46p"), SubResource("Resource_jtkyu"), SubResource("Resource_qfjyi"), SubResource("Resource_iqi6h"), SubResource("Resource_64057"), SubResource("Resource_vipxv"), SubResource("Resource_glslw"), SubResource("Resource_plbte"), SubResource("Resource_f81rn"), SubResource("Resource_pfxga"), SubResource("Resource_prvut"), SubResource("Resource_ko7xv"), SubResource("Resource_slgv0"), SubResource("Resource_7ejhu"), SubResource("Resource_odw3b"), SubResource("Resource_y4eqh"), SubResource("Resource_wntvk"), SubResource("Resource_jlemv"), SubResource("Resource_4nhwl"), SubResource("Resource_01l5p"), SubResource("Resource_sy4ih"), SubResource("Resource_5ofjd"), SubResource("Resource_ltk8i"), SubResource("Resource_g8ouj"), SubResource("Resource_rho7m"), SubResource("Resource_67sxk"), SubResource("Resource_t3gw3"), SubResource("Resource_odfni"), SubResource("Resource_1228q"), SubResource("Resource_s2fxt"), SubResource("Resource_drp4j"), SubResource("Resource_44as2"), SubResource("Resource_hih7c"), SubResource("Resource_qdbl8"), SubResource("Resource_x41qh"), SubResource("Resource_djc0j"), SubResource("Resource_syo5f"), SubResource("Resource_ipces"), SubResource("Resource_lgud1"), SubResource("Resource_kim7v"), SubResource("Resource_ja5jv"), SubResource("Resource_6xu06"), SubResource("Resource_26tpd"), SubResource("Resource_ftalb"), SubResource("Resource_0ihy7"), SubResource("Resource_alr0h"), SubResource("Resource_h0r60"), SubResource("Resource_a0gg0"), SubResource("Resource_mlaqm"), SubResource("Resource_x8nh3"), SubResource("Resource_mt8sb"), SubResource("Resource_2en6b"), SubResource("Resource_4shha"), SubResource("Resource_nou3g"), SubResource("Resource_go7qo"), SubResource("Resource_30l0e"), SubResource("Resource_14fiy"), SubResource("Resource_j63ta"), SubResource("Resource_pgrv3"), SubResource("Resource_1fnfn"), SubResource("Resource_p2k1x"), SubResource("Resource_8ih1c"), SubResource("Resource_8psj0"), SubResource("Resource_fem50"), SubResource("Resource_bpp8n"), SubResource("Resource_gw2x3"), SubResource("Resource_56rkx"), SubResource("Resource_uh0lc"), SubResource("Resource_0dkr8"), SubResource("Resource_pkrvo"), SubResource("Resource_06off"), SubResource("Resource_gxfe6"), SubResource("Resource_vakvp"), SubResource("Resource_jkm4e"), SubResource("Resource_dnfwv"), SubResource("Resource_456um"), SubResource("Resource_60awo"), SubResource("Resource_q2osw"), SubResource("Resource_ygae5"), SubResource("Resource_ssb8u"), SubResource("Resource_do6cf"), SubResource("Resource_yyltp"), SubResource("Resource_rx4l4"), SubResource("Resource_7lqqg"), SubResource("Resource_16pvg")])
 condition = SubResource("Resource_2mltf")
 movement_route = SubResource("Resource_fc2vd")
 options = SubResource("Resource_6uiwt")
@@ -2072,7 +2072,7 @@ indent = 1
 parameters = {
 &"item_id": 6,
 &"operation_type": 0,
-&"value": 5.0,
+&"value": 20.0,
 &"value_type": 0
 }
 
@@ -2282,6 +2282,7 @@ x = 13
 y = 12
 pages = Array[ExtResource("3_nd5sh")]([SubResource("Resource_xywgm"), SubResource("Resource_ho4x6")])
 relationship = SubResource("Resource_31gct")
+_editor_last_page_used = 1
 legacy_mode = true
 metadata/is_original_event = true
 

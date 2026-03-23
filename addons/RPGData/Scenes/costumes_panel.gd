@@ -42,6 +42,7 @@ func _update_data_fields() -> void:
 		%TraitsPanel.set_data(database, data[current_selected_index].traits)
 		%DescriptionTextEdit.text = current_data.description
 		%PriceSpinBox.value = current_data.price
+		%MaxQuantity.value = current_data.max_quantity
 		%MaxHPSpinBox.value = current_data.params[RPGActor.BaseParamType.HP]
 		%AttackSpinBox.value = current_data.params[RPGActor.BaseParamType.ATK]
 		%MagicAttackSpinBox.value = current_data.params[RPGActor.BaseParamType.MATK]
@@ -353,3 +354,8 @@ func clear() -> void:
 	%IconPicker.set_icon("")
 	%TraitsPanel.clear()
 	%UserParameters.clear()
+
+
+func _on_max_quantity_value_changed(value: float) -> void:
+	if get_data():
+		get_data().max_quantity = value

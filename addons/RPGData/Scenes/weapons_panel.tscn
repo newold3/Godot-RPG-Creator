@@ -611,6 +611,23 @@ The price when purchasing the equipment in a shop. The purchase price may increa
 allow_greater = true
 _custom_value = 0.0
 
+[node name="VBoxContainer5" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2" unique_id=1015169204]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer5" unique_id=2110135507]
+layout_mode = 2
+text = "Max quantity:"
+
+[node name="MaxQuantity" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer5" unique_id=307636274 instance=ExtResource("9_nlga7")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Maximum number of items you can have in your inventory.
+
+[Note]: 0 = Unlimited items"
+allow_greater = true
+_custom_value = 0.0
+
 [node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2" unique_id=999299546]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1258,6 +1275,7 @@ wrap_mode = 1
 [connection signal="middle_click" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer4/Tools" to="." method="_on_tools_middle_click"]
 [connection signal="multi_selection_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer4/Tools" to="." method="_on_tools_multi_selection_changed"]
 [connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer2/PriceSpinBox" to="." method="_on_price_spin_box_value_changed"]
+[connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer5/MaxQuantity" to="." method="_on_max_quantity_value_changed"]
 [connection signal="button_down" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer/AnimationButton" to="." method="_on_animation_button_button_down"]
 [connection signal="middle_click_pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer/AnimationButton" to="." method="_on_animation_button_middle_click_pressed"]
 [connection signal="middle_click_pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/VBoxContainer/HBoxContainer/LPCPartButton" to="." method="_on_lpc_part_button_middle_click_pressed"]

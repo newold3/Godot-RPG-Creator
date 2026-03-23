@@ -39,6 +39,7 @@ func _update_data_fields() -> void:
 		%TraitsPanel.set_data(database, data[current_selected_index].traits)
 		%DescriptionTextEdit.text = current_data.description
 		%PriceSpinBox.value = current_data.price
+		%MaxQuantity.value = current_data.max_quantity
 		%MaxHPSpinBox.value = current_data.params[RPGActor.BaseParamType.HP]
 		%AttackSpinBox.value = current_data.params[RPGActor.BaseParamType.ATK]
 		%MagicAttackSpinBox.value = current_data.params[RPGActor.BaseParamType.MATK]
@@ -500,3 +501,8 @@ func _on_reset_user_parameters_pressed() -> void:
 			get_data().user_parameters[i] = database.types.user_parameters[i].default_value
 	fill_user_parameters()
 	RPGEditorToast.show_message("User parameter list reset to default values")
+
+
+func _on_max_quantity_value_changed(value: float) -> void:
+	if get_data():
+		get_data().max_quantity = value

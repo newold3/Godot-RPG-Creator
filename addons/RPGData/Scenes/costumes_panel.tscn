@@ -426,21 +426,40 @@ size_flags_vertical = 2
 tooltip_text = "[title]Equipment Name[/title]
 The name of the equipment. If the name is too long, it may not be completely displayed on the Play Screen."
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer4" unique_id=148399827]
+[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer4" unique_id=35961058]
+layout_mode = 2
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer4/HBoxContainer" unique_id=148399827]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer4/VBoxContainer3" unique_id=2042522684]
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer4/HBoxContainer/VBoxContainer3" unique_id=2042522684]
 layout_mode = 2
 text = "Price:"
 
-[node name="PriceSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer4/VBoxContainer3" unique_id=1277270327 instance=ExtResource("10_nupqe")]
+[node name="PriceSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer4/HBoxContainer/VBoxContainer3" unique_id=1277270327 instance=ExtResource("10_nupqe")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "[title]Price[/title]
 The price when purchasing the equipment in a shop. The purchase price may increase depending on the level of the equipment.
 
 [Note]: The final purchase and sale price will depend on how the \"Purchase Ratio\" and \"Sales ratio\" parameters are configured in the shop."
+allow_greater = true
+_custom_value = 0.0
+
+[node name="VBoxContainer5" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer4/HBoxContainer" unique_id=429841634]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer4/HBoxContainer/VBoxContainer5" unique_id=671680876]
+layout_mode = 2
+text = "Max quantity:"
+
+[node name="MaxQuantity" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer4/HBoxContainer/VBoxContainer5" unique_id=1148122249 instance=ExtResource("10_nupqe")]
+layout_mode = 2
+tooltip_text = "Maximum number of items you can have in your inventory.
+
+[Note]: 0 = Unlimited items"
 allow_greater = true
 _custom_value = 0.0
 
@@ -912,7 +931,8 @@ wrap_mode = 1
 [connection signal="paste_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer2/IconPicker" to="." method="_on_icon_picker_paste_requested"]
 [connection signal="remove_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer2/IconPicker" to="." method="_on_icon_picker_remove_requested"]
 [connection signal="text_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer4/VBoxContainer/NameLineEdit" to="." method="_on_name_line_edit_text_changed"]
-[connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer4/VBoxContainer3/PriceSpinBox" to="." method="_on_price_spin_box_value_changed"]
+[connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer4/HBoxContainer/VBoxContainer3/PriceSpinBox" to="." method="_on_price_spin_box_value_changed"]
+[connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer4/HBoxContainer/VBoxContainer5/MaxQuantity" to="." method="_on_max_quantity_value_changed"]
 [connection signal="text_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3/DescriptionTextEdit" to="." method="_on_description_text_edit_text_changed"]
 [connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer2/ParameterChanges/HBoxContainer/CopyParameters" to="." method="_on_copy_parameters_pressed"]
 [connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer2/ParameterChanges/HBoxContainer/PasteParameters" to="." method="_on_paste_parameters_pressed"]
