@@ -1328,6 +1328,18 @@ func _process(delta: float) -> void:
 			for btn in floating_buttons:
 				if is_instance_valid(btn):
 					btn.modulate = Color(1.0, 1.0, 1.0, 1.0)
+					
+		var parent = floating_panel.get_parent()
+		
+		if parent:
+			var p_size = parent.size
+			var f_size = floating_panel.size
+			var f_pos = floating_panel.position
+			var margin = 20.0
+			
+			if f_pos.x < margin or f_pos.y < margin or f_pos.x > p_size.x - f_size.x - margin or f_pos.y > p_size.y - f_size.y - margin:
+				if not is_dragging_floating_panel:
+					_clamp_floating_panel_position()
 
 
 func _delayed_initialization() -> void:
