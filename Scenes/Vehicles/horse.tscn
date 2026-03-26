@@ -36,7 +36,7 @@ point_count = 3
 [sub_resource type="CurveTexture" id="CurveTexture_72ubp"]
 curve = SubResource("Curve_rlvxv")
 
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1pagj"]
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_3ambt"]
 resource_local_to_scene = true
 particle_flag_align_y = true
 particle_flag_disable_z = true
@@ -57,7 +57,7 @@ alpha_curve = SubResource("CurveTexture_2qtqf")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_s1cwp"]
 shader = ExtResource("3_wbknr")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_30n6w"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_1066t"]
 viewport_path = NodePath("CharacterViewport")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_s7tr5"]
@@ -390,13 +390,13 @@ fill_to = Vector2(0.5, 0.564)
 shader = ExtResource("3_wbknr")
 shader_parameter/mask_texture = SubResource("GradientTexture2D_ctmxn")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_2jbja"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_g17kw"]
 viewport_path = NodePath("FinalCharacter")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_id51l"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_u45gt"]
 viewport_path = NodePath("VehicleViewport")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_ycnaw"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_g7kwq"]
 viewport_path = NodePath("Final")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2aanc"]
@@ -2574,7 +2574,7 @@ z_index = 0
 amount = 100
 one_shot = false
 explosiveness = 0.0
-process_material = SubResource("ParticleProcessMaterial_1pagj")
+process_material = SubResource("ParticleProcessMaterial_3ambt")
 
 [node name="CharacterViewport" type="SubViewport" parent="." unique_id=620378043]
 unique_name_in_owner = true
@@ -2593,7 +2593,7 @@ material = SubResource("ShaderMaterial_s1cwp")
 position = Vector2(98, 117.035)
 rotation = -0.0314159
 scale = Vector2(1.225, 1.225)
-texture = SubResource("ViewportTexture_30n6w")
+texture = SubResource("ViewportTexture_1066t")
 
 [node name="VehicleViewport" type="SubViewport" parent="." unique_id=1523591062]
 unique_name_in_owner = true
@@ -2618,7 +2618,7 @@ position = Vector2(0, -48)
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_vb0s0")
 position = Vector2(-3, -16)
-texture = SubResource("ViewportTexture_2jbja")
+texture = SubResource("ViewportTexture_g17kw")
 
 [node name="HorseDownHeadGalloping" type="Sprite2D" parent="VehicleViewport/Node2D" unique_id=1264190870]
 visible = false
@@ -2639,7 +2639,7 @@ size = Vector2i(192, 192)
 
 [node name="VehicleFinal" type="Sprite2D" parent="Final" unique_id=1995078951]
 unique_name_in_owner = true
-texture = SubResource("ViewportTexture_id51l")
+texture = SubResource("ViewportTexture_u45gt")
 centered = false
 
 [node name="Shadow" type="SubViewport" parent="." unique_id=1159907850]
@@ -2655,7 +2655,7 @@ scale = Vector2(0.775, 0.775)
 [node name="FinalShadow" type="Sprite2D" parent="Shadow/Node2D" unique_id=178641669]
 unique_name_in_owner = true
 modulate = Color(0, 0, 0, 1)
-texture = SubResource("ViewportTexture_ycnaw")
+texture = SubResource("ViewportTexture_g7kwq")
 centered = false
 offset = Vector2(-96, -162)
 
@@ -2667,7 +2667,7 @@ scale = Vector2(0.99999994, 0.99999994)
 unique_name_in_owner = true
 position = Vector2(0, -8.000001)
 scale = Vector2(1.0000001, 1.0000001)
-texture = SubResource("ViewportTexture_ycnaw")
+texture = SubResource("ViewportTexture_g7kwq")
 offset = Vector2(-2, -50)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1855415489]
@@ -2676,6 +2676,7 @@ shape = SubResource("RectangleShape2D_2aanc")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=400143434]
 stream = ExtResource("6_2jq0g")
+bus = &"SE"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=223337415]
 unique_name_in_owner = true
