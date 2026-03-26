@@ -8,6 +8,19 @@
 [ext_resource type="Shader" uid="uid://b24gls5ur6xdm" path="res://Assets/Shaders/mist.gdshader" id="6_6x1qb"]
 [ext_resource type="Shader" uid="uid://cqq4awjndg3rh" path="res://Assets/Shaders/gaussian_blur_v2.gdshader" id="7_8r84t"]
 
+[sub_resource type="AudioEffectLowPassFilter" id="AudioEffectLowPassFilter_3fctx"]
+cutoff_hz = 600.0
+resonance = 0.6
+
+[sub_resource type="AudioEffectReverb" id="AudioEffectReverb_aq2q4"]
+room_size = 0.2
+damping = 0.8
+wet = 0.4
+
+[sub_resource type="AudioEffectChorus" id="AudioEffectChorus_qb56a"]
+voice/1/depth_ms = 0.5
+voice/2/depth_ms = 0.6
+
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_aq2q4"]
 noise_type = 5
 frequency = 0.0268
@@ -89,6 +102,7 @@ viewport_path = NodePath("SubViewport")
 [node name="UnderWaterComposeScene" type="Node2D" unique_id=144147116]
 script = ExtResource("1_3fctx")
 modulate_scene = Color(0.08627451, 0.34901962, 0.9098039, 0.654902)
+underwater_effects = Array[AudioEffect]([SubResource("AudioEffectLowPassFilter_3fctx"), SubResource("AudioEffectReverb_aq2q4"), SubResource("AudioEffectChorus_qb56a")])
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1986657751]
 layer = 2

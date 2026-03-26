@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://dsgyai8wihrkl" path="res://Scenes/GUI/SteamPunkTheme/Dialogs/steam_punk_dialog.gd" id="1_nionb"]
 [ext_resource type="Texture2D" uid="uid://duu13dsov6vp5" path="res://Assets/Images/GUI/main_gui.png" id="2_0lvpg"]
 [ext_resource type="Texture2D" uid="uid://deswo4ps8byb3" path="res://Scenes/GUI/SteamPunkTheme/Assets/steampunk_elements2.png" id="3_7mx6h"]
-[ext_resource type="Texture2D" uid="uid://bm0yrsmhngopc" path="res://icon.png" id="4_7mx6h"]
 [ext_resource type="Texture2D" uid="uid://bhqd5ifsmvk80" path="res://Scenes/GUI/SteamPunkTheme/Assets/dialog_advance_button.png" id="5_vcjpn"]
 [ext_resource type="AudioStream" uid="uid://c3u4nydr45dly" path="res://Assets/Sounds/typewrite2.ogg" id="29_am4vp"]
 
@@ -98,19 +97,19 @@ func _process(delta: float) -> void:
 "
 
 [node name="SteamPunkDialog" type="PanelContainer" unique_id=1723936875]
-custom_minimum_size = Vector2(147, 31)
+modulate = Color(1, 1, 1, 0)
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -204.5
+offset_left = -131.5
 offset_top = -170.0
-offset_right = 204.5
+offset_right = 131.5
 offset_bottom = -38.0
 grow_horizontal = 2
 grow_vertical = 0
-pivot_offset = Vector2(204.5, 66)
+pivot_offset = Vector2(131.5, 66)
 size_flags_horizontal = 4
 size_flags_vertical = 10
 theme_override_styles/panel = SubResource("StyleBoxEmpty_0aoe3")
@@ -217,6 +216,7 @@ theme_override_constants/margin_bottom = -2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MainMargin/BackgroundContainer/DecorationBotton" unique_id=587780278]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 0
 
 [node name="TextureRect" type="TextureRect" parent="MainMargin/BackgroundContainer/DecorationBotton/HBoxContainer" unique_id=1341325615]
@@ -224,6 +224,7 @@ custom_minimum_size = Vector2(0, 11)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.2
+mouse_filter = 2
 texture = SubResource("AtlasTexture_vcjpn")
 expand_mode = 1
 
@@ -232,6 +233,7 @@ custom_minimum_size = Vector2(0, 11)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.6
+mouse_filter = 2
 texture = SubResource("AtlasTexture_joi3w")
 expand_mode = 1
 
@@ -240,6 +242,7 @@ custom_minimum_size = Vector2(0, 11)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.2
+mouse_filter = 2
 texture = SubResource("AtlasTexture_xblmr")
 expand_mode = 1
 
@@ -253,6 +256,7 @@ theme_override_constants/margin_right = -20
 
 [node name="NameLeftContainer" type="PanelContainer" parent="MainMargin/NameContainer" unique_id=1341528615]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
@@ -305,11 +309,11 @@ theme_override_constants/margin_bottom = 0
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Left name"
 horizontal_alignment = 1
 
 [node name="NameRightContainer" type="PanelContainer" parent="MainMargin/NameContainer" unique_id=1635337232]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
@@ -363,7 +367,6 @@ theme_override_constants/margin_bottom = 0
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Right name"
 horizontal_alignment = 1
 
 [node name="DialogMainContainer" type="MarginContainer" parent="MainMargin" unique_id=707787243]
@@ -391,6 +394,7 @@ theme_override_constants/margin_bottom = 10
 
 [node name="FaceLeftFrame" type="PanelContainer" parent="MainMargin/DialogMainContainer/HBoxContainer/MarginContainer" unique_id=675126864]
 unique_name_in_owner = true
+visible = false
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 mouse_filter = 2
@@ -401,7 +405,6 @@ unique_name_in_owner = true
 show_behind_parent = true
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("4_7mx6h")
 expand_mode = 1
 stretch_mode = 5
 
@@ -421,7 +424,6 @@ theme_override_constants/margin_bottom = 12
 unique_name_in_owner = true
 process_priority = 12
 clip_children = 2
-custom_minimum_size = Vector2(147, 31)
 layout_mode = 2
 mouse_filter = 2
 theme_override_colors/default_color = Color(1, 1, 1, 1)
@@ -431,11 +433,11 @@ theme_override_constants/shadow_offset_y = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_cjjty")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_twlh8")
 bbcode_enabled = true
-text = "[transition_fade duration=0.3][font=\"res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf\"][font_size=22][color=\"#ffffffff\"]Test Message.[/color][/font_size][/font][/transition_fade]"
 fit_content = true
 scroll_active = false
-visible_characters = 13
+visible_characters = 0
 visible_characters_behavior = 1
+visible_ratio = 0.21311475
 
 [node name="MarginContainer2" type="MarginContainer" parent="MainMargin/DialogMainContainer/HBoxContainer" unique_id=646253354]
 layout_mode = 2
@@ -447,6 +449,7 @@ theme_override_constants/margin_bottom = 10
 
 [node name="FaceRightFrame" type="PanelContainer" parent="MainMargin/DialogMainContainer/HBoxContainer/MarginContainer2" unique_id=1350243230]
 unique_name_in_owner = true
+visible = false
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 mouse_filter = 2
@@ -457,7 +460,6 @@ unique_name_in_owner = true
 show_behind_parent = true
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("4_7mx6h")
 expand_mode = 1
 stretch_mode = 5
 flip_h = true
@@ -477,11 +479,11 @@ mouse_filter = 2
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="MainMargin/AdvanceCursorContainer/Control" unique_id=1593193539]
 position = Vector2(0, -4.3397465)
-rotation = 5275.0054
+rotation = 5278.391
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_xblmr")
 autoplay = "default"
-frame_progress = 0.30852747
+frame_progress = 0.862759
 speed_scale = 6.0
 script = SubResource("GDScript_8ogf7")
 
@@ -489,6 +491,7 @@ script = SubResource("GDScript_8ogf7")
 unique_name_in_owner = true
 stream = ExtResource("29_am4vp")
 pitch_scale = 0.8924465
+bus = &"SE"
 
 [connection signal="item_rect_changed" from="MainMargin/DialogMainContainer/HBoxContainer/MessageContainer/Message" to="." method="_on_message_item_rect_changed"]
-[connection signal="item_rect_changed" from="@CanvasLayer@19399/Message" to="." method="_on_message_item_rect_changed"]
+[connection signal="item_rect_changed" from="@CanvasLayer@94666/Message" to="." method="_on_message_item_rect_changed"]
