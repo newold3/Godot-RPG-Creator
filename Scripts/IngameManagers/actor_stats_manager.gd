@@ -74,7 +74,8 @@ func get_skills_for_actor(actor: GameActor, _sort_mode: int = 0) -> Array:
 		var mp_cost = real_skill.mp_cost if "mp_cost" in real_skill else 0
 		var usable_in_menu = true
 		if "occasion" in real_skill:
-			usable_in_menu = real_skill.occasion == 0 or real_skill.occasion == 2
+			var occasion = real_skill.occasion
+			usable_in_menu = RPGActionManager.Ocassion.ALWAYS or occasion ==  RPGActionManager.Ocassion.MENU_SCREEN or (GameManager.is_on_battle and occasion ==  RPGActionManager.Ocassion.BATTLE_SCREEN)
 		var current_mp = actor.get_parameter("mp")
 		var has_enough_mp = current_mp >= mp_cost
 		var is_disabled = skill_info.get("sealed", false) or not usable_in_menu or not has_enough_mp

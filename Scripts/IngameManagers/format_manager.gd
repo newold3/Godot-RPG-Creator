@@ -6,7 +6,7 @@ extends Node
 func get_number_formatted(number: float, decimals: int = 0, prefix: String = "", suffix: String = "", force_zero_decimal: bool = false) -> String:
 	var options = RPGSYSTEM.database.system.options
 	var use_thousands_separator = options.get("use_thousands_separator", true)
-	var show_abbreviated = options.get("show_abbreviated_in_battle", true) if GameManager.current_battle else options.get("show_abbreviated_in_menu", true)
+	var show_abbreviated = options.get("show_abbreviated_in_battle", true) if GameManager.is_on_battle else options.get("show_abbreviated_in_menu", true)
 	
 	if show_abbreviated:
 		return prefix + _format_compact_number(number, decimals, force_zero_decimal) + suffix

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://ddq8ntwy5i1cp"]
+[gd_scene format=3 uid="uid://ddq8ntwy5i1cp"]
 
 [ext_resource type="Script" uid="uid://cb1f31r150uwu" path="res://addons/RPGData/Scripts/effects_panel.gd" id="1_pw4xj"]
 [ext_resource type="PackedScene" uid="uid://dxcyqc2dscbvw" path="res://addons/CustomControls/custom_simple_column_item_list.tscn" id="2_5wa0a"]
@@ -25,7 +25,7 @@ gradient = SubResource("Gradient_8an5v")
 fill_from = Vector2(0.547009, 1)
 fill_to = Vector2(0.559829, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_alj40"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cs7vr"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_ygvtv")
 
@@ -38,13 +38,13 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0, 0, 0, 1)
 
-[node name="EffectsPanel" type="PanelContainer"]
+[node name="EffectsPanel" type="PanelContainer" unique_id=981934370]
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxEmpty_scogd")
 script = ExtResource("1_pw4xj")
 
-[node name="EffectsList" parent="." instance=ExtResource("2_5wa0a")]
+[node name="EffectsList" parent="." unique_id=109524027 instance=ExtResource("2_5wa0a")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -53,7 +53,7 @@ odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
 event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 top_bar_style = SubResource("StyleBoxTexture_2s8e2")
 columns_text_colors = PackedColorArray(0.72549, 0.992157, 0.772549, 1)
-cursor_style = SubResource("StyleBoxTexture_alj40")
+cursor_style = SubResource("StyleBoxTexture_cs7vr")
 panel_style = SubResource("StyleBoxFlat_261u5")
 columns = 2
 names = PackedStringArray("Type", "Content")

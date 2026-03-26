@@ -50,7 +50,7 @@ var current_map_vehicles: Array[RPGVehicle]
 var current_map_events: Dictionary[int, IngameEvent]
 var current_map_extraction_events: Dictionary[int, IngameExtractionEvent]
 
-var current_battle
+var is_on_battle: bool = false
 var current_battle_scene # TODO
 var battle_last_actions: BattleLastActions
 

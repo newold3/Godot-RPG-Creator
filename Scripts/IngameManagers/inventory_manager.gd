@@ -464,29 +464,9 @@ func _is_item_usable_in_menu(item_data: Variant) -> bool:
 		return true
 		
 	var occasion = item_data.occasion
-	# Occasion: 0 = Always, 1 = Battle Screen, 2 = Menu Screen, 3 = Never
-	if occasion == 1 or occasion == 3:
+	if occasion == RPGActionManager.Ocassion.ALWAYS or occasion ==  RPGActionManager.Ocassion.MENU_SCREEN or (GameManager.is_on_battle and occasion ==  RPGActionManager.Ocassion.BATTLE_SCREEN):
 		return false
-		
-	if not item_data.consumable:
-		var has_menu_effect = false
-		for effect in item_data.effects:
-			# Common recovery effect codes (HP, MP, State removal, etc.)
-			if effect.code in [11, 12, 13, 21, 22, 31, 32, 33, 34, 41, 42, 43, 44]:
-				has_menu_effect = true
-				break
-		if not has_menu_effect:
-			return false
 
-	# Optional: Check if the party actually needs the item's effects
-	# var party_needs_it = false
-	# for actor_id in GameManager.game_state.current_party:
-	# 	var actor = RPGSYSTEM.database.actors[actor_id] # Fetch real GameActor from state
-	# 	if does_target_need_recovery(actor, item_data.effects):
-	# 		party_needs_it = true
-	# 		break
-	# if not party_needs_it:
-	# 	return false
 	return true
 
 

@@ -1,16 +1,14 @@
 @tool
 extends SpinBox
 
-
+## Establece si el spinbox está deshabilitado
 @export var disabled: bool = false :
 	set(_value):
 		disabled = _value
 		set_disabled(_value)
 
-## Replace the selected numbers with the specified text.
-## key = Number to replace, Value = text to replace the value by
+## Replace the selected numbers with the specified text. key = Number to replace, Value = text to replace the value by
 @export var value_replace: Dictionary = {}
-
 
 var old_value: float
 var dragging: bool = false
@@ -22,25 +20,21 @@ var waiting_for_drag: bool = false
 var initial_mouse_position: Vector2
 var busy: bool = false
 var _initialization_complete: bool = false
-
-# This variable will store the real value, bypassing the initial clamping of the standard SpinBox.
-# It is exposed to storage via _get_property_list but hidden from the inspector.
 var _custom_value: float = 0.0
 
 static var current_line_edit_selected
+static var _current_spinbox_focused: LineEdit
 
 const SPINBOX_ARROWS_HOVER = preload("res://addons/CustomControls/Images/spinbox_arrows_hover.png")
 const DRAG_CURSOR = preload("res://addons/CustomControls/Images/drag_cursor.png")
-
 const INITIAL_DRAG_DELAY = 0.4
 const FOCUSED_DRAG_DELAY = 0.15
-
-static var _current_spinbox_focused: LineEdit
 
 signal value_updated(old_value: float, new_value: float)
 signal text_changed(text: String)
 
 
+## Returns the custom properties of the script for the inspector
 func _get_property_list() -> Array:
 	return [
 		{
@@ -51,27 +45,25 @@ func _get_property_list() -> Array:
 	]
 
 
+## Initializes the custom spinbox and its internal line edit
 func _ready() -> void:
-	# Temporarily allow any value to avoid clamping during initialization
 	var _prev_greater = allow_greater
 	var _prev_lesser = allow_lesser
 	allow_greater = true
 	allow_lesser = true
 	
-	# Apply the stored value cleanly
 	value = _custom_value
-	
 	allow_greater = _prev_greater
 	allow_lesser = _prev_lesser
-	
 	old_value = value
 	
 	var lineedit = get_line_edit()
 	lineedit.set_script(load("res://addons/CustomControls/custom_line_edit.gd"))
 	lineedit.focus_entered.connect(_on_line_edit_focus_entered)
 	lineedit.focus_exited.connect(_on_line_edit_focus_exited)
-	lineedit.text_changed.connect(func(text: String): text_changed.emit(text))
-	value_changed.connect(_on_value_changed)
+	lineedit.text_changed.connect(func(text: String): text_changed.emit(text), CONNECT_DEFERRED)
+	lineedit.draw.connect(_on_line_edit_draw, CONNECT_DEFERRED)
+	value_changed.connect(_on_value_changed, CONNECT_DEFERRED)
 	
 	drag_timer = Timer.new()
 	drag_timer.wait_time = INITIAL_DRAG_DELAY
@@ -84,19 +76,18 @@ func _ready() -> void:
 	else:
 		rounded = false
 	
-	# Mark initialization as complete
 	_initialization_complete = true
-	
 	changed.connect(_on_changed)
 	
-	# Initial text update
-	_on_text_changed(lineedit.text)
+	_on_text_changed.call_deferred(lineedit.text)
 	
 	await RenderingServer.frame_post_draw
 	await RenderingServer.frame_post_draw
+	
 	CustomTooltipManager.replace_all_tooltips_with_custom(self)
 
 
+## Updates the rounded state when properties change
 func _on_changed() -> void:
 	if step == int(step):
 		rounded = true
@@ -104,24 +95,31 @@ func _on_changed() -> void:
 		rounded = false
 
 
+## Grabs focus for the spinbox if it is editable
 func grab_focus(_hide_focus: bool = false) -> void:
 	if !is_editable() or disabled: return
+	
 	super()
 
 
+## Handles internal physics processing to manage selection
 func _physics_process(delta: float) -> void:
 	var lineedit = get_line_edit()
+	
 	if not lineedit.has_focus():
 		if not lineedit.get_selected_text().is_empty():
 			lineedit.deselect()
 
 
+## Sets the disabled state of the control and updates internal elements
 func set_disabled(_value: bool) -> void:
 	if disabled != _value:
 		disabled = _value
 		return
+		
 	set_editable(!_value)
 	var lineedit = get_line_edit()
+	
 	if !_value:
 		lineedit.set_text(prefix + str(value) + suffix)
 		lineedit.set_selecting_enabled(true)
@@ -149,6 +147,7 @@ func set_disabled(_value: bool) -> void:
 		lineedit.set_text(prefix + str(value) + suffix)
 
 
+## Checks if the control is visibly rendered on the screen considering its parents
 func is_control_actually_visible() -> bool:
 	if not visible or not is_inside_tree():
 		return false
@@ -160,6 +159,7 @@ func is_control_actually_visible() -> bool:
 		return false
 	
 	var current_node = get_parent()
+	
 	while current_node:
 		if current_node is ScrollContainer:
 			var scroll_container = current_node as ScrollContainer
@@ -181,6 +181,7 @@ func is_control_actually_visible() -> bool:
 	return true
 
 
+## Checks if the mouse is hovering over the visible bounds of the control
 func is_mouse_over_visible_control() -> bool:
 	if not is_control_actually_visible():
 		return false
@@ -192,6 +193,7 @@ func is_mouse_over_visible_control() -> bool:
 		return false
 	
 	var current_node = get_parent()
+	
 	while current_node:
 		if current_node is ScrollContainer:
 			var scroll_container = current_node as ScrollContainer
@@ -213,6 +215,7 @@ func is_mouse_over_visible_control() -> bool:
 	return true
 
 
+## Triggered when the line edit receives focus
 func _on_line_edit_focus_entered() -> void:
 	if dragging or !is_editable() or disabled: return
 	
@@ -228,10 +231,13 @@ func _on_line_edit_focus_entered() -> void:
 	_current_spinbox_focused = line_edit
 
 
+## Triggered when the line edit loses focus
 func _on_line_edit_focus_exited() -> void:
 	var line_edit = get_line_edit()
+	
 	if current_line_edit_selected == line_edit:
 		current_line_edit_selected = null
+		
 	line_edit.deselect()
 	call_deferred("_on_text_changed", line_edit.text)
 	
@@ -239,21 +245,18 @@ func _on_line_edit_focus_exited() -> void:
 		_current_spinbox_focused = null
 
 
+## Processes logic when the numeric value changes
 func _on_value_changed(new_value: float) -> void:
 	if _initialization_complete and is_node_ready() and not RPGDialogFunctions.there_are_any_dialog_open():
 		_custom_value = new_value
 	
 	var line_edit = get_line_edit()
 	var is_focused = line_edit.has_focus()
+	
 	value_updated.emit(old_value, new_value)
 	old_value = new_value
-	var text: String
-	if abs(step - int(step)) < 0.00001:
-		text = str(int(value))
-	else:
-		text = str(value)
-		
-	line_edit.text = text
+	
+	_apply_custom_text_format.call_deferred()
 	
 	if not RPGDialogFunctions.there_are_any_dialog_open():
 		return
@@ -263,33 +266,79 @@ func _on_value_changed(new_value: float) -> void:
 		call_deferred("_line_edit_grab_focus")
 
 
+func _on_line_edit_draw() -> void:
+	var lineedit = get_line_edit()
+	
+	if lineedit.has_focus():
+		return
+		
+	var current_text = lineedit.text
+	var clean_text = current_text
+	
+	if (rounded or abs(step - int(step)) < 0.00001) and current_text.ends_with(".0"):
+		clean_text = current_text.trim_suffix(".0")
+		
+	for key in value_replace.keys():
+		if str(key) == clean_text or str(key) == current_text:
+			clean_text = prefix + str(value_replace[key]) + suffix
+			break
+			
+	if lineedit.text != clean_text:
+		lineedit.text = clean_text
+
+
+func _apply_custom_text_format() -> void:
+	var line_edit = get_line_edit()
+	var text: String
+	
+	if rounded or abs(step - int(step)) < 0.00001:
+		text = str(int(value))
+	else:
+		text = str(value)
+		
+	if line_edit.text != text:
+		line_edit.text = text
+
+
+## Re-grabs focus for the internal line edit
 func _line_edit_grab_focus() -> void:
 	var line_edit = get_line_edit()
+	
 	if _current_spinbox_focused == line_edit and line_edit.editable:
 		line_edit.grab_focus()
 
 
+## Processes text formatting and replacements when the internal text changes
 func _on_text_changed(text: String) -> void:
 	if busy: return
 	busy = true
+	
 	var line_edit = get_line_edit()
+	
+	if (rounded or abs(step - int(step)) < 0.00001) and text.contains("."):
+		var clean_text = str(int(text.to_float()))
+		if line_edit.text != clean_text:
+			line_edit.text = clean_text
+			
 	for key in value_replace.keys():
 		if str(key) == text:
-			# Safety await for text replacements
 			for i in 3:
 				if is_inside_tree():
 					await get_tree().process_frame
 				else:
 					return
+					
 			if is_instance_valid(self) and is_inside_tree():
 				line_edit.text = prefix + str(value_replace[key]) + suffix
 			break
-	
+			
 	busy = false
 
 
+## Checks recursively if any parent of the node is invisible
 func parent_is_invisible(node: Node) -> bool:
 	var parent = node.get_parent()
+	
 	if parent:
 		if not parent.is_visible():
 			return true
@@ -299,6 +348,7 @@ func parent_is_invisible(node: Node) -> bool:
 	return false
 
 
+## Handles custom input events for drag interactions
 func _input(event: InputEvent) -> void:
 	if !visible or !is_editable() or disabled or not is_inside_tree() or parent_is_invisible(self): return
 	
@@ -336,6 +386,7 @@ func _input(event: InputEvent) -> void:
 			_cancel_drag()
 
 
+## Processes the initial left mouse button press logic
 func _handle_mouse_press() -> void:
 	var p1 = get_global_mouse_position()
 	var p2 = global_position.x + size.x
@@ -363,6 +414,7 @@ func _handle_mouse_press() -> void:
 		warp_position = p1
 
 
+## Processes the left mouse button release logic
 func _handle_mouse_release() -> void:
 	if waiting_for_drag:
 		drag_timer.stop()
@@ -371,6 +423,7 @@ func _handle_mouse_release() -> void:
 		_stop_dragging()
 
 
+## Evaluates drag state when the initial interaction timer finishes
 func _on_drag_timer_timeout() -> void:
 	if waiting_for_drag and Input.is_action_pressed("Mouse Left"):
 		_start_dragging()
@@ -378,6 +431,7 @@ func _on_drag_timer_timeout() -> void:
 		waiting_for_drag = false
 
 
+## Initiates the drag action modifying the mouse behavior
 func _start_dragging() -> void:
 	if not is_control_actually_visible():
 		_cancel_drag()
@@ -390,6 +444,7 @@ func _start_dragging() -> void:
 	CustomTooltipManager.set_no_tooltips(true)
 
 
+## Stops the drag action and restores the mouse behavior
 func _stop_dragging() -> void:
 	if dragging:
 		DisplayServer.mouse_set_mode(DisplayServer.MOUSE_MODE_VISIBLE)
@@ -399,18 +454,23 @@ func _stop_dragging() -> void:
 		gain_focus()
 
 
+## Cancels pending or active drag operations
 func _cancel_drag() -> void:
 	if drag_timer:
 		drag_timer.stop()
+		
 	waiting_for_drag = false
+	
 	if dragging:
 		_stop_dragging()
 
 
+## Verifies conditions to potentially begin a drag operation
 func _check_for_start_dragging(_warp_position: Vector2) -> void:
 	pass
 
 
+## Attempts to set focus on the internal line edit multiple times
 func gain_focus(repeats: int = 3) -> void:
 	if dragging or !is_editable() or disabled: return
 	
@@ -418,10 +478,12 @@ func gain_focus(repeats: int = 3) -> void:
 	var lineedit: LineEdit = get_line_edit()
 	lineedit.grab_focus()
 	lineedit.call_deferred("select_all")
+	
 	if repeats > 0:
 		gain_focus(repeats - 1)
 
 
+## Draws custom visuals like hover arrows on the spinbox
 func _draw() -> void:
 	if dragging or !is_editable() or disabled: return
 	
@@ -433,17 +495,20 @@ func _draw() -> void:
 	var p2 = global_position.x + size.x
 	
 	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	
 	if p1.x > p2 - SPINBOX_ARROWS_HOVER.get_width():
 		var s = SPINBOX_ARROWS_HOVER.get_size()
 		var x = size.x - s.x
 		var dest_rect: Rect2
 		var src_rect: Rect2
+		
 		if get_local_mouse_position().y < size.y / 2:
 			dest_rect = Rect2(x, size.y / 2 - s.y / 2 - 1, s.x, s.y / 2)
 			src_rect = Rect2(0, 0, s.x, s.y / 2)
 		else:
 			dest_rect = Rect2(x, size.y / 2, s.x, s.y / 2)
 			src_rect = Rect2(0, s.y / 2, s.x, s.y / 2)
+			
 		draw_texture_rect_region(SPINBOX_ARROWS_HOVER, dest_rect, src_rect)
 		arrow_need_refresh_on_mouse_exit = true
 	else:
