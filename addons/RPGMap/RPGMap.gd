@@ -67,6 +67,13 @@ var toggled_regions_button: Button
 
 var scene_preview: Variant
 
+var floating_panel: PanelContainer
+var floating_buttons: Array[Button] = []
+var is_in_2d_screen: bool = false
+var _current_floating_state: bool = false
+var is_dragging_floating_panel: bool = false
+var floating_panel_drag_offset: Vector2 = Vector2.ZERO
+
 var tile_popup_menu: PopupMenu
 var extraction_tile_popup_menu: PopupMenu
 var region_popup_menu: PopupMenu
@@ -139,6 +146,8 @@ var edit_configs = {
 	}
 }
 
+var initialize_state: int = 0
+
 
 static func reload_inputs_safely():
 	var editor_actions_backup = {}
@@ -164,6 +173,7 @@ static func reload_inputs_safely():
 
 func _create_editor_dock(title: String, content: Control) -> EditorDock:
 	var dock = EditorDock.new()
+	
 	dock.name = title
 	dock.title = title
 	dock.default_slot = EditorDock.DOCK_SLOT_BOTTOM
@@ -172,106 +182,418 @@ func _create_editor_dock(title: String, content: Control) -> EditorDock:
 	dock.focus_exited.connect(func(): print("unselected ", title))
 	dock.add_child(content)
 	content.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	
 	return dock
+
+
+func _init_project_settings() -> void:
+	if not ProjectSettings.has_setting("godot_rpg_creator/interface/use_floating_ui"):
+		ProjectSettings.set_setting("godot_rpg_creator/interface/use_floating_ui", false)
+		ProjectSettings.set_initial_value("godot_rpg_creator/interface/use_floating_ui", false)
+		
+	ProjectSettings.add_property_info({
+		"name": "godot_rpg_creator/interface/use_floating_ui",
+		"type": TYPE_BOOL,
+		"hint": PROPERTY_HINT_NONE,
+		"hint_string": ""
+	})
+	
+	if not ProjectSettings.has_setting("godot_rpg_creator/interface/floating_ui_position"):
+		ProjectSettings.set_setting("godot_rpg_creator/interface/floating_ui_position", Vector2(25, 80))
+		ProjectSettings.set_initial_value("godot_rpg_creator/interface/floating_ui_position", Vector2(25, 80))
+		
+	ProjectSettings.add_property_info({
+		"name": "godot_rpg_creator/interface/floating_ui_position",
+		"type": TYPE_VECTOR2,
+		"hint": PROPERTY_HINT_NONE,
+		"hint_string": ""
+	})
+
+
+func _on_settings_changed() -> void:
+	var new_state = ProjectSettings.get_setting("godot_rpg_creator/interface/use_floating_ui", false)
+	
+	if new_state != _current_floating_state:
+		var previous_mode = current_edit_mode
+		
+		_current_floating_state = new_state
+		_apply_ui_mode()
+		
+		if previous_mode != MODE.NONE:
+			_force_mode_switch(previous_mode)
+
+
+func _apply_ui_mode() -> void:
+	_ensure_containers_exist()
+	
+	if _current_floating_state:
+		_destroy_docks()
+	else:
+		_create_docks()
+		
+	_update_floating_toolbar_visibility()
+
+
+func _ensure_containers_exist() -> void:
+	if not is_instance_valid(event_container_control):
+		event_container_control = preload("res://addons/RPGMap/Scenes/event_container.tscn").instantiate()
+		event_container_control.requested_edit_event.connect(_on_event_container_requested_edit)
+		event_container_control.requested_remove_event.connect(_on_event_container_requested_remove)
+		event_container_control.item_selected.connect(_on_event_container_item_selected)
+		event_container_control.detach_panel.connect(_on_detach_event_container_control)
+		event_container_control.enable_plugin()
+		event_container_control.visibility_changed.connect(_set_custom_tooltip.bind(event_container_control))
+		
+	if not is_instance_valid(extraction_event_container_control):
+		extraction_event_container_control = preload("res://addons/RPGMap/Scenes/extraction_event_container.tscn").instantiate()
+		extraction_event_container_control.requested_edit_event.connect(_on_extraction_event_container_requested_edit)
+		extraction_event_container_control.requested_remove_event.connect(_on_extraction_event_container_requested_remove)
+		extraction_event_container_control.item_selected.connect(_on_extraction_event_container_item_selected)
+		extraction_event_container_control.detach_panel.connect(_on_detach_extraction_event_container_control)
+		extraction_event_container_control.enable_plugin()
+		extraction_event_container_control.visibility_changed.connect(_set_custom_tooltip.bind(extraction_event_container_control))
+		
+	if not is_instance_valid(enemy_spawn_container_control):
+		enemy_spawn_container_control = preload("res://addons/RPGMap/Scenes/enemy_spawn_region_container.tscn").instantiate()
+		enemy_spawn_container_control.requested_edit_region.connect(_on_enemy_spawn_region_container_requested_edit)
+		enemy_spawn_container_control.requested_remove_region.connect(_on_enemy_spawn_region_container_requested_remove)
+		enemy_spawn_container_control.item_selected.connect(_on_enemy_spawn_region_container_item_selected)
+		enemy_spawn_container_control.detach_panel.connect(_on_detach_enemy_spawn_container_control)
+		enemy_spawn_container_control.enable_plugin()
+		enemy_spawn_container_control.visibility_changed.connect(_set_custom_tooltip.bind(enemy_spawn_container_control))
+		
+	if not is_instance_valid(event_region_container_control):
+		event_region_container_control = preload("res://addons/RPGMap/Scenes/event_region_container.tscn").instantiate()
+		event_region_container_control.requested_edit_region.connect(_on_region_event_container_requested_edit)
+		event_region_container_control.requested_remove_region.connect(_on_region_event_container_requested_remove)
+		event_region_container_control.item_selected.connect(_on_region_event_container_item_selected)
+		event_region_container_control.detach_panel.connect(_on_detach_region_event_container_control)
+		event_region_container_control.enable_plugin()
+		event_region_container_control.visibility_changed.connect(_set_custom_tooltip.bind(event_region_container_control))
+
+
+func _destroy_docks() -> void:
+	if events_dock:
+		if events_dock.get_parent():
+			remove_dock(events_dock)
+			
+		if is_instance_valid(event_container_control) and event_container_control.get_parent() == events_dock:
+			events_dock.remove_child(event_container_control)
+			
+		events_dock.queue_free()
+		events_dock = null
+		
+	if extraction_events_dock:
+		if extraction_events_dock.get_parent():
+			remove_dock(extraction_events_dock)
+			
+		if is_instance_valid(extraction_event_container_control) and extraction_event_container_control.get_parent() == extraction_events_dock:
+			extraction_events_dock.remove_child(extraction_event_container_control)
+			
+		extraction_events_dock.queue_free()
+		extraction_events_dock = null
+		
+	if enemy_spawn_regions_dock:
+		if enemy_spawn_regions_dock.get_parent():
+			remove_dock(enemy_spawn_regions_dock)
+			
+		if is_instance_valid(enemy_spawn_container_control) and enemy_spawn_container_control.get_parent() == enemy_spawn_regions_dock:
+			enemy_spawn_regions_dock.remove_child(enemy_spawn_container_control)
+			
+		enemy_spawn_regions_dock.queue_free()
+		enemy_spawn_regions_dock = null
+		
+	if event_regions_dock:
+		if event_regions_dock.get_parent():
+			remove_dock(event_regions_dock)
+			
+		if is_instance_valid(event_region_container_control) and event_region_container_control.get_parent() == event_regions_dock:
+			event_regions_dock.remove_child(event_region_container_control)
+			
+		event_regions_dock.queue_free()
+		event_regions_dock = null
+
+
+func _create_docks() -> void:
+	if not is_instance_valid(events_dock):
+		events_dock = _create_editor_dock("Events", event_container_control)
+		add_dock(events_dock)
+		events_dock.visibility_changed.connect(_on_events_dock_visibility_changed)
+		
+	if not is_instance_valid(extraction_events_dock):
+		extraction_events_dock = _create_editor_dock("Extraction Events", extraction_event_container_control)
+		add_dock(extraction_events_dock)
+		extraction_events_dock.visibility_changed.connect(_on_extraction_events_dock_visibility_changed)
+		
+	if not is_instance_valid(enemy_spawn_regions_dock):
+		enemy_spawn_regions_dock = _create_editor_dock("Enemy Spawn Regions", enemy_spawn_container_control)
+		add_dock(enemy_spawn_regions_dock)
+		enemy_spawn_regions_dock.visibility_changed.connect(_on_enemy_spawn_regions_dock_visibility_changed)
+		
+	if not is_instance_valid(event_regions_dock):
+		event_regions_dock = _create_editor_dock("Event Regions", event_region_container_control)
+		add_dock(event_regions_dock)
+		event_regions_dock.visibility_changed.connect(_on_event_regions_dock_visibility_changed)
+
+
+func _setup_floating_toolbar() -> void:
+	if floating_panel:
+		return
+		
+	var vbox = VBoxContainer.new()
+	var style = StyleBoxFlat.new()
+	
+	style.bg_color = Color(0.15, 0.15, 0.15, 0.8)
+	style.corner_radius_top_left = 5
+	style.corner_radius_top_right = 5
+	style.corner_radius_bottom_left = 5
+	style.corner_radius_bottom_right = 5
+	style.content_margin_left = 5
+	style.content_margin_right = 5
+	style.content_margin_top = 5
+	style.content_margin_bottom = 5
+	
+	floating_panel = PanelContainer.new()
+	
+	floating_panel.add_theme_stylebox_override("panel", style)
+	floating_panel.add_child(vbox)
+	floating_panel.position = ProjectSettings.get_setting("godot_rpg_creator/interface/floating_ui_position", Vector2(25, 80))
+	floating_panel.z_index = 100
+	floating_panel.mouse_filter = Control.MOUSE_FILTER_STOP
+	floating_panel.visible = false
+	
+	var drag_handle = HSeparator.new()
+	
+	drag_handle.mouse_filter = Control.MOUSE_FILTER_STOP
+	drag_handle.mouse_default_cursor_shape = Control.CURSOR_DRAG
+	
+	var handle_style = StyleBoxLine.new()
+	
+	handle_style.color = Color(0.5, 0.5, 0.5, 0.8)
+	handle_style.thickness = 4
+	drag_handle.add_theme_stylebox_override("separator", handle_style)
+	vbox.add_child(drag_handle)
+	
+	floating_panel.set_meta("drag_handle", drag_handle)
+	
+	var btn_events = Button.new()
+	
+	btn_events.text = "Events"
+	btn_events.toggle_mode = true
+	btn_events.mouse_filter = Control.MOUSE_FILTER_STOP
+	btn_events.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	btn_events.toggled.connect(_on_event_button_toggled)
+	vbox.add_child(btn_events)
+	floating_buttons.append(btn_events)
+	
+	var btn_extraction = Button.new()
+	
+	btn_extraction.text = "Extraction"
+	btn_extraction.toggle_mode = true
+	btn_extraction.mouse_filter = Control.MOUSE_FILTER_STOP
+	btn_extraction.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	btn_extraction.toggled.connect(_on_extraction_event_button_toggled)
+	vbox.add_child(btn_extraction)
+	floating_buttons.append(btn_extraction)
+	
+	var btn_enemy = Button.new()
+	
+	btn_enemy.text = "Enemy Spawns"
+	btn_enemy.toggle_mode = true
+	btn_enemy.mouse_filter = Control.MOUSE_FILTER_STOP
+	btn_enemy.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	btn_enemy.toggled.connect(_on_enemy_spawn_region_button_toggled)
+	vbox.add_child(btn_enemy)
+	floating_buttons.append(btn_enemy)
+	
+	var btn_region = Button.new()
+	
+	btn_region.text = "Event Regions"
+	btn_region.toggle_mode = true
+	btn_region.mouse_filter = Control.MOUSE_FILTER_STOP
+	btn_region.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	btn_region.toggled.connect(_on_event_region_button_toggled)
+	vbox.add_child(btn_region)
+	floating_buttons.append(btn_region)
+	
+	var viewport = EditorInterface.get_editor_viewport_2d()
+	
+	if viewport:
+		viewport.get_parent().add_child(floating_panel)
+
+
+func _process_floating_ui_input(event: InputEvent, local_pos: Vector2) -> bool:
+	if is_dragging_floating_panel:
+		if event is InputEventMouseMotion:
+			floating_panel.position += event.relative
+			_clamp_floating_panel_position()
+			return true
+		elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.is_pressed():
+			is_dragging_floating_panel = false
+			_clamp_floating_panel_position()
+			ProjectSettings.set_setting("godot_rpg_creator/interface/floating_ui_position", floating_panel.position)
+			ProjectSettings.save()
+			return true
+			
+	var drag_handle = floating_panel.get_meta("drag_handle")
+	var handle_pos = drag_handle.get_parent().position + drag_handle.position
+	var handle_rect = Rect2(handle_pos, drag_handle.size)
+	
+	if event is InputEventMouseMotion:
+		var over_button: bool = false
+		var hovered_btn = null
+		
+		for btn in floating_buttons:
+			var btn_local = btn.get_local_mouse_position()
+			
+			if Rect2(Vector2.ZERO, btn.size).has_point(btn_local):
+				over_button = true
+				hovered_btn = btn
+				break
+				
+		for btn in floating_buttons:
+			if btn == hovered_btn:
+				btn.modulate = Color(1.3, 1.3, 1.3, 1.0)
+			else:
+				btn.modulate = Color(1.0, 1.0, 1.0, 1.0)
+				
+		if over_button:
+			current_cursor = Control.CURSOR_POINTING_HAND
+		elif handle_rect.has_point(local_pos):
+			current_cursor = Control.CURSOR_DRAG
+		else:
+			current_cursor = Control.CURSOR_ARROW
+			
+		update_cursor_shape()
+		
+		return true
+		
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
+		if handle_rect.has_point(local_pos):
+			is_dragging_floating_panel = true
+			return true
+			
+		for i in range(floating_buttons.size()):
+			var btn = floating_buttons[i]
+			var btn_local = btn.get_local_mouse_position()
+			
+			if Rect2(Vector2.ZERO, btn.size).has_point(btn_local):
+				if not btn.button_pressed:
+					for j in range(floating_buttons.size()):
+						if i != j:
+							floating_buttons[j].set_pressed_no_signal(false)
+							floating_buttons[j].modulate = Color(1.0, 1.0, 1.0, 1.0)
+							
+					EditorInterface.inspect_object(null)
+					btn.set_pressed(true)
+				break
+				
+		return true
+		
+	return false
+
+
+func _on_floating_panel_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.is_pressed():
+			is_dragging_floating_panel = true
+		else:
+			is_dragging_floating_panel = false
+			_clamp_floating_panel_position()
+			ProjectSettings.set_setting("godot_rpg_creator/interface/floating_ui_position", floating_panel.position)
+			ProjectSettings.save()
+	elif event is InputEventMouseMotion and is_dragging_floating_panel:
+		floating_panel.position += event.relative
+		_clamp_floating_panel_position()
+
+
+func _clamp_floating_panel_position() -> void:
+	if not floating_panel or not floating_panel.get_parent():
+		return
+		
+	var parent_size = floating_panel.get_parent().size
+	if parent_size.x == 0 or parent_size.y == 0:
+		return
+		
+	var panel_size = floating_panel.size
+	var margin = 20.0
+	
+	var new_pos = floating_panel.position
+	new_pos.x = clamp(new_pos.x, margin, max(margin, parent_size.x - panel_size.x - margin))
+	new_pos.y = clamp(new_pos.y, margin, max(margin, parent_size.y - panel_size.y - margin))
+	
+	floating_panel.position = new_pos
+
+
+func _on_editor_selection_changed() -> void:
+	if busy:
+		return
+		
+	var selected_nodes = get_editor_interface().get_selection().get_selected_nodes()
+	
+	if selected_nodes.size() > 0 and selected_nodes[0] == current_object:
+		var inspector = EditorInterface.get_inspector()
+		
+		if inspector and inspector.get_edited_object() != current_object:
+			busy = true
+			#EditorInterface.edit_node(current_object)
+			busy = false
 
 
 func _enter_tree() -> void:
 	tree_exiting.connect(_tree_exiting)
+	main_screen_changed.connect(_on_main_screen_changed)
+	ProjectSettings.settings_changed.connect(_on_settings_changed)
 	
-	#add_autoload_singleton("RPGMapsInfo", "res://addons/RPGMap/Scripts/maps_info.gd")
-	#add_autoload_singleton("RPGSYSTEM", "res://addons/RPGMap/Scripts/system.gd")
-
-	# --------------------------------------------------------------------------------------
-	# Events
-	# --------------------------------------------------------------------------------------
-	event_container_control = preload("res://addons/RPGMap/Scenes/event_container.tscn").instantiate()
-	event_container_control.requested_edit_event.connect(_on_event_container_requested_edit)
-	event_container_control.requested_remove_event.connect(_on_event_container_requested_remove)
-	event_container_control.item_selected.connect(_on_event_container_item_selected)
-	event_container_control.detach_panel.connect(_on_detach_event_container_control)
-
-	events_dock = _create_editor_dock("Events", event_container_control)
-	add_dock(events_dock)
-	events_dock.visibility_changed.connect(_on_events_dock_visibility_changed)
-	event_container_control.enable_plugin()
+	var selection = get_editor_interface().get_selection()
 	
-	event_container_control.visibility_changed.connect(_set_custom_tooltip.bind(event_container_control))
+	if not selection.selection_changed.is_connected(_on_editor_selection_changed):
+		selection.selection_changed.connect(_on_editor_selection_changed)
+		
+	_init_project_settings()
+	_current_floating_state = ProjectSettings.get_setting("godot_rpg_creator/interface/use_floating_ui", false)
 	
-	# --------------------------------------------------------------------------------------
-	# Extraction Events
-	# --------------------------------------------------------------------------------------
-	extraction_event_container_control = preload("res://addons/RPGMap/Scenes/extraction_event_container.tscn").instantiate()
-	extraction_event_container_control.requested_edit_event.connect(_on_extraction_event_container_requested_edit)
-	extraction_event_container_control.requested_remove_event.connect(_on_extraction_event_container_requested_remove)
-	extraction_event_container_control.item_selected.connect(_on_extraction_event_container_item_selected)
-	extraction_event_container_control.detach_panel.connect(_on_detach_extraction_event_container_control)
-
-	extraction_events_dock = _create_editor_dock("Extraction Events", extraction_event_container_control)
-	extraction_events_dock.visibility_changed.connect(_on_extraction_events_dock_visibility_changed)
-	add_dock(extraction_events_dock)
-
-	extraction_event_container_control.enable_plugin()
+	is_in_2d_screen = false
 	
-	extraction_event_container_control.visibility_changed.connect(_set_custom_tooltip.bind(extraction_event_container_control))
-
-	# --------------------------------------------------------------------------------------
-	# Enemy Regions
-	# --------------------------------------------------------------------------------------
-	enemy_spawn_regions_dock
-	enemy_spawn_container_control = preload("res://addons/RPGMap/Scenes/enemy_spawn_region_container.tscn").instantiate()
-	enemy_spawn_container_control.requested_edit_region.connect(_on_enemy_spawn_region_container_requested_edit)
-	enemy_spawn_container_control.requested_remove_region.connect(_on_enemy_spawn_region_container_requested_remove)
-	enemy_spawn_container_control.item_selected.connect(_on_enemy_spawn_region_container_item_selected)
-	enemy_spawn_container_control.detach_panel.connect(_on_detach_enemy_spawn_container_control)
-
-	enemy_spawn_regions_dock = _create_editor_dock("Enemy Spawn Regions", enemy_spawn_container_control)
-	enemy_spawn_regions_dock.visibility_changed.connect(_on_enemy_spawn_regions_dock_visibility_changed)
-	add_dock(enemy_spawn_regions_dock)
-	enemy_spawn_container_control.enable_plugin()
+	_setup_floating_toolbar()
 	
-	enemy_spawn_container_control.visibility_changed.connect(_set_custom_tooltip.bind(enemy_spawn_container_control))
-
-	# --------------------------------------------------------------------------------------
-	# Event Regions
-	# --------------------------------------------------------------------------------------
-	event_region_container_control = preload("res://addons/RPGMap/Scenes/event_region_container.tscn").instantiate()
-	event_region_container_control.requested_edit_region.connect(_on_region_event_container_requested_edit)
-	event_region_container_control.requested_remove_region.connect(_on_region_event_container_requested_remove)
-	event_region_container_control.item_selected.connect(_on_region_event_container_item_selected)
-	event_region_container_control.detach_panel.connect(_on_detach_region_event_container_control)
-
-	event_regions_dock = _create_editor_dock("Event Regions", event_region_container_control)
-	event_regions_dock.visibility_changed.connect(_on_event_regions_dock_visibility_changed)
-	add_dock(event_regions_dock)
-	event_region_container_control.enable_plugin()
+	_apply_ui_mode()
 	
-	event_region_container_control.visibility_changed.connect(_set_custom_tooltip.bind(event_region_container_control))
-
 	var selected_nodes = get_editor_interface().get_selection().get_selected_nodes()
+	
 	if selected_nodes.size() > 0:
-		var buttons_visibility: bool = selected_nodes[0] is RPGMap and selected_nodes[0].can_add_events
-		events_dock.visible = buttons_visibility
-		extraction_events_dock.visible = buttons_visibility
-		enemy_spawn_regions_dock.visible = buttons_visibility
-		event_regions_dock.visible = buttons_visibility
+		var first_node = selected_nodes[0]
+		var buttons_visibility: bool = first_node is RPGMap and first_node.get("can_add_events") == true
+		
+		if not _current_floating_state:
+			if is_instance_valid(events_dock): events_dock.visible = buttons_visibility
+			if is_instance_valid(extraction_events_dock): extraction_events_dock.visible = buttons_visibility
+			if is_instance_valid(enemy_spawn_regions_dock): enemy_spawn_regions_dock.visible = buttons_visibility
+			if is_instance_valid(event_regions_dock): event_regions_dock.visible = buttons_visibility
 	else:
-		events_dock.visible = false
-		extraction_events_dock.visible = false
-		enemy_spawn_regions_dock.visible = false
-		event_regions_dock.visible = false
-
+		if not _current_floating_state:
+			if is_instance_valid(events_dock): events_dock.visible = false
+			if is_instance_valid(extraction_events_dock): extraction_events_dock.visible = false
+			if is_instance_valid(enemy_spawn_regions_dock): enemy_spawn_regions_dock.visible = false
+			if is_instance_valid(event_regions_dock): event_regions_dock.visible = false
+			
 	set_force_draw_over_forwarding_enabled()
 	scene_preview = get_editor_interface().get_resource_previewer()
 	
 	var ins = preload("res://addons/RPGMap/Scenes/rpg_tile_menu.tscn")
+	
 	tile_popup_menu = ins.instantiate()
 	tile_popup_menu.visible = false
 	tile_popup_menu.index_pressed.connect(_on_tile_popup_menu_index_pressed)
 	tile_popup_menu.visibility_changed.connect(_on_tile_popup_menu_visibility_changed)
 	call_deferred("add_child", tile_popup_menu)
+	
 	var sub_popup1 = tile_popup_menu.get_child(0)
+	
 	sub_popup1.index_pressed.connect(_on_tile_subpopup_menu1_index_pressed)
+	
 	var sub_popup2 = tile_popup_menu.get_child(1)
+	
 	sub_popup2.index_pressed.connect(_on_preset_pressed)
 	tile_popup_menu.call_deferred("add_submenu_node_item", "Set start position for...", sub_popup1)
 	tile_popup_menu.call_deferred("add_separator")
@@ -283,18 +605,19 @@ func _enter_tree() -> void:
 	extraction_tile_popup_menu.index_pressed.connect(_on_extraction_tile_popup_menu_index_pressed)
 	extraction_tile_popup_menu.visibility_changed.connect(_on_extraction_tile_popup_menu_visibility_changed)
 	call_deferred("add_child", extraction_tile_popup_menu)
+	
 	sub_popup2 = extraction_tile_popup_menu.get_child(1)
 	sub_popup2.index_pressed.connect(_on_extraction_preset_pressed)
 	extraction_tile_popup_menu.call_deferred("add_submenu_node_item", "Presets...", sub_popup2)
 	extraction_tile_popup_menu.call_deferred("add_separator")
-
+	
 	ins = preload("res://addons/RPGMap/Scenes/rpg_enemy_spawn_region_menu.tscn")
 	region_popup_menu = ins.instantiate()
 	region_popup_menu.visible = false
 	region_popup_menu.index_pressed.connect(_on_region_popup_menu_index_pressed)
 	region_popup_menu.visibility_changed.connect(_on_region_popup_menu_visibility_changed)
 	call_deferred("add_child", region_popup_menu)
-
+	
 	ins = preload("res://addons/RPGMap/Scenes/rpg_start_position_menu.tscn")
 	start_position_popup_menu = ins.instantiate()
 	start_position_popup_menu.visible = false
@@ -303,23 +626,52 @@ func _enter_tree() -> void:
 	call_deferred("add_child", start_position_popup_menu)
 	
 	var path = "res://addons/RPGMap/Scenes/toggled_regions_draw_button.tscn"
+	
 	toggled_regions_button = load(path).instantiate()
 	toggled_regions_button.toggled.connect(_on_toggled_regions_draw_butto_pressed)
 	toggled_regions_button.tooltip_text = "[title]Toggled Regions Visibility[/title]\nView regions added to map in the event editor"
-	
 	add_control_to_container(EditorPlugin.CONTAINER_CANVAS_EDITOR_MENU, toggled_regions_button)
 	CustomTooltipManager.plugin_replace_all_tooltips_with_custom.call_deferred(toggled_regions_button)
 	toggled_regions_button.visible = false
-
+	
 	add_custom_type("RPGMap", "TileMap", preload("res://addons/RPGData/ModulesRPG/rpg_map.gd"), null)
-
 	get_tree().node_added.connect(_on_node_added)
-
-	var nodes_selected = EditorInterface.get_selection().get_selected_nodes()
-	if nodes_selected.size() > 0:
-		EditorInterface.edit_node(nodes_selected[0])
 	
 	DETACHABLE_WINDOW = load("res://addons/CustomControls/detachable_window.tscn")
+	
+	if selected_nodes.size() > 0:
+		var first_node = selected_nodes[0]
+		
+		if first_node is RPGMap:
+			get_editor_interface().call_deferred("edit_node", first_node)
+
+
+func _disable_plugin() -> void:
+	var selection = get_editor_interface().get_selection().get_selected_nodes()
+	
+	if selection.size() > 0:
+		get_editor_interface().edit_node(selection[0])
+	else:
+		get_editor_interface().inspect_object(null)
+
+
+func _on_main_screen_changed(screen_name: String) -> void:
+	is_in_2d_screen = (screen_name == "2D")
+	_update_floating_toolbar_visibility()
+
+
+func _update_floating_toolbar_visibility() -> void:
+	if floating_panel:
+		var viewport = EditorInterface.get_editor_viewport_2d()
+		
+		if viewport and not floating_panel.is_inside_tree():
+			viewport.get_parent().add_child(floating_panel)
+			
+		floating_panel.visible = _current_floating_state and is_in_2d_screen and current_object != null
+		
+		if floating_panel.visible:
+			floating_panel.position = ProjectSettings.get_setting("godot_rpg_creator/interface/floating_ui_position", Vector2(25, 80))
+			_clamp_floating_panel_position.call_deferred()
 
 
 func _set_custom_tooltip(container: Control) -> void:
@@ -328,31 +680,47 @@ func _set_custom_tooltip(container: Control) -> void:
 
 
 func _on_events_dock_visibility_changed() -> void:
-	if extraction_events_dock: extraction_events_dock.visible = false
-	if enemy_spawn_regions_dock: enemy_spawn_regions_dock.visible = false
-	if event_regions_dock: event_regions_dock.visible = false
-	_on_event_button_toggled.call_deferred(events_dock.visible)
+	if initialize_state < 2:
+		return
+		
+	if not _current_floating_state and is_instance_valid(events_dock):
+		if events_dock.visible and current_edit_mode != MODE.EVENT:
+			_on_event_button_toggled(true)
+		elif not events_dock.visible and current_edit_mode == MODE.EVENT:
+			_on_event_button_toggled(false)
 
 
 func _on_extraction_events_dock_visibility_changed() -> void:
-	if events_dock: events_dock.visible = false
-	if enemy_spawn_regions_dock: enemy_spawn_regions_dock.visible = false
-	if event_regions_dock: event_regions_dock.visible = false
-	_on_extraction_event_button_toggled.call_deferred(extraction_events_dock.visible)
+	if initialize_state < 2:
+		return
+		
+	if not _current_floating_state and is_instance_valid(extraction_events_dock):
+		if extraction_events_dock.visible and current_edit_mode != MODE.EXTRACTION_EVENT:
+			_on_extraction_event_button_toggled(true)
+		elif not extraction_events_dock.visible and current_edit_mode == MODE.EXTRACTION_EVENT:
+			_on_extraction_event_button_toggled(false)
 
 
 func _on_enemy_spawn_regions_dock_visibility_changed() -> void:
-	if events_dock: events_dock.visible = false
-	if extraction_events_dock: extraction_events_dock.visible = false
-	if event_regions_dock: event_regions_dock.visible = false
-	_on_enemy_spawn_region_button_toggled.call_deferred(enemy_spawn_regions_dock.visible)
+	if initialize_state < 2:
+		return
+		
+	if not _current_floating_state and is_instance_valid(enemy_spawn_regions_dock):
+		if enemy_spawn_regions_dock.visible and current_edit_mode != MODE.ENEMY_SPAWN:
+			_on_enemy_spawn_region_button_toggled(true)
+		elif not enemy_spawn_regions_dock.visible and current_edit_mode == MODE.ENEMY_SPAWN:
+			_on_enemy_spawn_region_button_toggled(false)
 
 
 func _on_event_regions_dock_visibility_changed() -> void:
-	if events_dock: events_dock.visible = false
-	if extraction_events_dock: extraction_events_dock.visible = false
-	if enemy_spawn_regions_dock: enemy_spawn_regions_dock.visible = false
-	_on_event_region_button_toggled.call_deferred(event_regions_dock.visible)
+	if initialize_state < 2:
+		return
+		
+	if not _current_floating_state and is_instance_valid(event_regions_dock):
+		if event_regions_dock.visible and current_edit_mode != MODE.EVENT_REGION:
+			_on_event_region_button_toggled(true)
+		elif not event_regions_dock.visible and current_edit_mode == MODE.EVENT_REGION:
+			_on_event_region_button_toggled(false)
 
 
 func _populate_event_presets_menu() -> void:
@@ -469,45 +837,25 @@ func _tree_exiting() -> void:
 
 
 func _exit_tree() -> void:
-	#remove_autoload_singleton("RPGMapsInfo")
-	#remove_autoload_singleton("RPGSYSTEM")
 	get_tree().node_added.disconnect(_on_node_added)
+	ProjectSettings.settings_changed.disconnect(_on_settings_changed)
 	
-	if events_dock:
-		remove_dock(events_dock)
-		CustomTooltipManager.restore_all_tooltips_for(event_container_control)
-		if FileCache.options.event_dialog.detached:
-			event_container_control.get_parent().queue_free()
-		else:
-			event_container_control.queue_free()
-		events_dock.queue_free()
+	var selection = get_editor_interface().get_selection()
 	
-	if extraction_events_dock:
-		remove_dock(extraction_events_dock)
-		CustomTooltipManager.restore_all_tooltips_for(extraction_event_container_control)
-		if FileCache.options.event_dialog.detached:
-			extraction_event_container_control.get_parent().queue_free()
-		else:
-			extraction_event_container_control.queue_free()
-		extraction_events_dock.queue_free()
+	if selection.selection_changed.is_connected(_on_editor_selection_changed):
+		selection.selection_changed.disconnect(_on_editor_selection_changed)
 	
-	if enemy_spawn_regions_dock:
-		remove_dock(enemy_spawn_regions_dock)
-		CustomTooltipManager.restore_all_tooltips_for(enemy_spawn_container_control)
-		if FileCache.options.event_dialog.detached:
-			enemy_spawn_container_control.get_parent().queue_free()
-		else:
-			enemy_spawn_container_control.queue_free()
-		enemy_spawn_regions_dock.queue_free()
+	if floating_panel:
+		floating_panel.queue_free()
+		floating_panel = null
+		floating_buttons.clear()
+		
+	_destroy_docks()
 	
-	if event_regions_dock:
-		remove_dock(event_regions_dock)
-		CustomTooltipManager.restore_all_tooltips_for(event_region_container_control)
-		if FileCache.options.event_dialog.detached:
-			event_region_container_control.get_parent().queue_free()
-		else:
-			event_region_container_control.queue_free()
-		event_regions_dock.queue_free()
+	if is_instance_valid(event_container_control): event_container_control.queue_free()
+	if is_instance_valid(extraction_event_container_control): extraction_event_container_control.queue_free()
+	if is_instance_valid(enemy_spawn_container_control): enemy_spawn_container_control.queue_free()
+	if is_instance_valid(event_region_container_control): event_region_container_control.queue_free()
 	
 	if current_object and current_object is RPGMap:
 		current_object.editing_events = false
@@ -515,11 +863,11 @@ func _exit_tree() -> void:
 		current_object.editing_enemy_spawn_region = false
 		current_object.editing_event_region = false
 		current_object.queue_redraw()
-	
+		
 	if toggled_regions_button:
 		remove_control_from_container(EditorPlugin.CONTAINER_CANVAS_EDITOR_MENU, toggled_regions_button)
 		toggled_regions_button.queue_free()
-	
+		
 	if tile_popup_menu: tile_popup_menu.queue_free()
 	if extraction_tile_popup_menu: extraction_tile_popup_menu.queue_free()
 	if region_popup_menu: region_popup_menu.queue_free()
@@ -527,28 +875,66 @@ func _exit_tree() -> void:
 
 
 func _handle_button_toggle(edit_type: int, toggled_on: bool) -> void:
+	if initialize_state < 2:
+		return
+		
 	var config = edit_configs[edit_type]
 	
-	current_edit_mode = config.mode if toggled_on else MODE.NONE
-	
+	if toggled_on:
+		current_edit_mode = config.mode
+		if current_object and "_last_edit_button_pressed" in current_object:
+			current_object._last_edit_button_pressed = config.button_index
+	elif current_edit_mode == config.mode:
+		current_edit_mode = MODE.NONE
+		if current_object:
+			current_object.current_edit_button_pressed = -1
+			if "_last_edit_button_pressed" in current_object:
+				current_object._last_edit_button_pressed = -1
+				
+	if _current_floating_state:
+		if toggled_on:
+			for i in range(floating_buttons.size()):
+				var btn = floating_buttons[i]
+				
+				if i == edit_type - 1:
+					if not btn.button_pressed:
+						btn.set_pressed_no_signal(true)
+						btn.modulate = Color(1.0, 1.0, 1.0, 1.0)
+				else:
+					btn.set_pressed_no_signal(false)
+					btn.modulate = Color(1.0, 1.0, 1.0, 1.0)
+					
 	if current_object:
 		current_object.call(config.edit_method, toggled_on)
-	
+		
 	if toggled_on:
 		_setup_editing_mode(config)
 		_hide_other_windows(edit_type)
 		_handle_regions_button(config, toggled_on)
-	
+		
 	_handle_regions_button_update(config, toggled_on)
 
-# Configura el modo de edición
+
 func _setup_editing_mode(config: Dictionary) -> void:
 	EditorInterface.set_main_screen_editor("2D")
 	
 	if current_object:
-		current_object.current_edit_button_pressed = config.button_index
-		get_editor_interface().get_selection().add_node(current_object)
+		var inspector = EditorInterface.get_inspector()
 		
+		if inspector and inspector.get_edited_object() != current_object:
+			busy = true
+			#EditorInterface.edit_node(current_object)
+			busy = false
+			
+		current_object.current_edit_button_pressed = config.button_index
+		
+		var selection = get_editor_interface().get_selection()
+		
+		if not selection.get_selected_nodes().has(current_object):
+			busy = true
+			selection.add_node(current_object)
+			busy = false
+			
 		if "refresh_canvas" in current_object:
 			current_object.refresh_canvas()
 		
@@ -560,7 +946,7 @@ func _setup_editing_mode(config: Dictionary) -> void:
 			if FileCache.options.get(config.dialog_option).detached:
 				call(config.detach_method, container)
 
-# Oculta las otras ventanas cuando se activa un modo
+
 func _hide_other_windows(current_edit_type: int) -> void:
 	for edit_type in edit_configs:
 		if edit_type != current_edit_type:
@@ -745,12 +1131,14 @@ func _handle_container_item_selection(edit_type: int, index: int) -> void:
 	if not current_object:
 		return
 	
+	EditorInterface.inspect_object(null)
 	match edit_type:
 		MODE.EVENT:
 			var event = current_object.events.get_event(index)
 			if event:
 				current_object.current_event = event
 				current_object.refresh_canvas()
+				EditorInterface.inspect_object(event)
 				if focus_tile_is_enabled:
 					var pos = Vector2i(event.x, event.y) * current_object.tile_size
 					_focus_any_item(pos, current_object.tile_size / 2)
@@ -760,6 +1148,7 @@ func _handle_container_item_selection(edit_type: int, index: int) -> void:
 			if event:
 				current_object.current_extraction_event = event
 				current_object.refresh_canvas()
+				EditorInterface.inspect_object(event)
 				if focus_tile_is_enabled:
 					var pos = Vector2i(event.x, event.y) * current_object.tile_size
 					_focus_any_item(pos, current_object.tile_size / 2)
@@ -769,6 +1158,7 @@ func _handle_container_item_selection(edit_type: int, index: int) -> void:
 			if region:
 				current_object.region_selected = region
 				current_object.refresh_canvas()
+				EditorInterface.inspect_object(region)
 				if focus_tile_is_enabled:
 					var pos = region.rect.position * current_object.tile_size
 					_focus_any_item(pos, region.rect.size / 2)
@@ -778,6 +1168,7 @@ func _handle_container_item_selection(edit_type: int, index: int) -> void:
 			if region:
 				current_object.event_region_selected = region
 				current_object.refresh_canvas()
+				EditorInterface.inspect_object(region)
 				if focus_tile_is_enabled:
 					var pos = region.rect.position * current_object.tile_size
 					_focus_any_item(pos, region.rect.size / 2)
@@ -883,28 +1274,75 @@ func _ready() -> void:
 	get_tree().node_added.connect(_on_new_node_added)
 
 
+#func _process(delta: float) -> void:
+	#if _current_floating_state:
+		#if floating_panel and floating_panel.visible:
+			#var local_pos = floating_panel.get_local_mouse_position()
+			#var rect = Rect2(Vector2.ZERO, floating_panel.size)
+			#
+			#if not rect.has_point(local_pos):
+				#for btn in floating_buttons:
+					#btn.modulate = Color(1.0, 1.0, 1.0, 1.0)
+					#
+		#var any_active = false
+		#
+		#for btn in floating_buttons:
+			#if btn.button_pressed:
+				#any_active = true
+				#break
+				#
+		#if not any_active and current_object and "current_edit_button_pressed" in current_object:
+			#current_object.current_edit_button_pressed = -1
+			#
+		#return
+		#
+	#if current_edit_mode == MODE.EVENT and is_instance_valid(events_dock) and !events_dock.visible:
+		#_on_event_button_toggled(false)
+	#elif current_edit_mode == MODE.EXTRACTION_EVENT and is_instance_valid(extraction_events_dock) and !extraction_events_dock.visible:
+		#_on_extraction_event_button_toggled(false)
+	#elif current_edit_mode == MODE.ENEMY_SPAWN and is_instance_valid(enemy_spawn_regions_dock) and !enemy_spawn_regions_dock.visible:
+		#_on_enemy_spawn_region_button_toggled(false)
+	#elif current_edit_mode == MODE.EVENT_REGION and is_instance_valid(event_regions_dock) and !event_regions_dock.visible:
+		#_on_event_region_button_toggled(false)
+		#
+	#if (
+		#is_instance_valid(events_dock) and not events_dock.visible and
+		#is_instance_valid(extraction_events_dock) and not extraction_events_dock.visible and
+		#is_instance_valid(enemy_spawn_regions_dock) and not enemy_spawn_regions_dock.visible and
+		#is_instance_valid(event_regions_dock) and not event_regions_dock.visible and
+		#current_object and
+		#"current_edit_button_pressed" in current_object
+	#):
+		#current_object.current_edit_button_pressed = -1
+
+
 func _process(delta: float) -> void:
-	if current_edit_mode == MODE.EVENT and !events_dock.visible:
-		_on_event_button_toggled(false)
+	if current_object and initialize_state == 0:
+		_delayed_initialization()
+		
+	if _current_floating_state and is_instance_valid(floating_panel) and floating_panel.visible:
+		var local_pos = floating_panel.get_local_mouse_position()
+		var rect = Rect2(Vector2.ZERO, floating_panel.size)
+		
+		if not rect.has_point(local_pos):
+			for btn in floating_buttons:
+				if is_instance_valid(btn):
+					btn.modulate = Color(1.0, 1.0, 1.0, 1.0)
+
+
+func _delayed_initialization() -> void:
+	if not current_object:
+		return
+		
+	initialize_state = 1
 	
-	if current_edit_mode == MODE.EXTRACTION_EVENT and !extraction_events_dock.visible:
-		_on_extraction_event_button_toggled(false)
+	while is_instance_valid(current_object) and not current_object.is_node_ready():
+		await get_tree().process_frame
+		
+	initialize_state = 2
 	
-	elif current_edit_mode == MODE.ENEMY_SPAWN and !enemy_spawn_regions_dock.visible:
-		_on_enemy_spawn_region_button_toggled(false)
-	
-	elif current_edit_mode == MODE.EVENT_REGION and !event_regions_dock.visible:
-		_on_event_region_button_toggled(false)
-	
-	if (
-		not events_dock.visible and
-		not extraction_events_dock.visible and
-		not enemy_spawn_regions_dock.visible and
-		not event_regions_dock.visible and
-		current_object and
-		"current_edit_button_pressed" in current_object
-	):
-		current_object.current_edit_button_pressed = -1
+	if current_object and is_instance_valid(current_object):
+		_sync_initial_edit_mode()
 
 
 func _on_node_type1_focus_entered(node: Node) -> void:
@@ -931,128 +1369,202 @@ func _on_rpgmap_exited(node: RPGMap) -> void:
 
 
 func _make_visible(visible: bool) -> void:
-	pass
+	is_in_2d_screen = visible
+	_update_floating_toolbar_visibility()
 
 
+func deactivate_edit_mode_and_show_output() -> void:
+	current_edit_mode = MODE.NONE
+	
+	if current_object:
+		current_object.current_edit_button_pressed = -1
+		
+		if "set_editing_events" in current_object:
+			current_object.set_editing_events(false)
+			current_object.set_editing_extraction_events(false)
+			current_object.set_editing_enemy_spawn_regions(false)
+			current_object.set_editing_event_regions(false)
+			
+		if "refresh_canvas" in current_object:
+			current_object.refresh_canvas()
+			
+	if _current_floating_state:
+		for btn in floating_buttons:
+			btn.set_pressed_no_signal(false)
+			btn.modulate = Color(1.0, 1.0, 1.0, 1.0)
+			
+	var target_tab_container: TabContainer = null
+	
+	if not _current_floating_state and is_instance_valid(events_dock) and events_dock.get_parent() is TabContainer:
+		target_tab_container = events_dock.get_parent() as TabContainer
+	elif not _current_floating_state and is_instance_valid(extraction_events_dock) and extraction_events_dock.get_parent() is TabContainer:
+		target_tab_container = extraction_events_dock.get_parent() as TabContainer
+	else:
+		var base_control = EditorInterface.get_base_control()
+		var all_tabs = base_control.find_children("*", "TabContainer", true, false)
+		
+		for tab in all_tabs:
+			if tab.get_tab_count() > 0:
+				var tab_title = tab.get_tab_title(0).to_lower()
+				
+				if tab_title == "output" or tab_title == "salida":
+					target_tab_container = tab as TabContainer
+					break
+					
+	if target_tab_container:
+		target_tab_container.current_tab = 0
+		
+	update_overlays()
+
+
+## Se llama al seleccionar un nodo nuevo en la jerarquia
 func _edit(object: Object) -> void:
 	if event_container_control_window:
 		FileCache.options.event_dialog.position = event_container_control_window.position
 		FileCache.options.event_dialog.size = event_container_control_window.size
 		event_container_control_window.hide()
-	
+		
 	if extraction_event_container_control_window:
 		FileCache.options.extraction_event_dialog.position = extraction_event_container_control_window.position
 		FileCache.options.extraction_event_dialog.size = extraction_event_container_control_window.size
 		extraction_event_container_control_window.hide()
-	
+		
 	if enemy_spawn_container_control_window:
 		FileCache.options.enemy_spawn_region_dialog.position = enemy_spawn_container_control_window.position
 		FileCache.options.enemy_spawn_region_dialog.size = enemy_spawn_container_control_window.size
 		enemy_spawn_container_control_window.hide()
-	
+		
 	if event_region_container_control_window:
 		FileCache.options.event_region_dialog.position = event_region_container_control_window.position
 		FileCache.options.event_region_dialog.size = event_region_container_control_window.size
 		event_region_container_control_window.hide()
 		
 	if !object or object.get_class() == "EditorDebuggerRemoteObject":
-		if events_dock and events_dock.get_parent() != null:
+		if is_instance_valid(events_dock) and events_dock.get_parent() != null:
 			event_regions_dock.close()
 			enemy_spawn_regions_dock.close()
 			extraction_events_dock.close()
 			events_dock.close()
 		return
-
-	if current_object and is_instance_valid(current_object) and "set_editing_events" in current_object:
-		current_object.set_editing_events(false)
-		current_object.set_editing_extraction_events(false)
-		current_object.set_editing_enemy_spawn_regions(false)
-		current_object.set_editing_event_regions(false)
-
+		
+	var is_same_map = (current_object == object)
+	
+	if is_same_map:
+		_update_floating_toolbar_visibility()
+		return
+		
+	if current_object and is_instance_valid(current_object):
+		if current_object.has_method("set_editing_events"):
+			current_object.set_editing_events(false)
+			current_object.set_editing_extraction_events(false)
+			current_object.set_editing_enemy_spawn_regions(false)
+			current_object.set_editing_event_regions(false)
+		deactivate_edit_mode_and_show_output()
+		
 	current_object = object as RPGMap
 	
-	if current_object and !"set_editing_events" in current_object:
+	if current_object and not current_object.has_method("set_editing_events"):
 		current_object = null
-
-	if events_dock:
+		
+	if current_object:
+		initialize_state = 0
+		
+	if is_instance_valid(events_dock):
 		if current_object:
-			events_dock.open()
-			extraction_events_dock.open()
-			enemy_spawn_regions_dock.open()
-			event_regions_dock.open()
-			if "current_edit_button_pressed" in current_object and current_object.current_edit_button_pressed != -1:
-				if current_object.current_edit_button_pressed == 0:
-					events_dock.make_visible()
-				elif current_object.current_edit_button_pressed == 1:
-					extraction_events_dock.make_visible()
-				elif current_object.current_edit_button_pressed == 2:
-					enemy_spawn_regions_dock.make_visible()
-				else:
-					event_regions_dock.make_visible()
-				current_object.refresh_canvas()
-			elif current_object.can_add_events:
-				get_viewport().set_input_as_handled()
+			if not _current_floating_state:
 				events_dock.open()
 				extraction_events_dock.open()
 				enemy_spawn_regions_dock.open()
 				event_regions_dock.open()
-				events_dock.make_visible()
+				
+				if "current_edit_button_pressed" in current_object and current_object.current_edit_button_pressed != -1:
+					if current_object.current_edit_button_pressed == 0:
+						events_dock.make_visible()
+					elif current_object.current_edit_button_pressed == 1:
+						extraction_events_dock.make_visible()
+					elif current_object.current_edit_button_pressed == 2:
+						enemy_spawn_regions_dock.make_visible()
+					else:
+						event_regions_dock.make_visible()
+						
+					if current_object.has_method("refresh_canvas"):
+						current_object.refresh_canvas()
+				elif current_object.get("can_add_events"):
+					get_viewport().set_input_as_handled()
+					events_dock.make_visible()
 		else:
-			event_regions_dock.close()
-			enemy_spawn_regions_dock.close()
-			extraction_events_dock.close()
-			events_dock.close()
-	
+			if not _current_floating_state:
+				event_regions_dock.close()
+				enemy_spawn_regions_dock.close()
+				extraction_events_dock.close()
+				events_dock.close()
+				
 	if current_object:
 		if Engine.is_editor_hint():
 			if current_object.property_list_changed.is_connected(_on_map_property_changed):
 				current_object.property_list_changed.disconnect(_on_map_property_changed)
 			current_object.property_list_changed.connect(_on_map_property_changed.bind(current_object))
-		var bottom_panel = events_dock.get_parent()
-		if bottom_panel:
-			for child in bottom_panel.get_children():
-				if child is Button and child.text == "TileSet":
-					child.visible = false
-	
-	if (
-		not events_dock.visible and
-		not extraction_events_dock.visible and
-		not enemy_spawn_regions_dock.visible and
-		not event_regions_dock.visible and
-		current_object and
-		"current_edit_button_pressed" in current_object
-	):
-		current_object.current_edit_button_pressed = -1
-
-	if current_object:
-		_sync_initial_edit_mode.call_deferred()
+			
+		if not _current_floating_state and is_instance_valid(events_dock):
+			var bottom_panel = events_dock.get_parent()
+			
+			if bottom_panel:
+				for child in bottom_panel.get_children():
+					if child is Button and child.text == "TileSet":
+						child.visible = false
+						
+	_update_floating_toolbar_visibility()
 
 
 func _sync_initial_edit_mode() -> void:
 	if not is_instance_valid(current_object):
 		return
-	
-	var last_state = FileCache.options.get("show_regions_toggled", false)
-	
-	if events_dock.visible:
-		_on_event_button_toggled(true)
-	elif extraction_events_dock.visible:
-		_on_extraction_event_button_toggled(true)
-	elif enemy_spawn_regions_dock.visible:
-		_on_enemy_spawn_region_button_toggled(true)
-	elif event_regions_dock.visible:
-		_on_event_region_button_toggled(true)
-	
-	if toggled_regions_button and toggled_regions_button.visible:
-
-		_force_toggled_regions_button_position()
 		
+	var last_state = FileCache.options.get("show_regions_toggled", false)
+	var target_btn = -1
+	
+	if "_last_edit_button_pressed" in current_object and current_object._last_edit_button_pressed != -1:
+		target_btn = current_object._last_edit_button_pressed
+	elif "current_edit_button_pressed" in current_object and current_object.current_edit_button_pressed != -1:
+		target_btn = current_object.current_edit_button_pressed
+		
+	if target_btn != -1:
+		var mode_found = -1
+		
+		for key in edit_configs:
+			if edit_configs[key].button_index == target_btn:
+				mode_found = key
+				break
+				
+		if mode_found != -1:
+			_handle_button_toggle(mode_found, true)
+			
+		if not _current_floating_state:
+			if target_btn == 0 and is_instance_valid(events_dock):
+				if not events_dock.visible: events_dock.make_visible()
+			elif target_btn == 1 and is_instance_valid(extraction_events_dock):
+				if not extraction_events_dock.visible: extraction_events_dock.make_visible()
+			elif target_btn == 2 and is_instance_valid(enemy_spawn_regions_dock):
+				if not enemy_spawn_regions_dock.visible: enemy_spawn_regions_dock.make_visible()
+			elif target_btn == 3 and is_instance_valid(event_regions_dock):
+				if not event_regions_dock.visible: event_regions_dock.make_visible()
+				
+		if current_object.has_method("refresh_canvas"):
+			current_object.refresh_canvas()
+			
+		update_overlays()
+	else:
+		deactivate_edit_mode_and_show_output()
+		
+	if is_instance_valid(toggled_regions_button) and toggled_regions_button.visible:
+		_force_toggled_regions_button_position()
 		toggled_regions_button.set_pressed_no_signal(last_state)
 		
 		if current_object:
 			current_object.force_show_regions = last_state
-			current_object.queue_redraw()
-
+			if current_object.has_method("queue_redraw"):
+				current_object.queue_redraw()
+				
 		toggled_regions_button.toggled.emit(last_state)
 
 
@@ -1196,7 +1708,14 @@ func find_viewport_2d(node: Node, recursive_level):
 func _input(event: InputEvent) -> void:
 	if !current_object or EditorInterface.get_script_editor().is_visible_in_tree():
 		return
-	
+		
+	if _current_floating_state and floating_panel and floating_panel.visible:
+		var local_pos = floating_panel.get_local_mouse_position()
+		var rect = Rect2(Vector2.ZERO, floating_panel.size)
+		
+		if is_dragging_floating_panel or rect.has_point(local_pos):
+			return
+			
 	match current_edit_mode:
 		MODE.ENEMY_SPAWN:
 			_input_enemy_spawn_mode(event)
@@ -1205,14 +1724,26 @@ func _input(event: InputEvent) -> void:
 
 
 func _forward_canvas_gui_input(event: InputEvent) -> bool:
+	if _current_floating_state and floating_panel and floating_panel.visible:
+		var local_pos = floating_panel.get_local_mouse_position()
+		var rect = Rect2(Vector2.ZERO, floating_panel.size)
+		
+		if is_dragging_floating_panel or rect.has_point(local_pos):
+			return _process_floating_ui_input(event, local_pos)
+		else:
+			for btn in floating_buttons:
+				btn.modulate = Color(1.0, 1.0, 1.0, 1.0)
+				
 	if tile_popup_menu.visible or region_popup_menu.visible or is_resizing:
 		return false
 
 	if current_edit_mode == MODE.NONE or not current_object:
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) or Input.is_key_pressed(KEY_DELETE):
 			var editing_object = EditorInterface.get_edited_scene_root()
+			
 			if editing_object is RPGMap:
 				editing_object._keots_need_refresh()
+				
 		return false
 
 	var input_handled: bool = false
@@ -1386,12 +1917,13 @@ func _forward_canvas_gui_input_event_mode(event: InputEvent) -> bool:
 	var input_handled: bool = false
 	
 	if event is InputEventMouseMotion:
-		# ... (keep existing motion logic) ...
 		current_cursor = RESIZE_CURSORS.arrow
+		
 		if current_object.is_mouse_over_event() or is_mouse_over_start_positions():
 			current_cursor = RESIZE_CURSORS.move
 		
 		var pos = current_object.get_local_mouse_position()
+		
 		update_cursor_shape()
 		current_tile_pos = current_object.local_to_map(pos)
 		
@@ -1406,145 +1938,151 @@ func _forward_canvas_gui_input_event_mode(event: InputEvent) -> bool:
 		input_handled = true
 	
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		# ... (keep existing left click logic) ...
 		if event.is_pressed():
 			var _current_event = current_object.get_event_in(current_tile_pos)
 			
 			if can_place_event_in(current_tile_pos) or _current_event:
-				# Double-click to create new event
 				var result = add_event_in(current_tile_pos) if !_current_event and event.is_double_click() else false
+				
 				if result:
 					var undo_redo = get_undo_redo()
+					
 					undo_redo.create_action("Create New Event", UndoRedo.MERGE_DISABLE, current_object)
 					undo_redo.add_do_method(self, "_force_mode_switch", MODE.EVENT)
 					undo_redo.add_do_method(current_object, "add_event_in", current_tile_pos)
 					undo_redo.add_do_method(get_editor_interface(), "mark_scene_as_unsaved")
 					undo_redo.add_do_method(event_container_control, "refresh", true)
-					
 					undo_redo.add_undo_method(self, "_force_mode_switch", MODE.EVENT)
 					undo_redo.add_undo_method(current_object, "remove_event_in", current_tile_pos)
 					undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
 					undo_redo.add_undo_method(event_container_control, "refresh", true)
 					undo_redo.add_undo_method(event_container_control, "select", -1, true, true)
 					undo_redo.commit_action()
-					
 					call_deferred("_select_event_after_creation", current_tile_pos)
-					
 				elif _current_event:
+					EditorInterface.inspect_object(_current_event)
+					
 					if event.is_double_click():
 						show_edit_event_dialog()
 					else:
-						# Start dragging an existing event
 						current_object.select_event(Vector2i(_current_event.x, _current_event.y))
 						dragging_event = _current_event
-						event_drag_start_pos = Vector2i(_current_event.x, _current_event.y) # Store original pos
+						event_drag_start_pos = Vector2i(_current_event.x, _current_event.y)
 						create_cursor()
 						set_cursor_position()
+						
 						if event_container_control:
 							event_container_control.select(dragging_event.id, false, true)
+							
 					current_cursor = RESIZE_CURSORS.move
 			else:
 				var start_position = get_start_position_under_mouse()
+				
 				if start_position:
-					# Start dragging a start position
+					EditorInterface.inspect_object(start_position)
 					current_object.current_start_position = start_position
+					
 					if event_container_control:
 						event_container_control.refresh(true)
+						
 					dragging_start_position = start_position
-					start_pos_drag_start_pos = start_position.position # Store original pos
+					start_pos_drag_start_pos = start_position.position
 					create_cursor()
 					set_cursor_position()
 					current_cursor = RESIZE_CURSORS.move
+					
 			update_cursor_shape()
 		
 		elif dragging_event:
-			# Finished dragging an event
 			var new_pos = current_tile_pos
 			var old_pos = event_drag_start_pos
-			
 			var can_place = current_object.events.is_place_free_in(new_pos) and can_place_event_in(new_pos)
 			
 			if new_pos != old_pos and can_place:
 				var undo_redo = get_undo_redo()
-				undo_redo.create_action("Move Event", UndoRedo.MERGE_DISABLE, current_object)
 				
-				# DO
+				undo_redo.create_action("Move Event", UndoRedo.MERGE_DISABLE, current_object)
 				undo_redo.add_do_method(self, "_force_mode_switch", MODE.EVENT)
 				undo_redo.add_do_property(dragging_event, "x", new_pos.x)
 				undo_redo.add_do_property(dragging_event, "y", new_pos.y)
 				undo_redo.add_do_method(current_object, "queue_redraw")
 				undo_redo.add_do_method(get_editor_interface(), "mark_scene_as_unsaved")
 				undo_redo.add_do_method(event_container_control, "refresh", true)
-				
-				# UNDO
 				undo_redo.add_undo_method(self, "_force_mode_switch", MODE.EVENT)
 				undo_redo.add_undo_property(dragging_event, "x", old_pos.x)
 				undo_redo.add_undo_property(dragging_event, "y", old_pos.y)
 				undo_redo.add_undo_method(current_object, "queue_redraw")
 				undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
 				undo_redo.add_undo_method(event_container_control, "refresh", true)
-				
 				undo_redo.commit_action()
 			
 			dragging_event = null
 			destroy_cursor()
 		
 		elif dragging_start_position:
-			# Finished dragging a start position
 			var new_pos = current_tile_pos
 			var old_pos = start_pos_drag_start_pos
-			
 			var can_place = current_object.events.is_place_free_in(new_pos) and can_place_event_in(new_pos)
 			
 			if new_pos != old_pos and can_place:
 				var undo_redo = get_undo_redo()
-				undo_redo.create_action("Move Start Position", UndoRedo.MERGE_DISABLE, current_object)
 				
-				# DO
+				undo_redo.create_action("Move Start Position", UndoRedo.MERGE_DISABLE, current_object)
 				undo_redo.add_do_method(self, "_force_mode_switch", MODE.EVENT)
 				undo_redo.add_do_property(dragging_start_position, "position", new_pos)
 				undo_redo.add_do_method(current_object, "queue_redraw")
 				undo_redo.add_do_method(get_editor_interface(), "mark_scene_as_unsaved")
 				undo_redo.add_do_method(event_container_control, "refresh", true)
-				
-				# UNDO
 				undo_redo.add_undo_method(self, "_force_mode_switch", MODE.EVENT)
 				undo_redo.add_undo_property(dragging_start_position, "position", old_pos)
 				undo_redo.add_undo_method(current_object, "queue_redraw")
 				undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
 				undo_redo.add_undo_method(event_container_control, "refresh", true)
-				
 				undo_redo.commit_action()
 					
 			dragging_start_position = RPGMapPosition.new()
 			current_object.current_start_position = RPGMapPosition.new()
+			
 			if event_container_control:
 				event_container_control.refresh(true)
+				
 			destroy_cursor()
-
-		input_handled = true
 		
+		input_handled = true
 			
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
 		var pos = current_object.get_local_mouse_position()
 		var map_pos = current_object.local_to_map(pos)
 		
-		# FIX: Ensure global current_tile_pos is updated exactly where we clicked
 		current_tile_pos = map_pos
 		
 		if can_place_event_in(map_pos):
 			var ev = current_object.get_event_in(map_pos)
+			
 			if ev and event_container_control:
 				event_container_control.select(ev.id, true, true)
+				
 			show_tile_popup_menu(event.global_position)
 		elif get_start_position_under_mouse():
 			show_start_position_popup_menu(event.global_position)
+			
 		input_handled = true
-
-	# ... (keep existing key input logic) ...
+		
 	elif event is InputEventKey and event.is_pressed():
 		if event.keycode == KEY_ENTER:
 			show_edit_event_dialog()
+			input_handled = true
+		elif event.keycode == KEY_DELETE or event.keycode == KEY_BACKSPACE:
+			var event_to_remove = current_object.current_event
+			
+			if !event_to_remove:
+				event_to_remove = current_object.get_event_in(current_tile_pos)
+			
+			if event_to_remove:
+				current_object.current_event = event_to_remove
+				current_tile_pos = Vector2i(event_to_remove.x, event_to_remove.y)
+				remove_tile()
+				
 			input_handled = true
 		elif event.is_ctrl_pressed():
 			if event.keycode == KEY_C:
@@ -1552,25 +2090,17 @@ func _forward_canvas_gui_input_event_mode(event: InputEvent) -> bool:
 				input_handled = true
 			elif event.keycode == KEY_X:
 				var event_to_cut = current_object.current_event
+				
 				if !event_to_cut:
 					event_to_cut = current_object.get_event_in(current_tile_pos)
 				
 				if event_to_cut:
 					current_tile_pos = Vector2i(event_to_cut.x, event_to_cut.y)
-					_on_tile_popup_menu_index_pressed(2) # Call "Cut"
+					_on_tile_popup_menu_index_pressed(2)
+					
 				input_handled = true
 			elif event.keycode == KEY_V:
 				paste_tile()
-				input_handled = true
-			elif event.keycode == KEY_DELETE:
-				var event_to_remove = current_object.current_event
-				if !event_to_remove:
-					event_to_remove = current_object.get_event_in(current_tile_pos)
-				
-				if event_to_remove:
-					current_object.current_event = event_to_remove
-					current_tile_pos = Vector2i(event_to_remove.x, event_to_remove.y)
-					remove_tile()
 				input_handled = true
 	
 	return input_handled
@@ -1582,10 +2112,12 @@ func _forward_canvas_gui_input_extraction_event_mode(event: InputEvent) -> bool:
 	
 	if event is InputEventMouseMotion:
 		current_cursor = RESIZE_CURSORS.arrow
+		
 		if current_object.is_mouse_over_extraction_event():
 			current_cursor = RESIZE_CURSORS.move
 		
 		var pos = current_object.get_local_mouse_position()
+		
 		update_cursor_shape()
 		current_tile_pos = current_object.local_to_map(pos)
 		
@@ -1604,68 +2136,63 @@ func _forward_canvas_gui_input_extraction_event_mode(event: InputEvent) -> bool:
 			var _current_event = current_object.get_extraction_event_in(current_tile_pos)
 			
 			if can_place_event_in(current_tile_pos) or _current_event:
-				# Double-click to create new event
 				var result = add_extraction_event_in(current_tile_pos) if !_current_event and event.is_double_click() else false
+				
 				if result:
 					var undo_redo = get_undo_redo()
+					
 					undo_redo.create_action("Create New Extraction Event", UndoRedo.MERGE_DISABLE, current_object)
 					undo_redo.add_do_method(self, "_force_mode_switch", MODE.EXTRACTION_EVENT)
 					undo_redo.add_do_method(current_object, "add_extraction_event_in", current_tile_pos)
 					undo_redo.add_do_method(get_editor_interface(), "mark_scene_as_unsaved")
 					undo_redo.add_do_method(extraction_event_container_control, "refresh", true)
-					
 					undo_redo.add_undo_method(self, "_force_mode_switch", MODE.EXTRACTION_EVENT)
 					undo_redo.add_undo_method(current_object, "remove_extraction_event_in", current_tile_pos)
 					undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
 					undo_redo.add_undo_method(extraction_event_container_control, "refresh", true)
 					undo_redo.add_undo_method(extraction_event_container_control, "select", -1, true, true)
 					undo_redo.commit_action()
-					
 					call_deferred("_select_extraction_event_after_creation", current_tile_pos)
-						
 				elif _current_event:
+					EditorInterface.inspect_object(_current_event)
+					
 					if event.is_double_click():
 						show_edit_extraction_event_dialog()
 					else:
-						# Start dragging
 						current_object.select_extraction_event(Vector2i(_current_event.x, _current_event.y))
 						dragging_extraction_event = _current_event
-						extraction_drag_start_pos = Vector2i(_current_event.x, _current_event.y) # Store original pos
+						extraction_drag_start_pos = Vector2i(_current_event.x, _current_event.y)
 						create_cursor()
 						set_cursor_position()
+						
 						if extraction_event_container_control:
 							extraction_event_container_control.select(dragging_extraction_event.id, false, true)
+							
 					current_cursor = RESIZE_CURSORS.move
-
+					
 			update_cursor_shape()
 		
 		elif dragging_extraction_event:
-			# Finished dragging
 			var new_pos = current_tile_pos
 			var old_pos = extraction_drag_start_pos
-			
 			var can_place = current_object._is_place_free(new_pos) and can_place_event_in(new_pos)
-
+			
 			if new_pos != old_pos and can_place:
 				var undo_redo = get_undo_redo()
-				undo_redo.create_action("Move Extraction Event", UndoRedo.MERGE_DISABLE, current_object)
 				
-				# DO
+				undo_redo.create_action("Move Extraction Event", UndoRedo.MERGE_DISABLE, current_object)
 				undo_redo.add_do_method(self, "_force_mode_switch", MODE.EXTRACTION_EVENT)
 				undo_redo.add_do_property(dragging_extraction_event, "x", new_pos.x)
 				undo_redo.add_do_property(dragging_extraction_event, "y", new_pos.y)
 				undo_redo.add_do_method(current_object, "queue_redraw")
 				undo_redo.add_do_method(get_editor_interface(), "mark_scene_as_unsaved")
 				undo_redo.add_do_method(extraction_event_container_control, "refresh", true)
-				
-				# UNDO
 				undo_redo.add_undo_method(self, "_force_mode_switch", MODE.EXTRACTION_EVENT)
 				undo_redo.add_undo_property(dragging_extraction_event, "x", old_pos.x)
 				undo_redo.add_undo_property(dragging_extraction_event, "y", old_pos.y)
 				undo_redo.add_undo_method(current_object, "queue_redraw")
 				undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
 				undo_redo.add_undo_method(extraction_event_container_control, "refresh", true)
-				
 				undo_redo.commit_action()
 					
 			dragging_extraction_event = null
@@ -1675,16 +2202,34 @@ func _forward_canvas_gui_input_extraction_event_mode(event: InputEvent) -> bool:
 		
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
 		var pos = current_object.get_local_mouse_position()
+		
 		pos = current_object.local_to_map(pos)
+		
 		if can_place_event_in(pos):
 			var ev = current_object.get_extraction_event_in(pos)
+			
 			if ev and extraction_event_container_control:
 				extraction_event_container_control.select(ev.id, true, true)
+				
 			show_extraction_tile_popup_menu(event.global_position)
+			
 		input_handled = true
+		
 	elif event is InputEventKey and event.is_pressed():
 		if event.keycode == KEY_ENTER:
 			show_edit_extraction_event_dialog()
+			input_handled = true
+		elif event.keycode == KEY_DELETE or event.keycode == KEY_BACKSPACE:
+			var event_to_remove = current_object.current_extraction_event
+			
+			if !event_to_remove:
+				event_to_remove = current_object.get_extraction_event_in(current_tile_pos)
+			
+			if event_to_remove:
+				current_object.current_extraction_event = event_to_remove
+				current_tile_pos = Vector2i(event_to_remove.x, event_to_remove.y)
+				remove_extraction_tile()
+				
 			input_handled = true
 		elif event.is_ctrl_pressed():
 			if event.keycode == KEY_C:
@@ -1692,25 +2237,17 @@ func _forward_canvas_gui_input_extraction_event_mode(event: InputEvent) -> bool:
 				input_handled = true
 			elif event.keycode == KEY_X:
 				var event_to_cut = current_object.current_extraction_event
+				
 				if !event_to_cut:
 					event_to_cut = current_object.get_extraction_event_in(current_tile_pos)
 				
 				if event_to_cut:
 					current_tile_pos = Vector2i(event_to_cut.x, event_to_cut.y)
-					_on_extraction_tile_popup_menu_index_pressed(2) # Call "Cut"
+					_on_extraction_tile_popup_menu_index_pressed(2)
+					
 				input_handled = true
 			elif event.keycode == KEY_V:
 				paste_extraction_tile()
-				input_handled = true
-			elif event.keycode == KEY_DELETE:
-				var event_to_remove = current_object.current_extraction_event
-				if !event_to_remove:
-					event_to_remove = current_object.get_extraction_event_in(current_tile_pos)
-				
-				if event_to_remove:
-					current_object.current_extraction_event = event_to_remove
-					current_tile_pos = Vector2i(event_to_remove.x, event_to_remove.y)
-					remove_extraction_tile()
 				input_handled = true
 	
 	return input_handled
@@ -1736,69 +2273,70 @@ func _forward_canvas_gui_input_enemy_spawn_mode(event: InputEvent) -> bool:
 	
 	if event is InputEventMouseMotion:
 		var pos = current_object.get_local_mouse_position()
+		
 		update_cursor_shape()
 		current_tile_pos = current_object.local_to_map(pos)
 		
 		if dragging_enemy_spawn_region != null:
 			update_drawing_region()
+			current_object.refresh_canvas()
 		elif moving_enemy_spawn_region != null:
 			update_moving_region(event.position)
-		
+			current_object.refresh_canvas()
+			
 		input_handled = true
-	
+		
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.is_pressed():
 			var region: EnemySpawnRegion = get_region_in(current_tile_pos)
+			
 			if can_place_event_in(current_tile_pos) or region:
 				if region:
-					# Start Moving
+					EditorInterface.inspect_object(region)
 					moving_enemy_spawn_region = region.duplicate()
 					current_object.current_enemy_spawn_region = moving_enemy_spawn_region
 					current_object.region_selected = region
-					current_object.refresh_canvas() # Shows "dim" state
+					current_object.refresh_canvas()
 					drawing_region_start_position = event.position
 					current_region_position = moving_enemy_spawn_region.rect.position
+					
 					if enemy_spawn_container_control:
 						enemy_spawn_container_control.select(moving_enemy_spawn_region.id, false, true)
+						
 					if event.is_double_click():
 						show_edit_region_dialog()
 				else:
-					# Start Creating
 					dragging_enemy_spawn_region = EnemySpawnRegion.new()
 					current_object.current_enemy_spawn_region = dragging_enemy_spawn_region
 					drawing_region_start_position = current_tile_pos
 					update_drawing_region()
-		
+					current_object.refresh_canvas()
+					
 		elif dragging_enemy_spawn_region:
-			# Finished Creating
 			var region_to_add = dragging_enemy_spawn_region.duplicate(true)
 			var region_id = region_to_add.id
 			
 			if region_to_add.rect.size.x > 0 and region_to_add.rect.size.y > 0:
 				var undo_redo = get_undo_redo()
-				undo_redo.create_action("Create Region", UndoRedo.MERGE_DISABLE, current_object)
 				
-				# DO
+				undo_redo.create_action("Create Region", UndoRedo.MERGE_DISABLE, current_object)
 				undo_redo.add_do_method(self, "_force_mode_switch", MODE.ENEMY_SPAWN)
 				undo_redo.add_do_method(current_object, "add_region", region_to_add)
 				undo_redo.add_do_method(get_editor_interface(), "mark_scene_as_unsaved")
 				undo_redo.add_do_method(enemy_spawn_container_control, "refresh", true)
 				call_deferred("_select_region_after_creation", region_to_add)
-
-				# UNDO
 				undo_redo.add_undo_method(self, "_force_mode_switch", MODE.ENEMY_SPAWN)
 				undo_redo.add_undo_method(current_object, "remove_region", region_to_add)
 				undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
 				undo_redo.add_undo_method(enemy_spawn_container_control, "refresh", true)
 				undo_redo.add_undo_method(enemy_spawn_container_control, "select", -1, true, true)
-				
 				undo_redo.commit_action()
-			
+				
 			current_object.current_enemy_spawn_region = null
 			dragging_enemy_spawn_region = null
-		
+			current_object.refresh_canvas()
+			
 		elif moving_enemy_spawn_region:
-			# Finished Moving
 			var new_rect = moving_enemy_spawn_region.rect
 			var old_rect = Rect2i(current_region_position, new_rect.size)
 			
@@ -1809,43 +2347,53 @@ func _forward_canvas_gui_input_enemy_spawn_mode(event: InputEvent) -> bool:
 					push_error("RPGMapPlugin: Cannot move region, region_selected is null.")
 				else:
 					var region_id = region_to_move.id
-					
 					var undo_redo = get_undo_redo()
-					undo_redo.create_action("Move Region", UndoRedo.MERGE_DISABLE, current_object)
 					
-					# DO
+					undo_redo.create_action("Move Region", UndoRedo.MERGE_DISABLE, current_object)
 					undo_redo.add_do_method(self, "_force_mode_switch", MODE.ENEMY_SPAWN)
 					undo_redo.add_do_property(region_to_move, "rect", new_rect)
 					undo_redo.add_do_method(current_object, "update_region", region_to_move)
 					undo_redo.add_do_method(get_editor_interface(), "mark_scene_as_unsaved")
 					undo_redo.add_do_method(enemy_spawn_container_control, "select", region_id, true, true)
-					
-					# UNDO
 					undo_redo.add_undo_method(self, "_force_mode_switch", MODE.ENEMY_SPAWN)
 					undo_redo.add_undo_property(region_to_move, "rect", old_rect)
 					undo_redo.add_undo_method(current_object, "update_region", region_to_move)
 					undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
 					undo_redo.add_undo_method(enemy_spawn_container_control, "select", region_id, true, true)
-					
 					undo_redo.commit_action()
-			
+					
 			current_object.current_enemy_spawn_region = null
 			moving_enemy_spawn_region = null
-			current_object.refresh_canvas() # <<< BUG FIX
-
+			current_object.refresh_canvas()
+			
 		input_handled = true
 		
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
 		var pos = current_object.get_local_mouse_position()
+		
 		pos = current_object.local_to_map(pos)
+		
 		var region = current_object.get_region_in(pos)
+		
 		if region and enemy_spawn_container_control:
 			enemy_spawn_container_control.select(region.id, true, true)
+			
 		show_region_popup_menu(event.global_position)
 		input_handled = true
+		
 	elif event is InputEventKey and event.is_pressed():
 		if event.keycode == KEY_ENTER and current_object.region_selected:
 			show_edit_region_dialog()
+			input_handled = true
+		elif event.keycode == KEY_DELETE or event.keycode == KEY_BACKSPACE:
+			var region_to_remove = current_object.region_selected
+			
+			if !region_to_remove:
+				region_to_remove = current_object.get_region_in(current_tile_pos)
+				
+			if region_to_remove:
+				remove_region(region_to_remove)
+				
 			input_handled = true
 		elif event.is_ctrl_pressed():
 			if event.keycode == KEY_C:
@@ -1853,23 +2401,19 @@ func _forward_canvas_gui_input_enemy_spawn_mode(event: InputEvent) -> bool:
 				input_handled = true
 			elif event.keycode == KEY_X:
 				var region_to_cut = current_object.region_selected
+				
 				if !region_to_cut:
 					region_to_cut = current_object.get_region_in(current_tile_pos)
+					
 				if region_to_cut:
 					current_object.region_selected = region_to_cut
-					_on_region_popup_menu_index_pressed(4) 
+					_on_region_popup_menu_index_pressed(4)
+					
 				input_handled = true
 			elif event.keycode == KEY_V:
 				paste_region()
 				input_handled = true
-			elif event.keycode == KEY_DELETE:
-				var region_to_remove = current_object.region_selected
-				if !region_to_remove:
-					region_to_remove = current_object.get_region_in(current_tile_pos)
-				if region_to_remove:
-					remove_region(region_to_remove)
-				input_handled = true
-	
+				
 	return input_handled
 
 
@@ -1898,72 +2442,73 @@ func _input_event_region_mode(event: InputEvent) -> void:
 
 func _forward_canvas_gui_input_event_region_mode(event: InputEvent) -> bool:
 	var input_handled: bool = false
-
+	
 	if event is InputEventMouseMotion:
 		var pos = current_object.get_local_mouse_position()
+		
 		update_cursor_shape()
 		current_tile_pos = current_object.local_to_map(pos)
-
+		
 		if dragging_event_region != null:
 			update_drawing_event_region()
+			current_object.refresh_canvas()
 		elif moving_event_region != null:
 			update_moving_event_region(event.position)
-		
+			current_object.refresh_canvas()
+			
 		input_handled = true
-	
+		
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.is_pressed():
 			var region: EventRegion = get_event_region_in(current_tile_pos)
+			
 			if can_place_event_in(current_tile_pos) or region:
 				if region:
-					# Start Moving
+					EditorInterface.inspect_object(region)
 					moving_event_region = region.duplicate()
 					current_object.current_event_region = moving_event_region
 					current_object.event_region_selected = region
-					current_object.refresh_canvas() # Shows "dim" state
+					current_object.refresh_canvas()
 					drawing_region_start_position = event.position
 					current_region_position = moving_event_region.rect.position
+					
 					if event_region_container_control:
 						event_region_container_control.select(moving_event_region.id, false, true)
+						
 					if event.is_double_click():
 						show_edit_event_region_dialog()
 				else:
-					# Start Creating
 					dragging_event_region = EventRegion.new()
 					current_object.current_event_region = dragging_event_region
 					drawing_region_start_position = current_tile_pos
 					update_drawing_event_region()
-		
+					current_object.refresh_canvas()
+					
 		elif dragging_event_region:
-			# Finished Creating
 			var region_to_add = dragging_event_region.duplicate(true)
 			var region_id = region_to_add.id
 			
 			if region_to_add.rect.size.x > 0 and region_to_add.rect.size.y > 0:
 				var undo_redo = get_undo_redo()
-				undo_redo.create_action("Create Event Region", UndoRedo.MERGE_DISABLE, current_object)
 				
-				# DO
+				undo_redo.create_action("Create Event Region", UndoRedo.MERGE_DISABLE, current_object)
 				undo_redo.add_do_method(self, "_force_mode_switch", MODE.EVENT_REGION)
 				undo_redo.add_do_method(current_object, "add_event_region", region_to_add)
 				undo_redo.add_do_method(get_editor_interface(), "mark_scene_as_unsaved")
 				undo_redo.add_do_method(event_region_container_control, "refresh", true)
 				call_deferred("_select_event_region_after_creation", region_to_add)
-
-				# UNDO
 				undo_redo.add_undo_method(self, "_force_mode_switch", MODE.EVENT_REGION)
 				undo_redo.add_undo_method(current_object, "remove_event_region", region_to_add)
 				undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
 				undo_redo.add_undo_method(event_region_container_control, "refresh", true)
 				undo_redo.add_undo_method(event_region_container_control, "select", -1, true, true)
-				
 				undo_redo.commit_action()
-
+				
 			current_object.current_event_region = null
 			dragging_event_region = null
-		
+			current_object.refresh_canvas()
+			
 		elif moving_event_region:
-			# Finished Moving
 			var new_rect = moving_event_region.rect
 			var old_rect = Rect2i(current_region_position, new_rect.size)
 			
@@ -1974,43 +2519,53 @@ func _forward_canvas_gui_input_event_region_mode(event: InputEvent) -> bool:
 					push_error("RPGMapPlugin: Cannot move event region, event_region_selected is null.")
 				else:
 					var region_id = region_to_move.id
-					
 					var undo_redo = get_undo_redo()
-					undo_redo.create_action("Move Event Region", UndoRedo.MERGE_DISABLE, current_object)
 					
-					# DO
+					undo_redo.create_action("Move Event Region", UndoRedo.MERGE_DISABLE, current_object)
 					undo_redo.add_do_method(self, "_force_mode_switch", MODE.EVENT_REGION)
 					undo_redo.add_do_property(region_to_move, "rect", new_rect)
 					undo_redo.add_do_method(current_object, "update_event_region", region_to_move)
 					undo_redo.add_do_method(get_editor_interface(), "mark_scene_as_unsaved")
 					undo_redo.add_do_method(event_region_container_control, "select", region_id, true, true)
-					
-					# UNDO
 					undo_redo.add_undo_method(self, "_force_mode_switch", MODE.EVENT_REGION)
 					undo_redo.add_undo_property(region_to_move, "rect", old_rect)
 					undo_redo.add_undo_method(current_object, "update_event_region", region_to_move)
 					undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
 					undo_redo.add_undo_method(event_region_container_control, "select", region_id, true, true)
-					
 					undo_redo.commit_action()
-			
+					
 			current_object.current_event_region = null
 			moving_event_region = null
-			current_object.refresh_canvas() # <<< BUG FIX
-		
+			current_object.refresh_canvas()
+			
 		input_handled = true
-	
+		
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
 		var pos = current_object.get_local_mouse_position()
+		
 		pos = current_object.local_to_map(pos)
+		
 		var region = current_object.get_event_region_in(pos)
+		
 		if region and event_region_container_control:
 			event_region_container_control.select(region.id, true, true)
+			
 		show_region_popup_menu(event.global_position)
 		input_handled = true
+		
 	elif event is InputEventKey and event.is_pressed():
 		if event.keycode == KEY_ENTER and current_object.event_region_selected:
 			show_edit_event_region_dialog()
+			input_handled = true
+		elif event.keycode == KEY_DELETE or event.keycode == KEY_BACKSPACE:
+			var region_to_remove = current_object.event_region_selected
+			
+			if !region_to_remove:
+				region_to_remove = current_object.get_event_region_in(current_tile_pos)
+				
+			if region_to_remove:
+				remove_event_region(region_to_remove)
+				
 			input_handled = true
 		elif event.is_ctrl_pressed():
 			if event.keycode == KEY_C:
@@ -2018,23 +2573,19 @@ func _forward_canvas_gui_input_event_region_mode(event: InputEvent) -> bool:
 				input_handled = true
 			elif event.keycode == KEY_X:
 				var region_to_cut = current_object.event_region_selected
+				
 				if !region_to_cut:
 					region_to_cut = current_object.get_event_region_in(current_tile_pos)
+					
 				if region_to_cut:
 					current_object.event_region_selected = region_to_cut
-					_on_region_popup_menu_index_pressed(4) 
+					_on_region_popup_menu_index_pressed(4)
+					
 				input_handled = true
 			elif event.keycode == KEY_V:
 				paste_event_region()
 				input_handled = true
-			elif event.keycode == KEY_DELETE:
-				var region_to_remove = current_object.event_region_selected
-				if !region_to_remove:
-					region_to_remove = current_object.get_event_region_in(current_tile_pos)
-				if region_to_remove:
-					remove_event_region(region_to_remove)
-				input_handled = true
-	
+				
 	return input_handled
 
 
@@ -2095,7 +2646,8 @@ func update_drawing_region() -> void:
 	dragging_enemy_spawn_region.rect = Rect2i(top_left, bottom_right - top_left)
 	dragging_enemy_spawn_region.rect.size = dragging_enemy_spawn_region.rect.size.max(Vector2i.ONE)
 	
-	current_object.refresh_canvas()
+	current_object.queue_redraw()
+	update_overlays()
 
 
 func update_drawing_event_region() -> void:
@@ -2111,7 +2663,8 @@ func update_drawing_event_region() -> void:
 	dragging_event_region.rect = Rect2i(top_left, bottom_right - top_left)
 	dragging_event_region.rect.size = dragging_event_region.rect.size.max(Vector2i.ONE)
 	
-	current_object.refresh_canvas()
+	current_object.queue_redraw()
+	update_overlays()
 
 
 func update_moving_region(pos: Vector2i) -> void:
@@ -2122,7 +2675,8 @@ func update_moving_region(pos: Vector2i) -> void:
 	
 	moving_enemy_spawn_region.rect.position = current_region_position + dest
 	
-	current_object.refresh_canvas()
+	current_object.queue_redraw()
+	update_overlays()
 
 
 func update_moving_event_region(pos: Vector2i) -> void:
@@ -2133,7 +2687,8 @@ func update_moving_event_region(pos: Vector2i) -> void:
 	
 	moving_event_region.rect.position = current_region_position + dest
 	
-	current_object.refresh_canvas()
+	current_object.queue_redraw()
+	update_overlays()
 
 
 func show_tile_popup_menu(pos: Vector2) -> void:
@@ -3103,15 +3658,14 @@ func remove_tile():
 	
 	undo_redo.create_action("Remove Event", UndoRedo.MERGE_DISABLE, current_object)
 
-	# DO
 	undo_redo.add_do_method(self, "_force_mode_switch", MODE.EVENT)
 	undo_redo.add_do_method(current_object, "remove_event_in", event_pos)
 	undo_redo.add_do_method(get_editor_interface(), "mark_scene_as_unsaved")
 	undo_redo.add_do_method(event_container_control, "refresh", true)
 	undo_redo.add_do_method(event_container_control, "select", -1, true, true)
+	undo_redo.add_do_method(EditorInterface, "inspect_object", null)
 	undo_redo.add_do_method(current_object, "queue_redraw")
 
-	# UNDO
 	undo_redo.add_undo_method(self, "_force_mode_switch", MODE.EVENT)
 	undo_redo.add_undo_method(current_object, "paste_event_in", event_pos, event_copy)
 	undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
@@ -3139,15 +3693,14 @@ func remove_extraction_tile():
 	var undo_redo = get_undo_redo()
 	undo_redo.create_action("Remove Extraction Event", UndoRedo.MERGE_DISABLE, current_object)
 
-	# DO
 	undo_redo.add_do_method(self, "_force_mode_switch", MODE.EXTRACTION_EVENT)
 	undo_redo.add_do_method(current_object, "remove_extraction_event_in", event_pos)
 	undo_redo.add_do_method(get_editor_interface(), "mark_scene_as_unsaved")
 	undo_redo.add_do_method(extraction_event_container_control, "refresh", true)
 	undo_redo.add_do_method(extraction_event_container_control, "select", -1, true, true)
+	undo_redo.add_do_method(EditorInterface, "inspect_object", null)
 	undo_redo.add_do_method(current_object, "queue_redraw")
 
-	# UNDO
 	undo_redo.add_undo_method(self, "_force_mode_switch", MODE.EXTRACTION_EVENT)
 	undo_redo.add_undo_method(current_object, "paste_extraction_event_in", event_pos, event_copy)
 	undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
@@ -3168,7 +3721,7 @@ func remove_region(default_region: EnemySpawnRegion = null):
 	if !region_to_remove:
 		region_to_remove = current_object.get_region_in(current_tile_pos)
 	if !region_to_remove:
-		return # Nothing to remove
+		return 
 	
 	var region_copy = region_to_remove.duplicate(true)
 	var region_id = region_copy.id
@@ -3176,15 +3729,14 @@ func remove_region(default_region: EnemySpawnRegion = null):
 	var undo_redo = get_undo_redo()
 	undo_redo.create_action("Remove Region", UndoRedo.MERGE_DISABLE, current_object)
 	
-	# DO
 	undo_redo.add_do_method(self, "_force_mode_switch", MODE.ENEMY_SPAWN)
 	undo_redo.add_do_method(current_object, "remove_region", region_to_remove)
 	undo_redo.add_do_method(get_editor_interface(), "mark_scene_as_unsaved")
 	undo_redo.add_do_method(enemy_spawn_container_control, "refresh", true)
 	undo_redo.add_do_method(enemy_spawn_container_control, "select", -1, true, true)
+	undo_redo.add_do_method(EditorInterface, "inspect_object", null)
 	undo_redo.add_do_method(current_object, "queue_redraw")
 
-	# UNDO
 	undo_redo.add_undo_method(self, "_force_mode_switch", MODE.ENEMY_SPAWN)
 	undo_redo.add_undo_method(current_object, "paste_region_in", region_copy.rect.position, region_copy)
 	undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
@@ -3205,7 +3757,7 @@ func remove_event_region(default_region: EventRegion = null):
 	if !region_to_remove:
 		region_to_remove = current_object.get_event_region_in(current_tile_pos)
 	if !region_to_remove:
-		return # Nothing to remove
+		return
 	
 	var region_copy = region_to_remove.duplicate(true)
 	var region_id = region_copy.id
@@ -3213,15 +3765,14 @@ func remove_event_region(default_region: EventRegion = null):
 	var undo_redo = get_undo_redo()
 	undo_redo.create_action("Remove Event Region", UndoRedo.MERGE_DISABLE, current_object)
 	
-	# DO
 	undo_redo.add_do_method(self, "_force_mode_switch", MODE.EVENT_REGION)
 	undo_redo.add_do_method(current_object, "remove_event_region", region_to_remove)
 	undo_redo.add_do_method(get_editor_interface(), "mark_scene_as_unsaved")
 	undo_redo.add_do_method(event_region_container_control, "refresh", true)
 	undo_redo.add_do_method(event_region_container_control, "select", -1, true, true)
+	undo_redo.add_do_method(EditorInterface, "inspect_object", null)
 	undo_redo.add_do_method(current_object, "queue_redraw")
 
-	# UNDO
 	undo_redo.add_undo_method(self, "_force_mode_switch", MODE.EVENT_REGION)
 	undo_redo.add_undo_method(current_object, "paste_event_region_in", region_copy.rect.position, region_copy)
 	undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
@@ -3498,26 +4049,24 @@ func get_event_region_in(pos: Vector2i) -> EventRegion:
 func can_place_event_in(pos: Vector2i) -> bool:
 	if current_object:
 		var system = get_node_or_null("/root/RPGSYSTEM")
+		
 		if system:
 			var map_id = current_object.internal_id
-			var ids = [
-				"player_start_position",
-				"land_transport_start_position",
-				"sea_transport_start_position",
-				"air_transport_start_position",
-			]
+			var ids = ["player_start_position", "land_transport_start_position", "sea_transport_start_position", "air_transport_start_position"]
+			
 			for id in ids:
 				var data: RPGMapPosition = system.database.system.get(id)
-				if data and data.map_id == map_id and data.position == current_tile_pos:
+				
+				if data and data.map_id == map_id and data.position == pos:
 					return false
-		
+					
 		var extra_margin = 5
 		var used_rect = current_object.get_used_rect()
-
-		var real_position = current_object.map_to_local(pos)
+		used_rect.position -= Vector2i(extra_margin, extra_margin)
+		used_rect.size += Vector2i(extra_margin * 2, extra_margin * 2)
 		
-		return used_rect.has_point(real_position)
-	
+		return used_rect.has_point(pos)
+		
 	return false
 
 
@@ -3526,27 +4075,36 @@ func get_preview(scene: String, receiver: Object, function: StringName, userdata
 
 
 func _force_mode_switch(mode_to_force: MODE) -> void:
-	# This function forces the UI to switch to a specific mode.
-	# We set other buttons to false first to avoid multiple signals.
-	if mode_to_force != MODE.EVENT:
-		events_dock.visible = false
-	if mode_to_force != MODE.EXTRACTION_EVENT:
-		extraction_events_dock.visible = false
-	if mode_to_force != MODE.ENEMY_SPAWN:
-		enemy_spawn_regions_dock.visible = false
-	if mode_to_force != MODE.EVENT_REGION:
-		event_regions_dock.visible = false
-	
-	# Now press the correct one. Its 'toggled' signal will fire.
-	match mode_to_force:
-		MODE.EVENT:
-			events_dock.make_visible()
-		MODE.EXTRACTION_EVENT:
-			extraction_events_dock.make_visible()
-		MODE.ENEMY_SPAWN:
-			enemy_spawn_regions_dock.make_visible()
-		MODE.EVENT_REGION:
-			event_regions_dock.make_visible()
+	if _current_floating_state:
+		for i in range(floating_buttons.size()):
+			var btn = floating_buttons[i]
+			var should_be_pressed = false
+			
+			if mode_to_force == MODE.EVENT and i == 0: should_be_pressed = true
+			elif mode_to_force == MODE.EXTRACTION_EVENT and i == 1: should_be_pressed = true
+			elif mode_to_force == MODE.ENEMY_SPAWN and i == 2: should_be_pressed = true
+			elif mode_to_force == MODE.EVENT_REGION and i == 3: should_be_pressed = true
+			
+			if should_be_pressed:
+				btn.set_pressed(true)
+			else:
+				btn.set_pressed_no_signal(false)
+				btn.modulate = Color(1.0, 1.0, 1.0, 1.0)
+	else:
+		if mode_to_force != MODE.EVENT and is_instance_valid(events_dock): events_dock.visible = false
+		if mode_to_force != MODE.EXTRACTION_EVENT and is_instance_valid(extraction_events_dock): extraction_events_dock.visible = false
+		if mode_to_force != MODE.ENEMY_SPAWN and is_instance_valid(enemy_spawn_regions_dock): enemy_spawn_regions_dock.visible = false
+		if mode_to_force != MODE.EVENT_REGION and is_instance_valid(event_regions_dock): event_regions_dock.visible = false
+		
+		match mode_to_force:
+			MODE.EVENT: 
+				if is_instance_valid(events_dock): events_dock.make_visible()
+			MODE.EXTRACTION_EVENT: 
+				if is_instance_valid(extraction_events_dock): extraction_events_dock.make_visible()
+			MODE.ENEMY_SPAWN: 
+				if is_instance_valid(enemy_spawn_regions_dock): enemy_spawn_regions_dock.make_visible()
+			MODE.EVENT_REGION: 
+				if is_instance_valid(event_regions_dock): event_regions_dock.make_visible()
 
 
 func _save_external_data() -> void:

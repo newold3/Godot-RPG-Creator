@@ -158,6 +158,7 @@ var current_in_game_enemy_spawn_region: EnemySpawnRegion
 @export var event_regions: Array[EventRegion] = []
 @export var internal_id: int
 @export var current_edit_button_pressed: int = -1
+@export var _last_edit_button_pressed: int = -1
 var ingame_event_regions: Array[CollisionShape2D] = []
 
 @onready var MAP_LAYERS: Dictionary = {}
@@ -292,7 +293,7 @@ func _validate_property(property):
 			property.usage = PROPERTY_USAGE_NO_EDITOR
 			return
 			
-	var properties = ["internal_id", "events", "extraction_events", "regions", "event_regions", "current_edit_button_pressed", "_baked_keot_data"]
+	var properties = ["internal_id", "events", "extraction_events", "regions", "event_regions", "current_edit_button_pressed", "_baked_keot_data", "_last_edit_button_pressed"]
 	if property.name in properties:
 		property.usage &= ~PROPERTY_USAGE_EDITOR
 	

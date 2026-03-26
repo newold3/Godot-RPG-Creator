@@ -2,11 +2,6 @@
 class_name RPGEvent
 extends Resource
 
-
-## Returns the class name for engine identification.
-func get_class(): return "RPGEvent"
-
-
 ## Unique 16-digit identifier for the event resource.
 @export var _uniq_id: int = -1 :
 	get():
@@ -45,6 +40,52 @@ func get_class(): return "RPGEvent"
 
 ## Runtime reference to the last executed or displayed page.
 var last_page_used: RPGEventPage
+
+
+## Hides the real exported variables from the inspector while keeping them serialized.
+func _validate_property(property: Dictionary) -> void:
+	if property.name == "id" or property.name == "_uniq_id":
+		property.usage = PROPERTY_USAGE_NO_EDITOR | PROPERTY_USAGE_STORAGE
+
+
+## Injects ghost read-only string properties into the inspector.
+func _get_property_list() -> Array[Dictionary]:
+	var props: Array[Dictionary] = []
+	
+	props.append({
+		"name": "Event ID",
+		"type": TYPE_STRING,
+		"usage": PROPERTY_USAGE_EDITOR
+	})
+	
+	props.append({
+		"name": "Unique ID",
+		"type": TYPE_STRING,
+		"usage": PROPERTY_USAGE_EDITOR
+	})
+	
+	return props
+
+
+## Returns the string values for the ghost properties.
+func _get(property: StringName):
+	if property == &"Event ID":
+		return str(id)
+	if property == &"Unique ID":
+		return str(_uniq_id)
+		
+	return null
+
+
+func _set(property: StringName, value: Variant) -> bool:
+	if property == &"Event ID" or property == &"Unique ID":
+		return true
+		
+	return false
+
+
+## Returns the class name for engine identification.
+func get_class(): return "RPGEvent"
 
 
 ## Generates a unique 16-digit integer for internal identification.
@@ -386,5 +427,6 @@ func _compare_values(a, b) -> bool:
 	return a == b
 
 
+## Returns a string representation of the event for debugging.
 func _to_string() -> String:
 	return "<RPGEvent: ID: %s, Name: %s, Position: %sx, %sy Internal ID: %s>" % [id, name, x, y, _uniq_id]
