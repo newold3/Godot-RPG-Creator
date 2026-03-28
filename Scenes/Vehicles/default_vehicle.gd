@@ -53,6 +53,9 @@ extends CharacterBody2D
 ## Indicates if the vehicle should show a visual marker where the player will disembark
 @export var show_disembark_indicator: bool = false
 
+@export var can_disembark_indicator_color: Color = Color.BLACK
+@export var cannot_disembark_indicator_color: Color = Color.RED
+
 ## Texture used for the disembark indicator, defaults to a simple rect if empty
 @export var disembark_indicator_texture: Texture2D
 
@@ -427,10 +430,16 @@ func _draw() -> void:
 	var tile_size = Vector2(current_map.tile_size)
 	var rect = Rect2(local_pos - Vector2(tile_size.x / 2.0, tile_size.y), tile_size)
 	if disembark_indicator_texture:
-		draw_texture_rect(disembark_indicator_texture, rect, false)
+		var color = can_disembark_indicator_color if can_disembark() \
+			else cannot_disembark_indicator_color
+		draw_texture_rect(disembark_indicator_texture, rect, false, color)
 	else:
-		draw_rect(rect, Color(0.0, 1.0, 0.0, 0.4), true)
-		draw_rect(rect, Color(0.0, 1.0, 0.0, 0.8), false, 2.0)
+		var color = Color.GREEN if can_disembark() \
+			else Color.RED
+		color.a = 0.4
+		draw_rect(rect, color, true)
+		color.a = 0.8
+		draw_rect(rect, color, false, 2.0)
 
 
 func _set_target_destination(tile: Vector2i, is_new_click: bool = true) -> void:

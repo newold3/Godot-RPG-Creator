@@ -6,8 +6,58 @@ var _map_size: Vector2i
 var _infinite_x: bool
 var _infinite_y: bool
 
+# Debug (for player only)
+var debug_mode: bool = false
+var last_path: Array[Vector2i] = []
+var debug_line_color: Color = Color(1, 0, 0, 0.5)
+var debug_point_color: Color = Color(1, 1, 0, 0.5)
+
+
 const COST_STRAIGHT = 1.0
 const COST_DIAGONAL = 1.4142
+
+
+## Draws the debug path on a given canvas item (call this inside a _draw method)
+func draw_debug(canvas: CanvasItem, map: RPGMap) -> void:
+	if not debug_mode or last_path.size() < 2 or not canvas or not map:
+		return
+		
+	var points_to_draw: PackedVector2Array = []
+	var half_tile: Vector2 = Vector2(map.tile_size) / 2.0
+	var radius = min(map.tile_size.x, map.tile_size.y) * 0.2
+	var current_visual_tile = Vector2(last_path[0])
+	
+	for i in range(last_path.size()):
+		var tile = last_path[i]
+		
+		if i > 0:
+			var prev_tile = last_path[i - 1]
+			var diff_x = tile.x - prev_tile.x
+			var diff_y = tile.y - prev_tile.y
+			
+			if _infinite_x:
+				if diff_x > _map_size.x / 2.0:
+					diff_x -= _map_size.x
+				elif diff_x < -_map_size.x / 2.0:
+					diff_x += _map_size.x
+					
+			if _infinite_y:
+				if diff_y > _map_size.y / 2.0:
+					diff_y -= _map_size.y
+				elif diff_y < -_map_size.y / 2.0:
+					diff_y += _map_size.y
+					
+			current_visual_tile += Vector2(diff_x, diff_y)
+			
+		var map_pos = (current_visual_tile * Vector2(map.tile_size)) + half_tile
+		var draw_pos = canvas.to_local(map_pos)
+		
+		points_to_draw.append(draw_pos)
+		
+		canvas.draw_circle(draw_pos, radius, debug_point_color)
+		
+	canvas.draw_polyline(points_to_draw, debug_line_color, 2.0)
+
 
 func initialize(map: RPGMap) -> void:
 	clear()
@@ -61,19 +111,31 @@ func _compute_cost(from_id: int, to_id: int) -> float:
 	return COST_STRAIGHT
 
 
+## Gets the next tile for the character and updates the debug path if enabled
 func get_next_tile(character: Node2D, current_tile: Vector2i, target_tile: Vector2i) -> Variant:
 	if not _map:
 		return null
+		
 	var start_id = _get_id_from_tile(current_tile)
 	var end_id = _get_id_from_tile(target_tile)
+	
 	if start_id < 0 or end_id < 0 or not has_point(start_id) or not has_point(end_id):
 		return null
+		
 	var disabled_points = _disable_dynamic_obstacles(character, target_tile)
 	var path_ids = get_id_path(start_id, end_id)
+	
 	_restore_dynamic_obstacles(disabled_points)
+	
+	if debug_mode:
+		last_path.clear()
+		for id in path_ids:
+			last_path.append(Vector2i(get_point_position(id)))
+			
 	if path_ids.size() > 1:
 		var next_point_pos = get_point_position(path_ids[1])
 		return Vector2i(next_point_pos)
+		
 	return null
 
 

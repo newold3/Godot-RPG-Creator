@@ -111,6 +111,8 @@ var _last_recorded_scale: Vector2 = Vector2.ONE
 var _auto_target_tile: Vector2i = Vector2i(-1, -1)
 var _auto_target_event: Node = null
 var _click_indicator_cooldown: float = 0.0
+var _last_auto_path_tile: Vector2i = Vector2i(-1, -1)
+var _auto_path_stuck_frames: int = 0
 
 var interactive_event: Node
 
@@ -253,6 +255,8 @@ func _set_target_destination(tile: Vector2i, is_new_click: bool = true) -> void:
 
 	_auto_target_tile = tile
 	_auto_target_event = null
+	_last_auto_path_tile = Vector2i(-1, -1)
+	_auto_path_stuck_frames = 0
 	set_meta("was_new_click", is_new_click)
 
 	if click_indicator_scene and _click_indicator_cooldown <= 0.0:
@@ -286,6 +290,20 @@ func _set_target_destination(tile: Vector2i, is_new_click: bool = true) -> void:
 ## Processes pathfinding logic and event interactions step by step
 func _process_auto_movement() -> void:
 	var current_tile = get_current_tile()
+	
+	if current_tile == _last_auto_path_tile:
+		_auto_path_stuck_frames += 1
+		if _auto_path_stuck_frames > 60:
+			_auto_target_tile = Vector2i(-1, -1)
+			movement_vector = Vector2.ZERO
+			current_animation = "idle"
+			run_animation()
+			_auto_path_stuck_frames = 0
+			return
+	else:
+		_last_auto_path_tile = current_tile
+		_auto_path_stuck_frames = 0
+
 	if current_tile == _auto_target_tile:
 		_auto_target_tile = Vector2i(-1, -1)
 		movement_vector = Vector2.ZERO
@@ -293,7 +311,7 @@ func _process_auto_movement() -> void:
 		run_animation()
 		_interact_with_click_target()
 		return
-	
+
 	if _auto_target_event and is_instance_valid(_auto_target_event):
 		if _is_solid(_auto_target_event) or _auto_target_event.has_method("interact"):
 			var is_adjacent = false
@@ -334,8 +352,9 @@ func _process_auto_movement() -> void:
 				run_animation()
 				_interact_with_click_target()
 				return
-	
+
 	var next_step = _get_next_move_toward_target(_auto_target_tile, Vector2.ZERO)
+	
 	if next_step != Vector2i.ZERO:
 		movement_vector = next_step
 		if not character_options.fixed_direction:
@@ -513,6 +532,9 @@ func _draw() -> void:
 			Rect2(local_pos.x, local_pos.y, map.tile_size.x, map.tile_size.y),
 			Color(1, 0, 0, 0.55), true
 		)
+	
+	if map and is_in_group("player"):
+		map.pathfinder.draw_debug(self, map)
 
 
 func calculate_grid_move_duration():
@@ -2159,7 +2181,6 @@ func _save_player_position_into_game_state() -> void:
 	if GameManager.game_state:
 		GameManager.game_state.current_map_position = get_current_tile()
 		GameManager.game_state.current_direction = current_direction
-	
 
 
 func grid_movement() -> void:
@@ -2170,12 +2191,7 @@ func grid_movement() -> void:
 	var motion = motion_data.final_motion
 
 	if !motion:
-		if _auto_target_tile != Vector2i(-1, -1) and not ControllerManager.is_action_pressed("Mouse Left"):
-			_auto_target_tile = Vector2i(-1, -1)
-			movement_vector = Vector2.ZERO
-			current_animation = "idle"
-			run_animation()
-		elif _auto_target_tile == Vector2i(-1, -1) and Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down") == Vector2.ZERO:
+		if _auto_target_tile == Vector2i(-1, -1) and Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down") == Vector2.ZERO:
 			movement_vector = Vector2.ZERO
 			current_animation = "idle"
 			run_animation()
@@ -2185,6 +2201,7 @@ func grid_movement() -> void:
 		return
 
 	start_movement(motion_data)
+
 	if movement_tween:
 		if movement_tween.finished.is_connected(_on_grid_movement_finished):
 			movement_tween.finished.disconnect(_on_grid_movement_finished)
