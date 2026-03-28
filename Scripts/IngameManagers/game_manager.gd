@@ -92,6 +92,7 @@ var timer_manager: TimerManager
 var input_manager: InputManager
 var menu_manager: MenuManager
 var toast_manager: ToastManager
+var action_manager: RPGActionManager
 
 var hand_cursor_path: String = "res://Scenes/GUI/default_hand_cursor.tscn"
 #endregion
@@ -191,6 +192,10 @@ func _ready() -> void:
 		toast_manager = ToastManager.new()
 		toast_manager.name = "ToastManager"
 		add_child(toast_manager)
+		
+		action_manager = RPGActionManager.new()
+		action_manager.name = "RPGActionManager"
+		add_child(action_manager)
 		
 		controller = KeyController.new()
 

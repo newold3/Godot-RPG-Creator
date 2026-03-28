@@ -691,16 +691,26 @@ func _init_states(actor_data: RPGActor, class_data: RPGClass) -> void:
 
 ## Initializes the actor's extra parameters.
 func _init_extra_params() -> void:
+	var used_ids = []
 	for param in RPGActor.ExtraParamType.keys():
-		if RPGActor.ExtraParamType[param] % 2 == 0:  # Only process short keys
-			params.set(param.to_lower(), DEFAULT_EXTRA_PARAMS[RPGActor.ExtraParamType[param]])
+		if RPGActor.ExtraParamType[param] in used_ids: continue
+		used_ids.append(RPGActor.ExtraParamType[param])
+		params.set(
+			param.to_lower(),
+			DEFAULT_EXTRA_PARAMS[RPGActor.ExtraParamType[param]]
+		)
 
 
 ## Initializes the actor's special parameters.
 func _init_special_params() -> void:
+	var used_ids = []
 	for param in RPGActor.SpecialParamType.keys():
-		if RPGActor.SpecialParamType[param] % 2 == 0:  # Only process short keys
-			params.set(param.to_lower(), DEFAULT_SPECIAL_PARAMS[RPGActor.SpecialParamType[param]])
+		if RPGActor.SpecialParamType[param] in used_ids: continue
+		used_ids.append(RPGActor.SpecialParamType[param])
+		params.set(
+			param.to_lower(),
+			DEFAULT_SPECIAL_PARAMS[RPGActor.SpecialParamType[param]]
+		)
 
 
 ## Adds a [GameState] to the actor based on a trait definition.

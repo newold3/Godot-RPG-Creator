@@ -98,6 +98,8 @@ func fill_scope() -> void:
 
 
 func fill_evolve_skills() -> void:
+	if not get_data(): return
+	
 	var current_id = get_data().id
 	var node = %EvolveOptions
 	node.clear()

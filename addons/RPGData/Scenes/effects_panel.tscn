@@ -59,6 +59,7 @@ columns = 2
 names = PackedStringArray("Type", "Content")
 sizes = PackedInt32Array(174, 0)
 placeholder_text = "Select effect..."
+multiselection_style = 2
 enable_multiselection = true
 
 [connection signal="copy_requested" from="EffectsList" to="." method="_on_effects_list_copy_requested"]

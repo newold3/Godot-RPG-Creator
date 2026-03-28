@@ -14,6 +14,8 @@ extends Window
 			print("Available Button Name: " + _get_button_name_available(self, [])[0])
 			print("Available Codes: " + _get_available_codes())
 
+
+## To auto-fill the tags in the effects checkboxes based on a JSON dictionary
 @export var auto_fill_tags: bool = false :
 	set(value):
 		if value:
@@ -184,7 +186,7 @@ func update_filter_buttons() -> void:
 	var is_filtering = filter.length() > 0 or show_favorites_only
 	var all_buttons = get_buttons()
 	
-	var buttons_by_parent: Dictionary = {} 
+	var buttons_by_parent: Dictionary = {}
 	
 	for node in all_buttons:
 		var parent = node.get_parent()
@@ -234,16 +236,14 @@ func update_filter_buttons() -> void:
 						if visible_count > 0:
 							if collapse_btn.button_pressed:
 								collapse_btn.set_pressed_no_signal(false)
-								collapse_btn.text = "▼"
-								if collapse_btn.target: collapse_btn.target.visible = true
+								_set_category_visual_state(collapse_btn, false)
 					else:
 						var category_id = _collapse_buttons_map.get(collapse_btn, "")
 						var saved_state = FileCache.options.category_states.get(category_id, false)
 						
 						if collapse_btn.button_pressed != saved_state:
 							collapse_btn.set_pressed_no_signal(saved_state)
-							collapse_btn.text = "◀" if saved_state else "▼"
-							if collapse_btn.target: collapse_btn.target.visible = !saved_state
+							_set_category_visual_state(collapse_btn, saved_state)
 
 
 func _find_collapse_button_in_category(category_vbox: Node) -> Button:
@@ -274,7 +274,7 @@ func get_buttons() -> Array:
 
 
 func _get_buttons(node: Node, current_buttons: Array = []) ->  Array:
-	if node is CustomSimpleButton and not node.name in ["CancelButton", "ToggleAllButton"]:
+	if node is CustomSimpleButton and not node.has_meta("no_add_to_favorite"):
 		current_buttons.append(node)
 	for child in node.get_children():
 		_get_buttons(child, current_buttons)
@@ -301,10 +301,10 @@ func rename_all_buttons(node: Node, current_id: Array) -> void:
 
 
 func _connect_all_buttons(node: Node) -> void:
-	if node is CustomSimpleButton and node.name != "CancelButton":
+	if node is CustomSimpleButton and not node.has_meta("no_add_to_favorite"):
 		node.pressed.connect(_on_button_pressed.bind(node.name))
 		node.set_meta("real_parent", node.get_parent()) # Legacy support if needed
-		
+
 		if node.get_child_count() == 0:
 			var b = FAVORITE_BUTTON.instantiate()
 			node.add_child(b)

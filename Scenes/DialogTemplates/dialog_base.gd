@@ -1207,7 +1207,6 @@ func setup_text(text: String, use_soft_reset: bool = false, _is_additional_text:
 		text = "[color=#%s]" % speaker_text_color.to_html() + text + "[/color]"
 	
 	text = parse_text(text)
-	modulate.a = 1.0
 	
 	var measure_text = text
 	var align_tags = ["[center]", "[/center]", "[right]", "[/right]", "[fill]", "[/fill]"]
@@ -1855,10 +1854,12 @@ func show_open_animation() -> void:
 	
 	var node = self
 	node.modulate.a = 0.0
+	
 	if is_floating:
 		node.pivot_offset = Vector2(node.size.x * 0.5, node.size.y)
 	else:
 		node.pivot_offset = node.size * 0.5
+		
 	node.scale = Vector2.ONE
 	
 	if is_floating:
@@ -1867,8 +1868,6 @@ func show_open_animation() -> void:
 		node.size = message.get_combined_minimum_size()
 		node.pivot_offset = Vector2(node.size.x * 0.5, node.size.y)
 		set_position_over_node()
-	
-	node.modulate.a = 1.0
 	
 	await get_tree().process_frame
 	
@@ -1890,6 +1889,8 @@ func show_open_animation() -> void:
 		if current_animation.find("Fade-In") != -1:
 			node.modulate.a = 0.0
 			tweens.message.tween_property(node, "modulate:a", 1.0, t).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_OUT)
+		else:
+			node.modulate.a = 1.0
 			
 		if ["Fade-In + Horizontal Grow", "Fade-In + Grow", "Horizontal Grow", "Grow"].has(current_animation):
 			node.scale.x = 0.25
@@ -1918,6 +1919,7 @@ func show_open_animation() -> void:
 					message.set_deferred("visible_characters", -1)
 		)
 	else:
+		node.modulate.a = 1.0
 		await show_next_character()
 		dialog_is_started = true
 
@@ -1976,12 +1978,15 @@ func show_close_animation() -> void:
 		
 		tweens.message.tween_callback(
 			func():
+				node.modulate.a = 0.0
 				all_messages_finished.emit()
 				if not is_multi_dialog:
 					reset()
 		).set_delay(t)
 	else:
+		closing.emit()
 		await get_tree().process_frame
+		modulate.a = 0.0
 		all_messages_finished.emit()
 	
 	wait_for_user_option_selected_enabled = false

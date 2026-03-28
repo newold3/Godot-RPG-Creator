@@ -1,17 +1,57 @@
-[gd_scene load_steps=23 format=3 uid="uid://cmg1eodqg7taj"]
+[gd_scene format=3 uid="uid://cmg1eodqg7taj"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_iiyws"]
 [ext_resource type="Script" uid="uid://bke8m6d5y0e7w" path="res://addons/CustomControls/Dialogs/select_effect_dialog.gd" id="2_jhjjr"]
-[ext_resource type="PackedScene" uid="uid://ccipi0sikmjuu" path="res://addons/CustomControls/custom_tab_container.tscn" id="3_hyqcv"]
 [ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="3_vrkgw"]
-[ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="4_dwgg5"]
 [ext_resource type="Texture2D" uid="uid://dwcnj2mbl2v2y" path="res://addons/CustomControls/Images/magnifying_glass.png" id="4_vtb37"]
 [ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="5_fj12j"]
 [ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="6_4c3ca"]
 [ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="7_0fv7s"]
 [ext_resource type="Script" uid="uid://d0kowhkcjb7kv" path="res://addons/CustomControls/custom_option_button.gd" id="7_oy6w7"]
 [ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="10_a5tu4"]
-[ext_resource type="Script" uid="uid://bujrsiao8ow4m" path="res://addons/CustomControls/flow_container_vertical_decorative.gd" id="11_vtb37"]
+
+[sub_resource type="Gradient" id="Gradient_s1krg"]
+offsets = PackedFloat32Array(0, 0.92983425, 0.9674033, 1)
+colors = PackedColorArray(0.17254902, 0.18039216, 0.18039216, 1, 0.17400153, 0.18197672, 0.18210876, 1, 0.13205287, 0.14005607, 0.14405768, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_vic0n"]
+gradient = SubResource("Gradient_s1krg")
+fill = 2
+fill_from = Vector2(0.49305555, 0.4837963)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gon0g"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 24.0
+content_margin_bottom = 4.0
+texture = SubResource("GradientTexture2D_vic0n")
+texture_margin_left = 3.0
+texture_margin_top = 3.0
+texture_margin_right = 3.0
+texture_margin_bottom = 5.0
+modulate_color = Color(0.4676506, 0.74850696, 1, 1)
+
+[sub_resource type="Gradient" id="Gradient_811n2"]
+offsets = PackedFloat32Array(0, 0.90254235, 0.9674033, 1)
+colors = PackedColorArray(0.1764811, 0.31020942, 0.16205716, 1, 0.17998129, 0.30840138, 0.16722386, 1, 0.13205287, 0.14005607, 0.14405768, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ojols"]
+gradient = SubResource("Gradient_811n2")
+fill = 2
+fill_from = Vector2(0.49305555, 0.4837963)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jovsc"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 24.0
+content_margin_bottom = 4.0
+texture = SubResource("GradientTexture2D_ojols")
+texture_margin_left = 3.0
+texture_margin_top = 3.0
+texture_margin_right = 4.0
+texture_margin_bottom = 5.0
 
 [sub_resource type="Gradient" id="Gradient_4u2ec"]
 colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
@@ -21,62 +61,92 @@ gradient = SubResource("Gradient_4u2ec")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lyd3h"]
-resource_local_to_scene = true
-content_margin_left = 0.0
-content_margin_top = 0.0
-content_margin_right = 0.0
-content_margin_bottom = 0.0
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-corner_radius_top_left = 12
-corner_radius_top_right = 12
-corner_radius_bottom_right = 12
-corner_radius_bottom_left = 12
+[sub_resource type="InputEventAction" id="InputEventAction_2dh51"]
+action = &"ui_cancel"
+pressed = true
 
-[sub_resource type="Gradient" id="Gradient_ctwx1"]
-colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
+[sub_resource type="InputEventAction" id="InputEventAction_5qyg1"]
+action = &"ui_accept"
+pressed = true
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_p4qv1"]
-resource_local_to_scene = true
-gradient = SubResource("Gradient_ctwx1")
-fill_from = Vector2(0.542735, 0.995726)
-fill_to = Vector2(0.58547, 0)
+[sub_resource type="Shortcut" id="Shortcut_vrkgw"]
+events = [SubResource("InputEventAction_2dh51"), SubResource("InputEventAction_5qyg1")]
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ojols"]
-resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_p4qv1")
+[sub_resource type="DPITexture" id="DPITexture_811n2"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#ff5d5d\" d=\"M2 1v8.586l1.293-1.293a1 1 0 0 1 1.414 0L7 10.587l2.293-2.293a1 1 0 0 1 1.414 0L13 10.586l1-1V6H9V1H2zm8 0v4h4zm-6 9.414-2 2V15h12v-2.586l-.293.293a1 1 0 0 1-1.414 0L10 10.414l-2.293 2.293a1 1 0 0 1-1.414 0L4 10.414z\"/></svg>
+"
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vrkgw"]
-resource_local_to_scene = true
-draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.113725, 0.133333, 0.160784, 1)
-corner_radius_top_left = 12
-corner_radius_top_right = 12
-corner_radius_bottom_right = 12
-corner_radius_bottom_left = 12
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a5tu4"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.32024425, 0.3202441, 0.32024413, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
 
-[sub_resource type="ButtonGroup" id="ButtonGroup_a5tu4"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1plc4"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0, 0, 0.6)
+border_width_bottom = 1
+border_color = Color(0.972549, 0.08235294, 0, 1)
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
 
-[sub_resource type="Gradient" id="Gradient_bjwi3"]
-colors = PackedColorArray(1, 1, 1, 0.34902, 0, 0, 0, 0.788235)
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p4qv1"]
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_1plc4"]
-gradient = SubResource("Gradient_bjwi3")
-height = 3
-fill_from = Vector2(0.5, 1)
-fill_to = Vector2(0.5, 0.108475)
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5tl4a"]
+content_margin_left = 8.0
+content_margin_right = 24.0
 
-[node name="SelectEffectDialog" type="Window"]
+[sub_resource type="GDScript" id="GDScript_c77jo"]
+script/source = "@tool
+extends Button
+
+
+@export var target: Node
+
+
+func _ready() -> void:
+	add_to_group(\"collapse_button\")
+	toggled.connect(_on_toggled)
+
+
+func _on_toggled(value: bool) -> void:
+	if value:
+		text = \"◀\"
+	else:
+		text = \"▼\"
+	
+	if target:
+		target.visible = !value
+"
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_p4qv1"]
+
+[sub_resource type="GDScript" id="GDScript_p4qv1"]
+script/source = "@tool
+extends CheckBox
+
+
+@export var main_container: Control
+"
+
+[node name="SelectEffectDialog" type="Window" unique_id=722568718]
+oversampling_override = 1.0
 title = "Effects List"
 position = Vector2i(0, 36)
-size = Vector2i(800, 329)
+size = Vector2i(1150, 600)
 wrap_controls = true
 transient = true
 exclusive = true
@@ -84,8 +154,10 @@ unresizable = true
 min_size = Vector2i(0, 294)
 theme = ExtResource("1_iiyws")
 script = ExtResource("2_jhjjr")
+section_collapse_style = SubResource("StyleBoxTexture_gon0g")
+section_expanded_style = SubResource("StyleBoxTexture_jovsc")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=396753205]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -93,7 +165,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_a3inn")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2066225449]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -104,240 +176,348 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="HBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="HBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1789517844]
 layout_mode = 2
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=2010441767]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer2" unique_id=178844365]
 layout_mode = 2
 text = "Filter: "
 metadata/original_index = 0
 
-[node name="Filter" parent="MarginContainer/HBoxContainer/HBoxContainer2" instance=ExtResource("3_vrkgw")]
+[node name="Filter" parent="MarginContainer/HBoxContainer/HBoxContainer2" unique_id=1553360770 instance=ExtResource("3_vrkgw")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Filter commands by name, including those shown in dropdown menus)"
 right_icon = ExtResource("4_vtb37")
 metadata/original_index = 1
+metadata/original_text = ""
 
-[node name="TabsContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 0
-
-[node name="TabsContainer" parent="MarginContainer/HBoxContainer/TabsContainer" instance=ExtResource("3_hyqcv")]
+[node name="ToggleAllButton" parent="MarginContainer/HBoxContainer/HBoxContainer2" unique_id=225668214 instance=ExtResource("7_0fv7s")]
 unique_name_in_owner = true
-clip_children = 0
+custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 4
-tab_name_base = ""
-background_color = Color(0, 0, 0, 0)
+size_flags_horizontal = 0
+shortcut = SubResource("Shortcut_vrkgw")
+text = "Expand / Collapse"
+icon = SubResource("DPITexture_811n2")
+metadata/real_parent = Object(HBoxContainer,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"pivot_offset_ratio":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
 
-[node name="CustomPanel" parent="MarginContainer/HBoxContainer" instance=ExtResource("4_dwgg5")]
+metadata/original_position_in_tree = 0
+metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":226.0,"offset_top":6.5,"offset_right":248.0,"offset_bottom":28.5,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"pivot_offset_ratio":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"Add/Remove from favorite","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":2,"focus_behavior_recursive":0,"mouse_filter":0,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":2,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","disabled":false,"toggle_mode":true,"button_pressed":true,"action_mode":1,"button_mask":1,"keep_pressed_outside":false,"button_group":null,"shortcut":null,"shortcut_feedback":true,"shortcut_in_tooltip":true,"texture_normal":Resource("res://addons/CustomControls/Images/heart_button_disabled.png"),"texture_pressed":Resource("res://addons/CustomControls/Images/heart_button_normal.png"),"texture_hover":Resource("res://addons/CustomControls/Images/heart_button_hover.png"),"texture_disabled":null,"texture_focused":null,"texture_click_mask":null,"ignore_texture_size":false,"stretch_mode":2,"flip_h":false,"flip_v":false,"script":null)
+
+
+[node name="FavoritesOnlyButton" type="Button" parent="MarginContainer/HBoxContainer/HBoxContainer2" unique_id=1165562375]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.19, 0.19, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_a5tu4")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_1plc4")
+toggle_mode = true
+text = "❤︎‬ Show Favorites Only"
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer" unique_id=293613030]
+layout_mode = 2
+theme_override_constants/margin_left = -8
+theme_override_constants/margin_right = -8
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/HBoxContainer/MarginContainer" unique_id=1978863129]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="ButtonsContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer" unique_id=591258996]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_lyd3h")
-style1 = SubResource("StyleBoxFlat_lyd3h")
-style2 = SubResource("StyleBoxTexture_ojols")
-style3 = SubResource("StyleBoxFlat_vrkgw")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_p4qv1")
 
-[node name="TargetContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/CustomPanel"]
+[node name="FilterSmoothContainer" type="ScrollContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer" unique_id=19368089]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 12
-theme_override_constants/margin_bottom = 12
+scroll_vertical = 340
+script = ExtResource("10_a5tu4")
+metadata/_custom_type_script = "uid://cs6g8remlafby"
 
-[node name="Recover" type="VBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer"]
-unique_name_in_owner = true
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer" unique_id=1028278446]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_right = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer" unique_id=2030595933]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Recover" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer" unique_id=58822091]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover" groups=["main_trait_filter_tab"]]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover" unique_id=80600832]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.80784315, 0.87058824, 1, 1)
+theme_override_styles/normal = SubResource("StyleBoxTexture_jovsc")
+text = "Recover:"
+
+[node name="CollapsePanel" type="Button" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/Label" unique_id=1935902269 node_paths=PackedStringArray("target")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_hover_color = Color(0.92156863, 0.78431374, 0.47843137, 1)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_5tl4a")
+toggle_mode = true
+text = "▼"
+flat = true
+alignment = 2
+script = SubResource("GDScript_c77jo")
+target = NodePath("../../VboxContainer")
+
+[node name="VboxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover" unique_id=609997386]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer" unique_id=2107940362 groups=["main_trait_filter_tab"]]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("..")
 metadata/original_parent = {
 "index": 0,
-"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":1,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
+"parent": Object(VBoxContainer,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"pivot_offset_ratio":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
 
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer/VBoxContainer" unique_id=1513327705]
 layout_mode = 2
 
-[node name="C0-1" type="CheckBox" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover/VBoxContainer/HBoxContainer"]
+[node name="C0-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer/VBoxContainer/HBoxContainer" unique_id=936537805 node_paths=PackedStringArray("main_container")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Recover HP[/title]
-Recovers HP (adds to current value). Recovery values are specified as a sum of a percentage of the target character's Max HP (-100% to 100%) and a set value (-9999999 to 9999999). If you only wish to set one of these values, make sure to set the other value to 0. When setting this effect to an item, the recovery value will change according to the user's [Pharmacology] special trait value."
+Recovers/Loses HP. Recovery values are specified as a sum of a percentage of the target character's Max HP (-100% to 100%) and a set value (-9999999 to 9999999). If you only wish to set one of these values, make sure to set the other value to 0. The recovery value will change according to the user's [Pharmacology] special trait value."
 mouse_default_cursor_shape = 2
 button_pressed = true
-button_group = SubResource("ButtonGroup_a5tu4")
+button_group = SubResource("ButtonGroup_p4qv1")
 text = "Recover HP"
+script = SubResource("GDScript_p4qv1")
+main_container = NodePath("../..")
+metadata/custom_search_tags = "curar, sanar, vida, salud, heal, restore, hp, poción, potion, damage, cure, recuperar"
+metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"Add/Remove from favorite","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":2,"focus_behavior_recursive":0,"mouse_filter":0,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":2,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","disabled":false,"toggle_mode":true,"button_pressed":false,"action_mode":1,"button_mask":1,"keep_pressed_outside":false,"button_group":null,"shortcut":null,"shortcut_feedback":true,"shortcut_in_tooltip":true,"texture_normal":Resource("res://addons/CustomControls/Images/heart_button_disabled.png"),"texture_pressed":Resource("res://addons/CustomControls/Images/heart_button_normal.png"),"texture_hover":Resource("res://addons/CustomControls/Images/heart_button_hover.png"),"texture_disabled":null,"texture_focused":null,"texture_click_mask":null,"ignore_texture_size":false,"stretch_mode":2,"flip_h":false,"flip_v":false,"script":null)
 
-[node name="C0-2" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover/VBoxContainer/HBoxContainer" instance=ExtResource("5_fj12j")]
+
+[node name="C0-2" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer/VBoxContainer/HBoxContainer" unique_id=1705212023 instance=ExtResource("5_fj12j")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Recover HP[/title]
-Recovers HP (adds to current value). Recovery values are specified as a sum of a percentage of the target character's Max HP (-100% to 100%) and a set value (-9999999 to 9999999). If you only wish to set one of these values, make sure to set the other value to 0. When setting this effect to an item, the recovery value will change according to the user's [Pharmacology] special trait value."
+Recovers/Loses HP. Recovery values are specified as a sum of a percentage of the target character's Max HP (-100% to 100%) and a set value (-9999999 to 9999999). If you only wish to set one of these values, make sure to set the other value to 0. The recovery value will change according to the user's [Pharmacology] special trait value."
 mouse_filter = 2
 min_value = -100.0
 value = 100.0
-rounded = true
 editable = false
 suffix = " %"
 disabled = true
+_custom_value = 100.0
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer/VBoxContainer" unique_id=1144443062]
 layout_mode = 2
+size_flags_horizontal = 8
 
-[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer/VBoxContainer/HBoxContainer2" unique_id=946422193]
+custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
-size_flags_horizontal = 3
+text = "+"
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover/VBoxContainer/HBoxContainer2"]
-layout_mode = 2
-text = "+ Pharmacology level x"
-
-[node name="C0-3" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover/VBoxContainer/HBoxContainer2" instance=ExtResource("5_fj12j")]
+[node name="C0-3" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer/VBoxContainer/HBoxContainer2" unique_id=886031794 instance=ExtResource("5_fj12j")]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Recover HP[/title]
-Recovers HP (adds to current value). Recovery values are specified as a sum of a percentage of the target character's Max HP (-100% to 100%) and a set value (-9999999 to 9999999). If you only wish to set one of these values, make sure to set the other value to 0. When setting this effect to an item, the recovery value will change according to the user's [Pharmacology] special trait value."
+Recovers/Loses HP. Recovery values are specified as a sum of a percentage of the target character's Max HP (-100% to 100%) and a set value (-9999999 to 9999999). If you only wish to set one of these values, make sure to set the other value to 0. The recovery value will change according to the user's [Pharmacology] special trait value."
 mouse_filter = 2
-min_value = -1e+07
-max_value = 1e+07
-rounded = true
+min_value = -10000000.0
+max_value = 10000000.0
 editable = false
 suffix = " %"
 disabled = true
+_custom_value = 0.0
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover" groups=["main_trait_filter_tab"]]
+[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer/VBoxContainer/HBoxContainer2" unique_id=991511032]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer" unique_id=1651009525 groups=["main_trait_filter_tab"]]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("..")
 metadata/original_parent = {
 "index": 1,
-"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":1,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
+"parent": Object(VBoxContainer,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"pivot_offset_ratio":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
 
 }
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover/VBoxContainer2"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer/VBoxContainer2" unique_id=2144839022]
 layout_mode = 2
 
-[node name="C1-1" type="CheckBox" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover/VBoxContainer2/HBoxContainer3"]
+[node name="C1-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer/VBoxContainer2/HBoxContainer3" unique_id=445866815 node_paths=PackedStringArray("main_container")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Recover MP[/title]
-Recovers MP (adds to current value). Recovery values are specified as a sum of a percentage of the target character's Max MP (-100% to 100%) and a set value (-9999999 to 9999999). If you only wish to set one of these values, make sure to set the other value to 0. When setting this effect to an item, the recovery value will change according to the user's [Pharmacology] special trait value."
+Recovers/Loses MP (adds to current value). Recovery values are specified as a sum of a percentage of the target character's Max MP (-100% to 100%) and a set value (-9999999 to 9999999). If you only wish to set one of these values, make sure to set the other value to 0. The recovery value will change according to the user's [Pharmacology] special trait value."
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_a5tu4")
+button_group = SubResource("ButtonGroup_p4qv1")
 text = "Recover MP"
+script = SubResource("GDScript_p4qv1")
+main_container = NodePath("../..")
+metadata/custom_search_tags = "magia, maná, energía, ether, mana, mp, restore, magic, spell, recuperar"
+metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"Add/Remove from favorite","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":2,"focus_behavior_recursive":0,"mouse_filter":0,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":2,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","disabled":false,"toggle_mode":true,"button_pressed":false,"action_mode":1,"button_mask":1,"keep_pressed_outside":false,"button_group":null,"shortcut":null,"shortcut_feedback":true,"shortcut_in_tooltip":true,"texture_normal":Resource("res://addons/CustomControls/Images/heart_button_disabled.png"),"texture_pressed":Resource("res://addons/CustomControls/Images/heart_button_normal.png"),"texture_hover":Resource("res://addons/CustomControls/Images/heart_button_hover.png"),"texture_disabled":null,"texture_focused":null,"texture_click_mask":null,"ignore_texture_size":false,"stretch_mode":2,"flip_h":false,"flip_v":false,"script":null)
 
-[node name="C1-2" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover/VBoxContainer2/HBoxContainer3" instance=ExtResource("5_fj12j")]
+
+[node name="C1-2" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer/VBoxContainer2/HBoxContainer3" unique_id=1053200643 instance=ExtResource("5_fj12j")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Recover MP[/title]
-Recovers MP (adds to current value). Recovery values are specified as a sum of a percentage of the target character's Max MP (-100% to 100%) and a set value (-9999999 to 9999999). If you only wish to set one of these values, make sure to set the other value to 0. When setting this effect to an item, the recovery value will change according to the user's [Pharmacology] special trait value."
+Recovers/Loses MP (adds to current value). Recovery values are specified as a sum of a percentage of the target character's Max MP (-100% to 100%) and a set value (-9999999 to 9999999). If you only wish to set one of these values, make sure to set the other value to 0. The recovery value will change according to the user's [Pharmacology] special trait value."
 mouse_filter = 2
 min_value = -100.0
 value = 100.0
-rounded = true
 editable = false
 suffix = " %"
 disabled = true
+_custom_value = 100.0
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover/VBoxContainer2"]
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer/VBoxContainer2" unique_id=2543629]
 layout_mode = 2
+size_flags_horizontal = 8
 
-[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover/VBoxContainer2/HBoxContainer4"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer/VBoxContainer2/HBoxContainer4" unique_id=838877765]
+custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
-size_flags_horizontal = 3
+text = "+"
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover/VBoxContainer2/HBoxContainer4"]
-layout_mode = 2
-text = "+ Pharmacology level x"
-
-[node name="C1-3" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover/VBoxContainer2/HBoxContainer4" instance=ExtResource("5_fj12j")]
+[node name="C1-3" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer/VBoxContainer2/HBoxContainer4" unique_id=472501970 instance=ExtResource("5_fj12j")]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Recover MP[/title]
-Recovers MP (adds to current value). Recovery values are specified as a sum of a percentage of the target character's Max MP (-100% to 100%) and a set value (-9999999 to 9999999). If you only wish to set one of these values, make sure to set the other value to 0. When setting this effect to an item, the recovery value will change according to the user's [Pharmacology] special trait value."
+Recovers/Loses MP (adds to current value). Recovery values are specified as a sum of a percentage of the target character's Max MP (-100% to 100%) and a set value (-9999999 to 9999999). If you only wish to set one of these values, make sure to set the other value to 0. The recovery value will change according to the user's [Pharmacology] special trait value."
 mouse_filter = 2
-min_value = -1e+07
-max_value = 1e+07
-rounded = true
+min_value = -10000000.0
+max_value = 10000000.0
 editable = false
 suffix = " %"
 disabled = true
+_custom_value = 0.0
 
-[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover" groups=["main_trait_filter_tab"]]
+[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer/VBoxContainer2/HBoxContainer4" unique_id=1360098752]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer" unique_id=1724134268 groups=["main_trait_filter_tab"]]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("..")
 metadata/original_parent = {
 "index": 2,
-"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":1,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
+"parent": Object(VBoxContainer,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"pivot_offset_ratio":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
 
 }
 
-[node name="C2-1" type="CheckBox" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover/HBoxContainer5"]
+[node name="C2-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer/HBoxContainer5" unique_id=1672456796 node_paths=PackedStringArray("main_container")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Gain TP[/title]
 Increases TP by the specified amount. Specify the increase using a set value (0 to 9999999)."
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_a5tu4")
+button_group = SubResource("ButtonGroup_p4qv1")
 text = "Gain TP"
+script = SubResource("GDScript_p4qv1")
+main_container = NodePath("..")
+metadata/custom_search_tags = "tp, tensión, furia, energía, stamina, rage, limit, técnica, ganar, puntos"
+metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"Add/Remove from favorite","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":2,"focus_behavior_recursive":0,"mouse_filter":0,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":2,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","disabled":false,"toggle_mode":true,"button_pressed":false,"action_mode":1,"button_mask":1,"keep_pressed_outside":false,"button_group":null,"shortcut":null,"shortcut_feedback":true,"shortcut_in_tooltip":true,"texture_normal":Resource("res://addons/CustomControls/Images/heart_button_disabled.png"),"texture_pressed":Resource("res://addons/CustomControls/Images/heart_button_normal.png"),"texture_hover":Resource("res://addons/CustomControls/Images/heart_button_hover.png"),"texture_disabled":null,"texture_focused":null,"texture_click_mask":null,"ignore_texture_size":false,"stretch_mode":2,"flip_h":false,"flip_v":false,"script":null)
 
-[node name="C2-2" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Recover/HBoxContainer5" instance=ExtResource("5_fj12j")]
+
+[node name="C2-2" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer/HBoxContainer5" unique_id=696456783 instance=ExtResource("5_fj12j")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Gain TP[/title]
 Increases TP by the specified amount. Specify the increase using a set value (0 to 9999999)."
 mouse_filter = 2
-max_value = 1e+07
-rounded = true
+max_value = 10000000.0
 editable = false
 disabled = true
+_custom_value = 0.0
 
-[node name="State" type="VBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer"]
-unique_name_in_owner = true
-visible = false
+[node name="State" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer" unique_id=809820670]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/State" groups=["main_trait_filter_tab"]]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State" unique_id=1991567308]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.80784315, 0.87058824, 1, 1)
+theme_override_styles/normal = SubResource("StyleBoxTexture_jovsc")
+text = "State:"
+
+[node name="CollapsePanel" type="Button" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/Label" unique_id=2008419298 node_paths=PackedStringArray("target")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_hover_color = Color(0.92156863, 0.78431374, 0.47843137, 1)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_5tl4a")
+toggle_mode = true
+text = "▼"
+flat = true
+alignment = 2
+script = SubResource("GDScript_c77jo")
+target = NodePath("../../VboxContainer")
+
+[node name="VboxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State" unique_id=1380552640]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/VboxContainer" unique_id=861822150 groups=["main_trait_filter_tab"]]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("..")
 metadata/original_parent = {
 "index": 0,
-"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":1,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
+"parent": Object(VBoxContainer,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"pivot_offset_ratio":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
 
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/State/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/VboxContainer/VBoxContainer" unique_id=580640393]
 layout_mode = 2
 
-[node name="C3-1" type="CheckBox" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/State/VBoxContainer/HBoxContainer"]
+[node name="C3-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/VboxContainer/VBoxContainer/HBoxContainer" unique_id=147239728 node_paths=PackedStringArray("main_container")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Add State[/title]
 Adds a state. Specify the desired state and the rate of success (0 to 10000%). By setting this to a value higher than 100%, this will have a higher chance of success to add the state than its original effectiveness."
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_a5tu4")
+button_group = SubResource("ButtonGroup_p4qv1")
 text = "Add State"
+script = SubResource("GDScript_p4qv1")
+main_container = NodePath("../..")
+metadata/custom_search_tags = "estado, veneno, quemadura, alterar, aplicar, status, condition, poison, inflict, state, ceguera, blind"
+metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"Add/Remove from favorite","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":2,"focus_behavior_recursive":0,"mouse_filter":0,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":2,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","disabled":false,"toggle_mode":true,"button_pressed":false,"action_mode":1,"button_mask":1,"keep_pressed_outside":false,"button_group":null,"shortcut":null,"shortcut_feedback":true,"shortcut_in_tooltip":true,"texture_normal":Resource("res://addons/CustomControls/Images/heart_button_disabled.png"),"texture_pressed":Resource("res://addons/CustomControls/Images/heart_button_normal.png"),"texture_hover":Resource("res://addons/CustomControls/Images/heart_button_hover.png"),"texture_disabled":null,"texture_focused":null,"texture_click_mask":null,"ignore_texture_size":false,"stretch_mode":2,"flip_h":false,"flip_v":false,"script":null)
 
-[node name="C3-2" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/State/VBoxContainer/HBoxContainer" instance=ExtResource("6_4c3ca")]
+
+[node name="C3-2" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/VboxContainer/VBoxContainer/HBoxContainer" unique_id=272716018 instance=ExtResource("6_4c3ca")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -348,15 +528,13 @@ Adds a state. Specify the desired state and the rate of success (0 to 10000%). B
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 disabled = true
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/State/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/VboxContainer/VBoxContainer" unique_id=754684510]
 layout_mode = 2
+size_flags_horizontal = 8
 
-[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/State/VBoxContainer/HBoxContainer2"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="C3-3" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/State/VBoxContainer/HBoxContainer2" instance=ExtResource("5_fj12j")]
+[node name="C3-3" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/VboxContainer/VBoxContainer/HBoxContainer2" unique_id=2138325388 instance=ExtResource("5_fj12j")]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Add State[/title]
@@ -364,34 +542,44 @@ Adds a state. Specify the desired state and the rate of success (0 to 10000%). B
 mouse_filter = 2
 max_value = 10000.0
 value = 100.0
-rounded = true
 editable = false
 suffix = " %"
 disabled = true
+_custom_value = 100.0
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/State" groups=["main_trait_filter_tab"]]
+[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/VboxContainer/VBoxContainer/HBoxContainer2" unique_id=1384530211]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/VboxContainer" unique_id=436413315 groups=["main_trait_filter_tab"]]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("..")
 metadata/original_parent = {
 "index": 1,
-"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":1,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
+"parent": Object(VBoxContainer,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"pivot_offset_ratio":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
 
 }
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/State/VBoxContainer2"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/VboxContainer/VBoxContainer2" unique_id=1930233473]
 layout_mode = 2
 
-[node name="C4-1" type="CheckBox" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/State/VBoxContainer2/HBoxContainer3"]
+[node name="C4-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/VboxContainer/VBoxContainer2/HBoxContainer3" unique_id=740099800 node_paths=PackedStringArray("main_container")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Remove State[/title]
 Removes a state. Specify the desired state and the rate of success (0 to 10000%)."
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_a5tu4")
+button_group = SubResource("ButtonGroup_p4qv1")
 text = "Remove State"
+script = SubResource("GDScript_p4qv1")
+main_container = NodePath("../..")
+metadata/custom_search_tags = "curar estado, antídoto, panacea, purificar, heal, cure, cleanse, remove, status, limpiar"
+metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"Add/Remove from favorite","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":2,"focus_behavior_recursive":0,"mouse_filter":0,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":2,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","disabled":false,"toggle_mode":true,"button_pressed":false,"action_mode":1,"button_mask":1,"keep_pressed_outside":false,"button_group":null,"shortcut":null,"shortcut_feedback":true,"shortcut_in_tooltip":true,"texture_normal":Resource("res://addons/CustomControls/Images/heart_button_disabled.png"),"texture_pressed":Resource("res://addons/CustomControls/Images/heart_button_normal.png"),"texture_hover":Resource("res://addons/CustomControls/Images/heart_button_hover.png"),"texture_disabled":null,"texture_focused":null,"texture_click_mask":null,"ignore_texture_size":false,"stretch_mode":2,"flip_h":false,"flip_v":false,"script":null)
 
-[node name="C4-2" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/State/VBoxContainer2/HBoxContainer3" instance=ExtResource("6_4c3ca")]
+
+[node name="C4-2" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/VboxContainer/VBoxContainer2/HBoxContainer3" unique_id=1163589344 instance=ExtResource("6_4c3ca")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -402,15 +590,13 @@ Removes a state. Specify the desired state and the rate of success (0 to 10000%)
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 disabled = true
 
-[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/State/VBoxContainer2"]
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/VboxContainer/VBoxContainer2" unique_id=287867193]
 layout_mode = 2
+size_flags_horizontal = 8
 
-[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/State/VBoxContainer2/HBoxContainer6"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="C4-3" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/State/VBoxContainer2/HBoxContainer6" instance=ExtResource("5_fj12j")]
+[node name="C4-3" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/VboxContainer/VBoxContainer2/HBoxContainer6" unique_id=643147974 instance=ExtResource("5_fj12j")]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Remove State[/title]
@@ -418,47 +604,86 @@ Removes a state. Specify the desired state and the rate of success (0 to 10000%)
 mouse_filter = 2
 max_value = 10000.0
 value = 100.0
-rounded = true
 editable = false
 suffix = " %"
 disabled = true
+_custom_value = 100.0
 
-[node name="ParameterBuff" type="VBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer"]
-unique_name_in_owner = true
-visible = false
+[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/VboxContainer/VBoxContainer2/HBoxContainer6" unique_id=364691170]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BufParameter" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer" unique_id=1700712916]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff" groups=["main_trait_filter_tab"]]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter" unique_id=1396812833]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.80784315, 0.87058824, 1, 1)
+theme_override_styles/normal = SubResource("StyleBoxTexture_jovsc")
+text = "Buf Parameter:"
+
+[node name="CollapsePanel" type="Button" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Label" unique_id=1719135819 node_paths=PackedStringArray("target")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_hover_color = Color(0.92156863, 0.78431374, 0.47843137, 1)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_5tl4a")
+toggle_mode = true
+text = "▼"
+flat = true
+alignment = 2
+script = SubResource("GDScript_c77jo")
+target = NodePath("../../VboxContainer")
+
+[node name="VboxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter" unique_id=259602491]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer" unique_id=1670180288 groups=["main_trait_filter_tab"]]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("..")
 metadata/original_parent = {
 "index": 0,
-"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":1,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
+"parent": Object(VBoxContainer,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"pivot_offset_ratio":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
 
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer" unique_id=268860508]
 layout_mode = 2
 
-[node name="C5-1" type="CheckBox" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/VBoxContainer/HBoxContainer"]
+[node name="C5-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer/HBoxContainer" unique_id=299020084 node_paths=PackedStringArray("main_container")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Add Buff[/title]
-Raises the fluctuation level of the specified trait by one. There is a 25% fluctuation in the original value per level. To have this raise two or more levels at once, add this effect multiple times. Set the target parameter and the number of turns this effect will last."
-mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_a5tu4")
-text = "Add Buff"
+Adds a buff that temporarily increases a base stat by a certain amount.
 
-[node name="C5-2" type="OptionButton" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/VBoxContainer/HBoxContainer"]
+[Note]: Buffs can be stacked."
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_p4qv1")
+text = "Add Buff"
+script = SubResource("GDScript_p4qv1")
+main_container = NodePath("../..")
+metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"Add/Remove from favorite","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":2,"focus_behavior_recursive":0,"mouse_filter":0,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":2,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","disabled":false,"toggle_mode":true,"button_pressed":false,"action_mode":1,"button_mask":1,"keep_pressed_outside":false,"button_group":null,"shortcut":null,"shortcut_feedback":true,"shortcut_in_tooltip":true,"texture_normal":Resource("res://addons/CustomControls/Images/heart_button_disabled.png"),"texture_pressed":Resource("res://addons/CustomControls/Images/heart_button_normal.png"),"texture_hover":Resource("res://addons/CustomControls/Images/heart_button_hover.png"),"texture_disabled":null,"texture_focused":null,"texture_click_mask":null,"ignore_texture_size":false,"stretch_mode":2,"flip_h":false,"flip_v":false,"script":null)
+
+metadata/custom_search_tags = "buff, mejora, subir, fortalecer, param, stat, boost, increase, agilidad, ataque, aura"
+
+[node name="C5-2" type="OptionButton" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer/HBoxContainer" unique_id=590646070]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.6)
 custom_minimum_size = Vector2(0, 31)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-tooltip_text = "[title]Add Buff[/title]
-Raises the fluctuation level of the specified trait by one. There is a 25% fluctuation in the original value per level. To have this raise two or more levels at once, add this effect multiple times. Set the target parameter and the number of turns this effect will last."
+tooltip_text = "Adds a buff that temporarily increases a base stat by a certain amount.
+
+[Note]: Buffs can be stacked."
+focus_mode = 0
+mouse_filter = 2
 mouse_default_cursor_shape = 2
 disabled = true
 selected = 0
@@ -480,63 +705,103 @@ popup/item_6/id = 6
 popup/item_7/text = "Luck"
 popup/item_7/id = 7
 script = ExtResource("7_oy6w7")
+metadata/original_focus_mode = 2
+metadata/original_mouse_filer = 0
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/VBoxContainer"]
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer" unique_id=1351397960]
 layout_mode = 2
+size_flags_horizontal = 8
 
-[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/VBoxContainer/HBoxContainer4"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer/HBoxContainer4" unique_id=1713269985]
+custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Control2" type="Control" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/VBoxContainer/HBoxContainer4"]
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/VBoxContainer/HBoxContainer4"]
-layout_mode = 2
+size_flags_horizontal = 10
 text = "x "
 
-[node name="C5-3" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/VBoxContainer/HBoxContainer4" instance=ExtResource("5_fj12j")]
+[node name="C5-3" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer/HBoxContainer4" unique_id=943884479 instance=ExtResource("5_fj12j")]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-tooltip_text = "[title]Add Buff[/title]
-Raises the fluctuation level of the specified trait by one. There is a 25% fluctuation in the original value per level. To have this raise two or more levels at once, add this effect multiple times. Set the target parameter and the number of turns this effect will last."
+tooltip_text = "Adds a buff that temporarily increases a base stat by a certain amount.
+
+[Note]: Buffs can be stacked."
 mouse_filter = 2
 min_value = 1.0
 value = 5.0
-rounded = true
 allow_greater = true
 editable = false
 disabled = true
+_custom_value = 5.0
 
-[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/VBoxContainer/HBoxContainer4"]
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer/HBoxContainer4" unique_id=1165049614]
+custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 text = " turns"
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff" groups=["main_trait_filter_tab"]]
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer" unique_id=967916939]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="Control2" type="Control" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer/HBoxContainer5" unique_id=1953149939]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer/HBoxContainer5" unique_id=256793440]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+text = "+ "
+
+[node name="C5-4" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer/HBoxContainer5" unique_id=939499059 instance=ExtResource("5_fj12j")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(380, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Adds a buff that temporarily increases a base stat by a certain amount.
+
+[Note]: Buffs can be stacked."
+mouse_filter = 2
+value = 25.0
+editable = false
+disabled = true
+_custom_value = 25.0
+
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer/HBoxContainer5" unique_id=934662555]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = " % base"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer" unique_id=1698231599 groups=["main_trait_filter_tab"]]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("..")
 metadata/original_parent = {
 "index": 1,
-"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":1,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
+"parent": Object(VBoxContainer,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"pivot_offset_ratio":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
 
 }
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/VBoxContainer2"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer2" unique_id=750364607]
 layout_mode = 2
 
-[node name="C6-1" type="CheckBox" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/VBoxContainer2/HBoxContainer2"]
+[node name="C6-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer2/HBoxContainer2" unique_id=1389366787 node_paths=PackedStringArray("main_container")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Add Debuff[/title]
-Lowers the fluctuation level of the specified trait by one. There is a 25% fluctuation in the original value per level. To have this decrease two or more levels at once, add this effect multiple times. Set the target parameter and the number of turns this effect will last."
-mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_a5tu4")
-text = "Add Debuff"
+Adds a debuff that temporarily decreases a base stat by a certain amount.
 
-[node name="C6-2" type="OptionButton" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/VBoxContainer2/HBoxContainer2"]
+[Note]: Debuffs can be stacked."
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_p4qv1")
+text = "Add Debuff"
+script = SubResource("GDScript_p4qv1")
+main_container = NodePath("../..")
+metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"Add/Remove from favorite","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":2,"focus_behavior_recursive":0,"mouse_filter":0,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":2,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","disabled":false,"toggle_mode":true,"button_pressed":false,"action_mode":1,"button_mask":1,"keep_pressed_outside":false,"button_group":null,"shortcut":null,"shortcut_feedback":true,"shortcut_in_tooltip":true,"texture_normal":Resource("res://addons/CustomControls/Images/heart_button_disabled.png"),"texture_pressed":Resource("res://addons/CustomControls/Images/heart_button_normal.png"),"texture_hover":Resource("res://addons/CustomControls/Images/heart_button_hover.png"),"texture_disabled":null,"texture_focused":null,"texture_click_mask":null,"ignore_texture_size":false,"stretch_mode":2,"flip_h":false,"flip_v":false,"script":null)
+
+metadata/custom_search_tags = "debuff, empeorar, bajar, debilitar, param, stat, drop, decrease, break, reducir, romper"
+
+[node name="C6-2" type="OptionButton" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer2/HBoxContainer2" unique_id=1920253933]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.6)
 custom_minimum_size = Vector2(0, 31)
@@ -544,7 +809,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 tooltip_text = "[title]Add Debuff[/title]
-Lowers the fluctuation level of the specified trait by one. There is a 25% fluctuation in the original value per level. To have this decrease two or more levels at once, add this effect multiple times. Set the target parameter and the number of turns this effect will last."
+Adds a debuff that temporarily decreases a base stat by a certain amount.
+
+[Note]: Debuffs can be stacked."
+focus_mode = 0
+mouse_filter = 2
 mouse_default_cursor_shape = 2
 disabled = true
 selected = 0
@@ -566,60 +835,101 @@ popup/item_6/id = 6
 popup/item_7/text = "Luck"
 popup/item_7/id = 7
 script = ExtResource("7_oy6w7")
+metadata/original_focus_mode = 2
+metadata/original_mouse_filer = 0
 
-[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/VBoxContainer2"]
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer2" unique_id=1504522582]
 layout_mode = 2
+size_flags_horizontal = 8
 
-[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/VBoxContainer2/HBoxContainer5"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer2/HBoxContainer5" unique_id=908094145]
+custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Control2" type="Control" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/VBoxContainer2/HBoxContainer5"]
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/VBoxContainer2/HBoxContainer5"]
-layout_mode = 2
+size_flags_horizontal = 10
 text = "x "
 
-[node name="C6-3" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/VBoxContainer2/HBoxContainer5" instance=ExtResource("5_fj12j")]
+[node name="C6-3" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer2/HBoxContainer5" unique_id=840761799 instance=ExtResource("5_fj12j")]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Add Debuff[/title]
-Lowers the fluctuation level of the specified trait by one. There is a 25% fluctuation in the original value per level. To have this decrease two or more levels at once, add this effect multiple times. Set the target parameter and the number of turns this effect will last."
+Adds a debuff that temporarily decreases a base stat by a certain amount.
+
+[Note]: Debuffs can be stacked."
 mouse_filter = 2
 min_value = 1.0
 value = 5.0
-rounded = true
 allow_greater = true
 editable = false
 disabled = true
+_custom_value = 5.0
 
-[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/VBoxContainer2/HBoxContainer5"]
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer2/HBoxContainer5" unique_id=467002492]
+custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 text = " turns"
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff" groups=["main_trait_filter_tab"]]
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer2" unique_id=7037624]
 layout_mode = 2
-focus_neighbor_bottom = NodePath("..")
+size_flags_horizontal = 8
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer2/HBoxContainer6" unique_id=2314831]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+text = "+ "
+
+[node name="C6-4" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer2/HBoxContainer6" unique_id=929861493 instance=ExtResource("5_fj12j")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(380, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Add Debuff[/title]
+Adds a debuff that temporarily decreases a base stat by a certain amount.
+
+[Note]: Debuffs can be stacked."
+mouse_filter = 2
+value = 25.0
+editable = false
+disabled = true
+_custom_value = 25.0
+
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer2/HBoxContainer6" unique_id=8306368]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = " % base"
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer" unique_id=850261805]
+layout_mode = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer3" unique_id=1293482835 groups=["main_trait_filter_tab"]]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("../..")
 metadata/original_parent = {
 "index": 2,
-"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":1,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
+"parent": Object(VBoxContainer,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"pivot_offset_ratio":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
 
 }
 
-[node name="C7-1" type="CheckBox" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/HBoxContainer3"]
+[node name="C7-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer3/HBoxContainer3" unique_id=1425294261 node_paths=PackedStringArray("main_container")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Remove Buff[/title]
-Resets a trait to its original value when the fluctuation level of the specified trait is buffed."
-mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_a5tu4")
-text = "Remove Buff"
+Removes 1 or more buffs of a specific type from the character.
 
-[node name="C7-2" type="OptionButton" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/HBoxContainer3"]
+[Note]: 0 = removes all buffs of a specific type; >= 1 removes that number of stacks from the target"
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_p4qv1")
+text = "Remove Buff"
+script = SubResource("GDScript_p4qv1")
+main_container = NodePath("..")
+metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"Add/Remove from favorite","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":2,"focus_behavior_recursive":0,"mouse_filter":0,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":2,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","disabled":false,"toggle_mode":true,"button_pressed":false,"action_mode":1,"button_mask":1,"keep_pressed_outside":false,"button_group":null,"shortcut":null,"shortcut_feedback":true,"shortcut_in_tooltip":true,"texture_normal":Resource("res://addons/CustomControls/Images/heart_button_disabled.png"),"texture_pressed":Resource("res://addons/CustomControls/Images/heart_button_normal.png"),"texture_hover":Resource("res://addons/CustomControls/Images/heart_button_hover.png"),"texture_disabled":null,"texture_focused":null,"texture_click_mask":null,"ignore_texture_size":false,"stretch_mode":2,"flip_h":false,"flip_v":false,"script":null)
+
+metadata/custom_search_tags = "quitar mejora, dispel, anular, limpiar, remove, cancel, buff, normalize, disipar"
+
+[node name="C7-2" type="OptionButton" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer3/HBoxContainer3" unique_id=256265460]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.6)
 custom_minimum_size = Vector2(0, 31)
@@ -627,7 +937,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 tooltip_text = "[title]Remove Buff[/title]
-Resets a trait to its original value when the fluctuation level of the specified trait is buffed."
+Removes 1 or more buffs of a specific type from the character.
+
+[Note]: 0 = removes all buffs of a specific type; >= 1 removes that number of stacks from the target"
+focus_mode = 0
+mouse_filter = 2
 mouse_default_cursor_shape = 2
 disabled = true
 selected = 0
@@ -649,27 +963,72 @@ popup/item_6/id = 6
 popup/item_7/text = "Luck"
 popup/item_7/id = 7
 script = ExtResource("7_oy6w7")
+metadata/original_focus_mode = 2
+metadata/original_mouse_filer = 0
 
-[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff" groups=["main_trait_filter_tab"]]
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer3" unique_id=955174558]
 layout_mode = 2
-focus_neighbor_bottom = NodePath("..")
+size_flags_horizontal = 8
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer3/HBoxContainer5" unique_id=529493984]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+text = "x "
+
+[node name="C7-3" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer3/HBoxContainer5" unique_id=102183855 instance=ExtResource("5_fj12j")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(380, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Remove Buff[/title]
+Removes 1 or more buffs of a specific type from the character.
+
+[Note]: 0 = removes all buffs of a specific type; >= 1 removes that number of stacks from the target"
+mouse_filter = 2
+allow_greater = true
+editable = false
+disabled = true
+value_replace = {
+"0": "∞"
+}
+_custom_value = 0.0
+
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer3/HBoxContainer5" unique_id=429862063]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "stack/s"
+
+[node name="VBoxContainer4" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer" unique_id=273732688]
+layout_mode = 2
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer4" unique_id=573730443 groups=["main_trait_filter_tab"]]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("../..")
 metadata/original_parent = {
 "index": 3,
-"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":1,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
+"parent": Object(VBoxContainer,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"pivot_offset_ratio":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
 
 }
 
-[node name="C8-1" type="CheckBox" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/HBoxContainer6"]
+[node name="C8-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer4/HBoxContainer6" unique_id=225607106 node_paths=PackedStringArray("main_container")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Remove Debuff[/title]
-Resets a trait to its original value when the fluctuation level of the specified trait is debuffed."
-mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_a5tu4")
-text = "Remove Debuff"
+Removes 1 or more debuffs of a specific type from the character.
 
-[node name="C8-2" type="OptionButton" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/ParameterBuff/HBoxContainer6"]
+[Note]: 0 = removes all debuffs of a specific type; >= 1 removes that number of stacks from the target."
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_p4qv1")
+text = "Remove Debuff"
+script = SubResource("GDScript_p4qv1")
+main_container = NodePath("..")
+metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"Add/Remove from favorite","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":2,"focus_behavior_recursive":0,"mouse_filter":0,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":2,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","disabled":false,"toggle_mode":true,"button_pressed":false,"action_mode":1,"button_mask":1,"keep_pressed_outside":false,"button_group":null,"shortcut":null,"shortcut_feedback":true,"shortcut_in_tooltip":true,"texture_normal":Resource("res://addons/CustomControls/Images/heart_button_disabled.png"),"texture_pressed":Resource("res://addons/CustomControls/Images/heart_button_normal.png"),"texture_hover":Resource("res://addons/CustomControls/Images/heart_button_hover.png"),"texture_disabled":null,"texture_focused":null,"texture_click_mask":null,"ignore_texture_size":false,"stretch_mode":2,"flip_h":false,"flip_v":false,"script":null)
+
+metadata/custom_search_tags = "quitar debuff, restaurar stat, cleanse, remove, cancel, debuff, normalize, aliviar"
+
+[node name="C8-2" type="OptionButton" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer4/HBoxContainer6" unique_id=104825814]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.6)
 custom_minimum_size = Vector2(0, 31)
@@ -677,7 +1036,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 tooltip_text = "[title]Remove Debuff[/title]
-Resets a trait to its original value when the fluctuation level of the specified trait is debuffed."
+Removes 1 or more debuffs of a specific type from the character.
+
+[Note]: 0 = removes all debuffs of a specific type; >= 1 removes that number of stacks from the target."
+focus_mode = 0
+mouse_filter = 2
 mouse_default_cursor_shape = 2
 disabled = true
 selected = 0
@@ -699,22 +1062,81 @@ popup/item_6/id = 6
 popup/item_7/text = "Luck"
 popup/item_7/id = 7
 script = ExtResource("7_oy6w7")
+metadata/original_focus_mode = 2
+metadata/original_mouse_filer = 0
 
-[node name="Other" type="VBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer"]
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer4" unique_id=1961906588]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer4/HBoxContainer5" unique_id=1256976824]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+text = "x "
+
+[node name="C8-3" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer4/HBoxContainer5" unique_id=848442072 instance=ExtResource("5_fj12j")]
 unique_name_in_owner = true
-visible = false
+custom_minimum_size = Vector2(380, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Remove Debuff[/title]
+Removes 1 or more debuffs of a specific type from the character.
+
+[Note]: 0 = removes all debuffs of a specific type; >= 1 removes that number of stacks from the target."
+mouse_filter = 2
+allow_greater = true
+editable = false
+disabled = true
+value_replace = {
+"0": "∞"
+}
+_custom_value = 0.0
+
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer4/HBoxContainer5" unique_id=376500645]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "stack/s"
+
+[node name="Other" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer" unique_id=1085822372]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other" groups=["main_trait_filter_tab"]]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other" unique_id=1998060374]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.80784315, 0.87058824, 1, 1)
+theme_override_styles/normal = SubResource("StyleBoxTexture_jovsc")
+text = "Other:"
+
+[node name="CollapsePanel" type="Button" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/Label" unique_id=492292019 node_paths=PackedStringArray("target")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_hover_color = Color(0.92156863, 0.78431374, 0.47843137, 1)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_5tl4a")
+toggle_mode = true
+text = "▼"
+flat = true
+alignment = 2
+script = SubResource("GDScript_c77jo")
+target = NodePath("../../VboxContainer")
+
+[node name="VboxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other" unique_id=1230632613]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer" unique_id=386161063 groups=["main_trait_filter_tab"]]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("..")
 metadata/original_parent = {
 "index": 0,
-"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":1,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
+"parent": Object(VBoxContainer,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"pivot_offset_ratio":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
 
 }
 
-[node name="C9-1" type="CheckBox" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other/HBoxContainer"]
+[node name="C9-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer/HBoxContainer" unique_id=988891490 node_paths=PackedStringArray("main_container")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -724,10 +1146,15 @@ If all party members flee due to a skill / item with this effect, they will not 
 
 *This is different than the \"Escape\" party command."
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_a5tu4")
+button_group = SubResource("ButtonGroup_p4qv1")
 text = "Special Effect"
+script = SubResource("GDScript_p4qv1")
+main_container = NodePath("..")
+metadata/custom_search_tags = "especial, huir, escapar, escape, flee, special, efecto, retirar"
+metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"Add/Remove from favorite","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":2,"focus_behavior_recursive":0,"mouse_filter":0,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":2,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","disabled":false,"toggle_mode":true,"button_pressed":false,"action_mode":1,"button_mask":1,"keep_pressed_outside":false,"button_group":null,"shortcut":null,"shortcut_feedback":true,"shortcut_in_tooltip":true,"texture_normal":Resource("res://addons/CustomControls/Images/heart_button_disabled.png"),"texture_pressed":Resource("res://addons/CustomControls/Images/heart_button_normal.png"),"texture_hover":Resource("res://addons/CustomControls/Images/heart_button_hover.png"),"texture_disabled":null,"texture_focused":null,"texture_click_mask":null,"ignore_texture_size":false,"stretch_mode":2,"flip_h":false,"flip_v":false,"script":null)
 
-[node name="C9-2" type="OptionButton" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other/HBoxContainer"]
+
+[node name="C9-2" type="OptionButton" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer/HBoxContainer" unique_id=312289904]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.6)
 custom_minimum_size = Vector2(0, 31)
@@ -739,6 +1166,8 @@ Can only be set to [Escape]. The target character will flee from battle (100%). 
 If all party members flee due to a skill / item with this effect, they will not receive any reward for the battle.
 
 *This is different than the \"Escape\" party command."
+focus_mode = 0
+mouse_filter = 2
 mouse_default_cursor_shape = 2
 disabled = true
 selected = 0
@@ -746,30 +1175,37 @@ item_count = 1
 popup/item_0/text = "Escape"
 popup/item_0/id = 0
 script = ExtResource("7_oy6w7")
+metadata/original_focus_mode = 2
+metadata/original_mouse_filer = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other" groups=["main_trait_filter_tab"]]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer" unique_id=291981746 groups=["main_trait_filter_tab"]]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("..")
 metadata/original_parent = {
 "index": 1,
-"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":1,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
+"parent": Object(VBoxContainer,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"pivot_offset_ratio":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
 
 }
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer/VBoxContainer" unique_id=1663833138]
 layout_mode = 2
 
-[node name="C10-1" type="CheckBox" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other/VBoxContainer/HBoxContainer3"]
+[node name="C10-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer/VBoxContainer/HBoxContainer3" unique_id=1435017250 node_paths=PackedStringArray("main_container")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Grow[/title]
 Permanently raise the value of a parameter. Specify the target parameter and the value (1 or more) to be added."
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_a5tu4")
+button_group = SubResource("ButtonGroup_p4qv1")
 text = "Grow"
+script = SubResource("GDScript_p4qv1")
+main_container = NodePath("../..")
+metadata/custom_search_tags = "crecer, subir stat, permanente, stats, semilla, seed, permanent, boost, param, parameter, stat up"
+metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"Add/Remove from favorite","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":2,"focus_behavior_recursive":0,"mouse_filter":0,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":2,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","disabled":false,"toggle_mode":true,"button_pressed":false,"action_mode":1,"button_mask":1,"keep_pressed_outside":false,"button_group":null,"shortcut":null,"shortcut_feedback":true,"shortcut_in_tooltip":true,"texture_normal":Resource("res://addons/CustomControls/Images/heart_button_disabled.png"),"texture_pressed":Resource("res://addons/CustomControls/Images/heart_button_normal.png"),"texture_hover":Resource("res://addons/CustomControls/Images/heart_button_hover.png"),"texture_disabled":null,"texture_focused":null,"texture_click_mask":null,"ignore_texture_size":false,"stretch_mode":2,"flip_h":false,"flip_v":false,"script":null)
 
-[node name="C10-2" type="OptionButton" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other/VBoxContainer/HBoxContainer3"]
+
+[node name="C10-2" type="OptionButton" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer/VBoxContainer/HBoxContainer3" unique_id=1041951868]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.6)
 custom_minimum_size = Vector2(0, 31)
@@ -778,6 +1214,8 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 tooltip_text = "[title]Grow[/title]
 Permanently raise the value of a parameter. Specify the target parameter and the value (1 or more) to be added."
+focus_mode = 0
+mouse_filter = 2
 mouse_default_cursor_shape = 2
 disabled = true
 selected = 0
@@ -799,52 +1237,61 @@ popup/item_6/id = 6
 popup/item_7/text = "Luck"
 popup/item_7/id = 7
 script = ExtResource("7_oy6w7")
+metadata/original_focus_mode = 2
+metadata/original_mouse_filer = 0
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer/VBoxContainer" unique_id=1788845783]
 layout_mode = 2
+size_flags_horizontal = 8
 
-[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other/VBoxContainer/HBoxContainer2"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer/VBoxContainer/HBoxContainer2" unique_id=469523178]
+custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 text = "+ "
 
-[node name="C10-3" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other/VBoxContainer/HBoxContainer2" instance=ExtResource("5_fj12j")]
+[node name="C10-3" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer/VBoxContainer/HBoxContainer2" unique_id=1962393946 instance=ExtResource("5_fj12j")]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Grow[/title]
 Permanently raise the value of a parameter. Specify the target parameter and the value (1 or more) to be added."
 mouse_filter = 2
 min_value = 1.0
-value = 1.0
-rounded = true
 allow_greater = true
 editable = false
 disabled = true
+_custom_value = 0.0
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other" groups=["main_trait_filter_tab"]]
+[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer/VBoxContainer/HBoxContainer2" unique_id=259137610]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer" unique_id=927867169 groups=["main_trait_filter_tab"]]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("..")
 metadata/original_parent = {
 "index": 2,
-"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":1,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
+"parent": Object(VBoxContainer,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"pivot_offset_ratio":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
 
 }
 
-[node name="C11-1" type="CheckBox" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other/HBoxContainer4"]
+[node name="C11-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer/HBoxContainer4" unique_id=827441406 node_paths=PackedStringArray("main_container")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Learn Skill[/title]
 An actor will learn the specified skill. This effect will not be applied to enemies."
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_a5tu4")
+button_group = SubResource("ButtonGroup_p4qv1")
 text = "Learn Skill"
+script = SubResource("GDScript_p4qv1")
+main_container = NodePath("..")
+metadata/custom_search_tags = "aprender, habilidad, magia, técnica, learn, skill, spell, enseñar, teach, libro, scroll, pergamino"
+metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"Add/Remove from favorite","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":2,"focus_behavior_recursive":0,"mouse_filter":0,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":2,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","disabled":false,"toggle_mode":true,"button_pressed":false,"action_mode":1,"button_mask":1,"keep_pressed_outside":false,"button_group":null,"shortcut":null,"shortcut_feedback":true,"shortcut_in_tooltip":true,"texture_normal":Resource("res://addons/CustomControls/Images/heart_button_disabled.png"),"texture_pressed":Resource("res://addons/CustomControls/Images/heart_button_normal.png"),"texture_hover":Resource("res://addons/CustomControls/Images/heart_button_hover.png"),"texture_disabled":null,"texture_focused":null,"texture_click_mask":null,"ignore_texture_size":false,"stretch_mode":2,"flip_h":false,"flip_v":false,"script":null)
 
-[node name="C11-2" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other/HBoxContainer4" instance=ExtResource("6_4c3ca")]
+
+[node name="C11-2" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer/HBoxContainer4" unique_id=2064151959 instance=ExtResource("6_4c3ca")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -855,26 +1302,31 @@ An actor will learn the specified skill. This effect will not be applied to enem
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 disabled = true
 
-[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other" groups=["main_trait_filter_tab"]]
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer" unique_id=1897086090 groups=["main_trait_filter_tab"]]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("..")
 metadata/original_parent = {
 "index": 3,
-"parent": Object(VBoxContainer,"_import_path":NodePath(""),"unique_name_in_owner":true,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":1,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
+"parent": Object(VBoxContainer,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"pivot_offset_ratio":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
 
 }
 
-[node name="C12-1" type="CheckBox" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other/HBoxContainer5"]
+[node name="C12-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer/HBoxContainer5" unique_id=1543739505 node_paths=PackedStringArray("main_container")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Common Event[/title]
 Specify the common event to run. You can configure multiple events to one data and will be reproduced in the order of appearance."
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_a5tu4")
+button_group = SubResource("ButtonGroup_p4qv1")
 text = "Common Event"
+script = SubResource("GDScript_p4qv1")
+main_container = NodePath("..")
+metadata/custom_search_tags = "evento común, global, llamar, invocar, call, run, trigger, common, event, custom, script, ejecutar"
+metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"Add/Remove from favorite","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":2,"focus_behavior_recursive":0,"mouse_filter":0,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":2,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","disabled":false,"toggle_mode":true,"button_pressed":false,"action_mode":1,"button_mask":1,"keep_pressed_outside":false,"button_group":null,"shortcut":null,"shortcut_feedback":true,"shortcut_in_tooltip":true,"texture_normal":Resource("res://addons/CustomControls/Images/heart_button_disabled.png"),"texture_pressed":Resource("res://addons/CustomControls/Images/heart_button_normal.png"),"texture_hover":Resource("res://addons/CustomControls/Images/heart_button_hover.png"),"texture_disabled":null,"texture_focused":null,"texture_click_mask":null,"ignore_texture_size":false,"stretch_mode":2,"flip_h":false,"flip_v":false,"script":null)
 
-[node name="C12-2" parent="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other/HBoxContainer5" instance=ExtResource("6_4c3ca")]
+
+[node name="C12-2" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer/HBoxContainer5" unique_id=467311462 instance=ExtResource("6_4c3ca")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -884,36 +1336,16 @@ tooltip_text = "[title]Common Event[/title]Specify the common event to run. You 
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 disabled = true
 
-[node name="FilterContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/CustomPanel"]
-unique_name_in_owner = true
-visible = false
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/HBoxContainer" unique_id=2014209001]
 layout_mode = 2
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 12
-theme_override_constants/margin_bottom = 12
-metadata/_edit_group_ = true
-metadata/_edit_lock_ = true
+size_flags_vertical = 8
+theme_override_constants/separation = 12
 
-[node name="FilterSmoothContainer" type="ScrollContainer" parent="MarginContainer/HBoxContainer/CustomPanel/FilterContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-script = ExtResource("10_a5tu4")
-metadata/_custom_type_script = "uid://cs6g8remlafby"
-
-[node name="FlowContainer" type="GridContainer" parent="MarginContainer/HBoxContainer/CustomPanel/FilterContainer/FilterSmoothContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-script = ExtResource("11_vtb37")
-vertical_separator_texture = SubResource("GradientTexture2D_1plc4")
-
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=821146800]
 layout_mode = 2
 alignment = 2
 
-[node name="OKButton" parent="MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("7_0fv7s")]
+[node name="OKButton" parent="MarginContainer/HBoxContainer/HBoxContainer" unique_id=1559952894 instance=ExtResource("7_0fv7s")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(140, 0)
 layout_mode = 2
@@ -922,7 +1354,7 @@ Saves all changes and closes the windows."
 text = "OK"
 text_overrun_behavior = 3
 
-[node name="CancelButton" parent="MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("7_0fv7s")]
+[node name="CancelButton" parent="MarginContainer/HBoxContainer/HBoxContainer" unique_id=1017771623 instance=ExtResource("7_0fv7s")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(140, 0)
 layout_mode = 2
@@ -933,10 +1365,10 @@ text_overrun_behavior = 3
 
 [connection signal="gui_input" from="MarginContainer/HBoxContainer/HBoxContainer2/Filter" to="." method="_on_filter_gui_input"]
 [connection signal="text_changed" from="MarginContainer/HBoxContainer/HBoxContainer2/Filter" to="." method="_on_filter_text_changed"]
-[connection signal="tab_changed" from="MarginContainer/HBoxContainer/TabsContainer/TabsContainer" to="." method="_on_tabs_container_tab_changed"]
-[connection signal="button_up" from="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/State/VBoxContainer/HBoxContainer/C3-2" to="." method="_on_c_32_button_up"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/State/VBoxContainer2/HBoxContainer3/C4-2" to="." method="_on_c_42_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other/HBoxContainer4/C11-2" to="." method="_on_c_112_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/CustomPanel/TargetContainer/Other/HBoxContainer5/C12-2" to="." method="_on_c_122_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/HBoxContainer2/ToggleAllButton" to="." method="_on_toggle_all_button_pressed"]
+[connection signal="button_up" from="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/VboxContainer/VBoxContainer/HBoxContainer/C3-2" to="." method="_on_c_32_button_up"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/VboxContainer/VBoxContainer2/HBoxContainer3/C4-2" to="." method="_on_c_42_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer/HBoxContainer4/C11-2" to="." method="_on_c_112_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer/HBoxContainer5/C12-2" to="." method="_on_c_122_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

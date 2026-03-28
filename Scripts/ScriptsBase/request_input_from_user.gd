@@ -87,13 +87,16 @@ func _update_position() -> void:
 		
 	var pos: Vector2
 	var offset: Vector2
-	var message: RichTextLabel = GameManager.message.get_message_box()
+	var message_node = GameManager.message
+	var message_rich_text: RichTextLabel = message_node.get_message_box()
 	var screen_size: Vector2 = get_window().content_scale_size
 	var use_the_message_boundaries = current_config.get("use_message_config", true)
 	var scene_position = current_config.get("position", 0)
 	var position_offset = current_config.get("offset", Vector2.ZERO)
+	
+	var message_active = message_rich_text and message_node.dialog_is_started and GameManager.message_container.visible
 
-	if !message or !message.get_parent().get_parent().visible or !use_the_message_boundaries:
+	if !message_active or !use_the_message_boundaries:
 		match scene_position:
 			0: pos = Vector2.ZERO; offset = Vector2.ZERO
 			1: pos = Vector2(0.5, 0); offset = Vector2(-size.x * 0.5, 0)
@@ -107,7 +110,7 @@ func _update_position() -> void:
 		
 		position = screen_size * pos + offset + position_offset
 	else:
-		var other_offset = message.global_position + position_offset
+		var other_offset = message_rich_text.global_position + position_offset
 		match scene_position:
 			0: pos = Vector2.ZERO; offset = Vector2(-size.x, -size.y)
 			1: pos = Vector2(0.5, 0); offset = Vector2(-size.x * 0.5, -size.y)
@@ -119,7 +122,7 @@ func _update_position() -> void:
 			7: pos = Vector2(0.5, 1); offset = Vector2(-size.x * 0.5, 0)
 			8: pos = Vector2.ONE; offset = Vector2(0, 0)
 			
-		position = message.size * pos + offset + other_offset
+		position = message_rich_text.size * pos + offset + other_offset
 		
 	position.x = clamp(position.x, 10, screen_size.x - 10 - size.x)
 	position.y = clamp(position.y, 10, screen_size.y - 10 - size.y)
@@ -333,11 +336,7 @@ func _update_label() -> void:
 
 ## get Final text
 func get_text() -> Variant:
-	var text_result = ""
-	for i in buffer.size():
-		text_result += buffer[i]
-	
-	return text_result
+	return "".join(buffer).replace(empty_char, "")
 
 
 ## Buffer-only insertion logic

@@ -419,6 +419,8 @@ func _on_party_menu_cancel() -> void:
 ## Consumes an item and updates lists checking if quantities have reached zero
 func _execute_item_use(_target_id: int) -> void:
 	print("⚠️ This function is under construction.")
+	var a = GameManager.action_manager.simulate_use_item(null, party_scene.get_actor_selected(), pending_item_data.item)
+	print(a)
 	return
 	@warning_ignore("unreachable_code")
 	if pending_item_type == 0:

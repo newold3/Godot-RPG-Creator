@@ -71,13 +71,20 @@ func get_column(item: RPGEffect) -> Array:
 	elif [6, 7].has(item.code):
 		var list = ["Max HP", "Max MP", "Attack", "Defense", "Magical Attack", "Magical Defense", "Agility", "Luck"]
 		if list.size() > item.data_id:
-			column.append(list[item.data_id] + " x " + str(item.value2) + " turns")
+			var value = " +" + str(item.value3) if item.code == 6 \
+				else " -" + str(item.value3)
+			column.append(
+				list[item.data_id] + value + "% x " + str(item.value2) + " turns"
+			)
 		else:
 			column.append("⚠ Invalid Data")
 	elif [8, 9].has(item.code):
 		var list = ["Max HP", "Max MP", "Attack", "Defense", "Magical Attack", "Magical Defense", "Agility", "Luck"]
 		if list.size() > item.data_id:
-			column.append(list[item.data_id])
+			var number = " (All)" if item.value2 == 0 \
+				else " (1 Stack)" if item.value2 == 1 \
+				else " (%s Stacks)" % item.value2
+			column.append(list[item.data_id] + number)
 		else:
 			column.append("⚠ Invalid Data")
 	elif [10].has(item.code):

@@ -154,20 +154,55 @@ func _process(delta: float) -> void:
 func _input(event: InputEvent) -> void:
 	if GameManager.loading_game or is_invalid_event:
 		return
+
 	if event.is_action_pressed("ui_up") or event.is_action_pressed("ui_down") or event.is_action_pressed("ui_left") or event.is_action_pressed("ui_right") or event.is_action_pressed("ui_select"):
 		_auto_target_tile = Vector2i(-1, -1)
 		_auto_target_event = null
+
 	if !can_perform_action():
 		return
+
 	if event.is_action_pressed("ui_select") and can_attack and not active_boomerang:
 		_reset()
-		if interactive_event and is_instance_valid(interactive_event) and interactive_event.has_method("interact"):
+		var action_found: bool = false
+		var node = get_event_at_adjacent_tile()
+
+		if node:
+			if node is RPGVehicle:
+				_reset(true)
+				node.start(self)
+				action_found = true
+				
+			elif node is LPCEvent or node is EmptyLPCEvent or node is GenericLPCEvent:
+				_reset(true)
+				is_moving = false
+				current_animation = "idle"
+				current_frame = 0
+				run_animation()
+				
+				var result = await node.start(self, RPGEventPage.LAUNCHER_MODE.ACTION_BUTTON)
+				if not result:
+					if current_weapon_data and current_weapon_data.get("id", "none") != "none":
+						attack_with_weapon()
+					else:
+						attack_without_weapon()
+				action_found = true
+				
+			elif node.get_class() == "RPGExtractionScene":
+				if not node.extraction_data.is_depleted():
+					GameManager.manage_extraction_scene(node)
+					action_found = true
+
+		if not action_found and interactive_event and is_instance_valid(interactive_event) and interactive_event.has_method("interact"):
 			var dist = global_position.distance_to(interactive_event.global_position)
+			var tile_size_len = GameManager.get_map_tile_size().length()
 			var can_activate = false
-			if dist < GameManager.get_map_tile_size().length() / 2:
+
+			if dist < tile_size_len / 2.0:
 				can_activate = true
-			else:
+			elif dist <= tile_size_len * 1.5:
 				var diff = interactive_event.global_position - global_position
+				
 				match current_direction:
 					DIRECTIONS.LEFT:
 						if diff.x < 0 and abs(diff.x) >= abs(diff.y) * 0.5:
@@ -181,34 +216,12 @@ func _input(event: InputEvent) -> void:
 					DIRECTIONS.DOWN:
 						if diff.y > 0 and abs(diff.y) >= abs(diff.x) * 0.5:
 							can_activate = true
+
 			if can_activate:
 				_reset(true)
 				interactive_event.interact()
-				return
-		var node = get_event_at_adjacent_tile()
-		var action_found: bool = false
-		if node:
-			if node is RPGVehicle:
-				_reset(true)
-				node.start(self)
 				action_found = true
-			elif node is LPCEvent or node is EmptyLPCEvent or node is GenericLPCEvent:
-				_reset(true)
-				is_moving = false
-				current_animation = "idle"
-				current_frame = 0
-				run_animation()
-				var result = await node.start(self, RPGEventPage.LAUNCHER_MODE.ACTION_BUTTON)
-				if not result:
-					if current_weapon_data and current_weapon_data.get("id", "none") != "none":
-						attack_with_weapon()
-					else:
-						attack_without_weapon()
-				action_found = true
-			elif node.get_class() == "RPGExtractionScene":
-				if not node.extraction_data.is_depleted():
-					GameManager.manage_extraction_scene(node)
-					action_found = true
+
 		if not action_found:
 			if current_weapon_data and current_weapon_data.get("id", "none") != "none":
 				attack_with_weapon()

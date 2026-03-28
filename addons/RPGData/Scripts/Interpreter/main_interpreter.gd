@@ -462,6 +462,7 @@ func end_message() -> void:
 		if GameManager.message_container.visible:
 			showing_message = false
 			await GameManager.message.all_messages_finished
+			GameManager.message_container.visible = false
 			GameManager.message.reset()
 			GameManager.message.clear_text()
 		return
@@ -488,6 +489,7 @@ func end_message() -> void:
 			current_interpreter.busy = false
 			GameManager.message.show_close_animation()
 			await GameManager.message.all_messages_finished
+			GameManager.message_container.visible = false
 			GameManager.message.reset()
 			GameManager.message.clear_text()
 	if not GameManager.message.dialog_is_paused:

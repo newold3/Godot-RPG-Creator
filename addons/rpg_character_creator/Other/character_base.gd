@@ -250,31 +250,37 @@ func _physics_process(delta: float):
 func _set_target_destination(tile: Vector2i, is_new_click: bool = true) -> void:
 	if not GameManager.current_map:
 		return
+
 	_auto_target_tile = tile
 	_auto_target_event = null
-	
+	set_meta("was_new_click", is_new_click)
+
 	if click_indicator_scene and _click_indicator_cooldown <= 0.0:
 		_click_indicator_cooldown = 0.1
 		var indicator = click_indicator_scene.instantiate()
 		GameManager.current_map.add_child(indicator)
 		var map = GameManager.current_map
 		indicator.global_position = map.get_tile_position(tile) - Vector2(0, map.tile_size.y / 2 - 8.0)
-	
+
 	if not is_new_click:
 		return
-	
+
 	var map = GameManager.current_map
 	var events = map.get_in_game_events_in(tile)
-	
+
 	for ev in events:
 		if ev is LPCEvent or ev is EmptyLPCEvent or ev is GenericLPCEvent or ev.get_class() == "RPGExtractionScene" or ev is RPGVehicle or ev.has_method("interact"):
 			_auto_target_event = ev
 			break
-	
+
 	if not _auto_target_event and map.has_method("get_in_game_vehicle_in"):
 		var vehicle = map.get_in_game_vehicle_in(tile)
 		if vehicle:
 			_auto_target_event = vehicle
+
+	if not _auto_target_event and is_instance_valid(interactive_event) and interactive_event.has_method("interact"):
+		if map.local_to_map(interactive_event.global_position) == tile:
+			_auto_target_event = interactive_event
 
 
 ## Processes pathfinding logic and event interactions step by step
@@ -366,31 +372,62 @@ func _look_at_tile_direction(diff: Vector2i) -> void:
 func _interact_with_click_target() -> void:
 	var node = _auto_target_event
 	_auto_target_event = null
-	
+
+	var was_click = get_meta("was_new_click", false)
+	set_meta("was_new_click", false)
+
 	await get_tree().create_timer(0.05).timeout
-	
-	if not ControllerManager.is_action_pressed("Mouse Left"):
-		if is_instance_valid(interactive_event) and interactive_event.has_method("interact"):
+
+	if is_instance_valid(node):
+		if node is RPGVehicle:
 			_reset(true)
-			interactive_event.interact()
-			return
-	
-	if not is_instance_valid(node):
+			node.start(self)
+		elif node is LPCEvent or node is EmptyLPCEvent or node is GenericLPCEvent:
+			_reset(true)
+			is_moving = false
+			current_animation = "idle"
+			current_frame = 0
+			run_animation()
+			await node.start(self, RPGEventPage.LAUNCHER_MODE.ACTION_BUTTON)
+		elif node.get_class() == "RPGExtractionScene":
+			if not node.extraction_data.is_depleted():
+				GameManager.manage_extraction_scene(node)
+		elif node.has_method("interact"):
+			_reset(true)
+			is_moving = false
+			current_animation = "idle"
+			current_frame = 0
+			run_animation()
+			node.interact()
 		return
-	
-	if node is RPGVehicle:
-		_reset(true)
-		node.start(self)
-	elif node is LPCEvent or node is EmptyLPCEvent or node is GenericLPCEvent:
-		_reset(true)
-		is_moving = false
-		current_animation = "idle"
-		current_frame = 0
-		run_animation()
-		await node.start(self, RPGEventPage.LAUNCHER_MODE.ACTION_BUTTON)
-	elif node.get_class() == "RPGExtractionScene":
-		if not node.extraction_data.is_depleted():
-			GameManager.manage_extraction_scene(node)
+
+	if was_click:
+		if interactive_event and is_instance_valid(interactive_event) and interactive_event.has_method("interact"):
+			var dist = global_position.distance_to(interactive_event.global_position)
+			var tile_size_len = GameManager.get_map_tile_size().length()
+			var can_activate = false
+
+			if dist < tile_size_len / 2.0:
+				can_activate = true
+			elif dist <= tile_size_len * 1.5:
+				var diff = interactive_event.global_position - global_position
+				match current_direction:
+					DIRECTIONS.LEFT:
+						if diff.x < 0 and abs(diff.x) >= abs(diff.y) * 0.5:
+							can_activate = true
+					DIRECTIONS.RIGHT:
+						if diff.x > 0 and abs(diff.x) >= abs(diff.y) * 0.5:
+							can_activate = true
+					DIRECTIONS.UP:
+						if diff.y < 0 and abs(diff.y) >= abs(diff.x) * 0.5:
+							can_activate = true
+					DIRECTIONS.DOWN:
+						if diff.y > 0 and abs(diff.y) >= abs(diff.x) * 0.5:
+							can_activate = true
+
+			if can_activate:
+				_reset(true)
+				interactive_event.interact()
 
 
 func attack_with_weapon() -> void:
@@ -2133,11 +2170,20 @@ func grid_movement() -> void:
 	var motion = motion_data.final_motion
 
 	if !motion:
+		if _auto_target_tile != Vector2i(-1, -1) and not ControllerManager.is_action_pressed("Mouse Left"):
+			_auto_target_tile = Vector2i(-1, -1)
+			movement_vector = Vector2.ZERO
+			current_animation = "idle"
+			run_animation()
+		elif _auto_target_tile == Vector2i(-1, -1) and Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down") == Vector2.ZERO:
+			movement_vector = Vector2.ZERO
+			current_animation = "idle"
+			run_animation()
+
 		_animate_contact_area.call_deferred(motion_data.current_motion)
 		end_movement.emit()
 		return
 
-	# Start Movement
 	start_movement(motion_data)
 	if movement_tween:
 		if movement_tween.finished.is_connected(_on_grid_movement_finished):
@@ -2150,12 +2196,12 @@ func free_movement(delta: float) -> void:
 		return
 	
 	if abs(movement_vector.y) > 1 or abs(movement_vector.x) > 1:
-		# Abnormal speed, should usually be between 0 and 1
 		_reset(true)
 		return
 
 	var current_movement_vector = movement_vector
 	var possible_movements = get_possible_movements(movement_vector)
+	
 	if possible_movements:
 		movement_vector *= Vector2(possible_movements)
 		if movement_vector.length_squared() > 0:
@@ -2167,12 +2213,20 @@ func free_movement(delta: float) -> void:
 		velocity = Vector2.ZERO
 	else:
 		velocity = Vector2.ZERO
+		if _auto_target_tile != Vector2i(-1, -1) and not ControllerManager.is_action_pressed("Mouse Left"):
+			_auto_target_tile = Vector2i(-1, -1)
+			movement_vector = Vector2.ZERO
+			current_animation = "idle"
+			run_animation()
+		elif _auto_target_tile == Vector2i(-1, -1) and Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down") == Vector2.ZERO:
+			movement_vector = Vector2.ZERO
+			current_animation = "idle"
+			run_animation()
 	
-	# update steps
 	if GameManager.current_map:
 		update_virtual_tile(velocity * delta)
 		var tile_size: Vector2 = GameManager.get_map_tile_size()
-		cumulative_steps += (movement_vector * delta).length()
+		cumulative_steps += (current_movement_vector * delta).length()
 		var steps_to_add = int(cumulative_steps / tile_size.x)
 		if steps_to_add > 0:
 			GameManager.game_state.stats.steps += steps_to_add

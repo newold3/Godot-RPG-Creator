@@ -141,14 +141,18 @@ func get_class(): return "ColumnItemList"
 		placeholder_text = value
 		queue_redraw()
 
+## Determines the specific behavior when multiple selection is enabled
+@export_enum("Toggle=0", "Multi=1") var multiselection_style: int = 0 :
+	set(value):
+		multiselection_style = value
+		_update_selection_mode()
+
 ## Enabled Multi-Selection
 @export var enable_multiselection: bool = false :
 	set(value):
 		enable_multiselection = value
-		var node: ItemList = get_node_or_null("%ItemList")
-		if node:
-			node.select_mode = ItemList.SELECT_TOGGLE if value else ItemList.SELECT_SINGLE
-			notify_property_list_changed()
+		_update_selection_mode()
+		notify_property_list_changed()
 
 ## Show a checkbox when multiselection is enabled
 @export var show_checkboxes: bool = false:
@@ -231,6 +235,22 @@ signal duplicate_requested(indexes: PackedInt32Array)
 signal paste_requested(index: int)
 signal columns_setted()
 signal button_right_pressed(indexes: PackedInt32Array)
+
+
+## Updates the ItemList selection behavior based on the exported variables.
+func _update_selection_mode() -> void:
+	var node: ItemList = get_node_or_null("%ItemList")
+	
+	if not node:
+		return
+		
+	if enable_multiselection:
+		if multiselection_style == 0:
+			node.select_mode = ItemList.SelectMode.SELECT_TOGGLE
+		else:
+			node.select_mode = ItemList.SelectMode.SELECT_MULTI
+	else:
+		node.select_mode = ItemList.SELECT_SINGLE
 
 
 func _ready() -> void:

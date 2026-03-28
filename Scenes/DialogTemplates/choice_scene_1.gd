@@ -39,6 +39,8 @@ var main_tween: Tween
 
 var old_size_and_position: String
 
+var is_closing: bool = false
+
 const MAX_WIDTH_SCREEN_PERCENT = 0.95
 
 
@@ -73,12 +75,14 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	if Engine.is_editor_hint() or !enabled:
-		if not Engine.is_editor_hint(): _update_position()
+	if Engine.is_editor_hint():
 		return
 	
+	if not is_closing:
+		_update_position()
 	
-	_check_button_pressed()
+	if enabled:
+		_check_button_pressed()
 
 
 func start() -> void:
@@ -136,6 +140,8 @@ func disabled() -> void:
 
 
 func end() -> void:
+	is_closing = true
+	
 	if main_tween:
 		main_tween.kill()
 		
@@ -155,72 +161,75 @@ func _update_position() -> void:
 		
 	var pos: Vector2
 	var offset: Vector2
-	var message: RichTextLabel = GameManager.message.get_message_box()
+	var message_node = GameManager.message
+	var message_rich_text: RichTextLabel = message_node.get_message_box()
 	var screen_size: Vector2 = get_window().content_scale_size
+	
+	var message_active = message_rich_text and message_node.dialog_is_started and GameManager.message_container.visible
 
-	if !message or !message.get_parent().get_parent().visible or !use_the_message_boundaries:
+	if !message_active or !use_the_message_boundaries:
 		match scene_position:
-			0: # Top Left
+			0:
 				pos = Vector2.ZERO
 				offset = Vector2.ZERO
-			1: # Top Center
+			1:
 				pos = Vector2(0.5, 0)
 				offset = Vector2(-size.x * 0.5, 0)
-			2: # Top Right
+			2:
 				pos = Vector2(1, 0)
 				offset = Vector2(-size.x, 0)
-			3: # Left
+			3:
 				pos = Vector2(0, 0.5)
 				offset = Vector2(0, -size.y * 0.5)
-			4: # Center
+			4:
 				pos = Vector2(0.5, 0.5)
 				offset = Vector2(-size.x * 0.5, -size.y * 0.5)
-			5: # Right
+			5:
 				pos = Vector2(1, 0.5)
 				offset = Vector2(-size.x, -size.y * 0.5)
-			6: # Bottom Left
+			6:
 				pos = Vector2(0, 1)
 				offset = Vector2(0, -size.y)
-			7: # Bottom Center
+			7:
 				pos = Vector2(0.5, 1)
 				offset = Vector2(-size.x * 0.5, -size.y)
-			8: # Bottom Right
+			8:
 				pos = Vector2.ONE
 				offset = Vector2(-size.x, -size.y)
 		
 		position = screen_size * pos + offset + position_offset
 	else:
-		var other_offset = message.global_position + position_offset
+		var other_offset = message_rich_text.global_position + position_offset
 		match scene_position:
-			0: # Top Left
+			0:
 				pos = Vector2.ZERO
 				offset = Vector2(-size.x, -size.y)
-			1: # Top Center
+			1:
 				pos = Vector2(0.5, 0)
 				offset = Vector2(-size.x * 0.5, -size.y)
-			2: # Top Right
+			2:
 				pos = Vector2(1, 0)
 				offset = Vector2(0, -size.y)
-			3: # Left
+			3:
 				pos = Vector2(0, 0.5)
 				offset = Vector2(-size.x, -size.y * 0.5)
-			4: # Center
+			4:
 				pos = Vector2(0.5, 0.5)
 				offset = Vector2(-size.x * 0.5, -size.y * 0.5)
-			5: # Right
+			5:
 				pos = Vector2(1, 0.5)
 				offset = Vector2(0, -size.y * 0.5)
-			6: # Bottom Left
+			6:
 				pos = Vector2(0, 1)
 				offset = Vector2(-size.x, 0)
-			7: # Bottom Center
+			7:
 				pos = Vector2(0.5, 1)
 				offset = Vector2(-size.x * 0.5, 0)
-			8: # Bottom Right
+			8:
 				pos = Vector2.ONE
 				offset = Vector2(0, 0)
 			
-		position = message.size * pos + offset + other_offset
+		position = message_rich_text.size * pos + offset + other_offset
 		
 	position.x = clamp(position.x, 10, screen_size.x - 10 - size.x)
 	position.y = clamp(position.y, 10, screen_size.y - 10 - size.y)

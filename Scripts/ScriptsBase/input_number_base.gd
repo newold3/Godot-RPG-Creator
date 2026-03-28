@@ -63,6 +63,5 @@ func _end_animation() -> void:
 
 ## get Final text
 func get_text() -> Variant:
-	var text_result: int = int("".join(buffer))
-	
-	return text_result
+	var clean_text = "".join(buffer).replace(empty_char, "")
+	return int(clean_text) if clean_text.is_valid_int() else 0

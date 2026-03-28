@@ -462,12 +462,12 @@ func _get_item_color_for_item(item: Variant) -> Color:
 func _is_item_usable_in_menu(item_data: Variant) -> bool:
 	if not item_data is RPGItem:
 		return true
-		
+
 	var occasion = item_data.occasion
 	if occasion == RPGActionManager.Ocassion.ALWAYS or occasion ==  RPGActionManager.Ocassion.MENU_SCREEN or (GameManager.is_on_battle and occasion ==  RPGActionManager.Ocassion.BATTLE_SCREEN):
-		return false
+		return true
 
-	return true
+	return false
 
 
 ## Helper to extract valid items (quantity > 0) from a state dictionary.

@@ -27,7 +27,7 @@ func _update_data_fields() -> void:
 		fill_invocation_animation()
 		fill_scope()
 		_fill_recipes_list()
-		var current_data = get_data().clone(true)
+		var current_data = get_data()
 		
 		if not current_data.recipes:
 			var new_list: Array[RPGRecipe] = []
