@@ -22,6 +22,10 @@ var effects: Array[RPGEffect]
 var effects_need_refresh_timer: float
 
 
+func _ready() -> void:
+	ResourceLoader.load_threaded_request.call_deferred("res://addons/CustomControls/Dialogs/select_effect_dialog.tscn")
+
+
 func set_data(_database, _effects) -> void:
 	database = _database
 	effects = _effects
@@ -43,6 +47,17 @@ func _process(delta: float) -> void:
 			set_process(false)
 	else:
 		set_process(false)
+
+
+func _get_parameter_name(id: int) -> String:
+	var items = RPGActor.get_parameter_list(false)
+	
+	var parameter: String = ""
+	
+	if items.size() > id:
+		parameter = items[id]
+	
+	return parameter
 
 
 func get_column(item: RPGEffect) -> Array:
@@ -69,22 +84,22 @@ func get_column(item: RPGEffect) -> Array:
 		else:
 			column.append("⚠ Invalid Data")
 	elif [6, 7].has(item.code):
-		var list = ["Max HP", "Max MP", "Attack", "Defense", "Magical Attack", "Magical Defense", "Agility", "Luck"]
-		if list.size() > item.data_id:
+		var param = _get_parameter_name(item.data_id)
+		if not param.is_empty():
 			var value = " +" + str(item.value3) if item.code == 6 \
 				else " -" + str(item.value3)
 			column.append(
-				list[item.data_id] + value + "% x " + str(item.value2) + " turns"
+				param + value + "% x " + str(item.value2) + " turns"
 			)
 		else:
 			column.append("⚠ Invalid Data")
 	elif [8, 9].has(item.code):
-		var list = ["Max HP", "Max MP", "Attack", "Defense", "Magical Attack", "Magical Defense", "Agility", "Luck"]
-		if list.size() > item.data_id:
+		var param = _get_parameter_name(item.data_id)
+		if not param.is_empty():
 			var number = " (All)" if item.value2 == 0 \
 				else " (1 Stack)" if item.value2 == 1 \
 				else " (%s Stacks)" % item.value2
-			column.append(list[item.data_id] + number)
+			column.append(param + number)
 		else:
 			column.append("⚠ Invalid Data")
 	elif [10].has(item.code):
@@ -94,9 +109,9 @@ func get_column(item: RPGEffect) -> Array:
 		else:
 			column.append("⚠ Invalid Data")
 	elif [11].has(item.code):
-		var list = ["Max HP", "Max MP", "Attack", "Defense", "Magical Attack", "Magical Defense", "Agility", "Luck"]
-		if list.size() > item.data_id:
-			column.append(list[item.data_id] + " + " + str(item.value2))
+		var param = _get_parameter_name(item.data_id)
+		if not param.is_empty():
+			column.append(param + " + " + str(item.value2))
 		else:
 			column.append("⚠ Invalid Data")
 	elif [12].has(item.code):

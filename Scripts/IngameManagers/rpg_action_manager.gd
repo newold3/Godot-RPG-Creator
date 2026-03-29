@@ -98,6 +98,30 @@ func _parse_formula(formula: String, user: Variant, target: Variant) -> int:
 	return int(result)
 
 
+func _simulate_generic(user: Variant, target: Variant, data: Variant) -> Dictionary:
+	var result_data = {
+		"success": false,
+		"hp_change": 0,
+		"mp_change": 0,
+		"tp_change": 0,
+		"added_states": [],
+		"removed_states": [],
+		"added_buffs": [],
+		"removed_buffs": [],
+		"added_debuffs": [],
+		"removed_debuffs": []
+	}
+	
+	var base_value = _parse_formula(data.damage.formula, user, target)
+	
+	if data and is_instance_valid(target):
+		if target.has_method("get_parameter"):
+			pass
+	
+	
+	return result_data
+
+
 ## Simulates the use of a GameItem on a target, calculating damage, healing, and processing all RPGEffects.
 func simulate_use_item(user: Variant, target: Variant, item: GameItem) -> Dictionary:
 	var result_data = {
@@ -113,6 +137,8 @@ func simulate_use_item(user: Variant, target: Variant, item: GameItem) -> Dictio
 		"removed_debuffs": []
 	}
 	var real_item = item.get_real_data() as RPGItem
+	return _simulate_generic(user, target, real_item)
+	
 
 	if not real_item:
 		return result_data

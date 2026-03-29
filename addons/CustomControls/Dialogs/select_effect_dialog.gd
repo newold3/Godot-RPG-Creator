@@ -491,6 +491,7 @@ func set_tab_and_selected_data() -> void:
 
 ## Refreshes all fill data operations
 func fill_all() -> void:
+	_fill_parameters()
 	fill_other()
 
 
@@ -532,6 +533,41 @@ func fill_other() -> void:
 			node_name = "%" + "C%s-2" % str(i)
 			node = get_node(node_name)
 			node.set_text("")
+
+
+func _fill_parameters() -> void:
+	var node1 = %"C5-2"
+	var node2 = %"C6-2"
+	var node3 = %"C7-2"
+	var node4 = %"C8-2"
+	var node5 = %"C10-2"
+	
+	node1.clear()
+	node2.clear()
+	node3.clear()
+	node4.clear()
+	node5.clear()
+	
+	var items = RPGActor.get_parameter_list(true)
+	var headers = [tr("Base Parameters"), tr("Extra Parameters"), tr("Special Parameters"), tr("User Parameters")]
+	var header_index = 0
+	
+	for item in items:
+		if not item.is_empty():
+			node1.add_item(item)
+			node2.add_item(item)
+			node3.add_item(item)
+			node4.add_item(item)
+			node4.add_item(item)
+			node5.add_item(item)
+		else:
+			var header = headers[header_index] if headers.size() > header_index else ""
+			node1.add_separator(header)
+			node2.add_separator(header)
+			node3.add_separator(header)
+			node4.add_separator(header)
+			node5.add_separator(header)
+			header_index += 1
 
 
 ## Opens a sub dialog to select database specific data

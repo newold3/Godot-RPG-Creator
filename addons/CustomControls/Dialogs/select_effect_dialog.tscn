@@ -36,7 +36,7 @@ modulate_color = Color(0.4676506, 0.74850696, 1, 1)
 offsets = PackedFloat32Array(0, 0.90254235, 0.9674033, 1)
 colors = PackedColorArray(0.1764811, 0.31020942, 0.16205716, 1, 0.17998129, 0.30840138, 0.16722386, 1, 0.13205287, 0.14005607, 0.14405768, 1, 0, 0, 0, 1)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_ojols"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_p4qv1"]
 gradient = SubResource("Gradient_811n2")
 fill = 2
 fill_from = Vector2(0.49305555, 0.4837963)
@@ -47,7 +47,7 @@ content_margin_left = 8.0
 content_margin_top = 4.0
 content_margin_right = 24.0
 content_margin_bottom = 4.0
-texture = SubResource("GradientTexture2D_ojols")
+texture = SubResource("GradientTexture2D_p4qv1")
 texture_margin_left = 3.0
 texture_margin_top = 3.0
 texture_margin_right = 4.0
@@ -72,7 +72,7 @@ pressed = true
 [sub_resource type="Shortcut" id="Shortcut_vrkgw"]
 events = [SubResource("InputEventAction_2dh51"), SubResource("InputEventAction_5qyg1")]
 
-[sub_resource type="DPITexture" id="DPITexture_811n2"]
+[sub_resource type="DPITexture" id="DPITexture_p4qv1"]
 _source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#ff5d5d\" d=\"M2 1v8.586l1.293-1.293a1 1 0 0 1 1.414 0L7 10.587l2.293-2.293a1 1 0 0 1 1.414 0L13 10.586l1-1V6H9V1H2zm8 0v4h4zm-6 9.414-2 2V15h12v-2.586l-.293.293a1 1 0 0 1-1.414 0L10 10.414l-2.293 2.293a1 1 0 0 1-1.414 0L4 10.414z\"/></svg>
 "
 
@@ -132,7 +132,7 @@ func _on_toggled(value: bool) -> void:
 		target.visible = !value
 "
 
-[sub_resource type="ButtonGroup" id="ButtonGroup_p4qv1"]
+[sub_resource type="ButtonGroup" id="ButtonGroup_ojols"]
 
 [sub_resource type="GDScript" id="GDScript_p4qv1"]
 script/source = "@tool
@@ -203,7 +203,7 @@ layout_mode = 2
 size_flags_horizontal = 0
 shortcut = SubResource("Shortcut_vrkgw")
 text = "Expand / Collapse"
-icon = SubResource("DPITexture_811n2")
+icon = SubResource("DPITexture_p4qv1")
 metadata/real_parent = Object(HBoxContainer,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"pivot_offset_ratio":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
 
 metadata/original_position_in_tree = 0
@@ -239,7 +239,6 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_p4qv1")
 [node name="FilterSmoothContainer" type="ScrollContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer" unique_id=19368089]
 unique_name_in_owner = true
 layout_mode = 2
-scroll_vertical = 340
 script = ExtResource("10_a5tu4")
 metadata/_custom_type_script = "uid://cs6g8remlafby"
 
@@ -279,12 +278,12 @@ text = "▼"
 flat = true
 alignment = 2
 script = SubResource("GDScript_c77jo")
-target = NodePath("../../VboxContainer")
+target = NodePath("../../Parent")
 
-[node name="VboxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover" unique_id=609997386]
+[node name="Parent" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover" unique_id=609997386]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer" unique_id=2107940362 groups=["main_trait_filter_tab"]]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/Parent" unique_id=2107940362 groups=["main_trait_filter_tab"]]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("..")
 metadata/original_parent = {
@@ -293,10 +292,10 @@ metadata/original_parent = {
 
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer/VBoxContainer" unique_id=1513327705]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/Parent/VBoxContainer" unique_id=1513327705]
 layout_mode = 2
 
-[node name="C0-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer/VBoxContainer/HBoxContainer" unique_id=936537805 node_paths=PackedStringArray("main_container")]
+[node name="C0-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/Parent/VBoxContainer/HBoxContainer" unique_id=936537805 node_paths=PackedStringArray("main_container")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -304,7 +303,7 @@ tooltip_text = "[title]Recover HP[/title]
 Recovers/Loses HP. Recovery values are specified as a sum of a percentage of the target character's Max HP (-100% to 100%) and a set value (-9999999 to 9999999). If you only wish to set one of these values, make sure to set the other value to 0. The recovery value will change according to the user's [Pharmacology] special trait value."
 mouse_default_cursor_shape = 2
 button_pressed = true
-button_group = SubResource("ButtonGroup_p4qv1")
+button_group = SubResource("ButtonGroup_ojols")
 text = "Recover HP"
 script = SubResource("GDScript_p4qv1")
 main_container = NodePath("../..")
@@ -312,7 +311,7 @@ metadata/custom_search_tags = "curar, sanar, vida, salud, heal, restore, hp, poc
 metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"Add/Remove from favorite","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":2,"focus_behavior_recursive":0,"mouse_filter":0,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":2,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","disabled":false,"toggle_mode":true,"button_pressed":false,"action_mode":1,"button_mask":1,"keep_pressed_outside":false,"button_group":null,"shortcut":null,"shortcut_feedback":true,"shortcut_in_tooltip":true,"texture_normal":Resource("res://addons/CustomControls/Images/heart_button_disabled.png"),"texture_pressed":Resource("res://addons/CustomControls/Images/heart_button_normal.png"),"texture_hover":Resource("res://addons/CustomControls/Images/heart_button_hover.png"),"texture_disabled":null,"texture_focused":null,"texture_click_mask":null,"ignore_texture_size":false,"stretch_mode":2,"flip_h":false,"flip_v":false,"script":null)
 
 
-[node name="C0-2" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer/VBoxContainer/HBoxContainer" unique_id=1705212023 instance=ExtResource("5_fj12j")]
+[node name="C0-2" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/Parent/VBoxContainer/HBoxContainer" unique_id=1705212023 instance=ExtResource("5_fj12j")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -326,16 +325,16 @@ suffix = " %"
 disabled = true
 _custom_value = 100.0
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer/VBoxContainer" unique_id=1144443062]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/Parent/VBoxContainer" unique_id=1144443062]
 layout_mode = 2
 size_flags_horizontal = 8
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer/VBoxContainer/HBoxContainer2" unique_id=946422193]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/Parent/VBoxContainer/HBoxContainer2" unique_id=946422193]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 text = "+"
 
-[node name="C0-3" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer/VBoxContainer/HBoxContainer2" unique_id=886031794 instance=ExtResource("5_fj12j")]
+[node name="C0-3" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/Parent/VBoxContainer/HBoxContainer2" unique_id=886031794 instance=ExtResource("5_fj12j")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
@@ -350,12 +349,12 @@ suffix = " %"
 disabled = true
 _custom_value = 0.0
 
-[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer/VBoxContainer/HBoxContainer2" unique_id=991511032]
+[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/Parent/VBoxContainer/HBoxContainer2" unique_id=991511032]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer" unique_id=1651009525 groups=["main_trait_filter_tab"]]
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/Parent" unique_id=1651009525 groups=["main_trait_filter_tab"]]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("..")
 metadata/original_parent = {
@@ -364,17 +363,17 @@ metadata/original_parent = {
 
 }
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer/VBoxContainer2" unique_id=2144839022]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/Parent/VBoxContainer2" unique_id=2144839022]
 layout_mode = 2
 
-[node name="C1-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer/VBoxContainer2/HBoxContainer3" unique_id=445866815 node_paths=PackedStringArray("main_container")]
+[node name="C1-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/Parent/VBoxContainer2/HBoxContainer3" unique_id=445866815 node_paths=PackedStringArray("main_container")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Recover MP[/title]
 Recovers/Loses MP (adds to current value). Recovery values are specified as a sum of a percentage of the target character's Max MP (-100% to 100%) and a set value (-9999999 to 9999999). If you only wish to set one of these values, make sure to set the other value to 0. The recovery value will change according to the user's [Pharmacology] special trait value."
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_p4qv1")
+button_group = SubResource("ButtonGroup_ojols")
 text = "Recover MP"
 script = SubResource("GDScript_p4qv1")
 main_container = NodePath("../..")
@@ -382,7 +381,7 @@ metadata/custom_search_tags = "magia, maná, energía, ether, mana, mp, restore,
 metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"Add/Remove from favorite","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":2,"focus_behavior_recursive":0,"mouse_filter":0,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":2,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","disabled":false,"toggle_mode":true,"button_pressed":false,"action_mode":1,"button_mask":1,"keep_pressed_outside":false,"button_group":null,"shortcut":null,"shortcut_feedback":true,"shortcut_in_tooltip":true,"texture_normal":Resource("res://addons/CustomControls/Images/heart_button_disabled.png"),"texture_pressed":Resource("res://addons/CustomControls/Images/heart_button_normal.png"),"texture_hover":Resource("res://addons/CustomControls/Images/heart_button_hover.png"),"texture_disabled":null,"texture_focused":null,"texture_click_mask":null,"ignore_texture_size":false,"stretch_mode":2,"flip_h":false,"flip_v":false,"script":null)
 
 
-[node name="C1-2" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer/VBoxContainer2/HBoxContainer3" unique_id=1053200643 instance=ExtResource("5_fj12j")]
+[node name="C1-2" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/Parent/VBoxContainer2/HBoxContainer3" unique_id=1053200643 instance=ExtResource("5_fj12j")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -396,16 +395,16 @@ suffix = " %"
 disabled = true
 _custom_value = 100.0
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer/VBoxContainer2" unique_id=2543629]
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/Parent/VBoxContainer2" unique_id=2543629]
 layout_mode = 2
 size_flags_horizontal = 8
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer/VBoxContainer2/HBoxContainer4" unique_id=838877765]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/Parent/VBoxContainer2/HBoxContainer4" unique_id=838877765]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 text = "+"
 
-[node name="C1-3" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer/VBoxContainer2/HBoxContainer4" unique_id=472501970 instance=ExtResource("5_fj12j")]
+[node name="C1-3" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/Parent/VBoxContainer2/HBoxContainer4" unique_id=472501970 instance=ExtResource("5_fj12j")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
@@ -420,12 +419,12 @@ suffix = " %"
 disabled = true
 _custom_value = 0.0
 
-[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer/VBoxContainer2/HBoxContainer4" unique_id=1360098752]
+[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/Parent/VBoxContainer2/HBoxContainer4" unique_id=1360098752]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer" unique_id=1724134268 groups=["main_trait_filter_tab"]]
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/Parent" unique_id=1724134268 groups=["main_trait_filter_tab"]]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("..")
 metadata/original_parent = {
@@ -434,14 +433,14 @@ metadata/original_parent = {
 
 }
 
-[node name="C2-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer/HBoxContainer5" unique_id=1672456796 node_paths=PackedStringArray("main_container")]
+[node name="C2-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/Parent/HBoxContainer5" unique_id=1672456796 node_paths=PackedStringArray("main_container")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Gain TP[/title]
 Increases TP by the specified amount. Specify the increase using a set value (0 to 9999999)."
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_p4qv1")
+button_group = SubResource("ButtonGroup_ojols")
 text = "Gain TP"
 script = SubResource("GDScript_p4qv1")
 main_container = NodePath("..")
@@ -449,7 +448,7 @@ metadata/custom_search_tags = "tp, tensión, furia, energía, stamina, rage, lim
 metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"Add/Remove from favorite","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":2,"focus_behavior_recursive":0,"mouse_filter":0,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":2,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","disabled":false,"toggle_mode":true,"button_pressed":false,"action_mode":1,"button_mask":1,"keep_pressed_outside":false,"button_group":null,"shortcut":null,"shortcut_feedback":true,"shortcut_in_tooltip":true,"texture_normal":Resource("res://addons/CustomControls/Images/heart_button_disabled.png"),"texture_pressed":Resource("res://addons/CustomControls/Images/heart_button_normal.png"),"texture_hover":Resource("res://addons/CustomControls/Images/heart_button_hover.png"),"texture_disabled":null,"texture_focused":null,"texture_click_mask":null,"ignore_texture_size":false,"stretch_mode":2,"flip_h":false,"flip_v":false,"script":null)
 
 
-[node name="C2-2" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/VboxContainer/HBoxContainer5" unique_id=696456783 instance=ExtResource("5_fj12j")]
+[node name="C2-2" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Recover/Parent/HBoxContainer5" unique_id=696456783 instance=ExtResource("5_fj12j")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -485,12 +484,12 @@ text = "▼"
 flat = true
 alignment = 2
 script = SubResource("GDScript_c77jo")
-target = NodePath("../../VboxContainer")
+target = NodePath("../../Parent")
 
-[node name="VboxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State" unique_id=1380552640]
+[node name="Parent" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State" unique_id=1380552640]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/VboxContainer" unique_id=861822150 groups=["main_trait_filter_tab"]]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/Parent" unique_id=861822150 groups=["main_trait_filter_tab"]]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("..")
 metadata/original_parent = {
@@ -499,17 +498,17 @@ metadata/original_parent = {
 
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/VboxContainer/VBoxContainer" unique_id=580640393]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/Parent/VBoxContainer" unique_id=580640393]
 layout_mode = 2
 
-[node name="C3-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/VboxContainer/VBoxContainer/HBoxContainer" unique_id=147239728 node_paths=PackedStringArray("main_container")]
+[node name="C3-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/Parent/VBoxContainer/HBoxContainer" unique_id=147239728 node_paths=PackedStringArray("main_container")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Add State[/title]
 Adds a state. Specify the desired state and the rate of success (0 to 10000%). By setting this to a value higher than 100%, this will have a higher chance of success to add the state than its original effectiveness."
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_p4qv1")
+button_group = SubResource("ButtonGroup_ojols")
 text = "Add State"
 script = SubResource("GDScript_p4qv1")
 main_container = NodePath("../..")
@@ -517,7 +516,7 @@ metadata/custom_search_tags = "estado, veneno, quemadura, alterar, aplicar, stat
 metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"Add/Remove from favorite","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":2,"focus_behavior_recursive":0,"mouse_filter":0,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":2,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","disabled":false,"toggle_mode":true,"button_pressed":false,"action_mode":1,"button_mask":1,"keep_pressed_outside":false,"button_group":null,"shortcut":null,"shortcut_feedback":true,"shortcut_in_tooltip":true,"texture_normal":Resource("res://addons/CustomControls/Images/heart_button_disabled.png"),"texture_pressed":Resource("res://addons/CustomControls/Images/heart_button_normal.png"),"texture_hover":Resource("res://addons/CustomControls/Images/heart_button_hover.png"),"texture_disabled":null,"texture_focused":null,"texture_click_mask":null,"ignore_texture_size":false,"stretch_mode":2,"flip_h":false,"flip_v":false,"script":null)
 
 
-[node name="C3-2" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/VboxContainer/VBoxContainer/HBoxContainer" unique_id=272716018 instance=ExtResource("6_4c3ca")]
+[node name="C3-2" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/Parent/VBoxContainer/HBoxContainer" unique_id=272716018 instance=ExtResource("6_4c3ca")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -528,11 +527,11 @@ Adds a state. Specify the desired state and the rate of success (0 to 10000%). B
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 disabled = true
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/VboxContainer/VBoxContainer" unique_id=754684510]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/Parent/VBoxContainer" unique_id=754684510]
 layout_mode = 2
 size_flags_horizontal = 8
 
-[node name="C3-3" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/VboxContainer/VBoxContainer/HBoxContainer2" unique_id=2138325388 instance=ExtResource("5_fj12j")]
+[node name="C3-3" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/Parent/VBoxContainer/HBoxContainer2" unique_id=2138325388 instance=ExtResource("5_fj12j")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
@@ -547,12 +546,12 @@ suffix = " %"
 disabled = true
 _custom_value = 100.0
 
-[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/VboxContainer/VBoxContainer/HBoxContainer2" unique_id=1384530211]
+[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/Parent/VBoxContainer/HBoxContainer2" unique_id=1384530211]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/VboxContainer" unique_id=436413315 groups=["main_trait_filter_tab"]]
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/Parent" unique_id=436413315 groups=["main_trait_filter_tab"]]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("..")
 metadata/original_parent = {
@@ -561,17 +560,17 @@ metadata/original_parent = {
 
 }
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/VboxContainer/VBoxContainer2" unique_id=1930233473]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/Parent/VBoxContainer2" unique_id=1930233473]
 layout_mode = 2
 
-[node name="C4-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/VboxContainer/VBoxContainer2/HBoxContainer3" unique_id=740099800 node_paths=PackedStringArray("main_container")]
+[node name="C4-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/Parent/VBoxContainer2/HBoxContainer3" unique_id=740099800 node_paths=PackedStringArray("main_container")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Remove State[/title]
 Removes a state. Specify the desired state and the rate of success (0 to 10000%)."
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_p4qv1")
+button_group = SubResource("ButtonGroup_ojols")
 text = "Remove State"
 script = SubResource("GDScript_p4qv1")
 main_container = NodePath("../..")
@@ -579,7 +578,7 @@ metadata/custom_search_tags = "curar estado, antídoto, panacea, purificar, heal
 metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"Add/Remove from favorite","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":2,"focus_behavior_recursive":0,"mouse_filter":0,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":2,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","disabled":false,"toggle_mode":true,"button_pressed":false,"action_mode":1,"button_mask":1,"keep_pressed_outside":false,"button_group":null,"shortcut":null,"shortcut_feedback":true,"shortcut_in_tooltip":true,"texture_normal":Resource("res://addons/CustomControls/Images/heart_button_disabled.png"),"texture_pressed":Resource("res://addons/CustomControls/Images/heart_button_normal.png"),"texture_hover":Resource("res://addons/CustomControls/Images/heart_button_hover.png"),"texture_disabled":null,"texture_focused":null,"texture_click_mask":null,"ignore_texture_size":false,"stretch_mode":2,"flip_h":false,"flip_v":false,"script":null)
 
 
-[node name="C4-2" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/VboxContainer/VBoxContainer2/HBoxContainer3" unique_id=1163589344 instance=ExtResource("6_4c3ca")]
+[node name="C4-2" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/Parent/VBoxContainer2/HBoxContainer3" unique_id=1163589344 instance=ExtResource("6_4c3ca")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -590,11 +589,11 @@ Removes a state. Specify the desired state and the rate of success (0 to 10000%)
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 disabled = true
 
-[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/VboxContainer/VBoxContainer2" unique_id=287867193]
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/Parent/VBoxContainer2" unique_id=287867193]
 layout_mode = 2
 size_flags_horizontal = 8
 
-[node name="C4-3" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/VboxContainer/VBoxContainer2/HBoxContainer6" unique_id=643147974 instance=ExtResource("5_fj12j")]
+[node name="C4-3" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/Parent/VBoxContainer2/HBoxContainer6" unique_id=643147974 instance=ExtResource("5_fj12j")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
@@ -609,7 +608,7 @@ suffix = " %"
 disabled = true
 _custom_value = 100.0
 
-[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/VboxContainer/VBoxContainer2/HBoxContainer6" unique_id=364691170]
+[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/Parent/VBoxContainer2/HBoxContainer6" unique_id=364691170]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -638,12 +637,12 @@ text = "▼"
 flat = true
 alignment = 2
 script = SubResource("GDScript_c77jo")
-target = NodePath("../../VboxContainer")
+target = NodePath("../../Parent")
 
-[node name="VboxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter" unique_id=259602491]
+[node name="Parent" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter" unique_id=259602491]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer" unique_id=1670180288 groups=["main_trait_filter_tab"]]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent" unique_id=1670180288 groups=["main_trait_filter_tab"]]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("..")
 metadata/original_parent = {
@@ -652,19 +651,18 @@ metadata/original_parent = {
 
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer" unique_id=268860508]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer" unique_id=268860508]
 layout_mode = 2
 
-[node name="C5-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer/HBoxContainer" unique_id=299020084 node_paths=PackedStringArray("main_container")]
+[node name="C5-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer/HBoxContainer" unique_id=299020084 node_paths=PackedStringArray("main_container")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-tooltip_text = "[title]Add Buff[/title]
-Adds a buff that temporarily increases a base stat by a certain amount.
+tooltip_text = "Adds a buff that temporarily increases a stat by a specified amount for x turns. If you leave the turn value at 0, the buff will last until the end of the battle.
 
 [Note]: Buffs can be stacked."
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_p4qv1")
+button_group = SubResource("ButtonGroup_ojols")
 text = "Add Buff"
 script = SubResource("GDScript_p4qv1")
 main_container = NodePath("../..")
@@ -672,93 +670,150 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 metadata/custom_search_tags = "buff, mejora, subir, fortalecer, param, stat, boost, increase, agilidad, ataque, aura"
 
-[node name="C5-2" type="OptionButton" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer/HBoxContainer" unique_id=590646070]
+[node name="C5-2" type="OptionButton" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer/HBoxContainer" unique_id=590646070]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.6)
 custom_minimum_size = Vector2(0, 31)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-tooltip_text = "Adds a buff that temporarily increases a base stat by a certain amount.
+tooltip_text = "Adds a buff that temporarily increases a stat by a specified amount for x turns. If you leave the turn value at 0, the buff will last until the end of the battle.
 
 [Note]: Buffs can be stacked."
 focus_mode = 0
 mouse_filter = 2
 mouse_default_cursor_shape = 2
 disabled = true
-selected = 0
-item_count = 8
-popup/item_0/text = "Max HP"
-popup/item_0/id = 0
-popup/item_1/text = "Max MP"
+selected = 1
+item_count = 35
+popup/item_0/text = "Base Parameters"
+popup/item_0/id = -1
+popup/item_0/separator = true
+popup/item_1/text = "Hit Points"
 popup/item_1/id = 1
-popup/item_2/text = "Attack"
+popup/item_2/text = "Magic Points"
 popup/item_2/id = 2
-popup/item_3/text = "Defense"
+popup/item_3/text = "Attack"
 popup/item_3/id = 3
-popup/item_4/text = "Magical Attack"
+popup/item_4/text = "Defense"
 popup/item_4/id = 4
-popup/item_5/text = "Magical Defense"
+popup/item_5/text = "Magic Attack"
 popup/item_5/id = 5
-popup/item_6/text = "Agility"
+popup/item_6/text = "Magic Defense"
 popup/item_6/id = 6
-popup/item_7/text = "Luck"
+popup/item_7/text = "Agility"
 popup/item_7/id = 7
+popup/item_8/text = "Luck"
+popup/item_8/id = 8
+popup/item_9/text = "Extra Parameters"
+popup/item_9/id = -1
+popup/item_9/separator = true
+popup/item_10/text = "Hit Rate"
+popup/item_10/id = 10
+popup/item_11/text = "Evasion Rate"
+popup/item_11/id = 11
+popup/item_12/text = "Critical Rate"
+popup/item_12/id = 12
+popup/item_13/text = "Critical Evasion Rate"
+popup/item_13/id = 13
+popup/item_14/text = "Magic Evasion Rate"
+popup/item_14/id = 14
+popup/item_15/text = "Magic Reflection"
+popup/item_15/id = 15
+popup/item_16/text = "Counter Attack"
+popup/item_16/id = 16
+popup/item_17/text = "HP Regeneration"
+popup/item_17/id = 17
+popup/item_18/text = "MP Regeneration"
+popup/item_18/id = 18
+popup/item_19/text = "TP Regeneration"
+popup/item_19/id = 19
+popup/item_20/text = "Special Parameters"
+popup/item_20/id = -1
+popup/item_20/separator = true
+popup/item_21/text = "Target Rate"
+popup/item_21/id = 21
+popup/item_22/text = "Guard Effect"
+popup/item_22/id = 22
+popup/item_23/text = "Recovery Effect"
+popup/item_23/id = 23
+popup/item_24/text = "Healing Mastery"
+popup/item_24/id = 24
+popup/item_25/text = "MP Cost Rate"
+popup/item_25/id = 25
+popup/item_26/text = "TP Charge Rate"
+popup/item_26/id = 26
+popup/item_27/text = "Physical Damage Rate"
+popup/item_27/id = 27
+popup/item_28/text = "Magic Damage Rate"
+popup/item_28/id = 28
+popup/item_29/text = "Floor Damage Rate"
+popup/item_29/id = 29
+popup/item_30/text = "Experience Rate"
+popup/item_30/id = 30
+popup/item_31/text = "Gold Rate"
+popup/item_31/id = 31
+popup/item_32/text = "User Parameters"
+popup/item_32/id = -1
+popup/item_32/separator = true
+popup/item_33/text = "User Parameter 0"
+popup/item_33/id = 33
+popup/item_34/text = "User Parameter 1"
+popup/item_34/id = 34
 script = ExtResource("7_oy6w7")
 metadata/original_focus_mode = 2
 metadata/original_mouse_filer = 0
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer" unique_id=1351397960]
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer" unique_id=1351397960]
 layout_mode = 2
 size_flags_horizontal = 8
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer/HBoxContainer4" unique_id=1713269985]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer/HBoxContainer4" unique_id=1713269985]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 10
 text = "x "
 
-[node name="C5-3" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer/HBoxContainer4" unique_id=943884479 instance=ExtResource("5_fj12j")]
+[node name="C5-3" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer/HBoxContainer4" unique_id=943884479 instance=ExtResource("5_fj12j")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-tooltip_text = "Adds a buff that temporarily increases a base stat by a certain amount.
+tooltip_text = "Adds a buff that temporarily increases a stat by a specified amount for x turns. If you leave the turn value at 0, the buff will last until the end of the battle.
 
 [Note]: Buffs can be stacked."
 mouse_filter = 2
-min_value = 1.0
 value = 5.0
 allow_greater = true
 editable = false
 disabled = true
 _custom_value = 5.0
 
-[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer/HBoxContainer4" unique_id=1165049614]
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer/HBoxContainer4" unique_id=1165049614]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 text = " turns"
 
-[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer" unique_id=967916939]
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer" unique_id=967916939]
 layout_mode = 2
 size_flags_horizontal = 8
 
-[node name="Control2" type="Control" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer/HBoxContainer5" unique_id=1953149939]
+[node name="Control2" type="Control" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer/HBoxContainer5" unique_id=1953149939]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer/HBoxContainer5" unique_id=256793440]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer/HBoxContainer5" unique_id=256793440]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 10
 text = "+ "
 
-[node name="C5-4" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer/HBoxContainer5" unique_id=939499059 instance=ExtResource("5_fj12j")]
+[node name="C5-4" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer/HBoxContainer5" unique_id=939499059 instance=ExtResource("5_fj12j")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-tooltip_text = "Adds a buff that temporarily increases a base stat by a certain amount.
+tooltip_text = "Adds a buff that temporarily increases a stat by a specified amount for x turns. If you leave the turn value at 0, the buff will last until the end of the battle.
 
 [Note]: Buffs can be stacked."
 mouse_filter = 2
@@ -767,12 +822,12 @@ editable = false
 disabled = true
 _custom_value = 25.0
 
-[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer/HBoxContainer5" unique_id=934662555]
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer/HBoxContainer5" unique_id=934662555]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 text = " % base"
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer" unique_id=1698231599 groups=["main_trait_filter_tab"]]
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent" unique_id=1698231599 groups=["main_trait_filter_tab"]]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("..")
 metadata/original_parent = {
@@ -781,19 +836,18 @@ metadata/original_parent = {
 
 }
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer2" unique_id=750364607]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer2" unique_id=750364607]
 layout_mode = 2
 
-[node name="C6-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer2/HBoxContainer2" unique_id=1389366787 node_paths=PackedStringArray("main_container")]
+[node name="C6-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer2/HBoxContainer2" unique_id=1389366787 node_paths=PackedStringArray("main_container")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-tooltip_text = "[title]Add Debuff[/title]
-Adds a debuff that temporarily decreases a base stat by a certain amount.
+tooltip_text = "Adds a debuff that temporarily decreases a stat by a specified amount for x turns. If you leave the turn value at 0, the debuff will last until the end of the battle.
 
 [Note]: Debuffs can be stacked."
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_p4qv1")
+button_group = SubResource("ButtonGroup_ojols")
 text = "Add Debuff"
 script = SubResource("GDScript_p4qv1")
 main_container = NodePath("../..")
@@ -801,92 +855,146 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 metadata/custom_search_tags = "debuff, empeorar, bajar, debilitar, param, stat, drop, decrease, break, reducir, romper"
 
-[node name="C6-2" type="OptionButton" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer2/HBoxContainer2" unique_id=1920253933]
+[node name="C6-2" type="OptionButton" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer2/HBoxContainer2" unique_id=1920253933]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.6)
 custom_minimum_size = Vector2(0, 31)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-tooltip_text = "[title]Add Debuff[/title]
-Adds a debuff that temporarily decreases a base stat by a certain amount.
+tooltip_text = "Adds a debuff that temporarily decreases a stat by a specified amount for x turns. If you leave the turn value at 0, the debuff will last until the end of the battle.
 
 [Note]: Debuffs can be stacked."
 focus_mode = 0
 mouse_filter = 2
 mouse_default_cursor_shape = 2
 disabled = true
-selected = 0
-item_count = 8
-popup/item_0/text = "Max HP"
-popup/item_0/id = 0
-popup/item_1/text = "Max MP"
+selected = 1
+item_count = 35
+popup/item_0/text = "Base Parameters"
+popup/item_0/id = -1
+popup/item_0/separator = true
+popup/item_1/text = "Hit Points"
 popup/item_1/id = 1
-popup/item_2/text = "Attack"
+popup/item_2/text = "Magic Points"
 popup/item_2/id = 2
-popup/item_3/text = "Defense"
+popup/item_3/text = "Attack"
 popup/item_3/id = 3
-popup/item_4/text = "Magical Attack"
+popup/item_4/text = "Defense"
 popup/item_4/id = 4
-popup/item_5/text = "Magical Defense"
+popup/item_5/text = "Magic Attack"
 popup/item_5/id = 5
-popup/item_6/text = "Agility"
+popup/item_6/text = "Magic Defense"
 popup/item_6/id = 6
-popup/item_7/text = "Luck"
+popup/item_7/text = "Agility"
 popup/item_7/id = 7
+popup/item_8/text = "Luck"
+popup/item_8/id = 8
+popup/item_9/text = "Extra Parameters"
+popup/item_9/id = -1
+popup/item_9/separator = true
+popup/item_10/text = "Hit Rate"
+popup/item_10/id = 10
+popup/item_11/text = "Evasion Rate"
+popup/item_11/id = 11
+popup/item_12/text = "Critical Rate"
+popup/item_12/id = 12
+popup/item_13/text = "Critical Evasion Rate"
+popup/item_13/id = 13
+popup/item_14/text = "Magic Evasion Rate"
+popup/item_14/id = 14
+popup/item_15/text = "Magic Reflection"
+popup/item_15/id = 15
+popup/item_16/text = "Counter Attack"
+popup/item_16/id = 16
+popup/item_17/text = "HP Regeneration"
+popup/item_17/id = 17
+popup/item_18/text = "MP Regeneration"
+popup/item_18/id = 18
+popup/item_19/text = "TP Regeneration"
+popup/item_19/id = 19
+popup/item_20/text = "Special Parameters"
+popup/item_20/id = -1
+popup/item_20/separator = true
+popup/item_21/text = "Target Rate"
+popup/item_21/id = 21
+popup/item_22/text = "Guard Effect"
+popup/item_22/id = 22
+popup/item_23/text = "Recovery Effect"
+popup/item_23/id = 23
+popup/item_24/text = "Healing Mastery"
+popup/item_24/id = 24
+popup/item_25/text = "MP Cost Rate"
+popup/item_25/id = 25
+popup/item_26/text = "TP Charge Rate"
+popup/item_26/id = 26
+popup/item_27/text = "Physical Damage Rate"
+popup/item_27/id = 27
+popup/item_28/text = "Magic Damage Rate"
+popup/item_28/id = 28
+popup/item_29/text = "Floor Damage Rate"
+popup/item_29/id = 29
+popup/item_30/text = "Experience Rate"
+popup/item_30/id = 30
+popup/item_31/text = "Gold Rate"
+popup/item_31/id = 31
+popup/item_32/text = "User Parameters"
+popup/item_32/id = -1
+popup/item_32/separator = true
+popup/item_33/text = "User Parameter 0"
+popup/item_33/id = 33
+popup/item_34/text = "User Parameter 1"
+popup/item_34/id = 34
 script = ExtResource("7_oy6w7")
 metadata/original_focus_mode = 2
 metadata/original_mouse_filer = 0
 
-[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer2" unique_id=1504522582]
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer2" unique_id=1504522582]
 layout_mode = 2
 size_flags_horizontal = 8
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer2/HBoxContainer5" unique_id=908094145]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer2/HBoxContainer5" unique_id=908094145]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 10
 text = "x "
 
-[node name="C6-3" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer2/HBoxContainer5" unique_id=840761799 instance=ExtResource("5_fj12j")]
+[node name="C6-3" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer2/HBoxContainer5" unique_id=840761799 instance=ExtResource("5_fj12j")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-tooltip_text = "[title]Add Debuff[/title]
-Adds a debuff that temporarily decreases a base stat by a certain amount.
+tooltip_text = "Adds a debuff that temporarily decreases a stat by a specified amount for x turns. If you leave the turn value at 0, the debuff will last until the end of the battle.
 
 [Note]: Debuffs can be stacked."
 mouse_filter = 2
-min_value = 1.0
 value = 5.0
 allow_greater = true
 editable = false
 disabled = true
 _custom_value = 5.0
 
-[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer2/HBoxContainer5" unique_id=467002492]
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer2/HBoxContainer5" unique_id=467002492]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 text = " turns"
 
-[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer2" unique_id=7037624]
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer2" unique_id=7037624]
 layout_mode = 2
 size_flags_horizontal = 8
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer2/HBoxContainer6" unique_id=2314831]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer2/HBoxContainer6" unique_id=2314831]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 10
 text = "+ "
 
-[node name="C6-4" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer2/HBoxContainer6" unique_id=929861493 instance=ExtResource("5_fj12j")]
+[node name="C6-4" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer2/HBoxContainer6" unique_id=929861493 instance=ExtResource("5_fj12j")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-tooltip_text = "[title]Add Debuff[/title]
-Adds a debuff that temporarily decreases a base stat by a certain amount.
+tooltip_text = "Adds a debuff that temporarily decreases a stat by a specified amount for x turns. If you leave the turn value at 0, the debuff will last until the end of the battle.
 
 [Note]: Debuffs can be stacked."
 mouse_filter = 2
@@ -895,15 +1003,15 @@ editable = false
 disabled = true
 _custom_value = 25.0
 
-[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer2/HBoxContainer6" unique_id=8306368]
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer2/HBoxContainer6" unique_id=8306368]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 text = " % base"
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer" unique_id=850261805]
+[node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent" unique_id=850261805]
 layout_mode = 2
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer3" unique_id=1293482835 groups=["main_trait_filter_tab"]]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer3" unique_id=1293482835 groups=["main_trait_filter_tab"]]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("../..")
 metadata/original_parent = {
@@ -912,7 +1020,7 @@ metadata/original_parent = {
 
 }
 
-[node name="C7-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer3/HBoxContainer3" unique_id=1425294261 node_paths=PackedStringArray("main_container")]
+[node name="C7-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer3/HBoxContainer3" unique_id=1425294261 node_paths=PackedStringArray("main_container")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -921,7 +1029,7 @@ Removes 1 or more buffs of a specific type from the character.
 
 [Note]: 0 = removes all buffs of a specific type; >= 1 removes that number of stacks from the target"
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_p4qv1")
+button_group = SubResource("ButtonGroup_ojols")
 text = "Remove Buff"
 script = SubResource("GDScript_p4qv1")
 main_container = NodePath("..")
@@ -929,7 +1037,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 metadata/custom_search_tags = "quitar mejora, dispel, anular, limpiar, remove, cancel, buff, normalize, disipar"
 
-[node name="C7-2" type="OptionButton" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer3/HBoxContainer3" unique_id=256265460]
+[node name="C7-2" type="OptionButton" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer3/HBoxContainer3" unique_id=256265460]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.6)
 custom_minimum_size = Vector2(0, 31)
@@ -944,39 +1052,97 @@ focus_mode = 0
 mouse_filter = 2
 mouse_default_cursor_shape = 2
 disabled = true
-selected = 0
-item_count = 8
-popup/item_0/text = "Max HP"
-popup/item_0/id = 0
-popup/item_1/text = "Max MP"
+selected = 1
+item_count = 35
+popup/item_0/text = "Base Parameters"
+popup/item_0/id = -1
+popup/item_0/separator = true
+popup/item_1/text = "Hit Points"
 popup/item_1/id = 1
-popup/item_2/text = "Attack"
+popup/item_2/text = "Magic Points"
 popup/item_2/id = 2
-popup/item_3/text = "Defense"
+popup/item_3/text = "Attack"
 popup/item_3/id = 3
-popup/item_4/text = "Magical Attack"
+popup/item_4/text = "Defense"
 popup/item_4/id = 4
-popup/item_5/text = "Magical Defense"
+popup/item_5/text = "Magic Attack"
 popup/item_5/id = 5
-popup/item_6/text = "Agility"
+popup/item_6/text = "Magic Defense"
 popup/item_6/id = 6
-popup/item_7/text = "Luck"
+popup/item_7/text = "Agility"
 popup/item_7/id = 7
+popup/item_8/text = "Luck"
+popup/item_8/id = 8
+popup/item_9/text = "Extra Parameters"
+popup/item_9/id = -1
+popup/item_9/separator = true
+popup/item_10/text = "Hit Rate"
+popup/item_10/id = 10
+popup/item_11/text = "Evasion Rate"
+popup/item_11/id = 11
+popup/item_12/text = "Critical Rate"
+popup/item_12/id = 12
+popup/item_13/text = "Critical Evasion Rate"
+popup/item_13/id = 13
+popup/item_14/text = "Magic Evasion Rate"
+popup/item_14/id = 14
+popup/item_15/text = "Magic Reflection"
+popup/item_15/id = 15
+popup/item_16/text = "Counter Attack"
+popup/item_16/id = 16
+popup/item_17/text = "HP Regeneration"
+popup/item_17/id = 17
+popup/item_18/text = "MP Regeneration"
+popup/item_18/id = 18
+popup/item_19/text = "TP Regeneration"
+popup/item_19/id = 19
+popup/item_20/text = "Special Parameters"
+popup/item_20/id = -1
+popup/item_20/separator = true
+popup/item_21/text = "Target Rate"
+popup/item_21/id = 21
+popup/item_22/text = "Guard Effect"
+popup/item_22/id = 22
+popup/item_23/text = "Recovery Effect"
+popup/item_23/id = 23
+popup/item_24/text = "Healing Mastery"
+popup/item_24/id = 24
+popup/item_25/text = "MP Cost Rate"
+popup/item_25/id = 25
+popup/item_26/text = "TP Charge Rate"
+popup/item_26/id = 26
+popup/item_27/text = "Physical Damage Rate"
+popup/item_27/id = 27
+popup/item_28/text = "Magic Damage Rate"
+popup/item_28/id = 28
+popup/item_29/text = "Floor Damage Rate"
+popup/item_29/id = 29
+popup/item_30/text = "Experience Rate"
+popup/item_30/id = 30
+popup/item_31/text = "Gold Rate"
+popup/item_31/id = 31
+popup/item_32/text = "User Parameters"
+popup/item_32/id = -1
+popup/item_32/separator = true
+popup/item_33/text = "User Parameter 0"
+popup/item_33/id = 33
+popup/item_34/text = "User Parameter 1"
+popup/item_34/id = 34
 script = ExtResource("7_oy6w7")
 metadata/original_focus_mode = 2
 metadata/original_mouse_filer = 0
 
-[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer3" unique_id=955174558]
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer3" unique_id=955174558]
 layout_mode = 2
 size_flags_horizontal = 8
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer3/HBoxContainer5" unique_id=529493984]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer3/HBoxContainer5" unique_id=529493984]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 10
 text = "x "
 
-[node name="C7-3" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer3/HBoxContainer5" unique_id=102183855 instance=ExtResource("5_fj12j")]
+[node name="C7-3" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer3/HBoxContainer5" unique_id=102183855 instance=ExtResource("5_fj12j")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
@@ -994,15 +1160,15 @@ value_replace = {
 }
 _custom_value = 0.0
 
-[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer3/HBoxContainer5" unique_id=429862063]
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer3/HBoxContainer5" unique_id=429862063]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 text = "stack/s"
 
-[node name="VBoxContainer4" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer" unique_id=273732688]
+[node name="VBoxContainer4" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent" unique_id=273732688]
 layout_mode = 2
 
-[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer4" unique_id=573730443 groups=["main_trait_filter_tab"]]
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer4" unique_id=573730443 groups=["main_trait_filter_tab"]]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("../..")
 metadata/original_parent = {
@@ -1011,7 +1177,7 @@ metadata/original_parent = {
 
 }
 
-[node name="C8-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer4/HBoxContainer6" unique_id=225607106 node_paths=PackedStringArray("main_container")]
+[node name="C8-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer4/HBoxContainer6" unique_id=225607106 node_paths=PackedStringArray("main_container")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1020,7 +1186,7 @@ Removes 1 or more debuffs of a specific type from the character.
 
 [Note]: 0 = removes all debuffs of a specific type; >= 1 removes that number of stacks from the target."
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_p4qv1")
+button_group = SubResource("ButtonGroup_ojols")
 text = "Remove Debuff"
 script = SubResource("GDScript_p4qv1")
 main_container = NodePath("..")
@@ -1028,7 +1194,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 metadata/custom_search_tags = "quitar debuff, restaurar stat, cleanse, remove, cancel, debuff, normalize, aliviar"
 
-[node name="C8-2" type="OptionButton" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer4/HBoxContainer6" unique_id=104825814]
+[node name="C8-2" type="OptionButton" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer4/HBoxContainer6" unique_id=104825814]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.6)
 custom_minimum_size = Vector2(0, 31)
@@ -1043,39 +1209,97 @@ focus_mode = 0
 mouse_filter = 2
 mouse_default_cursor_shape = 2
 disabled = true
-selected = 0
-item_count = 8
-popup/item_0/text = "Max HP"
-popup/item_0/id = 0
-popup/item_1/text = "Max MP"
+selected = 1
+item_count = 35
+popup/item_0/text = "Base Parameters"
+popup/item_0/id = -1
+popup/item_0/separator = true
+popup/item_1/text = "Hit Points"
 popup/item_1/id = 1
-popup/item_2/text = "Attack"
+popup/item_2/text = "Magic Points"
 popup/item_2/id = 2
-popup/item_3/text = "Defense"
+popup/item_3/text = "Attack"
 popup/item_3/id = 3
-popup/item_4/text = "Magical Attack"
+popup/item_4/text = "Defense"
 popup/item_4/id = 4
-popup/item_5/text = "Magical Defense"
+popup/item_5/text = "Magic Attack"
 popup/item_5/id = 5
-popup/item_6/text = "Agility"
+popup/item_6/text = "Magic Defense"
 popup/item_6/id = 6
-popup/item_7/text = "Luck"
+popup/item_7/text = "Agility"
 popup/item_7/id = 7
+popup/item_8/text = "Luck"
+popup/item_8/id = 8
+popup/item_9/text = "Extra Parameters"
+popup/item_9/id = -1
+popup/item_9/separator = true
+popup/item_10/text = "Hit Rate"
+popup/item_10/id = 10
+popup/item_11/text = "Evasion Rate"
+popup/item_11/id = 11
+popup/item_12/text = "Critical Rate"
+popup/item_12/id = 12
+popup/item_13/text = "Critical Evasion Rate"
+popup/item_13/id = 13
+popup/item_14/text = "Magic Evasion Rate"
+popup/item_14/id = 14
+popup/item_15/text = "Magic Reflection"
+popup/item_15/id = 15
+popup/item_16/text = "Counter Attack"
+popup/item_16/id = 16
+popup/item_17/text = "HP Regeneration"
+popup/item_17/id = 17
+popup/item_18/text = "MP Regeneration"
+popup/item_18/id = 18
+popup/item_19/text = "TP Regeneration"
+popup/item_19/id = 19
+popup/item_20/text = "Special Parameters"
+popup/item_20/id = -1
+popup/item_20/separator = true
+popup/item_21/text = "Target Rate"
+popup/item_21/id = 21
+popup/item_22/text = "Guard Effect"
+popup/item_22/id = 22
+popup/item_23/text = "Recovery Effect"
+popup/item_23/id = 23
+popup/item_24/text = "Healing Mastery"
+popup/item_24/id = 24
+popup/item_25/text = "MP Cost Rate"
+popup/item_25/id = 25
+popup/item_26/text = "TP Charge Rate"
+popup/item_26/id = 26
+popup/item_27/text = "Physical Damage Rate"
+popup/item_27/id = 27
+popup/item_28/text = "Magic Damage Rate"
+popup/item_28/id = 28
+popup/item_29/text = "Floor Damage Rate"
+popup/item_29/id = 29
+popup/item_30/text = "Experience Rate"
+popup/item_30/id = 30
+popup/item_31/text = "Gold Rate"
+popup/item_31/id = 31
+popup/item_32/text = "User Parameters"
+popup/item_32/id = -1
+popup/item_32/separator = true
+popup/item_33/text = "User Parameter 0"
+popup/item_33/id = 33
+popup/item_34/text = "User Parameter 1"
+popup/item_34/id = 34
 script = ExtResource("7_oy6w7")
 metadata/original_focus_mode = 2
 metadata/original_mouse_filer = 0
 
-[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer4" unique_id=1961906588]
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer4" unique_id=1961906588]
 layout_mode = 2
 size_flags_horizontal = 8
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer4/HBoxContainer5" unique_id=1256976824]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer4/HBoxContainer5" unique_id=1256976824]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 size_flags_horizontal = 10
 text = "x "
 
-[node name="C8-3" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer4/HBoxContainer5" unique_id=848442072 instance=ExtResource("5_fj12j")]
+[node name="C8-3" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer4/HBoxContainer5" unique_id=848442072 instance=ExtResource("5_fj12j")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
@@ -1093,7 +1317,7 @@ value_replace = {
 }
 _custom_value = 0.0
 
-[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/VboxContainer/VBoxContainer4/HBoxContainer5" unique_id=376500645]
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/BufParameter/Parent/VBoxContainer4/HBoxContainer5" unique_id=376500645]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 text = "stack/s"
@@ -1122,12 +1346,12 @@ text = "▼"
 flat = true
 alignment = 2
 script = SubResource("GDScript_c77jo")
-target = NodePath("../../VboxContainer")
+target = NodePath("../../Parent")
 
-[node name="VboxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other" unique_id=1230632613]
+[node name="Parent" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other" unique_id=1230632613]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer" unique_id=386161063 groups=["main_trait_filter_tab"]]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/Parent" unique_id=386161063 groups=["main_trait_filter_tab"]]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("..")
 metadata/original_parent = {
@@ -1136,7 +1360,7 @@ metadata/original_parent = {
 
 }
 
-[node name="C9-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer/HBoxContainer" unique_id=988891490 node_paths=PackedStringArray("main_container")]
+[node name="C9-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/Parent/HBoxContainer" unique_id=988891490 node_paths=PackedStringArray("main_container")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1146,7 +1370,7 @@ If all party members flee due to a skill / item with this effect, they will not 
 
 *This is different than the \"Escape\" party command."
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_p4qv1")
+button_group = SubResource("ButtonGroup_ojols")
 text = "Special Effect"
 script = SubResource("GDScript_p4qv1")
 main_container = NodePath("..")
@@ -1154,7 +1378,7 @@ metadata/custom_search_tags = "especial, huir, escapar, escape, flee, special, e
 metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"Add/Remove from favorite","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":2,"focus_behavior_recursive":0,"mouse_filter":0,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":2,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","disabled":false,"toggle_mode":true,"button_pressed":false,"action_mode":1,"button_mask":1,"keep_pressed_outside":false,"button_group":null,"shortcut":null,"shortcut_feedback":true,"shortcut_in_tooltip":true,"texture_normal":Resource("res://addons/CustomControls/Images/heart_button_disabled.png"),"texture_pressed":Resource("res://addons/CustomControls/Images/heart_button_normal.png"),"texture_hover":Resource("res://addons/CustomControls/Images/heart_button_hover.png"),"texture_disabled":null,"texture_focused":null,"texture_click_mask":null,"ignore_texture_size":false,"stretch_mode":2,"flip_h":false,"flip_v":false,"script":null)
 
 
-[node name="C9-2" type="OptionButton" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer/HBoxContainer" unique_id=312289904]
+[node name="C9-2" type="OptionButton" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/Parent/HBoxContainer" unique_id=312289904]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.6)
 custom_minimum_size = Vector2(0, 31)
@@ -1178,7 +1402,7 @@ script = ExtResource("7_oy6w7")
 metadata/original_focus_mode = 2
 metadata/original_mouse_filer = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer" unique_id=291981746 groups=["main_trait_filter_tab"]]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/Parent" unique_id=291981746 groups=["main_trait_filter_tab"]]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("..")
 metadata/original_parent = {
@@ -1187,17 +1411,17 @@ metadata/original_parent = {
 
 }
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer/VBoxContainer" unique_id=1663833138]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/Parent/VBoxContainer" unique_id=1663833138]
 layout_mode = 2
 
-[node name="C10-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer/VBoxContainer/HBoxContainer3" unique_id=1435017250 node_paths=PackedStringArray("main_container")]
+[node name="C10-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/Parent/VBoxContainer/HBoxContainer3" unique_id=1435017250 node_paths=PackedStringArray("main_container")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Grow[/title]
 Permanently raise the value of a parameter. Specify the target parameter and the value (1 or more) to be added."
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_p4qv1")
+button_group = SubResource("ButtonGroup_ojols")
 text = "Grow"
 script = SubResource("GDScript_p4qv1")
 main_container = NodePath("../..")
@@ -1205,7 +1429,7 @@ metadata/custom_search_tags = "crecer, subir stat, permanente, stats, semilla, s
 metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"Add/Remove from favorite","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":2,"focus_behavior_recursive":0,"mouse_filter":0,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":2,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","disabled":false,"toggle_mode":true,"button_pressed":false,"action_mode":1,"button_mask":1,"keep_pressed_outside":false,"button_group":null,"shortcut":null,"shortcut_feedback":true,"shortcut_in_tooltip":true,"texture_normal":Resource("res://addons/CustomControls/Images/heart_button_disabled.png"),"texture_pressed":Resource("res://addons/CustomControls/Images/heart_button_normal.png"),"texture_hover":Resource("res://addons/CustomControls/Images/heart_button_hover.png"),"texture_disabled":null,"texture_focused":null,"texture_click_mask":null,"ignore_texture_size":false,"stretch_mode":2,"flip_h":false,"flip_v":false,"script":null)
 
 
-[node name="C10-2" type="OptionButton" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer/VBoxContainer/HBoxContainer3" unique_id=1041951868]
+[node name="C10-2" type="OptionButton" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/Parent/VBoxContainer/HBoxContainer3" unique_id=1041951868]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.6)
 custom_minimum_size = Vector2(0, 31)
@@ -1240,16 +1464,16 @@ script = ExtResource("7_oy6w7")
 metadata/original_focus_mode = 2
 metadata/original_mouse_filer = 0
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer/VBoxContainer" unique_id=1788845783]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/Parent/VBoxContainer" unique_id=1788845783]
 layout_mode = 2
 size_flags_horizontal = 8
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer/VBoxContainer/HBoxContainer2" unique_id=469523178]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/Parent/VBoxContainer/HBoxContainer2" unique_id=469523178]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 text = "+ "
 
-[node name="C10-3" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer/VBoxContainer/HBoxContainer2" unique_id=1962393946 instance=ExtResource("5_fj12j")]
+[node name="C10-3" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/Parent/VBoxContainer/HBoxContainer2" unique_id=1962393946 instance=ExtResource("5_fj12j")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
@@ -1263,11 +1487,11 @@ editable = false
 disabled = true
 _custom_value = 0.0
 
-[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer/VBoxContainer/HBoxContainer2" unique_id=259137610]
+[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/Parent/VBoxContainer/HBoxContainer2" unique_id=259137610]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer" unique_id=927867169 groups=["main_trait_filter_tab"]]
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/Parent" unique_id=927867169 groups=["main_trait_filter_tab"]]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("..")
 metadata/original_parent = {
@@ -1276,14 +1500,14 @@ metadata/original_parent = {
 
 }
 
-[node name="C11-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer/HBoxContainer4" unique_id=827441406 node_paths=PackedStringArray("main_container")]
+[node name="C11-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/Parent/HBoxContainer4" unique_id=827441406 node_paths=PackedStringArray("main_container")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Learn Skill[/title]
 An actor will learn the specified skill. This effect will not be applied to enemies."
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_p4qv1")
+button_group = SubResource("ButtonGroup_ojols")
 text = "Learn Skill"
 script = SubResource("GDScript_p4qv1")
 main_container = NodePath("..")
@@ -1291,7 +1515,7 @@ metadata/custom_search_tags = "aprender, habilidad, magia, técnica, learn, skil
 metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"Add/Remove from favorite","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":2,"focus_behavior_recursive":0,"mouse_filter":0,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":2,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","disabled":false,"toggle_mode":true,"button_pressed":false,"action_mode":1,"button_mask":1,"keep_pressed_outside":false,"button_group":null,"shortcut":null,"shortcut_feedback":true,"shortcut_in_tooltip":true,"texture_normal":Resource("res://addons/CustomControls/Images/heart_button_disabled.png"),"texture_pressed":Resource("res://addons/CustomControls/Images/heart_button_normal.png"),"texture_hover":Resource("res://addons/CustomControls/Images/heart_button_hover.png"),"texture_disabled":null,"texture_focused":null,"texture_click_mask":null,"ignore_texture_size":false,"stretch_mode":2,"flip_h":false,"flip_v":false,"script":null)
 
 
-[node name="C11-2" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer/HBoxContainer4" unique_id=2064151959 instance=ExtResource("6_4c3ca")]
+[node name="C11-2" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/Parent/HBoxContainer4" unique_id=2064151959 instance=ExtResource("6_4c3ca")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -1302,7 +1526,7 @@ An actor will learn the specified skill. This effect will not be applied to enem
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 disabled = true
 
-[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer" unique_id=1897086090 groups=["main_trait_filter_tab"]]
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/Parent" unique_id=1897086090 groups=["main_trait_filter_tab"]]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("..")
 metadata/original_parent = {
@@ -1311,14 +1535,14 @@ metadata/original_parent = {
 
 }
 
-[node name="C12-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer/HBoxContainer5" unique_id=1543739505 node_paths=PackedStringArray("main_container")]
+[node name="C12-1" type="CheckBox" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/Parent/HBoxContainer5" unique_id=1543739505 node_paths=PackedStringArray("main_container")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Common Event[/title]
 Specify the common event to run. You can configure multiple events to one data and will be reproduced in the order of appearance."
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_p4qv1")
+button_group = SubResource("ButtonGroup_ojols")
 text = "Common Event"
 script = SubResource("GDScript_p4qv1")
 main_container = NodePath("..")
@@ -1326,7 +1550,7 @@ metadata/custom_search_tags = "evento común, global, llamar, invocar, call, run
 metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"Add/Remove from favorite","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":2,"focus_behavior_recursive":0,"mouse_filter":0,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":2,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","disabled":false,"toggle_mode":true,"button_pressed":false,"action_mode":1,"button_mask":1,"keep_pressed_outside":false,"button_group":null,"shortcut":null,"shortcut_feedback":true,"shortcut_in_tooltip":true,"texture_normal":Resource("res://addons/CustomControls/Images/heart_button_disabled.png"),"texture_pressed":Resource("res://addons/CustomControls/Images/heart_button_normal.png"),"texture_hover":Resource("res://addons/CustomControls/Images/heart_button_hover.png"),"texture_disabled":null,"texture_focused":null,"texture_click_mask":null,"ignore_texture_size":false,"stretch_mode":2,"flip_h":false,"flip_v":false,"script":null)
 
 
-[node name="C12-2" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer/HBoxContainer5" unique_id=467311462 instance=ExtResource("6_4c3ca")]
+[node name="C12-2" parent="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/Parent/HBoxContainer5" unique_id=467311462 instance=ExtResource("6_4c3ca")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -1366,9 +1590,9 @@ text_overrun_behavior = 3
 [connection signal="gui_input" from="MarginContainer/HBoxContainer/HBoxContainer2/Filter" to="." method="_on_filter_gui_input"]
 [connection signal="text_changed" from="MarginContainer/HBoxContainer/HBoxContainer2/Filter" to="." method="_on_filter_text_changed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/HBoxContainer2/ToggleAllButton" to="." method="_on_toggle_all_button_pressed"]
-[connection signal="button_up" from="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/VboxContainer/VBoxContainer/HBoxContainer/C3-2" to="." method="_on_c_32_button_up"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/VboxContainer/VBoxContainer2/HBoxContainer3/C4-2" to="." method="_on_c_42_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer/HBoxContainer4/C11-2" to="." method="_on_c_112_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/VboxContainer/HBoxContainer5/C12-2" to="." method="_on_c_122_pressed"]
+[connection signal="button_up" from="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/Parent/VBoxContainer/HBoxContainer/C3-2" to="." method="_on_c_32_button_up"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/State/Parent/VBoxContainer2/HBoxContainer3/C4-2" to="." method="_on_c_42_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/Parent/HBoxContainer4/C11-2" to="." method="_on_c_112_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/ButtonsContainer/FilterSmoothContainer/MarginContainer/VBoxContainer/Other/Parent/HBoxContainer5/C12-2" to="." method="_on_c_122_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

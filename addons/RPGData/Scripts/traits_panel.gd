@@ -25,6 +25,10 @@ var traits_need_refresh_timer: float
 signal traits_update()
 
 
+func _ready() -> void:
+	ResourceLoader.load_threaded_request.call_deferred("res://addons/CustomControls/Dialogs/select_trait_dialog.tscn")
+
+
 func set_data(_database, _traits) -> void:
 	database = _database
 	traits = _traits
@@ -48,6 +52,17 @@ func _process(delta: float) -> void:
 		set_process(false)
 
 
+func _get_parameter_name(id: int) -> String:
+	var items = RPGActor.get_parameter_list(false)
+	
+	var parameter: String = ""
+	
+	if items.size() > id:
+		parameter = items[id]
+	
+	return parameter
+
+
 func get_column(item: RPGTrait) -> Array:
 	var column = []
 	var left = {
@@ -56,8 +71,8 @@ func get_column(item: RPGTrait) -> Array:
 		3: "State Rate",
 		4: "State Resist",
 		5: "Parameter",
-		6: "Ex-Parameter",
-		7: "Sp-Parameter",
+		6: "Ex-Parameter", # unused (uses 5 - parameters)
+		7: "Sp-Parameter", # unused (uses 5 - parameters)
 		8: "Attack Element",
 		9: "Attack State",
 		10: "Attack Speed",
@@ -79,18 +94,20 @@ func get_column(item: RPGTrait) -> Array:
 		26: "Skill Special Flag",
 		27: "Element Rate (damage done)",
 		28: "Add Permanent State",
-		101: "User Parameter"
+		101: "User Parameter" # unused (uses 5 - parameters)
 	}
 	column.append(left[item.code])
-	
+
 	if [1, 27].has(item.code):
 		var list = database.types.element_types
 		if list.size() > item.data_id:
 			column.append(list[item.data_id] + " * " + str(item.value) + " %")
 	elif [2, 5].has(item.code):
-		var list = ["Max HP", "Max MP", "Attack", "Defense", "Magic Attack", "Magic Defense", "Agility", "Luck"]
-		if list.size() > item.data_id:
-			column.append(list[item.data_id] + " * " + str(item.value) + "%")
+		var param = _get_parameter_name(item.data_id)
+		if not param.is_empty():
+			column.append(param + " * " + str(item.value) + "%")
+		else:
+			column.append("⚠ Invalid Data")
 	elif item.code == 101:
 		var list = []
 		for i in database.types.user_parameters.size():
@@ -220,12 +237,40 @@ func clear() -> void:
 	%TraitsList.clear()
 
 
+func _fix_traits() -> void:
+	var items = RPGActor.get_parameter_list(false)
+	var category_offsets: Array[int] = []
+
+	for i in items.size():
+		if items[i] == "":
+			category_offsets.append(i + 1)
+
+	var ex_offset: int = category_offsets[1] if category_offsets.size() > 1 else 0
+	var sp_offset: int = category_offsets[2] if category_offsets.size() > 2 else 0
+	var user_offset: int = category_offsets[3] if category_offsets.size() > 3 else 0
+
+	for item in traits:
+		match item.code:
+			6:
+				item.code = 5
+				item.data_id += ex_offset
+			7:
+				item.code = 5
+				item.data_id += sp_offset
+			101:
+				item.code = 5
+				item.data_id += user_offset
+
+
 func fill_traits(item_selected: int) -> void:
 	var node = %TraitsList
 	node.clear()
+	_fix_traits()
+	print("---------------------------------------")
 	for item in traits:
-		#print(item)
-		node.add_column(get_column(item))
+		var item_name = get_column(item)
+		print(item.code)
+		node.add_column(item_name)
 	
 	if traits.size() > 0:
 		await node.columns_setted

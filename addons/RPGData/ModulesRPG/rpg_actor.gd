@@ -158,6 +158,47 @@ enum NewParamType {
 	# FOCUS = 1, CONCENTRATION = 1
 }
 
+static func get_parameter_list(get_real_keys: bool = true) -> Array:
+	var items: Array = []
+	
+	if get_real_keys:
+		items = [
+			"", # Base Parameters
+			"HIT_POINTS", "MAGIC_POINTS", "ATTACK", "DEFENSE", "MAGIC_ATTACK", "MAGIC_DEFENSE", "AGILITY", "LUCK",
+			"", # Extra Parameters
+			"HIT_RATE", "EVASION_RATE", "CRITICAL_RATE", "CRITICAL_EVASION_RATE", "MAGIC_EVASION_RATE", "MAGIC_REFLECTION", "COUNTER_ATTACK", "HP_REGENERATION", "MP_REGENERATION", "TP_REGENERATION",
+			"", # Special Parameters
+			"TARGET_RATE", "GUARD_EFFECT", "RECOVERY_EFFECT", "HEALING_MASTERY", "MP_COST_RATE", "TP_CHARGE_RATE", "PHYSICAL_DAMAGE_RATE", "MAGIC_DAMAGE_RATE", "FLOOR_DAMAGE_RATE", "EXPERIENCE_RATE", "GOLD_RATE"
+		]
+		
+		items.append("") # User Parameters
+		
+		var user_parameters = RPGSYSTEM.database.types.user_parameters
+		for i in user_parameters.size():
+			var item: RPGUserParameter = user_parameters[i]
+			items.append("USER_PARAMETER_%s" % i)
+		
+	else:
+		items = [
+			"", # Base Parameters
+			"Max HP", "Max MP", "Attack", "Defense", "Magical Attack", "Magical Defense", "Agility", "Luck",
+			"", # Extra Parameters
+			"Hit Rate", "Evasion Rate", "Critical Rate", "Critical Evasion Rate", "Magic Evasion Rate", "Magic Reflection", "Counter Attack", "HP Regeneration", "MP Regeneration", "TP Regeneration",
+			"", # Special Parameters
+			"Target Rate", "Guard Effect", "Recovery Effect", "Healing Mastery", "MP Cost Rate", "TP Charge Rate", "Physical Damage Rate", "Magic Damage Rate", "Floor Damage Rate", "Experience Rate", "Gold Rate"
+		]
+		
+		items.append("") # User Parameters
+		
+		var user_parameters = RPGSYSTEM.database.types.user_parameters
+		for i in user_parameters.size():
+			var item: RPGUserParameter = user_parameters[i]
+			items.append("User Parameter <%s: %s>" % [i + 1, item.name])
+	
+	
+	return items
+
+
 ## Returns the number of unique parameters in NewParamType enum.
 ## Use this to size arrays instead of hardcoding values.
 func get_new_param_array_size() -> int:

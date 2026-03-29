@@ -48,8 +48,6 @@ var is_valid: bool = true
 
 enum TraitCode {
 	PARAM_BASE = 5,
-	PARAM_EXTRA = 6,
-	PARAM_SPECIAL = 7,
 	ADD_STATE = 28,
 	EQUIP_WEAPON = 17,
 	EQUIP_ARMOR = 18,
@@ -96,8 +94,8 @@ const DEFAULT_SPECIAL_PARAMS = {
 
 ## Constant used to identify traits that enable ticking behavior on states.
 const TICKS_ENABLED = {
-	CODE = 6,
-	DATA_IDS = [7, 8, 9]
+	CODE = 5,
+	DATA_IDS = [17, 18, 19]
 }
 
 ## Maximum multiplier achieved when stacking traits.
@@ -107,6 +105,11 @@ var MAX_RESULT     = 1_000_000_000.0
 
 ## Cache used in some costly operations that involve successive calls to retrieve the list of traits.
 var _temp_trait_cache: Array = []
+
+var temp_buffs: Array = [] # {"param_id": "", "value": percent, "duration": 0}
+var temp_debuff: Array = [] # {"param_id": "", "value": percent, "duration": 0}
+
+var _param_offsets_cache: Array[int] = []
 
 var is_comparation_enabled: bool = false
 
@@ -152,7 +155,6 @@ func _init(_id: int = 1) -> void:
 ## Should be called after loading a save file to ensure the actor's properties
 ## (traits, parameter limits, class definitions) match the current game version.
 func refresh_actor_data() -> void:
-	# 1. Validate Basic Database Existence
 	if id <= 0 or id >= RPGSYSTEM.database.actors.size():
 		printerr("GameActor: ID %d not found in database during refresh." % id)
 		is_valid = false
@@ -164,58 +166,48 @@ func refresh_actor_data() -> void:
 	if current_class > 0 and current_class < RPGSYSTEM.database.classes.size():
 		class_data = RPGSYSTEM.database.classes[current_class]
 	
-	# 2. Resize User Parameters if the database has added new ones
 	var db_params_size = RPGSYSTEM.database.types.user_parameters.size()
+
 	if user_params.size() != db_params_size:
 		var old_size = user_params.size()
 		user_params.resize(db_params_size)
-		# Initialize new parameters with default values
+
 		for i in range(old_size, db_params_size):
 			user_params[i] = RPGSYSTEM.database.types.user_parameters[i].default_value
 
-	# 3. Rebuild Traits (Actor + Class)
-	# This ensures if you changed a Class or Actor trait in the editor, the save file updates.
 	trait_list.clear()
 	
-	# Re-add Actor Traits
 	for tr: RPGTrait in actor_data.traits:
 		trait_list.append(tr.clone(true))
 		
-	# Re-add Class Traits
 	if class_data:
 		for tr: RPGTrait in class_data.traits:
 			trait_list.append(tr.clone(true))
 
-	# 4. Refresh Permanent States
-	# We want to keep temporary battle states (like poison), but refresh permanent ones
-	# derived from Class/Gear in case the DB changed which states are passive.
-	
-	# Step A: Remove all currently active permanent states from the list
 	var temp_states: Array[GameState] = []
+
 	for state in current_states:
-		if not state.is_permanent():
+		if state and not state.is_permanent():
 			temp_states.append(state)
+
 	current_states = temp_states
 	
-	# Step B: Re-apply permanent states from the fresh Actor/Class data
 	if class_data:
 		var static_traits = actor_data.traits.filter(func(t: RPGTrait): return t.code == TraitCode.ADD_STATE)
 		static_traits += class_data.traits.filter(func(t: RPGTrait): return t.code == TraitCode.ADD_STATE)
-		for state_trait: RPGTrait in static_traits:
-			add_trait_state(state_trait) # This logic automatically handles the permanent flag inside add_state/trait
 
-	# Step C: Re-apply permanent states from currently equipped Gear
+		for state_trait: RPGTrait in static_traits:
+			add_trait_state(state_trait)
+
 	for item in current_gear:
 		if item and item.id > 0:
 			var real_item = item.get_real_data()
+
 			if real_item:
 				_add_permanent_states_from_gear(real_item)
 
-	# 5. Validate Equipment and Params
-	# Check if equipped items are still valid for this class/level in the new DB version
 	_validate_equipment()
 	
-	# Recalculate derived parameters
 	params.hp = min(params.hp, get_parameter("hp"))
 	params.mp = min(params.mp, get_parameter("mp"))
 	
@@ -488,41 +480,43 @@ func _add_equipment_to_inventory(item_id: int, new_equipment, real_item, game_st
 
 ## Removes any permanent states that were granted by the currently equipped gear.
 func _remove_permanent_states_from_gear(gear: Variant) -> void:
-	# filter states to remove
+	if not gear:
+		return
+
 	var trait_states = gear.traits.filter(
 		func(t: RPGTrait):
 			return t.code == TraitCode.ADD_STATE
 	)
 
-	# get states to remove
 	var states_to_remove = []
-	for state: GameState in current_states:
-		if state.is_permanent() and trait_states.any(
-			func(t: RPGTrait):
-				return t.data_id == state.id
-		):
+
+	for state in current_states:
+		if not state:
+			continue
+
+		if state.is_permanent() and trait_states.any(func(t: RPGTrait): return t.data_id == state.id):
 			state.usage_count -= 1
+
 			if state.usage_count <= 0:
-				# remove state
 				states_to_remove.append(state)
 	
-	# remove states (only the first state found must be removed)
-	for state: GameState in states_to_remove:
-		for i in range(current_states.size()):
-			if current_states[i].id == state.id:
-				current_states.remove_at(i)
-				break
+	for state in states_to_remove:
+		current_states.erase(state)
 
 	parameter_changed.emit()
 
 
 ## Adds any permanent states granted by the currently equipped gear.
 func _add_permanent_states_from_gear(gear: Variant) -> void:
+	if not gear:
+		return
+
 	var trait_states = gear.traits.filter(
 		func(t: RPGTrait):
 			return t.code == TraitCode.ADD_STATE
 	)
-	for state: RPGTrait in trait_states:
+
+	for state in trait_states:
 		add_trait_state(state, true)
 
 	parameter_changed.emit()
@@ -671,21 +665,25 @@ func _init_states(actor_data: RPGActor, class_data: RPGClass) -> void:
 	states += class_data.traits.filter(func(t: RPGTrait): return t.code == TraitCode.ADD_STATE)
 	var equipment_states: Array = []
 	var other_data: Variant
-	for gear: GameGearBase in current_gear:
-		if gear.id <= 0: continue
-		if gear.type == 0: # weapon type
+
+	for gear in current_gear:
+		if not gear or gear.id <= 0:
+			continue
+
+		if gear.type == 0:
 			other_data = RPGSYSTEM.database.weapons
-		else: # armor type
+		else:
 			other_data = RPGSYSTEM.database.armors
+
 		if other_data.size() > gear.id:
 			equipment_states += other_data[gear.id].traits.filter(func(t: RPGTrait): return t.code == TraitCode.ADD_STATE)
 
 	current_states.clear()
 	
-	for state: RPGTrait in states:
+	for state in states:
 		add_trait_state(state)
 	
-	for state: RPGTrait in equipment_states:
+	for state in equipment_states:
 		add_trait_state(state, true)
 
 
@@ -790,15 +788,15 @@ func _remove_state(state: GameState) -> void:
 
 ## Update all statuses added to this character.
 func update_states(delta: float) -> void:
-	for state: GameState in current_states:
-		state.update_lifetime(delta)
+	for state in current_states:
+		if state:
+			state.update_lifetime(delta)
 
 
 ## Returns true if a given skill ID is currently sealed by traits, gear, or states.
 func is_skill_sealed(skill_id: int) -> bool:
 	var trait_code = TraitCode.SEAL_SKILL
 	
-	# Helper function
 	var has_sealed_trait = func(_trait_array: Array) -> bool:
 		for t: RPGTrait in _trait_array:
 			if t.code == trait_code and t.data_id == skill_id:
@@ -808,18 +806,20 @@ func is_skill_sealed(skill_id: int) -> bool:
 	if has_sealed_trait.call(trait_list):
 		return true
 	
-	# Check gear traits
 	for gear in current_gear:
-		if not gear: continue
+		if not gear:
+			continue
+
 		var real_data = RPGSYSTEM.database.weapons if gear.type == 1 else RPGSYSTEM.database.armors
+
 		if gear.id > 0 and real_data.size() > gear.id:
 			if has_sealed_trait.call(real_data[gear.id].traits):
 				return true
 	
-	# Check states traits
 	var real_data = RPGSYSTEM.database.states
+
 	for state in current_states:
-		if state.id > 0 and real_data.size() > state.id:
+		if state and state.id > 0 and real_data.size() > state.id:
 			if has_sealed_trait.call(real_data[state.id].traits):
 				return true
 	
@@ -897,104 +897,226 @@ func _get_trait_list() ->  Array:
 	
 	if id > 0 and RPGSYSTEM.database.actors.size() > id:
 		var actor_data = RPGSYSTEM.database.actors[id]
+
 		if actor_data.class_id > 0 and RPGSYSTEM.database.classes.size() > actor_data.class_id:
 			var class_data = RPGSYSTEM.database.classes[actor_data.class_id]
 			var state_data = RPGSYSTEM.database.states
 		
-			# state traits
-			for state: GameState in current_states:
-				if state.id > 0 and state_data.size() > state.id:
+			for state in current_states:
+				if state and state.id > 0 and state_data.size() > state.id:
 					if state.cumulative_effect <= 1:
 						traits.append_array(state_data[state.id].traits)
 					else:
 						var new_traits = []
+
 						for old_trait in state_data[state.id].traits:
 							var new_trait = old_trait.clone(true)
 							new_trait.value *= state.cumulative_effect
 							new_traits.append(new_trait)
+
 						if new_traits:
 							traits.append_array(new_traits)
 	
-			# equipment traits
-			for equipment: Variant in current_gear:
+			for equipment in current_gear:
 				if equipment:
 					var equipment_real_data = RPGSYSTEM.database.weapons if equipment is GameWeapon else RPGSYSTEM.database.armors
+
 					if equipment.id > 0 and equipment_real_data.size() > equipment.id:
 						traits.append_array(equipment_real_data[equipment.id].traits)
 			
-			# actor and class traits
 			traits.append_array(trait_list)
 
 	return traits
 
 
+## Adds a percentage buff to a specific parameter for a given number of turns.
+func add_buff(param_index: int, value: float, duration: int = 0) -> void:
+	var param_list = RPGActor.get_parameter_list(true)
+	
+	if param_index < 0 or param_index >= param_list.size():
+		return
+		
+	var param_id = param_list[param_index].to_upper()
+	
+	if param_id == "":
+		return
+		
+	temp_buffs.append({"param_id": param_id, "value": value, "duration": duration})
+	
+	parameter_changed.emit()
+
+
+
+## Adds a percentage debuff to a specific parameter for a given number of turns.
+func add_debuff(param_index: int, value: float, duration: int = 0) -> void:
+	var param_list = RPGActor.get_parameter_list(true)
+	
+	if param_index < 0 or param_index >= param_list.size():
+		return
+		
+	var param_id = param_list[param_index].to_upper()
+	
+	if param_id == "":
+		return
+		
+	temp_debuff.append({"param_id": param_id, "value": value, "duration": duration})
+	
+	parameter_changed.emit()
+
+
+
+## Clears all active buffs from the actor.
+func clear_buffs() -> void:
+	temp_buffs.clear()
+	
+	parameter_changed.emit()
+
+
+
+## Clears all active debuffs from the actor.
+func clear_debuffs() -> void:
+	temp_debuff.clear()
+	
+	parameter_changed.emit()
+
+
+
+## Removes a specific number of buff stacks for a parameter, or all if stacks is 0.
+func remove_buff(param_index: int, stacks: int = 0) -> void:
+	var param_list = RPGActor.get_parameter_list(true)
+	
+	if param_index < 0 or param_index >= param_list.size():
+		return
+		
+	var param_id = param_list[param_index].to_upper()
+	var removed_count = 0
+	
+	for i in range(temp_buffs.size() - 1, -1, -1):
+		if temp_buffs[i]["param_id"] == param_id:
+			temp_buffs.remove_at(i)
+			removed_count += 1
+			
+			if stacks > 0 and removed_count >= stacks:
+				break
+				
+	if removed_count > 0:
+		parameter_changed.emit()
+
+
+
+## Removes a specific number of debuff stacks for a parameter, or all if stacks is 0.
+func remove_debuff(param_index: int, stacks: int = 0) -> void:
+	var param_list = RPGActor.get_parameter_list(true)
+	
+	if param_index < 0 or param_index >= param_list.size():
+		return
+		
+	var param_id = param_list[param_index].to_upper()
+	var removed_count = 0
+	
+	for i in range(temp_debuff.size() - 1, -1, -1):
+		if temp_debuff[i]["param_id"] == param_id:
+			temp_debuff.remove_at(i)
+			removed_count += 1
+			
+			if stacks > 0 and removed_count >= stacks:
+				break
+				
+	if removed_count > 0:
+		parameter_changed.emit()
+
+
+## Decrements the duration of all active buffs and debuffs, removing those that expire.
+func update_buffs_duration() -> void:
+	var has_changes = false
+	
+	for i in range(temp_buffs.size() - 1, -1, -1):
+		if temp_buffs[i]["duration"] > 0:
+			temp_buffs[i]["duration"] -= 1
+			
+			if temp_buffs[i]["duration"] <= 0:
+				temp_buffs.remove_at(i)
+				has_changes = true
+				
+	for i in range(temp_debuff.size() - 1, -1, -1):
+		if temp_debuff[i]["duration"] > 0:
+			temp_debuff[i]["duration"] -= 1
+			
+			if temp_debuff[i]["duration"] <= 0:
+				temp_debuff.remove_at(i)
+				has_changes = true
+				
+	if has_changes:
+		parameter_changed.emit()
+
+
 ## Calculates a specific parameter value by combining base stats + gear.
 func get_user_parameter(param_id: int) -> float:
-	var current_value: float = 0
-	
-	if user_params.size() > param_id and param_id >= 0:
-		current_value += user_params[param_id]
-		
-		# add mods
-		var real_param_id = "USER_PARAM_" + str(param_id)
-		if params.mods.has(real_param_id):
-			var mod_value = params.mods[real_param_id]
-			current_value += mod_value
-
-		# Apply gear modifiers
-		for gear in current_gear:
-			if not gear: continue
-			var real_data = gear.get_real_data()
-			if real_data:
-				current_value += real_data.get_user_parameter(param_id, gear.current_level)
-		
-		# Apply traits
-		var traits = _get_trait_list()
-		var trait_code = TraitCode.USER_PARAMETER
-		current_value = _add_traits_to_value(
-			traits,
-			current_value,
-			trait_code,
-			param_id,
-			false
-		)
-	
-	return current_value
+	return get_parameter("USER_PARAMETER_" + str(param_id))
 
 
 ## Calculates a specific parameter value by combining base stats, traits, gear, and state effects.
 func get_parameter(param_id: String) -> float:
 	var value: float = 0.0
-	
 	var search_param = param_id.strip_edges().to_upper()
 	var is_rate_parameter: bool = true
 	var traits = _get_trait_list()
-	
+
 	if id > 0 and RPGSYSTEM.database.actors.size() > id:
 		var actor_data = RPGSYSTEM.database.actors[id]
+
 		if actor_data.class_id > 0 and RPGSYSTEM.database.classes.size() > actor_data.class_id:
 			var class_data = RPGSYSTEM.database.classes[actor_data.class_id]
-			var state_data = RPGSYSTEM.database.states
-			
-			# Determine parameter type and get base value
+
 			if search_param in RPGActor.BaseParamType.keys():
 				value = float(_get_base_parameter(class_data, RPGActor.BaseParamType[search_param]))
 				is_rate_parameter = false
+
 			elif search_param in RPGActor.ExtraParamType.keys():
 				value = DEFAULT_EXTRA_PARAMS[RPGActor.ExtraParamType[search_param]] * 100.0
+
 			elif search_param in RPGActor.SpecialParamType.keys():
 				value = DEFAULT_SPECIAL_PARAMS[RPGActor.SpecialParamType[search_param]] * 100.0
-			
-			# add mods
-			var real_param_id = _find_real_param(search_param)
-			if real_param_id != "" and params.mods.has(real_param_id):
-				var mod_value = params.mods[real_param_id]
-				value += mod_value
 
-			# Apply traits and modifiers
-			value = _add_equipment_bonuses(value, search_param)
-			
+			elif search_param.begins_with("USER_PARAMETER_"):
+				var u_id = search_param.replace("USER_PARAMETER_", "").to_int()
+
+				if user_params.size() > u_id and u_id >= 0:
+					value = float(user_params[u_id])
+
+				is_rate_parameter = false
+
+			elif search_param == "LEVEL":
+				value = float(current_level)
+				is_rate_parameter = false
+
+			elif search_param == "EXPERIENCE":
+				value = float(current_experience)
+				is_rate_parameter = false
+
+			elif search_param == "TP":
+				is_rate_parameter = false
+
+			var real_param_id = _find_real_param(search_param)
+
+			if real_param_id != "" and params.mods.has(real_param_id):
+				value += params.mods[real_param_id]
+
+			if search_param.begins_with("USER_PARAMETER_"):
+				var u_id = search_param.replace("USER_PARAMETER_", "").to_int()
+
+				for gear in current_gear:
+					if not gear: continue
+					var real_data = gear.get_real_data()
+
+					if real_data and real_data.has_method("get_user_parameter"):
+						value += real_data.get_user_parameter(u_id, gear.current_level)
+
+			else:
+				value = _add_equipment_bonuses(value, search_param)
+
 			var trait_code = _get_trait_code(search_param)
+
 			if trait_code > 0:
 				value = _add_traits_to_value(
 					traits,
@@ -1003,7 +1125,23 @@ func get_parameter(param_id: String) -> float:
 					_get_param_type_id(search_param),
 					is_rate_parameter
 				)
-		
+
+	var total_buff_percent = 0.0
+
+	for b in temp_buffs:
+		if b["param_id"] == search_param:
+			total_buff_percent += b["value"]
+
+	var total_debuff_percent = 0.0
+
+	for d in temp_debuff:
+		if d["param_id"] == search_param:
+			total_debuff_percent += d["value"]
+
+	if total_buff_percent > 0.0 or total_debuff_percent > 0.0:
+		value += value * ((total_buff_percent - total_debuff_percent) / 100.0)
+		value = clamp(value, -MAX_RESULT, MAX_RESULT)
+
 	return value
 
 
@@ -1090,17 +1228,27 @@ func remove_trait(tr: RPGTrait) -> void:
 func _find_real_param(param: String) -> String:
 	if param in RPGActor.BaseParamType.keys():
 		return "base" + str(RPGActor.BaseParamType[param])
+
 	elif param in RPGActor.ExtraParamType.keys():
 		return "extra" + str(RPGActor.ExtraParamType[param])
+
 	elif param in RPGActor.SpecialParamType.keys():
 		return "special" + str(RPGActor.SpecialParamType[param])
+
+	elif param.begins_with("USER_PARAMETER_"):
+		var u_id = param.replace("USER_PARAMETER_", "").to_int()
+
+		return "USER_PARAM_" + str(u_id)
+
 	elif param == "LEVEL":
 		return "level"
+
 	elif param == "EXPERIENCE":
 		return "experience"
+
 	elif param == "TP":
 		return "tp"
-	
+
 	return ""
 
 
@@ -1127,23 +1275,34 @@ func get_current_level_experience() -> int:
 
 ## Gets the trait code from a [RPGTrait].
 func _get_trait_code(param: String) -> int:
-	if param in RPGActor.BaseParamType.keys():
+	if param in RPGActor.BaseParamType.keys() or param in RPGActor.ExtraParamType.keys() or param in RPGActor.SpecialParamType.keys() or param.begins_with("USER_PARAMETER_"):
 		return TraitCode.PARAM_BASE
-	elif param in RPGActor.ExtraParamType.keys():
-		return TraitCode.PARAM_EXTRA
-	elif param in RPGActor.SpecialParamType.keys():
-		return TraitCode.PARAM_SPECIAL
 	return 0
 
 
 ## Gets the parameter type ID.
 func _get_param_type_id(param: String) -> int:
+	if _param_offsets_cache.is_empty():
+		var all_params = RPGActor.get_parameter_list(false)
+
+		for i in all_params.size():
+			if all_params[i] == "":
+				_param_offsets_cache.append(i + 1)
+
 	if param in RPGActor.BaseParamType.keys():
-		return RPGActor.BaseParamType[param]
+		return RPGActor.BaseParamType[param] + (_param_offsets_cache[0] if _param_offsets_cache.size() > 0 else 0)
+
 	elif param in RPGActor.ExtraParamType.keys():
-		return RPGActor.ExtraParamType[param]
+		return RPGActor.ExtraParamType[param] + (_param_offsets_cache[1] if _param_offsets_cache.size() > 1 else 0)
+
 	elif param in RPGActor.SpecialParamType.keys():
-		return RPGActor.SpecialParamType[param]
+		return RPGActor.SpecialParamType[param] + (_param_offsets_cache[2] if _param_offsets_cache.size() > 2 else 0)
+
+	elif param.begins_with("USER_PARAMETER_"):
+		var u_id = param.replace("USER_PARAMETER_", "").to_int()
+
+		return u_id + (_param_offsets_cache[3] if _param_offsets_cache.size() > 3 else 0)
+
 	return -1
 
 
@@ -1197,17 +1356,20 @@ func _add_traits_to_value(traits: Array, current_value: float, code_id: int, dat
 
 ## Adds equipment bonuses to the actor's parameters.
 func _add_equipment_bonuses(current_value: float, param_id: String) -> float:
-	for gear: GameGearBase in current_gear:
+	for gear in current_gear:
 		if gear and gear.id > 0:
 			if gear is GameWeapon and RPGSYSTEM.database.weapons.size() > gear.id:
 				var weapon: RPGWeapon = RPGSYSTEM.database.weapons[gear.id]
+				
 				if weapon:
 					current_value += weapon.get_parameter(param_id, gear.current_level)
+
 			elif gear is GameArmor and RPGSYSTEM.database.armors.size() > gear.id:
 				var armor: RPGArmor = RPGSYSTEM.database.armors[gear.id]
+				
 				if armor:
 					current_value += armor.get_parameter(param_id, gear.current_level)
-	
+
 	return current_value
 
 

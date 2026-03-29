@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://os7clwyqwlka"]
+[gd_scene format=3 uid="uid://os7clwyqwlka"]
 
 [ext_resource type="PackedScene" uid="uid://dxcyqc2dscbvw" path="res://addons/CustomControls/custom_simple_column_item_list.tscn" id="1_eobwb"]
 [ext_resource type="Script" uid="uid://drx0i30jelbhh" path="res://addons/RPGData/Scripts/traits_panel.gd" id="1_mccvx"]
@@ -38,7 +38,7 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0, 0, 0, 1)
 
-[node name="TraitsPanel" type="PanelContainer"]
+[node name="TraitsPanel" type="PanelContainer" unique_id=1093777931]
 custom_minimum_size = Vector2(347, 46)
 offset_right = 347.0
 offset_bottom = 46.0
@@ -47,7 +47,7 @@ size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxEmpty_scogd")
 script = ExtResource("1_mccvx")
 
-[node name="TraitsList" parent="." instance=ExtResource("1_eobwb")]
+[node name="TraitsList" parent="." unique_id=1379305654 instance=ExtResource("1_eobwb")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
