@@ -94,6 +94,7 @@ func get_formatted_code(command: RPGEventCommand, font: Font, font_size: int, al
 	
 	return result
 #endregion
+
 #region Helpers
 func get_item_data(data: Array, id: int) -> Variant:
 	return data[id] if id < data.size() else null
@@ -333,6 +334,18 @@ func _get_image_command_parameter(data: FormatData) -> Dictionary:
 	result["param_color"] = param_color
 	return result
 
+func get_parameter_name(id: int) -> String:
+	var items = RPGActor.get_parameter_list(false)
+	
+	var parameter: String = ""
+	
+	if items.size() > id:
+		parameter = items[id]
+	
+	if parameter.is_empty():
+		parameter = "⚠ Invalid Data"
+	
+	return parameter
 #endregion
 
 
@@ -1161,20 +1174,18 @@ func _format_command_302(data: FormatData) -> Array:
 # Change Stat
 func _format_command_303(data: FormatData) -> Array:
 	var formatted_text = []
-	var stat_id = data.command.parameters.get("stat_id", 0)
+	var stat_path: String = data.command.parameters.get("stat_path", "")
+	var value = data.command.parameters.get("value", 0)
 	var param_name: String = ""
-	var default_stats = ["", "chests_opened", "secrets_found", "rare_items_found"]
-	if stat_id < default_stats.size():
-		param_name = default_stats[stat_id]
-		param_name += " += %s" % data.command.parameters.get("value", 0)
-	else:
-		stat_id -= (default_stats.size() + 1)
-		if stat_id >= 0 and RPGSYSTEM.database.types.user_stats.size() > stat_id:
-			var stat: String = RPGSYSTEM.database.types.user_stats[stat_id]
-			param_name = "%s += %s" % [stat, data.command.parameters.get("value", 0)]
-		else:
-			param_name = "⚠ Invalid Data"
 	
+	if stat_path.is_empty():
+		param_name = "⚠ Invalid Data"
+	else:
+		if stat_path.begins_with("user_stats:"):
+			stat_path = stat_path.trim_prefix("user_stats:")
+			
+		param_name = "%s += %s" % [stat_path, value]
+		
 	formatted_text.append({
 		"texts": [
 			{
@@ -1705,12 +1716,8 @@ func _format_command_43(data: FormatData) -> Array:
 
 # Change Actor Parameter
 func _format_command_44(data: FormatData) -> Array:
-	var parameter_names = [
-		"Max HP", "Max MP", "Attack", "Defense", "Magical Attack",
-		"Magical Defense", "Agility", "Luck"
-	]
 	var param_id = data.command.parameters.get("parameter_id", 0)
-	var param_name = "Parameter " + parameter_names[param_id]
+	var param_name = "Parameter " + get_parameter_name(param_id)
 	return _format_change_actor_stat(data, param_name)
 
 # Change Actor State

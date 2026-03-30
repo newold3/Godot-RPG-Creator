@@ -3,7 +3,7 @@
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_0iqxo"]
 [ext_resource type="Script" uid="uid://yj4fdld5vlih" path="res://addons/CustomControls/Dialogs/event_commands_dialog.gd" id="1_2gl8n"]
 [ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="3_vnx5y"]
-[ext_resource type="Texture2D" uid="uid://dwcnj2mbl2v2y" path="res://addons/CustomControls/Images/magnifying_glass.png" id="4_e6s4u"]
+[ext_resource type="Texture2D" uid="uid://kdtw43at18yl" path="res://addons/CustomControls/Images/filter_reset.png" id="4_811n2"]
 [ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="4_vlbtw"]
 [ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="5_vic0n"]
 [ext_resource type="Texture2D" uid="uid://xl88b63otgpi" path="res://addons/CustomControls/Images/button1_background.png" id="6_os1ff"]
@@ -62,7 +62,7 @@ gradient = SubResource("Gradient_qpaee")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
-[sub_resource type="DPITexture" id="DPITexture_811n2"]
+[sub_resource type="DPITexture" id="DPITexture_p4qv1"]
 _source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#ff5d5d\" d=\"M2 1v8.586l1.293-1.293a1 1 0 0 1 1.414 0L7 10.587l2.293-2.293a1 1 0 0 1 1.414 0L13 10.586l1-1V6H9V1H2zm8 0v4h4zm-6 9.414-2 2V15h12v-2.586l-.293.293a1 1 0 0 1-1.414 0L10 10.414l-2.293 2.293a1 1 0 0 1-1.414 0L4 10.414z\"/></svg>
 "
 
@@ -270,7 +270,8 @@ text = "Filter"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-right_icon = ExtResource("4_e6s4u")
+text = "para"
+right_icon = ExtResource("4_811n2")
 
 [node name="ToggleAllButton" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1013579288 instance=ExtResource("4_vlbtw")]
 unique_name_in_owner = true
@@ -279,7 +280,7 @@ layout_mode = 2
 size_flags_horizontal = 0
 tooltip_text = "Expand/Collapse All Panels"
 text = "Expand / Collapse"
-icon = SubResource("DPITexture_811n2")
+icon = SubResource("DPITexture_p4qv1")
 metadata/no_add_to_favorite = true
 
 [node name="FavoritesOnlyButton" type="Button" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1523656737]
@@ -321,6 +322,7 @@ size_flags_vertical = 3
 theme_override_constants/separation = 26
 
 [node name="VBoxContainer1" type="VBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer" unique_id=1925296452]
+visible = false
 layout_mode = 2
 
 [node name="Label" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer1" unique_id=1322439810]
@@ -356,6 +358,7 @@ layout_mode = 2
 theme_override_constants/h_separation = 8
 
 [node name="Button1" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer1/MarginContainer/HFlowContainer" unique_id=2081949319 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -370,6 +373,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button2" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer1/MarginContainer/HFlowContainer" unique_id=1843831285 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -384,6 +388,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button117" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer1/MarginContainer/HFlowContainer" unique_id=668441641 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -398,6 +403,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button3" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer1/MarginContainer/HFlowContainer" unique_id=1103667322 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -412,6 +418,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button4" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer1/MarginContainer/HFlowContainer" unique_id=1540518952 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -426,6 +433,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button5" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer1/MarginContainer/HFlowContainer" unique_id=358949457 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -440,6 +448,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button6" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer1/MarginContainer/HFlowContainer" unique_id=2105725728 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -454,6 +463,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button108" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer1/MarginContainer/HFlowContainer" unique_id=1984773994 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -522,6 +532,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button17" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer2/MarginContainer/HFlowContainer" unique_id=1954112280 instance=ExtResource("4_vlbtw")]
+visible = false
 custom_minimum_size = Vector2(310, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -537,6 +548,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button18" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer2/MarginContainer/HFlowContainer" unique_id=1818169491 instance=ExtResource("4_vlbtw")]
+visible = false
 custom_minimum_size = Vector2(310, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -552,6 +564,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button19" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer2/MarginContainer/HFlowContainer" unique_id=1472432932 instance=ExtResource("4_vlbtw")]
+visible = false
 custom_minimum_size = Vector2(310, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -567,6 +580,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button20" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer2/MarginContainer/HFlowContainer" unique_id=683306821 instance=ExtResource("4_vlbtw")]
+visible = false
 custom_minimum_size = Vector2(310, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -582,6 +596,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button21" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer2/MarginContainer/HFlowContainer" unique_id=13623740 instance=ExtResource("4_vlbtw")]
+visible = false
 custom_minimum_size = Vector2(310, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -597,6 +612,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button22" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer2/MarginContainer/HFlowContainer" unique_id=441247796 instance=ExtResource("4_vlbtw")]
+visible = false
 custom_minimum_size = Vector2(310, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -612,6 +628,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button23" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer2/MarginContainer/HFlowContainer" unique_id=452548033 instance=ExtResource("4_vlbtw")]
+visible = false
 custom_minimum_size = Vector2(310, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -627,6 +644,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button24" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer2/MarginContainer/HFlowContainer" unique_id=1185004175 instance=ExtResource("4_vlbtw")]
+visible = false
 custom_minimum_size = Vector2(310, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -677,6 +695,7 @@ layout_mode = 2
 theme_override_constants/h_separation = 5
 
 [node name="Button12" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer3/MarginContainer/HFlowContainer" unique_id=817853177 instance=ExtResource("4_vlbtw")]
+visible = false
 custom_minimum_size = Vector2(310, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -692,6 +711,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button13" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer3/MarginContainer/HFlowContainer" unique_id=2139476945 instance=ExtResource("4_vlbtw")]
+visible = false
 custom_minimum_size = Vector2(310, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -707,6 +727,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button113" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer3/MarginContainer/HFlowContainer" unique_id=1617494716 instance=ExtResource("4_vlbtw")]
+visible = false
 custom_minimum_size = Vector2(310, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -722,6 +743,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button14" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer3/MarginContainer/HFlowContainer" unique_id=709623705 instance=ExtResource("4_vlbtw")]
+visible = false
 custom_minimum_size = Vector2(310, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -756,9 +778,9 @@ custom_minimum_size = Vector2(310, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
-tooltip_text = "[title]Local Switch Control[/title]
-Controls switches limited to a specific map or event, rather than global states."
-text = "🥧 Stats"
+tooltip_text = "[title]Game statistics[/title]
+In-game stats. Many of them update automatically while you play, but this setting also lets you increase a stat manually."
+text = "🥧 Statistics"
 custom_search_tags = "estadísticas, valores, atributos, stats, numbers, parameters, fuerza, agilidad, int, vit, str, dex"
 metadata/real_parent = Object(HFlowContainer,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":2,"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","theme_override_constants/h_separation":5,"alignment":0,"last_wrap_alignment":0,"reverse_fill":false,"script":null)
 
@@ -767,6 +789,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button15" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer3/MarginContainer/HFlowContainer" unique_id=1145357316 instance=ExtResource("4_vlbtw")]
+visible = false
 custom_minimum_size = Vector2(310, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -782,6 +805,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button125" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer3/MarginContainer/HFlowContainer" unique_id=1128003801 instance=ExtResource("4_vlbtw")]
+visible = false
 custom_minimum_size = Vector2(310, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -797,6 +821,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="VBoxContainer4" type="VBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer" unique_id=48579217]
+visible = false
 layout_mode = 2
 
 [node name="Label" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer4" unique_id=787075596]
@@ -834,6 +859,7 @@ layout_mode = 2
 theme_override_constants/h_separation = 8
 
 [node name="Button7" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer4/MarginContainer/HFlowContainer" unique_id=249967889 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -848,6 +874,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button8" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer4/MarginContainer/HFlowContainer" unique_id=423065503 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -862,6 +889,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button9" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer4/MarginContainer/HFlowContainer" unique_id=806865895 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -876,6 +904,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button10" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer4/MarginContainer/HFlowContainer" unique_id=582471444 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -890,6 +919,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button11" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer4/MarginContainer/HFlowContainer" unique_id=1659815369 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -904,6 +934,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button109" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer4/MarginContainer/HFlowContainer" unique_id=243880149 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -922,6 +953,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button115" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer4/MarginContainer/HFlowContainer" unique_id=753981895 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -944,8 +976,8 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer5" unique_id=412249442]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.5254902, 0.5686275, 0.6509804, 1)
-theme_override_styles/normal = SubResource("StyleBoxTexture_gon0g")
+theme_override_colors/font_color = Color(0.80784315, 0.87058824, 1, 1)
+theme_override_styles/normal = SubResource("StyleBoxTexture_jovsc")
 text = "Actor Management"
 
 [node name="CollapsePanel" type="Button" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer5/Label" unique_id=970702012 node_paths=PackedStringArray("target")]
@@ -959,15 +991,13 @@ mouse_default_cursor_shape = 2
 theme_override_colors/font_hover_color = Color(0.92156863, 0.78431374, 0.47843137, 1)
 theme_override_styles/normal = SubResource("StyleBoxEmpty_811n2")
 toggle_mode = true
-button_pressed = true
-text = "►"
+text = "▼"
 flat = true
 alignment = 2
 script = SubResource("GDScript_811n2")
 target = NodePath("../../MarginContainer")
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer5" unique_id=723073550]
-visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 14
 theme_override_constants/margin_right = 14
@@ -977,6 +1007,7 @@ layout_mode = 2
 theme_override_constants/h_separation = 8
 
 [node name="Button25" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer5/MarginContainer/HFlowContainer" unique_id=1862388396 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -991,6 +1022,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button26" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer5/MarginContainer/HFlowContainer" unique_id=630831953 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1005,6 +1037,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button27" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer5/MarginContainer/HFlowContainer" unique_id=758941280 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1019,6 +1052,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button28" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer5/MarginContainer/HFlowContainer" unique_id=45202803 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1033,6 +1067,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button29" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer5/MarginContainer/HFlowContainer" unique_id=1763900429 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1047,6 +1082,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button30" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer5/MarginContainer/HFlowContainer" unique_id=985265213 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1061,6 +1097,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button31" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer5/MarginContainer/HFlowContainer" unique_id=608406249 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1089,6 +1126,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button33" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer5/MarginContainer/HFlowContainer" unique_id=650525157 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1103,6 +1141,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button34" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer5/MarginContainer/HFlowContainer" unique_id=1155976065 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1117,6 +1156,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button35" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer5/MarginContainer/HFlowContainer" unique_id=1514308393 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1131,6 +1171,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button36" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer5/MarginContainer/HFlowContainer" unique_id=1385178894 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1145,6 +1186,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button37" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer5/MarginContainer/HFlowContainer" unique_id=1782051119 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1159,6 +1201,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button38" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer5/MarginContainer/HFlowContainer" unique_id=1508211223 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1173,6 +1216,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button128" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer5/MarginContainer/HFlowContainer" unique_id=1427146525 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1187,6 +1231,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button129" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer5/MarginContainer/HFlowContainer" unique_id=1512289460 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1203,6 +1248,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button114" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer5/MarginContainer/HFlowContainer" unique_id=1661928819 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1217,6 +1263,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="VBoxContainer6" type="VBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer" unique_id=52091748]
+visible = false
 layout_mode = 2
 
 [node name="Label" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer6" unique_id=1707705000]
@@ -1254,6 +1301,7 @@ layout_mode = 2
 theme_override_constants/h_separation = 8
 
 [node name="Button39" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer6/MarginContainer/HFlowContainer" unique_id=302684862 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1268,6 +1316,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button40" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer6/MarginContainer/HFlowContainer" unique_id=1502687556 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1284,6 +1333,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button41" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer6/MarginContainer/HFlowContainer" unique_id=1456678158 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1298,6 +1348,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button42" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer6/MarginContainer/HFlowContainer" unique_id=211488781 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1312,6 +1363,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button43" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer6/MarginContainer/HFlowContainer" unique_id=2068952071 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1326,6 +1378,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button44" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer6/MarginContainer/HFlowContainer" unique_id=1583129894 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1340,6 +1393,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button45" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer6/MarginContainer/HFlowContainer" unique_id=155233408 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1354,6 +1408,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="VBoxContainer7" type="VBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer" unique_id=59230576]
+visible = false
 layout_mode = 2
 
 [node name="Label" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer7" unique_id=9013974]
@@ -1389,6 +1444,7 @@ layout_mode = 2
 theme_override_constants/h_separation = 8
 
 [node name="Button52" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer7/MarginContainer/HFlowContainer" unique_id=905425188 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1403,6 +1459,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button53" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer7/MarginContainer/HFlowContainer" unique_id=2071419042 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1417,6 +1474,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button54" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer7/MarginContainer/HFlowContainer" unique_id=1818941728 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1433,6 +1491,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button55" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer7/MarginContainer/HFlowContainer" unique_id=1204353276 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1447,6 +1506,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button56" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer7/MarginContainer/HFlowContainer" unique_id=1308952714 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1461,6 +1521,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button57" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer7/MarginContainer/HFlowContainer" unique_id=1402254871 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1475,6 +1536,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="VBoxContainer8" type="VBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer" unique_id=1009036397]
+visible = false
 layout_mode = 2
 
 [node name="Label" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer8" unique_id=1866374222]
@@ -1510,6 +1572,7 @@ layout_mode = 2
 theme_override_constants/h_separation = 8
 
 [node name="Button58" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer8/MarginContainer/HFlowContainer" unique_id=465208873 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1524,6 +1587,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button59" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer8/MarginContainer/HFlowContainer" unique_id=711342641 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1538,6 +1602,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button60" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer8/MarginContainer/HFlowContainer" unique_id=1100846341 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1552,6 +1617,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button116" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer8/MarginContainer/HFlowContainer" unique_id=584672765 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1566,6 +1632,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button61" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer8/MarginContainer/HFlowContainer" unique_id=2007676049 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1580,6 +1647,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button62" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer8/MarginContainer/HFlowContainer" unique_id=839252503 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1594,6 +1662,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button63" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer8/MarginContainer/HFlowContainer" unique_id=1654106310 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1610,6 +1679,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button127" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer8/MarginContainer/HFlowContainer" unique_id=105814126 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1624,6 +1694,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button64" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer8/MarginContainer/HFlowContainer" unique_id=576216760 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1638,6 +1709,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="VBoxContainer9" type="VBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer" unique_id=1705427537]
+visible = false
 layout_mode = 2
 
 [node name="Label" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer9" unique_id=628109518]
@@ -1673,6 +1745,7 @@ layout_mode = 2
 theme_override_constants/h_separation = 8
 
 [node name="Button46" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer9/MarginContainer/HFlowContainer" unique_id=118017280 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1687,6 +1760,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button47" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer9/MarginContainer/HFlowContainer" unique_id=1101335954 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1701,6 +1775,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button124" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer9/MarginContainer/HFlowContainer" unique_id=1463174731 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1715,6 +1790,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button48" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer9/MarginContainer/HFlowContainer" unique_id=420568356 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1729,6 +1805,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button49" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer9/MarginContainer/HFlowContainer" unique_id=859101844 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1743,6 +1820,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button50" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer9/MarginContainer/HFlowContainer" unique_id=1314250215 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1757,6 +1835,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button51" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer9/MarginContainer/HFlowContainer" unique_id=32953023 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1806,6 +1885,7 @@ layout_mode = 2
 theme_override_constants/h_separation = 8
 
 [node name="Button65" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer10/MarginContainer/HFlowContainer" unique_id=1811833878 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1834,6 +1914,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button67" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer10/MarginContainer/HFlowContainer" unique_id=957817189 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1848,6 +1929,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button68" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer10/MarginContainer/HFlowContainer" unique_id=205729070 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1862,6 +1944,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button69" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer10/MarginContainer/HFlowContainer" unique_id=1546652677 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1890,6 +1973,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button71" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer10/MarginContainer/HFlowContainer" unique_id=765186581 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1904,6 +1988,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button72" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer10/MarginContainer/HFlowContainer" unique_id=1079232248 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1967,6 +2052,7 @@ layout_mode = 2
 theme_override_constants/h_separation = 8
 
 [node name="Button74" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer11/MarginContainer/HFlowContainer" unique_id=1887408090 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1995,6 +2081,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="VBoxContainer12" type="VBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer" unique_id=465400316]
+visible = false
 layout_mode = 2
 
 [node name="Label" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer12" unique_id=352012371]
@@ -2030,6 +2117,7 @@ layout_mode = 2
 theme_override_constants/h_separation = 8
 
 [node name="Button126" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer12/MarginContainer/HFlowContainer" unique_id=103705115 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2044,6 +2132,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button107" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer12/MarginContainer/HFlowContainer" unique_id=248601114 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2058,6 +2147,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="VBoxContainer13" type="VBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer" unique_id=1522925744]
+visible = false
 layout_mode = 2
 
 [node name="Label" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer13" unique_id=108205]
@@ -2093,6 +2183,7 @@ layout_mode = 2
 theme_override_constants/h_separation = 8
 
 [node name="Button76" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer13/MarginContainer/HFlowContainer" unique_id=508905892 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2107,6 +2198,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button118" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer13/MarginContainer/HFlowContainer" unique_id=2131751489 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2121,6 +2213,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button119" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer13/MarginContainer/HFlowContainer" unique_id=436382741 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2135,6 +2228,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button77" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer13/MarginContainer/HFlowContainer" unique_id=1298178608 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2149,6 +2243,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button78" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer13/MarginContainer/HFlowContainer" unique_id=1158167726 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2163,6 +2258,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button79" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer13/MarginContainer/HFlowContainer" unique_id=1357843784 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2177,6 +2273,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button80" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer13/MarginContainer/HFlowContainer" unique_id=1205117158 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2191,6 +2288,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button81" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer13/MarginContainer/HFlowContainer" unique_id=852636097 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2240,6 +2338,7 @@ layout_mode = 2
 theme_override_constants/h_separation = 8
 
 [node name="Button82" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer14/MarginContainer/HFlowContainer" unique_id=528412642 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2254,6 +2353,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button83" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer14/MarginContainer/HFlowContainer" unique_id=333681105 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2282,6 +2382,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button85" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer14/MarginContainer/HFlowContainer" unique_id=770422709 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2296,6 +2397,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button111" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer14/MarginContainer/HFlowContainer" unique_id=133290641 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2314,6 +2416,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button132" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer14/MarginContainer/HFlowContainer" unique_id=1551850959 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2371,6 +2474,7 @@ layout_mode = 2
 theme_override_constants/h_separation = 8
 
 [node name="Button96" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer15/MarginContainer/HFlowContainer" unique_id=1002299684 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2385,6 +2489,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button97" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer15/MarginContainer/HFlowContainer" unique_id=245676184 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2399,6 +2504,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button98" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer15/MarginContainer/HFlowContainer" unique_id=1481534836 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2441,6 +2547,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button100" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer15/MarginContainer/HFlowContainer" unique_id=475825299 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2455,6 +2562,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button101" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer15/MarginContainer/HFlowContainer" unique_id=56875176 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2469,6 +2577,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button102" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer15/MarginContainer/HFlowContainer" unique_id=1766763424 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2483,6 +2592,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button103" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer15/MarginContainer/HFlowContainer" unique_id=1778948292 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2497,6 +2607,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button104" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer15/MarginContainer/HFlowContainer" unique_id=1398071100 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2511,6 +2622,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button105" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer15/MarginContainer/HFlowContainer" unique_id=1823534550 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2525,6 +2637,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button121" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer15/MarginContainer/HFlowContainer" unique_id=710404331 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2541,6 +2654,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="VBoxContainer16" type="VBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer" unique_id=812479543]
+visible = false
 layout_mode = 2
 
 [node name="Label" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer16" unique_id=346519849]
@@ -2576,6 +2690,7 @@ layout_mode = 2
 theme_override_constants/h_separation = 8
 
 [node name="Button86" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer16/MarginContainer/HFlowContainer" unique_id=1963113219 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2590,6 +2705,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button87" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer16/MarginContainer/HFlowContainer" unique_id=1912002825 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2604,6 +2720,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button88" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer16/MarginContainer/HFlowContainer" unique_id=1926194331 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2618,6 +2735,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button110" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer16/MarginContainer/HFlowContainer" unique_id=702396247 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2636,6 +2754,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button89" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer16/MarginContainer/HFlowContainer" unique_id=90045738 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2650,6 +2769,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button90" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer16/MarginContainer/HFlowContainer" unique_id=1693539597 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2664,6 +2784,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button91" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer16/MarginContainer/HFlowContainer" unique_id=229950939 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2680,6 +2801,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button92" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer16/MarginContainer/HFlowContainer" unique_id=1288619493 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2694,6 +2816,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button93" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer16/MarginContainer/HFlowContainer" unique_id=277901488 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2709,6 +2832,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button94" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer16/MarginContainer/HFlowContainer" unique_id=1801235383 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2723,6 +2847,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button95" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer16/MarginContainer/HFlowContainer" unique_id=2109300765 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2737,6 +2862,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button112" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer16/MarginContainer/HFlowContainer" unique_id=2144751412 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2755,6 +2881,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button122" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer16/MarginContainer/HFlowContainer" unique_id=1460850054 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2775,6 +2902,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="Button123" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer16/MarginContainer/HFlowContainer" unique_id=309260394 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -2795,6 +2923,7 @@ metadata/favorite_button = Object(TextureButton,"unique_name_in_owner":false,"pr
 
 
 [node name="VBoxContainer17" type="VBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer" unique_id=1030521243]
+visible = false
 layout_mode = 2
 
 [node name="Label" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer17" unique_id=373757026]
@@ -2830,6 +2959,7 @@ layout_mode = 2
 theme_override_constants/h_separation = 8
 
 [node name="Button106" parent="VBoxContainer/MarginContainer/VBoxContainer/ButtonsContainer/SmoothScrollContainer/VBoxContainer/VBoxContainer17/MarginContainer/HFlowContainer" unique_id=2078382812 instance=ExtResource("4_vlbtw")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4

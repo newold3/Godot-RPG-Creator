@@ -10,6 +10,66 @@ var followers: Array[SimpleFollower] = []
 ## Lock to prevent overlapping visual transitions causing visual glitches.
 var _is_transitioning: bool = false
 
+## Cache for unused player nodes to prevent instantiation lag.
+var _player_cache: Dictionary = {}
+
+## Cache for unused follower nodes to prevent instantiation lag.
+var _follower_cache: Array[SimpleFollower] = []
+
+
+#region Cache Management
+## Stores a player node in the cache, disabling its processing, visibility, and removing it from the player group.
+func _store_player_in_cache(actor_id: int, player_node: Node2D) -> void:
+	if not is_instance_valid(player_node):
+		return
+		
+	if _player_cache.size() >= RPGSYSTEM.database.system.party_active_members and not _player_cache.has(actor_id):
+		var keys = _player_cache.keys()
+		var old_node = _player_cache[keys[0]]
+		if is_instance_valid(old_node):
+			old_node.queue_free()
+		_player_cache.erase(keys[0])
+		
+	player_node.process_mode = Node.PROCESS_MODE_DISABLED
+	player_node.visible = false
+	if player_node.is_in_group("player"):
+		player_node.remove_from_group("player")
+	_player_cache[actor_id] = player_node
+
+
+## Retrieves a player node from the cache or instantiates a new one if not found.
+func _get_player_from_cache(actor_id: int, scene_path: String) -> Node2D:
+	if _player_cache.has(actor_id):
+		var cached_node = _player_cache[actor_id]
+		if is_instance_valid(cached_node):
+			cached_node.process_mode = Node.PROCESS_MODE_INHERIT
+			_player_cache.erase(actor_id)
+			return cached_node
+		else:
+			_player_cache.erase(actor_id)
+			
+	if AssetManager.exists(scene_path):
+		return load(scene_path).instantiate()
+		
+	return null
+
+
+## Cleans invalid nodes from the caches, typically called on map changes.
+func clear_caches() -> void:
+	for id in _player_cache:
+		var node = _player_cache[id]
+		if is_instance_valid(node):
+			node.queue_free()
+			
+	_player_cache.clear()
+	
+	for f in _follower_cache:
+		if is_instance_valid(f):
+			f.queue_free()
+			
+	_follower_cache.clear()
+#endregion
+
 
 
 #region Player
@@ -19,7 +79,7 @@ func add_actor_to_party(actor_id: int) -> void:
 		if !game_state.actors.has(actor_id):
 			var actor = GameActor.new(actor_id)
 			game_state.actors[actor_id] = actor
-	
+			
 	if !game_state.current_party.has(actor_id):
 		game_state.current_party.append(actor_id)
 
@@ -36,6 +96,7 @@ func clear_current_player() -> void:
 	if container:
 		for player in container.get_children():
 			player.queue_free()
+	clear_caches()
 
 
 func setup_player() -> void:
@@ -44,7 +105,7 @@ func setup_player() -> void:
 	
 	if not current_map or current_map.internal_id != game_state.current_map_id:
 		return
-	
+		
 	_create_or_reuse_player()
 	_position_player()
 	_setup_player_properties()
@@ -66,8 +127,8 @@ func _create_or_reuse_player() -> void:
 		if player_id > 0 and RPGSYSTEM.database.actors.size() > player_id:
 			var actor = RPGSYSTEM.database.actors[player_id]
 			var scene_path = actor.character_scene
-			if AssetManager.exists(scene_path):
-				current_player = load(scene_path).instantiate()
+			current_player = _get_player_from_cache(player_id, scene_path)
+			if current_player:
 				current_player.name = "Player_" + actor.name
 				current_player.set_meta("actor_id", player_id)
 				current_player.set_meta("party_id", 0)
@@ -83,7 +144,7 @@ func _create_or_reuse_player() -> void:
 			
 	elif current_player and current_player.is_inside_tree():
 		current_player.get_parent().remove_child(current_player)
-	
+		
 	if GameManager.current_map:
 		if current_player:
 			var tile_size: Vector2i = GameManager.get_map_tile_size()
@@ -131,7 +192,7 @@ func _setup_player_properties() -> void:
 		match RPGSYSTEM.database.system.movement_mode:
 			0: current_player.movement_current_mode = CharacterBase.MOVEMENTMODE.GRID
 			1: current_player.movement_current_mode = CharacterBase.MOVEMENTMODE.FREE
-		
+			
 	if GameManager.main_scene.is_test_map and current_map:
 		current_player.current_map_tile_size = current_map.tile_size
 		current_player.calculate_grid_move_duration()
@@ -148,17 +209,17 @@ func show_followers(instant: bool = false, force_regroup: bool = true) -> void:
 		return
 		
 	game_state.followers_enabled = true
-
+	
 	if game_state.followers_tracking_enabled and force_regroup:
 		if player.has_method("clear_movement_history"):
 			player.clear_movement_history()
-
+			
 	_refresh_follower_nodes(instant)
 	await update_party_visuals(instant)
 	
 	if game_state.current_party.size() <= 1:
 		return
-	
+		
 	if game_state.followers_tracking_enabled:
 		if force_regroup:
 			for f in followers:
@@ -167,7 +228,7 @@ func show_followers(instant: bool = false, force_regroup: bool = true) -> void:
 				if f.has_method("run_animation"):
 					f.current_animation = "idle"
 					f.run_animation()
-				
+					
 	var is_tracking = game_state.followers_tracking_enabled
 	for f in followers:
 		f.is_sync_active = is_tracking
@@ -196,7 +257,7 @@ func load_followers_from_save(save_data: Dictionary) -> void:
 			player.clear_movement_history()
 		for f in followers:
 			f.global_position = player.global_position
-		
+			
 	for f in followers:
 		f.is_sync_active = !is_split
 		if f.has_method("_initialize_queue") and !is_split:
@@ -219,15 +280,92 @@ func update_party_visuals(instant: bool = false) -> void:
 			current_player.set_meta("actor_id", 0)
 			current_player.set_meta("party_id", 0)
 		else:
-			current_player.visible = true
 			var leader_actor = RPGSYSTEM.database.actors[party[0]]
 			var cached_dir = current_player.current_direction
 			var cached_last_dir = current_player.get("last_direction")
+			var cached_pos = current_player.global_position
 			
 			if current_player.get_meta("actor_id", -1) != party[0] or current_player.name == "Player_Empty":
-				if leader_actor and leader_actor.get("character_data_file"):
-					current_player.set_data(load(leader_actor.character_data_file))
-					current_player.name = "Player_" + leader_actor.name
+				if leader_actor and leader_actor.get("character_scene"):
+					var new_player = _get_player_from_cache(party[0], leader_actor.character_scene)
+					if new_player:
+						new_player.visible = false
+						var parent = current_player.get_parent()
+						var index = current_player.get_index()
+						
+						if not new_player.is_inside_tree():
+							parent.add_child(new_player)
+							parent.move_child(new_player, index)
+						elif new_player.get_parent() != parent:
+							new_player.get_parent().remove_child(new_player)
+							parent.add_child(new_player)
+							parent.move_child(new_player, index)
+							
+						new_player.global_position = cached_pos
+						new_player.current_direction = cached_dir
+						if cached_last_dir != null:
+							new_player.last_direction = cached_last_dir
+							
+						var props_to_transfer = [
+							"movement_current_mode", "current_map_tile_size", "previous_tile",
+							"is_running", "map_offset", "cumulative_steps", "is_on_vehicle", 
+							"current_vehicle", "current_virtual_tile", "collision_disabled", 
+							"force_locked", "busy", "busy2", "_auto_target_tile", "_auto_target_event"
+						]
+						
+						for prop in props_to_transfer:
+							if prop in current_player and prop in new_player:
+								new_player.set(prop, current_player.get(prop))
+								
+						if "movement_history" in current_player and "movement_history" in new_player:
+							new_player.movement_history = current_player.movement_history.duplicate(true)
+							
+						if leader_actor.get("character_data_file") and new_player.has_method("set_data"):
+							new_player.set_data(load(leader_actor.character_data_file))
+							
+						new_player.name = "Player_" + leader_actor.name
+						if not new_player.is_in_group("player"):
+							new_player.add_to_group("player")
+							
+						if new_player.has_method("initialize_virtual_tile"):
+							new_player.initialize_virtual_tile()
+						if new_player.has_method("calculate_grid_move_duration"):
+							new_player.calculate_grid_move_duration()
+							
+						if new_player.has_method("force_update_transform"):
+							new_player.force_update_transform()
+						if new_player.has_method("reset_physics_interpolation"):
+							new_player.reset_physics_interpolation()
+							
+						new_player.visible = true
+						GameManager.current_player = new_player
+						
+						var main_camera = GameManager.main_scene.get_main_camera()
+						var is_cam_target = false
+						
+						if main_camera:
+							if main_camera.get("target") == current_player or (main_camera.has_method("has_target") and main_camera.has_target(current_player)):
+								is_cam_target = true
+								
+						if is_cam_target:
+							if main_camera.has_method("add_target_to_array"):
+								main_camera.add_target_to_array(new_player, 10)
+							if "target" in main_camera and main_camera.get("target") == current_player:
+								main_camera.target = new_player
+							if main_camera.has_method("remove_target_from_array"):
+								main_camera.remove_target_from_array(current_player)
+								
+						if followers.size() > 0:
+							followers[0].target_node = new_player
+							
+						current_player.visible = false
+						_store_player_in_cache(current_player.get_meta("actor_id", -1), current_player)
+						current_player = new_player
+						
+			elif leader_actor and leader_actor.get("character_data_file") and current_player.has_method("set_data"):
+				current_player.set_data(load(leader_actor.character_data_file))
+				current_player.name = "Player_" + leader_actor.name
+				current_player.visible = true
 				
 			current_player.set_meta("actor_id", party[0])
 			current_player.set_meta("party_id", 0)
@@ -238,10 +376,18 @@ func update_party_visuals(instant: bool = false) -> void:
 				
 			if current_player.has_method("run_animation"):
 				current_player.run_animation(true)
-			
+				
 	var old_size = followers.size()
 	_refresh_follower_nodes(instant)
 	
+	for i in range(1, party.size()):
+		var f_idx = i - 1
+		if f_idx < followers.size():
+			var follower = followers[f_idx]
+			var target_actor_id = party[i]
+			if follower.get_meta("actor_id", -1) != target_actor_id or follower.get_meta("requires_init", false):
+				follower.visible = false
+				
 	for i in range(1, party.size()):
 		var f_idx = i - 1
 		if f_idx < followers.size():
@@ -251,10 +397,15 @@ func update_party_visuals(instant: bool = false) -> void:
 			var body = follower.get_node_or_null("%Body")
 			var is_naked = body.texture == null if body else true
 			var actor_changed = follower.get_meta("actor_id", -1) != target_actor_id
+			var requires_init = follower.get_meta("requires_init", false)
 			
-			if f_idx >= old_size or actor_changed or is_naked:
+			if f_idx >= old_size or actor_changed or is_naked or requires_init:
+				follower.visible = false
 				await follower.update_appearance_cascade(target_actor_id, instant)
 				follower.set_meta("actor_id", target_actor_id)
+				follower.set_meta("requires_init", false)
+				
+			follower.visible = true
 
 
 func _refresh_follower_nodes(instant: bool = false, save_data_list: Array = []) -> void:
@@ -267,20 +418,29 @@ func _refresh_follower_nodes(instant: bool = false, save_data_list: Array = []) 
 	followers = followers.filter(func(f): return is_instance_valid(f))
 	
 	var max_active = RPGSYSTEM.database.system.party_active_members
-	
-	# Calculamos los necesarios, blindando que NUNCA sea negativo si la party es 1 o 0
 	var needed = 0
+	
 	if game_state.current_party.size() > 1:
 		needed = min(game_state.current_party.size() - 1, max_active - 1)
-	
+		
 	var insert_idx = current_player.get_index()
 	var is_loading = not save_data_list.is_empty()
 	
 	if followers.size() < needed:
 		while followers.size() < needed:
 			var f_idx = followers.size()
-			var f = FOLLOWER_SCENE.instantiate() as SimpleFollower
+			var f: SimpleFollower = null
 			
+			while _follower_cache.size() > 0 and not is_instance_valid(f):
+				f = _follower_cache.pop_back()
+				
+			if not is_instance_valid(f):
+				f = FOLLOWER_SCENE.instantiate() as SimpleFollower
+				
+			f.process_mode = Node.PROCESS_MODE_INHERIT
+			if not f.is_in_group("follower"):
+				f.add_to_group("follower")
+				
 			f.set_meta("actor_id", game_state.current_party[f_idx + 1])
 			f.set_meta("party_id", f_idx + 1)
 			f.follower_id = f_idx + 1
@@ -292,9 +452,14 @@ func _refresh_follower_nodes(instant: bool = false, save_data_list: Array = []) 
 			var target = current_player if f_idx == 0 else followers[f_idx - 1]
 			f.target_node = target
 			
-			current_map.add_child(f)
-			current_map.move_child(f, insert_idx)
-			
+			if not f.is_inside_tree():
+				current_map.add_child(f)
+				current_map.move_child(f, insert_idx)
+			elif f.get_parent() != current_map:
+				f.get_parent().remove_child(f)
+				current_map.add_child(f)
+				current_map.move_child(f, insert_idx)
+				
 			if is_loading and f_idx < save_data_list.size():
 				var s_data = save_data_list[f_idx]
 				f.global_position = s_data.get("position", current_player.global_position)
@@ -311,7 +476,7 @@ func _refresh_follower_nodes(instant: bool = false, save_data_list: Array = []) 
 				f.global_position = spawn_pos
 				f.current_direction = spawn_dir
 				f.modulate.a = 1.0 if instant else 0.0
-			
+				
 			f.current_animation = "idle"
 			f.is_fading_transition = not (instant or is_loading)
 			
@@ -321,10 +486,14 @@ func _refresh_follower_nodes(instant: bool = false, save_data_list: Array = []) 
 			followers.append(f)
 			f.set_meta("requires_init", true)
 			
-	# Borrado de seguidores sobrantes garantizado
 	while followers.size() > needed:
 		var f = followers.pop_back()
-		if is_instance_valid(f): f.queue_free()
+		if is_instance_valid(f):
+			f.process_mode = Node.PROCESS_MODE_DISABLED
+			f.visible = false
+			if f.is_in_group("follower"):
+				f.remove_from_group("follower")
+			_follower_cache.append(f)
 #endregion
 
 
@@ -396,7 +565,12 @@ func disappear(instant: bool = false, delete_after: bool = false) -> void:
 
 func destroy() -> void:
 	for f in followers:
-		if is_instance_valid(f): f.queue_free()
+		if is_instance_valid(f):
+			f.process_mode = Node.PROCESS_MODE_DISABLED
+			f.visible = false
+			if f.is_in_group("follower"):
+				f.remove_from_group("follower")
+			_follower_cache.append(f)
 	followers.clear()
 #endregion
 
@@ -432,14 +606,14 @@ func disable_split_mode(time: float) -> void:
 		if f.has_method("run_animation"):
 			f.current_animation = "idle"
 			f.run_animation()
-	
+			
 	for f in followers:
 		f._extra_history_offset_f = 0.0 
 		f._is_waiting = false
 		f.is_sync_active = true
 		if f.has_method("_initialize_queue"):
 			f._initialize_queue()
-	
+			
 	var fade_in_tween = create_tween().set_parallel(true)
 	for f in followers:
 		fade_in_tween.tween_property(f, "modulate:a", 1.0, time / 2.0)
@@ -454,19 +628,33 @@ func change_leader_to(direction: String) -> void:
 	
 	if not GameManager.game_state or not GameManager.game_state.followers_enabled or GameManager.get_followers().size() == 0:
 		return
-
+		
 	var party: Array = GameManager.game_state.current_party
 	var active_max: int = RPGSYSTEM.database.system.party_active_members
 	var active_count: int = min(party.size(), active_max)
-
+	
 	if active_count <= 1: return
-
+	
+	_is_transitioning = true
+	
 	var active_party: Array = party.slice(0, active_count)
 	var reserve_party: Array = party.slice(active_count, party.size())
 	
 	var is_split_mode_enabled: bool = !GameManager.game_state.followers_tracking_enabled
-	var camera: Camera2D = GameManager.get_camera()
-
+	
+	var viewport_img = get_viewport().get_texture().get_image()
+	var static_tex = ImageTexture.create_from_image(viewport_img)
+	var overlay_canvas = CanvasLayer.new()
+	overlay_canvas.layer = 128
+	
+	var overlay_rect = TextureRect.new()
+	overlay_rect.texture = static_tex
+	overlay_rect.set_anchors_preset(Control.PRESET_FULL_RECT)
+	overlay_canvas.add_child(overlay_rect)
+	get_tree().root.add_child(overlay_canvas)
+	
+	await get_tree().process_frame
+	
 	if is_split_mode_enabled:
 		var current_player = GameManager.current_player
 		var target_follower: Node2D = null
@@ -477,31 +665,16 @@ func change_leader_to(direction: String) -> void:
 			target_follower = followers.front()
 			
 		if current_player and target_follower:
-			_is_transitioning = true
-			
-			var viewport_img = get_viewport().get_texture().get_image()
-			var static_tex = ImageTexture.create_from_image(viewport_img)
-			var overlay_canvas = CanvasLayer.new()
-			overlay_canvas.layer = 128
-			
-			var overlay_rect = TextureRect.new()
-			overlay_rect.texture = static_tex
-			overlay_rect.set_anchors_preset(Control.PRESET_FULL_RECT)
-			overlay_canvas.add_child(overlay_rect)
-			get_tree().root.add_child(overlay_canvas)
-			
-			await get_tree().process_frame
-			
 			for f in followers:
 				f.is_sync_active = false
-			
+				
 			var is_grid_mode: bool = false
 			if "movement_current_mode" in current_player:
 				is_grid_mode = (current_player.movement_current_mode == CharacterBase.MOVEMENTMODE.GRID)
 				
 			var new_player_pos = target_follower.global_position
 			var new_follower_pos = current_player.global_position
-				
+			
 			if is_grid_mode:
 				var current_map = GameManager.current_map
 				if current_map:
@@ -513,7 +686,7 @@ func change_leader_to(direction: String) -> void:
 					
 			var target_player_dir = target_follower.current_direction
 			var target_follower_dir = current_player.current_direction
-
+			
 			if direction == "up":
 				var last_actor = active_party.pop_back()
 				active_party.push_front(last_actor)
@@ -526,15 +699,17 @@ func change_leader_to(direction: String) -> void:
 				if followers.size() > 0:
 					var first_follower = followers.pop_front()
 					followers.push_back(first_follower)
-
+					
 			GameManager.game_state.current_party = active_party + reserve_party
-
+			
 			for f in followers:
 				if "current_direction" in f:
 					f.fixed_direction = f.current_direction
-
+					
 			await update_party_visuals(true)
-
+			
+			current_player = GameManager.current_player
+			
 			current_player.global_position = new_player_pos
 			target_follower.global_position = new_follower_pos
 			
@@ -574,19 +749,6 @@ func change_leader_to(direction: String) -> void:
 				f.fixed_direction = -1
 				f.is_sync_active = true
 				
-			if camera and camera.has_method("scroll_to_position"):
-				var cam_data = camera.get_target_position_and_zoom()
-				camera.scroll_to_position(cam_data.position, cam_data.zoom, 0.3)
-				
-			await get_tree().process_frame
-			await get_tree().process_frame
-			await get_tree().process_frame
-			
-			if is_instance_valid(overlay_canvas):
-				overlay_canvas.queue_free()
-				
-			_is_transitioning = false
-				
 	else:
 		if direction == "up":
 			var last_member = active_party.pop_back()
@@ -594,10 +756,17 @@ func change_leader_to(direction: String) -> void:
 		else:
 			var first_member = active_party.pop_front()
 			active_party.push_back(first_member)
-
+			
 		GameManager.game_state.current_party = active_party + reserve_party
 		
 		await update_party_visuals(true)
+		
+	await get_tree().process_frame
+	
+	if is_instance_valid(overlay_canvas):
+		overlay_canvas.queue_free()
+		
+	_is_transitioning = false
 
 
 func regroup(time: float = 0.6, delete_followers: bool = false) -> void:
@@ -615,7 +784,7 @@ func regroup(time: float = 0.6, delete_followers: bool = false) -> void:
 		tween.tween_property(f, "global_position", target_pos, time).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 		if delete_followers:
 			tween.tween_property(f, "modulate:a", 0.0, time * 0.95)
-		
+			
 	await tween.finished
 	
 	if delete_followers:
@@ -624,7 +793,7 @@ func regroup(time: float = 0.6, delete_followers: bool = false) -> void:
 		for f in followers:
 			f.modulate.a = 0.0
 			f.is_invalid_event = true
-	
+			
 	if GameManager.current_player and delete_followers:
 		GameManager.current_player.clear_movement_history()
 #endregion

@@ -342,22 +342,34 @@ func _command_0302() -> void:
 func _command_0303() -> void:
 	debug_print("Processing command: Change Stat Value (code 303)")
 	
-	var stat_id = current_command.parameters.get("stat_id", 1)
+	var stat_path: String = current_command.parameters.get("stat_path", "")
 	var value = current_command.parameters.get("value", 1)
 	
-	var default_stats = ["", "chests_opened", "secrets_found", "rare_items_found"]
-	
-	if stat_id < default_stats.size() and stat_id > 0:
-		GameManager.game_state.stats[default_stats[stat_id]] += value
-	
+	if stat_path.is_empty():
+		return
+		
+	if stat_path.begins_with("user_stats:"):
+		var stat_name: String = stat_path.trim_prefix("user_stats:")
+		
+		if not stat_name in GameManager.game_state.stats.user_stats:
+			GameManager.game_state.stats.user_stats[stat_name] = 0
+			
+		GameManager.game_state.stats.user_stats[stat_name] += value
+		
 	else:
-		var user_stat_id = stat_id - default_stats.size() - 1
-		if user_stat_id >= 0 and RPGSYSTEM.database.types.user_stats.size() > user_stat_id:
-			var stat: String = RPGSYSTEM.database.types.user_stats[user_stat_id]
-			if stat:
-				if not stat in GameManager.game_state.stats.user_stats:
-					GameManager.game_state.stats.user_stats[stat] = 0
-				GameManager.game_state.stats.user_stats[stat] += value
+		var target_obj = GameManager.game_state.stats
+		var path_parts = stat_path.split(".")
+		var final_prop = path_parts[-1]
+		
+		for i in range(path_parts.size() - 1):
+			target_obj = target_obj.get(path_parts[i])
+			if target_obj == null:
+				return
+				
+		var current_val = target_obj.get(final_prop)
+		
+		if current_val != null:
+			target_obj.set(final_prop, current_val + value)
 
 
 # Command Control Timer Dialog (Code 20), button_id = 15

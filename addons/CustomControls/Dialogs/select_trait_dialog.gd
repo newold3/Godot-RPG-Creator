@@ -513,7 +513,7 @@ func _fill_parameters() -> void:
 	
 	for node in nodes: node.clear()
 	
-	var items = RPGActor.get_parameter_list(true)
+	var items = RPGActor.get_parameter_list(false)
 	var headers = [tr("Base Parameters"), tr("Extra Parameters"), tr("Special Parameters"), tr("User Parameters")]
 	var header_index = 0
 	

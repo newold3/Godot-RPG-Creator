@@ -183,13 +183,13 @@ func _physics_process(delta: float):
 		_click_indicator_cooldown = 0.0
 	if not Engine.is_editor_hint() and is_in_group("player"):
 		if ControllerManager.is_action_just_pressed("Button L2"):
-			busy2 = true
+			if GameManager.current_player: GameManager.current_player.busy2 = true
 			await GameManager.shift_up_follower()
-			busy2 = false
+			if GameManager.current_player: GameManager.current_player.busy2 = false
 		elif ControllerManager.is_action_just_pressed("Button R2"):
-			busy2 = true
+			if GameManager.current_player: GameManager.current_player.busy2 = true
 			await GameManager.shift_down_follower()
-			busy2 = false
+			if GameManager.current_player: GameManager.current_player.busy2 = false
 		elif GameManager.current_map and ControllerManager.is_action_pressed("Mouse Left"):
 			if not GameInterpreter.is_busy() and not GameManager.busy and not busy2:
 				var is_new_click = ControllerManager.is_action_just_pressed("Mouse Left")

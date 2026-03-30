@@ -10,7 +10,6 @@ func _parse_actor_command_parameters(parameter_id: String) -> void:
 	var operand = current_command.parameters.get("operand", 0)
 	var operand_type = current_command.parameters.get("operand_type", 0)
 	var operand_value = current_command.parameters.get("operand_value", 0)
-
 	# Determine the list of actor IDs based on the actor type
 	var actor_ids = []
 	if actor_type == 0: # Fixed value
@@ -160,17 +159,28 @@ func _command_0043() -> void:
 	var show_level_up = current_command.parameters.get("show_level_up", false) # TODO
 
 
+func get_parameter_id(id: int) -> String:
+	var items = RPGActor.get_parameter_list(true)
+	
+	var parameter: String = ""
+	
+	if items.size() > id:
+		parameter = items[id]
+	
+	return parameter
+
+
 # Command Change Actor Parameter (Code 44), button_id = 32
 # Code 44 (Parent) parameters { actor_type, actor_id, operand, operand_type, operand_value, parameter_id }
 func _command_0044() -> void:
 	debug_print("Processing command: Change Actor Parameter (code 44)")
 
-	var parameters = [
-		"hp", "mp", "max_hp", "max_mp", "attack", "defense",
-		"magic_attack", "magic_defense", "agility", "luck"
-	]
 	var parameter_id = current_command.parameters.get("parameter_id", 0)
-	_parse_actor_command_parameters(parameters[parameter_id])
+	
+	var parameter_string_id = get_parameter_id(parameter_id)
+	
+	if not parameter_string_id.is_empty():
+		_parse_actor_command_parameters(parameter_string_id)
 
 
 # Command Change Actor Skill (Code 45), button_id = 33

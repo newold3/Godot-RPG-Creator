@@ -29,7 +29,26 @@ func fill_fixed_values() -> void:
 		node.add_item(text)
 
 
+func _fill_parameters() -> void:
+	var nodes = [%ParameterSelected]
+	
+	for node in nodes: node.clear()
+	
+	var items = RPGActor.get_parameter_list(false)
+	var headers = [tr("Base Parameters"), tr("Extra Parameters"), tr("Special Parameters"), tr("User Parameters")]
+	var header_index = 0
+	
+	for item in items:
+		if not item.is_empty():
+			for node in nodes: node.add_item(item)
+		else:
+			var header = headers[header_index] if headers.size() > header_index else ""
+			for node in nodes: node.add_separator(header)
+			header_index += 1
+
+
 func set_data() -> void:
+	_fill_parameters()
 	var data = parameters[0].parameters
 	current_data = data.duplicate()
 	
@@ -70,7 +89,7 @@ func set_data() -> void:
 	
 	%LevelUp.set_pressed(data.get("show_level_up", false))
 	current_data.show_level_up = %LevelUp.is_pressed()
-	%ParameterSelected.select(data.get("parameter_id", 0))
+	%ParameterSelected.select(data.get("parameter_id", 1))
 	current_data.parameter_id = %ParameterSelected.get_selected_id()
 	
 	_set_variable_name()
