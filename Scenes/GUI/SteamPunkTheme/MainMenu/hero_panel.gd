@@ -10,6 +10,9 @@ var is_force_selected: bool = false
 var order_mode_enabled: bool = false
 var is_selected: bool = false
 
+var _is_initialized: bool = false
+var _hp_tween: Tween
+var _mp_tween: Tween
 
 @onready var hero_panel: Control = self
 
@@ -33,7 +36,6 @@ func _ready() -> void:
 	hero_panel.focus_previous = hero_panel.get_path()
 	
 	set_label_texts()
-	
 	start.call_deferred()
 
 
@@ -51,6 +53,7 @@ func set_party_icon(party_id: int) -> void:
 			node.texture.region = Rect2(1129, 304, 97, 98)
 		else:
 			node.texture.region = Rect2(1129, 433, 97, 70)
+
 
 func force_selection(animate: bool = true) -> void:
 	hero_panel.grab_focus()
@@ -83,6 +86,7 @@ func set_label_texts() -> void:
 
 func setup(actor: GameActor, _is_in_party: bool = false) -> void:
 	current_actor = actor
+	_is_initialized = false
 	if not current_actor.is_connected("parameter_changed", refresh):
 		current_actor.parameter_changed.connect(refresh)
 	
@@ -95,22 +99,32 @@ func refresh() -> void:
 	if current_actor.id > 0 and RPGSYSTEM.database.actors.size() > current_actor.id:
 		var real_actor: RPGActor = RPGSYSTEM.database.actors[current_actor.id]
 		%Name.text = current_actor.current_name if current_actor.current_name else real_actor.name
+		
 		if current_actor.current_class > 0 and RPGSYSTEM.database.classes.size() > current_actor.current_class:
 			%Class.text = RPGSYSTEM.database.classes[current_actor.current_class].name
 		else:
 			%Class.text = ""
+			
 		%LevelAmountLabel.text = str(current_actor.current_level)
-		var max_hp: String = GameManager.get_number_formatted(current_actor.get_parameter("hp"))
-		var hp: String = GameManager.get_number_formatted(current_actor.params.hp)
-		var max_mp: String = GameManager.get_number_formatted(current_actor.get_parameter("mp"))
-		var mp: String = GameManager.get_number_formatted(current_actor.params.mp)
-		%HPLabel.text = "[center]%s / %s[/center]" % [hp,max_hp]
-		%MPLabel.text = "[center]%s / %s[/center]" % [mp, max_mp]
-		%HPBar.max_value = current_actor.get_parameter("hp")
-		%HPBar.value = current_actor.params.hp
-		%MPBar.max_value = current_actor.get_parameter("mp")
-		%MPBar.value = current_actor.params.mp
 		%NextExperienceLabel.text = current_actor.get_remaining_exp_to_level()
+		
+		var target_hp = current_actor.params.hp
+		var max_hp = current_actor.get_parameter("hp")
+		var target_mp = current_actor.params.mp
+		var max_mp = current_actor.get_parameter("mp")
+
+		%HPBar.max_value = max_hp
+		%MPBar.max_value = max_mp
+
+		if not _is_initialized:
+			%HPBar.value = target_hp
+			%MPBar.value = target_mp
+			_update_hp_text(target_hp, max_hp)
+			_update_mp_text(target_mp, max_mp)
+		else:
+			_animate_hp(target_hp, max_hp)
+			_animate_mp(target_mp, max_mp)
+		
 		if AssetManager.exists(real_actor.face_preview.path):
 			%HeroFace.texture.atlas = load(real_actor.face_preview.path)
 			%HeroFace.texture.region = real_actor.face_preview.region
@@ -130,6 +144,33 @@ func refresh() -> void:
 		%HPBar.value = 0
 		%MPBar.max_value = 0
 		%MPBar.value = 0
+
+
+func _animate_hp(target_val: float, max_val: float) -> void:
+	if _hp_tween: _hp_tween.kill()
+	_hp_tween = create_tween().set_parallel(true)
+	_hp_tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	
+	_hp_tween.tween_property(%HPBar, "value", target_val, 0.4)
+	_hp_tween.tween_method(func(v): _update_hp_text(v, max_val), %HPBar.value, target_val, 0.4)
+
+func _animate_mp(target_val: float, max_val: float) -> void:
+	if _mp_tween: _mp_tween.kill()
+	_mp_tween = create_tween().set_parallel(true)
+	_mp_tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	
+	_mp_tween.tween_property(%MPBar, "value", target_val, 0.4)
+	_mp_tween.tween_method(func(v): _update_mp_text(v, max_val), %MPBar.value, target_val, 0.4)
+
+func _update_hp_text(current: float, total: float) -> void:
+	var hp_str = GameManager.get_number_formatted(current)
+	var max_hp_str = GameManager.get_number_formatted(total)
+	%HPLabel.text = "[center]%s / %s[/center]" % [hp_str, max_hp_str]
+
+func _update_mp_text(current: float, total: float) -> void:
+	var mp_str = GameManager.get_number_formatted(current)
+	var max_mp_str = GameManager.get_number_formatted(total)
+	%MPLabel.text = "[center]%s / %s[/center]" % [mp_str, max_mp_str]
 
 
 func restart() -> void:
@@ -176,7 +217,11 @@ func start() -> void:
 		t.tween_property(gear, "rotation", deg_to_rad(90), 0.85).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	t.tween_interval(0.01)
 	t.set_parallel(false)
-	t.tween_callback(set.bind("busy", false))
+	t.tween_callback(
+		func():
+			busy = false
+			_is_initialized = true
+	)
 
 
 func end() -> void:

@@ -70,19 +70,33 @@ func get_class():
 
 
 func _init() -> void:
-	var parameters = [
-		"Hit Points", "Magic Points", "Attack", "Defense", "Magical Attack", "Magical Defense", "Agility", "Luck",
-		"Hit Rate", "Evasion Rate", "Critical Rate", "Critical Evasion", "Magic Evasion", "Magic Reflection", 
-		"Counter Attack", "HP Regeneration", "MP Regeneration", "TP Regeneration", "Target Rate", "Guard Effect", 
-		"Recovery Effect", "Healing Mastery", "MP Cost Rate", "TP Charge Rate", "Physical Damage Rate", 
-		"Magic Damage Rate", "Floor Damage Rate", "Experience Rate", "Gold Rate"
-	]
-
+	var items = RPGActor.get_parameter_list(false)
+	var headers = [tr("Base Parameters"), tr("Extra Parameters"), tr("Special Parameters")]
+	var header_index = 0
+	var new_items: PackedStringArray = []
+	var indexes = []
+	
+	for i in items.size():
+		var item = items[i]
+		if not item.is_empty():
+			new_items.append(item)
+		else:
+			if header_index > headers.size():
+				break
+			var header = headers[header_index] if headers.size() > header_index else ""
+			new_items.append(header)
+			indexes.append(i)
+			header_index += 1
+	
 	main_parameters.clear()
 	icons.main_parameters_icons.clear()
-	for param in parameters:
-		main_parameters.append(param)
-		icons.main_parameters_icons.append(RPGIcon.new())
+	for i in new_items.size():
+		if not i in indexes:
+			icons.main_parameters_icons.append(RPGIcon.new())
+		else:
+			icons.main_parameters_icons.append(null)
+		var item = new_items[i]
+		main_parameters.append(item)
 
 
 func get_item_color(item_type: Variant, rarity_type: int) -> Color:

@@ -9,6 +9,24 @@ func get_class(): return "RPGTerms"
 @export var messages: Array[RPGTerm]
 
 
+func _init() -> void:
+	if not messages or messages.is_empty():
+		var terms = FileAccess.open("res://addons/RPGData/default_terms_list.txt", FileAccess.READ).get_as_text().split("\n")
+		
+		messages = []
+		for term: String in terms:
+			var new_term: RPGTerm
+			if term.find(",") != -1:
+				var id = term.get_slice(", ", 0)
+				var message = term.get_slice(", ", 1)
+				new_term = RPGTerm.new(id, message, false)
+			else:
+				new_term = RPGTerm.new(term, "", true)
+				
+			messages.append(new_term)
+			
+
+
 func create_message(id: String, message: String, unselectable: bool = false, is_user_message: bool = false, force_insert: bool = false) -> RPGTerm:
 	if !force_insert:
 		for current_message in messages:

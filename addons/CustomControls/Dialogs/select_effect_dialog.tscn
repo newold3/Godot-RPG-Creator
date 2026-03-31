@@ -72,7 +72,7 @@ pressed = true
 [sub_resource type="Shortcut" id="Shortcut_vrkgw"]
 events = [SubResource("InputEventAction_2dh51"), SubResource("InputEventAction_5qyg1")]
 
-[sub_resource type="DPITexture" id="DPITexture_p4qv1"]
+[sub_resource type="DPITexture" id="DPITexture_y1kif"]
 _source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#ff5d5d\" d=\"M2 1v8.586l1.293-1.293a1 1 0 0 1 1.414 0L7 10.587l2.293-2.293a1 1 0 0 1 1.414 0L13 10.586l1-1V6H9V1H2zm8 0v4h4zm-6 9.414-2 2V15h12v-2.586l-.293.293a1 1 0 0 1-1.414 0L10 10.414l-2.293 2.293a1 1 0 0 1-1.414 0L4 10.414z\"/></svg>
 "
 
@@ -132,7 +132,7 @@ func _on_toggled(value: bool) -> void:
 		target.visible = !value
 "
 
-[sub_resource type="ButtonGroup" id="ButtonGroup_ojols"]
+[sub_resource type="ButtonGroup" id="ButtonGroup_p4qv1"]
 
 [sub_resource type="GDScript" id="GDScript_p4qv1"]
 script/source = "@tool
@@ -203,7 +203,7 @@ layout_mode = 2
 size_flags_horizontal = 0
 shortcut = SubResource("Shortcut_vrkgw")
 text = "Expand / Collapse"
-icon = SubResource("DPITexture_p4qv1")
+icon = SubResource("DPITexture_y1kif")
 metadata/real_parent = Object(HBoxContainer,"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"physics_interpolation_mode":2,"auto_translate_mode":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":0.0,"offset_bottom":0.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"pivot_offset_ratio":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"localize_numeral_system":true,"tooltip_text":"","tooltip_auto_translate_mode":0,"focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"focus_behavior_recursive":0,"mouse_filter":1,"mouse_behavior_recursive":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"accessibility_name":"","accessibility_description":"","accessibility_live":0,"accessibility_controls_nodes":Array[NodePath]([]),"accessibility_described_by_nodes":Array[NodePath]([]),"accessibility_labeled_by_nodes":Array[NodePath]([]),"accessibility_flow_to_nodes":Array[NodePath]([]),"theme":null,"theme_type_variation":&"","alignment":0,"script":null)
 
 metadata/original_position_in_tree = 0
@@ -303,7 +303,7 @@ tooltip_text = "[title]Recover HP[/title]
 Recovers/Loses HP. Recovery values are specified as a sum of a percentage of the target character's Max HP (-100% to 100%) and a set value (-9999999 to 9999999). If you only wish to set one of these values, make sure to set the other value to 0. The recovery value will change according to the user's [Pharmacology] special trait value."
 mouse_default_cursor_shape = 2
 button_pressed = true
-button_group = SubResource("ButtonGroup_ojols")
+button_group = SubResource("ButtonGroup_p4qv1")
 text = "Recover HP"
 script = SubResource("GDScript_p4qv1")
 main_container = NodePath("../..")
@@ -373,7 +373,7 @@ size_flags_horizontal = 3
 tooltip_text = "[title]Recover MP[/title]
 Recovers/Loses MP (adds to current value). Recovery values are specified as a sum of a percentage of the target character's Max MP (-100% to 100%) and a set value (-9999999 to 9999999). If you only wish to set one of these values, make sure to set the other value to 0. The recovery value will change according to the user's [Pharmacology] special trait value."
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_ojols")
+button_group = SubResource("ButtonGroup_p4qv1")
 text = "Recover MP"
 script = SubResource("GDScript_p4qv1")
 main_container = NodePath("../..")
@@ -440,7 +440,7 @@ size_flags_horizontal = 3
 tooltip_text = "[title]Gain TP[/title]
 Increases TP by the specified amount. Specify the increase using a set value (0 to 9999999)."
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_ojols")
+button_group = SubResource("ButtonGroup_p4qv1")
 text = "Gain TP"
 script = SubResource("GDScript_p4qv1")
 main_container = NodePath("..")
@@ -508,7 +508,7 @@ size_flags_horizontal = 3
 tooltip_text = "[title]Add State[/title]
 Adds a state. Specify the desired state and the rate of success (0 to 10000%). By setting this to a value higher than 100%, this will have a higher chance of success to add the state than its original effectiveness."
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_ojols")
+button_group = SubResource("ButtonGroup_p4qv1")
 text = "Add State"
 script = SubResource("GDScript_p4qv1")
 main_container = NodePath("../..")
@@ -570,7 +570,7 @@ size_flags_horizontal = 3
 tooltip_text = "[title]Remove State[/title]
 Removes a state. Specify the desired state and the rate of success (0 to 10000%)."
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_ojols")
+button_group = SubResource("ButtonGroup_p4qv1")
 text = "Remove State"
 script = SubResource("GDScript_p4qv1")
 main_container = NodePath("../..")
@@ -662,7 +662,7 @@ tooltip_text = "Adds a buff that temporarily increases a stat by a specified amo
 
 [Note]: Buffs can be stacked."
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_ojols")
+button_group = SubResource("ButtonGroup_p4qv1")
 text = "Add Buff"
 script = SubResource("GDScript_p4qv1")
 main_container = NodePath("../..")
@@ -847,7 +847,7 @@ tooltip_text = "Adds a debuff that temporarily decreases a stat by a specified a
 
 [Note]: Debuffs can be stacked."
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_ojols")
+button_group = SubResource("ButtonGroup_p4qv1")
 text = "Add Debuff"
 script = SubResource("GDScript_p4qv1")
 main_container = NodePath("../..")
@@ -1029,7 +1029,7 @@ Removes 1 or more buffs of a specific type from the character.
 
 [Note]: 0 = removes all buffs of a specific type; >= 1 removes that number of stacks from the target"
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_ojols")
+button_group = SubResource("ButtonGroup_p4qv1")
 text = "Remove Buff"
 script = SubResource("GDScript_p4qv1")
 main_container = NodePath("..")
@@ -1186,7 +1186,7 @@ Removes 1 or more debuffs of a specific type from the character.
 
 [Note]: 0 = removes all debuffs of a specific type; >= 1 removes that number of stacks from the target."
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_ojols")
+button_group = SubResource("ButtonGroup_p4qv1")
 text = "Remove Debuff"
 script = SubResource("GDScript_p4qv1")
 main_container = NodePath("..")
@@ -1210,143 +1210,81 @@ mouse_filter = 2
 mouse_default_cursor_shape = 2
 disabled = true
 selected = 1
-item_count = 66
+item_count = 35
 popup/item_0/text = "Base Parameters"
 popup/item_0/id = -1
 popup/item_0/separator = true
 popup/item_1/text = "Max HP"
 popup/item_1/id = 1
-popup/item_2/text = "Max HP"
+popup/item_2/text = "Max MP"
 popup/item_2/id = 2
-popup/item_3/text = "Max MP"
+popup/item_3/text = "Attack"
 popup/item_3/id = 3
-popup/item_4/text = "Max MP"
+popup/item_4/text = "Defense"
 popup/item_4/id = 4
-popup/item_5/text = "Attack"
+popup/item_5/text = "Magical Attack"
 popup/item_5/id = 5
-popup/item_6/text = "Attack"
+popup/item_6/text = "Magical Defense"
 popup/item_6/id = 6
-popup/item_7/text = "Defense"
+popup/item_7/text = "Agility"
 popup/item_7/id = 7
-popup/item_8/text = "Defense"
+popup/item_8/text = "Luck"
 popup/item_8/id = 8
-popup/item_9/text = "Magical Attack"
-popup/item_9/id = 9
-popup/item_10/text = "Magical Attack"
+popup/item_9/text = "Extra Parameters"
+popup/item_9/id = -1
+popup/item_9/separator = true
+popup/item_10/text = "Hit Rate"
 popup/item_10/id = 10
-popup/item_11/text = "Magical Defense"
+popup/item_11/text = "Evasion Rate"
 popup/item_11/id = 11
-popup/item_12/text = "Magical Defense"
+popup/item_12/text = "Critical Rate"
 popup/item_12/id = 12
-popup/item_13/text = "Agility"
+popup/item_13/text = "Critical Evasion Rate"
 popup/item_13/id = 13
-popup/item_14/text = "Agility"
+popup/item_14/text = "Magic Evasion Rate"
 popup/item_14/id = 14
-popup/item_15/text = "Luck"
+popup/item_15/text = "Magic Reflection"
 popup/item_15/id = 15
-popup/item_16/text = "Luck"
+popup/item_16/text = "Counter Attack"
 popup/item_16/id = 16
-popup/item_17/text = "Extra Parameters"
-popup/item_17/id = -1
-popup/item_17/separator = true
-popup/item_18/text = "Hit Rate"
+popup/item_17/text = "HP Regeneration"
+popup/item_17/id = 17
+popup/item_18/text = "MP Regeneration"
 popup/item_18/id = 18
-popup/item_19/text = "Hit Rate"
+popup/item_19/text = "TP Regeneration"
 popup/item_19/id = 19
-popup/item_20/text = "Evasion Rate"
-popup/item_20/id = 20
-popup/item_21/text = "Evasion Rate"
+popup/item_20/text = "Special Parameters"
+popup/item_20/id = -1
+popup/item_20/separator = true
+popup/item_21/text = "Target Rate"
 popup/item_21/id = 21
-popup/item_22/text = "Critical Rate"
+popup/item_22/text = "Guard Effect"
 popup/item_22/id = 22
-popup/item_23/text = "Critical Rate"
+popup/item_23/text = "Recovery Effect"
 popup/item_23/id = 23
-popup/item_24/text = "Critical Evasion Rate"
+popup/item_24/text = "Healing Mastery"
 popup/item_24/id = 24
-popup/item_25/text = "Critical Evasion Rate"
+popup/item_25/text = "MP Cost Rate"
 popup/item_25/id = 25
-popup/item_26/text = "Magic Evasion Rate"
+popup/item_26/text = "TP Charge Rate"
 popup/item_26/id = 26
-popup/item_27/text = "Magic Evasion Rate"
+popup/item_27/text = "Physical Damage Rate"
 popup/item_27/id = 27
-popup/item_28/text = "Magic Reflection"
+popup/item_28/text = "Magic Damage Rate"
 popup/item_28/id = 28
-popup/item_29/text = "Magic Reflection"
+popup/item_29/text = "Floor Damage Rate"
 popup/item_29/id = 29
-popup/item_30/text = "Counter Attack"
+popup/item_30/text = "Experience Rate"
 popup/item_30/id = 30
-popup/item_31/text = "Counter Attack"
+popup/item_31/text = "Gold Rate"
 popup/item_31/id = 31
-popup/item_32/text = "HP Regeneration"
-popup/item_32/id = 32
-popup/item_33/text = "HP Regeneration"
+popup/item_32/text = "User Parameters"
+popup/item_32/id = -1
+popup/item_32/separator = true
+popup/item_33/text = "User Parameter <1: Param 1>"
 popup/item_33/id = 33
-popup/item_34/text = "MP Regeneration"
+popup/item_34/text = "User Parameter <2: Param 2>"
 popup/item_34/id = 34
-popup/item_35/text = "MP Regeneration"
-popup/item_35/id = 35
-popup/item_36/text = "TP Regeneration"
-popup/item_36/id = 36
-popup/item_37/text = "TP Regeneration"
-popup/item_37/id = 37
-popup/item_38/text = "Special Parameters"
-popup/item_38/id = -1
-popup/item_38/separator = true
-popup/item_39/text = "Target Rate"
-popup/item_39/id = 39
-popup/item_40/text = "Target Rate"
-popup/item_40/id = 40
-popup/item_41/text = "Guard Effect"
-popup/item_41/id = 41
-popup/item_42/text = "Guard Effect"
-popup/item_42/id = 42
-popup/item_43/text = "Recovery Effect"
-popup/item_43/id = 43
-popup/item_44/text = "Recovery Effect"
-popup/item_44/id = 44
-popup/item_45/text = "Healing Mastery"
-popup/item_45/id = 45
-popup/item_46/text = "Healing Mastery"
-popup/item_46/id = 46
-popup/item_47/text = "MP Cost Rate"
-popup/item_47/id = 47
-popup/item_48/text = "MP Cost Rate"
-popup/item_48/id = 48
-popup/item_49/text = "TP Charge Rate"
-popup/item_49/id = 49
-popup/item_50/text = "TP Charge Rate"
-popup/item_50/id = 50
-popup/item_51/text = "Physical Damage Rate"
-popup/item_51/id = 51
-popup/item_52/text = "Physical Damage Rate"
-popup/item_52/id = 52
-popup/item_53/text = "Magic Damage Rate"
-popup/item_53/id = 53
-popup/item_54/text = "Magic Damage Rate"
-popup/item_54/id = 54
-popup/item_55/text = "Floor Damage Rate"
-popup/item_55/id = 55
-popup/item_56/text = "Floor Damage Rate"
-popup/item_56/id = 56
-popup/item_57/text = "Experience Rate"
-popup/item_57/id = 57
-popup/item_58/text = "Experience Rate"
-popup/item_58/id = 58
-popup/item_59/text = "Gold Rate"
-popup/item_59/id = 59
-popup/item_60/text = "Gold Rate"
-popup/item_60/id = 60
-popup/item_61/text = "User Parameters"
-popup/item_61/id = -1
-popup/item_61/separator = true
-popup/item_62/text = "User Parameter <1: Param 1>"
-popup/item_62/id = 62
-popup/item_63/text = "User Parameter <1: Param 1>"
-popup/item_63/id = 63
-popup/item_64/text = "User Parameter <2: Param 2>"
-popup/item_64/id = 64
-popup/item_65/text = "User Parameter <2: Param 2>"
-popup/item_65/id = 65
 script = ExtResource("7_oy6w7")
 metadata/original_focus_mode = 2
 metadata/original_mouse_filer = 0
@@ -1432,7 +1370,7 @@ If all party members flee due to a skill / item with this effect, they will not 
 
 *This is different than the \"Escape\" party command."
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_ojols")
+button_group = SubResource("ButtonGroup_p4qv1")
 text = "Special Effect"
 script = SubResource("GDScript_p4qv1")
 main_container = NodePath("..")
@@ -1483,7 +1421,7 @@ size_flags_horizontal = 3
 tooltip_text = "[title]Grow[/title]
 Permanently raise the value of a parameter. Specify the target parameter and the value (1 or more) to be added."
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_ojols")
+button_group = SubResource("ButtonGroup_p4qv1")
 text = "Grow"
 script = SubResource("GDScript_p4qv1")
 main_container = NodePath("../..")
@@ -1627,7 +1565,7 @@ size_flags_horizontal = 3
 tooltip_text = "[title]Learn Skill[/title]
 An actor will learn the specified skill. This effect will not be applied to enemies."
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_ojols")
+button_group = SubResource("ButtonGroup_p4qv1")
 text = "Learn Skill"
 script = SubResource("GDScript_p4qv1")
 main_container = NodePath("..")
@@ -1662,7 +1600,7 @@ size_flags_horizontal = 3
 tooltip_text = "[title]Common Event[/title]
 Specify the common event to run. You can configure multiple events to one data and will be reproduced in the order of appearance."
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_ojols")
+button_group = SubResource("ButtonGroup_p4qv1")
 text = "Common Event"
 script = SubResource("GDScript_p4qv1")
 main_container = NodePath("..")

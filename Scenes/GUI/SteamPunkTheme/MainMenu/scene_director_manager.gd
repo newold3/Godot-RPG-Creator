@@ -418,11 +418,14 @@ func _on_party_menu_cancel() -> void:
 
 ## Consumes an item and updates lists checking if quantities have reached zero
 func _execute_item_use(_target_id: int) -> void:
-	print("⚠️ This function is under construction.")
-	var a = GameManager.action_manager.simulate_use_item(null, party_scene.get_actor_selected(), pending_item_data.item)
-	print(a)
-	return
-	@warning_ignore("unreachable_code")
+	var simulation = GameManager.action_manager.simulate_use_item(
+		null, party_scene.get_actor_selected(), pending_item_data.item
+	)
+	if not simulation.callables.is_empty():
+		for callable in simulation.callables:
+			callable.call()
+		party_scene.get_actor_selected().parameter_changed.emit()
+
 	if pending_item_type == 0:
 		GameManager.inventory_manager.remove_item_amount(pending_item_id, 1)
 	var current_qty = 1 
@@ -451,7 +454,6 @@ func _execute_item_use(_target_id: int) -> void:
 
 ## Consumes skill MP and updates lists checking if the actor can still cast
 func _execute_skill_use(_target_id: int) -> void:
-	print("⚠️ This function is under construction.")
 	return
 	@warning_ignore("unreachable_code")
 	if not current_skill_user: return

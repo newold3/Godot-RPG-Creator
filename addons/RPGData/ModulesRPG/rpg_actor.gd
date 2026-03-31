@@ -161,6 +161,8 @@ enum NewParamType {
 static func get_parameter_list(get_real_keys: bool = true) -> Array:
 	var items: Array = []
 	
+	if not RPGSYSTEM.database: return items
+	
 	if get_real_keys:
 		items = [
 			"", # Base Parameters

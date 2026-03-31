@@ -59,7 +59,9 @@ enum TraitCode {
 	SEAL_SKILL = 16,
 	ELEMENT_ATTACK = 1,
 	ELEMENT_DEFENSE = 27,
-	USER_PARAMETER = 101
+	USER_PARAMETER = 101,
+	DEBUFF_RATE = 2,
+	STATE_RATE = 3,
 }
 
 
@@ -1055,10 +1057,22 @@ func get_user_parameter(param_id: int) -> float:
 	return get_parameter("USER_PARAMETER_" + str(param_id))
 
 
+func _get_unified_param_key(param: String) -> String:
+	var search_param = param.strip_edges().to_upper()
+	var type_id = _get_param_type_id(search_param)
+	
+	if type_id >= 0:
+		var param_list = RPGActor.get_parameter_list(true)
+		if type_id < param_list.size():
+			return param_list[type_id]
+			
+	return search_param
+
+
 ## Calculates a specific parameter value by combining base stats, traits, gear, and state effects.
 func get_parameter(param_id: String) -> float:
 	var value: float = 0.0
-	var search_param = param_id.strip_edges().to_upper()
+	var search_param = _get_unified_param_key(param_id)
 	var is_rate_parameter: bool = true
 	var traits = _get_trait_list()
 
@@ -1185,7 +1199,7 @@ func get_element_defense_rate(element_id: Variant) -> float:
 
 ## Modifies a given parameter by adding or subtracting a value.
 func set_parameter(param_id: String, value: float, operation: int) -> void:
-	var search_param = param_id.strip_edges().to_upper()
+	var search_param = _get_unified_param_key(param_id)
 	var real_param_id = _find_real_param(search_param)
 	if real_param_id != "":
 		var current_value = params.mods.get(real_param_id, 0)
@@ -1200,6 +1214,114 @@ func set_parameter(param_id: String, value: float, operation: int) -> void:
 				1: params.mp = params.mp + (value if operation == 0 else -value)
 
 		parameter_changed.emit()
+
+
+## Applies damage or healing to the actor using elemental resistances and updating parameters.
+func apply_damage(raw_amount: float, damage_type: int, element_id: int) -> void:
+	var element_rate = 1.0
+	
+	if damage_type in [1, 2, 5, 6] and element_id != 1:
+		var rate = get_element_defense_rate(element_id) if has_method("get_element_defense_rate") else 100.0
+		element_rate = rate / 100.0
+		
+	var final_amount = int(raw_amount * element_rate)
+	var max_hp = get_parameter("HP")
+	
+	if max_hp <= 0:
+		max_hp = 999999
+		
+	var max_mp = get_parameter("MP")
+	
+	if max_mp <= 0:
+		max_mp = 999999
+		
+	match damage_type:
+		1, 3, 5:
+			params.hp = clamp(params.hp + final_amount, 0, max_hp)
+		2, 4, 6:
+			params.mp = clamp(params.mp + final_amount, 0, max_mp)
+
+
+## Applies a recovery effect based on a percentage of the max parameter plus a flat amount.
+func apply_recovery_effect(is_hp: bool, percent: float, flat: int) -> void:
+	var max_val = get_parameter("HP") if is_hp else get_parameter("MP")
+	
+	if max_val <= 0:
+		max_val = 999999
+		
+	var heal_amount = int((max_val * (percent / 100.0)) + flat)
+	
+	if is_hp:
+		params.hp = clamp(params.hp + heal_amount, 0, max_val)
+	else:
+		params.mp = clamp(params.mp + heal_amount, 0, max_val)
+
+
+## Returns the probability multiplier for receiving a specific state.
+func get_state_rate(state_id: int) -> float:
+	var value: float = 100.0
+	var traits: Array = _get_trait_list()
+	
+	value = _add_traits_to_value(traits, value, TraitCode.STATE_RATE, state_id, true)
+	
+	return value / 100.0
+
+
+## Returns the probability multiplier for receiving a buff on a specific parameter.
+func get_buff_rate(param_id: int) -> float:
+	return 1.0
+
+
+## Returns the probability multiplier for receiving a debuff on a specific parameter.
+func get_debuff_rate(param_id: int) -> float:
+	var value: float = 100.0
+	var traits: Array = _get_trait_list()
+	
+	value = _add_traits_to_value(traits, value, TraitCode.DEBUFF_RATE, param_id, true)
+	
+	return value / 100.0
+
+
+## Attempts to apply a state to the actor considering its resistance and the base chance.
+func apply_state_effect(state_id: int, base_chance: float) -> void:
+	var state_rate = get_state_rate(state_id) if has_method("get_state_rate") else 1.0
+	
+	if randf() < (base_chance / 100.0) * state_rate:
+		if RPGSYSTEM.database.states.size() > state_id:
+			add_state(RPGSYSTEM.database.states[state_id])
+
+
+## Attempts to remove a state from the actor based on a probability chance.
+func remove_state_effect(state_id: int, base_chance: float) -> void:
+	if randf() < (base_chance / 100.0):
+		var states_to_remove = current_states.filter(func(s): return s.id == state_id)
+		
+		for s in states_to_remove:
+			_remove_state(s)
+
+
+## Attempts to apply a buff to the actor considering its resistance.
+func apply_buff_effect(param_id: int, potency: float, turns: int) -> void:
+	var buff_rate = get_buff_rate(param_id) if has_method("get_buff_rate") else 1.0
+	
+	if randf() < buff_rate:
+		add_buff(param_id, potency, turns)
+
+
+## Attempts to apply a debuff to the actor considering its resistance.
+func apply_debuff_effect(param_id: int, potency: float, turns: int) -> void:
+	var debuff_rate = get_debuff_rate(param_id) if has_method("get_debuff_rate") else 1.0
+	
+	if randf() < debuff_rate:
+		add_debuff(param_id, potency, turns)
+
+
+## Permanently increases a parameter (Grow effect).
+func apply_grow_effect(param_id: int, amount: int) -> void:
+	var param_list = RPGActor.get_parameter_list(true)
+	if param_id >= 0 and param_id < param_list.size():
+		var stat_name = param_list[param_id]
+		set_parameter(stat_name, amount, 0) # 0 = Add
 
 
 ## Adds a [RPGTrait] to the actor.

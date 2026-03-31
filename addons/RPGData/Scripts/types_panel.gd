@@ -13,6 +13,18 @@ func _ready() -> void:
 
 func set_data(real_data: RPGTypes) -> void:
 	data = real_data
+	
+	var parameters = RPGActor.get_parameter_list(false)
+	var headers = ["Base Parameters", "Extra Parameters", "Special Parameters"]
+	var n = 0
+	var indexes = []
+	for i in parameters.size():
+		if parameters[i].is_empty():
+			if n > headers.size() - 1:
+				break
+			indexes.append(i)
+			n += 1
+
 	if data.tool_types == null:
 		data.tool_types = []
 		data.icons.tool_icons = []
@@ -29,6 +41,10 @@ func set_data(real_data: RPGTypes) -> void:
 	fill_list(%UserParametersList, data.user_parameters, 0, "6b")
 	fill_list(%UserStatsList, data.user_stats, 0, "7b")
 	fill_list(%MainParametersList, data.main_parameters, 0, "10")
+	n = 0
+	for i in indexes:
+		%MainParametersList.set_item_disabled(indexes[n], true)
+		n += 1
 	
 	%ElementList.lock_item(0, true)
 	%SkillList.lock_item(0, true)

@@ -139,8 +139,7 @@ func _on_term_list_delete_pressed(indexes: PackedInt32Array) -> void:
 ## Triggers edition or creation of a term when activated.
 func _on_term_list_item_activated(index: int) -> void:
 	var real_idx = %TermList.get_item_metadata(index)
-	
-	if real_idx != null:
+	if real_idx != null and index != %TermList.get_item_count() - 1:
 		if %TermList.is_item_selectable(index):
 			var path = "res://addons/CustomControls/Dialogs/select_text_dialog.tscn"
 			var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
@@ -252,3 +251,26 @@ func _on_fast_selection_item_selected(index: int) -> void:
 				node2.select(i+1)
 				break
 		node1.select(0)
+
+
+func _on_reset_pressed() -> void:
+	var old_messages = data.messages.filter(func(message: RPGTerm): return message.is_user_message == true)
+	data.messages.clear()
+	var terms = FileAccess.open("res://addons/RPGData/default_terms_list.txt", FileAccess.READ).get_as_text().split("\n")
+	
+	for term: String in terms:
+		var new_term: RPGTerm
+		if term.find(",") != -1:
+			var id = term.get_slice(", ", 0)
+			var message = term.get_slice(", ", 1)
+			new_term = RPGTerm.new(id, message, false)
+		else:
+			new_term = RPGTerm.new(term, "", true)
+	
+		data.messages.append(new_term)
+		
+	if data.messages.size() > 0:
+		data.messages.append(RPGTerm.new("User Messages", "", true))
+		data.messages.append_array(old_messages)
+	
+	fill_terms_list()

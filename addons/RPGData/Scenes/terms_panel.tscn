@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://dwcnj2mbl2v2y" path="res://addons/CustomControls/Images/magnifying_glass.png" id="4_0qk3h"]
 [ext_resource type="PackedScene" uid="uid://dxcyqc2dscbvw" path="res://addons/CustomControls/custom_simple_column_item_list.tscn" id="4_n0dqb"]
 [ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="5_pfj2n"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="6_kd2ju"]
 
 [sub_resource type="Gradient" id="Gradient_aj5s8"]
 offsets = PackedFloat32Array(0, 0.374126, 1)
@@ -198,9 +199,21 @@ layout_mode = 2
 tooltip_text = "[title]Diagonal Movement Mode[/title]
 Character will prioritize vertical or horizontal direction when moving diagonally or maintain direction before starting to move diagonally"
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1010846366]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1720917643]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1010846366]
 layout_mode = 2
 text = "Term List:"
+
+[node name="Reset" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=225668214 instance=ExtResource("6_kd2ju")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+tooltip_text = "Removes and re-adds all default terms. User-added terms are preserved and will not be changed."
+text = "Reset Default Terms"
+text_overrun_behavior = 3
 
 [node name="SmoothScrollContainer" type="ScrollContainer" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1075494787]
 layout_mode = 2
@@ -231,5 +244,6 @@ List of Words / Phrases Used in Different Parts of the Game"
 [connection signal="gui_input" from="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Filter" to="." method="_on_filter_gui_input"]
 [connection signal="text_changed" from="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Filter" to="." method="_on_filter_text_changed"]
 [connection signal="item_selected" from="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/FastSelection" to="." method="_on_fast_selection_item_selected"]
+[connection signal="pressed" from="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/Reset" to="." method="_on_reset_pressed"]
 [connection signal="delete_pressed" from="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/SmoothScrollContainer/TermList" to="." method="_on_term_list_delete_pressed"]
 [connection signal="item_activated" from="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/SmoothScrollContainer/TermList" to="." method="_on_term_list_item_activated"]

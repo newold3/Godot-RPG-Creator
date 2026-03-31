@@ -608,6 +608,11 @@ func _on_ok_button_pressed() -> void:
 	var node3 = get_node_or_null("%" + "C%s-3" % str(data.code - 1))
 	var node4 = get_node_or_null("%" + "C%s-4" % str(data.code - 1))
 	
+	data.data_id = 0
+	data.value1 = 0.0
+	data.value2 = 0.0
+	data.value3 = 0.0
+	
 	if node2:
 		if node2 is OptionButton:
 			data.data_id = node2.get_selected_id()

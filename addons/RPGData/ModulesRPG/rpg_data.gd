@@ -392,6 +392,23 @@ func _apply_upgrade(version_index: int) -> void:
 					weapon.tools_family = []
 			costumes = []
 		12:
-			var scenes = [""]
+			var old_messages = terms.messages.filter(func(message: RPGTerm): return message.is_user_message == true)
+			terms.messages.clear()
+			var terms = FileAccess.open("res://addons/RPGData/default_terms_list.txt", FileAccess.READ).get_as_text().split("\n")
+			
+			for term: String in terms:
+				var new_term: RPGTerm
+				if term.find(",") != -1:
+					var id = term.get_slice(", ", 0)
+					var message = term.get_slice(", ", 1)
+					new_term = RPGTerm.new(id, message, false)
+				else:
+					new_term = RPGTerm.new(term, "", true)
+			
+				terms.messages.append(new_term)
+				
+			if terms.messages.size() > 0:
+				terms.messages.append(RPGTerm.new("User Messages", "", true))
+				terms.messages.append_array(old_messages)
 		_:
 			pass
