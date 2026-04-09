@@ -104,9 +104,11 @@ zoom_speed = 2.0
 
 [node name="MainModulate" type="CanvasModulate" parent="MainSubViewportContainer/MainGameViewport" unique_id=155968943]
 unique_name_in_owner = true
+y_sort_enabled = true
 
 [node name="MapContainer" type="Parallax2D" parent="MainSubViewportContainer/MainGameViewport/MainModulate" unique_id=820017641]
 unique_name_in_owner = true
+y_sort_enabled = true
 texture_repeat = 2
 repeat_times = 4
 ignore_camera_scroll = true
@@ -222,7 +224,7 @@ layer = 121
 
 [node name="GUICanvas" type="CanvasLayer" parent="." unique_id=964964266]
 unique_name_in_owner = true
-layer = 125
+layer = 124
 
 [node name="TopLayer" type="CanvasLayer" parent="." unique_id=433255389]
 layer = 1000
@@ -278,4 +280,4 @@ bus = &"SE"
 unique_name_in_owner = true
 bus = &"SE"
 
-[connection signal="item_rect_changed" from="MessageCanvas/Control/Dialog/@CanvasLayer@19268/Message" to="MessageCanvas/Control/Dialog" method="_on_message_item_rect_changed"]
+[connection signal="item_rect_changed" from="MessageCanvas/Control/Dialog/@CanvasLayer@19301/Message" to="MessageCanvas/Control/Dialog" method="_on_message_item_rect_changed"]

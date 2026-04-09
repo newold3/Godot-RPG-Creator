@@ -58,6 +58,10 @@ extends Node2D
 			print("Map id %s copy into clipboard" % internal_id)
 
 @export_category("Map Fields")
+## Allows you to configure how the map name is displayed when you open it.
+@export_enum("ALWAYS", "ONCE", "NEVER") var show_map_name: int = 0
+## Specify a custom name for the map, or leave it blank to use the map node's name as the "map name"
+@export var custom_map_name: String = ""
 ## Music that will be played when playing this map
 @export var map_bgm: AudioStream
 
@@ -485,6 +489,12 @@ func _start_game_mode() -> void:
 	GameManager.set_fx_busy(false)
 	GameManager.set_cursor_manipulator(GameManager.MANIPULATOR_MODES.NONE)
 	map_started.emit()
+	
+	if show_map_name == 0 or (show_map_name == 1 and not GameManager.game_state.map_names_shown.get(internal_id, false)):
+		var map_name = custom_map_name if not custom_map_name.is_empty() else name
+		GameManager.show_map_name(map_name, 1.0)
+		if show_map_name == 1:
+			GameManager.game_state.map_names_shown[internal_id] = true
 
 
 func register_hp_page(event_id: int, page_id: int, hp_value: int) -> void:
@@ -1086,6 +1096,28 @@ func get_events_near_position(pos: Vector2) -> Array:
 func is_passable(tile_position: Vector2i, player_direction: int, ignore_node: Node = null, ignore_debug: bool = false) -> bool:
 	return passability_helper.is_passable(tile_position, player_direction, ignore_node, ignore_debug) if passability_helper else false
 
+
+
+func has_any_region_passable_in(tile: Vector2i) -> bool:
+	var global_p = map_to_local(tile)
+	for shape: CollisionShape2D in ingame_event_regions:
+		if shape.has_meta("region_data") and shape.shape and not shape.is_disabled():
+			var region_data: EventRegion = shape.get_meta("region_data")
+			if region_data.always_passable:
+				var shape_local_p = shape.to_local(global_p)
+				if shape.shape.get_rect().has_point(shape_local_p):
+					return true
+	return false
+
+
+func has_any_region_impassable_in(tile: Vector2i) -> bool:
+	var global_p = map_to_local(tile)
+	for shape: CollisionShape2D in ingame_event_regions:
+		if shape.has_meta("type") and shape.get_meta("type") == "collision_region" and shape.shape and not shape.is_disabled():
+			var shape_local_p = shape.to_local(global_p)
+			if shape.shape.get_rect().has_point(shape_local_p):
+				return true
+	return false
 
 
 func is_tile_passable_from_direction(tile_position: Vector2i, player_direction: int, invert: bool = false) -> bool:

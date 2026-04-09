@@ -153,10 +153,19 @@ func _perform_player_transfer(params: Dictionary) -> void:
 	interpreter.busy = true
 	interpreter.busy2 = true
 	interpreter.busy3 = true
+	
+	for follower in GameManager.get_followers():
+		follower.is_manual_animation = true
+		follower.set_meta("teleporting", true)
+		
 	if not transfer_on_same_map:
 		if GameManager.game_state:
 			GameManager.game_state.followers_tracking_enabled = true
 		await _transfer_to_oher_map(map_id, tile, direction, current_event, transfer_animation)
+	
+	for follower in GameManager.get_followers():
+		follower.is_manual_animation = false
+		follower.remove_meta("teleporting")
 	
 	interpreter.busy = backup_busys[0]
 	interpreter.busy2 = backup_busys[1]

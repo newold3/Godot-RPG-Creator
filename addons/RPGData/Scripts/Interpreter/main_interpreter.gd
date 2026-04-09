@@ -155,6 +155,7 @@ class Interpreter:
 var busy: bool = false : set = _set_busy  # Flag indicating if the main interpreter is busy
 var busy2: bool = false  # Flag indicating if processing parallel interpreters
 var busy3: bool = false  # Flag indicating if processing automatic interpreters group
+var busy4: bool = false # Flag enabled when run event commands
 var showing_message: bool = false  # Flag indicating if a message is being shown
 var showing_any_menu: bool = false  # Flag indicating if any menu/shop is being shown
 var current_command: RPGEventCommand  # The current command being processed
@@ -503,7 +504,7 @@ func end_message() -> void:
 # Check if the main interpreter or any auto run interpreter is busy
 func is_busy() -> bool:
 	# Only consider auto run interpreters for busy state
-	return GameManager.busy or busy or busy2 or busy3 or showing_message or showing_any_menu or transfer_in_progress or interpreters.any(
+	return GameManager.busy or busy or busy2 or busy3 or busy4 or showing_message or showing_any_menu or transfer_in_progress or interpreters.any(
 		func(interpreter: Interpreter):
 			return not interpreter.is_parallel() and interpreter.busy
 	)
@@ -626,6 +627,8 @@ func _process_automatic_events_queue() -> void:
 
 # Start processing an event using a new temporary interpreter
 func start_event(obj: Node, commands: Array[RPGEventCommand], automatic_is_enabled: bool = false, interpreter_id: String = "") -> void:
+	if busy4: return
+	busy4 = true
 	if obj and "current_event" in obj and obj.get("current_event") is RPGEvent:
 		current_event = obj.current_event
 	else:
@@ -670,6 +673,7 @@ func start_event(obj: Node, commands: Array[RPGEventCommand], automatic_is_enabl
 		busy = false
 	
 	current_event = null
+	busy4 = false
 
 
 #region Function used when load game to restore images and scenes

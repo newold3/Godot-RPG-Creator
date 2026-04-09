@@ -2,6 +2,12 @@ extends Control
 
 @export var initial_animation_delay: float = 0.0
 
+@export var glow_intensity: float = 1.3
+@export var glow_duration: float = 0.3
+@export var shake_distance: float = 8.0
+@export var shake_duration: float = 0.35
+@export var shake_vibrations: int = 5
+
 var busy: bool = false
 var animation_timer = 0.25
 var current_actor: GameActor
@@ -10,11 +16,17 @@ var is_force_selected: bool = false
 var order_mode_enabled: bool = false
 var is_selected: bool = false
 
+var is_multi_cursor_active: bool = false
+
 var _is_initialized: bool = false
 var _hp_tween: Tween
 var _mp_tween: Tween
+var _glow_tween: Tween
+var _shake_tween: Tween
 
 @onready var hero_panel: Control = self
+
+const PARTY_STAT_PANEL = preload("uid://ugevri8ok2ol")
 
 
 signal clicked(id: int)
@@ -37,6 +49,18 @@ func _ready() -> void:
 	
 	set_label_texts()
 	start.call_deferred()
+
+
+func set_multi_cursor_mode(active: bool) -> void:
+	is_multi_cursor_active = active
+	
+	if active:
+		hero_panel.focus_mode = Control.FOCUS_NONE
+		focus_animation(false)
+	else:
+		hero_panel.focus_mode = Control.FOCUS_ALL
+		if not hero_panel.has_focus() and not is_force_selected:
+			unfocus_animation()
 
 
 func set_order_mode(value: bool) -> void:
@@ -130,6 +154,8 @@ func refresh() -> void:
 			%HeroFace.texture.region = real_actor.face_preview.region
 		else:
 			%HeroFace.texture.atlas = null
+		
+		refresh_stats()
 	else:
 		%Name.text = ""
 		%Class.text = ""
@@ -144,6 +170,28 @@ func refresh() -> void:
 		%HPBar.value = 0
 		%MPBar.max_value = 0
 		%MPBar.value = 0
+		clear_stats()
+
+
+func refresh_stats() -> void:
+	clear_stats()
+	
+	if not current_actor: return
+	
+	var node = %StatsContainer
+	
+	for state: GameState in current_actor.current_states:
+		var real_state: RPGState = state.get_real_state()
+		var icon = PARTY_STAT_PANEL.instantiate()
+		node.add_child(icon)
+		if real_state and AssetManager.exists(real_state.icon.path):
+			icon.set_image(real_state.icon.path, real_state.icon.region)
+
+
+func clear_stats() -> void:
+	var node = %StatsContainer
+	for child in node.get_children():
+		child.queue_free()
 
 
 func _animate_hp(target_val: float, max_val: float) -> void:
@@ -171,6 +219,37 @@ func _update_mp_text(current: float, total: float) -> void:
 	var mp_str = GameManager.get_number_formatted(current)
 	var max_mp_str = GameManager.get_number_formatted(total)
 	%MPLabel.text = "[center]%s / %s[/center]" % [mp_str, max_mp_str]
+
+
+func glow_animation() -> void:
+	if _glow_tween: _glow_tween.kill()
+	_glow_tween = create_tween().set_parallel(true)
+	_glow_tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	
+	_glow_tween.tween_property(hero_panel, "modulate", Color(glow_intensity, glow_intensity, glow_intensity), glow_duration * 0.5)
+
+	_glow_tween.tween_property(hero_panel, "modulate", Color.WHITE, glow_duration * 0.5).set_delay(glow_duration * 0.5)
+
+
+func shake_animation() -> void:
+	if _shake_tween: _shake_tween.kill()
+	_shake_tween = create_tween()
+	
+	_shake_tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	
+	var base_x = hero_panel.position.x
+	
+	var step_time = shake_duration / float(shake_vibrations * 2)
+	var current_distance = shake_distance
+	
+	for i in range(shake_vibrations):
+		_shake_tween.tween_property(hero_panel, "position:x", base_x + current_distance, step_time)
+
+		_shake_tween.tween_property(hero_panel, "position:x", base_x - current_distance, step_time)
+		
+		current_distance *= 0.8
+		
+	_shake_tween.tween_property(hero_panel, "position:x", base_x, step_time)
 
 
 func restart() -> void:
@@ -310,12 +389,16 @@ func set_enabled() -> void:
 	is_enabled = true
 	hero_panel.mouse_filter = Control.MOUSE_FILTER_STOP
 	modulate = Color.WHITE
+	focus_mode = Control.FOCUS_ALL
 
 
 func set_disabled() -> void:
 	is_enabled = false
 	hero_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	modulate = Color(0.65, 0.65, 0.65)
+	focus_mode = Control.FOCUS_NONE
+	if _glow_tween: _glow_tween.kill()
+	if _shake_tween: _shake_tween.kill()
 
 
 func hightlight() -> void:
@@ -327,17 +410,20 @@ func select(force_focus: bool = false) -> void:
 	if not is_inside_tree(): return
 	if force_focus and hero_panel.has_focus():
 		hero_panel.release_focus()
-	hero_panel.grab_focus()
+	if hero_panel.focus_mode != Control.FOCUS_NONE:
+		hero_panel.grab_focus()
 	is_selected = true
 	item_selected.emit(get_index())
 
 
 func _on_focus_entered() -> void:
 	if not is_enabled: return
+	
 	%CursorNormal.visible = true
-	if not is_force_selected:
+	
+	if not is_force_selected and not is_multi_cursor_active:
 		focus_animation()
-	else:
+	elif is_force_selected:
 		item_selected.emit(get_index())
 	
 	is_selected = true
@@ -353,7 +439,7 @@ func set_final_position(time: float = 0.001) -> void:
 	t.tween_property(hero_panel, "position:x", 10, time)
 
 
-func focus_animation() -> void:
+func focus_animation(emit_signal: bool = true) -> void:
 	%CursorNormal.visible = true
 	
 	var gears = {
@@ -370,12 +456,11 @@ func focus_animation() -> void:
 	for gear in gears.right:
 		t.tween_property(gear, "rotation", gear.rotation - PI, animation_timer * 1.5).set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_OUT)
 
-	item_selected.emit(get_index())
+	if emit_signal:
+		item_selected.emit(get_index())
 
 
-func _on_focus_exited() -> void:
-	if not is_enabled: return
-	
+func unfocus_animation() -> void:
 	%CursorNormal.visible = false
 	
 	var gears = {
@@ -383,14 +468,21 @@ func _on_focus_exited() -> void:
 		"right": [%Gear2, %Gear5, %Gear8]
 	}
 	
+	var t = create_tween()
+	t.set_parallel(true)
+	t.tween_property(hero_panel, "position:x", 20, animation_timer)
+	
+	for gear in gears.left:
+		t.tween_property(gear, "rotation", 0, animation_timer * 1.5).set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_OUT)
+	for gear in gears.right:
+		t.tween_property(gear, "rotation", 0, animation_timer * 1.5).set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_OUT)
+
+
+func _on_focus_exited() -> void:
+	if not is_enabled or is_multi_cursor_active: return
+	
 	if not is_force_selected:
-		var t = create_tween()
-		t.set_parallel(true)
-		t.tween_property(hero_panel, "position:x", 20, animation_timer)
-		for gear in gears.left:
-			t.tween_property(gear, "rotation", 0, animation_timer * 1.5).set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_OUT)
-		for gear in gears.right:
-			t.tween_property(gear, "rotation", 0, animation_timer * 1.5).set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_OUT)
+		unfocus_animation()
 	
 	is_selected = false
 
@@ -406,7 +498,7 @@ func _on_hero_panel_gui_input(event: InputEvent) -> void:
 func _on_hero_panel_mouse_entered() -> void:
 	if not is_enabled: return
 	
-	if not busy and is_enabled:
+	if not busy and is_enabled and hero_panel.focus_mode != Control.FOCUS_NONE:
 		hero_panel.grab_focus()
 	if not order_mode_enabled:
 		select()

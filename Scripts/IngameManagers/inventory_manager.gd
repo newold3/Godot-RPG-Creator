@@ -6,6 +6,13 @@ var active_perishable_items: Array[GameItem] = []
 var active_overflow_bags: Array[OverflowBag] = []
 var interacting_bag: OverflowBag = null
 
+enum SCOPE {
+	NONE,
+	ONE,
+	ALL,
+	RANDOM
+}
+
 const OVER_FLOW_BAG = preload("uid://bsnxdk683a0qq")
 
 
@@ -350,6 +357,15 @@ func _remove_generic_amount(collection: Dictionary, id: int, amount: int, includ
 	sync_perishable_items()
 
 
+func clean_inventory_pending_stacks() -> void:
+	for bag in active_overflow_bags:
+		if is_instance_valid(bag):
+			bag.queue_free()
+			
+	active_overflow_bags.clear()
+	interacting_bag = null
+
+
 ## Sort modes: 0 = Smart/Default, 1 = A-Z, 2 = Z-A, 3 = Usable first + A-Z, 4 = Rarity + A-Z, 5 = Quantity + A-Z
 ## collection: 0 = items + weapons + armors + sets, 1 = items, 2 = weapons, 3 = armors, 4 = sets, 5 = key items
 func get_items(include_hidden_items: bool = false, sort_mode: int = 0, collection: int = 0) -> Array:
@@ -413,6 +429,15 @@ func get_items(include_hidden_items: bool = false, sort_mode: int = 0, collectio
 				"mp_cost": real_data.mp_cost if "mp_cost" in real_data else 0,
 				"description": real_data.description
 			}
+			if real_data is RPGItem:
+				var scope: RPGScope = real_data.scope
+				var target_id = SCOPE.ONE if scope.number == 0 \
+					else SCOPE.ALL if scope.number == 1 \
+					else SCOPE.RANDOM
+				var targets_amount = scope.random
+				dict_item["target_id"] = target_id
+				dict_item["targets_amount"] = targets_amount
+				
 			items.append(dict_item)
 	var sort_func: Callable
 	match sort_mode:
@@ -465,7 +490,11 @@ func _is_item_usable_in_menu(item_data: Variant) -> bool:
 
 	var occasion = item_data.occasion
 	if occasion == RPGActionManager.Ocassion.ALWAYS or occasion ==  RPGActionManager.Ocassion.MENU_SCREEN or (GameManager.is_on_battle and occasion ==  RPGActionManager.Ocassion.BATTLE_SCREEN):
-		return true
+		if not GameManager.is_on_battle:
+			if item_data.scope.faction == RPGActionManager.ScopeSide.ALLY or item_data.scope.faction == RPGActionManager.ScopeSide.ENEMY_AND_ALLY:
+				return true
+		else:
+			return true
 
 	return false
 

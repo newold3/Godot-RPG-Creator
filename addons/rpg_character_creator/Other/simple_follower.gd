@@ -125,6 +125,9 @@ func _get_index_at_distance(target_distance_px: float) -> int:
 func _process(delta: float) -> void:
 	if is_manual_animation:
 		return
+	
+	if GameManager.current_player and GameManager.current_player.is_on_vehicle:
+		modulate.a -= (5 + follower_id) * delta
 		
 	if not is_sync_active:
 		current_animation = "idle"
@@ -590,9 +593,11 @@ func update_manual_state(data: Dictionary) -> void:
 
 
 func disappear(fade_time: float = 0.5) -> void:
+	is_manual_animation = true
 	is_sync_active = false
 	var tween = create_tween()
 	tween.tween_property(self, "modulate:a", 0.0, fade_time)
+	tween.tween_callback(set.bind("is_manual_animation", false))
 
 
 func appear(fade_time: float = 0.5) -> void:

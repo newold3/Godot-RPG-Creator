@@ -2,6 +2,14 @@ class_name ActorStatsManager
 extends Node
 
 
+enum SCOPE {
+	NONE,
+	ONE,
+	ALL,
+	RANDOM
+}
+
+
 func get_actor_parameter(actor_id: int, parameter_id: String) -> int:
 	## Retrieves a specific core parameter (level, experience, or custom stat) from an actor.
 	var result: int = 0
@@ -95,6 +103,14 @@ func get_skills_for_actor(actor: GameActor, _sort_mode: int = 0) -> Array:
 			"mp_cost": mp_cost,
 			"description": skill_info.get("description", "")
 		}
+		if "occasion" in real_skill:
+			var scope: RPGScope = real_skill.scope
+			var target_id = SCOPE.ONE if scope.number == 0 \
+				else SCOPE.ALL if scope.number == 1 \
+				else SCOPE.RANDOM
+			var targets_amount = scope.random
+			dict_item["target_id"] = target_id
+			dict_item["targets_amount"] = targets_amount
 		items.append(dict_item)
 	var sort_func: Callable = func(a, b):
 		if a.is_disabled != b.is_disabled: return not a.is_disabled

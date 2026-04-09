@@ -125,6 +125,10 @@ func _exit_fade_out(max_time: float) -> void:
 	tween = create_tween()
 	tween.set_parallel(true)
 	tween.tween_property(player, "modulate:a", 0.0, max_time)
+	
+	for follower in GameManager.get_followers():
+		if follower.has_meta("teleporting"):
+			tween.tween_property(follower, "modulate:a", 0.0, max_time)
 
 
 func _exit_squash_down(max_time: float) -> void:
@@ -138,6 +142,11 @@ func _exit_squash_down(max_time: float) -> void:
 	var scale = _calculate_time_scale(0.25, max_time)
 	tween.tween_property(player, "scale", Vector2(1.5, 0.1), 0.25 * scale)
 	tween.tween_property(player, "modulate:a", 0.0, 0.25 * scale)
+	
+	for follower in GameManager.get_followers():
+		if follower.has_meta("teleporting"):
+			tween.tween_property(follower, "scale", Vector2(1.5, 0.1), 0.25 * scale)
+			tween.tween_property(follower, "modulate:a", 0.0, 0.25 * scale)
 
 
 func _exit_stretch_up(max_time: float) -> void:
@@ -151,6 +160,11 @@ func _exit_stretch_up(max_time: float) -> void:
 	var scale = _calculate_time_scale(0.25, max_time)
 	tween.tween_property(player, "scale", Vector2(0.1, 2.0), 0.25 * scale)
 	tween.tween_property(player, "modulate:a", 0.0, 0.25 * scale)
+	
+	for follower in GameManager.get_followers():
+		if follower.has_meta("teleporting"):
+			tween.tween_property(follower, "scale", Vector2(0.1, 2.0), 0.25 * scale)
+			tween.tween_property(follower, "modulate:a", 0.0, 0.25 * scale)
 
 
 func _exit_implode(max_time: float) -> void:
@@ -165,6 +179,12 @@ func _exit_implode(max_time: float) -> void:
 	tween.tween_property(player, "scale", Vector2(0.5, 1.2), 0.1 * scale).set_trans(Tween.TRANS_BACK)
 	tween.tween_property(player, "scale", Vector2(0.0, 0.0), 0.2 * scale).set_delay(0.1 * scale)
 	tween.tween_property(player, "modulate:a", 0.8, 0.3 * scale)
+	
+	for follower in GameManager.get_followers():
+		if follower.has_meta("teleporting"):
+			tween.tween_property(follower, "scale", Vector2(0.5, 1.2), 0.1 * scale).set_trans(Tween.TRANS_BACK)
+			tween.tween_property(follower, "scale", Vector2(0.0, 0.0), 0.2 * scale).set_delay(0.1 * scale)
+			tween.tween_property(follower, "modulate:a", 0.8, 0.3 * scale)
 
 
 func _exit_spin_implode(max_time: float) -> void:
@@ -179,6 +199,13 @@ func _exit_spin_implode(max_time: float) -> void:
 	tween.tween_property(player, "scale", Vector2(0.0, 0.0), 0.3 * scale)
 	tween.tween_property(player, "rotation", TAU, 0.3 * scale).from(0.0)
 	tween.tween_property(player, "modulate:a", 0.0, 0.3 * scale)
+	
+	for follower in GameManager.get_followers():
+		if follower.has_meta("teleporting"):
+			tween.tween_property(follower, "scale", Vector2(0.0, 0.0), 0.3 * scale)
+			tween.tween_property(follower, "rotation", TAU, 0.3 * scale).from(0.0)
+			tween.tween_property(follower, "modulate:a", 0.0, 0.3 * scale)
+			
 
 
 func _exit_elastic_snap(max_time: float) -> void:
@@ -192,6 +219,13 @@ func _exit_elastic_snap(max_time: float) -> void:
 	tween.tween_property(player, "scale", Vector2(1.2, 0.8), 0.15 * scale).set_delay(0.15 * scale).set_trans(Tween.TRANS_SINE)
 	tween.tween_property(player, "scale", Vector2(0.0, 0.0), 0.15 * scale).set_delay(0.30 * scale).set_trans(Tween.TRANS_SINE)
 	tween.tween_property(player, "modulate:a", 0.8, 0.1 * scale).set_delay(0.30 * scale)
+	
+	for follower in GameManager.get_followers():
+		if follower.has_meta("teleporting"):
+			tween.tween_property(follower, "scale", Vector2(0.9, 1.1), 0.15 * scale).set_trans(Tween.TRANS_SINE)
+			tween.tween_property(follower, "scale", Vector2(1.2, 0.8), 0.15 * scale).set_delay(0.15 * scale).set_trans(Tween.TRANS_SINE)
+			tween.tween_property(follower, "scale", Vector2(0.0, 0.0), 0.15 * scale).set_delay(0.30 * scale).set_trans(Tween.TRANS_SINE)
+			tween.tween_property(follower, "modulate:a", 0.8, 0.1 * scale).set_delay(0.30 * scale)
 
 
 func _exit_flatten_h(max_time: float) -> void:
@@ -204,7 +238,11 @@ func _exit_flatten_h(max_time: float) -> void:
 	var scale = _calculate_time_scale(0.25, max_time)
 	tween.tween_property(player, "scale", Vector2(0.0, 1.2), 0.25 * scale)
 	tween.tween_property(player, "modulate:a", 0.0, 0.25 * scale)
-
+	
+	for follower in GameManager.get_followers():
+		if follower.has_meta("teleporting"):
+			tween.tween_property(follower, "scale", Vector2(0.0, 1.2), 0.25 * scale)
+			tween.tween_property(follower, "modulate:a", 0.0, 0.25 * scale)
 
 func _exit_flatten_v(max_time: float) -> void:
 	if tween:
@@ -216,6 +254,11 @@ func _exit_flatten_v(max_time: float) -> void:
 	var scale = _calculate_time_scale(0.25, max_time)
 	tween.tween_property(player, "scale", Vector2(1.2, 0.0), 0.25 * scale)
 	tween.tween_property(player, "modulate:a", 0.0, 0.25 * scale)
+	
+	for follower in GameManager.get_followers():
+		if follower.has_meta("teleporting"):
+			tween.tween_property(follower, "scale", Vector2(1.2, 0.0), 0.25 * scale)
+			tween.tween_property(follower, "modulate:a", 0.0, 0.25 * scale)
 
 
 ## Returns a Dictionary with the final expected state (scale, modulate_a, rotation)
@@ -306,6 +349,10 @@ func _entry_fade_in(max_time: float) -> void:
 	tween = create_tween()
 	tween.set_parallel(true)
 	tween.tween_property(player, "modulate:a", _final_alpha, max_time)
+	
+	for follower in GameManager.get_followers():
+		if follower.has_meta("teleporting"):
+			tween.tween_property(follower, "modulate:a", _final_alpha, max_time)
 
 
 func _entry_pop_in(max_time: float) -> void:
@@ -319,6 +366,11 @@ func _entry_pop_in(max_time: float) -> void:
 	var scale = _calculate_time_scale(0.35, max_time)
 	tween.tween_property(player, "scale", _final_scale, 0.35 * scale)
 	tween.tween_property(player, "modulate:a", _final_alpha, 0.2 * scale)
+	
+	for follower in GameManager.get_followers():
+		if follower.has_meta("teleporting"):
+			tween.tween_property(follower, "scale", _final_scale, 0.35 * scale)
+			tween.tween_property(follower, "modulate:a", _final_alpha, 0.2 * scale)
 
 
 func _entry_drop_squash(max_time: float) -> void:
@@ -333,6 +385,13 @@ func _entry_drop_squash(max_time: float) -> void:
 	tween.tween_property(player, "modulate:a", _final_alpha, 0.1 * scale)
 	tween.tween_property(player, "scale", Vector2(1.4, 0.6) * _final_scale, 0.1 * scale).set_delay(0.1 * scale).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	tween.tween_property(player, "scale", _final_scale, 0.15 * scale).set_delay(0.2 * scale).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
+	
+	for follower in GameManager.get_followers():
+		if follower.has_meta("teleporting"):
+			tween.tween_property(follower, "scale", Vector2(0.6, 1.4) * _final_scale, 0.1 * scale).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+			tween.tween_property(follower, "modulate:a", _final_alpha, 0.1 * scale)
+			tween.tween_property(follower, "scale", Vector2(1.4, 0.6) * _final_scale, 0.1 * scale).set_delay(0.1 * scale).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+			tween.tween_property(follower, "scale", _final_scale, 0.15 * scale).set_delay(0.2 * scale).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
 
 
 func _entry_spin_pop(max_time: float) -> void:
@@ -348,6 +407,13 @@ func _entry_spin_pop(max_time: float) -> void:
 	# Spin one full circle ending at the original rotation
 	tween.tween_property(player, "rotation", _final_rotation, 0.35 * scale).from(_final_rotation - TAU)
 	tween.tween_property(player, "modulate:a", _final_alpha, 0.2 * scale)
+	
+	for follower in GameManager.get_followers():
+		if follower.has_meta("teleporting"):
+			tween.tween_property(follower, "scale", _final_scale, 0.35 * scale)
+			# Spin one full circle ending at the original rotation
+			tween.tween_property(follower, "rotation", _final_rotation, 0.35 * scale).from(_final_rotation - TAU)
+			tween.tween_property(follower, "modulate:a", _final_alpha, 0.2 * scale)
 
 
 func _entry_explode(max_time: float) -> void:
@@ -362,6 +428,12 @@ func _entry_explode(max_time: float) -> void:
 	tween.tween_property(player, "scale", Vector2(0.3, 1.2) * _final_scale, 0.2 * scale).set_trans(Tween.TRANS_BACK)
 	tween.tween_property(player, "scale", _final_scale, 0.1 * scale).set_delay(0.2 * scale)
 	tween.tween_property(player, "modulate:a", _final_alpha, 0.3 * scale)
+	
+	for follower in GameManager.get_followers():
+		if follower.has_meta("teleporting"):
+			tween.tween_property(follower, "scale", Vector2(0.3, 1.2) * _final_scale, 0.2 * scale).set_trans(Tween.TRANS_BACK)
+			tween.tween_property(follower, "scale", _final_scale, 0.1 * scale).set_delay(0.2 * scale)
+			tween.tween_property(follower, "modulate:a", _final_alpha, 0.3 * scale)
 
 
 func _entry_unflatten_h(max_time: float) -> void:
@@ -375,6 +447,11 @@ func _entry_unflatten_h(max_time: float) -> void:
 	var scale = _calculate_time_scale(0.4, max_time)
 	tween.tween_property(player, "scale", _final_scale, 0.4 * scale)
 	tween.tween_property(player, "modulate:a", _final_alpha, 0.2 * scale)
+	
+	for follower in GameManager.get_followers():
+		if follower.has_meta("teleporting"):
+			tween.tween_property(follower, "scale", _final_scale, 0.4 * scale)
+			tween.tween_property(follower, "modulate:a", _final_alpha, 0.2 * scale)
 
 
 func _entry_unflatten_v(max_time: float) -> void:
@@ -388,6 +465,11 @@ func _entry_unflatten_v(max_time: float) -> void:
 	var scale = _calculate_time_scale(0.4, max_time)
 	tween.tween_property(player, "scale", _final_scale, 0.4 * scale)
 	tween.tween_property(player, "modulate:a", _final_alpha, 0.2 * scale)
+	
+	for follower in GameManager.get_followers():
+		if follower.has_meta("teleporting"):
+			tween.tween_property(follower, "scale", _final_scale, 0.4 * scale)
+			tween.tween_property(follower, "modulate:a", _final_alpha, 0.2 * scale)
 
 
 func _entry_elastic_wobble(max_time: float) -> void:
@@ -400,6 +482,13 @@ func _entry_elastic_wobble(max_time: float) -> void:
 	tween.tween_property(player, "modulate:a", _final_alpha, 0.1 * scale)
 	tween.tween_property(player, "scale", Vector2(0.9, 1.1) * _final_scale, 0.15 * scale).set_delay(0.15 * scale).set_trans(Tween.TRANS_SINE)
 	tween.tween_property(player, "scale", _final_scale, 0.15 * scale).set_delay(0.30 * scale).set_trans(Tween.TRANS_SINE)
+	
+	for follower in GameManager.get_followers():
+		if follower.has_meta("teleporting"):
+			tween.tween_property(follower, "scale", Vector2(1.2, 0.8) * _final_scale, 0.15 * scale).set_trans(Tween.TRANS_SINE)
+			tween.tween_property(follower, "modulate:a", _final_alpha, 0.1 * scale)
+			tween.tween_property(follower, "scale", Vector2(0.9, 1.1) * _final_scale, 0.15 * scale).set_delay(0.15 * scale).set_trans(Tween.TRANS_SINE)
+			tween.tween_property(follower, "scale", _final_scale, 0.15 * scale).set_delay(0.30 * scale).set_trans(Tween.TRANS_SINE)
 
 
 # ============= PREVIEW FUNCTIONS =============

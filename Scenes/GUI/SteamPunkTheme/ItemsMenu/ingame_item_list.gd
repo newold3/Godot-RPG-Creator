@@ -264,7 +264,7 @@ func refresh_and_get_next_perishable(target_item_id: int) -> Dictionary:
 	var cache = get_list_cache()
 	var items_array = GameManager.get_items(false, cache.get("sort_type", 0), cache.get("collection", 0))
 	set_items(items_array)
-	return %ItemList.select_next_perishable(target_item_id)
+	return await %ItemList.select_next_perishable(target_item_id)
 
 
 func _on_item_list_use_item(obj: Dictionary) -> void:

@@ -25,6 +25,7 @@ var shake_time: float = 0.0
 var _trauma_uid := 0
 var target_zoom: Vector2 = Vector2.ONE
 var is_scrolling: bool = false
+var busy: bool = false
 
 
 func _ready():
@@ -218,7 +219,7 @@ func scroll_to_position(target_pos: Vector2, target_zoom_val: Vector2, duration:
 
 
 func _process(delta: float) -> void:
-	if not enabled or is_scrolling:
+	if not enabled or is_scrolling or busy:
 		return
 
 	var current_target_pos: Vector2

@@ -114,7 +114,7 @@ func clear_multi_cursors() -> void:
 	active_multi_cursors.clear()
 	if hand_cursor:
 		hand_cursor.multi_enabled = false
-	force_show_cursor()
+	force_show_cursor.call_deferred()
 
 
 func get_hand_style() -> MainHandCursor.HandPosition:

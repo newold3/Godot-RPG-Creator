@@ -113,6 +113,7 @@ func _compute_cost(from_id: int, to_id: int) -> float:
 
 ## Gets the next tile for the character and updates the debug path if enabled
 func get_next_tile(character: Node2D, current_tile: Vector2i, target_tile: Vector2i) -> Variant:
+	
 	if not _map:
 		return null
 		
@@ -122,10 +123,13 @@ func get_next_tile(character: Node2D, current_tile: Vector2i, target_tile: Vecto
 	if start_id < 0 or end_id < 0 or not has_point(start_id) or not has_point(end_id):
 		return null
 		
-	var disabled_points = _disable_dynamic_obstacles(character, target_tile)
+	if _is_target_in_solid_region(target_tile):
+		return null
+		
+	var state_data = _prepare_pathfinder_state(character, target_tile)
 	var path_ids = get_id_path(start_id, end_id)
 	
-	_restore_dynamic_obstacles(disabled_points)
+	_restore_pathfinder_state(state_data)
 	
 	if debug_mode:
 		last_path.clear()
@@ -139,10 +143,125 @@ func get_next_tile(character: Node2D, current_tile: Vector2i, target_tile: Vecto
 	return null
 
 
-func _restore_dynamic_obstacles(ids: Array[int]) -> void:
-	for id in ids:
+func _is_target_in_solid_region(target_tile: Vector2i) -> bool:
+	
+	if "ingame_event_regions" in _map:
+		for shape in _map.ingame_event_regions:
+			if is_instance_valid(shape) and not shape.disabled and shape.has_meta("type") and shape.get_meta("type") == "collision_region":
+				var region_data = shape.get_meta("region_data")
+				var rect = region_data.rect
+				
+				if target_tile.x >= int(rect.position.x) and target_tile.x < int(rect.position.x + rect.size.x) and target_tile.y >= int(rect.position.y) and target_tile.y < int(rect.position.y + rect.size.y):
+					return true
+					
+	return false
+
+
+func _prepare_pathfinder_state(me: Node2D, target_tile: Vector2i) -> Dictionary:
+	
+	var state: Dictionary = {"disabled_ids": [], "enabled_ids": []}
+	var obstacles_to_disable: Array[Dictionary] = []
+	
+	if not me.is_in_group("player") and GameManager.current_player:
+		var add_player = true
+		
+		if GameManager.current_player.is_on_vehicle and GameManager.current_player.current_vehicle == me:
+			add_player = false
+			
+		if add_player:
+			obstacles_to_disable.append({
+				"tile": GameManager.current_player.get_current_tile(),
+				"entity": GameManager.current_player
+			})
+			
+	if "entity_manager" in _map and _map.entity_manager and "current_ingame_vehicles" in _map.entity_manager:
+		for vehicle in _map.entity_manager.current_ingame_vehicles:
+			var v_tile = _map.local_to_map(Vector2i(vehicle.global_position))
+			obstacles_to_disable.append({"tile": v_tile, "entity": vehicle})
+			
+			if vehicle.get("extra_dimensions"):
+				var extra = vehicle.extra_dimensions
+				var v_left = v_tile.x - extra.grow_left
+				var v_right = v_tile.x + extra.grow_right + 1
+				var v_up = v_tile.y - extra.grow_up
+				var v_down = v_tile.y + extra.grow_down + 1
+				
+				for x in range(v_left, v_right):
+					for y in range(v_up, v_down):
+						obstacles_to_disable.append({"tile": Vector2i(x, y), "entity": vehicle})
+						
+	for ev in me.get_tree().get_nodes_in_group("extraction_event"):
+		if "is_started" in ev and ev.is_started:
+			var ev_tile = _map.local_to_map(Vector2i(ev.global_position))
+			obstacles_to_disable.append({"tile": ev_tile, "entity": ev})
+			
+	if "entity_manager" in _map and _map.entity_manager and "current_ingame_events" in _map.entity_manager:
+		for ev in _map.entity_manager.current_ingame_events.values():
+			if not ev:
+				continue
+				
+			var lpc = ev.get("lpc_event") if "lpc_event" in ev else null
+			
+			if lpc and is_instance_valid(lpc):
+				var is_solid = true
+				
+				if lpc.has_method("is_passable"):
+					is_solid = not lpc.is_passable()
+				elif "character_options" in lpc and lpc.character_options:
+					is_solid = not lpc.character_options.passable
+					
+				if is_solid:
+					obstacles_to_disable.append({"tile": lpc.get_current_tile(), "entity": lpc})
+					
+	if "ingame_event_regions" in _map:
+		for shape in _map.ingame_event_regions:
+			if not is_instance_valid(shape) or shape.disabled or not shape.has_meta("type"):
+				continue
+				
+			var type = shape.get_meta("type")
+			var region_data = shape.get_meta("region_data")
+			var rect = region_data.rect
+			
+			if type == "collision_region":
+				for x in range(int(rect.position.x), int(rect.position.x + rect.size.x)):
+					for y in range(int(rect.position.y), int(rect.position.y + rect.size.y)):
+						obstacles_to_disable.append({"tile": Vector2i(x, y), "entity": shape})
+						
+			elif type == "event_region" and region_data.get("always_passable"):
+				for x in range(int(rect.position.x), int(rect.position.x + rect.size.x)):
+					for y in range(int(rect.position.y), int(rect.position.y + rect.size.y)):
+						var tile = Vector2i(x, y)
+						var id = _get_id_from_tile(tile)
+						
+						if has_point(id) and is_point_disabled(id):
+							set_point_disabled(id, false)
+							state["enabled_ids"].append(id)
+							
+	for obs in obstacles_to_disable:
+		var tile = obs["tile"]
+		var entity = obs["entity"]
+		
+		if entity == me or tile == target_tile:
+			continue
+			
+		var id = _get_id_from_tile(tile)
+		
+		if has_point(id) and not is_point_disabled(id):
+			set_point_disabled(id, true)
+			state["disabled_ids"].append(id)
+			
+	return state
+
+
+func _restore_pathfinder_state(state: Dictionary) -> void:
+	
+	for id in state["disabled_ids"]:
 		if has_point(id):
 			set_point_disabled(id, false)
+			
+	for id in state["enabled_ids"]:
+		if has_point(id):
+			set_point_disabled(id, true)
 
 
 func _get_id_from_tile(tile: Vector2i) -> int:
@@ -164,6 +283,18 @@ func _get_id_from_tile(tile: Vector2i) -> int:
 
 
 func _is_tile_passable_static(tile: Vector2i) -> bool:
+	
+	if "ingame_event_regions" in _map:
+		for shape in _map.ingame_event_regions:
+			if is_instance_valid(shape) and shape.has_meta("type") and shape.get_meta("type") == "event_region":
+				var region_data = shape.get_meta("region_data")
+				
+				if region_data.get("always_passable"):
+					var rect = region_data.rect
+					
+					if tile.x >= int(rect.position.x) and tile.x < int(rect.position.x + rect.size.x) and tile.y >= int(rect.position.y) and tile.y < int(rect.position.y + rect.size.y):
+						return true
+						
 	return _map.is_tile_passable_from_direction(tile, 2)
 
 
@@ -200,89 +331,123 @@ func direction_to_vector2i(search_dir: int) -> Vector2i:
 
 
 func update_tile_connections(tile: Vector2i) -> void:
+	
 	var id = _get_id_from_tile(tile)
+	
 	if not has_point(id):
 		return
-	for connected_id in get_point_connections(id):
-		disconnect_points(id, connected_id)
-	if not _is_tile_passable_static(tile):
-		return
-	_try_connect(tile, Vector2i(1, 0))
-	_try_connect(tile, Vector2i(-1, 0))
-	_try_connect(tile, Vector2i(0, 1))
-	_try_connect(tile, Vector2i(0, -1))
-	_try_connect_diagonal(tile, Vector2i(1, 1))
-	_try_connect_diagonal(tile, Vector2i(-1, 1))
-	_try_connect_diagonal(tile, Vector2i(1, -1))
-	_try_connect_diagonal(tile, Vector2i(-1, -1))
+		
+	var is_passable = _is_tile_passable_static(tile)
+	
+	set_point_disabled(id, not is_passable)
 
 
 func _disable_dynamic_obstacles(me: Node2D, target_tile: Vector2i) -> Array[int]:
+	
 	var disabled_ids: Array[int] = []
 	var obstacles_to_disable: Array[Dictionary] = []
+	
 	if not me.is_in_group("player") and GameManager.current_player:
 		var add_player = true
+		
 		if GameManager.current_player.is_on_vehicle and GameManager.current_player.current_vehicle == me:
 			add_player = false
+			
 		if add_player:
 			obstacles_to_disable.append({
 				"tile": GameManager.current_player.get_current_tile(),
 				"entity": GameManager.current_player
 			})
+			
 	if "entity_manager" in _map and _map.entity_manager and "current_ingame_vehicles" in _map.entity_manager:
 		for vehicle in _map.entity_manager.current_ingame_vehicles:
 			var v_tile = _map.local_to_map(Vector2i(vehicle.global_position))
 			obstacles_to_disable.append({"tile": v_tile, "entity": vehicle})
+			
 			if vehicle.get("extra_dimensions"):
 				var extra = vehicle.extra_dimensions
 				var v_left = v_tile.x - extra.grow_left
 				var v_right = v_tile.x + extra.grow_right + 1
 				var v_up = v_tile.y - extra.grow_up
 				var v_down = v_tile.y + extra.grow_down + 1
+				
 				for x in range(v_left, v_right):
 					for y in range(v_up, v_down):
 						obstacles_to_disable.append({"tile": Vector2i(x, y), "entity": vehicle})
+						
 	for ev in me.get_tree().get_nodes_in_group("extraction_event"):
 		if "is_started" in ev and ev.is_started:
 			var ev_tile = _map.local_to_map(Vector2i(ev.global_position))
 			obstacles_to_disable.append({"tile": ev_tile, "entity": ev})
+			
 	if "entity_manager" in _map and _map.entity_manager and "current_ingame_events" in _map.entity_manager:
 		for ev in _map.entity_manager.current_ingame_events.values():
 			if not ev:
 				continue
+				
 			var lpc = ev.get("lpc_event") if "lpc_event" in ev else null
+			
 			if lpc and is_instance_valid(lpc):
 				var is_solid = true
+				
 				if lpc.has_method("is_passable"):
 					is_solid = not lpc.is_passable()
 				elif "character_options" in lpc and lpc.character_options:
 					is_solid = not lpc.character_options.passable
+					
 				if is_solid:
 					obstacles_to_disable.append({"tile": lpc.get_current_tile(), "entity": lpc})
+					
 	if "ingame_event_regions" in _map:
 		for shape in _map.ingame_event_regions:
-			if is_instance_valid(shape) and not shape.disabled and shape.has_meta("type") and shape.get_meta("type") == "collision_region":
+			if not is_instance_valid(shape) or not shape.has_meta("type"):
+				continue
+				
+			var type = shape.get_meta("type")
+			
+			if type == "collision_region" and not shape.disabled:
 				var region_data = shape.get_meta("region_data")
 				var rect = region_data.rect
+				
 				for x in range(int(rect.position.x), int(rect.position.x + rect.size.x)):
 					for y in range(int(rect.position.y), int(rect.position.y + rect.size.y)):
 						obstacles_to_disable.append({"tile": Vector2i(x, y), "entity": shape})
+						
+			elif type == "event_region" and shape.disabled:
+				var region_data = shape.get_meta("region_data")
+				
+				if region_data.get("always_passable"):
+					var rect = region_data.rect
+					
+					for x in range(int(rect.position.x), int(rect.position.x + rect.size.x)):
+						for y in range(int(rect.position.y), int(rect.position.y + rect.size.y)):
+							var t = Vector2i(x, y)
+							
+							if not _map.is_tile_passable_from_direction(t, 2):
+								obstacles_to_disable.append({"tile": t, "entity": shape})
+								
 	for obs in obstacles_to_disable:
 		var tile = obs["tile"]
 		var entity = obs["entity"]
+		
 		if entity == me:
 			continue
+			
 		if tile != target_tile:
 			var id = _get_id_from_tile(tile)
+			
 			if has_point(id) and not is_point_disabled(id):
 				set_point_disabled(id, true)
 				disabled_ids.append(id)
+				
 	return disabled_ids
 
 
 func _try_connect(origin: Vector2i, offset: Vector2i) -> void:
+	
 	var target_x = origin.x + offset.x
 	var target_y = origin.y + offset.y
+	
 	if target_x >= _map_size.x:
 		if _infinite_x:
 			target_x -= _map_size.x
@@ -293,6 +458,7 @@ func _try_connect(origin: Vector2i, offset: Vector2i) -> void:
 			target_x += _map_size.x
 		else:
 			return
+			
 	if target_y >= _map_size.y:
 		if _infinite_y:
 			target_y -= _map_size.y
@@ -303,38 +469,45 @@ func _try_connect(origin: Vector2i, offset: Vector2i) -> void:
 			target_y += _map_size.y
 		else:
 			return
+			
 	var target_tile = Vector2i(target_x, target_y)
-	if _is_tile_passable_static(target_tile):
-		var from_id = _get_id_from_tile(origin)
-		var to_id = _get_id_from_tile(target_tile)
-		if not are_points_connected(from_id, to_id):
-			connect_points(from_id, to_id, true)
+	var from_id = _get_id_from_tile(origin)
+	var to_id = _get_id_from_tile(target_tile)
+	
+	if not are_points_connected(from_id, to_id):
+		connect_points(from_id, to_id, true)
 
 
 func _try_connect_diagonal(origin: Vector2i, offset: Vector2i) -> void:
+	
 	var target_x = origin.x + offset.x
 	var target_y = origin.y + offset.y
+	
 	if not _infinite_x and (target_x < 0 or target_x >= _map_size.x):
 		return
+		
 	if not _infinite_y and (target_y < 0 or target_y >= _map_size.y):
 		return
-	var neighbor_h = _get_wrapped_tile(origin + Vector2i(offset.x, 0))
-	var neighbor_v = _get_wrapped_tile(origin + Vector2i(0, offset.y))
-	if _is_tile_passable_static(neighbor_h) and _is_tile_passable_static(neighbor_v):
-		_try_connect(origin, offset)
+		
+	_try_connect(origin, offset)
 
 
 func _build_graph() -> void:
+	
 	for x in range(_map_size.x):
 		for y in range(_map_size.y):
 			var tile = Vector2i(x, y)
 			add_point(_get_id_from_tile(tile), Vector2(x, y))
+			
 	for x in range(_map_size.x):
 		for y in range(_map_size.y):
 			var current_tile = Vector2i(x, y)
-			if not _is_tile_passable_static(current_tile):
-				continue
+			
 			_try_connect(current_tile, Vector2i(1, 0))
 			_try_connect(current_tile, Vector2i(0, 1))
 			_try_connect_diagonal(current_tile, Vector2i(1, 1))
 			_try_connect_diagonal(current_tile, Vector2i(-1, 1))
+			
+			if not _is_tile_passable_static(current_tile):
+				var id = _get_id_from_tile(current_tile)
+				set_point_disabled(id, true)

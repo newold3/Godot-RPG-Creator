@@ -25,5 +25,11 @@ func clear() -> void:
 	status = 0
 
 
+func _to_string() -> String:
+	return "<RPGScope faction=%s, number=%s random=%s status=%s>" % [
+		faction, number, random, status
+	]
+
+
 func clone(value: bool = true) -> RPGScope:
 	return(duplicate(value))

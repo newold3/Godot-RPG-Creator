@@ -544,6 +544,7 @@ func disappear(instant: bool = false, delete_after: bool = false) -> void:
 	var needs_tween = false
 	
 	for f in followers:
+		if not is_instance_valid(f): return
 		f.is_fading_transition = true
 		if not is_equal_approx(f.modulate.a, 0.0):
 			tween.tween_property(f, "modulate:a", 0.0, 0.3)
@@ -601,6 +602,7 @@ func disable_split_mode(time: float) -> void:
 		player.clear_movement_history()
 		
 	for f in followers:
+		if not is_instance_valid(f): return
 		f.global_position = player.global_position
 		f.current_direction = player.current_direction
 		if f.has_method("run_animation"):

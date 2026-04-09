@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://dpbbjdt5i04q"]
+[gd_scene format=3 uid="uid://dpbbjdt5i04q"]
 
 [ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="1_li6fw"]
 [ext_resource type="Script" uid="uid://drjfhmodxtg4o" path="res://addons/rpg_scene_manager/Scripts/rpg_scene_manager.gd" id="1_mnt6d"]
@@ -114,16 +114,14 @@ corner_detail = 5
 expand_margin_left = 2.0
 expand_margin_right = 2.0
 
-[node name="RPGSceneManager" type="MarginContainer"]
+[node name="RPGSceneManager" type="MarginContainer" unique_id=1570958793]
 offset_right = 203.0
 offset_bottom = 31.0
 script = ExtResource("1_mnt6d")
 
-[node name="MainButton" parent="." instance=ExtResource("1_li6fw")]
+[node name="MainButton" parent="." unique_id=209454546 instance=ExtResource("1_li6fw")]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "[title]RPG Scene Manager[/title]
-Quick access to editing scenes or creating new maps"
 theme = SubResource("Theme_hs60y")
 theme_override_styles/normal = SubResource("StyleBoxFlat_fxctw")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_hhnn4")
@@ -152,3 +150,5 @@ popup/item_6/id = 6
 popup/item_7/text = "Edit Menu Scene"
 popup/item_7/id = 7
 can_select_item_with_button_wheel = false
+metadata/current_tooltip = "[title]RPG Scene Manager[/title]
+Quick access to editing scenes or creating new maps"

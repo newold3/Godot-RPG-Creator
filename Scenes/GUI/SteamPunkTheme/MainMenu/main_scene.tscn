@@ -184,10 +184,10 @@ tracks/2/path = NodePath("SceneMainContainer/MainContainer/ContentsContainer/Mai
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0.4, 0.5),
-"transitions": PackedFloat32Array(1, 2.5491211),
+"times": PackedFloat32Array(0.4, 0.46666667, 0.5),
+"transitions": PackedFloat32Array(1, 0.32987702, 2.6390166),
 "update": 0,
-"values": [Vector2(-12.5, 0), Vector2(26.365, 0)]
+"values": [Vector2(-12.5, 0), Vector2(26.365, 0), Vector2(-12.5, 0)]
 }
 tracks/3/type = "method"
 tracks/3/imported = false
@@ -411,6 +411,8 @@ mouse_filter = 2
 unique_name_in_owner = true
 visible = false
 layout_mode = 0
+offset_left = -13.375
+offset_right = 530.625
 
 [node name="ExternalAnimator" type="AnimationPlayer" parent="." index="4" unique_id=1565637514]
 unique_name_in_owner = true

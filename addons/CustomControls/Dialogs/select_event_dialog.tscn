@@ -233,11 +233,13 @@ layout_mode = 2
 
 [node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=565964365 instance=ExtResource("4_7vhpk")]
 unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.65)
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Ok[/title]
 Saves all changes and closes the windows."
+disabled = true
 text = "OK"
 
 [node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=619153507 instance=ExtResource("4_7vhpk")]

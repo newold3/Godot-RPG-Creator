@@ -199,6 +199,10 @@ region = Rect2(216, 168, 24, 24)
 atlas = ExtResource("8_ca2t6")
 region = Rect2(144, 72, 24, 24)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_vmybp"]
+atlas = ExtResource("8_ca2t6")
+region = Rect2(120, 168, 24, 24)
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ds8gs"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_cc2pl")
@@ -1620,32 +1624,32 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="PreloadScene" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab7" unique_id=69670481]
+[node name="GameScenes" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab7" unique_id=69670481]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_ha2h2")
 
-[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab7/PreloadScene" unique_id=850699157]
+[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab7/GameScenes" unique_id=850699157]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab7/PreloadScene/MarginContainer" unique_id=368990237]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab7/GameScenes/MarginContainer" unique_id=368990237]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab7/PreloadScene/MarginContainer/VBoxContainer" unique_id=301088532]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab7/GameScenes/MarginContainer/VBoxContainer" unique_id=301088532]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab7/PreloadScene/MarginContainer/VBoxContainer/HBoxContainer" unique_id=753746443]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab7/GameScenes/MarginContainer/VBoxContainer/HBoxContainer" unique_id=753746443]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Game Scenes:"
 
-[node name="ExportScenes" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab7/PreloadScene/MarginContainer/VBoxContainer/HBoxContainer" unique_id=284054631 instance=ExtResource("13_vmybp")]
+[node name="ExportScenes" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab7/GameScenes/MarginContainer/VBoxContainer/HBoxContainer" unique_id=284054631 instance=ExtResource("13_vmybp")]
 unique_name_in_owner = true
 modulate = Color(0.49803922, 1, 0.49803922, 1)
 layout_mode = 2
@@ -1659,7 +1663,7 @@ text = "Export Preset"
 icon = SubResource("AtlasTexture_304yl")
 alignment = 0
 
-[node name="ImportScenes" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab7/PreloadScene/MarginContainer/VBoxContainer/HBoxContainer" unique_id=508717772 instance=ExtResource("13_vmybp")]
+[node name="ImportScenes" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab7/GameScenes/MarginContainer/VBoxContainer/HBoxContainer" unique_id=508717772 instance=ExtResource("13_vmybp")]
 unique_name_in_owner = true
 modulate = Color(0.68235296, 1, 1, 1)
 layout_mode = 2
@@ -1671,7 +1675,45 @@ text = "Import Preset"
 icon = SubResource("AtlasTexture_ftd1a")
 alignment = 0
 
-[node name="GameSceneList" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab7/PreloadScene/MarginContainer/VBoxContainer" unique_id=1140829683 instance=ExtResource("3_queqv")]
+[node name="Develop" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab7/GameScenes/MarginContainer/VBoxContainer" unique_id=678522462]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab7/GameScenes/MarginContainer/VBoxContainer/Develop" unique_id=374560064]
+layout_mode = 2
+text = "ID: "
+
+[node name="NewSceneID" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab7/GameScenes/MarginContainer/VBoxContainer/Develop" unique_id=1431222658 instance=ExtResource("3_maojx")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "ID for the new scene (Must be unique; if it has already been added, it will be ignored)"
+
+[node name="Label2" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab7/GameScenes/MarginContainer/VBoxContainer/Develop" unique_id=814444697]
+layout_mode = 2
+text = "Path: "
+
+[node name="NewScenePath" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab7/GameScenes/MarginContainer/VBoxContainer/Develop" unique_id=190617749 instance=ExtResource("7_nmumy")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Select a path for this scene for the new scene"
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+text = "Select Scene"
+
+[node name="InsertSceneButton" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab7/GameScenes/MarginContainer/VBoxContainer/Develop" unique_id=225668214 instance=ExtResource("13_vmybp")]
+modulate = Color(0.97531503, 0.8973259, 0.91119015, 1)
+layout_mode = 2
+tooltip_text = "Try adding the new scene to the list if its ID isn't already in the list"
+theme_override_styles/pressed = SubResource("StyleBoxTexture_pr5s6")
+toggle_mode = true
+text = "Insert Scene"
+icon = SubResource("AtlasTexture_vmybp")
+alignment = 0
+
+[node name="GameSceneList" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab7/GameScenes/MarginContainer/VBoxContainer" unique_id=1140829683 instance=ExtResource("3_queqv")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 23)
 layout_mode = 2
@@ -1694,32 +1736,32 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="PreloadScene" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab8" unique_id=535392485]
+[node name="PreloadScenes" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab8" unique_id=535392485]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_ha2h2")
 
-[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab8/PreloadScene" unique_id=474945969]
+[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab8/PreloadScenes" unique_id=474945969]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab8/PreloadScene/MarginContainer" unique_id=1099559290]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab8/PreloadScenes/MarginContainer" unique_id=1099559290]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab8/PreloadScene/MarginContainer/VBoxContainer" unique_id=1933978749]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab8/PreloadScenes/MarginContainer/VBoxContainer" unique_id=1933978749]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab8/PreloadScene/MarginContainer/VBoxContainer/HBoxContainer" unique_id=236619149]
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab8/PreloadScenes/MarginContainer/VBoxContainer/HBoxContainer" unique_id=236619149]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Preload Scenes:"
 
-[node name="PreloadSceneList" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab8/PreloadScene/MarginContainer/VBoxContainer" unique_id=308895616 instance=ExtResource("3_queqv")]
+[node name="PreloadSceneList" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab8/PreloadScenes/MarginContainer/VBoxContainer" unique_id=308895616 instance=ExtResource("3_queqv")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 23)
 layout_mode = 2
@@ -1815,9 +1857,11 @@ The scenes defined here will be preloaded when the game starts. This is useful f
 [connection signal="toggled" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer/OtherConfig/Other4" to="." method="_on_other_4_toggled"]
 [connection signal="toggled" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer/HBoxContainer/LegacyMode" to="." method="_on_legacy_mode_toggled"]
 [connection signal="toggled" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer/HBoxContainer/FadePageSwap" to="." method="_on_fade_page_swap_toggled"]
-[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab7/PreloadScene/MarginContainer/VBoxContainer/HBoxContainer/ExportScenes" to="." method="_on_export_scenes_pressed"]
-[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab7/PreloadScene/MarginContainer/VBoxContainer/HBoxContainer/ImportScenes" to="." method="_on_import_scenes_pressed"]
-[connection signal="delete_pressed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab7/PreloadScene/MarginContainer/VBoxContainer/GameSceneList" to="." method="_on_game_scene_list_delete_pressed"]
-[connection signal="item_activated" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab7/PreloadScene/MarginContainer/VBoxContainer/GameSceneList" to="." method="_on_game_scene_list_item_activated"]
-[connection signal="delete_pressed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab8/PreloadScene/MarginContainer/VBoxContainer/PreloadSceneList" to="." method="_on_preload_scene_list_delete_pressed"]
-[connection signal="item_activated" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab8/PreloadScene/MarginContainer/VBoxContainer/PreloadSceneList" to="." method="_on_preload_scene_list_item_activated"]
+[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab7/GameScenes/MarginContainer/VBoxContainer/HBoxContainer/ExportScenes" to="." method="_on_export_scenes_pressed"]
+[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab7/GameScenes/MarginContainer/VBoxContainer/HBoxContainer/ImportScenes" to="." method="_on_import_scenes_pressed"]
+[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab7/GameScenes/MarginContainer/VBoxContainer/Develop/NewScenePath" to="." method="_on_new_scene_path_pressed"]
+[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab7/GameScenes/MarginContainer/VBoxContainer/Develop/InsertSceneButton" to="." method="_on_insert_scene_button_pressed"]
+[connection signal="delete_pressed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab7/GameScenes/MarginContainer/VBoxContainer/GameSceneList" to="." method="_on_game_scene_list_delete_pressed"]
+[connection signal="item_activated" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab7/GameScenes/MarginContainer/VBoxContainer/GameSceneList" to="." method="_on_game_scene_list_item_activated"]
+[connection signal="delete_pressed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab8/PreloadScenes/MarginContainer/VBoxContainer/PreloadSceneList" to="." method="_on_preload_scene_list_delete_pressed"]
+[connection signal="item_activated" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab8/PreloadScenes/MarginContainer/VBoxContainer/PreloadSceneList" to="." method="_on_preload_scene_list_item_activated"]

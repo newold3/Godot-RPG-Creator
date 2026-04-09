@@ -21,7 +21,7 @@ var toast_canvas: CanvasLayer
 ## Initializes the dedicated canvas layer for toasts and attaches it to the scene root
 func _ready() -> void:
 	toast_canvas = CanvasLayer.new()
-	toast_canvas.layer = 128
+	toast_canvas.layer = 124
 	get_tree().root.call_deferred("add_child", toast_canvas)
 
 
@@ -40,11 +40,21 @@ func _process(_delta: float) -> void:
 
 ## Shows a floating notification dynamically generated in a specific screen position
 func show_message(message: String, pos: ToastPos = ToastPos.BOTTOM_RIGHT, over_node: Node = null, y_offset: float = 0.0) -> void:
+	var node_id = str(over_node.get_instance_id()) if is_instance_valid(over_node) else "none"
+	var msg_id = "msg_" + message + "_pos_" + str(pos) + "_node_" + node_id
+	
 	for i in range(active_toasts.size() - 1, -1, -1):
 		if not is_instance_valid(active_toasts[i]) or active_toasts[i].is_queued_for_deletion():
 			active_toasts.remove_at(i)
+		elif active_toasts[i].get_meta("toast_id", "") == msg_id:
+			if active_toasts[i].get_meta("is_node_anchored", false):
+				active_toasts[i].get_parent().queue_free()
+			else:
+				active_toasts[i].queue_free()
+			active_toasts.remove_at(i)
 	
 	var toast = PanelContainer.new()
+	toast.set_meta("toast_id", msg_id)
 	var wrapper: Node2D = null
 	
 	if is_instance_valid(over_node):
@@ -196,11 +206,26 @@ func _animate_toast_in(toast: PanelContainer) -> void:
 
 ## Shows a floating notification detailing the items that couldn't be picked up or centered over a node
 func show_overflow_error(items: Array, pos: ToastPos = ToastPos.BOTTOM_RIGHT, over_node: Node = null, y_offset: float = 0.0) -> void:
+	var node_id = str(over_node.get_instance_id()) if is_instance_valid(over_node) else "none"
+	var item_str = "overflow_"
+	
+	for item in items:
+		item_str += item.name + str(item.amount)
+	
+	item_str += "_pos_" + str(pos) + "_node_" + node_id
+	
 	for i in range(active_toasts.size() - 1, -1, -1):
 		if not is_instance_valid(active_toasts[i]) or active_toasts[i].is_queued_for_deletion():
 			active_toasts.remove_at(i)
+		elif active_toasts[i].get_meta("toast_id", "") == item_str:
+			if active_toasts[i].get_meta("is_node_anchored", false):
+				active_toasts[i].get_parent().queue_free()
+			else:
+				active_toasts[i].queue_free()
+			active_toasts.remove_at(i)
 	
 	var toast = PanelContainer.new()
+	toast.set_meta("toast_id", item_str)
 	var wrapper: Node2D = null
 	
 	if is_instance_valid(over_node):

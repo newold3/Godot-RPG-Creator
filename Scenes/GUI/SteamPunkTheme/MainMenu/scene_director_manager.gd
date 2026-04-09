@@ -213,6 +213,11 @@ func _on_items_menu_use_item(item_data: Dictionary) -> void:
 		previous_active_item = MenuState.ITEM_TARGET
 		party_scene.enabled()
 		party_scene.select()
+	var target = item_data.get("target_id", InventoryManager.SCOPE.NONE)
+	if target == InventoryManager.SCOPE.ALL:
+		var actor_panels = party_scene.get_panels()
+		GameManager.cursor_manager.show_multi_cursors(actor_panels, GameManager.get_cursor_manipulator())
+		party_scene.set_multi_cursor_mode(true)
 
 
 
@@ -243,7 +248,7 @@ func _on_ingame_item_list_active_item_rotted() -> void:
 		if pending_item_type == 0:
 			current_qty = GameManager.inventory_manager.get_item_amount(pending_item_id)
 		if current_qty > 0 and items_menu_scene and items_menu_scene.has_method("refresh_and_get_next_perishable"):
-			var next_item = items_menu_scene.refresh_and_get_next_perishable(pending_item_id)
+			var next_item = await items_menu_scene.refresh_and_get_next_perishable(pending_item_id)
 			if not next_item.is_empty():
 				pending_item_data = next_item
 				return
@@ -342,9 +347,43 @@ func select_party() -> void:
 ## Evaluates actions to perform when a party member is clicked based on state
 func _on_party_menu_clicked(id: int) -> void:
 	if not left_buttons_scene: return
-	GameManager.play_fx("ok")
-	if previous_active_item == MenuState.ITEM_TARGET:
-		_execute_item_use(id)
+	
+	var result: bool = false
+	if previous_active_item == MenuState.ITEM_TARGET and pending_item_data:
+		var target_id = pending_item_data.get("target_id", InventoryManager.SCOPE.NONE)
+		if target_id == InventoryManager.SCOPE.ONE:
+			var actor: GameActor = party_scene.get_actor_selected()
+			result = await _execute_item_use(actor)
+			_animate_party_panel(actor)
+		elif target_id == InventoryManager.SCOPE.ALL:
+			var actors = party_scene.get_actors()
+			for actor: GameActor in actors:
+				result = await _execute_item_use(actor, actor == actors[-1])
+				_animate_party_panel(actor)
+		elif target_id == InventoryManager.SCOPE.RANDOM:
+			var number = pending_item_data.get("targets_amount", 0)
+			if number > 0:
+				var new_actors: Array[GameActor] = []
+				var actors = party_scene.get_actors()
+				if actors.size <= number:
+					new_actors = actors
+				else:
+					while new_actors.size() < number:
+						var actor: GameActor = actors.pick_random()
+						if not actor in new_actors:
+							new_actors.append(actor)
+					
+				for actor: GameActor in new_actors:
+					if not result:
+						result = await _execute_item_use(actor, actor == new_actors[-1])
+					else:
+						await _execute_item_use(actor, actor == new_actors[-1])
+					_animate_party_panel(actor)
+		
+		if result:
+			GameManager.play_fx("ok")
+		else:
+			GameManager.play_fx("error")
 		return
 	elif previous_active_item == MenuState.SKILL_TARGET:
 		_execute_skill_use(id)
@@ -375,6 +414,16 @@ func _on_party_menu_clicked(id: int) -> void:
 			pass
 
 
+func _animate_party_panel(actor: GameActor) -> void:
+	if party_scene and party_scene.has_method("get_panel_for_actor"):
+		var panel = party_scene.get_panel_for_actor(actor)
+		if panel:
+			if panel.has_method("glow_animation"):
+				panel.glow_animation()
+			if panel.has_method("shake_animation"):
+				panel.shake_animation()
+
+
 
 ## Handles logic for swapping party member positions
 func _on_party_formation_request(_id: int) -> void:
@@ -390,6 +439,8 @@ func _on_party_formation_request(_id: int) -> void:
 func _on_party_menu_cancel() -> void:
 	if not main_scene or not party_scene or not left_buttons_scene or not items_menu_scene: return
 	GameManager.play_fx("cancel")
+	GameManager.cursor_manager.clear_multi_cursors()
+	party_scene.set_multi_cursor_mode(false)
 	if previous_active_item == MenuState.ITEM_TARGET:
 		previous_active_item = MenuState.ITEMS
 		party_scene.disabled()
@@ -417,16 +468,19 @@ func _on_party_menu_cancel() -> void:
 
 
 ## Consumes an item and updates lists checking if quantities have reached zero
-func _execute_item_use(_target_id: int) -> void:
+func _execute_item_use(entity: Variant, remove_item: bool = true) -> bool:
 	var simulation = GameManager.action_manager.simulate_use_item(
-		null, party_scene.get_actor_selected(), pending_item_data.item
+		null, entity, pending_item_data.item
 	)
 	if not simulation.callables.is_empty():
 		for callable in simulation.callables:
 			callable.call()
-		party_scene.get_actor_selected().parameter_changed.emit()
-
-	if pending_item_type == 0:
+		if entity.has_signal("parameter_changed"):
+			entity.parameter_changed.emit()
+	else:
+		return false
+		
+	if pending_item_type == 0 and remove_item:
 		GameManager.inventory_manager.remove_item_amount(pending_item_id, 1)
 	var current_qty = 1 
 	if pending_item_type == 0:
@@ -436,20 +490,30 @@ func _execute_item_use(_target_id: int) -> void:
 			var cache = items_menu_scene.get_list_cache()
 			var items_array = GameManager.get_items(false, cache.get("sort_type", 0), cache.get("collection", 0))
 			items_menu_scene.set_items(items_array)
-		_on_party_menu_cancel()
+		if party_scene.has_method("execute_cancel"):
+			party_scene.execute_cancel.call_deferred()
+		else:
+			_on_party_menu_cancel.call_deferred()
 	else:
 		if pending_item_data.get("is_perishable", false):
 			if items_menu_scene and items_menu_scene.has_method("refresh_and_get_next_perishable"):
-				var next_item = items_menu_scene.refresh_and_get_next_perishable(pending_item_id)
+				var next_item = await items_menu_scene.refresh_and_get_next_perishable(pending_item_id)
 				if not next_item.is_empty():
 					pending_item_data = next_item
+					if party_scene.has_method("config_hand"):
+						party_scene.config_hand.call_deferred()
 				else:
-					_on_party_menu_cancel()
+					if party_scene.has_method("execute_cancel"):
+						party_scene.execute_cancel.call_deferred()
+					else:
+						_on_party_menu_cancel.call_deferred()
 		else:
 			pending_item_data["quantity"] = current_qty
 			if items_menu_scene and items_menu_scene.has_node("%ItemList"):
 				var item_list = items_menu_scene.get_node("%ItemList")
 				item_list.queue_redraw()
+				
+	return true
 
 
 ## Consumes skill MP and updates lists checking if the actor can still cast

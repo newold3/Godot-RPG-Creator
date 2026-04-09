@@ -58,6 +58,9 @@ content_margin_bottom = 4.0
 bg_color = Color(0.184314, 0.196078, 0.203922, 1)
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_t1kh6"]
+allow_unpress = true
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_rwm38"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hiljt"]
 atlas = ExtResource("7_rrv1p")
@@ -67,7 +70,7 @@ region = Rect2(192, 0, 24, 24)
 atlas = ExtResource("7_rrv1p")
 region = Rect2(216, 0, 24, 24)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rwm38"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vmu8d"]
 resource_local_to_scene = true
 content_margin_left = 3.0
 content_margin_right = 3.0
@@ -79,7 +82,7 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.113725, 0.133333, 0.160784, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vmu8d"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k233s"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 1
@@ -96,11 +99,11 @@ gradient = SubResource("Gradient_rwm38")
 fill_from = Vector2(0.547009, 1)
 fill_to = Vector2(0.559829, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_k233s"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ab7e2"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_rrv1p")
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ab7e2"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_780ms"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_rrv1p")
 
@@ -108,7 +111,7 @@ texture = SubResource("GradientTexture2D_rrv1p")
 oversampling_override = 1.0
 title = "Edit Event Region"
 position = Vector2i(0, 36)
-size = Vector2i(680, 811)
+size = Vector2i(680, 846)
 wrap_controls = true
 transient = true
 exclusive = true
@@ -325,21 +328,33 @@ rounded = false
 allow_greater = true
 _custom_value = 0.0
 
-[node name="VBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1392841756]
-layout_mode = 2
-
 [node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1802866997]
 layout_mode = 2
 
-[node name="CanEntry" type="CheckBox" parent="MarginContainer/VBoxContainer" unique_id=507471485]
+[node name="VBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=84361392]
+layout_mode = 2
+
+[node name="CanEntry" type="CheckBox" parent="MarginContainer/VBoxContainer/VBoxContainer4" unique_id=507471485]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 tooltip_text = "[title]Block Passage[/title]
 Activating this option will make this area behave like a solid block, preventing traversal.
 
 [Note]: If \"Block entry?\" is enabled, this area will not trigger events when entering or leaving it."
 mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_t1kh6")
 text = "Block entry?"
+
+[node name="CanPass" type="CheckBox" parent="MarginContainer/VBoxContainer/VBoxContainer4" unique_id=1979145871]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Always Passage[/title]
+Ignores the passability of the terrain it occupies and always allows passage through"
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_t1kh6")
+text = "Always Passable?"
 
 [node name="HSeparator3" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1218596807]
 layout_mode = 2
@@ -349,7 +364,7 @@ unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Use \"common events\" as triggers."
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_t1kh6")
+button_group = SubResource("ButtonGroup_rwm38")
 text = "Use Common Events"
 
 [node name="CommonEventContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1126156827]
@@ -393,7 +408,7 @@ unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Use \"caller events\" as triggers."
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_t1kh6")
+button_group = SubResource("ButtonGroup_rwm38")
 text = "Use Caller Events"
 
 [node name="CallerEventContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=135694378]
@@ -461,11 +476,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/v_separation = -1
-theme_override_styles/panel = SubResource("StyleBoxFlat_rwm38")
-theme_override_styles/focus = SubResource("StyleBoxFlat_rwm38")
-theme_override_styles/hovered = SubResource("StyleBoxFlat_vmu8d")
-theme_override_styles/selected = SubResource("StyleBoxTexture_k233s")
-theme_override_styles/selected_focus = SubResource("StyleBoxTexture_ab7e2")
+theme_override_styles/panel = SubResource("StyleBoxFlat_vmu8d")
+theme_override_styles/focus = SubResource("StyleBoxFlat_vmu8d")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_k233s")
+theme_override_styles/selected = SubResource("StyleBoxTexture_ab7e2")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_780ms")
 select_mode = 2
 odd_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 event_line_color = Color(0.145098, 0.156863, 0.164706, 1)
@@ -507,7 +522,8 @@ text = "APPLY"
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer4/ColorButton" to="." method="_on_color_button_pressed"]
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/VBoxContainer/DamageAmount" to="." method="_on_damage_amount_value_changed"]
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/VBoxContainer/DamageFrequency" to="." method="_on_damage_frequency_value_changed"]
-[connection signal="toggled" from="MarginContainer/VBoxContainer/CanEntry" to="." method="_on_can_entry_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/VBoxContainer4/CanEntry" to="." method="_on_can_entry_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/VBoxContainer4/CanPass" to="." method="_on_can_pass_toggled"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/UseCommonEvent" to="." method="_on_use_common_event_toggled"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/CommonEventContainer/HBoxContainer6/EntryCommonEvent" to="." method="_on_entry_common_event_item_selected"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/CommonEventContainer/HBoxContainer8/ExitCommonEvent" to="." method="_on_exit_common_event_item_selected"]

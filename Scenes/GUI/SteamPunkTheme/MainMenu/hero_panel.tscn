@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bufr30r24ixhe" path="res://Scenes/GUI/SteamPunkTheme/MainMenu/hero_panel.gd" id="1_use6n"]
 [ext_resource type="Texture2D" uid="uid://c8guerd3v0l6t" path="res://Assets/Images/SceneMenu/part8.png" id="2_iuciu"]
+[ext_resource type="Script" uid="uid://bhkluedefy5rg" path="res://Scripts/auto_scroll_container.gd" id="7_0vjr3"]
 [ext_resource type="FontFile" uid="uid://dvh0mi6yu0ywx" path="res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf" id="7_eh0sd"]
 [ext_resource type="Shader" uid="uid://dxjc8yq6x2dvg" path="res://Assets/Shaders/gray_scale_with_mask.gdshader" id="14_x5bo0"]
 [ext_resource type="Texture2D" uid="uid://bfgr2ewrp6i0u" path="res://Assets/Images/GUI/party_menu.png" id="15_f4mn4"]
@@ -138,6 +139,11 @@ focus_mode = 1
 mouse_default_cursor_shape = 2
 script = ExtResource("1_use6n")
 initial_animation_delay = 0.04
+glow_intensity = null
+glow_duration = null
+shake_distance = 1.0
+shake_duration = 0.6
+shake_vibrations = null
 
 [node name="MaskViewport" type="SubViewport" parent="." unique_id=697351590]
 transparent_bg = true
@@ -829,6 +835,29 @@ offset_bottom = 83.345
 texture = SubResource("AtlasTexture_ajjem")
 expand_mode = 1
 stretch_mode = 5
+
+[node name="AutoScrollContainer" type="Container" parent="MainViewport/Control/MainLayout" unique_id=1600540103]
+clip_contents = true
+layout_mode = 1
+offset_left = 372.0
+offset_top = 60.0
+offset_right = 503.0
+offset_bottom = 100.0
+script = ExtResource("7_0vjr3")
+scroll_direction = 1
+min_scroll_speed = 64.0
+max_scroll_speed = 64.0
+metadata/_custom_type_script = "uid://bhkluedefy5rg"
+
+[node name="StatsContainer" type="HBoxContainer" parent="MainViewport/Control/MainLayout/AutoScrollContainer" unique_id=888922278]
+unique_name_in_owner = true
+layout_mode = 2
+metadata/current_size = Vector2(131, 40)
+metadata/current_size_flags = {
+"h": 1,
+"v": 1
+}
+metadata/base_position = Vector2(0, 0)
 
 [node name="GreyScaleContainer" type="ColorRect" parent="MainViewport/Control/MainLayout" unique_id=726914009]
 unique_name_in_owner = true

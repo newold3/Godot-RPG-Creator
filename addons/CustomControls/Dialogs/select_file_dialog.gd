@@ -276,7 +276,7 @@ func _get_files_in_cache(file_id: String) -> PackedStringArray:
 
 
 func _get_files_recursive(path: String, extensions: Array) -> PackedStringArray:
-	var results = ZipMediaLoader.get_files_in_path(path, extensions)
+	var results = ZipMediaLoader.get_files_in_path(path, extensions, true)
 	return PackedStringArray(results)
 
 

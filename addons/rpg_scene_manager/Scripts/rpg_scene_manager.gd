@@ -25,6 +25,7 @@ func _update_map_list() -> void:
 	edit_maps_menu.clear()
 	for map in RPGMapsInfo.map_infos.map_names.keys():
 		if map == "res://addons/RPGMap/Scenes/event_command_testing.tscn": continue
+		elif map == "res://addons/RPGMap/Scenes/@DefaultMap@.tscn": continue
 		edit_maps_menu.add_item(map.get_basename().get_file())
 
 

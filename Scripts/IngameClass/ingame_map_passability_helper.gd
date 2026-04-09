@@ -57,6 +57,9 @@ func is_passable(tile_position: Vector2i, player_direction: int, ignore_node: No
 
 
 func is_tile_passable_from_direction(tile_position: Vector2i, player_direction: int, invert: bool = false) -> bool:
+	if map.has_any_region_passable_in(tile_position):
+		return true
+		
 	var result = true
 	for child in map.get_children():
 		if child is TileMapLayer and child.tile_set:

@@ -22,6 +22,12 @@ func _ready() -> void:
 	_initialize_hero_panels()
 
 
+func set_multi_cursor_mode(value: bool) -> void:
+	var panels = get_panels()
+	for panel in panels:
+		panel.set_multi_cursor_mode(value)
+
+
 func force_selection(id: int) -> void:
 	if hero_panel_container.get_child_count() > id and id >= 0:
 		hero_panel_container.get_child(id).force_selection()
@@ -123,12 +129,16 @@ func _process(_delta: float) -> void:
 		if direction and direction in ["up", "down"]:
 			_change_selected_hero(direction)
 		elif ControllerManager.is_cancel_just_pressed([KEY_0, KEY_KP_0]):
-			var focus_owner = get_viewport().gui_get_focus_owner()
-			if focus_owner:
-				focus_owner.release_focus()
-			cancel.emit()
+			execute_cancel()
 		elif ControllerManager.is_confirm_just_pressed(true, [KEY_KP_ENTER]):
 			clicked.emit(current_panel_selected)
+
+
+func execute_cancel() -> void:
+	var focus_owner = get_viewport().gui_get_focus_owner()
+	if focus_owner:
+		focus_owner.release_focus()
+	cancel.emit()
 
 func _change_selected_hero(direction: String) -> void:
 	var child_count = hero_panel_container.get_child_count()
@@ -182,6 +192,10 @@ func _config_hand_in_party_actor() -> void:
 	GameManager.force_show_cursor()
 
 
+func config_hand() -> void:
+	_config_hand_in_party_actor()
+
+
 func select() -> void:
 	if current_panel_selected >= 0 and hero_panel_container.get_child_count() > current_panel_selected:
 		_config_hand_in_party_actor()
@@ -198,6 +212,23 @@ func has_actors() -> bool:
 func get_actor_selected() -> GameActor:
 	if current_panel_selected >= 0 and hero_panel_container.get_child_count() > current_panel_selected:
 		return hero_panel_container.get_child(current_panel_selected).current_actor
+	
+	return null
+
+
+func get_actors() -> Array[GameActor]:
+	var actors: Array[GameActor] = []
+	
+	for panel in get_panels():
+		actors.append(panel.current_actor)
+	
+	return actors
+
+
+func get_panel_for_actor(actor: GameActor) -> Control:
+	for panel in get_panels():
+		if panel.current_actor == actor:
+			return panel
 	
 	return null
 
@@ -237,6 +268,10 @@ func get_panel_count() -> int:
 
 func get_panel_container() -> VBoxContainer:
 	return hero_panel_container
+
+
+func get_panels() -> Array:
+	return hero_panel_container.get_children()
 
 
 func show_single_panel(index: int) -> void:

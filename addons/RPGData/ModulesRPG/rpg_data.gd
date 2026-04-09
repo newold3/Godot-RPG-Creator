@@ -410,5 +410,7 @@ func _apply_upgrade(version_index: int) -> void:
 			if terms.messages.size() > 0:
 				terms.messages.append(RPGTerm.new("User Messages", "", true))
 				terms.messages.append_array(old_messages)
+		13:
+			system.game_scenes["Show Map Name"] = "res://Scenes/OtherScenes/default_animate_map_name.tscn"
 		_:
 			pass

@@ -146,17 +146,29 @@ func add_player(passenger: LPCCharacter) -> void:
 	if player and passenger == player: return
 	var node = get_node_or_null(player_container_node)
 	if node:
+		current_map = passenger.get_parent()
+		var diff = self.global_position - passenger.global_position
+		var wrap_offset = Vector2.ZERO
+		if current_map and current_map.has_method("get_map_size_in_tiles"):
+			var map_size_px = Vector2(current_map.get_map_size_in_tiles()) * Vector2(current_map.tile_size)
+			if current_map.get("infinite_horizontal_scroll") and abs(diff.x) > map_size_px.x * 0.5:
+				wrap_offset.x = map_size_px.x * sign(diff.x)
+			if current_map.get("infinite_vertical_scroll") and abs(diff.y) > map_size_px.y * 0.5:
+				wrap_offset.y = map_size_px.y * sign(diff.y)
+		if wrap_offset != Vector2.ZERO:
+			var camera = GameManager.get_camera()
+			if camera:
+				camera.global_position += wrap_offset
+			passenger.shift_history_and_followers(wrap_offset)
+			passenger.global_position += wrap_offset
 		if GameManager.game_state.followers_enabled:
 			await GameManager.disappear_followers(0.1, true)
 			await get_tree().process_frame
-			
 		if passenger.has_method("clear_movement_history"):
 			passenger.clear_movement_history()
-			
 		player = passenger
 		player.is_on_vehicle = true
 		await _set_initial_player_position(player_position)
-		current_map = passenger.get_parent()
 		calculate_grid_move_duration()
 		for child in node.get_children():
 			node.remove_child(child)
@@ -297,11 +309,36 @@ func can_disembark() -> bool:
 		motion.y = -1
 	elif current_direction == LPCCharacter.DIRECTIONS.DOWN:
 		motion.y = 1
+		
 	var movement1 = get_possible_movement(motion)
 	var movement2: Vector2i = Vector2i.ONE
+	
 	if player:
 		movement2 = get_player_possible_movement(motion)
-	return movement1 != Vector2i.ZERO and movement2 != Vector2i.ZERO
+		
+	var passable = true
+	
+	if GameManager.current_map:
+		var target_tile = get_current_tile()
+		if current_direction == LPCCharacter.DIRECTIONS.LEFT:
+			target_tile.x -= (extra_dimensions.grow_left + 1)
+		elif current_direction == LPCCharacter.DIRECTIONS.RIGHT:
+			target_tile.x += (extra_dimensions.grow_right + 1)
+		elif current_direction == LPCCharacter.DIRECTIONS.UP:
+			target_tile.y -= (extra_dimensions.grow_up + 1)
+		elif current_direction == LPCCharacter.DIRECTIONS.DOWN:
+			target_tile.y += (extra_dimensions.grow_down + 1)
+			
+		if GameManager.current_map.has_any_region_impassable_in(target_tile):
+			passable = false
+			
+		if passable:
+			for v_tile in get_current_tiles():
+				if GameManager.current_map.has_any_region_impassable_in(v_tile):
+					passable = false
+					break
+					
+	return movement1 != Vector2i.ZERO and movement2 != Vector2i.ZERO and passable
 
 
 func get_adjacent_event() -> Variant:
@@ -724,22 +761,47 @@ func get_possible_movement(motion: Vector2, is_jump_action: bool = false) -> Vec
 	var result: Vector2i = Vector2i.ZERO
 	if motion.is_zero_approx():
 		return Vector2i.ZERO
+
 	motion.x = floor(motion.x) if motion.x < 0 else ceil(motion.x)
 	motion.y = floor(motion.y) if motion.y < 0 else ceil(motion.y)
+
+	var map = GameManager.current_map
+	var current_tile = get_current_tile()
+
+	if map and map.has_method("get_map_size_in_tiles"):
+		var map_size = map.get_map_size_in_tiles()
+
+		if not map.infinite_horizontal_scroll:
+			if motion.x < 0 and (current_tile.x - extra_dimensions.grow_left + int(motion.x)) < 0:
+				motion.x = 0
+			elif motion.x > 0 and (current_tile.x + extra_dimensions.grow_right + int(motion.x)) >= map_size.x:
+				motion.x = 0
+
+		if not map.infinite_vertical_scroll:
+			if motion.y < 0 and (current_tile.y - extra_dimensions.grow_up + int(motion.y)) < 0:
+				motion.y = 0
+			elif motion.y > 0 and (current_tile.y + extra_dimensions.grow_down + int(motion.y)) >= map_size.y:
+				motion.y = 0
+
+		if motion.is_zero_approx():
+			return Vector2i.ZERO
+
 	if (Input.is_key_pressed(KEY_CTRL) and OS.is_debug_build()) or flying_object:
 		return Vector2i(
 			1 if motion.x != 0 else 0,
 			1 if motion.y != 0 else 0
 		)
+
 	var tile_size: Vector2 = GameManager.get_map_tile_size()
 	var real_motion = motion * tile_size
 	var collision: KinematicCollision2D = move_and_collide(real_motion, true)
+
 	if collision:
 		return (Vector2i.ZERO)
-	var map = GameManager.current_map
+
 	if not map:
 		return result
-	var current_tile = get_current_tile()
+
 	var dx = int(motion.x)
 	var dy = int(motion.y)
 	var horizontal_tile = map.get_wrapped_tile(current_tile + Vector2i(dx, 0))
@@ -748,9 +810,11 @@ func get_possible_movement(motion: Vector2, is_jump_action: bool = false) -> Vec
 	var can_move_horizontally = dx != 0 and get_tile_passability(horizontal_tile, motion) != Vector2i.ZERO
 	var can_move_vertically = dy != 0 and get_tile_passability(vertical_tile, motion) != Vector2i.ZERO
 	var can_move_diagonally = dx != 0 and dy != 0 and get_tile_passability(diagonal_tile, motion) != Vector2i.ZERO
+
 	if is_jump_action:
 		var is_target_passable = true
 		var target_tile_for_check = Vector2i.ZERO
+		
 		if dx != 0 and dy != 0:
 			if not can_move_diagonally: is_target_passable = false
 			target_tile_for_check = diagonal_tile
@@ -760,11 +824,14 @@ func get_possible_movement(motion: Vector2, is_jump_action: bool = false) -> Vec
 		elif dy != 0:
 			if not can_move_vertically: is_target_passable = false
 			target_tile_for_check = vertical_tile
+			
 		if not is_target_passable:
 			return Vector2i.ZERO
+			
 		var events_at_target = map.get_in_game_events_in(target_tile_for_check)
 		if not is_in_group("player") and GameManager.current_player and GameManager.current_player.get_current_tile() == target_tile_for_check:
 			events_at_target.append(GameManager.current_player)
+			
 		for entity in events_at_target:
 			if entity == self: continue
 			var is_solid_entity = false
@@ -774,21 +841,26 @@ func get_possible_movement(motion: Vector2, is_jump_action: bool = false) -> Vec
 				is_solid_entity = not entity.character_options.passable
 			if is_solid_entity:
 				return Vector2i.ZERO
+				
 		return Vector2i(1 if dx != 0 else 0, 1 if dy != 0 else 0)
+
 	if can_move_horizontally and can_move_vertically and can_move_diagonally:
 		result = Vector2i(1, 1)
 	elif can_move_horizontally:
 		result.x = 1
 	elif can_move_vertically:
 		result.y = 1
+
 	if result == Vector2i.ZERO:
 		return result
+
 	var has_extra_dimension = (
 		(extra_dimensions.grow_left > 0 and motion.x < 0) or
 		(extra_dimensions.grow_right > 0 and motion.x > 0) or
 		(extra_dimensions.grow_up > 0 and motion.y < 0) or
 		(extra_dimensions.grow_down > 0 and motion.y > 0)
 	)
+
 	if has_extra_dimension:
 		if motion.x < 0:
 			for i in range(1, extra_dimensions.grow_left + 1):
@@ -820,6 +892,7 @@ func get_possible_movement(motion: Vector2, is_jump_action: bool = false) -> Vec
 			var corner_tile = Vector2i(corner_x, corner_y)
 			if get_tile_passability(map.get_wrapped_tile(corner_tile + Vector2i(dx, dy)), motion) == Vector2i.ZERO:
 				result = Vector2i.ZERO
+
 	return result
 
 
@@ -867,16 +940,21 @@ func start(passenger: LPCCharacter) -> void:
 		return
 	busy = true
 	GameManager.busy = true
+	var camera = GameManager.get_camera()
+	if camera:
+		camera.busy = true
 	await add_player(passenger)
 	GameManager.busy = false
 	GameManager.current_vehicle = self
 	get_viewport().set_input_as_handled()
-	var camera = GameManager.get_camera()
-	if camera and camera.has_method("has_target") and camera.has_target(passenger):
-		camera.remove_target_from_array(passenger)
-		@warning_ignore("incompatible_ternary")
-		var cam_target = camera_focus_node if is_instance_valid(camera_focus_node) else self
-		camera.add_target_to_array(cam_target)
+	if camera:
+		if camera.has_method("has_target") and camera.has_target(passenger):
+			camera.remove_target_from_array(passenger)
+			@warning_ignore("incompatible_ternary")
+			var cam_target = camera_focus_node if is_instance_valid(camera_focus_node) else self
+			camera.add_target_to_array(cam_target)
+		await get_tree().process_frame
+		camera.busy = false
 	starting.emit()
 	set_process(true)
 	set_process_input(true)

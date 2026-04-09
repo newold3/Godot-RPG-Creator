@@ -1,0 +1,584 @@
+[gd_scene format=3 uid="uid://87k70xrknu04"]
+
+[ext_resource type="Texture2D" uid="uid://dbwqtj7qenbbd" path="res://Assets/Images/Other/map_name_background.png" id="1_nqjqx"]
+[ext_resource type="Shader" uid="uid://cwtg2i4ptdrn6" path="res://Assets/Shaders/2D_dissolve_with_burn_edge.gdshader" id="1_r26cq"]
+[ext_resource type="Script" uid="uid://ffquqm135uqh" path="res://Scenes/OtherScenes/default_animate_map_name.gd" id="1_t1vk1"]
+[ext_resource type="FontFile" uid="uid://2okej4ay4kdb" path="res://addons/CustomControls/Resources/Fonts/unifont-13.0.01.ttf" id="2_r26cq"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_r26cq"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_tb4jc"]
+noise = SubResource("FastNoiseLite_r26cq")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nmf84"]
+shader = ExtResource("1_r26cq")
+shader_parameter/dissolve_texture = SubResource("NoiseTexture2D_tb4jc")
+shader_parameter/dissolve_value = 0.0
+shader_parameter/burn_size = 0.13999999687072
+shader_parameter/burn_color = Color(0.3225513, 0.14991137, 0.019306809, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_u0wha"]
+font = ExtResource("2_r26cq")
+font_size = 55
+font_color = Color(0.7515548, 0.5448484, 0.4098498, 1)
+outline_size = 8
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Gradient" id="Gradient_t1vk1"]
+offsets = PackedFloat32Array(0, 0.04411765, 0.9368512, 1)
+colors = PackedColorArray(0, 0, 0, 0, 0.015686275, 0.015686275, 0.015686275, 0.654902, 0.015686275, 0.015686275, 0.015686275, 0.654902, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_8ch4i"]
+gradient = SubResource("Gradient_t1vk1")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="Gradient" id="Gradient_wviry"]
+offsets = PackedFloat32Array(0, 0.5562284, 0.87456745)
+colors = PackedColorArray(0, 0, 0, 1, 0.03200692, 0.03200692, 0.03200692, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_pqojs"]
+gradient = SubResource("Gradient_wviry")
+fill = 1
+fill_from = Vector2(0.4940171, 0.51794875)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tb4jc"]
+atlas = ExtResource("1_nqjqx")
+region = Rect2(7, 134, 141, 28)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nmf84"]
+atlas = ExtResource("1_nqjqx")
+region = Rect2(153, 136, 141, 28)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_arivr"]
+atlas = ExtResource("1_nqjqx")
+region = Rect2(132, 171, 12, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xyxrw"]
+atlas = ExtResource("1_nqjqx")
+region = Rect2(71, 170, 7, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lpaib"]
+atlas = ExtResource("1_nqjqx")
+region = Rect2(152, 171, 12, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ym1d4"]
+atlas = ExtResource("1_nqjqx")
+region = Rect2(102, 170, 7, 8)
+
+[sub_resource type="Shader" id="Shader_t1vk1"]
+code = "shader_type canvas_item;
+
+// --- UNIFORMS PARA EL ESTILO DRAGON BALL ---
+// Color del centro del aura
+uniform vec4 color_center : source_color = vec4(1.0, 1.0, 0.0, 1.0); // Amarillo brillante
+// Color medio del aura
+uniform vec4 color_mid : source_color = vec4(1.0, 0.5, 0.0, 1.0);    // Naranja
+// Color del borde del aura
+uniform vec4 color_edge : source_color = vec4(1.0, 0.0, 0.0, 1.0);   // Rojo
+// Grosor inicial del aura
+uniform float aura_width : hint_range(0.0, 50.0) = 15.0;
+// Velocidad de la animación
+uniform float animation_speed : hint_range(0.0, 10.0) = 4.0;
+// Intensidad de la turbulencia (energía caótica)
+uniform float turbulence : hint_range(0.0, 5.0) = 2.0;
+// Textura de ruido (Cellular/Voronoi es la clave aquí)
+uniform sampler2D noise_tex : repeat_enable;
+// Textura para la turbulencia (Perlin o Fractal funciona bien)
+uniform sampler2D turbulence_tex : repeat_enable;
+
+
+void fragment() {
+    vec4 original_color = texture(TEXTURE, UV);
+    float alpha = 0.0;
+    
+    // 1. Turbulencia: Distorsionamos las UVs del ruido principal con un segundo ruido en movimiento
+    vec2 turbulence_uv = UV + vec2(TIME * animation_speed * 0.05, TIME * animation_speed * 0.07);
+    float turb = texture(turbulence_tex, turbulence_uv).r;
+    vec2 distorted_uv = UV + (turb - 0.5) * turbulence * 0.1;
+    
+    // 2. Ruido de Celdas Animado: Usamos las UVs distorsionadas para el ruido principal (Voronoi)
+    vec2 noise_uv = distorted_uv + vec2(0.0, -TIME * animation_speed * 0.1); // Movimiento hacia arriba
+    float noise = texture(noise_tex, noise_uv).r;
+    
+    // 3. Grosor Dinámico: El grosor del aura se modula por el ruido caótico
+    float current_width = aura_width * (1.0 + noise * 0.5);
+    vec2 size = TEXTURE_PIXEL_SIZE * current_width;
+    
+    // Muestreamos la opacidad en múltiples direcciones para expandir el aura
+    alpha += texture(TEXTURE, UV + vec2(size.x, 0.0)).a;
+    alpha += texture(TEXTURE, UV + vec2(-size.x, 0.0)).a;
+    alpha += texture(TEXTURE, UV + vec2(0.0, size.y)).a;
+    alpha += texture(TEXTURE, UV + vec2(0.0, -size.y)).a;
+    alpha += texture(TEXTURE, UV + vec2(size.x, size.y)).a;
+    alpha += texture(TEXTURE, UV + vec2(-size.x, -size.y)).a;
+    alpha += texture(TEXTURE, UV + vec2(size.x, -size.y)).a;
+    alpha += texture(TEXTURE, UV + vec2(-size.x, size.y)).a;
+    
+    // Suavizamos y limitamos la opacidad expandida
+    alpha = smoothstep(0.1, 0.9, alpha / 8.0);
+    
+    // 4. Gradiente de Color: Mapeamos la opacidad expandida (alpha) al gradiente de 3 colores
+    vec4 final_aura_color = color_center;
+    final_aura_color = mix(final_aura_color, color_mid, smoothstep(0.1, 0.4, alpha));
+    final_aura_color = mix(final_aura_color, color_edge, smoothstep(0.4, 0.8, alpha));
+    
+    // 5. Combinación Final: Superponemos el texto original nítido
+    vec4 final_color = mix(final_aura_color, original_color, original_color.a);
+    final_color.a *= alpha; // Usamos el alpha expandido para el aura
+    
+    COLOR = final_color;
+}"
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_8ch4i"]
+noise_type = 2
+frequency = 0.003
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_wviry"]
+noise = SubResource("FastNoiseLite_8ch4i")
+seamless = true
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_pqojs"]
+frequency = 0.0119
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ghw3t"]
+noise = SubResource("FastNoiseLite_pqojs")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ojubc"]
+shader = SubResource("Shader_t1vk1")
+shader_parameter/color_center = Color(0.36668548, 1.0528602e-06, 7.460266e-07, 1)
+shader_parameter/color_mid = Color(1, 0.5, 0, 1)
+shader_parameter/color_edge = Color(0.8297037, 0.38002437, 0.2642269, 1)
+shader_parameter/aura_width = 6.24400029659
+shader_parameter/animation_speed = 10.0
+shader_parameter/turbulence = 0.6510000309225
+shader_parameter/noise_tex = SubResource("NoiseTexture2D_wviry")
+shader_parameter/turbulence_tex = SubResource("NoiseTexture2D_ghw3t")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_rk5r6"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="Animation" id="Animation_t1vk1"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot/TextureRect/MainContainer:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(4.5, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Pivot/TextureRect/MainContainer/Background:material:shader_parameter/dissolve_value")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Pivot:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Pivot/LineBackground:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1e-05, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Pivot/LineBackground:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Pivot/LineBackground:pivot_offset")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 88)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Pivot:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_8ch4i"]
+resource_name = "Start"
+length = 8.0
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot/TextureRect/MainContainer:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 3.6, 7.9),
+"transitions": PackedFloat32Array(0.20306318, 1, 1, 1),
+"update": 0,
+"values": [Vector2(4.5, 1), Vector2(1, 1), Vector2(1, 1), Vector2(2, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Pivot/TextureRect/MainContainer/Background:material:shader_parameter/dissolve_value")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 3.6, 7.9),
+"transitions": PackedFloat32Array(1, 1, 0.17075527, 1),
+"update": 0,
+"values": [0.0, 1.0, 1.0, 0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Pivot:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.3, 3.6, 7.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Pivot:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 3.6, 7.9),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 0), Vector2(0, -16)]
+}
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(7.9),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Pivot/LineBackground:scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.3, 4.1, 7.9),
+"transitions": PackedFloat32Array(1, 1, 3.249036, 1),
+"update": 0,
+"values": [Vector2(1e-05, 1), Vector2(1, 1), Vector2(1, 1), Vector2(0, 0.8)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Pivot/LineBackground:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.6, 3.6, 7.9),
+"transitions": PackedFloat32Array(1, 1, 0.2102241, 2.9281716),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Pivot/LineBackground:pivot_offset")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 2.3, 3.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 88), Vector2(1, 88), Vector2(1148.9999, 90.009346)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wviry"]
+_data = {
+&"RESET": SubResource("Animation_t1vk1"),
+&"Start": SubResource("Animation_8ch4i")
+}
+
+[node name="AnimateMapName" type="CanvasLayer" unique_id=1279244523]
+layer = 115
+script = ExtResource("1_t1vk1")
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=1078774651]
+transparent_bg = true
+size = Vector2i(512, 90)
+
+[node name="MarginContainer" type="MarginContainer" parent="SubViewport" unique_id=1272892720]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 90.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 17
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 17
+
+[node name="MapName" type="Label" parent="SubViewport/MarginContainer" unique_id=1450030506]
+unique_name_in_owner = true
+clip_children = 2
+material = SubResource("ShaderMaterial_nmf84")
+instance_shader_parameters/is_text = true
+layout_mode = 2
+text = "Map Name"
+label_settings = SubResource("LabelSettings_u0wha")
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="Pivot" type="Control" parent="." unique_id=1082451518]
+modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(0, 171)
+layout_mode = 3
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 171.0
+grow_horizontal = 2
+
+[node name="LineBackground" type="TextureRect" parent="Pivot" unique_id=207179983]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1e-05, 1)
+pivot_offset = Vector2(1, 88)
+texture = SubResource("GradientTexture2D_8ch4i")
+expand_mode = 1
+
+[node name="TextureRect" type="TextureRect" parent="Pivot" unique_id=1875204318]
+clip_children = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_pqojs")
+
+[node name="MainContainer" type="MarginContainer" parent="Pivot/TextureRect" unique_id=669294520]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.94509804)
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -69.0
+offset_bottom = 69.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(4.5, 1)
+pivot_offset = Vector2(304, 69)
+mouse_filter = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 48
+theme_override_constants/margin_bottom = 24
+
+[node name="Background" type="NinePatchRect" parent="Pivot/TextureRect/MainContainer" unique_id=1159340407]
+material = SubResource("ShaderMaterial_nmf84")
+custom_minimum_size = Vector2(220, 70)
+layout_mode = 2
+texture = ExtResource("1_nqjqx")
+region_rect = Rect2(7, 8, 287, 102)
+patch_margin_left = 25
+patch_margin_top = 21
+patch_margin_right = 26
+patch_margin_bottom = 22
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+
+[node name="MidSeparator" type="NinePatchRect" parent="Pivot/TextureRect/MainContainer" unique_id=1864617764]
+modulate = Color(1, 1, 1, 0.3372549)
+texture_repeat = 2
+custom_minimum_size = Vector2(0, 20.47)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("1_nqjqx")
+region_rect = Rect2(184, 169, 111, 26)
+axis_stretch_horizontal = 2
+
+[node name="Decorations" type="Control" parent="Pivot/TextureRect/MainContainer" unique_id=1667025995]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="DecorationTop" type="MarginContainer" parent="Pivot/TextureRect/MainContainer/Decorations" unique_id=1407281867]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -70.5
+offset_right = 70.5
+offset_bottom = 43.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+theme_override_constants/margin_top = -13
+
+[node name="TextureRect" type="TextureRect" parent="Pivot/TextureRect/MainContainer/Decorations/DecorationTop" unique_id=1737669079]
+material = SubResource("ShaderMaterial_nmf84")
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+mouse_filter = 2
+texture = SubResource("AtlasTexture_tb4jc")
+
+[node name="DecorationBottom" type="MarginContainer" parent="Pivot/TextureRect/MainContainer/Decorations" unique_id=119066575]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -70.5
+offset_top = -43.0
+offset_right = 70.5
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+mouse_filter = 2
+theme_override_constants/margin_top = 27
+theme_override_constants/margin_bottom = -13
+
+[node name="TextureRect" type="TextureRect" parent="Pivot/TextureRect/MainContainer/Decorations/DecorationBottom" unique_id=2086918187]
+material = SubResource("ShaderMaterial_nmf84")
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+mouse_filter = 2
+texture = SubResource("AtlasTexture_nmf84")
+
+[node name="DecorationLeft" type="MarginContainer" parent="Pivot/TextureRect/MainContainer/Decorations" unique_id=1289098833]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -20.0
+offset_right = 13.0
+offset_bottom = 20.0
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="Pivot/TextureRect/MainContainer/Decorations/DecorationLeft" unique_id=1931290280]
+material = SubResource("ShaderMaterial_nmf84")
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+mouse_filter = 2
+texture = SubResource("AtlasTexture_arivr")
+
+[node name="TextureRect2" type="TextureRect" parent="Pivot/TextureRect/MainContainer/Decorations/DecorationLeft" unique_id=1043556187]
+material = SubResource("ShaderMaterial_nmf84")
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+texture = SubResource("AtlasTexture_xyxrw")
+
+[node name="DecorationRight" type="MarginContainer" parent="Pivot/TextureRect/MainContainer/Decorations" unique_id=2002332869]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -12.0
+offset_top = -20.0
+offset_bottom = 20.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="Pivot/TextureRect/MainContainer/Decorations/DecorationRight" unique_id=1973944802]
+material = SubResource("ShaderMaterial_nmf84")
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+mouse_filter = 2
+texture = SubResource("AtlasTexture_lpaib")
+
+[node name="TextureRect2" type="TextureRect" parent="Pivot/TextureRect/MainContainer/Decorations/DecorationRight" unique_id=1108185567]
+material = SubResource("ShaderMaterial_nmf84")
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+texture = SubResource("AtlasTexture_ym1d4")
+
+[node name="Text" type="TextureRect" parent="Pivot/TextureRect/MainContainer" unique_id=991048795]
+material = SubResource("ShaderMaterial_ojubc")
+layout_mode = 2
+texture = SubResource("ViewportTexture_rk5r6")
+
+[node name="Text2" type="TextureRect" parent="Pivot/TextureRect/MainContainer" unique_id=631334515]
+layout_mode = 2
+texture = SubResource("ViewportTexture_rk5r6")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1939586863]
+unique_name_in_owner = true
+libraries/ = SubResource("AnimationLibrary_wviry")

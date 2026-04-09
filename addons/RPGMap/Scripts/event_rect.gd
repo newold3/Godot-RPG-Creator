@@ -47,6 +47,9 @@ enum ActivationMode { ALWAYS_ACTIVE, SWITCH}
 ## Determines if entities can enter this region.
 @export var can_entry: bool = true
 
+## Determine whether entities can pass through this region without taking the tilemap's passability into account.
+@export var always_passable: bool = false
+
 ## List of specific triggers that can interact with this region.
 @export var triggers: PackedInt32Array = [-1]
 

@@ -21,6 +21,8 @@ func _ready() -> void:
 	_setup_file_dialog()
 	_setup_confirm_dialog()
 	_update_data_fields()
+	
+	%Develop.visible = DatabaseLoader.is_develop_build
 
 
 func _setup_file_dialog() -> void:
@@ -1150,3 +1152,28 @@ func _on_import_scenes_pressed() -> void:
 
 func _on_shadow_blur_size_value_changed(value: float) -> void:
 	data.day_night_config.blur_size = value
+
+
+func _on_new_scene_path_pressed() -> void:
+	var path = "res://addons/CustomControls/Dialogs/select_file_dialog.tscn"
+	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
+	await get_tree().process_frame
+	
+	dialog.destroy_on_hide = true
+	dialog.set_dialog_mode(0)
+	dialog.target_callable = _on_new_scene_selected
+	
+	var scene_path = "res://"
+	dialog.fill_files_by_extension(scene_path, ["tscn"])
+
+
+func _on_new_scene_selected(path: String) -> void:
+	%NewScenePath.text = path
+
+
+func _on_insert_scene_button_pressed() -> void:
+	var scene_id = %NewSceneID.text
+	var scene_path = %NewScenePath.text
+	if FileAccess.file_exists(scene_path) and not scene_id in data.game_scenes:
+		data.game_scenes[scene_id] = scene_path
+		fill_game_scenes()

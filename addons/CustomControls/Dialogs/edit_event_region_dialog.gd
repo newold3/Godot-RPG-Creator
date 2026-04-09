@@ -37,6 +37,11 @@ func set_region(region: EventRegion) -> void:
 	%ActivationMode.select(clamp(region.activation_mode, 0, 1))
 	update_switch()
 	%SwitchID.set_disabled(%ActivationMode.get_selected_id() == 0)
+	
+	if region.always_passable:
+		%CanPass.set_pressed(region.always_passable)
+	elif not region.can_entry:
+		%CanEntry.set_pressed(!region.can_entry)
 
 	fill_common_events(region.entry_common_event, region.exit_common_event)
 	fill_events(region.trigger_caller_event_on_entry, region.trigger_caller_event_on_exit)
@@ -357,3 +362,9 @@ func change_condition_value(id: int, target: String) -> void:
 			text = str(id).pad_zeros(4) + ":"
 		
 		%SwitchID.text = text
+
+
+func _on_can_pass_toggled(toggled_on: bool) -> void:
+	%ApplyButton.set_disabled(false)
+	if current_region:
+		current_region.always_passable = toggled_on

@@ -444,6 +444,22 @@ func get_shop_timer(shop_id: String) -> RPGShopTimer:
 
 
 #region Map & Events
+func show_map_name(map_name: String, initial_delay: float = 0.0) -> void:
+	var scene_path = RPGSYSTEM.database.system.game_scenes.get("Show Map Name", "")
+	if AssetManager.exists(scene_path):
+		var map = current_map
+		if map:
+			if initial_delay > 0.0:
+				await get_tree().create_timer(initial_delay).timeout
+			if is_instance_valid(map) and not map.is_queued_for_deletion():
+				var scn = load(scene_path).instantiate()
+				map.add_child(scn)
+				if scn.has_method("set_map_name"):
+					scn.set_map_name(map_name.capitalize())
+				if scn.has_method("start"):
+					scn.start()
+
+
 func get_ingame_events() -> Array[IngameEvent]:
 	if current_map: return current_map.get_in_game_events()
 	return []
@@ -825,6 +841,10 @@ func remove_item_amount(id: int, amount: int) -> void:
 func get_weapon_amount(id: int) -> int:
 	if inventory_manager: return inventory_manager.get_weapon_amount(id)
 	return 0
+
+
+func clean_inventory_pending_stacks() -> void:
+	if inventory_manager: inventory_manager.clean_inventory_pending_stacks()
 
 
 func add_weapon_amount(id: int, amount: int, level: int = 1, auto_popup_enabled: bool = false, popup_prefix: String = "", _item_level: int = -1) -> int:

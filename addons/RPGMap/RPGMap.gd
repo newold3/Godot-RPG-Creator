@@ -198,13 +198,13 @@ func _init_project_settings() -> void:
 		"hint_string": ""
 	})
 	
-	if not ProjectSettings.has_setting("godot_rpg_creator/interface/floating_ui_position"):
-		ProjectSettings.set_setting("godot_rpg_creator/interface/floating_ui_position", Vector2(25, 80))
-		ProjectSettings.set_initial_value("godot_rpg_creator/interface/floating_ui_position", Vector2(25, 80))
+	if not ProjectSettings.has_setting("godot_rpg_creator/interface/floating_ui_layout"):
+		ProjectSettings.set_setting("godot_rpg_creator/interface/floating_ui_layout", {"corner": 0, "offset": Vector2(25, 80)})
+		ProjectSettings.set_initial_value("godot_rpg_creator/interface/floating_ui_layout", {"corner": 0, "offset": Vector2(25, 80)})
 		
 	ProjectSettings.add_property_info({
-		"name": "godot_rpg_creator/interface/floating_ui_position",
-		"type": TYPE_VECTOR2,
+		"name": "godot_rpg_creator/interface/floating_ui_layout",
+		"type": TYPE_DICTIONARY,
 		"hint": PROPERTY_HINT_NONE,
 		"hint_string": ""
 	})
@@ -357,7 +357,6 @@ func _setup_floating_toolbar() -> void:
 	
 	floating_panel.add_theme_stylebox_override("panel", style)
 	floating_panel.add_child(vbox)
-	floating_panel.position = ProjectSettings.get_setting("godot_rpg_creator/interface/floating_ui_position", Vector2(25, 80))
 	floating_panel.z_index = 100
 	floating_panel.mouse_filter = Control.MOUSE_FILTER_STOP
 	floating_panel.visible = false
@@ -419,19 +418,57 @@ func _setup_floating_toolbar() -> void:
 	var viewport = EditorInterface.get_editor_viewport_2d()
 	
 	if viewport:
-		viewport.get_parent().add_child(floating_panel)
+		var parent = viewport.get_parent()
+		parent.add_child(floating_panel)
+		if not parent.resized.is_connected(_on_viewport_parent_resized):
+			parent.resized.connect(_on_viewport_parent_resized)
+
+
+func _on_viewport_parent_resized() -> void:
+	_apply_corner_position()
+
+
+func _apply_corner_position() -> void:
+	if not is_instance_valid(floating_panel) or not floating_panel.get_parent():
+		return
+		
+	var parent_size = floating_panel.get_parent().size
+	if parent_size.x == 0 or parent_size.y == 0:
+		return
+		
+	var layout = ProjectSettings.get_setting("godot_rpg_creator/interface/floating_ui_layout", {"corner": 0, "offset": Vector2(25, 80)})
+	
+	if typeof(layout) != TYPE_DICTIONARY:
+		layout = {"corner": 0, "offset": Vector2(25, 80)}
+		
+	var corner: int = layout.get("corner", 0)
+	var offset: Vector2 = layout.get("offset", Vector2(25, 80))
+	var target_pos = Vector2.ZERO
+	var panel_size = floating_panel.size
+	
+	match corner:
+		0:
+			target_pos = offset
+		1:
+			target_pos = Vector2(parent_size.x - panel_size.x - offset.x, offset.y)
+		2:
+			target_pos = Vector2(offset.x, parent_size.y - panel_size.y - offset.y)
+		3:
+			target_pos = Vector2(parent_size.x - panel_size.x - offset.x, parent_size.y - panel_size.y - offset.y)
+			
+	floating_panel.position = target_pos
+	_clamp_floating_panel_position(false)
 
 
 func _process_floating_ui_input(event: InputEvent, local_pos: Vector2) -> bool:
 	if is_dragging_floating_panel:
 		if event is InputEventMouseMotion:
 			floating_panel.position += event.relative
-			_clamp_floating_panel_position()
+			_clamp_floating_panel_position(false)
 			return true
 		elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.is_pressed():
 			is_dragging_floating_panel = false
-			_clamp_floating_panel_position()
-			ProjectSettings.set_setting("godot_rpg_creator/interface/floating_ui_position", floating_panel.position)
+			_clamp_floating_panel_position(true)
 			ProjectSettings.save()
 			return true
 			
@@ -499,16 +536,15 @@ func _on_floating_panel_gui_input(event: InputEvent) -> void:
 			is_dragging_floating_panel = true
 		else:
 			is_dragging_floating_panel = false
-			_clamp_floating_panel_position()
-			ProjectSettings.set_setting("godot_rpg_creator/interface/floating_ui_position", floating_panel.position)
+			_clamp_floating_panel_position(true)
 			ProjectSettings.save()
 	elif event is InputEventMouseMotion and is_dragging_floating_panel:
 		floating_panel.position += event.relative
-		_clamp_floating_panel_position()
+		_clamp_floating_panel_position(false)
 
 
-func _clamp_floating_panel_position() -> void:
-	if not floating_panel or not floating_panel.get_parent():
+func _clamp_floating_panel_position(save_layout: bool = false) -> void:
+	if not is_instance_valid(floating_panel) or not floating_panel.get_parent():
 		return
 		
 	var parent_size = floating_panel.get_parent().size
@@ -523,6 +559,28 @@ func _clamp_floating_panel_position() -> void:
 	new_pos.y = clamp(new_pos.y, margin, max(margin, parent_size.y - panel_size.y - margin))
 	
 	floating_panel.position = new_pos
+	
+	if save_layout:
+		var dist_tl = new_pos.length_squared()
+		var dist_tr = Vector2(parent_size.x - (new_pos.x + panel_size.x), new_pos.y).length_squared()
+		var dist_bl = Vector2(new_pos.x, parent_size.y - (new_pos.y + panel_size.y)).length_squared()
+		var dist_br = Vector2(parent_size.x - (new_pos.x + panel_size.x), parent_size.y - (new_pos.y + panel_size.y)).length_squared()
+		
+		var min_dist = min(min(dist_tl, dist_tr), min(dist_bl, dist_br))
+		var corner = 0
+		var offset = new_pos
+		
+		if min_dist == dist_tr:
+			corner = 1
+			offset = Vector2(parent_size.x - (new_pos.x + panel_size.x), new_pos.y)
+		elif min_dist == dist_bl:
+			corner = 2
+			offset = Vector2(new_pos.x, parent_size.y - (new_pos.y + panel_size.y))
+		elif min_dist == dist_br:
+			corner = 3
+			offset = Vector2(parent_size.x - (new_pos.x + panel_size.x), parent_size.y - (new_pos.y + panel_size.y))
+			
+		ProjectSettings.set_setting("godot_rpg_creator/interface/floating_ui_layout", {"corner": corner, "offset": offset})
 
 
 func _on_editor_selection_changed() -> void:
@@ -665,13 +723,15 @@ func _update_floating_toolbar_visibility() -> void:
 		var viewport = EditorInterface.get_editor_viewport_2d()
 		
 		if viewport and not floating_panel.is_inside_tree():
-			viewport.get_parent().add_child(floating_panel)
-			
+			var parent = viewport.get_parent()
+			parent.add_child(floating_panel)
+			if not parent.resized.is_connected(_on_viewport_parent_resized):
+				parent.resized.connect(_on_viewport_parent_resized)
+				
 		floating_panel.visible = _current_floating_state and is_in_2d_screen and current_object != null
 		
 		if floating_panel.visible:
-			floating_panel.position = ProjectSettings.get_setting("godot_rpg_creator/interface/floating_ui_position", Vector2(25, 80))
-			_clamp_floating_panel_position.call_deferred()
+			_apply_corner_position.call_deferred()
 
 
 func _set_custom_tooltip(container: Control) -> void:
@@ -846,6 +906,9 @@ func _exit_tree() -> void:
 		selection.selection_changed.disconnect(_on_editor_selection_changed)
 	
 	if floating_panel:
+		var parent = floating_panel.get_parent()
+		if parent and parent.resized.is_connected(_on_viewport_parent_resized):
+			parent.resized.disconnect(_on_viewport_parent_resized)
 		floating_panel.queue_free()
 		floating_panel = null
 		floating_buttons.clear()
@@ -1339,7 +1402,7 @@ func _process(delta: float) -> void:
 			
 			if f_pos.x < margin or f_pos.y < margin or f_pos.x > p_size.x - f_size.x - margin or f_pos.y > p_size.y - f_size.y - margin:
 				if not is_dragging_floating_panel:
-					_clamp_floating_panel_position()
+					_clamp_floating_panel_position(false)
 
 
 func _delayed_initialization() -> void:
@@ -1431,6 +1494,19 @@ func deactivate_edit_mode_and_show_output() -> void:
 
 ## Se llama al seleccionar un nodo nuevo en la jerarquia
 func _edit(object: Object) -> void:
+	var is_remote = false
+	
+	if object:
+		if "EditorDebuggerRemoteObject" in str(object):
+			is_remote = true
+		elif object is Node:
+			var edited_scene = EditorInterface.get_edited_scene_root()
+			if edited_scene and object != edited_scene and not edited_scene.is_ancestor_of(object):
+				is_remote = true
+				
+	if is_remote:
+		return
+		
 	if event_container_control_window:
 		FileCache.options.event_dialog.position = event_container_control_window.position
 		FileCache.options.event_dialog.size = event_container_control_window.size
@@ -1451,12 +1527,13 @@ func _edit(object: Object) -> void:
 		FileCache.options.event_region_dialog.size = event_region_container_control_window.size
 		event_region_container_control_window.hide()
 		
-	if !object or object.get_class() == "EditorDebuggerRemoteObject":
+	if !object:
 		if is_instance_valid(events_dock) and events_dock.get_parent() != null:
 			event_regions_dock.close()
 			enemy_spawn_regions_dock.close()
 			extraction_events_dock.close()
 			events_dock.close()
+		current_object = null
 		return
 		
 	var is_same_map = (current_object == object)
@@ -1597,6 +1674,24 @@ func _on_map_property_changed(map: RPGMap) -> void:
 
 
 func _handles(object: Object) -> bool:
+	if !object:
+		return false
+		
+	var is_remote = false
+	
+	if "EditorDebuggerRemoteObject" in str(object):
+		is_remote = true
+	elif object is Node:
+		if not object.is_inside_tree():
+			is_remote = true
+		else:
+			var edited_scene = EditorInterface.get_edited_scene_root()
+			if edited_scene and object != edited_scene and not edited_scene.is_ancestor_of(object):
+				is_remote = true
+				
+	if is_remote:
+		return current_object != null
+		
 	if object is TileMapLayer:
 		return true
 		
@@ -1604,12 +1699,6 @@ func _handles(object: Object) -> bool:
 		return false
 		
 	var result = object is RPGMap
-	
-	if "EditorDebuggerRemoteObject" in str(object):
-		return false
-	
-	if object is Node and not object.is_inside_tree():
-		return false
 	
 	if result:
 		if "shadow_manager" in object and object.shadow_manager:
@@ -1624,7 +1713,7 @@ func _handles(object: Object) -> bool:
 			enemy_spawn_regions_dock.visible = false
 		if event_regions_dock:
 			event_regions_dock.visible = false
-
+			
 		if current_object:
 			if "shadow_manager" in current_object and current_object.shadow_manager:
 				current_object.shadow_manager.set_force_update_shadow(true)
@@ -1632,6 +1721,7 @@ func _handles(object: Object) -> bool:
 				current_object.set_editing_events(false)
 			current_object.current_event = null
 			current_object = null
+			
 		return false
 
 

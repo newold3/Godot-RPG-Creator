@@ -91,6 +91,8 @@ func fill_maps() -> void:
 	else:
 		node.mouse_filter = Control.MOUSE_FILTER_STOP
 		for map in map_list:
+			if map == "res://addons/RPGMap/Scenes/event_command_testing.tscn": continue
+			elif map == "res://addons/RPGMap/Scenes/@DefaultMap@.tscn": continue
 			var map_id = RPGSYSTEM.map_infos.get_map_id(map)
 			var map_name = RPGSYSTEM.map_infos.get_map_name_from_id(map_id)
 			node.add_item(map_name if not map_name.is_empty() else "Map #%s" % map_id)

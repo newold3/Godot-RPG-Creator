@@ -95,38 +95,55 @@ func get_shadow_data() -> Dictionary:
 	var top_sprite = get_node_or_null("%VehicleTop")
 	if not balloon_sprite or not balloon_sprite.texture or not basket_sprite or not basket_sprite.texture:
 		return {}
-		
-	var tex = balloon_sprite.texture
-	var global_pos = global_position
 
+	var tex = balloon_sprite.texture
+	var ground_pos = global_position
 	var w_top = top_sprite.region_rect.size.x
 	var w_balloon = balloon_sprite.region_rect.size.x
-	global_pos.x += (w_top / 2.0) - (w_balloon / 2.0)
+	ground_pos.x += (w_top / 2.0) - (w_balloon / 2.0)
 
 	var container = basket_sprite.get_parent()
 	var current_height = 0.0
+	var elevated_pos = ground_pos
 
 	if container:
 		current_height = abs(container.position.y)
-		
+		elevated_pos.y -= current_height
+
 	var max_flight_height = 250.0
 	var scale_reduction = (current_height / max_flight_height) * 0.6
 	var dynamic_scale_factor = clamp(1.0 - scale_reduction, 0.4, 1.0)
 	var balloon_region = balloon_sprite.region_rect
 	var final_scale = balloon_sprite.scale * dynamic_scale_factor
 
+	var base_feet_y = balloon_region.size.y / 2.0
+	var h_half = balloon_region.size.y / 2.0
+	var adjusted_feet_y = base_feet_y
+	
+	var base_elongation = Vector2(1.0, 0.6)
+	var final_elongation = base_elongation
+
+	if final_scale.y > 0.0 and current_height > 0.0:
+		adjusted_feet_y += (current_height / final_scale.y)
+		
+		var old_diff_y = (base_feet_y + h_half) * final_scale.y
+		var new_diff_y = old_diff_y + current_height
+		
+		if new_diff_y > 0.0:
+			final_elongation.y = base_elongation.y * (old_diff_y / new_diff_y)
+
 	var shadow_dict = {
-		"position": global_pos,
+		"position": ground_pos,
 		"textures": [tex],
-		"positions": [global_pos],
+		"positions": [elevated_pos],
 		"regions": [balloon_region],
-		"feet_offsets": [[8.0, 8.0, balloon_sprite.region_rect.size.y / 2.0]],
-		"mask_offsets": [Vector2(0.0, -balloon_sprite.region_rect.size.y / 2.0)],
+		"feet_offsets": [[8.0, 8.0, adjusted_feet_y]],
+		"mask_offsets": [Vector2(0.0, -balloon_region.size.y / 2.0)],
 		"alpha": balloon_sprite.modulate.a,
 		"scale": final_scale,
 		"rotation": balloon_sprite.rotation,
 		"flip_h": balloon_sprite.flip_h,
-		"elongation": Vector2(1.0, 0.6)
+		"elongation": final_elongation
 	}
 
 	return shadow_dict

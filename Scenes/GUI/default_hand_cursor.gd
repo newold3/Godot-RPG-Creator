@@ -197,6 +197,8 @@ func show_cursor(hand_position: HandPosition = HandPosition.LEFT, manipulator_co
 		hand_tween.kill()
 	if hand_position != -1:
 		current_hand_position = hand_position
+		
+	visible = true
 	cursor.modulate.a = 1.0
 	_animate_fade_cursor(Color.WHITE, 0.35, false)
 
@@ -205,6 +207,7 @@ func force_show() -> void:
 	if hand_tween:
 		hand_tween.kill()
 	
+	visible = true
 	cursor.modulate.a = 1.0
 	cursor.self_modulate.a = 1.0
 	cursor.visible = true

@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://ugevri8ok2ol"]
+
+[ext_resource type="Script" uid="uid://bkbp07vyxqf7p" path="res://Scenes/GUI/party_stat_panel.gd" id="1_mhw8f"]
+[ext_resource type="Texture2D" uid="uid://dd2evgsvnv1bw" path="res://Assets/Images/Backgrounds/BattleBackgrounds/river_bed.png" id="1_n43v6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mhw8f"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.11372549, 0.08627451, 0.078431375, 0.08235294)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.35291094, 0.26116943, 0.2244826, 1)
+border_blend = true
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 6
+
+[node name="StatPanel" type="PanelContainer" unique_id=2008398172]
+theme_override_styles/panel = SubResource("StyleBoxFlat_mhw8f")
+script = ExtResource("1_mhw8f")
+
+[node name="Icon" type="TextureRect" parent="." unique_id=1341617645]
+unique_name_in_owner = true
+texture_filter = 1
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("1_n43v6")
+expand_mode = 1
+stretch_mode = 6

@@ -43,6 +43,7 @@ extends Resource
 @export var current_day_night_component: RPGDayNightComponent
 @export var bgm_saved: Dictionary
 @export var plugin_data: Dictionary = {} # used by user plugins to store any data
+@export var map_names_shown: Dictionary = {} # uniq_id: bool
 @export var current_day_time: float = 0.0
 # Stores event IDs that were erased via "Erase Event" command on the CURRENT map.
 # This list must be cleared whenever the player changes maps (transfer),

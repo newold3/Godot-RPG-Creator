@@ -56,6 +56,13 @@ func _init(
 	state_mode = _state_mode
 
 
+func get_real_state() -> RPGState:
+	if id > 0 and RPGSYSTEM.database.states.size() > id:
+		return RPGSYSTEM.database.states[id]
+	
+	return null
+
+
 ## Returns true if the state is active only during battles.
 func is_battle_only() -> bool:
 	return (state_mode & STATE_MODE.STATE_CONTEXT_BATTLE_ONLY) != 0
