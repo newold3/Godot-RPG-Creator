@@ -541,6 +541,7 @@ func disappear(instant: bool = false, delete_after: bool = false) -> void:
 		return
 		
 	var tween = create_tween().set_parallel(true)
+	tween.tween_interval(0.0)
 	var needs_tween = false
 	
 	for f in followers:
@@ -594,6 +595,7 @@ func disable_split_mode(time: float) -> void:
 	
 	var fade_out_tween = create_tween().set_parallel(true)
 	for f in followers:
+		if not is_instance_valid(f): return
 		f.is_sync_active = false
 		fade_out_tween.tween_property(f, "modulate:a", 0.0, time / 2.0)
 	await fade_out_tween.finished

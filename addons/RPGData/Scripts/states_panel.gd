@@ -61,6 +61,7 @@ func _update_data_fields() -> void:
 		%RemoveByTime.set_pressed(current_data.remove_by_time)
 		%Time.value = current_data.max_time
 		%IsCumulative.set_pressed(current_data.is_cumulative)
+		%IsDamageTick.set_pressed(current_data.is_damage_tick)
 		%TickInterval.value = current_data.tick_interval
 		fill_messages(-1)
 	else:
@@ -323,3 +324,7 @@ func _on_icon_picker_paste_requested(icon: String, region: Rect2) -> void:
 	data_icon.path = icon
 	data_icon.region = region
 	%IconPicker.set_icon(data_icon.path, data_icon.region)
+
+
+func _on_is_damage_tick_toggled(toggled_on: bool) -> void:
+	get_data().is_damage_tick = toggled_on

@@ -115,8 +115,8 @@ func enable_map_repeating() -> void:
 	if has_node("%SceneManager"): %SceneManager.enable_map_repeating()
 
 
-func change_scene(path: String, destroy_gui: bool = false) -> void:
-	if has_node("%SceneManager"): await %SceneManager.change_scene(path, destroy_gui)
+func change_scene(path: String, destroy_gui: bool = false, is_instant: bool = false) -> void:
+	if has_node("%SceneManager"): await %SceneManager.change_scene(path, destroy_gui, is_instant)
 #endregion
 
 

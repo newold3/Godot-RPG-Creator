@@ -6,6 +6,7 @@ var _current_scene_loaded: Node
 
 
 
+## Clears the current map and its components
 func clear_current_map() -> void:
 	var map_container = GameManager.main_scene.get_node_or_null("%MapContainer")
 	var options_canvas = GameManager.main_scene.get_node_or_null("%OptionsCanvas")
@@ -23,6 +24,7 @@ func clear_current_map() -> void:
 	GameInterpreter.clear()
 
 
+## Sets the new active map
 func set_map(map: RPGMap) -> void:
 	if not map:
 		return
@@ -35,6 +37,7 @@ func set_map(map: RPGMap) -> void:
 	_configure_map_scrolling(map)
 
 
+## Adds the map node to the container hierarchy
 func _add_map_to_container(map: RPGMap) -> void:
 	var map_container = GameManager.main_scene.get_node_or_null("%MapContainer")
 	if map_container:
@@ -44,6 +47,7 @@ func _add_map_to_container(map: RPGMap) -> void:
 			map_container.add_child(map)
 
 
+## Disables map repeating visuals
 func clear_map_repeating() -> void:
 	var map_container = GameManager.main_scene.get_node_or_null("%MapContainer")
 	var shadows = GameManager.main_scene.get_node_or_null("%DynamicShadows")
@@ -56,6 +60,7 @@ func clear_map_repeating() -> void:
 		shadows.clear_map_repeating()
 
 
+## Enables map repeating visually
 func enable_map_repeating() -> void:
 	var map_container = GameManager.main_scene.get_node_or_null("%MapContainer")
 	var shadows = GameManager.main_scene.get_node_or_null("%DynamicShadows")
@@ -68,6 +73,7 @@ func enable_map_repeating() -> void:
 		shadows.enable_map_repeating(repeat_times)
 
 
+## Calculates how many times the map needs to repeat to fill the screen
 func get_map_repeat_times() -> int:
 	var map = GameManager.current_map
 	if map:
@@ -83,6 +89,7 @@ func get_map_repeat_times() -> int:
 	return 2
 
 
+## Adjusts repeating rules depending on map scroll flags
 func _configure_map_scrolling(map: RPGMap) -> void:
 	var map_container = GameManager.main_scene.get_node_or_null("%MapContainer")
 	if not map_container or map_container.repeat_times == 1: return
@@ -98,6 +105,7 @@ func _configure_map_scrolling(map: RPGMap) -> void:
 	map_container.repeat_times = max_repeats if (map.infinite_horizontal_scroll or map.infinite_vertical_scroll) else 1
 
 
+## Removes all generic GUI nodes from the canvas
 func _destroy_gui_scenes() -> void:
 	var canvas = GameManager.main_scene.get_node_or_null("%GUICanvas")
 	if canvas:
@@ -105,7 +113,8 @@ func _destroy_gui_scenes() -> void:
 			child.queue_free()
 
 
-func change_scene(path: String, destroy_gui: bool = false) -> void:
+## Changes to the specified scene path handling graphical transitions
+func change_scene(path: String, destroy_gui: bool = false, is_instant: bool = false) -> void:
 	var main_scene = GameManager.main_scene
 	var interpreter = main_scene.get_node_or_null("%Interpreter")
 	var transition_canvas = main_scene.get_node_or_null("%TransitionCanvas")
@@ -114,15 +123,18 @@ func change_scene(path: String, destroy_gui: bool = false) -> void:
 	main_scene.busy = true
 	if interpreter: interpreter.transfer_in_progress = true
 	
-	await _wait_frames(3)
+	var transition_texture: ImageTexture = null
 	
-	if transition_canvas: transition_canvas.layer = 128
-	var transition_texture = _create_transition_texture()
+	if not is_instant:
+		await _wait_frames(3)
+		if transition_canvas: transition_canvas.layer = 128
+		transition_texture = _create_transition_texture()
 	
-	await _load_scene_async(path, transition_texture)
+	await _load_scene_async(path, transition_texture, is_instant)
 	
 	if _current_scene_loaded and _current_scene_loaded is RPGMap:
 		await _current_scene_loaded.map_started
+		main_scene.get_main_camera().fast_reposition.call_deferred()
 		
 	if GameManager.game_state:
 		GameManager.game_state.erased_events.clear()
@@ -132,23 +144,28 @@ func change_scene(path: String, destroy_gui: bool = false) -> void:
 		
 	main_scene.scene_changed.emit()
 	
-	if transition_manager: await transition_manager.end()
+	if transition_manager and not is_instant:
+		await transition_manager.end()
+		
 	if transition_canvas: transition_canvas.layer = 115
 	if interpreter: interpreter.transfer_in_progress = false
 	if transition_manager: transition_manager.visible = false
 
 
+## Pauses execution for a set amount of process frames
 func _wait_frames(count: int) -> void:
 	for i in count:
 		await get_tree().process_frame
 
 
+## Generates a texture from the current viewport state
 func _create_transition_texture() -> ImageTexture:
 	var img = get_viewport().get_texture().get_image()
 	return ImageTexture.create_from_image(img)
 
 
-func _load_scene_async(path: String, transition_texture: ImageTexture) -> void:
+## Handles threaded resource loading and transition start
+func _load_scene_async(path: String, transition_texture: ImageTexture, is_instant: bool = false) -> void:
 	if not AssetManager.exists(path):
 		printerr("Invalid Path: ", path)
 		return
@@ -156,7 +173,8 @@ func _load_scene_async(path: String, transition_texture: ImageTexture) -> void:
 	var transition_manager = GameManager.main_scene.transition_manager
 	ResourceLoader.load_threaded_request(path)
 	
-	if transition_manager: await transition_manager.start(transition_texture)
+	if transition_manager and not is_instant:
+		await transition_manager.start(transition_texture)
 	
 	var res = await _wait_for_resource_load(path)
 	if res:
@@ -165,6 +183,7 @@ func _load_scene_async(path: String, transition_texture: ImageTexture) -> void:
 		_current_scene_loaded = null
 
 
+## Polls the threaded load request until completion
 func _wait_for_resource_load(path: String) -> Resource:
 	var file_status = ResourceLoader.load_threaded_get_status(path)
 	
@@ -180,6 +199,7 @@ func _wait_for_resource_load(path: String) -> Resource:
 	return ResourceLoader.load_threaded_get(path)
 
 
+## Creates the node and determines correct setup
 func _instantiate_and_setup_scene(res: Resource, path: String) -> void:
 	if not res is PackedScene:
 		printerr("The current path is not a scene: ", path)
@@ -192,6 +212,7 @@ func _instantiate_and_setup_scene(res: Resource, path: String) -> void:
 	GameManager.main_scene.current_scene = next_scene
 
 
+## Routes scene setup logic depending on inheritance
 func _setup_scene_based_on_type(next_scene: Node) -> void:
 	if next_scene is SCENE_TITTLE or next_scene is SCENE_END:
 		_setup_gui_scene(next_scene)
@@ -199,6 +220,7 @@ func _setup_scene_based_on_type(next_scene: Node) -> void:
 		_setup_map_scene(next_scene)
 
 
+## Prepares Title or End scenes
 func _setup_gui_scene(scene: Node) -> void:
 	var canvas = GameManager.main_scene.get_node_or_null("%GUICanvas")
 	if canvas:
@@ -207,6 +229,7 @@ func _setup_gui_scene(scene: Node) -> void:
 		canvas.add_child(scene)
 
 
+## Cleans up previous maps and inserts the new one
 func _setup_map_scene(map_scene: RPGMap) -> void:
 	var main_scene = GameManager.main_scene
 	if main_scene.current_scene is SCENE_TITTLE:

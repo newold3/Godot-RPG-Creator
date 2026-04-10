@@ -679,8 +679,8 @@ func setup_gui_scene(scene: Node) -> void:
 	if main_scene: main_scene._setup_gui_scene(scene)
 
 
-func change_scene(path: String, destroy_gui: bool = false) -> void:
-	if main_scene: main_scene.change_scene(path, destroy_gui)
+func change_scene(path: String, destroy_gui: bool = false, is_instant: bool = false) -> void:
+	if main_scene: main_scene.change_scene(path, destroy_gui, is_instant)
 
 
 func clear_map_repeating() -> void:

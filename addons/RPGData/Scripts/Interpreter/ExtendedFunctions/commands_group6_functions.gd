@@ -176,8 +176,24 @@ func _transfer_to_oher_map(map_id: int, tile: Vector2i, direction: int, current_
 	var target = current_event
 	if "is_on_vehicle" in current_event and current_event.is_on_vehicle and current_event.current_vehicle:
 		target = current_event.current_vehicle
-	# 1) We need perform start animation
+
+	var cam = GameManager.get_camera()
+	var was_following_player = false
+	if cam and cam.is_following(target):
+		was_following_player = true
+
 	await _start_transfer_animation(target, transfer_animation)
+	
+	var current_teleport_data = {
+		"scale": target.scale,
+		"rotation": target.rotation,
+		"alpha": target.modulate.a
+	}
+	
+	var target_teleport_data = current_teleport_data.duplicate()
+	
+	if target and target.has_meta("teleport_restore_data"):
+		target_teleport_data = target.get_meta("teleport_restore_data").duplicate(true)
 	
 	var transport_id = -1 if not target is RPGVehicle else target.vehicle_type
 	if target is RPGVehicle:
@@ -185,46 +201,63 @@ func _transfer_to_oher_map(map_id: int, tile: Vector2i, direction: int, current_
 			map_id,
 			tile
 		)
-		if transport_id == 0: # Land Vehicle
+		if transport_id == 0:
 			GameManager.game_state.land_transport_start_position = vehicle_position
-		elif transport_id == 1: # Sea Vehicle
+		elif transport_id == 1:
 			GameManager.game_state.sea_transport_start_position = vehicle_position
-		elif transport_id == 2: # Air Vehicle
+		elif transport_id == 2:
 			GameManager.game_state.air_transport_start_position = vehicle_position
-		
 
 	GameManager.game_state.current_map_position = tile
-	GameManager.main_scene.scene_changed.connect(
-		func():
-			GameManager.main_scene.get_main_camera().clear_targets()
-			GameManager.current_map.set_event_position(current_event, tile, direction, true)
-			current_event.previous_tile = tile
-			current_event.current_virtual_tile = tile
-			if transport_id != -1:
-				var vehicle = GameManager.current_map.get_in_game_vehicle_in(tile)
-				if vehicle:
-					current_event.current_vehicle = vehicle
-					vehicle.start(current_event)
-					_set_start_tranfer_end_values(vehicle, transfer_animation)
-			
-			GameManager.destroy_followers()
-			if GameManager.game_state.followers_enabled:
-				GameManager.show_followers(true, true)
-				
-	, CONNECT_ONE_SHOT)
+	
 	var start_map_path = RPGSYSTEM.map_infos.get_map_by_id(map_id)
+	var is_instant = GameManager.game_state.current_transition.get("type", 0) == 0
 	if start_map_path and ResourceLoader.exists(start_map_path):
 		GameManager.game_state.current_map_id = map_id
-		await GameManager.change_scene(start_map_path)
+		GameManager.change_scene(start_map_path, false, is_instant)
 	else:
 		debug_print("Starting map no found (Map with id %s). Exiting..." % map_id)
-		await GameManager.change_scene("res://Scenes/EndScene/scene_end.tscn")
-
+		GameManager.change_scene("res://Scenes/EndScene/scene_end.tscn", false, is_instant)
+	
+	await GameManager.main_scene.scene_changed
+	
+	cam = GameManager.main_scene.get_main_camera()
+	if cam:
+		cam.clear_targets()
+		
+	GameManager.current_map.set_event_position(current_event, tile, direction, true)
+	current_event.previous_tile = tile
+	current_event.current_virtual_tile = tile
+	
+	if transport_id != -1:
+		var vehicle = GameManager.current_map.get_in_game_vehicle_in(tile)
+		if vehicle:
+			current_event.current_vehicle = vehicle
+			vehicle.start(current_event)
+			_set_start_tranfer_end_values(vehicle, transfer_animation)
+			
+	if was_following_player and cam:
+		var cam_target = current_event
+		if "is_on_vehicle" in current_event and current_event.is_on_vehicle and current_event.current_vehicle:
+			cam_target = current_event.current_vehicle
+		cam.set_target(cam_target)
+		cam.fast_reposition()
+	
+	GameManager.destroy_followers()
+	if GameManager.game_state.followers_enabled:
+		GameManager.show_followers(true, true)
+	
 	target = current_event
 	if "is_on_vehicle" in current_event and current_event.is_on_vehicle and current_event.current_vehicle:
 		target = current_event.current_vehicle
-
+	
+	target.set_meta("teleport_restore_data", target_teleport_data)
+	target.scale = current_teleport_data.scale
+	target.rotation = current_teleport_data.rotation
+	target.modulate.a = current_teleport_data.alpha
+		
 	await _end_transfer_animation(target, transfer_animation)
+
 
 
 # Parse transfer parameters for the player
@@ -404,8 +437,6 @@ func _command_0053() -> void:
 # Command Scroll / Zoom Map (Code 54), button_id = 43
 # Code 54 parameters { type, duration, wait, direction*, amount*, zoom* }
 func _command_0054() -> void:
-	debug_print("Processing command: Scroll / Zoom Map (code 54)")
-
 	var type = current_command.parameters.get("type", 0)
 	var duration = current_command.parameters.get("duration", 0.5)
 	var wait = current_command.parameters.get("wait", true)
@@ -415,42 +446,52 @@ func _command_0054() -> void:
 
 	if camera and map:
 		camera.set_process(false)
-		if type == 0: # Scroll Map
-			# 0 = Up, 1 = Down, 2 = Left, 3 = Right
+		
+		if type == 0:
 			var direction = current_command.parameters.get("direction", 0)
 			var amount = current_command.parameters.get("amount", 1)
+			
 			if amount != 0:
 				var real_amount = amount * map.tile_size
 				var t = GameManager.create_tween()
 				var p = camera.global_position
+				
 				camera.set_process(false)
+				
 				match direction:
-					0: # Up
+					0:
 						t.tween_property(camera, "global_position:y", p.y - real_amount.y, duration)
-					1: # Down
+					1:
 						t.tween_property(camera, "global_position:y", p.y + real_amount.y, duration)
-					2: # Left
+					2:
 						t.tween_property(camera, "global_position:x", p.x - real_amount.x, duration)
-					3: # Right
+					3:
 						t.tween_property(camera, "global_position:x", p.x + real_amount.x, duration)
 				
-		elif type == 1: # Zoom Map
+		elif type == 1:
 			var zoom = current_command.parameters.get("zoom", 2.0)
+			
 			if zoom > 0.0:
+				var target_zoom_vec = Vector2(zoom, zoom)
 				var t = GameManager.create_tween()
-				t.tween_property(camera, "zoom", Vector2(zoom, zoom), duration)
+				
+				t.tween_property(camera, "zoom", target_zoom_vec, duration)
+				camera.target_zoom = target_zoom_vec
+				
+				if "base_zoom" in camera:
+					camera.base_zoom = target_zoom_vec
 		
-		elif type == 2: # Reset Scroll And Zoom
+		elif type == 2:
 			camera.set_process(true)
+			
 			var data = camera.get_target_position_and_zoom()
 			var t = GameManager.create_tween()
+			
 			t.set_parallel(true)
 			t.tween_property(camera, "zoom", data.zoom, duration)
 			t.tween_property(camera, "global_position", data.position, duration)
 	
-	
 	if wait and duration > 0 and current_interpreter.obj:
-		# Create a timer for the specified duration and wait for it to timeout
 		await current_interpreter.obj.get_tree().create_timer(duration).timeout
 
 

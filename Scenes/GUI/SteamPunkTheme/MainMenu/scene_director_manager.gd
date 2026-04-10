@@ -238,7 +238,12 @@ func _on_items_menu_use_skill(skill_data: Dictionary) -> void:
 func _on_item_list_item_focused(obj: Dictionary) -> void:
 	if help_label:
 		help_label.text = obj.get("description", "")
-
+	
+	if GameManager.game_state:
+		GameManager.game_state.last_item_used = {
+			"id": obj.get("item_id", -1),
+			"type": obj.get("item_type", -1)
+		}
 
 
 ## Resets the state and UI if the currently active perishable item rots

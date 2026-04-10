@@ -50,6 +50,8 @@ extends Resource
 # but MUST be saved/loaded to persist within the same map session.
 @export var erased_events: Array[int] = []
 @export var in_game_options: Dictionary = {}
+@export var last_item_used: Dictionary = {} # { "id": int, "type": int }
+@export var last_skill_used: Dictionary = {} # actor id: skill id
 
 
 # When load this variable is populated and events used it to determine active page and position

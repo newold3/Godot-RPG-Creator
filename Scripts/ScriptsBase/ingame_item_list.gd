@@ -309,16 +309,24 @@ func _on_page_changed(_page: int) -> void:
 ## Updates item zoom animations in real time tracking local changes and custom controller inputs
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint(): return
+	
 	if dirty_refresh_time > 0.0:
-		dirty_refresh_time -= delta
-		if dirty_refresh_time <= 0.0:
-			_fetch_and_refresh_data()
+		if enabled and is_visible_in_tree():
+			dirty_refresh_time -= delta
+			if dirty_refresh_time <= 0.0:
+				_fetch_and_refresh_data()
+		else:
+			dirty_refresh_time = 0.0
+			
 	if not is_visible_in_tree(): return
+	
 	var screen_rect = get_viewport_rect()
 	if not screen_rect.intersects(get_global_rect()): return
+	
 	var is_active = enabled and GameManager.get_cursor_manipulator() == manipulator
 	if is_active:
 		_handle_controller_input()
+		
 	var needs_redraw = false
 	var current_offset = _get_local_scroll_offset()
 	if current_offset != _last_scroll_offset:
@@ -326,6 +334,7 @@ func _process(delta: float) -> void:
 		needs_redraw = true
 		if is_active:
 			_update_ghost_cursor()
+			
 	if is_active and not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and not Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE):
 		var current_global_mouse = get_global_mouse_position()
 		if current_global_mouse == _last_real_mouse_pos:
@@ -335,44 +344,53 @@ func _process(delta: float) -> void:
 				var idx = _get_item_at_pos(pos)
 				if idx != -1 and idx != selected_index:
 					_select_item(idx, false)
+					
 	var count = _get_current_page_count()
 	if anim_states.size() != count:
 		anim_states.resize(count)
 		anim_states.fill(1.0)
 		needs_redraw = true
+		
 	var visible_range = _get_visible_row_range()
 	var start_idx = visible_range.x * columns
 	var end_idx = min(count, visible_range.y * columns)
 	var has_perishable = false
 	var ipp = _get_items_per_page()
 	var page_offset = 0 if ipp <= 0 else _get_current_page() * ipp
+	
 	for i in range(start_idx, end_idx):
 		var target_scale = 1.0
 		if i == pressed_index:
 			target_scale = 0.95
 		elif i == selected_index:
 			target_scale = 1.05
+			
 		if abs(anim_states[i] - target_scale) > 0.005:
 			anim_states[i] = lerpf(anim_states[i], target_scale, 15.0 * delta)
 			needs_redraw = true
 		else:
 			anim_states[i] = target_scale
+			
 		if (page_offset + i) < items.size() and items[page_offset + i].get("is_perishable", false):
 			has_perishable = true
+			
 	if selected_index >= 0 and selected_index < count and (selected_index < start_idx or selected_index >= end_idx):
 		if abs(anim_states[selected_index] - 1.05) > 0.005:
 			anim_states[selected_index] = lerpf(anim_states[selected_index], 1.05, 15.0 * delta)
 			needs_redraw = true
 		else:
 			anim_states[selected_index] = 1.05
+			
 	if pressed_index >= 0 and pressed_index < count and (pressed_index < start_idx or pressed_index >= end_idx):
 		if abs(anim_states[pressed_index] - 0.95) > 0.005:
 			anim_states[pressed_index] = lerpf(anim_states[pressed_index], 0.95, 15.0 * delta)
 			needs_redraw = true
 		else:
 			anim_states[pressed_index] = 0.95
+			
 	if has_perishable:
 		needs_redraw = true
+		
 	if needs_redraw:
 		queue_redraw()
 
@@ -732,6 +750,10 @@ func _get_item_at_pos(pos: Vector2) -> int:
 ## Selects an item forcefully based on index
 func select_item(idx: int, snap_camera: bool = false) -> void:
 	_select_item(idx, true, snap_camera)
+
+	if not enabled or not is_visible_in_tree():
+		return
+		
 	_config_hand_cursor()
 	GameManager.force_hand_position_over_node(manipulator)
 
@@ -740,22 +762,29 @@ func select_item(idx: int, snap_camera: bool = false) -> void:
 ## Updates selection and synchronizes the cursor and sounds based on true interaction
 func _select_item(idx: int, force_focus: bool = false, snap_camera: bool = false) -> void:
 	if selected_index == idx:
-		if force_focus:
+		if force_focus and enabled and is_visible_in_tree():
 			_focus_ghost_cursor(true)
 		return
+		
 	selected_index = idx
 	_update_ghost_cursor()
-	_play_sound(cursor_fx)
-	if force_focus:
+	
+	if enabled and is_visible_in_tree():
+		_play_sound(cursor_fx)
+		
+	if force_focus and enabled and is_visible_in_tree():
 		_focus_ghost_cursor(true)
+		
 	var count = _get_current_page_count()
 	var ipp = _get_items_per_page()
 	var page_offset = 0 if ipp <= 0 else _get_current_page() * ipp
+	
 	if idx >= 0 and idx < count and (page_offset + idx) < items.size():
 		var item = items[page_offset + idx]
 		target_uid = str(item.get("item_type", -1)) + "_" + str(item.get("item_id", -1))
 		target_global_index = page_offset + idx
 		item_focused.emit(item)
+		
 	if scroll_container_node and scroll_container_node.has_method("bring_focus_target_into_view"):
 		var smooth = not snap_camera
 		scroll_container_node.call_deferred("bring_focus_target_into_view", true, smooth)
@@ -936,7 +965,9 @@ func _on_item_rotted(_real_item: GameItem, _item: Dictionary) -> void:
 	if rotted_uid == activated_item_uid:
 		active_item_rotted.emit()
 		activated_item_uid = ""
-	dirty_refresh_time = 0.1
+	
+	if enabled and is_visible_in_tree():
+		dirty_refresh_time = 0.1
 
 
 func _fetch_and_refresh_data() -> void:

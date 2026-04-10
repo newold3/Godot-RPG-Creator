@@ -5,6 +5,7 @@ extends Node
 var active_perishable_items: Array[GameItem] = []
 var active_overflow_bags: Array[OverflowBag] = []
 var interacting_bag: OverflowBag = null
+var has_new_items_pending_view: bool = false
 
 enum SCOPE {
 	NONE,
@@ -461,9 +462,22 @@ func get_items(include_hidden_items: bool = false, sort_mode: int = 0, collectio
 				return a.name.nocasecmp_to(b.name) < 0
 		0, _:
 			sort_func = func(a, b):
+				# 1. Top Priority: New Items
 				if a.is_new != b.is_new: return a.is_new
 				if a.is_new and b.is_new and a.date_added != b.date_added: return a.date_added > b.date_added
+				
+				# 2. Secondary Priority: The Last Item Selected
+				if has_new_items_pending_view:
+					var last_item = GameManager.game_state.last_item_used
+					if not last_item.is_empty():
+						var a_is_last = (a.item_id == last_item.get("id", -1) and a.item_type == last_item.get("type", -1))
+						var b_is_last = (b.item_id == last_item.get("id", -1) and b.item_type == last_item.get("type", -1))
+						if a_is_last != b_is_last: return a_is_last
+				
+				# 3. Tertiary Priority: Usability First
 				if a.is_disabled != b.is_disabled: return not a.is_disabled
+				
+				# 4.  Sort Order: Alphabetical
 				return a.name.nocasecmp_to(b.name) < 0
 	items.sort_custom(sort_func)
 	return items
@@ -529,6 +543,8 @@ func add_item_amount(id: int, amount: int, auto_popup_enabled: bool = false, pop
 		if not item_id in GameManager.game_state.stats.items_found:
 			GameManager.game_state.stats.items_found[item_id] = 0
 		GameManager.game_state.stats.items_found[item_id] += added
+		
+		has_new_items_pending_view = true
 	
 	if added != amount:
 		_handle_overflow(0, id, amount - added, 0, auto_popup_enabled, popup_prefix)
@@ -560,6 +576,8 @@ func add_weapon_amount(id: int, amount: int, level: int = 1, auto_popup_enabled:
 		if not item_id in GameManager.game_state.stats.items_found:
 			GameManager.game_state.stats.items_found[item_id] = 0
 		GameManager.game_state.stats.items_found[item_id] += added
+		
+		has_new_items_pending_view = true
 	
 	if added != amount:
 		_handle_overflow(1, id, amount - added, level, auto_popup_enabled, popup_prefix)
@@ -591,6 +609,8 @@ func add_armor_amount(id: int, amount: int, level: int = 1, auto_popup_enabled: 
 		if not item_id in GameManager.game_state.stats.items_found:
 			GameManager.game_state.stats.items_found[item_id] = 0
 		GameManager.game_state.stats.items_found[item_id] += added
+		
+		has_new_items_pending_view = true
 	
 	if added != amount:
 		_handle_overflow(2, id, amount - added, level, auto_popup_enabled, popup_prefix)

@@ -1,36 +1,49 @@
 extends Camera2D
 
-## Character to follow (backwards compatibility)
+
+## Character to follow
 @export var target: Node2D
-## Array of targets with priorities to follow (new feature)
-## Each element is a dictionary: {"target": Node2D, "priority": int}
+
+## Array of targets with priorities to follow
 @export var targets: Array[Dictionary] = []
+
 ## Whether to use multi-target mode
 @export var use_multi_target: bool = false
+
 ## Margin around targets when in multi-target mode
 @export var multi_target_margin: float = 100.0
 
 ## Camera speed when moving
 @export var smooth_speed: float = 14.5
+
 ## The source of random values for shake
 @export var noise: FastNoiseLite
+
 ## Zoom parameters
 @export var zoom_speed: float = 4.0
+
+## Minimum zoom limit
 @export var min_zoom: float = 0.2
+
+## Maximum zoom limit
 @export var max_zoom: float = 10.0
+
 
 var traumas := {} 
 var max_trauma_power: float = 0.0
 var shake_time: float = 0.0
 var _trauma_uid := 0
 var target_zoom: Vector2 = Vector2.ONE
+var base_zoom: Vector2 = Vector2.ONE
 var is_scrolling: bool = false
 var busy: bool = false
 
 
+## Initializes the camera setup
 func _ready():
 	randomize()
 	target_zoom = zoom
+	base_zoom = zoom
 	add_to_group("camera")
 	
 	if not targets.is_empty():
@@ -41,13 +54,16 @@ func _ready():
 		noise.seed = randi()
 
 
+## Set single target
 func set_target(_target: Node2D) -> void:
 	target = _target
 	use_multi_target = false
+	
 	if target:
 		global_position = apply_camera_limits(get_target_closest_position(target, global_position))
 
 
+## Add target to multi tracking array
 func add_target_to_array(new_target: Node2D, priority: int = 5):
 	if new_target:
 		for i in range(targets.size()):
@@ -62,6 +78,7 @@ func add_target_to_array(new_target: Node2D, priority: int = 5):
 		target = targets[0].target
 
 
+## Checks if target exists in tracking
 func has_target(_target: Node2D) -> bool:
 	if _target == target:
 		return true
@@ -73,6 +90,7 @@ func has_target(_target: Node2D) -> bool:
 	return false
 
 
+## Get target dictionary data
 func get_target(_target: Node2D) -> Dictionary:
 	for i in range(targets.size()):
 		if targets[i].has("target") and targets[i]["target"] == _target:
@@ -84,6 +102,7 @@ func get_target(_target: Node2D) -> Dictionary:
 	return {}
 
 
+## Erase target from specific property
 func erase_target(_target: Node2D) -> void:
 	if _target == target:
 		target = null
@@ -94,13 +113,19 @@ func erase_target(_target: Node2D) -> void:
 			break
 
 
+## Checks if camera is currently following the event
 func is_following(event: Node) -> bool:
-	if target == event: return true
+	if target == event:
+		return true
+		
 	for obj: Dictionary in targets:
-		if obj.target == event: return true
+		if obj.target == event:
+			return true
+			
 	return false
 
 
+## Removes a specific target from tracking array
 func remove_target_from_array(target_to_remove: Node2D):
 	for i in range(targets.size() - 1, -1, -1):
 		if targets[i].has("target") and targets[i]["target"] == target_to_remove:
@@ -109,19 +134,25 @@ func remove_target_from_array(target_to_remove: Node2D):
 	
 	if targets.is_empty():
 		use_multi_target = false
+		target_zoom = base_zoom
 
 
+## Clears all targets and restores default zoom
 func clear_targets():
 	targets.clear()
+	target = null
 	use_multi_target = false
+	target_zoom = base_zoom
 
 
+## Overwrites target array entirely
 func set_targets_array(new_targets: Array[Dictionary]):
 	targets = new_targets
 	use_multi_target = not targets.is_empty()
 	target = null
 
 
+## Adds screen shake trauma
 func add_trauma(amount: float, time: float) -> void:
 	_trauma_uid += 1
 	var id := _trauma_uid
@@ -131,6 +162,7 @@ func add_trauma(amount: float, time: float) -> void:
 	}
 
 
+## Gets closest target coordinates comparing physical and virtual
 func get_target_closest_position(target_node: Node2D, reference_pos: Vector2) -> Vector2:
 	if not target_node.has_method("get_current_virtual_tile_position"):
 		return target_node.global_position
@@ -147,6 +179,7 @@ func get_target_closest_position(target_node: Node2D, reference_pos: Vector2) ->
 		return physical_pos
 
 
+## Gets virtual position if available
 func get_target_virtual_position(target_node: Node2D) -> Vector2:
 	if target_node.has_method("get_current_virtual_tile_position"):
 		return target_node.get_current_virtual_tile_position()
@@ -154,6 +187,7 @@ func get_target_virtual_position(target_node: Node2D) -> Vector2:
 		return target_node.global_position
 
 
+## Applies map limits to given coordinates
 func apply_camera_limits(desired_position: Vector2) -> Vector2:
 	var limited_position = desired_position
 	
@@ -169,9 +203,11 @@ func apply_camera_limits(desired_position: Vector2) -> Vector2:
 	return limited_position
 
 
+## Moves camera instantly to targets
 func fast_reposition() -> void:
 	if use_multi_target and not targets.is_empty():
 		var valid_targets = get_valid_targets()
+		
 		if valid_targets.size() == 1:
 			var single_target = valid_targets[0]["target"]
 			var target_pos = get_target_virtual_position(single_target)
@@ -181,6 +217,7 @@ func fast_reposition() -> void:
 			global_position = apply_camera_limits(current_target_pos)
 			handle_multi_target_zoom()
 			zoom = target_zoom 
+			
 	elif target:
 		var target_pos = get_target_virtual_position(target)
 		global_position = apply_camera_limits(target_pos)
@@ -189,6 +226,7 @@ func fast_reposition() -> void:
 		zoom = target_zoom
 
 
+## Returns current data of focus and zoom
 func get_target_position_and_zoom() -> Dictionary:
 	var data = {}
 	
@@ -205,6 +243,7 @@ func get_target_position_and_zoom() -> Dictionary:
 	return data
 
 
+## Tween camera properties smoothly
 func scroll_to_position(target_pos: Vector2, target_zoom_val: Vector2, duration: float = 0.5) -> void:
 	is_scrolling = true
 	var final_pos = apply_camera_limits(target_pos)
@@ -218,6 +257,7 @@ func scroll_to_position(target_pos: Vector2, target_zoom_val: Vector2, duration:
 	is_scrolling = false
 
 
+## Process frame step
 func _process(delta: float) -> void:
 	if not enabled or is_scrolling or busy:
 		return
@@ -242,18 +282,23 @@ func _process(delta: float) -> void:
 	if traumas.size() > 0:
 		var max_power: float = 0
 		var max_trauma: Dictionary
+		
 		for key in traumas.keys():
 			var trauma: Dictionary = traumas[key]
+			
 			if trauma.amount > max_power:
 				max_power = trauma.amount
 				max_trauma = trauma
+				
 			trauma.time -= delta
+			
 			if trauma.time <= 0.0:
 				traumas.erase(key)
 		
 		if max_trauma:
 			max_trauma_power = lerp(max_trauma_power, max_trauma.amount, 0.2)
 			shake_time = max_trauma.time
+			
 			if max_trauma_power > 0:
 				offset = Vector2(
 					get_noise(0),
@@ -267,6 +312,7 @@ func _process(delta: float) -> void:
 	
 	if use_multi_target and not targets.is_empty():
 		var valid_targets = get_valid_targets()
+		
 		if valid_targets.size() == 1:
 			var single_target = valid_targets[0]["target"]
 			handle_single_target_movement(get_target_closest_position(single_target, global_position), single_target, delta)
@@ -279,8 +325,10 @@ func _process(delta: float) -> void:
 			handle_single_target_movement(current_target_pos, target, delta)
 
 
+## Calculate central point for all multiple tracking targets
 func get_multi_target_position() -> Vector2:
 	var valid_targets = get_valid_targets()
+	
 	if valid_targets.is_empty():
 		return global_position
 	
@@ -305,6 +353,7 @@ func get_multi_target_position() -> Vector2:
 	return weighted_position
 
 
+## Construct rectangle containing targets
 func get_targets_bounds(valid_targets: Array[Dictionary]) -> Rect2:
 	if valid_targets.is_empty():
 		return Rect2()
@@ -327,12 +376,15 @@ func get_targets_bounds(valid_targets: Array[Dictionary]) -> Rect2:
 	return Rect2(min_pos, max_pos - min_pos)
 
 
+## Processes zoom calculations for multi target mode
 func handle_multi_target_zoom():
 	var valid_targets = get_valid_targets()
+	
 	if valid_targets.is_empty():
 		return
 	
-	if valid_targets.size() == 1:
+	if valid_targets.size() <= 1:
+		target_zoom = base_zoom
 		return
 	
 	var bounds = get_targets_bounds(valid_targets)
@@ -350,6 +402,7 @@ func handle_multi_target_zoom():
 		target_zoom = Vector2(required_zoom, required_zoom)
 
 
+## Crops bounds to camera map limits
 func get_limited_bounds(original_bounds: Rect2) -> Rect2:
 	var limited_bounds = original_bounds
 	
@@ -369,7 +422,7 @@ func get_limited_bounds(original_bounds: Rect2) -> Rect2:
 	
 	return limited_bounds
 
-
+## Return safe valid nodes checking viewport mismatch
 func get_valid_targets() -> Array[Dictionary]:
 	var valid_targets: Array[Dictionary] = []
 	
@@ -379,13 +432,17 @@ func get_valid_targets() -> Array[Dictionary]:
 				targets.erase(target_data)
 				continue
 			
-			if not target_data["target"].visible and not target_data["target"].get_class() == "EmptyPlayableCharacter": continue
+			if not target_data["target"].visible and not target_data["target"].get_class() == "EmptyPlayableCharacter":
+				continue
+				
+			if target_data["target"].get_viewport() != self.get_viewport():
+				continue
 					
 			valid_targets.append(target_data)
 	
 	return valid_targets
 
-
+## Process logic for singular target behavior
 func handle_single_target_movement(target_pos: Vector2, target_node: Node2D, delta: float):
 	var viewport_size = get_viewport_rect().size
 	var margin_left = drag_left_margin * viewport_size.x
@@ -404,37 +461,42 @@ func handle_single_target_movement(target_pos: Vector2, target_node: Node2D, del
 	var new_position = global_position.lerp(desired_position, pos_weight)
 	global_position = apply_camera_limits(new_position)
 
-
+## Call to reposition fast
 func instantaneous_positioning() -> void:
 	fast_reposition()
 
-
+## Retrieves target array priority
 func get_target_priority(target_node: Node2D) -> int:
 	for target_data in targets:
 		if target_data.has("target") and target_data["target"] == target_node:
 			return target_data.get("priority", 5)
+			
 	return -1
 
-
+## Update priority parameter manually
 func update_target_priority(target_node: Node2D, new_priority: int):
 	for target_data in targets:
 		if target_data.has("target") and target_data["target"] == target_node:
 			target_data["priority"] = new_priority
 			return
 
-
+## Fetch perlin data
 func get_noise(_seed: int) -> float:
 	noise.seed = _seed
 	return noise.get_noise_1d(randf() * shake_time) * max_trauma_power
 
 
+## Enforces zoom target globally
 func set_zoom_level(level: float) -> void:
 	target_zoom = Vector2(clamp(level, min_zoom, max_zoom), clamp(level, min_zoom, max_zoom))
+	base_zoom = target_zoom
 
 
+## Reaches closest zoom
 func zoom_in() -> void:
 	set_zoom_level(min_zoom)
 
 
+## Reaches furthest zoom
 func zoom_out() -> void:
 	set_zoom_level(max_zoom)

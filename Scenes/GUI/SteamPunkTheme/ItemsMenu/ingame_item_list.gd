@@ -202,6 +202,13 @@ func set_items(items: Array) -> void:
 	var cache = get_list_cache()
 	%ItemList.itemlist_id = itemlist_id
 	var col = cache.get("collection", 0)
+	
+	if itemlist_id == "items" and GameManager.inventory_manager.get("has_new_items_pending_view"):
+		if cache.get("sort_type", 0) == 0:
+			cache["tabs"].clear()
+		
+		GameManager.inventory_manager.has_new_items_pending_view = false
+	
 	var tab_data = cache["tabs"].get(col, {})
 	%ItemList.target_uid = tab_data.get("uid", "")
 	%ItemList.target_global_index = tab_data.get("index", 0)
@@ -256,6 +263,9 @@ func select_current() -> void:
 
 
 func _on_item_list_active_item_rotted() -> void:
+	if not is_started:
+		return
+		
 	active_item_rotted.emit()
 
 
@@ -268,12 +278,10 @@ func refresh_and_get_next_perishable(target_item_id: int) -> Dictionary:
 
 
 func _on_item_list_use_item(obj: Dictionary) -> void:
-	print("USE ITEM: ")
 	use_item.emit(obj)
 
 
 func _on_item_list_use_skill(obj: Dictionary) -> void:
-	print("USE SKILL: ")
 	use_skill.emit(obj)
 
 
