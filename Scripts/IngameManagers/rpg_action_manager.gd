@@ -141,7 +141,7 @@ func _simulate_generic(user: Variant, target: GameActor, data: Variant) -> Dicti
 	var initial_mp = clone.params.mp if "params" in clone else 0
 	var initial_tp = clone.get_parameter("TP") if clone.has_method("get_parameter") else 0
 	
-	var initial_states: Array[GameState] = []
+	var initial_states = []
 	if "current_states" in clone:
 		for s in clone.current_states:
 			initial_states.append(s.id)
