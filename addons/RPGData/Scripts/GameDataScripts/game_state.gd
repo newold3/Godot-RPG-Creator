@@ -14,7 +14,11 @@ enum STATE_MODE {
 	STATE_DURATION_TURNS = 4,       ## Duration is measured in turns.
 	STATE_DURATION_SECONDS = 8,     ## Duration is measured in seconds.
 	STATE_DURATION_PERMANENT = 16,  ## State lasts indefinitely within its context.
-	STATE_TICKS_ENABLED = 32        ## State triggers actions at regular intervals (ticks).
+	STATE_TICKS_ENABLED = 32,       ## State triggers actions at regular intervals (ticks).
+	STATE_TICKS_DAMAGE = 64,        ## Regen traits do damage instead.
+	STATE_REMOVE_BY_WALKING = 128,  ## State is removed by walking steps.
+	STATE_REMOVE_BY_DAMAGE = 256,   ## State is removed when taking damage.
+	STATE_REMOVE_BY_RESTRICTION = 512 ## State is removed when restriction changes.
 }
 
 ## Real database ID of the state.
@@ -38,6 +42,8 @@ enum STATE_MODE {
 ## Number of times this state has been applied (used to track usage or scale effects).
 @export var usage_count: int = 0
 
+@export var initialize_step_count: int = 0
+
 
 signal state_ended(state: GameState)   ## Emitted when the state expires (duration reaches 0).
 signal state_tick(state: GameState)    ## Emitted every time a tick interval is completed.
@@ -54,6 +60,8 @@ func _init(
 	duration = _duration
 	tick_interval = _tick_interval
 	state_mode = _state_mode
+	if GameManager.game_state:
+		initialize_step_count = GameManager.game_state.stats.steps
 
 
 func get_real_state() -> RPGState:
@@ -62,6 +70,10 @@ func get_real_state() -> RPGState:
 	
 	return null
 
+
+## Returns true if the state applies in all contexts (exploration and battle).
+func is_global_context() -> bool:
+	return (state_mode & STATE_MODE.STATE_CONTEXT_GLOBAL) != 0
 
 ## Returns true if the state is active only during battles.
 func is_battle_only() -> bool:
@@ -83,6 +95,22 @@ func is_permanent() -> bool:
 func has_ticks() -> bool:
 	return (state_mode & STATE_MODE.STATE_TICKS_ENABLED) != 0
 
+## Returns true if the state is tick damage base.
+func has_ticks_damage() -> bool:
+	return (state_mode & STATE_MODE.STATE_TICKS_DAMAGE) != 0
+
+## Returns true if the state should be removed by walking on the map.
+func is_removed_by_walking() -> bool:
+	return (state_mode & STATE_MODE.STATE_REMOVE_BY_WALKING) != 0
+
+## Returns true if the state should be removed upon taking damage.
+func is_removed_by_damage() -> bool:
+	return (state_mode & STATE_MODE.STATE_REMOVE_BY_DAMAGE) != 0
+
+## Returns true if the state should be removed by restriction changes.
+func is_removed_by_restriction() -> bool:
+	return (state_mode & STATE_MODE.STATE_REMOVE_BY_RESTRICTION) != 0
+
 ## Updates the state's lifetime.
 ## - If the state is permanent, it remains active indefinitely and does not update.
 ## - If ticks are enabled, it accumulates time and emits [signal state_tick] when the interval is reached.
@@ -90,6 +118,7 @@ func has_ticks() -> bool:
 ## - Decreases the duration based on time or turns, depending on the state's mode.
 ## - Emits [signal state_ended] when the duration reaches zero.
 func update_lifetime(delta: float) -> void:
+	print("updateando tiempo de vida de estado")
 	if has_ticks():
 		tick_timer += delta
 		if tick_timer >= tick_interval:
@@ -104,5 +133,11 @@ func update_lifetime(delta: float) -> void:
 	else:
 		duration = maxf(0.0, duration - delta)
 	
-	if duration <= 0:
+	# Emit ended ONLY if the state was designed to have an expiration time or turns
+	if duration <= 0 and (is_duration_turn_based() or is_duration_time_based()):
 		state_ended.emit(self)
+
+
+func clone() -> GameState:
+	var new_state: GameState = duplicate(true)
+	return new_state

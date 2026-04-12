@@ -55,6 +55,8 @@ signal action_failure(target: Variant)
 signal action_canceled(target: Variant)
 
 
+
+## Returns a default dictionary structure for simulation results.
 func _get_default_simulate_data() -> Dictionary:
 	var result_data = {
 		"success": false,
@@ -77,6 +79,8 @@ func _get_default_simulate_data() -> Dictionary:
 	return result_data
 
 
+
+## Parses and evaluates a damage formula string using the user and target parameters.
 func _parse_formula(formula: String, user: Variant, target: Variant) -> int:
 	if formula.is_empty():
 		return 0
@@ -120,10 +124,12 @@ func _parse_formula(formula: String, user: Variant, target: Variant) -> int:
 	return int(result)
 
 
-func _simulate_generic(user: Variant, target: Variant, data: Variant) -> Dictionary:
+
+## Simulates the effects of an action on a target to determine success and collect callables.
+func _simulate_generic(user: Variant, target: GameActor, data: Variant) -> Dictionary:
 	var result_data = _get_default_simulate_data()
 	
-	var clone = target.duplicate_deep() if target.has_method("duplicate_deep") else target.duplicate(true)
+	var clone = target.clone() if target.has_method("clone") else target.duplicate(true)
 	
 	if "temp_buffs" in target and "temp_buffs" in clone:
 		clone.temp_buffs = target.temp_buffs.duplicate(true)
@@ -135,7 +141,7 @@ func _simulate_generic(user: Variant, target: Variant, data: Variant) -> Diction
 	var initial_mp = clone.params.mp if "params" in clone else 0
 	var initial_tp = clone.get_parameter("TP") if clone.has_method("get_parameter") else 0
 	
-	var initial_states = []
+	var initial_states: Array[GameState] = []
 	if "current_states" in clone:
 		for s in clone.current_states:
 			initial_states.append(s.id)
@@ -169,31 +175,32 @@ func _simulate_generic(user: Variant, target: Variant, data: Variant) -> Diction
 				if clone.has_method("apply_recovery_effect"):
 					clone.apply_recovery_effect(true, effect.value1, effect.value2)
 					result_data["callables"].append(target.apply_recovery_effect.bind(true, effect.value1, effect.value2))
+					
 			EffectCode.RECOVER_MP:
 				if clone.has_method("apply_recovery_effect"):
 					clone.apply_recovery_effect(false, effect.value1, effect.value2)
 					result_data["callables"].append(target.apply_recovery_effect.bind(false, effect.value1, effect.value2))
+					
 			EffectCode.GAIN_TP:
 				var tp_val = effect.value1 if effect.value1 != 0 else effect.value2
 				var op = 0 if tp_val > 0 else 1
 				if clone.has_method("set_parameter"):
 					clone.set_parameter("TP", abs(tp_val), op)
 					result_data["callables"].append(target.set_parameter.bind("TP", abs(tp_val), op))
+					
 			EffectCode.ADD_STATE:
-				var before_count = clone.current_states.size()
+				var state_id = effect.data_id
 				if clone.has_method("apply_state_effect"):
-					clone.apply_state_effect(effect.data_id, effect.value2)
-					if clone.current_states.size() > before_count:
-						var state_res = RPGSYSTEM.database.states[effect.data_id]
+					if clone.apply_state_effect(state_id, effect.value2):
+						var state_res = RPGSYSTEM.database.states[state_id]
 						result_data["callables"].append(target.add_state.bind(state_res))
+						
 			EffectCode.REMOVE_STATE:
-				var before_count = clone.current_states.size()
+				var state_id = effect.data_id
 				if clone.has_method("remove_state_effect"):
-					clone.remove_state_effect(effect.data_id, effect.value2)
-					if clone.current_states.size() < before_count:
-						var states_to_remove = target.current_states.filter(func(s): return s.id == effect.data_id)
-						for s in states_to_remove:
-							result_data["callables"].append(target._remove_state.bind(s))
+					if clone.remove_state_effect(state_id, effect.value2):
+						result_data["callables"].append(target.execute_state_removal.bind(state_id))
+							
 			EffectCode.ADD_BUFF:
 				var before_count = clone.temp_buffs.size()
 				if clone.has_method("apply_buff_effect"):
@@ -201,6 +208,7 @@ func _simulate_generic(user: Variant, target: Variant, data: Variant) -> Diction
 					clone.apply_buff_effect(effect.data_id, potency, val2)
 					if clone.temp_buffs.size() > before_count:
 						result_data["callables"].append(target.add_buff.bind(effect.data_id, potency, val2))
+						
 			EffectCode.ADD_DEBUFF:
 				var before_count = clone.temp_debuff.size()
 				if clone.has_method("apply_debuff_effect"):
@@ -208,23 +216,33 @@ func _simulate_generic(user: Variant, target: Variant, data: Variant) -> Diction
 					clone.apply_debuff_effect(effect.data_id, potency, val2)
 					if clone.temp_debuff.size() > before_count:
 						result_data["callables"].append(target.add_debuff.bind(effect.data_id, potency, val2))
+						
 			EffectCode.REMOVE_BUFF:
+				var before_count = clone.temp_buffs.size()
 				if clone.has_method("remove_buff"):
 					clone.remove_buff(effect.data_id, val2)
-					result_data["callables"].append(target.remove_buff.bind(effect.data_id, val2))
+					if clone.temp_buffs.size() < before_count:
+						result_data["callables"].append(target.remove_buff.bind(effect.data_id, val2))
+						
 			EffectCode.REMOVE_DEBUFF:
+				var before_count = clone.temp_debuff.size()
 				if clone.has_method("remove_debuff"):
 					clone.remove_debuff(effect.data_id, val2)
-					result_data["callables"].append(target.remove_debuff.bind(effect.data_id, val2))
+					if clone.temp_debuff.size() < before_count:
+						result_data["callables"].append(target.remove_debuff.bind(effect.data_id, val2))
+						
 			EffectCode.SPECIAL_EFFECT:
 				result_data["special_effects"].append(effect.data_id)
+				
 			EffectCode.GROW:
 				if clone.has_method("apply_grow_effect"):
 					clone.apply_grow_effect(effect.data_id, val2)
 					result_data["growth"].append({"param_id": effect.data_id, "amount": val2})
 					result_data["callables"].append(target.apply_grow_effect.bind(effect.data_id, val2))
+					
 			EffectCode.LEARN_SKILL:
 				result_data["learned_skills"].append(effect.data_id)
+				
 			13:
 				result_data["common_event"] = effect.data_id
 					
@@ -313,11 +331,11 @@ func _simulate_generic(user: Variant, target: Variant, data: Variant) -> Diction
 	elif clone is Object and not clone is RefCounted and clone != target:
 		clone.free()
 	
-	print(result_data)
-	
 	return result_data
 
 
+
+## Simulates using an item on a target to evaluate success and potential parameter changes.
 func simulate_use_item(user: Variant, target: Variant, item: GameItem) -> Dictionary:
 	var real_item: RPGItem = item.get_real_data()
 	
@@ -327,6 +345,8 @@ func simulate_use_item(user: Variant, target: Variant, item: GameItem) -> Dictio
 	return _simulate_generic(user, target, real_item)
 
 
+
+## Simulates using a skill on a target to evaluate success and potential parameter changes.
 func simulate_use_skill(user: Variant, target: Variant, skill_id: int) -> Dictionary:
 	var real_skill: RPGSkill = RPGSYSTEM.database.skills[skill_id] \
 		if skill_id > 0 and RPGSYSTEM.database.skills.size() > skill_id else null

@@ -63,6 +63,7 @@ func _update_data_fields() -> void:
 		%IsCumulative.set_pressed(current_data.is_cumulative)
 		%IsDamageTick.set_pressed(current_data.is_damage_tick)
 		%TickInterval.value = current_data.tick_interval
+		%RemoveByStack.set_pressed(!current_data.remove_by_stacks)
 		fill_messages(-1)
 	else:
 		disable_all(true)
@@ -328,3 +329,7 @@ func _on_icon_picker_paste_requested(icon: String, region: Rect2) -> void:
 
 func _on_is_damage_tick_toggled(toggled_on: bool) -> void:
 	get_data().is_damage_tick = toggled_on
+
+
+func _on_remove_by_stack_toggled(toggled_on: bool) -> void:
+	get_data().remove_by_stacks = !toggled_on

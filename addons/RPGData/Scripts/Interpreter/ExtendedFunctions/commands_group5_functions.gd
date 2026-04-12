@@ -72,41 +72,33 @@ func _command_0039() -> void:
 func _command_0040() -> void:
 	debug_print("Processing command: Change Actor State (code 40)")
 	
-	# Retrieve parameters from the current command
 	var actor_type = current_command.parameters.get("actor_type", 0)
 	var actor_id = current_command.parameters.get("actor_id", 0)
 	var operand = current_command.parameters.get("operand", 0)
 	var state_id = current_command.parameters.get("state_id", 0)
 	
-	# Determine the list of actor IDs based on the actor type
 	var actor_ids = []
-	if actor_type == 0: # Fixed value
-		if actor_id == 0: # Entire Party
+	
+	if actor_type == 0:
+		if actor_id == 0:
 			actor_ids = GameManager.game_state.current_party
-		else: # Specific Actor ID
+		else:
 			actor_ids.append(actor_id)
-	elif actor_type == 1 and actor_id > 0 and GameManager.game_state.game_variables.size() > actor_id: # Variable value
+	elif actor_type == 1 and actor_id > 0 and GameManager.game_state.game_variables.size() > actor_id:
 		var real_actor_id = GameManager.game_state.game_variables[actor_id]
 		actor_ids.append(real_actor_id)
 	
-	# Apply the state change to each actor in the list
 	for id: int in actor_ids:
 		if GameManager.game_state.actors.has(id):
 			var actor: GameActor = GameManager.game_state.actors[id]
+			
 			if actor:
-				if operand == 0: # Add state
-					# Ensure the state ID is valid before adding it
+				if operand == 0:
 					if state_id > 0 and RPGSYSTEM.database.states.size() > state_id:
 						var real_state: RPGState = RPGSYSTEM.database.states[state_id]
 						actor.add_state(real_state)
-				elif operand == 1: # Remove state
-					# Filter and remove the specified state from the actor's current states
-					var states = actor.current_states.filter(
-						func(state: GameState) -> bool:
-							return state.id == state_id
-					)
-					for state in states:
-						actor.current_states.erase(state)
+				elif operand == 1:
+					actor.remove_state(state_id)
 
 
 
@@ -401,29 +393,27 @@ func _command_0050() -> void:
 func _command_0062() -> void:
 	debug_print("Processing command: Add Or Remove Trait (code 62)")
 
-	# Retrieve the actor ID, type of operation (add/remove), and the trait to modify
 	var actor_id = current_command.parameters.get("actor_id", 0)
 	var type = current_command.parameters.get("type", 0)
 	var tr: RPGTrait = current_command.parameters.get("RPGTrait", null)
 
-	# Ensure the trait is valid before proceeding
 	if tr:
-		if actor_id == 0: # Apply to the entire party
+		if actor_id == 0:
 			for id in GameManager.game_state.current_party:
 				if GameManager.game_state.actors.has(id):
 					var actor: GameActor = GameManager.game_state.actors[id]
+					
 					if actor:
-						# Add or remove the trait based on the type parameter
-						if type == 0: # Add Trait
+						if type == 0:
 							actor.add_trait(tr)
-						elif type == 1: # Remove Trait
+						elif type == 1:
 							actor.remove_trait(tr)
-		else: # Apply to a specific actor by ID
+		else:
 			if GameManager.game_state.actors.has(actor_id):
 				var actor: GameActor = GameManager.game_state.actors[actor_id]
+				
 				if actor:
-					# Add or remove the trait based on the type parameter
-					if type == 0: # Add Trait
+					if type == 0:
 						actor.add_trait(tr)
-					elif type == 1: # Remove Trait
+					elif type == 1:
 						actor.remove_trait(tr)

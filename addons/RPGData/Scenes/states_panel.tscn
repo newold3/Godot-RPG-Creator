@@ -483,10 +483,13 @@ size_flags_horizontal = 3
 tooltip_text = "If the state has \"HP\", \"MP\" or \"TP\" (only in battle) regeneration traits and you are out of battle, this value is used to perform the ticks.
 
 [Note]: In battle, regeneration traits are triggered every turn."
+step = 0.01
 page = 0.01
+value = 1.0
+rounded = false
 allow_greater = true
 suffix = " second/s"
-_custom_value = 0.0
+_custom_value = 1.0
 
 [node name="IsDamageTick" type="CheckBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer3" unique_id=1881114907]
 unique_name_in_owner = true
@@ -512,6 +515,23 @@ layout_mode = 2
 [node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/RemovalCondition/MarginContainer/ParameterChanges" unique_id=1504323501]
 layout_mode = 2
 text = "Removal Conditions"
+
+[node name="RemoveByStack" type="CheckBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/RemovalCondition/MarginContainer/ParameterChanges/Label" unique_id=1321653945]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -24.0
+offset_top = -15.5
+offset_bottom = 15.5
+grow_horizontal = 0
+grow_vertical = 2
+tooltip_text = "If unchecked, removing this state will only remove one stack instead of removing all stacks."
+mouse_default_cursor_shape = 2
+text = "Removes all stacks when cleansed"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/RemovalCondition/MarginContainer/ParameterChanges" unique_id=1060811468]
 layout_mode = 2
@@ -637,7 +657,7 @@ theme_override_styles/separator = SubResource("StyleBoxLine_2omus")
 layout_mode = 2
 
 [node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/RemovalCondition/MarginContainer/ParameterChanges/HBoxContainer2" unique_id=966043043]
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(240, 0)
 layout_mode = 2
 text = "Auto-Removal Timing:"
 
@@ -663,7 +683,7 @@ script = ExtResource("9_1ak5i")
 layout_mode = 2
 
 [node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/RemovalCondition/MarginContainer/ParameterChanges/HBoxContainer3" unique_id=1478969962]
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(240, 0)
 layout_mode = 2
 text = "Duration in Turns:"
 
@@ -679,6 +699,7 @@ _custom_value = 0.0
 
 [node name="Label2" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/RemovalCondition/MarginContainer/ParameterChanges/HBoxContainer3" unique_id=1739373]
 layout_mode = 2
+size_flags_horizontal = 0
 text = "    ~    "
 
 [node name="MaxTurnsSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/RemovalCondition/MarginContainer/ParameterChanges/HBoxContainer3" unique_id=36532245 instance=ExtResource("9_n51fq")]
@@ -819,6 +840,7 @@ wrap_mode = 1
 [connection signal="toggled" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer3/IsCumulative" to="." method="_on_is_cumulative_toggled"]
 [connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer3/TickInterval" to="." method="_on_tick_interval_value_changed"]
 [connection signal="toggled" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/VBoxContainer3/IsDamageTick" to="." method="_on_is_damage_tick_toggled"]
+[connection signal="toggled" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/RemovalCondition/MarginContainer/ParameterChanges/Label/RemoveByStack" to="." method="_on_remove_by_stack_toggled"]
 [connection signal="toggled" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/RemovalCondition/MarginContainer/ParameterChanges/HBoxContainer/Control/RemoveAtBattleEndCheckBox" to="." method="_on_remove_at_battle_end_check_box_toggled"]
 [connection signal="toggled" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/RemovalCondition/MarginContainer/ParameterChanges/HBoxContainer/Control2/RemoveByRestrictionCheckBox" to="." method="_on_remove_by_restriction_check_box_toggled"]
 [connection signal="toggled" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/RemovalCondition/MarginContainer/ParameterChanges/HBoxContainer4/MarginContainer/HBoxContainer/RemoveByDamageCheckBox" to="." method="_on_remove_by_damage_check_box_toggled"]

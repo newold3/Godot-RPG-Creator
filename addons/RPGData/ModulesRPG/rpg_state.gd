@@ -21,6 +21,7 @@ func get_class(): return "RPGState"
 @export var remove_by_walking: bool = false
 @export var remove_by_time: bool = false
 @export var is_cumulative: bool = false
+@export var remove_by_stacks: bool = false
 @export var is_damage_tick: bool = false
 @export var steps_to_remove: int = 100
 @export var auto_removal_timing: int = 0
@@ -36,7 +37,7 @@ func get_class(): return "RPGState"
 func clear() -> void:
 	for v in ["name", "description", "notes"]: set(v, "")
 	for v in [messages, traits]: v.clear()
-	for v in ["remove_at_battle_end", "remove_by_restriction", "remove_by_damage", "remove_by_walking", "remove_by_time", "is_damage_tick", "is_cumulative"]: set(v, false)
+	for v in ["remove_at_battle_end", "remove_by_restriction", "remove_by_damage", "remove_by_walking", "remove_by_time", "is_damage_tick", "is_cumulative", "remove_by_stacks"]: set(v, false)
 	restriction = 0
 	motion_animation = 0
 	overlay_animation = 0
@@ -60,3 +61,7 @@ func clone(value: bool = true) -> RPGState:
 	new_state.icon = icon.clone(value)
 	
 	return new_state
+
+
+func _to_string() -> String:
+	return "<RGPState id=%s name=%s>" % [id, name]
