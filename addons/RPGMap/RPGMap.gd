@@ -89,6 +89,10 @@ var focus_tile_is_enabled: bool = true
 var preset_manager: EventPresetList = EventPresetList.new()
 var extraction_preset_manager: ExtractionEventPresetList = ExtractionEventPresetList.new()
 
+var hot_reload_udp := PacketPeerUDP.new()
+var target_port := 4242
+var target_ip := "127.0.0.1"
+
 var DETACHABLE_WINDOW: PackedScene
 
 var edit_configs = {
@@ -1893,7 +1897,6 @@ func _handle_region_resize_input(event: InputEvent, mode: MODE, current_data: Ar
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.pressed:
 				var mouse_pos = current_object.get_local_mouse_position()
-				
 				var found_handle = false
 				
 				for region in current_data:
@@ -1901,7 +1904,7 @@ func _handle_region_resize_input(event: InputEvent, mode: MODE, current_data: Ar
 					if resize_handle != "" and resize_handle != "inside":
 						is_resizing = true
 						resize_start_pos = mouse_pos
-						resize_start_rect = region.rect # This is the "before" state
+						resize_start_rect = region.rect
 						set(region_property, region)
 						current_object.set(selected_property, region)
 						current_object.refresh_canvas()
@@ -1911,31 +1914,28 @@ func _handle_region_resize_input(event: InputEvent, mode: MODE, current_data: Ar
 				if !found_handle:
 					is_resizing = false
 					
-			else: # Mouse release
+			else:
 				if is_resizing and region_instance:
 					var old_rect = resize_start_rect
 					var new_rect = region_instance.rect
 					
-					# BUG FIX: Cast old_rect (Rect2) to Rect2i for comparison
 					if Rect2i(old_rect) != new_rect:
 						var undo_redo = get_undo_redo()
 						undo_redo.create_action("Resize Region", UndoRedo.MERGE_DISABLE, current_object)
-						
-						# DO
 						undo_redo.add_do_method(self, "_force_mode_switch", mode)
 						undo_redo.add_do_property(region_instance, "rect", new_rect)
 						undo_redo.add_do_method(current_object, update_method, region_instance)
 						undo_redo.add_do_method(get_editor_interface(), "mark_scene_as_unsaved")
 						undo_redo.add_do_method(container_control, "select", region_instance.id, false, true)
-						
-						# UNDO
 						undo_redo.add_undo_method(self, "_force_mode_switch", mode)
-						undo_redo.add_undo_property(region_instance, "rect", Rect2i(old_rect)) # Cast here too for safety
+						undo_redo.add_undo_property(region_instance, "rect", Rect2i(old_rect))
 						undo_redo.add_undo_method(current_object, update_method, region_instance)
 						undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
 						undo_redo.add_undo_method(container_control, "select", region_instance.id, false, true)
-						
 						undo_redo.commit_action()
+						
+						var type = "update_enemy_spawn" if mode == MODE.ENEMY_SPAWN else "update_event_region"
+						send_hot_reload_update(type, region_instance.id, region_instance)
 					
 				is_resizing = false
 				resize_handle = ""
@@ -1945,7 +1945,7 @@ func _handle_region_resize_input(event: InputEvent, mode: MODE, current_data: Ar
 	elif is_resizing and event is InputEventMouseMotion:
 		var mouse_pos = current_object.get_local_mouse_position()
 		var delta = Vector2i((mouse_pos - resize_start_pos) / Vector2(current_object.tile_size))
-		var new_rect: Rect2i = resize_start_rect # This correctly truncates the float Rect2 to Rect2i
+		var new_rect: Rect2i = resize_start_rect
 		
 		match resize_handle:
 			"top_left":
@@ -2061,6 +2061,7 @@ func _forward_canvas_gui_input_event_mode(event: InputEvent) -> bool:
 					undo_redo.add_undo_method(event_container_control, "select", -1, true, true)
 					undo_redo.commit_action()
 					call_deferred("_select_event_after_creation", current_tile_pos)
+					
 				elif _current_event:
 					EditorInterface.inspect_object(_current_event)
 					
@@ -2077,6 +2078,7 @@ func _forward_canvas_gui_input_event_mode(event: InputEvent) -> bool:
 							event_container_control.select(dragging_event.id, false, true)
 							
 					current_cursor = RESIZE_CURSORS.move
+					
 			else:
 				var start_position = get_start_position_under_mouse()
 				
@@ -2118,6 +2120,7 @@ func _forward_canvas_gui_input_event_mode(event: InputEvent) -> bool:
 				undo_redo.add_undo_method(event_container_control, "refresh", true)
 				undo_redo.commit_action()
 			
+			send_hot_reload_update("update_event", dragging_event.id, dragging_event)
 			dragging_event = null
 			destroy_cursor()
 		
@@ -2128,18 +2131,24 @@ func _forward_canvas_gui_input_event_mode(event: InputEvent) -> bool:
 			
 			if new_pos != old_pos and can_place:
 				var undo_redo = get_undo_redo()
+				var target_id = _get_start_position_id(dragging_start_position)
 				
 				undo_redo.create_action("Move Start Position", UndoRedo.MERGE_DISABLE, current_object)
+				
 				undo_redo.add_do_method(self, "_force_mode_switch", MODE.EVENT)
 				undo_redo.add_do_property(dragging_start_position, "position", new_pos)
 				undo_redo.add_do_method(current_object, "queue_redraw")
 				undo_redo.add_do_method(get_editor_interface(), "mark_scene_as_unsaved")
 				undo_redo.add_do_method(event_container_control, "refresh", true)
+				undo_redo.add_do_method(self, "send_hot_reload_start_position", target_id, current_object.internal_id, new_pos)
+				
 				undo_redo.add_undo_method(self, "_force_mode_switch", MODE.EVENT)
 				undo_redo.add_undo_property(dragging_start_position, "position", old_pos)
 				undo_redo.add_undo_method(current_object, "queue_redraw")
 				undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
 				undo_redo.add_undo_method(event_container_control, "refresh", true)
+				undo_redo.add_undo_method(self, "send_hot_reload_start_position", target_id, current_object.internal_id, old_pos)
+				
 				undo_redo.commit_action()
 					
 			dragging_start_position = RPGMapPosition.new()
@@ -2184,6 +2193,8 @@ func _forward_canvas_gui_input_event_mode(event: InputEvent) -> bool:
 				current_object.current_event = event_to_remove
 				current_tile_pos = Vector2i(event_to_remove.x, event_to_remove.y)
 				remove_tile()
+			elif current_object.current_start_position:
+				_on_start_position_popup_menu_index_pressed(2)
 				
 			input_handled = true
 		elif event.is_ctrl_pressed():
@@ -2199,6 +2210,8 @@ func _forward_canvas_gui_input_event_mode(event: InputEvent) -> bool:
 				if event_to_cut:
 					current_tile_pos = Vector2i(event_to_cut.x, event_to_cut.y)
 					_on_tile_popup_menu_index_pressed(2)
+				elif current_object.current_start_position:
+					_on_start_position_popup_menu_index_pressed(0)
 					
 				input_handled = true
 			elif event.keycode == KEY_V:
@@ -2297,6 +2310,7 @@ func _forward_canvas_gui_input_extraction_event_mode(event: InputEvent) -> bool:
 				undo_redo.add_undo_method(extraction_event_container_control, "refresh", true)
 				undo_redo.commit_action()
 					
+			send_hot_reload_update("update_extraction_event", dragging_extraction_event.id, dragging_extraction_event)
 			dragging_extraction_event = null
 			destroy_cursor()
 		
@@ -2434,6 +2448,7 @@ func _forward_canvas_gui_input_enemy_spawn_mode(event: InputEvent) -> bool:
 				undo_redo.add_undo_method(enemy_spawn_container_control, "select", -1, true, true)
 				undo_redo.commit_action()
 				
+			send_hot_reload_update("update_enemy_spawn", region_to_add.id, region_to_add)
 			current_object.current_enemy_spawn_region = null
 			dragging_enemy_spawn_region = null
 			current_object.refresh_canvas()
@@ -2463,6 +2478,8 @@ func _forward_canvas_gui_input_enemy_spawn_mode(event: InputEvent) -> bool:
 					undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
 					undo_redo.add_undo_method(enemy_spawn_container_control, "select", region_id, true, true)
 					undo_redo.commit_action()
+					
+					send_hot_reload_update("update_enemy_spawn", region_to_move.id, region_to_move)
 					
 			current_object.current_enemy_spawn_region = null
 			moving_enemy_spawn_region = null
@@ -2522,8 +2539,9 @@ func _forward_canvas_gui_input_enemy_spawn_mode(event: InputEvent) -> bool:
 func _select_region_after_creation(region: EnemySpawnRegion):
 	if !current_object or !enemy_spawn_container_control:
 		return
-	# 'add_region' might have assigned a new ID, so we select using the object's ID
+		
 	enemy_spawn_container_control.select(region.id, true, true)
+	send_hot_reload_update("update_enemy_spawn", region.id, region)
 
 
 # --- Event Region Mode ---
@@ -2606,6 +2624,7 @@ func _forward_canvas_gui_input_event_region_mode(event: InputEvent) -> bool:
 				undo_redo.add_undo_method(event_region_container_control, "select", -1, true, true)
 				undo_redo.commit_action()
 				
+			send_hot_reload_update("update_event_region", region_to_add.id, region_to_add)
 			current_object.current_event_region = null
 			dragging_event_region = null
 			current_object.refresh_canvas()
@@ -2635,6 +2654,8 @@ func _forward_canvas_gui_input_event_region_mode(event: InputEvent) -> bool:
 					undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
 					undo_redo.add_undo_method(event_region_container_control, "select", region_id, true, true)
 					undo_redo.commit_action()
+					
+					send_hot_reload_update("update_event_region", region_to_move.id, region_to_move)
 					
 			current_object.current_event_region = null
 			moving_event_region = null
@@ -2694,7 +2715,9 @@ func _forward_canvas_gui_input_event_region_mode(event: InputEvent) -> bool:
 func _select_event_region_after_creation(region: EventRegion):
 	if !current_object or !event_region_container_control:
 		return
+		
 	event_region_container_control.select(region.id, true, true)
+	send_hot_reload_update("update_event_region", region.id, region)
 
 
 func is_mouse_over_start_positions() -> bool:
@@ -2940,49 +2963,51 @@ func _on_tile_popup_menu_index_pressed(index: int) -> void:
 	
 	var undo_redo = get_undo_redo()
 
-	if index == 0: # Create\Edit tile
+	if index == 0:
 		if !current_event:
 			create_new_tile()
 		else:
 			show_edit_event_dialog()
-	
-	elif index == 2: # Cut tile
+			
+	elif index == 2:
 		var event_to_cut = current_object.get_event_in(current_tile_pos)
+		
 		if !event_to_cut:
 			return
 			
 		var event_copy = event_to_cut.duplicate(true)
 		var event_id = event_copy.id
 		var event_pos = Vector2i(event_copy.x, event_copy.y)
+		
 		event_copy._uniq_id = event_to_cut._uniq_id
 		event_copy.set_meta("is_original_event", true)
 		
 		undo_redo.create_action("Cut Event", UndoRedo.MERGE_DISABLE, current_object)
 		
-		# DO
 		undo_redo.add_do_method(self, "_force_mode_switch", MODE.EVENT)
 		undo_redo.add_do_method(self, "copy_tile_into_clipboard", event_copy, true)
 		undo_redo.add_do_method(current_object, "remove_event_in", event_pos)
 		undo_redo.add_do_method(get_editor_interface(), "mark_scene_as_unsaved")
 		undo_redo.add_do_method(event_container_control, "refresh", true)
 		undo_redo.add_do_method(event_container_control, "select", -1, true, true)
+		undo_redo.add_do_method(self, "send_hot_reload_delete", "delete_event", event_copy._uniq_id)
 		
-		# UNDO
 		undo_redo.add_undo_method(self, "_force_mode_switch", MODE.EVENT)
 		undo_redo.add_undo_method(current_object, "paste_event_in", event_pos, event_copy)
 		undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
 		undo_redo.add_undo_method(event_container_control, "refresh", true)
 		undo_redo.add_undo_method(event_container_control, "select", event_id, true, true)
+		undo_redo.add_undo_method(self, "send_hot_reload_update", "update_event", event_id, event_copy)
 		
 		undo_redo.commit_action()
 		
-	elif index == 3: # Copy tile
+	elif index == 3:
 		copy_tile_into_clipboard()
-	
-	elif index == 4: # Paste tile
+		
+	elif index == 4:
 		paste_tile()
-	
-	elif index == 5: # Remove tile
+		
+	elif index == 5:
 		remove_tile()
 
 
@@ -2992,14 +3017,15 @@ func _on_extraction_tile_popup_menu_index_pressed(index: int) -> void:
 	
 	var undo_redo = get_undo_redo()
 	
-	if index == 0: # Create\Edit tile
+	if index == 0:
 		if !current_extraction_event:
 			create_new_extraction_tile()
 		else:
 			show_edit_extraction_event_dialog()
-	
-	elif index == 2: # Cut tile
+			
+	elif index == 2:
 		var event_to_cut = current_object.get_extraction_event_in(current_tile_pos)
+		
 		if !event_to_cut:
 			return
 		
@@ -3009,30 +3035,30 @@ func _on_extraction_tile_popup_menu_index_pressed(index: int) -> void:
 
 		undo_redo.create_action("Cut Extraction Event", UndoRedo.MERGE_DISABLE, current_object)
 		
-		# DO
 		undo_redo.add_do_method(self, "_force_mode_switch", MODE.EXTRACTION_EVENT)
 		undo_redo.add_do_method(self, "copy_extraction_tile_into_clipboard", event_copy)
 		undo_redo.add_do_method(current_object, "remove_extraction_event_in", event_pos)
 		undo_redo.add_do_method(get_editor_interface(), "mark_scene_as_unsaved")
 		undo_redo.add_do_method(extraction_event_container_control, "refresh", true)
 		undo_redo.add_do_method(extraction_event_container_control, "select", -1, true, true)
+		undo_redo.add_do_method(self, "send_hot_reload_delete", "delete_extraction_event", event_id)
 		
-		# UNDO
 		undo_redo.add_undo_method(self, "_force_mode_switch", MODE.EXTRACTION_EVENT)
 		undo_redo.add_undo_method(current_object, "paste_extraction_event_in", event_pos, event_copy)
 		undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
 		undo_redo.add_undo_method(extraction_event_container_control, "refresh", true)
 		undo_redo.add_undo_method(extraction_event_container_control, "select", event_id, true, true)
+		undo_redo.add_undo_method(self, "send_hot_reload_update", "update_extraction_event", event_id, event_copy)
 		
 		undo_redo.commit_action()
 
-	elif index == 3: # Copy tile
+	elif index == 3:
 		copy_extraction_tile_into_clipboard()
-	
-	elif index == 4: # Paste tile
+		
+	elif index == 4:
 		paste_extraction_tile()
-	
-	elif index == 5: # Remove tile
+		
+	elif index == 5:
 		remove_extraction_tile()
 
 
@@ -3041,6 +3067,7 @@ func _on_tile_subpopup_menu1_index_pressed(index: int) -> void:
 		return
 	
 	var system = get_node_or_null("/root/RPGSYSTEM")
+	
 	if !system:
 		return
 
@@ -3052,51 +3079,53 @@ func _on_tile_subpopup_menu1_index_pressed(index: int) -> void:
 	var action_name: String
 	
 	match index:
-		0: # Start Player Position
+		0:
 			start_pos_key = "player_start_position"
 			action_name = "Set Player Start"
-		1: # Start Land Transport Position
+		1:
 			start_pos_key = "land_transport_start_position"
 			action_name = "Set Land Transport Start"
-		2: # Start Sea Transport Position
+		2:
 			start_pos_key = "sea_transport_start_position"
 			action_name = "Set Sea Transport Start"
-		3: # Start Air Transport Position
+		3:
 			start_pos_key = "air_transport_start_position"
 			action_name = "Set Air Transport Start"
-		5: # Paste Start Position
-			paste_start_position() # Refactored to its own function
+		5:
+			paste_start_position()
 			return
 		_:
-			return # Other indices don't need undo
+			return
+			
 	var data_object: RPGMapPosition = system.database.system.get(start_pos_key)
+	
 	if !data_object:
 		return
 
-	# Store old data
 	var old_map_id = data_object.map_id
 	var old_pos = data_object.position
+	var target_id = _get_start_position_id(data_object)
 
 	if old_map_id == new_map_id and old_pos == new_pos:
-		return # No change
+		return
 
 	undo_redo.create_action(action_name, UndoRedo.MERGE_DISABLE, current_object)
 
-	# DO
 	undo_redo.add_do_method(self, "_force_mode_switch", MODE.EVENT)
 	undo_redo.add_do_property(data_object, "map_id", new_map_id)
 	undo_redo.add_do_property(data_object, "position", new_pos)
 	undo_redo.add_do_method(get_editor_interface(), "mark_scene_as_unsaved")
 	undo_redo.add_do_method(event_container_control, "refresh", true)
 	undo_redo.add_do_method(current_object, "queue_redraw")
+	undo_redo.add_do_method(self, "send_hot_reload_start_position", target_id, new_map_id, new_pos)
 	
-	# UNDO
 	undo_redo.add_undo_method(self, "_force_mode_switch", MODE.EVENT)
 	undo_redo.add_undo_property(data_object, "map_id", old_map_id)
 	undo_redo.add_undo_property(data_object, "position", old_pos)
 	undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
 	undo_redo.add_undo_method(event_container_control, "refresh", true)
 	undo_redo.add_undo_method(current_object, "queue_redraw")
+	undo_redo.add_undo_method(self, "send_hot_reload_start_position", target_id, old_map_id, old_pos)
 	
 	undo_redo.commit_action()
 
@@ -3157,36 +3186,38 @@ func create_tile_from_preset(preset_path: String) -> void:
 	if !current_object:
 		return
 	
-	# Load the preset
 	if !FileAccess.file_exists(preset_path):
 		push_error("Preset file not found: ", preset_path)
 		return
 	
 	var preset: EventPreset = FileAccess.open(preset_path, FileAccess.READ).get_var(true)
+	
 	if !preset or !preset.preset:
 		push_error("Invalid preset file: ", preset_path)
 		return
 	
 	var event_copy = preset.preset.duplicate(true)
+	
 	if "_uniq_id" in event_copy and event_copy.has_method("_generate_16_digit_id"):
 		event_copy._uniq_id = event_copy._generate_16_digit_id()
 	
 	var undo_redo = get_undo_redo()
+	
 	undo_redo.create_action("Create Event from Preset", UndoRedo.MERGE_DISABLE, current_object)
 	
-	# DO
 	undo_redo.add_do_method(self, "_force_mode_switch", MODE.EVENT)
 	undo_redo.add_do_method(current_object, "paste_event_in", current_tile_pos, event_copy)
 	undo_redo.add_do_method(get_editor_interface(), "mark_scene_as_unsaved")
 	undo_redo.add_do_method(event_container_control, "refresh", true)
 	undo_redo.add_do_method(event_container_control, "select_object", event_copy, true, true)
+	undo_redo.add_do_method(self, "send_hot_reload_update", "update_event", event_copy.id, event_copy)
 	
-	# UNDO
 	undo_redo.add_undo_method(self, "_force_mode_switch", MODE.EVENT)
 	undo_redo.add_undo_method(current_object, "remove_event_in", current_tile_pos)
 	undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
 	undo_redo.add_undo_method(event_container_control, "refresh", true)
 	undo_redo.add_undo_method(event_container_control, "select", -1, true, true)
+	undo_redo.add_undo_method(self, "send_hot_reload_delete", "delete_event", event_copy._uniq_id)
 	
 	undo_redo.commit_action()
 
@@ -3246,12 +3277,12 @@ func create_extraction_tile_from_preset(preset_path: String) -> void:
 	if !current_object:
 		return
 	
-	# Load the preset
 	if !FileAccess.file_exists(preset_path):
 		push_error("Extraction preset file not found: ", preset_path)
 		return
 	
 	var preset: ExtractionEventPreset = FileAccess.open(preset_path, FileAccess.READ).get_var(true)
+	
 	if !preset or !preset.preset:
 		push_error("Invalid extraction preset file: ", preset_path)
 		return
@@ -3260,21 +3291,22 @@ func create_extraction_tile_from_preset(preset_path: String) -> void:
 	event_copy.id = current_object._get_next_extraction_event_id()
 	
 	var undo_redo = get_undo_redo()
+	
 	undo_redo.create_action("Create Extraction Event from Preset", UndoRedo.MERGE_DISABLE, current_object)
 	
-	# DO
 	undo_redo.add_do_method(self, "_force_mode_switch", MODE.EXTRACTION_EVENT)
 	undo_redo.add_do_method(current_object, "paste_extraction_event_in", current_tile_pos, event_copy)
 	undo_redo.add_do_method(get_editor_interface(), "mark_scene_as_unsaved")
 	undo_redo.add_do_method(extraction_event_container_control, "refresh", true)
 	undo_redo.add_do_method(extraction_event_container_control, "select", event_copy.id, true, true)
+	undo_redo.add_do_method(self, "send_hot_reload_update", "update_extraction_event", event_copy.id, event_copy)
 	
-	# UNDO
 	undo_redo.add_undo_method(self, "_force_mode_switch", MODE.EXTRACTION_EVENT)
 	undo_redo.add_undo_method(current_object, "remove_extraction_event_in", current_tile_pos)
 	undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
 	undo_redo.add_undo_method(extraction_event_container_control, "refresh", true)
 	undo_redo.add_undo_method(extraction_event_container_control, "select", -1, true, true)
+	undo_redo.add_undo_method(self, "send_hot_reload_delete", "delete_extraction_event", event_copy.id)
 	
 	undo_redo.commit_action()
 
@@ -3282,88 +3314,88 @@ func create_extraction_tile_from_preset(preset_path: String) -> void:
 func _on_region_popup_menu_index_pressed(index: int) -> void:
 	if !current_object:
 		return
-
-	# This function handles BOTH ENEMY_SPAWN and EVENT_REGION
-	
+		
 	if current_edit_mode == MODE.ENEMY_SPAWN:
-		# --- ENEMY_SPAWN (Refactored in Phase 4) ---
-		if index == 0: # Edit region
+		if index == 0:
 			show_edit_region_dialog()
-		elif index == 2: # Remove region
+		elif index == 2:
 			remove_region(current_object.region_selected)
-		elif index == 4: # Cut region
+		elif index == 4:
 			var region_to_cut = current_object.region_selected
+			
 			if !region_to_cut:
 				region_to_cut = current_object.get_region_in(current_tile_pos)
+				
 			if !region_to_cut:
 				return
 
 			var region_copy = region_to_cut.duplicate(true)
 			var region_id = region_copy.id
-			
 			var undo_redo = get_undo_redo()
+			
 			undo_redo.create_action("Cut Region", UndoRedo.MERGE_DISABLE, current_object)
 			
-			# DO
 			undo_redo.add_do_method(self, "_force_mode_switch", MODE.ENEMY_SPAWN)
 			undo_redo.add_do_method(self, "copy_region_into_clipboard", region_copy)
 			undo_redo.add_do_method(current_object, "remove_region", region_to_cut)
 			undo_redo.add_do_method(get_editor_interface(), "mark_scene_as_unsaved")
 			undo_redo.add_do_method(enemy_spawn_container_control, "refresh", true)
 			undo_redo.add_do_method(enemy_spawn_container_control, "select", -1, true, true)
+			undo_redo.add_do_method(self, "send_hot_reload_delete", "delete_enemy_spawn", region_id)
 			
-			# UNDO
 			undo_redo.add_undo_method(self, "_force_mode_switch", MODE.ENEMY_SPAWN)
 			undo_redo.add_undo_method(current_object, "paste_region_in", region_copy.rect.position, region_copy)
 			undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
 			undo_redo.add_undo_method(enemy_spawn_container_control, "refresh", true)
 			undo_redo.add_undo_method(enemy_spawn_container_control, "select", region_id, true, true)
+			undo_redo.add_undo_method(self, "send_hot_reload_update", "update_enemy_spawn", region_id, region_copy)
 			
 			undo_redo.commit_action()
 			
-		elif index == 5: # Copy region
+		elif index == 5:
 			copy_region_into_clipboard()
-		elif index == 6: # Paste region
+		elif index == 6:
 			paste_region()
 	else:
-		# --- EVENT_REGION (Refactored now) ---
-		if index == 0: # Edit region
+		if index == 0:
 			show_edit_event_region_dialog()
-		elif index == 2: # Remove region
+		elif index == 2:
 			remove_event_region(current_object.event_region_selected)
-		elif index == 4: # Cut region
+		elif index == 4:
 			var region_to_cut = current_object.event_region_selected
+			
 			if !region_to_cut:
 				region_to_cut = current_object.get_event_region_in(current_tile_pos)
+				
 			if !region_to_cut:
 				return
 
 			var region_copy = region_to_cut.duplicate(true)
 			var region_id = region_copy.id
-			
 			var undo_redo = get_undo_redo()
+			
 			undo_redo.create_action("Cut Event Region", UndoRedo.MERGE_DISABLE, current_object)
 
-			# DO
 			undo_redo.add_do_method(self, "_force_mode_switch", MODE.EVENT_REGION)
 			undo_redo.add_do_method(self, "copy_event_region_into_clipboard", region_copy)
 			undo_redo.add_do_method(current_object, "remove_event_region", region_to_cut)
 			undo_redo.add_do_method(get_editor_interface(), "mark_scene_as_unsaved")
 			undo_redo.add_do_method(event_region_container_control, "refresh", true)
 			undo_redo.add_do_method(event_region_container_control, "select", -1, true, true)
+			undo_redo.add_do_method(self, "send_hot_reload_delete", "delete_event_region", region_id)
 			
-			# UNDO
 			undo_redo.add_undo_method(self, "_force_mode_switch", MODE.EVENT_REGION)
 			undo_redo.add_undo_method(current_object, "paste_event_region_in", region_copy.rect.position, region_copy)
 			undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
 			undo_redo.add_undo_method(event_region_container_control, "refresh", true)
 			undo_redo.add_undo_method(event_region_container_control, "select", region_id, true, true)
+			undo_redo.add_undo_method(self, "send_hot_reload_update", "update_event_region", region_id, region_copy)
 			
 			undo_redo.commit_action()
 			
-		elif index == 5: # Copy region
+		elif index == 5:
 			copy_event_region_into_clipboard()
-		elif index == 6: # Paste region
+		elif index == 6:
 			paste_event_region()
 
 
@@ -3372,55 +3404,51 @@ func _on_start_position_popup_menu_index_pressed(index: int) -> void:
 		return
 
 	var undo_redo = get_undo_redo()
-	
-	# Store old data
 	var old_map_id = current_start_position.map_id
 	var old_pos = current_start_position.position
+	var target_id = _get_start_position_id(current_start_position)
 	
-	if index == 0: # Cut start position
+	if index == 0:
 		undo_redo.create_action("Cut Start Position", UndoRedo.MERGE_DISABLE, current_object)
-
-		# DO
 		undo_redo.add_do_method(self, "_force_mode_switch", MODE.EVENT)
 		undo_redo.add_do_method(self, "copy_start_position_into_clipboard")
 		undo_redo.add_do_method(current_start_position, "clear")
 		undo_redo.add_do_method(get_editor_interface(), "mark_scene_as_unsaved")
 		undo_redo.add_do_method(event_container_control, "refresh", true)
 		undo_redo.add_do_method(current_object, "queue_redraw")
+		undo_redo.add_do_method(self, "send_hot_reload_start_position", target_id, -1, Vector2i.ZERO)
 		
-		# UNDO
 		undo_redo.add_undo_method(self, "_force_mode_switch", MODE.EVENT)
 		undo_redo.add_undo_property(current_start_position, "map_id", old_map_id)
 		undo_redo.add_undo_property(current_start_position, "position", old_pos)
 		undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
 		undo_redo.add_undo_method(event_container_control, "refresh", true)
 		undo_redo.add_undo_method(current_object, "queue_redraw")
+		undo_redo.add_undo_method(self, "send_hot_reload_start_position", target_id, old_map_id, old_pos)
 		
 		undo_redo.commit_action()
 
-	elif index == 1: # Copy start position
-		copy_start_position_into_clipboard() # No undo/redo needed
+	elif index == 1:
+		copy_start_position_into_clipboard()
 	
-	elif index == 2: # Remove start position
+	elif index == 2:
 		undo_redo.create_action("Remove Start Position", UndoRedo.MERGE_DISABLE, current_object)
-
-		# DO
 		undo_redo.add_do_method(self, "_force_mode_switch", MODE.EVENT)
 		undo_redo.add_do_method(current_start_position, "clear")
 		undo_redo.add_do_method(get_editor_interface(), "mark_scene_as_unsaved")
 		undo_redo.add_do_method(event_container_control, "refresh", true)
 		undo_redo.add_do_method(current_object, "queue_redraw")
+		undo_redo.add_do_method(self, "send_hot_reload_start_position", target_id, -1, Vector2i.ZERO)
 		
-		# UNDO
 		undo_redo.add_undo_method(self, "_force_mode_switch", MODE.EVENT)
 		undo_redo.add_undo_property(current_start_position, "map_id", old_map_id)
 		undo_redo.add_undo_property(current_start_position, "position", old_pos)
 		undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
 		undo_redo.add_undo_method(event_container_control, "refresh", true)
 		undo_redo.add_undo_method(current_object, "queue_redraw")
+		undo_redo.add_undo_method(self, "send_hot_reload_start_position", target_id, old_map_id, old_pos)
 		
 		undo_redo.commit_action()
-	
 
 
 func copy_start_position_into_clipboard() -> void:
@@ -3448,44 +3476,48 @@ func paste_start_position() -> void:
 		return
 		
 	var start_position_key = StaticEditorVars.CLIPBOARD.get("start_position")
+	
 	if !start_position_key:
 		return
 	
 	var system = get_node_or_null("/root/RPGSYSTEM")
+	
 	if !system:
 		return
 	
 	var data_object: RPGMapPosition = system.database.system.get(start_position_key)
+	
 	if !data_object:
 		return
 		
 	var new_map_id = current_object.internal_id
 	var new_pos = current_tile_pos
-	
 	var old_map_id = data_object.map_id
 	var old_pos = data_object.position
+	var target_id = _get_start_position_id(data_object)
 	
 	if old_map_id == new_map_id and old_pos == new_pos:
-		return # No change
-
+		return
+		
 	var undo_redo = get_undo_redo()
+	
 	undo_redo.create_action("Paste Start Position", UndoRedo.MERGE_DISABLE, current_object)
 	
-	# DO
 	undo_redo.add_do_method(self, "_force_mode_switch", MODE.EVENT)
 	undo_redo.add_do_property(data_object, "map_id", new_map_id)
 	undo_redo.add_do_property(data_object, "position", new_pos)
 	undo_redo.add_do_method(get_editor_interface(), "mark_scene_as_unsaved")
 	undo_redo.add_do_method(event_container_control, "refresh", true)
 	undo_redo.add_do_method(current_object, "queue_redraw")
+	undo_redo.add_do_method(self, "send_hot_reload_start_position", target_id, new_map_id, new_pos)
 	
-	# UNDO
 	undo_redo.add_undo_method(self, "_force_mode_switch", MODE.EVENT)
 	undo_redo.add_undo_property(data_object, "map_id", old_map_id)
 	undo_redo.add_undo_property(data_object, "position", old_pos)
 	undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
 	undo_redo.add_undo_method(event_container_control, "refresh", true)
 	undo_redo.add_undo_method(current_object, "queue_redraw")
+	undo_redo.add_undo_method(self, "send_hot_reload_start_position", target_id, old_map_id, old_pos)
 	
 	undo_redo.commit_action()
 
@@ -3527,8 +3559,10 @@ func _select_event_after_creation(pos: Vector2i):
 		return
 	
 	var event = current_object.get_event_in(pos)
-	if event and event_container_control:
-		event_container_control.select(event.id, true, true)
+	if event:
+		if event_container_control:
+			event_container_control.select(event.id, true, true)
+		send_hot_reload_update("update_event", event.id, event)
 	
 	current_object.select_event(pos)
 
@@ -3563,8 +3597,10 @@ func _select_extraction_event_after_creation(pos: Vector2i):
 		return
 	
 	var event = current_object.get_extraction_event_in(pos)
-	if event and extraction_event_container_control:
-		extraction_event_container_control.select(event.id, true, true)
+	if event:
+		if extraction_event_container_control:
+			extraction_event_container_control.select(event.id, true, true)
+		send_hot_reload_update("update_extraction_event", event.id, event)
 	
 	current_object.select_extraction_event(pos)
 
@@ -3603,6 +3639,7 @@ func paste_tile() -> void:
 		return
 
 	var event_to_paste = StaticEditorVars.CLIPBOARD.get("event")
+	
 	if !event_to_paste:
 		return
 		
@@ -3617,24 +3654,26 @@ func paste_tile() -> void:
 		event_copy.remove_meta("is_original_event")
 	
 	var undo_redo = get_undo_redo()
-
+	
 	undo_redo.create_action("Paste Event", UndoRedo.MERGE_DISABLE, current_object)
-
-	# DO
+	
 	undo_redo.add_do_method(self, "_force_mode_switch", MODE.EVENT)
 	undo_redo.add_do_method(current_object, "paste_event_in", current_tile_pos, event_copy)
 	undo_redo.add_do_method(get_editor_interface(), "mark_scene_as_unsaved")
 	undo_redo.add_do_method(event_container_control, "refresh", true)
 	undo_redo.add_do_method(event_container_control, "select", event_copy.id, true, true)
+	undo_redo.add_do_method(self, "send_hot_reload_update", "update_event", event_copy.id, event_copy)
+	
 	if is_original:
 		undo_redo.add_do_method(self, "_set_cache_original_event", false)
-	
-	# UNDO
+		
 	undo_redo.add_undo_method(self, "_force_mode_switch", MODE.EVENT)
 	undo_redo.add_undo_method(current_object, "remove_event_in", current_tile_pos)
 	undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
 	undo_redo.add_undo_method(event_container_control, "refresh", true)
 	undo_redo.add_undo_method(event_container_control, "select", -1, true, true)
+	undo_redo.add_undo_method(self, "send_hot_reload_delete", "delete_event", event_copy._uniq_id)
+	
 	if is_original:
 		undo_redo.add_undo_method(self, "_set_cache_original_event", true)
 
@@ -3655,6 +3694,7 @@ func paste_extraction_tile() -> void:
 		return
 
 	var event_to_paste = StaticEditorVars.CLIPBOARD.get("extraction_event")
+	
 	if !event_to_paste:
 		return
 		
@@ -3662,21 +3702,22 @@ func paste_extraction_tile() -> void:
 	event_copy.id = current_object._get_next_extraction_event_id()
 	
 	var undo_redo = get_undo_redo()
+	
 	undo_redo.create_action("Paste Extraction Event", UndoRedo.MERGE_DISABLE, current_object)
-
-	# DO
+	
 	undo_redo.add_do_method(self, "_force_mode_switch", MODE.EXTRACTION_EVENT)
 	undo_redo.add_do_method(current_object, "paste_extraction_event_in", current_tile_pos, event_copy)
 	undo_redo.add_do_method(get_editor_interface(), "mark_scene_as_unsaved")
 	undo_redo.add_do_method(extraction_event_container_control, "refresh", true)
 	undo_redo.add_do_method(extraction_event_container_control, "select", event_copy.id, true, true)
+	undo_redo.add_do_method(self, "send_hot_reload_update", "update_extraction_event", event_copy.id, event_copy)
 	
-	# UNDO
 	undo_redo.add_undo_method(self, "_force_mode_switch", MODE.EXTRACTION_EVENT)
 	undo_redo.add_undo_method(current_object, "remove_extraction_event_in", current_tile_pos)
 	undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
 	undo_redo.add_undo_method(extraction_event_container_control, "refresh", true)
 	undo_redo.add_undo_method(extraction_event_container_control, "select", -1, true, true)
+	undo_redo.add_undo_method(self, "send_hot_reload_delete", "delete_extraction_event", event_copy.id)
 
 	undo_redo.commit_action()
 
@@ -3686,28 +3727,28 @@ func paste_region() -> void:
 		return
 		
 	var region_to_paste = StaticEditorVars.CLIPBOARD.get("enemy_spawn_region")
+	
 	if !region_to_paste:
 		return
 		
 	var region_copy = region_to_paste.duplicate(true)
-	
 	var undo_redo = get_undo_redo()
+	
 	undo_redo.create_action("Paste Region", UndoRedo.MERGE_DISABLE, current_object)
 	
-	# DO
 	undo_redo.add_do_method(self, "_force_mode_switch", MODE.ENEMY_SPAWN)
 	undo_redo.add_do_method(current_object, "paste_region_in", current_tile_pos, region_copy)
 	undo_redo.add_do_method(get_editor_interface(), "mark_scene_as_unsaved")
 	undo_redo.add_do_method(enemy_spawn_container_control, "refresh", true)
 	undo_redo.add_do_method(enemy_spawn_container_control, "select", region_copy.id, true, true)
+	undo_redo.add_do_method(self, "send_hot_reload_update", "update_enemy_spawn", region_copy.id, region_copy)
 	
-	# UNDO
 	undo_redo.add_undo_method(self, "_force_mode_switch", MODE.ENEMY_SPAWN)
-	# Assuming 'remove_region' can take a region object
 	undo_redo.add_undo_method(current_object, "remove_region", region_copy) 
 	undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
 	undo_redo.add_undo_method(enemy_spawn_container_control, "refresh", true)
 	undo_redo.add_undo_method(enemy_spawn_container_control, "select", -1, true, true)
+	undo_redo.add_undo_method(self, "send_hot_reload_delete", "delete_enemy_spawn", region_copy.id)
 
 	undo_redo.commit_action()
 
@@ -3717,27 +3758,28 @@ func paste_event_region() -> void:
 		return
 
 	var region_to_paste = StaticEditorVars.CLIPBOARD.get("event_region")
+	
 	if !region_to_paste:
 		return
 		
 	var region_copy = region_to_paste.duplicate(true)
-	
 	var undo_redo = get_undo_redo()
+	
 	undo_redo.create_action("Paste Event Region", UndoRedo.MERGE_DISABLE, current_object)
 	
-	# DO
 	undo_redo.add_do_method(self, "_force_mode_switch", MODE.EVENT_REGION)
 	undo_redo.add_do_method(current_object, "paste_event_region_in", current_tile_pos, region_copy)
 	undo_redo.add_do_method(get_editor_interface(), "mark_scene_as_unsaved")
 	undo_redo.add_do_method(event_region_container_control, "refresh", true)
 	undo_redo.add_do_method(event_region_container_control, "select", region_copy.id, true, true)
+	undo_redo.add_do_method(self, "send_hot_reload_update", "update_event_region", region_copy.id, region_copy)
 	
-	# UNDO
 	undo_redo.add_undo_method(self, "_force_mode_switch", MODE.EVENT_REGION)
 	undo_redo.add_undo_method(current_object, "remove_event_region", region_copy)
 	undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
 	undo_redo.add_undo_method(event_region_container_control, "refresh", true)
 	undo_redo.add_undo_method(event_region_container_control, "select", -1, true, true)
+	undo_redo.add_undo_method(self, "send_hot_reload_delete", "delete_event_region", region_copy.id)
 
 	undo_redo.commit_action()
 
@@ -3747,19 +3789,20 @@ func remove_tile():
 		return
 
 	var event_to_remove = current_object.current_event
+	
 	if !event_to_remove:
 		event_to_remove = current_object.get_event_in(current_tile_pos)
+		
 		if !event_to_remove:
 			return
 	
 	var event_copy = event_to_remove.duplicate(true)
 	var event_id = event_copy.id
 	var event_pos = Vector2i(event_copy.x, event_copy.y)
-
 	var undo_redo = get_undo_redo()
 	
 	undo_redo.create_action("Remove Event", UndoRedo.MERGE_DISABLE, current_object)
-
+	
 	undo_redo.add_do_method(self, "_force_mode_switch", MODE.EVENT)
 	undo_redo.add_do_method(current_object, "remove_event_in", event_pos)
 	undo_redo.add_do_method(get_editor_interface(), "mark_scene_as_unsaved")
@@ -3767,13 +3810,15 @@ func remove_tile():
 	undo_redo.add_do_method(event_container_control, "select", -1, true, true)
 	undo_redo.add_do_method(EditorInterface, "inspect_object", null)
 	undo_redo.add_do_method(current_object, "queue_redraw")
-
+	undo_redo.add_do_method(self, "send_hot_reload_delete", "delete_event", event_copy._uniq_id)
+	
 	undo_redo.add_undo_method(self, "_force_mode_switch", MODE.EVENT)
 	undo_redo.add_undo_method(current_object, "paste_event_in", event_pos, event_copy)
 	undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
 	undo_redo.add_undo_method(event_container_control, "refresh", true)
 	undo_redo.add_undo_method(event_container_control, "select", event_id, true, true)
 	undo_redo.add_undo_method(current_object, "queue_redraw")
+	undo_redo.add_undo_method(self, "send_hot_reload_update", "update_event", event_id, event_copy)
 	
 	undo_redo.commit_action()
 
@@ -3783,18 +3828,20 @@ func remove_extraction_tile():
 		return
 
 	var event_to_remove = current_object.current_extraction_event
+	
 	if !event_to_remove:
 		event_to_remove = current_object.get_extraction_event_in(current_tile_pos)
+		
 		if !event_to_remove:
 			return
 	
 	var event_copy = event_to_remove.duplicate(true)
 	var event_id = event_copy.id
 	var event_pos = Vector2i(event_copy.x, event_copy.y)
-
 	var undo_redo = get_undo_redo()
+	
 	undo_redo.create_action("Remove Extraction Event", UndoRedo.MERGE_DISABLE, current_object)
-
+	
 	undo_redo.add_do_method(self, "_force_mode_switch", MODE.EXTRACTION_EVENT)
 	undo_redo.add_do_method(current_object, "remove_extraction_event_in", event_pos)
 	undo_redo.add_do_method(get_editor_interface(), "mark_scene_as_unsaved")
@@ -3802,13 +3849,15 @@ func remove_extraction_tile():
 	undo_redo.add_do_method(extraction_event_container_control, "select", -1, true, true)
 	undo_redo.add_do_method(EditorInterface, "inspect_object", null)
 	undo_redo.add_do_method(current_object, "queue_redraw")
-
+	undo_redo.add_do_method(self, "send_hot_reload_delete", "delete_extraction_event", event_id)
+	
 	undo_redo.add_undo_method(self, "_force_mode_switch", MODE.EXTRACTION_EVENT)
 	undo_redo.add_undo_method(current_object, "paste_extraction_event_in", event_pos, event_copy)
 	undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
 	undo_redo.add_undo_method(extraction_event_container_control, "refresh", true)
 	undo_redo.add_undo_method(extraction_event_container_control, "select", event_id, true, true)
 	undo_redo.add_undo_method(current_object, "queue_redraw")
+	undo_redo.add_undo_method(self, "send_hot_reload_update", "update_extraction_event", event_id, event_copy)
 	
 	undo_redo.commit_action()
 
@@ -3818,17 +3867,20 @@ func remove_region(default_region: EnemySpawnRegion = null):
 		return
 
 	var region_to_remove = default_region
+	
 	if !region_to_remove:
 		region_to_remove = current_object.region_selected
+		
 	if !region_to_remove:
 		region_to_remove = current_object.get_region_in(current_tile_pos)
+		
 	if !region_to_remove:
 		return 
 	
 	var region_copy = region_to_remove.duplicate(true)
 	var region_id = region_copy.id
-	
 	var undo_redo = get_undo_redo()
+	
 	undo_redo.create_action("Remove Region", UndoRedo.MERGE_DISABLE, current_object)
 	
 	undo_redo.add_do_method(self, "_force_mode_switch", MODE.ENEMY_SPAWN)
@@ -3838,13 +3890,15 @@ func remove_region(default_region: EnemySpawnRegion = null):
 	undo_redo.add_do_method(enemy_spawn_container_control, "select", -1, true, true)
 	undo_redo.add_do_method(EditorInterface, "inspect_object", null)
 	undo_redo.add_do_method(current_object, "queue_redraw")
-
+	undo_redo.add_do_method(self, "send_hot_reload_delete", "delete_enemy_spawn", region_id)
+	
 	undo_redo.add_undo_method(self, "_force_mode_switch", MODE.ENEMY_SPAWN)
 	undo_redo.add_undo_method(current_object, "paste_region_in", region_copy.rect.position, region_copy)
 	undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
 	undo_redo.add_undo_method(enemy_spawn_container_control, "refresh", true)
 	undo_redo.add_undo_method(enemy_spawn_container_control, "select", region_id, true, true)
 	undo_redo.add_undo_method(current_object, "queue_redraw")
+	undo_redo.add_undo_method(self, "send_hot_reload_update", "update_enemy_spawn", region_id, region_copy)
 	
 	undo_redo.commit_action()
 
@@ -3854,17 +3908,20 @@ func remove_event_region(default_region: EventRegion = null):
 		return
 
 	var region_to_remove = default_region
+	
 	if !region_to_remove:
 		region_to_remove = current_object.event_region_selected
+		
 	if !region_to_remove:
 		region_to_remove = current_object.get_event_region_in(current_tile_pos)
+		
 	if !region_to_remove:
 		return
 	
 	var region_copy = region_to_remove.duplicate(true)
 	var region_id = region_copy.id
-	
 	var undo_redo = get_undo_redo()
+	
 	undo_redo.create_action("Remove Event Region", UndoRedo.MERGE_DISABLE, current_object)
 	
 	undo_redo.add_do_method(self, "_force_mode_switch", MODE.EVENT_REGION)
@@ -3874,13 +3931,15 @@ func remove_event_region(default_region: EventRegion = null):
 	undo_redo.add_do_method(event_region_container_control, "select", -1, true, true)
 	undo_redo.add_do_method(EditorInterface, "inspect_object", null)
 	undo_redo.add_do_method(current_object, "queue_redraw")
-
+	undo_redo.add_do_method(self, "send_hot_reload_delete", "delete_event_region", region_id)
+	
 	undo_redo.add_undo_method(self, "_force_mode_switch", MODE.EVENT_REGION)
 	undo_redo.add_undo_method(current_object, "paste_event_region_in", region_copy.rect.position, region_copy)
 	undo_redo.add_undo_method(get_editor_interface(), "mark_scene_as_unsaved")
 	undo_redo.add_undo_method(event_region_container_control, "refresh", true)
 	undo_redo.add_undo_method(event_region_container_control, "select", region_id, true, true)
 	undo_redo.add_undo_method(current_object, "queue_redraw")
+	undo_redo.add_undo_method(self, "send_hot_reload_update", "update_event_region", region_id, region_copy)
 	
 	undo_redo.commit_action()
 
@@ -3957,6 +4016,7 @@ func _on_edit_event_dialog_changed(event: RPGEvent, obj: RPGMap) -> void:
 		var rpg_map_info = get_node_or_null("/root/RPGMapsInfo")
 		if rpg_map_info:
 			rpg_map_info.update_single_event(obj.internal_id, event)
+		send_hot_reload_update("update_event", event.id, event)
 
 
 func _on_dialog_tree_exited() -> void:
@@ -3980,7 +4040,7 @@ func show_edit_extraction_event_dialog() -> void:
 	dialog.plugin = self
 	dialog.set_event(current_extraction_event)
 	dialog.set_events(current_object.extraction_events)
-	dialog.changed.connect(get_editor_interface().mark_scene_as_unsaved)
+	dialog.changed.connect(_on_extraction_event_changed.bind(current_extraction_event))
 	dialog.size_changed.connect(_on_extraction_event_dialog_size_changed.bind(path, dialog))
 	dialog.tree_exited.connect(_on_extraction_event_dialog_tree_exited)
 	dialog.tree_exiting.connect(
@@ -3997,6 +4057,14 @@ func show_edit_extraction_event_dialog() -> void:
 		dialog.position = DisplayServer.screen_get_size() / 2 - dialog.size / 2
 	else:
 		dialog.position = state.position
+
+
+func _on_extraction_event_changed(event = null, _extra = null) -> void:
+	var target = event if event is RPGExtractionItem else current_extraction_event
+	
+	if target:
+		get_editor_interface().mark_scene_as_unsaved()
+		send_hot_reload_update("update_extraction_event", target.id, target)
 
 
 func _on_extraction_event_dialog_tree_exited() -> void:
@@ -4032,6 +4100,7 @@ func _on_region_changed_in_dialog(_region: EnemySpawnRegion) -> void:
 	get_editor_interface().mark_scene_as_unsaved()
 	current_object.refresh_canvas()
 	current_object.property_list_changed.emit()
+	send_hot_reload_update("update_enemy_spawn", _region.id, _region)
 
 
 func _on_region_dialog_tree_exited() -> void:
@@ -4070,6 +4139,7 @@ func _on_event_region_changed_in_dialog(_region: EventRegion) -> void:
 	get_editor_interface().mark_scene_as_unsaved()
 	current_object.refresh_canvas()
 	current_object.property_list_changed.emit()
+	send_hot_reload_update("update_event_region", _region.id, _region)
 
 
 func _on_event_region_dialog_tree_exited() -> void:
@@ -4224,3 +4294,145 @@ func _save_external_data() -> void:
 	var system = get_node_or_null("/root/RPGSYSTEM")
 	if system:
 		system.save()
+
+#region Hot Reloaded
+func _get_start_position_id(pos_obj: RPGMapPosition) -> String:
+	var system = get_node_or_null("/root/RPGSYSTEM")
+	
+	if not system or not system.database or not system.database.system:
+		return ""
+		
+	var db = system.database.system
+	
+	if pos_obj == db.get("land_transport_start_position"): return "land_transport_start_position"
+	if pos_obj == db.get("sea_transport_start_position"): return "sea_transport_start_position"
+	if pos_obj == db.get("air_transport_start_position"): return "air_transport_start_position"
+	if pos_obj == db.get("player_start_position"): return "player_start_position"
+	
+	return ""
+
+
+func send_hot_reload_delete(type: String, id: int) -> void:
+	if not hot_reload_udp.is_bound():
+		hot_reload_udp.set_dest_address(target_ip, target_port)
+		
+	var data := {
+		"type": type,
+		"id": id,
+		"map_id": current_object.internal_id
+	}
+	
+	var packet := JSON.stringify(data).to_utf8_buffer()
+	
+	hot_reload_udp.put_packet(packet)
+	
+	cleanup_old_temp_files()
+
+
+func send_hot_reload_update(type: String, id: int, resource: Resource) -> void:
+	if not hot_reload_udp.is_bound():
+		hot_reload_udp.set_dest_address(target_ip, target_port)
+		
+	var temp_dir := "res://addons/RPGMap/Temp/"
+	
+	if not DirAccess.dir_exists_absolute(temp_dir):
+		DirAccess.make_dir_recursive_absolute(temp_dir)
+		
+	var temp_path := temp_dir + "hot_reload_" + type + "_" + str(id) + ".tres"
+	
+	ResourceSaver.save(resource, temp_path)
+	
+	var data := {
+		"type": type,
+		"id": id,
+		"path": temp_path,
+		"map_id": current_object.internal_id
+	}
+	
+	var packet := JSON.stringify(data).to_utf8_buffer()
+	
+	hot_reload_udp.put_packet(packet)
+	
+	cleanup_old_temp_files()
+
+
+func send_hot_reload_move(type: String, id: int, new_pos: Vector2i) -> void:
+	if not hot_reload_udp.is_bound():
+		hot_reload_udp.set_dest_address(target_ip, target_port)
+		
+	var data := {
+		"type": type,
+		"id": id,
+		"x": new_pos.x,
+		"y": new_pos.y,
+		"map_id": current_object.internal_id
+	}
+	
+	var packet := JSON.stringify(data).to_utf8_buffer()
+	
+	hot_reload_udp.put_packet(packet)
+	
+	cleanup_old_temp_files()
+
+
+## Sends the updated start position data for vehicles or the player to the game instance
+func send_hot_reload_start_position(target_id: String, map_id: int, pos: Vector2i) -> void:
+	if not hot_reload_udp.is_bound():
+		hot_reload_udp.set_dest_address(target_ip, target_port)
+		
+	var data := {
+		"type": "update_start_position",
+		"target_id": target_id,
+		"map_id": map_id,
+		"x": pos.x,
+		"y": pos.y
+	}
+	
+	var packet := JSON.stringify(data).to_utf8_buffer()
+	
+	hot_reload_udp.put_packet(packet)
+	
+	cleanup_old_temp_files()
+
+
+## Sends a hot-reload network packet to update, create, or delete a vehicle in the game instance
+func send_hot_reload_vehicle(target_id: String, map_id: int, pos: Vector2i) -> void:
+	if target_id == "player_start_position" or target_id.is_empty():
+		return
+		
+	if not hot_reload_udp.is_bound():
+		hot_reload_udp.set_dest_address(target_ip, target_port)
+		
+	var data := {
+		"type": "update_start_position",
+		"target_id": target_id,
+		"map_id": map_id,
+		"x": pos.x,
+		"y": pos.y
+	}
+	
+	var packet := JSON.stringify(data).to_utf8_buffer()
+	
+	hot_reload_udp.put_packet(packet)
+	
+	cleanup_old_temp_files()
+
+
+## Cleans up temporary hot reload files older than a specific threshold
+func cleanup_old_temp_files(max_age_seconds: int = 60) -> void:
+	var temp_dir = "res://addons/RPGMap/Temp/"
+	var dir = DirAccess.open(temp_dir)
+	
+	if not dir:
+		return
+		
+	var current_time = Time.get_unix_time_from_system()
+	var files = dir.get_files()
+	
+	for file_name in files:
+		var file_path = temp_dir + file_name
+		var file_time = FileAccess.get_modified_time(file_path)
+			
+		if current_time - file_time > max_age_seconds:
+			DirAccess.remove_absolute(file_path)
+#endregion

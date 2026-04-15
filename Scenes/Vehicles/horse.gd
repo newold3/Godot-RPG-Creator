@@ -103,7 +103,7 @@ func _set_player_position(_target_position: Vector2) -> void:
 
 
 func _process(delta: float) -> void:
-	if is_jumping or force_jump_enabled:
+	if is_jumping or force_jump_enabled or not player:
 		return
 	if GameInterpreter.is_busy():
 		var direction_name = get_direction_name()

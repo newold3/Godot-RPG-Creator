@@ -439,7 +439,7 @@ func set_final_position(time: float = 0.001) -> void:
 	t.tween_property(hero_panel, "position:x", 10, time)
 
 
-func focus_animation(emit_signal: bool = true) -> void:
+func focus_animation(_emit_signal: bool = true) -> void:
 	%CursorNormal.visible = true
 	
 	var gears = {
@@ -456,7 +456,7 @@ func focus_animation(emit_signal: bool = true) -> void:
 	for gear in gears.right:
 		t.tween_property(gear, "rotation", gear.rotation - PI, animation_timer * 1.5).set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_OUT)
 
-	if emit_signal:
+	if _emit_signal:
 		item_selected.emit(get_index())
 
 

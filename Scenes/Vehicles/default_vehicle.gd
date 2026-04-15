@@ -221,6 +221,56 @@ func get_player_visual_offset() -> Vector2:
 	return Vector2.ZERO
 
 
+func remove_player_when_reload() -> void:
+	if player and current_map:
+		var current_tile = get_current_tile()
+		var _target_position = current_map.get_tile_position(current_tile).round()
+		current_map.set_event_direction(player, current_direction)
+		var real_start_pos = self.global_position + get_player_visual_offset()
+		player.reparent(current_map, false)
+		player.global_position = real_start_pos
+		await _set_player_position(_target_position)
+		player.position = _target_position
+		var camera = GameManager.get_camera()
+		if camera and camera.has_method("has_target"):
+			@warning_ignore("incompatible_ternary")
+			var cam_target = camera_focus_node if is_instance_valid(camera_focus_node) else self
+			if camera.has_target(cam_target):
+				camera.remove_target_from_array(cam_target)
+				camera.add_target_to_array(player)
+		player.current_direction = current_direction
+		player.last_direction = current_direction
+		if player.has_method("kill_movement"):
+			player.kill_movement()
+		if "is_attacking" in player:
+			player.is_attacking = false
+		if player.has_method("_reset"):
+			player._reset(true)
+		if "target_position" in player:
+			player.target_position = _target_position
+		if "previous_tile" in player:
+			player.previous_tile = current_tile
+		if "teleport" in player:
+			player.teleport = _target_position
+		if player.has_method("initialize_virtual_tile"):
+			player.initialize_virtual_tile()
+		player._auto_target_tile = Vector2i(-1, -1)
+		player._auto_target_event = null
+		player.movement_vector = Vector2.ZERO
+		player.is_moving = false
+		if "is_mouse_moving" in player:
+			player.is_mouse_moving = false
+		if "_click_indicator_cooldown" in player:
+			player._click_indicator_cooldown = 0.5
+		player.is_on_vehicle = false
+		player.current_vehicle = null
+		if player.has_method("clear_movement_history"):
+			player.clear_movement_history()
+		player.set_process(true)
+		player.set_process_input(true)
+		player = null
+		
+
 func remove_player() -> void:
 	if player and current_map:
 		var current_tile = get_current_tile()

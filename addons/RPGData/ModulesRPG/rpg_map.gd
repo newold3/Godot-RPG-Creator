@@ -155,6 +155,9 @@ var show_passability_debug: bool = false
 var need_refresh: bool = false
 var current_in_game_enemy_spawn_region: EnemySpawnRegion
 
+var hot_reload_udp := PacketPeerUDP.new()
+var listen_port := 4242
+
 @export var _baked_keot_data: Dictionary = {}
 @export var events := RPGEvents.new()
 @export var extraction_events: Array[RPGExtractionItem] = []
@@ -249,8 +252,8 @@ func _ready() -> void:
 	update_bgm()
 
 
-
 func _process(delta: float) -> void:
+	if not shadow_manager and Engine.is_editor_hint(): return
 	if shadow_manager: shadow_manager.process_editor_physics()
 	
 	if need_refresh:
@@ -271,7 +274,9 @@ func _process(delta: float) -> void:
 			editor_canvas.cursor_canvas.queue_redraw()
 		else:
 			editor_canvas.cursor_canvas.visible = false
-
+			
+	if hot_reload_udp.get_available_packet_count() > 0:
+		_process_hot_reload_packets()
 
 
 func _physics_process(delta: float) -> void:
@@ -393,6 +398,8 @@ func _start_preview_mode() -> void:
 
 
 func _start_game_mode() -> void:
+	hot_reload_udp.bind(listen_port)
+	
 	map_layout = MapLayout.new()
 	GameManager.current_map = self
 	visible = false
@@ -1152,4 +1159,93 @@ func get_custom_data_layer_names() -> PackedStringArray:
 
 func get_tile_terrain_name(tile: Vector2i) -> PackedStringArray:
 	return passability_helper.get_tile_terrain_name(tile) if passability_helper else PackedStringArray()
+#endregion
+
+
+#region hot reload functions
+## Processes incoming UDP packets and routes them to the correct update function based on the payload type
+func _process_hot_reload_packets() -> void:
+	while hot_reload_udp.get_available_packet_count() > 0:
+		var packet := hot_reload_udp.get_packet()
+		var data: Dictionary = JSON.parse_string(packet.get_string_from_utf8())
+		
+		var _map_id = data.get("map_id", -1)
+		if not data or _map_id != internal_id and not _map_id == -1:
+			continue
+			
+		var type: String = data.get("type", "")
+		var id: int = data.get("id", -1)
+		var temp_path: String = data.get("path", "")
+		
+		match type:
+			"move_event":
+				var ev = get_in_game_event_by_id(id)
+				if ev:
+					set_event_position(ev, Vector2i(data.get("x"), data.get("y")), ev.current_direction)
+			
+			"update_event":
+				if FileAccess.file_exists(temp_path):
+					var new_resource := ResourceLoader.load(temp_path, "", ResourceLoader.CACHE_MODE_IGNORE)
+					if entity_manager and new_resource is RPGEvent:
+						entity_manager.spawn_event(new_resource)
+			
+			"update_extraction_event":
+				if FileAccess.file_exists(temp_path):
+					var new_resource := ResourceLoader.load(temp_path, "", ResourceLoader.CACHE_MODE_IGNORE)
+					if entity_manager and new_resource is RPGExtractionItem:
+						entity_manager.spawn_extraction_event(new_resource)
+			
+			"update_enemy_spawn":
+				if FileAccess.file_exists(temp_path):
+					var new_resource := ResourceLoader.load(temp_path, "", ResourceLoader.CACHE_MODE_IGNORE)
+					if region_manager and new_resource is EnemySpawnRegion:
+						region_manager.spawn_enemy_region(new_resource)
+			
+			"update_event_region":
+				if FileAccess.file_exists(temp_path):
+					var new_resource := ResourceLoader.load(temp_path, "", ResourceLoader.CACHE_MODE_IGNORE)
+					if region_manager and new_resource is EventRegion:
+						region_manager.spawn_event_region(new_resource)
+						
+			"delete_event":
+				if entity_manager:
+					var interpreter_id = "event_" + str(id)
+					if GameInterpreter.is_event_running(interpreter_id):
+						GameInterpreter.remove_interpreter_by_id(interpreter_id)
+					if id in entity_manager.current_ingame_events:
+						var old_ev = entity_manager.current_ingame_events[id]
+						if old_ev and is_instance_valid(old_ev.lpc_event):
+							old_ev.lpc_event.queue_free()
+						entity_manager.current_ingame_events.erase(id)
+						
+			"delete_extraction_event":
+				if entity_manager and id in entity_manager.current_ingame_extraction_events:
+					var old_ev = entity_manager.current_ingame_extraction_events[id]
+					if old_ev and is_instance_valid(old_ev.scene):
+						old_ev.scene.queue_free()
+					entity_manager.current_ingame_extraction_events.erase(id)
+					
+			"delete_enemy_spawn":
+				var event_monitor = get_node_or_null("EventMonitor")
+				if event_monitor:
+					var old_node = event_monitor.get_node_or_null("EnemyEventRegion#" + str(id))
+					if old_node:
+						old_node.queue_free()
+						
+			"delete_event_region":
+				var target_name = "EventRegion#" + str(id)
+				var old_node = get_node_or_null("Walls/" + target_name)
+				if not old_node:
+					old_node = get_node_or_null("EventMonitor/" + target_name)
+				if old_node:
+					ingame_event_regions.erase(old_node)
+					old_node.queue_free()
+			
+			"update_start_position":
+				if entity_manager:
+					entity_manager.hot_reload_start_position(data.get("target_id", ""), data.get("map_id", -1), Vector2i(data.get("x", 0), data.get("y", 0)))
+	
+		var temp_dir = "res://addons/RPGMap/Temp/"
+		if FileAccess.file_exists(temp_path) and temp_path.begins_with(temp_dir):
+			DirAccess.remove_absolute(ProjectSettings.globalize_path(temp_path))
 #endregion

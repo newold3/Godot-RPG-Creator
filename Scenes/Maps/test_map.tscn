@@ -24,54 +24,17 @@
 [ext_resource type="Script" uid="uid://ji3ytcdipmyn" path="res://addons/RPGMap/Scripts/event_rect.gd" id="19_mppu7"]
 [ext_resource type="Script" uid="uid://xelmmknmjo8n" path="res://addons/RPGMap/Scripts/troop_spawn_data.gd" id="20_6yorc"]
 [ext_resource type="Script" uid="uid://45qsey742juw" path="res://addons/RPGMap/Scripts/floor_auto_shaders.gd" id="23_bvf2a"]
-[ext_resource type="PackedScene" uid="uid://87k70xrknu04" path="res://Scenes/OtherScenes/default_animate_map_name.tscn" id="25_6yorc"]
 
-[sub_resource type="Resource" id="Resource_m0d5v"]
+[sub_resource type="Resource" id="Resource_ik3hy"]
 script = ExtResource("4_htxeb")
 pressure_targets = PackedInt64Array(0)
 
-[sub_resource type="Resource" id="Resource_mppu7"]
+[sub_resource type="Resource" id="Resource_c7oc2"]
 script = ExtResource("5_fiyda")
 code = 19
 parameters = {
 &"operation_type": 0,
 &"switch_id": 0
-}
-
-[sub_resource type="Resource" id="Resource_vu4kc"]
-script = ExtResource("6_ewx0n")
-
-[sub_resource type="Resource" id="Resource_bvf2a"]
-script = ExtResource("5_fiyda")
-code = 2
-parameters = {
-&"character_name": {
-"type": 0,
-"value": ""
-},
-&"face": SubResource("Resource_vu4kc"),
-&"floating_target": -1,
-&"height": 0.0,
-&"is_floating_dialog": false,
-&"position": 0,
-&"width": 0.0
-}
-
-[sub_resource type="Resource" id="Resource_ik3hy"]
-script = ExtResource("5_fiyda")
-code = 3
-parameters = {
-"line": "There was nothing inside!... Wait, I think I see something shining over there..."
-}
-
-[sub_resource type="Resource" id="Resource_c7oc2"]
-script = ExtResource("5_fiyda")
-code = 90
-parameters = {
-&"path": "res://Assets/Sounds/SE/buy.ogg",
-&"pitch": 1.0,
-&"pitch2": 1.0,
-&"volume": 0.0
 }
 
 [sub_resource type="Resource" id="Resource_hyo3o"]
@@ -97,10 +60,46 @@ parameters = {
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
-"line": "You found 1 gold coin [img]res://Assets/Images/Other/gold_icon.png[/img]!!"
+"line": "There was nothing inside!... Wait, I think I see something shining over there..."
 }
 
 [sub_resource type="Resource" id="Resource_md2m7"]
+script = ExtResource("5_fiyda")
+code = 90
+parameters = {
+&"path": "res://Assets/Sounds/SE/buy.ogg",
+&"pitch": 1.0,
+&"pitch2": 1.0,
+&"volume": 0.0
+}
+
+[sub_resource type="Resource" id="Resource_apcmq"]
+script = ExtResource("6_ewx0n")
+
+[sub_resource type="Resource" id="Resource_wa2g7"]
+script = ExtResource("5_fiyda")
+code = 2
+parameters = {
+&"character_name": {
+"type": 0,
+"value": ""
+},
+&"face": SubResource("Resource_apcmq"),
+&"floating_target": -1,
+&"height": 0.0,
+&"is_floating_dialog": false,
+&"position": 0,
+&"width": 0.0
+}
+
+[sub_resource type="Resource" id="Resource_iarn2"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "You found 1 gold coin [img]res://Assets/Images/Other/gold_icon.png[/img]!!"
+}
+
+[sub_resource type="Resource" id="Resource_12lnd"]
 script = ExtResource("5_fiyda")
 code = 12
 parameters = {
@@ -109,13 +108,13 @@ parameters = {
 &"value_type": 0
 }
 
-[sub_resource type="Resource" id="Resource_apcmq"]
+[sub_resource type="Resource" id="Resource_wp5be"]
 script = ExtResource("5_fiyda")
 
-[sub_resource type="Resource" id="Resource_wa2g7"]
+[sub_resource type="Resource" id="Resource_0sq6r"]
 script = ExtResource("8_didij")
 
-[sub_resource type="Resource" id="Resource_iarn2"]
+[sub_resource type="Resource" id="Resource_y1ngj"]
 script = ExtResource("9_uohsy")
 show_name_in_map = true
 walking_animation = false
@@ -125,14 +124,14 @@ use_extra_config = true
 is_inmortal = false
 hp = 5
 
-[sub_resource type="Resource" id="Resource_12lnd"]
+[sub_resource type="Resource" id="Resource_i1mnv"]
 script = ExtResource("3_nd5sh")
 _uniq_id = 1888355637294685
 id = 0
-list = Array[ExtResource("5_fiyda")]([SubResource("Resource_mppu7"), SubResource("Resource_bvf2a"), SubResource("Resource_ik3hy"), SubResource("Resource_c7oc2"), SubResource("Resource_850m1"), SubResource("Resource_hhio5"), SubResource("Resource_md2m7"), SubResource("Resource_apcmq")])
-condition = SubResource("Resource_m0d5v")
-movement_route = SubResource("Resource_wa2g7")
-options = SubResource("Resource_iarn2")
+list = Array[ExtResource("5_fiyda")]([SubResource("Resource_c7oc2"), SubResource("Resource_850m1"), SubResource("Resource_hhio5"), SubResource("Resource_md2m7"), SubResource("Resource_wa2g7"), SubResource("Resource_iarn2"), SubResource("Resource_12lnd"), SubResource("Resource_wp5be")])
+condition = SubResource("Resource_ik3hy")
+movement_route = SubResource("Resource_0sq6r")
+options = SubResource("Resource_y1ngj")
 event_trigger_list = PackedInt64Array()
 event_tool_list = PackedInt32Array()
 event_signal_list = PackedInt32Array()
@@ -141,15 +140,15 @@ character_path = "res://Assets/Images/Other/chest.png"
 character_region = Rect2(0, 0, 32, 32)
 direction = 1
 
-[sub_resource type="Resource" id="Resource_wp5be"]
+[sub_resource type="Resource" id="Resource_cg0aq"]
 script = ExtResource("4_htxeb")
 use_local_switch = true
 pressure_targets = PackedInt64Array(0)
 
-[sub_resource type="Resource" id="Resource_0sq6r"]
+[sub_resource type="Resource" id="Resource_l770y"]
 script = ExtResource("6_ewx0n")
 
-[sub_resource type="Resource" id="Resource_y1ngj"]
+[sub_resource type="Resource" id="Resource_b0ns3"]
 script = ExtResource("5_fiyda")
 code = 2
 parameters = {
@@ -157,7 +156,7 @@ parameters = {
 "type": 0,
 "value": ""
 },
-&"face": SubResource("Resource_0sq6r"),
+&"face": SubResource("Resource_l770y"),
 &"floating_target": -1,
 &"height": 0.0,
 &"is_floating_dialog": false,
@@ -165,20 +164,20 @@ parameters = {
 &"width": 0.0
 }
 
-[sub_resource type="Resource" id="Resource_i1mnv"]
+[sub_resource type="Resource" id="Resource_d6l5l"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "The chest is already empty..."
 }
 
-[sub_resource type="Resource" id="Resource_cg0aq"]
+[sub_resource type="Resource" id="Resource_xaydv"]
 script = ExtResource("5_fiyda")
 
-[sub_resource type="Resource" id="Resource_l770y"]
+[sub_resource type="Resource" id="Resource_bqmor"]
 script = ExtResource("8_didij")
 
-[sub_resource type="Resource" id="Resource_b0ns3"]
+[sub_resource type="Resource" id="Resource_dcx4u"]
 script = ExtResource("9_uohsy")
 show_name_in_map = true
 walking_animation = false
@@ -188,14 +187,14 @@ use_extra_config = true
 is_inmortal = false
 hp = 5
 
-[sub_resource type="Resource" id="Resource_d6l5l"]
+[sub_resource type="Resource" id="Resource_8fxfw"]
 script = ExtResource("3_nd5sh")
 _uniq_id = 1681887173930781
 id = 0
-list = Array[ExtResource("5_fiyda")]([SubResource("Resource_y1ngj"), SubResource("Resource_i1mnv"), SubResource("Resource_cg0aq")])
-condition = SubResource("Resource_wp5be")
-movement_route = SubResource("Resource_l770y")
-options = SubResource("Resource_b0ns3")
+list = Array[ExtResource("5_fiyda")]([SubResource("Resource_b0ns3"), SubResource("Resource_d6l5l"), SubResource("Resource_xaydv")])
+condition = SubResource("Resource_cg0aq")
+movement_route = SubResource("Resource_bqmor")
+options = SubResource("Resource_dcx4u")
 event_trigger_list = PackedInt64Array()
 event_tool_list = PackedInt32Array()
 event_signal_list = PackedInt32Array()
@@ -204,22 +203,23 @@ character_path = "res://Assets/Images/Other/chest.png"
 character_region = Rect2(32, 0, 32, 32)
 direction = 1
 
-[sub_resource type="Resource" id="Resource_xaydv"]
+[sub_resource type="Resource" id="Resource_iynic"]
 script = ExtResource("11_dhmk3")
 
-[sub_resource type="Resource" id="Resource_bqmor"]
+[sub_resource type="Resource" id="Resource_au2yk"]
 script = ExtResource("12_yak7x")
-levels = Array[ExtResource("11_dhmk3")]([SubResource("Resource_xaydv")])
+levels = Array[ExtResource("11_dhmk3")]([SubResource("Resource_iynic")])
 
-[sub_resource type="Resource" id="Resource_dcx4u"]
+[sub_resource type="Resource" id="Resource_em1s3"]
 script = ExtResource("13_11apb")
 _uniq_id = 8527936703464669
 name = "Chest"
 id = 1
 x = 22
 y = 17
-pages = Array[ExtResource("3_nd5sh")]([SubResource("Resource_12lnd"), SubResource("Resource_d6l5l")])
-relationship = SubResource("Resource_bqmor")
+pages = Array[ExtResource("3_nd5sh")]([SubResource("Resource_i1mnv"), SubResource("Resource_8fxfw")])
+relationship = SubResource("Resource_au2yk")
+_editor_last_page_used = 1
 legacy_mode = true
 
 [sub_resource type="Resource" id="Resource_6yorc"]
@@ -506,7 +506,7 @@ _uniq_id = 1283470000896833
 name = "EV0003"
 id = 3
 x = 18
-y = 10
+y = 8
 pages = Array[ExtResource("3_nd5sh")]([SubResource("Resource_kbl5u"), SubResource("Resource_4mv46")])
 relationship = SubResource("Resource_mg7jm")
 legacy_mode = true
@@ -624,11 +624,11 @@ relationship = SubResource("Resource_173e5")
 _editor_last_page_used = 1
 legacy_mode = true
 
-[sub_resource type="Resource" id="Resource_2mltf"]
+[sub_resource type="Resource" id="Resource_a31gi"]
 script = ExtResource("4_htxeb")
 pressure_targets = PackedInt64Array(0)
 
-[sub_resource type="Resource" id="Resource_eu5nv"]
+[sub_resource type="Resource" id="Resource_t8355"]
 script = ExtResource("5_fiyda")
 code = 13
 parameters = {
@@ -638,7 +638,7 @@ parameters = {
 &"value_type": 0
 }
 
-[sub_resource type="Resource" id="Resource_bvp2u"]
+[sub_resource type="Resource" id="Resource_kfo52"]
 script = ExtResource("5_fiyda")
 code = 13
 parameters = {
@@ -648,7 +648,7 @@ parameters = {
 &"value_type": 0
 }
 
-[sub_resource type="Resource" id="Resource_bbwwk"]
+[sub_resource type="Resource" id="Resource_qar4r"]
 script = ExtResource("5_fiyda")
 code = 13
 parameters = {
@@ -658,7 +658,7 @@ parameters = {
 &"value_type": 0
 }
 
-[sub_resource type="Resource" id="Resource_64tee"]
+[sub_resource type="Resource" id="Resource_gq3j5"]
 script = ExtResource("5_fiyda")
 code = 13
 parameters = {
@@ -668,7 +668,7 @@ parameters = {
 &"value_type": 0
 }
 
-[sub_resource type="Resource" id="Resource_c30ta"]
+[sub_resource type="Resource" id="Resource_y8d1s"]
 script = ExtResource("5_fiyda")
 code = 13
 parameters = {
@@ -678,7 +678,7 @@ parameters = {
 &"value_type": 0
 }
 
-[sub_resource type="Resource" id="Resource_paa2j"]
+[sub_resource type="Resource" id="Resource_khrxu"]
 script = ExtResource("5_fiyda")
 code = 13
 parameters = {
@@ -688,7 +688,7 @@ parameters = {
 &"value_type": 0
 }
 
-[sub_resource type="Resource" id="Resource_ug546"]
+[sub_resource type="Resource" id="Resource_7e05m"]
 script = ExtResource("5_fiyda")
 code = 303
 parameters = {
@@ -696,7 +696,7 @@ parameters = {
 &"value": 12.0
 }
 
-[sub_resource type="Resource" id="Resource_fk6ie"]
+[sub_resource type="Resource" id="Resource_5cf7j"]
 script = ExtResource("5_fiyda")
 code = 302
 parameters = {
@@ -705,7 +705,7 @@ parameters = {
 &"value": 0.008
 }
 
-[sub_resource type="Resource" id="Resource_0jiwo"]
+[sub_resource type="Resource" id="Resource_48hwi"]
 script = ExtResource("5_fiyda")
 code = 52
 parameters = {
@@ -713,7 +713,7 @@ parameters = {
 &"type": 0
 }
 
-[sub_resource type="Resource" id="Resource_r3rve"]
+[sub_resource type="Resource" id="Resource_bea5y"]
 script = ExtResource("5_fiyda")
 code = 53
 parameters = {
@@ -737,17 +737,17 @@ parameters = {
 }
 ignore_command = true
 
-[sub_resource type="Resource" id="Resource_iu46p"]
+[sub_resource type="Resource" id="Resource_7ntpp"]
 script = ExtResource("5_fiyda")
 code = 30
 parameters = {
 &"text": "skip all"
 }
 
-[sub_resource type="Resource" id="Resource_jtkyu"]
+[sub_resource type="Resource" id="Resource_biaob"]
 script = ExtResource("6_ewx0n")
 
-[sub_resource type="Resource" id="Resource_vpwna"]
+[sub_resource type="Resource" id="Resource_nwouv"]
 script = ExtResource("5_fiyda")
 code = 2
 parameters = {
@@ -755,7 +755,7 @@ parameters = {
 "type": 0,
 "value": ""
 },
-&"face": SubResource("Resource_jtkyu"),
+&"face": SubResource("Resource_biaob"),
 &"floating_target": -1,
 &"height": 0.0,
 &"is_floating_dialog": false,
@@ -763,73 +763,73 @@ parameters = {
 &"width": 0.0
 }
 
-[sub_resource type="Resource" id="Resource_qfjyi"]
+[sub_resource type="Resource" id="Resource_sba15"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[showbox type=0 val=\"Left name\" pos=0]"
 }
 
-[sub_resource type="Resource" id="Resource_iqi6h"]
+[sub_resource type="Resource" id="Resource_5hyhy"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[showbox type=0 val=\"Right name\" pos=1]"
 }
 
-[sub_resource type="Resource" id="Resource_64057"]
+[sub_resource type="Resource" id="Resource_8uw7g"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[face path=\"res://icon.png\" trans_type=1 trans_time=0 trans_wait=0]"
 }
 
-[sub_resource type="Resource" id="Resource_tmtqo"]
+[sub_resource type="Resource" id="Resource_sexty"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[face path=\"res://icon.png\" position=1 trans_type=1 trans_time=0 trans_wait=0]"
 }
 
-[sub_resource type="Resource" id="Resource_vipxv"]
+[sub_resource type="Resource" id="Resource_nhv2d"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "Test Message."
 }
 
-[sub_resource type="Resource" id="Resource_glslw"]
+[sub_resource type="Resource" id="Resource_kt02t"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[imgfx type=0 duration=0.37 wait=true move=8,0]"
 }
 
-[sub_resource type="Resource" id="Resource_plbte"]
+[sub_resource type="Resource" id="Resource_14321"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "Line [color=#c42525ff]2[/color]"
 }
 
-[sub_resource type="Resource" id="Resource_gcqkq"]
+[sub_resource type="Resource" id="Resource_m6d50"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "Line [color=#1ae4cdff]3[/color]"
 }
 
-[sub_resource type="Resource" id="Resource_f81rn"]
+[sub_resource type="Resource" id="Resource_824ir"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "[tornado radius=10 freq=1 connected=0]Final Line[/tornado]"
 }
 
-[sub_resource type="Resource" id="Resource_pfxga"]
+[sub_resource type="Resource" id="Resource_bc7on"]
 script = ExtResource("6_ewx0n")
 
-[sub_resource type="Resource" id="Resource_prvut"]
+[sub_resource type="Resource" id="Resource_mrfhq"]
 script = ExtResource("5_fiyda")
 code = 2
 parameters = {
@@ -837,7 +837,7 @@ parameters = {
 "type": 0,
 "value": ""
 },
-&"face": SubResource("Resource_pfxga"),
+&"face": SubResource("Resource_bc7on"),
 &"floating_target": -1,
 &"height": 0.0,
 &"is_floating_dialog": false,
@@ -845,24 +845,24 @@ parameters = {
 &"width": 0.0
 }
 
-[sub_resource type="Resource" id="Resource_f1de0"]
+[sub_resource type="Resource" id="Resource_6ei8b"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "Did you know that if you open several dialog boxes in a row,"
 }
 
-[sub_resource type="Resource" id="Resource_ko7xv"]
+[sub_resource type="Resource" id="Resource_unfb0"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "the dialog box resizes dynamically to fit the new layout?"
 }
 
-[sub_resource type="Resource" id="Resource_slgv0"]
+[sub_resource type="Resource" id="Resource_mb2l8"]
 script = ExtResource("6_ewx0n")
 
-[sub_resource type="Resource" id="Resource_7ejhu"]
+[sub_resource type="Resource" id="Resource_d40ub"]
 script = ExtResource("5_fiyda")
 code = 2
 parameters = {
@@ -870,7 +870,7 @@ parameters = {
 "type": 0,
 "value": ""
 },
-&"face": SubResource("Resource_slgv0"),
+&"face": SubResource("Resource_mb2l8"),
 &"floating_target": -1,
 &"height": 0.0,
 &"is_floating_dialog": false,
@@ -878,14 +878,14 @@ parameters = {
 &"width": 0.0
 }
 
-[sub_resource type="Resource" id="Resource_o8ip1"]
+[sub_resource type="Resource" id="Resource_suonm"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "cool, eh?"
 }
 
-[sub_resource type="Resource" id="Resource_odw3b"]
+[sub_resource type="Resource" id="Resource_n6qh2"]
 script = ExtResource("5_fiyda")
 code = 1
 parameters = {
@@ -930,10 +930,10 @@ parameters = {
 }
 }
 
-[sub_resource type="Resource" id="Resource_y4eqh"]
+[sub_resource type="Resource" id="Resource_ccy58"]
 script = ExtResource("6_ewx0n")
 
-[sub_resource type="Resource" id="Resource_wntvk"]
+[sub_resource type="Resource" id="Resource_ev1gy"]
 script = ExtResource("5_fiyda")
 code = 2
 parameters = {
@@ -941,7 +941,7 @@ parameters = {
 "type": 0,
 "value": ""
 },
-&"face": SubResource("Resource_y4eqh"),
+&"face": SubResource("Resource_ccy58"),
 &"floating_target": -1,
 &"height": 0.0,
 &"is_floating_dialog": false,
@@ -949,14 +949,14 @@ parameters = {
 &"width": 0.0
 }
 
-[sub_resource type="Resource" id="Resource_5cdw8"]
+[sub_resource type="Resource" id="Resource_nhcex"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "And did you know that we can use multiple dialogue scenes?"
 }
 
-[sub_resource type="Resource" id="Resource_jlemv"]
+[sub_resource type="Resource" id="Resource_l4kty"]
 script = ExtResource("5_fiyda")
 code = 1
 parameters = {
@@ -1001,10 +1001,10 @@ parameters = {
 }
 }
 
-[sub_resource type="Resource" id="Resource_4nhwl"]
+[sub_resource type="Resource" id="Resource_dn5xy"]
 script = ExtResource("6_ewx0n")
 
-[sub_resource type="Resource" id="Resource_01l5p"]
+[sub_resource type="Resource" id="Resource_e0frr"]
 script = ExtResource("5_fiyda")
 code = 2
 parameters = {
@@ -1012,7 +1012,7 @@ parameters = {
 "type": 0,
 "value": ""
 },
-&"face": SubResource("Resource_4nhwl"),
+&"face": SubResource("Resource_dn5xy"),
 &"floating_target": -1,
 &"height": 0.0,
 &"is_floating_dialog": false,
@@ -1020,14 +1020,14 @@ parameters = {
 &"width": 0.0
 }
 
-[sub_resource type="Resource" id="Resource_j06s6"]
+[sub_resource type="Resource" id="Resource_dholc"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "How about this one?"
 }
 
-[sub_resource type="Resource" id="Resource_sy4ih"]
+[sub_resource type="Resource" id="Resource_3ao5d"]
 script = ExtResource("5_fiyda")
 code = 1
 parameters = {
@@ -1072,10 +1072,10 @@ parameters = {
 }
 }
 
-[sub_resource type="Resource" id="Resource_5ofjd"]
+[sub_resource type="Resource" id="Resource_6sjji"]
 script = ExtResource("6_ewx0n")
 
-[sub_resource type="Resource" id="Resource_ltk8i"]
+[sub_resource type="Resource" id="Resource_kblwe"]
 script = ExtResource("5_fiyda")
 code = 2
 parameters = {
@@ -1083,7 +1083,7 @@ parameters = {
 "type": 0,
 "value": ""
 },
-&"face": SubResource("Resource_5ofjd"),
+&"face": SubResource("Resource_6sjji"),
 &"floating_target": -1,
 &"height": 0.0,
 &"is_floating_dialog": false,
@@ -1091,14 +1091,14 @@ parameters = {
 &"width": 0.0
 }
 
-[sub_resource type="Resource" id="Resource_g8ouj"]
+[sub_resource type="Resource" id="Resource_mhymp"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "What do you think of this scene for selecting a number?"
 }
 
-[sub_resource type="Resource" id="Resource_rho7m"]
+[sub_resource type="Resource" id="Resource_bl0n3"]
 script = ExtResource("5_fiyda")
 code = 8
 parameters = {
@@ -1129,10 +1129,10 @@ parameters = {
 &"variable_id": 1
 }
 
-[sub_resource type="Resource" id="Resource_67sxk"]
+[sub_resource type="Resource" id="Resource_12em7"]
 script = ExtResource("6_ewx0n")
 
-[sub_resource type="Resource" id="Resource_t3gw3"]
+[sub_resource type="Resource" id="Resource_rlv02"]
 script = ExtResource("5_fiyda")
 code = 2
 parameters = {
@@ -1140,7 +1140,7 @@ parameters = {
 "type": 0,
 "value": ""
 },
-&"face": SubResource("Resource_67sxk"),
+&"face": SubResource("Resource_12em7"),
 &"floating_target": -1,
 &"height": 0.0,
 &"is_floating_dialog": false,
@@ -1148,14 +1148,14 @@ parameters = {
 &"width": 0.0
 }
 
-[sub_resource type="Resource" id="Resource_odfni"]
+[sub_resource type="Resource" id="Resource_mgvs1"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "How does this work for selecting text?"
 }
 
-[sub_resource type="Resource" id="Resource_1228q"]
+[sub_resource type="Resource" id="Resource_s7x2v"]
 script = ExtResource("5_fiyda")
 code = 8
 parameters = {
@@ -1186,10 +1186,10 @@ parameters = {
 &"variable_id": 1
 }
 
-[sub_resource type="Resource" id="Resource_s2fxt"]
+[sub_resource type="Resource" id="Resource_18go4"]
 script = ExtResource("6_ewx0n")
 
-[sub_resource type="Resource" id="Resource_drp4j"]
+[sub_resource type="Resource" id="Resource_e05mm"]
 script = ExtResource("5_fiyda")
 code = 2
 parameters = {
@@ -1197,7 +1197,7 @@ parameters = {
 "type": 0,
 "value": ""
 },
-&"face": SubResource("Resource_s2fxt"),
+&"face": SubResource("Resource_18go4"),
 &"floating_target": -1,
 &"height": 0.0,
 &"is_floating_dialog": false,
@@ -1205,14 +1205,14 @@ parameters = {
 &"width": 0.0
 }
 
-[sub_resource type="Resource" id="Resource_44as2"]
+[sub_resource type="Resource" id="Resource_1sdaf"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "What do you want to do now?"
 }
 
-[sub_resource type="Resource" id="Resource_hih7c"]
+[sub_resource type="Resource" id="Resource_bhbm7"]
 script = ExtResource("5_fiyda")
 code = 4
 parameters = {
@@ -1243,14 +1243,14 @@ parameters = {
 "use_message_bounds": true
 }
 
-[sub_resource type="Resource" id="Resource_qdbl8"]
+[sub_resource type="Resource" id="Resource_2xbjf"]
 script = ExtResource("5_fiyda")
 code = 5
 parameters = {
 &"name": "Snow Weather"
 }
 
-[sub_resource type="Resource" id="Resource_x41qh"]
+[sub_resource type="Resource" id="Resource_bgbtk"]
 script = ExtResource("5_fiyda")
 code = 68
 indent = 1
@@ -1260,18 +1260,18 @@ parameters = {
 &"type": 0
 }
 
-[sub_resource type="Resource" id="Resource_djc0j"]
+[sub_resource type="Resource" id="Resource_gxcth"]
 script = ExtResource("5_fiyda")
 indent = 1
 
-[sub_resource type="Resource" id="Resource_syo5f"]
+[sub_resource type="Resource" id="Resource_yij2w"]
 script = ExtResource("5_fiyda")
 code = 5
 parameters = {
 &"name": "rain Weather"
 }
 
-[sub_resource type="Resource" id="Resource_ipces"]
+[sub_resource type="Resource" id="Resource_j8bdp"]
 script = ExtResource("5_fiyda")
 code = 68
 indent = 1
@@ -1281,18 +1281,18 @@ parameters = {
 &"type": 0
 }
 
-[sub_resource type="Resource" id="Resource_lgud1"]
+[sub_resource type="Resource" id="Resource_fbo3h"]
 script = ExtResource("5_fiyda")
 indent = 1
 
-[sub_resource type="Resource" id="Resource_kim7v"]
+[sub_resource type="Resource" id="Resource_8ep4v"]
 script = ExtResource("5_fiyda")
 code = 5
 parameters = {
 &"name": "Desert Climate"
 }
 
-[sub_resource type="Resource" id="Resource_gfhva"]
+[sub_resource type="Resource" id="Resource_18vhm"]
 script = ExtResource("5_fiyda")
 code = 68
 indent = 1
@@ -1302,18 +1302,18 @@ parameters = {
 &"type": 0
 }
 
-[sub_resource type="Resource" id="Resource_ja5jv"]
+[sub_resource type="Resource" id="Resource_8psjc"]
 script = ExtResource("5_fiyda")
 indent = 1
 
-[sub_resource type="Resource" id="Resource_6xu06"]
+[sub_resource type="Resource" id="Resource_ku33s"]
 script = ExtResource("5_fiyda")
 code = 5
 parameters = {
 &"name": "Aquatic environment"
 }
 
-[sub_resource type="Resource" id="Resource_26tpd"]
+[sub_resource type="Resource" id="Resource_hj6ro"]
 script = ExtResource("5_fiyda")
 code = 68
 indent = 1
@@ -1323,18 +1323,18 @@ parameters = {
 &"type": 0
 }
 
-[sub_resource type="Resource" id="Resource_ftalb"]
+[sub_resource type="Resource" id="Resource_2s4be"]
 script = ExtResource("5_fiyda")
 indent = 1
 
-[sub_resource type="Resource" id="Resource_0ihy7"]
+[sub_resource type="Resource" id="Resource_0m5cy"]
 script = ExtResource("5_fiyda")
 code = 5
 parameters = {
 &"name": "Enable Follower Tracking"
 }
 
-[sub_resource type="Resource" id="Resource_alr0h"]
+[sub_resource type="Resource" id="Resource_k407u"]
 script = ExtResource("5_fiyda")
 code = 71
 indent = 1
@@ -1342,21 +1342,21 @@ parameters = {
 &"value": true
 }
 
-[sub_resource type="Resource" id="Resource_h0r60"]
+[sub_resource type="Resource" id="Resource_7lac0"]
 script = ExtResource("5_fiyda")
 indent = 1
 
-[sub_resource type="Resource" id="Resource_a0gg0"]
+[sub_resource type="Resource" id="Resource_wr5vl"]
 script = ExtResource("5_fiyda")
 code = 5
 parameters = {
 &"name": "Disable Follower Tracking"
 }
 
-[sub_resource type="Resource" id="Resource_spixi"]
+[sub_resource type="Resource" id="Resource_a1d1d"]
 script = ExtResource("6_ewx0n")
 
-[sub_resource type="Resource" id="Resource_mlaqm"]
+[sub_resource type="Resource" id="Resource_k72kk"]
 script = ExtResource("5_fiyda")
 code = 2
 indent = 1
@@ -1365,7 +1365,7 @@ parameters = {
 "type": 0,
 "value": ""
 },
-&"face": SubResource("Resource_spixi"),
+&"face": SubResource("Resource_a1d1d"),
 &"floating_target": -1,
 &"height": 0.0,
 &"is_floating_dialog": false,
@@ -1373,7 +1373,7 @@ parameters = {
 &"width": 0.0
 }
 
-[sub_resource type="Resource" id="Resource_x8nh3"]
+[sub_resource type="Resource" id="Resource_15xmg"]
 script = ExtResource("5_fiyda")
 code = 3
 indent = 1
@@ -1381,7 +1381,7 @@ parameters = {
 "line": "Now you can manage your followers (press L2 or R2 or key Q or Shift + Q)"
 }
 
-[sub_resource type="Resource" id="Resource_mt8sb"]
+[sub_resource type="Resource" id="Resource_5h8ba"]
 script = ExtResource("5_fiyda")
 code = 3
 indent = 1
@@ -1389,7 +1389,7 @@ parameters = {
 "line": ""
 }
 
-[sub_resource type="Resource" id="Resource_2en6b"]
+[sub_resource type="Resource" id="Resource_v242a"]
 script = ExtResource("5_fiyda")
 code = 3
 indent = 1
@@ -1397,7 +1397,7 @@ parameters = {
 "line": "Note: Try stepping on the switch down there with one character to unlock"
 }
 
-[sub_resource type="Resource" id="Resource_4shha"]
+[sub_resource type="Resource" id="Resource_bq7ur"]
 script = ExtResource("5_fiyda")
 code = 3
 indent = 1
@@ -1405,7 +1405,7 @@ parameters = {
 "line": "the chest, and use another character to reach it!"
 }
 
-[sub_resource type="Resource" id="Resource_nou3g"]
+[sub_resource type="Resource" id="Resource_qvghj"]
 script = ExtResource("5_fiyda")
 code = 71
 indent = 1
@@ -1413,21 +1413,21 @@ parameters = {
 &"value": false
 }
 
-[sub_resource type="Resource" id="Resource_go7qo"]
+[sub_resource type="Resource" id="Resource_wgif3"]
 script = ExtResource("5_fiyda")
 indent = 1
 
-[sub_resource type="Resource" id="Resource_30l0e"]
+[sub_resource type="Resource" id="Resource_ormxp"]
 script = ExtResource("5_fiyda")
 code = 5
 parameters = {
 &"name": "Start mining minerals!"
 }
 
-[sub_resource type="Resource" id="Resource_14fiy"]
+[sub_resource type="Resource" id="Resource_h24i5"]
 script = ExtResource("6_ewx0n")
 
-[sub_resource type="Resource" id="Resource_j63ta"]
+[sub_resource type="Resource" id="Resource_wocef"]
 script = ExtResource("5_fiyda")
 code = 2
 indent = 1
@@ -1436,7 +1436,7 @@ parameters = {
 "type": 0,
 "value": ""
 },
-&"face": SubResource("Resource_14fiy"),
+&"face": SubResource("Resource_h24i5"),
 &"floating_target": -1,
 &"height": 0.0,
 &"is_floating_dialog": false,
@@ -1444,7 +1444,7 @@ parameters = {
 &"width": 0.0
 }
 
-[sub_resource type="Resource" id="Resource_pgrv3"]
+[sub_resource type="Resource" id="Resource_b31ej"]
 script = ExtResource("5_fiyda")
 code = 3
 indent = 1
@@ -1452,7 +1452,7 @@ parameters = {
 "line": "I've taught you your first trade! Now you can mine those mineral veins right over there!"
 }
 
-[sub_resource type="Resource" id="Resource_1fnfn"]
+[sub_resource type="Resource" id="Resource_2a0la"]
 script = ExtResource("5_fiyda")
 code = 300
 indent = 1
@@ -1465,18 +1465,18 @@ parameters = {
 &"type": 1
 }
 
-[sub_resource type="Resource" id="Resource_p2k1x"]
+[sub_resource type="Resource" id="Resource_nvihj"]
 script = ExtResource("5_fiyda")
 indent = 1
 
-[sub_resource type="Resource" id="Resource_uyl3x"]
+[sub_resource type="Resource" id="Resource_od3dr"]
 script = ExtResource("5_fiyda")
 code = 5
 parameters = {
 &"name": "Give me Items!"
 }
 
-[sub_resource type="Resource" id="Resource_8ih1c"]
+[sub_resource type="Resource" id="Resource_h5d5p"]
 script = ExtResource("5_fiyda")
 code = 13
 indent = 1
@@ -1487,7 +1487,7 @@ parameters = {
 &"value_type": 0
 }
 
-[sub_resource type="Resource" id="Resource_8psj0"]
+[sub_resource type="Resource" id="Resource_stlra"]
 script = ExtResource("5_fiyda")
 code = 13
 indent = 1
@@ -1498,7 +1498,7 @@ parameters = {
 &"value_type": 0
 }
 
-[sub_resource type="Resource" id="Resource_fem50"]
+[sub_resource type="Resource" id="Resource_dp2qq"]
 script = ExtResource("5_fiyda")
 code = 13
 indent = 1
@@ -1509,7 +1509,7 @@ parameters = {
 &"value_type": 0
 }
 
-[sub_resource type="Resource" id="Resource_1g4yu"]
+[sub_resource type="Resource" id="Resource_babqj"]
 script = ExtResource("5_fiyda")
 code = 13
 indent = 1
@@ -1520,7 +1520,7 @@ parameters = {
 &"value_type": 0
 }
 
-[sub_resource type="Resource" id="Resource_bpp8n"]
+[sub_resource type="Resource" id="Resource_2dte8"]
 script = ExtResource("5_fiyda")
 code = 13
 indent = 1
@@ -1531,7 +1531,7 @@ parameters = {
 &"value_type": 0
 }
 
-[sub_resource type="Resource" id="Resource_gw2x3"]
+[sub_resource type="Resource" id="Resource_i44bx"]
 script = ExtResource("5_fiyda")
 code = 13
 indent = 1
@@ -1542,21 +1542,21 @@ parameters = {
 &"value_type": 0
 }
 
-[sub_resource type="Resource" id="Resource_56rkx"]
+[sub_resource type="Resource" id="Resource_vf5wp"]
 script = ExtResource("5_fiyda")
 indent = 1
 
-[sub_resource type="Resource" id="Resource_uh0lc"]
+[sub_resource type="Resource" id="Resource_t1axi"]
 script = ExtResource("5_fiyda")
 code = 5
 parameters = {
 &"name": "Teleport Me to another Map"
 }
 
-[sub_resource type="Resource" id="Resource_0dkr8"]
+[sub_resource type="Resource" id="Resource_3in6b"]
 script = ExtResource("6_ewx0n")
 
-[sub_resource type="Resource" id="Resource_pkrvo"]
+[sub_resource type="Resource" id="Resource_5seh2"]
 script = ExtResource("5_fiyda")
 code = 2
 indent = 1
@@ -1565,7 +1565,7 @@ parameters = {
 "type": 0,
 "value": ""
 },
-&"face": SubResource("Resource_0dkr8"),
+&"face": SubResource("Resource_3in6b"),
 &"floating_target": -1,
 &"height": 0.0,
 &"is_floating_dialog": false,
@@ -1573,7 +1573,7 @@ parameters = {
 &"width": 0.0
 }
 
-[sub_resource type="Resource" id="Resource_06off"]
+[sub_resource type="Resource" id="Resource_a7bp0"]
 script = ExtResource("5_fiyda")
 code = 3
 indent = 1
@@ -1581,7 +1581,7 @@ parameters = {
 "line": "Oops! There aren't any other maps. How about I teleport you right here on this map?"
 }
 
-[sub_resource type="Resource" id="Resource_slxx7"]
+[sub_resource type="Resource" id="Resource_3i5ed"]
 script = ExtResource("5_fiyda")
 code = 53
 indent = 1
@@ -1605,10 +1605,10 @@ parameters = {
 &"wait_animation": true
 }
 
-[sub_resource type="Resource" id="Resource_gxfe6"]
+[sub_resource type="Resource" id="Resource_i3ps1"]
 script = ExtResource("6_ewx0n")
 
-[sub_resource type="Resource" id="Resource_vakvp"]
+[sub_resource type="Resource" id="Resource_fuont"]
 script = ExtResource("5_fiyda")
 code = 2
 indent = 1
@@ -1617,7 +1617,7 @@ parameters = {
 "type": 0,
 "value": ""
 },
-&"face": SubResource("Resource_gxfe6"),
+&"face": SubResource("Resource_i3ps1"),
 &"floating_target": -1,
 &"height": 0.0,
 &"is_floating_dialog": false,
@@ -1625,7 +1625,7 @@ parameters = {
 &"width": 0.0
 }
 
-[sub_resource type="Resource" id="Resource_jkm4e"]
+[sub_resource type="Resource" id="Resource_62fyw"]
 script = ExtResource("5_fiyda")
 code = 3
 indent = 1
@@ -1633,18 +1633,18 @@ parameters = {
 "line": "[heart scale=16 freq=2]jeJe, Bye![/heart]"
 }
 
-[sub_resource type="Resource" id="Resource_dnfwv"]
+[sub_resource type="Resource" id="Resource_jaaiq"]
 script = ExtResource("5_fiyda")
 indent = 1
 
-[sub_resource type="Resource" id="Resource_gotgt"]
+[sub_resource type="Resource" id="Resource_i1hr7"]
 script = ExtResource("5_fiyda")
 code = 5
 parameters = {
 &"name": "Show an animation!"
 }
 
-[sub_resource type="Resource" id="Resource_456um"]
+[sub_resource type="Resource" id="Resource_cya6g"]
 script = ExtResource("5_fiyda")
 code = 72
 indent = 1
@@ -1654,18 +1654,18 @@ parameters = {
 &"wait": false
 }
 
-[sub_resource type="Resource" id="Resource_60awo"]
+[sub_resource type="Resource" id="Resource_f3qq1"]
 script = ExtResource("5_fiyda")
 indent = 1
 
-[sub_resource type="Resource" id="Resource_q2osw"]
+[sub_resource type="Resource" id="Resource_1mjgd"]
 script = ExtResource("5_fiyda")
 code = 6
 
-[sub_resource type="Resource" id="Resource_ygae5"]
+[sub_resource type="Resource" id="Resource_1tg5t"]
 script = ExtResource("6_ewx0n")
 
-[sub_resource type="Resource" id="Resource_ssb8u"]
+[sub_resource type="Resource" id="Resource_7llqc"]
 script = ExtResource("5_fiyda")
 code = 2
 indent = 1
@@ -1674,7 +1674,7 @@ parameters = {
 "type": 0,
 "value": ""
 },
-&"face": SubResource("Resource_ygae5"),
+&"face": SubResource("Resource_1tg5t"),
 &"floating_target": -1,
 &"height": 0.0,
 &"is_floating_dialog": false,
@@ -1682,7 +1682,7 @@ parameters = {
 &"width": 0.0
 }
 
-[sub_resource type="Resource" id="Resource_aepf8"]
+[sub_resource type="Resource" id="Resource_3f0n8"]
 script = ExtResource("5_fiyda")
 code = 3
 indent = 1
@@ -1690,18 +1690,18 @@ parameters = {
 "line": "If you don't want anything, don't talk to me..."
 }
 
-[sub_resource type="Resource" id="Resource_do6cf"]
+[sub_resource type="Resource" id="Resource_p46xd"]
 script = ExtResource("5_fiyda")
 indent = 1
 
-[sub_resource type="Resource" id="Resource_yyltp"]
+[sub_resource type="Resource" id="Resource_y1xvw"]
 script = ExtResource("5_fiyda")
 code = 7
 
-[sub_resource type="Resource" id="Resource_rx4l4"]
+[sub_resource type="Resource" id="Resource_8ihde"]
 script = ExtResource("6_ewx0n")
 
-[sub_resource type="Resource" id="Resource_7lqqg"]
+[sub_resource type="Resource" id="Resource_xa4ow"]
 script = ExtResource("5_fiyda")
 code = 2
 parameters = {
@@ -1709,7 +1709,7 @@ parameters = {
 "type": 0,
 "value": ""
 },
-&"face": SubResource("Resource_rx4l4"),
+&"face": SubResource("Resource_8ihde"),
 &"floating_target": -1,
 &"height": 0.0,
 &"is_floating_dialog": false,
@@ -1717,38 +1717,38 @@ parameters = {
 &"width": 0.0
 }
 
-[sub_resource type="Resource" id="Resource_16pvg"]
+[sub_resource type="Resource" id="Resource_40c52"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "In-game, you can press F9 to open the debug menu, hold down the Control"
 }
 
-[sub_resource type="Resource" id="Resource_fc2vd"]
+[sub_resource type="Resource" id="Resource_hf63t"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "key to ignore obstacles while playing in the editor,"
 }
 
-[sub_resource type="Resource" id="Resource_6uiwt"]
+[sub_resource type="Resource" id="Resource_tppx5"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "or press Shift to run[wait type=0 seconds=0.50]"
 }
 
-[sub_resource type="Resource" id="Resource_xywgm"]
+[sub_resource type="Resource" id="Resource_otfxb"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "give it a try!"
 }
 
-[sub_resource type="Resource" id="Resource_77pe6"]
+[sub_resource type="Resource" id="Resource_an3vv"]
 script = ExtResource("6_ewx0n")
 
-[sub_resource type="Resource" id="Resource_ry80i"]
+[sub_resource type="Resource" id="Resource_fi231"]
 script = ExtResource("5_fiyda")
 code = 2
 parameters = {
@@ -1756,7 +1756,7 @@ parameters = {
 "type": 0,
 "value": ""
 },
-&"face": SubResource("Resource_77pe6"),
+&"face": SubResource("Resource_an3vv"),
 &"floating_target": -1,
 &"height": 0.0,
 &"is_floating_dialog": false,
@@ -1764,21 +1764,21 @@ parameters = {
 &"width": 0.0
 }
 
-[sub_resource type="Resource" id="Resource_vftb8"]
+[sub_resource type="Resource" id="Resource_yyetf"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "Try shooting with Dadarian's bow and hit that moving NPC to see what happens!"
 }
 
-[sub_resource type="Resource" id="Resource_bypfe"]
+[sub_resource type="Resource" id="Resource_u2cf6"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "(Press the space bar to attack)"
 }
 
-[sub_resource type="Resource" id="Resource_03tg4"]
+[sub_resource type="Resource" id="Resource_lhjtt"]
 script = ExtResource("5_fiyda")
 code = 17
 parameters = {
@@ -1787,22 +1787,22 @@ parameters = {
 &"to": 10
 }
 
-[sub_resource type="Resource" id="Resource_xe8i4"]
+[sub_resource type="Resource" id="Resource_r4ldn"]
 script = ExtResource("5_fiyda")
 code = 29
 parameters = {
 &"text": "skip all"
 }
 
-[sub_resource type="Resource" id="Resource_b05gs"]
+[sub_resource type="Resource" id="Resource_d2n87"]
 script = ExtResource("5_fiyda")
 
-[sub_resource type="Resource" id="Resource_x7ig6"]
+[sub_resource type="Resource" id="Resource_7vlot"]
 script = ExtResource("8_didij")
 target = 0
 skippable = true
 
-[sub_resource type="Resource" id="Resource_lsioc"]
+[sub_resource type="Resource" id="Resource_plknb"]
 script = ExtResource("9_uohsy")
 show_name_in_map = true
 type_params = {
@@ -1814,32 +1814,32 @@ hp = 5
 enable_self_switch_on_hit_id = 9
 enable_self_switch_on_dead_id = 10
 
-[sub_resource type="Resource" id="Resource_tevmr"]
+[sub_resource type="Resource" id="Resource_b0egg"]
 script = ExtResource("3_nd5sh")
 _uniq_id = 2026260476780230
 id = 0
 name = "NPC Guay"
-list = Array[ExtResource("5_fiyda")]([SubResource("Resource_eu5nv"), SubResource("Resource_bvp2u"), SubResource("Resource_bbwwk"), SubResource("Resource_64tee"), SubResource("Resource_c30ta"), SubResource("Resource_paa2j"), SubResource("Resource_ug546"), SubResource("Resource_fk6ie"), SubResource("Resource_0jiwo"), SubResource("Resource_r3rve"), SubResource("Resource_iu46p"), SubResource("Resource_vpwna"), SubResource("Resource_qfjyi"), SubResource("Resource_iqi6h"), SubResource("Resource_64057"), SubResource("Resource_tmtqo"), SubResource("Resource_vipxv"), SubResource("Resource_glslw"), SubResource("Resource_plbte"), SubResource("Resource_gcqkq"), SubResource("Resource_f81rn"), SubResource("Resource_prvut"), SubResource("Resource_f1de0"), SubResource("Resource_ko7xv"), SubResource("Resource_7ejhu"), SubResource("Resource_o8ip1"), SubResource("Resource_odw3b"), SubResource("Resource_wntvk"), SubResource("Resource_5cdw8"), SubResource("Resource_jlemv"), SubResource("Resource_01l5p"), SubResource("Resource_j06s6"), SubResource("Resource_sy4ih"), SubResource("Resource_ltk8i"), SubResource("Resource_g8ouj"), SubResource("Resource_rho7m"), SubResource("Resource_t3gw3"), SubResource("Resource_odfni"), SubResource("Resource_1228q"), SubResource("Resource_drp4j"), SubResource("Resource_44as2"), SubResource("Resource_hih7c"), SubResource("Resource_qdbl8"), SubResource("Resource_x41qh"), SubResource("Resource_djc0j"), SubResource("Resource_syo5f"), SubResource("Resource_ipces"), SubResource("Resource_lgud1"), SubResource("Resource_kim7v"), SubResource("Resource_gfhva"), SubResource("Resource_ja5jv"), SubResource("Resource_6xu06"), SubResource("Resource_26tpd"), SubResource("Resource_ftalb"), SubResource("Resource_0ihy7"), SubResource("Resource_alr0h"), SubResource("Resource_h0r60"), SubResource("Resource_a0gg0"), SubResource("Resource_mlaqm"), SubResource("Resource_x8nh3"), SubResource("Resource_mt8sb"), SubResource("Resource_2en6b"), SubResource("Resource_4shha"), SubResource("Resource_nou3g"), SubResource("Resource_go7qo"), SubResource("Resource_30l0e"), SubResource("Resource_j63ta"), SubResource("Resource_pgrv3"), SubResource("Resource_1fnfn"), SubResource("Resource_p2k1x"), SubResource("Resource_uyl3x"), SubResource("Resource_8ih1c"), SubResource("Resource_8psj0"), SubResource("Resource_fem50"), SubResource("Resource_1g4yu"), SubResource("Resource_bpp8n"), SubResource("Resource_gw2x3"), SubResource("Resource_56rkx"), SubResource("Resource_uh0lc"), SubResource("Resource_pkrvo"), SubResource("Resource_06off"), SubResource("Resource_slxx7"), SubResource("Resource_vakvp"), SubResource("Resource_jkm4e"), SubResource("Resource_dnfwv"), SubResource("Resource_gotgt"), SubResource("Resource_456um"), SubResource("Resource_60awo"), SubResource("Resource_q2osw"), SubResource("Resource_ssb8u"), SubResource("Resource_aepf8"), SubResource("Resource_do6cf"), SubResource("Resource_yyltp"), SubResource("Resource_7lqqg"), SubResource("Resource_16pvg"), SubResource("Resource_fc2vd"), SubResource("Resource_6uiwt"), SubResource("Resource_xywgm"), SubResource("Resource_ry80i"), SubResource("Resource_vftb8"), SubResource("Resource_bypfe"), SubResource("Resource_03tg4"), SubResource("Resource_xe8i4"), SubResource("Resource_b05gs")])
-condition = SubResource("Resource_2mltf")
-movement_route = SubResource("Resource_x7ig6")
-options = SubResource("Resource_lsioc")
+list = Array[ExtResource("5_fiyda")]([SubResource("Resource_t8355"), SubResource("Resource_kfo52"), SubResource("Resource_qar4r"), SubResource("Resource_gq3j5"), SubResource("Resource_y8d1s"), SubResource("Resource_khrxu"), SubResource("Resource_7e05m"), SubResource("Resource_5cf7j"), SubResource("Resource_48hwi"), SubResource("Resource_bea5y"), SubResource("Resource_7ntpp"), SubResource("Resource_nwouv"), SubResource("Resource_sba15"), SubResource("Resource_5hyhy"), SubResource("Resource_8uw7g"), SubResource("Resource_sexty"), SubResource("Resource_nhv2d"), SubResource("Resource_kt02t"), SubResource("Resource_14321"), SubResource("Resource_m6d50"), SubResource("Resource_824ir"), SubResource("Resource_mrfhq"), SubResource("Resource_6ei8b"), SubResource("Resource_unfb0"), SubResource("Resource_d40ub"), SubResource("Resource_suonm"), SubResource("Resource_n6qh2"), SubResource("Resource_ev1gy"), SubResource("Resource_nhcex"), SubResource("Resource_l4kty"), SubResource("Resource_e0frr"), SubResource("Resource_dholc"), SubResource("Resource_3ao5d"), SubResource("Resource_kblwe"), SubResource("Resource_mhymp"), SubResource("Resource_bl0n3"), SubResource("Resource_rlv02"), SubResource("Resource_mgvs1"), SubResource("Resource_s7x2v"), SubResource("Resource_e05mm"), SubResource("Resource_1sdaf"), SubResource("Resource_bhbm7"), SubResource("Resource_2xbjf"), SubResource("Resource_bgbtk"), SubResource("Resource_gxcth"), SubResource("Resource_yij2w"), SubResource("Resource_j8bdp"), SubResource("Resource_fbo3h"), SubResource("Resource_8ep4v"), SubResource("Resource_18vhm"), SubResource("Resource_8psjc"), SubResource("Resource_ku33s"), SubResource("Resource_hj6ro"), SubResource("Resource_2s4be"), SubResource("Resource_0m5cy"), SubResource("Resource_k407u"), SubResource("Resource_7lac0"), SubResource("Resource_wr5vl"), SubResource("Resource_k72kk"), SubResource("Resource_15xmg"), SubResource("Resource_5h8ba"), SubResource("Resource_v242a"), SubResource("Resource_bq7ur"), SubResource("Resource_qvghj"), SubResource("Resource_wgif3"), SubResource("Resource_ormxp"), SubResource("Resource_wocef"), SubResource("Resource_b31ej"), SubResource("Resource_2a0la"), SubResource("Resource_nvihj"), SubResource("Resource_od3dr"), SubResource("Resource_h5d5p"), SubResource("Resource_stlra"), SubResource("Resource_dp2qq"), SubResource("Resource_babqj"), SubResource("Resource_2dte8"), SubResource("Resource_i44bx"), SubResource("Resource_vf5wp"), SubResource("Resource_t1axi"), SubResource("Resource_5seh2"), SubResource("Resource_a7bp0"), SubResource("Resource_3i5ed"), SubResource("Resource_fuont"), SubResource("Resource_62fyw"), SubResource("Resource_jaaiq"), SubResource("Resource_i1hr7"), SubResource("Resource_cya6g"), SubResource("Resource_f3qq1"), SubResource("Resource_1mjgd"), SubResource("Resource_7llqc"), SubResource("Resource_3f0n8"), SubResource("Resource_p46xd"), SubResource("Resource_y1xvw"), SubResource("Resource_xa4ow"), SubResource("Resource_40c52"), SubResource("Resource_hf63t"), SubResource("Resource_tppx5"), SubResource("Resource_otfxb"), SubResource("Resource_fi231"), SubResource("Resource_yyetf"), SubResource("Resource_u2cf6"), SubResource("Resource_lhjtt"), SubResource("Resource_r4ldn"), SubResource("Resource_d2n87")])
+condition = SubResource("Resource_a31gi")
+movement_route = SubResource("Resource_7vlot")
+options = SubResource("Resource_plknb")
 event_trigger_list = PackedInt64Array()
 event_tool_list = PackedInt32Array(0, 2)
 event_signal_list = PackedInt32Array()
 character_path = "res://Scenes/NPCs/Npc_1/npc_1_data.tres"
 modulate = Color(0.2985625, 0.8, 0.09000001, 1)
 
-[sub_resource type="Resource" id="Resource_37pno"]
+[sub_resource type="Resource" id="Resource_3i2k6"]
 script = ExtResource("4_htxeb")
 use_switch1 = true
 pressure_targets = PackedInt64Array(0, 5121752958849044, 1129373089051834)
 switch1_id = 10
 actor_id = 4
 
-[sub_resource type="Resource" id="Resource_6vcjr"]
+[sub_resource type="Resource" id="Resource_c710q"]
 script = ExtResource("6_ewx0n")
 
-[sub_resource type="Resource" id="Resource_26183"]
+[sub_resource type="Resource" id="Resource_cvvv8"]
 script = ExtResource("5_fiyda")
 code = 2
 parameters = {
@@ -1847,7 +1847,7 @@ parameters = {
 "type": 0,
 "value": ""
 },
-&"face": SubResource("Resource_6vcjr"),
+&"face": SubResource("Resource_c710q"),
 &"floating_target": -1,
 &"height": 0.0,
 &"is_floating_dialog": false,
@@ -1855,14 +1855,14 @@ parameters = {
 &"width": 0.0
 }
 
-[sub_resource type="Resource" id="Resource_77h78"]
+[sub_resource type="Resource" id="Resource_prwdw"]
 script = ExtResource("5_fiyda")
 code = 3
 parameters = {
 "line": "What do you want to do now?"
 }
 
-[sub_resource type="Resource" id="Resource_whtqf"]
+[sub_resource type="Resource" id="Resource_7bhu1"]
 script = ExtResource("5_fiyda")
 code = 4
 parameters = {
@@ -1893,14 +1893,14 @@ parameters = {
 "use_message_bounds": true
 }
 
-[sub_resource type="Resource" id="Resource_aaeam"]
+[sub_resource type="Resource" id="Resource_cvvyq"]
 script = ExtResource("5_fiyda")
 code = 5
 parameters = {
 &"name": "Snow Weather"
 }
 
-[sub_resource type="Resource" id="Resource_xpjmy"]
+[sub_resource type="Resource" id="Resource_wixnb"]
 script = ExtResource("5_fiyda")
 code = 68
 indent = 1
@@ -1910,18 +1910,18 @@ parameters = {
 &"type": 0
 }
 
-[sub_resource type="Resource" id="Resource_wf5qg"]
+[sub_resource type="Resource" id="Resource_7wwen"]
 script = ExtResource("5_fiyda")
 indent = 1
 
-[sub_resource type="Resource" id="Resource_sckf7"]
+[sub_resource type="Resource" id="Resource_qbty0"]
 script = ExtResource("5_fiyda")
 code = 5
 parameters = {
 &"name": "rain Weather"
 }
 
-[sub_resource type="Resource" id="Resource_jp3ag"]
+[sub_resource type="Resource" id="Resource_eod5m"]
 script = ExtResource("5_fiyda")
 code = 68
 indent = 1
@@ -1931,18 +1931,18 @@ parameters = {
 &"type": 0
 }
 
-[sub_resource type="Resource" id="Resource_301jq"]
+[sub_resource type="Resource" id="Resource_qh7ye"]
 script = ExtResource("5_fiyda")
 indent = 1
 
-[sub_resource type="Resource" id="Resource_qmusr"]
+[sub_resource type="Resource" id="Resource_5fcm8"]
 script = ExtResource("5_fiyda")
 code = 5
 parameters = {
 &"name": "Desert Climate"
 }
 
-[sub_resource type="Resource" id="Resource_erli4"]
+[sub_resource type="Resource" id="Resource_ujaig"]
 script = ExtResource("5_fiyda")
 code = 68
 indent = 1
@@ -1952,18 +1952,18 @@ parameters = {
 &"type": 0
 }
 
-[sub_resource type="Resource" id="Resource_76upm"]
+[sub_resource type="Resource" id="Resource_kgrat"]
 script = ExtResource("5_fiyda")
 indent = 1
 
-[sub_resource type="Resource" id="Resource_5kgcr"]
+[sub_resource type="Resource" id="Resource_acnrr"]
 script = ExtResource("5_fiyda")
 code = 5
 parameters = {
 &"name": "Aquatic environment"
 }
 
-[sub_resource type="Resource" id="Resource_tyn2n"]
+[sub_resource type="Resource" id="Resource_2swgg"]
 script = ExtResource("5_fiyda")
 code = 68
 indent = 1
@@ -1973,18 +1973,18 @@ parameters = {
 &"type": 0
 }
 
-[sub_resource type="Resource" id="Resource_puj8s"]
+[sub_resource type="Resource" id="Resource_chqxi"]
 script = ExtResource("5_fiyda")
 indent = 1
 
-[sub_resource type="Resource" id="Resource_hovcy"]
+[sub_resource type="Resource" id="Resource_5mmrr"]
 script = ExtResource("5_fiyda")
 code = 5
 parameters = {
 &"name": "Enable Follower Tracking"
 }
 
-[sub_resource type="Resource" id="Resource_3bs5c"]
+[sub_resource type="Resource" id="Resource_aq5fx"]
 script = ExtResource("5_fiyda")
 code = 71
 indent = 1
@@ -1992,21 +1992,21 @@ parameters = {
 &"value": true
 }
 
-[sub_resource type="Resource" id="Resource_8w3cj"]
+[sub_resource type="Resource" id="Resource_kqrii"]
 script = ExtResource("5_fiyda")
 indent = 1
 
-[sub_resource type="Resource" id="Resource_funii"]
+[sub_resource type="Resource" id="Resource_1es74"]
 script = ExtResource("5_fiyda")
 code = 5
 parameters = {
 &"name": "Disable Follower Tracking"
 }
 
-[sub_resource type="Resource" id="Resource_0qm75"]
+[sub_resource type="Resource" id="Resource_sfxyf"]
 script = ExtResource("6_ewx0n")
 
-[sub_resource type="Resource" id="Resource_rj2uf"]
+[sub_resource type="Resource" id="Resource_e8yea"]
 script = ExtResource("5_fiyda")
 code = 2
 indent = 1
@@ -2015,7 +2015,7 @@ parameters = {
 "type": 0,
 "value": ""
 },
-&"face": SubResource("Resource_0qm75"),
+&"face": SubResource("Resource_sfxyf"),
 &"floating_target": -1,
 &"height": 0.0,
 &"is_floating_dialog": false,
@@ -2023,7 +2023,7 @@ parameters = {
 &"width": 0.0
 }
 
-[sub_resource type="Resource" id="Resource_xnim5"]
+[sub_resource type="Resource" id="Resource_o8hlr"]
 script = ExtResource("5_fiyda")
 code = 3
 indent = 1
@@ -2031,7 +2031,7 @@ parameters = {
 "line": "Now you can manage your followers (press L2 or R2 or key Q or Shift + Q)"
 }
 
-[sub_resource type="Resource" id="Resource_xkka6"]
+[sub_resource type="Resource" id="Resource_7qpqb"]
 script = ExtResource("5_fiyda")
 code = 3
 indent = 1
@@ -2039,7 +2039,7 @@ parameters = {
 "line": ""
 }
 
-[sub_resource type="Resource" id="Resource_ygcte"]
+[sub_resource type="Resource" id="Resource_wvwjc"]
 script = ExtResource("5_fiyda")
 code = 3
 indent = 1
@@ -2047,7 +2047,7 @@ parameters = {
 "line": "Note: Try stepping on the switch down there with one character to unlock"
 }
 
-[sub_resource type="Resource" id="Resource_52amo"]
+[sub_resource type="Resource" id="Resource_tt67n"]
 script = ExtResource("5_fiyda")
 code = 3
 indent = 1
@@ -2055,7 +2055,7 @@ parameters = {
 "line": "the chest, and use another character to reach it!"
 }
 
-[sub_resource type="Resource" id="Resource_3u5qq"]
+[sub_resource type="Resource" id="Resource_orc31"]
 script = ExtResource("5_fiyda")
 code = 71
 indent = 1
@@ -2063,21 +2063,21 @@ parameters = {
 &"value": false
 }
 
-[sub_resource type="Resource" id="Resource_aqf4q"]
+[sub_resource type="Resource" id="Resource_py1nr"]
 script = ExtResource("5_fiyda")
 indent = 1
 
-[sub_resource type="Resource" id="Resource_x1vj2"]
+[sub_resource type="Resource" id="Resource_wkayc"]
 script = ExtResource("5_fiyda")
 code = 5
 parameters = {
 &"name": "Start mining minerals!"
 }
 
-[sub_resource type="Resource" id="Resource_brlmi"]
+[sub_resource type="Resource" id="Resource_agnq8"]
 script = ExtResource("6_ewx0n")
 
-[sub_resource type="Resource" id="Resource_gc7so"]
+[sub_resource type="Resource" id="Resource_dc5er"]
 script = ExtResource("5_fiyda")
 code = 2
 indent = 1
@@ -2086,7 +2086,7 @@ parameters = {
 "type": 0,
 "value": ""
 },
-&"face": SubResource("Resource_brlmi"),
+&"face": SubResource("Resource_agnq8"),
 &"floating_target": -1,
 &"height": 0.0,
 &"is_floating_dialog": false,
@@ -2094,7 +2094,7 @@ parameters = {
 &"width": 0.0
 }
 
-[sub_resource type="Resource" id="Resource_g2h4u"]
+[sub_resource type="Resource" id="Resource_18v87"]
 script = ExtResource("5_fiyda")
 code = 3
 indent = 1
@@ -2102,7 +2102,7 @@ parameters = {
 "line": "I've taught you your first trade! Now you can mine those mineral veins right over there!"
 }
 
-[sub_resource type="Resource" id="Resource_qujxs"]
+[sub_resource type="Resource" id="Resource_f2bo2"]
 script = ExtResource("5_fiyda")
 code = 300
 indent = 1
@@ -2115,18 +2115,18 @@ parameters = {
 &"type": 1
 }
 
-[sub_resource type="Resource" id="Resource_qs7qv"]
+[sub_resource type="Resource" id="Resource_8hctu"]
 script = ExtResource("5_fiyda")
 indent = 1
 
-[sub_resource type="Resource" id="Resource_wlcqq"]
+[sub_resource type="Resource" id="Resource_0iyrl"]
 script = ExtResource("5_fiyda")
 code = 5
 parameters = {
 &"name": "Give me Items!"
 }
 
-[sub_resource type="Resource" id="Resource_fuoow"]
+[sub_resource type="Resource" id="Resource_i8wml"]
 script = ExtResource("5_fiyda")
 code = 13
 indent = 1
@@ -2137,7 +2137,7 @@ parameters = {
 &"value_type": 0
 }
 
-[sub_resource type="Resource" id="Resource_8kew1"]
+[sub_resource type="Resource" id="Resource_1q23f"]
 script = ExtResource("5_fiyda")
 code = 13
 indent = 1
@@ -2148,7 +2148,7 @@ parameters = {
 &"value_type": 0
 }
 
-[sub_resource type="Resource" id="Resource_eoh83"]
+[sub_resource type="Resource" id="Resource_nmnsc"]
 script = ExtResource("5_fiyda")
 code = 13
 indent = 1
@@ -2159,7 +2159,7 @@ parameters = {
 &"value_type": 0
 }
 
-[sub_resource type="Resource" id="Resource_p7syr"]
+[sub_resource type="Resource" id="Resource_8rdt1"]
 script = ExtResource("5_fiyda")
 code = 13
 indent = 1
@@ -2170,7 +2170,7 @@ parameters = {
 &"value_type": 0
 }
 
-[sub_resource type="Resource" id="Resource_i6xqx"]
+[sub_resource type="Resource" id="Resource_n4twl"]
 script = ExtResource("5_fiyda")
 code = 13
 indent = 1
@@ -2181,7 +2181,7 @@ parameters = {
 &"value_type": 0
 }
 
-[sub_resource type="Resource" id="Resource_qcl3r"]
+[sub_resource type="Resource" id="Resource_bohq8"]
 script = ExtResource("5_fiyda")
 code = 13
 indent = 1
@@ -2192,21 +2192,21 @@ parameters = {
 &"value_type": 0
 }
 
-[sub_resource type="Resource" id="Resource_318me"]
+[sub_resource type="Resource" id="Resource_uochi"]
 script = ExtResource("5_fiyda")
 indent = 1
 
-[sub_resource type="Resource" id="Resource_okl18"]
+[sub_resource type="Resource" id="Resource_kd4ir"]
 script = ExtResource("5_fiyda")
 code = 5
 parameters = {
 &"name": "Teleport Me to another Map"
 }
 
-[sub_resource type="Resource" id="Resource_t2j2r"]
+[sub_resource type="Resource" id="Resource_fp1g4"]
 script = ExtResource("6_ewx0n")
 
-[sub_resource type="Resource" id="Resource_t15cl"]
+[sub_resource type="Resource" id="Resource_kto2v"]
 script = ExtResource("5_fiyda")
 code = 2
 indent = 1
@@ -2215,7 +2215,7 @@ parameters = {
 "type": 0,
 "value": ""
 },
-&"face": SubResource("Resource_t2j2r"),
+&"face": SubResource("Resource_fp1g4"),
 &"floating_target": -1,
 &"height": 0.0,
 &"is_floating_dialog": false,
@@ -2223,7 +2223,7 @@ parameters = {
 &"width": 0.0
 }
 
-[sub_resource type="Resource" id="Resource_fbfm0"]
+[sub_resource type="Resource" id="Resource_dhn1j"]
 script = ExtResource("5_fiyda")
 code = 3
 indent = 1
@@ -2231,7 +2231,7 @@ parameters = {
 "line": "Oops! There aren't any other maps. How about I teleport you right here on this map?"
 }
 
-[sub_resource type="Resource" id="Resource_vghus"]
+[sub_resource type="Resource" id="Resource_sogqq"]
 script = ExtResource("5_fiyda")
 code = 53
 indent = 1
@@ -2255,10 +2255,10 @@ parameters = {
 &"wait_animation": true
 }
 
-[sub_resource type="Resource" id="Resource_p26pd"]
+[sub_resource type="Resource" id="Resource_w6ffu"]
 script = ExtResource("6_ewx0n")
 
-[sub_resource type="Resource" id="Resource_1w58c"]
+[sub_resource type="Resource" id="Resource_wwpg5"]
 script = ExtResource("5_fiyda")
 code = 2
 indent = 1
@@ -2267,7 +2267,7 @@ parameters = {
 "type": 0,
 "value": ""
 },
-&"face": SubResource("Resource_p26pd"),
+&"face": SubResource("Resource_w6ffu"),
 &"floating_target": -1,
 &"height": 0.0,
 &"is_floating_dialog": false,
@@ -2275,7 +2275,7 @@ parameters = {
 &"width": 0.0
 }
 
-[sub_resource type="Resource" id="Resource_qkd57"]
+[sub_resource type="Resource" id="Resource_rikhb"]
 script = ExtResource("5_fiyda")
 code = 3
 indent = 1
@@ -2283,18 +2283,18 @@ parameters = {
 "line": "[heart scale=16 freq=2]jeJe, Bye![/heart]"
 }
 
-[sub_resource type="Resource" id="Resource_b0ryj"]
+[sub_resource type="Resource" id="Resource_vugc3"]
 script = ExtResource("5_fiyda")
 indent = 1
 
-[sub_resource type="Resource" id="Resource_tpocf"]
+[sub_resource type="Resource" id="Resource_7bd0f"]
 script = ExtResource("5_fiyda")
 code = 5
 parameters = {
 &"name": "Show an animation!"
 }
 
-[sub_resource type="Resource" id="Resource_tmmg4"]
+[sub_resource type="Resource" id="Resource_lowi7"]
 script = ExtResource("5_fiyda")
 code = 72
 indent = 1
@@ -2304,18 +2304,18 @@ parameters = {
 &"wait": false
 }
 
-[sub_resource type="Resource" id="Resource_ho4x6"]
+[sub_resource type="Resource" id="Resource_ta84c"]
 script = ExtResource("5_fiyda")
 indent = 1
 
-[sub_resource type="Resource" id="Resource_rd3uk"]
+[sub_resource type="Resource" id="Resource_7g0v1"]
 script = ExtResource("5_fiyda")
 code = 6
 
-[sub_resource type="Resource" id="Resource_31gct"]
+[sub_resource type="Resource" id="Resource_sduxp"]
 script = ExtResource("6_ewx0n")
 
-[sub_resource type="Resource" id="Resource_r52wh"]
+[sub_resource type="Resource" id="Resource_7wfgn"]
 script = ExtResource("5_fiyda")
 code = 2
 indent = 1
@@ -2324,7 +2324,7 @@ parameters = {
 "type": 0,
 "value": ""
 },
-&"face": SubResource("Resource_31gct"),
+&"face": SubResource("Resource_sduxp"),
 &"floating_target": -1,
 &"height": 0.0,
 &"is_floating_dialog": false,
@@ -2332,7 +2332,7 @@ parameters = {
 &"width": 0.0
 }
 
-[sub_resource type="Resource" id="Resource_bpjf5"]
+[sub_resource type="Resource" id="Resource_k4v8n"]
 script = ExtResource("5_fiyda")
 code = 3
 indent = 1
@@ -2340,23 +2340,23 @@ parameters = {
 "line": "If you don't want anything, don't talk to me..."
 }
 
-[sub_resource type="Resource" id="Resource_x6q2e"]
+[sub_resource type="Resource" id="Resource_6n148"]
 script = ExtResource("5_fiyda")
 indent = 1
 
-[sub_resource type="Resource" id="Resource_jsyg8"]
+[sub_resource type="Resource" id="Resource_111t5"]
 script = ExtResource("5_fiyda")
 code = 7
 
-[sub_resource type="Resource" id="Resource_lwy13"]
+[sub_resource type="Resource" id="Resource_k7j2i"]
 script = ExtResource("5_fiyda")
 
-[sub_resource type="Resource" id="Resource_0bfnc"]
+[sub_resource type="Resource" id="Resource_87unh"]
 script = ExtResource("8_didij")
 target = 0
 skippable = true
 
-[sub_resource type="Resource" id="Resource_3nnxr"]
+[sub_resource type="Resource" id="Resource_ooj6n"]
 script = ExtResource("9_uohsy")
 show_name_in_map = true
 type_params = {
@@ -2366,38 +2366,38 @@ use_extra_config = true
 is_inmortal = false
 hp = 5
 
-[sub_resource type="Resource" id="Resource_fq5r0"]
+[sub_resource type="Resource" id="Resource_2ckdx"]
 script = ExtResource("3_nd5sh")
 _uniq_id = 1352662857567558
 id = 0
 name = "Mi page"
-list = Array[ExtResource("5_fiyda")]([SubResource("Resource_26183"), SubResource("Resource_77h78"), SubResource("Resource_whtqf"), SubResource("Resource_aaeam"), SubResource("Resource_xpjmy"), SubResource("Resource_wf5qg"), SubResource("Resource_sckf7"), SubResource("Resource_jp3ag"), SubResource("Resource_301jq"), SubResource("Resource_qmusr"), SubResource("Resource_erli4"), SubResource("Resource_76upm"), SubResource("Resource_5kgcr"), SubResource("Resource_tyn2n"), SubResource("Resource_puj8s"), SubResource("Resource_hovcy"), SubResource("Resource_3bs5c"), SubResource("Resource_8w3cj"), SubResource("Resource_funii"), SubResource("Resource_rj2uf"), SubResource("Resource_xnim5"), SubResource("Resource_xkka6"), SubResource("Resource_ygcte"), SubResource("Resource_52amo"), SubResource("Resource_3u5qq"), SubResource("Resource_aqf4q"), SubResource("Resource_x1vj2"), SubResource("Resource_gc7so"), SubResource("Resource_g2h4u"), SubResource("Resource_qujxs"), SubResource("Resource_qs7qv"), SubResource("Resource_wlcqq"), SubResource("Resource_fuoow"), SubResource("Resource_8kew1"), SubResource("Resource_eoh83"), SubResource("Resource_p7syr"), SubResource("Resource_i6xqx"), SubResource("Resource_qcl3r"), SubResource("Resource_318me"), SubResource("Resource_okl18"), SubResource("Resource_t15cl"), SubResource("Resource_fbfm0"), SubResource("Resource_vghus"), SubResource("Resource_1w58c"), SubResource("Resource_qkd57"), SubResource("Resource_b0ryj"), SubResource("Resource_tpocf"), SubResource("Resource_tmmg4"), SubResource("Resource_ho4x6"), SubResource("Resource_rd3uk"), SubResource("Resource_r52wh"), SubResource("Resource_bpjf5"), SubResource("Resource_x6q2e"), SubResource("Resource_jsyg8"), SubResource("Resource_lwy13")])
-condition = SubResource("Resource_37pno")
-movement_route = SubResource("Resource_0bfnc")
+list = Array[ExtResource("5_fiyda")]([SubResource("Resource_cvvv8"), SubResource("Resource_prwdw"), SubResource("Resource_7bhu1"), SubResource("Resource_cvvyq"), SubResource("Resource_wixnb"), SubResource("Resource_7wwen"), SubResource("Resource_qbty0"), SubResource("Resource_eod5m"), SubResource("Resource_qh7ye"), SubResource("Resource_5fcm8"), SubResource("Resource_ujaig"), SubResource("Resource_kgrat"), SubResource("Resource_acnrr"), SubResource("Resource_2swgg"), SubResource("Resource_chqxi"), SubResource("Resource_5mmrr"), SubResource("Resource_aq5fx"), SubResource("Resource_kqrii"), SubResource("Resource_1es74"), SubResource("Resource_e8yea"), SubResource("Resource_o8hlr"), SubResource("Resource_7qpqb"), SubResource("Resource_wvwjc"), SubResource("Resource_tt67n"), SubResource("Resource_orc31"), SubResource("Resource_py1nr"), SubResource("Resource_wkayc"), SubResource("Resource_dc5er"), SubResource("Resource_18v87"), SubResource("Resource_f2bo2"), SubResource("Resource_8hctu"), SubResource("Resource_0iyrl"), SubResource("Resource_i8wml"), SubResource("Resource_1q23f"), SubResource("Resource_nmnsc"), SubResource("Resource_8rdt1"), SubResource("Resource_n4twl"), SubResource("Resource_bohq8"), SubResource("Resource_uochi"), SubResource("Resource_kd4ir"), SubResource("Resource_kto2v"), SubResource("Resource_dhn1j"), SubResource("Resource_sogqq"), SubResource("Resource_wwpg5"), SubResource("Resource_rikhb"), SubResource("Resource_vugc3"), SubResource("Resource_7bd0f"), SubResource("Resource_lowi7"), SubResource("Resource_ta84c"), SubResource("Resource_7g0v1"), SubResource("Resource_7wfgn"), SubResource("Resource_k4v8n"), SubResource("Resource_6n148"), SubResource("Resource_111t5"), SubResource("Resource_k7j2i")])
+condition = SubResource("Resource_3i2k6")
+movement_route = SubResource("Resource_87unh")
 movement_to_target = 1283470000896833
-options = SubResource("Resource_3nnxr")
+options = SubResource("Resource_ooj6n")
 event_trigger_list = PackedInt64Array(3971628251607575, 1283470000896833)
 event_tool_list = PackedInt32Array()
 event_signal_list = PackedInt32Array()
 character_path = "res://Scenes/NPCs/juanillo/juanillo_data.tres"
 modulate = Color(0.79296875, 0.08673096, 0.08673096, 1)
 
-[sub_resource type="Resource" id="Resource_ses24"]
+[sub_resource type="Resource" id="Resource_87t6y"]
 script = ExtResource("11_dhmk3")
 
-[sub_resource type="Resource" id="Resource_g42s2"]
+[sub_resource type="Resource" id="Resource_r2p0p"]
 script = ExtResource("12_yak7x")
-levels = Array[ExtResource("11_dhmk3")]([SubResource("Resource_ses24")])
+levels = Array[ExtResource("11_dhmk3")]([SubResource("Resource_87t6y")])
 
-[sub_resource type="Resource" id="Resource_o0x6m"]
+[sub_resource type="Resource" id="Resource_2mltf"]
 script = ExtResource("13_11apb")
 _uniq_id = 1129373089051834
 name = "EV0005"
 id = 5
 x = 13
 y = 12
-pages = Array[ExtResource("3_nd5sh")]([SubResource("Resource_tevmr"), SubResource("Resource_fq5r0")])
-relationship = SubResource("Resource_g42s2")
+pages = Array[ExtResource("3_nd5sh")]([SubResource("Resource_b0egg"), SubResource("Resource_2ckdx")])
+relationship = SubResource("Resource_r2p0p")
 legacy_mode = true
 metadata/is_original_event = true
 
@@ -3185,36 +3185,1812 @@ pages = Array[ExtResource("3_nd5sh")]([SubResource("Resource_0fv3w"), SubResourc
 relationship = SubResource("Resource_8hkq8")
 legacy_mode = true
 
-[sub_resource type="Resource" id="Resource_xn408"]
-script = ExtResource("3_kxphi")
-events = Array[ExtResource("13_11apb")]([SubResource("Resource_dcx4u"), SubResource("Resource_8k1bg"), SubResource("Resource_p8uxl"), SubResource("Resource_ixleh"), SubResource("Resource_o0x6m"), SubResource("Resource_fxc3q"), SubResource("Resource_61jql"), SubResource("Resource_m64xv"), SubResource("Resource_063iu"), SubResource("Resource_jp37q"), SubResource("Resource_ww6ku"), SubResource("Resource_3ufao")])
+[sub_resource type="Resource" id="Resource_cwqwi"]
+script = ExtResource("4_htxeb")
+pressure_targets = PackedInt64Array(0)
+
+[sub_resource type="Resource" id="Resource_lq2k8"]
+script = ExtResource("5_fiyda")
+code = 13
+parameters = {
+&"item_id": 1,
+&"operation_type": 0,
+&"value": 5.0,
+&"value_type": 0
+}
+
+[sub_resource type="Resource" id="Resource_vfse1"]
+script = ExtResource("5_fiyda")
+code = 13
+parameters = {
+&"item_id": 2,
+&"operation_type": 0,
+&"value": 5.0,
+&"value_type": 0
+}
+
+[sub_resource type="Resource" id="Resource_kyg5h"]
+script = ExtResource("5_fiyda")
+code = 13
+parameters = {
+&"item_id": 3,
+&"operation_type": 0,
+&"value": 5.0,
+&"value_type": 0
+}
+
+[sub_resource type="Resource" id="Resource_8ipxo"]
+script = ExtResource("5_fiyda")
+code = 13
+parameters = {
+&"item_id": 4,
+&"operation_type": 0,
+&"value": 5.0,
+&"value_type": 0
+}
+
+[sub_resource type="Resource" id="Resource_yrnlq"]
+script = ExtResource("5_fiyda")
+code = 13
+parameters = {
+&"item_id": 5,
+&"operation_type": 0,
+&"value": 5.0,
+&"value_type": 0
+}
+
+[sub_resource type="Resource" id="Resource_uhh1b"]
+script = ExtResource("5_fiyda")
+code = 13
+parameters = {
+&"item_id": 6,
+&"operation_type": 0,
+&"value": 20.0,
+&"value_type": 0
+}
+
+[sub_resource type="Resource" id="Resource_8g2lf"]
+script = ExtResource("5_fiyda")
+code = 303
+parameters = {
+"stat_path": "save_count",
+&"value": 12.0
+}
+
+[sub_resource type="Resource" id="Resource_rmb10"]
+script = ExtResource("5_fiyda")
+code = 302
+parameters = {
+&"param_id": 0,
+&"target_id": 0,
+&"value": 0.008
+}
+
+[sub_resource type="Resource" id="Resource_ci4ua"]
+script = ExtResource("5_fiyda")
+code = 52
+parameters = {
+&"duration": 0.4,
+&"type": 0
+}
+
+[sub_resource type="Resource" id="Resource_tuw0g"]
+script = ExtResource("5_fiyda")
+code = 53
+parameters = {
+&"delay_transfer": false,
+&"direction": 0,
+&"target": 0,
+&"transfer_animation": {
+"entry_animation": 2,
+"entry_time": 1.0,
+"exit_animation": 3,
+"exit_time": 0.3
+},
+&"type": 0,
+&"value": {
+&"assigned_map_id": 8512879122675625,
+&"assigned_x": 14,
+&"assigned_y": 7,
+&"event_id": 0
+},
+&"wait_animation": true
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_m8qr2"]
+script = ExtResource("5_fiyda")
+code = 30
+parameters = {
+&"text": "skip all"
+}
+
+[sub_resource type="Resource" id="Resource_iikg0"]
+script = ExtResource("6_ewx0n")
+
+[sub_resource type="Resource" id="Resource_fvhc8"]
+script = ExtResource("5_fiyda")
+code = 2
+parameters = {
+&"character_name": {
+"type": 0,
+"value": ""
+},
+&"face": SubResource("Resource_iikg0"),
+&"floating_target": -1,
+&"height": 0.0,
+&"is_floating_dialog": false,
+&"position": 0,
+&"width": 0.0
+}
+
+[sub_resource type="Resource" id="Resource_i12rd"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[showbox type=0 val=\"Left name\" pos=0]"
+}
+
+[sub_resource type="Resource" id="Resource_sxp8y"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[showbox type=0 val=\"Right name\" pos=1]"
+}
+
+[sub_resource type="Resource" id="Resource_ox1q8"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[face path=\"res://icon.png\" trans_type=1 trans_time=0 trans_wait=0]"
+}
+
+[sub_resource type="Resource" id="Resource_li01l"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[face path=\"res://icon.png\" position=1 trans_type=1 trans_time=0 trans_wait=0]"
+}
+
+[sub_resource type="Resource" id="Resource_y1sgp"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "Test Message."
+}
+
+[sub_resource type="Resource" id="Resource_spvio"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[imgfx type=0 duration=0.37 wait=true move=8,0]"
+}
+
+[sub_resource type="Resource" id="Resource_xm0eg"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "Line [color=#c42525ff]2[/color]"
+}
+
+[sub_resource type="Resource" id="Resource_gvha5"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "Line [color=#1ae4cdff]3[/color]"
+}
+
+[sub_resource type="Resource" id="Resource_s0k6a"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "[tornado radius=10 freq=1 connected=0]Final Line[/tornado]"
+}
+
+[sub_resource type="Resource" id="Resource_jvmk2"]
+script = ExtResource("6_ewx0n")
+
+[sub_resource type="Resource" id="Resource_24gke"]
+script = ExtResource("5_fiyda")
+code = 2
+parameters = {
+&"character_name": {
+"type": 0,
+"value": ""
+},
+&"face": SubResource("Resource_jvmk2"),
+&"floating_target": -1,
+&"height": 0.0,
+&"is_floating_dialog": false,
+&"position": 0,
+&"width": 0.0
+}
+
+[sub_resource type="Resource" id="Resource_xo8vo"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "Did you know that if you open several dialog boxes in a row,"
+}
+
+[sub_resource type="Resource" id="Resource_yjtvj"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "the dialog box resizes dynamically to fit the new layout?"
+}
+
+[sub_resource type="Resource" id="Resource_j8srm"]
+script = ExtResource("6_ewx0n")
+
+[sub_resource type="Resource" id="Resource_83orv"]
+script = ExtResource("5_fiyda")
+code = 2
+parameters = {
+&"character_name": {
+"type": 0,
+"value": ""
+},
+&"face": SubResource("Resource_j8srm"),
+&"floating_target": -1,
+&"height": 0.0,
+&"is_floating_dialog": false,
+&"position": 0,
+&"width": 0.0
+}
+
+[sub_resource type="Resource" id="Resource_oeal2"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "cool, eh?"
+}
+
+[sub_resource type="Resource" id="Resource_tqbol"]
+script = ExtResource("5_fiyda")
+code = 1
+parameters = {
+"character_delay": 0.03,
+"comma_delay": 0.15,
+"dot_delay": 0.35,
+"end_animation": 1,
+"end_animation_duration": 0.45,
+"end_animation_ease_type": 0,
+"end_animation_trans_type": 10,
+"font": "res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf",
+"fx_path": "res://Assets/Sounds/typewrite2.ogg",
+"fx_pitch_max": 1.1,
+"fx_pitch_min": 0.7,
+"fx_volume": 0.0,
+"max_lines": 4.0,
+"max_width": 800.0,
+"outline_color": Color(0, 0, 0, 1),
+"outline_size": 2.0,
+"paragraph_delay": 1.5,
+"scene_path": "res://Scenes/DialogTemplates/base_dialog.tscn",
+"shadow_color": Color(0, 0, 0, 0.5764706),
+"shadow_offset": Vector2(2, 2),
+"skip_mode": 3,
+"skip_speed": 0.01,
+"start_animation": 2,
+"start_animation_duration": 0.45,
+"start_animation_ease_type": 1,
+"start_animation_trans_type": 10,
+"text_align": 0,
+"text_box_margin_bottom": 16.0,
+"text_box_margin_left": 16.0,
+"text_box_margin_right": 16.0,
+"text_box_margin_top": 16.0,
+"text_box_position": 7,
+"text_color": Color(1, 1, 1, 1),
+"text_size": 22.0,
+"text_transition": 0,
+"text_transition_parameters": {
+&"fade_time": 0.3,
+&"length": 8.0
+}
+}
+
+[sub_resource type="Resource" id="Resource_e8b0u"]
+script = ExtResource("6_ewx0n")
+
+[sub_resource type="Resource" id="Resource_1afom"]
+script = ExtResource("5_fiyda")
+code = 2
+parameters = {
+&"character_name": {
+"type": 0,
+"value": ""
+},
+&"face": SubResource("Resource_e8b0u"),
+&"floating_target": -1,
+&"height": 0.0,
+&"is_floating_dialog": false,
+&"position": 0,
+&"width": 0.0
+}
+
+[sub_resource type="Resource" id="Resource_08ekk"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "And did you know that we can use multiple dialogue scenes?"
+}
+
+[sub_resource type="Resource" id="Resource_eqhwb"]
+script = ExtResource("5_fiyda")
+code = 1
+parameters = {
+"character_delay": 0.03,
+"comma_delay": 0.15,
+"dot_delay": 0.35,
+"end_animation": 1,
+"end_animation_duration": 0.45,
+"end_animation_ease_type": 0,
+"end_animation_trans_type": 10,
+"font": "res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf",
+"fx_path": "res://Assets/Sounds/typewrite2.ogg",
+"fx_pitch_max": 1.1,
+"fx_pitch_min": 0.7,
+"fx_volume": 0.0,
+"max_lines": 4.0,
+"max_width": 800.0,
+"outline_color": Color(0, 0, 0, 1),
+"outline_size": 2.0,
+"paragraph_delay": 1.5,
+"scene_path": "res://Scenes/DialogTemplates/dialog2.tscn",
+"shadow_color": Color(0, 0, 0, 0.5764706),
+"shadow_offset": Vector2(2, 2),
+"skip_mode": 3,
+"skip_speed": 0.01,
+"start_animation": 2,
+"start_animation_duration": 0.45,
+"start_animation_ease_type": 1,
+"start_animation_trans_type": 10,
+"text_align": 0,
+"text_box_margin_bottom": 16.0,
+"text_box_margin_left": 16.0,
+"text_box_margin_right": 16.0,
+"text_box_margin_top": 16.0,
+"text_box_position": 7,
+"text_color": Color(1, 1, 1, 1),
+"text_size": 22.0,
+"text_transition": 0,
+"text_transition_parameters": {
+&"fade_time": 0.3,
+&"length": 8.0
+}
+}
+
+[sub_resource type="Resource" id="Resource_yjta6"]
+script = ExtResource("6_ewx0n")
+
+[sub_resource type="Resource" id="Resource_t2hw1"]
+script = ExtResource("5_fiyda")
+code = 2
+parameters = {
+&"character_name": {
+"type": 0,
+"value": ""
+},
+&"face": SubResource("Resource_yjta6"),
+&"floating_target": -1,
+&"height": 0.0,
+&"is_floating_dialog": false,
+&"position": 0,
+&"width": 0.0
+}
+
+[sub_resource type="Resource" id="Resource_772at"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "How about this one?"
+}
+
+[sub_resource type="Resource" id="Resource_ya1w8"]
+script = ExtResource("5_fiyda")
+code = 1
+parameters = {
+"character_delay": 0.03,
+"comma_delay": 0.15,
+"dot_delay": 0.35,
+"end_animation": 1,
+"end_animation_duration": 0.45,
+"end_animation_ease_type": 0,
+"end_animation_trans_type": 10,
+"font": "res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf",
+"fx_path": "res://Assets/Sounds/typewrite2.ogg",
+"fx_pitch_max": 1.1,
+"fx_pitch_min": 0.7,
+"fx_volume": 0.0,
+"max_lines": 4.0,
+"max_width": 800.0,
+"outline_color": Color(0, 0, 0, 1),
+"outline_size": 2.0,
+"paragraph_delay": 1.5,
+"scene_path": "res://Scenes/GUI/SteamPunkTheme/Dialogs/steam_punk_dialog.tscn",
+"shadow_color": Color(0, 0, 0, 0.5764706),
+"shadow_offset": Vector2(2, 2),
+"skip_mode": 3,
+"skip_speed": 0.01,
+"start_animation": 2,
+"start_animation_duration": 0.45,
+"start_animation_ease_type": 1,
+"start_animation_trans_type": 10,
+"text_align": 0,
+"text_box_margin_bottom": 16.0,
+"text_box_margin_left": 16.0,
+"text_box_margin_right": 16.0,
+"text_box_margin_top": 16.0,
+"text_box_position": 7,
+"text_color": Color(1, 1, 1, 1),
+"text_size": 22.0,
+"text_transition": 0,
+"text_transition_parameters": {
+&"fade_time": 0.3,
+&"length": 8.0
+}
+}
+
+[sub_resource type="Resource" id="Resource_dka8o"]
+script = ExtResource("6_ewx0n")
+
+[sub_resource type="Resource" id="Resource_cmcps"]
+script = ExtResource("5_fiyda")
+code = 2
+parameters = {
+&"character_name": {
+"type": 0,
+"value": ""
+},
+&"face": SubResource("Resource_dka8o"),
+&"floating_target": -1,
+&"height": 0.0,
+&"is_floating_dialog": false,
+&"position": 0,
+&"width": 0.0
+}
+
+[sub_resource type="Resource" id="Resource_57xdr"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "What do you think of this scene for selecting a number?"
+}
+
+[sub_resource type="Resource" id="Resource_yc85i"]
+script = ExtResource("5_fiyda")
+code = 8
+parameters = {
+&"digits": 3.0,
+&"empty_place": "·",
+&"move_fx": {
+"path": "res://Assets/Sounds/SE/button_hover_se.wav",
+"pitch": 1,
+"volume": 0
+},
+&"offset": Vector2(0, 0),
+&"position": 5,
+&"remove_fx": {
+"path": "res://Assets/Sounds/SE/cancel1.ogg",
+"pitch": 1,
+"volume": 0
+},
+&"scene_path": "res://Scenes/GUI/SteamPunkTheme/OtherScenes/select_digit_dialog.tscn",
+&"select_fx": {
+"path": "res://Assets/Sounds/SE/button_click_se.wav",
+"pitch": 1,
+"volume": 0
+},
+&"text_format": {},
+&"tittle": "Enter Number",
+&"type": 0,
+&"use_message_bounds": true,
+&"variable_id": 1
+}
+
+[sub_resource type="Resource" id="Resource_gdvha"]
+script = ExtResource("6_ewx0n")
+
+[sub_resource type="Resource" id="Resource_ppb2c"]
+script = ExtResource("5_fiyda")
+code = 2
+parameters = {
+&"character_name": {
+"type": 0,
+"value": ""
+},
+&"face": SubResource("Resource_gdvha"),
+&"floating_target": -1,
+&"height": 0.0,
+&"is_floating_dialog": false,
+&"position": 0,
+&"width": 0.0
+}
+
+[sub_resource type="Resource" id="Resource_la8q5"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "How does this work for selecting text?"
+}
+
+[sub_resource type="Resource" id="Resource_1tljw"]
+script = ExtResource("5_fiyda")
+code = 8
+parameters = {
+&"digits": 8.0,
+&"empty_place": "·",
+&"move_fx": {
+"path": "res://Assets/Sounds/SE/button_hover_se.wav",
+"pitch": 1,
+"volume": 0
+},
+&"offset": Vector2(0, 0),
+&"position": 5,
+&"remove_fx": {
+"path": "res://Assets/Sounds/SE/cancel1.ogg",
+"pitch": 1,
+"volume": 0
+},
+&"scene_path": "res://Scenes/GUI/SteamPunkTheme/OtherScenes/select_text_dialog.tscn",
+&"select_fx": {
+"path": "res://Assets/Sounds/SE/button_click_se.wav",
+"pitch": 1,
+"volume": 0
+},
+&"text_format": {},
+&"tittle": "Enter Text",
+&"type": 1,
+&"use_message_bounds": true,
+&"variable_id": 1
+}
+
+[sub_resource type="Resource" id="Resource_3004d"]
+script = ExtResource("6_ewx0n")
+
+[sub_resource type="Resource" id="Resource_uob1g"]
+script = ExtResource("5_fiyda")
+code = 2
+parameters = {
+&"character_name": {
+"type": 0,
+"value": ""
+},
+&"face": SubResource("Resource_3004d"),
+&"floating_target": -1,
+&"height": 0.0,
+&"is_floating_dialog": false,
+&"position": 0,
+&"width": 0.0
+}
+
+[sub_resource type="Resource" id="Resource_5rrrs"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "What do you want to do now?"
+}
+
+[sub_resource type="Resource" id="Resource_q2lbq"]
+script = ExtResource("5_fiyda")
+code = 4
+parameters = {
+"cancel": 0,
+"cancel_fx": {
+"path": "res://Assets/Sounds/SE/cancel1.ogg",
+"pitch": 1,
+"volume": 0
+},
+"default": 1,
+"max_choices": 4.0,
+"move_fx": {
+"path": "res://Assets/Sounds/SE/button_hover_se.wav",
+"pitch": 1,
+"volume": 0
+},
+"next": "Next",
+"offset": Vector2(0, 0),
+"position": 4,
+"previous": "Previous",
+"scene_path": "res://Scenes/GUI/SteamPunkTheme/OtherScenes/steampunk_choice_scene.tscn",
+"select_fx": {
+"path": "res://Assets/Sounds/SE/button_click_se.wav",
+"pitch": 1,
+"volume": 0
+},
+"text_format": {},
+"use_message_bounds": true
+}
+
+[sub_resource type="Resource" id="Resource_30vi3"]
+script = ExtResource("5_fiyda")
+code = 5
+parameters = {
+&"name": "Snow Weather"
+}
+
+[sub_resource type="Resource" id="Resource_0di0s"]
+script = ExtResource("5_fiyda")
+code = 68
+indent = 1
+parameters = {
+&"id": 1.0,
+&"scene": "res://Scenes/WeatherScenes/SnowScenes/snow_compose_scene.tscn",
+&"type": 0
+}
+
+[sub_resource type="Resource" id="Resource_r2aoh"]
+script = ExtResource("5_fiyda")
+indent = 1
+
+[sub_resource type="Resource" id="Resource_kxto1"]
+script = ExtResource("5_fiyda")
+code = 5
+parameters = {
+&"name": "rain Weather"
+}
+
+[sub_resource type="Resource" id="Resource_g664j"]
+script = ExtResource("5_fiyda")
+code = 68
+indent = 1
+parameters = {
+&"id": 1.0,
+&"scene": "res://Scenes/WeatherScenes/RainScenes/rain_compose_scene.tscn",
+&"type": 0
+}
+
+[sub_resource type="Resource" id="Resource_gt55m"]
+script = ExtResource("5_fiyda")
+indent = 1
+
+[sub_resource type="Resource" id="Resource_ka8sb"]
+script = ExtResource("5_fiyda")
+code = 5
+parameters = {
+&"name": "Desert Climate"
+}
+
+[sub_resource type="Resource" id="Resource_1ew8i"]
+script = ExtResource("5_fiyda")
+code = 68
+indent = 1
+parameters = {
+&"id": 1.0,
+&"scene": "res://Scenes/WeatherScenes/HotDesert/hot_desert_scene_compose.tscn",
+&"type": 0
+}
+
+[sub_resource type="Resource" id="Resource_ywqhs"]
+script = ExtResource("5_fiyda")
+indent = 1
+
+[sub_resource type="Resource" id="Resource_r1fck"]
+script = ExtResource("5_fiyda")
+code = 5
+parameters = {
+&"name": "Aquatic environment"
+}
+
+[sub_resource type="Resource" id="Resource_tboqd"]
+script = ExtResource("5_fiyda")
+code = 68
+indent = 1
+parameters = {
+&"id": 1.0,
+&"scene": "res://Scenes/WeatherScenes/UnderWater/under_water_compose_scene.tscn",
+&"type": 0
+}
+
+[sub_resource type="Resource" id="Resource_tv2dx"]
+script = ExtResource("5_fiyda")
+indent = 1
+
+[sub_resource type="Resource" id="Resource_rip5e"]
+script = ExtResource("5_fiyda")
+code = 5
+parameters = {
+&"name": "Enable Follower Tracking"
+}
+
+[sub_resource type="Resource" id="Resource_farhm"]
+script = ExtResource("5_fiyda")
+code = 71
+indent = 1
+parameters = {
+&"value": true
+}
+
+[sub_resource type="Resource" id="Resource_46rvf"]
+script = ExtResource("5_fiyda")
+indent = 1
+
+[sub_resource type="Resource" id="Resource_hsodv"]
+script = ExtResource("5_fiyda")
+code = 5
+parameters = {
+&"name": "Disable Follower Tracking"
+}
+
+[sub_resource type="Resource" id="Resource_63t7s"]
+script = ExtResource("6_ewx0n")
+
+[sub_resource type="Resource" id="Resource_0ine5"]
+script = ExtResource("5_fiyda")
+code = 2
+indent = 1
+parameters = {
+&"character_name": {
+"type": 0,
+"value": ""
+},
+&"face": SubResource("Resource_63t7s"),
+&"floating_target": -1,
+&"height": 0.0,
+&"is_floating_dialog": false,
+&"position": 0,
+&"width": 0.0
+}
+
+[sub_resource type="Resource" id="Resource_7es2a"]
+script = ExtResource("5_fiyda")
+code = 3
+indent = 1
+parameters = {
+"line": "Now you can manage your followers (press L2 or R2 or key Q or Shift + Q)"
+}
+
+[sub_resource type="Resource" id="Resource_dpx3p"]
+script = ExtResource("5_fiyda")
+code = 3
+indent = 1
+parameters = {
+"line": ""
+}
+
+[sub_resource type="Resource" id="Resource_etlnm"]
+script = ExtResource("5_fiyda")
+code = 3
+indent = 1
+parameters = {
+"line": "Note: Try stepping on the switch down there with one character to unlock"
+}
+
+[sub_resource type="Resource" id="Resource_xttl5"]
+script = ExtResource("5_fiyda")
+code = 3
+indent = 1
+parameters = {
+"line": "the chest, and use another character to reach it!"
+}
+
+[sub_resource type="Resource" id="Resource_jhm53"]
+script = ExtResource("5_fiyda")
+code = 71
+indent = 1
+parameters = {
+&"value": false
+}
+
+[sub_resource type="Resource" id="Resource_ns1xk"]
+script = ExtResource("5_fiyda")
+indent = 1
+
+[sub_resource type="Resource" id="Resource_60uig"]
+script = ExtResource("5_fiyda")
+code = 5
+parameters = {
+&"name": "Start mining minerals!"
+}
+
+[sub_resource type="Resource" id="Resource_bm55q"]
+script = ExtResource("6_ewx0n")
+
+[sub_resource type="Resource" id="Resource_dpwcj"]
+script = ExtResource("5_fiyda")
+code = 2
+indent = 1
+parameters = {
+&"character_name": {
+"type": 0,
+"value": ""
+},
+&"face": SubResource("Resource_bm55q"),
+&"floating_target": -1,
+&"height": 0.0,
+&"is_floating_dialog": false,
+&"position": 0,
+&"width": 0.0
+}
+
+[sub_resource type="Resource" id="Resource_yd5e0"]
+script = ExtResource("5_fiyda")
+code = 3
+indent = 1
+parameters = {
+"line": "I've taught you your first trade! Now you can mine those mineral veins right over there!"
+}
+
+[sub_resource type="Resource" id="Resource_j3l12"]
+script = ExtResource("5_fiyda")
+code = 300
+indent = 1
+parameters = {
+&"action_type": 0,
+&"level": 1.0,
+&"preserve_level": true,
+&"profession_id": 1,
+&"reset_level": false,
+&"type": 1
+}
+
+[sub_resource type="Resource" id="Resource_almyk"]
+script = ExtResource("5_fiyda")
+indent = 1
+
+[sub_resource type="Resource" id="Resource_q66hj"]
+script = ExtResource("5_fiyda")
+code = 5
+parameters = {
+&"name": "Give me Items!"
+}
+
+[sub_resource type="Resource" id="Resource_emnpi"]
+script = ExtResource("5_fiyda")
+code = 13
+indent = 1
+parameters = {
+&"item_id": 1,
+&"operation_type": 0,
+&"value": 5.0,
+&"value_type": 0
+}
+
+[sub_resource type="Resource" id="Resource_2ga1e"]
+script = ExtResource("5_fiyda")
+code = 13
+indent = 1
+parameters = {
+&"item_id": 2,
+&"operation_type": 0,
+&"value": 5.0,
+&"value_type": 0
+}
+
+[sub_resource type="Resource" id="Resource_sj7xs"]
+script = ExtResource("5_fiyda")
+code = 13
+indent = 1
+parameters = {
+&"item_id": 3,
+&"operation_type": 0,
+&"value": 5.0,
+&"value_type": 0
+}
+
+[sub_resource type="Resource" id="Resource_uiu8h"]
+script = ExtResource("5_fiyda")
+code = 13
+indent = 1
+parameters = {
+&"item_id": 4,
+&"operation_type": 0,
+&"value": 5.0,
+&"value_type": 0
+}
+
+[sub_resource type="Resource" id="Resource_00d6j"]
+script = ExtResource("5_fiyda")
+code = 13
+indent = 1
+parameters = {
+&"item_id": 5,
+&"operation_type": 0,
+&"value": 5.0,
+&"value_type": 0
+}
+
+[sub_resource type="Resource" id="Resource_biss7"]
+script = ExtResource("5_fiyda")
+code = 13
+indent = 1
+parameters = {
+&"item_id": 6,
+&"operation_type": 0,
+&"value": 20.0,
+&"value_type": 0
+}
+
+[sub_resource type="Resource" id="Resource_l8g7m"]
+script = ExtResource("5_fiyda")
+indent = 1
+
+[sub_resource type="Resource" id="Resource_hfw1q"]
+script = ExtResource("5_fiyda")
+code = 5
+parameters = {
+&"name": "Teleport Me to another Map"
+}
+
+[sub_resource type="Resource" id="Resource_7t1xj"]
+script = ExtResource("6_ewx0n")
+
+[sub_resource type="Resource" id="Resource_ih46c"]
+script = ExtResource("5_fiyda")
+code = 2
+indent = 1
+parameters = {
+&"character_name": {
+"type": 0,
+"value": ""
+},
+&"face": SubResource("Resource_7t1xj"),
+&"floating_target": -1,
+&"height": 0.0,
+&"is_floating_dialog": false,
+&"position": 0,
+&"width": 0.0
+}
+
+[sub_resource type="Resource" id="Resource_e2lnu"]
+script = ExtResource("5_fiyda")
+code = 3
+indent = 1
+parameters = {
+"line": "Oops! There aren't any other maps. How about I teleport you right here on this map?"
+}
+
+[sub_resource type="Resource" id="Resource_dfshn"]
+script = ExtResource("5_fiyda")
+code = 53
+indent = 1
+parameters = {
+&"delay_transfer": false,
+&"direction": 0,
+&"target": 0,
+&"transfer_animation": {
+"entry_animation": 0,
+"entry_time": 0.5,
+"exit_animation": 0,
+"exit_time": 0.5
+},
+&"type": 0,
+&"value": {
+&"assigned_map_id": 2651459344452080,
+&"assigned_x": 31,
+&"assigned_y": 5,
+&"event_id": 0
+},
+&"wait_animation": true
+}
+
+[sub_resource type="Resource" id="Resource_g5oxu"]
+script = ExtResource("6_ewx0n")
+
+[sub_resource type="Resource" id="Resource_7oob2"]
+script = ExtResource("5_fiyda")
+code = 2
+indent = 1
+parameters = {
+&"character_name": {
+"type": 0,
+"value": ""
+},
+&"face": SubResource("Resource_g5oxu"),
+&"floating_target": -1,
+&"height": 0.0,
+&"is_floating_dialog": false,
+&"position": 0,
+&"width": 0.0
+}
+
+[sub_resource type="Resource" id="Resource_fnhmf"]
+script = ExtResource("5_fiyda")
+code = 3
+indent = 1
+parameters = {
+"line": "[heart scale=16 freq=2]jeJe, Bye![/heart]"
+}
+
+[sub_resource type="Resource" id="Resource_4757w"]
+script = ExtResource("5_fiyda")
+indent = 1
+
+[sub_resource type="Resource" id="Resource_w0eao"]
+script = ExtResource("5_fiyda")
+code = 5
+parameters = {
+&"name": "Show an animation!"
+}
+
+[sub_resource type="Resource" id="Resource_lbnb5"]
+script = ExtResource("5_fiyda")
+code = 72
+indent = 1
+parameters = {
+&"animation_id": 1,
+&"target_id": -1,
+&"wait": false
+}
+
+[sub_resource type="Resource" id="Resource_ttmkj"]
+script = ExtResource("5_fiyda")
+indent = 1
+
+[sub_resource type="Resource" id="Resource_r0txk"]
+script = ExtResource("5_fiyda")
+code = 6
+
+[sub_resource type="Resource" id="Resource_vjwbx"]
+script = ExtResource("6_ewx0n")
+
+[sub_resource type="Resource" id="Resource_ykg3r"]
+script = ExtResource("5_fiyda")
+code = 2
+indent = 1
+parameters = {
+&"character_name": {
+"type": 0,
+"value": ""
+},
+&"face": SubResource("Resource_vjwbx"),
+&"floating_target": -1,
+&"height": 0.0,
+&"is_floating_dialog": false,
+&"position": 0,
+&"width": 0.0
+}
+
+[sub_resource type="Resource" id="Resource_k0n1e"]
+script = ExtResource("5_fiyda")
+code = 3
+indent = 1
+parameters = {
+"line": "If you don't want anything, don't talk to me..."
+}
+
+[sub_resource type="Resource" id="Resource_qtojv"]
+script = ExtResource("5_fiyda")
+indent = 1
+
+[sub_resource type="Resource" id="Resource_0ywsp"]
+script = ExtResource("5_fiyda")
+code = 7
+
+[sub_resource type="Resource" id="Resource_obhl5"]
+script = ExtResource("6_ewx0n")
+
+[sub_resource type="Resource" id="Resource_jncj1"]
+script = ExtResource("5_fiyda")
+code = 2
+parameters = {
+&"character_name": {
+"type": 0,
+"value": ""
+},
+&"face": SubResource("Resource_obhl5"),
+&"floating_target": -1,
+&"height": 0.0,
+&"is_floating_dialog": false,
+&"position": 0,
+&"width": 0.0
+}
+
+[sub_resource type="Resource" id="Resource_mabx4"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "In-game, you can press F9 to open the debug menu, hold down the Control"
+}
+
+[sub_resource type="Resource" id="Resource_3lwow"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "key to ignore obstacles while playing in the editor,"
+}
+
+[sub_resource type="Resource" id="Resource_0dvr4"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "or press Shift to run[wait type=0 seconds=0.50]"
+}
+
+[sub_resource type="Resource" id="Resource_1p1av"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "give it a try!"
+}
+
+[sub_resource type="Resource" id="Resource_kdann"]
+script = ExtResource("6_ewx0n")
+
+[sub_resource type="Resource" id="Resource_vrr6b"]
+script = ExtResource("5_fiyda")
+code = 2
+parameters = {
+&"character_name": {
+"type": 0,
+"value": ""
+},
+&"face": SubResource("Resource_kdann"),
+&"floating_target": -1,
+&"height": 0.0,
+&"is_floating_dialog": false,
+&"position": 0,
+&"width": 0.0
+}
+
+[sub_resource type="Resource" id="Resource_b7u42"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "Try shooting with Dadarian's bow and hit that moving NPC to see what happens!"
+}
+
+[sub_resource type="Resource" id="Resource_5kr67"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "(Press the space bar to attack)"
+}
+
+[sub_resource type="Resource" id="Resource_x5sxk"]
+script = ExtResource("5_fiyda")
+code = 17
+parameters = {
+&"from": 10,
+&"operation_type": 0,
+&"to": 10
+}
+
+[sub_resource type="Resource" id="Resource_l63sw"]
+script = ExtResource("5_fiyda")
+code = 29
+parameters = {
+&"text": "skip all"
+}
+
+[sub_resource type="Resource" id="Resource_qfkic"]
+script = ExtResource("5_fiyda")
+
+[sub_resource type="Resource" id="Resource_wwcec"]
+script = ExtResource("8_didij")
+target = 0
+skippable = true
+
+[sub_resource type="Resource" id="Resource_hwaw4"]
+script = ExtResource("9_uohsy")
+show_name_in_map = true
+type_params = {
+&"initial_delay": 0.0
+}
+use_extra_config = true
+is_inmortal = false
+hp = 5
+enable_self_switch_on_hit_id = 9
+enable_self_switch_on_dead_id = 10
+
+[sub_resource type="Resource" id="Resource_w27p1"]
+script = ExtResource("3_nd5sh")
+_uniq_id = 9550728391727168
+id = 0
+name = "NPC Guay"
+list = Array[ExtResource("5_fiyda")]([SubResource("Resource_lq2k8"), SubResource("Resource_vfse1"), SubResource("Resource_kyg5h"), SubResource("Resource_8ipxo"), SubResource("Resource_yrnlq"), SubResource("Resource_uhh1b"), SubResource("Resource_8g2lf"), SubResource("Resource_rmb10"), SubResource("Resource_ci4ua"), SubResource("Resource_tuw0g"), SubResource("Resource_m8qr2"), SubResource("Resource_fvhc8"), SubResource("Resource_i12rd"), SubResource("Resource_sxp8y"), SubResource("Resource_ox1q8"), SubResource("Resource_li01l"), SubResource("Resource_y1sgp"), SubResource("Resource_spvio"), SubResource("Resource_xm0eg"), SubResource("Resource_gvha5"), SubResource("Resource_s0k6a"), SubResource("Resource_24gke"), SubResource("Resource_xo8vo"), SubResource("Resource_yjtvj"), SubResource("Resource_83orv"), SubResource("Resource_oeal2"), SubResource("Resource_tqbol"), SubResource("Resource_1afom"), SubResource("Resource_08ekk"), SubResource("Resource_eqhwb"), SubResource("Resource_t2hw1"), SubResource("Resource_772at"), SubResource("Resource_ya1w8"), SubResource("Resource_cmcps"), SubResource("Resource_57xdr"), SubResource("Resource_yc85i"), SubResource("Resource_ppb2c"), SubResource("Resource_la8q5"), SubResource("Resource_1tljw"), SubResource("Resource_uob1g"), SubResource("Resource_5rrrs"), SubResource("Resource_q2lbq"), SubResource("Resource_30vi3"), SubResource("Resource_0di0s"), SubResource("Resource_r2aoh"), SubResource("Resource_kxto1"), SubResource("Resource_g664j"), SubResource("Resource_gt55m"), SubResource("Resource_ka8sb"), SubResource("Resource_1ew8i"), SubResource("Resource_ywqhs"), SubResource("Resource_r1fck"), SubResource("Resource_tboqd"), SubResource("Resource_tv2dx"), SubResource("Resource_rip5e"), SubResource("Resource_farhm"), SubResource("Resource_46rvf"), SubResource("Resource_hsodv"), SubResource("Resource_0ine5"), SubResource("Resource_7es2a"), SubResource("Resource_dpx3p"), SubResource("Resource_etlnm"), SubResource("Resource_xttl5"), SubResource("Resource_jhm53"), SubResource("Resource_ns1xk"), SubResource("Resource_60uig"), SubResource("Resource_dpwcj"), SubResource("Resource_yd5e0"), SubResource("Resource_j3l12"), SubResource("Resource_almyk"), SubResource("Resource_q66hj"), SubResource("Resource_emnpi"), SubResource("Resource_2ga1e"), SubResource("Resource_sj7xs"), SubResource("Resource_uiu8h"), SubResource("Resource_00d6j"), SubResource("Resource_biss7"), SubResource("Resource_l8g7m"), SubResource("Resource_hfw1q"), SubResource("Resource_ih46c"), SubResource("Resource_e2lnu"), SubResource("Resource_dfshn"), SubResource("Resource_7oob2"), SubResource("Resource_fnhmf"), SubResource("Resource_4757w"), SubResource("Resource_w0eao"), SubResource("Resource_lbnb5"), SubResource("Resource_ttmkj"), SubResource("Resource_r0txk"), SubResource("Resource_ykg3r"), SubResource("Resource_k0n1e"), SubResource("Resource_qtojv"), SubResource("Resource_0ywsp"), SubResource("Resource_jncj1"), SubResource("Resource_mabx4"), SubResource("Resource_3lwow"), SubResource("Resource_0dvr4"), SubResource("Resource_1p1av"), SubResource("Resource_vrr6b"), SubResource("Resource_b7u42"), SubResource("Resource_5kr67"), SubResource("Resource_x5sxk"), SubResource("Resource_l63sw"), SubResource("Resource_qfkic")])
+condition = SubResource("Resource_cwqwi")
+movement_route = SubResource("Resource_wwcec")
+options = SubResource("Resource_hwaw4")
+event_trigger_list = PackedInt64Array()
+event_tool_list = PackedInt32Array(0, 2)
+event_signal_list = PackedInt32Array()
+character_path = "res://Scenes/NPCs/Npc_1/npc_1_data.tres"
+modulate = Color(0.2985625, 0.8, 0.09000001, 1)
+
+[sub_resource type="Resource" id="Resource_6lk0h"]
+script = ExtResource("4_htxeb")
+use_switch1 = true
+pressure_targets = PackedInt64Array(0, 5121752958849044, 1129373089051834)
+switch1_id = 10
+actor_id = 4
+
+[sub_resource type="Resource" id="Resource_eityv"]
+script = ExtResource("6_ewx0n")
+
+[sub_resource type="Resource" id="Resource_ax1vq"]
+script = ExtResource("5_fiyda")
+code = 2
+parameters = {
+&"character_name": {
+"type": 0,
+"value": ""
+},
+&"face": SubResource("Resource_eityv"),
+&"floating_target": -1,
+&"height": 0.0,
+&"is_floating_dialog": false,
+&"position": 0,
+&"width": 0.0
+}
+
+[sub_resource type="Resource" id="Resource_mjypn"]
+script = ExtResource("5_fiyda")
+code = 3
+parameters = {
+"line": "What do you want to do now?"
+}
+
+[sub_resource type="Resource" id="Resource_yehia"]
+script = ExtResource("5_fiyda")
+code = 4
+parameters = {
+"cancel": 0,
+"cancel_fx": {
+"path": "res://Assets/Sounds/SE/cancel1.ogg",
+"pitch": 1,
+"volume": 0
+},
+"default": 1,
+"max_choices": 4.0,
+"move_fx": {
+"path": "res://Assets/Sounds/SE/button_hover_se.wav",
+"pitch": 1,
+"volume": 0
+},
+"next": "Next",
+"offset": Vector2(0, 0),
+"position": 5,
+"previous": "Previous",
+"scene_path": "res://Scenes/GUI/SteamPunkTheme/OtherScenes/steampunk_choice_scene.tscn",
+"select_fx": {
+"path": "res://Assets/Sounds/SE/button_click_se.wav",
+"pitch": 1,
+"volume": 0
+},
+"text_format": {},
+"use_message_bounds": true
+}
+
+[sub_resource type="Resource" id="Resource_kc1o1"]
+script = ExtResource("5_fiyda")
+code = 5
+parameters = {
+&"name": "Snow Weather"
+}
+
+[sub_resource type="Resource" id="Resource_ycg4x"]
+script = ExtResource("5_fiyda")
+code = 68
+indent = 1
+parameters = {
+&"id": 1.0,
+&"scene": "res://Scenes/WeatherScenes/SnowScenes/snow_compose_scene.tscn",
+&"type": 0
+}
+
+[sub_resource type="Resource" id="Resource_81v4e"]
+script = ExtResource("5_fiyda")
+indent = 1
+
+[sub_resource type="Resource" id="Resource_6x87g"]
+script = ExtResource("5_fiyda")
+code = 5
+parameters = {
+&"name": "rain Weather"
+}
+
+[sub_resource type="Resource" id="Resource_eyk21"]
+script = ExtResource("5_fiyda")
+code = 68
+indent = 1
+parameters = {
+&"id": 1.0,
+&"scene": "res://Scenes/WeatherScenes/RainScenes/rain_compose_scene.tscn",
+&"type": 0
+}
+
+[sub_resource type="Resource" id="Resource_naith"]
+script = ExtResource("5_fiyda")
+indent = 1
+
+[sub_resource type="Resource" id="Resource_fdnwk"]
+script = ExtResource("5_fiyda")
+code = 5
+parameters = {
+&"name": "Desert Climate"
+}
+
+[sub_resource type="Resource" id="Resource_ojnvk"]
+script = ExtResource("5_fiyda")
+code = 68
+indent = 1
+parameters = {
+&"id": 1.0,
+&"scene": "res://Scenes/WeatherScenes/HotDesert/hot_desert_scene_compose.tscn",
+&"type": 0
+}
+
+[sub_resource type="Resource" id="Resource_fixjk"]
+script = ExtResource("5_fiyda")
+indent = 1
+
+[sub_resource type="Resource" id="Resource_6ntkc"]
+script = ExtResource("5_fiyda")
+code = 5
+parameters = {
+&"name": "Aquatic environment"
+}
+
+[sub_resource type="Resource" id="Resource_ct3ce"]
+script = ExtResource("5_fiyda")
+code = 68
+indent = 1
+parameters = {
+&"id": 1.0,
+&"scene": "res://Scenes/WeatherScenes/UnderWater/under_water_compose_scene.tscn",
+&"type": 0
+}
+
+[sub_resource type="Resource" id="Resource_iqgse"]
+script = ExtResource("5_fiyda")
+indent = 1
+
+[sub_resource type="Resource" id="Resource_gwemq"]
+script = ExtResource("5_fiyda")
+code = 5
+parameters = {
+&"name": "Enable Follower Tracking"
+}
+
+[sub_resource type="Resource" id="Resource_nw0dy"]
+script = ExtResource("5_fiyda")
+code = 71
+indent = 1
+parameters = {
+&"value": true
+}
+
+[sub_resource type="Resource" id="Resource_78y47"]
+script = ExtResource("5_fiyda")
+indent = 1
+
+[sub_resource type="Resource" id="Resource_84i76"]
+script = ExtResource("5_fiyda")
+code = 5
+parameters = {
+&"name": "Disable Follower Tracking"
+}
+
+[sub_resource type="Resource" id="Resource_t2c2j"]
+script = ExtResource("6_ewx0n")
+
+[sub_resource type="Resource" id="Resource_ypqbt"]
+script = ExtResource("5_fiyda")
+code = 2
+indent = 1
+parameters = {
+&"character_name": {
+"type": 0,
+"value": ""
+},
+&"face": SubResource("Resource_t2c2j"),
+&"floating_target": -1,
+&"height": 0.0,
+&"is_floating_dialog": false,
+&"position": 0,
+&"width": 0.0
+}
+
+[sub_resource type="Resource" id="Resource_frqsx"]
+script = ExtResource("5_fiyda")
+code = 3
+indent = 1
+parameters = {
+"line": "Now you can manage your followers (press L2 or R2 or key Q or Shift + Q)"
+}
+
+[sub_resource type="Resource" id="Resource_53rhn"]
+script = ExtResource("5_fiyda")
+code = 3
+indent = 1
+parameters = {
+"line": ""
+}
+
+[sub_resource type="Resource" id="Resource_sh1sx"]
+script = ExtResource("5_fiyda")
+code = 3
+indent = 1
+parameters = {
+"line": "Note: Try stepping on the switch down there with one character to unlock"
+}
+
+[sub_resource type="Resource" id="Resource_uvl0x"]
+script = ExtResource("5_fiyda")
+code = 3
+indent = 1
+parameters = {
+"line": "the chest, and use another character to reach it!"
+}
+
+[sub_resource type="Resource" id="Resource_41riv"]
+script = ExtResource("5_fiyda")
+code = 71
+indent = 1
+parameters = {
+&"value": false
+}
+
+[sub_resource type="Resource" id="Resource_60ice"]
+script = ExtResource("5_fiyda")
+indent = 1
+
+[sub_resource type="Resource" id="Resource_40i12"]
+script = ExtResource("5_fiyda")
+code = 5
+parameters = {
+&"name": "Start mining minerals!"
+}
+
+[sub_resource type="Resource" id="Resource_sy7a6"]
+script = ExtResource("6_ewx0n")
+
+[sub_resource type="Resource" id="Resource_5kb21"]
+script = ExtResource("5_fiyda")
+code = 2
+indent = 1
+parameters = {
+&"character_name": {
+"type": 0,
+"value": ""
+},
+&"face": SubResource("Resource_sy7a6"),
+&"floating_target": -1,
+&"height": 0.0,
+&"is_floating_dialog": false,
+&"position": 0,
+&"width": 0.0
+}
+
+[sub_resource type="Resource" id="Resource_cru34"]
+script = ExtResource("5_fiyda")
+code = 3
+indent = 1
+parameters = {
+"line": "I've taught you your first trade! Now you can mine those mineral veins right over there!"
+}
+
+[sub_resource type="Resource" id="Resource_m888k"]
+script = ExtResource("5_fiyda")
+code = 300
+indent = 1
+parameters = {
+&"action_type": 0,
+&"level": 1.0,
+&"preserve_level": true,
+&"profession_id": 1,
+&"reset_level": false,
+&"type": 1
+}
+
+[sub_resource type="Resource" id="Resource_ga50y"]
+script = ExtResource("5_fiyda")
+indent = 1
+
+[sub_resource type="Resource" id="Resource_8cfui"]
+script = ExtResource("5_fiyda")
+code = 5
+parameters = {
+&"name": "Give me Items!"
+}
+
+[sub_resource type="Resource" id="Resource_6acbl"]
+script = ExtResource("5_fiyda")
+code = 13
+indent = 1
+parameters = {
+&"item_id": 1,
+&"operation_type": 0,
+&"value": 5.0,
+&"value_type": 0
+}
+
+[sub_resource type="Resource" id="Resource_wnnce"]
+script = ExtResource("5_fiyda")
+code = 13
+indent = 1
+parameters = {
+&"item_id": 2,
+&"operation_type": 0,
+&"value": 5.0,
+&"value_type": 0
+}
+
+[sub_resource type="Resource" id="Resource_0gwee"]
+script = ExtResource("5_fiyda")
+code = 13
+indent = 1
+parameters = {
+&"item_id": 3,
+&"operation_type": 0,
+&"value": 5.0,
+&"value_type": 0
+}
+
+[sub_resource type="Resource" id="Resource_3ffaw"]
+script = ExtResource("5_fiyda")
+code = 13
+indent = 1
+parameters = {
+&"item_id": 4,
+&"operation_type": 0,
+&"value": 5.0,
+&"value_type": 0
+}
+
+[sub_resource type="Resource" id="Resource_ymhal"]
+script = ExtResource("5_fiyda")
+code = 13
+indent = 1
+parameters = {
+&"item_id": 5,
+&"operation_type": 0,
+&"value": 5.0,
+&"value_type": 0
+}
+
+[sub_resource type="Resource" id="Resource_12rss"]
+script = ExtResource("5_fiyda")
+code = 13
+indent = 1
+parameters = {
+&"item_id": 6,
+&"operation_type": 0,
+&"value": 20.0,
+&"value_type": 0
+}
+
+[sub_resource type="Resource" id="Resource_dnag7"]
+script = ExtResource("5_fiyda")
+indent = 1
+
+[sub_resource type="Resource" id="Resource_1804e"]
+script = ExtResource("5_fiyda")
+code = 5
+parameters = {
+&"name": "Teleport Me to another Map"
+}
+
+[sub_resource type="Resource" id="Resource_ppe5a"]
+script = ExtResource("6_ewx0n")
+
+[sub_resource type="Resource" id="Resource_861qv"]
+script = ExtResource("5_fiyda")
+code = 2
+indent = 1
+parameters = {
+&"character_name": {
+"type": 0,
+"value": ""
+},
+&"face": SubResource("Resource_ppe5a"),
+&"floating_target": -1,
+&"height": 0.0,
+&"is_floating_dialog": false,
+&"position": 0,
+&"width": 0.0
+}
+
+[sub_resource type="Resource" id="Resource_rg5ad"]
+script = ExtResource("5_fiyda")
+code = 3
+indent = 1
+parameters = {
+"line": "Oops! There aren't any other maps. How about I teleport you right here on this map?"
+}
+
+[sub_resource type="Resource" id="Resource_1bt8s"]
+script = ExtResource("5_fiyda")
+code = 53
+indent = 1
+parameters = {
+&"delay_transfer": false,
+&"direction": 0,
+&"target": 0,
+&"transfer_animation": {
+"entry_animation": 0,
+"entry_time": 0.5,
+"exit_animation": 0,
+"exit_time": 0.5
+},
+&"type": 0,
+&"value": {
+&"assigned_map_id": 2651459344452080,
+&"assigned_x": 31,
+&"assigned_y": 5,
+&"event_id": 0
+},
+&"wait_animation": true
+}
+
+[sub_resource type="Resource" id="Resource_hny7s"]
+script = ExtResource("6_ewx0n")
+
+[sub_resource type="Resource" id="Resource_ik40b"]
+script = ExtResource("5_fiyda")
+code = 2
+indent = 1
+parameters = {
+&"character_name": {
+"type": 0,
+"value": ""
+},
+&"face": SubResource("Resource_hny7s"),
+&"floating_target": -1,
+&"height": 0.0,
+&"is_floating_dialog": false,
+&"position": 0,
+&"width": 0.0
+}
+
+[sub_resource type="Resource" id="Resource_undjr"]
+script = ExtResource("5_fiyda")
+code = 3
+indent = 1
+parameters = {
+"line": "[heart scale=16 freq=2]jeJe, Bye![/heart]"
+}
+
+[sub_resource type="Resource" id="Resource_rulil"]
+script = ExtResource("5_fiyda")
+indent = 1
+
+[sub_resource type="Resource" id="Resource_1ywxu"]
+script = ExtResource("5_fiyda")
+code = 5
+parameters = {
+&"name": "Show an animation!"
+}
+
+[sub_resource type="Resource" id="Resource_a5dlc"]
+script = ExtResource("5_fiyda")
+code = 72
+indent = 1
+parameters = {
+&"animation_id": 1,
+&"target_id": -1,
+&"wait": false
+}
+
+[sub_resource type="Resource" id="Resource_l2ybt"]
+script = ExtResource("5_fiyda")
+indent = 1
+
+[sub_resource type="Resource" id="Resource_uk6b4"]
+script = ExtResource("5_fiyda")
+code = 6
+
+[sub_resource type="Resource" id="Resource_wbidg"]
+script = ExtResource("6_ewx0n")
+
+[sub_resource type="Resource" id="Resource_uhqpy"]
+script = ExtResource("5_fiyda")
+code = 2
+indent = 1
+parameters = {
+&"character_name": {
+"type": 0,
+"value": ""
+},
+&"face": SubResource("Resource_wbidg"),
+&"floating_target": -1,
+&"height": 0.0,
+&"is_floating_dialog": false,
+&"position": 0,
+&"width": 0.0
+}
+
+[sub_resource type="Resource" id="Resource_4vn8y"]
+script = ExtResource("5_fiyda")
+code = 3
+indent = 1
+parameters = {
+"line": "If you don't want anything, don't talk to me..."
+}
+
+[sub_resource type="Resource" id="Resource_00yon"]
+script = ExtResource("5_fiyda")
+indent = 1
+
+[sub_resource type="Resource" id="Resource_60xqw"]
+script = ExtResource("5_fiyda")
+code = 7
+
+[sub_resource type="Resource" id="Resource_q7rcx"]
+script = ExtResource("5_fiyda")
+
+[sub_resource type="Resource" id="Resource_utu0h"]
+script = ExtResource("8_didij")
+target = 0
+skippable = true
+
+[sub_resource type="Resource" id="Resource_36rrp"]
+script = ExtResource("9_uohsy")
+show_name_in_map = true
+type_params = {
+&"initial_delay": 0.0
+}
+use_extra_config = true
+is_inmortal = false
+hp = 5
+
+[sub_resource type="Resource" id="Resource_xeyob"]
+script = ExtResource("3_nd5sh")
+_uniq_id = 6049936456702350
+id = 0
+name = "Mi page"
+list = Array[ExtResource("5_fiyda")]([SubResource("Resource_ax1vq"), SubResource("Resource_mjypn"), SubResource("Resource_yehia"), SubResource("Resource_kc1o1"), SubResource("Resource_ycg4x"), SubResource("Resource_81v4e"), SubResource("Resource_6x87g"), SubResource("Resource_eyk21"), SubResource("Resource_naith"), SubResource("Resource_fdnwk"), SubResource("Resource_ojnvk"), SubResource("Resource_fixjk"), SubResource("Resource_6ntkc"), SubResource("Resource_ct3ce"), SubResource("Resource_iqgse"), SubResource("Resource_gwemq"), SubResource("Resource_nw0dy"), SubResource("Resource_78y47"), SubResource("Resource_84i76"), SubResource("Resource_ypqbt"), SubResource("Resource_frqsx"), SubResource("Resource_53rhn"), SubResource("Resource_sh1sx"), SubResource("Resource_uvl0x"), SubResource("Resource_41riv"), SubResource("Resource_60ice"), SubResource("Resource_40i12"), SubResource("Resource_5kb21"), SubResource("Resource_cru34"), SubResource("Resource_m888k"), SubResource("Resource_ga50y"), SubResource("Resource_8cfui"), SubResource("Resource_6acbl"), SubResource("Resource_wnnce"), SubResource("Resource_0gwee"), SubResource("Resource_3ffaw"), SubResource("Resource_ymhal"), SubResource("Resource_12rss"), SubResource("Resource_dnag7"), SubResource("Resource_1804e"), SubResource("Resource_861qv"), SubResource("Resource_rg5ad"), SubResource("Resource_1bt8s"), SubResource("Resource_ik40b"), SubResource("Resource_undjr"), SubResource("Resource_rulil"), SubResource("Resource_1ywxu"), SubResource("Resource_a5dlc"), SubResource("Resource_l2ybt"), SubResource("Resource_uk6b4"), SubResource("Resource_uhqpy"), SubResource("Resource_4vn8y"), SubResource("Resource_00yon"), SubResource("Resource_60xqw"), SubResource("Resource_q7rcx")])
+condition = SubResource("Resource_6lk0h")
+movement_route = SubResource("Resource_utu0h")
+movement_to_target = 1283470000896833
+options = SubResource("Resource_36rrp")
+event_trigger_list = PackedInt64Array(3971628251607575, 1283470000896833)
+event_tool_list = PackedInt32Array()
+event_signal_list = PackedInt32Array()
+character_path = "res://Scenes/NPCs/juanillo/juanillo_data.tres"
+modulate = Color(0.79296875, 0.08673096, 0.08673096, 1)
+
+[sub_resource type="Resource" id="Resource_3plqi"]
+script = ExtResource("11_dhmk3")
+
+[sub_resource type="Resource" id="Resource_wr5wl"]
+script = ExtResource("12_yak7x")
+levels = Array[ExtResource("11_dhmk3")]([SubResource("Resource_3plqi")])
 
 [sub_resource type="Resource" id="Resource_67g10"]
+script = ExtResource("13_11apb")
+_uniq_id = 1129373089051834
+name = "EV0013"
+id = 13
+x = 15
+y = 8
+pages = Array[ExtResource("3_nd5sh")]([SubResource("Resource_w27p1"), SubResource("Resource_xeyob")])
+relationship = SubResource("Resource_wr5wl")
+legacy_mode = true
+
+[sub_resource type="Resource" id="Resource_xn408"]
+script = ExtResource("3_kxphi")
+events = Array[ExtResource("13_11apb")]([SubResource("Resource_em1s3"), SubResource("Resource_8k1bg"), SubResource("Resource_p8uxl"), SubResource("Resource_ixleh"), SubResource("Resource_2mltf"), SubResource("Resource_fxc3q"), SubResource("Resource_61jql"), SubResource("Resource_m64xv"), SubResource("Resource_063iu"), SubResource("Resource_jp37q"), SubResource("Resource_ww6ku"), SubResource("Resource_3ufao"), SubResource("Resource_67g10")])
+
+[sub_resource type="Resource" id="Resource_hekhd"]
 script = ExtResource("17_m0d5v")
 data_id = 1
 
-[sub_resource type="Resource" id="Resource_1oglb"]
+[sub_resource type="Resource" id="Resource_c01xp"]
 script = ExtResource("16_m0d5v")
-item = SubResource("Resource_67g10")
+item = SubResource("Resource_hekhd")
 
-[sub_resource type="Resource" id="Resource_upqxx"]
+[sub_resource type="Resource" id="Resource_sxka5"]
 script = ExtResource("17_mppu7")
 filename = "res://Assets/Sounds/BGS/wind1.ogg"
 
-[sub_resource type="Resource" id="Resource_a37fj"]
+[sub_resource type="Resource" id="Resource_s6b7x"]
 script = ExtResource("6_ewx0n")
 
-[sub_resource type="Resource" id="Resource_o6ncs"]
+[sub_resource type="Resource" id="Resource_1oglb"]
 script = ExtResource("15_otpcx")
 id = 1
 name = "Mineral 2"
-icon = SubResource("Resource_a37fj")
+icon = SubResource("Resource_s6b7x")
 scene_path = "res://Scenes/ExtractionScenes/default_extraction_scene.tscn"
 max_uses = 6
 respawn_time = 5
-drop_table = Array[ExtResource("16_m0d5v")]([SubResource("Resource_1oglb")])
-extraction_fx = SubResource("Resource_upqxx")
-x = 11
+drop_table = Array[ExtResource("16_m0d5v")]([SubResource("Resource_c01xp")])
+extraction_fx = SubResource("Resource_sxka5")
+x = 12
 y = 11
 
 [sub_resource type="Resource" id="Resource_3qosp"]
@@ -3248,20 +5024,11 @@ extraction_fx = SubResource("Resource_2r2f5")
 x = 7
 y = 11
 
-[sub_resource type="Resource" id="Resource_136fo"]
+[sub_resource type="Resource" id="Resource_upqxx"]
 script = ExtResource("19_bvf2a")
-id = 5322684196741040
-color = Color(0.18734005, 0.67469776, 0.39303178, 0.4)
-rect = Rect2i(17, 4, 4, 3)
-
-[sub_resource type="Resource" id="Resource_14i2a"]
-script = ExtResource("19_mppu7")
-id = 1
-color = Color(0.04372058, 0.68054926, 0.25646257, 0.4)
-rect = Rect2i(7, 3, 10, 6)
-damage_frequency = 0.15000000000000002
-always_passable = true
-triggers = PackedInt32Array(-1)
+id = 3119104774362981
+color = Color(0.94711524, 0.30816478, 0.2697195, 0.4)
+rect = Rect2i(17, 3, 4, 3)
 
 [sub_resource type="Resource" id="Resource_w5yvp"]
 script = ExtResource("19_mppu7")
@@ -3280,22 +5047,33 @@ rect = Rect2i(30, 7, 4, 5)
 damage_frequency = 0.15000000000000002
 triggers = PackedInt32Array(-1)
 
+[sub_resource type="Resource" id="Resource_o0x6m"]
+script = ExtResource("19_mppu7")
+id = 1
+color = Color(0.3864961, 0.35614142, 0.9456966, 0.4)
+rect = Rect2i(7, 3, 10, 6)
+damage_frequency = 0.15000000000000002
+always_passable = true
+triggers = PackedInt32Array(-1)
+
 [node name="TestMap" type="Node2D" unique_id=264368788]
 y_sort_enabled = true
+position = Vector2(-1, 0)
 script = ExtResource("1_didij")
 grid_gradient = ExtResource("2_kukki")
 infinite_vertical_scroll = true
 use_dynamic_day_night = true
 events = SubResource("Resource_xn408")
-extraction_events = Array[ExtResource("15_otpcx")]([SubResource("Resource_o6ncs"), SubResource("Resource_bsx76")])
-regions = Array[ExtResource("19_bvf2a")]([SubResource("Resource_136fo")])
-event_regions = Array[ExtResource("19_mppu7")]([SubResource("Resource_14i2a"), SubResource("Resource_w5yvp"), SubResource("Resource_3o0ny")])
+extraction_events = Array[ExtResource("15_otpcx")]([SubResource("Resource_1oglb"), SubResource("Resource_bsx76")])
+regions = Array[ExtResource("19_bvf2a")]([SubResource("Resource_upqxx")])
+event_regions = Array[ExtResource("19_mppu7")]([SubResource("Resource_w5yvp"), SubResource("Resource_3o0ny"), SubResource("Resource_o0x6m")])
 internal_id = 2651459344452080
 current_edit_button_pressed = 0
 _last_edit_button_pressed = 0
 
 [node name="GroundBase" type="TileMapLayer" parent="." unique_id=1610878107]
 unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.21)
 tile_map_data = PackedByteArray("AAAAAAAAAQASACUAAAABAAAAAQAQACMAAAABAAEAAQAUACAAAAACAAEAAQAUACQAAAADAAEAAQAOACAAAAAEAAEAAQAUACEAAAAFAAEAAQAOACAAAAAFAAIAAQAUACIAAAAGAAIAAQAOACAAAAAHAAIAAQAOACAAAAAIAAIAAQAOACAAAAAJAAIAAQAOACAAAAAJAAMAAQAOACAAAAAKAAMAAQAOACAAAAALAAMAAQAOACAAAAAMAAMAAQAOACAAAAANAAMAAQAOACAAAAANAAQAAQAOACAAAAAOAAQAAQAOACAAAAAPAAQAAQAOACAAAAAQAAQAAQAOACAAAAARAAQAAQAOACAAAAASAAQAAQAOACAAAAASAAUAAQAOACAAAAATAAUAAQAOACAAAAAUAAUAAQAOACAAAAAVAAUAAQAUACIAAAAWAAUAAQAUACIAAAAWAAYAAQAOACAAAAAXAAYAAQAOACAAAAAbAAMAAQAUACAAAAAbAAIAAQAOACAAAAAbAAEAAQAUACQAAAAaAAEAAQAOACAAAAAZAAEAAQAOACAAAAAYAAEAAQAOACAAAAAXAAEAAQAOACAAAAAWAAAAAQAQACMAAAAVAAAAAQAQACMAAAAUAAAAAQAQACMAAAATAAAAAQAQACMAAAASAAAAAQAQACMAAAARAAAAAQAQACMAAAAQAAAAAQAQACMAAAAPAAAAAQAQACMAAAAOAAAAAQAQACMAAAANAAAAAQAQACMAAAAMAAAAAQAQACMAAAALAAAAAQAQACMAAAAKAAAAAQAQACMAAAAJAAAAAQAQACMAAAAIAAAAAQAQACMAAAAHAAAAAQAQACMAAAAGAAAAAQAQACMAAAAFAAAAAQAQACMAAAAEAAAAAQAQACMAAAADAAAAAQAQACMAAAACAAAAAQAQACMAAAAGAAEAAQAOACAAAAAHAAEAAQAOACAAAAAIAAEAAQAOACAAAAAJAAEAAQAUACEAAAAKAAEAAQAOACAAAAALAAEAAQAOACAAAAAMAAEAAQAUACQAAAANAAEAAQAUACIAAAAOAAEAAQAOACAAAAAPAAEAAQAOACAAAAAQAAEAAQAUACAAAAARAAEAAQAOACAAAAASAAEAAQAUACIAAAATAAEAAQAOACAAAAAUAAEAAQAOACAAAAAVAAEAAQAOACAAAAAWAAEAAQAOACAAAAAYAAIAAQAOACAAAAAZAAIAAQAUACEAAAAaAAIAAQAOACAAAAAXAAIAAQAOACAAAAAWAAIAAQAOACAAAAAVAAIAAQAUACIAAAAUAAIAAQAOACAAAAATAAIAAQAOACAAAAASAAIAAQAOACAAAAARAAIAAQAOACAAAAAQAAIAAQAOACAAAAAPAAIAAQAOACAAAAAOAAIAAQAOACAAAAANAAIAAQAUACIAAAAMAAIAAQAOACAAAAAKAAIAAQAUACIAAAALAAIAAQAOACAAAAATAAMAAQAOACAAAAAVAAMAAQAOACAAAAAUAAMAAQAOACAAAAAWAAMAAQAUACAAAAAXAAMAAQAOACAAAAAYAAMAAQAOACAAAAAZAAMAAQAOACAAAAAaAAMAAQAUACIAAAAYAAUAAQAOACAAAAAXAAUAAQAOACAAAAAWAAQAAQAUACIAAAAVAAQAAQAOACAAAAAUAAQAAQAOACAAAAATAAQAAQAOACAAAAASAAMAAQAOACAAAAARAAMAAQAOACAAAAAQAAMAAQAOACAAAAAPAAMAAQAOACAAAAAOAAMAAQAOACAAAAAXAAQAAQAOACAAAAAYAAQAAQAOACAAAAAjABMAAQASACAAAAAjABIAAQAOACAAAAAjABEAAQAOACAAAAAjABAAAQAUACAAAAAjAA8AAQAOACAAAAAjAA4AAQAOACAAAAAjAA0AAQAOACAAAAAjAAwAAQAOACAAAAAjAAsAAQAOACAAAAAjAAoAAQAOACAAAAAjAAkAAQAOACAAAAAjAAgAAQAOACAAAAAjAAcAAQAOACAAAAAjAAYAAQAOACAAAAAjAAUAAQAOACAAAAAjAAQAAQAOACAAAAAjAAMAAQAOACAAAAAjAAIAAQAOACAAAAAjAAEAAQAOACAAAAAjAAAAAQAQACMAAAAiABMAAQAOACAAAAAiABIAAQAOACAAAAAiABEAAQAOACAAAAAiABAAAQAUACIAAAAiAA8AAQAUACAAAAAiAA4AAQAUACQAAAAiAA0AAQAOACAAAAAiAAwAAQAOACAAAAAiAAsAAQAOACAAAAAiAAoAAQAOACAAAAAiAAkAAQAUACQAAAAiAAgAAQAOACAAAAAiAAcAAQAOACAAAAAiAAYAAQAOACAAAAAiAAUAAQAOACAAAAAiAAQAAQAOACAAAAAiAAMAAQAOACAAAAAiAAIAAQAUACAAAAAiAAEAAQAOACAAAAAiAAAAAQAQACMAAAAhABMAAQAOACAAAAAhABIAAQAOACAAAAAhABEAAQAOACAAAAAhABAAAQAOACAAAAAhAA8AAQAUACQAAAAhAA4AAQAOACAAAAAhAA0AAQAOACAAAAAhAAwAAQAOACAAAAAhAAsAAQAOACAAAAAhAAoAAQAUACQAAAAhAAQAAQAOACAAAAAhAAMAAQAOACAAAAAhAAIAAQAUACAAAAAhAAEAAQAOACAAAAAhAAAAAQAQACMAAAAgABMAAQAUACEAAAAgABIAAQAOACAAAAAgABEAAQAOACAAAAAgABAAAQAOACAAAAAgAA8AAQAOACAAAAAgAA4AAQAOACAAAAAgAA0AAQAOACAAAAAgAAwAAQAOACAAAAAgAAsAAQAOACAAAAAgAAoAAQAOACAAAAAgAAUAAQAOACAAAAAgAAQAAQAOACAAAAAgAAMAAQAUACAAAAAgAAIAAQAOACAAAAAgAAEAAQAOACAAAAAgAAAAAQAQACMAAAAfABMAAQAUACIAAAAfABIAAQAOACAAAAAfABEAAQAOACAAAAAfABAAAQAOACAAAAAfAA8AAQAOACAAAAAfAA4AAQAUACEAAAAfAA0AAQAOACAAAAAfAAwAAQAOACAAAAAfAAsAAQAOACAAAAAfAAoAAQAOACAAAAAfAAUAAQAOACAAAAAfAAQAAQAOACAAAAAfAAMAAQAOACAAAAAfAAIAAQAOACAAAAAfAAEAAQAOACAAAAAfAAAAAQAQACMAAAAeABMAAQAOACAAAAAeABIAAQAUACEAAAAeABEAAQAUACQAAAAeABAAAQAOACAAAAAeAA8AAQAOACAAAAAeAA4AAQAOACAAAAAeAA0AAQAOACAAAAAeAAwAAQAUACAAAAAeAAsAAQAOACAAAAAeAAoAAQAOACAAAAAeAAMAAQAOACAAAAAeAAIAAQAOACAAAAAeAAEAAQAUACAAAAAeAAAAAQAQACMAAAAdABMAAQAUACIAAAAdABIAAQAOACAAAAAdABEAAQAUACIAAAAdABAAAQAUACEAAAAdAA8AAQAOACAAAAAdAA4AAQAOACAAAAAdAA0AAQAOACAAAAAdAAwAAQAOACAAAAAdAAsAAQAUACQAAAAdAAoAAQAOACAAAAAdAAMAAQAUACQAAAAdAAIAAQAUACQAAAAdAAEAAQAOACAAAAAdAAAAAQAQACMAAAAcABMAAQASACIAAAAcABIAAQASACIAAAAcABEAAQASACIAAAAcABAAAQASACIAAAAcAA8AAQASACIAAAAcAA4AAQAQACEAAAAcAA0AAQAUACAAAAAcAAwAAQAOACAAAAAcAAsAAQAOACAAAAAcAAoAAQAOACAAAAAcAAMAAQAUACIAAAAcAAIAAQAOACAAAAAcAAEAAQAUACEAAAAcAAAAAQAQACMAAAAbABMAAQACABYAAAAbABIAAQAAABQAAAAbABEAAQAAABQAAAAbABAAAQAAABQAAAAbAA8AAQAAABYAAAAbAA4AAQASACQAAAAbAA0AAQAOACAAAAAbAAwAAQAUACAAAAAbAAsAAQAOACAAAAAbAAoAAQAOACAAAAAbAAAAAQAQACMAAAAaABMAAQAEABQAAAAaABIAAQAAABAAAAAaABEAAQAAABAAAAAaABAAAQAGABEAAAAaAA8AAQACABMAAAAaAA4AAQASACQAAAAaAA0AAQAUACQAAAAaAAwAAQAUACAAAAAaAAsAAQAUACEAAAAaAAoAAQAUACIAAAAaAAAAAQAQACMAAAAZABMAAQAEABQAAAAZABIAAQAAABAAAAAZABEAAQAAABAAAAAZABAAAQAAABAAAAAZAA8AAQACABMAAAAZAA4AAQASACQAAAAZAA0AAQAOACAAAAAZAAwAAQAUACEAAAAZAAsAAQAUACAAAAAZAAoAAQAOACAAAAAZAAAAAQAQACMAAAAYABMAAQAEABYAAAAYABIAAQAEABIAAAAYABEAAQAEABIAAAAYABAAAQAEABIAAAAYAA8AAQAEABUAAAAYAA4AAQASACQAAAAYAA0AAQAUACQAAAAYAAwAAQAOACAAAAAYAAsAAQAOACAAAAAYAAoAAQAUACIAAAAYAAkAAQAOACAAAAAYAAAAAQAQACMAAAAXABMAAQAQACYAAAAXABIAAQAOACQAAAAXABEAAQAOACQAAAAXABAAAQAOACQAAAAXAA8AAQAOACQAAAAXAA4AAQASACAAAAAXAA0AAQAOACAAAAAXAAwAAQAOACAAAAAXAAsAAQAOACAAAAAXAAoAAQAOACAAAAAXAAkAAQAOACAAAAAXAAgAAQAUACEAAAAXAAcAAQAUACEAAAAXAAAAAQAQACMAAAAWABMAAQAUACEAAAAWABIAAQAUACAAAAAWABEAAQAUACQAAAAWABAAAQAOACAAAAAWAA8AAQAUACIAAAAWAA4AAQAOACAAAAAWAA0AAQAOACAAAAAWAAwAAQAOACAAAAAWAAsAAQAUACIAAAAWAAoAAQAUACAAAAAWAAkAAQAOACAAAAAWAAgAAQAOACAAAAAWAAcAAQAUACEAAAAVABMAAQAUACEAAAAVABIAAQAOACAAAAAVABEAAQAOACAAAAAVABAAAQAOACAAAAAVAA8AAQAOACAAAAAVAA4AAQAOACAAAAAVAA0AAQAOACAAAAAVAAwAAQAOACAAAAAVAAsAAQAOACAAAAAVAAoAAQAUACIAAAAVAAkAAQAUACAAAAAVAAgAAQAUACQAAAAVAAcAAQAOACAAAAAVAAYAAQAUACIAAAAUABMAAQAOACAAAAAUABIAAQAUACEAAAAUABEAAQAOACAAAAAUABAAAQAUACIAAAAUAA8AAQAOACAAAAAUAA4AAQAOACAAAAAUAA0AAQAUACQAAAAUAAwAAQAUACIAAAAUAAsAAQAOACAAAAAUAAoAAQAUACEAAAAUAAkAAQAOACAAAAAUAAgAAQAUACEAAAAUAAcAAQAUACEAAAAUAAYAAQAUACIAAAATABMAAQAOACAAAAATABIAAQAOACAAAAATABEAAQAUACIAAAATABAAAQAOACAAAAATAA8AAQAOACAAAAATAA4AAQAOACAAAAATAA0AAQAOACAAAAATAAwAAQAOACAAAAATAAsAAQAUACIAAAATAAoAAQAOACAAAAATAAkAAQAOACAAAAATAAgAAQAOACAAAAATAAcAAQAOACAAAAATAAYAAQAOACAAAAASABMAAQAOACAAAAASABIAAQAOACAAAAASABEAAQAUACAAAAASABAAAQAUACEAAAASAA8AAQAOACAAAAASAA4AAQAOACAAAAASAA0AAQAOACAAAAASAAwAAQAOACAAAAASAAsAAQAOACAAAAASAAoAAQAOACAAAAASAAkAAQAOACAAAAASAAgAAQAOACAAAAASAAcAAQAOACAAAAASAAYAAQAOACAAAAARABMAAQAUACEAAAARABIAAQAOACAAAAARABEAAQAOACAAAAARABAAAQAOACAAAAARAA8AAQAOACAAAAARAA4AAQAUACAAAAARAA0AAQAUACAAAAARAAwAAQAUACAAAAARAAsAAQAOACAAAAARAAoAAQAOACAAAAARAAkAAQAOACAAAAARAAgAAQAOACAAAAARAAcAAQAOACAAAAARAAYAAQAOACAAAAARAAUAAQAOACAAAAAQABMAAQAOACAAAAAQABIAAQAOACAAAAAQABEAAQAOACAAAAAQABAAAQAOACAAAAAQAA8AAQAOACAAAAAQAA4AAQAOACAAAAAQAA0AAQAOACAAAAAQAAwAAQAOACAAAAAQAAsAAQAOACAAAAAQAAoAAQAOACAAAAAQAAkAAQAOACAAAAAQAAgAAQAOACAAAAAQAAcAAQAOACAAAAAQAAYAAQAOACAAAAAQAAUAAQAOACAAAAAPABMAAQAUACAAAAAPABIAAQAUACEAAAAPABEAAQAUACEAAAAPABAAAQAOACAAAAAPAA8AAQAUACQAAAAPAA4AAQAOACAAAAAPAA0AAQAOACAAAAAPAAwAAQAOACAAAAAPAAsAAQAUACEAAAAPAAoAAQAOACAAAAAPAAkAAQAOACAAAAAPAAgAAQAOACAAAAAPAAcAAQAOACAAAAAPAAYAAQAOACAAAAAPAAUAAQAOACAAAAAOABMAAQAUACQAAAAOABIAAQAOACAAAAAOABEAAQAUACQAAAAOABAAAQAUACIAAAAOAA8AAQAOACAAAAAOAA4AAQAUACIAAAAOAA0AAQAOACAAAAAOAAwAAQAUACQAAAAOAAsAAQAOACAAAAAOAAoAAQAUACEAAAAOAAkAAQAOACAAAAAOAAgAAQAOACAAAAAOAAcAAQAOACAAAAAOAAYAAQAOACAAAAAOAAUAAQAOACAAAAANABMAAQAOACAAAAANABIAAQAOACAAAAANABEAAQAOACAAAAANABAAAQAOACAAAAANAA8AAQAOACAAAAANAA4AAQAOACAAAAANAA0AAQAUACIAAAANAAwAAQAOACAAAAANAAsAAQAOACAAAAANAAoAAQAOACAAAAANAAkAAQAOACAAAAANAAgAAQAOACAAAAANAAcAAQAOACAAAAANAAYAAQAOACAAAAANAAUAAQAOACAAAAAMABMAAQAOACAAAAAMABIAAQAUACAAAAAMABEAAQAOACAAAAAMABAAAQAUACAAAAAMAA8AAQAUACEAAAAMAA4AAQAOACAAAAAMAA0AAQAOACAAAAAMAAwAAQAOACAAAAAMAAsAAQAOACAAAAAMAAoAAQAOACAAAAAMAAkAAQAOACAAAAAMAAgAAQAOACAAAAAMAAcAAQAOACAAAAAMAAYAAQAOACAAAAAMAAUAAQAOACAAAAAMAAQAAQAOACAAAAALABMAAQAOACAAAAALABIAAQAOACAAAAALABEAAQAOACAAAAALABAAAQAUACAAAAALAA8AAQAUACQAAAALAA4AAQAOACAAAAALAA0AAQAOACAAAAALAAwAAQAUACEAAAALAAsAAQAUACIAAAALAAoAAQAOACAAAAALAAkAAQAOACAAAAALAAgAAQAOACAAAAALAAcAAQAOACAAAAALAAYAAQAOACAAAAALAAUAAQAOACAAAAALAAQAAQAOACAAAAAKABMAAQAOACAAAAAKABIAAQAOACAAAAAKABEAAQAUACQAAAAKABAAAQAOACAAAAAKAA8AAQAOACAAAAAKAA4AAQAOACAAAAAKAA0AAQAOACAAAAAKAAwAAQAUACQAAAAKAAsAAQAUACAAAAAKAAoAAQAOACAAAAAKAAkAAQAOACAAAAAKAAgAAQAOACAAAAAKAAcAAQAOACAAAAAKAAYAAQAOACAAAAAKAAUAAQAOACAAAAAKAAQAAQAOACAAAAAJABMAAQAOACAAAAAJABIAAQAOACAAAAAJABEAAQAUACQAAAAJABAAAQAUACIAAAAJAA8AAQAOACAAAAAJAA4AAQAOACAAAAAJAA0AAQAUACAAAAAJAAwAAQAOACAAAAAJAAsAAQAOACAAAAAJAAoAAQAOACAAAAAJAAkAAQAOACAAAAAJAAgAAQAOACAAAAAJAAcAAQAOACAAAAAJAAYAAQAOACAAAAAJAAUAAQAOACAAAAAJAAQAAQAOACAAAAAIABMAAQAOACAAAAAIABIAAQAUACIAAAAIABEAAQAOACAAAAAIABAAAQAUACAAAAAIAA8AAQAOACAAAAAIAA4AAQAOACAAAAAIAA0AAQAOACAAAAAIAAwAAQAOACAAAAAIAAsAAQAUACEAAAAIAAoAAQAOACAAAAAIAAkAAQAOACAAAAAIAAgAAQAOACAAAAAIAAcAAQAOACAAAAAIAAYAAQAOACAAAAAIAAUAAQAOACAAAAAIAAQAAQAOACAAAAAIAAMAAQAOACAAAAAHABMAAQAUACQAAAAHABIAAQAOACAAAAAHABEAAQAOACAAAAAHABAAAQAOACAAAAAHAA8AAQAOACAAAAAHAA4AAQAOACAAAAAHAA0AAQAOACAAAAAHAAwAAQAOACAAAAAHAAsAAQAOACAAAAAHAAoAAQAOACAAAAAHAAkAAQAOACAAAAAHAAgAAQAOACAAAAAHAAcAAQAOACAAAAAHAAYAAQAOACAAAAAHAAUAAQAOACAAAAAHAAQAAQAOACAAAAAHAAMAAQAOACAAAAAGABMAAQAUACEAAAAGABIAAQAOACAAAAAGABEAAQAOACAAAAAGABAAAQAUACAAAAAGAA8AAQAUACQAAAAGAA4AAQAOACAAAAAGAA0AAQAUACAAAAAGAAwAAQAOACAAAAAGAAsAAQAUACQAAAAGAAoAAQAOACAAAAAGAAkAAQAOACAAAAAGAAgAAQAOACAAAAAGAAcAAQAOACAAAAAGAAYAAQAOACAAAAAGAAUAAQAOACAAAAAGAAQAAQAOACAAAAAGAAMAAQAOACAAAAAFABMAAQAOACAAAAAFABIAAQAOACAAAAAFABEAAQAOACAAAAAFABAAAQAOACAAAAAFAA8AAQAUACEAAAAFAA4AAQAOACAAAAAFAA0AAQAOACAAAAAFAAwAAQAOACAAAAAFAAsAAQAOACAAAAAFAAoAAQAOACAAAAAFAAkAAQAOACAAAAAFAAgAAQAOACAAAAAFAAcAAQAOACAAAAAFAAYAAQAOACAAAAAFAAUAAQAOACAAAAAFAAQAAQAOACAAAAAFAAMAAQAOACAAAAAEABMAAQAUACEAAAAEABIAAQAOACAAAAAEABEAAQAOACAAAAAEABAAAQAOACAAAAAEAA8AAQAOACAAAAAEAA4AAQAUACQAAAAEAA0AAQAUACQAAAAEAAwAAQAUACAAAAAEAAsAAQAOACAAAAAEAAoAAQAOACAAAAAEAAkAAQAOACAAAAAEAAgAAQAOACAAAAAEAAcAAQAOACAAAAAEAAYAAQAOACAAAAAEAAUAAQAOACAAAAAEAAQAAQAOACAAAAAEAAMAAQAOACAAAAAEAAIAAQAOACAAAAADABMAAQAOACAAAAADABIAAQAOACAAAAADABEAAQAOACAAAAADABAAAQAUACEAAAADAA8AAQAOACAAAAADAA4AAQAOACAAAAADAA0AAQAOACAAAAADAAwAAQAOACAAAAADAAsAAQAOACAAAAADAAoAAQAOACAAAAADAAkAAQAOACAAAAADAAgAAQAOACAAAAADAAcAAQAOACAAAAADAAYAAQAOACAAAAADAAUAAQAOACAAAAADAAQAAQAOACAAAAADAAMAAQAOACAAAAADAAIAAQAOACAAAAACABMAAQAUACIAAAACABIAAQAOACAAAAACABEAAQAOACAAAAACABAAAQAUACQAAAACAA8AAQAOACAAAAACAA4AAQAUACQAAAACAA0AAQAOACAAAAACAAwAAQAUACQAAAACAAsAAQAOACAAAAACAAoAAQAOACAAAAACAAkAAQAOACAAAAACAAgAAQAOACAAAAACAAcAAQAOACAAAAACAAYAAQAOACAAAAACAAUAAQAOACAAAAACAAQAAQAOACAAAAACAAMAAQAOACAAAAACAAIAAQAOACAAAAABABMAAQAOACAAAAABABIAAQAOACAAAAABABEAAQAUACEAAAABABAAAQAOACAAAAABAA8AAQAUACQAAAABAA4AAQAOACAAAAABAA0AAQAOACAAAAABAAwAAQAUACAAAAABAAsAAQAOACAAAAABAAoAAQAOACAAAAABAAkAAQAOACAAAAABAAgAAQAOACAAAAABAAcAAQAOACAAAAABAAYAAQAOACAAAAABAAUAAQAOACAAAAABAAQAAQAOACAAAAABAAMAAQAOACAAAAABAAIAAQAOACAAAAAAABMAAQASACIAAAAAABIAAQASACIAAAAAABEAAQASACIAAAAAABAAAQASACIAAAAAAA8AAQASACIAAAAAAA4AAQASACIAAAAAAA0AAQASACIAAAAAAAwAAQASACIAAAAAAAsAAQASACIAAAAAAAoAAQASACIAAAAAAAkAAQASACIAAAAAAAgAAQASACIAAAAAAAcAAQASACIAAAAAAAYAAQASACIAAAAAAAUAAQASACIAAAAAAAQAAQASACIAAAAAAAMAAQASACIAAAAAAAIAAQASACIAAAAAAAEAAQASACIAAAAhAAUAAQAOACAAAAAeAAUAAQAOACAAAAAeAAYAAQAOACAAAAAdAAUAAQAOACAAAAAdAAQAAQAOACAAAAAeAAQAAQAOACAAAAAcAAUAAQAOACAAAAAcAAQAAQAOACAAAAAbAAUAAQAOACAAAAAbAAQAAQAOACAAAAAaAAUAAQAOACAAAAAaAAQAAQAOACAAAAAZAAUAAQAOACAAAAAZAAYAAQAOACAAAAAYAAYAAQAOACAAAAAbAAcAAQAOACAAAAAaAAcAAQAOACAAAAAeAAcAAQAOACAAAAAfAAYAAQAOACAAAAAfAAcAAQAOACAAAAAfAAkAAQAOACAAAAAeAAkAAQAOACAAAAAdAAkAAQAUACEAAAAgAAgAAQAOACAAAAAgAAkAAQAOACAAAAAgAAcAAQAOACAAAAAhAAgAAQAOACAAAAAhAAkAAQAOACAAAAAhAAcAAQAOACAAAAAgAAYAAQAOACAAAAAhAAYAAQAOACAAAAAcAAkAAQAOACAAAAAbAAkAAQAUACQAAAAbAAgAAQAOACAAAAAaAAkAAQAUACIAAAAaAAgAAQAOACAAAAAZAAkAAQAOACAAAAAZAAgAAQAOACAAAAAZAAcAAQAOACAAAAAYAAgAAQAOACAAAAAYAAcAAQAOACAAAAAaAAYAAQAOACAAAAAbAAYAAQAOACAAAAAcAAYAAQAOACAAAAAdAAYAAQAOACAAAAAdAAcAAQAOACAAAAAeAAgAAQAOACAAAAAdAAgAAQAOACAAAAAcAAgAAQAOACAAAAAfAAgAAQAOACAAAAAcAAcAAQAOACAAAAAZAAQAAQAOACAAAAA=")
 tile_set = ExtResource("4_j28jb")
 script = ExtResource("23_bvf2a")
@@ -3303,11 +5081,13 @@ metadata/original_opacity = 1.0
 
 [node name="GroundDetail" type="TileMapLayer" parent="." unique_id=1544551046]
 unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.21)
 tile_set = ExtResource("4_j28jb")
 metadata/original_opacity = 1.0
 
 [node name="Environment" type="TileMapLayer" parent="." unique_id=197981873]
 unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.21)
 z_index = 1
 y_sort_enabled = true
 tile_map_data = PackedByteArray("AAABAAIAAAAcABMAAAABAAMAAAAcABQAAAACAAIAAAAcABMAAAACAAMAAAAcABQAAAADAAAAAAAcABMAAAADAAEAAAAcABQAAAAEAAAAAAAcABMAAAAEAAEAAAAcABQAAAAEAA0AAAAcABQAAAAFAAAAAAAcABMAAAAFAAEAAAAcABQAAAAFAA0AAAAcABQAAAAFAA4AAAAcABMAAAAFAA8AAAAcABQAAAAGAAAAAAAcABMAAAAGAAEAAAAcABQAAAAGAA4AAAAcABMAAAAGAA8AAAAcABQAAAAHAA4AAAAcABMAAAAHAA8AAAAcABQAAAAIAAcAAAAcABMAAAAIAAgAAAAcABQAAAAIAAwAAAAcABMAAAAIAA0AAAAcABQAAAAIAA4AAAAcABMAAAAIAA8AAAAcABQAAAAJAAcAAAAcABMAAAAJAAgAAAAcABQAAAAJAAwAAAAcABMAAAAJAA0AAAAcABQAAAAKAAcAAAAcABMAAAAKAAgAAAAcABQAAAAKAAwAAAAcABMAAAAKAA0AAAAcABQAAAALAAUAAAAcABMAAAALAAYAAAAcABQAAAALAAcAAAAcABMAAAALAAgAAAAcABQAAAALAAwAAAAcABMAAAALAA0AAAAcABQAAAAMAAUAAAAcABMAAAAMAAYAAAAcABQAAAANAAUAAAAcABMAAAANAAYAAAAcABQAAAAOAAUAAAAcABMAAAAOAAYAAAAcABQAAAAPAAUAAAAcABMAAAAPAAYAAAAcABQAAAAPAA4AAAAcABMAAAAPAA8AAAAcABQAAAAQAAMAAAAcABMAAAAQAAQAAAAcABQAAAAQAA4AAAAcABMAAAAQAA8AAAAcABQAAAARAA4AAAAcABMAAAARAA8AAAAcABQAAAASAA4AAAAcABMAAAASAA8AAAAcABQAAAATAAwAAAAcABMAAAATAA0AAAAcABQAAAATAA4AAAAcABMAAAATAA8AAAAcABQAAAAUAAwAAAAcABMAAAAUAA0AAAAcABQAAAAVAAcAAAAcABMAAAAVAAgAAAAcABQAAAAWAAcAAAAcABMAAAAWAAgAAAAcABQAAAAXAAcAAAAcABMAAAAXAAgAAAAcABQAAAAYAAcAAAAcABMAAAAYAAgAAAAcABQAAAAYAAkAAAAcABMAAAAYAAoAAAAcABQAAAAZAAkAAAAcABMAAAAZAAoAAAAcABQAAAAaAAkAAAAcABMAAAAaAAoAAAAcABQAAAAaAAsAAAAcABMAAAAaAAwAAAAcABQAAAAbAAsAAAAcABMAAAAbAAwAAAAcABQAAAAdAAIAAAAcABMAAAAdAAMAAAAcABQAAAAdABEAAAAcABMAAAAdABIAAAAcABQAAAAeAAIAAAAcABMAAAAeAAMAAAAcABQAAAAeABEAAAAcABMAAAAeABIAAAAcABQAAAAfAAIAAAAcABMAAAAfAAMAAAAcABQAAAAfAA8AAAAcABMAAAAfABAAAAAcABQAAAAfABEAAAAcABMAAAAfABIAAAAcABQAAAAgAAIAAAAcABMAAAAgAAMAAAAcABQAAAAgAA0AAAAcABMAAAAgAA4AAAAcABQAAAAgAA8AAAAcABMAAAAgABAAAAAcABQAAAAhAAsAAAAcABMAAAAhAAwAAAAcABQAAAAhAA0AAAAcABMAAAAhAA4AAAAcABQAAAAEAAwAAAAcABMAAAAFAAwAAAAcABMAAAAWAAMAAAAYABMAAAAWAAQAAAAYABQAAAAXAAMAAAAZABMAAAAXAAQAAAAZABQAAAADAAcAAAAaABMAAAADAAgAAAAaABQAAAAEAAcAAAAbABMAAAAEAAgAAAAbABQAAAA=")
@@ -3316,9 +5096,8 @@ metadata/original_opacity = 1.0
 
 [node name="Overlay" type="TileMapLayer" parent="." unique_id=1033043721]
 unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.21)
 z_index = 1
 y_sort_enabled = true
 tile_set = ExtResource("5_xj7ls")
 metadata/original_opacity = 1.0
-
-[node name="AnimatemapName" parent="." unique_id=1279244523 instance=ExtResource("25_6yorc")]

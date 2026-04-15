@@ -14,7 +14,7 @@ var plugin: RPGMapPlugin
 var busy: bool
 
 
-signal changed()
+signal changed(event: Variant)
 
 
 func _ready() -> void:
@@ -152,7 +152,7 @@ func _fix_current_level() -> void:
 
 func _on_ok_button_pressed() -> void:
 	_create_undo_redo_action()
-	changed.emit()
+	changed.emit(current_event)
 	queue_free()
 
 func _create_undo_redo_action() -> void:
@@ -213,12 +213,20 @@ func confirm_changes() -> void:
 func _on_apply_button_pressed() -> void:
 	if current_event and events:
 		var event = current_event.clone(true)
+		
 		for i in events.size():
 			if events[i].id == event.id:
 				events[i] = event
 				break
-	
+				
+	if plugin:
+		plugin.set("current_extraction_event", current_event)
+		
+	if current_object:
+		current_object.set("current_extraction_event", current_event)
+		
 	%ApplyButton.set_disabled(true)
+	changed.emit(current_event)
 
 
 func _on_event_name_text_changed(new_text: String) -> void:

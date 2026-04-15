@@ -411,3 +411,160 @@ func update_pressable_events() -> void:
 func clear_pressable_events() -> void:
 	pressable_events.clear()
 #endregion
+
+
+#region Hot Reload
+## Replaces an existing event node with a new one created from the updated resource, stopping any active interpreter
+func spawn_event(ev: RPGEvent) -> void:
+	var uniq_id = ev._uniq_id
+	var interpreter_id = "event_" + str(uniq_id)
+	
+	if GameInterpreter.is_event_running(interpreter_id):
+		GameInterpreter.remove_interpreter_by_id(interpreter_id)
+		
+	if uniq_id in current_ingame_events:
+		var old_ev: IngameEvent = current_ingame_events[uniq_id]
+		
+		if old_ev and is_instance_valid(old_ev.lpc_event):
+			old_ev.lpc_event.queue_free()
+			
+		current_ingame_events.erase(uniq_id)
+		
+	ev.initialize_page_ids()
+	
+	var page: RPGEventPage = ev.get_active_page()
+	
+	if page:
+		page.id = ev.id
+		
+		var ingame_event = create_ingame_event(ev, page)
+		register_pressable_event(ingame_event.event)
+		
+		if map:
+			map.register_hp_page(uniq_id, page._uniq_id, page.options.hp)
+			
+		if ingame_event:
+			current_ingame_events[uniq_id] = ingame_event
+			
+			if page.launcher == RPGEventPage.LAUNCHER_MODE.AUTOMATIC:
+				GameInterpreter.auto_start_automatic_events([{"obj": ingame_event.lpc_event, "commands": page.list, "id": interpreter_id}])
+			elif page.launcher == RPGEventPage.LAUNCHER_MODE.PARALLEL:
+				GameInterpreter.register_interpreter(ingame_event.lpc_event, page.list, true, interpreter_id)
+				
+		ingame_event.update_label_name(page)
+
+
+## Replaces an existing extraction event by destroying its scene and rebuilding it from the new resource
+func spawn_extraction_event(ev: RPGExtractionItem) -> void:
+	if ev.id in current_ingame_extraction_events:
+		var old_ev: IngameExtractionEvent = current_ingame_extraction_events[ev.id]
+		
+		if old_ev and is_instance_valid(old_ev.scene):
+			old_ev.scene.queue_free()
+			
+		current_ingame_extraction_events.erase(ev.id)
+		
+	var ingame_extraction_event = IngameExtractionEvent.new(map, ev)
+	
+	ingame_extraction_event.build()
+	
+	if ingame_extraction_event.is_valid():
+		current_ingame_extraction_events[ev.id] = ingame_extraction_event
+
+
+## Updates the game state with the new vehicle start position and reconstructs map vehicles
+func hot_reload_start_position(target_id: String, new_map_id: int, new_pos: Vector2i) -> void:
+	if target_id.is_empty():
+		return
+		
+	var player = GameManager.current_player
+	var is_deleting = (new_map_id == -1)
+	
+	if target_id == "player_start_position" and player and is_instance_valid(player):
+		if not is_deleting and new_map_id == map.internal_id:
+			set_event_position(player, new_pos, player.current_direction, true)
+			player.clear_movement_history()
+			
+			if player.has_method("update_virtual_tile"):
+				player.update_virtual_tile()
+				
+			var camera = GameManager.get_camera()
+			
+			if camera and camera.has_method("fast_reposition"):
+				camera.fast_reposition.call_deferred()
+		return
+		
+	var v_index = -1
+	
+	match target_id:
+		"land_transport_start_position": v_index = 0
+		"sea_transport_start_position": v_index = 1
+		"air_transport_start_position": v_index = 2
+		
+	var v_node = null
+	
+	for vehicle in current_ingame_vehicles:
+		if vehicle.vehicle_type == v_index:
+			v_node = vehicle
+			break
+	
+	if (is_deleting or new_map_id != map.internal_id) and player and is_instance_valid(player) and "is_on_vehicle" in player and player.is_on_vehicle:
+		if "current_vehicle" in player and is_instance_valid(player.current_vehicle):
+			if player.current_vehicle == v_node:
+				var safe_tile: Vector2i = Vector2i.ZERO
+				
+				if v_node.has_method("get_current_tile"):
+					safe_tile = v_node.get_current_tile()
+				else:
+					safe_tile = map.local_to_map(v_node.global_position)
+					
+				player.reparent(map)
+				player.is_on_vehicle = false
+				player.current_vehicle = null
+				
+				set_event_position(player, safe_tile, player.current_direction)
+				player.clear_movement_history()
+				
+				if player.has_method("update_virtual_tile"):
+					player.update_virtual_tile()
+					
+				player.show()
+				
+				if "force_locked" in player:
+					player.force_locked = false
+					
+				var camera = GameManager.get_camera()
+				
+				if camera and camera.has_method("fast_reposition"):
+					camera.fast_reposition.call_deferred()
+						
+	var data: RPGMapPosition
+	
+	if Engine.is_editor_hint():
+		data = RPGSYSTEM.database.system.get(target_id)
+	else:
+		if GameManager.game_state:
+			data = GameManager.game_state.get(target_id)
+			if not data:
+				data = RPGMapPosition.new()
+				GameManager.game_state.set(target_id, data)
+				
+	if data:
+		if is_deleting:
+			data.map_id = -1
+			data.position = Vector2i.ZERO
+		else:
+			data.map_id = new_map_id
+			data.position = new_pos
+		
+	if is_deleting or new_map_id != map.internal_id:
+		if is_instance_valid(v_node):
+			v_node.name = "DeletedVehicle_" + str(v_node.get_instance_id())
+			v_node.queue_free()
+			current_ingame_vehicles.erase(v_node)
+	else:
+		if is_instance_valid(v_node):
+			map.set_event_position(v_node, new_pos, v_node.current_direction)
+		else:
+			setup_vehicles()
+#endregion

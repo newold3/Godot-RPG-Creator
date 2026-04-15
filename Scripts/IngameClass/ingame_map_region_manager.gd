@@ -174,6 +174,8 @@ func _on_event_monitor_body_entered(_body_rid: RID, body: Node2D, _body_shape_in
 
 
 func _on_event_monitor_body_exited(_body_rid: RID, body: Node2D, _body_shape_index: int, local_shape_index: int, main_area: Area2D) -> void:
+	if not is_instance_valid(body): return
+	
 	if body.is_in_group("vehicle") and not body.is_enabled:
 		return
 		
@@ -209,3 +211,69 @@ func _on_event_monitor_body_exited(_body_rid: RID, body: Node2D, _body_shape_ind
 		elif action_type == "enemy_spawn_area" and (body.is_in_group("player") or body.is_in_group("vehicle")):
 			if map.current_in_game_enemy_spawn_region and map.current_in_game_enemy_spawn_region == region_data:
 				map.current_in_game_enemy_spawn_region = null
+
+
+#region Hot Reload
+## Replaces an existing enemy spawn region by removing its previous collision shape and creating a new one in the monitor
+func spawn_enemy_region(region: EnemySpawnRegion) -> void:
+	var event_monitor = map.get_node_or_null("EventMonitor")
+	
+	if event_monitor:
+		var old_node = event_monitor.get_node_or_null("EnemyEventRegion#" + str(region.id))
+		
+		if old_node:
+			old_node.name = "DeletedEnemyRegion_" + str(old_node.get_instance_id())
+			old_node.queue_free()
+			
+		var obj: CollisionShape2D = CollisionShape2D.new()
+		obj.shape = RectangleShape2D.new()
+		obj.shape.size = region.rect.size * map.tile_size
+		var p = region.rect.position * map.tile_size + Vector2i(obj.shape.size / 2)
+		obj.position = p
+		obj.name = "EnemyEventRegion#" + str(region.id)
+		obj.z_index = 1
+		obj.set_meta("type", "enemy_spawn_area")
+		obj.set_meta("region_data", region)
+		
+		event_monitor.add_child(obj)
+
+
+
+## Replaces an existing event region updating its logic, shape and reparenting it if its passability has changed
+func spawn_event_region(region: EventRegion) -> void:
+	var target_name = "EventRegion#" + str(region.id)
+	var old_node = map.get_node_or_null("Walls/" + target_name)
+	
+	if not old_node:
+		old_node = map.get_node_or_null("EventMonitor/" + target_name)
+		
+	if old_node:
+		map.ingame_event_regions.erase(old_node)
+		old_node.name = "DeletedRegion_" + str(old_node.get_instance_id())
+		old_node.queue_free()
+		
+	var collision_body = map.get_node_or_null("Walls")
+	var collision_area = map.get_node_or_null("EventMonitor")
+	
+	if collision_body and collision_area:
+		var obj: CollisionShape2D = CollisionShape2D.new()
+		obj.shape = RectangleShape2D.new()
+		obj.shape.size = region.rect.size * map.tile_size
+		var p = region.rect.position * map.tile_size + Vector2i(obj.shape.size / 2)
+		obj.position = p
+		obj.name = target_name
+		obj.z_index = 1
+		obj.set_meta("region_data", region)
+		
+		var region_is_disabled = region.activation_mode == EventRegion.ActivationMode.SWITCH and not GameManager.get_switch(region.activation_switch_id)
+		obj.set_disabled(region_is_disabled)
+		
+		if not region.can_entry:
+			obj.set_meta("type", "collision_region")
+			collision_body.add_child(obj)
+		else:
+			obj.set_meta("type", "event_region")
+			collision_area.add_child(obj)
+			
+		map.ingame_event_regions.append(obj)
+#region
