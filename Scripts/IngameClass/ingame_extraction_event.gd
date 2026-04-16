@@ -25,6 +25,7 @@ func build() -> void:
 	if scene:
 		map.add_child(scene)
 		scene.position = map.get_tile_position(Vector2i(event.x, event.y))
+		scene.add_to_group("extraction_event")
 		
 		var internal_id = map.internal_id
 		

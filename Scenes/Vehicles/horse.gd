@@ -256,6 +256,18 @@ func is_any_direction_pressed() -> bool:
 	return result
 
 
+func get_images() -> Array:
+	var sprites_to_check = [%FinalVehicle]
+	
+	var images = []
+	
+	for s in sprites_to_check:
+		if s and is_instance_valid(s) and s.visible and s.texture:
+			images.append(s)
+	
+	return images
+
+
 func get_shadow_data() -> Dictionary:
 	var sprite = get_node_or_null("%FinalVehicle")
 	if not sprite or not sprite.texture:

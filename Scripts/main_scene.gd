@@ -351,4 +351,17 @@ func play_video(path: String, loop: bool = false, fade_out_time: float = 0.0) ->
 
 func stop_video() -> void:
 	if has_node("%ScreenVisualsManager"): %ScreenVisualsManager.stop_video()
+
+
+func setup_minimap(map: RPGMap) -> void:
+	%MiniMapManager.setup(map)
+	show_minimap()
+
+
+func show_minimap() -> void:
+	%MiniMapManager.show()
+
+
+func hide_minimap() -> void:
+	%MiniMapManager.hide()
 #endregion

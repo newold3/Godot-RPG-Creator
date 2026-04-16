@@ -1105,6 +1105,10 @@ func _fix_z_ordering() -> void:
 			remove_meta("_backup_z_index")
 
 
+func get_images() -> Array:
+	return []
+
+
 func get_shadow_data() -> Dictionary:
 	return {}
 

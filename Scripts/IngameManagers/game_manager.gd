@@ -444,6 +444,15 @@ func get_shop_timer(shop_id: String) -> RPGShopTimer:
 
 
 #region Map & Events
+func get_empty_texture() -> Texture2D:
+	if has_meta("empty_texture"): return get_meta("empty_texture")
+	
+	var img = Image.create_empty(1, 1, false, Image.FORMAT_BPTC_RGBA)
+	set_meta("empty_texture", ImageTexture.create_from_image(img))
+	
+	return get_meta("empty_texture")
+
+
 func show_map_name(map_name: String, initial_delay: float = 0.0) -> void:
 	var scene_path = RPGSYSTEM.database.system.game_scenes.get("Show Map Name", "")
 	if AssetManager.exists(scene_path):

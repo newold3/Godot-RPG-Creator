@@ -266,6 +266,18 @@ func _sync_custom_scene_state(delta: float) -> void:
 		instanced_scene.call("process_event_state", state)
 
 
+func get_icon() -> Texture2D:
+	var tex: Texture2D
+	
+	if current_event_page:
+		# lpc character, image
+		if current_event_page.character_type in [0, 1]:
+			tex = %MainTexture.texture
+		if not tex: tex = GameManager.get_empty_texture()
+	
+	return tex
+
+
 ## Formats and returns the shadow data array based on the current event display mode
 func get_shadow_data() -> Dictionary:
 	if is_on_vehicle or is_queued_for_deletion() or has_meta("_disable_shadow"):

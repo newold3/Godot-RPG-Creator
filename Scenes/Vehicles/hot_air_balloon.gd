@@ -89,6 +89,18 @@ func _on_disembark() -> void:
 	%VehicleTop.z_index = 101
 
 
+func get_images() -> Array:
+	var sprites_to_check = [%Vehicle, %VehicleTop]
+	
+	var images = []
+	
+	for s in sprites_to_check:
+		if s and is_instance_valid(s) and s.visible and s.texture:
+			images.append(s)
+	
+	return images
+
+
 func get_shadow_data() -> Dictionary:
 	var balloon_sprite = get_node_or_null("%FinalBalloon")
 	var basket_sprite = get_node_or_null("%Vehicle")

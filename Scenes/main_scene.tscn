@@ -15,6 +15,9 @@
 [ext_resource type="Script" uid="uid://caqxe0k4vyenn" path="res://Scripts/IngameManagers/game_loader_manager.gd" id="8_7ewk0"]
 [ext_resource type="PackedScene" uid="uid://dj44lomm46fuq" path="res://Scenes/OtherScenes/animate_items.tscn" id="8_huasi"]
 [ext_resource type="Script" uid="uid://b5ed3erpmobv7" path="res://Scripts/IngameManagers/scene_manager.gd" id="9_lhp3t"]
+[ext_resource type="Script" uid="uid://6haw4a1tw6n2" path="res://Scripts/IngameManagers/mini_map_manager.gd" id="15_gnsmo"]
+[ext_resource type="Texture2D" uid="uid://5ur7q8x2sa7j" path="res://Assets/Images/Other/minimap.png" id="16_2ebs2"]
+[ext_resource type="Texture2D" uid="uid://bpj212cv3h4ng" path="res://Assets/Images/Other/default_minimap_icons.png" id="16_oyb3p"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_rbbkg"]
 frequency = 0.0011
@@ -24,6 +27,78 @@ shader = ExtResource("6_m1efj")
 shader_parameter/modulate = Color(1, 1, 1, 0)
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_huasi"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8edxt"]
+atlas = ExtResource("16_oyb3p")
+region = Rect2(35, 4, 23, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nt2eh"]
+atlas = ExtResource("16_oyb3p")
+region = Rect2(131, 4, 23, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5cm5d"]
+atlas = ExtResource("16_oyb3p")
+region = Rect2(3, 4, 23, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xle81"]
+atlas = ExtResource("16_oyb3p")
+region = Rect2(99, 4, 23, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s8qe6"]
+atlas = ExtResource("16_oyb3p")
+region = Rect2(67, 4, 23, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yb0ja"]
+atlas = ExtResource("16_oyb3p")
+region = Rect2(163, 4, 23, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jvnna"]
+atlas = ExtResource("16_2ebs2")
+region = Rect2(0, 235, 236, 226)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b48ew"]
+atlas = ExtResource("16_2ebs2")
+region = Rect2(6, 4, 232, 222)
+
+[sub_resource type="Shader" id="Shader_5oxhp"]
+code = "shader_type canvas_item;
+
+//* Curvature strength. Small values (0.1 to 0.3) give a subtle, elegant lens effect */
+uniform float spherize_strength : hint_range(0.0, 1.0) = 0.2;
+
+//* Intensity of the 3D volume shadow at the edges */
+uniform float shadow_strength : hint_range(0.0, 1.0) = 0.6;
+
+void fragment() {
+    vec2 center = vec2(0.5, 0.5);
+    vec2 uv = UV - center;
+    float dist = length(uv);
+    
+    // Distorsión de barril suave. 
+    // Escala los UVs basándose en la distancia, creando un ligero \"abombamiento\" central sin romper los bordes.
+    vec2 final_uv = center + uv * (1.0 - spherize_strength * dist);
+    
+    vec4 tex_color = texture(TEXTURE, final_uv);
+    
+    // Viñeteado suave (vignette) en lugar de un cálculo lineal.
+    // smoothstep crea una transición de luz perfecta desde el centro (0.0) hasta las esquinas (0.7).
+    float light_intensity = smoothstep(0.7, 0.0, dist);
+    float shadow_factor = mix(1.0, light_intensity, shadow_strength);
+    
+    COLOR = vec4(tex_color.rgb * shadow_factor, tex_color.a);
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nt2eh"]
+shader = SubResource("Shader_5oxhp")
+shader_parameter/spherize_strength = 0.1070000050825
+shader_parameter/shadow_strength = 0.394000018715
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_psl12"]
+viewport_path = NodePath("MiniMapManager/MainViewport")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5oxhp"]
+atlas = ExtResource("16_2ebs2")
+region = Rect2(0, 247, 220, 220)
 
 [node name="MainScene" type="Node2D" unique_id=631871742 node_paths=PackedStringArray("transition_manager") groups=["start_scene_main"]]
 texture_filter = 5
@@ -222,6 +297,69 @@ character_container = NodePath("../../MessageCharacterImages")
 unique_name_in_owner = true
 layer = 121
 
+[node name="MiniMapManager" type="CanvasLayer" parent="." unique_id=42316787 node_paths=PackedStringArray("minimap_viewport", "camera", "tilemap_container", "entities_drawer")]
+unique_name_in_owner = true
+layer = 122
+script = ExtResource("15_gnsmo")
+minimap_viewport = NodePath("MainViewport")
+camera = NodePath("MainViewport/Camera2D")
+tilemap_container = NodePath("MainViewport/TilemapContainer")
+entities_drawer = NodePath("MainViewport/EntityContainer")
+limit_camera_to_map = true
+default_event_icon = SubResource("AtlasTexture_8edxt")
+default_extraction_event_icon = SubResource("AtlasTexture_nt2eh")
+default_player_icon = SubResource("AtlasTexture_5cm5d")
+default_vehicle_land_icon = SubResource("AtlasTexture_xle81")
+default_vehicle_sea_icon = SubResource("AtlasTexture_s8qe6")
+default_vehicle_air_icon = SubResource("AtlasTexture_yb0ja")
+
+[node name="MainViewport" type="SubViewport" parent="MiniMapManager" unique_id=1649431453]
+transparent_bg = true
+size = Vector2i(244, 244)
+
+[node name="Camera2D" type="Camera2D" parent="MiniMapManager/MainViewport" unique_id=1436223834]
+
+[node name="TilemapContainer" type="Node2D" parent="MiniMapManager/MainViewport" unique_id=1410982676]
+
+[node name="EntityContainer" type="Node2D" parent="MiniMapManager/MainViewport" unique_id=561568004]
+
+[node name="MiniMapContainer" type="Node2D" parent="MiniMapManager" unique_id=3255240]
+position = Vector2(1024, 114)
+scale = Vector2(0.8, 0.8)
+
+[node name="Background" type="Sprite2D" parent="MiniMapManager/MiniMapContainer" unique_id=1780504675]
+texture = SubResource("AtlasTexture_jvnna")
+
+[node name="MapMask" type="Sprite2D" parent="MiniMapManager/MiniMapContainer" unique_id=1923836961]
+clip_children = 1
+position = Vector2(-1.9679846e-05, 5.6028366e-06)
+scale = Vector2(0.9913794, 0.99099094)
+texture = SubResource("AtlasTexture_b48ew")
+
+[node name="ViewportBackground" type="ColorRect" parent="MiniMapManager/MiniMapContainer/MapMask" unique_id=2073970403]
+custom_minimum_size = Vector2(207.99034, 207.99518)
+offset_left = -117.25391
+offset_top = -112.254234
+offset_right = 118.50806
+offset_bottom = 113.50848
+color = Color(0, 0, 0, 1)
+
+[node name="Map" type="TextureRect" parent="MiniMapManager/MiniMapContainer/MapMask" unique_id=1834953497]
+material = SubResource("ShaderMaterial_nt2eh")
+offset_left = -115.99994
+offset_top = -111.0
+offset_right = 115.99994
+offset_bottom = 111.0
+texture = SubResource("ViewportTexture_psl12")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Foreground" type="Sprite2D" parent="MiniMapManager/MiniMapContainer/MapMask" unique_id=61046703]
+visible = false
+modulate = Color(1, 1, 1, 0.5254902)
+scale = Vector2(1, 0.99999994)
+texture = SubResource("AtlasTexture_5oxhp")
+
 [node name="GUICanvas" type="CanvasLayer" parent="." unique_id=964964266]
 unique_name_in_owner = true
 layer = 124
@@ -231,6 +369,8 @@ layer = 1000
 
 [node name="AnimateItems" parent="TopLayer" unique_id=540726037 instance=ExtResource("8_huasi")]
 unique_name_in_owner = true
+offset_left = 4.0
+offset_right = 4.0
 icon_size = Vector2(22, 22)
 move_duration = 0.5
 bounce_distance = 5.0

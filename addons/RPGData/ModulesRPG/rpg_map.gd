@@ -64,6 +64,8 @@ extends Node2D
 @export var custom_map_name: String = ""
 ## Music that will be played when playing this map
 @export var map_bgm: AudioStream
+## Enables the minimap overlay when playing this map.
+@export var enable_minimap: bool = false
 
 ## Changes the current color modulation for this map (Default will be White = No Change)
 @export var map_modulate: Color = Color.WHITE:
@@ -502,6 +504,12 @@ func _start_game_mode() -> void:
 		GameManager.show_map_name(map_name, 1.0)
 		if show_map_name == 1:
 			GameManager.game_state.map_names_shown[internal_id] = true
+	
+	if GameManager.main_scene:
+		if enable_minimap:
+			GameManager.main_scene.setup_minimap(self)
+		else:
+			GameManager.main_scene.hide_minimap()
 
 
 func register_hp_page(event_id: int, page_id: int, hp_value: int) -> void:

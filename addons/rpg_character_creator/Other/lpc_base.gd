@@ -881,6 +881,18 @@ func can_perform_action() -> bool:
 	return !busy and !is_attacking and !is_moving and can_attack and can_move and !GameManager.busy and !main_interpreter.is_busy() and !GameInterpreter.is_busy() and !force_locked
 
 
+func get_icon() -> Variant:
+	var tex: Variant
+	
+	if has_meta("actor_id"):
+		var actor_id = get_meta("actor_id")
+		if typeof(actor_id) == TYPE_INT and RPGSYSTEM.database.actors.size() > actor_id and actor_id > 0:
+			var actor = RPGSYSTEM.database.actors[actor_id]
+			tex = actor.icon
+	
+	return tex
+
+
 func get_shadow_data() -> Dictionary:
 	if is_on_vehicle or is_queued_for_deletion() or has_meta("_disable_shadow"):
 		return {}

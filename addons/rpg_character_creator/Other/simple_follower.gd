@@ -448,6 +448,18 @@ func get_character_sprite() -> Sprite2D:
 	return body
 
 
+func get_icon() -> Variant:
+	var tex: Variant
+	
+	#if has_meta("actor_id"):
+		#var actor_id = get_meta("actor_id")
+		#if typeof(actor_id) == TYPE_INT and RPGSYSTEM.database.actors.size() > actor_id and actor_id > 0:
+			#var actor = RPGSYSTEM.database.actors[actor_id]
+			#tex = actor.icon
+	
+	return tex
+
+
 func get_shadow_data() -> Dictionary:
 	if is_queued_for_deletion() or has_meta("_disable_shadow"):
 		return {}
