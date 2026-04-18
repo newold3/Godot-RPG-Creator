@@ -78,6 +78,10 @@ var last_offset_setted: float
 
 var backup_text: String
 
+var potential_drag_index: int = -1
+var mouse_down_time: int = 0
+var drag_preview_line: int = -1
+
 
 const  EDITABLE_CODES: Array = [
 	0, 1, 2, 4, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 28, 29,
@@ -103,6 +107,7 @@ signal paste_requested(index: int)
 signal duplicate_requested(indexes: PackedInt32Array)
 signal right_click(index: int, indexes: PackedInt32Array)
 signal change_position_requested(to: int, indexes: PackedInt32Array)
+signal items_dropped(to_index: int, new_indent: int, indexes: PackedInt32Array)
 
 
 func _ready() -> void:
@@ -169,39 +174,49 @@ func _on_itemlist_gui_input(event: InputEvent) -> void:
 	if get_item_count() == 0:
 		return
 
-	if event is InputEventMouseButton and event.is_pressed() and event.button_index == MOUSE_BUTTON_LEFT:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		var index = get_item_at_position(event.position, true)
-		if index != -1 and event.is_double_click():
-			get_viewport().set_input_as_handled()
-			item_activated.emit(index)
-			return
-		if !event.is_shift_pressed():
-			last_click_without_shift = index
-		if last_clicked_track.size() == 2:
-			last_clicked_track.pop_front()
-		last_clicked_track.append(index)
-		if event.is_ctrl_pressed():
-			if index != -1:
+		
+		if event.is_pressed():
+			if index != -1 and event.is_double_click():
+				get_viewport().set_input_as_handled()
+				item_activated.emit(index)
+				return
+
+			if index != -1 and is_selected(index) and not event.is_shift_pressed() and not event.is_ctrl_pressed():
+				return
+
+			if !event.is_shift_pressed():
+				last_click_without_shift = index
+
+			if last_clicked_track.size() == 2:
+				last_clicked_track.pop_front()
+			last_clicked_track.append(index)
+
+			if event.is_ctrl_pressed():
+				if index != -1:
+					select(index)
+					multi_selected.emit(index, true)
+				get_viewport().set_input_as_handled()
+			elif index != -1 and last_clicked_track.size() == 2 and event.is_shift_pressed():
+				var max_value = max(last_click_without_shift, last_clicked_track[1])
+				var min_value = min(last_click_without_shift, last_clicked_track[1])
+				var selected_items = range(min_value, max_value)
+				selected_items.append(max_value)
+				select_right_items(selected_items)
+				get_viewport().set_input_as_handled()
+			elif index != -1:
+				deselect_all()
 				select(index)
 				multi_selected.emit(index, true)
-			get_viewport().set_input_as_handled()
-		elif index != -1 and last_clicked_track.size() == 2 and event.is_shift_pressed():
-			var max_value = max(last_click_without_shift, last_clicked_track[1])
-			var min_value = min(last_click_without_shift, last_clicked_track[1])
-			var selected_items = range(min_value, max_value)
-			selected_items.append(max_value)
-			select_right_items(selected_items)
-			#deselect_all()
-			#for i in selected_items:
-				#if i != -1:
-					#select(i, false)
-			#start_reselect()
-			get_viewport().set_input_as_handled()
-		elif index != -1:
-			deselect_all()
-			select(index)
-			multi_selected.emit(index, true)
-			get_viewport().set_input_as_handled()
+				get_viewport().set_input_as_handled()
+		
+		else:
+			if index != -1 and is_selected(index) and not event.is_shift_pressed() and not event.is_ctrl_pressed():
+				deselect_all()
+				select(index)
+				multi_selected.emit(index, true)
+
 		return 
 	
 	if event is InputEventMouseButton and event.is_pressed() and event.button_index == MOUSE_BUTTON_RIGHT:
@@ -230,6 +245,16 @@ func _on_itemlist_gui_input(event: InputEvent) -> void:
 				paste_requested.emit(get_selected_items()[-1])
 			elif event.keycode == KEY_D:
 				duplicate_requested.emit(get_selected_items())
+			elif event.keycode == KEY_UP:
+				var indexes = get_selected_items()
+				if indexes.size() > 0:
+					change_position_requested.emit(indexes[0], indexes[0] - 1, indexes)
+				get_viewport().set_input_as_handled()
+			elif event.keycode == KEY_DOWN:
+				var indexes = get_selected_items()
+				if indexes.size() > 0:
+					change_position_requested.emit(indexes[0], indexes[-1] + 1, indexes)
+				get_viewport().set_input_as_handled()
 		elif event.keycode == KEY_UP:
 			var indexes = get_selected_items()
 			if indexes.size() > 0:
@@ -258,6 +283,59 @@ func _on_itemlist_gui_input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 			var index = get_selected_items()[-1]
 			item_activated.emit(index)
+
+
+func _get_drag_data(at_position: Vector2) -> Variant:
+	var index = get_item_at_position(at_position, true)
+	
+	if index == -1 or not is_selected(index):
+		return null
+
+	var cmd = data[index].command
+	if cmd.code == 0 or cmd.code in SUB_CODES:
+		return null
+
+	var selected = get_selected_items()
+	var preview = Label.new()
+	preview.text = " Moviendo %s comando(s)... " % selected.size()
+	set_drag_preview(preview)
+
+	return selected
+
+
+func _can_drop_data(at_position: Vector2, drag_data: Variant) -> bool:
+	if typeof(drag_data) != TYPE_PACKED_INT32_ARRAY:
+		return false
+
+	var drop_index = get_item_at_position(at_position, true)
+	
+	if drop_index != -1:
+		var cmd = data[drop_index].command
+		if cmd.code in SUB_CODES:
+			drag_preview_line = -1
+			%BackControl.queue_redraw()
+			return false
+	else:
+		drop_index = data.size()
+
+	drag_preview_line = drop_index
+	%BackControl.queue_redraw()
+	
+	return true
+
+
+func _drop_data(at_position: Vector2, drag_data: Variant) -> void:
+	var drop_index = drag_preview_line
+	
+	drag_preview_line = -1
+	%BackControl.queue_redraw()
+	
+	if drop_index == -1:
+		drop_index = get_item_at_position(at_position, true)
+		if drop_index == -1:
+			drop_index = data.size()
+
+	items_dropped.emit(drop_index, 0, drag_data)
 
 
 func _get_command_index(from: int, to: int) -> int:
@@ -1047,7 +1125,7 @@ func is_not_editable_event(event: RPGEventCommand) -> bool:
 func _on_back_draw() -> void:
 	if busy:
 		return
-		
+
 	var control: Control = %BackControl
 	control.size = size
 
@@ -1055,6 +1133,7 @@ func _on_back_draw() -> void:
 	var offset_x: int = 0
 	var offset_y: int = 0
 	var parent = self
+
 	if main_container:
 		parent = get_node(main_container)
 		if "get_v_scroll_bar" in parent:
@@ -1062,14 +1141,13 @@ func _on_back_draw() -> void:
 		if "get_h_scroll_bar" in parent:
 			offset_x = max(0, parent.get_h_scroll_bar().value)
 		parent = self
-	
+
 	var font = get_theme_default_font()
 	var font_size = get_theme_default_font_size()
 	var align = HORIZONTAL_ALIGNMENT_LEFT
-	
 	var items_selected = get_selected_items()
-	
 	var max_page_size = Vector2.ZERO
+
 	if scroll_container:
 		var main_scroll_container = get_node(scroll_container)
 		if main_scroll_container.scroll_vertical > 0 and not main_scroll_container.get_v_scroll_bar().visible:
@@ -1079,31 +1157,31 @@ func _on_back_draw() -> void:
 		max_page_size = main_scroll_container.size
 
 	var v_separation = get("theme_override_constants/v_separation")
+	
 	if !v_separation:
 		v_separation = 2
-	
-	# Array para almacenar todas las filas (reales y de relleno) con su información
+
 	var all_rows = []
-	
+
 	if item_count > 0:
-		# Agregar filas reales
 		for i in item_count:
 			var formatted_data = data[i].formatted_data
 			rect = get_item_rect(i)
+
 			if rect.position.y + rect.size.y - offset_y < 0:
 				continue
 			elif rect.position.y - offset_y > parent.size.y:
 				continue
+
 			rect.size.x = parent.size.x
-			
+
 			all_rows.append({
 				"type": "real",
 				"index": i,
 				"rect": rect,
 				"formatted_data": formatted_data
 			})
-		
-		# Si hay espacio para más filas, agregar filas de relleno
+
 		if all_rows.size() > 0:
 			var last_real_rect = all_rows[-1].rect
 			var base_height = last_real_rect.size.y
@@ -1111,62 +1189,60 @@ func _on_back_draw() -> void:
 			var fill_id = item_count
 			var max_deep = 1000
 			var current_deep = 0
-			
+
 			while fill_y - offset_y < parent.size.y + 42 and current_deep < max_deep:
 				var fill_rect = Rect2()
 				fill_rect.position.x = 0
 				fill_rect.position.y = fill_y
 				fill_rect.size.x = parent.size.x
 				fill_rect.size.y = base_height
-				
+
 				if fill_rect.position.y + fill_rect.size.y - offset_y >= 0:
 					all_rows.append({
 						"type": "fill",
 						"index": fill_id,
 						"rect": fill_rect
 					})
-				
+
 				fill_y += v_separation + base_height
 				fill_id += 1
 				current_deep += 1
+
 	else:
-		# Cuando no hay items, llenar con filas de altura base del font
 		var sy = font.get_string_size(" ", HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).y
 		var y = 0
 		var i = 0
 		var max_deep = 1000
 		var current_deep = 0
-		
+
 		while y < parent.size.y + v_separation + 42 and current_deep < max_deep:
 			rect = Rect2()
 			rect.position = Vector2(0, y)
 			rect.size = Vector2(parent.size.x, sy)
-			
+
 			if rect.position.y + rect.size.y - offset_y >= 0 and rect.position.y - offset_y <= parent.size.y:
 				all_rows.append({
 					"type": "fill",
 					"index": i,
 					"rect": rect
 				})
-			
+
 			y += v_separation + sy
 			i += 1
 			current_deep += 1
-	
-	# Aplicar +6 solo a la última fila visible
+
 	if all_rows.size() > 0:
 		all_rows[-1].rect.size.y += 6
-	
-	# Dibujar todas las filas
+
 	for row in all_rows:
 		rect = row.rect
-		
+
 		if row.type == "real":
 			var i = row.index
 			var formatted_data = row.formatted_data
 			var x = rect.position.x + text_margin_left
-			var y = font.get_ascent() + rect.position.y
-			
+			var y_pos = font.get_ascent() + rect.position.y
+
 			if items_selected.has(i):
 				if enabled_action_cursor_texture:
 					if can_edit_event(data[i].command) or item_has_parent_selected(data[i].command) or is_not_editable_event(data[i].command):
@@ -1174,91 +1250,121 @@ func _on_back_draw() -> void:
 					else:
 						control.draw_rect(rect, formatted_data.bg_color)
 						var rect2 = rect
-						rect2.size.y -= 6 if row == all_rows[-1] else 0  # Solo restar 6 si es la última fila
+						rect2.size.y -= 6 if row == all_rows[-1] else 0
 						rect2.size.x = size.x - 42
+
 						if main_container:
 							var scrolling_panel = get_node(main_container)
 							if scrolling_panel.get_v_scroll_bar().visible:
 								rect2.size.x = max(scrolling_panel.size.x, rect2.size.x) - scrolling_panel.get_v_scroll_bar().size.x - 4
 							if scrolling_panel.get_h_scroll_bar().visible:
 								rect2.size.x = max(rect2.size.x, scrolling_panel.get_h_scroll_bar().max_value - 2)
+
 						control.draw_style_box(no_editable_cursor_texture, rect)
 				else:
 					control.draw_rect(rect, formatted_data.bg_color)
 			else:
 				control.draw_rect(rect, formatted_data.bg_color)
-			
+
 			if data[i].command.ignore_command:
 				var s = font.get_string_size(no_available_icon, align, -1, font_size)
 				control.draw_string(
-					font, Vector2(x, y + font.get_ascent() - 4), no_available_icon,
+					font, Vector2(x, y_pos + font.get_ascent() - 4), no_available_icon,
 					align, s.x, font_size
 				)
 				control.draw_style_box(ignored_command, rect)
 				x += s.x + 4
-			
-			# Dibujar texto
+
 			var start_height = 0
+
 			for phrase in formatted_data.phrases:
 				var start_width = 0
+
 				for obj in phrase.texts:
 					var displacement = obj.get("offset_x", 0)
 					start_width += obj.size.x
+
 					if obj == phrase.texts[0]:
 						start_height += obj.size.y
-					
+
 					if items_selected.has(i):
 						control.draw_string(
-							font, Vector2(x + displacement, y + phrase.offset_y), obj.text,
+							font, Vector2(x + displacement, y_pos + phrase.offset_y), obj.text,
 							align, obj.size.x, font_size, text_selected_color
 						)
 					else:
 						var text: String = obj.text.replace(default_text, " ")
 						var text_color = Color(obj.color) if not data[i].command.ignore_command else disable_text_color
 						control.draw_string(
-							font, Vector2(x + displacement, y + phrase.offset_y), text,
-							align, obj.size.x, font_size, text_color)
+							font, Vector2(x + displacement, y_pos + phrase.offset_y), text,
+							align, obj.size.x, font_size, text_color
+						)
+
 						if obj.text.find(default_text) != -1:
 							text = "".lpad(obj.text.find(default_text), " ") + default_text
 							text_color = Color.WHITE if not data[i].command.ignore_command else disable_text_color
 							control.draw_string(
-								font, Vector2(x + displacement, y + phrase.offset_y), text,
-								align, -1, font_size, text_color)
+								font, Vector2(x + displacement, y_pos + phrase.offset_y), text,
+								align, -1, font_size, text_color
+							)
 						elif obj.text.find(default_no_editable_text) != -1:
 							text = "".lpad(obj.text.find(default_no_editable_text), " ") + default_no_editable_text
 							text_color = Color.WHITE if not data[i].command.ignore_command else disable_text_color
 							control.draw_string(
-								font, Vector2(x + displacement, y + phrase.offset_y), text,
-								align, -1, font_size, Color.WHITE)
+								font, Vector2(x + displacement, y_pos + phrase.offset_y), text,
+								align, -1, font_size, Color.WHITE
+							)
+
 					x += obj.size.x
+
 				max_page_size.x = max(max_page_size.x, start_width)
+
 			max_page_size.y = max(max_page_size.y, start_height)
-			
-		else:  # Fila de relleno
+
+		else:
 			var fill_id = row.index
 			if fill_id % 2 == 0:
 				control.draw_rect(rect, event_line_color)
 			else:
 				control.draw_rect(rect, odd_line_color)
-	
+
 	if scroll_container:
 		var node = get_node_or_null(scroll_container)
 		if node and max_page_size.x > node.size.x:
 			max_page_size.x += 240
+
 	custom_minimum_size = max_page_size
 	size = max_page_size
-	
-	# Dibujar las líneas divisorias solo para items reales
+
 	for i in item_count:
 		rect = get_item_rect(i)
+
 		if rect.position.y + rect.size.y - offset_y < 0:
 			continue
 		elif rect.position.y - offset_y > parent.size.y:
 			continue
+
 		rect.size.x = parent.size.x
 		rect.size.y = 1
 		rect.position.y = rect.position.y + rect.size.y - 1
 		control.draw_rect(rect, Color("#67676792"))
+
+	if drag_preview_line != -1:
+		var preview_rect: Rect2
+		
+		if drag_preview_line < item_count:
+			preview_rect = get_item_rect(drag_preview_line)
+		else:
+			if item_count > 0:
+				preview_rect = get_item_rect(item_count - 1)
+				preview_rect.position.y += preview_rect.size.y
+			else:
+				preview_rect = Rect2(0, 0, size.x, 20)
+
+		var y_pos = preview_rect.position.y - offset_y
+		
+		if y_pos >= 0 and y_pos <= parent.size.y:
+			control.draw_line(Vector2(0, y_pos), Vector2(size.x, y_pos), Color.YELLOW, 3.0)
 
 
 func _change_back_position(value: float) -> void:

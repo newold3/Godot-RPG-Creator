@@ -306,11 +306,11 @@ layout_mode = 2
 unique_name_in_owner = true
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
+tooltip_text = "[title]Switch Condition[/title]
+Choose a start condition of “switch” to activate this page."
 focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "Switch 1:"
-metadata/current_tooltip = "[title]Switch Condition[/title]
-Choose a start condition of “switch” to activate this page."
 
 [node name="Condition1Value" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1275124139 instance=ExtResource("2_ghqqv")]
 unique_name_in_owner = true
@@ -318,10 +318,10 @@ custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
+tooltip_text = "[title]Switch[/title]
+Choose the switch that needs to be activated to start this page."
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 disabled = true
-metadata/current_tooltip = "[title]Switch[/title]
-Choose the switch that needs to be activated to start this page."
 
 [node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1020068628]
 custom_minimum_size = Vector2(35, 0)
@@ -336,11 +336,11 @@ layout_mode = 2
 unique_name_in_owner = true
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
+tooltip_text = "[title]Switch Condition[/title]
+Choose a start condition of “switch” to activate this page."
 focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "Switch 2:"
-metadata/current_tooltip = "[title]Switch Condition[/title]
-Choose a start condition of “switch” to activate this page."
 
 [node name="Condition2Value" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1958518962 instance=ExtResource("2_ghqqv")]
 unique_name_in_owner = true
@@ -348,10 +348,10 @@ custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
+tooltip_text = "[title]Switch[/title]
+Choose the switch that needs to be activated to start this page."
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 disabled = true
-metadata/current_tooltip = "[title]Switch[/title]
-Choose the switch that needs to be activated to start this page."
 
 [node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=581799767]
 custom_minimum_size = Vector2(35, 0)
@@ -366,18 +366,20 @@ layout_mode = 2
 unique_name_in_owner = true
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
+tooltip_text = "[title]Local Switch Condition[/title]
+Choose a start condition of “local switch” to activate this page."
 focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "Local
 Switch:"
-metadata/current_tooltip = "[title]Local Switch Condition[/title]
-Choose a start condition of “local switch” to activate this page."
 
 [node name="Condition3Value" type="OptionButton" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer5" unique_id=635454342]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
+tooltip_text = "[title]Local Switch[/title]
+Choose the local switch that needs to be activated to start this page."
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
@@ -402,8 +404,6 @@ popup/item_6/id = 6
 popup/item_7/text = "H"
 popup/item_7/id = 7
 script = ExtResource("5_csadr")
-metadata/current_tooltip = "[title]Local Switch[/title]
-Choose the local switch that needs to be activated to start this page."
 
 [node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer5" unique_id=1589348492]
 custom_minimum_size = Vector2(35, 0)
@@ -418,11 +418,11 @@ layout_mode = 2
 unique_name_in_owner = true
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
+tooltip_text = "[title]Variable Condition[/title]
+Choose a start condition of “variable” to activate this page."
 focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "Variable:"
-metadata/current_tooltip = "[title]Variable Condition[/title]
-Choose a start condition of “variable” to activate this page."
 
 [node name="Condition4Value1" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1821807972 instance=ExtResource("2_ghqqv")]
 unique_name_in_owner = true
@@ -430,10 +430,10 @@ custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
+tooltip_text = "[title]Variable[/title]
+Choose the variable that needs to be checked to activate this page"
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 disabled = true
-metadata/current_tooltip = "[title]Variable[/title]
-Choose the variable that needs to be checked to activate this page"
 
 [node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1271740417]
 custom_minimum_size = Vector2(35, 0)
@@ -453,6 +453,8 @@ mouse_default_cursor_shape = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
+tooltip_text = "[title]Variable Operation[/title]
+Choose the type of comparison to be made to the selected variable"
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
@@ -473,8 +475,6 @@ popup/item_4/id = 4
 popup/item_5/text = "!="
 popup/item_5/id = 5
 script = ExtResource("5_csadr")
-metadata/current_tooltip = "[title]Variable Operation[/title]
-Choose the type of comparison to be made to the selected variable"
 
 [node name="Condition4Value3" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer4" unique_id=947238000 instance=ExtResource("5_nl5s3")]
 unique_name_in_owner = true
@@ -500,11 +500,11 @@ layout_mode = 2
 unique_name_in_owner = true
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
+tooltip_text = "[title]Exists Item Condition[/title]
+Choose a start condition of “exists item” to activate this page."
 focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "Exists Item:"
-metadata/current_tooltip = "[title]Exists Item Condition[/title]
-Choose a start condition of “exists item” to activate this page."
 
 [node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer6" unique_id=1708494027]
 custom_minimum_size = Vector2(35, 0)
@@ -521,14 +521,16 @@ custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
+tooltip_text = "[title]Item[/title]
+Select the item that must be owned by the group to activate this page."
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 disabled = true
-metadata/current_tooltip = "[title]Item[/title]
-Select the item that must be owned by the group to activate this page."
 
 [node name="Condition5Value2" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer8" unique_id=2019214916 instance=ExtResource("7_kfqxl")]
 unique_name_in_owner = true
 layout_mode = 2
+tooltip_text = "[title]Item Type[/title]
+Select the type of item that must be owned by the group to activate this page."
 selected = 0
 allow_reselect = true
 item_count = 3
@@ -538,8 +540,6 @@ popup/item_1/text = "Weapon"
 popup/item_1/id = 1
 popup/item_2/text = "Armor"
 popup/item_2/id = 2
-metadata/current_tooltip = "[title]Item Type[/title]
-Select the type of item that must be owned by the group to activate this page."
 
 [node name="HBoxContainer7" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer" unique_id=214370609]
 layout_mode = 2
@@ -548,11 +548,11 @@ layout_mode = 2
 unique_name_in_owner = true
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
+tooltip_text = "[title]Exists Actor Condition[/title]
+Choose a start condition of “exists actor” to activate this page."
 focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "Exists Actor:"
-metadata/current_tooltip = "[title]Exists Actor Condition[/title]
-Choose a start condition of “exists actor” to activate this page."
 
 [node name="Condition6Value" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer7" unique_id=1510129617 instance=ExtResource("2_ghqqv")]
 unique_name_in_owner = true
@@ -560,10 +560,10 @@ custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
+tooltip_text = "[title]Actor[/title]
+Select the character that must be in the group for this page to be activated."
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 disabled = true
-metadata/current_tooltip = "[title]Actor[/title]
-Select the character that must be in the group for this page to be activated."
 
 [node name="HBoxContainer10" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer" unique_id=1295904130]
 layout_mode = 2
@@ -572,32 +572,32 @@ layout_mode = 2
 unique_name_in_owner = true
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
-focus_mode = 0
-mouse_default_cursor_shape = 2
-text = "Pressurable:"
-metadata/current_tooltip = "[title]Is Pressurable[/title]
+tooltip_text = "[title]Is Pressurable[/title]
 This page will be valid if it has one or more allowed targets on the.
 
 [Note]: When this condition is selected, the event will be set and fixed as passable and will only have the launchers \"Player Contact\", \"Event Contact\", or \"Contact with Anyone\" active.
 
 [Note2]: When a page configured as pressable is activated, the previously active page will execute its commands. When the page is \"released,\" the commands added to the pressed page will be executed.
 "
+focus_mode = 0
+mouse_default_cursor_shape = 2
+text = "Pressurable:"
 
 [node name="AllowPressureTargets" type="OptionButton" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer10" unique_id=928557188]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.01
+tooltip_text = "[title]Valid Targets[/title]
+Targets that can \"press\" this event.
+
+[Note]: For an event to be considered pressed, it must have this start condition and also one or more allowed targets on top of it. If no valid target has been defined, the player will be used as the fallback target."
 focus_mode = 0
 mouse_default_cursor_shape = 2
 fit_to_longest_item = false
 allow_reselect = true
 script = ExtResource("5_csadr")
 enable_multi_selection = true
-metadata/current_tooltip = "[title]Valid Targets[/title]
-Targets that can \"press\" this event.
-
-[Note]: For an event to be considered pressed, it must have this start condition and also one or more allowed targets on top of it. If no valid target has been defined, the player will be used as the fallback target."
 
 [node name="HBoxContainer9" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer" unique_id=1450755270]
 layout_mode = 2
@@ -632,6 +632,12 @@ uppercase = true
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "[title]Data Type[/title]
+The type of data this event will use to display its scene.
+
+[ul] \"Lpc Event\": Standard LPC Event (created with the character editor).
+ \"Image\": Uses an image to create the in-game scene (images should be scaled to a maximum width equal to the tile width).
+ \"Custom Scene\": Custom scene that offers more control than a simple image. You can use any scene, but it is recommended to use a scene adapted to LPC assets. The scene can have the function process_event_state, which receives a dictionary with the keys is_moving, direction, and delta, and the function get_shadow_sprites, which returns an array of the sprites used by your scene.[/ul]"
 focus_mode = 0
 mouse_default_cursor_shape = 2
 alignment = 1
@@ -645,22 +651,16 @@ popup/item_1/id = 1
 popup/item_2/text = "Custom Scene"
 popup/item_2/id = 2
 script = ExtResource("5_csadr")
-metadata/current_tooltip = "[title]Data Type[/title]
-The type of data this event will use to display its scene.
-
-[ul] \"Lpc Event\": Standard LPC Event (created with the character editor).
- \"Image\": Uses an image to create the in-game scene (images should be scaled to a maximum width equal to the tile width).
- \"Custom Scene\": Custom scene that offers more control than a simple image. You can use any scene, but it is recommended to use a scene adapted to LPC assets. The scene can have the function process_event_state, which receives a dictionary with the keys is_moving, direction, and delta, and the function get_shadow_sprites, which returns an array of the sprites used by your scene.[/ul]"
 
 [node name="CharacterImage" parent="HBoxContainer/VBoxContainer/HBoxContainer/CustomPanel2/MarginContainer/VBoxContainer" unique_id=511629248 instance=ExtResource("3_w73pn")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 size_flags_vertical = 4
+tooltip_text = "[title]Event Graphic[/title]
+Choose the scene used to represent this event (usually an LPCEvent scene)."
 clipboard_key = "event_graphic"
 custom_copy_and_paste_enabled = true
-metadata/current_tooltip = "[title]Event Graphic[/title]
-Choose the scene used to represent this event (usually an LPCEvent scene)."
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer" unique_id=1114779553]
 layout_mode = 2
@@ -698,6 +698,22 @@ text = "Launcher:"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "[title]Page Initiator Type[/title]
+Choose how you want this page to be activated
+
+[ul] \"Action Button\": The event runs when the player presses the action button while facing the event.
+ \"Player Contact\": The event runs when the player walks onto the same tile as the event.
+ \"Event Contact\": The event runs when another event moves onto the same tile. You must define which events can trigger it.
+ \"Auto-Start\": The event starts automatically as soon as its conditions are met. It blocks player input until it finishes.
+ \"Parallel\": The event runs automatically in the background without interrupting player control.
+ \"Caller\": The event runs only when triggered directly by another event or script.
+ \"Any Contact\": The event runs when the player or other event walks onto the same tile as the event.
+ \"Tool\": Projectile(s) or weapon/tool(s) that activates this page.
+ \"Signal\": Activated when another event emits the specified signal(s)[/ul]
+
+[Note]: When the trigger is set to \"Player Contact\", \"Event Contact\", or \"Any Contact\", if the \"Passable\" option is enabled, contact will occur upon collision; otherwise, contact will occur when occupying the same tile as this event.
+
+[Note 2]: Events with the \"Caller\" trigger will automatically be converted into an EmptyLPCEvent, with no graphics, no collisions, and fully passable."
 focus_mode = 0
 mouse_default_cursor_shape = 2
 selected = 0
@@ -722,22 +738,6 @@ popup/item_7/id = 7
 popup/item_8/text = "Signal"
 popup/item_8/id = 8
 script = ExtResource("5_csadr")
-metadata/current_tooltip = "[title]Page Initiator Type[/title]
-Choose how you want this page to be activated
-
-[ul] \"Action Button\": The event runs when the player presses the action button while facing the event.
- \"Player Contact\": The event runs when the player walks onto the same tile as the event.
- \"Event Contact\": The event runs when another event moves onto the same tile. You must define which events can trigger it.
- \"Auto-Start\": The event starts automatically as soon as its conditions are met. It blocks player input until it finishes.
- \"Parallel\": The event runs automatically in the background without interrupting player control.
- \"Caller\": The event runs only when triggered directly by another event or script.
- \"Any Contact\": The event runs when the player or other event walks onto the same tile as the event.
- \"Tool\": Projectile(s) or weapon/tool(s) that activates this page.
- \"Signal\": Activated when another event emits the specified signal(s)[/ul]
-
-[Note]: When the trigger is set to \"Player Contact\", \"Event Contact\", or \"Any Contact\", if the \"Passable\" option is enabled, contact will occur upon collision; otherwise, contact will occur when occupying the same tile as this event.
-
-[Note 2]: Events with the \"Caller\" trigger will automatically be converted into an EmptyLPCEvent, with no graphics, no collisions, and fully passable."
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2" unique_id=2038557171]
 custom_minimum_size = Vector2(0, 32)
@@ -751,9 +751,9 @@ custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
+tooltip_text = "Select the events that can trigger this event."
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 disabled = true
-metadata/current_tooltip = "Select the events that can trigger this event."
 
 [node name="PlaceHolderLauncher" type="Control" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer3" unique_id=1479972787]
 unique_name_in_owner = true
@@ -791,6 +791,8 @@ text = "Direction:"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "[title]Event Default Direction[/title]
+Sets the initial direction this event will face"
 selected = 3
 item_count = 4
 popup/item_0/text = "Left"
@@ -801,8 +803,6 @@ popup/item_2/text = "Up"
 popup/item_2/id = 2
 popup/item_3/text = "Down"
 popup/item_3/id = 3
-metadata/current_tooltip = "[title]Event Default Direction[/title]
-Sets the initial direction this event will face"
 
 [node name="VBoxContainer2" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2" unique_id=906582120]
 layout_mode = 2
@@ -843,13 +843,13 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 6
+tooltip_text = "Choose the desired color
+
+[Note]: Click center to set the default color (white)."
 theme_override_styles/normal = SubResource("StyleBoxFlat_qvqpa")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_p6oxe")
 theme_override_styles/hover = SubResource("StyleBoxFlat_5n8h1")
 theme_override_styles/disabled = SubResource("StyleBoxFlat_44tlk")
-metadata/current_tooltip = "Choose the desired color
-
-[Note]: Click center to set the default color (white)."
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2" unique_id=1740053087]
 layout_mode = 2
@@ -891,18 +891,18 @@ size_flags_horizontal = 3
 [node name="EventOption1" type="CheckBox" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel3/MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer" unique_id=1791108207]
 unique_name_in_owner = true
 layout_mode = 2
+tooltip_text = "[title]Walking Animation[/title]
+Causes the walking animation to play when the character is walking"
 mouse_default_cursor_shape = 2
 text = "Walking Animation"
-metadata/current_tooltip = "[title]Walking Animation[/title]
-Causes the walking animation to play when the character is walking"
 
 [node name="EventOption2" type="CheckBox" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel3/MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer" unique_id=1691882772]
 unique_name_in_owner = true
 layout_mode = 2
+tooltip_text = "[title]Idle Animation[/title]
+Causes the idle animation to play when the character is at a standstill."
 mouse_default_cursor_shape = 2
 text = "Idle Animation"
-metadata/current_tooltip = "[title]Idle Animation[/title]
-Causes the idle animation to play when the character is at a standstill."
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel3/MarginContainer/HBoxContainer/HBoxContainer" unique_id=1378016336]
 layout_mode = 2
@@ -913,20 +913,20 @@ alignment = 1
 [node name="EventOption3" type="CheckBox" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel3/MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer3" unique_id=1848429455]
 unique_name_in_owner = true
 layout_mode = 2
+tooltip_text = "[title]Fixed Direction[/title]
+Prevents looking at the character in any direction other than the one specified in this event."
 mouse_default_cursor_shape = 2
 text = "Fixed Direction"
-metadata/current_tooltip = "[title]Fixed Direction[/title]
-Prevents looking at the character in any direction other than the one specified in this event."
 
 [node name="EventOption4" type="CheckBox" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel3/MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer3" unique_id=2114605778]
 unique_name_in_owner = true
 layout_mode = 2
-mouse_default_cursor_shape = 2
-text = "Passable"
-metadata/current_tooltip = "[title]Passable[/title]
+tooltip_text = "[title]Passable[/title]
 Mark this event as traversable. Leave it deactivated so that this event blocks the passage of another event / player / vehicle that tries to pass through it.
 
 [Note]: When the trigger is set to \"Caller\",  the \"Passable\" option is ignored and it will always be passable, since these types of events are always passable."
+mouse_default_cursor_shape = 2
+text = "Passable"
 
 [node name="CustomPanel4" parent="HBoxContainer/VBoxContainer/HBoxContainer2" unique_id=1410917057 instance=ExtResource("1_whka3")]
 custom_minimum_size = Vector2(320, 0)
@@ -966,6 +966,8 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.01
+tooltip_text = "[title]Movement Type[/title]
+Choose the type of movement for this event"
 focus_mode = 0
 mouse_default_cursor_shape = 2
 selected = 0
@@ -985,8 +987,6 @@ popup/item_4/id = 4
 popup/item_5/text = "Follow Event"
 popup/item_5/id = 5
 script = ExtResource("5_csadr")
-metadata/current_tooltip = "[title]Movement Type[/title]
-Choose the type of movement for this event"
 
 [node name="Control" type="Control" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer" unique_id=844041692]
 custom_minimum_size = Vector2(12, 0)
@@ -999,17 +999,17 @@ modulate = Color(1, 1, 1, 0.65)
 custom_minimum_size = Vector2(110, 0)
 layout_mode = 2
 size_flags_horizontal = 7
+tooltip_text = "[title]Movement Route[/title]
+Define a movement pattern for this event."
 disabled = true
 text = "Movement route..."
-metadata/current_tooltip = "[title]Movement Route[/title]
-Define a movement pattern for this event."
 
 [node name="SelectTargetEvent" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer" unique_id=714873590 instance=ExtResource("7_kfqxl")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_horizontal = 7
-metadata/current_tooltip = "[title]Select Target To Follow[/title]
+tooltip_text = "[title]Select Target To Follow[/title]
 Choose the target that this event will follow"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2" unique_id=101053600]
@@ -1063,23 +1063,23 @@ text = "Page Name"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-metadata/current_tooltip = "Name given to this page"
+tooltip_text = "Name given to this page"
 
 [node name="MarkAsQuestPage" type="CheckBox" parent="HBoxContainer/VBoxContainer2/HBoxContainer" unique_id=862026591]
 unique_name_in_owner = true
 layout_mode = 2
+tooltip_text = "By marking this page as a quest page, this page will never be active unless a quest activates it."
 mouse_default_cursor_shape = 2
 text = "Mark as quest Page"
-metadata/current_tooltip = "By marking this page as a quest page, this page will never be active unless a quest activates it."
 
 [node name="PageExtraOptions" type="TextureButton" parent="HBoxContainer/VBoxContainer2/HBoxContainer" unique_id=849142871]
 layout_mode = 2
 size_flags_vertical = 8
+tooltip_text = "Set up extra data for this event page, such as hit points, enabling a self switch when hit or upon death."
 mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_m1q1w")
 texture_pressed = SubResource("AtlasTexture_x7gmb")
 script = ExtResource("13_pts3j")
-metadata/current_tooltip = "Set up extra data for this event page, such as hit points, enabling a self switch when hit or upon death."
 
 [node name="EventPageListEditor" parent="HBoxContainer/VBoxContainer2" unique_id=1128338880 instance=ExtResource("8_qgfkt")]
 unique_name_in_owner = true

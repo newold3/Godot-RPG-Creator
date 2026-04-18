@@ -56,12 +56,11 @@ func _ready() -> void:
 	%EventListContainer.get_h_scroll_bar().z_index = 5
 	%EventListContainer.get_h_scroll_bar().z_as_relative = false
 	%EventListContainer.get_v_scroll_bar().z_as_relative = false
+	%EventPageList.items_dropped.connect(_on_event_page_list_items_dropped)
 	update_theme()
-	
 	visibility_changed.connect(func(): if visible: recharge_code_script())
 	tree_entered.connect(recharge_code_script)
 	recharge_code_script()
-	
 	_fill_favorite_buttons()
 
 
@@ -1298,9 +1297,211 @@ func _on_right_menu_index_pressed(index: int) -> void:
 			RPGDialogFunctions.preview_commands_in_action(%EventPageList.get_command_list())
 
 
+func _get_expanded_commands(indexes: PackedInt32Array) -> Array[RPGEventCommand]:
+	var commands: Array[RPGEventCommand] = []
+	var list = current_data
+	
+	for i in indexes:
+		if i < 0 or i >= list.size(): continue
+		var cmd = list[i]
+		
+		if cmd.code == 0 or cmd.code in %EventPageList.SUB_CODES:
+			continue
+			
+		if not cmd in commands:
+			commands.append(cmd)
+			var children_indexes = %EventPageList.get_selection_from_command(cmd, list.find(cmd))
+			for child_idx in children_indexes:
+				var child_cmd = list[child_idx]
+				if not child_cmd in commands:
+					commands.append(child_cmd)
+					
+	commands.sort_custom(func(a, b): return list.find(a) < list.find(b))
+	return commands
+
+
 func _on_event_page_list_change_position_requested(from: int, to: int, indexes: PackedInt32Array) -> void:
-	#print([from, to, indexes])
-	pass
+	var list = current_data
+	var moving_commands = _get_expanded_commands(indexes)
+	
+	if moving_commands.is_empty():
+		return
+		
+	var is_up = to < from
+	var base_indent = moving_commands[0].indent
+	var first_idx = list.find(moving_commands[0])
+	var last_idx = list.find(moving_commands[-1])
+	var swap_target_idx = -1
+	
+	if is_up:
+		for i in range(first_idx - 1, -1, -1):
+			if list[i].indent < base_indent:
+				return
+			if list[i].indent == base_indent and list[i].code != 0 and list[i].code not in %EventPageList.SUB_CODES:
+				var sibling_block = _get_expanded_commands(PackedInt32Array([i]))
+				swap_target_idx = list.find(sibling_block[0])
+				break
+	else:
+		for i in range(last_idx + 1, list.size()):
+			if list[i].indent < base_indent:
+				return
+			if list[i].indent == base_indent and list[i].code != 0 and list[i].code not in %EventPageList.SUB_CODES:
+				var sibling_block = _get_expanded_commands(PackedInt32Array([i]))
+				swap_target_idx = list.find(sibling_block[-1]) + 1
+				break
+				
+	if swap_target_idx != -1:
+		_move_data_block(moving_commands, swap_target_idx, base_indent)
+
+
+func _on_event_page_list_items_dropped(to_index: int, _new_indent: int, indexes: PackedInt32Array) -> void:
+	var list = current_data
+	var moving_commands = _get_expanded_commands(indexes)
+	
+	if moving_commands.is_empty() or to_index < 0:
+		return
+		
+	var safe_to_index = min(to_index, list.size() - 1)
+	var target_cmd = list[safe_to_index]
+	
+	if target_cmd.code in %EventPageList.SUB_CODES:
+		return
+		
+	_move_data_block(moving_commands, safe_to_index, target_cmd.indent)
+
+
+func _move_data_block(moving_commands: Array[RPGEventCommand], target_index: int, target_indent: int) -> void:
+	var list = current_data
+	var base_indent = moving_commands[0].indent
+	var indent_displacement = target_indent - base_indent
+	var pre_cut_target_cmd = list[target_index] if target_index < list.size() else null
+	
+	for cmd in moving_commands:
+		list.erase(cmd)
+		
+	var real_insert_pos = list.find(pre_cut_target_cmd) if pre_cut_target_cmd != null else list.size()
+	if real_insert_pos == -1:
+		real_insert_pos = list.size()
+		
+	for i in range(moving_commands.size()):
+		var cmd = moving_commands[i]
+		cmd.indent = max(0, cmd.indent + indent_displacement)
+		list.insert(real_insert_pos + i, cmd)
+		
+	_cleanup_zeros()
+	
+	busy2 = true
+	update_data()
+	%EventPageList.deselect_all()
+	
+	for cmd in moving_commands:
+		var idx = current_data.find(cmd)
+		if idx != -1:
+			%EventPageList.select(idx, false)
+			
+	busy2 = false
+	data_changed.emit()
+
+
+func _cleanup_zeros() -> void:
+	var list = current_data
+	
+	for i in range(list.size() - 1, 0, -1):
+		if list[i].code == 0 and list[i - 1].code == 0:
+			list.remove_at(i)
+			
+	if list.is_empty() or list[-1].code != 0:
+		var zero_cmd = RPGEventCommand.new()
+		zero_cmd.code = 0
+		zero_cmd.indent = 0
+		list.append(zero_cmd)
+
+
+func _get_expanded_movement_block(indexes: PackedInt32Array) -> PackedInt32Array:
+	if indexes.is_empty(): 
+		return PackedInt32Array()
+
+	var first_cmd = current_data[indexes[0]]
+	
+	if first_cmd.code == 0 or first_cmd.code in %EventPageList.SUB_CODES:
+		return PackedInt32Array()
+
+	var expanded: Array[int] = []
+	var list = current_data
+	var sorted_indexes = Array(indexes)
+	
+	sorted_indexes.sort()
+
+	for idx in sorted_indexes:
+		if idx < 0 or idx >= list.size(): 
+			continue
+			
+		if list[idx].code == 0 or list[idx].code in %EventPageList.SUB_CODES:
+			continue
+
+		if not idx in expanded:
+			expanded.append(idx)
+			var start_indent = list[idx].indent
+			
+			for i in range(idx + 1, list.size()):
+				if list[i].indent > start_indent:
+					if not i in expanded: 
+						expanded.append(i)
+				elif list[i].indent == start_indent:
+					var parent_code = %EventPageList.find_parent_code_for_child(list[i].code)
+					if parent_code != -1 and parent_code == list[idx].code:
+						if not i in expanded: 
+							expanded.append(i)
+						continue
+					break
+				else:
+					break
+
+	expanded.sort()
+	
+	return PackedInt32Array(expanded)
+
+
+func _resolve_drop_target(target_index: int, moving_block: PackedInt32Array) -> Dictionary:
+	var list = current_data
+	var insert_pos = clamp(target_index, 0, list.size())
+
+	if insert_pos in moving_block:
+		return {"valid": false}
+
+	var prev_cmd: RPGEventCommand = null
+	var next_cmd: RPGEventCommand = null
+
+	for i in range(insert_pos - 1, -1, -1):
+		if not i in moving_block:
+			prev_cmd = list[i]
+			break
+
+	for i in range(insert_pos, list.size()):
+		if not i in moving_block:
+			next_cmd = list[i]
+			break
+
+	if prev_cmd == null:
+		return {"valid": true, "insert_pos": 0, "indent": 0}
+
+	if next_cmd != null:
+		var expected_parent = %EventPageList.find_parent_code_for_child(next_cmd.code)
+		if expected_parent != -1 and expected_parent == prev_cmd.code and prev_cmd.indent == next_cmd.indent:
+			return {"valid": false}
+
+	var param_struct = %EventPageList.get_param_struct()
+	var new_indent = prev_cmd.indent
+
+	if param_struct.has(prev_cmd.code):
+		new_indent = prev_cmd.indent + 1
+	elif prev_cmd.code == 0:
+		if next_cmd != null:
+			new_indent = next_cmd.indent
+		else:
+			new_indent = max(0, prev_cmd.indent - 1)
+
+	return {"valid": true, "insert_pos": insert_pos, "indent": new_indent}
 
 
 func _process(delta: float) -> void:
