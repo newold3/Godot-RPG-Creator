@@ -184,12 +184,15 @@ func _on_event_canvas_draw() -> void:
 					if page.character_type != 1:
 						event_canvas.draw_texture_rect(tex_to_draw, draw_rect, false, tex_color)
 					else:
-						event_canvas.draw_texture_rect_region(
-							tex_to_draw,
-							draw_rect,
-							page.character_region,
-							tex_color
-						)
+						if page.character_region.has_area():
+							event_canvas.draw_texture_rect_region(
+								tex_to_draw,
+								draw_rect,
+								page.character_region,
+								tex_color
+							)
+						else:
+							event_canvas.draw_texture_rect(tex_to_draw, draw_rect, false, tex_color)
 
 
 func _on_extraction_event_canvas_draw() -> void:

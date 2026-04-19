@@ -1185,6 +1185,12 @@ func _process_hot_reload_packets() -> void:
 		var id: int = data.get("id", -1)
 		var temp_path: String = data.get("path", "")
 		
+		var player = GameManager.current_player
+		if type in ["update_event", "delete_event", "move_event"] and id != -1:
+			var target_event = get_in_game_event_by_id(id)
+			if target_event and player and is_instance_valid(player.carried_event) and player.carried_event == target_event:
+				continue
+		
 		match type:
 			"move_event":
 				var ev = get_in_game_event_by_id(id)
@@ -1252,6 +1258,19 @@ func _process_hot_reload_packets() -> void:
 			"update_start_position":
 				if entity_manager:
 					entity_manager.hot_reload_start_position(data.get("target_id", ""), data.get("map_id", -1), Vector2i(data.get("x", 0), data.get("y", 0)))
+			"update_carry_offsets":
+				if player and player.carried_event and player.carried_event.has_meta("backup_data"):
+					var backup = player.carried_event.get_meta("backup_data")
+					var o_data = data.get("offsets", {})
+					
+					backup["offsets"] = {
+						CharacterBase.DIRECTIONS.LEFT: Vector2(o_data.get("offset_left_x", 0), o_data.get("offset_left_y", 0)),
+						CharacterBase.DIRECTIONS.RIGHT: Vector2(o_data.get("offset_right_x", 0), o_data.get("offset_right_y", 0)),
+						CharacterBase.DIRECTIONS.UP: Vector2(o_data.get("offset_up_x", 0), o_data.get("offset_up_y", 0)),
+						CharacterBase.DIRECTIONS.DOWN: Vector2(o_data.get("offset_down_x", 0), o_data.get("offset_down_y", 0))
+					}
+					
+					player.carried_event.set_meta("backup_data", backup)
 	
 		var temp_dir = "res://addons/RPGMap/Temp/"
 		if FileAccess.file_exists(temp_path) and temp_path.begins_with(temp_dir):

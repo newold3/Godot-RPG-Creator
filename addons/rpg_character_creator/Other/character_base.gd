@@ -13,6 +13,16 @@ func get_custom_class() -> String: return "CharacterBase"
 ## Visual indicator scene instantiated when the player clicks on a map tile
 @export var click_indicator_scene: PackedScene = preload("res://Scenes/OtherScenes/click_on_map.tscn")
 
+@export_category("Carry & Throw Indicators")
+## Indicates if the player should show a visual marker where the carried object will land
+@export var show_throw_indicator: bool = true
+## Color used for the throw indicator when the target is valid
+@export var valid_throw_color: Color = Color.BLACK
+## Color used for the throw indicator when the target is invalid or blocked
+@export var invalid_throw_color: Color = Color.RED
+## Texture used for the throw indicator, defaults to a simple rect if empty
+@export var throw_indicator_texture: Texture2D = preload("uid://denhhg8ng2ipw")
+
 
 enum DIRECTIONS {
 	LEFT = RPGMapPassability.DIR_LEFT,
@@ -116,6 +126,19 @@ var _auto_path_stuck_frames: int = 0
 
 var interactive_event: Node
 
+var is_dual_animation: bool = false
+var dual_top_animation: String = "lift"
+var dual_top_frame: int = 0
+var dual_crop_offset_y: float = 54.0
+
+var original_body_texture: Texture2D
+var dual_frame_cache: Dictionary = {}
+
+var carried_event: Node2D = null
+var throw_indicator_node: Node2D
+var is_lifting: bool = false
+var is_pushing: bool = false
+
 const MAX_HISTORY_SIZE: int = 300
 const MIN_RECORD_DIST_SQ: float = 2.0
 
@@ -133,6 +156,43 @@ signal event_start_movement()
 signal idle_setted()
 
 
+func enable_dual_animation(start_animation: String, end_animation: String) -> void:
+	busy = true
+	
+	current_animation = "idle"
+	current_frame = 0
+	
+	if not start_animation.is_empty():
+		force_animation_enabled = true
+		current_animation = start_animation
+		dual_top_frame = 0
+		await animation_finished
+		
+	dual_top_frame = 0
+	force_animation_enabled = false
+	is_dual_animation = true
+	dual_top_animation = end_animation
+
+	busy = false
+
+
+func disable_dual_animation() -> void:
+	is_dual_animation = false
+	dual_top_animation = ""
+	dual_top_frame = 0
+	current_animation = "idle"
+	current_frame = 0
+	animation_finished.emit()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.is_pressed() and event.keycode == KEY_T:
+		if is_dual_animation:
+			disable_dual_animation()
+		else:
+			enable_dual_animation("start_lift", "lift")
+
+
 func _ready() -> void:
 	previous_tile = get_current_tile()
 	set_character_options(CharacterOptions.new())
@@ -142,6 +202,393 @@ func _ready() -> void:
 		var tile_size: Vector2i = GameManager.get_map_tile_size()
 		_squared_tile_size = tile_size.length_squared()
 		GameManager.current_map.update_event_position_in_layout(self)
+	
+	throw_indicator_node = Node2D.new()
+	throw_indicator_node.name = "ThrowIndicator"
+	throw_indicator_node.top_level = true
+	throw_indicator_node.z_index = 100
+	add_child(throw_indicator_node)
+	throw_indicator_node.draw.connect(_on_throw_indicator_draw)
+
+
+func _get_shoulders() -> Marker2D:
+	var mark
+	
+	var parent = get_node_or_null("Bounds")
+	if not parent:
+		parent = self
+		
+	mark = parent.get_node_or_null("CarryPoint")
+	
+	if not mark:
+		mark = Marker2D.new()
+		mark.name = "CarryPoint"
+		mark.position = Vector2(0.0, -48)
+		parent.add_child(mark)
+	
+	return mark
+
+
+func pick_up_event(event_node: Node2D) -> void:
+	if carried_event or is_lifting or busy: return
+
+	is_lifting = true
+	busy = true
+	carried_event = event_node
+	carried_event.process_mode = Node.PROCESS_MODE_DISABLED
+	carried_event.y_sort_enabled = false
+
+	if carried_event.has_meta("name_label"):
+		var label = carried_event.get_meta("name_label")
+		if is_instance_valid(label):
+			label.visible = false
+
+	var backup = {
+		"z_index": carried_event.z_index,
+		"rotation": carried_event.rotation
+	}
+
+	var main_tex = carried_event.get_node_or_null("%MainTexture")
+
+	if main_tex:
+		backup["texture"] = main_tex.texture
+		backup["region_rect"] = main_tex.region_rect
+		backup["offset"] = main_tex.offset
+		backup["centered"] = main_tex.centered
+
+		var offset_diff = main_tex.offset
+		carried_event.global_position += offset_diff
+
+		main_tex.centered = true
+		main_tex.offset = Vector2.ZERO
+
+	var type_params = {}
+	if "current_event_page" in carried_event and carried_event.current_event_page:
+		type_params = carried_event.current_event_page.options.type_params
+
+	backup["offsets"] = {
+		DIRECTIONS.LEFT: Vector2(type_params.get("offset_left_x", 0), type_params.get("offset_left_y", 0)),
+		DIRECTIONS.RIGHT: Vector2(type_params.get("offset_right_x", 0), type_params.get("offset_right_y", 0)),
+		DIRECTIONS.UP: Vector2(type_params.get("offset_up_x", 0), type_params.get("offset_up_y", 0)),
+		DIRECTIONS.DOWN: Vector2(type_params.get("offset_down_x", 0), type_params.get("offset_down_y", 0))
+	}
+
+	if carried_event.has_method("_disable_collision_shape"):
+		carried_event._disable_collision_shape(true)
+		
+	carried_event.y_sort_enabled = false
+	carried_event.z_index = 0
+
+	var mark = _get_shoulders()
+	var target_rotation = deg_to_rad(type_params.get("lift_rotation", 0.0))
+	var anim_type = type_params.get("animation_type", 0)
+	var lift_anim = "lift" if anim_type == 0 else "lift_chest"
+	var start_lift_anim = "start_lift" if anim_type == 0 else "start_lift_chest"
+
+	var tween_duration: float = 0.15
+	if not start_lift_anim.is_empty() and has_method("get_current_animation"):
+		force_animation_enabled = true
+		current_animation = start_lift_anim
+		current_frame = 0
+		var anim_data = call("get_current_animation")
+		if anim_data and anim_data.has("frames"):
+			var fps = anim_data.get("fps", 0)
+			var current_delay = 1.0 / float(fps) if fps > 0 else frame_delay_max
+			tween_duration = anim_data.frames.size() * current_delay
+
+	var current_custom_offset = backup["offsets"][current_direction]
+	var target_global_pos = mark.global_position + current_custom_offset
+
+	var mid_duration = tween_duration / 2.0
+
+	var t = create_tween()
+	t.set_parallel(true)
+	t.tween_property(carried_event, "global_position", target_global_pos, tween_duration)
+	t.tween_property(self, "scale:y", scale.y * 0.9, mid_duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	t.tween_property(self, "scale:y", scale.y, mid_duration).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT).set_delay(mid_duration)
+
+	if target_rotation != 0.0:
+		t.tween_property(carried_event, "rotation", target_rotation, tween_duration)
+
+	t.chain().tween_callback(
+		func():
+			if carried_event != event_node: return
+			
+			var visual_parent = get_node_or_null("%FullBody")
+			if not visual_parent:
+				visual_parent = self
+			carried_event.reparent(visual_parent)
+			
+			carried_event.position = to_local(target_global_pos)
+
+			var base_local = to_local(mark.global_position)
+			backup["x_position"] = base_local.x
+			backup["y_position"] = base_local.y
+			carried_event.set_meta("backup_data", backup)
+
+			if main_tex and type_params.has("lift_image") and type_params.lift_image.path != "":
+				var img: RPGIcon = type_params.lift_image
+				main_tex.texture = load(img.path)
+				main_tex.region_enabled = (img.region != Rect2())
+				if main_tex.region_enabled: main_tex.region_rect = img.region
+
+			carried_event.show_behind_parent = current_direction != DIRECTIONS.UP
+	)
+
+	if not start_lift_anim.is_empty(): await animation_finished
+	if carried_event == event_node:
+		dual_top_frame = 0
+		force_animation_enabled = false
+		is_dual_animation = true
+		dual_top_animation = lift_anim
+		current_animation = "idle"
+		current_frame = 0
+		set_deferred("is_lifting", false)
+		set_deferred("busy", false)
+	else:
+		set_deferred("is_lifting", false)
+		set_deferred("busy", false)
+
+
+func _get_throw_target_info() -> Dictionary:
+	if not carried_event:
+		return {"distance": 0, "tile": get_current_tile()}
+		
+	var type_params = {}
+	if "current_event_page" in carried_event and carried_event.current_event_page:
+		type_params = carried_event.current_event_page.options.type_params
+		
+	var throw_strength = type_params.get("throw_strength", 1)
+	
+	var can_throw_over = true
+	if type_params.has("can_throw_over_obstacles"):
+		var val = type_params.can_throw_over_obstacles
+		if typeof(val) == TYPE_INT:
+			can_throw_over = (val == 0)
+		else:
+			can_throw_over = bool(val)
+			
+	var map = GameManager.current_map
+	
+	if not map:
+		return {"distance": 0, "tile": get_current_tile()}
+		
+	var current_tile = get_current_tile()
+	var target_tile = current_tile
+	var throw_distance = 0
+	var dir_vec = Vector2i.ZERO
+	
+	match current_direction:
+		DIRECTIONS.UP: dir_vec = Vector2i(0, -1)
+		DIRECTIONS.DOWN: dir_vec = Vector2i(0, 1)
+		DIRECTIONS.LEFT: dir_vec = Vector2i(-1, 0)
+		DIRECTIONS.RIGHT: dir_vec = Vector2i(1, 0)
+
+	var map_size = map.get_map_size_in_tiles() if map.has_method("get_map_size_in_tiles") else Vector2i(9999, 9999)
+
+	if can_throw_over:
+		for i in range(throw_strength, 0, -1):
+			var check_tile = current_tile + (dir_vec * i)
+			
+			if not map.infinite_horizontal_scroll:
+				if check_tile.x < 0 or check_tile.x >= map_size.x: continue
+			if not map.infinite_vertical_scroll:
+				if check_tile.y < 0 or check_tile.y >= map_size.y: continue
+			
+			var is_valid = map.is_passable(check_tile, current_direction, self)
+			
+			if is_valid and map.has_method("can_move_over_terrain"):
+				if not map.can_move_over_terrain(check_tile, can_move_on_terrains):
+					is_valid = false
+			
+			if is_valid and map.has_method("has_any_region_impassable_in"):
+				if map.has_any_region_impassable_in(check_tile):
+					is_valid = false
+			
+			if is_valid:
+				var events_in_tile = map.get_in_game_events_in(check_tile, false)
+				for ev in events_in_tile:
+					if ev == carried_event or ev == self: continue
+					if _is_solid(ev):
+						is_valid = false
+						break
+			
+			if is_valid:
+				return {"distance": i, "tile": check_tile}
+				
+	else:
+		for i in range(1, throw_strength + 1):
+			var check_tile = current_tile + (dir_vec * i)
+			
+			if not map.infinite_horizontal_scroll:
+				if check_tile.x < 0 or check_tile.x >= map_size.x: break
+			if not map.infinite_vertical_scroll:
+				if check_tile.y < 0 or check_tile.y >= map_size.y: break
+			
+			var is_physically_blocked = not map.is_passable(check_tile, current_direction, self)
+			
+			if not is_physically_blocked and map.has_method("has_any_region_impassable_in"):
+				if map.has_any_region_impassable_in(check_tile):
+					is_physically_blocked = true
+			
+			if not is_physically_blocked:
+				var events_in_tile = map.get_in_game_events_in(check_tile, false)
+				for ev in events_in_tile:
+					if ev == carried_event or ev == self: continue
+					if _is_solid(ev):
+						is_physically_blocked = true
+						break
+			
+			if is_physically_blocked:
+				break
+				
+			var is_valid_landing = true
+			if map.has_method("can_move_over_terrain"):
+				if not map.can_move_over_terrain(check_tile, can_move_on_terrains):
+					is_valid_landing = false
+					
+			if is_valid_landing:
+				target_tile = check_tile
+				throw_distance = i
+				
+	return {"distance": throw_distance, "tile": target_tile}
+
+
+func throw_event() -> void:
+	if not carried_event or is_lifting or busy: return
+	
+	is_lifting = true
+	busy = true
+	var type_params = {}
+	
+	if "current_event_page" in carried_event and carried_event.current_event_page:
+		type_params = carried_event.current_event_page.options.type_params
+		
+	var map = GameManager.current_map
+	var throw_info = _get_throw_target_info()
+	
+	if not map or throw_info.distance == 0:
+		set_deferred("is_lifting", false)
+		set_deferred("busy", false)
+		return
+		
+	var target_tile = throw_info.tile
+	var throw_distance = throw_info.distance
+	var event_to_throw = carried_event
+	carried_event = null
+	
+	disable_dual_animation()
+	force_animation_enabled = true
+	current_animation = "slash"
+	current_frame = 0
+	
+	var base_time = type_params.get("time", 0.15) * 1.5
+	
+	var original_frame_delay_max = frame_delay_max
+	if has_method("get_current_animation"):
+		var anim_data = call("get_current_animation")
+		if anim_data and anim_data.has("frames"):
+			var total_frames = anim_data.frames.size()
+			if total_frames > 0:
+				frame_delay_max = base_time / float(total_frames)
+				if "frame_delay" in self:
+					set("frame_delay", 0.0)
+					
+	run_animation()
+	
+	event_to_throw.reparent(map, true)
+	
+	var backup = event_to_throw.get_meta("backup_data", {})
+	var target_global_pos = map.get_tile_position(target_tile)
+	var jump_height = 24.0 + (throw_distance * 8.0)
+	var start_pos = event_to_throw.global_position
+	
+	var t = create_tween()
+	t.set_parallel(true)
+	
+	if backup.has("rotation"):
+		t.tween_property(event_to_throw, "rotation", backup["rotation"], base_time)
+		
+	t.tween_method(
+		func(progress: float):
+			event_to_throw.global_position = start_pos.lerp(target_global_pos, progress) - Vector2(0, sin(progress * PI) * jump_height),
+		0.0,
+		1.0,
+		base_time
+	).set_trans(Tween.TRANS_LINEAR)
+	
+	t.chain().tween_callback(
+		func():
+			frame_delay_max = original_frame_delay_max
+			force_animation_enabled = false
+			current_animation = "idle"
+			current_frame = 0
+			run_animation()
+			
+			event_to_throw.process_mode = Node.PROCESS_MODE_INHERIT
+			event_to_throw.set_process_internal(true)
+			event_to_throw.is_invalid_event = false
+			
+			if event_to_throw.has_method("update_virtual_tile"):
+				event_to_throw.update_virtual_tile()
+				
+			if event_to_throw.has_meta("name_label"):
+				var label = event_to_throw.get_meta("name_label")
+				if is_instance_valid(label):
+					label.visible = true
+					
+			if backup.has("z_index"):
+				event_to_throw.z_index = backup["z_index"]
+			else:
+				event_to_throw.z_index = 0
+				
+			event_to_throw.show_behind_parent = false
+				
+			if backup.has("collision_layer"):
+				event_to_throw.set("collision_layer", backup["collision_layer"])
+				event_to_throw.set("collision_mask", backup["collision_mask"])
+				
+			if event_to_throw.has_method("_disable_collision_shape"):
+				event_to_throw._disable_collision_shape(false)
+				
+			if backup.has("texture") and event_to_throw.has_node("%MainTexture"):
+				var main_tex = event_to_throw.get_node("%MainTexture")
+				main_tex.texture = backup["texture"]
+				main_tex.region_rect = backup["region_rect"]
+				main_tex.region_enabled = true
+				
+			if backup.has("offset") and event_to_throw.has_node("%MainTexture"):
+				var main_tex = event_to_throw.get_node("%MainTexture")
+				var original_offset = backup["offset"]
+				event_to_throw.global_position -= original_offset
+				main_tex.centered = backup["centered"]
+				main_tex.offset = original_offset
+				
+			if event_to_throw.has_meta("backup_data"):
+				event_to_throw.remove_meta("backup_data")
+				
+			map.update_event_position_in_layout(event_to_throw)
+			
+			set_deferred("is_lifting", false)
+			set_deferred("busy", false)
+			
+			if event_to_throw.has_method("_check_contact_after_move"):
+				event_to_throw._check_contact_after_move()
+	)
+
+
+func move_target_event(target_node: Node2D) -> void:
+	pass
+
+
+func enable_push_mode() -> void:
+	is_pushing = true
+	enable_dual_animation("", "push")
+
+
+func disable_push_mode() -> void:
+	is_pushing = false
+	disable_dual_animation()
 
 
 func _on_end_movement() -> void:
@@ -175,21 +622,30 @@ func _process(_delta: float) -> void:
 func _physics_process(delta: float):
 	if GameManager.loading_game or is_invalid_event or busy2 or Engine.is_editor_hint() or GameManager.busy or GameInterpreter.is_busy():
 		return
+		
+	if show_throw_indicator and is_instance_valid(throw_indicator_node):
+		throw_indicator_node.queue_redraw()
+		
 	if is_in_group("player"):
 		_save_player_position_into_game_state()
+		
 	if _click_indicator_cooldown > 0.0:
 		_click_indicator_cooldown -= delta
+		
 	if ControllerManager.is_action_just_released("Mouse Left"):
 		_click_indicator_cooldown = 0.0
+		
 	if not Engine.is_editor_hint() and is_in_group("player"):
 		if ControllerManager.is_action_just_pressed("Button L2"):
-			if GameManager.current_player: GameManager.current_player.busy2 = true
-			await GameManager.shift_up_follower()
-			if GameManager.current_player: GameManager.current_player.busy2 = false
+			if not carried_event and not is_lifting:
+				if GameManager.current_player: GameManager.current_player.busy2 = true
+				await GameManager.shift_up_follower()
+				if GameManager.current_player: GameManager.current_player.busy2 = false
 		elif ControllerManager.is_action_just_pressed("Button R2"):
-			if GameManager.current_player: GameManager.current_player.busy2 = true
-			await GameManager.shift_down_follower()
-			if GameManager.current_player: GameManager.current_player.busy2 = false
+			if not carried_event and not is_lifting:
+				if GameManager.current_player: GameManager.current_player.busy2 = true
+				await GameManager.shift_down_follower()
+				if GameManager.current_player: GameManager.current_player.busy2 = false
 		elif GameManager.current_map and ControllerManager.is_action_pressed("Mouse Left"):
 			if not GameInterpreter.is_busy() and not GameManager.busy and not busy2:
 				var is_new_click = ControllerManager.is_action_just_pressed("Mouse Left")
@@ -197,9 +653,11 @@ func _physics_process(delta: float):
 				var tile: Vector2i = GameManager.current_map.local_to_map(mouse_pos)
 				if is_new_click or (tile != _auto_target_tile and _click_indicator_cooldown <= 0.0):
 					_set_target_destination(tile, is_new_click)
+					
 	activated_this_frame = false
 	if not busy and _contact_activation_delay > 0:
 		_contact_activation_delay -= delta
+		
 	if not _ignore_events_contact.is_empty():
 		for i in range(_ignore_events_contact.size() - 1, -1, -1):
 			var obj = _ignore_events_contact[i]
@@ -208,6 +666,7 @@ func _physics_process(delta: float):
 				continue
 			if position.distance_squared_to(obj.position) > _squared_tile_size:
 				_ignore_events_contact.remove_at(i)
+				
 	if not targets_over_me.is_empty():
 		var current_tile = get_current_tile()
 		for i in range(targets_over_me.size() - 1, -1, -1):
@@ -216,18 +675,24 @@ func _physics_process(delta: float):
 					targets_over_me.remove_at(i)
 			else:
 				targets_over_me.remove_at(i)
+				
 	if is_on_vehicle:
 		if route_commands:
 			update_process_route()
 		return
+		
 	if is_inside_tree():
 		queue_redraw()
+		
 	if busy or is_attacking or is_jumping or is_moving or force_locked:
 		return
+		
 	if is_in_group("player") and _auto_target_tile != Vector2i(-1, -1):
 		_process_auto_movement()
+		
 	if movement_current_mode == MOVEMENTMODE.EVENT and GameManager.current_map:
 		GameManager.current_map.moving_event = true
+		
 	match movement_current_mode:
 		MOVEMENTMODE.GRID:
 			if route_commands:
@@ -244,6 +709,7 @@ func _physics_process(delta: float):
 			if event_movement_frame_count >= event_movement_frequency:
 				event_movement()
 				event_movement_frame_count = 0
+				
 	if movement_current_mode == MOVEMENTMODE.EVENT and GameManager.current_map:
 		GameManager.current_map.moving_event = false
 
@@ -458,12 +924,15 @@ func attack_without_weapon() -> void:
 
 
 func _smart_record_history() -> void:
+	if is_lifting:
+		return
+
 	var dist_sq = global_position.distance_squared_to(_last_recorded_pos)
 	var has_moved = dist_sq > MIN_RECORD_DIST_SQ
-	
+
 	var scale_diff = (scale - _last_recorded_scale).length_squared()
 	var has_scaled = scale_diff > 0.0001
-	
+
 	if has_moved or is_jumping or has_scaled or movement_history.is_empty():
 		_add_snapshot()
 
@@ -485,11 +954,18 @@ func _add_snapshot(snapshot: Dictionary = {}) -> void:
 			"direction": current_direction,
 			"rotation": rotation,
 			"animation": current_animation,
-			"is_jumping": is_jumping
+			"is_jumping": is_jumping,
+			"is_dual": is_dual_animation,
+			"frame": current_frame
 		}
 	
 	movement_history.push_back(snapshot)
 	_last_recorded_pos = snapshot.pos 
+	
+	if snapshot.has("scale"):
+		_last_recorded_scale = snapshot.scale
+	else:
+		_last_recorded_scale = scale
 	
 	if movement_history.size() > MAX_HISTORY_SIZE:
 		movement_history.pop_front()
@@ -522,19 +998,48 @@ func _should_check_nearby_events() -> bool:
 		   page.launcher == RPGEventPage.LAUNCHER_MODE.PLAYER_COLLISION
 
 
+func _on_throw_indicator_draw() -> void:
+	var map = GameManager.current_map
+	
+	if not show_throw_indicator or not carried_event or not map:
+		return
+		
+	var throw_info = _get_throw_target_info()
+	var target_tile = throw_info.tile
+	var is_valid = throw_info.distance > 0
+	
+	if not is_valid:
+		var dir_vec = Vector2i.ZERO
+		match current_direction:
+			DIRECTIONS.UP: dir_vec = Vector2i(0, -1)
+			DIRECTIONS.DOWN: dir_vec = Vector2i(0, 1)
+			DIRECTIONS.LEFT: dir_vec = Vector2i(-1, 0)
+			DIRECTIONS.RIGHT: dir_vec = Vector2i(1, 0)
+		target_tile = get_current_tile() + dir_vec
+		
+	var target_global_pos = map.get_tile_position(target_tile)
+	var tile_size = Vector2(map.tile_size)
+	
+	var rect = Rect2(target_global_pos - Vector2(tile_size.x / 2.0, tile_size.y), tile_size)
+	var color = valid_throw_color if is_valid else invalid_throw_color
+	if throw_indicator_texture:
+		throw_indicator_node.draw_texture_rect(throw_indicator_texture, rect, false, color)
+	else:
+		throw_indicator_node.draw_rect(rect, color, true)
+		color.a = min(color.a + 0.4, 1.0)
+		throw_indicator_node.draw_rect(rect, color, false, 2.0)
+
+
 func _draw() -> void:
 	var map = GameManager.current_map
+		
 	if map and get_tree().debug_collisions_hint:
-		var tile = get_current_tile()
-		var p = map.get_tile_position(tile)
-		var local_pos = to_local(p) - map.event_offset
+		var p = map.get_tile_position(get_current_tile())
+		var l_pos = to_local(p) - map.event_offset
 		draw_rect(
-			Rect2(local_pos.x, local_pos.y, map.tile_size.x, map.tile_size.y),
+			Rect2(l_pos.x, l_pos.y, map.tile_size.x, map.tile_size.y),
 			Color(1, 0, 0, 0.55), true
 		)
-	
-	if map and is_in_group("player"):
-		map.pathfinder.draw_debug(self, map)
 
 
 func calculate_grid_move_duration():
@@ -1246,7 +1751,7 @@ func _reset(force_reset: bool = false) -> void:
 
 
 func _animation_to_idle() -> void:
-	if not is_moving:
+	if not is_moving and not force_animation_enabled:
 		current_animation = "idle"
 		#current_frame = 0
 	idle_setted.emit()
@@ -1261,7 +1766,7 @@ func _process_event_contact(contacting_entities: Array, stop_movement_on_activat
 		return false
 
 	var events_to_start: Array = []
-	var self_id = page.get("_uniq_id") if page else -1
+	var self_id = get("current_event")._uniq_id if "current_event" in self else -1
 	var self_launcher = page.launcher if page else -1
 	var primary_target = contacting_entities[0] if not contacting_entities.is_empty() else null
 	var self_activated_this_check = false
@@ -1288,7 +1793,7 @@ func _process_event_contact(contacting_entities: Array, stop_movement_on_activat
 					activate_self = true
 				elif self_launcher == RPGEventPage.LAUNCHER_MODE.EVENT_COLLISION and not entity.is_in_group("player"):
 					if "current_event_page" in entity and entity.current_event_page:
-						var other_id = entity.current_event_page.get("_uniq_id")
+						var other_id = entity.get("current_event")._uniq_id if "current_event" in entity else -1
 						var event_trigger_list = page.get("event_trigger_list")
 						if other_id in event_trigger_list:
 							activate_self = true
@@ -1524,9 +2029,8 @@ func look_at_event(event: Variant) -> void:
 
 # Check contact before move
 func _check_contact_before_move(tile: Vector2i, is_after_move: bool = false) -> bool:
-	if not GameManager.current_map:
+	if not GameManager.current_map or is_invalid_event:
 		return true
-
 
 	var im_player = is_in_group("player")
 	if im_player and is_on_vehicle and GameManager.current_vehicle and GameManager.current_vehicle.flying_object:
@@ -1543,7 +2047,7 @@ func _check_contact_before_move(tile: Vector2i, is_after_move: bool = false) -> 
 
 
 	for entity in all_entities_on_tile:
-		if entity == self:
+		if entity == self or ("is_invalid_event" in entity and entity.is_invalid_event):
 			continue
 		
 		var entity_is_solid = _is_solid(entity)
@@ -1764,9 +2268,10 @@ func _has_ignore_entity(entity: Node) -> bool:
 	return entity in _ignore_events_contact
 
 
-func get_event_at_adjacent_tile() -> Node:
-	var node_found: Node = null
+func get_events_at_adjacent_tile() -> Array:
+	var nodes_found: Array = []
 	var node: RPGMap = GameManager.current_map
+	
 	if node:
 		var origin = global_position
 		
@@ -1795,17 +2300,19 @@ func get_event_at_adjacent_tile() -> Node:
 			origin.y = wrapped_y + used_rect.position.y
 		
 		var target_pos = node.local_to_map(origin)
-		var event: Variant = node.get_in_game_event_in(target_pos)
 		
-		if event is LPCEvent or event is EmptyLPCEvent or event is GenericLPCEvent or (event and event.get_class() == "RPGExtractionScene"):
-			node_found = event
-		else:
-			var vehicle: RPGVehicle = node.get_in_game_vehicle_in(target_pos)
-			
-			if vehicle:
-				node_found = vehicle
+		if node.has_method("get_in_game_events_in"):
+			var events = node.get_in_game_events_in(target_pos)
+			for ev in events:
+				if ev is LPCEvent or ev is EmptyLPCEvent or ev is GenericLPCEvent or (ev and ev.get_class() == "RPGExtractionScene"):
+					nodes_found.append(ev)
+		
+		if node.has_method("get_in_game_vehicle_in"):
+			var vehicle = node.get_in_game_vehicle_in(target_pos)
+			if vehicle and not vehicle in nodes_found:
+				nodes_found.append(vehicle)
 	
-	return node_found
+	return nodes_found
 
 
 func start_movement(motion_data: Dictionary) -> void:
@@ -1899,6 +2406,7 @@ func _set_contact_area_size(width: float, collision_shape: CollisionShape2D, mot
 
 
 func _update_position(new_position: Vector2, old_position_cache: Array) -> void:
+	if is_invalid_event: return
 	position = new_position
 	update_virtual_tile(new_position - old_position_cache[0])
 	old_position_cache[0] = position

@@ -384,7 +384,7 @@ func update_pressable_events() -> void:
 		var event: RPGEvent = ingame_event.event
 		var lpc_event = ingame_event.lpc_event
 		
-		if not is_instance_valid(lpc_event):
+		if not is_instance_valid(lpc_event) or ("is_invalid_event" in lpc_event and lpc_event.is_invalid_event):
 			continue
 		
 		var old_page: RPGEventPage = lpc_event.current_event_page

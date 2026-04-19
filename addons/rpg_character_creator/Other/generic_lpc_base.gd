@@ -51,6 +51,7 @@ var animation_data = {
 	"walk_right": [Vector2(192, 384), Vector2(384, 384), Vector2(576, 384), Vector2(768, 384), Vector2(960, 384), Vector2(1152, 384), Vector2(1344, 384), Vector2(1536, 384)],
 	"walk_up": [Vector2(192, 576), Vector2(384, 576), Vector2(576, 576), Vector2(768, 576), Vector2(960, 576), Vector2(1152, 576), Vector2(1344, 576), Vector2(1536, 576)]
 }
+
 #endregion
 
 
@@ -153,8 +154,11 @@ func _build_custom_scene() -> void:
 
 func update_character_rect(region: Rect2) -> void:
 	var node = get_node_or_null("%MainTexture")
-	node.region_enabled = true
-	node.region_rect = region
+	if region.has_area():
+		node.region_enabled = true
+		node.region_rect = region
+	else:
+		node.region_enabled = false
 	
 	node.offset.y = -region.size.y / 2.0
 	if GameManager.current_map:
@@ -217,7 +221,24 @@ func run_animation() -> void:
 
 
 func is_passable() -> bool:
+	if is_invalid_event:
+		return true
+		
 	return character_options.passable
+
+
+func is_liftable() -> bool:
+	if current_event_page:
+		return current_event_page.options.event_type == 1
+	
+	return false
+
+
+func is_moveable() -> bool:
+	if current_event_page:
+		return current_event_page.options.event_type == 2
+	
+	return false
 
 
 func _update_frame(delta: float = 0.0):
@@ -380,6 +401,13 @@ func is_pressed() -> bool:
 	return false
 
 
+func _start_lift_animation() -> void:
+	is_invalid_event = true
+	var player = GameManager.current_player
+	if player and player.has_method("pick_up_event"):
+		player.pick_up_event(self)
+
+
 func start(obj: Node, launcher_mode: RPGEventPage.LAUNCHER_MODE) -> bool:
 	if is_invalid_event: return false
 	
@@ -393,6 +421,10 @@ func start(obj: Node, launcher_mode: RPGEventPage.LAUNCHER_MODE) -> bool:
 	
 	if QuestManager.manage_mission_for_event(current_event):
 		return false
+	
+	if is_liftable():
+		_start_lift_animation()
+		return true
 		
 	if current_event_page:
 		if current_event_page.launcher != launcher_mode:

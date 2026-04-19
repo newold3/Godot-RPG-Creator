@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://c7kwutiivrd7j" path="res://addons/CustomControls/simple_texture_button.gd" id="4_0ieku"]
 [ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="4_eu62a"]
 [ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="4_jdvip"]
+[ext_resource type="PackedScene" uid="uid://duykjs55o5h2m" path="res://addons/CustomControls/custom_image_picker.tscn" id="7_0ieku"]
 
 [sub_resource type="Gradient" id="Gradient_vvvrv"]
 colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
@@ -27,11 +28,23 @@ region = Rect2(216, 240, 24, 24)
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_v8wqf"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o7760"]
+content_margin_left = 9.0
+content_margin_top = 6.0
+content_margin_right = 9.0
+content_margin_bottom = 6.0
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.14901961, 0.15686275, 0.15686275, 1)
+
 [node name="EventExtraOptionsDialog" type="Window" unique_id=1900839263]
 oversampling_override = 1.0
 title = "Event Extra Options"
 position = Vector2i(0, 36)
-size = Vector2i(600, 554)
+size = Vector2i(700, 944)
 wrap_controls = true
 transient = true
 exclusive = true
@@ -141,7 +154,7 @@ tooltip_text = "Converts this event into a liftable event. These events are set 
 [Note]: These events execute the commands defined on their active page once per interaction before being picked."
 mouse_default_cursor_shape = 2
 button_group = SubResource("ButtonGroup_v8wqf")
-text = "Pickable"
+text = "Lifttable"
 
 [node name="TypeMoveableEvent" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer5" unique_id=1632629207]
 unique_name_in_owner = true
@@ -157,7 +170,7 @@ text = "Moveable"
 
 [node name="NewOptionsIncoming" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer5" unique_id=55575439]
 layout_mode = 2
-tooltip_text = "The \"Is Pickable\" and \"Is Moveable\" options are future features that have not been implemented yet."
+tooltip_text = "The \"Is Lifttable\" and \"Is Moveable\" options are future features that have not been implemented yet."
 mouse_filter = 1
 mouse_default_cursor_shape = 16
 text = "⚠️"
@@ -172,18 +185,69 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.63529414, 0.63529414, 0.63529414, 1)
 text = "Params:"
 
-[node name="PickableParams" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer6" unique_id=407969272]
+[node name="Panel" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer6" unique_id=1995808257]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_o7760")
+
+[node name="PickableParams" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel" unique_id=798284719]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/PickableParams" unique_id=1186595959]
+[node name="HBoxContainer8" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams" unique_id=327337953]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer8" unique_id=1860413065]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+text = "Animation:"
+
+[node name="AnimationType" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer8" unique_id=621784070 instance=ExtResource("4_eu62a")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Choose the animation that plays when picking up an object. Select the one that best fits your characters and events."
+selected = 0
+item_count = 2
+popup/item_0/text = "Arms Extended"
+popup/item_0/id = 0
+popup/item_1/text = "Arms Contracted"
+popup/item_1/id = 1
+
+[node name="HBoxContainer9" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams" unique_id=1090318724]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer9" unique_id=1495619558]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+text = "Can throw over
+obstacles:"
+
+[node name="CanThrowOverObstacles" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer9" unique_id=353774217 instance=ExtResource("4_eu62a")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "This option, when enabled, allows you to throw the lifted object over any obstacle as long as the place where it lands is a passable space."
+selected = 0
+item_count = 2
+popup/item_0/text = "Yes"
+popup/item_0/id = 0
+popup/item_1/text = "No"
+popup/item_1/id = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams" unique_id=1609257925]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer" unique_id=1186595959]
+custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
 text = "Throw Strength:"
 
-[node name="ThrowStrength" parent="MarginContainer/VBoxContainer/HBoxContainer6/PickableParams" unique_id=1926866617 instance=ExtResource("3_o81l7")]
+[node name="ThrowStrength" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer" unique_id=1926866617 instance=ExtResource("3_o81l7")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -193,23 +257,251 @@ value = 1.0
 allow_greater = true
 _custom_value = 1.0
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/PickableParams" unique_id=722897359]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer" unique_id=722897359]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.63539076, 0.63539076, 0.63539076, 1)
 text = "tile/s"
 
-[node name="MoveableParams" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer6" unique_id=2106571474]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams" unique_id=2054164578]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer2" unique_id=322212925]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+text = "Offset Left:"
+
+[node name="OffsetLeftX" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer2" unique_id=1883216119 instance=ExtResource("3_o81l7")]
 unique_name_in_owner = true
-visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "When this event is lifted, the event's final position will be adjusted by this offset."
+value = -25.0
+allow_greater = true
+allow_lesser = true
+_custom_value = -25.0
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer2" unique_id=985276606]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.63539076, 0.63539076, 0.63539076, 1)
+text = " X  "
+
+[node name="OffsetLeftY" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer2" unique_id=410086192 instance=ExtResource("3_o81l7")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "When this event is lifted, the event's final position will be adjusted by this offset."
+value = 1.0
+allow_greater = true
+allow_lesser = true
+_custom_value = 1.0
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer2" unique_id=2070862873]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.63539076, 0.63539076, 0.63539076, 1)
+text = " Y"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams" unique_id=1770496165]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer3" unique_id=1463044731]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+text = "Offset Right:"
+
+[node name="OffsetRightX" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer3" unique_id=547851474 instance=ExtResource("3_o81l7")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "When this event is lifted, the event's final position will be adjusted by this offset."
+value = -25.0
+allow_greater = true
+allow_lesser = true
+_custom_value = -25.0
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer3" unique_id=1456977303]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.63539076, 0.63539076, 0.63539076, 1)
+text = " X  "
+
+[node name="OffsetRightY" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer3" unique_id=635177568 instance=ExtResource("3_o81l7")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "When this event is lifted, the event's final position will be adjusted by this offset."
+value = 1.0
+allow_greater = true
+allow_lesser = true
+_custom_value = 1.0
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer3" unique_id=1549703002]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.63539076, 0.63539076, 0.63539076, 1)
+text = " Y"
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams" unique_id=200712052]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer4" unique_id=1894270361]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+text = "Offset Up:"
+
+[node name="OffsetUpX" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer4" unique_id=1934360746 instance=ExtResource("3_o81l7")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "When this event is lifted, the event's final position will be adjusted by this offset."
+value = -25.0
+allow_greater = true
+allow_lesser = true
+_custom_value = -25.0
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer4" unique_id=200171979]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.63539076, 0.63539076, 0.63539076, 1)
+text = " X  "
+
+[node name="OffsetUpY" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer4" unique_id=74634689 instance=ExtResource("3_o81l7")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "When this event is lifted, the event's final position will be adjusted by this offset."
+value = 1.0
+allow_greater = true
+allow_lesser = true
+_custom_value = 1.0
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer4" unique_id=2057093165]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.63539076, 0.63539076, 0.63539076, 1)
+text = " Y"
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams" unique_id=621399271]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer5" unique_id=536927787]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+text = "Offset Down:"
+
+[node name="OffsetDownX" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer5" unique_id=1683924048 instance=ExtResource("3_o81l7")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "When this event is lifted, the event's final position will be adjusted by this offset."
+value = -25.0
+allow_greater = true
+allow_lesser = true
+_custom_value = -25.0
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer5" unique_id=1118923641]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.63539076, 0.63539076, 0.63539076, 1)
+text = " X  "
+
+[node name="OffsetDownY" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer5" unique_id=2091451817 instance=ExtResource("3_o81l7")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "When this event is lifted, the event's final position will be adjusted by this offset."
+value = 1.0
+allow_greater = true
+allow_lesser = true
+_custom_value = 1.0
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer5" unique_id=950756054]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.63539076, 0.63539076, 0.63539076, 1)
+text = " Y"
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams" unique_id=733703596]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer6" unique_id=1270144158]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+text = "Lift Rotation:"
+
+[node name="LiftRotation" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer6" unique_id=1003311100 instance=ExtResource("3_o81l7")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "When you lift this object, it will rotate to the specified angle."
+min_value = -360.0
+max_value = 360.0
+_custom_value = 0.0
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer6" unique_id=1672636083]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.63539076, 0.63539076, 0.63539076, 1)
+text = " Degrees"
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams" unique_id=1063981207]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer7" unique_id=1182122316]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+text = "Lift Image:"
+
+[node name="LiftImage" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer7" unique_id=1919207132 instance=ExtResource("7_0ieku")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_vertical = 6
+tooltip_text = "Select the chart this event will use when triggered (Leave blank to use the event's current chart)
+
+[Note]: Click the middle mouse button to clear"
+
+[node name="HBoxContainer10" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams" unique_id=2109322660]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer10" unique_id=302234824]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+text = "Lift Fx:"
+
+[node name="LiftFx" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer10" unique_id=1510466172 instance=ExtResource("3_ulo5m")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Sound played when this event is lifted."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+
+[node name="HBoxContainer11" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams" unique_id=809766514]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer11" unique_id=586313222]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+text = "Throw Fx:"
+
+[node name="ThrowFx" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer11" unique_id=1137302027 instance=ExtResource("3_ulo5m")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Sound played when this event is thrown"
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+
+[node name="MoveableParams" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel" unique_id=1790328042]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/MoveableParams" unique_id=1314800726]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams" unique_id=375393288]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer" unique_id=1314800726]
+custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
 text = "Speed:"
 
-[node name="Time" parent="MarginContainer/VBoxContainer/HBoxContainer6/MoveableParams" unique_id=1676540868 instance=ExtResource("3_o81l7")]
+[node name="Time" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer" unique_id=1676540868 instance=ExtResource("3_o81l7")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -221,11 +513,15 @@ rounded = false
 allow_greater = true
 _custom_value = 0.15
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/MoveableParams" unique_id=983183199]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams" unique_id=160346164]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer2" unique_id=983183199]
+custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
 text = "Initial Delay :"
 
-[node name="InitialDelay" parent="MarginContainer/VBoxContainer/HBoxContainer6/MoveableParams" unique_id=1982024686 instance=ExtResource("3_o81l7")]
+[node name="InitialDelay" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer2" unique_id=1982024686 instance=ExtResource("3_o81l7")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -236,8 +532,178 @@ rounded = false
 allow_greater = true
 _custom_value = 0.1
 
-[node name="NoParams" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6" unique_id=191081513]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams" unique_id=1662815739]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer3" unique_id=1176861464]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+text = "Offset Left:"
+
+[node name="PushOffsetLeftX" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer3" unique_id=1645713630 instance=ExtResource("3_o81l7")]
 unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "When this event is pushed, the event's final position will be adjusted by this offset."
+value = -25.0
+allow_greater = true
+allow_lesser = true
+_custom_value = -25.0
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer3" unique_id=167599564]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.63539076, 0.63539076, 0.63539076, 1)
+text = " X  "
+
+[node name="PushOffsetLeftY" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer3" unique_id=951040 instance=ExtResource("3_o81l7")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "When this event is pushed, the event's final position will be adjusted by this offset."
+value = 1.0
+allow_greater = true
+allow_lesser = true
+_custom_value = 1.0
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer3" unique_id=975271705]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.63539076, 0.63539076, 0.63539076, 1)
+text = " Y"
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams" unique_id=349444411]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer4" unique_id=954676814]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+text = "Offset Right:"
+
+[node name="PushOffsetRightX" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer4" unique_id=1604569357 instance=ExtResource("3_o81l7")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "When this event is pushed, the event's final position will be adjusted by this offset."
+value = -25.0
+allow_greater = true
+allow_lesser = true
+_custom_value = -25.0
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer4" unique_id=1151043741]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.63539076, 0.63539076, 0.63539076, 1)
+text = " X  "
+
+[node name="PushOffsetRightY" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer4" unique_id=1790986170 instance=ExtResource("3_o81l7")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "When this event is pushed, the event's final position will be adjusted by this offset."
+value = 1.0
+allow_greater = true
+allow_lesser = true
+_custom_value = 1.0
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer4" unique_id=1849725491]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.63539076, 0.63539076, 0.63539076, 1)
+text = " Y"
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams" unique_id=941601742]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer5" unique_id=944959975]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+text = "Offset Up:"
+
+[node name="PushOffsetUpX" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer5" unique_id=1704444464 instance=ExtResource("3_o81l7")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "When this event is pushed, the event's final position will be adjusted by this offset."
+value = -25.0
+allow_greater = true
+allow_lesser = true
+_custom_value = -25.0
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer5" unique_id=2106953462]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.63539076, 0.63539076, 0.63539076, 1)
+text = " X  "
+
+[node name="PushOffsetUpY" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer5" unique_id=695154379 instance=ExtResource("3_o81l7")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "When this event is pushed, the event's final position will be adjusted by this offset."
+value = 1.0
+allow_greater = true
+allow_lesser = true
+_custom_value = 1.0
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer5" unique_id=1538874260]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.63539076, 0.63539076, 0.63539076, 1)
+text = " Y"
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams" unique_id=457880648]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer6" unique_id=1950101474]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+text = "Offset Down:"
+
+[node name="PushOffsetDownX" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer6" unique_id=1172648406 instance=ExtResource("3_o81l7")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "When this event is pushed, the event's final position will be adjusted by this offset."
+value = -25.0
+allow_greater = true
+allow_lesser = true
+_custom_value = -25.0
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer6" unique_id=153569529]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.63539076, 0.63539076, 0.63539076, 1)
+text = " X  "
+
+[node name="PushOffsetDownY" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer6" unique_id=416058491 instance=ExtResource("3_o81l7")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "When this event is pushed, the event's final position will be adjusted by this offset."
+value = 1.0
+allow_greater = true
+allow_lesser = true
+_custom_value = 1.0
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer6" unique_id=1643644490]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.63539076, 0.63539076, 0.63539076, 1)
+text = " Y"
+
+[node name="HBoxContainer10" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams" unique_id=1232532804]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer10" unique_id=784549419]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+text = "Push Fx:"
+
+[node name="PushFx" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer10" unique_id=1868314332 instance=ExtResource("3_ulo5m")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Sound played when this event is lifted."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+
+[node name="NoParams" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel" unique_id=191081513]
+unique_name_in_owner = true
+visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(0.6125778, 0.61257786, 0.6125778, 1)
 text = "-"
@@ -391,7 +857,7 @@ layout_mode = 2
 text = "Enable Self
 Switch On Hit:"
 
-[node name="EnableSelfSwitchOnHit" parent="MarginContainer/VBoxContainer/ExtraConfigContainer/HBoxContainer3" unique_id=621784070 instance=ExtResource("4_eu62a")]
+[node name="EnableSelfSwitchOnHit" parent="MarginContainer/VBoxContainer/ExtraConfigContainer/HBoxContainer3" unique_id=501572367 instance=ExtResource("4_eu62a")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -483,11 +949,36 @@ text = "Cancel"
 [connection signal="toggled" from="MarginContainer/VBoxContainer/ShowNameInMap" to="." method="_on_show_name_in_map_toggled"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer3/NameConfig" to="." method="_on_name_config_pressed"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/HBoxContainer5/TypeNormalEvent" to="." method="_on_type_normal_event_toggled"]
-[connection signal="toggled" from="MarginContainer/VBoxContainer/HBoxContainer5/TypePickableEvent" to="." method="_on_type_pickable_event_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/HBoxContainer5/TypePickableEvent" to="." method="_on_type_lifttable_event_toggled"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/HBoxContainer5/TypeMoveableEvent" to="." method="_on_type_moveable_event_toggled"]
-[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer6/PickableParams/ThrowStrength" to="." method="_on_throw_strength_value_changed"]
-[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer6/MoveableParams/Time" to="." method="_on_time_value_changed"]
-[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer6/MoveableParams/InitialDelay" to="." method="_on_initial_delay_value_changed"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer8/AnimationType" to="." method="_on_animation_type_item_selected"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer9/CanThrowOverObstacles" to="." method="_on_can_throw_over_obstacles_item_selected"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer/ThrowStrength" to="." method="_on_throw_strength_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer2/OffsetLeftX" to="." method="_on_offset_left_x_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer2/OffsetLeftY" to="." method="_on_offset_left_y_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer3/OffsetRightX" to="." method="_on_offset_right_x_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer3/OffsetRightY" to="." method="_on_offset_right_y_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer4/OffsetUpX" to="." method="_on_offset_up_x_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer4/OffsetUpY" to="." method="_on_offset_up_y_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer5/OffsetDownX" to="." method="_on_offset_down_x_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer5/OffsetDownY" to="." method="_on_offset_down_y_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer6/LiftRotation" to="." method="_on_lift_rotation_value_changed"]
+[connection signal="clicked" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer7/LiftImage" to="." method="_on_lift_image_clicked"]
+[connection signal="paste_requested" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer7/LiftImage" to="." method="_on_lift_image_paste_requested"]
+[connection signal="remove_requested" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer7/LiftImage" to="." method="_on_lift_image_remove_requested"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer10/LiftFx" to="." method="_on_lift_fx_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer11/ThrowFx" to="." method="_on_throw_fx_pressed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer/Time" to="." method="_on_time_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer2/InitialDelay" to="." method="_on_initial_delay_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer3/PushOffsetLeftX" to="." method="_on_push_offset_left_x_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer3/PushOffsetLeftY" to="." method="_on_push_offset_left_y_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer4/PushOffsetRightX" to="." method="_on_push_offset_right_x_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer4/PushOffsetRightY" to="." method="_on_push_offset_right_y_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer5/PushOffsetUpX" to="." method="_on_push_offset_up_x_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer5/PushOffsetUpY" to="." method="_on_push_offset_up_y_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer6/PushOffsetDownX" to="." method="_on_push_offset_down_x_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer6/PushOffsetDownY" to="." method="_on_push_offset_down_y_value_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer10/PushFx" to="." method="_on_push_fx_pressed"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/HBoxContainer2/UseExtraConfig" to="." method="_on_use_extra_config_toggled"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/SaveExtraConfig" to="." method="_on_save_extra_config_pressed"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/ExtraConfigContainer/HBoxContainer/IsInmortal" to="." method="_on_is_inmortal_toggled"]

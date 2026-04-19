@@ -291,13 +291,18 @@ func _get_drag_data(at_position: Vector2) -> Variant:
 	if index == -1 or not is_selected(index):
 		return null
 
-	var cmd = data[index].command
-	if cmd.code == 0 or cmd.code in SUB_CODES:
+	var selected = get_selected_items()
+	
+	if selected.is_empty():
 		return null
 
-	var selected = get_selected_items()
+	var first_cmd = data[selected[0]].command
+	
+	if first_cmd.code == 0 or first_cmd.code in SUB_CODES:
+		return null
+
 	var preview = Label.new()
-	preview.text = " Moviendo %s comando(s)... " % selected.size()
+	preview.text = " Moving %s command(s)... " % selected.size()
 	set_drag_preview(preview)
 
 	return selected
@@ -310,11 +315,38 @@ func _can_drop_data(at_position: Vector2, drag_data: Variant) -> bool:
 	var drop_index = get_item_at_position(at_position, true)
 	
 	if drop_index != -1:
+		if drop_index in drag_data:
+			drag_preview_line = -1
+			%BackControl.queue_redraw()
+			return false
+
 		var cmd = data[drop_index].command
 		if cmd.code in SUB_CODES:
 			drag_preview_line = -1
 			%BackControl.queue_redraw()
 			return false
+
+		if drag_data.size() > 0:
+			var first_dragged = drag_data[0]
+			if drop_index > first_dragged:
+				var base_indent = data[first_dragged].command.indent
+				var is_inside = true
+				
+				for i in range(first_dragged + 1, drop_index + 1):
+					var check_cmd = data[i].command
+					
+					if check_cmd.indent < base_indent:
+						is_inside = false
+						break
+						
+					if check_cmd.indent == base_indent and check_cmd.code != 0 and check_cmd.code not in SUB_CODES:
+						is_inside = false
+						break
+						
+				if is_inside:
+					drag_preview_line = -1
+					%BackControl.queue_redraw()
+					return false
 	else:
 		drop_index = data.size()
 
@@ -1351,20 +1383,69 @@ func _on_back_draw() -> void:
 
 	if drag_preview_line != -1:
 		var preview_rect: Rect2
+		var indent_x: float = text_margin_left
 		
 		if drag_preview_line < item_count:
 			preview_rect = get_item_rect(drag_preview_line)
+			var cmd = data[drag_preview_line].command
+			var sep = "      "
+			var tabs: String = ""
+			
+			for i in cmd.indent:
+				tabs += sep
+				
+			if cmd.indent > 0 and tabs.length() > 0:
+				tabs = tabs.substr(0, tabs.length() - 1)
+				
+			indent_x += font.get_string_size(tabs, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+			
+			var phrases = data[drag_preview_line].formatted_data.phrases
+			
+			if phrases.size() > 0 and phrases[0].texts.size() > 0:
+				indent_x += phrases[0].texts[0].get("offset_x", 0)
 		else:
 			if item_count > 0:
 				preview_rect = get_item_rect(item_count - 1)
 				preview_rect.position.y += preview_rect.size.y
+				var cmd = data[item_count - 1].command
+				var sep = "      "
+				var tabs: String = ""
+				
+				for i in cmd.indent:
+					tabs += sep
+					
+				if cmd.indent > 0 and tabs.length() > 0:
+					tabs = tabs.substr(0, tabs.length() - 1)
+					
+				indent_x += font.get_string_size(tabs, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+				
+				var phrases = data[item_count - 1].formatted_data.phrases
+				
+				if phrases.size() > 0 and phrases[0].texts.size() > 0:
+					indent_x += phrases[0].texts[0].get("offset_x", 0)
 			else:
 				preview_rect = Rect2(0, 0, size.x, 20)
 
 		var y_pos = preview_rect.position.y - offset_y
 		
 		if y_pos >= 0 and y_pos <= parent.size.y:
-			control.draw_line(Vector2(0, y_pos), Vector2(size.x, y_pos), Color.YELLOW, 3.0)
+			var secondary_color = Color(0.6, 0.6, 0.6, 0.8)
+			var arrow_size = 4.0
+			var start_x = text_margin_left
+			
+			control.draw_line(Vector2(start_x, y_pos - arrow_size), Vector2(start_x + arrow_size, y_pos), secondary_color, 2.0)
+			control.draw_line(Vector2(start_x + arrow_size, y_pos), Vector2(start_x, y_pos + arrow_size), secondary_color, 2.0)
+			
+			var line_start_x = start_x + arrow_size + 4.0
+			
+			if line_start_x < indent_x:
+				control.draw_line(Vector2(line_start_x, y_pos), Vector2(indent_x, y_pos), secondary_color, 2.0)
+				
+			var indicator_size = 6.0
+			var rect_pos = Vector2(max(indent_x, line_start_x), y_pos - indicator_size / 2.0)
+			
+			control.draw_rect(Rect2(rect_pos, Vector2(indicator_size, indicator_size)), Color.YELLOW)
+			control.draw_line(Vector2(rect_pos.x + indicator_size, y_pos), Vector2(size.x, y_pos), Color.YELLOW, 2.0)
 
 
 func _change_back_position(value: float) -> void:

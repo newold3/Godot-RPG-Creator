@@ -3,14 +3,13 @@
 [ext_resource type="Script" uid="uid://powuheliwl5j" path="res://Scenes/Vehicles/hot_air_balloon.gd" id="1_xt8wq"]
 [ext_resource type="Texture2D" uid="uid://bp3gp81dj2tod" path="res://Assets/Images/Vehicles/hot_air_balloon.png" id="2_acxxb"]
 [ext_resource type="Script" uid="uid://450mjutneyod" path="res://addons/RPGData/ModulesRPG/rpg_dimension.gd" id="2_v8jne"]
-[ext_resource type="Texture2D" uid="uid://denhhg8ng2ipw" path="res://Assets/Images/Other/floor_selector_frame0.png" id="3_hqx3u"]
 
 [sub_resource type="Resource" id="Resource_5ekhm"]
 script = ExtResource("2_v8jne")
 grow_left = 1
 grow_right = 1
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_wja4e"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_gjnqj"]
 viewport_path = NodePath("Ballon")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_m4ryf"]
@@ -236,7 +235,6 @@ can_move_on_terrains = PackedStringArray("all")
 can_disembark_on_terrains = PackedStringArray("^water", "all")
 flying_object = true
 show_disembark_indicator = true
-disembark_indicator_texture = ExtResource("3_hqx3u")
 
 [node name="Ballon" type="SubViewport" parent="." unique_id=200181185]
 unique_name_in_owner = true
@@ -288,7 +286,7 @@ size = Vector2i(153, 209)
 
 [node name="FinalBalloon" type="Sprite2D" parent="Final" unique_id=494604303]
 unique_name_in_owner = true
-texture = SubResource("ViewportTexture_wja4e")
+texture = SubResource("ViewportTexture_gjnqj")
 centered = false
 region_enabled = true
 region_rect = Rect2(437, 301, 153, 209)
@@ -301,7 +299,7 @@ unique_name_in_owner = true
 z_index = 1
 z_as_relative = false
 position = Vector2(0, -63)
-texture = SubResource("ViewportTexture_wja4e")
+texture = SubResource("ViewportTexture_gjnqj")
 centered = false
 offset = Vector2(-26, -1)
 region_enabled = true
@@ -312,7 +310,7 @@ unique_name_in_owner = true
 z_index = 101
 z_as_relative = false
 position = Vector2(0, -65)
-texture = SubResource("ViewportTexture_wja4e")
+texture = SubResource("ViewportTexture_gjnqj")
 centered = false
 offset = Vector2(-75, -145)
 region_enabled = true

@@ -8,6 +8,8 @@ var starting_menu: SCENE_TITTLE
 
 func show_menu() -> void:
 	if main_menu and main_menu.visible: return
+	
+	if GameManager.current_player and (GameManager.current_player.carried_event or GameManager.current_player.is_lifting): return
 
 	if not GameManager.busy and not GameInterpreter.is_busy() and GameManager.game_state and not GameManager.game_state.menu_scene_prohibited:
 		GameManager.busy = true

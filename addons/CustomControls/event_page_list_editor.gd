@@ -1364,6 +1364,9 @@ func _on_event_page_list_items_dropped(to_index: int, _new_indent: int, indexes:
 	var safe_to_index = min(to_index, list.size() - 1)
 	var target_cmd = list[safe_to_index]
 	
+	if target_cmd in moving_commands:
+		return
+		
 	if target_cmd.code in %EventPageList.SUB_CODES:
 		return
 		

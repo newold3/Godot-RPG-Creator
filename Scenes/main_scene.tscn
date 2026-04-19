@@ -300,6 +300,7 @@ layer = 121
 [node name="MiniMapManager" type="CanvasLayer" parent="." unique_id=42316787 node_paths=PackedStringArray("minimap_viewport", "camera", "tilemap_container", "entities_drawer")]
 unique_name_in_owner = true
 layer = 122
+visible = false
 script = ExtResource("15_gnsmo")
 minimap_viewport = NodePath("MainViewport")
 camera = NodePath("MainViewport/Camera2D")
@@ -420,4 +421,4 @@ bus = &"SE"
 unique_name_in_owner = true
 bus = &"SE"
 
-[connection signal="item_rect_changed" from="MessageCanvas/Control/Dialog/@CanvasLayer@19301/Message" to="MessageCanvas/Control/Dialog" method="_on_message_item_rect_changed"]
+[connection signal="item_rect_changed" from="MessageCanvas/Control/Dialog/@CanvasLayer@19302/Message" to="MessageCanvas/Control/Dialog" method="_on_message_item_rect_changed"]

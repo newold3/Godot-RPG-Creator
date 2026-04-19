@@ -57,7 +57,7 @@ extends CharacterBody2D
 @export var cannot_disembark_indicator_color: Color = Color.RED
 
 ## Texture used for the disembark indicator, defaults to a simple rect if empty
-@export var disembark_indicator_texture: Texture2D
+@export var disembark_indicator_texture: Texture2D = preload("uid://denhhg8ng2ipw")
 
 
 var player: LPCCharacter

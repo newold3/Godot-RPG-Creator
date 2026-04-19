@@ -455,6 +455,17 @@ func run_animation(force_animation: bool = false) -> void:
 	if not is_inside_tree(): return
 	if frame_delay > 0.0 and not force_animation: return
 	
+	if is_dual_animation:
+		_run_dual_animation()
+	else:
+		_run_normal_animation()
+
+
+## Standard animation logic
+func _run_normal_animation() -> void:
+	if original_body_texture != null and body.texture != original_body_texture:
+		body.texture = original_body_texture
+		
 	var should_show_weapon = false
 
 	if current_data:
@@ -474,7 +485,6 @@ func run_animation(force_animation: bool = false) -> void:
 			mainhand_back.visible = should_show_weapon
 			mainhand_front.visible = should_show_weapon
 			
-			# --------- AMMO LOGIC ---------
 			if "ammo" in current_weapon_images and current_weapon_images.ammo:
 				if ammo_node_back:
 					ammo_node_back.texture = current_weapon_images.ammo.back
@@ -486,7 +496,6 @@ func run_animation(force_animation: bool = false) -> void:
 			else:
 				if ammo_node_back: ammo_node_back.visible = false
 				if ammo_node_front: ammo_node_front.visible = false
-			# ------------------------------------------------
 		else:
 			mainhand_back.visible = false
 			mainhand_front.visible = false
@@ -542,8 +551,6 @@ func run_animation(force_animation: bool = false) -> void:
 	if ammo_node_back: ammo_node_back.region_rect = body.region_rect
 	if ammo_node_front: ammo_node_front.region_rect = body.region_rect
 	
-	# ----------------------------------------
-	
 	var action_frame = current_animation_data.get("action_frame", -1)
 	if current_frame == action_frame and not "idle" in current_animation:
 		_handle_action_frame(current_animation_data)
@@ -568,6 +575,108 @@ func run_animation(force_animation: bool = false) -> void:
 				current_frame = 0
 			else:
 				current_frame = current_animation_data.frames.size() - 1
+
+
+func _run_dual_animation() -> void:
+	if original_body_texture == null:
+		original_body_texture = body.texture
+
+	mainhand_back.visible = false
+	mainhand_front.visible = false
+	offhand_back.visible = false
+	offhand_front.visible = false
+	
+	if ammo_node_back: ammo_node_back.visible = false
+	if ammo_node_front: ammo_node_front.visible = false
+
+	var bottom_data = get_current_animation()
+	
+	var temp_anim = current_animation
+	current_animation = dual_top_animation
+	var top_data = get_current_animation()
+	current_animation = temp_anim
+	
+	if not bottom_data or not top_data:
+		return
+
+	var bottom_frame_index = min(current_frame, bottom_data.frames.size() - 1)
+	var top_frame_index = min(dual_top_frame, top_data.frames.size() - 1)
+	
+	var bottom_frame_data: Array = bottom_data.frames[bottom_frame_index]
+	var top_frame_data: Array = top_data.frames[top_frame_index]
+	var p_size = bottom_data.frame_size
+
+	var bottom_rect = Rect2(bottom_frame_data[0], bottom_frame_data[1], p_size[0], p_size[1])
+	var top_rect = Rect2(top_frame_data[0], top_frame_data[1], p_size[0], p_size[1])
+
+	var bobbing_y = 0.0
+	if "walk" in current_animation and bottom_frame_index in [1, 5]:
+		bobbing_y = 2.0
+
+	body.texture = get_dual_frame_texture(original_body_texture, top_rect, bottom_rect, dual_crop_offset_y, bobbing_y)
+	body.region_rect = Rect2(0, 0, p_size[0], p_size[1])
+	wings_back.region_rect = body.region_rect
+
+	_update_carried_object_visuals(bobbing_y)
+
+	var action_frame = bottom_data.get("action_frame", -1)
+	if current_frame == action_frame:
+		_handle_action_frame(bottom_data)
+
+	current_frame += 1
+	dual_top_frame += 1
+	
+	if current_frame >= bottom_data.frames.size():
+		if bottom_data.get("loop", false):
+			current_frame = 0
+		else:
+			current_frame = bottom_data.frames.size() - 1
+			
+	if dual_top_frame >= top_data.frames.size():
+		if top_data.get("loop", false):
+			dual_top_frame = 0
+		else:
+			dual_top_frame = top_data.frames.size() - 1
+
+
+func _update_carried_object_visuals(bobbing_y: float) -> void:
+	if not carried_event:
+		return
+	
+	if carried_event.has_meta("backup_data"):
+		var backup = carried_event.get_meta("backup_data")
+		var custom_offset = Vector2.ZERO
+		
+		if backup.has("offsets") and backup["offsets"].has(current_direction):
+			custom_offset = backup["offsets"][current_direction]
+		
+		if backup.has("x_position") and backup.has("y_position"):
+			carried_event.position.x = backup["x_position"] + custom_offset.x
+			carried_event.position.y = backup["y_position"] + bobbing_y + custom_offset.y
+	
+	carried_event.show_behind_parent = current_direction != DIRECTIONS.UP
+
+
+## Retrieves a cached dual frame texture blending halves and applying vertical bobbing
+func get_dual_frame_texture(sprite_sheet: Texture2D, top_frame_rect: Rect2, bottom_frame_rect: Rect2, crop_y: float, bob_y: float = 0.0) -> Texture2D:
+	var cache_key = "%s_%s_%s_%s_%s" % [sprite_sheet.resource_path, top_frame_rect, bottom_frame_rect, crop_y, bob_y]
+	
+	if dual_frame_cache.has(cache_key):
+		return dual_frame_cache[cache_key]
+		
+	var source_image = sprite_sheet.get_image()
+	var new_image = Image.create_empty(int(top_frame_rect.size.x), int(top_frame_rect.size.y), false, source_image.get_format())
+	
+	var top_crop = Rect2(top_frame_rect.position.x, top_frame_rect.position.y, top_frame_rect.size.x, crop_y)
+	var bottom_crop = Rect2(bottom_frame_rect.position.x, bottom_frame_rect.position.y + crop_y, bottom_frame_rect.size.x, bottom_frame_rect.size.y - crop_y)
+	
+	new_image.blit_rect(source_image, bottom_crop, Vector2(0, crop_y))
+	new_image.blit_rect(source_image, top_crop, Vector2(0, bob_y))
+	
+	var final_tex = ImageTexture.create_from_image(new_image)
+	dual_frame_cache[cache_key] = final_tex
+	
+	return final_tex
 
 
 func _get_direction_string() -> String:

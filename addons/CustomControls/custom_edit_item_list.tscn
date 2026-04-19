@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://7bb05tatss36"]
+[gd_scene format=3 uid="uid://7bb05tatss36"]
 
 [ext_resource type="Script" uid="uid://bj72de2rkskfb" path="res://addons/CustomControls/custom_edit_item_list.gd" id="1_m12x0"]
 
@@ -43,7 +43,7 @@ border_width_bottom = 1
 border_color = Color(0.96144634, 0.0006858632, 0.00037445725, 1)
 border_blend = true
 
-[node name="CustomEditItemList" type="ItemList"]
+[node name="CustomEditItemList" type="ItemList" unique_id=1808318021]
 theme = SubResource("Theme_cfnmo")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hovered_color = Color(0.109804, 0.580392, 0.92549, 1)
@@ -68,7 +68,7 @@ default_text_offset_y = 10
 disable_text_color = Color(0.94048876, 0.6644985, 0.58842635, 1)
 main_container = NodePath(".")
 
-[node name="BackControl" type="Control" parent="."]
+[node name="BackControl" type="Control" parent="." unique_id=1655760237]
 unique_name_in_owner = true
 show_behind_parent = true
 layout_mode = 1

@@ -295,22 +295,31 @@ func _process_follower_logic(snap: Dictionary, delta: float) -> void:
 	if dist_moved > 0.001:
 		_idle_timer = walk_persist_time
 		current_animation = "walk"
-		_apply_snapshot_visuals(snap)
 		
+		if snap.get("is_dual", false):
+			current_frame = snap.get("frame", current_frame)
+			run_animation()
+		else:
+			_apply_snapshot_visuals(snap)
+			
 	else:
 		_idle_timer = max(0.0, _idle_timer - delta)
 		
 		if _idle_timer <= 0.0:
 			current_animation = "idle"
 			
-			_frame_timer += delta
-			if _frame_timer >= (1.0 / animation_fps):
-				current_frame += 1
-				_frame_timer = 0.0
-			
-			run_animation()
+			if snap.get("is_dual", false):
+				current_frame = snap.get("frame", current_frame)
+				run_animation()
+			else:
+				_process_next_frame(delta)
+				
 		else:
-			_apply_snapshot_visuals(snap)
+			if snap.get("is_dual", false):
+				current_frame = snap.get("frame", current_frame)
+				run_animation()
+			else:
+				_apply_snapshot_visuals(snap)
 
 
 func _apply_snapshot_transform(snap: Dictionary) -> void:

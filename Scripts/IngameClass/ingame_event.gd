@@ -66,6 +66,8 @@ func update_label_name(page: RPGEventPage) -> void:
 		if not new_name.is_empty():
 			name_label = Label.new()
 			name_label.text = new_name
+			name_label.y_sort_enabled = false
+			name_label.z_index = 128
 			if AssetManager.exists(page.options.name_config_path):
 				var config: LabelSettings = load(page.options.name_config_path)
 				name_label.label_settings = config
@@ -73,6 +75,7 @@ func update_label_name(page: RPGEventPage) -> void:
 				name_label.label_settings = load(DEFAULT_NAMELABEL_SETTING)
 			name_label.modulate.a = 0.0
 			lpc_event.add_child(name_label)
+			lpc_event.set_meta("name_label", name_label)
 			await lpc_event.get_tree().process_frame
 			var p: Vector2 = Vector2(0, -16)
 			var up_node = lpc_event.get_node_or_null("%Up")
