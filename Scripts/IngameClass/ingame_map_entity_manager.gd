@@ -69,28 +69,95 @@ func clear_all_ingame_extraction_events() -> void:
 	current_ingame_extraction_events.clear()
 
 
+func inject_carried_event(lpc_node: Node2D, original_map_id: int) -> void:
+	if not lpc_node or not "current_event" in lpc_node:
+		return
+		
+	var ev_resource: RPGEvent = lpc_node.current_event
+	var u_id: int = ev_resource._uniq_id
+	
+	var page = lpc_node.get("current_event_page")
+	var p_id = page.page_id if page else 1
+	
+	var ingame_event = IngameEvent.new(map, ev_resource, null, lpc_node, original_map_id, null, p_id)
+	
+	current_ingame_events[u_id] = ingame_event
+	
+	if lpc_node.has_method("update_virtual_tile"):
+		lpc_node.update_virtual_tile()
+		
+	register_pressable_event(ev_resource)
+	
+	if map:
+		map.register_hp_page(u_id, page._uniq_id if page else 0, page.options.hp if page else 10)
+
+
 func setup_events() -> void:
 	clear_all_ingame_events()
 	GameManager.current_map_events = current_ingame_events
 	var automatic_events: Array[Dictionary] = []
 	
+	var saved_events_data: Dictionary = {}
+	var migrated_data: Dictionary = {}
+	
+	if GameManager.game_state:
+		if "current_events" in GameManager.game_state:
+			saved_events_data = GameManager.game_state.current_events
+		if "migrated_events" in GameManager.game_state:
+			migrated_data = GameManager.game_state.migrated_events
+	
+	var events_to_spawn: Array[RPGEvent] = []
+	
 	for ev: RPGEvent in map.events.get_events():
+		var is_migrated_away = false
+		if ev._uniq_id in migrated_data:
+			if migrated_data[ev._uniq_id].current_map_id != map.internal_id:
+				is_migrated_away = true
+		
+		if not is_migrated_away:
+			events_to_spawn.append(ev)
+			
+	for u_id in migrated_data:
+		var m_data = migrated_data[u_id]
+		if m_data.current_map_id == map.internal_id and m_data.original_map_id != map.internal_id:
+			if GameManager.current_player and GameManager.current_player.carried_event:
+				var carried_res = GameManager.current_player.carried_event.get("current_event")
+				if carried_res and carried_res._uniq_id == u_id:
+					continue
+					
+			events_to_spawn.append(m_data.event_resource)
+	
+	for ev: RPGEvent in events_to_spawn:
 		ev.initialize_page_ids()
 		var page: RPGEventPage = ev.get_active_page()
 		
 		if page:
 			page.id = ev.id
-			var ingame_event = create_ingame_event(ev, page)
+			var origin_map = migrated_data[ev._uniq_id].original_map_id if ev._uniq_id in migrated_data else map.internal_id
+			var ingame_event = IngameEvent.new(map, ev, null, null, origin_map, null, page.page_id)
+			ingame_event.load_event_graphics(page, page.direction)
+			
+			if ev._uniq_id in saved_events_data:
+				var e_data = saved_events_data[ev._uniq_id]
+				ingame_event.lpc_event.position = e_data.position
+				ingame_event.lpc_event.current_direction = e_data.direction
+				if map:
+					map.update_event_position_in_layout(ingame_event.lpc_event)
+			
 			register_pressable_event(ingame_event.event)
+			
 			if map:
 				map.register_hp_page(ev._uniq_id, page._uniq_id, page.options.hp)
+				
 			if ingame_event:
 				current_ingame_events[ev._uniq_id] = ingame_event
 				var interpreter_id = "event_" + str(ev._uniq_id)
+				
 				if page.launcher == RPGEventPage.LAUNCHER_MODE.AUTOMATIC:
 					automatic_events.append({"obj": ingame_event.lpc_event, "commands": page.list, "id": interpreter_id})
 				elif page.launcher == RPGEventPage.LAUNCHER_MODE.PARALLEL:
 					GameInterpreter.register_interpreter(ingame_event.lpc_event, page.list, true, interpreter_id)
+					
 			ingame_event.update_label_name(page)
 	
 	if not automatic_events.is_empty():
@@ -173,6 +240,7 @@ func get_events_objects_in(pos: Vector2i) -> Array:
 		objects.append(GameManager.current_player)
 	
 	for ev: IngameEvent in current_ingame_events.values():
+		if not ev.lpc_event or not is_instance_valid(ev.lpc_event): continue
 		if ev.lpc_event.get_current_tile() == pos:
 			objects.append(ev.lpc_event)
 	

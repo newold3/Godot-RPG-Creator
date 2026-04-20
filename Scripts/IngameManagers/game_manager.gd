@@ -78,6 +78,8 @@ var animation_pool: Array = []
 var _test_commands_processed: bool = false
 @warning_ignore("unused_private_class_variable")
 var _transfer_direction: int = -1
+@warning_ignore("unused_private_class_variable")
+var _pending_carried_event_uniq_id: int = -1
 
 var inventory_manager: InventoryManager
 var cursor_manager: CursorManager
@@ -93,6 +95,8 @@ var input_manager: InputManager
 var menu_manager: MenuManager
 var toast_manager: ToastManager
 var action_manager: RPGActionManager
+
+var is_transfer_animating: bool = false
 
 var hand_cursor_path: String = "res://Scenes/GUI/default_hand_cursor.tscn"
 #endregion

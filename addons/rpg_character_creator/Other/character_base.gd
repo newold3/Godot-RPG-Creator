@@ -33,6 +33,14 @@ enum DIRECTIONS {
 
 enum MOVEMENTMODE {GRID = 1, FREE = 2, EVENT = 3}
 
+enum LiftTriggers {
+	NONE = 0,
+	PRE_LIFT = 1,
+	POST_LIFT = 2,
+	PRE_THROW = 4,
+	POST_THROW = 8
+}
+
 class TextureData:
 	var part_id: String
 	var back_texture: String
@@ -232,6 +240,16 @@ func _get_shoulders() -> Marker2D:
 func pick_up_event(event_node: Node2D) -> void:
 	if carried_event or is_lifting or busy: return
 
+	var type_params = {}
+	if "current_event_page" in event_node and event_node.current_event_page:
+		type_params = event_node.current_event_page.options.type_params
+	
+	var trigger_mask = type_params.get("activation_page_type", 0)
+	
+	if (trigger_mask & LiftTriggers.PRE_LIFT) != 0:
+		await _execute_real_event_page(event_node)
+		if carried_event or is_lifting or busy or not is_instance_valid(event_node): return
+
 	is_lifting = true
 	busy = true
 	carried_event = event_node
@@ -261,10 +279,6 @@ func pick_up_event(event_node: Node2D) -> void:
 
 		main_tex.centered = true
 		main_tex.offset = Vector2.ZERO
-
-	var type_params = {}
-	if "current_event_page" in carried_event and carried_event.current_event_page:
-		type_params = carried_event.current_event_page.options.type_params
 
 	backup["offsets"] = {
 		DIRECTIONS.LEFT: Vector2(type_params.get("offset_left_x", 0), type_params.get("offset_left_y", 0)),
@@ -314,6 +328,8 @@ func pick_up_event(event_node: Node2D) -> void:
 		func():
 			if carried_event != event_node: return
 			
+			if not carried_event or not is_instance_valid(carried_event): return
+			
 			var visual_parent = get_node_or_null("%FullBody")
 			if not visual_parent:
 				visual_parent = self
@@ -345,6 +361,9 @@ func pick_up_event(event_node: Node2D) -> void:
 		current_frame = 0
 		set_deferred("is_lifting", false)
 		set_deferred("busy", false)
+		
+		if (trigger_mask & LiftTriggers.POST_LIFT) != 0 and is_instance_valid(event_node):
+			await _execute_real_event_page(event_node)
 	else:
 		set_deferred("is_lifting", false)
 		set_deferred("busy", false)
@@ -457,12 +476,15 @@ func _get_throw_target_info() -> Dictionary:
 func throw_event() -> void:
 	if not carried_event or is_lifting or busy: return
 	
-	is_lifting = true
-	busy = true
 	var type_params = {}
-	
 	if "current_event_page" in carried_event and carried_event.current_event_page:
 		type_params = carried_event.current_event_page.options.type_params
+	
+	var trigger_mask = type_params.get("activation_page_type", 0)
+	
+	if (trigger_mask & LiftTriggers.PRE_THROW) != 0:
+		await _execute_real_event_page(carried_event)
+		if not carried_event or is_lifting or busy: return
 		
 	var map = GameManager.current_map
 	var throw_info = _get_throw_target_info()
@@ -471,6 +493,9 @@ func throw_event() -> void:
 		set_deferred("is_lifting", false)
 		set_deferred("busy", false)
 		return
+		
+	is_lifting = true
+	busy = true
 		
 	var target_tile = throw_info.tile
 	var throw_distance = throw_info.distance
@@ -511,70 +536,85 @@ func throw_event() -> void:
 		
 	t.tween_method(
 		func(progress: float):
-			event_to_throw.global_position = start_pos.lerp(target_global_pos, progress) - Vector2(0, sin(progress * PI) * jump_height),
+			if is_instance_valid(event_to_throw):
+				event_to_throw.global_position = start_pos.lerp(target_global_pos, progress) - Vector2(0, sin(progress * PI) * jump_height),
 		0.0,
 		1.0,
 		base_time
 	).set_trans(Tween.TRANS_LINEAR)
 	
-	t.chain().tween_callback(
-		func():
-			frame_delay_max = original_frame_delay_max
-			force_animation_enabled = false
-			current_animation = "idle"
-			current_frame = 0
-			run_animation()
+	await t.finished
+	
+	frame_delay_max = original_frame_delay_max
+	force_animation_enabled = false
+	current_animation = "idle"
+	current_frame = 0
+	run_animation()
+	
+	if is_instance_valid(event_to_throw):
+		event_to_throw.process_mode = Node.PROCESS_MODE_INHERIT
+		event_to_throw.set_process_internal(true)
+		event_to_throw.is_invalid_event = false
+		
+		if event_to_throw.has_method("update_virtual_tile"):
+			event_to_throw.update_virtual_tile()
 			
-			event_to_throw.process_mode = Node.PROCESS_MODE_INHERIT
-			event_to_throw.set_process_internal(true)
-			event_to_throw.is_invalid_event = false
+		if event_to_throw.has_meta("name_label"):
+			var label = event_to_throw.get_meta("name_label")
+			if is_instance_valid(label):
+				label.visible = true
+				
+		if backup.has("z_index"):
+			event_to_throw.z_index = backup["z_index"]
+		else:
+			event_to_throw.z_index = 0
 			
-			if event_to_throw.has_method("update_virtual_tile"):
-				event_to_throw.update_virtual_tile()
-				
-			if event_to_throw.has_meta("name_label"):
-				var label = event_to_throw.get_meta("name_label")
-				if is_instance_valid(label):
-					label.visible = true
-					
-			if backup.has("z_index"):
-				event_to_throw.z_index = backup["z_index"]
-			else:
-				event_to_throw.z_index = 0
-				
-			event_to_throw.show_behind_parent = false
-				
-			if backup.has("collision_layer"):
-				event_to_throw.set("collision_layer", backup["collision_layer"])
-				event_to_throw.set("collision_mask", backup["collision_mask"])
-				
-			if event_to_throw.has_method("_disable_collision_shape"):
-				event_to_throw._disable_collision_shape(false)
-				
-			if backup.has("texture") and event_to_throw.has_node("%MainTexture"):
-				var main_tex = event_to_throw.get_node("%MainTexture")
-				main_tex.texture = backup["texture"]
-				main_tex.region_rect = backup["region_rect"]
-				main_tex.region_enabled = true
-				
-			if backup.has("offset") and event_to_throw.has_node("%MainTexture"):
-				var main_tex = event_to_throw.get_node("%MainTexture")
-				var original_offset = backup["offset"]
-				event_to_throw.global_position -= original_offset
-				main_tex.centered = backup["centered"]
-				main_tex.offset = original_offset
-				
-			if event_to_throw.has_meta("backup_data"):
-				event_to_throw.remove_meta("backup_data")
-				
-			map.update_event_position_in_layout(event_to_throw)
+		event_to_throw.show_behind_parent = false
 			
-			set_deferred("is_lifting", false)
-			set_deferred("busy", false)
+		if backup.has("collision_layer"):
+			event_to_throw.set("collision_layer", backup["collision_layer"])
+			event_to_throw.set("collision_mask", backup["collision_mask"])
 			
-			if event_to_throw.has_method("_check_contact_after_move"):
-				event_to_throw._check_contact_after_move()
-	)
+		if event_to_throw.has_method("_disable_collision_shape"):
+			event_to_throw._disable_collision_shape(false)
+			
+		if backup.has("texture") and event_to_throw.has_node("%MainTexture"):
+			var main_tex = event_to_throw.get_node("%MainTexture")
+			main_tex.texture = backup["texture"]
+			main_tex.region_rect = backup["region_rect"]
+			main_tex.region_enabled = true
+			
+		if backup.has("offset") and event_to_throw.has_node("%MainTexture"):
+			var main_tex = event_to_throw.get_node("%MainTexture")
+			var original_offset = backup["offset"]
+			event_to_throw.global_position -= original_offset
+			main_tex.centered = backup["centered"]
+			main_tex.offset = original_offset
+			
+		if event_to_throw.has_meta("backup_data"):
+			event_to_throw.remove_meta("backup_data")
+			
+		map.update_event_position_in_layout(event_to_throw)
+		
+		if event_to_throw.has_method("_check_contact_after_move"):
+			event_to_throw._check_contact_after_move()
+			
+	set_deferred("is_lifting", false)
+	set_deferred("busy", false)
+
+	if (trigger_mask & LiftTriggers.POST_THROW) != 0 and is_instance_valid(event_to_throw):
+		await _execute_real_event_page(event_to_throw)
+
+
+func _execute_real_event_page(event_node: Node2D) -> void:
+	if "current_event" in event_node and event_node.current_event is RPGEvent:
+		var real_page = event_node.current_event.get_active_page()
+		
+		if real_page and real_page.list.size() > 0:
+			var objs: Array[Dictionary] = []
+			objs.append({"obj": event_node, "commands": real_page.list, "id": str(event_node.get_rid())})
+			
+			await GameInterpreter.auto_start_automatic_events(objs)
 
 
 func move_target_event(target_node: Node2D) -> void:
@@ -973,7 +1013,6 @@ func _add_snapshot(snapshot: Dictionary = {}) -> void:
 
 func clear_movement_history() -> void:
 	movement_history.clear()
-	_last_recorded_pos = global_position
 
 
 func get_history_step(step_offset: int) -> Dictionary:

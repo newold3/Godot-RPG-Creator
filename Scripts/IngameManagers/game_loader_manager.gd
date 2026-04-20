@@ -137,70 +137,78 @@ func load_game(data: RPGSavedGameData) -> void:
 	if not data or not data.game_state:
 		printerr("Invalid save data")
 		return
-
-	if GameManager.current_player:
-		prints(GameManager.current_player, GameManager.current_player.is_in_group("player"))
+	
 	var main_scene = GameManager.main_scene
 	GameInterpreter.clear()
 	main_scene.busy = true
 	GameManager.loading_game = true
-
+	
 	main_scene.stop_bgm(0.25)
 	main_scene.stop_bgs(0.25)
-
+	
 	var game_state = data.game_state
 	GameManager.game_started = false
 	GameManager.game_state = game_state
 	GameManager.current_save_slot = data.save_slot_id
 	game_state.current_events = data.current_map_events
-
+	
 	_setup_game_managers()
 	_setup_day_night_config()
 	DayNightManager.current_time = game_state.current_day_time
 	_initialize_transition_system()
-
+	
 	var map_path = RPGSYSTEM.map_infos.get_map_by_id(game_state.current_map_id)
 	if not map_path or not AssetManager.exists(map_path):
 		printerr("Map not found: ", game_state.current_map_id)
 		return
-
+		
 	main_scene.scene_changed.connect(_restore_game_scene_states.bind(data), CONNECT_ONE_SHOT)
+	
 	await main_scene.change_scene(map_path, true)
-
+	
 	GameManager.set_cursor_manipulator.call_deferred("")
-
+	
 	main_scene.busy = false
 	GameManager.loading_game = false
 	GameManager.set_deferred("game_started", true)
 	GameManager.set_deferred("busy", false)
+	
 	game_state.current_events.clear()
-	main_scene.restore_followers_from_save(data.followers)
-	
-	if GameManager.current_player:
-		if not GameManager.current_player.is_in_group("player"):
-			GameManager.current_player.add_to_group("player")
-	
-	var tracking_enabled = GameManager.game_state.followers_tracking_enabled
-	for follower in GameManager.get_followers():
-		if follower.has_method("set_wait"):
-			follower.set_wait(!tracking_enabled)
 
 
 func _restore_game_scene_states(data: RPGSavedGameData) -> void:
 	if not data: return
 	
+	var main_scene = GameManager.main_scene
+	
+	main_scene.restore_followers_from_save(data.followers)
+	
+	if GameManager.current_player:
+		if not GameManager.current_player.is_in_group("player"):
+			GameManager.current_player.add_to_group("player")
+			
+		if GameManager.current_player.has_method("clear_movement_history"):
+			GameManager.current_player.clear_movement_history()
+	
+	var tracking_enabled = GameManager.game_state.followers_tracking_enabled
+	for follower in GameManager.get_followers():
+		if follower.has_method("set_wait"):
+			follower.set_wait(!tracking_enabled)
+	
 	_load_data_map.clear()
 	GameInterpreter.create_load_interpreter(interpreter_id)
+	
 	if not GameInterpreter.processed_command.is_connected(_on_load_command_processed):
 		GameInterpreter.processed_command.connect(_on_load_command_processed)
 	
 	if not data.main_scene_config.is_empty():
 		var config = data.main_scene_config
 		_restore_main_scene_visuals(config)
+		
 		if "ingame_images" in config:
 			for img_data in config.ingame_images:
 				_restore_generic_scene(img_data, 75)
-		
+				
 		if "ingame_scenes" in config:
 			for scene_data in config.ingame_scenes:
 				_restore_generic_scene(scene_data, 81)
@@ -208,11 +216,11 @@ func _restore_game_scene_states(data: RPGSavedGameData) -> void:
 		if "weather_scenes" in config:
 			for weather_data in config.weather_scenes:
 				_restore_generic_scene(weather_data, 68)
-
+				
 		if "video_scenes" in config:
 			for video_data in config.video_scenes:
 				_restore_generic_scene(video_data, 92)
-
+				
 	if data.player_on_vehicle != -1 and GameManager.current_map and GameManager.current_player:
 		var vehicles = GameManager.current_map.get_in_game_vehicles()
 		for vehicle in vehicles:
@@ -220,7 +228,7 @@ func _restore_game_scene_states(data: RPGSavedGameData) -> void:
 				var tile = GameManager.current_player.get_current_tile()
 				GameManager.current_map.set_event_position(vehicle, tile, GameManager.current_player.current_direction)
 				vehicle.start(GameManager.current_player)
-
+				
 	_restore_audio_state(data)
 	
 	await GameInterpreter.execute_load_interpreter(interpreter_id)
@@ -228,7 +236,7 @@ func _restore_game_scene_states(data: RPGSavedGameData) -> void:
 	_load_data_map.clear()
 	if GameInterpreter.processed_command.is_connected(_on_load_command_processed):
 		GameInterpreter.processed_command.disconnect(_on_load_command_processed)
-
+		
 	GameManager.set_cursor_manipulator.call_deferred("")
 
 
@@ -336,7 +344,7 @@ func _restore_tweens(node: Node, tweens_data: Dictionary) -> void:
 		)
 
 
-func _on_load_command_processed(command: RPGEventCommand, scene: Node) -> void:
+func _on_load_command_processed(command: RPGEventCommand, scene: Variant) -> void:
 	if not scene or not command: return
 	
 	if not command.parameters in _load_data_map: return

@@ -13,7 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://bbd8rv6w7vjb3" path="res://addons/CustomControls/custom_color_button.tscn" id="9_h2o4p"]
 [ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="12_kcex0"]
 [ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="12_w08ns"]
-[ext_resource type="Script" uid="uid://c7kwutiivrd7j" path="res://addons/CustomControls/simple_texture_button.gd" id="13_pts3j"]
+[ext_resource type="Script" uid="uid://dlff8xqhuv7e7" path="res://addons/CustomControls/Dialogs/event_page_extra_options_button.gd" id="13_w08ns"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w08ns"]
 resource_local_to_scene = true
@@ -249,10 +249,6 @@ corner_radius_bottom_left = 12
 [sub_resource type="AtlasTexture" id="AtlasTexture_m1q1w"]
 atlas = ExtResource("12_w08ns")
 region = Rect2(120, 168, 24, 24)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_x7gmb"]
-atlas = ExtResource("12_w08ns")
-region = Rect2(144, 168, 24, 24)
 
 [node name="EditEventPage" type="MarginContainer" unique_id=341481203]
 anchors_preset = 15
@@ -573,12 +569,11 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
 tooltip_text = "[title]Is Pressurable[/title]
-This page will be valid if it has one or more allowed targets on the.
+This page will become active when one or more allowed targets step on the event.
 
-[Note]: When this condition is selected, the event will be set and fixed as passable and will only have the launchers \"Player Contact\", \"Event Contact\", or \"Contact with Anyone\" active.
+[Note]: Activating this condition disables the \"Pickable\" and \"Moveable\" event types. It also forces the event to be Passable and restricts the Launcher options to \"Player Contact\", \"Event Contact\", or \"Any Contact\".
 
-[Note2]: When a page configured as pressable is activated, the previously active page will execute its commands. When the page is \"released,\" the commands added to the pressed page will be executed.
-"
+[Note2]: When a page configured as pressable is stepped ON, the previously active page will execute its commands. When the page is stepped OFF (released), the commands added to this pressed page will be executed."
 focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "Pressurable:"
@@ -1052,34 +1047,47 @@ _custom_value = 0.0
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer2" unique_id=521084308]
+[node name="HBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer2" unique_id=1778380234]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer2/HBoxContainer" unique_id=1583679373]
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer2/HBoxContainer" unique_id=828503775]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer2/HBoxContainer/HBoxContainer" unique_id=1583679373]
 layout_mode = 2
 text = "Page Name"
 
-[node name="PageName" parent="HBoxContainer/VBoxContainer2/HBoxContainer" unique_id=1304175086 instance=ExtResource("12_kcex0")]
+[node name="PageName" parent="HBoxContainer/VBoxContainer2/HBoxContainer/HBoxContainer" unique_id=1304175086 instance=ExtResource("12_kcex0")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Name given to this page"
 
-[node name="MarkAsQuestPage" type="CheckBox" parent="HBoxContainer/VBoxContainer2/HBoxContainer" unique_id=862026591]
+[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer/VBoxContainer2/HBoxContainer" unique_id=541416891]
+layout_mode = 2
+
+[node name="MarkAsQuestPage" type="CheckBox" parent="HBoxContainer/VBoxContainer2/HBoxContainer/HBoxContainer2" unique_id=862026591]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "By marking this page as a quest page, this page will never be active unless a quest activates it."
 mouse_default_cursor_shape = 2
-text = "Mark as quest Page"
+text = "Mark as 📜 quest Page"
+icon_alignment = 2
 
-[node name="PageExtraOptions" type="TextureButton" parent="HBoxContainer/VBoxContainer2/HBoxContainer" unique_id=849142871]
+[node name="PageExtraOptions" type="Button" parent="HBoxContainer/VBoxContainer2/HBoxContainer" unique_id=1655761382]
+unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 8
-tooltip_text = "Set up extra data for this event page, such as hit points, enabling a self switch when hit or upon death."
+focus_mode = 0
 mouse_default_cursor_shape = 2
-texture_normal = SubResource("AtlasTexture_m1q1w")
-texture_pressed = SubResource("AtlasTexture_x7gmb")
-script = ExtResource("13_pts3j")
+theme_override_colors/font_hover_pressed_color = Color(1, 0.5411765, 0.24313726, 1)
+icon = SubResource("AtlasTexture_m1q1w")
+flat = true
+alignment = 0
+script = ExtResource("13_w08ns")
+
+[node name="HSeparator" type="HSeparator" parent="HBoxContainer/VBoxContainer2/HBoxContainer" unique_id=1746448978]
+layout_mode = 2
 
 [node name="EventPageListEditor" parent="HBoxContainer/VBoxContainer2" unique_id=1128338880 instance=ExtResource("8_qgfkt")]
 unique_name_in_owner = true
@@ -1122,7 +1130,7 @@ layout_mode = 2
 [connection signal="item_selected" from="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer/SelectTargetEvent" to="." method="_on_select_target_event_item_selected"]
 [connection signal="value_changed" from="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer2/Velocity" to="." method="_on_velocity_value_changed"]
 [connection signal="value_changed" from="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer2/Frequency" to="." method="_on_frequency_value_changed"]
-[connection signal="text_changed" from="HBoxContainer/VBoxContainer2/HBoxContainer/PageName" to="." method="_on_page_name_text_changed"]
-[connection signal="toggled" from="HBoxContainer/VBoxContainer2/HBoxContainer/MarkAsQuestPage" to="." method="_on_mark_as_quest_page_toggled"]
+[connection signal="text_changed" from="HBoxContainer/VBoxContainer2/HBoxContainer/HBoxContainer/PageName" to="." method="_on_page_name_text_changed"]
+[connection signal="toggled" from="HBoxContainer/VBoxContainer2/HBoxContainer/HBoxContainer2/MarkAsQuestPage" to="." method="_on_mark_as_quest_page_toggled"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer2/HBoxContainer/PageExtraOptions" to="." method="_on_page_extra_options_pressed"]
 [connection signal="data_changed" from="HBoxContainer/VBoxContainer2/EventPageListEditor" to="." method="_on_event_page_list_editor_data_changed"]

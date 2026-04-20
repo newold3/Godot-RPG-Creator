@@ -181,6 +181,8 @@ func fill_page(page: RPGEventPage) -> void:
 		%PlaceHolderLauncher.visible = !%TriggerEventList.visible
 		_configure_launcher()
 		%Launcher.item_selected.emit(launcher)
+		
+		%PageExtraOptions._update_extra_config_label(current_page)
 
 
 func _update_graphic() -> void:
@@ -867,65 +869,74 @@ func _on_page_extra_options_pressed() -> void:
 	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
 	
 	dialog.set_page_options(current_page.options, current_page.condition.use_pressure)
-	dialog.OK.connect(_set_pressed_mode.bind(current_page.condition.use_pressure))
+	
+	dialog.OK.connect(func(new_pressed_state: bool):
+		current_page.condition.use_pressure = new_pressed_state
+		%Condition7Pressed.set_pressed_no_signal(new_pressed_state)
+		_set_pressed_mode(new_pressed_state)
+		changed.emit()
+		%PageExtraOptions._update_extra_config_label(current_page)
+	)
 
 
 func _on_condition_7_pressed_toggled(toggled_on: bool) -> void:
 	if current_page:
 		current_page.condition.use_pressure = toggled_on
-		_set_pressed_mode(toggled_on)
+		
+		if toggled_on and current_page.options.event_type in [1, 2]:
+			current_page.options.event_type = 0
+			
+		_set_pressed_mode(current_page.condition.use_pressure)
+		
 		if current_page.condition.pressure_targets.is_empty():
 			_on_allow_pressure_targets_multi_selection_changed([])
-		if toggled_on:
-			current_page.options.event_type = 0	
+		
+		%PageExtraOptions._update_extra_config_label(current_page)
 
 
 func _set_pressed_mode(value: bool) -> void:
 	var launcher = %Launcher
 	var selected_index = launcher.get_selected_id()
 	var active_indexes: Array = []
+	var popup = launcher.get_popup()
 	
-	# PRIORITY 1: Pressed Mode (Pressure Plate)
-	# This mode forces the event to be a trigger/sensor on the floor.
-	if value:
-		%AllowPressureTargets.set_disabled(false)
-		%EventOption4.set_pressed(true) # Force Traversable
+	if current_page.options.event_type < 0 or current_page.options.event_type > 2:
+		current_page.options.event_type = 0
+	
+	if current_page.options.event_type == 1 or current_page.options.event_type == 2:
+		%AllowPressureTargets.set_disabled(true)
+		%EventOption4.set_pressed(false)
 		%EventOption4.set_disabled(true)
 		
-		# Restricted to contact-based triggers
+		active_indexes = [0] 
+			
+		if not selected_index in active_indexes:
+			selected_index = active_indexes[0]
+			
+		for i in launcher.get_item_count():
+			launcher.set_item_disabled(i, not i in active_indexes)
+			popup.set_item_disabled(i, not i in active_indexes)
+			
+	elif value:
+		%AllowPressureTargets.set_disabled(false)
+		%EventOption4.set_pressed(true)
+		%EventOption4.set_disabled(true)
+		
 		active_indexes = [1, 2, 6]
 		if not selected_index in active_indexes:
 			selected_index = active_indexes[0]
 			
 		for i in launcher.get_item_count():
 			launcher.set_item_disabled(i, not i in active_indexes)
+			popup.set_item_disabled(i, not i in active_indexes)
 			
-	# PRIORITY 2: Extra Options (Pickable / Moveable)
-	# Only active if Pressed mode is NOT enabled.
-	elif current_page.options.event_type != 0:
-		%AllowPressureTargets.set_disabled(true)
-		%EventOption4.set_pressed(false)
-		%EventOption4.set_disabled(true)
-		
-		if current_page.options.event_type == 1: # Pickable
-			active_indexes = [0] # 'Press Button'
-		elif current_page.options.event_type == 2: # Moveable
-			active_indexes = [1] # 'Player Touch'
-			
-		if not selected_index in active_indexes and not active_indexes.is_empty():
-			selected_index = active_indexes[0]
-			
-		for i in launcher.get_item_count():
-			launcher.set_item_disabled(i, not i in active_indexes)
-			
-	# PRIORITY 3: Default / Manual Mode
-	# Full freedom for the user when no special modes are active.
 	else:
 		%AllowPressureTargets.set_disabled(true)
 		%EventOption4.set_disabled(false)
 		
 		for i in launcher.get_item_count():
 			launcher.set_item_disabled(i, false)
+			popup.set_item_disabled(i, false)
 	
 	launcher.select(selected_index)
 	launcher.item_selected.emit(selected_index)

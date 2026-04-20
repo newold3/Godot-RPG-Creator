@@ -172,17 +172,129 @@ func _perform_player_transfer(params: Dictionary) -> void:
 	interpreter.busy3 = backup_busys[2]
 
 
+## Handles transferring the player to another map, managing carried events and synchronizing follower animations.
 func _transfer_to_oher_map(map_id: int, tile: Vector2i, direction: int, current_event: Variant, transfer_animation: Dictionary) -> void:
 	var target = current_event
 	if "is_on_vehicle" in current_event and current_event.is_on_vehicle and current_event.current_vehicle:
 		target = current_event.current_vehicle
+
+	var should_drop_carried = false
+	var carried_to_drop = null
+
+	if GameManager.current_map and GameManager.current_map.entity_manager and GameManager.game_state:
+		if not "migrated_events" in GameManager.game_state:
+			GameManager.game_state.set("migrated_events", {})
+			
+		var current_map_id = GameManager.current_map.internal_id
+		var carried_uniq_id = -1
+		
+		var player = GameManager.current_player
+		if player and player.carried_event:
+			var carried_res = player.carried_event.get("current_event")
+			if carried_res and "_uniq_id" in carried_res:
+				carried_uniq_id = carried_res._uniq_id
+				
+		for ev in GameManager.current_map.entity_manager.current_ingame_events.values():
+			if ev and is_instance_valid(ev.lpc_event) and ev.event:
+				var u_id = ev.uniq_id
+				if u_id == carried_uniq_id:
+					continue
+					
+				var o_id = ev.map_id
+				var is_liftable = false
+				var page = ev.lpc_event.get("current_event_page")
+				
+				if page and "options" in page and "type_params" in page.options:
+					var trigger = page.options.type_params.get("activation_page_type", 0)
+					if trigger > 0:
+						is_liftable = true
+						
+				if is_liftable or u_id in GameManager.game_state.migrated_events:
+					if current_map_id == o_id:
+						GameManager.game_state.migrated_events[u_id] = {
+							"original_map_id": o_id,
+							"current_map_id": current_map_id,
+							"current_pos": ev.lpc_event.global_position
+						}
+					else:
+						var cloned_resource = ev.event.duplicate(true)
+						GameManager.game_state.migrated_events[u_id] = {
+							"event_resource": cloned_resource,
+							"original_map_id": o_id,
+							"current_map_id": current_map_id,
+							"current_pos": ev.lpc_event.global_position
+						}
+
+		if player and player.carried_event:
+			var carried = player.carried_event
+			var ev_resource = carried.get("current_event")
+			
+			if ev_resource and "_uniq_id" in ev_resource:
+				var u_id = ev_resource._uniq_id
+				var o_id = current_map_id
+				var can_carry = false
+				var page = carried.get("current_event_page")
+				
+				if u_id in GameManager.game_state.migrated_events:
+					o_id = GameManager.game_state.migrated_events[u_id].original_map_id
+					
+				if page and "options" in page and "type_params" in page.options:
+					can_carry = page.options.type_params.get("can_carry_to_other_maps", false)
+					
+				if can_carry:
+					if map_id == o_id:
+						GameManager.game_state.migrated_events[u_id] = {
+							"original_map_id": o_id,
+							"current_map_id": map_id,
+							"current_pos": carried.global_position
+						}
+					else:
+						var cloned_resource = ev_resource.duplicate(true)
+						GameManager.game_state.migrated_events[u_id] = {
+							"event_resource": cloned_resource,
+							"original_map_id": o_id,
+							"current_map_id": map_id,
+							"current_pos": carried.global_position
+						}
+						
+					GameManager._pending_carried_event_uniq_id = u_id
+				else:
+					if current_map_id == o_id:
+						GameManager.game_state.migrated_events[u_id] = {
+							"original_map_id": o_id,
+							"current_map_id": current_map_id,
+							"current_pos": player.global_position
+						}
+					else:
+						var cloned_resource = ev_resource.duplicate(true)
+						GameManager.game_state.migrated_events[u_id] = {
+							"event_resource": cloned_resource,
+							"original_map_id": o_id,
+							"current_map_id": current_map_id,
+							"current_pos": player.global_position
+						}
+						
+					should_drop_carried = true
+					carried_to_drop = carried
 
 	var cam = GameManager.get_camera()
 	var was_following_player = false
 	if cam and cam.is_following(target):
 		was_following_player = true
 
+	GameManager.is_transfer_animating = true
+
 	await _start_transfer_animation(target, transfer_animation)
+	
+	if should_drop_carried and GameManager.current_player:
+		var player = GameManager.current_player
+		
+		if is_instance_valid(carried_to_drop):
+			carried_to_drop.queue_free()
+			
+		player.carried_event = null
+		if player.has_method("disable_dual_animation"):
+			player.disable_dual_animation()
 	
 	var current_teleport_data = {
 		"scale": target.scale,
@@ -216,7 +328,6 @@ func _transfer_to_oher_map(map_id: int, tile: Vector2i, direction: int, current_
 		GameManager.game_state.current_map_id = map_id
 		GameManager.change_scene(start_map_path, false, is_instant)
 	else:
-		debug_print("Starting map no found (Map with id %s). Exiting..." % map_id)
 		GameManager.change_scene("res://Scenes/EndScene/scene_end.tscn", false, is_instant)
 	
 	await GameManager.main_scene.scene_changed
@@ -257,6 +368,26 @@ func _transfer_to_oher_map(map_id: int, tile: Vector2i, direction: int, current_
 	target.modulate.a = current_teleport_data.alpha
 		
 	await _end_transfer_animation(target, transfer_animation)
+	
+	GameManager.is_transfer_animating = false
+	
+	if GameManager.current_player and "movement_history" in GameManager.current_player:
+		GameManager.current_player.movement_history.clear()
+	
+	if GameManager.current_player and GameManager.current_player.carried_event and "_pending_carried_event_uniq_id" in GameManager:
+		if GameManager._pending_carried_event_uniq_id != -1:
+			var u_id = GameManager.current_player.carried_event.current_event._uniq_id
+			var original_carried_id = map_id
+			
+			if u_id in GameManager.game_state.migrated_events:
+				original_carried_id = GameManager.game_state.migrated_events[u_id].original_map_id
+			
+			GameManager.current_map.entity_manager.inject_carried_event(GameManager.current_player.carried_event, original_carried_id)
+			
+			if u_id in GameManager.game_state.migrated_events:
+				GameManager.game_state.migrated_events[u_id].current_pos = GameManager.current_player.carried_event.global_position
+				
+			GameManager._pending_carried_event_uniq_id = -1
 
 
 

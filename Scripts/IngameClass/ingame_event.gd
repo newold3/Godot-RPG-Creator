@@ -181,13 +181,24 @@ func load_event_graphics(page: RPGEventPage, direction: int) -> void:
 	page_id = page.page_id
 	
 	var pos = Vector2i(event.x, event.y)
-	if GameManager.game_state and event_id in GameManager.game_state.current_events:
-		pos = GameManager.game_state.current_events[event_id].position
-		
-	map.set_event_position(new_scene, pos, direction)
+	var final_direction = direction
+	var is_pixel_pos = false
+	
+	if GameManager.game_state and "current_events" in GameManager.game_state and uniq_id in GameManager.game_state.current_events:
+		var e_data = GameManager.game_state.current_events[uniq_id]
+		pos = Vector2i(e_data.position)
+		is_pixel_pos = true
+		if not page.options.fixed_direction:
+			final_direction = e_data.direction
+	elif GameManager.game_state and "migrated_events" in GameManager.game_state and uniq_id in GameManager.game_state.migrated_events:
+		var m_data = GameManager.game_state.migrated_events[uniq_id]
+		if m_data.has("current_pos") and m_data.get("current_map_id", -1) == map.internal_id:
+			pos = Vector2i(m_data.current_pos)
+			is_pixel_pos = true
+			
+	map.set_event_position(new_scene, pos, final_direction, false, is_pixel_pos)
 	update_scene_properties(new_scene, page)
 	
-	# Force visual update immediately so the first rendered frame has the correct direction
 	if new_scene.has_method("run_animation"):
 		new_scene.run_animation()
 	

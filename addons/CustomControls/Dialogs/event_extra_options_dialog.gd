@@ -1,22 +1,20 @@
 @tool
 extends Window
 
-## Reference to the original options object to apply changes
 var real_options: RPGEventPageOptions
-## Local copy of options for the dialog session
 var options: RPGEventPageOptions
-## Internal flag to check if the parent page is in 'Pressed' mode
 var is_pressed_mode: bool = false
 
 var _hot_reload_timer: Timer
 var _udp_peer: PacketPeerUDP
 
-signal OK()
+signal OK(new_pressed_state: bool)
 
 
 func _ready() -> void:
 	close_requested.connect(queue_free)
 	_fill_self_switches()
+	_fill_trigger_lift_options()
 	
 	_udp_peer = PacketPeerUDP.new()
 	_udp_peer.set_dest_address("127.0.0.1", 4242)
@@ -96,14 +94,53 @@ func _fill_self_switches() -> void:
 			node2.add_item("Switch %s" % key.to_upper())
 
 
+func _fill_trigger_lift_options() -> void:
+	var node = %ActivationPageTrigger
+	node.clear()
+	
+	node.add_item(tr("Never"), 0)
+	
+	var names = {
+		1: tr("Pre-Lift"),
+		2: tr("Post-Lift"),
+		4: tr("Pre-Throw"),
+		8: tr("Post-Throw")
+	}
+	
+	var basics: Array = []
+	var combos: Array = []
+	
+	for i in range(1, 16):
+		var combo_name = ""
+		var is_first = true
+		var bits_count = 0
+		
+		for bit in [1, 2, 4, 8]:
+			if (i & bit) != 0:
+				bits_count += 1
+				if not is_first:
+					combo_name += " + "
+				combo_name += names[bit]
+				is_first = false
+		
+		if bits_count == 1:
+			basics.append({"name": combo_name, "id": i})
+		else:
+			combos.append({"name": combo_name, "id": i})
+			
+	for opt in basics:
+		node.add_item(opt.name, opt.id)
+		
+	combos.sort_custom(func(a, b): return a.name < b.name)
+	
+	for opt in combos:
+		node.add_item(opt.name, opt.id)
+
+
 func set_page_options(_options: RPGEventPageOptions, _is_pressed: bool = false) -> void:
 	real_options = _options
 	options = _options.clone()
 	is_pressed_mode = _is_pressed
-	
-	## If pressed mode is active, we force 'Normal' type in data immediately
-	if is_pressed_mode:
-		options.event_type = 0
 		
 	fill()
 
@@ -151,6 +188,21 @@ func fill() -> void:
 	%AnimationType.select(options.type_params.get("animation_type", 0))
 	%CanThrowOverObstacles.select(options.type_params.get("can_throw_over_obstacles", 0))
 	
+	var act_page_val = options.type_params.get("activation_page_type", 0)
+	var act_page_idx = 0
+	
+	for i in range(%ActivationPageTrigger.item_count):
+		if %ActivationPageTrigger.get_item_id(i) == act_page_val:
+			act_page_idx = i
+			break
+	
+	%ActivationPageTrigger.select(act_page_idx)
+	
+	%CanCarryToOtherMaps.select(
+		0 if options.type_params.get("can_carry_to_other_maps", false) \
+		else 1
+	)
+	
 	lift_image_changed()
 	
 	_update_fx_text("lift_fx")
@@ -159,32 +211,19 @@ func fill() -> void:
 
 
 func _setup_event_type_ui() -> void:
-	# Setup interactive state based on Pressed mode
-	if is_pressed_mode:
-		%TypePickableEvent.set_disabled(true)
-		%TypeMoveableEvent.set_disabled(true)
-		var msg = tr("Not available in Pressed Mode (Traversable)")
-		%TypePickableEvent.tooltip_text = msg
-		%TypeMoveableEvent.tooltip_text = msg
-		# Forcing Normal mode button: this triggers the 'toggled' signal and updates data
-		%TypeNormalEvent.button_pressed = true
-	else:
-		%TypePickableEvent.set_disabled(false)
-		%TypeMoveableEvent.set_disabled(false)
-		%TypePickableEvent.tooltip_text = ""
-		%TypeMoveableEvent.tooltip_text = ""
-		
-		# Activate the correct button from the ButtonGroup based on current data
-		match options.event_type:
-			0: %TypeNormalEvent.button_pressed = true
-			1: %TypePickableEvent.button_pressed = true
-			2: %TypeMoveableEvent.button_pressed = true
+	%TypePickableEvent.tooltip_text = tr("Disables Pressed Mode.\nForces 'Action Button' trigger.\nForces NOT Passable.")
+	%TypeMoveableEvent.tooltip_text = tr("Disables Pressed Mode.\nForces 'Action Button' trigger.\nForces NOT Passable.")
+	%TypeNormalEvent.tooltip_text = tr("Standard Event Mode.")
 	
+	match options.event_type:
+		0: %TypeNormalEvent.button_pressed = true
+		1: %TypePickableEvent.button_pressed = true
+		2: %TypeMoveableEvent.button_pressed = true
+
 	_refresh_type_params_visibility()
 
 
 func _refresh_type_params_visibility() -> void:
-	# Handle visibility of parameter containers based on selected mode
 	%PickableParams.visible = (options.event_type == 1)
 	%MoveableParams.visible = (options.event_type == 2)
 	%NoParams.visible = (options.event_type == 0)
@@ -214,7 +253,7 @@ func _on_ok_button_pressed() -> void:
 	for key in keys:
 		real_options[key] = options[key]
 
-	OK.emit()
+	OK.emit(is_pressed_mode)
 	queue_free()
 
 
@@ -309,12 +348,14 @@ func _on_type_normal_event_toggled(toggled_on: bool) -> void:
 func _on_type_lifttable_event_toggled(toggled_on: bool) -> void:
 	if not toggled_on or not options: return
 	options.event_type = 1
+	is_pressed_mode = false
 	_refresh_type_params_visibility()
 
 
 func _on_type_moveable_event_toggled(toggled_on: bool) -> void:
 	if not toggled_on or not options: return
 	options.event_type = 2
+	is_pressed_mode = false
 	_refresh_type_params_visibility()
 
 
@@ -527,3 +568,12 @@ func _on_push_offset_down_y_value_changed(value: float) -> void:
 
 func _on_push_fx_pressed() -> void:
 	open_sound_dialog("push_fx")
+
+
+func _on_activation_page_trigger_item_selected(index: int) -> void:
+	options.type_params.activation_page_type = %ActivationPageTrigger.get_item_id(index)
+
+
+func _on_can_carry_to_other_maps_item_selected(index: int) -> void:
+	if not options: return
+	options.type_params.can_carry_to_other_maps = index == 0

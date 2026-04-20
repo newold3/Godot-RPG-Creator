@@ -44,7 +44,7 @@ border_color = Color(0.14901961, 0.15686275, 0.15686275, 1)
 oversampling_override = 1.0
 title = "Event Extra Options"
 position = Vector2i(0, 36)
-size = Vector2i(700, 944)
+size = Vector2i(700, 997)
 wrap_controls = true
 transient = true
 exclusive = true
@@ -149,9 +149,14 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
-tooltip_text = "Converts this event into a liftable event. These events are set by default as \"non-passable\" and with the launcher fixed to \"Action Button.\" They use the \"Throw Strength\" parameter when the player throws them, moving the assigned tiles.
+tooltip_text = "[title]Liftable Event[/title]
+Converts this event into an object that the player can pick up, carry, and throw. When thrown, the event travels a distance determined by its \"Throw Strength\" parameter.
 
-[Note]: These events execute the commands defined on their active page once per interaction before being picked."
+[Note]: Activating this mode disables \"Pressed Mode\". It also forces the event to be Not Passable and restricts the Launcher to \"Action Button\".
+
+[Note2]: The execution of this page's commands depends on the selected \"Activation Trigger\" (e.g., Pre-Lift, Post-Lift, Pre-Throw, Post-Throw), allowing for custom logic at different stages of the lifting and throwing sequence.
+
+[Note 3]: This event is globally persistent and can be transported across different maps. Triggers and pressure plates on any map can be configured to react specifically to this event using its Unique ID (or its Original Map ID combined with its Event ID)."
 mouse_default_cursor_shape = 2
 button_group = SubResource("ButtonGroup_v8wqf")
 text = "Lifttable"
@@ -161,19 +166,17 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
-tooltip_text = "Converts this event into a movable event. These events are set by default as \"non-passable\" and with the launcher fixed to \"Player Contact.\" They use the \"Time\" parameter to move 1 tile with the player when pushed, and an \"Initial Delay\" to postpone the movement by a few frames to simulate effort.
+tooltip_text = "[title]Moveable Event[/title]
+Converts this event into a solid object that the player can push across the map grid. It uses the \"Time\" parameter to determine the speed of moving 1 tile, and an \"Initial Delay\" to postpone the movement by a few frames, simulating physical effort.
 
-[Note]: These events execute the commands defined on their active page once per interaction before being moved."
+[Note]: Activating this mode disables \"Pressed Mode\". It also forces the event to be Not Passable and restricts the Launcher to \"Player Contact\".
+
+[Note 2]: These events execute the commands defined on their active page once per interaction before being moved.
+
+[Note 3]: This event is globally persistent. If transported, triggers and pressure plates on other maps can be configured to react specifically to this event using its Unique ID (or its Original Map ID combined with its Event ID)."
 mouse_default_cursor_shape = 2
 button_group = SubResource("ButtonGroup_v8wqf")
 text = "Moveable"
-
-[node name="NewOptionsIncoming" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer5" unique_id=55575439]
-layout_mode = 2
-tooltip_text = "The \"Is Lifttable\" and \"Is Moveable\" options are future features that have not been implemented yet."
-mouse_filter = 1
-mouse_default_cursor_shape = 16
-text = "⚠️"
 
 [node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=69764578]
 custom_minimum_size = Vector2(0, 36)
@@ -192,7 +195,6 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_o7760")
 
 [node name="PickableParams" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel" unique_id=798284719]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -238,6 +240,78 @@ popup/item_0/text = "Yes"
 popup/item_0/id = 0
 popup/item_1/text = "No"
 popup/item_1/id = 1
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer9" unique_id=1931602887]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer9" unique_id=25737488]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+text = "Can carry to
+other maps:"
+
+[node name="CanCarryToOtherMaps" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer9" unique_id=2140266536 instance=ExtResource("4_eu62a")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "If disabled, the player will automatically drop this item when teleporting to another map. Highly recommended for puzzle stability."
+selected = 0
+item_count = 2
+popup/item_0/text = "Yes"
+popup/item_0/id = 0
+popup/item_1/text = "No"
+popup/item_1/id = 1
+
+[node name="HBoxContainer12" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams" unique_id=854052609]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer12" unique_id=913350626]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+text = "Activation
+page trigger:"
+
+[node name="ActivationPageTrigger" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer12" unique_id=945398286 instance=ExtResource("4_eu62a")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "This option, when enabled, allows you to throw the lifted object over any obstacle as long as the place where it lands is a passable space."
+selected = 0
+item_count = 16
+popup/item_0/text = "Never"
+popup/item_0/id = 0
+popup/item_1/text = "Pre Lift"
+popup/item_1/id = 1
+popup/item_2/text = "Post Lift"
+popup/item_2/id = 2
+popup/item_3/text = "Pre Throw"
+popup/item_3/id = 4
+popup/item_4/text = "Post Throw"
+popup/item_4/id = 8
+popup/item_5/text = "Post Lift + Post Throw"
+popup/item_5/id = 10
+popup/item_6/text = "Post Lift + Pre Throw"
+popup/item_6/id = 6
+popup/item_7/text = "Post Lift + Pre Throw + Post Throw"
+popup/item_7/id = 14
+popup/item_8/text = "Pre Lift + Post Lift"
+popup/item_8/id = 3
+popup/item_9/text = "Pre Lift + Post Lift + Post Throw"
+popup/item_9/id = 11
+popup/item_10/text = "Pre Lift + Post Lift + Pre Throw"
+popup/item_10/id = 7
+popup/item_11/text = "Pre Lift + Post Lift + Pre Throw + Post Throw"
+popup/item_11/id = 15
+popup/item_12/text = "Pre Lift + Post Throw"
+popup/item_12/id = 9
+popup/item_13/text = "Pre Lift + Pre Throw"
+popup/item_13/id = 5
+popup/item_14/text = "Pre Lift + Pre Throw + Post Throw"
+popup/item_14/id = 13
+popup/item_15/text = "Pre Throw + Post Throw"
+popup/item_15/id = 12
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams" unique_id=1609257925]
 layout_mode = 2
@@ -489,6 +563,7 @@ theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 
 [node name="MoveableParams" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel" unique_id=1790328042]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -953,6 +1028,8 @@ text = "Cancel"
 [connection signal="toggled" from="MarginContainer/VBoxContainer/HBoxContainer5/TypeMoveableEvent" to="." method="_on_type_moveable_event_toggled"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer8/AnimationType" to="." method="_on_animation_type_item_selected"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer9/CanThrowOverObstacles" to="." method="_on_can_throw_over_obstacles_item_selected"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer9/CanCarryToOtherMaps" to="." method="_on_can_carry_to_other_maps_item_selected"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer12/ActivationPageTrigger" to="." method="_on_activation_page_trigger_item_selected"]
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer/ThrowStrength" to="." method="_on_throw_strength_value_changed"]
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer2/OffsetLeftX" to="." method="_on_offset_left_x_value_changed"]
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer2/OffsetLeftY" to="." method="_on_offset_left_y_value_changed"]

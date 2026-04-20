@@ -430,7 +430,10 @@ func _start_game_mode() -> void:
 	_setup_common_events()
 	
 	parent.setup_player()
-	GameManager.show_followers(GameManager.game_state.followers_enabled, true)
+	if GameManager.current_player and GameManager.current_player.has_method("clear_movement_history"):
+		GameManager.current_player.clear_movement_history()
+		
+	GameManager.show_followers.call_deferred(GameManager.game_state.followers_enabled, true)
 	
 	if draw_shadows and shadow_manager:
 		shadow_manager.create_shadows()

@@ -324,6 +324,18 @@ func _process_follower_logic(snap: Dictionary, delta: float) -> void:
 
 func _apply_snapshot_transform(snap: Dictionary) -> void:
 	global_position = snap.pos
+	
+	if GameManager.is_transfer_animating and is_instance_valid(GameManager.current_player):
+		var player = GameManager.current_player
+		
+		scale = player.scale
+		rotation = player.rotation
+		modulate.a = player.modulate.a
+		z_index = snap.z_index
+		current_direction = snap.direction
+		
+		return
+		
 	scale = snap.scale
 	rotation = snap.rotation
 	
