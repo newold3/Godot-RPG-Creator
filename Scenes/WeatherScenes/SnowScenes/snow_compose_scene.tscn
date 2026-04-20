@@ -7,12 +7,12 @@
 [ext_resource type="AudioStream" uid="uid://lw8is4kyp452" path="res://Assets/Sounds/BGS/wind1.ogg" id="4_ldfpy"]
 [ext_resource type="PackedScene" uid="uid://c12tmpb4msfdw" path="res://Scenes/WeatherScenes/SnowScenes/tileable_snow.tscn" id="5_jyh6l"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_kmcow"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_u3ft1"]
 viewport_path = NodePath("MainViewport")
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_kv720"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_7fy7y"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_kmcow"]
 viewport_path = NodePath("TrailViewport")
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_hclb4"]
@@ -28,7 +28,7 @@ modulate_scene = Color(0.52, 0.52, 0.52, 1)
 
 [node name="TrailScene" parent="." unique_id=1643510112 instance=ExtResource("2_u3ft1")]
 unique_name_in_owner = true
-texture = SubResource("ViewportTexture_kmcow")
+texture = SubResource("ViewportTexture_u3ft1")
 
 [node name="TrailScene2" parent="." unique_id=1656552679 instance=ExtResource("1_1bw8m")]
 unique_name_in_owner = true
@@ -36,7 +36,7 @@ visible = false
 self_modulate = Color(1, 1, 1, 0.477)
 material = SubResource("CanvasItemMaterial_kv720")
 position = Vector2(0, -1)
-texture = SubResource("ViewportTexture_7fy7y")
+texture = SubResource("ViewportTexture_kmcow")
 
 [node name="SnowScene" parent="." unique_id=400606771 instance=ExtResource("2_q71wq")]
 unique_name_in_owner = true

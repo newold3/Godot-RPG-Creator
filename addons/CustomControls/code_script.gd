@@ -222,7 +222,7 @@ var command_codes = {
 	# Code 67 parameters { duration, power }
 	50: {"command_code" : 67, "dialog" : "shake_screen_dialog"},
 	# Add or Remove Weather Scene (Code 68)
-	# Code 68 parameters { type, id, scene }
+	# Code 68 parameters { type, id, is_persistent, scene }
 	51: {"command_code" : 68, "dialog" : "set_weather_effects_dialog"},
 	# Change Transparency (Code 69)
 	# Code 69 parameters { value }

@@ -117,6 +117,8 @@ func setup_events() -> void:
 		if not is_migrated_away:
 			events_to_spawn.append(ev)
 			
+	var cached_external_collections: Dictionary = {}
+			
 	for u_id in migrated_data:
 		var m_data = migrated_data[u_id]
 		if m_data.current_map_id == map.internal_id and m_data.original_map_id != map.internal_id:
@@ -125,7 +127,19 @@ func setup_events() -> void:
 				if carried_res and carried_res._uniq_id == u_id:
 					continue
 					
-			events_to_spawn.append(m_data.event_resource)
+			var orig_map_id = m_data.original_map_id
+			if not orig_map_id in cached_external_collections:
+				var file_path = "res://data/MapEvents/Map_%s_events.tres" % str(orig_map_id)
+				if ResourceLoader.exists(file_path):
+					cached_external_collections[orig_map_id] = load(file_path)
+				else:
+					cached_external_collections[orig_map_id] = null
+					
+			var collection = cached_external_collections[orig_map_id]
+			if collection and collection.has_method("get_event_by_uniq_id"):
+				var found_event = collection.get_event_by_uniq_id(u_id)
+				if found_event:
+					events_to_spawn.append(found_event.duplicate(true))
 	
 	for ev: RPGEvent in events_to_spawn:
 		ev.initialize_page_ids()
@@ -143,6 +157,12 @@ func setup_events() -> void:
 				ingame_event.lpc_event.current_direction = e_data.direction
 				if map:
 					map.update_event_position_in_layout(ingame_event.lpc_event)
+			elif ev._uniq_id in migrated_data and migrated_data[ev._uniq_id].current_map_id == map.internal_id:
+				var m_data = migrated_data[ev._uniq_id]
+				if "current_pos" in m_data:
+					ingame_event.lpc_event.global_position = m_data.current_pos
+					if map:
+						map.update_event_position_in_layout(ingame_event.lpc_event)
 			
 			register_pressable_event(ingame_event.event)
 			
@@ -363,16 +383,51 @@ func get_overlapped_vehicle_number(pos: Vector2i) -> int:
 	return n
 
 
-func add_weather_scene(id: int, weather_scene: Node) -> void:
+func add_weather_scene(id: int, weather_scene: Node, force_hidden: bool = false, is_reinject: bool = false) -> void:
 	remove_weather_scene(id)
 	current_ingame_weather_scenes[id] = weather_scene
-	weather_scene.visible = false
+	
 	map.add_child(weather_scene)
-	await map.get_tree().process_frame
-	await map.get_tree().process_frame
-	await map.get_tree().process_frame
+	
+	var takes_args = false
+	for method in weather_scene.get_method_list():
+		if method.name == "start":
+			takes_args = method.args.size() > 0
+			break
+			
+	if is_reinject:
+		if weather_scene.has_method("start"):
+			if takes_args:
+				weather_scene.start(true)
+			else:
+				weather_scene.start()
+		weather_scene.set_meta("started", true)
+	else:
+		weather_scene.visible = false
+		if weather_scene.has_method("start"):
+			if takes_args:
+				weather_scene.start(false)
+			else:
+				weather_scene.start()
+		weather_scene.set_meta("started", true)
+		
+		await map.get_tree().process_frame
+		await map.get_tree().process_frame
+		await map.get_tree().process_frame
+		
 	if is_instance_valid(weather_scene):
-		weather_scene.visible = true
+		if force_hidden:
+			if weather_scene.has_method("pause_weather"):
+				weather_scene.pause_weather()
+			else:
+				weather_scene.hide()
+				weather_scene.process_mode = Node.PROCESS_MODE_DISABLED
+		else:
+			if weather_scene.has_method("resume_weather"):
+				weather_scene.resume_weather()
+			else:
+				weather_scene.visible = true
+				weather_scene.process_mode = Node.PROCESS_MODE_INHERIT
 
 
 func remove_weather_scene(id: int) -> void:

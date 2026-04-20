@@ -55,6 +55,9 @@ extends Resource
 # { uniq_id: { "event_resource": RPGEvent, "original_map_id": int, "current_map_id": int } }
 @export var migrated_events: Dictionary = {}
 
+@export var custom_map_name_scene_path: String = ""
+@export var active_weathers: Dictionary = {}
+
 
 # When load this variable is populated and events used it to determine active page and position
 var current_events: Dictionary = {}

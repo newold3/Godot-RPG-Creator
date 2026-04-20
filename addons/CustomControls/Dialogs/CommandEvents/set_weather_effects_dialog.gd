@@ -17,6 +17,7 @@ func set_data() -> void:
 	else:
 		%RemoveEffect.set_pressed_no_signal(true)
 	%ID.value = parameters[0].parameters.get("id", 1)
+	%IsPersistent.set_pressed_no_signal(parameters[0].parameters.get("is_persistent", true))
 	current_weather_scene = parameters[0].parameters.get("scene", "")
 	%WeatherScene.text = current_weather_scene if current_weather_scene else "select wheater scene..."
 	
@@ -37,6 +38,7 @@ func build_command_list() -> Array[RPGEventCommand]:
 
 	commands[-1].parameters.type = 0 if %AddEffect.is_pressed() else 1
 	commands[-1].parameters.id = %ID.value
+	commands[-1].parameters.is_persistent = %IsPersistent.is_pressed()
 	commands[-1].parameters.scene = "" if commands[-1].parameters.type == 1 else current_weather_scene
 	
 	return commands

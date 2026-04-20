@@ -2372,6 +2372,9 @@ func _format_command_68(data: FormatData) -> Array:
 		command_text = "Add Weather scene %s with id %s" % [scene.get_file(), id]
 	else:
 		command_text = "Remove Weather scene with id %s" % id
+	var is_persistent = data.command.parameters.get("is_persistent", true)
+	if is_persistent:
+		command_text += " (Is Persistent)"
 	return [{
 		"texts": [
 			{

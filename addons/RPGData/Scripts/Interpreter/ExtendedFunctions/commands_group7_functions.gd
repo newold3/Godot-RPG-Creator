@@ -118,19 +118,29 @@ func _command_0067() -> void:
 # Command Add or Remove Weather Scene (Code 68), button_id = 51
 # Code 68 parameters { type, id, scene }
 func _command_0068() -> void:
-	debug_print("Processing command: Add or Remove Weather Scene (code 68)")
-	
-	if not GameManager.current_map:
+	if not GameManager.current_map or not GameManager.game_state:
 		return
 
 	var type = current_command.parameters.get("type", 0)
 	var id = current_command.parameters.get("id", 0)
 	var scene = current_command.parameters.get("scene", "")
+	var is_persistent = current_command.parameters.get("is_persistent", true)
 
 	if type == 0:
+		if not "active_weathers" in GameManager.game_state:
+			GameManager.game_state.set("active_weathers", {})
+		
+		GameManager.game_state.active_weathers[id] = {
+			"path": scene,
+			"is_persistent": is_persistent
+		}
+		
 		interpreter.request_async_scene_load(scene, current_command.parameters, _on_weather_scene_loaded)
 
 	elif type == 1:
+		if "active_weathers" in GameManager.game_state and id in GameManager.game_state.active_weathers:
+			GameManager.game_state.active_weathers.erase(id)
+			
 		GameManager.current_map.remove_weather_scene(id)
 
 
@@ -143,6 +153,12 @@ func _on_weather_scene_loaded(packed_scene: PackedScene, data: Dictionary) -> vo
 	weather_scene.set_meta("creation_properties", data)
 	weather_scene.add_to_group("_map_weather_scene")
 	
-	var id = data.get("id", 0)
-	GameManager.current_map.add_weather_scene(id, weather_scene)
+	var id = int(data.get("id", 0))
+	var map = GameManager.current_map
+	var is_map_indoor = map.get("is_indoor") if "is_indoor" in map else false
+	var is_persistent = data.get("is_persistent", true)
+	
+	var force_hidden = is_map_indoor and is_persistent
+	
+	await GameManager.current_map.add_weather_scene(id, weather_scene, force_hidden)
 	GameManager.interpreter_last_scene_created = weather_scene

@@ -99,6 +99,9 @@ var action_manager: RPGActionManager
 var is_transfer_animating: bool = false
 
 var hand_cursor_path: String = "res://Scenes/GUI/default_hand_cursor.tscn"
+
+@warning_ignore("unused_private_class_variable")
+var _persistent_weather_pool: Dictionary = {}
 #endregion
 
 
@@ -448,6 +451,56 @@ func get_shop_timer(shop_id: String) -> RPGShopTimer:
 
 
 #region Map & Events
+## Extracts persistent weather scenes before the map is destroyed and removes non-persistent ones from state.
+func extract_persistent_weather(map: RPGMap) -> void:
+	if not game_state or not "active_weathers" in game_state: return
+	if not map or not map.entity_manager: return
+	
+	var sanitized_weathers = {}
+	for key in game_state.active_weathers.keys():
+		sanitized_weathers[int(key)] = game_state.active_weathers[key]
+	game_state.active_weathers = sanitized_weathers
+	
+	var em = map.entity_manager
+	var weathers_to_delete_from_state = []
+	
+	for _id in em.current_ingame_weather_scenes.keys():
+		var id = int(_id)
+		var w_state = game_state.active_weathers.get(id)
+		
+		if w_state and w_state.get("is_persistent", false):
+			var node = em.current_ingame_weather_scenes[id]
+			if is_instance_valid(node) and node.has_method("hibernate"):
+				node.hibernate()
+		else:
+			weathers_to_delete_from_state.append(id)
+			
+	for id in weathers_to_delete_from_state:
+		game_state.active_weathers.erase(id)
+
+
+## Injects the salvaged weather nodes into the new map and handles indoor/outdoor logic.
+func inject_persistent_weather(new_map: RPGMap) -> void:
+	if not game_state or not "active_weathers" in game_state: return
+	if not new_map or not new_map.entity_manager: return
+	
+	var sanitized_weathers = {}
+	for key in game_state.active_weathers.keys():
+		sanitized_weathers[int(key)] = game_state.active_weathers[key]
+	game_state.active_weathers = sanitized_weathers
+	
+	var em = new_map.entity_manager
+	var is_map_indoor = new_map.get("is_indoor") if "is_indoor" in new_map else false
+	
+	for _id in game_state.active_weathers.keys():
+		var id = int(_id)
+		var path = game_state.active_weathers[id].get("path", "")
+		
+		if not path.is_empty() and ResourceLoader.exists(path):
+			var node = load(path).instantiate()
+			em.add_weather_scene(id, node, is_map_indoor, true)
+
+
 func get_empty_texture() -> Texture2D:
 	if has_meta("empty_texture"): return get_meta("empty_texture")
 	
@@ -457,20 +510,43 @@ func get_empty_texture() -> Texture2D:
 	return get_meta("empty_texture")
 
 
+
 func show_map_name(map_name: String, initial_delay: float = 0.0) -> void:
-	var scene_path = RPGSYSTEM.database.system.game_scenes.get("Show Map Name", "")
-	if AssetManager.exists(scene_path):
-		var map = current_map
-		if map:
-			if initial_delay > 0.0:
-				await get_tree().create_timer(initial_delay).timeout
-			if is_instance_valid(map) and not map.is_queued_for_deletion():
-				var scn = load(scene_path).instantiate()
-				map.add_child(scn)
-				if scn.has_method("set_map_name"):
-					scn.set_map_name(map_name.capitalize())
-				if scn.has_method("start"):
-					scn.start()
+	if not GameManager.game_state:
+		return
+		
+	var scene_path: String = GameManager.game_state.custom_map_name_scene_path
+	
+	if scene_path.is_empty():
+		scene_path = RPGSYSTEM.database.system.game_scenes.get("Show Map Name", "")
+		GameManager.game_state.custom_map_name_scene_path = scene_path
+	
+	if scene_path.is_empty() or not AssetManager.exists(scene_path):
+		return
+
+	var map = current_map
+	
+	if map:
+		ResourceLoader.load_threaded_request(scene_path)
+		if initial_delay > 0.0:
+			await get_tree().create_timer(initial_delay).timeout
+		
+		while ResourceLoader.load_threaded_get_status(scene_path) != ResourceLoader.ThreadLoadStatus.THREAD_LOAD_LOADED:
+			await get_tree().process_frame
+			
+		if is_instance_valid(map) and not map.is_queued_for_deletion():
+			var scn_packed = ResourceLoader.load_threaded_get(scene_path)
+			var scn = scn_packed.instantiate()
+			
+			map.add_child(scn)
+			
+			if scn.has_method("set_map_name"):
+				scn.set_map_name(map_name.capitalize())
+			
+			await get_tree().process_frame
+				
+			if is_instance_valid(scn) and scn.has_method("start"):
+				scn.start()
 
 
 func get_ingame_events() -> Array[IngameEvent]:

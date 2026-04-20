@@ -2,6 +2,7 @@ extends GPUParticles2D
 
 
 func _ready() -> void:
+	texture = load("res://Assets/EffekEffects/tktk02/Parts/SnowCrystals_S.png")
 	finished.connect(queue_free)
 
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://cuokjbf8erg0p"]
+[gd_scene format=3 uid="uid://cuokjbf8erg0p"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_erdf4"]
 [ext_resource type="Script" uid="uid://dwiba42ay0xb4" path="res://addons/CustomControls/Dialogs/CommandEvents/set_weather_effects_dialog.gd" id="2_ll5j2"]
@@ -21,7 +21,7 @@ gradient = SubResource("Gradient_uww37")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fysoy"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dt331"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -39,17 +39,17 @@ corner_radius_bottom_left = 12
 [sub_resource type="Gradient" id="Gradient_ctwx1"]
 colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_wm07h"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ht5a0"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_ctwx1")
 fill_from = Vector2(0.542735, 0.995726)
 fill_to = Vector2(0.58547, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fw0ys"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wgmy3"]
 resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_wm07h")
+texture = SubResource("GradientTexture2D_ht5a0")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7fjtw"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xmi12"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -64,7 +64,7 @@ corner_radius_bottom_left = 12
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_885ge"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g38pp"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4ba5a"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -79,17 +79,17 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_uc6i8"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_yo8by"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_ctwx1")
 fill_from = Vector2(0.542735, 0.995726)
 fill_to = Vector2(0.58547, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wovj5"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4tplv"]
 resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_uc6i8")
+texture = SubResource("GradientTexture2D_yo8by")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w8go5"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ffxlv"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -102,7 +102,7 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wat8g"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_co4uy"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -117,17 +117,17 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_relqq"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_dy011"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_ctwx1")
 fill_from = Vector2(0.542735, 0.995726)
 fill_to = Vector2(0.58547, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nd4b7"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_slleh"]
 resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_relqq")
+texture = SubResource("GradientTexture2D_dy011")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1jd5p"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qst2s"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -196,11 +196,11 @@ texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[node name="SetWeatherEffectsDialog" type="Window"]
+[node name="SetWeatherEffectsDialog" type="Window" unique_id=438931307]
 oversampling_override = 1.0
 title = "Weather Effects"
 position = Vector2i(0, 36)
-size = Vector2i(500, 305)
+size = Vector2i(503, 340)
 wrap_controls = true
 transient = true
 exclusive = true
@@ -209,7 +209,7 @@ min_size = Vector2i(0, 220)
 theme = ExtResource("1_erdf4")
 script = ExtResource("2_ll5j2")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1693122604]
 material = SubResource("CanvasItemMaterial_iemuh")
 anchors_preset = 15
 anchor_right = 1.0
@@ -218,7 +218,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_j32f4")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1477123769]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -231,27 +231,30 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=112407969]
 layout_mode = 2
 
-[node name="OperationPanel" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_ud8oq")]
+[node name="OperationPanel" parent="MarginContainer/VBoxContainer" unique_id=722074857 instance=ExtResource("3_ud8oq")]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_fysoy")
-style1 = SubResource("StyleBoxFlat_fysoy")
-style2 = SubResource("StyleBoxTexture_fw0ys")
-style3 = SubResource("StyleBoxFlat_7fjtw")
+theme_override_styles/panel = SubResource("StyleBoxFlat_dt331")
+style1 = SubResource("StyleBoxFlat_dt331")
+style2 = SubResource("StyleBoxTexture_wgmy3")
+style3 = SubResource("StyleBoxFlat_xmi12")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/OperationPanel"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/OperationPanel" unique_id=1828217380]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/OperationPanel/MarginContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/OperationPanel/MarginContainer" unique_id=1028778568]
 layout_mode = 2
 
-[node name="AddEffect" type="CheckBox" parent="MarginContainer/VBoxContainer/OperationPanel/MarginContainer/VBoxContainer"]
+[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/OperationPanel/MarginContainer/VBoxContainer2" unique_id=2093281889]
+layout_mode = 2
+
+[node name="AddEffect" type="CheckBox" parent="MarginContainer/VBoxContainer/OperationPanel/MarginContainer/VBoxContainer2/VBoxContainer" unique_id=1261160768]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -260,7 +263,7 @@ mouse_default_cursor_shape = 2
 button_group = SubResource("ButtonGroup_885ge")
 text = "Add Effect"
 
-[node name="RemoveEffect" type="CheckBox" parent="MarginContainer/VBoxContainer/OperationPanel/MarginContainer/VBoxContainer"]
+[node name="RemoveEffect" type="CheckBox" parent="MarginContainer/VBoxContainer/OperationPanel/MarginContainer/VBoxContainer2/VBoxContainer" unique_id=255314930]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -269,60 +272,70 @@ mouse_default_cursor_shape = 2
 button_group = SubResource("ButtonGroup_885ge")
 text = "Remove Effect"
 
-[node name="EffectIDPanel" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_ud8oq")]
+[node name="IsPersistent" type="CheckBox" parent="MarginContainer/VBoxContainer/OperationPanel/MarginContainer/VBoxContainer2" unique_id=588921063]
+unique_name_in_owner = true
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_g38pp")
-style1 = SubResource("StyleBoxFlat_g38pp")
-style2 = SubResource("StyleBoxTexture_wovj5")
-style3 = SubResource("StyleBoxFlat_w8go5")
+size_flags_horizontal = 3
+tooltip_text = "The weather effect persists across maps until you use a command to remove the effect with this ID
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/EffectIDPanel"]
+[Note]: Maps set to “is indoor” will never have weather effects."
+mouse_default_cursor_shape = 2
+button_pressed = true
+text = "Is Persistent"
+
+[node name="EffectIDPanel" parent="MarginContainer/VBoxContainer" unique_id=1067148369 instance=ExtResource("3_ud8oq")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_4ba5a")
+style1 = SubResource("StyleBoxFlat_4ba5a")
+style2 = SubResource("StyleBoxTexture_4tplv")
+style3 = SubResource("StyleBoxFlat_ffxlv")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/EffectIDPanel" unique_id=1658571445]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/EffectIDPanel/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/EffectIDPanel/MarginContainer" unique_id=1596687343]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/EffectIDPanel/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/EffectIDPanel/MarginContainer/VBoxContainer" unique_id=1114279717]
 layout_mode = 2
 text = "Effect ID"
 
-[node name="ID" parent="MarginContainer/VBoxContainer/EffectIDPanel/MarginContainer/VBoxContainer" instance=ExtResource("4_thd6d")]
+[node name="ID" parent="MarginContainer/VBoxContainer/EffectIDPanel/MarginContainer/VBoxContainer" unique_id=2136711498 instance=ExtResource("4_thd6d")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "ID of the weather scene to be added to or removed from the current map"
 min_value = 1.0
-value = 1.0
 allow_greater = true
 _custom_value = 0.0
 
-[node name="WeatherScenePanel" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_ud8oq")]
+[node name="WeatherScenePanel" parent="MarginContainer/VBoxContainer" unique_id=779490240 instance=ExtResource("3_ud8oq")]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_wat8g")
-style1 = SubResource("StyleBoxFlat_wat8g")
-style2 = SubResource("StyleBoxTexture_nd4b7")
-style3 = SubResource("StyleBoxFlat_1jd5p")
+theme_override_styles/panel = SubResource("StyleBoxFlat_co4uy")
+style1 = SubResource("StyleBoxFlat_co4uy")
+style2 = SubResource("StyleBoxTexture_slleh")
+style3 = SubResource("StyleBoxFlat_qst2s")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/WeatherScenePanel"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/WeatherScenePanel" unique_id=19183062]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/WeatherScenePanel/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/WeatherScenePanel/MarginContainer" unique_id=1756635117]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/WeatherScenePanel/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/WeatherScenePanel/MarginContainer/VBoxContainer" unique_id=1145213504]
 layout_mode = 2
 text = "Weather Scene"
 
-[node name="WeatherScene" parent="MarginContainer/VBoxContainer/WeatherScenePanel/MarginContainer/VBoxContainer" instance=ExtResource("5_2kahn")]
+[node name="WeatherScene" parent="MarginContainer/VBoxContainer/WeatherScenePanel/MarginContainer/VBoxContainer" unique_id=1963661204 instance=ExtResource("5_2kahn")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -331,18 +344,18 @@ size_flags_vertical = 4
 tooltip_text = "Choose the weather scene to be added to the current map"
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1183804661]
 layout_mode = 2
 size_flags_vertical = 8
 theme_override_constants/separation = 12
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1949170893]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 alignment = 1
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_eb6nj")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=685096630 instance=ExtResource("5_eb6nj")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
@@ -354,7 +367,7 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_occp0")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_iu3fr")
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_eb6nj")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=731356633 instance=ExtResource("5_eb6nj")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
@@ -366,8 +379,8 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_gommh")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_yd8hk")
 text = "CANCEL"
 
-[connection signal="toggled" from="MarginContainer/VBoxContainer/OperationPanel/MarginContainer/VBoxContainer/AddEffect" to="." method="_on_add_effect_toggled"]
-[connection signal="toggled" from="MarginContainer/VBoxContainer/OperationPanel/MarginContainer/VBoxContainer/RemoveEffect" to="." method="_on_remove_effect_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/OperationPanel/MarginContainer/VBoxContainer2/VBoxContainer/AddEffect" to="." method="_on_add_effect_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/OperationPanel/MarginContainer/VBoxContainer2/IsPersistent" to="." method="_on_is_persistent_toggled"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/WeatherScenePanel/MarginContainer/VBoxContainer/WeatherScene" to="." method="_on_weather_scene_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

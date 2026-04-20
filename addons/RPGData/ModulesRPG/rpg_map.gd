@@ -60,6 +60,8 @@ extends Node2D
 @export_category("Map Fields")
 ## Allows you to configure how the map name is displayed when you open it.
 @export_enum("ALWAYS", "ONCE", "NEVER") var show_map_name: int = 0
+## Defines if this map is considered an indoor area, pausing persistent weather effects automatically.
+@export var is_indoor: bool = false
 ## Specify a custom name for the map, or leave it blank to use the map node's name as the "map name"
 @export var custom_map_name: String = ""
 ## Music that will be played when playing this map
@@ -189,6 +191,8 @@ var layout_helper: IngameMapLayoutHelper
 var passability_helper: IngameMapPassabilityHelper
 var region_manager: IngameMapRegionManager
 
+var _temp_events_backup: RPGEvents
+
 const GENERIC_EVENT_SCENE_PATH = "res://addons/rpg_character_creator/Other/generic_lpc_base_scene.tscn"
 const GENERIC_EVENT_SCRIPT_PATH = "res://addons/rpg_character_creator/Other/generic_lpc_base.gd"
 #endregion
@@ -226,6 +230,8 @@ func _ready() -> void:
 		"environment": find_child("Environment"),
 		"overlay": find_child("Overlay")
 	}
+	
+	_load_external_events()
 	
 	shadow_manager = IngameMapShadowManager.new(self)
 	entity_manager = IngameMapEntityManager.new(self)
@@ -295,7 +301,40 @@ func _notification(what: int) -> void:
 			rpg_map_info.fix_maps([self])
 		
 		_bake_keot_data_fast()
+		_save_external_events()
+	
+	elif what == NOTIFICATION_EDITOR_POST_SAVE:
+		if _temp_events_backup:
+			events = _temp_events_backup
+			_temp_events_backup = null
 
+
+func _get_events_file_path() -> String:
+	return "res://data/MapEvents/Map_%s_events.tres" % str(internal_id)
+
+
+func _load_external_events() -> void:
+	if events and "events" in events and not events.events.is_empty():
+		return
+		
+	var file_path = _get_events_file_path()
+	if ResourceLoader.exists(file_path):
+		events = load(file_path)
+
+
+func _save_external_events() -> void:
+	if not events or ("events" in events and events.events.is_empty()):
+		return
+		
+	var dir = DirAccess.open("res://")
+	if not dir.dir_exists("data/MapEvents"):
+		dir.make_dir_recursive("data/MapEvents")
+		
+	var file_path = _get_events_file_path()
+	ResourceSaver.save(events, file_path)
+	
+	_temp_events_backup = events
+	events = RPGEvents.new()
 
 
 func _validate_property(property):
@@ -1019,8 +1058,8 @@ func get_overlapped_vehicle_number(pos: Vector2i) -> int:
 
 
 
-func add_weather_scene(id: int, weather_scene: Node) -> void:
-	if entity_manager: entity_manager.add_weather_scene(id, weather_scene)
+func add_weather_scene(id: int, weather_scene: Node, force_hidden: bool = false, is_reinject: bool = false) -> void:
+	if entity_manager: await entity_manager.add_weather_scene(id, weather_scene, force_hidden, is_reinject)
 
 
 

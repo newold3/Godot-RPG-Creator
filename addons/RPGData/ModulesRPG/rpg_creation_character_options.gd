@@ -48,7 +48,7 @@ func get_class():
 @export var create_equipment_parts: bool = false
 
 ## Folder path for equipment data.
-@export var equipment_folder: String = "res://Data/Equipment/"
+@export var equipment_folder: String = "res://data/Equipment/"
 
 ## Whether to create equipment set.
 @export var create_equipment_set: bool = false

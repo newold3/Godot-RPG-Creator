@@ -1,6 +1,5 @@
-[gd_scene load_steps=8 format=3 uid="uid://bbhf2da6o2mbr"]
+[gd_scene format=3 uid="uid://bbhf2da6o2mbr"]
 
-[ext_resource type="Texture2D" uid="uid://c6o85mk21ixvk" path="res://Assets/EffekEffects/tktk02/Parts/SnowCrystals_S.png" id="1_sv3vj"]
 [ext_resource type="Script" uid="uid://qxfe2uxflfrr" path="res://Scenes/WeatherScenes/SnowScenes/snow_impact.gd" id="2_lewp6"]
 
 [sub_resource type="Curve" id="Curve_rmo36"]
@@ -39,16 +38,15 @@ damping_max = 56.843
 scale_curve = SubResource("CurveTexture_ftnln")
 alpha_curve = SubResource("CurveTexture_mmwgr")
 
-[node name="SnowImpact" type="GPUParticles2D"]
+[node name="SnowImpact" type="GPUParticles2D" unique_id=2021493611]
 z_index = 50
 z_as_relative = false
 emitting = false
 amount = 32
-process_material = SubResource("ParticleProcessMaterial_6tx73")
-texture = ExtResource("1_sv3vj")
 lifetime = 3.2
 one_shot = true
 explosiveness = 1.0
 randomness = 1.0
 local_coords = true
+process_material = SubResource("ParticleProcessMaterial_6tx73")
 script = ExtResource("2_lewp6")

@@ -17,7 +17,11 @@ func adjust_to_the_map() -> void:
 	if map:
 		var map_rect = map.get_used_rect(false)
 		global_position = map_rect.position
-		global_scale = Vector2(map_rect.size) / texture.get_size()
+		var vp = get_node_or_null("%SubViewport")
+		var tex_size = vp.size if vp else (texture.get_size() if texture else Vector2(1, 1))
+		if tex_size == Vector2.ZERO: tex_size = Vector2(1, 1)
+		global_scale = Vector2(map_rect.size) / tex_size
 		
 		var mat: ShaderMaterial = %MainSprite.get_material()
-		mat.set_shader_parameter("nowflake_scale", Vector2(1.0 / global_scale.x * 2.0, 1.0 / global_scale.y * 2.0))
+		if mat:
+			mat.set_shader_parameter("nowflake_scale", Vector2(1.0 / global_scale.x * 2.0, 1.0 / global_scale.y * 2.0))

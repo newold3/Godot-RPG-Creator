@@ -22,6 +22,10 @@ const MIN_SHADOW_OPACITY = 0.4
 
 var shadow_container
 
+@onready var bgs_player: AudioStreamPlayer = %BGSPlayer
+
+
+
 
 func _ready() -> void:
 	set_process(false)
@@ -30,32 +34,46 @@ func _ready() -> void:
 		while !shadow_container:
 			shadow_container = get_tree().get_first_node_in_group("dynamic_shadow_container")
 			await get_tree().process_frame
-		start()
 
 
-func start() -> void:
-	await get_tree().process_frame
-	await get_tree().process_frame
+func start(skip_animation: bool = false) -> void:
+	shadow_container = get_tree().get_first_node_in_group("dynamic_shadow_container")
+	var orphaned_audio = GameManager.get_node_or_null("WeatherAudio_Snow")
+	
+	if skip_animation and orphaned_audio:
+		var old_pos = orphaned_audio.get_meta("old_pos", 0.0)
+		bgs_player.volume_db = orphaned_audio.volume_db
+		bgs_player.play(old_pos)
+		orphaned_audio.queue_free()
+	elif skip_animation and not orphaned_audio:
+		bgs_player.volume_db = -80.0
+		bgs_player.play()
+	elif not skip_animation:
+		bgs_player.volume_db = -80.0
+		bgs_player.play()
 	
 	var nodes = [%TrailScene, %SnowScene, %TileableSnow]
 	
-	%BGSPlayer.volume_db = -80
-	%BGSPlayer.play()
-	
-	var t = create_tween()
-	t.set_parallel(true)
-	
-	t.tween_property(%BGSPlayer, "volume_db", 0.0, 4.5)
-	t.tween_property(shadow_container, "modulate:a", MIN_SHADOW_OPACITY, 4.5)
-	
-	for node in nodes:
-		node.visible = true
-		node.modulate.a = 0.0
-		t.tween_property(node, "modulate:a", 1.0, 4.5)
-	
-	GameManager.set_weather_color(modulate_scene, 2.5)
-	
-	t.tween_callback(set_process.bind(true)).set_delay(2.5)
+	if skip_animation:
+		if shadow_container:
+			shadow_container.modulate.a = MIN_SHADOW_OPACITY
+		for node in nodes:
+			node.visible = true
+			node.modulate.a = 1.0
+		GameManager.set_weather_color(modulate_scene, 0.0)
+		set_process(true)
+	else:
+		var t = create_tween()
+		t.set_parallel(true)
+		t.tween_property(bgs_player, "volume_db", 0.0, 4.5)
+		if shadow_container:
+			t.tween_property(shadow_container, "modulate:a", MIN_SHADOW_OPACITY, 4.5)
+		for node in nodes:
+			node.visible = true
+			node.modulate.a = 0.0
+			t.tween_property(node, "modulate:a", 1.0, 4.5)
+		GameManager.set_weather_color(modulate_scene, 2.5)
+		t.tween_callback(set_process.bind(true)).set_delay(2.5)
 
 
 func end() -> void:
@@ -65,6 +83,7 @@ func end() -> void:
 
 
 func _process(_delta: float) -> void:
+	if not visible: return
 	var luck = randi() % 200
 	if luck == 0:
 		animate_wind_pitch()
@@ -92,4 +111,33 @@ func create_impact() -> void:
 
 func animate_wind_pitch() -> void:
 	var t = create_tween()
-	t.tween_property(%BGSPlayer, "pitch_scale", randf_range(0.8, 1.2), 0.5)
+	t.tween_property(bgs_player, "pitch_scale", randf_range(0.8, 1.2), 0.5)
+
+
+func pause_weather() -> void:
+	hide()
+	var node = bgs_player
+	var t = node.create_tween()
+	t.tween_property(node, "volume_db", -60.0, 0.8)
+	set_process(false)
+
+
+func resume_weather() -> void:
+	if not bgs_player.playing:
+		bgs_player.volume_db = -80.0
+		bgs_player.play()
+		
+	var t = create_tween()
+	t.tween_property(bgs_player, "volume_db", 0.0, 1.5)
+	
+	set_process(true)
+
+
+func hibernate() -> void:
+	if bgs_player.playing:
+		var audio_node = bgs_player
+		var playback_pos = audio_node.get_playback_position()
+		audio_node.set_meta("old_pos", playback_pos)
+		audio_node.reparent(GameManager)
+		audio_node.name = "WeatherAudio_Snow"
+		audio_node.play(playback_pos)

@@ -134,6 +134,16 @@ func change_scene(path: String, destroy_gui: bool = false, is_instant: bool = fa
 	
 	if _current_scene_loaded and _current_scene_loaded is RPGMap:
 		await _current_scene_loaded.map_started
+		
+		if _current_scene_loaded.is_indoor:
+			for child in GameManager.get_children():
+				if child.name.begins_with("WeatherAudio_"):
+					child.name = "FadingAudio_" + str(child.get_instance_id())
+					var t = GameManager.create_tween()
+					t.tween_property(child, "volume_db", -80.0, 2.0)
+					t.tween_callback(child.queue_free)
+		
+		GameManager.inject_persistent_weather(_current_scene_loaded)
 		main_scene.get_main_camera().fast_reposition.call_deferred()
 		
 	if GameManager.game_state:

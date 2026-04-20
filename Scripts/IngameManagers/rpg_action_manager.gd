@@ -46,12 +46,15 @@ enum EffectCode {
 }
 
 
+@warning_ignore("unused_signal")
 signal action_success(target: Variant, changes: Dictionary)
 
 
+@warning_ignore("unused_signal")
 signal action_failure(target: Variant)
 
 
+@warning_ignore("unused_signal")
 signal action_canceled(target: Variant)
 
 
@@ -168,7 +171,7 @@ func _simulate_generic(user: Variant, target: GameActor, data: Variant) -> Dicti
 	
 	for effect in data.effects:
 		var val2 = int(effect.value2)
-		var val3 = effect.value3 if "value3" in effect else 0.0
+		var _val3 = effect.value3 if "value3" in effect else 0.0
 		
 		match effect.code:
 			EffectCode.RECOVER_HP:

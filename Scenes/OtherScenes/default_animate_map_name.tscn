@@ -26,8 +26,8 @@ outline_size = 8
 outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="Gradient" id="Gradient_t1vk1"]
-offsets = PackedFloat32Array(0, 0.04411765, 0.9368512, 1)
-colors = PackedColorArray(0, 0, 0, 0, 0.015686275, 0.015686275, 0.015686275, 0.654902, 0.015686275, 0.015686275, 0.015686275, 0.654902, 0, 0, 0, 0)
+offsets = PackedFloat32Array(0, 0.4226361, 0.9368512, 1)
+colors = PackedColorArray(0, 0, 0, 0, 0.015686275, 0.015686275, 0.015686275, 0.13725491, 0.015686275, 0.015686275, 0.015686275, 0.13725491, 0, 0, 0, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_8ch4i"]
 gradient = SubResource("Gradient_t1vk1")
@@ -35,7 +35,7 @@ fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
 [sub_resource type="Gradient" id="Gradient_wviry"]
-offsets = PackedFloat32Array(0, 0.5562284, 0.87456745)
+offsets = PackedFloat32Array(0, 0.5562284, 0.8782235)
 colors = PackedColorArray(0, 0, 0, 1, 0.03200692, 0.03200692, 0.03200692, 1, 0, 0, 0, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_pqojs"]
@@ -298,7 +298,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0, 3.6, 7.9),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(0, 0), Vector2(0, 0), Vector2(0, -16)]
+"values": [Vector2(0, 0), Vector2(0, 0), Vector2(0, -32)]
 }
 tracks/4/type = "method"
 tracks/4/imported = false
@@ -307,9 +307,15 @@ tracks/4/path = NodePath(".")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(7.9),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 3.6, 7.9),
+"transitions": PackedFloat32Array(1, 1, 1),
 "values": [{
+"args": [],
+"method": &"fix_pivot"
+}, {
+"args": [],
+"method": &"fix_pivot"
+}, {
 "args": [],
 "method": &"queue_free"
 }]
@@ -366,6 +372,7 @@ transparent_bg = true
 size = Vector2i(512, 90)
 
 [node name="MarginContainer" type="MarginContainer" parent="SubViewport" unique_id=1272892720]
+custom_minimum_size = Vector2(512, 90)
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 90.0
@@ -403,6 +410,7 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = -10.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1e-05, 1)
@@ -416,6 +424,7 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_pqojs")
@@ -424,11 +433,14 @@ texture = SubResource("GradientTexture2D_pqojs")
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.94509804)
 layout_mode = 1
-anchors_preset = 14
+anchors_preset = 8
+anchor_left = 0.5
 anchor_top = 0.5
-anchor_right = 1.0
+anchor_right = 0.5
 anchor_bottom = 0.5
+offset_left = -304.0
 offset_top = -69.0
+offset_right = 304.0
 offset_bottom = 69.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -573,10 +585,14 @@ texture = SubResource("AtlasTexture_ym1d4")
 [node name="Text" type="TextureRect" parent="Pivot/TextureRect/MainContainer" unique_id=991048795]
 material = SubResource("ShaderMaterial_ojubc")
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 texture = SubResource("ViewportTexture_rk5r6")
 
 [node name="Text2" type="TextureRect" parent="Pivot/TextureRect/MainContainer" unique_id=631334515]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 texture = SubResource("ViewportTexture_rk5r6")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1939586863]

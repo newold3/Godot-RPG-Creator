@@ -210,20 +210,11 @@ func _transfer_to_oher_map(map_id: int, tile: Vector2i, direction: int, current_
 						is_liftable = true
 						
 				if is_liftable or u_id in GameManager.game_state.migrated_events:
-					if current_map_id == o_id:
-						GameManager.game_state.migrated_events[u_id] = {
-							"original_map_id": o_id,
-							"current_map_id": current_map_id,
-							"current_pos": ev.lpc_event.global_position
-						}
-					else:
-						var cloned_resource = ev.event.duplicate(true)
-						GameManager.game_state.migrated_events[u_id] = {
-							"event_resource": cloned_resource,
-							"original_map_id": o_id,
-							"current_map_id": current_map_id,
-							"current_pos": ev.lpc_event.global_position
-						}
+					GameManager.game_state.migrated_events[u_id] = {
+						"original_map_id": o_id,
+						"current_map_id": current_map_id,
+						"current_pos": ev.lpc_event.global_position
+					}
 
 		if player and player.carried_event:
 			var carried = player.carried_event
@@ -242,37 +233,19 @@ func _transfer_to_oher_map(map_id: int, tile: Vector2i, direction: int, current_
 					can_carry = page.options.type_params.get("can_carry_to_other_maps", false)
 					
 				if can_carry:
-					if map_id == o_id:
-						GameManager.game_state.migrated_events[u_id] = {
-							"original_map_id": o_id,
-							"current_map_id": map_id,
-							"current_pos": carried.global_position
-						}
-					else:
-						var cloned_resource = ev_resource.duplicate(true)
-						GameManager.game_state.migrated_events[u_id] = {
-							"event_resource": cloned_resource,
-							"original_map_id": o_id,
-							"current_map_id": map_id,
-							"current_pos": carried.global_position
-						}
+					GameManager.game_state.migrated_events[u_id] = {
+						"original_map_id": o_id,
+						"current_map_id": map_id,
+						"current_pos": carried.global_position
+					}
 						
 					GameManager._pending_carried_event_uniq_id = u_id
 				else:
-					if current_map_id == o_id:
-						GameManager.game_state.migrated_events[u_id] = {
-							"original_map_id": o_id,
-							"current_map_id": current_map_id,
-							"current_pos": player.global_position
-						}
-					else:
-						var cloned_resource = ev_resource.duplicate(true)
-						GameManager.game_state.migrated_events[u_id] = {
-							"event_resource": cloned_resource,
-							"original_map_id": o_id,
-							"current_map_id": current_map_id,
-							"current_pos": player.global_position
-						}
+					GameManager.game_state.migrated_events[u_id] = {
+						"original_map_id": o_id,
+						"current_map_id": current_map_id,
+						"current_pos": player.global_position
+					}
 						
 					should_drop_carried = true
 					carried_to_drop = carried
@@ -322,6 +295,9 @@ func _transfer_to_oher_map(map_id: int, tile: Vector2i, direction: int, current_
 
 	GameManager.game_state.current_map_position = tile
 	
+	if GameManager.current_map:
+		GameManager.extract_persistent_weather(GameManager.current_map)
+	
 	var start_map_path = RPGSYSTEM.map_infos.get_map_by_id(map_id)
 	var is_instant = GameManager.game_state.current_transition.get("type", 0) == 0
 	if start_map_path and ResourceLoader.exists(start_map_path):
@@ -346,6 +322,9 @@ func _transfer_to_oher_map(map_id: int, tile: Vector2i, direction: int, current_
 			current_event.current_vehicle = vehicle
 			vehicle.start(current_event)
 			_set_start_tranfer_end_values(vehicle, transfer_animation)
+			
+	if GameManager.current_map:
+		GameManager.inject_persistent_weather(GameManager.current_map)
 			
 	if was_following_player and cam:
 		var cam_target = current_event
@@ -381,8 +360,6 @@ func _transfer_to_oher_map(map_id: int, tile: Vector2i, direction: int, current_
 			
 			if u_id in GameManager.game_state.migrated_events:
 				original_carried_id = GameManager.game_state.migrated_events[u_id].original_map_id
-			
-			GameManager.current_map.entity_manager.inject_carried_event(GameManager.current_player.carried_event, original_carried_id)
 			
 			if u_id in GameManager.game_state.migrated_events:
 				GameManager.game_state.migrated_events[u_id].current_pos = GameManager.current_player.carried_event.global_position
