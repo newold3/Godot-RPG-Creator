@@ -60,14 +60,17 @@ func _fill_events(p_current_event: RPGEvent, event_list: Array, selected_id: int
 	current_event_list = event_list
 
 
+## Fills the local pressure targets list and updates its tooltip with human-readable names.
 func _fill_pressure_targets(p_current_event: RPGEvent, event_list: Array, selected_ids: PackedInt64Array) -> void:
 	var node = %AllowPressureTargets
 	node.clear()
 
 	node.add_item("player")
 	node.set_item_metadata(-1, 0)
+	var has_player = false
 	if 0 in selected_ids:
 		node.set_item_selected(0, true)
+		has_player = true
 	
 	for i in event_list.size():
 		var event: RPGEvent = event_list[i]
@@ -76,7 +79,16 @@ func _fill_pressure_targets(p_current_event: RPGEvent, event_list: Array, select
 		node.add_item("Event %s: %s" % [event.id, event.name])
 		node.set_item_metadata(-1, event._uniq_id)
 		if event._uniq_id in selected_ids:
-			node.set_item_selected(i+1, true)
+			node.set_item_selected(node.get_item_count() - 1, true)
+			
+	var arr_ids: Array = []
+	if has_player: arr_ids.append("0: Player")
+	
+	for ev: RPGEvent in event_list:
+		if ev._uniq_id in selected_ids and ev != p_current_event:
+			arr_ids.append("%s: %s" % [ev.id, ev.name])
+			
+	_append_ids_to_tooltip(node, arr_ids, 0)
 
 
 func fill_local_switches() -> void:
@@ -122,6 +134,9 @@ func fill_page(page: RPGEventPage) -> void:
 		%EventOption2.toggled.emit(current_page.options.idle_animation)
 		%EventOption3.toggled.emit(current_page.options.fixed_direction)
 		%EventOption4.toggled.emit(current_page.options.passable)
+		
+		%AllowExternalEventsTrigger.set_pressed_no_signal(current_page.allow_external_events_triggers)
+		%AllowExternalPressureEvents.set_pressed_no_signal(current_page.allow_external_pressure_events)
 		
 		%PageName.text = current_page.name
 		%MarkAsQuestPage.set_pressed_no_signal(current_page.is_quest_page)
@@ -169,7 +184,7 @@ func fill_page(page: RPGEventPage) -> void:
 			_fill_pressure_targets(null, [], [])
 		
 		%Condition7Pressed.set_pressed_no_signal(current_page.condition.use_pressure)
-		%AllowPressureTargets.set_disabled(!current_page.condition.use_pressure)
+		_update_pressure_targets_visibility()
 		
 		_set_pressed_mode(current_page.condition.use_pressure)
 		
@@ -177,8 +192,8 @@ func fill_page(page: RPGEventPage) -> void:
 		%SelectTargetEvent.visible = movement_type == 5
 		
 		%Launcher.select(launcher)
-		%TriggerEventList.visible = launcher in [2, 7, 8]
-		%PlaceHolderLauncher.visible = !%TriggerEventList.visible
+		%TriggerEventContainer.visible = launcher in [2, 7, 8]
+		%PlaceHolderLauncher.visible = !%TriggerEventContainer.visible
 		_configure_launcher()
 		%Launcher.item_selected.emit(launcher)
 		
@@ -229,34 +244,56 @@ func _fill_trigger_list() -> void:
 		node.text = ""
 		node.set_disabled(true)
 		return
+		
+	var tooltip_ids: Array = []
+	var format_type: int = 0
 	
 	match current_page.launcher:
-		2: # Events
-			node.text = "Select Events"
-			var events = current_event_list
-			var text = "Event"
-			var valid_events: PackedStringArray = []
-			for ev: RPGEvent in events:
-				if ev._uniq_id in current_page.event_trigger_list:
-					valid_events.append("%s: %s" % [ev.id, ev.name])
-			if not valid_events.is_empty():
-				for i in valid_events.size():
-					if i == 0:
-						if valid_events.size() == 1:
-							text += ": " + valid_events[i]
+		2:
+			if current_page.allow_external_events_triggers:
+				format_type = 2
+				var total_events = 0
+				for map_id in current_page.external_event_triggers:
+					var ext_ids = current_page.external_event_triggers[map_id]
+					total_events += ext_ids.size()
+					if not ext_ids.is_empty():
+						tooltip_ids.append({"map_id": map_id, "event_ids": ext_ids})
+				
+				node.text = "External Events: %s" % total_events
+			else:
+				format_type = 1
+				node.text = "Select Events"
+				var events = current_event_list
+				var text = "Event"
+				var valid_events: PackedStringArray = []
+				
+				for ev: RPGEvent in events:
+					if ev._uniq_id in current_page.event_trigger_list:
+						valid_events.append("%s: %s" % [ev.id, ev.name])
+						tooltip_ids.append(ev._uniq_id)
+						
+				if not valid_events.is_empty():
+					for i in valid_events.size():
+						if i == 0:
+							if valid_events.size() == 1:
+								text += ": " + valid_events[i]
+							else:
+								text += "s: " + valid_events[i]
 						else:
-							text += "s: " + valid_events[i]
-					else:
-						text += ", " + valid_events[i]
-				node.text = text
-		7: # Tools
+							text += ", " + valid_events[i]
+					node.text = text
+		7:
+			format_type = 3
 			node.text = "Select Tools"
 			var list = RPGSYSTEM.database.types.tool_types
 			var text = "Tool"
 			var valid_events: PackedStringArray = []
+			
 			for i in list.size():
 				if i in current_page.event_tool_list:
 					valid_events.append("%s: %s" % [i + 1, list[i]])
+					tooltip_ids.append(i + 1)
+					
 			if not valid_events.is_empty():
 				for i in valid_events.size():
 					if i == 0:
@@ -267,14 +304,18 @@ func _fill_trigger_list() -> void:
 					else:
 						text += ", " + valid_events[i]
 				node.text = text
-		8: # Signals
+		8:
+			format_type = 4
 			node.text = "Select Signals"
 			var list = RPGSYSTEM.database.system.custom_signal_list
 			var text = "Signal"
 			var valid_events: PackedStringArray = []
+			
 			for i in list.size():
 				if i in current_page.event_signal_list:
 					valid_events.append("%s: %s" % [i + 1, list[i]])
+					tooltip_ids.append(i + 1)
+					
 			if not valid_events.is_empty():
 				for i in valid_events.size():
 					if i == 0:
@@ -285,6 +326,8 @@ func _fill_trigger_list() -> void:
 					else:
 						text += ", " + valid_events[i]
 				node.text = text
+				
+	_append_ids_to_tooltip(node, tooltip_ids, format_type)
 
 
 func _configure_launcher() -> void:
@@ -303,23 +346,26 @@ func _configure_launcher() -> void:
 		node.pressed.disconnect(_on_trigger_signal_list_pressed)
 	
 	match current_page.launcher:
-		2: # Events
+		2:
 			node.text = ""
 			node.tooltip_text = "[title]Trigger Event List[/title]\nSelect the events that can trigger this event."
 			_is_valid = true
 			node.pressed.connect(_on_trigger_event_list_pressed)
-		7: # Tools
+		7:
 			node.text = ""
 			node.tooltip_text = "[title]Trigger Tool List[/title]\nSelect the tools that can trigger this event."
 			_is_valid = true
 			node.pressed.connect(_on_trigger_tool_list_pressed)
-		8: # Signals
+		8:
 			node.text = ""
 			node.tooltip_text = "[title]Trigger Signal List[/title]\nSelect the signals that can trigger this event."
 			_is_valid = true
 			node.pressed.connect(_on_trigger_signal_list_pressed)
 	
 	if _is_valid:
+		if node.has_meta("base_tooltip"):
+			node.remove_meta("base_tooltip")
+			
 		CustomTooltipManager.replace_all_tooltips_with_custom(node)
 		_fill_trigger_list()
 
@@ -450,8 +496,8 @@ func _on_launcher_item_selected(index: int) -> void:
 	if current_page:
 		current_page.launcher = index
 	
-	%TriggerEventList.visible = index in [2, 7, 8]
-	%PlaceHolderLauncher.visible = !%TriggerEventList.visible
+	%TriggerEventContainer.visible = index in [2, 7, 8]
+	%PlaceHolderLauncher.visible = !%TriggerEventContainer.visible
 	_configure_launcher()
 	
 	changed.emit()
@@ -753,6 +799,13 @@ func _on_select_target_event_item_selected(index: int) -> void:
 
 
 func _on_trigger_event_list_pressed() -> void:
+	if not current_page.allow_external_events_triggers:
+		_select_triggers_from_current_map()
+	else:
+		_select_triggers_from_any_map()
+
+
+func _select_triggers_from_current_map() -> void:
 	var path = "res://addons/CustomControls/Dialogs/select_in_game_events_dialog.tscn"
 	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
 	
@@ -766,6 +819,19 @@ func _on_trigger_event_list_pressed() -> void:
 	dialog.events_selected.connect(
 		func(list: PackedInt64Array):
 			current_page.event_trigger_list = list
+			_fill_trigger_list()
+	)
+
+
+func _select_triggers_from_any_map() -> void:
+	var path = "res://addons/CustomControls/Dialogs/select_event_dialog.tscn"
+	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
+	
+	dialog.setup_multi_events_mode(current_page.external_event_triggers)
+	
+	dialog.events_selected.connect(
+		func(selection_data: Dictionary):
+			current_page.external_event_triggers = selection_data
 			_fill_trigger_list()
 	)
 
@@ -869,11 +935,18 @@ func _on_page_extra_options_pressed() -> void:
 	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
 	
 	dialog.set_page_options(current_page.options, current_page.condition.use_pressure)
+	dialog.current_event = current_event
 	
 	dialog.OK.connect(func(new_pressed_state: bool):
 		current_page.condition.use_pressure = new_pressed_state
 		%Condition7Pressed.set_pressed_no_signal(new_pressed_state)
 		_set_pressed_mode(new_pressed_state)
+		
+		if current_page.has_method("emit_changed"):
+			current_page.emit_changed()
+		if current_event and current_event.has_method("emit_changed"):
+			current_event.emit_changed()
+			
 		changed.emit()
 		%PageExtraOptions._update_extra_config_label(current_page)
 	)
@@ -897,58 +970,247 @@ func _on_condition_7_pressed_toggled(toggled_on: bool) -> void:
 func _set_pressed_mode(value: bool) -> void:
 	var launcher = %Launcher
 	var selected_index = launcher.get_selected_id()
-	var active_indexes: Array = []
 	var popup = launcher.get_popup()
+	var external_btn = get_node_or_null("%AllowExternalPressureTargets")
+	var external_check = get_node_or_null("%AllowExternalPressureEvents")
+	var player_check = get_node_or_null("%ExternalAllowPlayer")
 	
-	if current_page.options.event_type < 0 or current_page.options.event_type > 2:
+	var event_type = current_page.options.event_type
+	
+	if event_type == null or event_type < 0 or event_type > 2:
 		current_page.options.event_type = 0
+		
+	var disable_children = false
 	
 	if current_page.options.event_type == 1 or current_page.options.event_type == 2:
-		%AllowPressureTargets.set_disabled(true)
+		disable_children = true
 		%EventOption4.set_pressed(false)
 		%EventOption4.set_disabled(true)
 		
-		active_indexes = [0] 
-			
-		if not selected_index in active_indexes:
-			selected_index = active_indexes[0]
-			
+		selected_index = 0
+		current_page.launcher = 0
+		launcher.set_disabled(true)
+		
 		for i in launcher.get_item_count():
-			launcher.set_item_disabled(i, not i in active_indexes)
-			popup.set_item_disabled(i, not i in active_indexes)
+			launcher.set_item_disabled(i, i != 0)
+			popup.set_item_disabled(i, i != 0)
 			
 	elif value:
-		%AllowPressureTargets.set_disabled(false)
+		disable_children = false
 		%EventOption4.set_pressed(true)
 		%EventOption4.set_disabled(true)
 		
-		active_indexes = [1, 2, 6]
-		if not selected_index in active_indexes:
-			selected_index = active_indexes[0]
-			
+		selected_index = -1
+		current_page.launcher = -1
+		launcher.set_disabled(true)
+		
 		for i in launcher.get_item_count():
-			launcher.set_item_disabled(i, not i in active_indexes)
-			popup.set_item_disabled(i, not i in active_indexes)
+			launcher.set_item_disabled(i, true)
+			popup.set_item_disabled(i, true)
 			
 	else:
-		%AllowPressureTargets.set_disabled(true)
+		disable_children = true
 		%EventOption4.set_disabled(false)
+		launcher.set_disabled(false)
+		
+		selected_index = max(0, selected_index)
+		current_page.launcher = selected_index
 		
 		for i in launcher.get_item_count():
 			launcher.set_item_disabled(i, false)
 			popup.set_item_disabled(i, false)
+			
+	%AllowPressureTargets.set_disabled(disable_children)
+	if external_btn: external_btn.set_disabled(disable_children)
+	if external_check: external_check.set_disabled(disable_children)
+	if player_check: player_check.set_disabled(disable_children)
 	
-	launcher.select(selected_index)
-	launcher.item_selected.emit(selected_index)
+	if selected_index == -1:
+		launcher.select(-1)
+	else:
+		launcher.select(selected_index)
+		launcher.item_selected.emit(selected_index)
 
 
+## Updates the page data and modifies the tooltip when local target selections change.
 func _on_allow_pressure_targets_multi_selection_changed(selected_ids: Array[int]) -> void:
 	current_page.condition.pressure_targets.clear()
 	var node = %AllowPressureTargets
+	
+	var arr_names: Array = []
+	
 	if selected_ids.is_empty():
 		current_page.condition.pressure_targets.append(0)
 		node.set_item_selected(0, true)
+		arr_names.append("0: Player")
 	else:
 		for id in selected_ids:
 			var real_id = node.get_item_metadata(id)
 			current_page.condition.pressure_targets.append(real_id)
+			if real_id == 0:
+				arr_names.append("0: Player")
+			else:
+				for ev: RPGEvent in current_event_list:
+					if ev._uniq_id == real_id:
+						arr_names.append("%s: %s" % [ev.id, ev.name])
+						break
+			
+	_append_ids_to_tooltip(node, arr_names, 0)
+
+
+func _on_allow_external_events_trigger_toggled(toggled_on: bool) -> void:
+	current_page.allow_external_events_triggers = toggled_on
+	_fill_trigger_list()
+
+
+func _on_allow_external_pressure_events_toggled(toggled_on: bool) -> void:
+	current_page.allow_external_pressure_events = toggled_on
+	_update_pressure_targets_visibility()
+
+
+func _update_pressure_targets_visibility() -> void:
+	var use_external = current_page.allow_external_pressure_events
+	var external_btn = get_node_or_null("%AllowExternalPressureTargets")
+	var player_check = get_node_or_null("%ExternalAllowPlayer")
+	
+	%AllowPressureTargets.visible = not use_external
+	
+	if external_btn:
+		external_btn.visible = use_external
+		
+	if player_check:
+		player_check.visible = use_external
+		
+	if use_external:
+		_fill_external_pressure_list()
+		if player_check:
+			player_check.set_pressed_no_signal(current_page.external_pressure_targets.has(-1))
+
+
+## Fills the text and tooltip displaying the total external pressure targets with formatted map/event names.
+func _fill_external_pressure_list() -> void:
+	var node = get_node_or_null("%AllowExternalPressureTargets")
+	if not node or not current_page: return
+	
+	var total_events = 0
+	var tooltip_ids: Array = []
+	for map_id in current_page.external_pressure_targets:
+		if map_id == -1:
+			%ExternalAllowPlayer.set_pressed_no_signal(true)
+			continue
+		var ext_ids = current_page.external_pressure_targets[map_id]
+		total_events += ext_ids.size()
+		if not ext_ids.is_empty():
+			tooltip_ids.append({"map_id": map_id, "event_ids": ext_ids})
+		
+	node.text = "External Targets: %s" % total_events
+	_append_ids_to_tooltip(node, tooltip_ids, 2)
+
+
+func _on_allow_external_pressure_targets_pressed() -> void:
+	var path = "res://addons/CustomControls/Dialogs/select_event_dialog.tscn"
+	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
+	
+	dialog.setup_multi_events_mode(current_page.external_pressure_targets)
+	
+	dialog.events_selected.connect(
+		func(selection_data: Dictionary):
+			current_page.external_pressure_targets = selection_data
+			_fill_external_pressure_list()
+	)
+
+
+## Appends selected IDs to the node's custom tooltip with human-readable formatting.
+## Format types: 0 = Generic, 1 = Local Events, 2 = External Events, 3 = Tools, 4 = Signals
+func _append_ids_to_tooltip(node: Control, ids: Array, format_type: int = 0) -> void:
+	if not is_instance_valid(node): return
+	
+	if not node.has_meta("base_tooltip"):
+		var base = node.get_meta("current_tooltip", node.tooltip_text)
+		node.set_meta("base_tooltip", base)
+	
+	var original_tooltip = node.get_meta("base_tooltip")
+	var append_text = ""
+	
+	if not ids.is_empty():
+		var str_names: PackedStringArray = []
+		
+		match format_type:
+			0:
+				for id in ids: str_names.append(str(id))
+			1:
+				for id in ids:
+					var found = false
+					for ev: RPGEvent in current_event_list:
+						if ev._uniq_id == id:
+							str_names.append("%s: %s" % [ev.id, ev.name])
+							found = true
+							break
+					if not found: str_names.append("Unknown Event")
+			2:
+				var maps_info = RPGSYSTEM.map_infos.map_infos
+				for dict_entry in ids:
+					var map_id = dict_entry.map_id
+					var event_ids = dict_entry.event_ids
+					var map_name = maps_info.get_map_name_from_id(map_id)
+					if map_name.is_empty(): map_name = "Map %s" % map_id
+					
+					var map_events = maps_info.get_map_events(map_id)
+					
+					for ev_id in event_ids:
+						var ev_name = ""
+						var short_id = ""
+						for ev_dict in map_events:
+							if ev_dict.get("uid", -1) == ev_id:
+								ev_name = ev_dict.get("name", "")
+								short_id = str(ev_dict.get("id", ""))
+								break
+								
+						if ev_name.is_empty():
+							str_names.append("[%s] Unknown Event" % map_name)
+						else:
+							str_names.append("[%s] %s: %s" % [map_name, short_id, ev_name])
+			3:
+				var list = RPGSYSTEM.database.types.tool_types
+				for id in ids:
+					var idx = id - 1
+					if idx >= 0 and idx < list.size():
+						str_names.append("%s: %s" % [id, list[idx]])
+					else:
+						str_names.append(str(id))
+			4:
+				var list = RPGSYSTEM.database.system.custom_signal_list
+				for id in ids:
+					var idx = id - 1
+					if idx >= 0 and idx < list.size():
+						str_names.append("%s: %s" % [id, list[idx]])
+					else:
+						str_names.append(str(id))
+		
+		var max_items = 10
+		var display_names: PackedStringArray = []
+		
+		for i in min(str_names.size(), max_items):
+			display_names.append(str_names[i])
+			
+		if str_names.size() > max_items:
+			display_names.append("...and %s more" % (str_names.size() - max_items))
+			
+		append_text = "\n\nSelected Targets:\n- " + "\n- ".join(display_names)
+		
+	node.set_meta("current_tooltip", original_tooltip + append_text)
+	if node.has_signal("tooltip_changed"):
+		node.tooltip_changed.emit()
+
+
+func _on_external_allow_player_toggled(toggled_on: bool) -> void:
+	if toggled_on:
+		if not current_page.external_pressure_targets.has(-1):
+			current_page.external_pressure_targets[-1] = []
+		if not current_page.external_pressure_targets[-1].has(0):
+			current_page.external_pressure_targets[-1].append(0)
+	else:
+		if not current_page.external_pressure_targets.has(-1):
+			current_page.external_pressure_targets.erase(-1)
+			
+	changed.emit()

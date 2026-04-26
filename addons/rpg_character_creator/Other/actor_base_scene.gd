@@ -99,6 +99,7 @@ func _process(delta: float) -> void:
 	super(delta)
 	if GameManager.loading_game or is_invalid_event:
 		return
+		
 	if frame_delay <= 0.0:
 		run_animation()
 		var current_anim_data = get_current_animation()
@@ -114,8 +115,15 @@ func _process(delta: float) -> void:
 				frame_delay = frame_delay_max
 	else:
 		frame_delay = max(0.0, frame_delay - delta)
+		
+	if is_pushing and is_running:
+		is_running = false
+		if movement_current_mode == MOVEMENTMODE.GRID:
+			calculate_grid_move_duration()
+			
 	if force_animation_enabled or !can_perform_action() or is_on_vehicle:
 		return
+		
 	var input_vector = Vector2(Input.get_axis("ui_left", "ui_right"), Input.get_axis("ui_up", "ui_down"))
 	if input_vector != Vector2.ZERO:
 		movement_vector = input_vector
@@ -128,20 +136,24 @@ func _process(delta: float) -> void:
 				1: prioritize_horizontal_look()
 				2: maintain_current_look()
 			current_direction = last_direction
+			
 	if Vector2(movement_vector) != Vector2.ZERO:
 		current_animation = "walk"
 		movement_vector = Vector2(movement_vector).normalized()
 	else:
 		if _auto_target_tile == Vector2i(-1, -1):
 			current_animation = "idle"
-	if current_animation == "walk":
+			
+	if current_animation == "walk" and not is_pushing:
 		var last_is_running = is_running
 		is_running = Input.is_action_pressed("running")
 		if last_is_running != is_running and movement_current_mode == MOVEMENTMODE.GRID:
 			calculate_grid_move_duration()
 	elif is_running:
 		is_running = false
-		calculate_grid_move_duration()
+		if movement_current_mode == MOVEMENTMODE.GRID:
+			calculate_grid_move_duration()
+			
 	if Input.is_key_pressed(KEY_CTRL) and OS.is_debug_build() and not ctrl_pressed:
 		ctrl_pressed = true
 		call_deferred("propagate_call", "set_disabled", [true])
@@ -190,6 +202,10 @@ func _input(event: InputEvent) -> void:
 				current_frame = 0
 				run_animation()
 				
+				if "current_event" in node and node.current_event is RPGEvent and node.current_event.next_page_has_pressure():
+					action_found = true
+					break
+					
 				var result = await node.start(self, RPGEventPage.LAUNCHER_MODE.ACTION_BUTTON)
 				if result:
 					action_found = true

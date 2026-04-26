@@ -220,27 +220,6 @@ func run_animation() -> void:
 	_update_frame(0.0)
 
 
-func is_passable() -> bool:
-	if is_invalid_event:
-		return true
-		
-	return character_options.passable
-
-
-func is_liftable() -> bool:
-	if current_event_page:
-		return current_event_page.options.event_type == 1
-	
-	return false
-
-
-func is_moveable() -> bool:
-	if current_event_page:
-		return current_event_page.options.event_type == 2
-	
-	return false
-
-
 func _update_frame(delta: float = 0.0):
 	current_animation = "walk" if is_moving else "idle"
 	
@@ -378,64 +357,38 @@ func get_shadow_data() -> Dictionary:
 	return shadow_dict
 
 
-func _get_next_move_toward_event() -> Vector2i:
-	var goal = Vector2i.ZERO
-	var target_screen_position: Vector2 = Vector2.ZERO
-	
-	if current_event_page and GameManager.current_map:
-		var event = GameManager.current_map.get_in_game_event_by_uniq_id(current_event_page.movement_to_target)
-		if event and event.has_method("get_current_tile"):
-			goal = event.get_current_tile()
-			target_screen_position = event.get_global_transform_with_canvas().origin
-	else:
-		return goal
-	
-	return _get_next_move_toward_target(goal, target_screen_position)
+#region event's functions
+## Returns whether this event can be passed through.
+func is_passable() -> bool:
+	return EventManager.is_passable(self)
 
 
+## Returns whether this event can be lifted.
+func is_liftable() -> bool:
+	return EventManager.is_liftable(self)
+
+
+## Returns whether this event can be moved.
+func is_moveable() -> bool:
+	return EventManager.is_moveable(self)
+
+
+## Returns whether this event is currently pressed.
 func is_pressed() -> bool:
-	if is_in_group("event") and GameManager.current_map:
-		if current_event_page and current_event_page.condition.use_pressure:
-			return true
-	
-	return false
+	return EventManager.is_pressed(self)
 
 
+## Calculates the next tile coordinate to move toward the target event.
+func _get_next_move_toward_event() -> Vector2i:
+	return EventManager.get_next_move_toward_event(self)
+
+
+## Starts the lifting animation logic.
 func _start_lift_animation() -> void:
-	is_invalid_event = true
-	var player = GameManager.current_player
-	if player and player.has_method("pick_up_event"):
-		player.pick_up_event(self)
+	EventManager.start_lift_animation(self)
 
 
+## Starts the event interaction.
 func start(obj: Node, launcher_mode: RPGEventPage.LAUNCHER_MODE) -> bool:
-	if is_invalid_event: return false
-	
-	if GameManager.game_state and GameManager.current_map:
-		var id = "%s_%s" % [GameManager.current_map.internal_id, current_event.id]
-		if not id in GameManager.game_state.stats.interactive_events_found:
-			GameManager.game_state.stats.interactive_events_found[id] = true
-	
-	if obj in targets_over_me:
-		return false
-	
-	if QuestManager.manage_mission_for_event(current_event):
-		return false
-	
-	if is_liftable():
-		_start_lift_animation()
-		return true
-		
-	if current_event_page:
-		if current_event_page.launcher != launcher_mode:
-			return false
-		if not current_event_page.options.fixed_direction and "current_direction" in obj:
-			last_direction = get_opposite_direction(obj.current_direction)
-			current_direction = last_direction
-				
-		var interpreter_id = "event_" + str(current_event.id)
-		GameInterpreter.start_event(self, current_event_page.list, false, interpreter_id)
-	
-	targets_over_me.append(obj)
-	
-	return true
+	return EventManager.start_event(self, obj, launcher_mode)
+#endregion

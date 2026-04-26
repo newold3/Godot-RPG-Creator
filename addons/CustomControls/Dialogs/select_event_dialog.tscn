@@ -183,10 +183,9 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_ss0dj")
 theme_override_styles/hovered = SubResource("StyleBoxFlat_oqxba")
 theme_override_styles/selected = SubResource("StyleBoxTexture_pb61c")
 theme_override_styles/selected_focus = SubResource("StyleBoxTexture_7vhpk")
-item_count = 3
-item_0/text = "EventCommandTesting"
-item_1/text = "DefaultMap"
-item_2/text = "TestMap"
+item_count = 2
+item_0/text = "TestMap"
+item_1/text = "RPGMap0004"
 odd_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 event_line_color = Color(0.145098, 0.156863, 0.164706, 1)
 
@@ -203,6 +202,21 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_7kymb")
 theme_override_styles/hovered = SubResource("StyleBoxFlat_enxwj")
 theme_override_styles/selected = SubResource("StyleBoxTexture_nfksn")
 theme_override_styles/selected_focus = SubResource("StyleBoxTexture_3tgw2")
+item_count = 14
+item_0/text = "1: Chest"
+item_1/text = "2: EV0002"
+item_2/text = "3: EV0003"
+item_3/text = "4: EV0004"
+item_4/text = "5: EV0005"
+item_5/text = "6: EV0006"
+item_6/text = "7: EV0007"
+item_7/text = "8: EV0008"
+item_8/text = "9: EV0009"
+item_9/text = "10: EV0010"
+item_10/text = "11: EV0011"
+item_11/text = "12: EV0012"
+item_12/text = "13: EV0013"
+item_13/text = "14: EV0014"
 odd_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 event_line_color = Color(0.145098, 0.156863, 0.164706, 1)
 
@@ -221,7 +235,10 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_drk6v")
 theme_override_styles/hovered = SubResource("StyleBoxFlat_y13ye")
 theme_override_styles/selected = SubResource("StyleBoxTexture_x6k6x")
 theme_override_styles/selected_focus = SubResource("StyleBoxTexture_bbaqv")
+item_count = 2
 fixed_icon_size = Vector2i(18, 18)
+item_0/text = "Page 1"
+item_1/text = "Page 2"
 odd_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 event_line_color = Color(0.145098, 0.156863, 0.164706, 1)
 
@@ -233,13 +250,11 @@ layout_mode = 2
 
 [node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=565964365 instance=ExtResource("4_7vhpk")]
 unique_name_in_owner = true
-modulate = Color(1, 1, 1, 0.65)
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Ok[/title]
 Saves all changes and closes the windows."
-disabled = true
 text = "OK"
 
 [node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=619153507 instance=ExtResource("4_7vhpk")]
@@ -252,7 +267,9 @@ Closes this window without saving any changes."
 text = "Cancel"
 
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer2/MapList" to="." method="_on_map_list_item_selected"]
+[connection signal="item_activated" from="MarginContainer/VBoxContainer/HBoxContainer2/EventList" to="." method="_on_event_list_item_activated"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer2/EventList" to="." method="_on_event_list_item_selected"]
+[connection signal="multi_selected" from="MarginContainer/VBoxContainer/HBoxContainer2/EventList" to="." method="_on_event_list_multi_selected"]
 [connection signal="item_activated" from="MarginContainer/VBoxContainer/HBoxContainer2/PageList" to="." method="_on_page_list_item_activated"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

@@ -12,14 +12,12 @@ func get_class() -> String:
 var delay: float = 0.0
 var is_started: bool = false
 
-
 var rumble_fxs = [
 	preload("res://Assets/Sounds/SE/rain_rumble.ogg"),
 	preload("res://Assets/Sounds/SE/rain_rumble2.ogg"),
 	preload("res://Assets/Sounds/SE/rain_rumble3.ogg"),
 	preload("res://Assets/Sounds/SE/rain_rumble4.ogg")
 ]
-
 
 const RAIN_IMPACT = preload("res://Scenes/WeatherScenes/RainScenes/rain_impact.tscn")
 const MIN_SHADOW_OPACITY = 0.4
@@ -31,42 +29,59 @@ var shadow_container
 
 func _ready() -> void:
 	shadow_container = get_tree().get_first_node_in_group("dynamic_shadow_container")
-	
 	set_process(false)
-	
-	if !Engine.is_editor_hint():
-		while !shadow_container:
-			shadow_container = get_tree().get_first_node_in_group("dynamic_shadow_container")
-			await get_tree().process_frame
-		start()
 
 
-func start() -> void:
-	await get_tree().process_frame
-	await get_tree().process_frame
+## Initializes the scene, checking for inherited audio and setting up initial visual states.
+func start(skip_animation: bool = false) -> void:
+	shadow_container = get_tree().get_first_node_in_group("dynamic_shadow_container")
+	var orphaned_audio = GameManager.get_node_or_null("WeatherAudio_Rain")
 	
-	%BGSPlayer.volume_db = -80.0
-	%BGSPlayer.play()
-	$WaterRipplesScene.modulate.a = 0.0
-	$RainScene.modulate.a = 0.0
-	%Ray.self_modulate.a = 0.0
-	$WaterRipplesScene.visible = true
-	$RainScene.visible = true
+	if skip_animation and orphaned_audio:
+		var old_pos = orphaned_audio.get_meta("old_pos", 0.0)
+		%BGSPlayer.volume_db = orphaned_audio.volume_db
+		%BGSPlayer.play(old_pos)
+		orphaned_audio.queue_free()
+	elif skip_animation and not orphaned_audio:
+		%BGSPlayer.volume_db = -80.0
+		%BGSPlayer.play()
+	elif not skip_animation:
+		%BGSPlayer.volume_db = -80.0
+		%BGSPlayer.play()
+		
+	show()
+	%WaterRipplesScene.visible = true
+	%RainScene.visible = true
 	%Ray.visible = true
 	
-	var t = create_tween()
-	t.set_parallel(true)
-	t.tween_property(shadow_container, "modulate:a", MIN_SHADOW_OPACITY, 4.5)
-	t.tween_property(%WaterRipplesScene, "modulate:a", 1.0, 4.5)
-	t.tween_property(%RainScene, "modulate:a", 1.0, 4.5)
-	t.tween_property(%BGSPlayer, "volume_db", 0.0, 2.5)
-	t.tween_callback(set.bind("is_started", true)).set_delay(2.5)
-	
-	t.tween_callback(set_process.bind(true)).set_delay(2.5)
-	
-	GameManager.set_weather_color(modulate_scene, 2.5)
+	if skip_animation:
+		if shadow_container:
+			shadow_container.modulate.a = MIN_SHADOW_OPACITY
+		%WaterRipplesScene.modulate.a = 1.0
+		%RainScene.modulate.a = 1.0
+		%Ray.self_modulate.a = 0.0
+		GameManager.set_weather_color(modulate_scene, 0.0)
+		is_started = true
+		set_process(true)
+	else:
+		%WaterRipplesScene.modulate.a = 0.0
+		%RainScene.modulate.a = 0.0
+		%Ray.self_modulate.a = 0.0
+		
+		var t = create_tween()
+		t.set_parallel(true)
+		t.tween_property(%BGSPlayer, "volume_db", 0.0, 4.5)
+		if shadow_container:
+			t.tween_property(shadow_container, "modulate:a", MIN_SHADOW_OPACITY, 4.5)
+		t.tween_property(%WaterRipplesScene, "modulate:a", 1.0, 4.5)
+		t.tween_property(%RainScene, "modulate:a", 1.0, 4.5)
+		
+		GameManager.set_weather_color(modulate_scene, 2.5)
+		t.tween_callback(set.bind("is_started", true)).set_delay(2.5)
+		t.tween_callback(set_process.bind(true)).set_delay(2.5)
 
 
+## Cleans up weather effects and resources before destroying the scene node.
 func end() -> void:
 	is_started = false
 	var t = create_tween()
@@ -81,8 +96,78 @@ func end() -> void:
 	queue_free()
 
 
+## Detaches the background sound to the GameManager to ensure it survives map transitions.
+func hibernate() -> void:
+	set_process(false)
+	is_started = false
+	
+	if %BGSPlayer.playing:
+		var audio_node = %BGSPlayer
+		var playback_pos = audio_node.get_playback_position()
+		audio_node.set_meta("old_pos", playback_pos)
+		audio_node.reparent(GameManager)
+		audio_node.name = "WeatherAudio_Rain"
+		audio_node.play(playback_pos)
+
+
+## Disables visuals and logic, clears global color tint, and fading out the sound for indoor map areas.
+func pause_weather() -> void:
+	var bgs_player = get_node_or_null("%BGSPlayer")
+	if bgs_player:
+		var t = create_tween()
+		t.tween_property(bgs_player, "volume_db", -80.0, 0.8)
+		t.tween_callback(bgs_player.stop)
+		
+	var ripples = get_node_or_null("%WaterRipplesScene")
+	if ripples:
+		ripples.visible = false
+		ripples.process_mode = Node.PROCESS_MODE_DISABLED
+		
+	var rain = get_node_or_null("%RainScene")
+	if rain:
+		rain.visible = false
+		rain.process_mode = Node.PROCESS_MODE_DISABLED
+		
+	var ray = get_node_or_null("%Ray")
+	if ray: ray.visible = false
+	
+	GameManager.set_weather_color(Color.WHITE, 1.0)
+	
+	set_process(false)
+	is_started = false
+
+
+## Restores visuals and resumes logic, reapplies global color tint, and fading the sound back in after a short delay.
+func resume_weather() -> void:
+	var bgs_player = get_node_or_null("%BGSPlayer")
+	if bgs_player:
+		if not bgs_player.playing:
+			bgs_player.volume_db = -80.0
+			bgs_player.play()
+		var t = create_tween()
+		t.tween_property(bgs_player, "volume_db", 0.0, 2.5).set_delay(1.0)
+		
+	var ripples = get_node_or_null("%WaterRipplesScene")
+	if ripples:
+		ripples.visible = true
+		ripples.process_mode = Node.PROCESS_MODE_INHERIT
+		
+	var rain = get_node_or_null("%RainScene")
+	if rain:
+		rain.visible = true
+		rain.process_mode = Node.PROCESS_MODE_INHERIT
+		
+	var ray = get_node_or_null("%Ray")
+	if ray: ray.visible = true
+	
+	GameManager.set_weather_color(modulate_scene, 2.5)
+	
+	set_process(true)
+	is_started = true
+
+
 func _process(delta: float) -> void:
-	if Engine.is_editor_hint() or !is_started:
+	if Engine.is_editor_hint() or !is_started or !visible:
 		return
 	
 	if delay > 0.0:
@@ -155,7 +240,6 @@ func rumble() -> void:
 			var mid_time = randf_range(0.03, 0.06)
 			t.tween_callback(GameManager.set_weather_flash.bind(Color(1.811, 1.508, 0.719, 0.474), mid_time))
 			t.tween_interval(mid_time)
-	
 	
 	var camera = get_viewport().get_camera_2d()
 	if camera:

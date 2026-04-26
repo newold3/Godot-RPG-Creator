@@ -52,6 +52,7 @@ func start(skip_animation: bool = false) -> void:
 		bgs_player.volume_db = -80.0
 		bgs_player.play()
 	
+	show()
 	var nodes = [%TrailScene, %SnowScene, %TileableSnow]
 	
 	if skip_animation:
@@ -116,19 +117,25 @@ func animate_wind_pitch() -> void:
 
 func pause_weather() -> void:
 	hide()
-	var node = bgs_player
-	var t = node.create_tween()
-	t.tween_property(node, "volume_db", -60.0, 0.8)
+	
+	var t = create_tween()
+	t.tween_property(%BGSPlayer, "volume_db", -80.0, 0.8)
+	t.tween_callback(%BGSPlayer.stop)
+	
+	GameManager.set_weather_color(Color.WHITE, 1.0)
+	
 	set_process(false)
 
 
 func resume_weather() -> void:
-	if not bgs_player.playing:
-		bgs_player.volume_db = -80.0
-		bgs_player.play()
+	if not %BGSPlayer.playing:
+		%BGSPlayer.volume_db = -80.0
+		%BGSPlayer.play()
 		
 	var t = create_tween()
-	t.tween_property(bgs_player, "volume_db", 0.0, 1.5)
+	t.tween_property(%BGSPlayer, "volume_db", 0.0, 2.5).set_delay(1.0)
+	
+	GameManager.set_weather_color(modulate_scene, 2.5)
 	
 	set_process(true)
 

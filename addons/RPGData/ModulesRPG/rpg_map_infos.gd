@@ -158,6 +158,7 @@ func get_path_from_id(map_id: int) -> String:
 func _convert_event_to_dict(event: RPGEvent) -> Dictionary:
 	var pages: Array[Dictionary] = []
 	var quest_pages: PackedInt32Array = []
+	var quest_ids: PackedInt32Array = []
 	
 	for i in event.pages.size():
 		var page: RPGEventPage = event.pages[i]
@@ -165,12 +166,17 @@ func _convert_event_to_dict(event: RPGEvent) -> Dictionary:
 		if page.is_quest_page:
 			quest_pages.append(i)
 	
+	for q in event.quests:
+		quest_ids.append(q.id)
+	
 	return {
 		"id": event.id,
 		"uid": event._uniq_id,
 		"name": event.name,
 		"pages": pages,
-		"quest_pages": quest_pages
+		"quest_pages": quest_pages,
+		"quest_ids": quest_ids,
+		"quest_count": event.quests.size()
 	}
 
 
@@ -244,6 +250,8 @@ func get_event_name(map_id: int, event_id: int) -> String:
 	var events = get_map_events(map_id)
 	for event_data in events:
 		if event_data.has("id") and event_data["id"] == event_id:
+			return event_data.get("name", "")
+		if event_data.has("uid") and event_data["uid"] == event_id:
 			return event_data.get("name", "")
 	return ""
 

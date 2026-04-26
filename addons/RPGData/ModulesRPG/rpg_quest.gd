@@ -23,6 +23,7 @@ enum ItemType {
 	ITEM, ## The type of object searched is of type [b]Item ID[/b].
 	WEAPON, ## The type of object searched is of type [b]Weapon ID[/b].
 	ARMOR, ## The type of object searched is of type [b]Armor ID[/b].
+	SET_COSTUME, ## The type of object searched is of type [b]Set / Costume ID[/b].
 	ENEMY ## The type of object searched is of type [b]Kill Enemy ID[/b].
 }
 

@@ -274,6 +274,7 @@ layout_mode = 2
 [node name="CustomPanel" parent="HBoxContainer/VBoxContainer" unique_id=1941240867 instance=ExtResource("1_whka3")]
 custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
+size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_w08ns")
 style1 = SubResource("StyleBoxFlat_w08ns")
 style2 = SubResource("StyleBoxTexture_kkq5y")
@@ -568,6 +569,7 @@ layout_mode = 2
 unique_name_in_owner = true
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
+size_flags_vertical = 0
 tooltip_text = "[title]Is Pressurable[/title]
 This page will become active when one or more allowed targets step on the event.
 
@@ -582,6 +584,7 @@ text = "Pressurable:"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 0
 size_flags_stretch_ratio = 0.01
 tooltip_text = "[title]Valid Targets[/title]
 Targets that can \"press\" this event.
@@ -589,10 +592,46 @@ Targets that can \"press\" this event.
 [Note]: For an event to be considered pressed, it must have this start condition and also one or more allowed targets on top of it. If no valid target has been defined, the player will be used as the fallback target."
 focus_mode = 0
 mouse_default_cursor_shape = 2
+text_overrun_behavior = 2
 fit_to_longest_item = false
 allow_reselect = true
 script = ExtResource("5_csadr")
 enable_multi_selection = true
+
+[node name="AllowExternalPressureTargets" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer10" unique_id=1647195080 instance=ExtResource("2_ghqqv")]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+tooltip_text = "Select the events that can trigger this event."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+disabled = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer10" unique_id=1243488661]
+layout_mode = 2
+
+[node name="AllowExternalPressureEvents" type="CheckBox" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer10/VBoxContainer" unique_id=1775939460]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Allows selecting any event from any map; this is useful if those events can move between maps. When entering this map, they could be eligible to press this event."
+mouse_default_cursor_shape = 2
+text = "Allow ext"
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer10/VBoxContainer" unique_id=1173688178]
+layout_mode = 2
+theme_override_constants/margin_left = -173
+theme_override_constants/margin_top = 3
+
+[node name="ExternalAllowPlayer" type="CheckBox" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer10/VBoxContainer/MarginContainer" unique_id=1631754805]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+tooltip_text = "Allows selecting any event from any map; this is useful if those events can move between maps. When entering this map, they could be eligible to press this event."
+mouse_default_cursor_shape = 2
+text = "Add Player to The List"
 
 [node name="HBoxContainer9" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer" unique_id=1450755270]
 layout_mode = 2
@@ -739,9 +778,13 @@ custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 size_flags_vertical = 6
 
-[node name="TriggerEventList" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer3" unique_id=579199044 instance=ExtResource("2_ghqqv")]
+[node name="TriggerEventContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer3" unique_id=2054979792]
 unique_name_in_owner = true
 visible = false
+layout_mode = 2
+
+[node name="TriggerEventList" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer3/TriggerEventContainer" unique_id=579199044 instance=ExtResource("2_ghqqv")]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -749,6 +792,13 @@ size_flags_vertical = 4
 tooltip_text = "Select the events that can trigger this event."
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 disabled = true
+
+[node name="AllowExternalEventsTrigger" type="CheckBox" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer3/TriggerEventContainer" unique_id=502093300]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Allows selecting any event from any map; this is useful if those events can move between maps. When entering this map, they could be eligible to trigger this event."
+mouse_default_cursor_shape = 2
+text = "Allow ext"
 
 [node name="PlaceHolderLauncher" type="Control" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer3" unique_id=1479972787]
 unique_name_in_owner = true
@@ -1110,13 +1160,17 @@ layout_mode = 2
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer7/Condition6Value" to="." method="_on_condition_6_value_pressed"]
 [connection signal="toggled" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer10/Condition7Pressed" to="." method="_on_condition_7_pressed_toggled"]
 [connection signal="multi_selection_changed" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer10/AllowPressureTargets" to="." method="_on_allow_pressure_targets_multi_selection_changed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer10/AllowExternalPressureTargets" to="." method="_on_allow_external_pressure_targets_pressed"]
+[connection signal="toggled" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer10/VBoxContainer/AllowExternalPressureEvents" to="." method="_on_allow_external_pressure_events_toggled"]
+[connection signal="toggled" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer10/VBoxContainer/MarginContainer/ExternalAllowPlayer" to="." method="_on_external_allow_player_toggled"]
 [connection signal="item_selected" from="HBoxContainer/VBoxContainer/HBoxContainer/CustomPanel2/MarginContainer/VBoxContainer/DataTypeSelected" to="." method="_on_data_type_selected_item_selected"]
 [connection signal="clicked" from="HBoxContainer/VBoxContainer/HBoxContainer/CustomPanel2/MarginContainer/VBoxContainer/CharacterImage" to="." method="_on_character_image_clicked"]
 [connection signal="custom_copy" from="HBoxContainer/VBoxContainer/HBoxContainer/CustomPanel2/MarginContainer/VBoxContainer/CharacterImage" to="." method="_on_character_image_custom_copy"]
 [connection signal="custom_paste" from="HBoxContainer/VBoxContainer/HBoxContainer/CustomPanel2/MarginContainer/VBoxContainer/CharacterImage" to="." method="_on_character_image_custom_paste"]
 [connection signal="remove_requested" from="HBoxContainer/VBoxContainer/HBoxContainer/CustomPanel2/MarginContainer/VBoxContainer/CharacterImage" to="." method="_on_character_image_remove_requested"]
 [connection signal="item_selected" from="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer4/Launcher" to="." method="_on_launcher_item_selected"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer3/TriggerEventList" to="." method="_on_trigger_event_list_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer3/TriggerEventContainer/TriggerEventList" to="." method="_on_trigger_event_list_pressed"]
+[connection signal="toggled" from="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer3/TriggerEventContainer/AllowExternalEventsTrigger" to="." method="_on_allow_external_events_trigger_toggled"]
 [connection signal="item_selected" from="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer3/Direction" to="." method="_on_direction_item_selected"]
 [connection signal="value_changed" from="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer2/ZIndex" to="." method="_on_z_index_value_changed"]
 [connection signal="middle_clicked" from="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer/Control/Modulate" to="." method="_on_modulate_middle_clicked"]

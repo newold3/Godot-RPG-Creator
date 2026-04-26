@@ -4,6 +4,7 @@ extends CommandBaseDialog
 var current_data : Dictionary
 var char_variable_id: int = 1
 var operand_variable_id: int = 1
+var is_experience_mode: bool = false
 
 
 func _ready() -> void:
@@ -11,6 +12,14 @@ func _ready() -> void:
 	fill_fixed_values()
 	set_initial_values()
 	_set_variable_name()
+
+
+func setup_experience_mode() -> void:
+	is_experience_mode = true
+	%ParameterSelected.visible = false
+	%ParameterTitle.text = tr("Change Experience")
+	%ContentsPanel4.visible = true
+	size.y = 0.0
 
 
 func set_initial_values() -> void:
@@ -97,6 +106,8 @@ func set_data() -> void:
 
 func build_command_list() -> Array[RPGEventCommand]:
 	var commands = super()
+	if setup_experience_mode:
+		current_data.parameter_id = -1
 	commands[-1].parameters = current_data
 	return commands
 

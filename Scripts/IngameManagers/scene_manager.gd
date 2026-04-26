@@ -71,6 +71,10 @@ func enable_map_repeating() -> void:
 		
 	if shadows:
 		shadows.enable_map_repeating(repeat_times)
+		
+	var map = GameManager.current_map
+	if map:
+		_configure_map_scrolling(map)
 
 
 ## Calculates how many times the map needs to repeat to fill the screen
@@ -92,17 +96,28 @@ func get_map_repeat_times() -> int:
 ## Adjusts repeating rules depending on map scroll flags
 func _configure_map_scrolling(map: RPGMap) -> void:
 	var map_container = GameManager.main_scene.get_node_or_null("%MapContainer")
-	if not map_container or map_container.repeat_times == 1: return
+	if not map_container: return
 	
 	var used_rect = map.get_used_rect(false)
-	map_container.repeat_size = used_rect.size
+	var calculated_repeat = used_rect.size
+	
+	if not map.infinite_horizontal_scroll:
+		calculated_repeat.x = 0
+	if not map.infinite_vertical_scroll:
+		calculated_repeat.y = 0
+		
+	map_container.repeat_size = calculated_repeat
 	
 	var viewport_size = get_viewport().size
 	var max_repeats_x = max(2, ceil(used_rect.size.x / viewport_size.x))
 	var max_repeats_y = max(2, ceil(used_rect.size.y / viewport_size.y))
 	var max_repeats = max(max_repeats_x, max_repeats_y)
 	
-	map_container.repeat_times = max_repeats if (map.infinite_horizontal_scroll or map.infinite_vertical_scroll) else 1
+	if map.infinite_horizontal_scroll or map.infinite_vertical_scroll:
+		map_container.repeat_times = max_repeats
+	else:
+		map_container.repeat_times = 1
+		map_container.repeat_size = Vector2.ZERO
 
 
 ## Removes all generic GUI nodes from the canvas

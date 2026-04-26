@@ -77,7 +77,13 @@ func draw_icon() -> void:
 
 
 func fill_region() -> void:
-	%ImageRegion.text = "Region: " + str(data.region)
+	if data.path.get_extension() == "tscn":
+		%ImageRegion.set_disabled(true)
+		%ImageRegion.text = "-"
+	else:
+		%ImageRegion.set_disabled(false)
+		%ImageRegion.text = "Region: " + str(data.region)
+	
 
 
 func _on_icon_picker_remove_requested() -> void:

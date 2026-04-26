@@ -535,6 +535,8 @@ func _start_game_mode() -> void:
 	add_child(keots_area)
 	keots_area.build_from_cache(self, _baked_keot_data)
 	
+	QuestManager.notify_location_reached(internal_id)
+	
 	visible = true
 	await get_tree().create_timer(0.04).timeout
 	GameManager.set_fx_busy(false)
@@ -1225,17 +1227,28 @@ func _process_hot_reload_packets() -> void:
 			
 		var type: String = data.get("type", "")
 		var id: int = data.get("id", -1)
+		var uniq_id: int = data.get("uniq_id", -1)
 		var temp_path: String = data.get("path", "")
 		
 		var player = GameManager.current_player
-		if type in ["update_event", "delete_event", "move_event"] and id != -1:
-			var target_event = get_in_game_event_by_id(id)
+		if type in ["update_event", "delete_event", "move_event"] and (id != -1 or uniq_id != -1):
+			var target_event = null
+			if uniq_id != -1:
+				target_event = get_in_game_event_by_uniq_id(uniq_id)
+			elif id != -1:
+				target_event = get_in_game_event_by_id(id)
+				
 			if target_event and player and is_instance_valid(player.carried_event) and player.carried_event == target_event:
 				continue
 		
 		match type:
 			"move_event":
-				var ev = get_in_game_event_by_id(id)
+				var ev = null
+				if uniq_id != -1:
+					ev = get_in_game_event_by_uniq_id(uniq_id)
+				else:
+					ev = get_in_game_event_by_id(id)
+					
 				if ev:
 					set_event_position(ev, Vector2i(data.get("x"), data.get("y")), ev.current_direction)
 			
@@ -1300,19 +1313,76 @@ func _process_hot_reload_packets() -> void:
 			"update_start_position":
 				if entity_manager:
 					entity_manager.hot_reload_start_position(data.get("target_id", ""), data.get("map_id", -1), Vector2i(data.get("x", 0), data.get("y", 0)))
+					
 			"update_carry_offsets":
-				if player and player.carried_event and player.carried_event.has_meta("backup_data"):
-					var backup = player.carried_event.get_meta("backup_data")
-					var o_data = data.get("offsets", {})
+				var target_event = get_in_game_event_by_uniq_id(uniq_id)
+				if target_event and is_instance_valid(target_event):
+					var ev_node = target_event
 					
-					backup["offsets"] = {
-						CharacterBase.DIRECTIONS.LEFT: Vector2(o_data.get("offset_left_x", 0), o_data.get("offset_left_y", 0)),
-						CharacterBase.DIRECTIONS.RIGHT: Vector2(o_data.get("offset_right_x", 0), o_data.get("offset_right_y", 0)),
-						CharacterBase.DIRECTIONS.UP: Vector2(o_data.get("offset_up_x", 0), o_data.get("offset_up_y", 0)),
-						CharacterBase.DIRECTIONS.DOWN: Vector2(o_data.get("offset_down_x", 0), o_data.get("offset_down_y", 0))
-					}
+					if "current_event_page" in ev_node and ev_node.current_event_page:
+						var params = ev_node.current_event_page.options.type_params
+						var o_data = data.get("offsets", {})
+						var fxs = data.get("fxs", {})
+						
+						params["offset_left_x"] = o_data.get("offset_left_x", 0)
+						params["offset_left_y"] = o_data.get("offset_left_y", 0)
+						params["offset_right_x"] = o_data.get("offset_right_x", 0)
+						params["offset_right_y"] = o_data.get("offset_right_y", 0)
+						params["offset_up_x"] = o_data.get("offset_up_x", 0)
+						params["offset_up_y"] = o_data.get("offset_up_y", 0)
+						params["offset_down_x"] = o_data.get("offset_down_x", 0)
+						params["offset_down_y"] = o_data.get("offset_down_y", 0)
+						params["throw_strength"] = data.get("throw_strength", 1)
+						
+						params["activation_page_type"] = data.get("activation_page_type", 0)
+						params["can_throw_over_obstacles"] = data.get("can_throw_over_obstacles", 1)
+						params["can_carry_to_other_maps"] = data.get("can_carry_to_other_maps", false)
+						params["lift_rotation"] = data.get("lift_rotation", 90)
+						
+						if fxs.has("lift_fx"): params["lift_fx"] = fxs["lift_fx"]
+						if fxs.has("throw_fx"): params["throw_fx"] = fxs["throw_fx"]
+						
+					if player and player.carried_event == ev_node and ev_node.has_meta("backup_data"):
+						var backup = ev_node.get_meta("backup_data")
+						var o_data = data.get("offsets", {})
+						
+						backup["offsets"] = {
+							CharacterBase.DIRECTIONS.LEFT: Vector2(o_data.get("offset_left_x", 0), o_data.get("offset_left_y", 0)),
+							CharacterBase.DIRECTIONS.RIGHT: Vector2(o_data.get("offset_right_x", 0), o_data.get("offset_right_y", 0)),
+							CharacterBase.DIRECTIONS.UP: Vector2(o_data.get("offset_up_x", 0), o_data.get("offset_up_y", 0)),
+							CharacterBase.DIRECTIONS.DOWN: Vector2(o_data.get("offset_down_x", 0), o_data.get("offset_down_y", 0))
+						}
+						
+						ev_node.set_meta("backup_data", backup)
+						
+						if player.has_method("_get_shoulders"):
+							var mark = player._get_shoulders()
+							var current_offset = backup["offsets"][player.current_direction]
+							ev_node.position = player.to_local(mark.global_position + current_offset)
+							
+			"update_push_offsets":
+				var target_event = get_in_game_event_by_uniq_id(uniq_id)
+				if target_event and is_instance_valid(target_event):
+					var ev_node = target_event
 					
-					player.carried_event.set_meta("backup_data", backup)
+					if "current_event_page" in ev_node and ev_node.current_event_page:
+						var params = ev_node.current_event_page.options.type_params
+						var o_data = data.get("offsets", {})
+						var fxs = data.get("fxs", {})
+						
+						params["push_offset_left_x"] = o_data.get("push_offset_left_x", 0)
+						params["push_offset_left_y"] = o_data.get("push_offset_left_y", 0)
+						params["push_offset_right_x"] = o_data.get("push_offset_right_x", 0)
+						params["push_offset_right_y"] = o_data.get("push_offset_right_y", 0)
+						params["push_offset_up_x"] = o_data.get("push_offset_up_x", 0)
+						params["push_offset_up_y"] = o_data.get("push_offset_up_y", 0)
+						params["push_offset_down_x"] = o_data.get("push_offset_down_x", 0)
+						params["push_offset_down_y"] = o_data.get("push_offset_down_y", 0)
+						params["activation_push_type"] = o_data.get("activation_push_type", 0)
+						params["time"] = o_data.get("time", 0)
+						params["initial_delay"] = o_data.get("initial_delay", 0)
+						if fxs.has("push_fx"): params["push_fx"] = fxs["push_fx"]
+						
 	
 		var temp_dir = "res://addons/RPGMap/Temp/"
 		if FileAccess.file_exists(temp_path) and temp_path.begins_with(temp_dir):

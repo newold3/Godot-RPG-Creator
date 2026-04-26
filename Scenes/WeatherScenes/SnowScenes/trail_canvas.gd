@@ -77,6 +77,7 @@ func _physics_process(delta: float) -> void:
 			visible_rect = visible_rect.grow(visibility_margin)
 			
 			for entity in current_entities:
+				if "is_invalid_event" in entity and entity.is_invalid_event: continue
 				if not visible_rect.has_point(entity.global_position):
 					continue
 				current_entities_set[entity] = true

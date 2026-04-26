@@ -640,8 +640,12 @@ func _run_dual_animation() -> void:
 
 
 func _update_carried_object_visuals(bobbing_y: float) -> void:
-	if not carried_event:
+	if not carried_event or is_lifting:
 		return
+		
+	var anim_type = 0
+	if "current_event_page" in carried_event and carried_event.current_event_page:
+		anim_type = carried_event.current_event_page.options.type_params.get("animation_type", 0)
 	
 	if carried_event.has_meta("backup_data"):
 		var backup = carried_event.get_meta("backup_data")
@@ -653,8 +657,11 @@ func _update_carried_object_visuals(bobbing_y: float) -> void:
 		if backup.has("x_position") and backup.has("y_position"):
 			carried_event.position.x = backup["x_position"] + custom_offset.x
 			carried_event.position.y = backup["y_position"] + bobbing_y + custom_offset.y
-	
-	carried_event.show_behind_parent = current_direction != DIRECTIONS.UP
+			
+	if anim_type == 0:
+		carried_event.show_behind_parent = current_direction != DIRECTIONS.UP
+	else:
+		carried_event.show_behind_parent = current_direction == DIRECTIONS.UP
 
 
 ## Retrieves a cached dual frame texture blending halves and applying vertical bobbing

@@ -36,31 +36,38 @@ func _ready() -> void:
 	set_collision_mask_value(4, true)
 
 
+#region event's functions
+## Returns whether this event can be passed through.
 func is_passable() -> bool:
-	return passable
+	return EventManager.is_passable(self)
 
 
+## Returns whether this event can be lifted.
+func is_liftable() -> bool:
+	return EventManager.is_liftable(self)
+
+
+## Returns whether this event can be moved.
+func is_moveable() -> bool:
+	return EventManager.is_moveable(self)
+
+
+## Returns whether this event is currently pressed.
+func is_pressed() -> bool:
+	return EventManager.is_pressed(self)
+
+
+## Calculates the next tile coordinate to move toward the target event.
+func _get_next_move_toward_event() -> Vector2i:
+	return EventManager.get_next_move_toward_event(self)
+
+
+## Starts the lifting animation logic.
+func _start_lift_animation() -> void:
+	EventManager.start_lift_animation(self)
+
+
+## Starts the event interaction.
 func start(obj: Node, launcher_mode: RPGEventPage.LAUNCHER_MODE) -> bool:
-	if is_invalid_event: return false
-	
-	# update interactive_events_found stat
-	if GameManager.game_state and GameManager.current_map:
-		var id = "%s_%s" % [GameManager.current_map.internal_id, current_event.id]
-		if not id in GameManager.game_state.stats.interactive_events_found:
-			GameManager.game_state.stats.interactive_events_found[id] = true
-			
-	if obj in targets_over_me:
-		return false
-	
-	if QuestManager.manage_mission_for_event(current_event):
-		return false
-		
-	if current_event_page:
-		if current_event_page.launcher != launcher_mode:
-			return false
-		var interpreter_id = "event_" + str(current_event_page.id)
-		GameInterpreter.start_event(self, current_event_page.list, false, interpreter_id)
-	
-	targets_over_me.append(obj)
-	
-	return true
+	return EventManager.start_event(self, obj, launcher_mode)
+#endregion

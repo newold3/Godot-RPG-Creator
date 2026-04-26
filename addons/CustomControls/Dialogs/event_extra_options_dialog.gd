@@ -1,6 +1,7 @@
 @tool
 extends Window
 
+var current_event: RPGEvent
 var real_options: RPGEventPageOptions
 var options: RPGEventPageOptions
 var is_pressed_mode: bool = false
@@ -12,9 +13,10 @@ signal OK(new_pressed_state: bool)
 
 
 func _ready() -> void:
-	close_requested.connect(queue_free)
+	close_requested.connect(_attempt_close)
 	_fill_self_switches()
 	_fill_trigger_lift_options()
+	_fill_trigger_push_options()
 	
 	_udp_peer = PacketPeerUDP.new()
 	_udp_peer.set_dest_address("127.0.0.1", 4242)
@@ -34,10 +36,13 @@ func _send_hot_reload_packet() -> void:
 	
 	var data: Dictionary
 	
+	if options.type_params.is_empty(): return
+	
 	if options.event_type == 1:
 		data = {
 			"type": "update_carry_offsets",
 			"map_id": -1,
+			"uniq_id": current_event._uniq_id,
 			"offsets": {
 				"offset_left_x": options.type_params.get("offset_left_x", 0),
 				"offset_left_y": options.type_params.get("offset_left_y", 0),
@@ -52,12 +57,17 @@ func _send_hot_reload_packet() -> void:
 				"lift_fx": options.type_params.get("lift_fx", {}),
 				"throw_fx": options.type_params.get("throw_fx", {})
 			},
-			"throw_strength": options.type_params.throw_strength
+			"throw_strength": options.type_params.throw_strength,
+			"activation_page_type": options.type_params.get("activation_page_type", 0),
+			"can_throw_over_obstacles": options.type_params.get("can_throw_over_obstacles", 0),
+			"can_carry_to_other_maps": options.type_params.get("can_carry_to_other_maps", false),
+			"lift_rotation": options.type_params.get("lift_rotation", 0.0)
 		}
 	elif options.event_type == 2:
 		data = {
 			"type": "update_push_offsets",
 			"map_id": -1,
+			"uniq_id": current_event._uniq_id,
 			"offsets": {
 				"push_offset_left_x": options.type_params.get("push_offset_left_x", 0),
 				"push_offset_left_y": options.type_params.get("push_offset_left_y", 0),
@@ -70,7 +80,10 @@ func _send_hot_reload_packet() -> void:
 			},
 			"fxs": {
 				"push_fx": options.type_params.get("push_fx", {})
-			}
+			},
+			"activation_push_type": options.type_params.get("activation_push_type", 0),
+			"time": options.type_params.get("time", 0),
+			"initial_delay": options.type_params.get("initial_delay", 0)
 		}
 	
 	if data:
@@ -137,6 +150,45 @@ func _fill_trigger_lift_options() -> void:
 		node.add_item(opt.name, opt.id)
 
 
+func _fill_trigger_push_options() -> void:
+	var node = %PushActivationPageTrigger
+	node.clear()
+	
+	node.add_item(tr("Never"), 0)
+	
+	var names = {
+		16: tr("Pre-Push"),
+		32: tr("Post-Push")
+	}
+	
+	var basics: Array = []
+	var combos: Array = []
+	
+	for i in [16, 32, 48]:
+		var combo_name = ""
+		var is_first = true
+		var bits_count = 0
+		
+		for bit in [16, 32]:
+			if (i & bit) != 0:
+				bits_count += 1
+				if not is_first:
+					combo_name += " + "
+				combo_name += names[bit]
+				is_first = false
+		
+		if bits_count == 1:
+			basics.append({"name": combo_name, "id": i})
+		else:
+			combos.append({"name": combo_name, "id": i})
+			
+	for opt in basics:
+		node.add_item(opt.name, opt.id)
+		
+	for opt in combos:
+		node.add_item(opt.name, opt.id)
+
+
 func set_page_options(_options: RPGEventPageOptions, _is_pressed: bool = false) -> void:
 	real_options = _options
 	options = _options.clone()
@@ -198,6 +250,15 @@ func fill() -> void:
 	
 	%ActivationPageTrigger.select(act_page_idx)
 	
+	var push_act_val = options.type_params.get("activation_push_type", 0)
+	
+	var push_idx = 0
+	for i in range(%PushActivationPageTrigger.item_count):
+		if %PushActivationPageTrigger.get_item_id(i) == push_act_val:
+			push_idx = i
+			break
+	%PushActivationPageTrigger.select(push_idx)
+	
 	%CanCarryToOtherMaps.select(
 		0 if options.type_params.get("can_carry_to_other_maps", false) \
 		else 1
@@ -245,9 +306,8 @@ func _on_ok_button_pressed() -> void:
 	propagate_call("apply")
 	
 	var keys = [
-		"show_name_in_map", "name_config_path", "event_type", "type_params",
-		"use_extra_config", "is_inmortal", "hp", "enable_self_switch_on_hit_id",
-		"enable_self_switch_on_dead_id"
+		"show_name_in_map", "name_config_path", "walking_animation", "idle_animation", "fixed_direction", "passable", "use_extra_config",
+		"is_inmortal", "hp", "enable_self_switch_on_hit_id", "enable_self_switch_on_dead_id", "event_type", "type_params"
 	]
 	
 	for key in keys:
@@ -258,7 +318,42 @@ func _on_ok_button_pressed() -> void:
 
 
 func _on_cancel_button_pressed() -> void:
-	queue_free()
+	_attempt_close()
+
+
+func _attempt_close() -> void:
+	if _has_unsaved_changes():
+		var path = "res://addons/CustomControls/Dialogs/confirm_dialog.tscn"
+		var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
+		
+		dialog.set_text(TranslationManager.tr("You have unsaved extra options.\n\nDo you want to exit and discard the changes?\n"))
+		dialog.title = TranslationManager.tr("Unsaved Changes")
+
+		dialog.tree_exiting.connect(
+			func():
+				if dialog.result:
+					queue_free()
+		)
+	else:
+		queue_free()
+
+
+## Compara las opciones actuales con las guardadas para detectar modificaciones
+func _has_unsaved_changes() -> bool:
+	var keys = [
+		"show_name_in_map", "name_config_path", "walking_animation", "idle_animation", 
+		"fixed_direction", "passable", "use_extra_config", "is_inmortal", "hp", 
+		"enable_self_switch_on_hit_id", "enable_self_switch_on_dead_id", "event_type"
+	]
+	
+	for key in keys:
+		if real_options[key] != options[key]:
+			return true
+			
+	if hash(real_options.type_params) != hash(options.type_params):
+		return true
+		
+	return false
 
 
 func _on_use_extra_config_toggled(toggled_on: bool) -> void:
@@ -368,11 +463,13 @@ func _on_throw_strength_value_changed(value: float) -> void:
 func _on_time_value_changed(value: float) -> void:
 	if not options: return
 	options.type_params.time = value
+	_hot_reload_timer.start()
 
 
 func _on_initial_delay_value_changed(value: float) -> void:
 	if not options: return
 	options.type_params.initial_delay = value
+	_hot_reload_timer.start()
 
 
 func _on_offset_left_x_value_changed(value: float) -> void:
@@ -463,10 +560,12 @@ func _on_lift_image_remove_requested() -> void:
 
 func _on_animation_type_item_selected(index: int) -> void:
 	options.type_params.animation_type = index
+	_hot_reload_timer.start()
 
 
 func _on_can_throw_over_obstacles_item_selected(index: int) -> void:
 	options.type_params.can_throw_over_obstacles = index
+	_hot_reload_timer.start()
 
 
 func open_sound_dialog(id: String) -> void:
@@ -572,8 +671,14 @@ func _on_push_fx_pressed() -> void:
 
 func _on_activation_page_trigger_item_selected(index: int) -> void:
 	options.type_params.activation_page_type = %ActivationPageTrigger.get_item_id(index)
+	_hot_reload_timer.start()
 
 
 func _on_can_carry_to_other_maps_item_selected(index: int) -> void:
 	if not options: return
 	options.type_params.can_carry_to_other_maps = index == 0
+	_hot_reload_timer.start()
+
+
+func _on_push_activation_page_trigger_item_selected(index: int) -> void:
+	options.type_params.activation_push_type = %PushActivationPageTrigger.get_item_id(index)

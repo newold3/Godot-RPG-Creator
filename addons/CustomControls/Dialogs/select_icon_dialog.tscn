@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://4hjttjjne78w"]
+[gd_scene format=3 uid="uid://4hjttjjne78w"]
 
 [ext_resource type="Theme" uid="uid://dlgit3j4ygo54" path="res://addons/RPGData/Assets/Themes/database_theme.tres" id="1_yt8ob"]
 [ext_resource type="Script" uid="uid://co00x40kjcmsx" path="res://addons/CustomControls/Dialogs/select_icon_dialog.gd" id="2_ei7gc"]
@@ -27,7 +27,7 @@ keycode = 4194310
 [sub_resource type="Shortcut" id="Shortcut_yldtf"]
 events = [SubResource("InputEventKey_ueikt"), SubResource("InputEventKey_6sxke")]
 
-[node name="SelectIconDialog" type="Window"]
+[node name="SelectIconDialog" type="Window" unique_id=1496648259]
 oversampling_override = 1.0
 title = "Select Icon"
 position = Vector2i(0, 36)
@@ -40,7 +40,7 @@ theme = ExtResource("1_yt8ob")
 script = ExtResource("2_ei7gc")
 main_texture = SubResource("AtlasTexture_88aeh")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1448734987]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -48,7 +48,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_a3inn")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=49559352]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -59,20 +59,20 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="HBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="HBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1724642892]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=1453224137]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=1101338023]
 custom_minimum_size = Vector2(158, 0)
 layout_mode = 2
 text = "Icon"
 
-[node name="IconPicker" parent="MarginContainer/HBoxContainer/VBoxContainer" instance=ExtResource("3_5r52i")]
+[node name="IconPicker" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=1033230131 instance=ExtResource("3_5r52i")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
@@ -82,12 +82,12 @@ Image identifying this data. You can select an image in the [Select an Image] wi
 
 Mouse wheel click to erase the current image."
 
-[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=439431279]
 custom_minimum_size = Vector2(158, 0)
 layout_mode = 2
 text = "Region:"
 
-[node name="ImageRegion" parent="MarginContainer/HBoxContainer/VBoxContainer" instance=ExtResource("4_w4dif")]
+[node name="ImageRegion" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=748368827 instance=ExtResource("4_w4dif")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -100,17 +100,17 @@ If the image is part of an atlas, define here the region occupied by the selecte
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 text = "Region"
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/HBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/HBoxContainer" unique_id=770746762]
 layout_mode = 2
 size_flags_vertical = 8
 
-[node name="VBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
+[node name="VBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=201831538]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 16
 alignment = 1
 
-[node name="OKButton" parent="MarginContainer/HBoxContainer/VBoxContainer2" instance=ExtResource("3_c5pat")]
+[node name="OKButton" parent="MarginContainer/HBoxContainer/VBoxContainer2" unique_id=322388491 instance=ExtResource("3_c5pat")]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Ok[/title]
@@ -118,7 +118,7 @@ Saves all changes and closes the window."
 shortcut = SubResource("Shortcut_yldtf")
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/HBoxContainer/VBoxContainer2" instance=ExtResource("3_c5pat")]
+[node name="CancelButton" parent="MarginContainer/HBoxContainer/VBoxContainer2" unique_id=571083901 instance=ExtResource("3_c5pat")]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Cancel[/title]

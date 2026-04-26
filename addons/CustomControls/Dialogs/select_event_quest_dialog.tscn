@@ -20,7 +20,7 @@ fill_to = Vector2(0.5, 0)
 oversampling_override = 1.0
 title = "Event Quests"
 position = Vector2i(0, 36)
-size = Vector2i(800, 586)
+size = Vector2i(800, 652)
 wrap_controls = true
 transient = true
 exclusive = true
@@ -67,7 +67,7 @@ text = "Select Quest"
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=1547335366]
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 text = "Start Page:"
 
@@ -87,7 +87,7 @@ clip_text = true
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6" unique_id=1534985699]
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 text = "Target Event Page:"
 
@@ -108,7 +108,7 @@ layout_mode = 2
 
 [node name="UseCustomTimer" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer5" unique_id=256424170]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 tooltip_text = "Enable overwrite the timer to complete this quest defined in the database with a specific timer."
 mouse_default_cursor_shape = 2
@@ -122,9 +122,38 @@ tooltip_text = "Time limit to complete the quest. A value of 0 means there is no
 
 [Note]: This time is used to automatically finish the quest (terminating it as failed)."
 mouse_filter = 2
+min_value = 1.0
+value = 1.0
+allow_greater = true
 editable = false
 disabled = true
-_custom_value = 0.0
+_custom_value = 1.0
+
+[node name="OnCompleteCallCommonEvent" parent="MarginContainer/VBoxContainer" unique_id=2071156231 instance=ExtResource("3_sc7n4")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Common Event ID triggered automatically when this quest is successfully completed.
+This event fires universally regardless of whether the quest delivery was automatic or manual.
+
+\"WARNING\": Do not include quest-altering commands within this Common Event to avoid conflicts with the Quest Manager.
+
+[Note]: Middle Click = Erase Global Event"
+text = "On Complete Call Common Event - None"
+clip_text = true
+
+[node name="OnFailCallCommonEvent" parent="MarginContainer/VBoxContainer" unique_id=943217175 instance=ExtResource("3_sc7n4")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Common Event ID triggered automatically when this quest is failed or canceled.
+This event fires universally as soon as the quest enters a failed state.
+
+\"WARNING\": Do not include quest-altering commands within this Common Event to avoid conflicts with the Quest Manager.
+
+[Note]: Middle Click = Erase Global Event"
+text = "On Fail Call Common Event     - None"
+clip_text = true
 
 [node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=564004961]
 layout_mode = 2
@@ -139,7 +168,7 @@ text = "Requisites"
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=2012280779]
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 text = "Active Pages:"
 
@@ -157,7 +186,7 @@ multi_selection_prefix = "Page/s "
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer3" unique_id=594611130]
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 text = "Relationship level:"
 
@@ -187,7 +216,7 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer" unique_id=1538726378]
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 text = "Start Message:"
 
@@ -204,7 +233,7 @@ clip_text = true
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer3" unique_id=27953693]
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 text = "Success Message:"
 
@@ -221,7 +250,7 @@ clip_text = true
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer4" unique_id=2118912299]
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 text = "Failure Message:"
 
@@ -255,7 +284,7 @@ text = "Use “Confirm” to give this quest to the player."
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer" unique_id=693838499]
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 text = "Accept Option:"
 
@@ -271,7 +300,7 @@ metadata/original_text = "Accept quest"
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer2" unique_id=678727961]
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 text = "Cancel Option:"
 
@@ -316,6 +345,11 @@ text = "CANCEL"
 [connection signal="middle_click_pressed" from="MarginContainer/VBoxContainer/HBoxContainer6/TargetEventPage" to="." method="_on_target_event_page_middle_click_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer6/TargetEventPage" to="." method="_on_target_event_page_pressed"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/HBoxContainer5/UseCustomTimer" to="." method="_on_use_custom_timer_toggled"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer5/CustomTimer" to="." method="_on_custom_timer_value_changed"]
+[connection signal="middle_click_pressed" from="MarginContainer/VBoxContainer/OnCompleteCallCommonEvent" to="." method="_on_on_complete_call_common_event_middle_click_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/OnCompleteCallCommonEvent" to="." method="_on_on_complete_call_common_event_pressed"]
+[connection signal="middle_click_pressed" from="MarginContainer/VBoxContainer/OnFailCallCommonEvent" to="." method="_on_on_fail_call_common_event_middle_click_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/OnFailCallCommonEvent" to="." method="_on_on_fail_call_common_event_pressed"]
 [connection signal="multi_selection_changed" from="MarginContainer/VBoxContainer/HBoxContainer/PageList" to="." method="_on_page_list_multi_selection_changed"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer3/RelationshipLevel" to="." method="_on_relationship_level_item_selected"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/StartMessage" to="." method="_on_start_message_pressed"]

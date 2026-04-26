@@ -336,8 +336,9 @@ code_format = NodePath("../../../../../Formatter")
 
 [node name="RightMenu" type="PopupMenu" parent="." unique_id=1727991476]
 unique_name_in_owner = true
-size = Vector2i(231, 286)
-item_count = 13
+oversampling_override = 1.0
+size = Vector2i(310, 344)
+item_count = 15
 item_0/text = "Create new Command"
 item_0/id = 0
 item_1/text = "Edit Command Selected"
@@ -364,6 +365,10 @@ item_11/text = "Preview Selected Command/s"
 item_11/id = 11
 item_12/text = "Preview Page Commands"
 item_12/id = 12
+item_13/id = 13
+item_13/separator = true
+item_14/text = "Copy Selected Command/s as JSON"
+item_14/id = 14
 
 [connection signal="gui_input" from="VBoxContainer/HBoxContainer/Filter" to="." method="_on_filter_gui_input"]
 [connection signal="text_changed" from="VBoxContainer/HBoxContainer/Filter" to="." method="_on_filter_text_changed"]

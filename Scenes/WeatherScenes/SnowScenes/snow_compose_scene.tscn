@@ -1,6 +1,5 @@
 [gd_scene format=3 uid="uid://c27jqf82o4t60"]
 
-[ext_resource type="PackedScene" uid="uid://m3vvhpbeu3uy" path="res://Scenes/WeatherScenes/SnowScenes/trail_scene.tscn" id="1_1bw8m"]
 [ext_resource type="Script" uid="uid://65tcuva1hv78" path="res://Scenes/WeatherScenes/SnowScenes/snow_compose_scene.gd" id="1_6i41d"]
 [ext_resource type="PackedScene" uid="uid://b2arh2buftsm1" path="res://Scenes/WeatherScenes/SnowScenes/snow_scene.tscn" id="2_q71wq"]
 [ext_resource type="PackedScene" uid="uid://d2cy6vg0xgsvl" path="res://Scenes/WeatherScenes/SnowScenes/simplified_trail_scene.tscn" id="2_u3ft1"]
@@ -9,11 +8,6 @@
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_u3ft1"]
 viewport_path = NodePath("MainViewport")
-
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_kv720"]
-
-[sub_resource type="ViewportTexture" id="ViewportTexture_kmcow"]
-viewport_path = NodePath("TrailViewport")
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_hclb4"]
 blend_mode = 1
@@ -29,14 +23,6 @@ modulate_scene = Color(0.52, 0.52, 0.52, 1)
 [node name="TrailScene" parent="." unique_id=1643510112 instance=ExtResource("2_u3ft1")]
 unique_name_in_owner = true
 texture = SubResource("ViewportTexture_u3ft1")
-
-[node name="TrailScene2" parent="." unique_id=1656552679 instance=ExtResource("1_1bw8m")]
-unique_name_in_owner = true
-visible = false
-self_modulate = Color(1, 1, 1, 0.477)
-material = SubResource("CanvasItemMaterial_kv720")
-position = Vector2(0, -1)
-texture = SubResource("ViewportTexture_kmcow")
 
 [node name="SnowScene" parent="." unique_id=400606771 instance=ExtResource("2_q71wq")]
 unique_name_in_owner = true

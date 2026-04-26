@@ -55,6 +55,10 @@ func set_data(p_data: RPGEventPQuest) -> void:
 	%UseConfirm.set_pressed(data.use_confirm_message)
 	%ConfirmOK.text = data.confirm_ok_option
 	%ConfirmCancel.text = data.confirm_cancel_option
+	
+	set_control_name("start_page", data.start_page)
+	set_control_name("target_page", data.target_page)
+	_update_common_events_texts()
 
 
 func _update_texts() -> void:
@@ -127,6 +131,7 @@ func _on_quest_id_selected(id: int, target: Variant) -> void:
 
 func _on_use_custom_timer_toggled(toggled_on: bool) -> void:
 	%CustomTimer.set_disabled(!toggled_on)
+	data.use_custom_timer = toggled_on
 
 
 func _on_page_list_multi_selection_changed(selected_ids: PackedInt32Array) -> void:
@@ -157,7 +162,6 @@ func _select_event(data_id: String, event: RPGMapEventID, is_single: bool) -> vo
 	
 	if is_single:
 		var w = get_tree().get_first_node_in_group("event_editor")
-		print([w.current_object, w.current_event])
 		dialog.setup_single_event_mode(w.current_object.internal_id, w.current_event._uniq_id, true, true)
 	else:
 		dialog.setup_quest_mode(true, true)
@@ -209,3 +213,70 @@ func _on_start_page_middle_click_pressed() -> void:
 func _on_target_event_page_middle_click_pressed() -> void:
 	data.target_page.clear()
 	set_control_name("target_page", data.target_page)
+
+
+func _on_on_complete_call_common_event_pressed() -> void:
+	_open_select_any_data_dialog(RPGSYSTEM.database.common_events, data.on_complete_common_event, "Global Event", 0)
+
+
+func _on_on_fail_call_common_event_pressed() -> void:
+	_open_select_any_data_dialog(RPGSYSTEM.database.common_events, data.on_fail_common_event, "Global Event", 1)
+
+
+func _open_select_any_data_dialog(current_data, id_selected: int, title: String, target: int) -> void:
+	var path = "res://addons/CustomControls/Dialogs/select_any_data_dialog.tscn"
+	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
+	dialog.database = RPGSYSTEM.database
+	
+	dialog.destroy_on_hide = true
+	dialog.selected.connect(_on_any_data_selected, CONNECT_ONE_SHOT)
+	
+	dialog.setup(current_data, id_selected, title, target)
+
+
+func _on_any_data_selected(id: int, target: int) -> void:
+	if target == 0:
+		data.on_complete_common_event = id
+	else:
+		data.on_fail_common_event = id
+	_update_common_events_texts()
+
+
+func _update_common_events_texts() -> void:
+	var nodes = [%OnCompleteCallCommonEvent, %OnFailCallCommonEvent]
+	var keys = ["on_complete_common_event", "on_fail_common_event"]
+	var texts = [
+		tr("On Complete Call Common Event - "),
+		tr("On Fail Call Common Event     - "),
+	]
+	
+	for i in keys.size():
+		var node = nodes[i]
+		var key = keys[i]
+		var text = texts[i]
+		var global_event_id = data[key]
+		if global_event_id <= 0:
+			data[key] = -1
+			node.text = text + tr("None")
+		else:
+			var global_event_name: String = ""
+			if global_event_id > 0 and RPGSYSTEM.database.common_events.size() > global_event_id:
+				global_event_name = "%s: %s" % [global_event_id, RPGSYSTEM.database.common_events[global_event_id].name]
+			else:
+				global_event_name = "⚠ Invalid Data"
+				
+			node.text = text + global_event_name
+
+
+func _on_on_complete_call_common_event_middle_click_pressed() -> void:
+	data.on_complete_common_event = -1
+	_update_common_events_texts()
+
+
+func _on_on_fail_call_common_event_middle_click_pressed() -> void:
+	data.on_fail_common_event = -1
+	_update_common_events_texts()
+
+
+func _on_custom_timer_value_changed(value: float) -> void:
+	data.custom_timer = value

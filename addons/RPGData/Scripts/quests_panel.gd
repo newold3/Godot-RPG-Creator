@@ -8,6 +8,7 @@ var quest_cache: Dictionary = {
 	"item_id": 1,
 	"weapon_id": 1,
 	"armor_id": 1,
+	"set_id": 1,
 	"item_quantity": 1,
 	"item_preserve": false,
 	"enemy_id": 1,
@@ -108,6 +109,7 @@ func clear_cache() -> void:
 	quest_cache.item_id = 1
 	quest_cache.weapon_id = 1
 	quest_cache.armor_id = 1
+	quest_cache.set_id = 1
 	quest_cache.item_quantity = 1
 	quest_cache.item_preserve = false
 	quest_cache.enemy_id = 1
@@ -134,6 +136,7 @@ func _update_data_fields() -> void:
 				0: quest_cache.item_id = current_data.item_id
 				1: quest_cache.weapon_id = current_data.item_id
 				2: quest_cache.armor_id = current_data.item_id
+				3: quest_cache.set_id = current_data.set_id
 			quest_cache.item_quantity = current_data.quantity
 			quest_cache.item_preserve = current_data.keep_materials
 		elif current_data.type == RPGQuest.QuestMode.BOUNTY_HUNTS:
@@ -236,6 +239,7 @@ func _on_type_options_item_selected(index: int) -> void:
 				0: current_data.item_id = quest_cache.item_id
 				1: current_data.item_id = quest_cache.weapon_id
 				2: current_data.item_id = quest_cache.armor_id
+				3: current_data.item_id = quest_cache.set_id
 			current_data.quantity = quest_cache.item_quantity
 			current_data.keep_materials = quest_cache.item_preserve
 			
@@ -428,9 +432,13 @@ func set_item_name(type: int, id: int) -> void:
 	
 	var current_data = RPGSYSTEM.database.items if type == 0 \
 		else RPGSYSTEM.database.weapons if type == 1 \
-		else RPGSYSTEM.database.armors
+		else RPGSYSTEM.database.armors if type == 2 \
+		else RPGSYSTEM.database.costumes
 	
-	%ItemID.text = "%s: %s" % [id, current_data[id].name]
+	if current_data.size() > id:
+		%ItemID.text = "%s: %s" % [id, current_data[id].name]
+	else:
+		%ItemID.text = tr("None")
 
 
 func set_enemy_name() -> void:
@@ -481,7 +489,8 @@ func _on_item_type_options_item_selected(index: int) -> void:
 	get_data().item_type = index
 	get_data().item_id = quest_cache.item_id if index == 0 \
 		else quest_cache.weapon_id if index == 1 \
-		else quest_cache.armor_id
+		else quest_cache.armor_id if index == 2 \
+		else quest_cache.set_id
 	
 	set_item_name(index, get_data().item_id)
 
@@ -498,7 +507,7 @@ func _open_select_any_data_dialog(current_data, id_selected: int, title: String,
 
 
 func _on_any_data_selected(id: int, target: int) -> void:
-	if target in [0, 1, 2]:
+	if target in [0, 1, 2, 3]:
 		get_data().item_id = id
 		set_item_name(target, id)
 	elif target == 4:
@@ -527,6 +536,7 @@ func _on_item_id_pressed() -> void:
 		0: _open_select_any_data_dialog(RPGSYSTEM.database.items, get_data().item_id, "items", item_type)
 		1: _open_select_any_data_dialog(RPGSYSTEM.database.weapons, get_data().item_id, "weapons", item_type)
 		2: _open_select_any_data_dialog(RPGSYSTEM.database.armors, get_data().item_id, "armors", item_type)
+		3: _open_select_any_data_dialog(RPGSYSTEM.database.costumes, get_data().item_id, "costumes", item_type)
 
 
 func _on_quantity_value_changed(value: float) -> void:

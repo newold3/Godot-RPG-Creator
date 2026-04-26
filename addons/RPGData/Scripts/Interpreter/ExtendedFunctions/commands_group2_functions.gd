@@ -62,7 +62,7 @@ func _command_0013() -> void:
 
 
 # Command Change Weapons (Code 14), button_id = 9
-# Code 14 (Parent) parameters { operation_type, value_type, value, item_id, include_equipment }
+# Code 14 (Parent) parameters { operation_type, value_type, value, item_id, include_equipment, level }
 func _command_0014() -> void:
 	debug_print("Processing command: Change Weapons (code 14)")
 	
@@ -103,7 +103,7 @@ func _command_0014() -> void:
 
 
 # Command Change Armors (Code 15), button_id = 10
-# Code 15 (Parent) parameters { operation_type, value_type, value, item_id, include_equipment }
+# Code 15 (Parent) parameters { operation_type, value_type, value, item_id, include_equipment, level }
 func _command_0015() -> void:
 	debug_print("Processing command: Change Armors (code 15)")
 	
@@ -137,6 +137,44 @@ func _command_0015() -> void:
 		GameManager.add_armor_amount(item_id, value, level)
 	else:
 		GameManager.remove_armor_amount(item_id, value, include_equipment)
+	
+	# Refresh the map if it exists
+	if GameManager.current_map:
+		GameManager.current_map.need_refresh = true
+
+
+# Command Change Costumes / Sets (Code 127), button_id = 133
+# Code 127 (Parent) parameters { operation_type, value_type, value, item_id, include_equipment }
+func _command_0127() -> void:
+	debug_print("Processing command: Change Costumes / Sets (code 127)")
+	
+	# Get the operation type: 0 = increase, 1 = decrease
+	var operation_type = current_command.parameters.get("operation_type")
+	
+	# Get the value type: 0 = fixed value, 1 = variable reference
+	var value_type = current_command.parameters.get("value_type")
+	
+	# Get the armor ID to modify
+	var item_id = current_command.parameters.get("item_id")
+	
+	# Determine whether to include equipped costume or set in the operation
+	var include_equipment = current_command.parameters.get("include_equipment", false)
+
+	var value: int
+	if value_type == 0:
+		# If value type is fixed, retrieve the fixed value
+		value = current_command.parameters.get("value", 0)
+	else:
+		# If value type is variable, retrieve the variable ID and get its value
+		var id = current_command.parameters.get("value", 1)
+		value = GameManager.get_variable(id)
+		
+	# Adjust the costume or set amount based on the operation type
+	# Increase costume or set amount if operation_type is 0, otherwise decrease it
+	if operation_type == 0:
+		GameManager.add_costume_amount(item_id, value)
+	else:
+		GameManager.remove_costume_amount(item_id, value, include_equipment)
 	
 	# Refresh the map if it exists
 	if GameManager.current_map:

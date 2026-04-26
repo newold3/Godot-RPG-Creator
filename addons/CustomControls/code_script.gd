@@ -74,13 +74,16 @@ var command_codes = {
 	# Command Change Armors (Code 15)
 	# Code 15 (Parent) parameters { operation_type, value_type, value, level, item_id, include_equipment }
 	10 : {"command_code" : 15, "dialog" : "change_armor_dialog"},
+	# Command Change Costumes / Sets (Code 127)
+	# Code 127 (Parent) parameters { operation_type, value_type, value, item_id, include_equipment }
+	133 : {"command_code" : 127, "dialog" : "change_set_dialog"},
 	# Command Change Party Members (Code 16)
 	# Code 16 (Parent) parameters { operation_type, actor_id, initialize }
 	11 : {"command_code" : 16, "dialog" : "change_party_member_dialog"},
 	# Command Change Leader (Code 36)
 	# Code 36 (Parent) parameters { leader_id, is_locked }
 	109 : {"command_code" : 36, "dialog" : "change_leader_dialog"},
-	# Command Combar Experience Mode Leader (Code 60)
+	# Command Combat Experience Mode Leader (Code 60)
 	# Code 60 (Parent) parameters { type }
 	115 : {"command_code" : 60, "dialog" : "change_combat_xp_dialog"},
 	# Command Control Switches (Code 17)
@@ -384,6 +387,9 @@ var command_codes = {
 	# Change Tile State (Code 125)
 	# Code 125 parameters { layer, use_all_layers, state, tiles }
 	132: {"command_code" : 125, "dialog" : "disable_tile_from_tilemap_layer_dialog"},
+	# Manage Quest (Code 126)
+	# Code 126 parameters {operation_type, progress, map_id, event_id, quest_scope, *global_ids, *specific_ids}
+	125: {"command_code" : 126, "dialog" : "manage_quest_dialog"},
 	# Change Language (Code 120)
 	# Code 120 parameters { locale }
 	112: {"command_code" : 120, "dialog" : "change_language_dialog"},

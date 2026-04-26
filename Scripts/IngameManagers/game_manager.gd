@@ -957,6 +957,20 @@ func add_armor_amount(id: int, amount: int, level: int = 1, auto_popup_enabled: 
 
 func remove_armor_amount(id: int, amount: int, include_equipment: bool) -> void:
 	if inventory_manager: inventory_manager.remove_armor_amount(id, amount, include_equipment)
+
+
+func get_costume_amount(id: int) -> int:
+	if inventory_manager: return inventory_manager.get_costume_amount(id)
+	return 0
+
+
+func add_costume_amount(id: int, amount: int, auto_popup_enabled: bool = false, popup_prefix: String = "") -> int:
+	if inventory_manager: return inventory_manager.add_costume_amount(id, amount, auto_popup_enabled, popup_prefix)
+	return 0
+
+
+func remove_costume_amount(id: int, amount: int, include_equipment: bool) -> void:
+	if inventory_manager: inventory_manager.remove_costume_amount(id, amount, include_equipment)
 #endregion
 
 

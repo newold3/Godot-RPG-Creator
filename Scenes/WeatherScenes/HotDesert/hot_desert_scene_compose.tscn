@@ -15,42 +15,172 @@ func get_class() -> String:
 
 
 const LINE_WIND = preload(\"res://Scenes/WeatherScenes/HotDesert/line_wind.tscn\")
-const MAX_LINE_WIND: int = 10
+const MAX_LINE_WIND: int = 15
 
 @export var modulate_scene: Color = Color(\"#081662\")
 
 var current_camera_position: Vector2 = Vector2.ZERO
-var current_lines: int  = 0
+var current_lines: int = 0
+var is_started: bool = false
 
 
 func _ready() -> void:
-	if Engine.is_editor_hint():
-		set_physics_process(false)
-		set_process(false)
+	set_physics_process(false)
+	set_process(false)
+
+
+## Initializes the scene, safely checking for optional audio and enabling local particle and heat distortion effects.
+func start(skip_animation: bool = false) -> void:
+	var bgs_player = get_node_or_null(\"%BGSPlayer\")
+	var orphaned_audio = GameManager.get_node_or_null(\"WeatherAudio_Desert\")
+	
+	if skip_animation and orphaned_audio and bgs_player:
+		var old_pos = orphaned_audio.get_meta(\"old_pos\", 0.0)
+		bgs_player.volume_db = orphaned_audio.volume_db
+		bgs_player.play(old_pos)
+		orphaned_audio.queue_free()
+	elif skip_animation and not orphaned_audio and bgs_player:
+		bgs_player.volume_db = -80.0
+		bgs_player.play()
+	elif not skip_animation and bgs_player:
+		bgs_player.volume_db = -80.0
+		bgs_player.play()
+		
+	var dust = get_node_or_null(\"Dust\")
+	if dust: dust.emitting = true
+	var heat_haze = get_node_or_null(\"%HeatHaze\")
+	if heat_haze: heat_haze.visible = true
+	
+	$Mist.visible = true
+	
+	if skip_animation:
+		$Mist.modulate.a = 1.0
+		GameManager.set_weather_color(modulate_scene, 0.0)
+		is_started = true
+		set_physics_process(true)
 	else:
-		if GameManager.main_scene:
-			$Mist.modulate = Color.TRANSPARENT
-			var t = create_tween()
-			t.set_parallel(true)
-			t.tween_method(_set_main_canvas_modulate.bind(GameManager.main_scene), Color.TRANSPARENT, modulate_scene, 2.5)
-			t.tween_property($Mist,\"modulate\", Color.WHITE, 2.5)
+		$Mist.modulate.a = 0.0
+		var t = create_tween()
+		t.set_parallel(true)
+		if bgs_player:
+			t.tween_property(bgs_player, \"volume_db\", 0.0, 4.5)
+		t.tween_property($Mist, \"modulate:a\", 1.0, 2.5)
+		GameManager.set_weather_color(modulate_scene, 2.5)
+		t.tween_callback(set.bind(\"is_started\", true)).set_delay(2.5)
+		t.tween_callback(set_physics_process.bind(true)).set_delay(2.5)
 
 
-func _set_main_canvas_modulate(color: Color, main_scene: MainScene) -> void:
-	main_scene.set_weather_modulate_color(color)
+## Cleans up weather effects and resources before destroying the scene node.
+func end() -> void:
+	is_started = false
+	var bgs_player = get_node_or_null(\"%BGSPlayer\")
+	
+	var dust = get_node_or_null(\"Dust\")
+	if dust: dust.emitting = false
+	var heat_haze = get_node_or_null(\"%HeatHaze\")
+	if heat_haze: heat_haze.visible = false
+	
+	var t = create_tween()
+	t.set_parallel(true)
+	t.tween_property($Mist, \"modulate:a\", 0.0, 2.5)
+	if bgs_player:
+		t.tween_property(bgs_player, \"volume_db\", -80.0, 2.5)
+	GameManager.set_weather_color(Color.WHITE, 2.5)
+	queue_free()
+
+
+## Safely parks the audio player in the GameManager to survive transitions.
+func hibernate() -> void:
+	set_physics_process(false)
+	is_started = false
+	
+	var bgs_player = get_node_or_null(\"%BGSPlayer\")
+	if bgs_player and bgs_player.playing:
+		var playback_pos = bgs_player.get_playback_position()
+		bgs_player.set_meta(\"old_pos\", playback_pos)
+		bgs_player.reparent(GameManager)
+		bgs_player.name = \"WeatherAudio_Desert\"
+		bgs_player.play(playback_pos)
+
+
+## Stops spawning wind lines, hides local heat distortion, disables dust, clears global color tint, and fades out audio.
+func pause_weather() -> void:
+	var bgs_player = get_node_or_null(\"%BGSPlayer\")
+	if bgs_player:
+		var t = create_tween()
+		t.tween_property(bgs_player, \"volume_db\", -80.0, 0.8)
+		t.tween_callback(bgs_player.stop)
+		
+	var dust = get_node_or_null(\"Dust\")
+	if dust: dust.emitting = false
+	var heat_haze = get_node_or_null(\"%HeatHaze\")
+	if heat_haze: heat_haze.visible = false
+	
+	var mist = get_node_or_null(\"Mist\")
+	if mist: mist.visible = false
+	
+	GameManager.set_weather_color(Color.WHITE, 1.0)
+	
+	set_physics_process(false)
+	is_started = false
+
+
+## Restores local visuals, resumes logic, enables dust particles, reapplies global color tint, and fades the sound back in.
+func resume_weather() -> void:
+	var bgs_player = get_node_or_null(\"%BGSPlayer\")
+	if bgs_player:
+		if not bgs_player.playing:
+			bgs_player.volume_db = -80.0
+			bgs_player.play()
+		var t = create_tween()
+		t.tween_property(bgs_player, \"volume_db\", 0.0, 2.5).set_delay(1.0)
+		
+	var dust = get_node_or_null(\"Dust\")
+	if dust: dust.emitting = true
+	var heat_haze = get_node_or_null(\"%HeatHaze\")
+	if heat_haze: heat_haze.visible = true
+	
+	var mist = get_node_or_null(\"Mist\")
+	if mist: mist.visible = true
+	
+	GameManager.set_weather_color(modulate_scene, 2.5)
+	
+	set_physics_process(true)
+	is_started = true
 
 
 func _physics_process(delta: float) -> void:
-	if ([1, 5, 15].has(randi() % 20) and current_lines < MAX_LINE_WIND):
+	if Engine.is_editor_hint() or !is_started or !visible:
+		return
+		
+	if randi() % 20 > 5 and current_lines < MAX_LINE_WIND:
 		var wind = LINE_WIND.instantiate()
-		var screen_size = get_viewport().size
-		wind.position = Vector2(randi() % screen_size.x, randi() % screen_size.y)
+		
+		var spawn_pos := Vector2.ZERO
+		var player = GameManager.current_player
+		
+		if player:
+			var zoom = GameManager.get_camera().zoom if GameManager.get_camera() else Vector2.ONE
+			var screen_size = Vector2(get_viewport().size) / zoom
+			var margin = 100.0
+			
+			var left = player.global_position.x - (screen_size.x / 2.0) - margin
+			var right = player.global_position.x + (screen_size.x / 2.0) + margin
+			var top = player.global_position.y - (screen_size.y / 2.0) - margin
+			var bottom = player.global_position.y + (screen_size.y / 2.0) + margin
+			
+			spawn_pos = Vector2(randf_range(left, right), randf_range(top, bottom))
+		else:
+			var screen_size = get_viewport().size
+			spawn_pos = Vector2(randf_range(0, screen_size.x), randf_range(0, screen_size.y))
+			
+		self.add_child(wind)
+		wind.global_position = spawn_pos
 		wind.direction = Vector2(randf_range(0.75, 1), randf_range(-0.35, 0.35))
 		wind.tree_exiting.connect(
 			func():
 				current_lines -= 1
 		)
-		GameManager.current_map.add_child(wind)
 		current_lines += 1
 "
 

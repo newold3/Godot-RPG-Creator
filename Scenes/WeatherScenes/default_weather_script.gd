@@ -34,14 +34,8 @@ func _ready() -> void:
 	setup()
 
 
-#func _process(delta: float) -> void:
-	#delta *= 0.5
-	##for up in extra_ripple_points:
-		##up.update(delta)
-
-
 func _physics_process(delta: float) -> void:
-	if !can_add_particle_ripples:
+	if !can_add_particle_ripples or !visible:
 		return
 	
 	for up in extra_ripple_points:
@@ -58,6 +52,7 @@ func _physics_process(delta: float) -> void:
 			obj = ingame_event.lpc_event
 				
 	if is_instance_valid(obj) and GameManager.current_map:
+		if "is_invalid_event" in obj and obj.is_invalid_event: return
 		var add_ripple: bool = false
 		var point: Vector2
 		if obj is SimpleFollower or obj.is_moving:
@@ -98,6 +93,7 @@ func setup() -> void:
 	adjust_to_the_map()
 
 
+## Safely calculates the map size relying on the Viewport to prevent zero-division coordinates and updates shaders.
 func adjust_to_the_map() -> void:
 	var map: RPGMap = get_tree().get_first_node_in_group("rpgmap")
 	if map:

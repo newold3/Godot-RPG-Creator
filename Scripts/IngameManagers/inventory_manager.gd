@@ -118,34 +118,34 @@ func _split_into_stacks(amount: int, max_per_stack: int) -> Array:
 
 func _add_generic_amount(collection: Dictionary, data: Array, id: int, amount: int, level: int, item_type: int) -> int:
 	amount = abs(amount)
-
+	
 	if id <= 0 or data.size() <= id or amount <= 0:
 		return 0
-	
+		
 	var real_item = data[id]
 	var max_inventory = RPGSYSTEM.database.system.max_items_in_inventory
 	var max_per_stack = RPGSYSTEM.database.system.max_items_per_stack
 	var current_total_quantity = 0
-
+	
 	if collection.has(id):
 		for item in collection[id]:
 			current_total_quantity += item.quantity
-
+			
 	var remaining_amount = amount
-
+	
 	if "max_quantity" in real_item and real_item.max_quantity > 0:
 		var space_left = real_item.max_quantity - current_total_quantity
 		if space_left <= 0:
 			return 0
 		if remaining_amount > space_left:
 			remaining_amount = space_left
-
+			
 	var added_amount = 0
 	var current_time = int(Time.get_unix_time_from_system())
 	
 	if not collection.has(id):
 		collection[id] = []
-	
+		
 	var item_list = collection[id]
 	
 	for item in item_list:
@@ -161,37 +161,44 @@ func _add_generic_amount(collection: Dictionary, data: Array, id: int, amount: i
 				can_stack_more = item.quantity < max_per_stack
 			elif compatible:
 				can_stack_more = true
+		elif item_type == 3:
+			compatible = not item.get("equipped")
+			if compatible and max_per_stack > 0:
+				can_stack_more = item.quantity < max_per_stack
+			elif compatible:
+				can_stack_more = true
 		else:
 			compatible = real_item.upgrades.max_levels == 1 and not item.equipped
 			if compatible and max_per_stack > 0:
 				can_stack_more = item.quantity < max_per_stack
 			elif compatible:
 				can_stack_more = true
-		
+				
 		if compatible and can_stack_more:
 			var can_add = remaining_amount
 			if max_per_stack > 0:
 				can_add = min(remaining_amount, max_per_stack - item.quantity)
-			
+				
 			item.quantity += can_add
 			remaining_amount -= can_add
 			added_amount += can_add
 			item.newly_added = true
-			item.last_added_date = current_time
-	
+			if "last_added_date" in item:
+				item.last_added_date = current_time
+			
 	if remaining_amount > 0:
 		var current_slots = _get_total_used_slots()
 		var available_slots = max_inventory - current_slots if max_inventory > 0 else -1
 		
 		if max_inventory > 0 and available_slots <= 0:
 			return added_amount
-		
+			
 		var stacks = _split_into_stacks(remaining_amount, max_per_stack)
 		var slots_needed = stacks.size()
 		
 		if max_inventory > 0 and slots_needed > available_slots:
 			stacks = stacks.slice(0, available_slots)
-		
+			
 		for stack_amount in stacks:
 			if item_type == 0:
 				if not real_item.perishable.is_enabled():
@@ -208,7 +215,7 @@ func _add_generic_amount(collection: Dictionary, data: Array, id: int, amount: i
 						var current_slots_check = _get_total_used_slots()
 						var available_slots_check = max_inventory - current_slots_check
 						items_to_create = min(stack_amount, available_slots_check)
-					
+						
 					for i in items_to_create:
 						var game_item = GameItem.new(id, 1, 0)
 						game_item.is_perishable = true
@@ -218,6 +225,16 @@ func _add_generic_amount(collection: Dictionary, data: Array, id: int, amount: i
 							game_item.last_added_date = current_time
 						item_list.append(game_item)
 						added_amount += 1
+			elif item_type == 3:
+				var game_item = IngameCostume.new()
+				game_item.id = id
+				game_item.quantity = stack_amount
+				game_item.type = 0 # 0 para IngameCostume según tu clase
+				game_item.newly_added = true
+				if "last_added_date" in game_item:
+					game_item.last_added_date = current_time
+				item_list.append(game_item)
+				added_amount += stack_amount
 			else:
 				if real_item.upgrades.max_levels == 1:
 					var game_item
@@ -237,7 +254,7 @@ func _add_generic_amount(collection: Dictionary, data: Array, id: int, amount: i
 						var current_slots_check = _get_total_used_slots()
 						var available_slots_check = max_inventory - current_slots_check
 						items_to_create = min(stack_amount, available_slots_check)
-					
+						
 					for i in items_to_create:
 						var game_item
 						if item_type == 1:
@@ -250,7 +267,7 @@ func _add_generic_amount(collection: Dictionary, data: Array, id: int, amount: i
 							game_item.last_added_date = current_time
 						item_list.append(game_item)
 						added_amount += 1
-
+						
 	sync_perishable_items()
 	
 	return added_amount
@@ -548,12 +565,17 @@ func add_item_amount(id: int, amount: int, auto_popup_enabled: bool = false, pop
 	
 	if added != amount:
 		_handle_overflow(0, id, amount - added, 0, auto_popup_enabled, popup_prefix)
+		
+	if is_instance_valid(QuestManager):
+		QuestManager.notify_inventory_changed()
 	
 	return added
 
 
 func remove_item_amount(id: int, amount: int) -> void:
 	_remove_generic_amount(GameManager.game_state.items, id, amount, false, true)
+	if is_instance_valid(QuestManager):
+		QuestManager.notify_inventory_changed()
 
 
 func get_weapon_amount(id: int) -> int:
@@ -581,12 +603,17 @@ func add_weapon_amount(id: int, amount: int, level: int = 1, auto_popup_enabled:
 	
 	if added != amount:
 		_handle_overflow(1, id, amount - added, level, auto_popup_enabled, popup_prefix)
+		
+	if is_instance_valid(QuestManager):
+		QuestManager.notify_inventory_changed()
 	
 	return added
 
 
 func remove_weapon_amount(id: int, amount: int, include_equipment: bool) -> void:
 	_remove_generic_amount(GameManager.game_state.weapons, id, amount, include_equipment, false)
+	if is_instance_valid(QuestManager):
+		QuestManager.notify_inventory_changed()
 
 
 func get_armor_amount(id: int) -> int:
@@ -614,9 +641,52 @@ func add_armor_amount(id: int, amount: int, level: int = 1, auto_popup_enabled: 
 	
 	if added != amount:
 		_handle_overflow(2, id, amount - added, level, auto_popup_enabled, popup_prefix)
+		
+	if is_instance_valid(QuestManager):
+		QuestManager.notify_inventory_changed()
 	
 	return added
 
 
 func remove_armor_amount(id: int, amount: int, include_equipment: bool) -> void:
 	_remove_generic_amount(GameManager.game_state.armors, id, amount, include_equipment, false)
+	if is_instance_valid(QuestManager):
+		QuestManager.notify_inventory_changed()
+
+
+func get_costume_amount(id: int) -> int:
+	var quantity: int = 0
+	if GameManager.game_state.sets.has(id):
+		for item in GameManager.game_state.sets[id]:
+			quantity += item.quantity
+			
+	return quantity
+
+
+func add_costume_amount(id: int, amount: int, auto_popup_enabled: bool = false, popup_prefix: String = "") -> int:
+	var added = _add_generic_amount(GameManager.game_state.sets, RPGSYSTEM.database.costumes, id, amount, 1, 3)
+	
+	if added > 0:
+		if auto_popup_enabled or RPGSYSTEM.database.system.options.get("auto_popup_on_pick_up_items", false):
+			GameManager.call_deferred("_create_popup_message", 3, id, added, popup_prefix)
+			
+		var item_id = "3" + "_" + str(id)
+		if not item_id in GameManager.game_state.stats.items_found:
+			GameManager.game_state.stats.items_found[item_id] = 0
+		GameManager.game_state.stats.items_found[item_id] += added
+		
+		has_new_items_pending_view = true
+		
+	if added != amount:
+		_handle_overflow(3, id, amount - added, 1, auto_popup_enabled, popup_prefix)
+		
+	if is_instance_valid(QuestManager):
+		QuestManager.notify_inventory_changed()
+		
+	return added
+
+
+func remove_costume_amount(id: int, amount: int, include_equipment: bool) -> void:
+	_remove_generic_amount(GameManager.game_state.sets, id, amount, include_equipment, false)
+	if is_instance_valid(QuestManager):
+		QuestManager.notify_inventory_changed()

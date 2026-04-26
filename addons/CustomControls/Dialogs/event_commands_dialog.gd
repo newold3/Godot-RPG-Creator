@@ -15,6 +15,18 @@ extends Window
 			print("Available Codes: " + _get_available_codes())
 
 
+@export var change_visibility_for_all: bool = false :
+	set(value):
+		if is_node_ready():
+			var control = %SmoothScrollContainer
+			if _is_any_children_hidden(control):
+				_set_all_children_visibility(control, true)
+				notify_property_list_changed()
+			else:
+				_set_all_children_visibility(control, false)
+				notify_property_list_changed()
+
+
 ## To auto-fill the tags in the effects checkboxes based on a JSON dictionary
 @export var auto_fill_tags: bool = false :
 	set(value):
@@ -41,6 +53,24 @@ var _collapse_buttons_map: Dictionary = {}
 
 signal request_command_created(command_code: int, from_dialog: Window)
 signal request_update_favorite_buttons()
+
+
+func _is_any_children_hidden(node: Node) -> bool:
+	if not node.visible:
+		return true
+	
+	for child in node.get_children():
+		if not _is_any_children_hidden(child):
+			return true
+			
+	return false 
+
+
+func _set_all_children_visibility(node: Node, is_visible: bool) -> void:
+	node.visible = is_visible
+	
+	for child in node.get_children():
+		_set_all_children_visibility(child, is_visible)
 
 
 func _ready() -> void:

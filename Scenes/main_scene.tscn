@@ -297,15 +297,16 @@ character_container = NodePath("../../MessageCharacterImages")
 unique_name_in_owner = true
 layer = 121
 
-[node name="MiniMapManager" type="CanvasLayer" parent="." unique_id=42316787 node_paths=PackedStringArray("minimap_viewport", "camera", "tilemap_container", "entities_drawer")]
+[node name="MiniMapManager" type="CanvasLayer" parent="." unique_id=42316787 node_paths=PackedStringArray("minimap_viewport", "main_parallax", "camera", "tilemap_container", "entities_drawer")]
 unique_name_in_owner = true
 layer = 122
 visible = false
 script = ExtResource("15_gnsmo")
 minimap_viewport = NodePath("MainViewport")
+main_parallax = NodePath("../MainSubViewportContainer/MainGameViewport/MainModulate/MapContainer")
 camera = NodePath("MainViewport/Camera2D")
-tilemap_container = NodePath("MainViewport/TilemapContainer")
-entities_drawer = NodePath("MainViewport/EntityContainer")
+tilemap_container = NodePath("MainViewport/MiniMapContainer/TilemapContainer")
+entities_drawer = NodePath("MainViewport/MiniMapContainer/EntityContainer")
 limit_camera_to_map = true
 default_event_icon = SubResource("AtlasTexture_8edxt")
 default_extraction_event_icon = SubResource("AtlasTexture_nt2eh")
@@ -320,9 +321,12 @@ size = Vector2i(244, 244)
 
 [node name="Camera2D" type="Camera2D" parent="MiniMapManager/MainViewport" unique_id=1436223834]
 
-[node name="TilemapContainer" type="Node2D" parent="MiniMapManager/MainViewport" unique_id=1410982676]
+[node name="MiniMapContainer" type="Parallax2D" parent="MiniMapManager/MainViewport" unique_id=914637832]
+unique_name_in_owner = true
 
-[node name="EntityContainer" type="Node2D" parent="MiniMapManager/MainViewport" unique_id=561568004]
+[node name="TilemapContainer" type="Node2D" parent="MiniMapManager/MainViewport/MiniMapContainer" unique_id=1410982676]
+
+[node name="EntityContainer" type="Node2D" parent="MiniMapManager/MainViewport/MiniMapContainer" unique_id=561568004]
 
 [node name="MiniMapContainer" type="Node2D" parent="MiniMapManager" unique_id=3255240]
 position = Vector2(1024, 114)
@@ -421,4 +425,4 @@ bus = &"SE"
 unique_name_in_owner = true
 bus = &"SE"
 
-[connection signal="item_rect_changed" from="MessageCanvas/Control/Dialog/@CanvasLayer@19302/Message" to="MessageCanvas/Control/Dialog" method="_on_message_item_rect_changed"]
+[connection signal="item_rect_changed" from="MessageCanvas/Control/Dialog/@CanvasLayer@19308/Message" to="MessageCanvas/Control/Dialog" method="_on_message_item_rect_changed"]

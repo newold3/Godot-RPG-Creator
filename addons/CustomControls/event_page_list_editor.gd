@@ -349,6 +349,7 @@ func _show_dialog_command(parent: Window, data: Dictionary, edit_mode: bool = fa
 				dialog.parameter_code = command_code
 			elif command_code == 42:
 				dialog.title = TranslationManager.tr("Change Experience")
+				dialog.setup_experience_mode()
 				dialog.parameter_code = command_code
 			elif command_code == 43:
 				dialog.title = TranslationManager.tr("Change Level")
@@ -1295,6 +1296,25 @@ func _on_right_menu_index_pressed(index: int) -> void:
 			RPGDialogFunctions.preview_commands_in_action(%EventPageList.get_selected_commands())
 		12: # Preview current page in-game
 			RPGDialogFunctions.preview_commands_in_action(%EventPageList.get_command_list())
+		14: # Copy Commands as JSON
+			_copy_selected_commands_as_json(items)
+
+
+## Serializes the currently selected commands into a formatted JSON string and copies it to the system clipboard.
+func _copy_selected_commands_as_json(indexes: PackedInt32Array) -> void:
+	var export_data: Array = []
+	
+	for index in indexes:
+		var command = current_data[index]
+		var cmd_dict: Dictionary = {
+			"code": command.code,
+			"parameters": command.parameters
+		}
+		export_data.append(cmd_dict)
+		
+	var json_string: String = JSON.stringify(export_data, "\t")
+	
+	DisplayServer.clipboard_set(json_string)
 
 
 func _get_expanded_commands(indexes: PackedInt32Array) -> Array[RPGEventCommand]:

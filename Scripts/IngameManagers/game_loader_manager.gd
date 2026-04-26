@@ -61,6 +61,10 @@ func _initialize_game_state() -> void:
 	game_state.experience_mode = 1 if system.options.experience_in_reserve else 0
 	game_state.game_chapter_name = system.initial_chapter_name
 	game_state.followers_enabled = system.followers_enabled
+	
+	for quest in RPGSYSTEM.database.quests:
+		if quest and quest.default_unlocked:
+			game_state.quest_progress.unlocked_quests[quest.id] = true
 
 
 func _setup_initial_party() -> void:
@@ -174,6 +178,8 @@ func load_game(data: RPGSavedGameData) -> void:
 	GameManager.set_deferred("busy", false)
 	
 	game_state.current_events.clear()
+	
+	QuestManager.setup_active_quest()
 
 
 func _restore_game_scene_states(data: RPGSavedGameData) -> void:

@@ -272,6 +272,29 @@ func get_active_page() -> RPGEventPage:
 	return null
 
 
+## Returns the page immediately to the right (higher priority) of the current active page.
+func get_next_page() -> RPGEventPage:
+	var current = get_active_page()
+	if not current:
+		return null
+	
+	var next_idx = pages.find(current) + 1
+	if next_idx < pages.size():
+		return pages[next_idx]
+	
+	return null
+
+
+## Check whether the page following the current one is a page that uses the pressure condition
+func next_page_has_pressure() -> bool:
+	var page = get_next_page()
+	
+	if page and page.condition.use_pressure:
+		return true
+	
+	return false
+
+
 ## Helper function to evaluate all runtime conditions for a given page.
 func _are_page_conditions_met(page: RPGEventPage) -> bool:
 	var condition: RPGEventPageCondition = page.condition
@@ -279,7 +302,7 @@ func _are_page_conditions_met(page: RPGEventPage) -> bool:
 	if condition.use_switch1 and not GameManager.get_switch(condition.switch1_id): return false
 	if condition.use_switch2 and not GameManager.get_switch(condition.switch2_id): return false
 	if condition.use_local_switch and not GameManager.get_local_switch(condition.local_switch_id, _uniq_id): return false
-	if condition.use_pressure and not _is_pressed(condition.pressure_targets): return false
+	if condition.use_pressure and not _is_pressed(page): return false
 	
 	if condition.use_variable:
 		var current_value: int = GameManager.get_variable(condition.variable_id)
@@ -299,36 +322,50 @@ func _are_page_conditions_met(page: RPGEventPage) -> bool:
 
 
 ## Evaluates if the event's grid cell is occupied by any valid targets.
-func _is_pressed(targets: PackedInt64Array) -> bool:
+func _is_pressed(page: RPGEventPage) -> bool:
 	var current_ingame_event = GameManager.get_in_game_event_by_uniq_id(_uniq_id)
 
 	if not current_ingame_event:
 		return false
 		
 	var my_cell: Vector2i = current_ingame_event.get_current_tile()
-		
-	var events: Array[IngameEvent] = GameManager.get_ingame_events()
+	var events: Array = GameManager.get_ingame_events()
 	
 	if events.is_empty():
 		return false
 
+	var allowed_targets = []
+	var allows_player = false
+	
+	if page.allow_external_pressure_events:
+		for map_id in page.external_pressure_targets:
+			if map_id == -1:
+				if page.external_pressure_targets[map_id].has(0):
+					allows_player = true
+			else:
+				var ext_ids = page.external_pressure_targets[map_id]
+				allowed_targets.append_array(ext_ids)
+	else:
+		allowed_targets = page.condition.pressure_targets
+		if allowed_targets.has(0):
+			allows_player = true
 
-	if targets.has(0):
+	if allows_player:
 		if GameManager.current_player:
 			if (
 				GameManager.current_player.is_on_vehicle and
 				GameManager.current_vehicle and
 				GameManager.current_vehicle.flying_object
 			):
-				return false
-				
-			var real_player = GameManager.current_player
-			if GameManager.current_player.is_on_vehicle and GameManager.current_vehicle:
-				real_player = GameManager.current_vehicle
-			var p_cell: Vector2i = real_player.get_current_tile()
-			if my_cell == p_cell:
-				return true
-				
+				pass
+			else:
+				var real_player = GameManager.current_player
+				if GameManager.current_player.is_on_vehicle and GameManager.current_vehicle:
+					real_player = GameManager.current_vehicle
+				var p_cell: Vector2i = real_player.get_current_tile()
+				if my_cell == p_cell:
+					return true
+					
 		var followers: Array = GameManager.get_followers()
 		for f in followers:
 			if is_instance_valid(f):
@@ -336,16 +373,13 @@ func _is_pressed(targets: PackedInt64Array) -> bool:
 				if my_cell == f_cell:
 					return true
 					
-	var check_specific_events: bool = false
-	for t in targets:
-		if t > 0:
-			check_specific_events = true
-			break
-			
-	if check_specific_events:
+	if not allowed_targets.is_empty():
 		for e in events:
 			var node = e.lpc_event
 			if not is_instance_valid(node):
+				continue
+			
+			if "is_invalid_event" in node and node.is_invalid_event:
 				continue
 				
 			var e_uniq_id: int = e.uniq_id
@@ -353,10 +387,11 @@ func _is_pressed(targets: PackedInt64Array) -> bool:
 			if e_uniq_id == _uniq_id:
 				continue
 				
-			if targets.has(e_uniq_id):
+			if e_uniq_id in allowed_targets:
 				var e_cell: Vector2i = node.get_current_tile()
 				if my_cell == e_cell:
 					return true
+					
 	return false
 
 

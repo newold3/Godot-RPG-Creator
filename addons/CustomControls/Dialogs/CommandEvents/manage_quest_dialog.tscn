@@ -1,0 +1,248 @@
+[gd_scene format=3 uid="uid://c81rlj1c7d2dd"]
+
+[ext_resource type="Theme" uid="uid://dlgit3j4ygo54" path="res://addons/RPGData/Assets/Themes/database_theme.tres" id="1_xk4cq"]
+[ext_resource type="Script" uid="uid://c6y12uu0wc85w" path="res://addons/CustomControls/Dialogs/CommandEvents/manage_quest_dialog.gd" id="2_tcfng"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="3_sjsld"]
+[ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="4_q5yhe"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="4_sjsld"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="5_ya68a"]
+
+[sub_resource type="Gradient" id="Gradient_4u2ec"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_a3inn"]
+gradient = SubResource("Gradient_4u2ec")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_ki7ia"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_ueikt"]
+pressed = true
+keycode = 4194309
+
+[sub_resource type="InputEventKey" id="InputEventKey_6sxke"]
+pressed = true
+keycode = 4194310
+
+[sub_resource type="Shortcut" id="Shortcut_yldtf"]
+events = [SubResource("InputEventKey_ueikt"), SubResource("InputEventKey_6sxke")]
+
+[node name="ManageQuestDialog" type="Window" unique_id=1496648259]
+oversampling_override = 1.0
+title = "Manage Quest"
+position = Vector2i(0, 36)
+size = Vector2i(600, 388)
+wrap_controls = true
+transient_to_focused = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_xk4cq")
+script = ExtResource("2_tcfng")
+
+[node name="Background" type="TextureRect" parent="." unique_id=1448734987]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_a3inn")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=49559352]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="HBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1724642892]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=118013040]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HBoxContainer" unique_id=1723012802]
+custom_minimum_size = Vector2(108.685, 0)
+layout_mode = 2
+text = "Mode:"
+
+[node name="QuestScope" parent="MarginContainer/HBoxContainer/HBoxContainer" unique_id=621784070 instance=ExtResource("3_sjsld")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+tooltip_text = "Set the quest list filter"
+selected = 1
+item_count = 2
+popup/item_0/text = "Global"
+popup/item_0/id = 0
+popup/item_1/text = "Specific Event"
+popup/item_1/id = 1
+
+[node name="TargetEvent" parent="MarginContainer/HBoxContainer/HBoxContainer" unique_id=1732879861 instance=ExtResource("4_q5yhe")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Select the event to view its quest list"
+text = "Select Event"
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer" unique_id=1912683790]
+layout_mode = 2
+text = "Quest List:"
+
+[node name="QuestList" parent="MarginContainer/HBoxContainer" unique_id=672735157 instance=ExtResource("4_q5yhe")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Select 1 or more quests you want to configure"
+text = "Select Quest/s"
+
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer" unique_id=999290217]
+layout_mode = 2
+text = "Select Action:"
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/HBoxContainer" unique_id=1424129132]
+layout_mode = 2
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=1440535384]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer3" unique_id=322403045]
+layout_mode = 2
+
+[node name="StartQuest" type="CheckBox" parent="MarginContainer/HBoxContainer/VBoxContainer3/HBoxContainer" unique_id=1319739112]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Start the selected quest(s)"
+mouse_default_cursor_shape = 2
+button_pressed = true
+button_group = SubResource("ButtonGroup_ki7ia")
+text = "Start"
+metadata/id = 0
+
+[node name="CancelQuest" type="CheckBox" parent="MarginContainer/HBoxContainer/VBoxContainer3/HBoxContainer" unique_id=1139076263]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Cancel the selected quest(s)"
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_ki7ia")
+text = "Cancel"
+metadata/id = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer3" unique_id=651372082]
+layout_mode = 2
+
+[node name="CompleteQuest" type="CheckBox" parent="MarginContainer/HBoxContainer/VBoxContainer3/HBoxContainer2" unique_id=1672852554]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Complete the selected quest(s)"
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_ki7ia")
+text = "Complete"
+metadata/id = 2
+
+[node name="FailQuest" type="CheckBox" parent="MarginContainer/HBoxContainer/VBoxContainer3/HBoxContainer2" unique_id=305954784]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Mark the selected quest(s) as failed"
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_ki7ia")
+text = "Fail"
+metadata/id = 3
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer3" unique_id=1416710263]
+layout_mode = 2
+
+[node name="UnlockQuest" type="CheckBox" parent="MarginContainer/HBoxContainer/VBoxContainer3/HBoxContainer3" unique_id=338304421]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Add the selected quest(s) to the list of available quests"
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_ki7ia")
+text = "Unlock"
+metadata/id = 4
+
+[node name="RestartQuest" type="CheckBox" parent="MarginContainer/HBoxContainer/VBoxContainer3/HBoxContainer3" unique_id=408801197]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Restart the selected quest(s). This command allows you to redo a quest even if its state is set as non-repeatable"
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_ki7ia")
+text = "Restart"
+metadata/id = 5
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer3" unique_id=229995251]
+layout_mode = 2
+
+[node name="UpdateUserQuest" type="CheckBox" parent="MarginContainer/HBoxContainer/VBoxContainer3/HBoxContainer4" unique_id=1549078170]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Update the selected quest(s) if they are user quests. This action uses a progress parameter from 0.0 to 1.0 that accumulates each time you use it, and the quest will complete when it reaches 1.0"
+mouse_default_cursor_shape = 2
+button_group = SubResource("ButtonGroup_ki7ia")
+text = "Update User Quest"
+metadata/id = 6
+
+[node name="UserProgress" parent="MarginContainer/HBoxContainer/VBoxContainer3/HBoxContainer4" unique_id=643520704 instance=ExtResource("4_sjsld")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Parameter used in the update action. Its value ranges from 0.001 to 1.0 and will be added each time this command is used until the quest reaches a progress of 1.0 or more and auto-completes."
+mouse_filter = 2
+min_value = 0.001
+max_value = 1.0
+step = 0.001
+value = 0.1
+rounded = false
+editable = false
+disabled = true
+_custom_value = 0.1
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer3" unique_id=1546468206]
+layout_mode = 2
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer3" unique_id=1364667601]
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/HBoxContainer" unique_id=770746762]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="VBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=201831538]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/HBoxContainer/VBoxContainer2" unique_id=322388491 instance=ExtResource("5_ya68a")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the window."
+shortcut = SubResource("Shortcut_yldtf")
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/HBoxContainer/VBoxContainer2" unique_id=571083901 instance=ExtResource("5_ya68a")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+text = "CANCEL"
+
+[connection signal="item_selected" from="MarginContainer/HBoxContainer/HBoxContainer/QuestScope" to="." method="_on_quest_scope_item_selected"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/HBoxContainer/TargetEvent" to="." method="_on_target_event_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/QuestList" to="." method="_on_quest_list_pressed"]
+[connection signal="toggled" from="MarginContainer/HBoxContainer/VBoxContainer3/HBoxContainer4/UpdateUserQuest" to="." method="_on_update_user_quest_toggled"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer2/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer2/CancelButton" to="." method="_on_cancel_button_pressed"]

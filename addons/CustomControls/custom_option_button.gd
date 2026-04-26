@@ -20,6 +20,7 @@ var is_popup_open: bool = false
 signal middle_click()
 signal multi_selection_changed(selected_ids: Array[int])
 
+
 func _ready() -> void:
 	_sync_timer = Timer.new()
 	_sync_timer.one_shot = true
@@ -36,12 +37,11 @@ func _ready() -> void:
 				await get_tree().process_frame
 				await get_tree().process_frame
 				await get_tree().process_frame
-				var id = get_selected_id()
-				if id >= 0:
-					popup.scroll_to_item(id)
+				var idx = selected
+				if idx >= 0:
+					popup.scroll_to_item(idx)
 	)
 	
-	# Setup multi-selection if enabled
 	_setup_multi_selection()
 	
 	for i in get_item_count():
@@ -414,10 +414,9 @@ func _on_gui_input(event: InputEvent) -> void:
 func change_index(mod: int) -> void:
 	var bak = can_select_item_with_button_wheel
 	can_select_item_with_button_wheel = false
+	
 	if enable_multi_selection:
-		# En modo multi-selección, comportamiento especial
 		if selected_items.is_empty():
-			# Si no hay selección, comportarse como normal
 			var index = 0
 			index = wrapi(index + mod, 0, get_item_count())
 			var count = 0
@@ -433,8 +432,8 @@ func change_index(mod: int) -> void:
 				
 				if count >= get_item_count():
 					break
+					
 		elif selected_items.size() == 1:
-			# Si hay un solo item seleccionado, comportarse como el original
 			var current_index = selected_items[0]
 			var new_index = current_index + mod
 			new_index = wrapi(new_index, 0, get_item_count())
@@ -452,14 +451,12 @@ func change_index(mod: int) -> void:
 				
 				if count >= get_item_count():
 					break
+					
 		else:
-			# Si hay múltiples items seleccionados
 			var reference_index: int
 			if mod > 0:
-				# Avanzar: usar el índice mayor
 				reference_index = Array(selected_items).max()
 			else:
-				# Retroceder: usar el índice menor
 				reference_index = Array(selected_items).min()
 			
 			var new_index = reference_index + mod
@@ -480,10 +477,10 @@ func change_index(mod: int) -> void:
 					break
 		return
 		
-	# Comportamiento original para modo no-multi
-	var index = get_selected_id() + mod
+	var index = selected + mod
 	index = wrapi(index, 0, get_item_count())
 	var count = 0
+	
 	while true:
 		if !is_item_disabled(index):
 			select(index)

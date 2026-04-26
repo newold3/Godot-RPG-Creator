@@ -846,6 +846,38 @@ func _format_command_15(data: FormatData) -> Array:
 	})
 	return formatted_text
 
+# Comando 127: Change Costumes / Sets
+func _format_command_127(data: FormatData) -> Array:
+	var formatted_text = []
+	var operation = "+" if data.command.parameters.get("operation_type", 0) == 0 else "-"
+	var value = data.command.parameters.get("value", 1)
+	if data.command.parameters.get("value_type", 0) == 1:
+		var variable_id = str(value).pad_zeros(str(RPGSYSTEM.system.variables.size()).length())
+		value = "{#%s}" % variable_id
+	var item_name = ""
+	var item_id = data.command.parameters.get("item_id", 0)
+	var items = RPGSYSTEM.database.costumes
+	if items.size() > item_id:
+		item_name = "%s: %s" % [
+			str(item_id).pad_zeros(str(items.size()).length()),
+			items[item_id].name
+		]
+	
+	formatted_text.append({
+		"texts": [
+			{
+				"text": data.tabs + default_text + " Change Costume / Set : [%s] %s %s " % [item_name, operation, value],
+				"color": color_theme.get("color5", Color.WHITE)
+			},
+			{
+				"text": "(include equipment)" if data.command.parameters.get("include_equipment", false) else "",
+				"color": color_theme.get("color3", Color.WHITE)
+			}
+		],
+		"offset_y": default_text_offset_y
+	})
+	return formatted_text
+
 # Change Party Members
 func _format_command_16(data: FormatData) -> Array:
 	var formatted_text = []
@@ -3310,6 +3342,42 @@ func _format_command_125(data: FormatData) -> Array:
 		],
 		"offset_y": default_text_offset_y
 	}]
+
+
+# Perform Quest action
+func _format_command_126(data: FormatData) -> Array:
+	var scope = data.command.parameters.get("quest_scope", 0)
+	var options = [
+		tr("Global"), tr("Specific Event")
+	]
+	prints(scope, options)
+	var quest_scope = options[scope]
+	var operation_type = data.command.parameters.get("operation_type", 0)
+	options = [
+		tr("Start Quest/s"), tr("Cancel Quest/s"), tr("Complete Quest/s"),
+		tr("Mask Quest/s As Fail"), tr("Unlock Quest/s"), tr("Restart Quest/s"),
+		tr("Update User Quest/s")
+	]
+	var operation_str = options[operation_type]
+	var map_id = data.command.parameters.get("operation_type", -1)
+	var event_id = data.command.parameters.get("event_id", -1)
+	
+	var text = " " + quest_scope + " " + operation_str
+	
+	if operation_type == 6:
+		text += " %s%%" % data.command.parameters.get("progress", 0.0)
+	
+	return [{
+		"texts": [
+			{
+				"text": data.tabs + default_text + text,
+				"color": color_theme.get("color6", Color.WHITE)
+			}
+		],
+		"offset_y": default_text_offset_y
+	}]
+	
+	#progress, *global_ids, *specific_ids
 
 
 # Change Battle BGM

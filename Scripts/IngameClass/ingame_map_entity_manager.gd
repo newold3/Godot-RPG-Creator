@@ -180,6 +180,8 @@ func setup_events() -> void:
 					
 			ingame_event.update_label_name(page)
 	
+	QuestManager.scan_map_events(current_ingame_events)
+	
 	if not automatic_events.is_empty():
 		GameInterpreter.auto_start_automatic_events(automatic_events)
 	
@@ -213,6 +215,8 @@ func refresh_events() -> void:
 				GameManager.message.anchor_node = ev.lpc_event
 			if map:
 				map.register_hp_page(ev.uniq_id, active_page._uniq_id, active_page.options.hp)
+				
+			QuestManager.notify_event_page_changed(ev)
 	
 	for obj: CollisionShape2D in map.ingame_event_regions:
 		var region = obj.get_meta("region_data")
@@ -423,11 +427,12 @@ func add_weather_scene(id: int, weather_scene: Node, force_hidden: bool = false,
 				weather_scene.hide()
 				weather_scene.process_mode = Node.PROCESS_MODE_DISABLED
 		else:
+			weather_scene.process_mode = Node.PROCESS_MODE_INHERIT
 			if weather_scene.has_method("resume_weather"):
 				weather_scene.resume_weather()
-			else:
+			await weather_scene.get_tree().process_frame
+			if is_instance_valid(weather_scene):
 				weather_scene.visible = true
-				weather_scene.process_mode = Node.PROCESS_MODE_INHERIT
 
 
 func remove_weather_scene(id: int) -> void:

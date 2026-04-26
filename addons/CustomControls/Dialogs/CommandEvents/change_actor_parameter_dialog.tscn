@@ -218,7 +218,7 @@ corner_radius_bottom_left = 12
 [node name="ChangeActorParameterDialog" type="Window" unique_id=118676133]
 oversampling_override = 1.0
 position = Vector2i(0, 36)
-size = Vector2i(400, 481)
+size = Vector2i(400, 540)
 wrap_controls = true
 transient = true
 exclusive = true
@@ -345,7 +345,8 @@ theme_override_constants/margin_bottom = 12
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ContentsPanel5/MarginContainer" unique_id=240132439]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ContentsPanel5/MarginContainer/VBoxContainer" unique_id=115247763]
+[node name="ParameterTitle" type="Label" parent="MarginContainer/VBoxContainer/ContentsPanel5/MarginContainer/VBoxContainer" unique_id=115247763]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Parameter"
 

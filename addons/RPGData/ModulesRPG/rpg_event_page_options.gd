@@ -5,7 +5,6 @@ extends Resource
 
 func get_class(): return "RPGEventPageOptions"
 
-
 @export_group("General Config")
 ## If enabled, the NPC's name will be displayed above their head.
 ## If the active NPC page has a name assigned, that name will be used;

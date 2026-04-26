@@ -4,6 +4,9 @@ class_name RPGMinimap
 ## Reference to the SubViewport that renders the minimap.
 @export var minimap_viewport: SubViewport
 
+## Reference to the main parallax used for synchronization.
+@export var main_parallax: Parallax2D
+
 ## Internal camera of the minimap.
 @export var camera: Camera2D
 
@@ -93,6 +96,8 @@ func setup(map: RPGMap) -> void:
 	
 	if not entities_drawer.draw.is_connected(_on_entities_drawer_draw):
 		entities_drawer.draw.connect(_on_entities_drawer_draw)
+	
+	%MiniMapContainer
 
 
 
@@ -124,13 +129,13 @@ func _calculate_camera_settings() -> void:
 		return
 		
 	var calc_size = visible_area_size if visible_area_size.x > 0 and visible_area_size.y > 0 else Vector2(minimap_viewport.size)
-	var world_size = Vector2(map_rect.size)
+	var world_size_px = Vector2(map_rect.size)
 	
-	if world_size.x <= 0 or world_size.y <= 0:
+	if world_size_px.x <= 0 or world_size_px.y <= 0:
 		return
-		
-	var z_min_x = calc_size.x / world_size.x
-	var z_min_y = calc_size.y / world_size.y
+
+	var z_min_x = calc_size.x / world_size_px.x
+	var z_min_y = calc_size.y / world_size_px.y
 	var z_min = Vector2(min(z_min_x, z_min_y), min(z_min_x, z_min_y))
 	var z_max_val = (min(calc_size.x, calc_size.y) * 0.5) / 64.0
 	var z_max = Vector2(z_max_val, z_max_val)
@@ -152,24 +157,45 @@ func _calculate_camera_settings() -> void:
 		camera.limit_bottom = 10000000
 		return
 		
-	if target_map.infinite_horizontal_scroll:
-		camera.limit_left = -10000000
-		camera.limit_right = 10000000
+	var main_cam = GameManager.get_camera()
+	if main_cam and is_instance_valid(main_cam):
+		camera.limit_left = main_cam.limit_left
+		camera.limit_top = main_cam.limit_top
+		camera.limit_right = main_cam.limit_right
+		camera.limit_bottom = main_cam.limit_bottom
 	else:
-		camera.limit_left = int(map_rect.position.x)
-		camera.limit_right = int(map_rect.end.x)
-		
-	if target_map.infinite_vertical_scroll:
-		camera.limit_top = -10000000
-		camera.limit_bottom = 10000000
-	else:
-		camera.limit_top = int(map_rect.position.y)
-		camera.limit_bottom = int(map_rect.end.y)
+		if target_map.infinite_horizontal_scroll:
+			camera.limit_left = -10000000
+			camera.limit_right = 10000000
+		else:
+			camera.limit_left = int(map_rect.position.x)
+			camera.limit_right = int(map_rect.end.x)
+			
+		if target_map.infinite_vertical_scroll:
+			camera.limit_top = -10000000
+			camera.limit_bottom = 10000000
+		else:
+			camera.limit_top = int(map_rect.position.y)
+			camera.limit_bottom = int(map_rect.end.y)
 
 
 
 ## Updates camera position and requests a redraw for dynamic entities.
 func _physics_process(_delta: float) -> void:
+	if main_parallax and target_map:
+		var synced_repeat = main_parallax.repeat_size
+		
+		if not target_map.infinite_horizontal_scroll:
+			synced_repeat.x = 0
+		if not target_map.infinite_vertical_scroll:
+			synced_repeat.y = 0
+			
+		if %MiniMapContainer.repeat_size != synced_repeat:
+			%MiniMapContainer.repeat_size = synced_repeat
+			
+		if main_parallax.repeat_times != %MiniMapContainer.repeat_times:
+			%MiniMapContainer.repeat_times = main_parallax.repeat_times
+			
 	if not target_map:
 		return
 		

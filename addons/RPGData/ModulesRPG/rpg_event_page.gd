@@ -83,6 +83,18 @@ enum LAUNCHER_MODE {ACTION_BUTTON, PLAYER_COLLISION, EVENT_COLLISION, AUTOMATIC,
 ## If true, this page belongs to a quest logic branch.
 @export var is_quest_page: bool = false
 
+## Allows selecting any event from any map; this is useful if those events can move between maps. When entering this map, they could be eligible to trigger this event.
+@export var allow_external_events_triggers: bool = false
+
+## List of external events selected for the trigger action.
+@export var external_event_triggers: Dictionary = {}
+
+## Allows selecting any event from any map; this is useful if those events can move between maps. When entering this map, they could be eligible to press this event.
+@export var allow_external_pressure_events: bool = false
+
+## List of external events selected for the pressable action.
+@export var external_pressure_targets: Dictionary = {}
+
 var _event_owner: int = -1
 
 
@@ -112,6 +124,8 @@ func _init(_id: int = 0) -> void:
 func clone(value: bool = true) -> RPGEventPage:
 	var new_event_page = duplicate(value)
 	
+	new_event_page.external_event_triggers = new_event_page.external_event_triggers.duplicate_deep()
+	new_event_page.external_pressure_targets = new_event_page.external_pressure_targets.duplicate_deep()
 	new_event_page.condition = condition.clone(value)
 	new_event_page.movement_route = movement_route.clone(value)
 	new_event_page._uniq_id = _generate_16_digit_id()

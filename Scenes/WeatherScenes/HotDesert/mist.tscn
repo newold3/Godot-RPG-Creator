@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cb7emuh2o72a5"]
+[gd_scene format=3 uid="uid://cb7emuh2o72a5"]
 
 [ext_resource type="Shader" uid="uid://b24gls5ur6xdm" path="res://Assets/Shaders/mist.gdshader" id="1_gum7e"]
 [ext_resource type="Texture2D" uid="uid://dxq6c68tslp4r" path="res://Assets/Images/Backgrounds/tileable_snow.png" id="2_k3nio"]
@@ -8,7 +8,9 @@ script/source = "extends Sprite2D
 
 
 func _ready() -> void:
-	texture = %SubViewport.get_texture()
+	var vp = get_node_or_null(\"%SubViewport\")
+	if vp:
+		texture = vp.get_texture()
 	setup()
 
 
@@ -18,14 +20,18 @@ func setup() -> void:
 	adjust_to_the_map()
 
 
+## Safely calculates the map size relying on the Viewport to prevent zero-division coordinates and updates the distortion shader.
 func adjust_to_the_map() -> void:
 	var map: RPGMap = get_tree().get_first_node_in_group(\"rpgmap\")
 	if map:
 		var map_rect = map.get_used_rect(false)
 		global_position = map_rect.position
-		global_scale = Vector2(map_rect.size) / texture.get_size()
+		var vp = get_node_or_null(\"%SubViewport\")
+		var tex_size = vp.size if vp else (texture.get_size() if texture else Vector2(1, 1))
+		if tex_size == Vector2.ZERO: tex_size = Vector2(1, 1)
+		global_scale = Vector2(map_rect.size) / tex_size
 		
-		var mat: ShaderMaterial = %MainSprite.get_material()
+		var mat: ShaderMaterial = %MainSprite.get_material() if has_node(\"%MainSprite\") else material
 		if mat:
 			mat.set_shader_parameter(\"scale\", Vector2(1.0 / global_scale.x, 1.0 / global_scale.y))
 "
@@ -78,16 +84,16 @@ shader_parameter/density_threshold = 0.32999999262384
 shader_parameter/edge_softness = 0.32999999262384
 shader_parameter/scale = Vector2(1, 1)
 
-[node name="Mist" type="Sprite2D"]
+[node name="Mist" type="Sprite2D" unique_id=1361707378]
 centered = false
 script = SubResource("GDScript_k3nio")
 
-[node name="SubViewport" type="SubViewport" parent="."]
+[node name="SubViewport" type="SubViewport" parent="." unique_id=341404730]
 unique_name_in_owner = true
 transparent_bg = true
 size = Vector2i(1152, 640)
 
-[node name="MainSprite" type="Sprite2D" parent="SubViewport"]
+[node name="MainSprite" type="Sprite2D" parent="SubViewport" unique_id=1213476833]
 unique_name_in_owner = true
 texture_repeat = 2
 material = SubResource("ShaderMaterial_r2ee0")

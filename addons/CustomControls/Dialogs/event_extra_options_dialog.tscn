@@ -277,7 +277,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
-tooltip_text = "This option, when enabled, allows you to throw the lifted object over any obstacle as long as the place where it lands is a passable space."
+tooltip_text = "This option, when enabled, allows you to activate its active page at different moments—while lifting it or while throwing it—even multiple times during the animation"
 selected = 0
 item_count = 16
 popup/item_0/text = "Never"
@@ -567,6 +567,32 @@ visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
+
+[node name="HBoxContainer12" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams" unique_id=2023092561]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer12" unique_id=57568726]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+text = "Activation
+page trigger:"
+
+[node name="PushActivationPageTrigger" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer12" unique_id=1219317875 instance=ExtResource("4_eu62a")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "This option, when enabled, allows you to activate its active page at different moments."
+selected = 0
+item_count = 4
+popup/item_0/text = "Never"
+popup/item_0/id = 0
+popup/item_1/text = "Pre Push"
+popup/item_1/id = 16
+popup/item_2/text = "Post Push"
+popup/item_2/id = 32
+popup/item_3/text = "Pre Push + Post Push"
+popup/item_3/id = 48
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams" unique_id=375393288]
 layout_mode = 2
@@ -1045,6 +1071,7 @@ text = "Cancel"
 [connection signal="remove_requested" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer7/LiftImage" to="." method="_on_lift_image_remove_requested"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer10/LiftFx" to="." method="_on_lift_fx_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/PickableParams/HBoxContainer11/ThrowFx" to="." method="_on_throw_fx_pressed"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer12/PushActivationPageTrigger" to="." method="_on_push_activation_page_trigger_item_selected"]
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer/Time" to="." method="_on_time_value_changed"]
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer2/InitialDelay" to="." method="_on_initial_delay_value_changed"]
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer6/Panel/MoveableParams/HBoxContainer3/PushOffsetLeftX" to="." method="_on_push_offset_left_x_value_changed"]

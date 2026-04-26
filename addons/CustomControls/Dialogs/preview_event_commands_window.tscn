@@ -1,0 +1,122 @@
+[gd_scene format=3 uid="uid://dfhh3dmsm0per"]
+
+[ext_resource type="Script" uid="uid://cgip41noqxjcb" path="res://addons/CustomControls/Dialogs/preview_event_commands_window.gd" id="1_ppixd"]
+[ext_resource type="Script" uid="uid://cq8wt1ftsmf0v" path="res://addons/CustomControls/formatter.gd" id="2_ovn5t"]
+[ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="3_cg821"]
+
+[sub_resource type="GDScript" id="GDScript_mqkso"]
+script/source = "@tool
+extends Control
+
+
+var commands_to_draw: Array = []
+var formatter_ref: Node = null
+var text_margin_left: float = 10.0
+
+
+
+## Configures the canvas with the commands to render and triggers a redraw
+func setup_commands(commands: Array, formatter: Node) -> void:
+	commands_to_draw = commands
+	formatter_ref = formatter
+	
+	queue_redraw()
+
+
+
+## Draws the formatted commands sequentially on the canvas
+func _draw() -> void:
+	if commands_to_draw.is_empty() or not is_instance_valid(formatter_ref):
+		return
+		
+	var font = get_theme_default_font()
+	var font_size = get_theme_default_font_size()
+	var v_separation = 4
+	var align = HORIZONTAL_ALIGNMENT_LEFT
+	var y_pos = 0.0
+	var max_width = 0.0
+	
+	for i in commands_to_draw.size():
+		var command = commands_to_draw[i]
+		var formatted_data = formatter_ref.get_formatted_code(command, font, font_size, align, v_separation, i)
+		var row_height = 0.0
+		var x_pos = text_margin_left
+		var current_line_y = y_pos + font.get_ascent() + v_separation
+		
+		if not formatted_data.has(\"phrases\"):
+			continue
+			
+		for phrase in formatted_data.phrases:
+			for obj in phrase.texts:
+				var displacement = obj.get(\"offset_x\", 0)
+				var text_color = obj.get(\"color\", Color.WHITE)
+				var text_string = obj.get(\"text\", \"\")
+				
+				draw_string(font, Vector2(x_pos + displacement, current_line_y + phrase.get(\"offset_y\", 0)), text_string, align, -1, font_size, text_color)
+				
+				var str_size = font.get_string_size(text_string, align, -1, font_size)
+				x_pos += str_size.x
+				row_height = max(row_height, str_size.y)
+				
+			max_width = max(max_width, x_pos)
+			
+		if row_height == 0:
+			row_height = font.get_height(font_size)
+			
+		draw_rect(Rect2(0, y_pos + row_height + v_separation * 2 - 1, size.x, 1), Color(\"#67676792\"))
+		
+		y_pos += row_height + v_separation * 2
+		
+	var new_min_size = Vector2(max_width + 40, y_pos)
+	
+	if custom_minimum_size != new_min_size:
+		custom_minimum_size = new_min_size
+"
+
+[node name="PreviewEventCommands" type="Window" unique_id=440853575]
+oversampling_override = 1.0
+position = Vector2i(0, 36)
+size = Vector2i(400, 400)
+visible = false
+wrap_controls = true
+transient_to_focused = true
+unfocusable = true
+script = ExtResource("1_ppixd")
+
+[node name="Formatter" type="Node" parent="." unique_id=106649198]
+unique_name_in_owner = true
+script = ExtResource("2_ovn5t")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=681042760]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=133967895]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1486070938]
+layout_mode = 2
+text = "Command List:"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1195503590]
+layout_mode = 2
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer" unique_id=81856167]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("3_cg821")
+metadata/_custom_type_script = "uid://cs6g8remlafby"
+
+[node name="Canvas" type="Control" parent="MarginContainer/VBoxContainer/SmoothScrollContainer" unique_id=1269739022]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = SubResource("GDScript_mqkso")

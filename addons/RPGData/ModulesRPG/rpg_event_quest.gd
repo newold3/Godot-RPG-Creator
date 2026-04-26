@@ -32,13 +32,14 @@ func get_class(): return "RPGEventPQuest"
 @export var on_finish_quest_page: int = -1
 ## Start the specified event page if it exists and is set as the mission page when the mission fails.
 @export var on_failure_quest_page: int = -1
-## Overwrite the timer to complete this quest defined in the
-## database with a specific timer.
+
+## Enables a custom time limit for this specific quest offering.
 @export var use_custom_timer: bool = false
-## Time limit to complete the quest. A value of 0 means there is no time
-## limit to complete the quest.
-## This time is used to automatically finish the quest (terminating it as failed).
-@export var custom_timer: float = 0.0
+
+## Time limit in seconds to complete the quest (minimum 1.0).
+## If the timer reaches 0, the quest automatically fails.
+@export var custom_timer: float = 1.0
+
 ## Display a confirmation message to the player to accept this quest. If this option is disabled,
 ## after the start message, the quest will be given to the player automatically.
 @export var use_confirm_message: bool = true
@@ -46,6 +47,16 @@ func get_class(): return "RPGEventPQuest"
 @export var confirm_ok_option: String = tr("Accept quest")
 ## Message displayed in the quest "cancel" option
 @export var confirm_cancel_option: String = tr("Decline")
+
+## Common Event ID triggered automatically when this quest is successfully completed (-1 to disable).
+## This event fires universally regardless of whether the quest delivery was automatic or manual.
+## WARNING: Do not include quest-altering commands within this Common Event to avoid conflicts with the Quest Manager.
+@export var on_complete_common_event: int = -1
+
+## Common Event ID triggered automatically when this quest is failed or canceled (-1 to disable).
+## This event fires universally as soon as the quest enters a failed state.
+## WARNING: Do not include quest-altering commands within this Common Event to avoid conflicts with the Quest Manager.
+@export var on_fail_common_event: int = -1
 
 
 func clone(value: bool = true) -> RPGEventPQuest:
