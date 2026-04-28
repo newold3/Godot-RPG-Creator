@@ -3350,7 +3350,6 @@ func _format_command_126(data: FormatData) -> Array:
 	var options = [
 		tr("Global"), tr("Specific Event")
 	]
-	prints(scope, options)
 	var quest_scope = options[scope]
 	var operation_type = data.command.parameters.get("operation_type", 0)
 	options = [

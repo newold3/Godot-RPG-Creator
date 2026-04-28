@@ -11,10 +11,10 @@ func get_class(): return "RPGEventPage"
 enum LAUNCHER_MODE {ACTION_BUTTON, PLAYER_COLLISION, EVENT_COLLISION, AUTOMATIC, PARALLEL, CALLER, ANY_CONTACT, TOOL, SIGNAL}
 
 
-## Unique 16-digit identifier generated once for this resource.
+## Unique identifier used for internal referencing and persistence.
 @export var _uniq_id: int = -1 :
 	get():
-		if _uniq_id == -1: _uniq_id = _generate_16_digit_id()
+		if _uniq_id < 0: _uniq_id = RPGSYSTEM.generate_16_digit_id()
 		return _uniq_id
 
 ## Main event ID in the database.
@@ -98,16 +98,6 @@ enum LAUNCHER_MODE {ACTION_BUTTON, PLAYER_COLLISION, EVENT_COLLISION, AUTOMATIC,
 var _event_owner: int = -1
 
 
-func _generate_16_digit_id() -> int:
-	var id = str(randi_range(1, 9))
-	var characters = "0123456789"
-	for i in range(15):
-		var random_index = randi() % characters.length()
-		id += characters.substr(random_index, 1)
-	
-	return int(id)
-
-
 func _init(_id: int = 0) -> void:
 	id = _id
 	if list.size() == 0:
@@ -128,7 +118,7 @@ func clone(value: bool = true) -> RPGEventPage:
 	new_event_page.external_pressure_targets = new_event_page.external_pressure_targets.duplicate_deep()
 	new_event_page.condition = condition.clone(value)
 	new_event_page.movement_route = movement_route.clone(value)
-	new_event_page._uniq_id = _generate_16_digit_id()
+	new_event_page._uniq_id = RPGSYSTEM.generate_16_digit_id()
 	
 	return new_event_page
 

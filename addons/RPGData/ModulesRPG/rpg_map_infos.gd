@@ -158,7 +158,7 @@ func get_path_from_id(map_id: int) -> String:
 func _convert_event_to_dict(event: RPGEvent) -> Dictionary:
 	var pages: Array[Dictionary] = []
 	var quest_pages: PackedInt32Array = []
-	var quest_ids: PackedInt32Array = []
+	var quest_ids: Dictionary = {}
 	
 	for i in event.pages.size():
 		var page: RPGEventPage = event.pages[i]
@@ -166,8 +166,19 @@ func _convert_event_to_dict(event: RPGEvent) -> Dictionary:
 		if page.is_quest_page:
 			quest_pages.append(i)
 	
-	for q in event.quests:
-		quest_ids.append(q.id)
+	var real_quest_db = RPGSYSTEM.database.quests
+	
+	for q: RPGEventPQuest in event.quests:
+		if q:
+			var _current_name = q.override_name
+			var real_quest_id = q.id
+			for rq in real_quest_db:
+				if not rq: continue
+				if rq._uniq_id == real_quest_id or rq.id == real_quest_id:
+					if not rq.name.is_empty() and _current_name.is_empty():
+						_current_name = rq.name
+					break
+			quest_ids[q._uniq_id] = {"real_quest_id": real_quest_id, "name": _current_name}
 	
 	return {
 		"id": event.id,

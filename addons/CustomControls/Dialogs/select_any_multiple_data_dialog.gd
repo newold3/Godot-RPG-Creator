@@ -32,7 +32,6 @@ func fill_data(data: PackedStringArray, selected_ids: PackedInt32Array = [], off
 func _on_ok_button_pressed() -> void:
 	var items = %DataList.get_selected_items()
 	var real_ids: PackedInt32Array = []
-	
 	for i in items:
 		real_ids.append(%DataList.get_item_metadata(i))
 
@@ -42,9 +41,14 @@ func _on_ok_button_pressed() -> void:
 	queue_free()
 
 
+func setup_single_mode() -> void:
+	%DataList.select_mode = ItemList.SelectMode.SELECT_SINGLE
+
+
 func _on_cancel_button_pressed() -> void:
 	queue_free()
 
 
 func _on_event_list_item_activated(index: int) -> void:
-	_on_ok_button_pressed()
+	if %DataList.select_mode == ItemList.SelectMode.SELECT_SINGLE:
+		_on_ok_button_pressed()

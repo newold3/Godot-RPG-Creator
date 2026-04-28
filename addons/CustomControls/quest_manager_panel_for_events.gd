@@ -15,11 +15,21 @@ func fill_list(index: int) -> void:
 	var node = %QuestList
 	node.clear()
 	
+	var real_db_quests = RPGSYSTEM.database.quests
+	
 	for quest: RPGEventPQuest in quests:
-		if quest.id > 0 and RPGSYSTEM.database.quests.size() > quest.id:
-			var real_quest = RPGSYSTEM.database.quests
-			var quest_name = real_quest[quest.id].name
-			node.add_column([quest_name])
+		var quest_found: bool = false
+		var current_name = quest.override_name
+		for q: RPGQuest in real_db_quests:
+			if not q: continue
+			if q._uniq_id == quest.id or q.id == quest.id:
+				if not q.name.is_empty() and current_name.is_empty():
+					current_name = q.name
+					break
+				quest_found = true
+					
+		if quest_found:
+			node.add_column([current_name])
 		else:
 			node.add_column(["⚠ Invalid Data"])
 	

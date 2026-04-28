@@ -7,6 +7,9 @@ enum QuestStatus {
 	FAILED_PENDING_DELIVERY
 }
 
+## Unique ID of the specific local event configuration (RPGEventPQuest) that started this quest.
+@export var owner_pquest_uniq_id: int = -1
+
 ## Real ID of this quest in database
 @export var id: int = -1
 

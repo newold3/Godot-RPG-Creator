@@ -364,4 +364,20 @@ func show_minimap() -> void:
 
 func hide_minimap() -> void:
 	%MiniMapManager.hide()
+
+
+func add_quest_icon(icon: Node2D, target_event: IngameEvent) -> void:
+	%QuestIconContainer.add_quest_icon(icon, target_event)
+
+
+func remove_quest_icon(target_event: IngameEvent) -> void:
+	%QuestIconContainer.remove_quest_icon(target_event)
+
+
+func clear_quest_icons() -> void:
+	%QuestIconContainer.clear_quest_icons()
+
+
+func update_quest_tracker() -> void:
+	%QuestTracker.update_progress()
 #endregion

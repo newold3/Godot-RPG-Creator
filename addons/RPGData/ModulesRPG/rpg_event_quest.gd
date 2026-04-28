@@ -6,8 +6,18 @@ extends Resource
 func get_class(): return "RPGEventPQuest"
 
 
-## Real id in database for this quest
+## Unique identifier used for internal referencing and persistence.
+@export var _uniq_id: int = -1 :
+	get():
+		if _uniq_id < 0: _uniq_id = RPGSYSTEM.generate_16_digit_id()
+		return _uniq_id
+
+## Real id in database for this quest (use _uniq_id)
 @export var id: int = 1
+## Override the name for this quest (Leave blank to use the default name).
+@export var override_name: String = ""
+## Override the description for this quest (Leave blank to use the default description).
+@export var override_description: String = ""
 ## Event pages that need to be active in order to obtain or deliver
 ## this mission to this event
 @export var required_pages: PackedInt32Array = []

@@ -3198,8 +3198,8 @@ func create_tile_from_preset(preset_path: String) -> void:
 	
 	var event_copy = preset.preset.duplicate(true)
 	
-	if "_uniq_id" in event_copy and event_copy.has_method("_generate_16_digit_id"):
-		event_copy._uniq_id = event_copy._generate_16_digit_id()
+	if "_uniq_id" in event_copy:
+		event_copy._uniq_id = RPGSYSTEM.generate_16_digit_id()
 	
 	var undo_redo = get_undo_redo()
 	
@@ -3649,7 +3649,7 @@ func paste_tile() -> void:
 	var is_original = event_copy.has_meta("is_original_event")
 	
 	if not is_original:
-		event_copy._uniq_id = event_copy._generate_16_digit_id()
+		event_copy._uniq_id = RPGSYSTEM.generate_16_digit_id()
 	elif event_copy.has_meta("is_original_event"):
 		event_copy.remove_meta("is_original_event")
 	

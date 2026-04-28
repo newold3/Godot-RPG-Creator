@@ -59,12 +59,20 @@ func set_data(p_data: RPGEventPQuest) -> void:
 	set_control_name("start_page", data.start_page)
 	set_control_name("target_page", data.target_page)
 	_update_common_events_texts()
+	
+	title = tr("Event Quests") + " - Quest ID: " + str(p_data._uniq_id)
 
 
 func _update_texts() -> void:
 	%StartMessage.text = data.dialogue_on_start.replace("\n", "\\n")
 	%SuccessMessage.text = data.dialogue_on_finish.replace("\n", "\\n")
 	%FailureMessage.text = data.dialogue_on_failure.replace("\n", "\\n")
+	var _name = data.override_name.replace("\n", "\\n")
+	if _name.is_empty(): _name = tr("Use Default Name")
+	%OverrideName.text = _name
+	var _description = data.override_description.replace("\n", "\\n")
+	if _description.is_empty(): _description = tr("Use Default Name")
+	%OverrideDescription.text = _description
 
 
 func _on_cancel_button_pressed() -> void:
@@ -86,6 +94,8 @@ func _show_text_message(id: int) -> void:
 		0: text = data.dialogue_on_start
 		1: text = data.dialogue_on_finish
 		2: text = data.dialogue_on_failure
+		50: text = data.override_name
+		51: text = data.override_description
 	dialog.set_fast_edit_text(text)
 	dialog.fast_text_changed.connect(
 		func(new_text: String):
@@ -93,6 +103,10 @@ func _show_text_message(id: int) -> void:
 				0: data.dialogue_on_start = new_text
 				1: data.dialogue_on_finish = new_text
 				2: data.dialogue_on_failure = new_text
+				50:
+					data.override_name = new_text
+					_on_quest_id_selected(data.id, null)
+				51: data.override_description = new_text
 			_update_texts()
 	)
 
@@ -120,13 +134,28 @@ func _on_quest_id_pressed() -> void:
 	dialog.setup(RPGSYSTEM.database.quests, data.id, "Quest", null)
 
 
-func _on_quest_id_selected(id: int, target: Variant) -> void:
-	data.id = id
-	if id > 0 and RPGSYSTEM.database.quests.size() > id:
-		%QuestID.text = "%s: %s" % [id, RPGSYSTEM.database.quests[id].name]
+func _on_quest_id_selected(id: int, _target: Variant) -> void:
+	var real_quest_db = RPGSYSTEM.database.quests
+	var quest_found: bool = false
+	var _current_name = data.override_name
+	var real_quest_id: String = ""
+
+	for q: RPGQuest in real_quest_db:
+		if not q: continue
+		if q.id == id or q._uniq_id == id:
+			id = q._uniq_id
+			if not q.name.is_empty() and _current_name.is_empty():
+				_current_name = q.name
+			quest_found = true
+			real_quest_id = " (Data ID = %s)" % q.id
+			break
+
+	if quest_found:
+		data.id = id
+		%QuestID.text =  _current_name + real_quest_id
 	else:
+		data.id = -1
 		%QuestID.text = "⚠ Invalid Data"
-	
 
 
 func _on_use_custom_timer_toggled(toggled_on: bool) -> void:
@@ -280,3 +309,37 @@ func _on_on_fail_call_common_event_middle_click_pressed() -> void:
 
 func _on_custom_timer_value_changed(value: float) -> void:
 	data.custom_timer = value
+
+
+func _on_override_name_pressed() -> void:
+	_show_text_message(50)
+
+
+func _on_override_description_pressed() -> void:
+	_show_text_message(51)
+
+
+func _on_override_name_middle_click_pressed() -> void:
+	data.override_name = ""
+	%OverrideName.text = ""
+	_on_quest_id_selected(data.id, null)
+
+
+func _on_override_description_middle_click_pressed() -> void:
+	data.override_description = ""
+	%OverrideDescription.text = ""
+
+
+func _on_start_message_middle_click_pressed() -> void:
+	data.dialogue_on_start = ""
+	%StartMessage.text = ""
+
+
+func _on_success_message_middle_click_pressed() -> void:
+	data.dialogue_on_finish = ""
+	%SuccessMessage.text = ""
+
+
+func _on_failure_message_middle_click_pressed() -> void:
+	data.dialogue_on_failure = ""
+	%FailureMessage.text = ""

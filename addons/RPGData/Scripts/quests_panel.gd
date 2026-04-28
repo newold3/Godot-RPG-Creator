@@ -351,30 +351,95 @@ func _on_prerequisites_middle_click_pressed() -> void:
 	%Prerequisites.text = tr("Select Quests")
 
 
-func _select_quest(button: Button, id: String, is_single: bool = false) -> void:
+func _select_quest(button: Button, property_name: String, is_single: bool = false) -> void:
 	var path = "res://addons/CustomControls/Dialogs/select_quest_dialog.tscn"
 	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
-	var current_indexes = get_data().get(id) if not is_single else [get_data().get(id)]
-	dialog.set_selected_indexes(current_indexes)
+	
+	var current_val = get_data().get(property_name)
+	var current_uids = current_val if typeof(current_val) in [TYPE_ARRAY, TYPE_PACKED_INT32_ARRAY, TYPE_PACKED_INT64_ARRAY] else [current_val]
+	var current_ids: PackedInt32Array = []
+	
+	for uid in current_uids:
+		var id = _uid_to_id(uid)
+		if id != -1:
+			current_ids.append(id)
+			
+	dialog.set_selected_indexes(current_ids)
 	dialog.set_main_quest_selected(get_data().id)
+	
 	if is_single:
 		dialog.set_single_item_mode()
-	
+		
 	dialog.selected_items.connect(
 		func(indexes: PackedInt32Array):
 			if not is_single:
-				get_data().set(id, indexes)
+				var new_uids: Array[int] = []
+				
+				for id in indexes:
+					var uid = _id_to_uid(id)
+					if uid != -1:
+						new_uids.append(uid)
+						
+				get_data().set(property_name, new_uids)
 			else:
-				get_data().set(id, indexes[0])
-			set_button_text(button, get_data().get(id))
+				var uid = _id_to_uid(indexes[0]) if indexes.size() > 0 else -1
+				get_data().set(property_name, uid)
+				
+			set_button_text(button, get_data().get(property_name))
 	)
 
 
-func set_button_text(button: Button, text: Variant) -> void:
-	var current_text = str(text)
-	if not "[" in current_text:
-		current_text = "[" + current_text + "]"
-	button.text = current_text
+func set_button_text(button: Button, text_data: Variant) -> void:
+	if typeof(text_data) in [TYPE_ARRAY, TYPE_PACKED_INT32_ARRAY, TYPE_PACKED_INT64_ARRAY]:
+		var display_strings: PackedStringArray = []
+		
+		for uid in text_data:
+			display_strings.append(_uid_to_display_name(uid))
+			
+		if display_strings.is_empty():
+			button.text = tr("Select Quests")
+		else:
+			button.text = "[" + ", ".join(display_strings) + "]"
+	else:
+		var uid = int(text_data)
+		
+		if uid <= 0:
+			button.text = tr("Select Quest")
+		else:
+			button.text = "[" + _uid_to_display_name(uid) + "]"
+
+
+func _uid_to_id(uid: int) -> int:
+	for q in RPGSYSTEM.database.quests:
+		if not q:
+			continue
+			
+		if ("_uniq_id" in q and q._uniq_id == uid) or q.id == uid:
+			return q.id
+			
+	return -1
+
+
+func _id_to_uid(id: int) -> int:
+	for q in RPGSYSTEM.database.quests:
+		if not q:
+			continue
+			
+		if q.id == id:
+			return q._uniq_id if "_uniq_id" in q and q._uniq_id > 0 else q.id
+			
+	return -1
+
+
+func _uid_to_display_name(uid: int) -> String:
+	for q in RPGSYSTEM.database.quests:
+		if not q:
+			continue
+			
+		if ("_uniq_id" in q and q._uniq_id == uid) or q.id == uid:
+			return str(q.id) + ": " + q.name
+			
+	return str(uid)
 
 
 func _on_prerequisites_pressed() -> void:

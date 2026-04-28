@@ -2,10 +2,10 @@
 class_name RPGEvent
 extends Resource
 
-## Unique 16-digit identifier for the event resource.
+## Unique identifier used for internal referencing and persistence.
 @export var _uniq_id: int = -1 :
 	get():
-		if _uniq_id == -1: _uniq_id = _generate_16_digit_id()
+		if _uniq_id < 0: _uniq_id = RPGSYSTEM.generate_16_digit_id()
 		return _uniq_id
 
 ## Display name for the event in the editor.
@@ -88,17 +88,6 @@ func _set(property: StringName, value: Variant) -> bool:
 func get_class(): return "RPGEvent"
 
 
-## Generates a unique 16-digit integer for internal identification.
-func _generate_16_digit_id() -> int:
-	var id = str(randi_range(1, 9))
-	var characters = "0123456789"
-	for i in range(15):
-		var random_index = randi() % characters.length()
-		id += characters.substr(random_index, 1)
-	
-	return int(id)
-
-
 ## Initializes the event with basic positioning and ensures at least one page exists.
 func _init(_id: int = 0, _x: int = 0, _y: int = 0) -> void:
 	id = _id
@@ -166,7 +155,7 @@ func clone(value: bool = true) -> RPGEvent:
 	else:
 		new_event.relationship = new_event.relationship.clone(value)
 	
-	new_event._uniq_id = _generate_16_digit_id()
+	new_event._uniq_id = RPGSYSTEM.generate_16_digit_id()
 		
 	return new_event
 

@@ -28,6 +28,12 @@ enum ItemType {
 }
 
 # General Settings
+## Unique identifier used for internal referencing and persistence.
+@export var _uniq_id: int = -1 :
+	get():
+		if _uniq_id < 0: _uniq_id = RPGSYSTEM.generate_16_digit_id()
+		return _uniq_id
+
 ## Unique identifier for the quest.
 @export var id: int = 0
 
@@ -65,11 +71,11 @@ enum ItemType {
 @export var type: QuestMode = QuestMode.TALK_TO_NPC
 
 ## List of quest IDs that must be completed first.
-@export var prerequisites: PackedInt32Array = []
+@export var prerequisites: PackedInt64Array = []
 
 ## List of missions that auto-start together with this mission.
 ## This mission will not be completed until all the missions in the list, including this one, are finished.
-@export var multi_quests: PackedInt32Array = []
+@export var multi_quests: PackedInt64Array = []
 
 ## Quest that will auto-start when this quest is completed (ideal for quests with several sequential steps)
 @export var chain_quest: int = -1
@@ -85,7 +91,7 @@ enum ItemType {
 @export var reward: RPGQuestReward = RPGQuestReward.new()
 
 ## List of quests that will be unlocked upon completion of this quest.
-@export var quests_unlocked: PackedInt32Array = []
+@export var quests_unlocked: PackedInt64Array = []
 
 ## Start the chain mission immediately
 ## after completing this (useful for making a quest chain).

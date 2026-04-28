@@ -672,7 +672,7 @@ func get_map_tile_size() -> Vector2i:
 
 
 func get_camera() -> Camera2D:
-	if main_scene: return main_scene.get_node("%MainCamera")
+	if main_scene: return main_scene.get_main_camera()
 	return get_viewport().get_camera_2d()
 
 
@@ -835,6 +835,25 @@ func stop_se() -> void:
 
 func stop_video() -> void:
 	if main_scene: main_scene.stop_video()
+
+
+## Sends a quest icon to the UI overlay mapping it to the target event.
+func add_quest_icon(icon: Node2D, target_event: IngameEvent) -> void:
+	if main_scene: main_scene.add_quest_icon(icon, target_event)
+
+
+## Orders the UI overlay to remove an event's quest icon.
+func remove_quest_icon(target_event: IngameEvent) -> void:
+	if main_scene: main_scene.remove_quest_icon(target_event)
+
+
+## Orders the UI overlay to clear all active quest icons.
+func clear_quest_icons() -> void:
+	if main_scene: main_scene.clear_quest_icons()
+
+
+func update_quest_tracker() -> void:
+	if main_scene: main_scene.update_quest_tracker()
 #endregion
 
 

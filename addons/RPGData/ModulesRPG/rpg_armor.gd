@@ -10,6 +10,13 @@ extends Resource
 func get_class():
 	return "RPGArmor"
 
+
+## Unique identifier used for internal referencing and persistence.
+@export var _uniq_id: int = -1 :
+	get():
+		if _uniq_id < 0: _uniq_id = RPGSYSTEM.generate_16_digit_id()
+		return _uniq_id
+
 ## Unique identifier for the armor.
 @export var id: int = 0
 

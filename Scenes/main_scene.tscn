@@ -18,6 +18,8 @@
 [ext_resource type="Script" uid="uid://6haw4a1tw6n2" path="res://Scripts/IngameManagers/mini_map_manager.gd" id="15_gnsmo"]
 [ext_resource type="Texture2D" uid="uid://5ur7q8x2sa7j" path="res://Assets/Images/Other/minimap.png" id="16_2ebs2"]
 [ext_resource type="Texture2D" uid="uid://bpj212cv3h4ng" path="res://Assets/Images/Other/default_minimap_icons.png" id="16_oyb3p"]
+[ext_resource type="Script" uid="uid://cqx2v0onhinl4" path="res://Scripts/IngameManagers/quest_icons_canvas.gd" id="17_oyb3p"]
+[ext_resource type="PackedScene" uid="uid://j7uwss7o0a3h" path="res://Scenes/QuestTrackerScene/quest_tracker.tscn" id="18_b48ew"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_rbbkg"]
 frequency = 0.0011
@@ -267,39 +269,9 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0)
 
-[node name="MessageCanvas" type="CanvasLayer" parent="." unique_id=469834250]
-unique_name_in_owner = true
-layer = 120
-visible = false
-
-[node name="MessageCharacterImages" type="Control" parent="MessageCanvas" unique_id=1605910488]
-unique_name_in_owner = true
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Control" type="VBoxContainer" parent="MessageCanvas" unique_id=1599319309]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Dialog" parent="MessageCanvas/Control" unique_id=1651516393 node_paths=PackedStringArray("character_container") instance=ExtResource("4_re3ur")]
-unique_name_in_owner = true
-layout_mode = 2
-character_container = NodePath("../../MessageCharacterImages")
-
-[node name="OverMessageCanvas" type="CanvasLayer" parent="." unique_id=2008279795]
-unique_name_in_owner = true
-layer = 121
-
 [node name="MiniMapManager" type="CanvasLayer" parent="." unique_id=42316787 node_paths=PackedStringArray("minimap_viewport", "main_parallax", "camera", "tilemap_container", "entities_drawer")]
 unique_name_in_owner = true
-layer = 122
+layer = 116
 visible = false
 script = ExtResource("15_gnsmo")
 minimap_viewport = NodePath("MainViewport")
@@ -365,6 +337,54 @@ modulate = Color(1, 1, 1, 0.5254902)
 scale = Vector2(1, 0.99999994)
 texture = SubResource("AtlasTexture_5oxhp")
 
+[node name="QuestCanvas" type="CanvasLayer" parent="." unique_id=2134251990]
+unique_name_in_owner = true
+layer = 118
+
+[node name="QuestIconContainer" type="Node2D" parent="QuestCanvas" unique_id=644814464]
+unique_name_in_owner = true
+script = ExtResource("17_oyb3p")
+update_every_x_frames = 4
+base_offset_for_node_up = Vector2(0, -8)
+base_offset_for_no_node_up = Vector2(0, -16)
+
+[node name="QuestTracker" parent="QuestCanvas" unique_id=253192504 instance=ExtResource("18_b48ew")]
+unique_name_in_owner = true
+offset_left = 817.0
+offset_top = 219.0
+offset_right = 1131.0
+offset_bottom = 512.0
+
+[node name="MessageCanvas" type="CanvasLayer" parent="." unique_id=469834250]
+unique_name_in_owner = true
+layer = 120
+visible = false
+
+[node name="MessageCharacterImages" type="Control" parent="MessageCanvas" unique_id=1605910488]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Control" type="VBoxContainer" parent="MessageCanvas" unique_id=1599319309]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dialog" parent="MessageCanvas/Control" unique_id=1651516393 node_paths=PackedStringArray("character_container") instance=ExtResource("4_re3ur")]
+unique_name_in_owner = true
+layout_mode = 2
+character_container = NodePath("../../MessageCharacterImages")
+
+[node name="OverMessageCanvas" type="CanvasLayer" parent="." unique_id=2008279795]
+unique_name_in_owner = true
+layer = 121
+
 [node name="GUICanvas" type="CanvasLayer" parent="." unique_id=964964266]
 unique_name_in_owner = true
 layer = 124
@@ -425,4 +445,4 @@ bus = &"SE"
 unique_name_in_owner = true
 bus = &"SE"
 
-[connection signal="item_rect_changed" from="MessageCanvas/Control/Dialog/@CanvasLayer@19308/Message" to="MessageCanvas/Control/Dialog" method="_on_message_item_rect_changed"]
+[connection signal="item_rect_changed" from="MessageCanvas/Control/Dialog/@CanvasLayer@305131/Message" to="MessageCanvas/Control/Dialog" method="_on_message_item_rect_changed"]

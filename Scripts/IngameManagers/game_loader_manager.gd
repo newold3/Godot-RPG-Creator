@@ -64,7 +64,7 @@ func _initialize_game_state() -> void:
 	
 	for quest in RPGSYSTEM.database.quests:
 		if quest and quest.default_unlocked:
-			game_state.quest_progress.unlocked_quests[quest.id] = true
+			game_state.quest_progress.unlocked_quests[quest._uniq_id] = true
 
 
 func _setup_initial_party() -> void:

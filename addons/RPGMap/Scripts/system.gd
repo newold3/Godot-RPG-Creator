@@ -99,6 +99,32 @@ func _inject_extra_data() -> void:
 		#database.initialize()
 
 
+func generate_16_digit_id() -> int:
+	var id = str(randi_range(1, 9))
+	var characters = "0123456789"
+	for i in range(15):
+		var random_index = randi() % 10
+		id += characters.substr(random_index, 1)
+		
+	return int(id)
+
+
+func get_data(key: String, id: int) -> Variant:
+	var valid_keys = ["actors", "classes", "professions", "skills", "items", "weapons", "armors", "costumes", "enemies", "troops", "states", "animations", "common_events", "speakers", "quests"]
+	
+	if key in valid_keys:
+		var data = database[key]
+		if id > 0 and data.size() > id:
+			return data[id]
+		else:
+			for d: Variant in data:
+				if not d: continue
+				if d._uniq_id == id:
+					return d
+	
+	return null
+
+
 func load_variables_and_switches() -> void:
 	system = DatabaseLoader.load_system()
 	

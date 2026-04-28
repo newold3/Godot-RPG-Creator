@@ -1,11 +1,11 @@
-[gd_scene load_steps=17 format=3 uid="uid://bg11fd6hmeg30"]
+[gd_scene format=3 uid="uid://bg11fd6hmeg30"]
 
 [ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="1_flnkl"]
 [ext_resource type="Script" uid="uid://bk28wcn045uuk" path="res://addons/CustomControls/quest_manager_panel_for_events.gd" id="1_q65kd"]
 [ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="3_6vpv7"]
 [ext_resource type="PackedScene" uid="uid://dxcyqc2dscbvw" path="res://addons/CustomControls/custom_simple_column_item_list.tscn" id="3_qvw3r"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_asfg1"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qvw3r"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -23,17 +23,17 @@ corner_radius_bottom_left = 12
 [sub_resource type="Gradient" id="Gradient_ctwx1"]
 colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_l7i8v"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_6vpv7"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_ctwx1")
 fill_from = Vector2(0.542735, 0.995726)
 fill_to = Vector2(0.58547, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_d6ss7"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_l8n8h"]
 resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_l7i8v")
+texture = SubResource("GradientTexture2D_6vpv7")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f0bo5"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8xlhf"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -66,7 +66,7 @@ gradient = SubResource("Gradient_l8n8h")
 fill_from = Vector2(0.547009, 1)
 fill_to = Vector2(0.559829, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qvw3r"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_evp0g"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_cc2pl")
 
@@ -79,8 +79,7 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0, 0, 0, 1)
 
-[node name="QuestManagerPanel" type="MarginContainer"]
-visible = false
+[node name="QuestManagerPanel" type="MarginContainer" unique_id=1030508112]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -92,34 +91,34 @@ theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 script = ExtResource("1_q65kd")
 
-[node name="CustomPanel" parent="." instance=ExtResource("1_flnkl")]
+[node name="CustomPanel" parent="." unique_id=1655124019 instance=ExtResource("1_flnkl")]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_asfg1")
-style1 = SubResource("StyleBoxFlat_asfg1")
-style2 = SubResource("StyleBoxTexture_d6ss7")
-style3 = SubResource("StyleBoxFlat_f0bo5")
+theme_override_styles/panel = SubResource("StyleBoxFlat_qvw3r")
+style1 = SubResource("StyleBoxFlat_qvw3r")
+style2 = SubResource("StyleBoxTexture_l8n8h")
+style3 = SubResource("StyleBoxFlat_8xlhf")
 
-[node name="MarginContainer" type="MarginContainer" parent="CustomPanel"]
+[node name="MarginContainer" type="MarginContainer" parent="CustomPanel" unique_id=1683428106]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CustomPanel/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CustomPanel/MarginContainer" unique_id=25501513]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="CustomPanel/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="CustomPanel/MarginContainer/VBoxContainer" unique_id=703401268]
 layout_mode = 2
 text = "Available quests"
 
-[node name="SmoothScrollContainer" type="ScrollContainer" parent="CustomPanel/MarginContainer/VBoxContainer"]
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="CustomPanel/MarginContainer/VBoxContainer" unique_id=1063070692]
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("3_6vpv7")
 metadata/_custom_type_script = "uid://cs6g8remlafby"
 
-[node name="QuestList" parent="CustomPanel/MarginContainer/VBoxContainer/SmoothScrollContainer" instance=ExtResource("3_qvw3r")]
+[node name="QuestList" parent="CustomPanel/MarginContainer/VBoxContainer/SmoothScrollContainer" unique_id=1677893539 instance=ExtResource("3_qvw3r")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 573)
 layout_mode = 2
@@ -129,7 +128,7 @@ odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
 event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 min_size = Vector2(1112, 573)
 top_bar_style = SubResource("StyleBoxTexture_s31ys")
-cursor_style = SubResource("StyleBoxTexture_qvw3r")
+cursor_style = SubResource("StyleBoxTexture_evp0g")
 panel_style = SubResource("StyleBoxFlat_evp0g")
 names = PackedStringArray("Quests List")
 sizes = PackedInt32Array(80)

@@ -1,0 +1,174 @@
+[gd_scene format=3 uid="uid://j7uwss7o0a3h"]
+
+[ext_resource type="Script" uid="uid://dmq4ihklyapoi" path="res://Scenes/QuestTrackerScene/quest_tracker.gd" id="1_ewqg0"]
+[ext_resource type="FontFile" uid="uid://2okej4ay4kdb" path="res://addons/CustomControls/Resources/Fonts/unifont-13.0.01.ttf" id="2_6yf1x"]
+[ext_resource type="Texture2D" uid="uid://btktwfyky80qr" path="res://Assets/Images/Other/mini_check_box.png" id="2_p5k05"]
+
+[sub_resource type="Gradient" id="Gradient_6yf1x"]
+interpolation_color_space = 2
+offsets = PackedFloat32Array(0, 0.91887903, 1)
+colors = PackedColorArray(0, 0, 0, 0.078431375, 0, 0, 0, 0.078431375, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_p5k05"]
+gradient = SubResource("Gradient_6yf1x")
+fill = 2
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.4974359)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dpvqf"]
+content_margin_left = 14.0
+content_margin_top = 14.0
+content_margin_right = 14.0
+content_margin_bottom = 14.0
+texture = SubResource("GradientTexture2D_p5k05")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p5k05"]
+content_margin_left = 8.0
+content_margin_top = 6.0
+content_margin_right = 8.0
+content_margin_bottom = 6.0
+bg_color = Color(0, 0, 0, 0.12156863)
+border_width_left = 4
+border_color = Color(0.9646773, 0.77378285, 0.24156386, 1)
+border_blend = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dpvqf"]
+atlas = ExtResource("2_p5k05")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ikupi"]
+atlas = ExtResource("2_p5k05")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="LabelSettings" id="LabelSettings_p5k05"]
+font = ExtResource("2_6yf1x")
+font_size = 20
+font_color = Color(1, 0.7058824, 0.101960786, 1)
+outline_size = 8
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_j8eam"]
+font = ExtResource("2_6yf1x")
+font_size = 17
+font_color = Color(0.9999996, 0.9401465, 0.7938936, 1)
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_6yf1x"]
+font = ExtResource("2_6yf1x")
+font_size = 17
+font_color = Color(0.8788665, 0.38620502, 0.22414982, 1)
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_pd4ym"]
+font = ExtResource("2_6yf1x")
+font_size = 20
+font_color = Color(0.96120536, 0.90238017, 0.22856419, 1)
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_dpvqf"]
+font = ExtResource("2_6yf1x")
+font_size = 20
+font_color = Color(0.25140953, 0.6560913, 0.24962005, 1)
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ikupi"]
+font = ExtResource("2_6yf1x")
+font_size = 20
+font_color = Color(0.9372549, 0.0627451, 0.35686275, 1)
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Gradient" id="Gradient_dpvqf"]
+offsets = PackedFloat32Array(0, 0.62335956, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.94870347, 0.8006986, 0.2575415, 1, 0.98675424, 0, 0.3187483, 1)
+
+[sub_resource type="Gradient" id="Gradient_p5k05"]
+offsets = PackedFloat32Array(0, 0.8908356, 0.9420485, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.9756795, 0.9756795, 0.9756795, 1, 0, 0, 0, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_dpvqf"]
+gradient = SubResource("Gradient_p5k05")
+width = 26
+height = 26
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="Gradient" id="Gradient_pd4ym"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_j8eam"]
+gradient = SubResource("Gradient_pd4ym")
+
+[sub_resource type="Gradient" id="Gradient_ikupi"]
+colors = PackedColorArray(0.8117647, 0, 0, 1, 8.663535e-07, 0.74600714, 0.13563481, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_pd4ym"]
+gradient = SubResource("Gradient_ikupi")
+width = 32
+
+[node name="QuestTracker" type="PanelContainer" unique_id=253192504 node_paths=PackedStringArray("timer_bar_template", "generic_bar_template", "container")]
+clip_contents = true
+custom_minimum_size = Vector2(200, 240)
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_dpvqf")
+script = ExtResource("1_ewqg0")
+quest_entry_style = SubResource("StyleBoxFlat_p5k05")
+icon_incomplete = SubResource("AtlasTexture_dpvqf")
+icon_complete = SubResource("AtlasTexture_ikupi")
+quest_name_settings = SubResource("LabelSettings_p5k05")
+objective_settings = SubResource("LabelSettings_j8eam")
+objective_completed_settings = SubResource("LabelSettings_6yf1x")
+quantity_settings = SubResource("LabelSettings_pd4ym")
+all_completed_settings = SubResource("LabelSettings_dpvqf")
+failure_settings = SubResource("LabelSettings_ikupi")
+timer_bar_template = NodePath("Control/ClockBar")
+generic_bar_template = NodePath("Control/ProgressBar")
+use_timer_gradient = true
+timer_gradient = SubResource("Gradient_dpvqf")
+container = NodePath("QuestContainer")
+
+[node name="QuestContainer" type="VBoxContainer" parent="." unique_id=438107497]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Control" type="Control" parent="." unique_id=1189580354]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+
+[node name="ClockBar" type="TextureProgressBar" parent="Control" unique_id=14399604]
+layout_mode = 0
+offset_right = 26.0
+offset_bottom = 26.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+value = 100.0
+fill_mode = 4
+texture_progress = SubResource("GradientTexture2D_dpvqf")
+
+[node name="ProgressBar" type="TextureProgressBar" parent="Control" unique_id=799532321]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 35.0
+offset_right = 43.0
+offset_bottom = 36.0
+mouse_filter = 2
+max_value = 1.0
+step = 0.01
+value = 0.79
+nine_patch_stretch = true
+texture_under = SubResource("GradientTexture1D_j8eam")
+texture_progress = SubResource("GradientTexture1D_pd4ym")
+
+[node name="Label" type="Label" parent="." unique_id=2113464759]
+layout_mode = 2

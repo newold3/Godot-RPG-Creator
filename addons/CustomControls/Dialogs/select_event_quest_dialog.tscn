@@ -20,7 +20,7 @@ fill_to = Vector2(0.5, 0)
 oversampling_override = 1.0
 title = "Event Quests"
 position = Vector2i(0, 36)
-size = Vector2i(800, 652)
+size = Vector2i(800, 706)
 wrap_controls = true
 transient = true
 exclusive = true
@@ -62,6 +62,43 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Choose one of the available quests."
 text = "Select Quest"
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=520359233]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer3" unique_id=235217692]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer3/HBoxContainer" unique_id=69232389]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+text = "Override Name:"
+
+[node name="OverrideName" parent="MarginContainer/VBoxContainer/VBoxContainer3/HBoxContainer" unique_id=1769857998 instance=ExtResource("3_sc7n4")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Override the name for this quest.
+
+[Note]: Leave blank to use the default name (Middle Click to empty text)."
+clip_text = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer3" unique_id=2001893558]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer3/HBoxContainer2" unique_id=1403294348]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+text = "Override Description:"
+
+[node name="OverrideDescription" parent="MarginContainer/VBoxContainer/VBoxContainer3/HBoxContainer2" unique_id=1975893262 instance=ExtResource("3_sc7n4")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Override the description for this quest.
+
+[Note]: Leave blank to use the default description (Middle Click to empty text)."
+clip_text = true
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=467236479]
 layout_mode = 2
@@ -226,7 +263,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Initial dialogue that this event will reproduce before giving this quest to the player.
 
-[Note]: This is a fallback dialog; it will only start if there is no page defined for this action."
+[Note]: This is a fallback dialog; it will only start if there is no page defined for this action.
+
+[Note 2]: Middle Click to empty text."
 clip_text = true
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer" unique_id=715649687]
@@ -243,7 +282,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Dialogue that this event will reproduce when delivering the completed quest.
 
-[Note]: This is a fallback dialog; it will only start if there is no page defined for this action."
+[Note]: This is a fallback dialog; it will only start if there is no page defined for this action.
+
+[Note 2]: Middle Click to empty text."
 clip_text = true
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer" unique_id=397479111]
@@ -258,7 +299,9 @@ text = "Failure Message:"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-tooltip_text = "Dialogue that will reproduce if this quest was given to the player and they failed to complete it."
+tooltip_text = "Dialogue that will reproduce if this quest was given to the player and they failed to complete it.
+
+[Note 2]: Middle Click to empty text."
 clip_text = true
 
 [node name="HSeparator4" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=562385656]
@@ -340,6 +383,10 @@ Closes this window without saving any changes."
 text = "CANCEL"
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/QuestID" to="." method="_on_quest_id_pressed"]
+[connection signal="middle_click_pressed" from="MarginContainer/VBoxContainer/VBoxContainer3/HBoxContainer/OverrideName" to="." method="_on_override_name_middle_click_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer3/HBoxContainer/OverrideName" to="." method="_on_override_name_pressed"]
+[connection signal="middle_click_pressed" from="MarginContainer/VBoxContainer/VBoxContainer3/HBoxContainer2/OverrideDescription" to="." method="_on_override_description_middle_click_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer3/HBoxContainer2/OverrideDescription" to="." method="_on_override_description_pressed"]
 [connection signal="middle_click_pressed" from="MarginContainer/VBoxContainer/HBoxContainer4/StartPage" to="." method="_on_start_page_middle_click_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer4/StartPage" to="." method="_on_start_page_pressed"]
 [connection signal="middle_click_pressed" from="MarginContainer/VBoxContainer/HBoxContainer6/TargetEventPage" to="." method="_on_target_event_page_middle_click_pressed"]
@@ -352,8 +399,11 @@ text = "CANCEL"
 [connection signal="pressed" from="MarginContainer/VBoxContainer/OnFailCallCommonEvent" to="." method="_on_on_fail_call_common_event_pressed"]
 [connection signal="multi_selection_changed" from="MarginContainer/VBoxContainer/HBoxContainer/PageList" to="." method="_on_page_list_multi_selection_changed"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer3/RelationshipLevel" to="." method="_on_relationship_level_item_selected"]
+[connection signal="middle_click_pressed" from="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/StartMessage" to="." method="_on_start_message_middle_click_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/StartMessage" to="." method="_on_start_message_pressed"]
+[connection signal="middle_click_pressed" from="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer3/SuccessMessage" to="." method="_on_success_message_middle_click_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer3/SuccessMessage" to="." method="_on_success_message_pressed"]
+[connection signal="middle_click_pressed" from="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer4/FailureMessage" to="." method="_on_failure_message_middle_click_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer4/FailureMessage" to="." method="_on_failure_message_pressed"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/VBoxContainer2/UseConfirm" to="." method="_on_use_confirm_toggled"]
 [connection signal="text_changed" from="MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer/ConfirmOK" to="." method="_on_confirm_ok_text_changed"]
