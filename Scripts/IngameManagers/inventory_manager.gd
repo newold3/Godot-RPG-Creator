@@ -1,7 +1,7 @@
 class_name InventoryManager
 extends Node
 
-
+#region VariablesAndConstants
 var active_perishable_items: Array[GameItem] = []
 var active_overflow_bags: Array[OverflowBag] = []
 var interacting_bag: OverflowBag = null
@@ -15,8 +15,57 @@ enum SCOPE {
 }
 
 const OVER_FLOW_BAG = preload("uid://bsnxdk683a0qq")
+#endregion
 
 
+
+#region LifecycleAndPerishables
+func _process(delta: float) -> void:
+	if active_perishable_items.is_empty():
+		return
+		
+	for i in range(active_perishable_items.size() - 1, -1, -1):
+		var item = active_perishable_items[i]
+		item.update_lifetime(delta)
+		
+		if item.lifetime <= 0:
+			active_perishable_items.remove_at(i)
+			_handle_rotted_item(item)
+
+
+
+func sync_perishable_items() -> void:
+	active_perishable_items.clear()
+	
+	if not GameManager.game_state:
+		return
+		
+	for item_list in GameManager.game_state.items.values():
+		for item in item_list:
+			if item.get("is_perishable") and item.lifetime > 0:
+				active_perishable_items.append(item)
+
+
+
+func _handle_rotted_item(item: GameItem) -> void:
+	var item_id = item.id
+	
+	if GameManager.game_state.items.has(item_id):
+		var item_list = GameManager.game_state.items[item_id]
+		item_list.erase(item)
+		if item_list.is_empty():
+			GameManager.game_state.items.erase(item_id)
+			
+	var real_data = item.get_real_data()
+	if real_data and "perishable" in real_data and real_data.perishable is RPGPerishable:
+		var obj: RPGPerishable = real_data.perishable
+		if obj.action == 1 and obj.conversion_item_id > 0:
+			add_item_amount(real_data.perishable.conversion_item_id, 1)
+#endregion
+
+
+
+#region CoreInventoryLogic
 func _handle_overflow(type: int, id: int, amount: int, level: int, auto_popup_enabled: bool, popup_prefix: String) -> void:
 	if interacting_bag != null:
 		interacting_bag.add_item(type, id, amount, level, auto_popup_enabled, popup_prefix)
@@ -44,40 +93,6 @@ func _handle_overflow(type: int, id: int, amount: int, level: int, auto_popup_en
 		active_overflow_bags.append(new_bag)
 
 
-func sync_perishable_items() -> void:
-	active_perishable_items.clear()
-	if not GameManager.game_state:
-		return
-	for item_list in GameManager.game_state.items.values():
-		for item in item_list:
-			if item.get("is_perishable") and item.lifetime > 0:
-				active_perishable_items.append(item)
-
-
-func _process(delta: float) -> void:
-	if active_perishable_items.is_empty():
-		return
-	for i in range(active_perishable_items.size() - 1, -1, -1):
-		var item = active_perishable_items[i]
-		item.update_lifetime(delta)
-		if item.lifetime <= 0:
-			active_perishable_items.remove_at(i)
-			_handle_rotted_item(item)
-
-
-func _handle_rotted_item(item: GameItem) -> void:
-	var item_id = item.id
-	if GameManager.game_state.items.has(item_id):
-		var item_list = GameManager.game_state.items[item_id]
-		item_list.erase(item)
-		if item_list.is_empty():
-			GameManager.game_state.items.erase(item_id)
-	var real_data = item.get_real_data()
-	if real_data and "perishable" in real_data and real_data.perishable is RPGPerishable:
-		var obj: RPGPerishable = real_data.perishable
-		if obj.action == 1 and obj.conversion_item_id > 0:
-			add_item_amount(real_data.perishable.conversion_item_id, 1)
-
 
 ## Helper function to count total used slots across all inventories
 func _get_total_used_slots() -> int:
@@ -96,10 +111,12 @@ func _get_total_used_slots() -> int:
 	return total
 
 
+
 func _calculate_slots_needed(amount: int, max_per_stack: int) -> int:
 	if max_per_stack <= 0:
 		return 1
 	return int(ceil(float(amount) / float(max_per_stack)))
+
 
 
 func _split_into_stacks(amount: int, max_per_stack: int) -> Array:
@@ -116,13 +133,18 @@ func _split_into_stacks(amount: int, max_per_stack: int) -> Array:
 	return stacks
 
 
-func _add_generic_amount(collection: Dictionary, data: Array, id: int, amount: int, level: int, item_type: int) -> int:
+
+func _add_generic_amount(collection: Dictionary, db_key: String, id: int, amount: int, level: int, item_type: int) -> int:
 	amount = abs(amount)
 	
-	if id <= 0 or data.size() <= id or amount <= 0:
+	if id <= 0 or amount <= 0:
 		return 0
 		
-	var real_item = data[id]
+	var real_item = RPGSYSTEM.get_data(db_key, id)
+	
+	if not real_item:
+		return 0
+		
 	var max_inventory = RPGSYSTEM.database.system.max_items_in_inventory
 	var max_per_stack = RPGSYSTEM.database.system.max_items_per_stack
 	var current_total_quantity = 0
@@ -229,7 +251,7 @@ func _add_generic_amount(collection: Dictionary, data: Array, id: int, amount: i
 				var game_item = IngameCostume.new()
 				game_item.id = id
 				game_item.quantity = stack_amount
-				game_item.type = 0 # 0 para IngameCostume según tu clase
+				game_item.type = 0 
 				game_item.newly_added = true
 				if "last_added_date" in game_item:
 					game_item.last_added_date = current_time
@@ -273,8 +295,10 @@ func _add_generic_amount(collection: Dictionary, data: Array, id: int, amount: i
 	return added_amount
 
 
+
 func _remove_generic_amount(collection: Dictionary, id: int, amount: int, include_equipment: bool = false, use_perishable_logic: bool = false) -> void:
 	amount = abs(amount)
+	
 	if not collection.has(id):
 		return
 	
@@ -375,6 +399,7 @@ func _remove_generic_amount(collection: Dictionary, id: int, amount: int, includ
 	sync_perishable_items()
 
 
+
 func clean_inventory_pending_stacks() -> void:
 	for bag in active_overflow_bags:
 		if is_instance_valid(bag):
@@ -382,8 +407,11 @@ func clean_inventory_pending_stacks() -> void:
 			
 	active_overflow_bags.clear()
 	interacting_bag = null
+#endregion
 
 
+
+#region SortingAndQueries
 ## Sort modes: 0 = Smart/Default, 1 = A-Z, 2 = Z-A, 3 = Usable first + A-Z, 4 = Rarity + A-Z, 5 = Quantity + A-Z
 ## collection: 0 = items + weapons + armors + sets, 1 = items, 2 = weapons, 3 = armors, 4 = sets, 5 = key items
 func get_items(include_hidden_items: bool = false, sort_mode: int = 0, collection: int = 0) -> Array:
@@ -405,10 +433,12 @@ func get_items(include_hidden_items: bool = false, sort_mode: int = 0, collectio
 				raw_items.append_array(_extract_items_from_dict(state.sets))
 			_:
 				raw_items.append_array(_extract_items_from_dict(state.items))
+				
 		for item in raw_items:
 			var real_data = item.get_real_data()
 			if not real_data or (real_data is RPGItem and real_data.item_category > 1 and not include_hidden_items) or (real_data is RPGItem and real_data.item_category != 1 and collection == 5):
 				continue
+				
 			var item_type: int = 0
 			if item is GameWeapon:
 				item_type = 1
@@ -418,22 +448,36 @@ func get_items(include_hidden_items: bool = false, sort_mode: int = 0, collectio
 				item_type = 3
 			elif real_data is RPGItem and real_data.item_category == 1:
 				item_type = 4
+				
 			var level = -1 if not "current_level" in item else item.current_level
 			var equipped = " E" if "equipped" in item and item.equipped else ""
 			var is_disabled = not _is_item_usable_in_menu(real_data) or (not equipped.is_empty() and not item is GameItem)
 			var is_perish = false
 			var life = 0.0
 			var max_life = 0.0
+			
 			if real_data is RPGItem and real_data.perishable.is_perishable:
 				is_perish = true
 				life = item.lifetime
 				max_life = real_data.perishable.duration
+				
 			var item_qty = 1 if is_perish else item.quantity
+			
+			var icon: RPGIcon
+			if real_data is RPGCostume:
+				var path = real_data.lpc_part
+				var preview_path = path.get_basename().trim_suffix("_data") + "_preview.png"
+				icon = RPGIcon.new(preview_path)
+			elif "icon" in real_data:
+				icon = real_data.icon
+			else:
+				icon = RPGIcon.new()
+
 			var dict_item = {
 				"item": item,
 				"real_item": real_data,
 				"name": real_data.name + (" ⬥" + str(level) if level != -1 else "") + equipped,
-				"icon": real_data.icon,
+				"icon": icon,
 				"item_color": _get_item_color_for_item(real_data),
 				"quantity": item_qty,
 				"item_type": item_type,
@@ -447,6 +491,7 @@ func get_items(include_hidden_items: bool = false, sort_mode: int = 0, collectio
 				"mp_cost": real_data.mp_cost if "mp_cost" in real_data else 0,
 				"description": real_data.description
 			}
+			
 			if real_data is RPGItem:
 				var scope: RPGScope = real_data.scope
 				var target_id = SCOPE.ONE if scope.number == 0 \
@@ -457,6 +502,7 @@ func get_items(include_hidden_items: bool = false, sort_mode: int = 0, collectio
 				dict_item["targets_amount"] = targets_amount
 				
 			items.append(dict_item)
+			
 	var sort_func: Callable
 	match sort_mode:
 		1:
@@ -469,8 +515,8 @@ func get_items(include_hidden_items: bool = false, sort_mode: int = 0, collectio
 				return a.name.nocasecmp_to(b.name) < 0
 		4:
 			sort_func = func(a, b):
-				var rar_a = a.real_item.rarity_type if a.real_item else 0
-				var rar_b = b.real_item.rarity_type if b.real_item else 0
+				var rar_a = a.real_item.rarity_type if a.real_item and "rarity_type" in a.real_item else 0
+				var rar_b = b.real_item.rarity_type if b.real_item and "rarity_type" in b.real_item else 0
 				if rar_a != rar_b: return rar_a > rar_b
 				return a.name.nocasecmp_to(b.name) < 0
 		5:
@@ -479,11 +525,9 @@ func get_items(include_hidden_items: bool = false, sort_mode: int = 0, collectio
 				return a.name.nocasecmp_to(b.name) < 0
 		0, _:
 			sort_func = func(a, b):
-				# 1. Top Priority: New Items
 				if a.is_new != b.is_new: return a.is_new
 				if a.is_new and b.is_new and a.date_added != b.date_added: return a.date_added > b.date_added
 				
-				# 2. Secondary Priority: The Last Item Selected
 				if has_new_items_pending_view:
 					var last_item = GameManager.game_state.last_item_used
 					if not last_item.is_empty():
@@ -491,13 +535,13 @@ func get_items(include_hidden_items: bool = false, sort_mode: int = 0, collectio
 						var b_is_last = (b.item_id == last_item.get("id", -1) and b.item_type == last_item.get("type", -1))
 						if a_is_last != b_is_last: return a_is_last
 				
-				# 3. Tertiary Priority: Usability First
 				if a.is_disabled != b.is_disabled: return not a.is_disabled
 				
-				# 4.  Sort Order: Alphabetical
 				return a.name.nocasecmp_to(b.name) < 0
+				
 	items.sort_custom(sort_func)
 	return items
+
 
 
 func _get_item_color_for_item(item: Variant) -> Color:
@@ -511,7 +555,7 @@ func _get_item_color_for_item(item: Variant) -> Color:
 		color = RPGSYSTEM.database.types.get_item_color("armor", item.rarity_type)
 	
 	return color
-	
+
 
 
 ## Determines if an item can be used directly from the menu screen.
@@ -530,6 +574,7 @@ func _is_item_usable_in_menu(item_data: Variant) -> bool:
 	return false
 
 
+
 ## Helper to extract valid items (quantity > 0) from a state dictionary.
 func _extract_items_from_dict(source_dict: Dictionary) -> Array:
 	var result: Array = []
@@ -538,25 +583,35 @@ func _extract_items_from_dict(source_dict: Dictionary) -> Array:
 			if item.quantity > 0:
 				result.append(item)
 	return result
+#endregion
 
 
+
+#region PublicAddersAndRemovers
 func get_item_amount(id: int) -> int:
+	var uid = RPGSYSTEM.id_to_uid("items", id)
+	if uid == -1: return 0
+		
 	var quantity: int = 0
-	if GameManager.game_state.items.has(id):
-		for item: GameItem in GameManager.game_state.items[id]:
+	if GameManager.game_state.items.has(uid):
+		for item: GameItem in GameManager.game_state.items[uid]:
 			quantity += item.quantity
 	
 	return quantity
+
 
 
 func add_item_amount(id: int, amount: int, auto_popup_enabled: bool = false, popup_prefix: String = "") -> int:
-	var added = _add_generic_amount(GameManager.game_state.items, RPGSYSTEM.database.items, id, amount, 0, 0)
+	var uid = RPGSYSTEM.id_to_uid("items", id)
+	if uid == -1: return 0
+		
+	var added = _add_generic_amount(GameManager.game_state.items, "items", uid, amount, 0, 0)
 	
 	if added > 0:
 		if auto_popup_enabled or RPGSYSTEM.database.system.options.get("auto_popup_on_pick_up_items", false):
-			GameManager.call_deferred("_create_popup_message", 0, id, added, popup_prefix)
+			GameManager.call_deferred("_create_popup_message", 0, uid, added, popup_prefix)
 		
-		var item_id = "0" + "_" + str(id)
+		var item_id = "0" + "_" + str(uid)
 		if not item_id in GameManager.game_state.stats.items_found:
 			GameManager.game_state.stats.items_found[item_id] = 0
 		GameManager.game_state.stats.items_found[item_id] += added
@@ -564,37 +619,49 @@ func add_item_amount(id: int, amount: int, auto_popup_enabled: bool = false, pop
 		has_new_items_pending_view = true
 	
 	if added != amount:
-		_handle_overflow(0, id, amount - added, 0, auto_popup_enabled, popup_prefix)
+		_handle_overflow(0, uid, amount - added, 0, auto_popup_enabled, popup_prefix)
 		
 	if is_instance_valid(QuestManager):
 		QuestManager.notify_inventory_changed()
 	
 	return added
+
 
 
 func remove_item_amount(id: int, amount: int) -> void:
-	_remove_generic_amount(GameManager.game_state.items, id, amount, false, true)
+	var uid = RPGSYSTEM.id_to_uid("items", id)
+	if uid == -1: return
+		
+	_remove_generic_amount(GameManager.game_state.items, uid, amount, false, true)
+	
 	if is_instance_valid(QuestManager):
 		QuestManager.notify_inventory_changed()
+
 
 
 func get_weapon_amount(id: int) -> int:
+	var uid = RPGSYSTEM.id_to_uid("weapons", id)
+	if uid == -1: return 0
+		
 	var quantity: int = 0
-	if GameManager.game_state.weapons.has(id):
-		for item: GameWeapon in GameManager.game_state.weapons[id]:
+	if GameManager.game_state.weapons.has(uid):
+		for item: GameWeapon in GameManager.game_state.weapons[uid]:
 			quantity += item.quantity
 	
 	return quantity
+
 
 
 func add_weapon_amount(id: int, amount: int, level: int = 1, auto_popup_enabled: bool = false, popup_prefix: String = "", _item_level: int = -1) -> int:
-	var added = _add_generic_amount(GameManager.game_state.weapons, RPGSYSTEM.database.weapons, id, amount, level, 1)
-	
+	var uid = RPGSYSTEM.id_to_uid("weapons", id)
+	if uid == -1: return 0
+		
+	var added = _add_generic_amount(GameManager.game_state.weapons, "weapons", uid, amount, level, 1)
 	if added > 0:
 		if auto_popup_enabled or RPGSYSTEM.database.system.options.get("auto_popup_on_pick_up_items", false):
-			GameManager.call_deferred("_create_popup_message", 1, id, added, popup_prefix, level)
+			GameManager.call_deferred("_create_popup_message", 1, uid, added, popup_prefix, level)
 		
-		var item_id = "1" + "_" + str(id)
+		var item_id = "1" + "_" + str(uid)
 		if not item_id in GameManager.game_state.stats.items_found:
 			GameManager.game_state.stats.items_found[item_id] = 0
 		GameManager.game_state.stats.items_found[item_id] += added
@@ -602,37 +669,50 @@ func add_weapon_amount(id: int, amount: int, level: int = 1, auto_popup_enabled:
 		has_new_items_pending_view = true
 	
 	if added != amount:
-		_handle_overflow(1, id, amount - added, level, auto_popup_enabled, popup_prefix)
+		_handle_overflow(1, uid, amount - added, level, auto_popup_enabled, popup_prefix)
 		
 	if is_instance_valid(QuestManager):
 		QuestManager.notify_inventory_changed()
 	
 	return added
+
 
 
 func remove_weapon_amount(id: int, amount: int, include_equipment: bool) -> void:
-	_remove_generic_amount(GameManager.game_state.weapons, id, amount, include_equipment, false)
+	var uid = RPGSYSTEM.id_to_uid("weapons", id)
+	if uid == -1: return
+		
+	_remove_generic_amount(GameManager.game_state.weapons, uid, amount, include_equipment, false)
+	
 	if is_instance_valid(QuestManager):
 		QuestManager.notify_inventory_changed()
+
 
 
 func get_armor_amount(id: int) -> int:
+	var uid = RPGSYSTEM.id_to_uid("armors", id)
+	if uid == -1: return 0
+		
 	var quantity: int = 0
-	if GameManager.game_state.armors.has(id):
-		for item: GameArmor in GameManager.game_state.armors[id]:
+	if GameManager.game_state.armors.has(uid):
+		for item: GameArmor in GameManager.game_state.armors[uid]:
 			quantity += item.quantity
 	
 	return quantity
+
 
 
 func add_armor_amount(id: int, amount: int, level: int = 1, auto_popup_enabled: bool = false, popup_prefix: String = "") -> int:
-	var added = _add_generic_amount(GameManager.game_state.armors, RPGSYSTEM.database.armors, id, amount, level, 2)
+	var uid = RPGSYSTEM.id_to_uid("armors", id)
+	if uid == -1: return 0
+		
+	var added = _add_generic_amount(GameManager.game_state.armors, "armors", uid, amount, level, 2)
 	
 	if added > 0:
 		if auto_popup_enabled or RPGSYSTEM.database.system.options.get("auto_popup_on_pick_up_items", false):
-			GameManager.call_deferred("_create_popup_message", 2, id, added, popup_prefix, level)
+			GameManager.call_deferred("_create_popup_message", 2, uid, added, popup_prefix, level)
 		
-		var item_id = "2" + "_" + str(id)
+		var item_id = "2" + "_" + str(uid)
 		if not item_id in GameManager.game_state.stats.items_found:
 			GameManager.game_state.stats.items_found[item_id] = 0
 		GameManager.game_state.stats.items_found[item_id] += added
@@ -640,7 +720,7 @@ func add_armor_amount(id: int, amount: int, level: int = 1, auto_popup_enabled: 
 		has_new_items_pending_view = true
 	
 	if added != amount:
-		_handle_overflow(2, id, amount - added, level, auto_popup_enabled, popup_prefix)
+		_handle_overflow(2, uid, amount - added, level, auto_popup_enabled, popup_prefix)
 		
 	if is_instance_valid(QuestManager):
 		QuestManager.notify_inventory_changed()
@@ -648,29 +728,42 @@ func add_armor_amount(id: int, amount: int, level: int = 1, auto_popup_enabled: 
 	return added
 
 
+
 func remove_armor_amount(id: int, amount: int, include_equipment: bool) -> void:
-	_remove_generic_amount(GameManager.game_state.armors, id, amount, include_equipment, false)
+	var uid = RPGSYSTEM.id_to_uid("armors", id)
+	if uid == -1: return
+		
+	_remove_generic_amount(GameManager.game_state.armors, uid, amount, include_equipment, false)
+	
 	if is_instance_valid(QuestManager):
 		QuestManager.notify_inventory_changed()
 
 
+
 func get_costume_amount(id: int) -> int:
+	var uid = RPGSYSTEM.id_to_uid("costumes", id)
+	if uid == -1: return 0
+		
 	var quantity: int = 0
-	if GameManager.game_state.sets.has(id):
-		for item in GameManager.game_state.sets[id]:
+	if GameManager.game_state.sets.has(uid):
+		for item in GameManager.game_state.sets[uid]:
 			quantity += item.quantity
 			
 	return quantity
 
 
+
 func add_costume_amount(id: int, amount: int, auto_popup_enabled: bool = false, popup_prefix: String = "") -> int:
-	var added = _add_generic_amount(GameManager.game_state.sets, RPGSYSTEM.database.costumes, id, amount, 1, 3)
+	var uid = RPGSYSTEM.id_to_uid("costumes", id)
+	if uid == -1: return 0
+		
+	var added = _add_generic_amount(GameManager.game_state.sets, "costumes", uid, amount, 1, 3)
 	
 	if added > 0:
 		if auto_popup_enabled or RPGSYSTEM.database.system.options.get("auto_popup_on_pick_up_items", false):
-			GameManager.call_deferred("_create_popup_message", 3, id, added, popup_prefix)
+			GameManager.call_deferred("_create_popup_message", 3, uid, added, popup_prefix)
 			
-		var item_id = "3" + "_" + str(id)
+		var item_id = "3" + "_" + str(uid)
 		if not item_id in GameManager.game_state.stats.items_found:
 			GameManager.game_state.stats.items_found[item_id] = 0
 		GameManager.game_state.stats.items_found[item_id] += added
@@ -678,7 +771,7 @@ func add_costume_amount(id: int, amount: int, auto_popup_enabled: bool = false, 
 		has_new_items_pending_view = true
 		
 	if added != amount:
-		_handle_overflow(3, id, amount - added, 1, auto_popup_enabled, popup_prefix)
+		_handle_overflow(3, uid, amount - added, 1, auto_popup_enabled, popup_prefix)
 		
 	if is_instance_valid(QuestManager):
 		QuestManager.notify_inventory_changed()
@@ -686,7 +779,13 @@ func add_costume_amount(id: int, amount: int, auto_popup_enabled: bool = false, 
 	return added
 
 
+
 func remove_costume_amount(id: int, amount: int, include_equipment: bool) -> void:
-	_remove_generic_amount(GameManager.game_state.sets, id, amount, include_equipment, false)
+	var uid = RPGSYSTEM.id_to_uid("costumes", id)
+	if uid == -1: return
+		
+	_remove_generic_amount(GameManager.game_state.sets, uid, amount, include_equipment, false)
+	
 	if is_instance_valid(QuestManager):
 		QuestManager.notify_inventory_changed()
+#endregion

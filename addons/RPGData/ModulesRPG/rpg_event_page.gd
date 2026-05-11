@@ -109,6 +109,8 @@ func _init(_id: int = 0) -> void:
 		movement_route = RPGMovementRoute.new()
 	if !options:
 		options = RPGEventPageOptions.new()
+	
+	_uniq_id = RPGSYSTEM.generate_16_digit_id()
 
 
 func clone(value: bool = true) -> RPGEventPage:

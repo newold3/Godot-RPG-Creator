@@ -12,6 +12,130 @@
 [ext_resource type="PackedScene" uid="uid://dhayhpqxdxhub" path="res://Scenes/GUI/SteamPunkTheme/Equip/current_selected_equipment_container.tscn" id="9_x4so8"]
 [ext_resource type="PackedScene" uid="uid://cm3723njwglc8" path="res://Scenes/GUI/SteamPunkTheme/Equip/items_menu.tscn" id="15_ueivf"]
 
+[sub_resource type="GDScript" id="GDScript_0kaj4"]
+script/source = "extends Node
+
+enum MenuZone { ACTORS, COSTUME, EQUIPMENT }
+
+@export var main_node: Node
+@export var actors_menu: Node
+
+var current_zone: MenuZone = MenuZone.ACTORS
+
+var busy: bool = false
+
+
+func _process(delta: float) -> void:
+	if current_zone != MenuZone.COSTUME: return
+	
+	if ControllerManager.is_cancel_just_pressed([KEY_0, KEY_KP_0]):
+		destroy()
+		return
+	
+	if actors_menu:
+		if ControllerManager.is_action_pressed(\"Button L1\"):
+			_change_actor(-1)
+			
+		elif ControllerManager.is_action_pressed(\"Button R1\"):
+			_change_actor(1)
+		
+	var direction = ControllerManager.get_pressed_direction()
+	if direction == \"right\":
+		%EquipmentContainer.select_last_slot()
+		current_zone = MenuZone.EQUIPMENT
+	elif direction == \"left\":
+		%ButtonsVerticalMenu.select_last_button()
+		current_zone = MenuZone.ACTORS
+	if direction == \"right\" or direction == \"left\":
+		busy = true
+		set_deferred(\"busy\", false)
+
+
+func _change_actor(direction: int) -> void:
+	actors_menu.set_process(false)
+	actors_menu.set_process.call_deferred(true)
+	actors_menu.navigate_button(direction)
+	actors_menu.change_hero_by_hotkey.emit()
+	_select_costume.call_deferred()
+
+
+func _select_costume() -> void:
+	await get_tree().process_frame
+	%CostumeButton.grab_focus()
+	current_zone = MenuZone.COSTUME
+
+
+func _on_buttons_vertical_menu_change_focus_requested() -> void:
+	if current_zone != MenuZone.ACTORS or busy: return
+	var direction = ControllerManager.get_pressed_direction()
+	if direction == \"right\":
+		%CostumeButton.grab_focus()
+		current_zone = MenuZone.COSTUME
+	elif direction == \"left\":
+		%EquipmentContainer.select_last_slot()
+		current_zone = MenuZone.EQUIPMENT
+
+	busy = true
+	set_deferred(\"busy\", false)
+
+
+func _on_equipment_container_change_focus_requested() -> void:
+	if current_zone != MenuZone.EQUIPMENT or busy: return
+	var direction = ControllerManager.get_pressed_direction()
+	if direction == \"left\":
+		%CostumeButton.grab_focus()
+		current_zone = MenuZone.COSTUME
+	elif direction == \"right\":
+		%ButtonsVerticalMenu.select_last_button()
+		current_zone = MenuZone.ACTORS
+	
+	busy = true
+	set_deferred(\"busy\", false)
+
+
+func _on_buttons_vertical_menu_change_hero_by_hotkey() -> void:
+	%EquipmentContainer.select_last_slot()
+
+
+func _on_buttons_vertical_menu_button_selected(index: int) -> void:
+	current_zone = MenuZone.ACTORS
+
+
+func _on_equipment_container_slot_selected(slot_id: int) -> void:
+	current_zone = MenuZone.EQUIPMENT
+
+
+func _on_costume_button_focus_entered() -> void:
+	var manipulator = str(GameManager.MANIPULATOR_MODES.EQUIP_MENU_SUB_MENU_2)
+	GameManager.set_cursor_manipulator(manipulator)
+	GameManager.set_confin_area(Rect2(), manipulator)
+	GameManager.set_hand_position(MainHandCursor.HandPosition.LEFT, manipulator)
+	GameManager.set_cursor_offset(Vector2(8, 0), manipulator)
+	GameManager.force_show_cursor()
+
+
+func _on_costume_button_pressed() -> void:
+	if current_zone != MenuZone.COSTUME: return
+	# TODO
+
+
+func _on_buttons_vertical_menu_ok_pressed(index: int) -> void:
+	GameManager.play_fx(\"ok\")
+	%EquipmentContainer.select_last_slot()
+	current_zone = MenuZone.EQUIPMENT
+
+
+func destroy() -> void:
+	if current_zone == MenuZone.EQUIPMENT or current_zone == MenuZone.COSTUME:
+		GameManager.play_fx(\"back\")
+		%ButtonsVerticalMenu.select_last_button.call_deferred()
+		current_zone = MenuZone.ACTORS
+	elif main_node and main_node.has_method(\"destroy\"):
+		main_node.destroy()
+	busy = true
+	set_deferred(\"busy\", false)
+"
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_6cilu"]
 atlas = ExtResource("2_jbong")
 region = Rect2(1129, 304, 97, 98)
@@ -45,6 +169,12 @@ theme_override_constants/margin_top = 45
 theme_override_constants/margin_bottom = 40
 script = ExtResource("1_jbong")
 menu_items_end_position = Vector2(420, 0)
+
+[node name="Manager" type="Node" parent="." unique_id=294024291 node_paths=PackedStringArray("main_node", "actors_menu")]
+unique_name_in_owner = true
+script = SubResource("GDScript_0kaj4")
+main_node = NodePath("..")
+actors_menu = NodePath("../HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu")
 
 [node name="HelpTop" type="MarginContainer" parent="." unique_id=571185067]
 z_index = 100
@@ -167,7 +297,8 @@ layout_mode = 2
 mouse_filter = 2
 alignment = 2
 
-[node name="CostumeButton" type="MarginContainer" parent="HBoxContainer/ActorPanel" unique_id=521975477]
+[node name="CostumeButtonContainer" type="MarginContainer" parent="HBoxContainer/ActorPanel" unique_id=521975477]
+unique_name_in_owner = true
 z_index = 100
 layout_mode = 1
 anchors_preset = 3
@@ -182,27 +313,30 @@ grow_vertical = 0
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_bottom = -39
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ActorPanel/CostumeButton" unique_id=681968850]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ActorPanel/CostumeButtonContainer" unique_id=681968850]
 layout_mode = 2
 theme_override_constants/separation = 1
 
-[node name="Label" type="Label" parent="HBoxContainer/ActorPanel/CostumeButton/VBoxContainer" unique_id=1057566546]
+[node name="Label" type="Label" parent="HBoxContainer/ActorPanel/CostumeButtonContainer/VBoxContainer" unique_id=1057566546]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.94509804, 0.64705884, 0.30588236, 1)
 text = "Costume"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MainButton" type="TextureButton" parent="HBoxContainer/ActorPanel/CostumeButton/VBoxContainer" unique_id=1292414437]
+[node name="CostumeButton" type="TextureButton" parent="HBoxContainer/ActorPanel/CostumeButtonContainer/VBoxContainer" unique_id=1292414437]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
+focus_mode = 1
+mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_x4so8")
 texture_hover = SubResource("AtlasTexture_0kaj4")
 texture_disabled = SubResource("AtlasTexture_xhc3l")
 texture_focused = SubResource("AtlasTexture_x4so8")
 stretch_mode = 0
 
-[node name="ClipTexture" type="TextureRect" parent="HBoxContainer/ActorPanel/CostumeButton/VBoxContainer/MainButton" unique_id=1871861694]
+[node name="ClipTexture" type="TextureRect" parent="HBoxContainer/ActorPanel/CostumeButtonContainer/VBoxContainer/CostumeButton" unique_id=1871861694]
 show_behind_parent = true
 clip_children = 1
 layout_mode = 1
@@ -217,7 +351,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("AtlasTexture_jbong")
 
-[node name="Icon" type="TextureRect" parent="HBoxContainer/ActorPanel/CostumeButton/VBoxContainer/MainButton/ClipTexture" unique_id=1022207665]
+[node name="Icon" type="TextureRect" parent="HBoxContainer/ActorPanel/CostumeButtonContainer/VBoxContainer/CostumeButton/ClipTexture" unique_id=1022207665]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -248,13 +382,13 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 0)
 layout_mode = 2
 
-[node name="Gear1" parent="HBoxContainer/MainStatsContainer/Stats/StatsContainer/Gear" index="0"]
+[node name="Gear1" parent="HBoxContainer/MainStatsContainer/Stats/StatsContainer/Gear" parent_id_path=PackedInt32Array(125808626, 280123703) index="0" unique_id=959750090]
 offset_left = 15.999998
 offset_top = 11.999998
 offset_right = 15.999998
 offset_bottom = 11.999998
 
-[node name="Part" parent="HBoxContainer/MainStatsContainer/Stats/StatsContainer/Gear/Gear1" index="0"]
+[node name="Part" parent="HBoxContainer/MainStatsContainer/Stats/StatsContainer/Gear/Gear1" index="0" unique_id=215621296]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -267,13 +401,13 @@ offset_bottom = 229.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Gear2" parent="HBoxContainer/MainStatsContainer/Stats/StatsContainer/Gear" index="1"]
+[node name="Gear2" parent="HBoxContainer/MainStatsContainer/Stats/StatsContainer/Gear" parent_id_path=PackedInt32Array(125808626, 280123703) index="1" unique_id=1209752613]
 offset_left = -17.0
 offset_top = 11.999998
 offset_right = -17.0
 offset_bottom = 11.999998
 
-[node name="Part" parent="HBoxContainer/MainStatsContainer/Stats/StatsContainer/Gear/Gear2" index="0"]
+[node name="Part" parent="HBoxContainer/MainStatsContainer/Stats/StatsContainer/Gear/Gear2" index="0" unique_id=722889579]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -286,15 +420,15 @@ offset_bottom = 229.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="BottomContainer" parent="HBoxContainer/MainStatsContainer/Stats/StatsContainer/MarginContainer/VBoxContainer/MarginContainer" index="0"]
+[node name="BottomContainer" parent="HBoxContainer/MainStatsContainer/Stats/StatsContainer/MarginContainer/VBoxContainer/MarginContainer" parent_id_path=PackedInt32Array(125808626, 521561027) index="0" unique_id=835639728]
 custom_vscroll_size = Vector2(12, 346)
 custom_vscroll_offset = Vector2(347, -2)
 custom_scene_for_vertical_bar = ExtResource("8_0kaj4")
 
-[node name="StatsContainer" parent="HBoxContainer/MainStatsContainer/Stats/StatsContainer/MarginContainer/VBoxContainer/MarginContainer/BottomContainer" index="0"]
+[node name="StatsContainer" parent="HBoxContainer/MainStatsContainer/Stats/StatsContainer/MarginContainer/VBoxContainer/MarginContainer/BottomContainer" index="0" unique_id=1948749115]
 custom_minimum_size = Vector2(0, 0)
 
-[node name="BackgroundTop" parent="HBoxContainer/MainStatsContainer/Stats/StatsContainer" index="3"]
+[node name="BackgroundTop" parent="HBoxContainer/MainStatsContainer/Stats/StatsContainer" index="3" unique_id=733133411]
 metadata/_edit_lock_ = true
 
 [node name="EquipmentContainer" type="Control" parent="HBoxContainer" unique_id=1546642492]
@@ -342,15 +476,20 @@ offset_right = 934.0
 offset_bottom = 555.0
 mouse_filter = 0
 
-[connection signal="back_pressed" from="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu" to="." method="destroy"]
+[connection signal="back_pressed" from="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu" to="Manager" method="destroy"]
 [connection signal="button_clicked" from="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu" to="." method="_change_actor"]
 [connection signal="button_selected" from="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu" to="." method="_on_actors_menu_button_selected"]
-[connection signal="change_focus_requested" from="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu" to="HBoxContainer/EquipmentContainer/Equipment/VBoxContainer/EquipmentContainer" method="select_last_slot" flags=3]
-[connection signal="change_hero_by_hotkey" from="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu" to="HBoxContainer/EquipmentContainer/Equipment/VBoxContainer/EquipmentContainer" method="select_last_slot"]
-[connection signal="back_pressed" from="HBoxContainer/EquipmentContainer/Equipment/VBoxContainer/EquipmentContainer" to="." method="destroy"]
-[connection signal="change_focus_requested" from="HBoxContainer/EquipmentContainer/Equipment/VBoxContainer/EquipmentContainer" to="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu" method="select_last_button" flags=3]
+[connection signal="button_selected" from="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu" to="Manager" method="_on_buttons_vertical_menu_button_selected"]
+[connection signal="change_focus_requested" from="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu" to="Manager" method="_on_buttons_vertical_menu_change_focus_requested"]
+[connection signal="change_hero_by_hotkey" from="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu" to="Manager" method="_on_buttons_vertical_menu_change_hero_by_hotkey"]
+[connection signal="ok_pressed" from="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu" to="Manager" method="_on_buttons_vertical_menu_ok_pressed"]
+[connection signal="focus_entered" from="HBoxContainer/ActorPanel/CostumeButtonContainer/VBoxContainer/CostumeButton" to="Manager" method="_on_costume_button_focus_entered"]
+[connection signal="pressed" from="HBoxContainer/ActorPanel/CostumeButtonContainer/VBoxContainer/CostumeButton" to="Manager" method="_on_costume_button_pressed"]
+[connection signal="back_pressed" from="HBoxContainer/EquipmentContainer/Equipment/VBoxContainer/EquipmentContainer" to="Manager" method="destroy"]
+[connection signal="change_focus_requested" from="HBoxContainer/EquipmentContainer/Equipment/VBoxContainer/EquipmentContainer" to="Manager" method="_on_equipment_container_change_focus_requested"]
 [connection signal="slot_clicked" from="HBoxContainer/EquipmentContainer/Equipment/VBoxContainer/EquipmentContainer" to="." method="_on_equipment_container_slot_clicked"]
 [connection signal="slot_selected" from="HBoxContainer/EquipmentContainer/Equipment/VBoxContainer/EquipmentContainer" to="." method="_on_equipment_slot_selected"]
+[connection signal="slot_selected" from="HBoxContainer/EquipmentContainer/Equipment/VBoxContainer/EquipmentContainer" to="Manager" method="_on_equipment_container_slot_selected"]
 [connection signal="back_pressed" from="SecondaryMenu/MenuItems" to="." method="_hide_menu"]
 [connection signal="cancel" from="SecondaryMenu/MenuItems" to="." method="_on_menu_items_cancel"]
 [connection signal="item_clicked" from="SecondaryMenu/MenuItems" to="." method="_on_menu_items_item_clicked"]

@@ -481,6 +481,34 @@ texture = SubResource("GradientTexture2D_mtkxg")
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_mtkxg")
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d4jf7"]
+resource_local_to_scene = true
+content_margin_left = 3.0
+content_margin_right = 3.0
+bg_color = Color(1, 1, 1, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8vu27"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0oba7"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rfhe6"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
 [node name="TypesPanel" type="HBoxContainer" unique_id=1327369552]
 anchors_preset = 15
 anchor_right = 1.0
@@ -517,13 +545,16 @@ layout_mode = 2
 [node name="ConfigDataTabs" parent="MainColumn/MarginContainer/VBoxContainer/HBoxContainer" unique_id=743618606 instance=ExtResource("2_0tfot")]
 unique_name_in_owner = true
 clip_children = 0
-custom_minimum_size = Vector2(149, 32)
+custom_minimum_size = Vector2(120, 64)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
-default_tabs = Array[String](["Equipment", "Items", "Weapons", "Armors", "Tools", "Skills", "Elements", "Rarities", "User Parameters", "User Statistics", "Main Parameters"])
+default_tabs = Array[String](["Equipment", "Items", "Weapons", "Armors", "Tools", "Skills", "Elements", "Rarities", "User Parameters", "User Statistics", "Main Parameters", "Genders"])
 drag_threshold = 10.0
 current_tab_unselected_text_outline_color = Color(0, 0, 0, 1)
+alignment = 3
+smart_row_balance = true
+max_rows = 2
 tab_name_base = ""
 background_color = Color(0, 0, 0, 0)
 tab_selected = null
@@ -1861,6 +1892,97 @@ Image used in some menus to display this type
 
 Mouse wheel click to erase the current image."
 
+[node name="Tab12" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer" unique_id=2079241408]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="UserStatsContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab12" unique_id=762262478]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_mwo22")
+
+[node name="MarginContainer" type="MarginContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab12/UserStatsContainer" unique_id=1702436683]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab12/UserStatsContainer/MarginContainer" unique_id=844069784]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab12/UserStatsContainer/MarginContainer/VBoxContainer" unique_id=739176703]
+layout_mode = 2
+text = "Genders"
+
+[node name="Info" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab12/UserStatsContainer/MarginContainer/VBoxContainer/Label" unique_id=938965145]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -24.0
+offset_top = -12.0
+offset_bottom = 12.0
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 10
+tooltip_text = "[title]Genders[/title]
+List of genders used in the game. By default, the genders “male,” “female,” and “other” are added as fixed entries, although their names can be changed."
+mouse_default_cursor_shape = 16
+texture_normal = SubResource("AtlasTexture_nfmol")
+texture_hover = SubResource("AtlasTexture_tbecf")
+
+[node name="GenderList" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab12/UserStatsContainer/MarginContainer/VBoxContainer" unique_id=550280658 instance=ExtResource("2_3qr2q")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_d4jf7")
+theme_override_styles/focus = SubResource("StyleBoxFlat_d4jf7")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_8vu27")
+theme_override_styles/selected = SubResource("StyleBoxTexture_0oba7")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_rfhe6")
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab12/UserStatsContainer/MarginContainer/VBoxContainer" unique_id=1362815587]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab12/UserStatsContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=573972479]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+text = "Name: "
+
+[node name="Name50LineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab12/UserStatsContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=916462256 instance=ExtResource("6_xe17m")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]User Parameter Name[/title]
+Enter name for this data"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab12/UserStatsContainer/MarginContainer/VBoxContainer" unique_id=198218061]
+layout_mode = 2
+
+[node name="AddItem50Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab12/UserStatsContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=225668214 instance=ExtResource("4_wnm54")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Add Data[/title]
+Add a new entry to the selected list."
+text = "Add Item"
+text_overrun_behavior = 3
+
+[node name="RemoveItem50Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab12/UserStatsContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1145344087 instance=ExtResource("4_wnm54")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Remove Data[/title]
+Remove entry from the selected list."
+text = "Remove Item"
+text_overrun_behavior = 3
+
 [connection signal="tab_changed" from="MainColumn/MarginContainer/VBoxContainer/HBoxContainer/ConfigDataTabs" to="." method="_on_config_data_tabs_tab_changed"]
 [connection signal="item_activated" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab1/EquipmentTypesContainer/MarginContainer/VboxContainer/EquipmentList" to="." method="_on_equipment_list_item_activated"]
 [connection signal="item_selected" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab1/EquipmentTypesContainer/MarginContainer/VboxContainer/EquipmentList" to="." method="_on_equipment_list_item_selected"]
@@ -1959,3 +2081,8 @@ Mouse wheel click to erase the current image."
 [connection signal="clicked" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3/IconPicker10" to="." method="_on_icon_picker_clicked" binds= [10]]
 [connection signal="paste_requested" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3/IconPicker10" to="." method="_on_icon_paste_requested" binds= [10]]
 [connection signal="remove_requested" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3/IconPicker10" to="." method="_on_icon_picker_remove_requested" binds= [10]]
+[connection signal="item_activated" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab12/UserStatsContainer/MarginContainer/VBoxContainer/GenderList" to="." method="_on_gender_list_item_activated"]
+[connection signal="item_selected" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab12/UserStatsContainer/MarginContainer/VBoxContainer/GenderList" to="." method="_on_gender_list_item_selected"]
+[connection signal="text_changed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab12/UserStatsContainer/MarginContainer/VBoxContainer/HBoxContainer3/Name50LineEdit" to="." method="_on_name_50_line_edit_text_changed"]
+[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab12/UserStatsContainer/MarginContainer/VBoxContainer/HBoxContainer/AddItem50Button" to="." method="_on_add_item_50_button_pressed"]
+[connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab12/UserStatsContainer/MarginContainer/VBoxContainer/HBoxContainer/RemoveItem50Button" to="." method="_on_remove_item_50_button_pressed"]

@@ -93,6 +93,7 @@ func _init(_id: int = 0, _x: int = 0, _y: int = 0) -> void:
 	id = _id
 	x = _x
 	y = _y
+	_uniq_id = RPGSYSTEM.generate_16_digit_id()
 	if pages.size() == 0:
 		add_new_page(0)
 

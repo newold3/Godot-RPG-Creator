@@ -149,6 +149,14 @@ func _get_formatted_text(command: RPGInvocationSequence) -> String:
 			var wait_time = command.parameters.wait_time
 			var s = "s" if wait_time != 1 else ""
 			formatted_text = "Wait <%s> second%s" % [wait_time, s]
+		12: # Global Event
+			var uid = command.parameters.id
+			var global_event = RPGSYSTEM.get_data("common_events", uid)
+			if global_event:
+				formatted_text = "Call Global Event <%s: %s>" % [global_event.id, global_event.name]
+			else:
+				formatted_text = "Call Global Event <⚠ Invalid Data>"
+			
 	
 	return formatted_text
 
@@ -226,6 +234,8 @@ func _on_command_menu_index_pressed(index: int, command: RPGInvocationSequence =
 			_create_command_change_zoom(index, command)
 		11: # Camera Zoom
 			_create_command_wait(index, " seconds", command)
+		12: # Call Global Event
+			_create_global_event(index, command)
 
 
 func _create_command_show_caster_motion(type: int, command: RPGInvocationSequence = null) -> void:
@@ -274,6 +284,32 @@ func _on_wait_selected_value(value: float, type: int, command: RPGInvocationSequ
 		fill_list(selected_index)
 	else:
 		command.parameters.wait_time = value
+		fill_list(%SequenceList.get_selected_items()[0])
+
+
+func _create_global_event(index, command: RPGInvocationSequence = null) -> void:
+	var path = "res://addons/CustomControls/Dialogs/select_any_data_dialog.tscn"
+	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
+	var database = RPGSYSTEM.database
+	dialog.database = database
+	var id_selected = 1 if not command else RPGSYSTEM.uid_to_id("common_events", command.parameters.id)
+	dialog.destroy_on_hide = true
+	var current_data = database.common_events
+	var title = TranslationManager.tr("Global Events")
+	dialog.selected.connect(_on_global_event_selected.bind(command), CONNECT_ONE_SHOT)
+	dialog.setup(current_data, id_selected, title, index)
+
+
+func _on_global_event_selected(id: int, type: int, command: RPGInvocationSequence) -> void:
+	if not command:
+		var parameter = RPGInvocationSequence.new()
+		parameter.type = type
+		parameter.parameters.id = RPGSYSTEM.id_to_uid("common_events", id)
+		var selected_index = %SequenceList.get_selected_items()[0]
+		current_data.insert(selected_index, parameter)
+		fill_list(selected_index)
+	else:
+		command.parameters.id = RPGSYSTEM.id_to_uid("common_events", id)
 		fill_list(%SequenceList.get_selected_items()[0])
 
 

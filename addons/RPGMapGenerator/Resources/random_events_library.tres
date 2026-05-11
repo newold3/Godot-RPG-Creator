@@ -1,0 +1,67 @@
+[gd_resource type="Resource" script_class="MapGeneratorEvents" format=3 uid="uid://baxtj37kchdpg"]
+
+[ext_resource type="Script" uid="uid://c0oyh1g25lcyv" path="res://addons/RPGData/ModulesRPG/rpg_map_generator_event.gd" id="1_ssqax"]
+[ext_resource type="Script" uid="uid://c4n8w1wb1qopr" path="res://addons/RPGData/ModulesRPG/rpg_event_page.gd" id="2_bd026"]
+[ext_resource type="Script" uid="uid://biahpabcgjkgs" path="res://addons/RPGData/ModulesRPG/rpg_event_page_condition.gd" id="3_8qpab"]
+[ext_resource type="Script" uid="uid://oh1bgoqomrdj" path="res://addons/RPGData/ModulesRPG/rpg_event_command.gd" id="4_cq6n4"]
+[ext_resource type="Script" uid="uid://b7ykdbujk8i3l" path="res://addons/RPGData/ModulesRPG/rpg_movement_command.gd" id="5_t38lc"]
+[ext_resource type="Script" uid="uid://by33wnof5fhmw" path="res://addons/RPGData/ModulesRPG/rpg_movement_route.gd" id="6_q4onq"]
+[ext_resource type="Script" uid="uid://b1paousg2byp3" path="res://addons/RPGData/ModulesRPG/rpg_event_page_options.gd" id="7_qx2o7"]
+[ext_resource type="Script" uid="uid://dcx6f8knjwegv" path="res://addons/RPGData/ModulesRPG/rpg_event_quest.gd" id="8_iygfw"]
+[ext_resource type="Script" uid="uid://ccw0uhbc0ne88" path="res://addons/RPGData/ModulesRPG/rpg_relationship_level.gd" id="9_fo4n0"]
+[ext_resource type="Script" uid="uid://dex58yidnaamn" path="res://addons/RPGData/ModulesRPG/rpg_relationship.gd" id="10_7k1lw"]
+[ext_resource type="Script" uid="uid://dvbel4d37a2dd" path="res://addons/RPGData/ModulesRPG/rpg_event.gd" id="11_7px14"]
+[ext_resource type="Script" uid="uid://vk85xlnpsck8" path="res://addons/RPGData/ModulesRPG/rpg_map_generator_events.gd" id="12_yj1qp"]
+
+[sub_resource type="Resource" id="Resource_ssqax"]
+script = ExtResource("3_8qpab")
+pressure_targets = PackedInt64Array(0)
+
+[sub_resource type="Resource" id="Resource_bd026"]
+script = ExtResource("4_cq6n4")
+
+[sub_resource type="Resource" id="Resource_8qpab"]
+script = ExtResource("6_q4onq")
+
+[sub_resource type="Resource" id="Resource_cq6n4"]
+script = ExtResource("7_qx2o7")
+
+[sub_resource type="Resource" id="Resource_t38lc"]
+script = ExtResource("2_bd026")
+_uniq_id = 7946668267396881
+id = 0
+list = Array[ExtResource("4_cq6n4")]([SubResource("Resource_bd026")])
+condition = SubResource("Resource_ssqax")
+movement_route = SubResource("Resource_8qpab")
+options = SubResource("Resource_cq6n4")
+event_trigger_list = PackedInt64Array()
+event_tool_list = PackedInt32Array()
+event_signal_list = PackedInt32Array()
+character_type = 1
+character_path = "res://Assets/Images/Other/gold_icon.png"
+character_region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="Resource" id="Resource_q4onq"]
+script = ExtResource("9_fo4n0")
+
+[sub_resource type="Resource" id="Resource_qx2o7"]
+script = ExtResource("10_7k1lw")
+levels = Array[ExtResource("9_fo4n0")]([SubResource("Resource_q4onq")])
+
+[sub_resource type="Resource" id="Resource_iygfw"]
+script = ExtResource("11_7px14")
+_uniq_id = 1158471001002922
+name = "Cofre"
+pages = Array[ExtResource("2_bd026")]([SubResource("Resource_t38lc")])
+relationship = SubResource("Resource_qx2o7")
+
+[sub_resource type="Resource" id="Resource_mnxga"]
+script = ExtResource("1_ssqax")
+event = SubResource("Resource_iygfw")
+probability = 80.0
+max_quantity = 10
+placement = 1
+
+[resource]
+script = ExtResource("12_yj1qp")
+events = Array[ExtResource("1_ssqax")]([SubResource("Resource_mnxga")])

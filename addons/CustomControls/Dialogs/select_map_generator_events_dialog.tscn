@@ -1,0 +1,304 @@
+[gd_scene format=3 uid="uid://b1kfbsiowyspx"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_aqgf1"]
+[ext_resource type="Script" uid="uid://dqd1bq0fxdyf5" path="res://addons/CustomControls/Dialogs/select_map_generator_events_dialog.gd" id="2_8v0fm"]
+[ext_resource type="PackedScene" uid="uid://dxcyqc2dscbvw" path="res://addons/CustomControls/custom_simple_column_item_list.tscn" id="3_8v0fm"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="6_5ler4"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="7_rpchq"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="8_hri4g"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="10_od61c"]
+
+[sub_resource type="Gradient" id="Gradient_vvvrv"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_fg0k8"]
+gradient = SubResource("Gradient_vvvrv")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="Gradient" id="Gradient_3f8cb"]
+colors = PackedColorArray(0.333333, 0.352941, 0.360784, 1, 0.380392, 0.4, 0.407843, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_0n3ye"]
+gradient = SubResource("Gradient_3f8cb")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_aq1a2"]
+texture = SubResource("GradientTexture2D_0n3ye")
+
+[sub_resource type="Gradient" id="Gradient_un8fw"]
+offsets = PackedFloat32Array(0, 0.369535, 1)
+colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ygvtv"]
+gradient = SubResource("Gradient_un8fw")
+fill_from = Vector2(0.547009, 1)
+fill_to = Vector2(0.559829, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8v0fm"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_ygvtv")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k2edk"]
+bg_color = Color(0, 0, 0, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8v0fm"]
+atlas = ExtResource("7_rpchq")
+region = Rect2(192, 240, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aqgf1"]
+atlas = ExtResource("7_rpchq")
+region = Rect2(144, 72, 24, 24)
+
+[node name="SelectMapGeneratorEventsDialog" type="Window" unique_id=1795928936]
+oversampling_override = 1.0
+title = "Edit Map Generator Events"
+position = Vector2i(0, 36)
+size = Vector2i(809, 560)
+wrap_controls = true
+transient = true
+exclusive = true
+theme = ExtResource("1_aqgf1")
+script = ExtResource("2_8v0fm")
+
+[node name="Background" type="TextureRect" parent="." unique_id=169465493]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_fg0k8")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1739132568]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=2107948163]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HSplitContainer" parent="MarginContainer/VBoxContainer" unique_id=2038778398]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="LeftColumn" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1962431503]
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+
+[node name="EventList" parent="MarginContainer/VBoxContainer/HBoxContainer2/LeftColumn" unique_id=29010192 instance=ExtResource("3_8v0fm")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
+event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
+top_bar_style = SubResource("StyleBoxTexture_aq1a2")
+columns_text_colors = PackedColorArray(0.72549, 0.992157, 0.772549, 1)
+cursor_style = SubResource("StyleBoxTexture_8v0fm")
+panel_style = SubResource("StyleBoxFlat_k2edk")
+names = PackedStringArray("Event List")
+sizes = PackedInt32Array(260)
+placeholder_text = "Add Event.."
+itemlist_tooltip = "Event lists saved in the map generator, ready to be randomly added to the map.
+
+[Note]: You can limit the number of times the same event appears and also exclude events from the list so they aren't used when populating the map."
+
+[node name="RightColumn" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=602407482]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=422186291]
+layout_mode = 2
+size_flags_vertical = 10
+theme_override_constants/separation = 14
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer" unique_id=87902549]
+layout_mode = 2
+
+[node name="Icon" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/HBoxContainer" unique_id=2005949943]
+layout_mode = 2
+size_flags_vertical = 4
+texture = SubResource("AtlasTexture_8v0fm")
+
+[node name="RemoveFromStack" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/HBoxContainer" unique_id=592094127]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Mark this event so that it won't be eligible for inclusion on the map when you click the \"Fill in map events\" button."
+mouse_default_cursor_shape = 2
+disabled = true
+text = "Remove From The Random Event Stack"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer" unique_id=708805716]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer" unique_id=1383031950]
+layout_mode = 2
+text = "Probability of appearance:"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer" unique_id=1345086579]
+layout_mode = 2
+
+[node name="ProbabilityOfAppearance" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/HBoxContainer2" unique_id=686731102 instance=ExtResource("10_od61c")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "the probability (0–100%) that this event will appear when painted"
+mouse_filter = 2
+min_value = 0.01
+step = 0.001
+value = 10.0
+rounded = false
+editable = false
+disabled = true
+_custom_value = 10.0
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/HBoxContainer2" unique_id=1946845137]
+layout_mode = 2
+text = " %"
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer" unique_id=1997441179]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/HBoxContainer5" unique_id=1189627869]
+layout_mode = 2
+text = "Maximum Quantity Generated:"
+
+[node name="Quantity" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer" unique_id=20733617 instance=ExtResource("10_od61c")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Maximum number of entities from this event that will be displayed on the map"
+mouse_filter = 2
+value = 1.0
+allow_greater = true
+editable = false
+disabled = true
+_custom_value = 1.0
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer" unique_id=955017306]
+layout_mode = 2
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer" unique_id=772012719]
+layout_mode = 2
+
+[node name="Icon" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/HBoxContainer6" unique_id=806916765]
+layout_mode = 2
+texture = SubResource("AtlasTexture_aqgf1")
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/HBoxContainer6" unique_id=1278452617]
+layout_mode = 2
+text = "Placement Mode:"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer" unique_id=2063701741]
+layout_mode = 2
+
+[node name="PlacementMode" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/HBoxContainer3" unique_id=621784070 instance=ExtResource("8_hri4g")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Select where this tile can be installed (walls, floors, or both)
+
+[Note]: When \"wall\" is selected, the event will be placed on the bottom tile of the wall"
+focus_mode = 0
+mouse_filter = 2
+disabled = true
+selected = 0
+item_count = 3
+popup/item_0/text = "Anywhere"
+popup/item_0/id = 0
+popup/item_1/text = "Floor Only"
+popup/item_1/id = 1
+popup/item_2/text = "Wall Only"
+popup/item_2/id = 2
+metadata/original_focus_mode = 2
+metadata/original_mouse_filer = 0
+
+[node name="EventPositions" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/HBoxContainer3" unique_id=1034399869 instance=ExtResource("8_hri4g")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Select the part of the floor/wall where the event will appear"
+focus_mode = 0
+mouse_filter = 2
+disabled = true
+selected = 0
+item_count = 10
+popup/item_0/text = "Use Any Position"
+popup/item_0/id = 0
+popup/item_1/text = "At the Top"
+popup/item_1/id = 1
+popup/item_2/text = "At the Bottom"
+popup/item_2/id = 2
+popup/item_3/text = "At the Center"
+popup/item_3/id = 3
+popup/item_4/text = "On the Left"
+popup/item_4/id = 4
+popup/item_5/text = "On the Right"
+popup/item_5/id = 5
+popup/item_6/text = "Top Left"
+popup/item_6/id = 6
+popup/item_7/text = "Top Right"
+popup/item_7/id = 7
+popup/item_8/text = "Bottom Left"
+popup/item_8/id = 8
+popup/item_9/text = "Bottom Right"
+popup/item_9/id = 9
+metadata/original_focus_mode = 2
+metadata/original_mouse_filer = 0
+
+[node name="HSeparator3" type="HSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer" unique_id=864515769]
+layout_mode = 2
+
+[node name="DeleteEvent" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer" unique_id=225668214 instance=ExtResource("6_5ler4")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.65)
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+disabled = true
+text = "Delete Event"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=493259790]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 24
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=2142477788]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=858384430 instance=ExtResource("6_5ler4")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+text = "Close"
+
+[connection signal="dragged" from="MarginContainer/VBoxContainer/HBoxContainer2" to="." method="_on_h_box_container_2_dragged"]
+[connection signal="item_activated" from="MarginContainer/VBoxContainer/HBoxContainer2/LeftColumn/EventList" to="." method="_on_event_list_item_activated"]
+[connection signal="multi_selected" from="MarginContainer/VBoxContainer/HBoxContainer2/LeftColumn/EventList" to="." method="_on_event_list_multi_selected"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/HBoxContainer/RemoveFromStack" to="." method="_on_remove_from_stack_toggled"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/HBoxContainer2/ProbabilityOfAppearance" to="." method="_on_probability_of_appearance_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/Quantity" to="." method="_on_quantity_value_changed"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/HBoxContainer3/PlacementMode" to="." method="_on_placement_mode_item_selected"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/DeleteEvent" to="." method="_on_delete_event_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

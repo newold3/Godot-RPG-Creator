@@ -1,6 +1,7 @@
 @tool
 extends PanelContainer
 
+#region Variables
 ## Deselect when lost focus
 @export var deselect_when_lost_focus: bool = false :
 	set(value):
@@ -18,26 +19,35 @@ extends PanelContainer
 
 var database: RPGDATA
 var effects: Array[RPGEffect]
-
 var effects_need_refresh_timer: float
+#endregion
 
 
+
+#region Initialization
+## Request the dialog resource on ready
 func _ready() -> void:
 	ResourceLoader.load_threaded_request.call_deferred("res://addons/CustomControls/Dialogs/select_effect_dialog.tscn")
 
 
+## Initialize the effects list with data
 func set_data(_database, _effects) -> void:
 	database = _database
 	effects = _effects
 	
 	fill_effects(-1)
+#endregion
 
-#region EFFECTS
+
+
+#region LogicAndProcessing
+## Trigger a delayed refresh for the effects list
 func set_need_refresh() -> void:
 	effects_need_refresh_timer = 0.25
 	set_process(true)
 
 
+## Handle the timer-based refresh logic
 func _process(delta: float) -> void:
 	if effects_need_refresh_timer > 0:
 		effects_need_refresh_timer -= delta
@@ -49,9 +59,9 @@ func _process(delta: float) -> void:
 		set_process(false)
 
 
+## Get the parameter name from the global actor list
 func _get_parameter_name(id: int) -> String:
 	var items = RPGActor.get_parameter_list(false)
-	
 	var parameter: String = ""
 	
 	if items.size() > id:
@@ -60,15 +70,16 @@ func _get_parameter_name(id: int) -> String:
 	return parameter
 
 
+## Parse an effect into its visual column representation using UIDs
 func get_column(item: RPGEffect) -> Array:
 	var column = []
-	
 	var left = [
 		"Recover HP", "Recover MP", "Gain TP", "Add State",
 		"Remove State", "Add Buff", "Add Debuff",
 		"Remove Buff", "Remove Debuff", "Special Effect",
 		"Grow", "Learn Skill", "Common Event"
 	]
+	
 	column.append(left[item.code - 1])
 	
 	if [1, 2].has(item.code):
@@ -78,9 +89,9 @@ func get_column(item: RPGEffect) -> Array:
 		var text = "%s" % item.value1
 		column.append(text)
 	elif [4, 5].has(item.code):
-		var list = database.states
-		if list.size() > item.data_id:
-			column.append(list[item.data_id].name + " " + str(item.value2) + " %")
+		var state = RPGSYSTEM.get_data("states", item.data_id)
+		if state:
+			column.append(state.name + " " + str(item.value2) + " %")
 		else:
 			column.append("⚠ Invalid Data")
 	elif [6, 7].has(item.code):
@@ -115,21 +126,22 @@ func get_column(item: RPGEffect) -> Array:
 		else:
 			column.append("⚠ Invalid Data")
 	elif [12].has(item.code):
-		var list = database.skills
-		if list.size() > item.data_id:
-			column.append(list[item.data_id].name)
+		var skill = RPGSYSTEM.get_data("skills", item.data_id)
+		if skill:
+			column.append(skill.name)
 		else:
 			column.append("⚠ Invalid Data")
 	elif [13].has(item.code):
-		var list = database.common_events
-		if list.size() > item.data_id:
-			column.append(list[item.data_id].name)
+		var ce = RPGSYSTEM.get_data("common_events", item.data_id)
+		if ce:
+			column.append(ce.name)
 		else:
 			column.append("⚠ Invalid Data")
 	
 	return column
 
 
+## Refresh the entire list preserving scroll and selection
 func refresh_effects() -> void:
 	var node = %EffectsList
 	var selected_items = node.get_selected_items()
@@ -142,10 +154,12 @@ func refresh_effects() -> void:
 	node.get_v_scroll_bar().value = scroll
 
 
+## Clear the internal list
 func clear() -> void:
 	%EffectsList.clear()
 
 
+## Populate the UI node with the current effects data
 func fill_effects(item_selected: int) -> void:
 	var node = %EffectsList
 	node.clear()
@@ -160,13 +174,18 @@ func fill_effects(item_selected: int) -> void:
 			node.deselect_all()
 	else:
 		node.deselect_all()
+#endregion
 
 
+
+#region SignalsAndInteractions
+## Triggered when an effect is double clicked
 func _on_effects_list_item_activated(index: int) -> void:
 	var path = "res://addons/CustomControls/Dialogs/select_effect_dialog.tscn"
 	var parent = get_tree().get_nodes_in_group("main_database")[0]
 	var dialog
 	var main_panel = parent.get_child(0)
+	
 	if main_panel.cache_dialog.has(path) and is_instance_valid(main_panel.cache_dialog[path]):
 		dialog = main_panel.cache_dialog[path]
 		RPGDialogFunctions.show_dialog(dialog, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
@@ -183,6 +202,7 @@ func _on_effects_list_item_activated(index: int) -> void:
 		dialog.set_data(null, -1)
 
 
+## Callback when a new effect is selected in the dialog
 func _on_effect_selected(current_effect: RPGEffect, target: int) -> void:
 	if target == -1:
 		effects.append(current_effect)
@@ -192,11 +212,16 @@ func _on_effect_selected(current_effect: RPGEffect, target: int) -> void:
 		fill_effects(target)
 
 
+## Internal multi selection signal
 func _on_effects_list_multi_selected(index: int, selected: bool) -> void:
 	pass
 
 
+## Process effect deletion from the list
 func _on_effects_list_delete_pressed(indexes: PackedInt32Array) -> void:
+	if indexes.is_empty():
+		return
+		
 	var remove_effects: Array[RPGEffect] = []
 	for index in indexes:
 		if index >= 0 and effects.size() > index:
@@ -204,11 +229,13 @@ func _on_effects_list_delete_pressed(indexes: PackedInt32Array) -> void:
 	for obj in remove_effects:
 		effects.erase(obj)
 	fill_effects(indexes[0])
-	
-#endregion
 
 
+## Copy selected effects to clipboard
 func _on_effects_list_copy_requested(indexes: PackedInt32Array) -> void:
+	if indexes.is_empty():
+		return
+		
 	var copy_effects: Array[RPGEffect]
 	for index in indexes:
 		if index > effects.size() - 1:
@@ -218,7 +245,11 @@ func _on_effects_list_copy_requested(indexes: PackedInt32Array) -> void:
 	StaticEditorVars.CLIPBOARD["effects"] = copy_effects
 
 
+## Cut selected effects to clipboard
 func _on_effects_list_cut_requested(indexes: PackedInt32Array) -> void:
+	if indexes.is_empty():
+		return
+		
 	var copy_effects: Array[RPGEffect]
 	var remove_effects: Array[RPGEffect]
 	for index in indexes:
@@ -235,6 +266,7 @@ func _on_effects_list_cut_requested(indexes: PackedInt32Array) -> void:
 	fill_effects(item_selected)
 
 
+## Paste effects from clipboard into the list
 func _on_effects_list_paste_requested(index: int) -> void:
 	if StaticEditorVars.CLIPBOARD.has("effects"):
 		for i in StaticEditorVars.CLIPBOARD["effects"].size():
@@ -256,3 +288,4 @@ func _on_effects_list_paste_requested(index: int) -> void:
 			if i >= effects.size():
 				i = index
 			list.select(i, false)
+#endregion

@@ -6,7 +6,7 @@ extends Resource
 @export var game_title: String
 @export var options: Dictionary
 @export var party_active_members: int = 4
-@export var start_party: PackedInt32Array = []
+@export var start_party: PackedInt64Array = []
 @export var player_start_position: RPGMapPosition = RPGMapPosition.new()
 @export var land_transport_start_position: RPGMapPosition = RPGMapPosition.new()
 @export var sea_transport_start_position: RPGMapPosition = RPGMapPosition.new()

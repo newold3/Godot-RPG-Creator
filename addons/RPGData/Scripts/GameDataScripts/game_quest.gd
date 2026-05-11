@@ -25,6 +25,9 @@ enum QuestStatus {
 ## Unique 16-digit ID of the event that gave this quest
 @export var owner_event_uniq_id: int = -1
 
+## This quest is sub-mission (objetive to the other mission)
+@export var parent_quest_id: int = -1
+
 ## Unique 16-digit ID of the map required to complete this quest
 @export var target_map_uniq_id: int = -1
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://mj80ef41veum"]
+[gd_scene format=3 uid="uid://mj80ef41veum"]
 
 [ext_resource type="Theme" uid="uid://dlgit3j4ygo54" path="res://addons/RPGData/Assets/Themes/database_theme.tres" id="1_0i78y"]
 [ext_resource type="Script" uid="uid://dkuacd5kwpwwp" path="res://addons/CustomControls/Dialogs/select_any_data_dialog.gd" id="2_sj3or"]
@@ -22,7 +22,7 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.113725, 0.133333, 0.160784, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_541qt"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_20id4"]
 resource_local_to_scene = true
 corner_radius_top_left = 16
 corner_radius_top_right = 16
@@ -35,11 +35,11 @@ gradient = SubResource("Gradient_na841")
 fill_from = Vector2(0.487179, 1)
 fill_to = Vector2(0.547009, 0.034188)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_oqa60"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_k8h46"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_h0yhu")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c7rls"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fnmjd"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -52,7 +52,7 @@ corner_radius_top_right = 16
 shadow_size = 4
 shadow_offset = Vector2(0, 4.18)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_er6bx"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ymu4m"]
 resource_local_to_scene = true
 content_margin_left = 3.0
 content_margin_right = 3.0
@@ -64,7 +64,7 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.113725, 0.133333, 0.160784, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e42gi"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j6uhi"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 1
@@ -81,15 +81,15 @@ gradient = SubResource("Gradient_3obsl")
 fill_from = Vector2(0.547009, 1)
 fill_to = Vector2(0.559829, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pepbk"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hwkcv"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_mtkxg")
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pkfoj"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_m6whg"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_mtkxg")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hr0gs"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m5tta"]
 resource_local_to_scene = true
 content_margin_left = 3.0
 content_margin_right = 3.0
@@ -101,7 +101,7 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.113725, 0.133333, 0.160784, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kfhq7"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_53xk0"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 1
@@ -109,11 +109,11 @@ border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ka1gq"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_i5m8w"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_mtkxg")
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wiqd7"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_malpl"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_mtkxg")
 
@@ -126,11 +126,11 @@ func _process(delta: float) -> void:
 	queue_redraw()
 "
 
-[node name="SelectAnyDataDialog" type="Window"]
+[node name="SelectAnyDataDialog" type="Window" unique_id=1463546794]
 oversampling_override = 1.0
 title = "Title"
 position = Vector2i(0, 36)
-size = Vector2i(700, 725)
+size = Vector2i(900, 725)
 transient = true
 exclusive = true
 unresizable = true
@@ -138,7 +138,7 @@ min_size = Vector2i(700, 725)
 theme = ExtResource("1_0i78y")
 script = ExtResource("2_sj3or")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=859779273]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -146,7 +146,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_e8gxf")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=673341575]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -157,16 +157,16 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=697250486]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer"]
+[node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer" unique_id=1515196342]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_4yvde")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Panel"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Panel" unique_id=96485233]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -178,47 +178,47 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer" unique_id=946915897]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 12
 
-[node name="Left" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer"]
-custom_minimum_size = Vector2(210, 0)
+[node name="Left" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer" unique_id=1856906355]
+custom_minimum_size = Vector2(310, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.29
 
-[node name="SimpleLabel" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/Left" instance=ExtResource("3_c27y1")]
+[node name="SimpleLabel" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/Left" unique_id=1410881053 instance=ExtResource("3_c27y1")]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_541qt")
-mask = SubResource("StyleBoxFlat_541qt")
-fill = SubResource("StyleBoxTexture_oqa60")
-border = SubResource("StyleBoxFlat_c7rls")
+theme_override_styles/panel = SubResource("StyleBoxFlat_20id4")
+mask = SubResource("StyleBoxFlat_20id4")
+fill = SubResource("StyleBoxTexture_k8h46")
+border = SubResource("StyleBoxFlat_fnmjd")
 
-[node name="List1" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/Left" instance=ExtResource("4_3etyx")]
+[node name="List1" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/Left" unique_id=1494979597 instance=ExtResource("4_3etyx")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(170, 0)
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_er6bx")
-theme_override_styles/focus = SubResource("StyleBoxFlat_er6bx")
-theme_override_styles/hovered = SubResource("StyleBoxFlat_e42gi")
-theme_override_styles/selected = SubResource("StyleBoxTexture_pepbk")
-theme_override_styles/selected_focus = SubResource("StyleBoxTexture_pkfoj")
+theme_override_styles/panel = SubResource("StyleBoxFlat_ymu4m")
+theme_override_styles/focus = SubResource("StyleBoxFlat_ymu4m")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_j6uhi")
+theme_override_styles/selected = SubResource("StyleBoxTexture_hwkcv")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_m6whg")
 
-[node name="Right" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer"]
+[node name="Right" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer" unique_id=604220939]
 custom_minimum_size = Vector2(220, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/Right"]
+[node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/Right" unique_id=750086152]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_4yvde")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/Right/Panel"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/Right/Panel" unique_id=364219746]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -230,21 +230,21 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/Right/Panel/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/Right/Panel/MarginContainer" unique_id=788698573]
 layout_mode = 2
 
-[node name="List2" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/Right/Panel/MarginContainer/VBoxContainer" instance=ExtResource("4_3etyx")]
+[node name="List2" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/Right/Panel/MarginContainer/VBoxContainer" unique_id=680629437 instance=ExtResource("4_3etyx")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_hr0gs")
-theme_override_styles/focus = SubResource("StyleBoxFlat_hr0gs")
-theme_override_styles/hovered = SubResource("StyleBoxFlat_kfhq7")
-theme_override_styles/selected = SubResource("StyleBoxTexture_ka1gq")
-theme_override_styles/selected_focus = SubResource("StyleBoxTexture_wiqd7")
+theme_override_styles/panel = SubResource("StyleBoxFlat_m5tta")
+theme_override_styles/focus = SubResource("StyleBoxFlat_m5tta")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_53xk0")
+theme_override_styles/selected = SubResource("StyleBoxTexture_i5m8w")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_malpl")
 auto_height = true
 
-[node name="AnimationsBackground" type="ColorRect" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/Right/Panel/MarginContainer/VBoxContainer"]
+[node name="AnimationsBackground" type="ColorRect" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/Right/Panel/MarginContainer/VBoxContainer" unique_id=132689585]
 unique_name_in_owner = true
 visible = false
 clip_children = 2
@@ -254,7 +254,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 color = Color(0, 0, 0, 1)
 
-[node name="AnimationMainContainer" type="Control" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/Right/Panel/MarginContainer/VBoxContainer/AnimationsBackground"]
+[node name="AnimationMainContainer" type="Control" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/Right/Panel/MarginContainer/VBoxContainer/AnimationsBackground" unique_id=1862392117]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -267,17 +267,17 @@ grow_vertical = 2
 scale = Vector2(0.4, 0.4)
 mouse_filter = 2
 
-[node name="EffekseerEmitter2D" type="EffekseerEmitter2D" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/Right/Panel/MarginContainer/VBoxContainer/AnimationsBackground/AnimationMainContainer"]
+[node name="EffekseerEmitter2D" type="EffekseerEmitter2D" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/Right/Panel/MarginContainer/VBoxContainer/AnimationsBackground/AnimationMainContainer" unique_id=2016183679]
 unique_name_in_owner = true
 process_mode = 3
 scale = Vector2(125, 125)
 script = SubResource("GDScript_20id4")
 
-[node name="SceneAnimations" type="Control" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/Right/Panel/MarginContainer/VBoxContainer/AnimationsBackground/AnimationMainContainer"]
+[node name="SceneAnimations" type="Control" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/Right/Panel/MarginContainer/VBoxContainer/AnimationsBackground/AnimationMainContainer" unique_id=572771295]
 unique_name_in_owner = true
 anchors_preset = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/Right/Panel/MarginContainer/VBoxContainer/AnimationsBackground"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/Right/Panel/MarginContainer/VBoxContainer/AnimationsBackground" unique_id=2145534584]
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -286,13 +286,13 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/Right/Panel/MarginContainer/VBoxContainer/AnimationsBackground/HBoxContainer"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/Right/Panel/MarginContainer/VBoxContainer/AnimationsBackground/HBoxContainer" unique_id=774083539]
 layout_mode = 2
 text = "Zoom"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HSlider" type="HSlider" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/Right/Panel/MarginContainer/VBoxContainer/AnimationsBackground/HBoxContainer"]
+[node name="HSlider" type="HSlider" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/Right/Panel/MarginContainer/VBoxContainer/AnimationsBackground/HBoxContainer" unique_id=2116335477]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -302,24 +302,24 @@ max_value = 20.0
 step = 0.001
 value = 0.4
 
-[node name="Scale" type="Label" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/Right/Panel/MarginContainer/VBoxContainer/AnimationsBackground/HBoxContainer"]
+[node name="Scale" type="Label" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/Right/Panel/MarginContainer/VBoxContainer/AnimationsBackground/HBoxContainer" unique_id=831364221]
 unique_name_in_owner = true
 layout_mode = 2
 text = "0.4"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=509279535]
 layout_mode = 2
 alignment = 2
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_r2ny0")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=217518299 instance=ExtResource("5_r2ny0")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("5_r2ny0")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1448231007 instance=ExtResource("5_r2ny0")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2

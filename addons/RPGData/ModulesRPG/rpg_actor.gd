@@ -31,6 +31,9 @@ func get_class():
 ## Profile description of the actor.
 @export var profile: String = ""
 
+## The gender with which this character identifies.
+@export var gender: int = 0
+
 ## Class identifier for the actor.
 @export var class_id: int = 1
 
@@ -50,7 +53,7 @@ func get_class():
 @export var battler_preview: String = ""
 
 ## Equipment items the actor has.
-@export var equipment: PackedInt32Array = []
+@export var equipment: PackedInt64Array = []
 
 ## Initial level for all equipment.
 @export var equipment_level: PackedInt32Array = []

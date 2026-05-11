@@ -249,13 +249,16 @@ layout_mode = 2
 [node name="ConfigDataTabs" parent="MainColumn/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1448925787 instance=ExtResource("3_56w1w")]
 unique_name_in_owner = true
 clip_children = 0
-custom_minimum_size = Vector2(133, 32)
+custom_minimum_size = Vector2(133, 64)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 default_tabs = Array[String](["General", "Vehicles and start positions", "Music & Sounds", "Day/Night Config", "Signals", "Other Options", "Game Scenes", "Preload Scenes"])
 drag_threshold = 10.0
 current_tab_unselected_text_outline_color = Color(0, 0, 0, 1)
+alignment = 3
+smart_row_balance = true
+max_rows = 2
 tab_name_base = ""
 background_color = Color(0, 0, 0, 0)
 tab_selected = null
@@ -795,8 +798,12 @@ text = "Ambient Light:"
 [node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/AmbientLight" unique_id=687398968]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/AmbientLight/HBoxContainer" unique_id=1608052324]
+[node name="Control" type="Control" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/AmbientLight/HBoxContainer" unique_id=382668337]
 custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/AmbientLight/HBoxContainer" unique_id=1608052324]
+custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 text = "Dawn Color:"
 
@@ -809,15 +816,15 @@ tooltip_text = "color used to modulate the dawn"
 mouse_default_cursor_shape = 2
 color = Color(1, 0.701961, 0.501961, 1)
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/AmbientLight" unique_id=1544128406]
+[node name="HSeparator" type="VSeparator" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/AmbientLight/HBoxContainer" unique_id=1102405746]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/AmbientLight/HBoxContainer2" unique_id=1991624112]
-custom_minimum_size = Vector2(280, 0)
+[node name="Label2" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/AmbientLight/HBoxContainer" unique_id=1991624112]
+custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 text = "Day Color:"
 
-[node name="DayColor" type="ColorPickerButton" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/AmbientLight/HBoxContainer2" unique_id=1026651568]
+[node name="DayColor" type="ColorPickerButton" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/AmbientLight/HBoxContainer" unique_id=1026651568]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
@@ -829,8 +836,12 @@ color = Color(1, 1, 1, 1)
 [node name="HBoxContainer3" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/AmbientLight" unique_id=1929163397]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/AmbientLight/HBoxContainer3" unique_id=952656500]
+[node name="Control" type="Control" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/AmbientLight/HBoxContainer3" unique_id=410067377]
 custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/AmbientLight/HBoxContainer3" unique_id=952656500]
+custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 text = "Dusk Color:"
 
@@ -843,15 +854,15 @@ tooltip_text = "color used to modulate the dusk"
 mouse_default_cursor_shape = 2
 color = Color(1, 0.501961, 0.301961, 1)
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/AmbientLight" unique_id=1604337197]
+[node name="HSeparator" type="VSeparator" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/AmbientLight/HBoxContainer3" unique_id=1174065973]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/AmbientLight/HBoxContainer4" unique_id=1384306693]
-custom_minimum_size = Vector2(280, 0)
+[node name="Label2" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/AmbientLight/HBoxContainer3" unique_id=1384306693]
+custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 text = "Night Color:"
 
-[node name="NightColor" type="ColorPickerButton" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/AmbientLight/HBoxContainer4" unique_id=924562533]
+[node name="NightColor" type="ColorPickerButton" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/AmbientLight/HBoxContainer3" unique_id=924562533]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
@@ -859,23 +870,6 @@ size_flags_horizontal = 3
 tooltip_text = "color used to modulate the night"
 mouse_default_cursor_shape = 2
 color = Color(0.2, 0.301961, 0.6, 1)
-
-[node name="HBoxContainer5" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/AmbientLight" unique_id=1375049355]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/AmbientLight/HBoxContainer5" unique_id=22639037]
-custom_minimum_size = Vector2(280, 0)
-layout_mode = 2
-text = "Shadow Color:"
-
-[node name="ShadowColor" type="ColorPickerButton" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/AmbientLight/HBoxContainer5" unique_id=624427615]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 32)
-layout_mode = 2
-size_flags_horizontal = 3
-tooltip_text = "color for the Shadow"
-mouse_default_cursor_shape = 2
-color = Color(0, 0, 0, 0.5294118)
 
 [node name="HSeparator5" type="HSeparator" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer" unique_id=959875342]
 layout_mode = 2
@@ -1006,6 +1000,23 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Shadow:"
 
+[node name="HBoxContainer5" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Shadow" unique_id=1375049355]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Shadow/HBoxContainer5" unique_id=22639037]
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+text = "Shadow Color:"
+
+[node name="ShadowColor" type="ColorPickerButton" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Shadow/HBoxContainer5" unique_id=624427615]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "color for the Shadow"
+mouse_default_cursor_shape = 2
+color = Color(0, 0, 0, 0.5294118)
+
 [node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Shadow" unique_id=583043738]
 layout_mode = 2
 
@@ -1087,15 +1098,15 @@ rounded = false
 suffix = "minimun"
 _custom_value = 0.0
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer" unique_id=1122557313]
+[node name="HBoxContainer4" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Shadow" unique_id=1122557313]
 layout_mode = 2
 
-[node name="Label3" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1271145111]
+[node name="Label3" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Shadow/HBoxContainer4" unique_id=1271145111]
 custom_minimum_size = Vector2(280, 0)
 layout_mode = 2
 text = "Shadow Blur Size:"
 
-[node name="ShadowBlurSize" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1774247051 instance=ExtResource("8_bxeuf")]
+[node name="ShadowBlurSize" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Shadow/HBoxContainer4" unique_id=1774247051 instance=ExtResource("8_bxeuf")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1812,10 +1823,9 @@ The scenes defined here will be preloaded when the game starts. This is useful f
 [connection signal="value_changed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/DayDuration/DaySeconds" to="." method="_on_day_seconds_value_changed"]
 [connection signal="value_changed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/StartingTime/StartingHour" to="." method="_on_starting_hour_value_changed"]
 [connection signal="color_changed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/AmbientLight/HBoxContainer/DawnColor" to="." method="_on_dawn_color_color_changed"]
-[connection signal="color_changed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/AmbientLight/HBoxContainer2/DayColor" to="." method="_on_day_color_color_changed"]
+[connection signal="color_changed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/AmbientLight/HBoxContainer/DayColor" to="." method="_on_day_color_color_changed"]
 [connection signal="color_changed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/AmbientLight/HBoxContainer3/DuskColor" to="." method="_on_dusk_color_color_changed"]
-[connection signal="color_changed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/AmbientLight/HBoxContainer4/NightColor" to="." method="_on_night_color_color_changed"]
-[connection signal="color_changed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/AmbientLight/HBoxContainer5/ShadowColor" to="." method="_on_shadow_color_color_changed"]
+[connection signal="color_changed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/AmbientLight/HBoxContainer3/NightColor" to="." method="_on_night_color_color_changed"]
 [connection signal="value_changed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/AudioConfig/HBoxContainer/DayVolume" to="." method="_on_day_volume_value_changed"]
 [connection signal="value_changed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/AudioConfig/HBoxContainer/NightVolume" to="." method="_on_night_volume_value_changed"]
 [connection signal="value_changed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/AudioConfig/HBoxContainer2/AudioTransitionSpeed" to="." method="_on_audio_transition_speed_value_changed"]
@@ -1823,12 +1833,13 @@ The scenes defined here will be preloaded when the game starts. This is useful f
 [connection signal="value_changed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Sun/HBoxContainer/SunRotationSpeed" to="." method="_on_sun_rotation_speed_value_changed"]
 [connection signal="value_changed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Sun/HBoxContainer2/SunDayShadowStrength" to="." method="_on_sun_day_shadow_strength_value_changed"]
 [connection signal="value_changed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Sun/HBoxContainer2/SunNightShadowStrength" to="." method="_on_sun_night_shadow_strength_value_changed"]
+[connection signal="color_changed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Shadow/HBoxContainer5/ShadowColor" to="." method="_on_shadow_color_color_changed"]
 [connection signal="value_changed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Shadow/HBoxContainer/ShadowElongationX" to="." method="_on_shadow_elongation_x_value_changed"]
 [connection signal="value_changed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Shadow/HBoxContainer/ShadowElongationY" to="." method="_on_shadow_elongation_y_value_changed"]
 [connection signal="value_changed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Shadow/HBoxContainer2/ShadowSkew" to="." method="_on_shadow_skew_value_changed"]
 [connection signal="value_changed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Shadow/HBoxContainer3/ShadowLengthX" to="." method="_on_shadow_length_x_value_changed"]
 [connection signal="value_changed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Shadow/HBoxContainer3/ShadowLengthY" to="." method="_on_shadow_length_y_value_changed"]
-[connection signal="value_changed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/HBoxContainer2/ShadowBlurSize" to="." method="_on_shadow_blur_size_value_changed"]
+[connection signal="value_changed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Shadow/HBoxContainer4/ShadowBlurSize" to="." method="_on_shadow_blur_size_value_changed"]
 [connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Switches/HBoxContainer3/SwitchId" to="." method="_on_switch_id_pressed"]
 [connection signal="value_changed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Switches/HBoxContainer/StreetLightsOnHour" to="." method="_on_street_lights_on_hour_value_changed"]
 [connection signal="value_changed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Switches/HBoxContainer/StreetLightsOffHour" to="." method="_on_street_lights_off_hour_value_changed"]

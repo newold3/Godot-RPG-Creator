@@ -7,9 +7,8 @@ extends VBoxContainer
 func set_actor(actor: GameActor) -> void:
 	if not actor: return
 	
-	var data = RPGSYSTEM.database.actors
-	if actor.id > 0 and data.size() > actor.id:
-		var real_actor: RPGActor = data[actor.id]
+	var real_actor: RPGActor = RPGSYSTEM.get_data("actors", actor.id)
+	if real_actor:
 		var img = real_actor.character_preview
 		if AssetManager.exists(img):
 			actor_image.texture = ResourceLoader.load(img)

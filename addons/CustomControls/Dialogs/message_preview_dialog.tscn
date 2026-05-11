@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bn6avb2v08c10"]
+[gd_scene format=3 uid="uid://bn6avb2v08c10"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_6w7jn"]
 [ext_resource type="Script" uid="uid://04tajwcit7v0" path="res://addons/CustomControls/Dialogs/message_preview_dialog.gd" id="2_wr5r4"]
@@ -18,7 +18,7 @@ fill_to = Vector2(0.5, 0)
 content_margin_left = 10.0
 content_margin_right = 10.0
 
-[node name="MessagePreviewDialog" type="Window"]
+[node name="MessagePreviewDialog" type="Window" unique_id=1912734433]
 oversampling_override = 1.0
 title = "Message Preview"
 position = Vector2i(0, 36)
@@ -30,7 +30,7 @@ max_size = Vector2i(1152, 640)
 theme = ExtResource("1_6w7jn")
 script = ExtResource("2_wr5r4")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1159076614]
 material = SubResource("CanvasItemMaterial_7x356")
 anchors_preset = 15
 anchor_right = 1.0
@@ -39,7 +39,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_3l4b8")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=616265813]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -52,30 +52,30 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=14657942]
 layout_mode = 2
 
-[node name="Control" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
+[node name="Control" type="PanelContainer" parent="MarginContainer/VBoxContainer" unique_id=470661426]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxEmpty_xkt14")
 
-[node name="Background" type="ColorRect" parent="MarginContainer/VBoxContainer/Control"]
+[node name="Background" type="ColorRect" parent="MarginContainer/VBoxContainer/Control" unique_id=2088736439]
 custom_minimum_size = Vector2(1152, 640)
 layout_mode = 2
 mouse_filter = 2
 color = Color(0.11372549, 0.13333334, 0.16078432, 1)
 
-[node name="CaracterContainer" type="Control" parent="MarginContainer/VBoxContainer/Control"]
+[node name="CaracterContainer" type="Control" parent="MarginContainer/VBoxContainer/Control" unique_id=411030403]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Dialog" parent="MarginContainer/VBoxContainer/Control" node_paths=PackedStringArray("character_container") instance=ExtResource("3_vo4gu")]
+[node name="Dialog" parent="MarginContainer/VBoxContainer/Control" unique_id=322931049 node_paths=PackedStringArray("character_container") instance=ExtResource("3_vo4gu")]
 unique_name_in_owner = true
 layout_mode = 2
 character_container = NodePath("../CaracterContainer")
 
-[node name="Timer" type="Timer" parent="."]
+[node name="Timer" type="Timer" parent="." unique_id=1162739191]
 unique_name_in_owner = true
 wait_time = 0.15
 
@@ -83,4 +83,5 @@ wait_time = 0.15
 [connection signal="item_rect_changed" from="MarginContainer" to="." method="_on_margin_container_item_rect_changed"]
 [connection signal="item_rect_changed" from="MarginContainer/VBoxContainer/Control/Dialog" to="." method="_on_margin_container_item_rect_changed"]
 [connection signal="message_started" from="MarginContainer/VBoxContainer/Control/Dialog" to="." method="_on_dialog_message_started"]
+[connection signal="item_rect_changed" from="MarginContainer/VBoxContainer/Control/Dialog/@CanvasLayer@309141/Message" to="MarginContainer/VBoxContainer/Control/Dialog" method="_on_message_item_rect_changed"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

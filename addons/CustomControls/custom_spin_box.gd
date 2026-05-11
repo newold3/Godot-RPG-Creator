@@ -340,6 +340,8 @@ func parent_is_invisible(node: Node) -> bool:
 	var parent = node.get_parent()
 	
 	if parent:
+		if parent.get_class() == "EditorNode": return true
+		
 		if not parent.is_visible():
 			return true
 		else:

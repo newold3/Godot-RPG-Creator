@@ -2,31 +2,34 @@ class_name CommandsGroup13
 extends CommandHandlerBase
 
 
-#region Shop Helpers
 var items_db: Array[RPGItem]
 var weapons_db: Array[RPGWeapon]
 var armors_db: Array[RPGArmor]
 
 
+
+## Función de ayuda para traducir rápidamente el Type (0, 1, 2, 3) a su clave de BD
+func _get_db_key(type: int) -> String:
+	match type:
+		0: return "items"
+		1: return "weapons"
+		2: return "armors"
+		3: return "costumes"
+	return "items"
+
+
+
 func _format_shop_item(item: Dictionary, purchase_ratio: int) -> Dictionary:
-	# Validate general type and ID range
-	if item.type not in [0, 1, 2] or item.id <= 0:
+	# Validate general type and ID range (Añadido el tipo 3)
+	if item.type not in [0, 1, 2, 3] or item.id <= 0:
 		return {}
 	
-	var db
-	match item.type:
-		0:
-			db = items_db
-		1:
-			db = weapons_db
-		2:
-			db = armors_db
-
-	if item.id >= db.size():
-		debug_print("Format item error: item id out of range: %s" % item)
-		return {}  # ID out of range
+	var db_key = _get_db_key(item.type)
+	var data = RPGSYSTEM.get_data(db_key, item.id)
 	
-	var data = db[item.id]
+	if not data:
+		debug_print("Format item error: item id out of range or invalid UID: %s" % item)
+		return {}  # ID out of range or not found
 	
 	var source = item.get("source", "stock")
 	
@@ -44,11 +47,11 @@ func _format_shop_item(item: Dictionary, purchase_ratio: int) -> Dictionary:
 		"level": item.level,
 		"source": source,
 		"price": 0,  # will be calculated below
-		"rarity": data.rarity_type,
-		"icon": data.icon,
-		"name": data.name,
-		"description": data.description,
-		"restock_amount": item.get("restock_amount", -1)
+		"rarity": data.rarity_type if "rarity_type" in data else 0,
+		"icon": data.icon if "icon" in data else "",
+		"name": data.name if "name" in data else "",
+		"description": data.description if "description" in data else "",
+		"restock_amount": data.restock_amount if "restock_amount" in data else -1
 	}
 	
 	# Determine category based on item type
@@ -78,9 +81,16 @@ func _format_shop_item(item: Dictionary, purchase_ratio: int) -> Dictionary:
 					item_data.category = data_types[armor_type]
 			else:
 				item_data.category = "___none___"
+		3:
+			# Para Sets, asignamos una categoría genérica. 
+			item_data.category = TranslationManager.tr("Costumes / Sets")
 	
 	# Calculate base price
-	var base_price = item.price if item.get("price_mode", 0) == 1 else data.price
+	var p = 0
+	if "price":
+		if not "price_mode" in item or item.price_mode == 1:
+			p = item.price
+	var base_price = p
 	
 	# Apply upgrade price increments if upgrades exist
 	if "upgrades" in data and "level" in item_data and item_data.level > 1:
@@ -95,12 +105,15 @@ func _format_shop_item(item: Dictionary, purchase_ratio: int) -> Dictionary:
 	return item_data
 
 
+
 func _allowed_items_array_to_dic(allowed_items: Array = []) -> Dictionary:
 	var d = {}
 	for item in allowed_items:
-		var key = str(item.type) + "_" + str(item.id)
+		var uid = RPGSYSTEM.id_to_uid(_get_db_key(item.type), item.id)
+		var key = str(item.type) + "_" + str(uid)
 		d[key] = true
 	return d
+
 
 
 func _add_item_list(config: Dictionary, sales_ratio: int, include_equipped: bool, list: Array, allowed_items: Array) -> void:
@@ -115,33 +128,47 @@ func _add_item_list(config: Dictionary, sales_ratio: int, include_equipped: bool
 			var key = str(first_item.type) + "_" + str(first_item.id)
 			if not key in filter: continue
 		for item: Variant in item_arr:
-			if item.type != 0 and not include_equipped and item.equipped: continue
+			if item.type != 0 and not include_equipped and item.get("equipped", false): continue
 			# Use database position (i) for generic lists, pass counter from config
 			_add_inventory_item_to_config(i, config, item, sales_ratio, i)
+
 
 
 func _add_items_in_inventory(config: Dictionary, sales_ratio: int, allowed_items: Array = []) -> void:
 	_add_item_list(config, sales_ratio, true, GameManager.game_state.items.values(), allowed_items)
 
 
+
 func _add_weapons_in_inventory(config: Dictionary, sales_ratio: int, include_equipped: bool = true, allowed_items: Array = []) -> void:
 	_add_item_list(config, sales_ratio, include_equipped, GameManager.game_state.weapons.values(), allowed_items)
+
 
 
 func _add_armors_in_inventory(config: Dictionary, sales_ratio: int, include_equipped: bool = true, allowed_items: Array = []) -> void:
 	_add_item_list(config, sales_ratio, include_equipped, GameManager.game_state.armors.values(), allowed_items)
 
 
+
+## Carga los sets disponibles en el inventario del jugador
+func _add_sets_in_inventory(config: Dictionary, sales_ratio: int, include_equipped: bool = true, allowed_items: Array = []) -> void:
+	if "sets" in GameManager.game_state:
+		_add_item_list(config, sales_ratio, include_equipped, GameManager.game_state.sets.values(), allowed_items)
+
+
+
 func _add_all_inventory_items(config: Dictionary, sales_ratio: int) -> void:
 	_add_items_in_inventory(config, sales_ratio)
 	_add_weapons_in_inventory(config, sales_ratio, false)
 	_add_armors_in_inventory(config, sales_ratio, false)
+	_add_sets_in_inventory(config, sales_ratio, false)
+
 
 
 func _add_specific_inventory_items(config: Dictionary, sales_ratio: int, allowed_items: Array) -> void:
 	_add_items_in_inventory(config, sales_ratio, allowed_items)
 	_add_weapons_in_inventory(config, sales_ratio, false, allowed_items)
 	_add_armors_in_inventory(config, sales_ratio, false, allowed_items)
+	_add_sets_in_inventory(config, sales_ratio, false, allowed_items)
 	
 	var added_items = {}
 	for item in config.items:
@@ -153,11 +180,13 @@ func _add_specific_inventory_items(config: Dictionary, sales_ratio: int, allowed
 	
 	for i in range(allowed_items.size()):
 		var allowed_item = allowed_items[i]
-		var key = str(allowed_item.type) + "_" + str(allowed_item.id)
+		var uid = RPGSYSTEM.id_to_uid(_get_db_key(allowed_item.type), allowed_item.id)
+		var key = str(allowed_item.type) + "_" + str(uid)
+		
 		if not key in added_items:
 			var formatted_item = _format_shop_item({
 				"index": config.items.size(),
-				"id": allowed_item.id,
+				"id": uid,
 				"type": allowed_item.type,
 				"price_mode": 0,
 				"price": 0,
@@ -176,9 +205,10 @@ func _add_specific_inventory_items(config: Dictionary, sales_ratio: int, allowed
 				formatted_item.empty_item = true
 				# Generate SELL uniq_id format: S_allowed_list_position_type_id_counter
 				# For specific items, use position in allowed_items list
-				formatted_item.uniq_id = "S_" + str(i) + "_" + str(allowed_item.type) + "_" + str(allowed_item.id) + "_" + str(config.item_counter)
+				formatted_item.uniq_id = "S_" + str(i) + "_" + str(allowed_item.type) + "_" + str(uid) + "_" + str(config.item_counter)
 				config.item_counter += 1
 				config.items.append(formatted_item)
+
 
 
 func _add_inventory_item_to_config(item_index: int, config: Dictionary, inventory_item: Variant, sales_ratio: int, db_position: int = -1) -> void:
@@ -205,14 +235,19 @@ func _add_inventory_item_to_config(item_index: int, config: Dictionary, inventor
 		formatted_item.uniq_id = "S_" + str(position) + "_" + str(inventory_item.type) + "_" + str(inventory_item.id) + "_" + str(config.item_counter)
 		config.item_counter += 1
 		config.items.append(formatted_item)
-#endregion
+
 
 
 func add_buy_items(shop_id: String, config: Dictionary, items: Array, can_restock: bool, restock_timer: int, purchase_ratio: int) -> void:
 	for i in items.size():
 		var item = items[i]
-		var item_id = item.get("item_id", 1)
 		var item_type = item.get("type", 0)
+		var db_key = _get_db_key(item_type)
+		var item_id = RPGSYSTEM.id_to_uid(db_key, item.get("item_id", 1))
+		
+		if item_id == -1:
+			continue
+			
 		var quantity: int
 		var max_quantity = item.get("quantity", 0)
 		if not shop_id.is_empty() and shop_id in GameManager.game_state.active_shop_timers:
@@ -241,6 +276,7 @@ func add_buy_items(shop_id: String, config: Dictionary, items: Array, can_restoc
 			"level": item.get("level", 1),
 			"restock_amount": item.get("restock_amount", -1)
 		}, purchase_ratio)
+		
 		if not formatted_item.is_empty():
 			# Initialize counter if not exists
 			if not "item_counter" in config:
@@ -251,6 +287,7 @@ func add_buy_items(shop_id: String, config: Dictionary, items: Array, can_restoc
 			config.item_counter += 1
 			formatted_item.max_quantity =  max_quantity
 			config.items.append(formatted_item)
+
 
 
 func add_sell_items(config: Dictionary, sales_mode: int, sales_ratio: int, include_equipped: bool, buy_list: Array) -> void:
@@ -275,13 +312,14 @@ func add_sell_items(config: Dictionary, sales_mode: int, sales_ratio: int, inclu
 			config.sell_mode = "specific_items"
 
 
+
 # Command Show Shop (Codes 96, 97), button_id = 76
 # Code 96 parameters { sales_mode, purchase_ratio, sales_ratio, shop_name, shop_scene, shop_keeper, sold_items }
 # Code 97 parameters { type, item_id, quantity, price_mode, price }
 func _command_0096() -> void:
 	debug_print("Processing command: Show Shop (code 96)")
 	
-	# cache database:
+	# cache database
 	if not items_db:
 		items_db = RPGSYSTEM.database.items
 		weapons_db = RPGSYSTEM.database.weapons
@@ -376,10 +414,12 @@ func _command_0096() -> void:
 	await ins.tree_exited
 
 
+
 # Command Open Blacksmith Shop (Code 200), button_id = 118
 # Code 200 parameters { }
 func _command_0200() -> void:
 	debug_print("Command 200 is not implemented")
+
 
 
 # Command Open Class Upgrade Shop (Code 201), button_id = 119

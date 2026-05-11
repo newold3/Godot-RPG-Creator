@@ -21,7 +21,7 @@ gradient = SubResource("Gradient_g283l")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d3kll"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p3rcj"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -39,17 +39,17 @@ corner_radius_bottom_left = 12
 [sub_resource type="Gradient" id="Gradient_ctwx1"]
 colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_v165v"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_d3kll"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_ctwx1")
 fill_from = Vector2(0.542735, 0.995726)
 fill_to = Vector2(0.58547, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_iro1h"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_v165v"]
 resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_v165v")
+texture = SubResource("GradientTexture2D_d3kll")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6yron"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iro1h"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -62,7 +62,7 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7e2jo"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6yron"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -77,17 +77,17 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_hic2q"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7e2jo"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_ctwx1")
 fill_from = Vector2(0.542735, 0.995726)
 fill_to = Vector2(0.58547, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_w2xgh"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hic2q"]
 resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_hic2q")
+texture = SubResource("GradientTexture2D_7e2jo")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eweh7"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w2xgh"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -102,7 +102,7 @@ corner_radius_bottom_left = 12
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_8fpmd"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_conbf"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eweh7"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -117,17 +117,17 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_igt0t"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_conbf"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_ctwx1")
 fill_from = Vector2(0.542735, 0.995726)
 fill_to = Vector2(0.58547, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_f1km4"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_igt0t"]
 resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_igt0t")
+texture = SubResource("GradientTexture2D_conbf")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tgyij"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f1km4"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -237,10 +237,10 @@ layout_mode = 2
 
 [node name="Item" parent="MarginContainer/VBoxContainer" unique_id=1921793359 instance=ExtResource("3_v165v")]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_d3kll")
-style1 = SubResource("StyleBoxFlat_d3kll")
-style2 = SubResource("StyleBoxTexture_iro1h")
-style3 = SubResource("StyleBoxFlat_6yron")
+theme_override_styles/panel = SubResource("StyleBoxFlat_p3rcj")
+style1 = SubResource("StyleBoxFlat_p3rcj")
+style2 = SubResource("StyleBoxTexture_v165v")
+style3 = SubResource("StyleBoxFlat_iro1h")
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Item" unique_id=865215203]
 layout_mode = 2
@@ -265,10 +265,10 @@ text = "Select an Costume or Set"
 
 [node name="Operation" parent="MarginContainer/VBoxContainer" unique_id=603716583 instance=ExtResource("3_v165v")]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_7e2jo")
-style1 = SubResource("StyleBoxFlat_7e2jo")
-style2 = SubResource("StyleBoxTexture_w2xgh")
-style3 = SubResource("StyleBoxFlat_eweh7")
+theme_override_styles/panel = SubResource("StyleBoxFlat_6yron")
+style1 = SubResource("StyleBoxFlat_6yron")
+style2 = SubResource("StyleBoxTexture_hic2q")
+style3 = SubResource("StyleBoxFlat_w2xgh")
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Operation" unique_id=1862217681]
 layout_mode = 2
@@ -317,10 +317,10 @@ text = "Include Equipment"
 
 [node name="Operand" parent="MarginContainer/VBoxContainer" unique_id=1508875326 instance=ExtResource("3_v165v")]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_conbf")
-style1 = SubResource("StyleBoxFlat_conbf")
-style2 = SubResource("StyleBoxTexture_f1km4")
-style3 = SubResource("StyleBoxFlat_tgyij")
+theme_override_styles/panel = SubResource("StyleBoxFlat_eweh7")
+style1 = SubResource("StyleBoxFlat_eweh7")
+style2 = SubResource("StyleBoxTexture_igt0t")
+style3 = SubResource("StyleBoxFlat_f1km4")
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Operand" unique_id=1562925422]
 layout_mode = 2

@@ -1,0 +1,171 @@
+[gd_scene format=3 uid="uid://btiud3xatb5ci"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_vnglm"]
+[ext_resource type="Script" uid="uid://b7d6e3obkr6la" path="res://addons/CustomControls/Dialogs/edit_map_generator_presets_dialog.gd" id="2_347i8"]
+[ext_resource type="PackedScene" uid="uid://m1iixxkyrur5" path="res://addons/CustomControls/custom_simple_item_list.tscn" id="2_gmosj"]
+[ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="4_347i8"]
+[ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="5_vnglm"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="7_51beg"]
+
+[sub_resource type="Gradient" id="Gradient_vvvrv"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_fg0k8"]
+gradient = SubResource("Gradient_vvvrv")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qkwnk"]
+resource_local_to_scene = true
+content_margin_left = 3.0
+content_margin_right = 3.0
+bg_color = Color(1, 1, 1, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n14wx"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="Gradient" id="Gradient_3obsl"]
+offsets = PackedFloat32Array(0, 0.369535, 1)
+colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_mtkxg"]
+gradient = SubResource("Gradient_3obsl")
+fill_from = Vector2(0.547009, 1)
+fill_to = Vector2(0.559829, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_k27nu"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ls6xh"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[node name="SelectMapGeneratorEventsDialog" type="Window" unique_id=1795928936]
+oversampling_override = 1.0
+title = "Edit Map Generator Events"
+position = Vector2i(0, 36)
+size = Vector2i(809, 359)
+wrap_controls = true
+transient = true
+exclusive = true
+theme = ExtResource("1_vnglm")
+script = ExtResource("2_347i8")
+
+[node name="Background" type="TextureRect" parent="." unique_id=169465493]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_fg0k8")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1739132568]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=2107948163]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HSplitContainer" parent="MarginContainer/VBoxContainer" unique_id=2038778398]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="LeftColumn" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1962431503]
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+
+[node name="label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/LeftColumn" unique_id=1199659723]
+layout_mode = 2
+text = "Preset List"
+
+[node name="PresetList" parent="MarginContainer/VBoxContainer/HBoxContainer2/LeftColumn" unique_id=2044730304 instance=ExtResource("2_gmosj")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_qkwnk")
+theme_override_styles/focus = SubResource("StyleBoxFlat_qkwnk")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_n14wx")
+theme_override_styles/selected = SubResource("StyleBoxTexture_k27nu")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_ls6xh")
+
+[node name="DeletePreset" parent="MarginContainer/VBoxContainer/HBoxContainer2/LeftColumn" unique_id=225668214 instance=ExtResource("7_51beg")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.65)
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+disabled = true
+text = "Delete Selected"
+
+[node name="RightColumn" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=602407482]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=1383031950]
+layout_mode = 2
+text = "Preset Name:"
+
+[node name="PresetName" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=1306698087 instance=ExtResource("4_347i8")]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+mouse_filter = 2
+editable = false
+selecting_enabled = false
+disabled = true
+metadata/original_text = ""
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=2031998786]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("5_vnglm")
+metadata/_custom_type_script = "uid://cs6g8remlafby"
+
+[node name="PresetDetails" type="RichTextLabel" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/SmoothScrollContainer" unique_id=1172382155]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+bbcode_enabled = true
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=493259790]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 24
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=2142477788]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="CloseButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=858384430 instance=ExtResource("7_51beg")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+text = "Close"
+
+[connection signal="dragged" from="MarginContainer/VBoxContainer/HBoxContainer2" to="." method="_on_h_box_container_2_dragged"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CloseButton" to="." method="_on_cancel_button_pressed"]

@@ -1,0 +1,543 @@
+[gd_scene format=3 uid="uid://cce7758d71n8"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_w4hte"]
+[ext_resource type="Script" uid="uid://d20kgjjhsjnsk" path="res://addons/CustomControls/Dialogs/select_tile_from_tileset_dialog.gd" id="2_44dgo"]
+[ext_resource type="PackedScene" uid="uid://m1iixxkyrur5" path="res://addons/CustomControls/custom_simple_item_list.tscn" id="3_b6ptd"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="4_b6ptd"]
+[ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="4_em6i0"]
+[ext_resource type="Texture2D" uid="uid://dvp2ey8ip37h4" path="res://Assets/Images/Tilesets/terrain.png" id="5_em6i0"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="6_em6i0"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="7_6odri"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="7_rjyjv"]
+[ext_resource type="Texture2D" uid="uid://besm5yw6dd5ns" path="res://addons/CustomControls/Images/dice_icon.png" id="9_rka3q"]
+
+[sub_resource type="Gradient" id="Gradient_vvvrv"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_fg0k8"]
+gradient = SubResource("Gradient_vvvrv")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rjyjv"]
+resource_local_to_scene = true
+content_margin_left = 3.0
+content_margin_right = 3.0
+bg_color = Color(1, 1, 1, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g2g1m"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="Gradient" id="Gradient_3obsl"]
+offsets = PackedFloat32Array(0, 0.369535, 1)
+colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_mtkxg"]
+gradient = SubResource("Gradient_3obsl")
+fill_from = Vector2(0.547009, 1)
+fill_to = Vector2(0.559829, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_aycp5"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_akxct"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aycp5"]
+content_margin_left = 12.0
+content_margin_top = 12.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+draw_center = false
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.14509805, 0.15686275, 0.16470589, 1)
+border_blend = true
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gbpf1"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 8.0
+bg_color = Color(0, 0, 0, 0.5176471)
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vlbbi"]
+resource_local_to_scene = true
+content_margin_left = 3.0
+content_margin_right = 3.0
+bg_color = Color(1, 1, 1, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_im52c"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_glv77"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wkqbe"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="DPITexture" id="DPITexture_570cm"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"m5 1v1h-4v2h14v-2h-4v-1zm-3 4v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8zm1 2h2v6h-2zm4 0h2v6h-2zm4 0h2v6h-2z\"/></svg>
+"
+base_scale = 1.25
+saturation = 2.0
+color_map = {
+Color(1, 0.37254903, 0.37254903, 1): Color(1, 0.47, 0.42, 1),
+Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
+Color(1, 0.8666667, 0.39607844, 1): Color(0.83, 0.78, 0.62, 1)
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rka3q"]
+content_margin_left = 12.0
+content_margin_top = 12.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+draw_center = false
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.14509805, 0.15686275, 0.16470589, 1)
+border_blend = true
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g2g1m"]
+atlas = ExtResource("7_rjyjv")
+region = Rect2(144, 72, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aycp5"]
+atlas = ExtResource("9_rka3q")
+region = Rect2(4, 3, 25, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_akxct"]
+atlas = ExtResource("9_rka3q")
+region = Rect2(36, 3, 25, 26)
+
+[sub_resource type="DPITexture" id="DPITexture_afqh7"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"m8 1c-1.108 0-2 .892-2 2v2h-1v2h1v5a2 2 0 0 0 1 1.7285v1.2715h2v-1.2695a2 2 0 0 0 1-1.7305v-5h1v-2h-1v-2c0-1.108-.892-2-2-2zm-1 6h2v5a1 1 0 0 1 -1 1 1 1 0 0 1 -1-1z\"/></svg>
+"
+base_scale = 1.25
+saturation = 2.0
+color_map = {
+Color(1, 0.37254903, 0.37254903, 1): Color(1, 0.47, 0.42, 1),
+Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
+Color(1, 0.8666667, 0.39607844, 1): Color(0.83, 0.78, 0.62, 1)
+}
+
+[node name="SelectTileFromTilesetDialog" type="Window" unique_id=1795928936 node_paths=PackedStringArray("canvas", "scroll_container", "atlas_list", "data_list", "current_atlas", "cancel_button", "ok_button", "delete_button", "alt_mode_button", "appear_percent_spinbox", "max_quantity_spinbox", "alt_chance_spinbox", "placement_mode_option", "environment_position", "info_label")]
+oversampling_override = 1.0
+title = "Select Title"
+position = Vector2i(0, 36)
+size = Vector2i(1200, 700)
+wrap_controls = true
+transient = true
+exclusive = true
+theme = ExtResource("1_w4hte")
+script = ExtResource("2_44dgo")
+canvas = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/SmoothScrollContainer/CurrentAtlas/Canvas")
+scroll_container = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/SmoothScrollContainer")
+atlas_list = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/LeftColumn/AtlasList")
+data_list = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/DataList")
+current_atlas = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/SmoothScrollContainer/CurrentAtlas")
+cancel_button = NodePath("MarginContainer/VBoxContainer/HBoxContainer/CancelButton")
+ok_button = NodePath("MarginContainer/VBoxContainer/HBoxContainer/OKButton")
+delete_button = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/RemoveTile")
+alt_mode_button = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer/AlternativeTile")
+appear_percent_spinbox = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer2/ProbabilityOfAppearance")
+max_quantity_spinbox = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer8/MaxQuantity")
+alt_chance_spinbox = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer3/ProbabilityOfAppearanceAlternative")
+placement_mode_option = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer7/PlacementMode")
+environment_position = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer7/EnvironmentPositions")
+info_label = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/MidColum/MarginContainer/TileLabel")
+
+[node name="Background" type="TextureRect" parent="." unique_id=169465493]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_fg0k8")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1739132568]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=2107948163]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HSplitContainer" parent="MarginContainer/VBoxContainer" unique_id=2038778398]
+layout_mode = 2
+size_flags_vertical = 3
+split_offsets = PackedInt32Array(200, 0)
+split_offset = 200
+
+[node name="LeftColumn" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=573033032]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="AtlasList" parent="MarginContainer/VBoxContainer/HBoxContainer2/LeftColumn" unique_id=1880395230 instance=ExtResource("3_b6ptd")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/v_separation = -1
+theme_override_styles/panel = SubResource("StyleBoxFlat_rjyjv")
+theme_override_styles/focus = SubResource("StyleBoxFlat_rjyjv")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_g2g1m")
+theme_override_styles/selected = SubResource("StyleBoxTexture_aycp5")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_akxct")
+item_count = 2
+item_0/text = "Atlas 0"
+item_1/text = "Atlas 1"
+odd_line_color = Color(0.172549, 0.184314, 0.192157, 1)
+event_line_color = Color(0.145098, 0.156863, 0.164706, 1)
+
+[node name="MidColum" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=649839381]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_aycp5")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum" unique_id=605220506]
+layout_mode = 2
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer" unique_id=1996378324]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("4_em6i0")
+metadata/_custom_type_script = "uid://cs6g8remlafby"
+
+[node name="CurrentAtlas" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/SmoothScrollContainer" unique_id=1044560000]
+unique_name_in_owner = true
+self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(1024, 1024)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource("5_em6i0")
+expand_mode = 1
+
+[node name="Canvas" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/SmoothScrollContainer/CurrentAtlas" unique_id=799600079]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1024, 1024)
+layout_mode = 1
+anchors_preset = 0
+offset_right = 1024.0
+offset_bottom = 1024.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="CanvasHelp" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer" unique_id=1750663132]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_colors/font_color = Color(1, 0.22745098, 0.22352941, 1)
+text = "Click to select any tile"
+horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum" unique_id=1390375597]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+mouse_filter = 2
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 48
+
+[node name="TileLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/MarginContainer" unique_id=1003200315]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1.1670696, 0.16315776, 0.3630316, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("StyleBoxFlat_gbpf1")
+text = "Tile 0, 0"
+
+[node name="RightColumn" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=602407482]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="DataList" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=1744179405 instance=ExtResource("3_b6ptd")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(380, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/v_separation = -1
+theme_override_styles/panel = SubResource("StyleBoxFlat_vlbbi")
+theme_override_styles/focus = SubResource("StyleBoxFlat_vlbbi")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_im52c")
+theme_override_styles/selected = SubResource("StyleBoxTexture_glv77")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_wkqbe")
+allow_reselect = true
+odd_line_color = Color(0.172549, 0.184314, 0.192157, 1)
+event_line_color = Color(0.145098, 0.156863, 0.164706, 1)
+
+[node name="RemoveTile" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=565792642 instance=ExtResource("4_b6ptd")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.65)
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+tooltip_text = "Remove the selected tile from the list."
+disabled = true
+text = "Remove Tile"
+icon = SubResource("DPITexture_570cm")
+
+[node name="ExtraControls" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=831860319]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_rka3q")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls" unique_id=422186291]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer" unique_id=1451389705]
+layout_mode = 2
+
+[node name="Icon" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer4" unique_id=1869067021]
+layout_mode = 2
+texture = SubResource("AtlasTexture_g2g1m")
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer4" unique_id=1383031950]
+layout_mode = 2
+text = "Placement Mode:"
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer" unique_id=822848685]
+layout_mode = 2
+
+[node name="PlacementMode" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer7" unique_id=621784070 instance=ExtResource("6_em6i0")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Select where this tile can be installed (walls, floors, or both)"
+focus_mode = 0
+mouse_filter = 2
+disabled = true
+selected = 0
+item_count = 3
+popup/item_0/text = "Anywhere"
+popup/item_0/id = 0
+popup/item_1/text = "Floor Only"
+popup/item_1/id = 1
+popup/item_2/text = "Wall Only"
+popup/item_2/id = 2
+metadata/original_focus_mode = 2
+metadata/original_mouse_filer = 0
+
+[node name="EnvironmentPositions" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer7" unique_id=613183654 instance=ExtResource("6_em6i0")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Select the part of the floor/wall where the tile will appear"
+focus_mode = 0
+mouse_filter = 2
+disabled = true
+selected = 0
+item_count = 10
+popup/item_0/text = "Use Any Position"
+popup/item_0/id = 0
+popup/item_1/text = "At the Top"
+popup/item_1/id = 1
+popup/item_2/text = "At the Bottom"
+popup/item_2/id = 2
+popup/item_3/text = "At the Center"
+popup/item_3/id = 3
+popup/item_4/text = "On the Left"
+popup/item_4/id = 4
+popup/item_5/text = "On the Right"
+popup/item_5/id = 5
+popup/item_6/text = "Top Left"
+popup/item_6/id = 6
+popup/item_7/text = "Top Right"
+popup/item_7/id = 7
+popup/item_8/text = "Bottom Left"
+popup/item_8/id = 8
+popup/item_9/text = "Bottom Right"
+popup/item_9/id = 9
+metadata/original_focus_mode = 2
+metadata/original_mouse_filer = 0
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer" unique_id=1997441179]
+layout_mode = 2
+
+[node name="Icon" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer5" unique_id=1721015320]
+layout_mode = 2
+size_flags_vertical = 4
+texture = SubResource("AtlasTexture_aycp5")
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer5" unique_id=1189627869]
+layout_mode = 2
+text = "Probability Of Appearance:"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer" unique_id=1345086579]
+layout_mode = 2
+
+[node name="ProbabilityOfAppearance" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer2" unique_id=20733617 instance=ExtResource("7_6odri")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "the probability (0–100%) that this tile will appear when painted"
+mouse_filter = 2
+min_value = 0.01
+step = 0.001
+value = 0.01
+rounded = false
+editable = false
+disabled = true
+_custom_value = 0.01
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer2" unique_id=1946845137]
+layout_mode = 2
+text = " %"
+
+[node name="HBoxContainer8" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer" unique_id=1327141662]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer8" unique_id=1325964842]
+layout_mode = 2
+text = "Max Quantity:"
+
+[node name="MaxQuantity" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer8" unique_id=1854987636 instance=ExtResource("7_6odri")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Maximum number of entities from this tile that will be displayed on the map"
+mouse_filter = 2
+value = 1.0
+allow_greater = true
+editable = false
+disabled = true
+value_replace = {
+"0": "Unlimited"
+}
+_custom_value = 1.0
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer" unique_id=857985149]
+layout_mode = 2
+
+[node name="Icon" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer6" unique_id=158698767]
+layout_mode = 2
+size_flags_vertical = 4
+texture = SubResource("AtlasTexture_akxct")
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer6" unique_id=414544734]
+layout_mode = 2
+text = "Probability Of Alternative:"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer" unique_id=1136318787]
+layout_mode = 2
+
+[node name="ProbabilityOfAppearanceAlternative" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer3" unique_id=1799206523 instance=ExtResource("7_6odri")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "the probability (0–100%) that this tile will appear when painted in its alternate version"
+mouse_filter = 2
+min_value = 0.01
+step = 0.001
+value = 0.01
+rounded = false
+editable = false
+disabled = true
+_custom_value = 0.01
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer3" unique_id=1033094710]
+layout_mode = 2
+text = " %"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer" unique_id=837142283]
+layout_mode = 2
+
+[node name="AlternativeTile" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer" unique_id=225668214 instance=ExtResource("4_b6ptd")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.65)
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Enables the alternative tile selection mode for the tile selected in the top list.
+
+[Note]: You can only select an alternative tile from the same atlas as the selected tile."
+disabled = true
+toggle_mode = true
+text = "Pick Alternative tile"
+icon = SubResource("DPITexture_afqh7")
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=493259790]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=2142477788]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=529615738 instance=ExtResource("4_b6ptd")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=858384430 instance=ExtResource("4_b6ptd")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+text = "Cancel"
+
+[connection signal="dragged" from="MarginContainer/VBoxContainer/HBoxContainer2" to="." method="_on_h_box_container_2_dragged"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer7/EnvironmentPositions" to="." method="_on_environment_positions_item_selected"]

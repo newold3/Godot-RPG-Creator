@@ -26,6 +26,9 @@ func get_class() -> String:
 ## Description of the costume/set.
 @export var description: String = ""
 
+## List of usage restrictions for this equipment.
+@export var equipment_restriction: RPGEquipRestrictions = RPGEquipRestrictions.new()
+
 ## Price of the costume/set.
 @export var price: int = 0
 
@@ -55,10 +58,16 @@ func get_class() -> String:
 ## Additional notes about the costume/set.
 @export var notes: String = ""
 
+var icon: String :
+	get():
+		var lpc_part_path = lpc_part
+		var preview_path = lpc_part_path.get_basename().trim_suffix("_data") + "_preview.png"
+		return preview_path
+
 
 ## Clears all the properties of the costume/set.
 func clear() -> void:
-	for v in ["name", "description", "lpc_part", "notes"]:
+	for v in ["name", "description", "lpc_part", "notes", "equipment_restriction"]:
 		set(v, "")
 	for v in [traits, craft_materials, disassemble_materials]:
 		v.clear()
@@ -109,6 +118,11 @@ func clone(value: bool = true) -> RPGCostume:
 		new_costume.craft_materials[i] = new_costume.craft_materials[i].clone(value)
 	for i in new_costume.disassemble_materials.size():
 		new_costume.disassemble_materials[i] = new_costume.disassemble_materials[i].clone(value)
+	
+	if equipment_restriction:
+		new_costume.equipment_restriction = equipment_restriction.clone(value)
+	else:
+		new_costume.equipment_restriction = RPGEquipRestrictions.new()
 
 	return new_costume
 

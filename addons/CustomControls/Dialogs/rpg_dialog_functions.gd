@@ -453,7 +453,7 @@ func _on_dialog_tree_exiting(dialog: Window) -> void:
 func _on_dialog_window_input(event: InputEvent, dialog: Window) -> void:
 	if event is InputEventKey:
 		if event.is_pressed():
-			if event.keycode == KEY_ESCAPE:
+			if event.keycode == KEY_ESCAPE and not dialog.has_meta("cancel_scape"):
 				if "_on_cancel_button_pressed" in dialog:
 					dialog._on_cancel_button_pressed()
 					get_viewport().set_input_as_handled()

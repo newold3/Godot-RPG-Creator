@@ -297,59 +297,55 @@ func draw_item(item: Dictionary):
 	var item_data = item.data
 	var base_color = item_data.get("item_color", Color.WHITE)
 	base_color.a = item.alpha
-	
+
 	var pos = item.current_pos
 	var prefix = item_data.get("prefix", "")
 	var item_name = item_data.get("item_name", "Item")
 	var quantity_text = " x%d" % item_data.get("quantity", 1)
-	
-	# Calculate text sizes
+	var icon_align = item_data.get("icon_align", "left")
+
 	var prefix_size = font.get_string_size(prefix, HORIZONTAL_ALIGNMENT_LEFT, -1, text_size) if prefix != "" else Vector2.ZERO
 	var name_size = font.get_string_size(item_name, HORIZONTAL_ALIGNMENT_LEFT, -1, text_size)
 	var quantity_size = font.get_string_size(quantity_text, HORIZONTAL_ALIGNMENT_LEFT, -1, text_size)
 	var text_height = max(prefix_size.y, name_size.y, quantity_size.y)
-	
-	# StyleBox margins
-	var margins = Vector4.ZERO # left, top, right, bottom
+
+	var margins = Vector4.ZERO
 	if text_background_style:
 		margins.x = text_background_style.get_content_margin(SIDE_LEFT)
 		margins.y = text_background_style.get_content_margin(SIDE_TOP)
 		margins.z = text_background_style.get_content_margin(SIDE_RIGHT)
 		margins.w = text_background_style.get_content_margin(SIDE_BOTTOM)
-	
-	# Draw StyleBox with REAL item size
+
 	if text_background_style:
 		var style_rect = Rect2(pos, item.size)
 		text_background_style.draw(get_canvas_item(), style_rect)
-	
-	# Content position
+
 	var content_pos = pos + Vector2(margins.x, margins.y)
 	var content_height = item.size.y - margins.y - margins.w
-	
-	# Initial content position
 	var current_x = content_pos.x
-	
-	# Text position
+
 	var text_y = content_pos.y + (content_height * 0.5) + (font.get_ascent(text_size) - text_height * 0.5)
 	var text_pos = Vector2(current_x, text_y)
-	
-	# Draw prefix
+
 	if prefix != "":
 		var prefix_color_alpha = prefix_color
 		prefix_color_alpha.a = item.alpha
 		draw_string(font, text_pos, prefix, HORIZONTAL_ALIGNMENT_LEFT, -1, text_size, prefix_color_alpha)
 		text_pos.x += prefix_size.x
-	
-	# Draw icon if exists
-	if item.icon:
+
+	if item.icon and icon_align != "right":
 		var icon_y = content_pos.y + (content_height - icon_size.y) * 0.5
 		draw_texture_rect(item.icon, Rect2(Vector2(text_pos.x, icon_y), icon_size), false)
 		text_pos.x += icon_size.x + icon_separation
-	
-	# Draw rest of texts
+
 	draw_string(font, text_pos, item_name, HORIZONTAL_ALIGNMENT_LEFT, -1, text_size, base_color)
 	text_pos.x += name_size.x
-	
+
 	var quantity_color_alpha = quantity_color
 	quantity_color_alpha.a = item.alpha
 	draw_string(font, text_pos, quantity_text, HORIZONTAL_ALIGNMENT_LEFT, -1, text_size, quantity_color_alpha)
+
+	if item.icon and icon_align == "right":
+		var icon_x = pos.x + item.size.x - margins.z - icon_size.x
+		var icon_y = content_pos.y + (content_height - icon_size.y) * 0.5
+		draw_texture_rect(item.icon, Rect2(Vector2(icon_x, icon_y), icon_size), false)

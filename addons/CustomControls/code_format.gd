@@ -96,11 +96,27 @@ func get_formatted_code(command: RPGEventCommand, font: Font, font_size: int, al
 #endregion
 
 #region Helpers
+
+func _get_real_id(data: Array, id: int) -> int:
+	if id <= 0: return id
+	
+	for i in range(data.size()):
+		var item = data[i]
+		if item and typeof(item) == TYPE_OBJECT and "_uniq_id" in item and item.get("_uniq_id") == id:
+			return i
+			
+	return id
+
+
 func get_item_data(data: Array, id: int) -> Variant:
-	return data[id] if id < data.size() else null
+	var real_id = _get_real_id(data, id)
+	return data[real_id] if real_id >= 0 and real_id < data.size() else null
+
 
 func get_item_data_name(data: Array, id: int) -> String:
-	return "< %s: %s >" % [id, data[id].name] if id < data.size() else "⚠ Invalid Data"
+	var real_id = _get_real_id(data, id)
+	return "< %s: %s >" % [real_id, data[real_id].name] if real_id >= 0 and real_id < data.size() else "⚠ Invalid Data"
+
 
 func get_event_name(id: int) -> String:
 	match id:
@@ -108,19 +124,28 @@ func get_event_name(id: int) -> String:
 			return "Player"
 		0: # This Event
 			return "This Event"
-		_: # Event _uniq_id
+		_: # Event _uniq_id or Fallback ID
 			var edited_scene = RPGSYSTEM.editor_interface.get_edited_scene_root()
 			if edited_scene and edited_scene is RPGMap:
-				for ev: RPGEvent in edited_scene.events.get_events():
-					if ev._uniq_id == id:
+				var events = edited_scene.events.get_events()
+				#  UID
+				for ev: RPGEvent in events:
+					if "_uniq_id" in ev and ev._uniq_id == id:
+						return("%s: %s" % [ev.id, ev.name])
+				# Fallback classics ID
+				for ev: RPGEvent in events:
+					if ev.id == id:
 						return("%s: %s" % [ev.id, ev.name])
 
 	return "⚠ Invalid Data"
 
+
 func get_actor_name(id: int) -> String:
-	if id > 0 && RPGSYSTEM.database.actors.size() > id:
-		return "< %s: %s >" % [id, RPGSYSTEM.database.actors[id].name]
+	var real_id = _get_real_id(RPGSYSTEM.database.actors, id)
+	if real_id > 0 && RPGSYSTEM.database.actors.size() > real_id:
+		return "< %s: %s >" % [real_id, RPGSYSTEM.database.actors[real_id].name]
 	return "⚠ Invalid Data"
+
 
 func get_formated_movement_command(command: RPGMovementCommand) -> String:
 	if !command:
@@ -181,6 +206,7 @@ func get_formated_movement_command(command: RPGMovementCommand) -> String:
 		45: return "Script: %s" % command.parameters[0]
 		_: return ""
 
+
 func get_trait_name(item: RPGTrait) -> Array:
 	var column = []
 	var left = [
@@ -199,20 +225,23 @@ func get_trait_name(item: RPGTrait) -> Array:
 	match item.code:
 		1, 27:
 			var list = database.types.element_types
-			if list.size() > item.data_id:
-				column.append("%s * %s %%" % [list[item.data_id], item.value])
+			var real_id = _get_real_id(list, item.data_id)
+			if list.size() > real_id:
+				column.append("%s * %s %%" % [list[real_id], item.value])
 		2, 5:
 			var params = ["Max HP", "Max MP", "Attack", "Defense", "Magic Attack", 
 				"Magic Defense", "Agility", "Luck"]
 			column.append("%s * %s %%" % [params[item.data_id], item.value])
 		3:
 			var list = database.states
-			if list.size() > item.data_id:
-				column.append("%s * %s %%" % [list[item.data_id].name, item.value])
+			var real_id = _get_real_id(list, item.data_id)
+			if list.size() > real_id:
+				column.append("%s * %s %%" % [list[real_id].name, item.value])
 		4:
 			var list = database.states
-			if list.size() > item.data_id:
-				column.append(list[item.data_id].name)
+			var real_id = _get_real_id(list, item.data_id)
+			if list.size() > real_id:
+				column.append(list[real_id].name)
 		6:
 			var ex_params = ["Hit Rate", "Evasion Rate", "Critical Rate", "Critical Evasion", 
 				"Magic Evasion", "Magic Reflection", "Counter Attack", "HP Regeneration", 
@@ -225,29 +254,36 @@ func get_trait_name(item: RPGTrait) -> Array:
 			column.append("%s * %s %%" % [sp_params[item.data_id], item.value])
 		8:
 			var list = database.types.element_types
-			column.append(list[item.data_id] if list.size() > item.data_id else "⚠ Invalid Data")
+			var real_id = _get_real_id(list, item.data_id)
+			column.append(list[real_id] if list.size() > real_id else "⚠ Invalid Data")
 		9:
 			var list = database.states
-			column.append("%s + %s %%" % [list[item.data_id].name, item.value] if list.size() > item.data_id else "⚠ Invalid Data")
+			var real_id = _get_real_id(list, item.data_id)
+			column.append("%s + %s %%" % [list[real_id].name, item.value] if list.size() > real_id else "⚠ Invalid Data")
 		10, 11, 22:
 			column.append(str(item.value) + ("%" if item.code == 22 else ""))
 		12, 15, 16:
 			var list = database.skills
-			column.append(list[item.data_id].name if list.size() > item.data_id else "⚠ Invalid Data")
+			var real_id = _get_real_id(list, item.data_id)
+			column.append(list[real_id].name if list.size() > real_id else "⚠ Invalid Data")
 		13, 14:
 			var list = database.types.skill_types
-			column.append(list[item.data_id] if list.size() > item.data_id else "⚠ Invalid Data")
+			var real_id = _get_real_id(list, item.data_id)
+			column.append(list[real_id] if list.size() > real_id else "⚠ Invalid Data")
 		17:
 			var list = database.types.weapon_types
-			column.append("All Weapon Types" if item.data_id == 0 else list[item.data_id - 1] 
-				if list.size() > item.data_id - 1 else "⚠ Invalid Data")
+			var real_id = _get_real_id(list, item.data_id)
+			column.append("All Weapon Types" if real_id == 0 else list[real_id - 1] 
+				if list.size() > real_id - 1 else "⚠ Invalid Data")
 		18:
 			var list = database.types.armor_types
-			column.append("All Armor Types" if item.data_id == 0 else list[item.data_id - 1] 
-				if list.size() > item.data_id - 1 else "⚠ Invalid Data")
+			var real_id = _get_real_id(list, item.data_id)
+			column.append("All Armor Types" if real_id == 0 else list[real_id - 1] 
+				if list.size() > real_id - 1 else "⚠ Invalid Data")
 		19, 20:
 			var list = database.types.equipment_types
-			column.append(list[item.data_id] if list.size() > item.data_id else "⚠ Invalid Data")
+			var real_id = _get_real_id(list, item.data_id)
+			column.append(list[real_id] if list.size() > real_id else "⚠ Invalid Data")
 		21:
 			column.append(["Normal", "Dual Wield"][item.data_id])
 		23:
@@ -263,20 +299,31 @@ func get_trait_name(item: RPGTrait) -> Array:
 		26:
 			var specials = ["MP Cost Down", "Double Cast Chance"]
 			column.append("%s * %s %%" % [specials[item.data_id], item.value])
+			
 	return column
+
 
 func _get_actor_name_from_actor_type(actor_type: int, actor_id: int) -> String:
 	if actor_type == 0:
 		if actor_id == 0:
 			return "Entire Party"
-		if actor_id > 0 and RPGSYSTEM.database.actors.size() > actor_id:
-			return "[%s: %s]" % [actor_id, RPGSYSTEM.database.actors[actor_id].name]
-		return "[%s: ]" % actor_id
+			
+		var real_id = _get_real_id(RPGSYSTEM.database.actors, actor_id)
+		if real_id > 0 and RPGSYSTEM.database.actors.size() > real_id:
+			return "[%s: %s]" % [real_id, RPGSYSTEM.database.actors[real_id].name]
+		return "[%s: ]" % real_id
+		
 	return "{%s: %s}" % [actor_id, RPGSYSTEM.system.variables.get_item_name(actor_id)]
+
 
 func _format_change_actor_stat(data: FormatData, stat_name: String, check_level_up: bool = false) -> Array:
 	var actor_type = data.command.parameters.get("actor_type", 0)
-	var actor_id = data.command.parameters.get("actor_id", 0) if actor_type == 0 else data.command.parameters.get("actor_id", 1)
+	var uid_actor = data.command.parameters.get("actor_id", 0) if actor_type == 0 else data.command.parameters.get("actor_id", 1)
+	
+	var actor_id = uid_actor
+	if actor_type == 0 and uid_actor > 0:
+		actor_id = _get_real_id(RPGSYSTEM.database.actors, uid_actor)
+		
 	var n1 = _get_actor_name_from_actor_type(actor_type, actor_id)
 	var n2 = "+" if data.command.parameters.get("operand", 0) == 0 else "-"
 	var operand_type = data.command.parameters.get("operand_type", 0)
@@ -299,8 +346,10 @@ func _format_change_actor_stat(data: FormatData, stat_name: String, check_level_
 	
 	return formatted_text
 
+
 func _get_wait_text(wait: bool) -> String:
 	return "" if !wait else ", wait"
+
 
 func _get_image_command_parameter(data: FormatData) -> Dictionary:
 	var result = {}
@@ -317,7 +366,7 @@ func _get_image_command_parameter(data: FormatData) -> Dictionary:
 			var id = str(v.x).pad_zeros(str(RPGSYSTEM.system.variables.size()).length())
 			var v1_name = id + ": " + RPGSYSTEM.system.variables.get_item_name(v.x)
 			var id2 = str(v.y).pad_zeros(str(RPGSYSTEM.system.variables.size()).length())
-			var v2_name = id + ": " + RPGSYSTEM.system.variables.get_item_name(v.y)
+			var v2_name = id2 + ": " + RPGSYSTEM.system.variables.get_item_name(v.y)
 			pos = "p:(#%s, #%s)" % [v1_name, v2_name]
 		main_parameter = pos
 	elif data.command.code == 77:
@@ -334,6 +383,7 @@ func _get_image_command_parameter(data: FormatData) -> Dictionary:
 	result["param_color"] = param_color
 	return result
 
+
 func get_parameter_name(id: int) -> String:
 	var items = RPGActor.get_parameter_list(false)
 	
@@ -346,6 +396,7 @@ func get_parameter_name(id: int) -> String:
 		parameter = "⚠ Invalid Data"
 	
 	return parameter
+
 #endregion
 
 
@@ -759,9 +810,10 @@ func _format_command_13(data: FormatData) -> Array:
 		var variable_id = str(value).pad_zeros(str(RPGSYSTEM.system.variables.size()).length())
 		value = "{#%s}" % variable_id
 	var item_name = ""
-	var item_id = data.command.parameters.get("item_id", 0)
+	var uid = data.command.parameters.get("item_id", 0)
+	var item_id = RPGSYSTEM.uid_to_id("items", uid) if uid > 0 else 0
 	var items = RPGSYSTEM.database.items
-	if items.size() > item_id:
+	if items.size() > item_id and item_id > 0:
 		item_name = "%s: %s" % [
 			str(item_id).pad_zeros(str(items.size()).length()),
 			items[item_id].name
@@ -789,9 +841,10 @@ func _format_command_14(data: FormatData) -> Array:
 		var variable_id = str(value).pad_zeros(str(RPGSYSTEM.system.variables.size()).length())
 		value = "{#%s}" % variable_id
 	var item_name = ""
-	var item_id = data.command.parameters.get("item_id", 0)
+	var uid = data.command.parameters.get("item_id", 0)
+	var item_id = RPGSYSTEM.uid_to_id("weapons", uid) if uid > 0 else 0
 	var items = RPGSYSTEM.database.weapons
-	if items.size() > item_id:
+	if items.size() > item_id and item_id > 0:
 		item_name = "%s: %s" % [
 			str(item_id).pad_zeros(str(items.size()).length()),
 			items[item_id].name
@@ -823,9 +876,10 @@ func _format_command_15(data: FormatData) -> Array:
 		var variable_id = str(value).pad_zeros(str(RPGSYSTEM.system.variables.size()).length())
 		value = "{#%s}" % variable_id
 	var item_name = ""
-	var item_id = data.command.parameters.get("item_id", 0)
+	var uid = data.command.parameters.get("item_id", 0)
+	var item_id = RPGSYSTEM.uid_to_id("armors", uid) if uid > 0 else 0
 	var items = RPGSYSTEM.database.armors
-	if items.size() > item_id:
+	if items.size() > item_id and item_id > 0:
 		item_name = "%s: %s" % [
 			str(item_id).pad_zeros(str(items.size()).length()),
 			items[item_id].name
@@ -846,6 +900,7 @@ func _format_command_15(data: FormatData) -> Array:
 	})
 	return formatted_text
 
+
 # Comando 127: Change Costumes / Sets
 func _format_command_127(data: FormatData) -> Array:
 	var formatted_text = []
@@ -855,9 +910,10 @@ func _format_command_127(data: FormatData) -> Array:
 		var variable_id = str(value).pad_zeros(str(RPGSYSTEM.system.variables.size()).length())
 		value = "{#%s}" % variable_id
 	var item_name = ""
-	var item_id = data.command.parameters.get("item_id", 0)
+	var uid = data.command.parameters.get("item_id", 0)
+	var item_id = RPGSYSTEM.uid_to_id("costumes", uid) if uid > 0 else 0
 	var items = RPGSYSTEM.database.costumes
-	if items.size() > item_id:
+	if items.size() > item_id and item_id > 0:
 		item_name = "%s: %s" % [
 			str(item_id).pad_zeros(str(items.size()).length()),
 			items[item_id].name
@@ -878,19 +934,22 @@ func _format_command_127(data: FormatData) -> Array:
 	})
 	return formatted_text
 
-# Change Party Members
+# Comando 16: Change Party Members
 func _format_command_16(data: FormatData) -> Array:
 	var formatted_text = []
 	var operation = "Add" if data.command.parameters.get("operation_type", 0) == 0 else "Remove"
 	var actor_name = ""
-	var actor_id = data.command.parameters.get("actor_id", 1)
+	var uid = data.command.parameters.get("actor_id", 1)
+	var actor_id = RPGSYSTEM.uid_to_id("actors", uid) if uid > 0 else 0
 	var items = RPGSYSTEM.database.actors
 	
-	if items.size() > actor_id:
+	if items.size() > actor_id and actor_id > 0:
 		actor_name = "%s: %s" % [
 			str(actor_id).pad_zeros(str(items.size()).length()),
 			items[actor_id].name
 		]
+	else:
+		actor_name = "⚠ Invalid Actor"
 	
 	var initialize = " (initialize)" if data.command.parameters.get("initialize", false) and operation == "Add" else ""
 	
@@ -939,7 +998,7 @@ func _format_command_17(data: FormatData) -> Array:
 	
 	return formatted_text
 
-# Control Variables
+## Formats the Control Variables command supporting UIDs and Legacy IDs
 func _format_command_18(data: FormatData) -> Array:
 	var formatted_text = []
 	var from = int(data.command.parameters.get("from", 1))
@@ -961,7 +1020,7 @@ func _format_command_18(data: FormatData) -> Array:
 	
 	match operand_type:
 		0: # Constant
-			text = data.command.parameters.get("value1", 0)
+			text = str(data.command.parameters.get("value1", 0))
 		1: # Variable
 			var target = int(data.command.parameters.get("value1", 0))
 			var variable_id = str(target).pad_zeros(str(RPGSYSTEM.system.variables.size()).length())
@@ -977,35 +1036,29 @@ func _format_command_18(data: FormatData) -> Array:
 			var target = int(data.command.parameters.get("value1", 0))
 			match target:
 				0: # Item
-					var items = RPGSYSTEM.database.items
-					var id = int(data.command.parameters.get("value2", 0))
-					if items.size() > id:
-						var item_name = "%s:%s" % [
-							str(id).pad_zeros(str(items.size()).length()),
-							items[id].name
-						]
+					var uid = int(data.command.parameters.get("value2", 0))
+					var item_data = RPGSYSTEM.get_data("items", uid)
+					if item_data:
+						var classic_id = RPGSYSTEM.uid_to_id("items", uid)
+						var item_name = "%s:%s" % [str(classic_id).pad_zeros(str(RPGSYSTEM.database.items.size()).length()), item_data.name]
 						text = "Number of the item [%s]" % item_name
 					else:
 						text = "Number of the ?"
 				1: # Weapon
-					var items = RPGSYSTEM.database.weapons
-					var id = int(data.command.parameters.get("value2", 0))
-					if items.size() > id:
-						var item_name = "%s:%s" % [
-							str(id).pad_zeros(str(items.size()).length()),
-							items[id].name
-						]
+					var uid = int(data.command.parameters.get("value2", 0))
+					var item_data = RPGSYSTEM.get_data("weapons", uid)
+					if item_data:
+						var classic_id = RPGSYSTEM.uid_to_id("weapons", uid)
+						var item_name = "%s:%s" % [str(classic_id).pad_zeros(str(RPGSYSTEM.database.weapons.size()).length()), item_data.name]
 						text = "Number of the weapon [%s]" % item_name
 					else:
 						text = "Number of the ?"
 				2: # Armor
-					var items = RPGSYSTEM.database.armors
-					var id = int(data.command.parameters.get("value2", 0))
-					if items.size() > id:
-						var item_name = "%s:%s" % [
-							str(id).pad_zeros(str(items.size()).length()),
-							items[id].name
-						]
+					var uid = int(data.command.parameters.get("value2", 0))
+					var item_data = RPGSYSTEM.get_data("armors", uid)
+					if item_data:
+						var classic_id = RPGSYSTEM.uid_to_id("armors", uid)
+						var item_name = "%s:%s" % [str(classic_id).pad_zeros(str(RPGSYSTEM.database.armors.size()).length()), item_data.name]
 						text = "Number of the armor [%s]" % item_name
 					else:
 						text = "Number of the ?"
@@ -1013,9 +1066,10 @@ func _format_command_18(data: FormatData) -> Array:
 					var index = data.command.parameters.get("value3", 0)
 					var parameter = PackedStringArray(["Level", "Experience"]) + RPGSYSTEM.database.types.main_parameters
 					var param_name: String = ""
+					
 					if parameter.size() > index:
 						param_name = parameter[index]
-					elif index > parameter.size():
+					elif index >= parameter.size():
 						var param_id = index - parameter.size() - 1
 						var user_parameters = RPGSYSTEM.database.types.user_parameters
 						if param_id >= 0 and user_parameters.size() > param_id:
@@ -1023,17 +1077,15 @@ func _format_command_18(data: FormatData) -> Array:
 						else:
 							param_name = "User Parameter ?"
 					
-					var items = RPGSYSTEM.database.actors
-					var id = int(data.command.parameters.get("value2", 0))
-					if items.size() > id:
-						var item_name = "%s:%s" % [
-							str(id).pad_zeros(str(items.size()).length()),
-							items[id].name
-						]
+					var uid = int(data.command.parameters.get("value2", 0))
+					var item_data = RPGSYSTEM.get_data("actors", uid)
+					if item_data:
+						var classic_id = RPGSYSTEM.uid_to_id("actors", uid)
+						var item_name = "%s:%s" % [str(classic_id).pad_zeros(str(RPGSYSTEM.database.actors.size()).length()), item_data.name]
 						text = "%s of actor [%s]" % [param_name, item_name]
 					else:
 						text = "%s of ?" % param_name
-				4: # Enemy
+				4: # Enemy (Does not require UID translation because it refers to the troop battler index #1, #2...)
 					var parameter = [
 						"HP", "MP", "Max HP", "Max MP", "Attack", "Defense",
 						"Magic Attack", "Magic Defense", "Agility", "Luck", "TP"
@@ -1065,20 +1117,18 @@ func _format_command_18(data: FormatData) -> Array:
 					if index == 19:
 						var user_parameters = RPGSYSTEM.database.types.user_parameters
 						var param_id = data.command.parameters.get("value3", 0)
-						if param_id > 0 and user_parameters.size() > param_id:
+						if param_id >= 0 and user_parameters.size() > param_id:
 							text = option + " < %s >" % user_parameters[param_id].name
 						else:
 							text = option + " < ? >"
 					else:
 						text = option
 				9: # Profession
-					var items = RPGSYSTEM.database.professions
-					var id = int(data.command.parameters.get("value2", 0))
-					if items.size() > id:
-						var item_name = "%s:%s" % [
-							str(id).pad_zeros(str(items.size()).length()),
-							items[id].name
-						]
+					var uid = int(data.command.parameters.get("value2", 0))
+					var item_data = RPGSYSTEM.get_data("professions", uid)
+					if item_data:
+						var classic_id = RPGSYSTEM.uid_to_id("professions", uid)
+						var item_name = "%s:%s" % [str(classic_id).pad_zeros(str(RPGSYSTEM.database.professions.size()).length()), item_data.name]
 						text = "Level of the profession [%s]" % item_name
 					else:
 						text = "Level of the ?"
@@ -1102,6 +1152,7 @@ func _format_command_18(data: FormatData) -> Array:
 						"save_count", "game_progress", "total_money_earned", "total_money_spent", "player_deaths", "chests_opened", "secrets_found", "max_level_reached", "dialogues_completed", "rare_items_found",
 						"missions/completed", "missions/in_progress", "missions/failed", "missions/total_found"
 					]
+					
 					if value < base_options.size():
 						option = base_options[value]
 					else:
@@ -1111,18 +1162,41 @@ func _format_command_18(data: FormatData) -> Array:
 						else:
 							option = "⚠ Invalid Data"
 					
-					var extra = tr("Item") + " " if value in [4, 5, 6] \
-						else tr("Weapon") + " " if value in [7, 8, 9] \
-						else tr("Armor") + " " if value in [10, 11, 12] \
-						else tr("Profession") + " " if value in [31] \
-						else ""
-					if not extra.is_empty():
-						text = option + " (%sID = %s)" % [extra, data.command.parameters.get("value3", 1)]
+					var db_key = ""
+					var extra_txt = ""
+					
+					if value in [4, 5, 6]:
+						db_key = "items"
+						extra_txt = tr("Item")
+					elif value in [7, 8, 9]:
+						db_key = "weapons"
+						extra_txt = tr("Weapon")
+					elif value in [10, 11, 12]:
+						db_key = "armors"
+						extra_txt = tr("Armor")
+					elif value in [31]:
+						db_key = "professions"
+						extra_txt = tr("Profession")
+					elif value == 2:
+						db_key = "enemies"
+						extra_txt = tr("Enemy")
+					elif value == 3:
+						db_key = "skills"
+						extra_txt = tr("Skill")
+						
+					if not db_key.is_empty():
+						var target_uid = data.command.parameters.get("value3", 1)
+						var target_data = RPGSYSTEM.get_data(db_key, target_uid)
+						if target_data:
+							var classic_id = RPGSYSTEM.uid_to_id(db_key, target_uid)
+							text = option + " (%s %s: %s)" % [extra_txt, classic_id, target_data.name]
+						else:
+							text = option + " (%s ⚠ Invalid Data)" % extra_txt
 					else:
 						text = option
 					
 		4: # Script
-			text = data.command.parameters.get("value1", 0)
+			text = str(data.command.parameters.get("value1", ""))
 	
 	formatted_text.append({
 		"texts": [
@@ -1267,7 +1341,7 @@ func _format_command_20(data: FormatData) -> Array:
 	
 	return formatted_text
 
-# Conditional Branch
+## Formats the Conditional Branch command replacing classic IDs with UIDs
 func _format_command_21(data: FormatData) -> Array:
 	var formatted_text = []
 	var item_selected = data.command.parameters.get("item_selected", 0)
@@ -1307,31 +1381,38 @@ func _format_command_21(data: FormatData) -> Array:
 			var seconds = str(data.command.parameters.get("value3", 0)) + "sec"
 			text = "Timer #%s " % timer_id + condition + " " + minutes + " " + seconds
 		4: # Actor
-			var actor_id = data.command.parameters.get("value1", 1)
-			var actor_name = get_item_data_name(RPGSYSTEM.database.actors, actor_id)
+			var actor_uid = data.command.parameters.get("value1", 1)
+			var actor_data = RPGSYSTEM.get_data("actors", actor_uid)
+			var actor_name = actor_data.name if actor_data else "⚠ Invalid Data"
 			var actor_condition = data.command.parameters.get("value2", 0)
+			
 			match actor_condition:
 				0: text = actor_name + " is in the party"
 				1: text = "Name of " + actor_name + " is " + data.command.parameters.get("value3", "")
 				2:
-					var item_id = data.command.parameters.get("value3", 1)
-					var item_name = get_item_data_name(RPGSYSTEM.database.classes, item_id)
+					var item_uid = data.command.parameters.get("value3", 1)
+					var i_data = RPGSYSTEM.get_data("classes", item_uid)
+					var item_name = i_data.name if i_data else "⚠ Invalid Data"
 					text = "Class of " + actor_name + " is " + item_name
 				3:
-					var item_id = data.command.parameters.get("value3", 1)
-					var item_name = get_item_data_name(RPGSYSTEM.database.skills, item_id)
+					var item_uid = data.command.parameters.get("value3", 1)
+					var i_data = RPGSYSTEM.get_data("skills", item_uid)
+					var item_name = i_data.name if i_data else "⚠ Invalid Data"
 					text = actor_name + " has learned " + item_name
 				4:
-					var item_id = data.command.parameters.get("value3", 1)
-					var item_name = get_item_data_name(RPGSYSTEM.database.weapons, item_id)
+					var item_uid = data.command.parameters.get("value3", 1)
+					var i_data = RPGSYSTEM.get_data("weapons", item_uid)
+					var item_name = i_data.name if i_data else "⚠ Invalid Data"
 					text = actor_name + " has equipped " + item_name
 				5:
-					var item_id = data.command.parameters.get("value3", 1)
-					var item_name = get_item_data_name(RPGSYSTEM.database.armors, item_id)
+					var item_uid = data.command.parameters.get("value3", 1)
+					var i_data = RPGSYSTEM.get_data("armors", item_uid)
+					var item_name = i_data.name if i_data else "⚠ Invalid Data"
 					text = actor_name + " has equipped " + item_name
 				6:
-					var item_id = data.command.parameters.get("value3", 1)
-					var item_name = get_item_data_name(RPGSYSTEM.database.states, item_id)
+					var item_uid = data.command.parameters.get("value3", 1)
+					var i_data = RPGSYSTEM.get_data("states", item_uid)
+					var item_name = i_data.name if i_data else "⚠ Invalid Data"
 					text = actor_name + " is affected by " + item_name
 				7:
 					var param_id = data.command.parameters.get("value4", 0)
@@ -1339,6 +1420,7 @@ func _format_command_21(data: FormatData) -> Array:
 					var condition_value = data.command.parameters.get("value6", 0)
 					var parameters = PackedStringArray(["Level", "Experience"]) + RPGSYSTEM.database.types.main_parameters
 					var param_name: String
+					
 					if parameters.size() > param_id:
 						param_name = parameters[param_id]
 					elif param_id >= parameters.size(): # user Parameter
@@ -1348,17 +1430,20 @@ func _format_command_21(data: FormatData) -> Array:
 							param_name = "User Parameter " + user_parameters[user_parameter_id].name
 						else:
 							param_name = "User Parameter ?"
+							
 					var v = " %.2f" % condition_value if int(condition_value) != condition_value else " %s" % int(condition_value)
 					text = "( " + param_name + " ) " + condition + v
 					
 		5: # Enemy
 			var enemy_id = str(data.command.parameters.get("value1", 0) + 1)
 			var enemy_condition = data.command.parameters.get("value2", 0)
+			
 			if enemy_condition == 0:
 				text = "Enemy #" + enemy_id + " has appeared"
 			else:
-				var state_id = data.command.parameters.get("value3", 1)
-				var item_name = get_item_data_name(RPGSYSTEM.database.states, state_id)
+				var state_uid = data.command.parameters.get("value3", 1)
+				var i_data = RPGSYSTEM.get_data("states", state_uid)
+				var item_name = i_data.name if i_data else "⚠ Invalid Data"
 				text = "Enemy #" + enemy_id + " is affected by " + item_name
 		6: # Character
 			var character_id = data.command.parameters.get("value1", 0)
@@ -1377,20 +1462,23 @@ func _format_command_21(data: FormatData) -> Array:
 			var value = str(data.command.parameters.get("value2", 0))
 			text = "Gold " + condition + " " + value
 		9: # Item
-			var item_id = data.command.parameters.get("value1", 1)
-			var item_name = get_item_data_name(RPGSYSTEM.database.items, item_id)
+			var item_uid = data.command.parameters.get("value1", 1)
+			var i_data = RPGSYSTEM.get_data("items", item_uid)
+			var item_name = i_data.name if i_data else "⚠ Invalid Data"
 			text = "Party has " + item_name
 		10: # Weapon
-			var item_id = data.command.parameters.get("value1", 1)
-			var item_name = get_item_data_name(RPGSYSTEM.database.weapons, item_id)
+			var item_uid = data.command.parameters.get("value1", 1)
+			var i_data = RPGSYSTEM.get_data("weapons", item_uid)
+			var item_name = i_data.name if i_data else "⚠ Invalid Data"
 			var equipment = data.command.parameters.get("value2", false)
 			var include_equipment = "Include Equipment" if equipment else ""
 			text = "Party has " + item_name
 			if include_equipment:
 				sub_text = "(%s)" % include_equipment
 		11: # Armor
-			var item_id = data.command.parameters.get("value1", 1)
-			var item_name = get_item_data_name(RPGSYSTEM.database.armors, item_id)
+			var item_uid = data.command.parameters.get("value1", 1)
+			var i_data = RPGSYSTEM.get_data("armors", item_uid)
+			var item_name = i_data.name if i_data else "⚠ Invalid Data"
 			var equipment = data.command.parameters.get("value2", false)
 			var include_equipment = "Include Equipment" if equipment else ""
 			text = "Party has " + item_name
@@ -1414,6 +1502,7 @@ func _format_command_21(data: FormatData) -> Array:
 			var condition = ["=", ">=", "<=", ">", "<", "≠"][data.command.parameters.get("value2", "")]
 			var variable_name = RPGSYSTEM.system.text_variables.get_item_name(variable_id)
 			var value = ""
+			
 			if data.command.parameters.get("value3", 0) == 0:
 				value = str(data.command.parameters.get("value4", ""))
 			else:
@@ -1423,10 +1512,14 @@ func _format_command_21(data: FormatData) -> Array:
 				value = "[" + str2_id + ": " + variable2_name + "]"
 			text = "[" + str_id + ": " + variable_name + "] " + condition + " " + value
 		15: # Profession
-			var variable_id = data.command.parameters.get("value1", 1)
-			var str_id = str(variable_id).pad_zeros(str(RPGSYSTEM.database.professions.size()).length())
+			var variable_uid = data.command.parameters.get("value1", 1)
+			var p_data = RPGSYSTEM.get_data("professions", variable_uid)
+			var variable_name = p_data.name if p_data else "⚠ Invalid Data"
+			
+			var classic_id = RPGSYSTEM.uid_to_id("professions", variable_uid)
+			var str_id = str(classic_id).pad_zeros(str(RPGSYSTEM.database.professions.size()).length())
+			
 			var condition = ["=", ">=", "<=", ">", "<", "≠"][data.command.parameters.get("value2", 0)]
-			var variable_name = get_item_data_name(RPGSYSTEM.database.professions, variable_id)
 			var value = str(data.command.parameters.get("value3", ""))
 			text = "[" + str_id + ": " + variable_name + "] " + condition + " " + value
 		16: # Relationship
@@ -1439,6 +1532,7 @@ func _format_command_21(data: FormatData) -> Array:
 			var condition = ["=", ">=", "<=", ">", "<", "≠"][data.command.parameters.get("value2", "")]
 			var variable_name = RPGSYSTEM.database.types.get_user_parameters_name(variable_id)
 			var value = ""
+			
 			if data.command.parameters.get("value3", 0) == 0:
 				value = str(data.command.parameters.get("value4", ""))
 			else:
@@ -1468,7 +1562,9 @@ func _format_command_21(data: FormatData) -> Array:
 	
 	return formatted_text
 
-# Conditional Branch Else
+
+
+## Formats the Conditional Branch Else command
 func _format_command_22(data: FormatData) -> Array:
 	var formatted_text = []
 	formatted_text.append({
@@ -1483,7 +1579,9 @@ func _format_command_22(data: FormatData) -> Array:
 	})
 	return formatted_text
 
-# Conditional Branch End
+
+
+## Formats the Conditional Branch End command
 func _format_command_23(data: FormatData) -> Array:
 	var formatted_text = []
 	formatted_text.append({
@@ -1557,9 +1655,11 @@ func _format_command_27(data: FormatData) -> Array:
 # Select Common Event
 func _format_command_28(data: FormatData) -> Array:
 	var formatted_text = []
-	var event_id = data.command.parameters.get("id", 1)
-	var event_name = get_item_data_name(RPGSYSTEM.database.common_events, event_id)
-	var value = data.command.parameters.get("value", 1)
+	var uid = data.command.parameters.get("id", 1)
+	
+	var classic_id = RPGSYSTEM.uid_to_id("common_events", uid) if uid > 0 else 1
+	
+	var event_name = get_item_data_name(RPGSYSTEM.database.common_events, classic_id)
 	
 	formatted_text.append({
 		"texts": [
@@ -1702,12 +1802,13 @@ func _format_command_35(data: FormatData) -> Array:
 # Change Leader
 func _format_command_36(data: FormatData) -> Array:
 	var formatted_text = []
-	var leader_id = data.command.parameters.get("leader_id", -1)
+	var uid = data.command.parameters.get("leader_id", -1)
+	var classic_id = RPGSYSTEM.uid_to_id("actors", uid) if uid > 0 else -1
 	var is_locked = data.command.parameters.get("is_locked", false)
 	var text: String
 	
-	if RPGSYSTEM.database.actors.size() > leader_id and leader_id != -1:
-		text = "[%s: %s]" % [leader_id, RPGSYSTEM.database.actors[leader_id].name]
+	if classic_id > 0 and classic_id < RPGSYSTEM.database.actors.size():
+		text = "[%s: %s]" % [classic_id, RPGSYSTEM.database.actors[classic_id].name]
 	else:
 		text = "⚠ Invalid Data"
 	
@@ -1724,6 +1825,7 @@ func _format_command_36(data: FormatData) -> Array:
 		],
 		"offset_y": default_text_offset_y
 	})
+	
 	return formatted_text
 
 # Change Actor HP
@@ -1755,11 +1857,13 @@ func _format_command_44(data: FormatData) -> Array:
 # Change Actor State
 func _format_command_40(data: FormatData) -> Array:
 	var actor_type = data.command.parameters.get("actor_type", 0)
-	var actor_id = data.command.parameters.get("actor_id", 0) if actor_type == 0 else data.command.parameters.get("actor_id", 1)
+	var uid_actor = data.command.parameters.get("actor_id", 0) if actor_type == 0 else data.command.parameters.get("actor_id", 1)
+	var actor_id = RPGSYSTEM.uid_to_id("actors", uid_actor) if (actor_type == 0 and uid_actor > 0) else uid_actor
 	var n0 = "State"
 	var n1 = _get_actor_name_from_actor_type(actor_type, actor_id)
 	var n2 = "Add" if data.command.parameters.get("operand", 0) == 0 else "Remove"
-	var state_id = data.command.parameters.get("state_id", 1)
+	var uid_state = data.command.parameters.get("state_id", 1)
+	var state_id = RPGSYSTEM.uid_to_id("states", uid_state) if uid_state > 0 else 1
 	var n3 = "{%s: %s}" % [state_id, RPGSYSTEM.database.states[state_id].name] if state_id > 0 and RPGSYSTEM.database.states.size() > state_id else "[%s: ]" % state_id
 
 	return [{
@@ -1770,28 +1874,12 @@ func _format_command_40(data: FormatData) -> Array:
 		"offset_y": default_text_offset_y
 	}]
 
-# Change Actor Skill
-func _format_command_45(data: FormatData) -> Array:
-	var actor_type = data.command.parameters.get("actor_type", 0)
-	var actor_id = data.command.parameters.get("actor_id", 0) if actor_type == 0 else data.command.parameters.get("actor_id", 1)
-	var n0 = "Skill"
-	var n1 = _get_actor_name_from_actor_type(actor_type, actor_id)
-	var n2 = "Learn" if data.command.parameters.get("operand", 0) == 0 else "Forget"
-	var skill_id = data.command.parameters.get("skill_id", 1)
-	var n3 = "{%s: %s}" % [skill_id, RPGSYSTEM.database.skills[skill_id].name] if skill_id > 0 and RPGSYSTEM.database.skills.size() > skill_id else "[%s: ]" % skill_id
-
-	return [{
-		"texts": [{
-			"text": data.tabs + default_text + " Change %s : %s, %s %s" % [n0, n1, n2, n3],
-			"color": color_theme.get("color5", Color.WHITE)
-		}],
-		"offset_y": default_text_offset_y
-	}]
 
 # Actor Full Recovery
 func _format_command_41(data: FormatData) -> Array:
 	var actor_type = data.command.parameters.get("actor_type", 0)
-	var actor_id = data.command.parameters.get("actor_id", 0) if actor_type == 0 else data.command.parameters.get("actor_id", 1)
+	var uid_actor = data.command.parameters.get("actor_id", 0) if actor_type == 0 else data.command.parameters.get("actor_id", 1)
+	var actor_id = RPGSYSTEM.uid_to_id("actors", uid_actor) if (actor_type == 0 and uid_actor > 0) else uid_actor
 	var n1 = _get_actor_name_from_actor_type(actor_type, actor_id)
 	
 	return [{
@@ -1802,11 +1890,35 @@ func _format_command_41(data: FormatData) -> Array:
 		"offset_y": default_text_offset_y
 	}]
 
+# Change Actor Skill
+func _format_command_45(data: FormatData) -> Array:
+	var actor_type = data.command.parameters.get("actor_type", 0)
+	var uid_actor = data.command.parameters.get("actor_id", 0) if actor_type == 0 else data.command.parameters.get("actor_id", 1)
+	var actor_id = RPGSYSTEM.uid_to_id("actors", uid_actor) if (actor_type == 0 and uid_actor > 0) else uid_actor
+	var n0 = "Skill"
+	var n1 = _get_actor_name_from_actor_type(actor_type, actor_id)
+	var n2 = "Learn" if data.command.parameters.get("operand", 0) == 0 else "Forget"
+	var uid_skill = data.command.parameters.get("skill_id", 1)
+	var skill_id = RPGSYSTEM.uid_to_id("skills", uid_skill) if uid_skill > 0 else 1
+	var n3 = "{%s: %s}" % [skill_id, RPGSYSTEM.database.skills[skill_id].name] if skill_id > 0 and RPGSYSTEM.database.skills.size() > skill_id else "[%s: ]" % skill_id
+
+	return [{
+		"texts": [{
+			"text": data.tabs + default_text + " Change %s : %s, %s %s" % [n0, n1, n2, n3],
+			"color": color_theme.get("color5", Color.WHITE)
+		}],
+		"offset_y": default_text_offset_y
+	}]
+
+
 # Actor Change Equipment
 func _format_command_46(data: FormatData) -> Array:
-	var actor_id = data.command.parameters.get("actor_id", 0)
+	var uid_actor = data.command.parameters.get("actor_id", 0)
+	var actor_id = RPGSYSTEM.uid_to_id("actors", uid_actor) if uid_actor > 0 else 0
 	var equipment_type_id = data.command.parameters.get("equipment_type_id", 0)
-	var item_id = data.command.parameters.get("item_id", 0)
+	var uid_item = data.command.parameters.get("item_id", 0)
+	var category = "weapons" if equipment_type_id == 0 else "armors"
+	var item_id = RPGSYSTEM.uid_to_id(category, uid_item) if uid_item > 0 else 0
 	
 	var n1 = _get_actor_name_from_actor_type(0, actor_id)
 	var n2 = RPGSYSTEM.database.types.equipment_types[equipment_type_id] if RPGSYSTEM.database.types.equipment_types.size() > equipment_type_id else ""
@@ -1837,8 +1949,10 @@ func _format_command_47(data: FormatData) -> Array:
 
 # Actor Change Class
 func _format_command_48(data: FormatData) -> Array:
-	var actor_id = data.command.parameters.get("actor_id", 0)
-	var class_id = data.command.parameters.get("class_id", 0)
+	var uid_actor = data.command.parameters.get("actor_id", 0)
+	var uid_class = data.command.parameters.get("class_id", 0)
+	var actor_id = RPGSYSTEM.uid_to_id("actors", uid_actor) if uid_actor > 0 else 0
+	var class_id = RPGSYSTEM.uid_to_id("classes", uid_class) if uid_class > 0 else 0
 	var keep_level = data.command.parameters.get("keep_level", false)
 	var n1; var n2; var n3;
 	if actor_id > 0 and RPGSYSTEM.database.actors.size() > actor_id:
@@ -1869,7 +1983,8 @@ func _format_command_48(data: FormatData) -> Array:
 func _format_command_300(data: FormatData) -> Array:
 	var type = data.command.parameters.get("type", 0)
 	var type_str = tr("Remove Profession") if type == 0 else tr("Add Profession")
-	var profession_id = data.command.parameters.get("profession_id", 1)
+	var uid_profession = data.command.parameters.get("profession_id", 1)
+	var profession_id = RPGSYSTEM.uid_to_id("professions", uid_profession) if uid_profession > 0 else 1
 	var profession_name = ""
 	if profession_id > 0 and RPGSYSTEM.database.professions.size() > profession_id:
 		var profession = RPGSYSTEM.database.professions[profession_id]
@@ -1884,7 +1999,6 @@ func _format_command_300(data: FormatData) -> Array:
 		else:
 			var level = tr("Level") + " " + str(int(data.command.parameters.get("level", 1)))
 			extra_arg = "(" + level + ")"
-	
 	
 	var level: String
 	if data.command.parameters.get("preserve_level", false):
@@ -1907,9 +2021,11 @@ func _format_command_300(data: FormatData) -> Array:
 		"offset_y": default_text_offset_y
 	}]
 
+
 # Upgrade Profession
 func _format_command_301(data: FormatData) -> Array:
-	var profession_id = data.command.parameters.get("profession_id", 1)
+	var uid_profession = data.command.parameters.get("profession_id", 1)
+	var profession_id = RPGSYSTEM.uid_to_id("professions", uid_profession) if uid_profession > 0 else 1
 	var prefession_name: String
 	if profession_id > 0 and RPGSYSTEM.database.professions.size() > profession_id:
 		var profession = RPGSYSTEM.database.professions[profession_id]
@@ -1927,7 +2043,8 @@ func _format_command_301(data: FormatData) -> Array:
 
 # Actor Actor Nickname
 func _format_command_49(data: FormatData) -> Array:
-	var actor_id = data.command.parameters.get("actor_id", 0)
+	var uid_actor = data.command.parameters.get("actor_id", 0)
+	var actor_id = RPGSYSTEM.uid_to_id("actors", uid_actor) if uid_actor > 0 else 0
 	var actor_nickname = data.command.parameters.get("nickname", "")
 	var n1;
 	if actor_id > 0 and RPGSYSTEM.database.actors.size() > actor_id:
@@ -1945,9 +2062,11 @@ func _format_command_49(data: FormatData) -> Array:
 		"offset_y": default_text_offset_y
 	}]
 
+
 # Actor Profile (First Line)
 func _format_command_50(data: FormatData) -> Array:
-	var actor_id = data.command.parameters.get("actor_id", 0)
+	var uid_actor = data.command.parameters.get("actor_id", 0)
+	var actor_id = RPGSYSTEM.uid_to_id("actors", uid_actor) if uid_actor > 0 else 0
 	var n1;
 	if actor_id > 0 and RPGSYSTEM.database.actors.size() > actor_id:
 		n1 = "[%s: %s]" % [actor_id, RPGSYSTEM.database.actors[actor_id].name]
@@ -2284,7 +2403,8 @@ func _format_command_62(data: FormatData) -> Array:
 	var current_trait = data.command.parameters.get("trait", 0)
 	var trait_name = get_trait_name(current_trait)
 	trait_name = "< " + ": ".join(trait_name) + " >"
-	var actor_id = data.command.parameters.get("actor_id", 0)
+	var uid_actor = data.command.parameters.get("actor_id", 0)
+	var actor_id = RPGSYSTEM.uid_to_id("actors", uid_actor) if uid_actor > 0 else 0
 	var actor_name = "Entire Party" if actor_id == 0 else get_actor_name(actor_id)
 	var action_name = "Add trait to %s" % actor_name if type == 0 else "Remove trait from %s" % actor_name
 	return [{
@@ -2460,8 +2580,11 @@ func _format_command_71(data: FormatData) -> Array:
 func _format_command_72(data: FormatData) -> Array:
 	var target_id = data.command.parameters.get("target_id", 0)
 	var target_name = get_event_name(target_id)
-	var animation_id = data.command.parameters.get("animation_id", 1)
+	
+	var uid_anim = data.command.parameters.get("animation_id", 1)
+	var animation_id = RPGSYSTEM.uid_to_id("animations", uid_anim) if uid_anim > 0 else 1
 	var animation_name = get_item_data_name(RPGSYSTEM.database.animations, animation_id)
+	
 	var wait = data.command.parameters.get("wait", false)
 	var wait_text = _get_wait_text(wait)
 	return [{
@@ -2980,18 +3103,22 @@ func _format_command_93(data: FormatData) -> Array:
 
 # Manage Camera Targets
 func _format_command_123(data: FormatData) -> Array:
-	var targets = data.command.parameters.get("legacy_targets", [])
+	var targets = data.command.parameters.get("targets", data.command.parameters.get("legacy_targets", []))
 	var targets_str = ""
+	
 	if targets.has(0):
 		targets_str += "player"
+		
 	for target in targets:
 		if target == 0: continue
+		var ev_name = get_event_name(target)
 		if targets_str.is_empty():
-			targets_str = "ev #%s" % target
+			targets_str = ev_name
 		else:
-			targets_str += ", ev #%s" % target
+			targets_str += ", " + ev_name
 	
 	var target_color = color_theme.get("color3", Color.WHITE)
+	
 	if targets_str.is_empty():
 		targets_str = tr("Remove all targets")
 		target_color = color_theme.get("color10", Color.WHITE)
@@ -3096,23 +3223,42 @@ func _format_command_201(data: FormatData) -> Array:
 	}]
 
 # Item Sold in the Store
+## Formats the Shop Item sub-command decoding the UIDs and adding Costumes support
 func _format_command_97(data: FormatData) -> Array:
 	var item_type = data.command.parameters.get("type", 0)
-	var item_id = data.command.parameters.get("item_id", 1)
+	var item_uid = data.command.parameters.get("item_id", 1)
 	var quantity: int = data.command.parameters.get("quantity", 0)
 	var quantity_str = str(quantity) if quantity > 0 else "∞"
 	var price_mode = data.command.parameters.get("price_mode", 0)
-	var item_data = RPGSYSTEM.database.items if item_type == 0 \
-					else RPGSYSTEM.database.weapons if item_type == 1 \
-					else RPGSYSTEM.database.armors
-	var item = get_item_data(item_data, item_id)
-	var item_name = "" if not item else item.name
-	var price: int = data.command.parameters.get("price", 0) if price_mode == 1 else item.price if item else 0
+	
+	var db_key = "items"
+	var type_name = "item"
+	
+	match item_type:
+		1: 
+			db_key = "weapons"
+			type_name = "weapon"
+		2: 
+			db_key = "armors"
+			type_name = "armor"
+		3: 
+			db_key = "costumes"
+			type_name = "set"
+			
+	var item = RPGSYSTEM.get_data(db_key, item_uid)
+	var item_name = item.name if item else "⚠ Invalid Data"
+	
+	var default_price: int = 0
+	if item and "price" in item:
+		default_price = item.price
+		
+	var price: int = data.command.parameters.get("price", 0) if price_mode == 1 else default_price
 	var plural = "s" if quantity != 1 else ""
+	
 	return [{
 		"texts": [
 			{
-				"text": data.tabs + ": Selling %s item%s < %s > at %s each" % [quantity_str, plural, item_name, price],
+				"text": data.tabs + ": Selling %s %s%s < %s > at %s each" % [quantity_str, type_name, plural, item_name, price],
 				"color": color_theme.get("color14", Color.WHITE),
 				"offset_x": data.font.get_string_size(default_text + " Show Shop%s" % backup_text, data.align, -1, data.font_size).x,
 			}
@@ -3122,10 +3268,12 @@ func _format_command_97(data: FormatData) -> Array:
 
 # Input Change Actor Name
 func _format_command_98(data: FormatData) -> Array:
-	var actor_id = data.command.parameters.get("actor_id", 1)
+	var uid_actor = data.command.parameters.get("actor_id", 1)
+	var actor_id = RPGSYSTEM.uid_to_id("actors", uid_actor) if uid_actor > 0 else 1
 	var actor_name = str(actor_id) + ": " + get_actor_name(actor_id)
 	var max_letters = data.command.parameters.get("max_letters", 0)
 	var max_letters_str = str(max_letters) if max_letters > 0 else "∞"
+	
 	return [{
 		"texts": [
 			{
@@ -3603,14 +3751,18 @@ func _format_command_117(data: FormatData) -> Array:
 
 # Change Actor Scene
 func _format_command_118(data: FormatData) -> Array:
-	var index = data.command.parameters.get("index", 0)
+	var uid_actor = data.command.parameters.get("index", 0)
+	var index = RPGSYSTEM.uid_to_id("actors", uid_actor) if uid_actor > 0 else uid_actor
 	var path = data.command.parameters.get("path", "").get_file()
 	var new_scene: String
+	
 	if path.is_empty():
 		new_scene = "Nothing"
 	else:
 		new_scene = path
+		
 	var actor_name = get_actor_name(index)
+	
 	return [{
 		"texts": [
 			{

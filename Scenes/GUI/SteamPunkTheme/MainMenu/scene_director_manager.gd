@@ -116,17 +116,24 @@ func _show_equip_menu() -> void:
 	party_scene.disabled()
 	main_scene.sub_menu_opened.emit()
 	left_buttons_scene.busy = true
+	
 	GameManager.play_fx("select")
 	GameManager.set_fx_busy(true)
+	
 	var initial_container = main_scene.initial_container
 	var original_position = initial_container.position
 	var t = create_tween()
 	t.set_parallel(true)
 	t.tween_property(initial_container, "modulate:a", 0.3, 0.15)
 	t.tween_property(initial_container, "position:x", initial_container.position.x - initial_container.size.x - main_scene.VIEWPORT_SAFETY_MARGIN, 0.15)
+	
 	var scene_equip_path = RPGSYSTEM.database.system.game_scenes.get("Scene Equipment", "")
 	var s = await GameManager.get_scene_from_cache("equipment", scene_equip_path, "", true)
-	if not s: return
+	
+	if not s: 
+		GameManager.set_fx_busy(false)
+		return
+		
 	s.z_index = 10
 	s.is_sub_menu = true
 	s.exit_tree_when_end = true
@@ -138,7 +145,13 @@ func _show_equip_menu() -> void:
 	if main_node and main_node.has_method("set_actor"):
 		main_node.set_actor(actor)
 	s.visible = true
+	
+	GameManager.set_fx_busy(false)
+	
 	await s.end
+	
+	GameManager.set_fx_busy(true)
+	
 	main_scene.sub_menu_closed.emit()
 	left_buttons_scene.start()
 	initial_container.position.x = -100
@@ -151,6 +164,7 @@ func _show_equip_menu() -> void:
 	party_scene.select()
 	GameManager.force_hand_position_over_node(GameManager.get_cursor_manipulator())
 	GameManager.force_show_cursor()
+	
 	GameManager.set_fx_busy(false)
 	left_buttons_scene.busy = false
 #endregion

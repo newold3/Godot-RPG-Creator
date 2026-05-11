@@ -330,7 +330,7 @@ func install_parts() -> void:
 		if actor:
 			for item in actor.current_gear:
 				if item and item.type == 1:
-					var db_item = RPGSYSTEM.database.weapons.get(item.id)
+					var db_item = item.get_real_data()
 					if db_item:
 						if not db_item.lpc_part.is_empty() and AssetManager.exists(db_item.lpc_part):
 							weapon_res = load(db_item.lpc_part)

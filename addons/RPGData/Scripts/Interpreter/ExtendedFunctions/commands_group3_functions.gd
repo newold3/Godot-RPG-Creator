@@ -2,6 +2,7 @@ class_name CommandsGroup3
 extends CommandHandlerBase
 
 
+
 # Command Control Switches (Code 17), button_id = 12
 # Code 17 (Parent) parameters { operation_type, from, to }
 func _command_0017() -> void:
@@ -21,6 +22,7 @@ func _command_0017() -> void:
 		await GameManager.current_map.get_tree().process_frame
 		await GameManager.current_map.get_tree().process_frame
 		await GameManager.current_map.get_tree().process_frame
+
 
 
 # Command Control Variables (Code 18), button_id = 13
@@ -163,9 +165,10 @@ func _command_0018() -> void:
 							if GameManager.game_state.game_user_parameters > value3 and value3 > 0:
 								target_value = GameManager.game_state.game_user_parameters[value3]
 				9: # Level Profession
-					if value2 > 0 and RPGSYSTEM.database.professions.size() > value2:
-						var profession = RPGSYSTEM.database.professions[value2]
-						target_value = GameManager.get_profession_level(profession)
+					if value2 > 0:
+						var profession = RPGSYSTEM.get_data("professions", value2)
+						if profession:
+							target_value = GameManager.get_profession_level(profession)
 				10: # stat
 					match value2:
 						0: # steps
@@ -285,6 +288,7 @@ func _command_0018() -> void:
 		await GameManager.current_map.get_tree().process_frame
 
 
+
 # Command Text Variable (Code 61), button_id = 113
 # Code 61 (Parent) parameters { id, value }
 func _command_0061() -> void:
@@ -296,6 +300,7 @@ func _command_0061() -> void:
 	var replace_text = current_command.parameters.get("replace_text", "")
 	
 	GameManager.set_text_variable(id, value, operation, replace_text)
+
 
 
 # Command Control Self Switches (Code 19), button_id = 14
@@ -314,6 +319,7 @@ func _command_0019() -> void:
 		GameManager.set_local_switch(switch_id, operation_type == 0, target)
 
 
+
 # Command Change User Parameter (Code 302), button_id = 130
 # Code 302 (Parent) parameters { param_id, value }
 func _command_0302() -> void:
@@ -329,12 +335,14 @@ func _command_0302() -> void:
 	if param_id > 0 and GameManager.game_state.game_user_parameters.size() > param_id:
 		if target_id == 0:
 			GameManager.game_state.game_user_parameters[param_id] = value
-		elif RPGSYSTEM.database.actors.size() > target_id:
+		else:
 			var actor: GameActor = GameManager.get_actor(target_id)
-			if actor.user_params.size() != RPGSYSTEM.database.types.user_parameters.size():
-				actor.user_params.resize(RPGSYSTEM.database.types.user_parameters.size())
-			if actor and actor.user_params.size() > param_id:
-				actor.user_params[param_id] = value
+			if actor:
+				if actor.user_params.size() != RPGSYSTEM.database.types.user_parameters.size():
+					actor.user_params.resize(RPGSYSTEM.database.types.user_parameters.size())
+				if actor.user_params.size() > param_id:
+					actor.user_params[param_id] = value
+
 
 
 # Command Change Stat Value (Code 303), button_id = 131
@@ -372,12 +380,14 @@ func _command_0303() -> void:
 			target_obj.set(final_prop, current_val + value)
 
 
+
 # Command Control Timer Dialog (Code 20), button_id = 15
 # Code 20 (Parent) parameters { operation_type, minutes, seconds, timer_scene, timer_id, timer_title, extra_config }
 func _command_0020() -> void:
 	debug_print("Processing command: Control Timer (code 20)")
 
 	GameManager.manage_timer(current_command.parameters)
+
 
 
 # Command Manage Quest (Code xxx), button_id = 125

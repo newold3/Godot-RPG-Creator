@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://b0u15vo3gllnb"]
+[gd_scene format=3 uid="uid://b0u15vo3gllnb"]
 
 [ext_resource type="Script" uid="uid://j5rfk0v3nxyi" path="res://Scripts/animation_process.gd" id="1_p3oue"]
 
@@ -8,11 +8,11 @@ blend_mode = 1
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_4drb6"]
 blend_mode = 1
 
-[node name="AnimationProcess" type="Node2D"]
+[node name="AnimationProcess" type="Node2D" unique_id=139826803]
 material = SubResource("CanvasItemMaterial_p3oue")
 script = ExtResource("1_p3oue")
 
-[node name="EffectViewport" type="SubViewport" parent="."]
+[node name="EffectViewport" type="SubViewport" parent="." unique_id=1786591285]
 unique_name_in_owner = true
 handle_input_locally = false
 vrs_mode = 3
@@ -20,7 +20,7 @@ vrs_update_mode = 2
 positional_shadow_atlas_16_bits = false
 size = Vector2i(2304, 1280)
 
-[node name="ColorRect" type="ColorRect" parent="EffectViewport"]
+[node name="ColorRect" type="ColorRect" parent="EffectViewport" unique_id=816331775]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -28,9 +28,9 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="EffectPosition" type="Marker2D" parent="EffectViewport"]
+[node name="EffectPosition" type="Marker2D" parent="EffectViewport" unique_id=1618682128]
 unique_name_in_owner = true
 position = Vector2(1162, 640)
 
-[node name="MainTexture" type="Sprite2D" parent="."]
+[node name="MainTexture" type="Sprite2D" parent="." unique_id=1685812001]
 material = SubResource("CanvasItemMaterial_4drb6")

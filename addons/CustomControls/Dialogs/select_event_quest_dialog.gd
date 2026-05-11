@@ -15,17 +15,19 @@ func _ready() -> void:
 	_fill_relationship_level_list(0)
 
 
-func _fill_page_list(indexes: Array = []) -> void:
+func _fill_page_list(selected_uids: Array = []) -> void:
 	var node = %PageList
 	node.clear()
-	
+
 	if pages:
 		for i in pages.size():
-			node.add_item("Page %s" % (i+1))
-	
-	if not indexes.is_empty():
-		for id in indexes:
-			node.set_item_selected(id, true)
+			var page_name = pages[i].name if pages[i].name != "" else "Page %s" % (i + 1)
+			node.add_item(page_name)
+
+	if not selected_uids.is_empty() and pages:
+		for i in pages.size():
+			if pages[i]._uniq_id in selected_uids:
+				node.set_item_selected(i, true)
 	elif pages.size() > 0:
 		node.select(0)
 		
@@ -164,7 +166,13 @@ func _on_use_custom_timer_toggled(toggled_on: bool) -> void:
 
 
 func _on_page_list_multi_selection_changed(selected_ids: PackedInt32Array) -> void:
-	data.required_pages = selected_ids
+	var selected_uids: PackedInt64Array = []
+
+	for id in selected_ids:
+		if id >= 0 and id < pages.size():
+			selected_uids.append(pages[id]._uniq_id)
+
+	data.required_pages = selected_uids
 
 
 func _on_relationship_level_item_selected(index: int) -> void:

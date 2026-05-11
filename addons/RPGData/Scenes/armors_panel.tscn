@@ -15,9 +15,10 @@
 [ext_resource type="PackedScene" uid="uid://os7clwyqwlka" path="res://addons/RPGData/Scenes/traits_panel.tscn" id="10_jvn8b"]
 [ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="10_sdq0p"]
 [ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="12_b5k43"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="12_wqerl"]
 [ext_resource type="PackedScene" uid="uid://dxcyqc2dscbvw" path="res://addons/CustomControls/custom_simple_column_item_list.tscn" id="15_vvlf1"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vvlf1"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yfamt"]
 resource_local_to_scene = true
 content_margin_left = 3.0
 content_margin_right = 3.0
@@ -29,7 +30,7 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.113725, 0.133333, 0.160784, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yfamt"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_61hfg"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 1
@@ -46,11 +47,11 @@ gradient = SubResource("Gradient_3obsl")
 fill_from = Vector2(0.547009, 1)
 fill_to = Vector2(0.559829, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_61hfg"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fi7ck"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_mtkxg")
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fi7ck"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gpfvm"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_mtkxg")
 
@@ -71,7 +72,7 @@ texture = ExtResource("6_vvlf1")
 texture_margin_left = 18.0
 texture_margin_right = 18.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2t7bu"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v1muy"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -97,7 +98,7 @@ fill_to = Vector2(0.58547, 0)
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2t7bu"]
 texture = SubResource("GradientTexture2D_fi7ck")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gpfvm"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rmr4f"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -121,6 +122,78 @@ corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
+
+[sub_resource type="Image" id="Image_wqerl"]
+data = {
+"data": PackedByteArray(255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+"format": "RGB8",
+"height": 16,
+"mipmaps": true,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_yfamt"]
+image = SubResource("Image_wqerl")
+
+[sub_resource type="Image" id="Image_61hfg"]
+data = {
+"data": PackedByteArray(13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 13, 157, 196, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+"format": "RGB8",
+"height": 16,
+"mipmaps": true,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_fi7ck"]
+image = SubResource("Image_61hfg")
+
+[sub_resource type="Image" id="Image_2t7bu"]
+data = {
+"data": PackedByteArray(255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 255, 245, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+"format": "RGB8",
+"height": 16,
+"mipmaps": true,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_gpfvm"]
+image = SubResource("Image_2t7bu")
+
+[sub_resource type="Image" id="Image_jajws"]
+data = {
+"data": PackedByteArray(198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 198, 8, 219, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+"format": "RGB8",
+"height": 16,
+"mipmaps": true,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_v1muy"]
+image = SubResource("Image_jajws")
+
+[sub_resource type="Image" id="Image_rmr4f"]
+data = {
+"data": PackedByteArray(255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 255, 147, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+"format": "RGB8",
+"height": 16,
+"mipmaps": true,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_k46qy"]
+image = SubResource("Image_rmr4f")
+
+[sub_resource type="Image" id="Image_wmpcw"]
+data = {
+"data": PackedByteArray(232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 232, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+"format": "RGB8",
+"height": 16,
+"mipmaps": true,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_ngag6"]
+image = SubResource("Image_wmpcw")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kivu3"]
 atlas = ExtResource("12_b5k43")
@@ -218,7 +291,7 @@ gradient = SubResource("Gradient_k46qy")
 fill_from = Vector2(0.547009, 1)
 fill_to = Vector2(0.559829, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jajws"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_k46qy"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_wqerl")
 
@@ -290,11 +363,11 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/v_separation = -1
-theme_override_styles/panel = SubResource("StyleBoxFlat_vvlf1")
-theme_override_styles/focus = SubResource("StyleBoxFlat_vvlf1")
-theme_override_styles/hovered = SubResource("StyleBoxFlat_yfamt")
-theme_override_styles/selected = SubResource("StyleBoxTexture_61hfg")
-theme_override_styles/selected_focus = SubResource("StyleBoxTexture_fi7ck")
+theme_override_styles/panel = SubResource("StyleBoxFlat_yfamt")
+theme_override_styles/focus = SubResource("StyleBoxFlat_yfamt")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_61hfg")
+theme_override_styles/selected = SubResource("StyleBoxTexture_fi7ck")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_gpfvm")
 select_mode = 1
 odd_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 event_line_color = Color(0.145098, 0.156863, 0.164706, 1)
@@ -366,10 +439,10 @@ stylebox_tab_selected = SubResource("StyleBoxTexture_wqerl")
 custom_minimum_size = Vector2(510, 160)
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_2t7bu")
-style1 = SubResource("StyleBoxFlat_2t7bu")
+theme_override_styles/panel = SubResource("StyleBoxFlat_v1muy")
+style1 = SubResource("StyleBoxFlat_v1muy")
 style2 = SubResource("StyleBoxTexture_2t7bu")
-style3 = SubResource("StyleBoxFlat_gpfvm")
+style3 = SubResource("StyleBoxFlat_rmr4f")
 
 [node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer" unique_id=888909205]
 layout_mode = 2
@@ -433,23 +506,6 @@ size_flags_vertical = 6
 tooltip_text = "[title]Equipment Name[/title]
 The name of the equipment. If the name is too long, it may not be completely displayed on the Play Screen."
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer" unique_id=1142068302]
-custom_minimum_size = Vector2(160, 0)
-layout_mode = 2
-
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer3" unique_id=1155442706]
-layout_mode = 2
-text = "Level Restriction:"
-
-[node name="LevelRestrictionSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer3" unique_id=1426470231 instance=ExtResource("9_57wpb")]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 6
-tooltip_text = "[title]Level Restriction[/title]
-Minimum level required to use this armor"
-allow_greater = true
-_custom_value = 0.0
-
 [node name="VBoxContainer4" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer" unique_id=1375127987]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -487,6 +543,94 @@ tooltip_text = "[title]Description[/title]
 The description that appears when a equipment is selected in the Play Screen."
 wrap_mode = 1
 
+[node name="HBoxContainer5" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings" unique_id=146728231]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HSeparator" type="HSeparator" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5" unique_id=1333203738]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5" unique_id=1512994068]
+layout_mode = 2
+text = "Usage Restriction:"
+
+[node name="VBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5" unique_id=1330034806]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer" unique_id=1235609053]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer/VBoxContainer" unique_id=1955949474]
+layout_mode = 2
+text = "Requires Actor Level"
+
+[node name="RequiresActorLevel" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer/VBoxContainer" unique_id=497469032 instance=ExtResource("9_57wpb")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "Restricts its use to characters whose level is greater than or equal to the specified level"
+allow_greater = true
+value_replace = {
+"0": "Any Level"
+}
+_custom_value = 0.0
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer" unique_id=628523301]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer/VBoxContainer2" unique_id=611340193]
+layout_mode = 2
+text = "Requires Actor Class"
+
+[node name="RequiresActorClass" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer/VBoxContainer2" unique_id=621784070 instance=ExtResource("12_wqerl")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "Restricts its use to characters whose class matches the specified class (or 0 to allow any class)"
+selected = 0
+item_count = 6
+popup/item_0/text = "Any Class"
+popup/item_0/id = 0
+popup/item_1/text = "1: Tank"
+popup/item_1/id = 1
+popup/item_2/text = "2: Mage"
+popup/item_2/id = 2
+popup/item_3/text = "3: Lancer"
+popup/item_3/id = 3
+popup/item_4/text = "4: Archer"
+popup/item_4/id = 4
+popup/item_5/text = "5: Cleric"
+popup/item_5/id = 5
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer" unique_id=548224324]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer/VBoxContainer3" unique_id=423023775]
+layout_mode = 2
+text = "Requires Actor Gender"
+
+[node name="RequiresActorGender" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer/VBoxContainer3" unique_id=1071462925 instance=ExtResource("12_wqerl")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "Restricts its use to characters whose gender matches the specified gender (or 0 to allow any gender)"
+selected = 0
+item_count = 4
+popup/item_0/text = "Any Gender"
+popup/item_0/id = 0
+popup/item_1/text = "1: None"
+popup/item_1/id = 1
+popup/item_2/text = "2: Male"
+popup/item_2/id = 2
+popup/item_3/text = "3: Female"
+popup/item_3/id = 3
+
+[node name="HSeparator2" type="HSeparator" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5" unique_id=616783184]
+layout_mode = 2
+
 [node name="HboxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings" unique_id=911175584]
 layout_mode = 2
 
@@ -508,6 +652,21 @@ The classification of the equipment. This determines whether an actor can equip 
 
 [Note]: If the category \"None\" is assigned to this armor, it can be equipped by anyone without restrictions."
 mouse_default_cursor_shape = 2
+item_count = 7
+popup/item_0/text = "None"
+popup/item_0/id = 0
+popup/item_1/text = "General"
+popup/item_1/id = 1
+popup/item_2/text = "Magic Armor"
+popup/item_2/id = 2
+popup/item_3/text = "Light Armor"
+popup/item_3/id = 3
+popup/item_4/text = "Heavy Armor"
+popup/item_4/id = 4
+popup/item_5/text = "Small Shield"
+popup/item_5/id = 5
+popup/item_6/text = "Large Shield"
+popup/item_6/id = 6
 script = ExtResource("9_qvmig")
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HboxContainer" unique_id=147685639]
@@ -528,6 +687,25 @@ Choose the rarity for this object.
 
 \"Each rarity has a color associated with it that will make the name of this object in the game appear in that color\""
 mouse_default_cursor_shape = 2
+item_count = 6
+popup/item_0/text = "Common"
+popup/item_0/icon = SubResource("ImageTexture_yfamt")
+popup/item_0/id = 0
+popup/item_1/text = "Uncommon"
+popup/item_1/icon = SubResource("ImageTexture_fi7ck")
+popup/item_1/id = 1
+popup/item_2/text = "Rare"
+popup/item_2/icon = SubResource("ImageTexture_gpfvm")
+popup/item_2/id = 2
+popup/item_3/text = "Epic"
+popup/item_3/icon = SubResource("ImageTexture_v1muy")
+popup/item_3/id = 3
+popup/item_4/text = "Legendary"
+popup/item_4/icon = SubResource("ImageTexture_k46qy")
+popup/item_4/id = 4
+popup/item_5/text = "Mythic"
+popup/item_5/icon = SubResource("ImageTexture_ngag6")
+popup/item_5/id = 5
 script = ExtResource("9_qvmig")
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings" unique_id=1649403989]
@@ -551,6 +729,23 @@ What type of equipment does this item belong to? . This also indicates the type 
 
 [Note]: Setting the type to \"None\" creates a special armor piece that can be equipped in any available equipment slot (e.g., a magical bandage that can be wrapped around any part of the body for thematic consistency)."
 mouse_default_cursor_shape = 2
+item_count = 8
+popup/item_0/text = "None"
+popup/item_0/id = 0
+popup/item_1/text = "Shield"
+popup/item_1/id = 1
+popup/item_2/text = "Head"
+popup/item_2/id = 2
+popup/item_3/text = "Body"
+popup/item_3/id = 3
+popup/item_4/text = "Gloves"
+popup/item_4/id = 4
+popup/item_5/text = "Pants"
+popup/item_5/id = 5
+popup/item_6/text = "Boots"
+popup/item_6/id = 6
+popup/item_7/text = "Accesory"
+popup/item_7/id = 7
 script = ExtResource("9_qvmig")
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2" unique_id=148399827]
@@ -580,6 +775,7 @@ layout_mode = 2
 text = "Max quantity:"
 
 [node name="MaxQuantity" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer5" unique_id=2030931085 instance=ExtResource("9_57wpb")]
+unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Maximum number of items you can have in your inventory.
 
@@ -893,7 +1089,7 @@ odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
 event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 top_bar_style = SubResource("StyleBoxTexture_rmr4f")
 columns_text_colors = PackedColorArray(0.72549, 0.992157, 0.772549, 1)
-cursor_style = SubResource("StyleBoxTexture_jajws")
+cursor_style = SubResource("StyleBoxTexture_k46qy")
 panel_style = SubResource("StyleBoxFlat_ngag6")
 columns = 2
 names = PackedStringArray("Parameter", "Value")
@@ -1156,9 +1352,11 @@ wrap_mode = 1
 [connection signal="paste_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer2/IconPicker" to="." method="_on_icon_picker_paste_requested"]
 [connection signal="remove_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer2/IconPicker" to="." method="_on_icon_picker_remove_requested"]
 [connection signal="text_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer/NameLineEdit" to="." method="_on_name_line_edit_text_changed"]
-[connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer3/LevelRestrictionSpinBox" to="." method="_on_level_restriction_spin_box_value_changed"]
 [connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer4/TickInterval" to="." method="_on_tick_interval_value_changed"]
 [connection signal="text_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3/DescriptionTextEdit" to="." method="_on_description_text_edit_text_changed"]
+[connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer/VBoxContainer/RequiresActorLevel" to="." method="_on_requires_actor_level_value_changed"]
+[connection signal="item_selected" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer/VBoxContainer2/RequiresActorClass" to="." method="_on_requires_actor_class_item_selected"]
+[connection signal="item_selected" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer/VBoxContainer3/RequiresActorGender" to="." method="_on_requires_actor_gender_item_selected"]
 [connection signal="item_selected" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HboxContainer/VBoxContainer/ArmorTypeOptions" to="." method="_on_armor_type_options_item_selected"]
 [connection signal="item_selected" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HboxContainer/VBoxContainer2/ArmorRarityTypeOptions" to="." method="_on_armor_rarity_type_options_item_selected"]
 [connection signal="item_selected" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer/EquipmentOptions" to="." method="_on_equipment_options_item_selected"]

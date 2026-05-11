@@ -15,7 +15,6 @@ func set_data(_title : String, _data: Array, _real_ids: Array, selected_id: int,
 	title = _title.capitalize()
 	%DataTitle.text = _title + ":"
 	var selected_setted: bool = false
-	
 	var node = %Options
 	node.clear()
 	for i in _data.size():
@@ -47,15 +46,15 @@ func _on_cancel_button_pressed() -> void:
 
 
 func _on_options_item_selected(index: int) -> void:
-	if index == 0:
-		%Level.set_disabled(true)
-		%MaxLevels.text = ""
-	else:
+	var real_item = data[index]
+	if real_item:
 		%Level.set_disabled(false)
-		var real_item = data[%Options.get_item_metadata(index)]
 		if real_item.upgrades.max_levels == 1:
 			%Level.max_value = 1
 			%MaxLevels.text = " / 1"
 		else:
 			%Level.max_value = real_item.upgrades.max_levels
 			%MaxLevels.text = " / " + str(real_item.upgrades.max_levels)
+	else:
+		%Level.set_disabled(true)
+		%MaxLevels.text = ""

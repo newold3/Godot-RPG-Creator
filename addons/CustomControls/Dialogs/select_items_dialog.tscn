@@ -72,6 +72,8 @@ modulate_color = Color(1.384, 1.718, 1.882, 1)
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_kfoe7"]
 
+[sub_resource type="ButtonGroup" id="ButtonGroup_2m55n"]
+
 [sub_resource type="ButtonGroup" id="ButtonGroup_6isu0"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vs3u3"]
@@ -147,7 +149,7 @@ texture_margin_bottom = 6.0
 oversampling_override = 1.0
 title = "Select Items"
 position = Vector2i(0, 36)
-size = Vector2i(640, 480)
+size = Vector2i(800, 480)
 wrap_controls = true
 transient = true
 exclusive = true
@@ -238,6 +240,17 @@ theme_override_styles/pressed = SubResource("StyleBoxTexture_o3gie")
 toggle_mode = true
 button_group = SubResource("ButtonGroup_kfoe7")
 text = "Armors"
+
+[node name="Button4" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer/TypeContainer" unique_id=225668214 instance=ExtResource("4_2rk3k")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+tooltip_text = "[title]Armors[/title]
+List of armors added to the database"
+theme_override_styles/pressed = SubResource("StyleBoxTexture_o3gie")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_2m55n")
+text = "Sets & Costumes"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer" unique_id=666927278]
 layout_mode = 2

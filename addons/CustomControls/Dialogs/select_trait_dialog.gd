@@ -1,6 +1,7 @@
 @tool
 extends Window
 
+#region VariablesAndSignals
 ## Style for collapsed sections
 @export var section_collapse_style: StyleBox
 
@@ -27,15 +28,15 @@ var last_filter_used: String
 
 var _collapse_buttons_map: Dictionary = {}
 
-var data_id_cache = {
-	2: 1,
-	3: 1,
-	4: 1,
-	8: 1,
-	11: 1,
-	14: 1,
-	15: 1,
-	27: 1
+var data_id_cache: Dictionary = {
+	2: -1,
+	3: -1,
+	4: -1,
+	8: -1,
+	11: -1,
+	14: -1,
+	15: -1,
+	27: -1
 }
 
 var favorite_buttons_need_refresh: bool = false
@@ -44,9 +45,11 @@ var current_button_hovered: Control
 var selected_id_mode: bool = false
 
 const FAVORITE_BUTTON = preload("uid://dsmo7ri8d6djp")
+#endregion
 
 
 
+#region Initialization
 ## Initializes the dialog and sets up the new collapsible sections
 func _ready() -> void:
 	if not "category_states" in FileCache.options:
@@ -56,8 +59,10 @@ func _ready() -> void:
 	
 	if has_node("%FavoritesOnlyButton"):
 		%FavoritesOnlyButton.set_pressed_no_signal(show_favorites_only)
+		
 		if not %FavoritesOnlyButton.toggled.is_connected(_on_favorites_only_button_toggled):
 			%FavoritesOnlyButton.toggled.connect(_on_favorites_only_button_toggled)
+			
 		%FavoritesOnlyButton.modulate.a = 0.6 if not show_favorites_only else 1.0
 		
 	_setup_collapse_buttons()
@@ -68,7 +73,6 @@ func _ready() -> void:
 		%FilterSmoothContainer.get_v_scroll_bar().changed.connect(_update_window_size_by_filter_container)
 		
 	_set_disabled(true)
-		
 	_setup_checkboxes_and_favorites()
 	
 	%OKButton.set_disabled(false)
@@ -76,6 +80,7 @@ func _ready() -> void:
 	%"C0-1".set_pressed(true)
 	%"C0-1".toggled.emit(true)
 	fill_all()
+
 
 
 ## Sets up button groups, connections, and favorite buttons in a single native pass
@@ -86,8 +91,10 @@ func _setup_checkboxes_and_favorites() -> void:
 	
 	for node in all_checkboxes:
 		node.set_button_group(btn_group)
+		
 		if not node.toggled.is_connected(_on_toggled):
 			node.toggled.connect(_on_toggled.bind(node))
+			
 		node.set_disabled(false)
 		node.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		
@@ -101,12 +108,17 @@ func _setup_checkboxes_and_favorites() -> void:
 				b.set_pressed_no_signal(true)
 				
 			node.set_meta("favorite_button", b)
+#endregion
 
+
+
+#region UIStatesAndHelpers
 ## Applies the search tags to the checkboxes based on a JSON dictionary
 func _apply_automatic_tags() -> void:
 	var dict_path = "res://addons/CustomControls/Dialogs/traits_tags.tags"
 	var tags_dict = JSON.parse_string(FileAccess.get_file_as_string(dict_path))
 	var checkboxes = _get_trait_checkboxes(self)
+	
 	for cb in checkboxes:
 		var matched: bool = false
 		var cb_text_lower = cb.text.to_lower()
@@ -137,17 +149,9 @@ func _set_disabled(value: bool) -> void:
 	var nodes = get_tree().get_nodes_in_group("collapse_button")
 	nodes.append_array(get_tree().get_nodes_in_group("favorite_button"))
 	nodes.append_array([%Filter, %ToggleAllButton, %FavoritesOnlyButton])
+	
 	for node in nodes:
 		node.set_disabled(false)
-
-
-
-## Handles the main favorite toggle logic
-func _on_favorites_only_button_toggled(toggled_on: bool) -> void:
-	show_favorites_only = toggled_on
-	FileCache.options.traits_show_favorites_only = show_favorites_only
-	filter_update_timer = 0.01
-	%FavoritesOnlyButton.modulate.a = 0.6 if not toggled_on else 1.0
 
 
 
@@ -155,12 +159,15 @@ func _on_favorites_only_button_toggled(toggled_on: bool) -> void:
 func _process(delta: float) -> void:
 	if filter_update_timer > 0.0:
 		filter_update_timer -= delta
+		
 		if filter_update_timer <= 0:
 			filter_update_timer = 0.0
 			_update_filter()
+#endregion
 
 
 
+#region CollapseAndCategories
 ## Prepares the collapse buttons and restores their saved states
 func _setup_collapse_buttons() -> void:
 	var nodes = get_tree().get_nodes_in_group("collapse_button")
@@ -168,6 +175,7 @@ func _setup_collapse_buttons() -> void:
 	for btn in nodes:
 		if is_ancestor_of(btn):
 			var category_label = btn.get_parent()
+			
 			if category_label is Label:
 				var category_id = "trait_" + category_label.text
 				_collapse_buttons_map[btn] = category_id
@@ -178,6 +186,7 @@ func _setup_collapse_buttons() -> void:
 				var is_collapsed = FileCache.options.category_states.get(category_id, false)
 				btn.set_pressed_no_signal(is_collapsed)
 				_set_category_visual_state(btn, is_collapsed)
+
 
 
 ## Updates the visual state of a category based on user data
@@ -246,6 +255,17 @@ func _on_toggle_all_button_pressed() -> void:
 			%ToggleAllButton.icon = get_theme_icon("GuiTreeArrowRight", "EditorIcons")
 		else:
 			%ToggleAllButton.icon = get_theme_icon("Collapse", "EditorIcons")
+#endregion
+
+
+
+#region FavoritesAndFilters
+## Handles the main favorite toggle logic
+func _on_favorites_only_button_toggled(toggled_on: bool) -> void:
+	show_favorites_only = toggled_on
+	FileCache.options.traits_show_favorites_only = show_favorites_only
+	filter_update_timer = 0.01
+	%FavoritesOnlyButton.modulate.a = 0.6 if not toggled_on else 1.0
 
 
 
@@ -319,6 +339,7 @@ func _update_filter() -> void:
 			
 			if is_filtering:
 				category_root.visible = (visible_count > 0)
+				
 				if visible_count > 0 and collapse_btn.button_pressed:
 					collapse_btn.set_pressed_no_signal(false)
 					_set_category_visual_state(collapse_btn, false)
@@ -326,6 +347,7 @@ func _update_filter() -> void:
 				category_root.visible = true
 				var category_id = _collapse_buttons_map.get(collapse_btn, "")
 				var saved_state = FileCache.options.category_states.get(category_id, false)
+				
 				if collapse_btn.button_pressed != saved_state:
 					collapse_btn.set_pressed_no_signal(saved_state)
 					_set_category_visual_state(collapse_btn, saved_state)
@@ -376,10 +398,12 @@ func _find_collapse_button_in_category(start_node: Node) -> Button:
 	
 	while current and current != self:
 		var parent = current.get_parent()
+		
 		if not parent:
 			break
 			
 		var btn = _search_button_recursive(parent, current)
+		
 		if btn:
 			return btn
 			
@@ -399,6 +423,7 @@ func _search_button_recursive(node: Node, exclude_node: Node) -> Button:
 			continue
 			
 		var found = _search_button_recursive(child, null)
+		
 		if found:
 			return found
 			
@@ -406,14 +431,36 @@ func _search_button_recursive(node: Node, exclude_node: Node) -> Button:
 
 
 
-## Updates the window height when filtering changes the scroll container size
-func _update_window_size_by_filter_container() -> void:
-	var vbar = %FilterSmoothContainer.get_v_scroll_bar()
-	var max_h = 600
-	size.y = max(min_size.y, min((vbar.max_value - vbar.min_value) + vbar.page, max_h))
+## Resets the filter timer and updates search icon
+func _on_filter_text_changed(new_text: String) -> void:
+	if new_text.length() != 0:
+		%Filter.right_icon = ResourceLoader.load("res://addons/CustomControls/Images/filter_reset.png")
+	else:
+		%Filter.right_icon = ResourceLoader.load("res://addons/CustomControls/Images/magnifying_glass.png")
+		
+	filter_update_timer = 0.25
 
 
 
+## Clears the filter text if the reset icon is clicked
+func _on_filter_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.is_pressed():
+			if event.button_index == MOUSE_BUTTON_LEFT:
+				if %Filter.text.length() > 0:
+					if event.position.x >= %Filter.size.x - 22:
+						%Filter.text = ""
+						_on_filter_text_changed("")
+	elif event is InputEventMouseMotion:
+		if event.position.x >= %Filter.size.x - 22:
+			%Filter.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		else:
+			%Filter.mouse_default_cursor_shape = Control.CURSOR_IBEAM
+#endregion
+
+
+
+#region DataPopulationAndSelection
 ## Sets the initial data and target for the dialog
 func set_data(_data: RPGTrait, _target: int) -> void:
 	if _data:
@@ -423,25 +470,6 @@ func set_data(_data: RPGTrait, _target: int) -> void:
 	
 	set_selected_data()
 	target = _target
-
-
-## Handles a checkbox toggle to enable or disable associated controls
-func _on_toggled(value: bool, node: CheckBox) -> void:
-	if !data:
-		return
-		
-	if !selected_id_mode:
-		node.get_parent().propagate_call("set_disabled", [!value])
-		var value_extra = ["C0-1", "C1-1", "C2-1", "C4-1", "C5-1", "C100-1", "C6-1", "C8-1", "C25-1", "C26-1"].has(node.name)
-		if value_extra:
-			var other_node = node.get_parent().get_parent().get_child(node.get_parent().get_index() + 1)
-			other_node.propagate_call("set_disabled", [!value])
-		node.set_disabled(false)
-	
-	if value:
-		var base_name = str(node.name).get_slice("-", 0)
-		var current_code = base_name.replace("C", "")
-		data.code = int(current_code) + 1
 
 
 
@@ -464,6 +492,7 @@ func set_selected_data() -> void:
 	if [1, 2, 5, 101, 6, 7, 8, 13, 14, 17, 18, 19, 20, 21, 23, 24, 25, 26, 27].has(data.code):
 		node_name = "%" + "C%s-2" % str(data.code - 1)
 		node = get_node(node_name)
+		
 		if node.get_item_count() > data.data_id:
 			node.select(data.data_id)
 		else:
@@ -481,18 +510,41 @@ func set_selected_data() -> void:
 	if [3, 4, 9, 12, 15, 16, 28].has(data.code):
 		node_name = "%" + "C%s-2" % str(data.code - 1)
 		node = get_node(node_name)
-		var current_data
-		if [3, 4, 9, 28].has(data.code):
-			current_data = database.states
-		elif [12, 15, 16]:
-			current_data = database.skills
+		var db_type = "states" if [3, 4, 9, 28].has(data.code) else "skills"
 		
 		data_id_cache[data.code - 1] = data.data_id
 		
-		if current_data.size() > data.data_id:
-			node.set_text(str(data.data_id).pad_zeros(str(current_data.size()).length()) + ": " + current_data[data.data_id].name)
-		elif current_data.size() > 1:
-			node.set_text(str(1).pad_zeros(str(current_data.size()).length()) + ": " + current_data[1].name)
+		var item = RPGSYSTEM.get_data(db_type, data.data_id)
+		
+		if item:
+			var classic_id = RPGSYSTEM.uid_to_id(db_type, data.data_id)
+			var current_data_array = database.states if db_type == "states" else database.skills
+			var padded_id = str(classic_id).pad_zeros(str(current_data_array.size()).length())
+			node.set_text(padded_id + ": " + item.name)
+		else:
+			node.set_text("⚠ Invalid Data")
+
+
+
+## Handles a checkbox toggle to enable or disable associated controls
+func _on_toggled(value: bool, node: CheckBox) -> void:
+	if !data:
+		return
+		
+	if !selected_id_mode:
+		node.get_parent().propagate_call("set_disabled", [!value])
+		var value_extra = ["C0-1", "C1-1", "C2-1", "C4-1", "C5-1", "C100-1", "C6-1", "C8-1", "C25-1", "C26-1"].has(node.name)
+		
+		if value_extra:
+			var other_node = node.get_parent().get_parent().get_child(node.get_parent().get_index() + 1)
+			other_node.propagate_call("set_disabled", [!value])
+			
+		node.set_disabled(false)
+	
+	if value:
+		var base_name = str(node.name).get_slice("-", 0)
+		var current_code = base_name.replace("C", "")
+		data.code = int(current_code) + 1
 
 
 
@@ -535,6 +587,7 @@ func fill_elements_types() -> void:
 	node1.clear()
 	node2.clear()
 	node3.clear()
+	
 	if database:
 		var elements = database.types.element_types
 		for element in elements:
@@ -550,6 +603,7 @@ func fill_skill_types() -> void:
 	var node2 = %"C13-2"
 	node1.clear()
 	node2.clear()
+	
 	if database:
 		var skills = database.types.skill_types
 		for skill in skills:
@@ -564,6 +618,7 @@ func fill_equipment_types() -> void:
 	var node2 = %"C19-2"
 	node1.clear()
 	node2.clear()
+	
 	if database:
 		var equipment = database.types.equipment_types
 		for equip in equipment:
@@ -576,6 +631,7 @@ func fill_equipment_types() -> void:
 func fill_weapon_types() -> void:
 	var node = %"C16-2"
 	node.clear()
+	
 	if database:
 		var weapons = database.types.weapon_types
 		node.add_item("Add All Weapon Types")
@@ -588,6 +644,7 @@ func fill_weapon_types() -> void:
 func fill_armor_types() -> void:
 	var node = %"C17-2"
 	node.clear()
+	
 	if database:
 		var armors = database.types.armor_types
 		node.add_item("Add All Armor Types")
@@ -596,28 +653,49 @@ func fill_armor_types() -> void:
 
 
 
-## Populates database dynamic lists
+## Populates database dynamic lists with UIDs
 func fill_other() -> void:
 	var node_name
 	var node
-	var current_data
 	
 	if database:
-		current_data = database.states
+		var first_state = null
+		var first_state_id = -1
+		
+		for i in range(1, database.states.size()):
+			var s = database.states[i]
+			if s and s.get("_uniq_id") and s._uniq_id > 0:
+				first_state = s
+				first_state_id = i
+				break
+				
 		for i in [2, 3, 8, 27]:
 			node_name = "%" + "C%s-2" % str(i)
 			node = get_node(node_name)
-			if current_data.size() > 1:
-				node.set_text(str(1).pad_zeros(str(current_data.size()).length()) + ": " + current_data[1].name)
+			
+			if first_state:
+				var padded_id = str(first_state_id).pad_zeros(str(database.states.size()).length())
+				node.set_text(padded_id + ": " + first_state.name)
 			else:
 				node.set_text("")
 		
-		current_data = database.skills
+		var first_skill = null
+		var first_skill_id = -1
+		
+		for i in range(1, database.skills.size()):
+			var s = database.skills[i]
+			if s and s.get("_uniq_id") and s._uniq_id > 0:
+				first_skill = s
+				first_skill_id = i
+				break
+				
 		for i in [11, 14, 15]:
 			node_name = "%" + "C%s-2" % str(i)
 			node = get_node(node_name)
-			if current_data.size() > 1:
-				node.set_text(str(1).pad_zeros(str(current_data.size()).length()) + ": " + current_data[1].name)
+			
+			if first_skill:
+				var padded_id = str(first_skill_id).pad_zeros(str(database.skills.size()).length())
+				node.set_text(padded_id + ": " + first_skill.name)
 			else:
 				node.set_text("")
 	else:
@@ -625,11 +703,19 @@ func fill_other() -> void:
 			node_name = "%" + "C%s-2" % str(i)
 			node = get_node(node_name)
 			node.set_text("")
+#endregion
 
 
 
+#region SubDialogsAndCallbacks
 ## Opens a sub dialog to select database specific data
-func _open_select_any_data_dialog(current_data, id_selected: int, title: String, target_id: int) -> void:
+func _open_select_any_data_dialog(current_data: Variant, uid_selected: int, title: String, target_id: int) -> void:
+	var db_key = "states" if [2, 3, 8, 27].has(target_id) else ("skills" if [11, 14, 15].has(target_id) else "")
+	var array_index: int = -1
+	
+	if db_key != "":
+		array_index = RPGSYSTEM.uid_to_id(db_key, uid_selected)
+		
 	var path = "res://addons/CustomControls/Dialogs/select_any_data_dialog.tscn"
 	var dialog
 	
@@ -641,25 +727,37 @@ func _open_select_any_data_dialog(current_data, id_selected: int, title: String,
 		dialog.database = database
 	
 	dialog.selected.connect(_on_any_data_selected, CONNECT_ONE_SHOT)
-	dialog.setup(current_data, id_selected, title, target_id)
+	dialog.setup(current_data, array_index, title, target_id)
 
 
 
-## Processes the selected data from the sub dialog
-func _on_any_data_selected(id: int, dialog_target: Variant) -> void:
+## Processes the selected data from the sub dialog using UID
+func _on_any_data_selected(index: int, dialog_target: Variant) -> void:
 	if !database: return
 	
-	data_id_cache[dialog_target] = id
-	var node = get_node_or_null("%" + "C%s-2" % str(dialog_target))
+	var db_type = "states" if [2, 3, 8, 27].has(dialog_target) else ("skills" if [11, 14, 15].has(dialog_target) else "")
 	
-	if node:
-		var current_data
-		if [2, 3, 8, 27].has(dialog_target):
-			current_data = database.states
-		elif [11, 14, 15].has(dialog_target):
-			current_data = database.skills
-		if current_data:
-			node.set_text(str(id).pad_zeros(str(current_data.size()).length()) + ": " + current_data[id].name)
+	if db_type != "":
+		var uid = RPGSYSTEM.id_to_uid(db_type, index)
+		data_id_cache[dialog_target] = uid
+		
+		var node = get_node_or_null("%" + "C%s-2" % str(dialog_target))
+		
+		if node:
+			var item = RPGSYSTEM.get_data(db_type, uid)
+			
+			if item:
+				var current_data_array = database.states if db_type == "states" else database.skills
+				var padded_id = str(index).pad_zeros(str(current_data_array.size()).length())
+				node.set_text(padded_id + ": " + item.name)
+
+
+
+## Updates the window height when filtering changes the scroll container size
+func _update_window_size_by_filter_container() -> void:
+	var vbar = %FilterSmoothContainer.get_v_scroll_bar()
+	var max_h = 600
+	size.y = max(min_size.y, min((vbar.max_value - vbar.min_value) + vbar.page, max_h))
 
 
 
@@ -678,7 +776,6 @@ func _on_ok_button_pressed() -> void:
 	if focus_owner is LineEdit and focus_owner.get_parent() is SpinBox:
 		focus_owner.get_parent().apply()
 		
-	var button_pressed = %"C0-1".get_button_group().get_pressed_button()
 	var node2 = get_node_or_null("%" + "C%s-2" % str(data.code - 1))
 	var node3 = get_node_or_null("%" + "C%s-3" % str(data.code - 1))
 	
@@ -755,30 +852,4 @@ func _on_c_142_pressed() -> void:
 func _on_c_152_pressed() -> void:
 	if !database: return
 	_open_select_any_data_dialog(database.skills, data_id_cache[15], "Skills", 15)
-
-
-
-## Resets the filter timer and updates search icon
-func _on_filter_text_changed(new_text: String) -> void:
-	if new_text.length() != 0:
-		%Filter.right_icon = ResourceLoader.load("res://addons/CustomControls/Images/filter_reset.png")
-	else:
-		%Filter.right_icon = ResourceLoader.load("res://addons/CustomControls/Images/magnifying_glass.png")
-	filter_update_timer = 0.25
-
-
-
-## Clears the filter text if the reset icon is clicked
-func _on_filter_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton:
-		if event.is_pressed():
-			if event.button_index == MOUSE_BUTTON_LEFT:
-				if %Filter.text.length() > 0:
-					if event.position.x >= %Filter.size.x - 22:
-						%Filter.text = ""
-						_on_filter_text_changed("")
-	elif event is InputEventMouseMotion:
-		if event.position.x >= %Filter.size.x - 22:
-			%Filter.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-		else:
-			%Filter.mouse_default_cursor_shape = Control.CURSOR_IBEAM
+#endregion

@@ -63,8 +63,9 @@ func _command_0072() -> void:
 	elif GameManager.current_battle_scene: # Show animation on battle scene
 		return # TODO
 	
-	if target and RPGSYSTEM.database.animations.size() > animation_id and animation_id > 0:
-		var animation: RPGAnimation = RPGSYSTEM.database.animations[animation_id]
+	var animation = RPGSYSTEM.get_data("animations", animation_id)
+	
+	if target and animation:
 		if ResourceLoader.exists(animation.filename):
 			var effect: Variant
 			if animation.filename.get_extension().to_lower() == "tscn":

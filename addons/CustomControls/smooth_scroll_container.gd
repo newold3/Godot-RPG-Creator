@@ -728,6 +728,7 @@ func reset_scroll() -> void:
 	if v and v.visible:
 		v.value = 0
 	_sync_child_to_scrollbar()
+	saved_position = Vector2.ZERO
 	is_animating = false
 
 

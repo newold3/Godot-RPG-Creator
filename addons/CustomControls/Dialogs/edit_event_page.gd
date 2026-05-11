@@ -177,8 +177,9 @@ func fill_page(page: RPGEventPage) -> void:
 		var window: Window = get_window()
 		if window and window is EditEventEditor:
 			var movement_to_target = current_page.movement_to_target
-			_fill_events(window.current_event, window.events.get_events(), movement_to_target)
-			_fill_pressure_targets(window.current_event, window.events.get_events(), current_page.condition.pressure_targets)
+			var evs = window.events.get_events() if window.events else []
+			_fill_events(window.current_event, evs, movement_to_target)
+			_fill_pressure_targets(window.current_event, evs, current_page.condition.pressure_targets)
 		else:
 			_fill_events(null, [], -1)
 			_fill_pressure_targets(null, [], [])

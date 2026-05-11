@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://48h2dv7e1hcf"]
+[gd_scene format=3 uid="uid://48h2dv7e1hcf"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_h6nir"]
 [ext_resource type="Script" uid="uid://c8ks15g52coec" path="res://addons/CustomControls/Dialogs/CommandEvents/control_variables_dialog.gd" id="2_5x0fq"]
@@ -23,7 +23,7 @@ gradient = SubResource("Gradient_u5yrp")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_faxed"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jcs72"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -41,17 +41,17 @@ corner_radius_bottom_left = 12
 [sub_resource type="Gradient" id="Gradient_ctwx1"]
 colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_jcs72"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_sbngs"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_ctwx1")
 fill_from = Vector2(0.542735, 0.995726)
 fill_to = Vector2(0.58547, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_sbngs"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_263tv"]
 resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_jcs72")
+texture = SubResource("GradientTexture2D_sbngs")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_263tv"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vyf6c"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -66,7 +66,7 @@ corner_radius_bottom_left = 12
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_i8abc"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vyf6c"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wyqqb"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -81,17 +81,17 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_wyqqb"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_kke3s"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_ctwx1")
 fill_from = Vector2(0.542735, 0.995726)
 fill_to = Vector2(0.58547, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kke3s"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_f6v0s"]
 resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_wyqqb")
+texture = SubResource("GradientTexture2D_kke3s")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f6v0s"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wdl87"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -106,7 +106,7 @@ corner_radius_bottom_left = 12
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_wby2p"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wdl87"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g7a08"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -121,17 +121,17 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_g7a08"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_0g6gq"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_ctwx1")
 fill_from = Vector2(0.542735, 0.995726)
 fill_to = Vector2(0.58547, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0g6gq"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pu77k"]
 resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_g7a08")
+texture = SubResource("GradientTexture2D_0g6gq")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pu77k"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ftumo"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -214,7 +214,7 @@ texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[node name="ControlVariablesDialog" type="Window"]
+[node name="ControlVariablesDialog" type="Window" unique_id=1270588348]
 oversampling_override = 1.0
 title = "Control Variables"
 position = Vector2i(0, 36)
@@ -226,7 +226,7 @@ unresizable = true
 theme = ExtResource("1_h6nir")
 script = ExtResource("2_5x0fq")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=969683750]
 material = SubResource("CanvasItemMaterial_mv5b2")
 anchors_preset = 15
 anchor_right = 1.0
@@ -235,7 +235,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_ogwiw")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=506189038]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -248,35 +248,35 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1178596]
 layout_mode = 2
 
-[node name="Item" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_dlo4s")]
+[node name="Item" parent="MarginContainer/VBoxContainer" unique_id=719766878 instance=ExtResource("3_dlo4s")]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_faxed")
-style1 = SubResource("StyleBoxFlat_faxed")
-style2 = SubResource("StyleBoxTexture_sbngs")
-style3 = SubResource("StyleBoxFlat_263tv")
+theme_override_styles/panel = SubResource("StyleBoxFlat_jcs72")
+style1 = SubResource("StyleBoxFlat_jcs72")
+style2 = SubResource("StyleBoxTexture_263tv")
+style3 = SubResource("StyleBoxFlat_vyf6c")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Item"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Item" unique_id=1072030611]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer" unique_id=1676177182]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer" unique_id=2082018694]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "Variable"
 
-[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer" unique_id=93071445]
 layout_mode = 2
 
-[node name="Single" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="Single" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/VBoxContainer" unique_id=1073925940]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(110, 0)
 layout_mode = 2
@@ -287,17 +287,17 @@ button_pressed = true
 button_group = SubResource("ButtonGroup_i8abc")
 text = "Single:"
 
-[node name="ItemID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/VBoxContainer" instance=ExtResource("4_sih3x")]
+[node name="ItemID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/VBoxContainer" unique_id=1558196321 instance=ExtResource("4_sih3x")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Click to select the variable for this operation"
 text = "0001:uno"
 
-[node name="VBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+[node name="VBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer" unique_id=1842986145]
 layout_mode = 2
 
-[node name="Random" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/VBoxContainer2"]
+[node name="Random" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/VBoxContainer2" unique_id=1754543869]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(110, 0)
 layout_mode = 2
@@ -310,62 +310,62 @@ mouse_default_cursor_shape = 2
 button_group = SubResource("ButtonGroup_i8abc")
 text = "Group:"
 
-[node name="From" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/VBoxContainer2" instance=ExtResource("5_7m2rc")]
+[node name="From" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/VBoxContainer2" unique_id=431835570 instance=ExtResource("5_7m2rc")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Operates all variables found beetween two specified numbers"
 mouse_filter = 2
 min_value = 1.0
-value = 1.0
 allow_greater = true
 editable = false
 disabled = true
+_custom_value = 0.0
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/VBoxContainer2"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/VBoxContainer2" unique_id=1096581725]
 layout_mode = 2
 size_flags_vertical = 1
 text = " ~ "
 horizontal_alignment = 1
 vertical_alignment = 2
 
-[node name="To" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/VBoxContainer2" instance=ExtResource("5_7m2rc")]
+[node name="To" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/VBoxContainer2" unique_id=568991802 instance=ExtResource("5_7m2rc")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Operates all variables found beetween two specified numbers"
 mouse_filter = 2
 min_value = 1.0
-value = 1.0
 allow_greater = true
 editable = false
 disabled = true
+_custom_value = 0.0
 
-[node name="Operation" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_dlo4s")]
+[node name="Operation" parent="MarginContainer/VBoxContainer" unique_id=1832425972 instance=ExtResource("3_dlo4s")]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_vyf6c")
-style1 = SubResource("StyleBoxFlat_vyf6c")
-style2 = SubResource("StyleBoxTexture_kke3s")
-style3 = SubResource("StyleBoxFlat_f6v0s")
+theme_override_styles/panel = SubResource("StyleBoxFlat_wyqqb")
+style1 = SubResource("StyleBoxFlat_wyqqb")
+style2 = SubResource("StyleBoxTexture_f6v0s")
+style3 = SubResource("StyleBoxFlat_wdl87")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Operation"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Operation" unique_id=213442671]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Operation/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Operation/MarginContainer" unique_id=271458192]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer" unique_id=1499158336]
 layout_mode = 2
 text = "Operation"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer" unique_id=587844849]
 layout_mode = 2
 
-[node name="OperationSet" type="CheckBox" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="OperationSet" type="CheckBox" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1434853153]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -375,7 +375,7 @@ button_pressed = true
 button_group = SubResource("ButtonGroup_wby2p")
 text = "Set (=)"
 
-[node name="OperationAdd" type="CheckBox" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="OperationAdd" type="CheckBox" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer" unique_id=600799503]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -384,7 +384,7 @@ mouse_default_cursor_shape = 2
 button_group = SubResource("ButtonGroup_wby2p")
 text = "Add (+)"
 
-[node name="OperationSub" type="CheckBox" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="OperationSub" type="CheckBox" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1988090180]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -393,7 +393,7 @@ mouse_default_cursor_shape = 2
 button_group = SubResource("ButtonGroup_wby2p")
 text = "Sub (-)"
 
-[node name="OperationMul" type="CheckBox" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="OperationMul" type="CheckBox" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1741326131]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -402,7 +402,7 @@ mouse_default_cursor_shape = 2
 button_group = SubResource("ButtonGroup_wby2p")
 text = "Mul (*)"
 
-[node name="OperationDiv" type="CheckBox" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="OperationDiv" type="CheckBox" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer" unique_id=547781037]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -411,7 +411,7 @@ mouse_default_cursor_shape = 2
 button_group = SubResource("ButtonGroup_wby2p")
 text = "Div (/)"
 
-[node name="OperationMod" type="CheckBox" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="OperationMod" type="CheckBox" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1551553871]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -420,31 +420,31 @@ mouse_default_cursor_shape = 2
 button_group = SubResource("ButtonGroup_wby2p")
 text = "Mod (%)"
 
-[node name="Operand" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_dlo4s")]
+[node name="Operand" parent="MarginContainer/VBoxContainer" unique_id=474361085 instance=ExtResource("3_dlo4s")]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_wdl87")
-style1 = SubResource("StyleBoxFlat_wdl87")
-style2 = SubResource("StyleBoxTexture_0g6gq")
-style3 = SubResource("StyleBoxFlat_pu77k")
+theme_override_styles/panel = SubResource("StyleBoxFlat_g7a08")
+style1 = SubResource("StyleBoxFlat_g7a08")
+style2 = SubResource("StyleBoxTexture_pu77k")
+style3 = SubResource("StyleBoxFlat_ftumo")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Operand"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Operand" unique_id=2125370596]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Operand/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Operand/MarginContainer" unique_id=1653386153]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer" unique_id=316206470]
 layout_mode = 2
 text = "Operand"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer" unique_id=171924735]
 layout_mode = 2
 
-[node name="Constant" type="CheckBox" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Constant" type="CheckBox" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/HBoxContainer" unique_id=590948939]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
@@ -456,19 +456,19 @@ button_group = SubResource("ButtonGroup_tttgk")
 text = "Constant
 "
 
-[node name="OperandConstant" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_7m2rc")]
+[node name="OperandConstant" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/HBoxContainer" unique_id=753589855 instance=ExtResource("5_7m2rc")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Uses the constant value"
-value = 8.0
 allow_greater = true
 allow_lesser = true
+_custom_value = 0.0
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer" unique_id=812920891]
 layout_mode = 2
 
-[node name="Variable" type="CheckBox" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Variable" type="CheckBox" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1593797597]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
@@ -479,7 +479,7 @@ button_group = SubResource("ButtonGroup_tttgk")
 text = "Variable
 "
 
-[node name="OperandVariableID" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("4_sih3x")]
+[node name="OperandVariableID" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=687212296 instance=ExtResource("4_sih3x")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -487,10 +487,10 @@ tooltip_text = "Uses the value of the specified variable"
 disabled = true
 text = "0001:uno"
 
-[node name="VBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer"]
+[node name="VBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer" unique_id=913187289]
 layout_mode = 2
 
-[node name="OperandRandom" type="CheckBox" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/VBoxContainer2"]
+[node name="OperandRandom" type="CheckBox" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/VBoxContainer2" unique_id=1057604414]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
@@ -500,41 +500,41 @@ mouse_default_cursor_shape = 2
 button_group = SubResource("ButtonGroup_tttgk")
 text = "Random"
 
-[node name="OperandFrom" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/VBoxContainer2" instance=ExtResource("5_7m2rc")]
+[node name="OperandFrom" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/VBoxContainer2" unique_id=636798343 instance=ExtResource("5_7m2rc")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Uses a random value beetween two specified values"
 mouse_filter = 2
 min_value = 1.0
-value = 1.0
 allow_greater = true
 editable = false
 disabled = true
+_custom_value = 0.0
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/VBoxContainer2"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/VBoxContainer2" unique_id=873648462]
 layout_mode = 2
 size_flags_vertical = 1
 text = " ~ "
 horizontal_alignment = 1
 vertical_alignment = 2
 
-[node name="OperandTo" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/VBoxContainer2" instance=ExtResource("5_7m2rc")]
+[node name="OperandTo" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/VBoxContainer2" unique_id=2092203149 instance=ExtResource("5_7m2rc")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Uses a random value beetween two specified values"
 mouse_filter = 2
 min_value = 1.0
-value = 1.0
 allow_greater = true
 editable = false
 disabled = true
+_custom_value = 0.0
 
-[node name="VBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer"]
+[node name="VBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer" unique_id=682131627]
 layout_mode = 2
 
-[node name="GameData" type="CheckBox" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/VBoxContainer3"]
+[node name="GameData" type="CheckBox" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/VBoxContainer3" unique_id=1184217035]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
@@ -544,7 +544,7 @@ mouse_default_cursor_shape = 2
 button_group = SubResource("ButtonGroup_tttgk")
 text = "Game Data"
 
-[node name="OperandGameData" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/VBoxContainer3" instance=ExtResource("4_sih3x")]
+[node name="OperandGameData" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/VBoxContainer3" unique_id=702369074 instance=ExtResource("4_sih3x")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -552,10 +552,10 @@ tooltip_text = "Uses a value of various data in the game"
 disabled = true
 text = "Map ID"
 
-[node name="VBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer"]
+[node name="VBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer" unique_id=1254827142]
 layout_mode = 2
 
-[node name="Script" type="CheckBox" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/VBoxContainer4"]
+[node name="Script" type="CheckBox" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/VBoxContainer4" unique_id=142630048]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
@@ -565,7 +565,7 @@ mouse_default_cursor_shape = 2
 button_group = SubResource("ButtonGroup_tttgk")
 text = "Script"
 
-[node name="OperandScript" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/VBoxContainer4" instance=ExtResource("6_ccojj")]
+[node name="OperandScript" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/VBoxContainer4" unique_id=2069470579 instance=ExtResource("6_ccojj")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -579,7 +579,7 @@ selecting_enabled = false
 disabled = true
 metadata/original_text = ""
 
-[node name="OpenAdvancedScriptEditor" type="TextureButton" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/VBoxContainer4"]
+[node name="OpenAdvancedScriptEditor" type="TextureButton" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/VBoxContainer4" unique_id=1500924809]
 layout_mode = 2
 size_flags_vertical = 4
 tooltip_text = "Open the advanced script editor"
@@ -590,18 +590,18 @@ texture_normal = SubResource("AtlasTexture_sbngs")
 texture_hover = SubResource("AtlasTexture_263tv")
 texture_disabled = SubResource("AtlasTexture_jcs72")
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1987245548]
 layout_mode = 2
 size_flags_vertical = 10
 theme_override_constants/separation = 12
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=819090838]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 alignment = 1
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("6_0ohqy")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1264773879 instance=ExtResource("6_0ohqy")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
@@ -613,7 +613,7 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_8632l")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_umt67")
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("6_0ohqy")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1313124683 instance=ExtResource("6_0ohqy")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2

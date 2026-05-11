@@ -9,6 +9,8 @@ var weapon_animations_data: Dictionary
 
 var is_playing: bool = false
 
+const VALID_DATABASE_KEYS: Array = ["actors", "classes", "professions", "skills", "items", "weapons", "armors", "costumes", "enemies", "troops", "states", "animations", "common_events", "speakers", "quests"]
+
 static var editor_interface
 
 
@@ -109,20 +111,83 @@ func generate_16_digit_id() -> int:
 	return int(id)
 
 
-func get_data(key: String, id: int) -> Variant:
-	var valid_keys = ["actors", "classes", "professions", "skills", "items", "weapons", "armors", "costumes", "enemies", "troops", "states", "animations", "common_events", "speakers", "quests"]
+func get_data(key: Variant, id: int) -> Variant:
+	if id < 0:
+		return null
+		
+	if key is String and not key in VALID_DATABASE_KEYS:
+		return null
+		
+	var data: Array = database[key] if key is String else key
 	
-	if key in valid_keys:
-		var data = database[key]
-		if id > 0 and data.size() > id:
-			return data[id]
-		else:
-			for d: Variant in data:
-				if not d: continue
-				if d._uniq_id == id:
-					return d
+	if not data: 
+		return null
+		
+	if id >= 1_000_000_000_000_000:
+		for d: Variant in data:
+			if d and d.get("_uniq_id") == id:
+				return d
+		return null
 	
+	if id > 0 and data.size() > id and data[id] and data[id].id == id:
+		return data[id]
+		
+	for d: Variant in data:
+		if d and d.id == id:
+			return d
+			
 	return null
+
+
+
+func id_to_uid(key: Variant, id: int) -> int:
+	if id < 0:
+		return -1
+		
+	if id >= 1_000_000_000_000_000:
+		return id
+		
+	if key is String and not key in VALID_DATABASE_KEYS:
+		return -1
+		
+	var data: Array = database[key] if key is String else key
+	
+	if not data: 
+		return -1
+	
+	if id > 0 and data.size() > id and data[id] and data[id].id == id:
+		return data[id]._uniq_id
+	
+	for d: Variant in data:
+		if d and d.id == id:
+			return d.get("_uniq_id", -1)
+		
+	return -1
+
+
+
+func uid_to_id(key: Variant, id: int) -> int:
+	if id < 0:
+		return -1
+		
+	if id < 1_000_000_000_000_000:
+		return id
+		
+	if key is String and not key in VALID_DATABASE_KEYS:
+		return -1
+		
+	var data: Array = database[key] if key is String else key
+	
+	if not data: 
+		return -1
+	
+	for i: int in data.size():
+		var d: Variant = data[i]
+		
+		if d and d.get("_uniq_id") == id:
+			return i
+			
+	return -1
 
 
 func load_variables_and_switches() -> void:

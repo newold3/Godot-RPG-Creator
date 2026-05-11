@@ -1,6 +1,7 @@
 @tool
 extends Control
 
+#region InternalClasses
 # Internal class to handle the state of each item
 class ItemState:
 	var data: Dictionary
@@ -59,9 +60,11 @@ class ItemState:
 	
 	func _to_string() -> String:
 		return "<ItemState %s>" % data
+#endregion
 
 
-# Exported Uniforms/Properties
+
+#region ExportedVariables
 @export_group("Layout")
 @export_range(1, 12, 1) var max_columns: int = 3: set = set_max_columns
 @export var item_size: Vector2 = Vector2(120, 40): set = set_item_size
@@ -92,8 +95,11 @@ class ItemState:
 
 @export_group("Other")
 @export var target_node_size: Control
+#endregion
 
-# Internal variables
+
+
+#region InternalVariablesAndSignals
 var item_states: Array[ItemState] = []
 var hovered_index: int = -1
 var selected_index: int = -1
@@ -106,14 +112,15 @@ var is_enabled: bool = false
 
 var curren_equipped_item: Variant # GameWeapon or GameArmor
 
-
-# Signals
 signal item_selected(index: int, item: Dictionary)
 signal item_hovered(index: int, item: Dictionary)
 signal item_clicked(index: int, item: Dictionary)
 signal cancel()
+#endregion
 
 
+
+#region Initialization
 func _ready():
 	last_position = global_position
 	mouse_entered.connect(_on_mouse_entered)
@@ -131,10 +138,9 @@ func _ready():
 	# Find parent ScrollContainer
 	_find_scroll_parent()
 	
-	#fill_test_data()
-	
 	busy = false
 	_update_layout()
+
 
 
 func _find_scroll_parent():
@@ -144,11 +150,13 @@ func _find_scroll_parent():
 			scroll_parent = parent
 			scroll_parent.get_v_scroll_bar().value_changed.connect(queue_redraw.unbind(1))
 			scroll_parent.get_h_scroll_bar().value_changed.connect(queue_redraw.unbind(1))
-			#scroll_parent.single_target_focus = focus_control
 			break
 		parent = parent.get_parent()
+#endregion
 
 
+
+#region RenderingAndLayout
 func _get_visible_range(columns: int) -> Vector2i:
 	if not scroll_parent:
 		return Vector2i(0, item_states.size() - 1)
@@ -164,6 +172,7 @@ func _get_visible_range(columns: int) -> Vector2i:
 	var start_index = first_row * columns
 	var end_index = min(item_states.size() - 1, (last_row + 1) * columns - 1)
 	return Vector2i(start_index, end_index)
+
 
 
 func _draw():
@@ -220,11 +229,14 @@ func _draw():
 		_draw_item_content(item, content_rect, text_color, i)
 
 
+
 func _is_item_visible(item_state: ItemState) -> bool:
 	if not scroll_parent:
 		return true
 	
 	return visible_rect.intersects(item_state.rect)
+
+
 
 func _draw_item_content(item: Dictionary, rect: Rect2, text_color: Color, _index: int):
 	var icon_texture: Texture2D
@@ -323,15 +335,22 @@ func _draw_item_content(item: Dictionary, rect: Rect2, text_color: Color, _index
 	var name_draw_pos = name_pos - Vector2(0, name_size.y * 0.5)
 	draw_string(current_font, name_draw_pos, display_name, HORIZONTAL_ALIGNMENT_LEFT, available_width, current_font_size, text_color)
 	
-	# Draw equipment icon if it matches equipped item
-	if _index > 0 and equip_icon and item.current_item and curren_equipped_item and item.current_item.id == curren_equipped_item.id and item.current_item.type == curren_equipped_item.type and item.current_item.current_level == curren_equipped_item.current_level:
-		var equip_icon_size = Vector2(rect.size.y * 0.6, rect.size.y * 0.6)
-		var equip_icon_pos = Vector2(
-			name_draw_pos.x + name_size.x + 4,
-			rect.position.y + rect.size.y * 0.5 - equip_icon_size.y * 0.5
-		)
-		var equip_icon_rect = Rect2(equip_icon_pos, equip_icon_size)
-		draw_texture_rect(equip_icon, equip_icon_rect, false, text_color if item.get("disabled", false) else Color.WHITE)
+	# BLINDAJE UID: Draw equipment icon matching normalized IDs
+	if _index > 0 and equip_icon and item.current_item and curren_equipped_item:
+		var list_type = "weapons" if item.current_item.type == 0 else "armors"
+		var equip_type = "weapons" if curren_equipped_item.type == 0 else "armors"
+		
+		var list_id = RPGSYSTEM.uid_to_id(list_type, item.current_item.id) if item.current_item.id > 0 else 1
+		var equip_id = RPGSYSTEM.uid_to_id(equip_type, curren_equipped_item.id) if curren_equipped_item.id > 0 else 1
+		
+		if list_id == equip_id and item.current_item.type == curren_equipped_item.type and item.current_item.current_level == curren_equipped_item.current_level:
+			var equip_icon_size = Vector2(rect.size.y * 0.6, rect.size.y * 0.6)
+			var equip_icon_pos = Vector2(
+				name_draw_pos.x + name_size.x + 4,
+				rect.position.y + rect.size.y * 0.5 - equip_icon_size.y * 0.5
+			)
+			var equip_icon_rect = Rect2(equip_icon_pos, equip_icon_size)
+			draw_texture_rect(equip_icon, equip_icon_rect, false, text_color if item.get("disabled", false) else Color.WHITE)
 	
 	# Draw right-justified text - vertically centered
 	if right_text != "":
@@ -345,116 +364,6 @@ func _draw_item_content(item: Dictionary, rect: Rect2, text_color: Color, _index
 		var circle_pos = rect.position + Vector2(rect.size.x, 0) + offset
 		draw_circle(circle_pos, radius, Color.RED)
 
-func _gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion:
-		_handle_mouse_motion(event.position)
-	elif event is InputEventMouseButton and event.pressed:
-		if event.button_index == MOUSE_BUTTON_LEFT:
-			_handle_mouse_click(event.position)
-
-
-func _process(_delta: float) -> void:
-	if is_enabled:
-		if last_position != global_position:
-			last_position = global_position
-			if target_node_size:
-				GameManager.set_confin_area(target_node_size.get_global_rect(), GameManager.get_cursor_manipulator())
-			else:
-				GameManager.set_confin_area(get_global_rect(), GameManager.get_cursor_manipulator())
-			
-		if GameManager.get_cursor_manipulator() == GameManager.MANIPULATOR_MODES.EQUIP_MENU_SUB_MENU:
-			var direction = ControllerManager.get_pressed_direction()
-			if direction and direction in ["up", "down"]:
-				_update_selected(-1 if direction == "up" else 1)
-			elif ControllerManager.is_cancel_just_pressed([KEY_0, KEY_KP_0]):
-				GameManager.play_fx("cancel")
-				cancel.emit()
-			elif ControllerManager.is_confirm_pressed(false, [KEY_KP_ENTER]):
-				item_clicked.emit(selected_index, item_states[selected_index].data)
-
-
-func _update_selected(amount: int) -> void:
-	if selected_index >= 0:
-		item_states[selected_index].set_selected(false, self)
-	
-	var last_index = selected_index
-	var clicked_index = wrapi(selected_index + amount, 0, item_states.size())
-	
-	selected_index = clicked_index
-	item_states[selected_index].set_selected(true, self)
-	_update_focus_control()
-	item_selected.emit(selected_index, item_states[selected_index].data)
-	if last_index != clicked_index:
-		GameManager.play_fx("cursor")
-	queue_redraw()
-
-
-func _on_item_selected(_index: int, item: Dictionary) -> void:
-	_untick_new_label(item)
-
-
-func _untick_new_label(item: Dictionary) -> void:
-	if item.get("is_new_item", false):
-		item.is_new_item = false
-		if "current_item" in item and item.current_item and "newly_added" in item.current_item:
-			item.current_item.newly_added = false
-
-
-func _handle_mouse_motion(pos: Vector2):
-	var new_hovered = _get_item_at_position(pos)
-	
-	var item = item_states[hovered_index].data
-	_untick_new_label(item)
-	
-	if new_hovered != hovered_index:
-		var old_hovered = hovered_index
-		hovered_index = new_hovered
-		item = item_states[hovered_index].data
-		
-		# Change cursor
-		if hovered_index >= 0:
-			mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-			item_hovered.emit(hovered_index, item)
-		else:
-			mouse_default_cursor_shape = Control.CURSOR_ARROW
-		
-		# Update hover states
-		if old_hovered >= 0:
-			item_states[old_hovered].set_hover(false, self)
-		if hovered_index >= 0:
-			item_states[new_hovered].set_hover(true, self)
-
-		select_item(new_hovered)
-		queue_redraw()
-	else:
-		item_hovered.emit(hovered_index, item)
-
-
-func _handle_mouse_click(pos: Vector2):
-	var clicked_index = _get_item_at_position(pos)
-	
-	if clicked_index >= 0 and not item_states[clicked_index].data.get("disabled", false):
-		if selected_index >= 0:
-			item_states[selected_index].set_selected(false, self)
-		
-		selected_index = clicked_index
-		item_states[selected_index].set_selected(true, self)
-		_update_focus_control()
-		item_selected.emit(selected_index, item_states[selected_index].data)
-		queue_redraw()
-
-
-func _get_item_at_position(pos: Vector2) -> int:
-	for i in range(item_states.size()):
-		var item_state = item_states[i]
-		var pivot_center = item_state.rect.get_center()
-		var scaled_size = item_state.rect.size * item_state.scale
-		var scaled_rect = Rect2(pivot_center - scaled_size * 0.5, scaled_size)
-		
-		if scaled_rect.has_point(pos):
-			return i
-			
-	return -1
 
 
 func _update_layout():
@@ -462,7 +371,6 @@ func _update_layout():
 	
 	custom_minimum_size = Vector2.ZERO
 	await get_tree().process_frame
-	
 	
 	if item_states.is_empty():
 		return
@@ -518,6 +426,134 @@ func _update_layout():
 	_update_focus_control()
 	queue_redraw()
 	busy = false
+#endregion
+
+
+
+#region InputHandling
+func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion:
+		_handle_mouse_motion(event.position)
+	elif event is InputEventMouseButton and event.pressed:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			_handle_mouse_click(event.position)
+
+
+
+func _process(_delta: float) -> void:
+	if is_enabled:
+		if last_position != global_position:
+			last_position = global_position
+			if target_node_size:
+				GameManager.set_confin_area(target_node_size.get_global_rect(), GameManager.get_cursor_manipulator())
+			else:
+				GameManager.set_confin_area(get_global_rect(), GameManager.get_cursor_manipulator())
+			
+		if GameManager.get_cursor_manipulator() == GameManager.MANIPULATOR_MODES.EQUIP_MENU_SUB_MENU:
+			var direction = ControllerManager.get_pressed_direction()
+			if direction and direction in ["up", "down"]:
+				_update_selected(-1 if direction == "up" else 1)
+			elif ControllerManager.is_cancel_just_pressed([KEY_0, KEY_KP_0]):
+				GameManager.play_fx("cancel")
+				cancel.emit()
+
+			elif ControllerManager.is_confirm_just_pressed(false, [KEY_KP_ENTER]):
+				item_clicked.emit(selected_index, item_states[selected_index].data)
+
+
+
+func _handle_mouse_motion(pos: Vector2):
+	var new_hovered = _get_item_at_position(pos)
+	
+	var item = item_states[hovered_index].data
+	_untick_new_label(item)
+	
+	if new_hovered != hovered_index:
+		var old_hovered = hovered_index
+		hovered_index = new_hovered
+		item = item_states[hovered_index].data
+		
+		# Change cursor
+		if hovered_index >= 0:
+			mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+			item_hovered.emit(hovered_index, item)
+		else:
+			mouse_default_cursor_shape = Control.CURSOR_ARROW
+		
+		# Update hover states
+		if old_hovered >= 0:
+			item_states[old_hovered].set_hover(false, self)
+		if hovered_index >= 0:
+			item_states[new_hovered].set_hover(true, self)
+
+		select_item(new_hovered)
+		queue_redraw()
+	else:
+		item_hovered.emit(hovered_index, item)
+
+
+
+func _handle_mouse_click(pos: Vector2):
+	var clicked_index = _get_item_at_position(pos)
+	
+	if clicked_index >= 0 and not item_states[clicked_index].data.get("disabled", false):
+		if selected_index >= 0:
+			item_states[selected_index].set_selected(false, self)
+		
+		selected_index = clicked_index
+		item_states[selected_index].set_selected(true, self)
+		_update_focus_control()
+		
+		item_selected.emit(selected_index, item_states[selected_index].data)
+		item_clicked.emit(selected_index, item_states[selected_index].data)
+		queue_redraw()
+
+
+
+func _get_item_at_position(pos: Vector2) -> int:
+	for i in range(item_states.size()):
+		var item_state = item_states[i]
+		var pivot_center = item_state.rect.get_center()
+		var scaled_size = item_state.rect.size * item_state.scale
+		var scaled_rect = Rect2(pivot_center - scaled_size * 0.5, scaled_size)
+		
+		if scaled_rect.has_point(pos):
+			return i
+			
+	return -1
+#endregion
+
+
+
+#region SelectionAndUpdates
+func _update_selected(amount: int) -> void:
+	if selected_index >= 0:
+		item_states[selected_index].set_selected(false, self)
+	
+	var last_index = selected_index
+	var clicked_index = wrapi(selected_index + amount, 0, item_states.size())
+	
+	selected_index = clicked_index
+	item_states[selected_index].set_selected(true, self)
+	_update_focus_control()
+	item_selected.emit(selected_index, item_states[selected_index].data)
+	if last_index != clicked_index:
+		GameManager.play_fx("cursor")
+	queue_redraw()
+
+
+
+func _on_item_selected(_index: int, item: Dictionary) -> void:
+	_untick_new_label(item)
+
+
+
+func _untick_new_label(item: Dictionary) -> void:
+	if item.get("is_new_item", false):
+		item.is_new_item = false
+		if "current_item" in item and item.current_item and "newly_added" in item.current_item:
+			item.current_item.newly_added = false
+
 
 
 func _update_focus_control():
@@ -535,8 +571,12 @@ func _update_focus_control():
 		else:
 			focus_control.visible = false
 
+
+
 func _on_mouse_entered():
 	pass
+
+
 
 func _on_mouse_exited():
 	if hovered_index >= 0:
@@ -544,18 +584,25 @@ func _on_mouse_exited():
 		hovered_index = -1
 		mouse_default_cursor_shape = Control.CURSOR_ARROW
 		queue_redraw()
+#endregion
 
-# Functions to update properties
+
+
+#region SettersAndGetters
 func set_max_columns(value: int):
 	max_columns = max(1, value)
 	if is_inside_tree():
 		_update_layout()
+
+
 
 func set_item_size(value: Vector2):
 	item_size = value
 	if busy: return
 	if is_inside_tree():
 		_update_layout()
+
+
 
 func set_max_item_size(value: Vector2):
 	max_item_size = value
@@ -564,65 +611,90 @@ func set_max_item_size(value: Vector2):
 		_update_layout()
 
 
+
 func set_item_spacing(value: Vector2):
 	item_spacing = value
 	if is_inside_tree():
 		_update_layout()
+
+
 
 func set_padding(value: Vector2):
 	padding = value
 	if is_inside_tree():
 		_update_layout()
 
+
+
 func set_margin(value: int):
 	margin = value
 	if is_inside_tree():
 		queue_redraw()
+
+
 
 func set_style_normal(value: StyleBox):
 	style_normal = value
 	if is_inside_tree():
 		queue_redraw()
 
+
+
 func set_style_hover(value: StyleBox):
 	style_hover = value
 	if is_inside_tree():
 		queue_redraw()
+
+
 
 func set_style_hover_disabled(value: StyleBox):
 	style_hover_disabled = value
 	if is_inside_tree():
 		queue_redraw()
 
+
+
 func set_style_hover_selected(value: StyleBox):
 	style_hover_selected = value
 	if is_inside_tree():
 		queue_redraw()
+
+
 
 func set_equip_icon(value: Texture2D):
 	equip_icon = value
 	if is_inside_tree():
 		queue_redraw()
 
+
+
 func set_style_selected(value: StyleBox):
 	style_selected = value
 	if is_inside_tree():
 		queue_redraw()
+
+
 
 func set_style_disabled(value: StyleBox):
 	style_disabled = value
 	if is_inside_tree():
 		queue_redraw()
 
+
+
 func set_color_disabled(value: Color):
 	color_disabled = value
 	if is_inside_tree():
 		queue_redraw()
 
+
+
 func set_color_quantity(value: Color):
 	color_quantity = value
 	if is_inside_tree():
 		queue_redraw()
+
+
 
 func set_color_level(value: Color):
 	color_level = value
@@ -630,22 +702,30 @@ func set_color_level(value: Color):
 		queue_redraw()
 
 
+
 func set_color_hover(value: Color):
 	color_hover = value
 	if is_inside_tree():
 		queue_redraw()
+
+
 
 func set_font(value: Font):
 	font = value
 	if is_inside_tree():
 		queue_redraw()
 
+
+
 func set_font_size(value: int):
 	font_size = max(8, value)
 	if is_inside_tree():
 		queue_redraw()
+#endregion
 
-# Public functions
+
+
+#region PublicMethods
 func set_items(new_items: Array[Dictionary]):
 	# Clear previous states
 	for item_state in item_states:
@@ -667,14 +747,18 @@ func set_items(new_items: Array[Dictionary]):
 	
 	_update_layout()
 
+
+
 func get_selected_item() -> Dictionary:
 	if selected_index >= 0 and selected_index < item_states.size():
 		return item_states[selected_index].data
 	return {}
 
 
+
 func get_selected_index() -> int:
 	return selected_index
+
 
 
 func select_item(index: int):
@@ -690,12 +774,15 @@ func select_item(index: int):
 		
 		item_selected.emit(selected_index, item_states[selected_index].data)
 
+
+
 func clear_selection():
 	if selected_index >= 0:
 		item_states[selected_index].set_selected(false, self)
 		selected_index = -1
 		_update_focus_control()
 		queue_redraw()
+
 
 
 func enabled() -> void:
@@ -714,12 +801,15 @@ func enabled() -> void:
 	GameManager.force_show_cursor()
 
 
+
 func disabled() -> void:
 	is_enabled = false
 	focus_control.focus_mode = Control.FOCUS_NONE
 	GameManager.set_cursor_manipulator(GameManager.MANIPULATOR_MODES.NONE)
 
 
+
 func emit_selected_item() -> void:
 	if selected_index >= 0 and selected_index < item_states.size():
 		item_selected.emit(selected_index, item_states[selected_index].data)
+#endregion

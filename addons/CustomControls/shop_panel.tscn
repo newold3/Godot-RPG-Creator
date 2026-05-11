@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://cobosqfcyccw1"]
+[gd_scene format=3 uid="uid://cobosqfcyccw1"]
 
 [ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="1_b0d2m"]
 [ext_resource type="Script" uid="uid://bctqrjk26q55e" path="res://addons/CustomControls/shop_panel.gd" id="1_dvsdp"]
@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="4_lslks"]
 [ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="5_v1wsc"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_56esr"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tsehd"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -25,17 +25,17 @@ corner_radius_bottom_left = 12
 [sub_resource type="Gradient" id="Gradient_ctwx1"]
 colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_p053n"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_c7jkm"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_ctwx1")
 fill_from = Vector2(0.542735, 0.995726)
 fill_to = Vector2(0.58547, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_n3ec6"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qq4aq"]
 resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_p053n")
+texture = SubResource("GradientTexture2D_c7jkm")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ss3n2"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tl2cj"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -90,7 +90,7 @@ load_path = "res://.godot/imported/buttons.png-c08ce4315629138dcb3fe4a0d034f7bd.
 atlas = SubResource("CompressedTexture2D_yp3ps")
 region = Rect2(0, 120, 24, 24)
 
-[sub_resource type="ButtonGroup" id="ButtonGroup_tsehd"]
+[sub_resource type="ButtonGroup" id="ButtonGroup_omsgp"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4dbxu"]
 atlas = ExtResource("5_v1wsc")
@@ -100,19 +100,19 @@ region = Rect2(0, 48, 24, 24)
 atlas = ExtResource("5_v1wsc")
 region = Rect2(24, 48, 24, 24)
 
-[node name="ShopPanel" type="MarginContainer"]
+[node name="ShopPanel" type="MarginContainer" unique_id=2080419540]
 size_flags_horizontal = 3
 script = ExtResource("1_dvsdp")
 
-[node name="CustomPanel" parent="." instance=ExtResource("1_b0d2m")]
+[node name="CustomPanel" parent="." unique_id=1973557433 instance=ExtResource("1_b0d2m")]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_56esr")
-style1 = SubResource("StyleBoxFlat_56esr")
-style2 = SubResource("StyleBoxTexture_n3ec6")
-style3 = SubResource("StyleBoxFlat_ss3n2")
+theme_override_styles/panel = SubResource("StyleBoxFlat_tsehd")
+style1 = SubResource("StyleBoxFlat_tsehd")
+style2 = SubResource("StyleBoxTexture_qq4aq")
+style3 = SubResource("StyleBoxFlat_tl2cj")
 
-[node name="MainMarginContainer" type="MarginContainer" parent="CustomPanel"]
+[node name="MainMarginContainer" type="MarginContainer" parent="CustomPanel" unique_id=1244981290]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/margin_left = 12
@@ -120,17 +120,17 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="CustomPanel/MainMarginContainer"]
+[node name="HBoxContainer4" type="HBoxContainer" parent="CustomPanel/MainMarginContainer" unique_id=901821424]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CustomPanel/MainMarginContainer/HBoxContainer4"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CustomPanel/MainMarginContainer/HBoxContainer4" unique_id=1896345897]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer" unique_id=1482003757]
 layout_mode = 2
 
-[node name="ItemName" type="Label" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer2"]
+[node name="ItemName" type="Label" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer2" unique_id=589526399]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -138,7 +138,7 @@ theme_override_colors/font_color = Color(0.960993, 0.84834, 0.599135, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
 
-[node name="MoveDown" type="TextureButton" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer2"]
+[node name="MoveDown" type="TextureButton" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer2" unique_id=1460165202]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
@@ -149,7 +149,7 @@ texture_normal = SubResource("AtlasTexture_c7jkm")
 texture_hover = SubResource("AtlasTexture_tl2cj")
 texture_disabled = SubResource("AtlasTexture_hlfpm")
 
-[node name="MoveUp" type="TextureButton" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer2"]
+[node name="MoveUp" type="TextureButton" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer2" unique_id=1739812224]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
@@ -160,122 +160,130 @@ texture_normal = SubResource("AtlasTexture_xuxgx")
 texture_hover = SubResource("AtlasTexture_geyls")
 texture_disabled = SubResource("AtlasTexture_lo4q1")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer" unique_id=2145481311]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer" unique_id=206391725]
 layout_mode = 2
 text = "Type:"
 
-[node name="Type" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer" instance=ExtResource("2_fc0sr")]
+[node name="Type" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer" unique_id=2008998929 instance=ExtResource("2_fc0sr")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Choose the type for this item."
 selected = 0
-item_count = 3
+item_count = 4
 popup/item_0/text = "Items"
 popup/item_0/id = 0
 popup/item_1/text = "Weapons"
 popup/item_1/id = 1
 popup/item_2/text = "Armors"
 popup/item_2/id = 2
+popup/item_3/text = "Sets & Costumes"
+popup/item_3/id = 3
 
-[node name="Label2" type="Label" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer"]
+[node name="Label2" type="Label" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer" unique_id=1402940235]
 layout_mode = 2
 text = " ID:"
 
-[node name="ItemID" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer" instance=ExtResource("3_u6puw")]
+[node name="ItemID" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer" unique_id=1374684377 instance=ExtResource("3_u6puw")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 30)
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 4
 tooltip_text = "Choose the item to be displayed in the store"
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 
-[node name="Label3" type="Label" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer"]
+[node name="Label3" type="Label" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer" unique_id=433138181]
 layout_mode = 2
 text = " Sales units:"
 
-[node name="Quantity" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer" instance=ExtResource("4_lslks")]
+[node name="Quantity" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer" unique_id=2041784199 instance=ExtResource("4_lslks")]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
-size_flags_horizontal = 3
 tooltip_text = "Choose the quantity of items in stock in this store. Use the “0” to have an unlimited amount of items.
 
 [Note]: If this store is opened in the middle of a battle, the stock of items for sale will be unlimited and the store’s restocking functions will be disabled."
-value = 1.0
 allow_greater = true
 value_replace = {
 0: "ꝏ"
 }
+_custom_value = 0.0
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer" unique_id=73328045]
 layout_mode = 2
 
-[node name="DefaultPrice" type="CheckBox" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer3"]
+[node name="DefaultPrice" type="CheckBox" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer3" unique_id=1527543847]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Uses the price of the item defined in the database"
 mouse_default_cursor_shape = 2
 button_pressed = true
-button_group = SubResource("ButtonGroup_tsehd")
+button_group = SubResource("ButtonGroup_omsgp")
 text = "Use Default Price"
 
-[node name="CustomPrice" type="CheckBox" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer3"]
+[node name="CustomPrice" type="CheckBox" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer3" unique_id=1941508899]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Use a custom price for this item"
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_tsehd")
+button_group = SubResource("ButtonGroup_omsgp")
 text = "Custom Price"
 
-[node name="CustomPriceValue" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer3" instance=ExtResource("4_lslks")]
+[node name="CustomPriceValue" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer3" unique_id=1889076413 instance=ExtResource("4_lslks")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Choose the selling price for this item manually"
 min_value = 1.0
-value = 1.0
 allow_greater = true
 editable = false
+_custom_value = 0.0
 
-[node name="Label" type="Label" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer3"]
+[node name="Label" type="Label" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer3" unique_id=314790743]
 layout_mode = 2
 text = " Restock Amount: "
 
-[node name="RestockAmount" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer3" instance=ExtResource("4_lslks")]
+[node name="RestockAmount" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/HBoxContainer3" unique_id=1629898750 instance=ExtResource("4_lslks")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Number of items of this type that are replenished when the store restocks. If the quantity is 0, this item will never be replenished in the store. If it is -1, the quantity of this item after restocking will be set to the maximum defined quantity without exceeding it. If it is greater than 0, the specified number of items will be replenished (up to the defined maximum quantity)."
+mouse_filter = 2
 min_value = -1.0
 allow_greater = true
+editable = false
+disabled = true
 value_replace = {
 0: "ꝏ"
 }
+_custom_value = 0.0
 
-[node name="LevelContainer" type="HBoxContainer" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer"]
+[node name="LevelContainer" type="HBoxContainer" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer" unique_id=317009591]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" type="Label" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/LevelContainer"]
+[node name="Label" type="Label" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/LevelContainer" unique_id=526168857]
 layout_mode = 2
 text = "Level: "
 
-[node name="Level" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/LevelContainer" instance=ExtResource("4_lslks")]
+[node name="Level" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/LevelContainer" unique_id=414479702 instance=ExtResource("4_lslks")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "The sold equipment will be of the level specified here.
 
 "
+_custom_value = 0.0
 
-[node name="MaxLevelLabel" type="Label" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/LevelContainer"]
+[node name="MaxLevelLabel" type="Label" parent="CustomPanel/MainMarginContainer/HBoxContainer4/VBoxContainer/LevelContainer" unique_id=1508900968]
 unique_name_in_owner = true
 layout_mode = 2
 text = " / 1"
 
-[node name="ClosePanelButton" type="TextureButton" parent="CustomPanel/MainMarginContainer/HBoxContainer4"]
+[node name="ClosePanelButton" type="TextureButton" parent="CustomPanel/MainMarginContainer/HBoxContainer4" unique_id=1877350900]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4

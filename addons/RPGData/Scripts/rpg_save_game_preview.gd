@@ -2,7 +2,7 @@
 class_name RPGSavedGamePreview
 extends Resource
 
-@export var current_party_ids: PackedInt32Array = []
+@export var current_party_ids: PackedInt64Array = []
 @export var current_chapter_name: String = ""
 @export var current_gold: int = 0
 @export var play_time: float = 0.0

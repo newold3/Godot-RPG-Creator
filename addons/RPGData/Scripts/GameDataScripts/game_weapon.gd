@@ -3,24 +3,24 @@ extends GameGearBase
 
 
 func get_experience_to_level_up() -> int:
-	if id > 0 and RPGSYSTEM.database.weapons.size() > id:
-		var real_data: RPGWeapon = RPGSYSTEM.database.weapons[id]
-		if current_level >= real_data.upgrades.max_levels - 1:
+	var weapon = get_real_data()
+	if weapon:
+		if current_level >= weapon.upgrades.max_levels - 1:
 			return 0
 		else:
-			var required_experience = real_data.upgrades.levels[current_level + 1].required_experience - current_experience
+			var required_experience = weapon.upgrades.levels[current_level + 1].required_experience - current_experience
 			return required_experience
 	
 	return 0
 
 
 func get_next_level_experience() -> int:
-	if id > 0 and RPGSYSTEM.database.weapons.size() > id:
-		var real_data: RPGWeapon = RPGSYSTEM.database.weapons[id]
-		if current_level >= real_data.upgrades.max_levels - 1:
+	var weapon = get_real_data()
+	if weapon:
+		if current_level >= weapon.upgrades.max_levels - 1:
 			return 0
 		else:
-			return real_data.upgrades.levels[current_level + 1].required_experience
+			return weapon.upgrades.levels[current_level + 1].required_experience
 	
 	return 0
 

@@ -41,7 +41,7 @@ func _process(delta: float) -> void:
 	if active_quests.size() > 0:
 		for quest in active_quests.duplicate():
 			if quest.timer > 0.0:
-				var parent_quest = _get_parent_active_quest(quest.id)
+				var parent_quest = _get_parent_active_quest(quest)
 				var main_quest_id = parent_quest.id if parent_quest else quest.id
 				
 				if not _is_cluster_ready_to_deliver(main_quest_id):
@@ -90,7 +90,7 @@ func _is_event_related_to_active_quest(ingame_event: IngameEvent) -> bool:
 		if active_quest.target_event_uniq_id == ingame_event.uniq_id:
 			return true
 			
-		var parent_quest = _get_parent_active_quest(active_quest.id)
+		var parent_quest = _get_parent_active_quest(active_quest)
 		var check_id = parent_quest.id if parent_quest else active_quest.id
 		
 		if _is_cluster_ready_to_deliver(check_id):
@@ -130,7 +130,7 @@ func _get_highest_priority_icon_for_event(ingame_event: IngameEvent) -> RPGIcon:
 					highest_icon = db_quest.icon_progress
 					current_priority = 1
 					
-		var parent_quest = _get_parent_active_quest(active_quest.id)
+		var parent_quest = _get_parent_active_quest(active_quest)
 		var check_id = parent_quest.id if parent_quest else active_quest.id
 		
 		if _is_cluster_ready_to_deliver(check_id):
@@ -234,7 +234,7 @@ func notify_location_reached(map_id: int) -> void:
 					objective_advanced = true
 					
 	for active_quest in active_quests.duplicate():
-		var parent_quest = _get_parent_active_quest(active_quest.id)
+		var parent_quest = _get_parent_active_quest(active_quest)
 		var check_id = parent_quest.id if parent_quest else active_quest.id
 		
 		if _is_cluster_ready_to_deliver(check_id):
@@ -272,7 +272,7 @@ func notify_enemy_killed(enemy_id: int, amount: int = 1) -> void:
 					if active_quest.current_progress >= 1.0:
 						active_quest.status = GameQuest.QuestStatus.COMPLETED_PENDING_DELIVERY
 						
-						var parent_quest = _get_parent_active_quest(active_quest.id)
+						var parent_quest = _get_parent_active_quest(active_quest)
 						var check_id = parent_quest.id if parent_quest else active_quest.id
 						
 						if _is_cluster_ready_to_deliver(check_id):
@@ -288,12 +288,13 @@ func notify_enemy_killed(enemy_id: int, amount: int = 1) -> void:
 
 
 ## Explicitly creates a new active quest and triggers any multi-quests auto-start sequentially.
-func accept_quest(quest_id: int, owner_uniq_id: int, owner_pquest_uniq_id: int = -1, target_uniq_id: int = -1) -> void:
+func accept_quest(quest_id: int, owner_uniq_id: int, owner_pquest_uniq_id: int = -1, target_uniq_id: int = -1, parent_id: int = -1) -> void:
 	var db_quest = _get_quest_from_database(quest_id)
 	var final_id = db_quest._uniq_id if db_quest and "_uniq_id" in db_quest and db_quest._uniq_id > 0 else quest_id
 	
 	var new_quest = GameQuest.new()
 	new_quest.id = final_id
+	new_quest.parent_quest_id = parent_id
 	new_quest.status = GameQuest.QuestStatus.ACTIVE
 	new_quest.owner_event_uniq_id = owner_uniq_id
 	new_quest.owner_pquest_uniq_id = owner_pquest_uniq_id
@@ -306,22 +307,17 @@ func accept_quest(quest_id: int, owner_uniq_id: int, owner_pquest_uniq_id: int =
 		new_quest.timer = -1.0
 		
 	if show_debug_prints:
-		print("[QuestManager] Quest Accepted: ID ", final_id)
+		print("[QuestManager] Quest Accepted: ID ", final_id, " | Parent: ", parent_id)
 		
 	add_active_mission(new_quest)
 	
 	if db_quest and not db_quest.multi_quests.is_empty():
 		for sub_id in db_quest.multi_quests:
-			var is_active = _get_active_quest_by_id(sub_id) != null
-			var historical = GameManager.game_state.stats.missions.historical_dictionary
-			var db_sub = _get_quest_from_database(sub_id)
+			var is_active = _get_active_quest_by_id(sub_id, final_id) != null
 			
-			var sub_key = db_sub._uniq_id if db_sub and "_uniq_id" in db_sub and db_sub._uniq_id > 0 else sub_id
-			var was_completed = historical.has(sub_key)
-			
-			if not is_active and not was_completed:
+			if not is_active:
 				var sub_target = _get_target_uniq_id_from_db(sub_id)
-				accept_quest(sub_id, owner_uniq_id, -1, sub_target)
+				accept_quest(sub_id, owner_uniq_id, -1, sub_target, final_id)
 
 
 
@@ -352,7 +348,7 @@ func complete_mission(quest: GameQuest, force_subquest_cleanup: bool = false, fo
 		print("[QuestManager] Quest Completed: ID ", quest.id)
 		
 	var db_quest = _get_quest_from_database(quest.id)
-	var is_sub = _is_sub_quest_of_active_parent(quest.id) or force_subquest_cleanup
+	var is_sub = quest.parent_quest_id != -1 or force_subquest_cleanup
 	
 	if db_quest and db_quest.type == RPGQuest.QuestMode.GATHER_ITEM and not db_quest.item_preserve:
 		match db_quest.item_type:
@@ -367,7 +363,7 @@ func complete_mission(quest: GameQuest, force_subquest_cleanup: bool = false, fo
 				
 	var progress_array = GameManager.game_state.quest_progress.active_quests
 	for i in range(progress_array.size() - 1, -1, -1):
-		if progress_array[i].id == quest.id:
+		if progress_array[i] == quest:
 			progress_array.remove_at(i)
 			break
 			
@@ -403,7 +399,7 @@ func complete_mission(quest: GameQuest, force_subquest_cleanup: bool = false, fo
 					GameInterpreter.start_common_event(null, common_event.list)
 					
 		for sub_id in db_quest.multi_quests:
-			var sub_active = _get_active_quest_by_id(sub_id)
+			var sub_active = _get_active_quest_by_id(sub_id, quest.id)
 			if sub_active:
 				complete_mission(sub_active, true, is_repeatable)
 				
@@ -424,11 +420,11 @@ func fail_mission(quest: GameQuest, force_subquest_cleanup: bool = false, force_
 		print("[QuestManager] Quest Failed: ID ", quest.id)
 		
 	var db_quest = _get_quest_from_database(quest.id)
-	var is_sub = _is_sub_quest_of_active_parent(quest.id) or force_subquest_cleanup
+	var is_sub = quest.parent_quest_id != -1 or force_subquest_cleanup
 	
 	var progress_array = GameManager.game_state.quest_progress.active_quests
 	for i in range(progress_array.size() - 1, -1, -1):
-		if progress_array[i].id == quest.id:
+		if progress_array[i] == quest:
 			progress_array.remove_at(i)
 			break
 			
@@ -460,7 +456,7 @@ func fail_mission(quest: GameQuest, force_subquest_cleanup: bool = false, force_
 					GameInterpreter.start_common_event(null, common_event.list)
 					
 		for sub_id in db_quest.multi_quests:
-			var sub_active = _get_active_quest_by_id(sub_id)
+			var sub_active = _get_active_quest_by_id(sub_id, quest.id)
 			if sub_active:
 				fail_mission(sub_active, true, is_repeatable)
 				
@@ -469,6 +465,7 @@ func fail_mission(quest: GameQuest, force_subquest_cleanup: bool = false, force_
 	
 	if not force_subquest_cleanup:
 		quest_failed.emit(quest)
+
 #endregion
 
 
@@ -489,7 +486,7 @@ func manage_mission_for_event(event: IngameEvent) -> bool:
 					active_quest.status = GameQuest.QuestStatus.COMPLETED_PENDING_DELIVERY
 					objective_advanced = true
 					
-					var parent_quest = _get_parent_active_quest(active_quest.id)
+					var parent_quest = _get_parent_active_quest(active_quest)
 					var check_id = parent_quest.id if parent_quest else active_quest.id
 					
 					if _is_cluster_ready_to_deliver(check_id):
@@ -523,27 +520,28 @@ func can_start_any_mission_for(ingame_event: IngameEvent) -> bool:
 	var event_res = _get_event_resource(ingame_event)
 	if not event_res:
 		return false
-		
+
 	var progress = GameManager.game_state.quest_progress
 	var historical = GameManager.game_state.stats.missions.historical_dictionary
-	
+
 	for event_quest in event_res.quests:
 		var db_quest = _get_quest_from_database(event_quest.id)
 		if not db_quest:
 			continue
-			
+
 		var db_key = db_quest._uniq_id if "_uniq_id" in db_quest and db_quest._uniq_id > 0 else db_quest.id
 		var is_unlocked = progress.unlocked_quests.has(db_key) or progress.unlocked_quests.has(db_quest.id)
-		
+
 		var local_uid = event_quest._uniq_id if "_uniq_id" in event_quest else event_quest.id
 		var history_key = _get_history_key(ingame_event.uniq_id, local_uid)
 		var was_completed_by_this_npc = historical.has(history_key)
-		
+
 		if is_unlocked and not was_completed_by_this_npc and _are_prerequisites_met(db_quest):
-			var active_quest = _get_active_quest_by_id(event_quest.id)
-			if not active_quest:
-				return true
-				
+			if _are_local_pquest_requirements_met(ingame_event, event_quest):
+				var active_quest = _get_active_quest_by_id(event_quest.id)
+				if not active_quest:
+					return true
+
 	return false
 
 
@@ -553,45 +551,45 @@ func start_next_quest_available_for(ingame_event: IngameEvent) -> void:
 	var event_res = _get_event_resource(ingame_event)
 	if not event_res:
 		return
-		
+
 	var progress = GameManager.game_state.quest_progress
 	var historical = GameManager.game_state.stats.missions.historical_dictionary
 	var target_quest: RPGEventPQuest = null
-	
+
 	for event_quest in event_res.quests:
 		var db_quest = _get_quest_from_database(event_quest.id)
 		if not db_quest:
 			continue
-			
+
 		var db_key = db_quest._uniq_id if "_uniq_id" in db_quest and db_quest._uniq_id > 0 else db_quest.id
 		var is_unlocked = progress.unlocked_quests.has(db_key) or progress.unlocked_quests.has(db_quest.id)
-		
+
 		var local_uid = event_quest._uniq_id if "_uniq_id" in event_quest else event_quest.id
 		var history_key = _get_history_key(ingame_event.uniq_id, local_uid)
 		var was_completed_by_this_npc = historical.has(history_key)
-		
+
 		if is_unlocked and not was_completed_by_this_npc:
-			if _are_prerequisites_met(db_quest):
+			if _are_prerequisites_met(db_quest) and _are_local_pquest_requirements_met(ingame_event, event_quest):
 				if not _get_active_quest_by_id(event_quest.id):
 					target_quest = event_quest
 					if show_debug_prints:
 						print("[QuestManager] Starting Quest ID: ", db_key)
 					break
-					
+
 	if not target_quest:
 		return
-		
+
 	var target_id = _get_target_uniq_id_from_db(target_quest.id)
 	var interpreter_id = "quest_start_" + str(ingame_event.uniq_id)
 	var local_uid = target_quest._uniq_id if "_uniq_id" in target_quest else -1
-	
+
 	if _is_custom_page_valid(target_quest.start_page):
 		var commands = _get_commands_from_custom_page(target_quest.start_page)
 		await GameInterpreter.start_event(ingame_event.lpc_event, commands, false, interpreter_id)
 	else:
 		var commands = _generate_fallback_start_commands(target_quest)
 		var is_auto = not target_quest.use_confirm_message
-		
+
 		if commands.is_empty() and is_auto:
 			accept_quest(target_quest.id, ingame_event.uniq_id, local_uid, target_id)
 		else:
@@ -604,7 +602,7 @@ func start_next_quest_available_for(ingame_event: IngameEvent) -> void:
 ## Checks if the event is the Delivery Target of a fully completed mission cluster.
 func can_finish_cluster_delivery(ingame_event: IngameEvent) -> bool:
 	for active_quest in active_quests:
-		var parent_quest = _get_parent_active_quest(active_quest.id)
+		var parent_quest = _get_parent_active_quest(active_quest)
 		var check_id = parent_quest.id if parent_quest else active_quest.id
 		if _is_cluster_ready_to_deliver(check_id):
 			var p_active = _get_active_quest_by_id(check_id)
@@ -621,7 +619,7 @@ func finish_cluster_delivery(ingame_event: IngameEvent) -> void:
 	var target_pquest: RPGEventPQuest = null
 	
 	for active_quest in active_quests:
-		var parent_quest = _get_parent_active_quest(active_quest.id)
+		var parent_quest = _get_parent_active_quest(active_quest)
 		var check_id = parent_quest.id if parent_quest else active_quest.id
 		
 		if _is_cluster_ready_to_deliver(check_id):
@@ -680,6 +678,23 @@ func finish_failed_mission_for(ingame_event: IngameEvent) -> void:
 
 
 #region UTILITIES & DATA RETRIEVAL
+## Checks if the NPC's local quest configuration requirements (pages and relationship) are met.
+func _are_local_pquest_requirements_met(ingame_event: IngameEvent, event_quest: RPGEventPQuest) -> bool:
+	if not event_quest.required_pages.is_empty():
+		var active_page = _get_active_event_page(ingame_event)
+		if not active_page or not (active_page._uniq_id in event_quest.required_pages):
+			return false
+
+	if event_quest.relationship_requeriment_level > 0:
+		var current_level = 0
+		if GameManager.has_method("get_event_relationship_level"):
+			current_level = GameManager.get_event_relationship_level(ingame_event.uniq_id)
+		if current_level < event_quest.relationship_requeriment_level:
+			return false
+
+	return true
+
+
 ## Checks if the event's active page contains a command (126, type 6) to update the given USER_QUEST.
 func _page_contains_user_quest_update(ingame_event: IngameEvent, quest_id: int) -> bool:
 	var active_page = _get_active_event_page(ingame_event)
@@ -698,19 +713,10 @@ func _page_contains_user_quest_update(ingame_event: IngameEvent, quest_id: int) 
 
 
 ## Returns the parent quest if this quest was auto-started as a multi-quest.
-func _get_parent_active_quest(child_quest_id: int) -> GameQuest:
-	var child_db = _get_quest_from_database(child_quest_id)
-	if not child_db: return null
-	
-	var child_id_seq = child_db.id
-	var child_uid = child_db._uniq_id if "_uniq_id" in child_db else -1
-	
-	for active in active_quests:
-		var parent_db = _get_quest_from_database(active.id)
-		if parent_db:
-			if parent_db.multi_quests.has(child_id_seq) or (child_uid != -1 and parent_db.multi_quests.has(child_uid)): 
-				return active
-				
+func _get_parent_active_quest(child_quest: GameQuest) -> GameQuest:
+	if child_quest and child_quest.parent_quest_id != -1:
+		return _get_active_quest_by_id(child_quest.parent_quest_id)
+		
 	return null
 
 
@@ -724,8 +730,8 @@ func _is_cluster_ready_to_deliver(parent_quest_id: int) -> bool:
 	if not parent_db: return false
 	
 	for sub_id in parent_db.multi_quests:
-		var sub_active = _get_active_quest_by_id(sub_id)
-		if sub_active and sub_active.status != GameQuest.QuestStatus.COMPLETED_PENDING_DELIVERY: return false
+		var sub_active = _get_active_quest_by_id(sub_id, parent_active.id)
+		if not sub_active or sub_active.status != GameQuest.QuestStatus.COMPLETED_PENDING_DELIVERY: return false
 		
 	return true
 
@@ -917,15 +923,17 @@ func _get_quest_from_database(identifier: int) -> RPGQuest:
 
 
 ## Retrieves an active quest from the current progression state by its ID.
-func _get_active_quest_by_id(quest_id: int) -> GameQuest:
+func _get_active_quest_by_id(quest_id: int, parent_id: int = -2) -> GameQuest:
 	if not GameManager.game_state: return null
 	
 	var db_quest = _get_quest_from_database(quest_id)
 	var target_id = db_quest._uniq_id if db_quest and "_uniq_id" in db_quest and db_quest._uniq_id > 0 else quest_id
 	
 	for q in GameManager.game_state.quest_progress.active_quests:
-		if q.id == target_id or q.id == quest_id: return q
-		
+		if q.id == target_id or q.id == quest_id:
+			if parent_id == -2 or q.parent_quest_id == parent_id:
+				return q
+				
 	return null
 
 
@@ -1004,7 +1012,7 @@ func _validate_gather_quests() -> void:
 			if is_ready and active_quest.status == GameQuest.QuestStatus.ACTIVE:
 				active_quest.status = GameQuest.QuestStatus.COMPLETED_PENDING_DELIVERY
 				
-				var parent_quest = _get_parent_active_quest(active_quest.id)
+				var parent_quest = _get_parent_active_quest(active_quest)
 				var check_id = parent_quest.id if parent_quest else active_quest.id
 				
 				if _is_cluster_ready_to_deliver(check_id):
@@ -1216,7 +1224,7 @@ func update_user_quest_progress(quest_id: int, added_progress: float) -> void:
 	if active_quest.current_progress >= 1.0:
 		active_quest.status = GameQuest.QuestStatus.COMPLETED_PENDING_DELIVERY
 		
-		var parent_quest = _get_parent_active_quest(active_quest.id)
+		var parent_quest = _get_parent_active_quest(active_quest)
 		var check_id = parent_quest.id if parent_quest else active_quest.id
 					
 		if _is_cluster_ready_to_deliver(check_id):

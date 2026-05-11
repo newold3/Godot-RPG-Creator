@@ -165,6 +165,11 @@ func setup_player() -> void:
 		%PartyManager.setup_player()
 
 
+func setup_gui_scene(scene: Node) -> void:
+	if has_node("%SceneManager"):
+		%SceneManager._setup_gui_scene(scene)
+
+
 func update_party_visuals(instant: bool = false) -> void:
 	if has_node("%PartyManager"):
 		%PartyManager.update_party_visuals(instant)

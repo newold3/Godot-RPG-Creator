@@ -10,6 +10,15 @@ func get_class(): return "IngameCostume"
 @export var quantity: int = 0 # Number of items in possession of this type
 @export var type: int # Indicates the type of equipment (0 = IngameCostume, 1 = IngameGearSet)
 @export var newly_added: bool = false
+@export var last_added_date: int = 0
+
+
+func _init() -> void:
+	uniq_id = RPGSYSTEM.generate_16_digit_id()
+
+
+func get_real_data() -> RPGCostume:
+	return RPGSYSTEM.get_data("costumes", id)
 
 
 func _to_string() -> String:

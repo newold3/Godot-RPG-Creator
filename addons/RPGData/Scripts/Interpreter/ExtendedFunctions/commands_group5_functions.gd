@@ -2,6 +2,7 @@ class_name CommandsGroup5
 extends CommandHandlerBase
 
 
+
 # Command Change Actor parameters
 func _parse_actor_command_parameters(parameter_id: String) -> void:
 	# Retrieve parameters from the current command
@@ -43,12 +44,14 @@ func _parse_actor_command_parameters(parameter_id: String) -> void:
 				)
 	
 
+
 # Command Change Actor HP (Code 37), button_id = 25
 # Code 37 (Parent) parameters { actor_type, actor_id, operand, operand_type, operand_value }
 func _command_0037() -> void:
 	debug_print("Processing command: Change Actor HP (code 37)")
 
 	_parse_actor_command_parameters("hp")
+
 
 
 # Command Change Actor MP (Code 38), button_id = 26
@@ -59,12 +62,14 @@ func _command_0038() -> void:
 	_parse_actor_command_parameters("mp")
 
 
+
 # Command Change Actor TP (Code 39), button_id = 27
 # Code 39 (Parent) parameters { actor_type, actor_id, operand, operand_type, operand_value }
 func _command_0039() -> void:
 	debug_print("Processing command: Change Actor TP (code 39)")
 	
 	_parse_actor_command_parameters("tp")
+
 
 
 # Command Change Actor State (Code 40), button_id = 28
@@ -88,17 +93,20 @@ func _command_0040() -> void:
 		var real_actor_id = GameManager.game_state.game_variables[actor_id]
 		actor_ids.append(real_actor_id)
 	
+	var real_state = RPGSYSTEM.get_data("states", state_id)
+	var target_uid = real_state._uniq_id if real_state else -1
+	
 	for id: int in actor_ids:
 		if GameManager.game_state.actors.has(id):
 			var actor: GameActor = GameManager.game_state.actors[id]
 			
 			if actor:
 				if operand == 0:
-					if state_id > 0 and RPGSYSTEM.database.states.size() > state_id:
-						var real_state: RPGState = RPGSYSTEM.database.states[state_id]
+					if real_state:
 						actor.add_state(real_state)
 				elif operand == 1:
-					actor.remove_state(state_id)
+					if target_uid != -1:
+						actor.remove_state(target_uid)
 
 
 
@@ -133,6 +141,7 @@ func _command_0041() -> void:
 				actor.parameter_changed.emit()
 
 
+
 # Command Change Actor Experience (Code 42), button_id = 30
 # Code 42 (Parent) parameters { actor_type, actor_id, operand, operand_type, operand_value, show_level_up }
 func _command_0042() -> void:
@@ -140,6 +149,7 @@ func _command_0042() -> void:
 
 	_parse_actor_command_parameters("experience")
 	var show_level_up = current_command.parameters.get("show_level_up", false) # TODO
+
 
 
 # Command Change Actor Level (Code 43), button_id = 31
@@ -151,6 +161,7 @@ func _command_0043() -> void:
 	var show_level_up = current_command.parameters.get("show_level_up", false) # TODO
 
 
+
 func get_parameter_id(id: int) -> String:
 	var items = RPGActor.get_parameter_list(true)
 	
@@ -160,6 +171,7 @@ func get_parameter_id(id: int) -> String:
 		parameter = items[id]
 	
 	return parameter
+
 
 
 # Command Change Actor Parameter (Code 44), button_id = 32
@@ -175,6 +187,7 @@ func _command_0044() -> void:
 		_parse_actor_command_parameters(parameter_string_id)
 
 
+
 # Command Change Actor Skill (Code 45), button_id = 33
 # Code 45 (Parent) parameters { actor_type, actor_id, operand, skill_id }
 func _command_0045() -> void:
@@ -186,9 +199,12 @@ func _command_0045() -> void:
 	var operand = current_command.parameters.get("operand", 0)
 	var skill_id = current_command.parameters.get("skill_id", 0)
 
+	var real_skill = RPGSYSTEM.get_data("skills", skill_id)
+
 	# Ensure the skill ID is valid before proceeding
-	if skill_id > 0 and RPGSYSTEM.database.skills.size() > skill_id:
+	if real_skill:
 		var actor_ids = []
+		var target_uid = real_skill._uniq_id
 
 		# Determine the list of actor IDs based on the actor type
 		if actor_type == 0: # Fixed value
@@ -207,21 +223,22 @@ func _command_0045() -> void:
 				if actor:
 					if operand == 0: # Add skill
 						# Add the skill if it is not already in the actor's skill lists
-						if not skill_id in actor.current_skills and not skill_id in actor.extra_skills:
-							actor.extra_skills.append(skill_id)
+						if not target_uid in actor.current_skills and not target_uid in actor.extra_skills:
+							actor.extra_skills.append(target_uid)
 					elif operand == 1: # Remove skill
 						# Remove the skill from the extra skills list if it exists
-						if skill_id in actor.extra_skills:
+						if target_uid in actor.extra_skills:
 							for i in range(actor.extra_skills.size()):
-								if actor.extra_skills[i] == skill_id:
+								if actor.extra_skills[i] == target_uid:
 									actor.extra_skills.remove_at(i)
 									break
 						# Remove the skill from the current skills list if it exists
-						if skill_id in actor.current_skills:
+						if target_uid in actor.current_skills:
 							for i in range(actor.current_skills.size()):
-								if actor.current_skills[i] == skill_id:
+								if actor.current_skills[i] == target_uid:
 									actor.current_skills.remove_at(i)
 									break
+
 
 
 # Command Change Actor Equipment (Code 46), button_id = 34
@@ -242,6 +259,7 @@ func _command_0046() -> void:
 		actor.change_equipment(equipment_type_id, item_id, 1)
 
 
+
 # Command Change Actor Name (Code 47), button_id = 35
 # Code 47 (Parent) parameters { actor_id, name }
 func _command_0047() -> void:
@@ -257,6 +275,7 @@ func _command_0047() -> void:
 		# Update the actor's name and emit a signal to notify about the change
 		actor.current_name = name
 		actor.parameter_changed.emit()
+
 
 
 # Command Change Actor Class (Code 48), button_id = 36
@@ -278,6 +297,7 @@ func _command_0048() -> void:
 		actor.parameter_changed.emit()
 
 
+
 # Command Change Profession (Code 300), button_id = 128
 # Code 300 (Parent) parameters { type, profession_id, reset_level, level, preserve_level, action_type }
 func _command_0300() -> void:
@@ -286,23 +306,30 @@ func _command_0300() -> void:
 	var profession_id = current_command.parameters.get("profession_id", 1)
 	var type = current_command.parameters.get("type", 0)
 	
-	if not profession_id in GameManager.game_state.profession_levels:
-		GameManager.game_state.profession_levels[profession_id] = {"level": 1, "sub_level": 1, "available": false, "experience": 0}
+	var profession = RPGSYSTEM.get_data("professions", profession_id)
+	if not profession:
+		return
+		
+	var target_uid = profession._uniq_id
+	
+	if not target_uid in GameManager.game_state.profession_levels:
+		GameManager.game_state.profession_levels[target_uid] = {"level": 1, "sub_level": 1, "available": false, "experience": 0}
 	
 	if type == 0:
 		# Remove Profession
-		GameManager.game_state.profession_levels[profession_id].available = false
+		GameManager.game_state.profession_levels[target_uid].available = false
 		if current_command.parameters.get("reset_level", false):
-			GameManager.game_state.profession_levels[profession_id].level = 1
-			GameManager.game_state.profession_levels[profession_id].sub_level = 1
+			GameManager.game_state.profession_levels[target_uid].level = 1
+			GameManager.game_state.profession_levels[target_uid].sub_level = 1
 	else:
 		# Add Profession
-		GameManager.game_state.profession_levels[profession_id].available = true
+		GameManager.game_state.profession_levels[target_uid].available = true
 		if current_command.parameters.get("action_type", 0) == 1:
-			GameManager.game_state.profession_levels[profession_id].level = int(current_command.parameters.get("level", 1))
+			GameManager.game_state.profession_levels[target_uid].level = int(current_command.parameters.get("level", 1))
 	
 	if GameManager.current_map:
 		GameManager.current_map.refresh_extraction_events()
+
 
 
 # Command Upgrade Profession (Code 301), button_id = 129
@@ -311,10 +338,12 @@ func _command_0301() -> void:
 	debug_print("Processing command: Upgrade Profession (code 301)")
 
 	var profession_id = current_command.parameters.get("profession_id", 1)
-	if  profession_id > 0 and RPGSYSTEM.database.professions.size() > profession_id:
-		if profession_id in GameManager.game_state.profession_levels:
-			var profession = RPGSYSTEM.database.professions[profession_id]
-			var level: Dictionary = GameManager.game_state.profession_levels[profession_id]
+	var profession = RPGSYSTEM.get_data("professions", profession_id)
+	
+	if profession:
+		var target_uid = profession._uniq_id
+		if target_uid in GameManager.game_state.profession_levels:
+			var level: Dictionary = GameManager.game_state.profession_levels[target_uid]
 			if level.get("current_level_completed", false):
 				if level.level + 1 <= profession.levels.size():
 					level.sub_level = 1
@@ -344,6 +373,7 @@ func _command_0049() -> void:
 		# Update the actor's nickname and emit a signal to notify about the change
 		actor.current_nickname = nickname
 		actor.parameter_changed.emit()
+
 
 
 # Command Change Actor Profile (Code 50, 51), button_id = 38
@@ -386,6 +416,7 @@ func _command_0050() -> void:
 	
 	# Adjust the interpreter's command index to the last processed command
 	current_interpreter.go_to(current_index - 1)
+
 
 
 # Command Add Or Remove Trait (Code 62), button_id = 114

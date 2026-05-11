@@ -135,6 +135,8 @@ func _setup_tbt_plugin_control() -> G.Errors:
 func _can_handle(object: Object) -> bool:
 	var _err := _clear_tiles_inspector()
 
+	if not object: return false
+	
 	if object.is_class("AtlasTileProxyObject"):
 		output.debug("_can_handle() => AtlasTileProxyObject")
 		return true

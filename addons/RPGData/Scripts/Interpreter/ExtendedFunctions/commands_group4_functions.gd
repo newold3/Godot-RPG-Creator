@@ -2,6 +2,7 @@ class_name CommandsGroup4
 extends CommandHandlerBase
 
 
+
 # Command Conditional Branch (Codes 21, 22, 23), button_id = 16
 # Code 21 (Parent) parameters { item_selected, value1, value2, value3, value4 }
 # Code 22 (Else) parameters { }
@@ -90,28 +91,32 @@ func _command_0021() -> void:
 						if GameManager.game_state.actors[actor_id].current_class == value3:
 							condition_met = true
 					3: # Has Skill
-						if GameManager.game_state.actors[actor_id].current_skills.has(value3):
+						var uid = RPGSYSTEM.id_to_uid("skills", value3)
+						if GameManager.game_state.actors[actor_id].current_skills.has(uid):
 							condition_met = true
 					4: # Has Weapon
+						var uid = RPGSYSTEM.id_to_uid("weapons", value2)
 						var current_weapon = GameManager.game_state.actors[actor_id].gear.filter(
 							func(obj: Variant):
-								if obj is GameWeapon and obj.id == value2:
+								if obj is GameWeapon and obj.id == uid:
 									return obj
 						)
 						if current_weapon.size() > 0:
 							condition_met = true
 					5: # Has Armor
+						var uid = RPGSYSTEM.id_to_uid("armors", value2)
 						var current_armor = GameManager.game_state.actors[actor_id].gear.filter(
 							func(obj: Variant):
-								if obj is GameArmor and obj.id == value2:
+								if obj is GameArmor and obj.id == uid:
 									return obj
 						)
 						if current_armor.size() > 0:
 							condition_met = true
 					6: # State
+						var uid = RPGSYSTEM.id_to_uid("states", value2)
 						var current_state = GameManager.game_state.actors[actor_id].states.filter(
 							func(obj: GameState):
-								if obj.id == value2:
+								if obj.id == uid:
 									return obj
 						)
 						if current_state.size() > 0:
@@ -149,11 +154,12 @@ func _command_0021() -> void:
 									condition_met = true
 
 		5: # Enemy TODO
-			var enemy_battler_id = value1
-			if value2 == 0: # Appeared
-				pass
-			elif value2 == 1: # Has State
-				var state_id = value3
+			pass
+			#var enemy_battler_id = value1
+			#if value2 == 0: # Appeared
+			#	pass
+			#elif value2 == 1: # Has State
+			#	var state_id = value3
 		6: # Character Param
 			var target: Variant
 			if value1 == 0:
@@ -204,27 +210,27 @@ func _command_0021() -> void:
 			if GameManager.game_state.current_gold >= value1:
 				condition_met = true
 		9: # Has Item	
-			var item_id = value1
-			if GameManager.game_state.items.has(item_id):
-				var items = GameManager.game_state.items[item_id]
+			var uid = RPGSYSTEM.id_to_uid("items", value1)
+			if GameManager.game_state.items.has(uid):
+				var items = GameManager.game_state.items[uid]
 				for item: GameItem in items:
 					if item.quantity > 0:
 						condition_met = true
 						break
 		10: # Has Weapon
-			var item_id = value1
+			var uid = RPGSYSTEM.id_to_uid("weapons", value1)
 			var include_equiped = value2
-			if GameManager.game_state.weapons.has(item_id):
-				var items = GameManager.game_state.weapons[item_id]
+			if GameManager.game_state.weapons.has(uid):
+				var items = GameManager.game_state.weapons[uid]
 				for item: GameWeapon in items:
 					if item.quantity > 0 and (include_equiped or item.total_equipped < item.quantity):
 						condition_met = true
 						break
 		11: # Has Armor
-			var item_id = value1
+			var uid = RPGSYSTEM.id_to_uid("armors", value1)
 			var include_equiped = value2
-			if GameManager.game_state.armors.has(item_id):
-				var items = GameManager.game_state.armors[item_id]
+			if GameManager.game_state.armors.has(uid):
+				var items = GameManager.game_state.armors[uid]
 				for item: GameArmor in items:
 					if item.quantity > 0 and (include_equiped or item.total_equipped < item.quantity):
 						condition_met = true
@@ -264,8 +270,8 @@ func _command_0021() -> void:
 							condition_met = true
 		15: # Profession
 			var profession_id = value1
-			if profession_id > 0 and RPGSYSTEM.database.professions.size() > profession_id:
-				var profession = RPGSYSTEM.database.professions[profession_id]
+			var profession = RPGSYSTEM.get_data("professions", profession_id)
+			if profession:
 				var current_value = GameManager.get_profession_level(profession)
 				var target_value = value3
 				var prefession_condition = value2
@@ -371,6 +377,7 @@ func _command_0021() -> void:
 		current_interpreter.go_to(current_index - 1)
 
 
+
 # Command Start Loop (Codes 24, 25), button_id = 17
 # Code 24 (Parent) parameters { }
 # Code 25 (Repeat / End) parameters { }
@@ -402,6 +409,7 @@ func _command_0024() -> void:
 		current_index += 1
 
 
+
 # Code 25 (Repeat / End) parameters { }
 func _command_0025() -> void:
 	debug_print("Processing command: Repeat Loop (code 25)")
@@ -427,6 +435,7 @@ func _command_0026() -> void:
 	current_interpreter.loop.start_index = -1
 
 
+
 # Command Exit Event Processing (Code 27), button_id = 19
 # Code 27 (Parent) parameters { }
 func _command_0027() -> void:
@@ -434,6 +443,7 @@ func _command_0027() -> void:
 	# End the current event processing
 	current_interpreter.end()
 	current_interpreter.force_stop.emit(current_interpreter)
+
 
 
 # Command Select Common Event (Code 28), button_id = 20
@@ -444,11 +454,8 @@ func _command_0028() -> void:
 	# Retrieve the common event ID from the command parameters
 	var common_event_id: int = current_command.parameters.get("id", 0)
 	
-	# Check if the common event ID is valid and exists in the database
-	if common_event_id > 0 and RPGSYSTEM.database.common_events.size() > common_event_id:
-		# Retrieve the common event from the database
-		var event = RPGSYSTEM.database.common_events[common_event_id]
-		
+	var event = RPGSYSTEM.get_data("common_event", common_event_id)
+	if event:
 		# Get the list of commands associated with the common event
 		var commands = event.list
 		
@@ -459,12 +466,14 @@ func _command_0028() -> void:
 		await interpreter.start_common_event(current_interpreter.obj, commands)
 
 
+
 # Command Set Label (Code 29), button_id = 21
 # Code 29 (Parent) parameters { text }
 func _command_0029() -> void:
 	debug_print("Processing command: Set Label (code 29)")
 	
 	pass # This command does not need any processing
+
 
 
 # Command Jump To Label (Code 30), button_id = 22
@@ -543,6 +552,7 @@ func _command_0031() -> void:
 		# For instance, it could be leveraged to process commands in a custom manner,
 		# similar to how some plugins/scripts work in RPG Maker (if you are familiar with that program).
 		interpreter.notes_found.emit(full_comentary)
+
 
 
 # Command Wait (Code 33), button_id = 24

@@ -42,6 +42,19 @@ static var cache : Dictionary = {
 	"chain_size": true
 }
 
+## Dictionary mapping BBCode command names to their respective database keys
+const DB_COMMAND_MAPPING = {
+	"actor": "actors",
+	"class": "classes",
+	"enemy": "enemies",
+	"item": "items",
+	"weapon": "weapons",
+	"armor": "armors",
+	"state": "states",
+	"profession_name": "professions",
+	"profession_level": "professions"
+}
+
 signal command_changed(commands: Array[RPGEventCommand])
 signal fast_text_changed(text: String)
 signal cancel()
@@ -155,7 +168,8 @@ func _save_size_and_position() -> void:
 
 func set_fast_edit_text(text: String) -> void:
 	fast_text_enabled = true
-	set_text(text)
+	var clean_text = _parse_uids_to_ids(text)
+	set_text(clean_text)
 	%BottomButtonContainer.visible = false
 	%DisplayAsFloatingDialog.visible = false
 	%Target.visible = false
@@ -169,6 +183,7 @@ func set_parameters(_parameters: Array[RPGEventCommand]) -> void:
 	var text: String = ""
 	if dialog_mode == 2:
 		text = parameters[0].parameters.get("first_line", "")
+		
 	if parameters:
 		for i in range(1, parameters.size()):
 			var t = parameters[i].parameters.get("line", "")
@@ -181,6 +196,9 @@ func set_parameters(_parameters: Array[RPGEventCommand]) -> void:
 		set_config(parameters[0].parameters)
 	else:
 		set_config({})
+		
+	text = _parse_uids_to_ids(text)
+		
 	set_text(text)
 
 
@@ -265,11 +283,13 @@ func _on_ok_button_pressed() -> void:
 	busy = true
 	propagate_call("apply")
 	busy = false
+	
 	if not fast_text_enabled:
 		var commands: Array[RPGEventCommand] = build_command_list()
 		command_changed.emit(commands)
 	else:
-		fast_text_changed.emit(%TextEdit.text.strip_edges())
+		var secure_text = _parse_ids_to_uids(%TextEdit.text.strip_edges())
+		fast_text_changed.emit(secure_text)
 		
 	if preview_message_dialog and is_instance_valid(preview_message_dialog):
 		preview_message_dialog.queue_free()
@@ -281,10 +301,10 @@ func _on_ok_button_pressed() -> void:
 func build_command_list() -> Array[RPGEventCommand]:
 	var commands: Array[RPGEventCommand] = []
 	
-	var text = %TextEdit.text.strip_edges()
-	var lines = text.split("\n")
-	# Dialog lines command
+	var secure_text = _parse_ids_to_uids(%TextEdit.text.strip_edges())
+	var lines = secure_text.split("\n")
 	var min_line = -1 if dialog_mode != 2 else 0
+	
 	for i in range(lines.size() - 1, min_line, -1):
 		var line = lines[i]
 		var command = RPGEventCommand.new()
@@ -292,13 +312,15 @@ func build_command_list() -> Array[RPGEventCommand]:
 		command.parameters = {"line": line}
 		command.indent = parameters[0].indent
 		commands.append(command)
-	# Dialog command
+		
 	var command = RPGEventCommand.new()
 	command.code = 2 if dialog_mode == 0 else 10 if dialog_mode == 1 else 34
+	
 	if dialog_mode != 2:
 		command.parameters = message_initial_config.duplicate()
 	else:
 		command.parameters.first_line = lines[0]
+		
 	command.indent = parameters[0].indent
 	commands.append(command)
 	
@@ -1920,3 +1942,65 @@ func _on_nowait_for_input_toggled(toggled_on: bool) -> void:
 
 func _on_new_line_pressed() -> void:
 	insert_or_replace_text("[newline]")
+
+
+## Replaces UIDs in the raw text with Classic IDs for user editing
+func _parse_uids_to_ids(raw_text: String) -> String:
+	var clean_text = raw_text
+	var regex = RegEx.new()
+	
+	regex.compile("\\[(\\w+)\\s+.*?id=(\\d+).*?\\]")
+	var matches = regex.search_all(clean_text)
+	
+	for i in range(matches.size() - 1, -1, -1):
+		var m = matches[i]
+		var command_name = m.get_string(1).to_lower()
+		var uid_str = m.get_string(2)
+		
+		if DB_COMMAND_MAPPING.has(command_name):
+			var db_key = DB_COMMAND_MAPPING[command_name]
+			var uid = int(uid_str)
+			
+			if uid >= 1000000:
+				var classic_id = RPGSYSTEM.uid_to_id(db_key, uid)
+				var full_tag = m.get_string(0)
+				var new_tag = full_tag.replace("id=" + uid_str, "id=" + str(classic_id))
+				
+				var start_pos = m.get_start()
+				var end_pos = m.get_end()
+				
+				clean_text = clean_text.substr(0, start_pos) + new_tag + clean_text.substr(end_pos)
+				
+	return clean_text
+
+
+
+## Replaces Classic IDs from the editor text back into secure UIDs for storage
+func _parse_ids_to_uids(clean_text: String) -> String:
+	var secure_text = clean_text
+	var regex = RegEx.new()
+	
+	regex.compile("\\[(\\w+)\\s+.*?id=(\\d+).*?\\]")
+	var matches = regex.search_all(secure_text)
+	
+	for i in range(matches.size() - 1, -1, -1):
+		var m = matches[i]
+		var command_name = m.get_string(1).to_lower()
+		var id_str = m.get_string(2)
+		
+		if DB_COMMAND_MAPPING.has(command_name):
+			var db_key = DB_COMMAND_MAPPING[command_name]
+			var classic_id = int(id_str)
+			
+			if classic_id > 0 and classic_id < 1000000: 
+				var uid = RPGSYSTEM.id_to_uid(db_key, classic_id)
+				var full_tag = m.get_string(0)
+				var new_tag = full_tag.replace("id=" + id_str, "id=" + str(uid))
+				
+				var start_pos = m.get_start()
+				var end_pos = m.get_end()
+				
+				secure_text = secure_text.substr(0, start_pos) + new_tag + secure_text.substr(end_pos)
+				
+	return secure_text
+#endregion

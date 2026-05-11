@@ -5,9 +5,28 @@ extends BasePanelData
 func _ready() -> void:
 	super()
 	default_data_element = RPGActor.new()
+	_fill_genders()
+
+
+func _fill_genders() -> void:
+	var genders = RPGSYSTEM.database.types.gender_types
+	var node = %Gender
+	node.clear()
+	
+	for gender in genders:
+		node.add_item(gender.capitalize())
+	
+	var current_data = get_data()
+	if current_data:
+		var gender_index = current_data.gender
+		if gender_index >= %Gender.get_item_count() or gender_index < 0:
+			current_data.gender = 0
+			gender_index = 0
+		%Gender.select(gender_index)
 
 
 func get_data() -> RPGActor:
+	if data.is_empty(): return null
 	current_selected_index = max(1, min(current_selected_index, data.size() - 1))
 	return data[current_selected_index]
 
@@ -36,6 +55,11 @@ func _update_data_fields() -> void:
 		%BattlerPicker.set_icon(current_data.battler_preview)
 		%IconPicker.set_icon(current_data.icon.path, current_data.icon.region)
 		%PoseVerticalOffset.value = current_data.pose_vertical_offset
+		var gender_index = current_data.gender
+		if gender_index >= %Gender.get_item_count() or gender_index < 0:
+			current_data.gender = 0
+			gender_index = 0
+		%Gender.select(gender_index)
 	else:
 		disable_all(true)
 	
@@ -54,7 +78,7 @@ func get_equippable_weapons() -> Array:
 	
 	var valid_types: Array = obj.map(func(t: RPGTrait): return t.data_id - 1)
 	
-	# get valid  armors
+	# get valid weapons
 	obj = database.weapons.filter(
 		func(weapon: RPGWeapon):
 			if weapon:
@@ -65,7 +89,7 @@ func get_equippable_weapons() -> Array:
 
 	# get valid weapons id
 	if obj.size() > 0:
-		result = obj.map(func(weapon: RPGWeapon): return weapon.id)
+		result = obj.map(func(weapon: RPGWeapon): return weapon._uniq_id)
 
 	return result
 
@@ -82,7 +106,7 @@ func get_equippable_equipment(slot_id: int) -> Array:
 	
 	var valid_types: Array = obj.map(func(t: RPGTrait): return t.data_id - 1)
 	
-	# get valid  armors
+	# get valid armors
 	obj = database.armors.filter(
 		func(armor: RPGArmor):
 			if armor and (armor.equipment_type == 0 or armor.equipment_type == slot_id):
@@ -93,7 +117,7 @@ func get_equippable_equipment(slot_id: int) -> Array:
 
 	# get valid armors id
 	if obj.size() > 0:
-		result = obj.map(func(armor: RPGArmor): return armor.id)
+		result = obj.map(func(armor: RPGArmor): return armor._uniq_id)
 
 	return result
 
@@ -113,31 +137,34 @@ func fill_equipment_list() -> void:
 	for i in database.types.equipment_types.size():
 		var column = []
 		column.append(database.types.equipment_types[i])
-		var none = tr("none")
+		var none = "\u200B" + tr("none") + "\u200B"
 		var equipment_name = none
 		if equipment.size() > i:
 			var selected_id = equipment[i]
 			if selected_id != -1:
 				if i == 0: # Weapon
-					if database.weapons.size() > selected_id and selected_id > 0:
-						var weapon_type = database.weapons[selected_id].weapon_type - 1
-						if weapon_type >= 0 and weapon_type in equippable_weapons or -1 in equippable_weapons:
-							equipment_name = database.weapons[selected_id].name
-							if equipment_name.length() == 0:
-								equipment_name = "# %s" % selected_id
-					elif selected_id > 0:
+					var weapon: RPGWeapon = RPGSYSTEM.get_data("weapons", selected_id)
+					if not weapon or (not selected_id in equippable_weapons and not -1 in equippable_weapons):
 						equipment_name = "⚠ Invalid Item"
-				else: # Armor
-					var equippable_equipment = get_equippable_equipment(i)
-					if not selected_id in equippable_equipment:
-						equipment_name = "⚠ Invalid Item"
-					else:
-						if database.armors.size() > selected_id and selected_id > 0:
-							equipment_name = database.armors[selected_id].name
+					elif weapon:
+						var weapon_type = weapon.weapon_type - 1
+						if weapon_type >= 0:
+							equipment_name = weapon.name
 							if equipment_name.length() == 0:
-								equipment_name = "# %s" % selected_id
-						elif selected_id > 0:
+								equipment_name = "# %s" % weapon.id
+						if equipment_name.is_empty():
 							equipment_name = "⚠ Invalid Item"
+				else: # Armor
+					var armor: RPGArmor = RPGSYSTEM.get_data("armors", selected_id)
+					var equippable_equipment = get_equippable_equipment(i)
+					if not armor or (not selected_id in equippable_equipment and not -1 in equippable_equipment):
+						equipment_name = "⚠ Invalid Item"
+					elif armor:
+						equipment_name = armor.name
+						if equipment_name.length() == 0:
+							equipment_name = "# %s" % armor.id
+					if equipment_name.is_empty():
+						equipment_name = "⚠ Invalid Item"
 
 		column.append(equipment_name)
 		if equipment_name != none:
@@ -246,6 +273,7 @@ func _on_visibility_changed() -> void:
 			fill_equipment_list()
 			fill_classes()
 			fill_battle_actions()
+			_fill_genders()
 			set_class(current_data.class_id - 1)
 			busy = false
 		else:
@@ -294,34 +322,34 @@ func _on_note_text_edit_text_changed() -> void:
 func _on_equipment_list_item_activated(index: int) -> void:
 	var path = "res://addons/CustomControls/Dialogs/Select_one_data_dialog.tscn"
 	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
-	
+
 	var list = ["none"]
 	var real_ids = [-1]
 	var title = database.types.equipment_types[index]
 	var selected_id = 0
 	var current_data: Variant
-	
+
 	if index == 0:
 		current_data = database.weapons
 		var equippable_weapons = get_equippable_weapons()
+
 		for i in equippable_weapons.size():
-			var weapon: RPGWeapon = current_data[equippable_weapons[i]]
-			var current_name = weapon.name
-			if current_name.length() == 0:
+			var weapon: RPGWeapon = RPGSYSTEM.get_data("weapons", equippable_weapons[i])
+			var current_name = weapon.name if weapon else ""
+			if current_name.length() == 0 and weapon:
 				current_name = "Weapon ID = %s" % weapon.id
 			list.append(current_name)
-			real_ids.append(weapon.id)
+			real_ids.append(weapon._uniq_id if weapon else -1)
 	else:
 		current_data = database.armors
 		var equippable_armors = get_equippable_equipment(index)
 		for i in equippable_armors.size():
-			var armor: RPGArmor = current_data[equippable_armors[i]]
-			var current_name = armor.name
-			if current_name.length() == 0:
+			var armor: RPGArmor = RPGSYSTEM.get_data("armors", equippable_armors[i])
+			var current_name = armor.name if armor else ""
+			if current_name.length() == 0 and armor:
 				current_name = "Armor ID = %s" % armor.id
 			list.append(current_name)
-			real_ids.append(armor.id)
-	
+			real_ids.append(armor._uniq_id if armor else -1)
 	
 	var equipment = get_data().equipment
 	if equipment.size() > index:
@@ -332,8 +360,8 @@ func _on_equipment_list_item_activated(index: int) -> void:
 	for i in equipment_level.size():
 		if equipment_level[i] <= 0: equipment_level[i] = 1
 	dialog.data = current_data
-
-	dialog.set_data(title, list, real_ids, selected_id, get_data().equipment_level[index], _on_equipment_selected.bind(index))
+	var level = get_data().equipment_level[index] if get_data().equipment_level.size() > index else 0
+	dialog.set_data(title, list, real_ids, selected_id, level, _on_equipment_selected.bind(index))
 
 
 func _on_equipment_selected(item_id: int, item_level: int, data_id: int) -> void:
@@ -616,3 +644,7 @@ func _on_icon_picker_paste_requested(icon: String, region: Rect2) -> void:
 
 func _on_custom_spin_box_value_changed(value: float) -> void:
 	get_data().pose_vertical_offset = value
+
+
+func _on_gender_item_selected(index: int) -> void:
+	get_data().gender = index

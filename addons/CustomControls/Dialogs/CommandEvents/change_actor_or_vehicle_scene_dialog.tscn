@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://c28kdklv1xr5s"]
+[gd_scene format=3 uid="uid://c28kdklv1xr5s"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_shpq1"]
 [ext_resource type="Script" uid="uid://bkh8w7itp7ty6" path="res://addons/CustomControls/Dialogs/CommandEvents/change_actor_or_vehicle_scene_dialog.gd" id="2_shpq1"]
@@ -21,7 +21,7 @@ gradient = SubResource("Gradient_u5yrp")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_316jl"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_shpq1"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -39,17 +39,17 @@ corner_radius_bottom_left = 12
 [sub_resource type="Gradient" id="Gradient_yqasu"]
 colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_relqq"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7xn1g"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_yqasu")
 fill_from = Vector2(0.542735, 0.995726)
 fill_to = Vector2(0.58547, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8m3b6"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_oa6co"]
 resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_relqq")
+texture = SubResource("GradientTexture2D_7xn1g")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fneyr"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ekifu"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -62,15 +62,8 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qiqap"]
-texture = ExtResource("7_25jbv")
-texture_margin_left = 6.0
-texture_margin_top = 6.0
-texture_margin_right = 6.0
-texture_margin_bottom = 6.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7qdgr"]
-texture = ExtResource("8_65f1u")
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_subod"]
+texture = ExtResource("10_25n7f")
 texture_margin_left = 6.0
 texture_margin_top = 6.0
 texture_margin_right = 6.0
@@ -83,29 +76,15 @@ texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_subod"]
-texture = ExtResource("10_25n7f")
-texture_margin_left = 6.0
-texture_margin_top = 6.0
-texture_margin_right = 6.0
-texture_margin_bottom = 6.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hfo07"]
-texture = ExtResource("7_25jbv")
-texture_margin_left = 6.0
-texture_margin_top = 6.0
-texture_margin_right = 6.0
-texture_margin_bottom = 6.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4sujn"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7qdgr"]
 texture = ExtResource("8_65f1u")
 texture_margin_left = 6.0
 texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5stfh"]
-texture = ExtResource("9_blog4")
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qiqap"]
+texture = ExtResource("7_25jbv")
 texture_margin_left = 6.0
 texture_margin_top = 6.0
 texture_margin_right = 6.0
@@ -118,7 +97,29 @@ texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[node name="ChangeActorOrVehicleSceneDialog" type="Window"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5stfh"]
+texture = ExtResource("9_blog4")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4sujn"]
+texture = ExtResource("8_65f1u")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hfo07"]
+texture = ExtResource("7_25jbv")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[node name="ChangeActorOrVehicleSceneDialog" type="Window" unique_id=145458104]
+oversampling_override = 1.0
 title = "Change Scene"
 position = Vector2i(0, 36)
 size = Vector2i(480, 160)
@@ -129,7 +130,7 @@ unresizable = true
 theme = ExtResource("1_shpq1")
 script = ExtResource("2_shpq1")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=2046294933]
 material = SubResource("CanvasItemMaterial_u11f1")
 anchors_preset = 15
 anchor_right = 1.0
@@ -138,7 +139,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_6yyp3")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1912489619]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -149,19 +150,19 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=231193271]
 layout_mode = 2
 
-[node name="VehicleContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="VehicleContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1710686310]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VehicleContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VehicleContainer" unique_id=1939143110]
 layout_mode = 2
 text = "Vehicle:"
 
-[node name="VehicleOptions" parent="MarginContainer/VBoxContainer/VehicleContainer" instance=ExtResource("3_7xn1g")]
+[node name="VehicleOptions" parent="MarginContainer/VBoxContainer/VehicleContainer" unique_id=481962069 instance=ExtResource("3_7xn1g")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Select the transport to which you want to change the scene"
@@ -176,44 +177,44 @@ popup/item_1/id = 1
 popup/item_2/text = "Air Transport"
 popup/item_2/id = 2
 
-[node name="ActorContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="ActorContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=575687168]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ActorContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ActorContainer" unique_id=662332050]
 layout_mode = 2
 text = "Vehicle:"
 
-[node name="ActorsOptions" parent="MarginContainer/VBoxContainer/ActorContainer" instance=ExtResource("3_7xn1g")]
+[node name="ActorsOptions" parent="MarginContainer/VBoxContainer/ActorContainer" unique_id=915644962 instance=ExtResource("3_7xn1g")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Choose the character you want to change the scene for"
 text_overrun_behavior = 3
 fit_to_longest_item = false
 
-[node name="ScenePanel" parent="MarginContainer/VBoxContainer" instance=ExtResource("4_ekifu")]
+[node name="ScenePanel" parent="MarginContainer/VBoxContainer" unique_id=1753566570 instance=ExtResource("4_ekifu")]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_316jl")
-style1 = SubResource("StyleBoxFlat_316jl")
-style2 = SubResource("StyleBoxTexture_8m3b6")
-style3 = SubResource("StyleBoxFlat_fneyr")
+theme_override_styles/panel = SubResource("StyleBoxFlat_shpq1")
+style1 = SubResource("StyleBoxFlat_shpq1")
+style2 = SubResource("StyleBoxTexture_oa6co")
+style3 = SubResource("StyleBoxFlat_ekifu")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/ScenePanel"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/ScenePanel" unique_id=20887312]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScenePanel/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScenePanel/MarginContainer" unique_id=508096156]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ScenePanel/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ScenePanel/MarginContainer/VBoxContainer" unique_id=566201646]
 layout_mode = 2
 text = "Scene"
 
-[node name="Scene" parent="MarginContainer/VBoxContainer/ScenePanel/MarginContainer/VBoxContainer" instance=ExtResource("5_g4rie")]
+[node name="Scene" parent="MarginContainer/VBoxContainer/ScenePanel/MarginContainer/VBoxContainer" unique_id=655374024 instance=ExtResource("5_g4rie")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -225,39 +226,39 @@ tooltip_text = "Choose the new scene for the selected object
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 text = "Select scene"
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=973128412]
 layout_mode = 2
 size_flags_vertical = 8
 theme_override_constants/separation = 12
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1366367483]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 alignment = 1
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("6_aym67")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1693690173 instance=ExtResource("6_aym67")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 tooltip_text = "[title]Ok[/title]
 Saves all changes and closes the windows."
-theme_override_styles/disabled = SubResource("StyleBoxTexture_qiqap")
-theme_override_styles/hover = SubResource("StyleBoxTexture_7qdgr")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_mjylh")
 theme_override_styles/normal = SubResource("StyleBoxTexture_subod")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_mjylh")
+theme_override_styles/hover = SubResource("StyleBoxTexture_7qdgr")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_qiqap")
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("6_aym67")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1325899948 instance=ExtResource("6_aym67")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 tooltip_text = "[title]Cancel[/title]
 Closes this window without saving any changes."
-theme_override_styles/disabled = SubResource("StyleBoxTexture_hfo07")
-theme_override_styles/hover = SubResource("StyleBoxTexture_4sujn")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_5stfh")
 theme_override_styles/normal = SubResource("StyleBoxTexture_maa40")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_5stfh")
+theme_override_styles/hover = SubResource("StyleBoxTexture_4sujn")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_hfo07")
 text = "CANCEL"
 
 [connection signal="middle_click_pressed" from="MarginContainer/VBoxContainer/ScenePanel/MarginContainer/VBoxContainer/Scene" to="." method="_on_scene_middle_click_pressed"]

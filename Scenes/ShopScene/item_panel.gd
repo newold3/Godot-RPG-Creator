@@ -132,12 +132,17 @@ func set_item(item: Dictionary) -> void:
 	item_name_label.text = item.name + ("" if item.level <= 1 else " +%s" % int(item.level))
 	description.text = item.description
 	price_label.text = GameManager.get_number_formatted(int(item.price))
-	var icon: RPGIcon = item.icon
-	if AssetManager.exists(icon.path):
-		item_icon.texture.atlas = load(icon.path)
-		item_icon.texture.region = icon.region
-	else:
-		item_icon.texture.atlas = null
+	var icon: Variant = item.icon
+	if icon is String:
+		if AssetManager.exists(icon):
+			item_icon.texture.atlas = load(icon)
+			item_icon.texture.region = Rect2()
+	elif icon is RPGIcon:
+		if AssetManager.exists(icon.path):
+			item_icon.texture.atlas = load(icon.path)
+			item_icon.texture.region = icon.region
+		else:
+			item_icon.texture.atlas = null
 
 	if item.max_quantity == 0 and not item.get("empty_item", false):
 		unlimited_items = true

@@ -1,0 +1,448 @@
+[gd_scene format=3 uid="uid://do4x2205kpsxr"]
+
+[ext_resource type="Script" uid="uid://dix158htcdl5e" path="res://addons/RPGMapGenerator/UI/floating_panel.gd" id="1_dru4v"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="2_piaam"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="3_ouk8a"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6lpfb"]
+content_margin_left = 12.0
+content_margin_top = 12.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+bg_color = Color(0.12, 0.12, 0.12, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.3, 0.3, 0.3, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dru4v"]
+content_margin_left = 5.0
+content_margin_right = 5.0
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_dru4v"]
+content_margin_left = 4.0
+content_margin_top = 0.0
+content_margin_right = 4.0
+content_margin_bottom = 0.0
+color = Color(0.5, 0.5, 0.5, 1)
+
+[sub_resource type="GDScript" id="GDScript_piaam"]
+script/source = "@tool
+extends Button
+
+@export var node_parent: Node
+@export var main_panel: Node
+
+var is_shrunk: bool = false
+
+signal shunked(value: bool)
+
+
+func _ready() -> void:
+	pressed.connect(_on_pressed)
+
+
+func _on_pressed() -> void:
+	is_shrunk = !is_shrunk
+	text = \"+\" if is_shrunk else \"-\"
+	shunked.emit(is_shrunk)
+	_hide_childs()
+
+
+func _hide_childs() -> void:
+	var my_parent = get_parent()
+	if node_parent and node_parent != my_parent:
+		for child in node_parent.get_children():
+			if child != my_parent:
+				child.visible = !is_shrunk
+	
+	if main_panel:
+		main_panel.size.y = 0
+		if main_panel.has_method(\"_clamp_panel_position\"):
+			main_panel._clamp_panel_position()
+"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dru4v"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.51380026, 0.42253533, 0.72396904, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wrwnr"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.6665957, 0.59878343, 0.8501835, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_piaam"]
+bg_color = Color(0.15, 0.4, 0.15, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ouk8a"]
+bg_color = Color(0.1, 0.3, 0.1, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x8mry"]
+bg_color = Color(0.2, 0.5, 0.2, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="FloatingPanel" type="PanelContainer" unique_id=680044429]
+custom_minimum_size = Vector2(400, 0)
+offset_left = 1592.0
+offset_top = 304.0
+offset_right = 1992.0
+offset_bottom = 906.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_6lpfb")
+script = ExtResource("1_dru4v")
+
+[node name="MainVBox" type="VBoxContainer" parent="." unique_id=1364467277]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="TopBar" type="HBoxContainer" parent="MainVBox" unique_id=2106930754]
+layout_mode = 2
+
+[node name="CollapseBtn" type="Button" parent="MainVBox/TopBar" unique_id=135130954]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = " - "
+
+[node name="DragHandle" type="Panel" parent="MainVBox/TopBar" unique_id=11421594]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 6
+theme_override_styles/panel = SubResource("StyleBoxEmpty_dru4v")
+
+[node name="HSeparator" type="HSeparator" parent="MainVBox/TopBar/DragHandle" unique_id=405484149]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -2.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_dru4v")
+
+[node name="TopMiniBar" type="HBoxContainer" parent="MainVBox/TopBar" unique_id=1742153309]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="MiniGenBtn" type="Button" parent="MainVBox/TopBar/TopMiniBar" unique_id=1327239715]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "Gen Map"
+
+[node name="MiniExpBtn" type="Button" parent="MainVBox/TopBar/TopMiniBar" unique_id=676382206]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.5, 1, 0.5, 1)
+text = "Export"
+
+[node name="ContentVBox" type="VBoxContainer" parent="MainVBox" unique_id=246792041]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="LayerLabel" type="Label" parent="MainVBox/ContentVBox" unique_id=975968450]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Target Layers:"
+
+[node name="LayerSelect" parent="MainVBox/ContentVBox" unique_id=621784070 instance=ExtResource("2_piaam")]
+unique_name_in_owner = true
+layout_mode = 2
+selected = 0
+item_count = 5
+popup/item_0/text = "All Layers"
+popup/item_0/id = 0
+popup/item_1/text = "Base Floor Only"
+popup/item_1/id = 1
+popup/item_2/text = "Walls Only"
+popup/item_2/id = 2
+popup/item_3/text = "Ground Details Only"
+popup/item_3/id = 3
+popup/item_4/text = "Environment Only"
+popup/item_4/id = 4
+metadata/current_tooltip = "Select the layer(s) you want to paint"
+
+[node name="ModeLabel" type="Label" parent="MainVBox/ContentVBox" unique_id=33104220]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Generation Mode:"
+
+[node name="ModeOption" parent="MainVBox/ContentVBox" unique_id=992354815 instance=ExtResource("2_piaam")]
+unique_name_in_owner = true
+layout_mode = 2
+metadata/current_tooltip = "Choose the type of map you want to generate"
+
+[node name="HBoxSize" type="HBoxContainer" parent="MainVBox/ContentVBox" unique_id=2112590985]
+layout_mode = 2
+
+[node name="VBoxW" type="VBoxContainer" parent="MainVBox/ContentVBox/HBoxSize" unique_id=255213666]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LblW" type="Label" parent="MainVBox/ContentVBox/HBoxSize/VBoxW" unique_id=1284805036]
+layout_mode = 2
+text = "Width"
+
+[node name="WidthSpin" parent="MainVBox/ContentVBox/HBoxSize/VBoxW" unique_id=675893138 instance=ExtResource("3_ouk8a")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Maximum width of the map to be generated in tiles"
+min_value = 30.0
+max_value = 500.0
+value = 30.0
+_custom_value = 30.0
+
+[node name="VBoxH" type="VBoxContainer" parent="MainVBox/ContentVBox/HBoxSize" unique_id=256134277]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LblH" type="Label" parent="MainVBox/ContentVBox/HBoxSize/VBoxH" unique_id=1918849729]
+layout_mode = 2
+text = "Height"
+
+[node name="HeightSpin" parent="MainVBox/ContentVBox/HBoxSize/VBoxH" unique_id=2136417206 instance=ExtResource("3_ouk8a")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Maximum height of the map to be generated in tiles"
+min_value = 30.0
+max_value = 500.0
+value = 30.0
+_custom_value = 30.0
+
+[node name="CollisionCheck" type="CheckBox" parent="MainVBox/ContentVBox" unique_id=711171958]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "Add Collisions"
+
+[node name="Sep1" type="HSeparator" parent="MainVBox/ContentVBox" unique_id=459572794]
+layout_mode = 2
+
+[node name="HBoxMaps" type="HBoxContainer" parent="MainVBox/ContentVBox" unique_id=1084315252]
+layout_mode = 2
+
+[node name="BtnGenMap" type="Button" parent="MainVBox/ContentVBox/HBoxMaps" unique_id=1472379353]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+text = "Generate Map"
+metadata/current_tooltip = "Generate a new map using the selected settings or the selected preset"
+
+[node name="BtnClearMaps" type="Button" parent="MainVBox/ContentVBox/HBoxMaps" unique_id=1732686444]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 0.4, 0.4, 1)
+text = "Clear Maps"
+metadata/current_tooltip = "Completely clear the generated map"
+
+[node name="HBoxEvents" type="HBoxContainer" parent="MainVBox/ContentVBox" unique_id=1490466796]
+layout_mode = 2
+
+[node name="BtnGenEvents" type="Button" parent="MainVBox/ContentVBox/HBoxEvents" unique_id=1182518034]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+text = "Generate Events"
+metadata/current_tooltip = "Populate the map with events randomly selected from the list of available events"
+
+[node name="BtnClearEvents" type="Button" parent="MainVBox/ContentVBox/HBoxEvents" unique_id=70752238]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 0.4, 0.4, 1)
+text = "Clear Events"
+metadata/current_tooltip = "Remove all events added to the map"
+
+[node name="Sep2" type="HSeparator" parent="MainVBox/ContentVBox" unique_id=1014661295]
+layout_mode = 2
+
+[node name="Configuration" type="VBoxContainer" parent="MainVBox/ContentVBox" unique_id=739898569]
+layout_mode = 2
+
+[node name="LblConfig" type="Label" parent="MainVBox/ContentVBox/Configuration" unique_id=795342731]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
+theme_override_font_sizes/font_size = 12
+text = "- Configuration -"
+horizontal_alignment = 1
+
+[node name="BtnCompact1" type="Button" parent="MainVBox/ContentVBox/Configuration/LblConfig" unique_id=1169159809 node_paths=PackedStringArray("node_parent", "main_panel")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1, 0)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -38.0
+offset_top = -15.5
+offset_bottom = 15.5
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+text = "-"
+script = SubResource("GDScript_piaam")
+node_parent = NodePath("../..")
+main_panel = NodePath("../../../../..")
+
+[node name="BtnDecorators" type="Button" parent="MainVBox/ContentVBox/Configuration" unique_id=408988280]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.4, 0.75, 1, 1)
+text = "Environment Decorators..."
+metadata/current_tooltip = "Open the dialog box to configure the environment settings"
+
+[node name="BtnEditEvents" type="Button" parent="MainVBox/ContentVBox/Configuration" unique_id=465291179]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.4, 0.75, 1, 1)
+text = "Edit Random Events Library"
+metadata/current_tooltip = "Open the dialog box to configure the event list"
+
+[node name="Sep3" type="HSeparator" parent="MainVBox/ContentVBox/Configuration" unique_id=1097986909]
+layout_mode = 2
+
+[node name="BtnDebugPath" type="Button" parent="MainVBox/ContentVBox/Configuration" unique_id=2091641410]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_pressed_color = Color(0.87195957, 0.8812047, 0.9728015, 1)
+theme_override_styles/pressed = SubResource("StyleBoxFlat_dru4v")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_wrwnr")
+toggle_mode = true
+text = "Draw Debug Path"
+metadata/current_tooltip = "Draw a path between the player and the goal (This is just to see a visual representation of how the player should move to reach the goal)"
+
+[node name="Sep4" type="HSeparator" parent="MainVBox/ContentVBox" unique_id=232260921]
+layout_mode = 2
+
+[node name="PresetPanel" type="VBoxContainer" parent="MainVBox/ContentVBox" unique_id=1028159541]
+layout_mode = 2
+
+[node name="LblPresets" type="Label" parent="MainVBox/ContentVBox/PresetPanel" unique_id=1812527033]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
+theme_override_font_sizes/font_size = 12
+text = "- Presets -"
+horizontal_alignment = 1
+
+[node name="BtnCompact2" type="Button" parent="MainVBox/ContentVBox/PresetPanel/LblPresets" unique_id=1496424825 node_paths=PackedStringArray("node_parent", "main_panel")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1, 0)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -38.0
+offset_top = -15.5
+offset_bottom = 15.5
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+text = "-"
+script = SubResource("GDScript_piaam")
+node_parent = NodePath("../..")
+main_panel = NodePath("../../../../..")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainVBox/ContentVBox/PresetPanel" unique_id=581942227]
+layout_mode = 2
+
+[node name="PresetList" parent="MainVBox/ContentVBox/PresetPanel/HBoxContainer" unique_id=1148619295 instance=ExtResource("2_piaam")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 0
+fit_to_longest_item = false
+item_count = 2
+popup/item_0/text = "None"
+popup/item_0/id = 0
+popup/item_1/text = "Preset 1"
+popup/item_1/id = 1
+metadata/current_tooltip = "Select a preset from the list. If the preset is not \"none\", the settings stored in the preset will be used to generate the map"
+
+[node name="BtnSavePreset" type="Button" parent="MainVBox/ContentVBox/PresetPanel/HBoxContainer" unique_id=573718404]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+text = "Save"
+metadata/current_tooltip = "Saves the most recent data used to generate the current map"
+
+[node name="BtnEditPresets" type="Button" parent="MainVBox/ContentVBox/PresetPanel/HBoxContainer" unique_id=1847743874]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+text = "Edit"
+metadata/current_tooltip = "Allows you to edit the list of presets, rename them, or delete them"
+
+[node name="Sep5" type="HSeparator" parent="MainVBox/ContentVBox" unique_id=1142706564]
+layout_mode = 2
+
+[node name="BtnExport" type="Button" parent="MainVBox/ContentVBox" unique_id=1150746929]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_piaam")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ouk8a")
+theme_override_styles/hover = SubResource("StyleBoxFlat_x8mry")
+text = "Export as RPGMap"
+metadata/current_tooltip = "Export the currently generated map and its events as a valid \"RPGMap\""

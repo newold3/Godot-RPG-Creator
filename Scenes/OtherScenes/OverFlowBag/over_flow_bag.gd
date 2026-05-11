@@ -39,6 +39,8 @@ func interact() -> void:
 			manager.add_weapon_amount(item.id, item.amount, item.level, item.auto_popup_enabled, item.popup_prefix)
 		elif item.type == 2:
 			manager.add_armor_amount(item.id, item.amount, item.level, item.auto_popup_enabled, item.popup_prefix)
+		elif item.type == 3:
+			manager.add_costume_amount(item.id, item.amount, item.auto_popup_enabled, item.popup_prefix)
 
 	manager.interacting_bag = null
 
@@ -52,11 +54,13 @@ func interact() -> void:
 			var real_item = null
 
 			if item.type == 0:
-				real_item = RPGSYSTEM.database.items[item.id]
+				real_item = RPGSYSTEM.get_data("items", item.id)
 			elif item.type == 1:
-				real_item = RPGSYSTEM.database.weapons[item.id]
+				real_item = RPGSYSTEM.get_data("weapons", item.id)
 			elif item.type == 2:
-				real_item = RPGSYSTEM.database.armors[item.id]
+				real_item = RPGSYSTEM.get_data("armors", item.id)
+			elif item.type == 3:
+				real_item = RPGSYSTEM.get_data("costumes", item.id)
 
 			if real_item:
 				failed_items.append({

@@ -1,10 +1,15 @@
 @tool
 extends CommandBaseDialog
 
+#region Variables
 var priority_index: int = -1
 var current_priorities: PackedInt32Array = []
+#endregion
 
 
+
+#region Lifecycle & Setup
+## Initializes the base configuration for the priority command
 func _ready() -> void:
 	super()
 	parameter_code = 123
@@ -12,6 +17,8 @@ func _ready() -> void:
 	fill_targets()
 
 
+
+## Populates the list with Player and all map events securely using UIDs
 func fill_targets() -> void:
 	var list = %TargetList
 	list.clear()
@@ -27,9 +34,11 @@ func fill_targets() -> void:
 			var text = "Event #%s: %s" % [ev.id, ev.name]
 			list.add_item(text)
 			var real_id = ev._uniq_id if "_uniq_id" in ev else ev.id
-			list.set_item_metadata(-1, real_id)
+			list.set_item_metadata(list.get_item_count() - 1, real_id)
 
 
+
+## Selects elements and restores their saved priority values from loaded data
 func set_targets_by_ids(saved_ids: PackedInt64Array, saved_priorities: PackedInt32Array) -> void:
 	var list = %TargetList
 	var total_items = list.get_item_count()
@@ -55,6 +64,8 @@ func set_targets_by_ids(saved_ids: PackedInt64Array, saved_priorities: PackedInt
 					break
 
 
+
+## Parses the initial command data loading target UIDs and priorities
 func set_data() -> void:
 	var targets: PackedInt64Array = parameters[0].parameters.get("targets", [])
 	var priorities: PackedInt32Array = parameters[0].parameters.get("priorities", [])
@@ -62,6 +73,8 @@ func set_data() -> void:
 	set_targets_by_ids(targets, priorities)
 
 
+
+## Compiles the UI state back extracting UIDs and priority mappings
 func build_command_list() -> Array[RPGEventCommand]:
 	var commands = super()
 	
@@ -84,8 +97,12 @@ func build_command_list() -> Array[RPGEventCommand]:
 	commands[-1].parameters.priorities = final_priorities
 	commands[-1].parameters.legacy_targets = selected_indexes
 	return commands
+#endregion
 
 
+
+#region UI Interaction & Priority Management
+## Synchronizes the floating priority spinbox position with the scroll bar
 func _reposition_priority_node(_value: float = 0.0) -> void:
 	var node1 = %TargetList
 	var node2 = %Priority
@@ -105,6 +122,8 @@ func _reposition_priority_node(_value: float = 0.0) -> void:
 		node2.visible = false
 
 
+
+## Refreshes the display value on the floating priority spinbox
 func _update_priority_value() -> void:
 	if priority_index != -1:
 		%Priority.value = current_priorities[priority_index]
@@ -112,6 +131,8 @@ func _update_priority_value() -> void:
 		%Priority.value = 0
 
 
+
+## Captures hover state to move and update the priority spinbox context
 func _on_target_list_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		priority_index = %TargetList.get_item_at_position(event.position)
@@ -119,10 +140,15 @@ func _on_target_list_gui_input(event: InputEvent) -> void:
 		_update_priority_value()
 
 
+
+## Saves the spinbox value changes to memory
 func _on_priority_value_changed(value: float) -> void:
 	if priority_index != -1:
 		current_priorities[priority_index] = value
 
 
+
+## Hides the priority spinbox when the cursor leaves the target list area
 func _on_target_list_mouse_exited() -> void:
 	%Priority.visible = false
+#endregion

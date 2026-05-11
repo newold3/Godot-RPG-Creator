@@ -1,6 +1,7 @@
 @tool
 extends Window
 
+#region Variables
 var data = {
 	"option_selected": 8,
 	"item_id": 1,
@@ -29,8 +30,12 @@ var data = {
 var busy: bool = false
 
 signal option_selected(value1: int, value2: int, value3: int)
+#endregion
 
 
+
+#region Initialization
+## Called when the node enters the scene tree for the first time
 func _ready() -> void:
 	close_requested.connect(queue_free)
 	_fill_stats()
@@ -39,6 +44,8 @@ func _ready() -> void:
 	update_items()
 
 
+
+## Populates the statistics dropdown list
 func _fill_stats() -> void:
 	var stats = [
 		"steps", "play_time", "enemy_kills", "skills",
@@ -80,6 +87,8 @@ func _fill_stats() -> void:
 		node.set_item_metadata(-1, user_stats.find(current_stat) + extra_id)
 
 
+
+## Populates the actor parameters dropdown list
 func _fill_actor_parameters() -> void:
 	var items = PackedStringArray(["Level", "Experience"]) + RPGSYSTEM.database.types.main_parameters
 	
@@ -98,6 +107,8 @@ func _fill_actor_parameters() -> void:
 			node.add_item("User Parameter: " + param.name)
 
 
+
+## Populates the global user parameters dropdown list
 func _fill_global_user_parameters() -> void:
 	var node = %GlobalUserParameter
 	node.clear()
@@ -109,6 +120,8 @@ func _fill_global_user_parameters() -> void:
 			node.add_item("User Parameter: " + param.name)
 
 
+
+## Sets up the dialog data from the command parameters utilizing UIDs and handling Legacy IDs
 func set_data(value1: Variant, value2: int, value3: int) -> void:
 	%GlobalUserParameterContainer.visible = false
 	%GlobalUserParameter.set_disabled(true)
@@ -120,18 +133,20 @@ func set_data(value1: Variant, value2: int, value3: int) -> void:
 		node.set_pressed_no_signal(false)
 	nodes[value1].set_pressed(true)
 	
+	# Helper for backward compatibility (Legacy IDs to UIDs)
+	var final_v2 = value2
+	
 	match value1:
-		0: data.item_id = value2
-		1: data.weapon_id = value2
-		2: data.armor_id = value2
+		0: data.item_id = RPGSYSTEM.id_to_uid("items", value2) if value2 > 0 and value2 < 1000000 else value2
+		1: data.weapon_id = RPGSYSTEM.id_to_uid("weapons", value2) if value2 > 0 and value2 < 1000000 else value2
+		2: data.armor_id = RPGSYSTEM.id_to_uid("armors", value2) if value2 > 0 and value2 < 1000000 else value2
 		3:
-			data.actor_id = value2
+			data.actor_id = RPGSYSTEM.id_to_uid("actors", value2) if value2 > 0 and value2 < 1000000 else value2
 			data.actor_parameter = value3
 			%ActorParameter.select(value3)
 		4:
-			data.enemy_id = value2
+			data.enemy_id = RPGSYSTEM.id_to_uid("enemies", value2) if value2 > 0 and value2 < 1000000 else value2
 			data.enemy_parameter = value3
-			%EnemyID.select(value2)
 			%EnemyParameter.select(value3)
 		5:
 			data.character_id = value2
@@ -157,22 +172,24 @@ func set_data(value1: Variant, value2: int, value3: int) -> void:
 				%GlobalUserParameter.select(value3)
 			else:
 				%GlobalUserParameter.select(0)
-		9: data.profession_id = value2
+		9: data.profession_id = RPGSYSTEM.id_to_uid("professions", value2) if value2 > 0 and value2 < 1000000 else value2
 		10:
 			data.stat_id = value2
+			var final_v3 = value3
 			match value2:
-				2: # enemy:
-					data.stat_enemy_id = value3
-				3: # skill
-					data.stat_skill_id = value3
-				4, 5, 6: # items
-					data.stat_item_id = value3
-				7, 8, 9: # weapons
-					data.stat_weapon_id = value3
-				10, 11, 12: # armor
-					data.stat_armor_id = value3
-				31: # Extaction
-					data.stat_extraction_profession_id = value3
+				2:
+					data.stat_enemy_id = RPGSYSTEM.id_to_uid("enemies", value3) if value3 > 0 and value3 < 1000000 else value3
+				3:
+					data.stat_skill_id = RPGSYSTEM.id_to_uid("skills", value3) if value3 > 0 and value3 < 1000000 else value3
+				4, 5, 6:
+					data.stat_item_id = RPGSYSTEM.id_to_uid("items", value3) if value3 > 0 and value3 < 1000000 else value3
+				7, 8, 9:
+					data.stat_weapon_id = RPGSYSTEM.id_to_uid("weapons", value3) if value3 > 0 and value3 < 1000000 else value3
+				10, 11, 12:
+					data.stat_armor_id = RPGSYSTEM.id_to_uid("armors", value3) if value3 > 0 and value3 < 1000000 else value3
+				31:
+					data.stat_extraction_profession_id = RPGSYSTEM.id_to_uid("professions", value3) if value3 > 0 and value3 < 1000000 else value3
+					
 			for i in %StatID.get_item_count():
 				if %StatID.get_item_metadata(i) == value2:
 					%StatID.select(i)
@@ -182,8 +199,12 @@ func set_data(value1: Variant, value2: int, value3: int) -> void:
 	update_items()
 	set_deferred("size",  Vector2i(size.x, 0))
 	busy = false
+#endregion
 
 
+
+#region Event_Handlers
+## Handles the change of the main data type selection
 func _on_type_selected(toggled_on: bool, type: int) -> void:
 	var nodes = [%Item, %Weapon, %Armor, %Actor, %Enemy, %Character, %Party, %Last, %Other, %Profession, %Stat]
 	nodes[type].get_parent().propagate_call("set_disabled", [!toggled_on])
@@ -194,32 +215,18 @@ func _on_type_selected(toggled_on: bool, type: int) -> void:
 	
 	if type == 10:
 		match data.stat_id:
-			2: # enemy:
+			2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 31:
 				%StatItemID.set_disabled(false)
-				%StatItemID.text = "ID = " + str(data.stat_enemy_id)
-			3: # skill
-				%StatItemID.set_disabled(false)
-				%StatItemID.text = "ID = " + str(data.stat_skill_id)
-			4, 5, 6: # items
-				%StatItemID.set_disabled(false)
-				%StatItemID.text = "ID = " + str(data.stat_item_id)
-			7, 8, 9: # weapons
-				%StatItemID.set_disabled(false)
-				%StatItemID.text = "ID = " + str(data.stat_weapon_id)
-			10, 11, 12: # armor
-				%StatItemID.set_disabled(false)
-				%StatItemID.text = "ID = " + str(data.stat_armor_id)
-			31: # Extraction
-				%StatItemID.set_disabled(false)
-				%StatItemID.text = "ID = " + str(data.stat_extraction_profession_id)
 			_:
 				%StatItemID.set_disabled(true)
-				%StatItemID.text = " "
 	else:
 		%StatItemID.set_disabled(true)
-		%StatItemID.text = " "
+		
+	update_items()
 
 
+
+## Helper to open the generic data selector converting UID to index first
 func _open_select_any_data_dialog(current_data, id_selected: int, title: String, target: int) -> void:
 	var path = "res://addons/CustomControls/Dialogs/select_any_data_dialog.tscn"
 	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
@@ -231,54 +238,129 @@ func _open_select_any_data_dialog(current_data, id_selected: int, title: String,
 	dialog.setup(current_data, id_selected, title, target)
 
 
-func _on_any_data_selected(id: int, target: int) -> void:
+
+## Callback when a generic data item is selected to convert back to UID
+func _on_any_data_selected(index: int, target: int) -> void:
 	match target:
-		0: data.item_id = id
-		1: data.weapon_id = id
-		2: data.armor_id = id
-		3: data.actor_id = id
-		4: data.enemy_id = id
-		9: data.profession_id = id
-		10: data.stat_snemy_id = id
-		11: data.stat_skill_id = id
-		12: data.stat_item_id = id
-		13: data.stat_weapon_id = id
-		14: data.stat_armor_id = id
-		31: data.stat_extraction_profession_id = id
+		0: data.item_id = RPGSYSTEM.id_to_uid("items", index)
+		1: data.weapon_id = RPGSYSTEM.id_to_uid("weapons", index)
+		2: data.armor_id = RPGSYSTEM.id_to_uid("armors", index)
+		3: data.actor_id = RPGSYSTEM.id_to_uid("actors", index)
+		4: data.enemy_id = RPGSYSTEM.id_to_uid("enemies", index)
+		9: data.profession_id = RPGSYSTEM.id_to_uid("professions", index)
+		10: data.stat_enemy_id = RPGSYSTEM.id_to_uid("enemies", index)
+		11: data.stat_skill_id = RPGSYSTEM.id_to_uid("skills", index)
+		12: data.stat_item_id = RPGSYSTEM.id_to_uid("items", index)
+		13: data.stat_weapon_id = RPGSYSTEM.id_to_uid("weapons", index)
+		14: data.stat_armor_id = RPGSYSTEM.id_to_uid("armors", index)
+		31: data.stat_extraction_profession_id = RPGSYSTEM.id_to_uid("professions", index)
 	
 	update_items()
 
 
+
+## Opens the item selection dialog
 func _on_item_id_pressed() -> void:
 	var current_data = RPGSYSTEM.database.items
-	var id_selected = max(1, min(data.item_id, current_data.size()))
+	var classic_id = RPGSYSTEM.uid_to_id("items", data.item_id)
+	var id_selected = max(1, min(classic_id, current_data.size() - 1))
 	_open_select_any_data_dialog(current_data, id_selected, "Item", 0)
 
 
+
+## Opens the weapon selection dialog
 func _on_weapon_id_pressed() -> void:
 	var current_data = RPGSYSTEM.database.weapons
-	var id_selected = max(1, min(data.weapon_id, current_data.size()))
+	var classic_id = RPGSYSTEM.uid_to_id("weapons", data.weapon_id)
+	var id_selected = max(1, min(classic_id, current_data.size() - 1))
 	_open_select_any_data_dialog(current_data, id_selected, "Weapon", 1)
 
 
+
+## Opens the armor selection dialog
 func _on_armor_id_pressed() -> void:
 	var current_data = RPGSYSTEM.database.armors
-	var id_selected = max(1, min(data.armor_id, current_data.size()))
+	var classic_id = RPGSYSTEM.uid_to_id("armors", data.armor_id)
+	var id_selected = max(1, min(classic_id, current_data.size() - 1))
 	_open_select_any_data_dialog(current_data, id_selected, "Armor", 2)
 
 
+
+## Opens the actor selection dialog
 func _on_actor_id_pressed() -> void:
 	var current_data = RPGSYSTEM.database.actors
-	var id_selected = max(1, min(data.actor_id, current_data.size()))
+	var classic_id = RPGSYSTEM.uid_to_id("actors", data.actor_id)
+	var id_selected = max(1, min(classic_id, current_data.size() - 1))
 	_open_select_any_data_dialog(current_data, id_selected, "Actor", 3)
 
 
+
+## Opens the enemy selection dialog
 func _on_enemy_id_pressed() -> void:
 	var current_data = RPGSYSTEM.database.enemies
-	var id_selected = max(1, min(data.enemy_id, current_data.size()))
+	var classic_id = RPGSYSTEM.uid_to_id("enemies", data.enemy_id)
+	var id_selected = max(1, min(classic_id, current_data.size() - 1))
 	_open_select_any_data_dialog(current_data, id_selected, "Enemy", 4)
 
 
+
+## Opens the profession selection dialog
+func _on_profession_id_pressed() -> void:
+	var current_data = RPGSYSTEM.database.professions
+	var classic_id = RPGSYSTEM.uid_to_id("professions", data.profession_id)
+	var id_selected = max(1, min(classic_id, current_data.size() - 1))
+	_open_select_any_data_dialog(current_data, id_selected, "Profession", 9)
+
+
+
+## Opens the specific stat target selection dialog
+func _on_stat_item_id_pressed() -> void:
+	var current_data: Variant
+	var id_selected: int = 1
+	var dialog_title: String = ""
+	var target_id: int = 0
+	
+	match data.stat_id:
+		2:
+			current_data = RPGSYSTEM.database.enemies
+			id_selected = RPGSYSTEM.uid_to_id("enemies", data.stat_enemy_id)
+			dialog_title = "Enemy"
+			target_id = 10
+		3:
+			current_data = RPGSYSTEM.database.skills
+			id_selected = RPGSYSTEM.uid_to_id("skills", data.stat_skill_id)
+			dialog_title = "Skill"
+			target_id = 11
+		4, 5, 6:
+			current_data = RPGSYSTEM.database.items
+			id_selected = RPGSYSTEM.uid_to_id("items", data.stat_item_id)
+			dialog_title = "Item"
+			target_id = 12
+		7, 8, 9:
+			current_data = RPGSYSTEM.database.weapons
+			id_selected = RPGSYSTEM.uid_to_id("weapons", data.stat_weapon_id)
+			dialog_title = "Weapon"
+			target_id = 13
+		10, 11, 12:
+			current_data = RPGSYSTEM.database.armors
+			id_selected = RPGSYSTEM.uid_to_id("armors", data.stat_armor_id)
+			dialog_title = "Armor"
+			target_id = 14
+		31:
+			current_data = RPGSYSTEM.database.professions
+			id_selected = RPGSYSTEM.uid_to_id("professions", data.stat_extraction_profession_id)
+			dialog_title = "Profession"
+			target_id = 31
+	
+	if current_data:
+		id_selected = max(1, min(id_selected, current_data.size() - 1))
+		_open_select_any_data_dialog(current_data, id_selected, dialog_title, target_id)
+#endregion
+
+
+
+#region Logic
+## Updates the button texts to display the selected game data names
 func update_items() -> void:
 	var obj = [
 		[%ItemID, "items", "item_id"],
@@ -288,39 +370,63 @@ func update_items() -> void:
 		[%EnemyID, "enemies", "enemy_id"],
 		[%ProfessionID, "professions", "profession_id"],
 	]
+	
 	for o in obj:
-		var items = RPGSYSTEM.database[o[1]]
-		var index = max(1, data[o[2]])
-		if items.size() > index:
-			var item_name = "%s:%s" % [
-				str(index).pad_zeros(str(items.size()).length()),
-				items[index].name
+		var db_key = o[1]
+		var uid = data[o[2]]
+		var item = RPGSYSTEM.get_data(db_key, uid)
+		
+		if item:
+			var classic_id = RPGSYSTEM.uid_to_id(db_key, uid)
+			var items_size = RPGSYSTEM.database[db_key].size()
+			var item_name = "%s: %s" % [
+				str(classic_id).pad_zeros(str(items_size).length()),
+				item.name
 			]
 			o[0].text = item_name
 		else:
 			o[0].text = "⚠ Invalid Data"
 	
 	match data.stat_id:
-		2: # enemy:
-			%StatItemID.text = "ID = " + str(data.stat_enemy_id)
-		3: # skill
-			%StatItemID.text = "ID = " + str(data.stat_skill_id)
-		4, 5, 6: # items
-			%StatItemID.text = "ID = " + str(data.stat_item_id)
-		7, 8, 9: # weapons
-			%StatItemID.text = "ID = " + str(data.stat_weapon_id)
-		10, 11, 12: # armor
-			%StatItemID.text = "ID = " + str(data.stat_armor_id)
-		31: # Extraction
-			%StatItemID.text = "ID = " + str(data.stat_extraction_profession_id)
+		2:
+			var name_str = _get_name_for_stat_button("enemies", data.stat_enemy_id)
+			%StatItemID.text = name_str
+		3:
+			var name_str = _get_name_for_stat_button("skills", data.stat_skill_id)
+			%StatItemID.text = name_str
+		4, 5, 6:
+			var name_str = _get_name_for_stat_button("items", data.stat_item_id)
+			%StatItemID.text = name_str
+		7, 8, 9:
+			var name_str = _get_name_for_stat_button("weapons", data.stat_weapon_id)
+			%StatItemID.text = name_str
+		10, 11, 12:
+			var name_str = _get_name_for_stat_button("armors", data.stat_armor_id)
+			%StatItemID.text = name_str
+		31:
+			var name_str = _get_name_for_stat_button("professions", data.stat_extraction_profession_id)
+			%StatItemID.text = name_str
 		_:
 			%StatItemID.text = " "
 
 
+
+## Helper to fetch the formatted name for the stat button
+func _get_name_for_stat_button(db_key: String, uid: int) -> String:
+	var res = RPGSYSTEM.get_data(db_key, uid)
+	if res:
+		var classic_id = RPGSYSTEM.uid_to_id(db_key, uid)
+		return str(classic_id).pad_zeros(str(RPGSYSTEM.database[db_key].size()).length()) + ": " + res.name
+	return "⚠ Invalid Data"
+
+
+
+## Save data, emit signal and close dialog
 func _on_ok_button_pressed() -> void:
 	var value1 = data.option_selected
 	var value2 = -1
 	var value3 = -1
+	
 	match value1:
 		0: value2 = data.item_id
 		1: value2 = data.weapon_id
@@ -343,51 +449,67 @@ func _on_ok_button_pressed() -> void:
 		10:
 			value2 = data.stat_id
 			match value2:
-				2: # enemy:
+				2:
 					value3 = data.stat_enemy_id
-				3: # skill
+				3:
 					value3 = data.stat_skill_id
-				4, 5, 6: # items
+				4, 5, 6:
 					value3 = data.stat_item_id
-				7, 8, 9: # weapons
+				7, 8, 9:
 					value3 = data.stat_weapon_id
-				10, 11, 12: # armor
+				10, 11, 12:
 					value3 = data.stat_armor_id
-				31: # Extraction:
+				31:
 					value3 = data.stat_extraction_profession_id
 			
 	option_selected.emit(value1, value2, value3)
 	queue_free()
 
 
+
+## Closes the dialog without saving
 func _on_cancel_button_pressed() -> void:
 	queue_free()
 
 
+
+## Handles actor parameter selection
 func _on_actor_parameter_item_selected(index: int) -> void:
 	data.actor_parameter = index
 
 
+
+## Handles enemy parameter selection
 func _on_enemy_parameter_item_selected(index: int) -> void:
 	data.enemy_parameter = index
 
 
+
+## Handles character ID selection
 func _on_character_id_item_selected(index: int) -> void:
 	data.character_id = index
 
 
+
+## Handles character parameter selection
 func _on_character_parameter_item_selected(index: int) -> void:
 	data.character_parameter = index
 
 
+
+## Handles party ID selection
 func _on_party_id_item_selected(index: int) -> void:
 	data.party_id = index
 
 
+
+## Handles last ID selection
 func _on_last_id_item_selected(index: int) -> void:
 	data.last_id = index
 
 
+
+## Handles other ID selection
 func _on_other_id_item_selected(index: int) -> void:
 	data.other_id = index
 	%GlobalUserParameterContainer.visible = index == 19
@@ -395,78 +517,21 @@ func _on_other_id_item_selected(index: int) -> void:
 	set_deferred("size",  Vector2i(size.x, 0))
 
 
-func _on_profession_id_pressed() -> void:
-	var current_data = RPGSYSTEM.database.professions
-	var id_selected = max(1, min(data.profession_id, current_data.size()))
-	_open_select_any_data_dialog(current_data, id_selected, "Profession", 9)
 
-
+## Handles stat ID selection
 func _on_stat_id_item_selected(index: int) -> void:
 	data.stat_id = %StatID.get_item_metadata(index)
+	update_items()
+	
 	match data.stat_id:
-		2: # enemy:
+		2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 31:
 			%StatItemID.set_disabled(false)
-			%StatItemID.text = "ID = " + str(data.stat_enemy_id)
-		3: # skill
-			%StatItemID.set_disabled(false)
-			%StatItemID.text = "ID = " + str(data.stat_skill_id)
-		4, 5, 6: # items
-			%StatItemID.set_disabled(false)
-			%StatItemID.text = "ID = " + str(data.stat_item_id)
-		7, 8, 9: # weapons
-			%StatItemID.set_disabled(false)
-			%StatItemID.text = "ID = " + str(data.stat_weapon_id)
-		10, 11, 12: # armor
-			%StatItemID.set_disabled(false)
-			%StatItemID.text = "ID = " + str(data.stat_armor_id)
-		31: # Extraction
-			%StatItemID.set_disabled(false)
-			%StatItemID.text = "ID = " + str(data.stat_extraction_profession_id)
 		_:
 			%StatItemID.set_disabled(true)
-			%StatItemID.text = " "
 
 
-func _on_stat_item_id_pressed() -> void:
-	var current_data: Variant
-	var id_selected: int
-	var dialog_title: String
-	var target_id: int
-	match data.stat_id:
-		2: # enemy:
-			current_data = RPGSYSTEM.database.enemies
-			id_selected = data.stat_snemy_id
-			dialog_title = "Enemy"
-			target_id = 10
-		3: # skill
-			current_data = RPGSYSTEM.database.skills
-			id_selected = data.stat_skill_id
-			dialog_title = "Skill"
-			target_id = 11
-		4, 5, 6: # items
-			current_data = RPGSYSTEM.database.items
-			id_selected = data.stat_item_id
-			dialog_title = "Item"
-			target_id = 12
-		7, 8, 9: # weapons
-			current_data = RPGSYSTEM.database.weapons
-			id_selected = data.stat_weapon_id
-			dialog_title = "Weapon"
-			target_id = 13
-		10, 11, 12: # armor
-			current_data = RPGSYSTEM.database.armors
-			id_selected = data.stat_armor_id
-			dialog_title = "Armor"
-			target_id = 14
-		31: # Extraction
-			current_data = RPGSYSTEM.database.professions
-			id_selected = data.stat_extraction_profession_id
-			dialog_title = "Profession"
-			target_id = 31
-	
-	if current_data:
-		_open_select_any_data_dialog(current_data, id_selected, dialog_title, target_id)
 
-
+## Handles global user parameter selection
 func _on_global_user_parameter_item_selected(index: int) -> void:
 	data.global_user_parameter = index
+#endregion

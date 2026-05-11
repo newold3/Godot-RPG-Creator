@@ -1,10 +1,10 @@
 @tool
 extends NinePatchRect
 
+#region Variables
 @export var slot_container: Node
 @export var slot_offset: Vector2 = Vector2(25, 7)
 @export var slot_id: int = 0
-
 
 @onready var cursor: NinePatchRect = %Cursor
 @onready var slot_position: Control = %SlotPosition
@@ -18,13 +18,16 @@ extends NinePatchRect
 @onready var contents_container: MarginContainer = %ContentsContainer
 @onready var gear: TextureRect = %Gear
 
-
 var is_disabled: bool = false
 var main_tween: Tween
 var gear_tween: Tween
 var scroll_container: Node
+#endregion
 
 
+
+#region Lifecycle & Setup
+## Initializes the visual state, naming, and data loading for this slot
 func _ready() -> void:
 	_set_slot_name()
 	_move_slot()
@@ -33,18 +36,22 @@ func _ready() -> void:
 	_set_cursor_visibility()
 
 
-func disable_input() -> void:
-	mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+## Continuous processing to keep the floating slot name indicator aligned
+func _process(_delta: float) -> void:
+	if slot_container and is_instance_valid(slot):
+		slot.global_position = slot_position.global_position - slot.size * 0.5
+		slot.position += slot_offset
 
 
-func enable_input() -> void:
-	mouse_filter = Control.MOUSE_FILTER_STOP
 
-
+## Assigns the specific index to this save slot instance
 func initialize_slot(index: int) -> void:
 	slot_id = index
 
 
+
+## Sets the display text for the slot depending on whether it is auto-save or a standard slot
 func _set_slot_name() -> void:
 	if slot_id == 0:
 		if "label_text" in slot_name:
@@ -59,6 +66,8 @@ func _set_slot_name() -> void:
 			slot_name.text = text
 
 
+
+## Reparents and visually offsets the slot label node into the master container
 func _move_slot() -> void:
 	if slot_container:
 		slot.name = "SlotName%s" % slot_id
@@ -69,54 +78,18 @@ func _move_slot() -> void:
 		set_process(true)
 	else:
 		set_process(false)
+#endregion
 
 
-func _animate_gear(value: float):
-	if gear_tween:
-		gear_tween.kill()
-	gear_tween = create_tween()
-	gear_tween.set_speed_scale(0.25)
-	if value > 0:
-		gear_tween.set_loops()
-		gear_tween.tween_property(gear, "rotation", value, 2.0).from(0.0)
-	else:
-		gear_tween.tween_property(gear, "rotation", gear.rotation + value, 0.6).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
-	
 
-
-func _set_cursor_visibility() -> void:
-	cursor.visible = false
-	mouse_entered.connect(
-		func():
-			select()
-	)
-	focus_entered.connect(
-		func():
-			_animate_gear(TAU)
-			cursor.visible = true
-	)
-	focus_exited.connect(
-		func():
-			_animate_gear(-0.65)
-			cursor.visible = false
-	)
-
-
-func _rebuild_cursor_tween() -> void:
-	if main_tween:
-		main_tween.kill()
-		
-	main_tween = create_tween()
-	main_tween.set_loops()
-	main_tween.tween_interval(0.5)
-	main_tween.tween_property(cursor, "modulate:a", 0.8, 0.25).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
-	main_tween.tween_property(cursor, "modulate:a", 1.0, 0.35).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CIRC)
-
-
+#region Data Loading & UI Population
+## Triggers a reload of the save data for this specific slot
 func refresh() -> void:
 	_try_load_save_data()
 
 
+
+## Attempts to fetch and map the preview data and screenshot for this save file
 func _try_load_save_data() -> void:
 	if Engine.is_editor_hint():
 		set_disabled()
@@ -133,6 +106,8 @@ func _try_load_save_data() -> void:
 	set_enabled()
 
 
+
+## Fills the UI components with the extracted save file information
 func _populate_ui(data: RPGSavedGamePreview, image_path: String) -> void:
 	if chapter_name.has_method("set_text"):
 		chapter_name.text = data.current_chapter_name
@@ -160,77 +135,129 @@ func _populate_ui(data: RPGSavedGamePreview, image_path: String) -> void:
 	_update_party_icons(data.current_party_ids)
 
 
+
+## Creates and loads the mini-icons for the active party members safely decoding UIDs
 func _update_party_icons(party_ids: Array) -> void:
 	for child in hero_container.get_children():
 		child.queue_free()
 		hero_container.remove_child(child)
 		
 	for id in party_ids:
-		if id > 0 and RPGSYSTEM.database.actors.size() > id:
-			var actor: RPGActor = RPGSYSTEM.database.actors[id]
-			var scene = actor.character_scene
-			var image_path = scene.trim_suffix(".tscn") + "_character.png"
-			if AssetManager.exists(image_path):
-				var tex = load(image_path)
-				var node = TextureRect.new()
-				node.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-				node.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-				node.custom_minimum_size.x = 36
-				node.texture = tex
-				hero_container.add_child(node)
+		var uid = id
+		
+		if uid > 0 and uid < 1000000:
+			uid = RPGSYSTEM.id_to_uid("actors", uid)
+			
+		if uid > 0:
+			var actor: RPGActor = RPGSYSTEM.get_data("actors", uid)
+			if actor:
+				var scene = actor.character_scene
+				var image_path = scene.trim_suffix(".tscn") + "_character.png"
+				
+				if AssetManager.exists(image_path):
+					var tex = load(image_path)
+					var node = TextureRect.new()
+					
+					node.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+					node.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+					node.custom_minimum_size.x = 36
+					node.texture = tex
+					
+					hero_container.add_child(node)
+#endregion
 
 
 
-func _process(_delta: float) -> void:
-	if slot_container and is_instance_valid(slot):
-		slot.global_position = slot_position.global_position - slot.size * 0.5
-		slot.position += slot_offset
+#region Animations & Visuals
+## Animates the rotating gear icon
+func _animate_gear(value: float) -> void:
+	if gear_tween:
+		gear_tween.kill()
+		
+	gear_tween = create_tween()
+	gear_tween.set_speed_scale(0.25)
+	
+	if value > 0:
+		gear_tween.set_loops()
+		gear_tween.tween_property(gear, "rotation", value, 2.0).from(0.0)
+	else:
+		gear_tween.tween_property(gear, "rotation", gear.rotation + value, 0.6).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
 
 
-func set_disabled() -> void:
-	%ContentsContainer.visible = false
-	%NoDataContainer.visible = true
-	is_disabled = true
+
+## Binds focus and hover events to the cursor visibility
+func _set_cursor_visibility() -> void:
+	cursor.visible = false
+	mouse_entered.connect(
+		func():
+			select()
+	)
+	focus_entered.connect(
+		func():
+			_animate_gear(TAU)
+			cursor.visible = true
+	)
+	focus_exited.connect(
+		func():
+			_animate_gear(-0.65)
+			cursor.visible = false
+	)
 
 
-func set_enabled() -> void:
-	%ContentsContainer.visible = true
-	%NoDataContainer.visible = false
-	is_disabled = false
+
+## Constructs the idle pulsing animation for the cursor
+func _rebuild_cursor_tween() -> void:
+	if main_tween:
+		main_tween.kill()
+		
+	main_tween = create_tween()
+	main_tween.set_loops()
+	main_tween.tween_interval(0.5)
+	main_tween.tween_property(cursor, "modulate:a", 0.8, 0.25).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
+	main_tween.tween_property(cursor, "modulate:a", 1.0, 0.35).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CIRC)
 
 
+
+## Pulses brightness and shakes the slot horizontally to indicate a successful action
 func highlight() -> void:
 	var t = create_tween()
-	t.set_parallel(true) # Todo corre simultáneamente
+	t.set_parallel(true)
 	
 	t.tween_property(self, "modulate", Color(2.35, 2.35, 2.35, 1), 0.1)
 	t.tween_property(self, "modulate", Color(1, 1, 1, 1), 0.3).set_delay(0.1)
 	
 	var strength: float = 6.0
 	var duration: float = 0.05
+	
 	if not has_meta("original_x"):
-		set_meta("oroginal_x", position.x)
+		set_meta("original_x", position.x)
 		
 	t.tween_property(self, "position:x", strength, duration).as_relative()
 	t.tween_property(self, "position:x", -strength * 2, duration).set_delay(duration).as_relative()
 	t.tween_property(self, "position:x", strength, duration).set_delay(duration * 2).as_relative()
-	t.tween_property(self, "position:x", get_meta("oroginal_x"), duration).set_delay(duration * 2 + 0.01)
+	t.tween_property(self, "position:x", get_meta("original_x"), duration).set_delay(duration * 2 + 0.01)
 
 
+
+## Triggers the slide-in animation when the save/load screen is opened
 func start() -> void:
 	disable_input()
 	contents_container.pivot_offset = Vector2(0, size.y * 0.5)
 	gear.pivot_offset = gear.size * 0.5
+	
 	var t = create_tween()
 	t.set_parallel(true)
+	
 	if get_index() % 2 == 0:
 		t.tween_property(self, "position:x", 0.0, 0.6).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK).from(-size.x)
 	else:
 		t.tween_property(self, "position:x", 0.0, 0.6).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK).from(size.x)
+		
 	t.tween_property(gear, "rotation", gear.rotation - PI, 0.85).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
 
 	var target_index = GameManager.current_save_slot
 	t.tween_callback(enable_input).set_delay(0.35)
+	
 	if get_index() == target_index:
 		t.tween_callback(_initial_selection).set_delay(0.35)
 		if scroll_container:
@@ -245,27 +272,69 @@ func start() -> void:
 		t.tween_callback(enable_input).set_delay(0.35)
 
 
-func _initial_selection():
+
+## Handles the initial automatic focus routing
+func _initial_selection() -> void:
 	enable_input()
+	
 	if scroll_container and scroll_container is SmoothScrollContainer:
 		scroll_container.bring_target_into_view(self, true, false)
+		
 	select()
 	GameManager.force_hand_position_over_node.call_deferred(GameManager.get_cursor_manipulator())
 	GameManager.set_fx_busy(false)
 
 
+
+## Triggers the slide-out animation when leaving the save/load screen
 func end() -> void:
 	disable_input()
 	GameManager.set_fx_busy(true)
 	await get_tree().process_frame
+	
 	var t = create_tween()
 	t.set_parallel(true)
+	
 	if get_index() % 2 == 1:
 		t.tween_property(self, "position:x", -size.x, 0.6).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
 	else:
 		t.tween_property(self, "position:x", size.x, 0.6).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_BACK)
+		
 	t.tween_property(gear, "rotation", gear.rotation - PI, 0.85).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CIRC)
+#endregion
 
 
+
+#region State Toggles
+## Blocks mouse events for the slot
+func disable_input() -> void:
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+
+
+## Allows mouse events for the slot
+func enable_input() -> void:
+	mouse_filter = Control.MOUSE_FILTER_STOP
+
+
+
+## Hides preview content and displays the 'Empty Slot' container
+func set_disabled() -> void:
+	%ContentsContainer.visible = false
+	%NoDataContainer.visible = true
+	is_disabled = true
+
+
+
+## Shows preview content and hides the 'Empty Slot' container
+func set_enabled() -> void:
+	%ContentsContainer.visible = true
+	%NoDataContainer.visible = false
+	is_disabled = false
+
+
+
+## Forces UI focus onto this slot
 func select() -> void:
 	grab_focus()
+#endregion

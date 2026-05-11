@@ -562,6 +562,8 @@ func _show_select_common_event_dialog(parent: Window, id: int = 1, edit_mode: bo
 	
 	dialog.destroy_on_hide = true
 	
+	var real_id = RPGSYSTEM.uid_to_id("common_events", id)
+	
 	dialog.setup(RPGSYSTEM.database.common_events, id, "Common Events", null)
 	
 	if !edit_mode:
@@ -575,6 +577,7 @@ func _create_command_select_common_dialog(id: int, target) -> void:
 	var command = RPGEventCommand.new()
 	command.code = 28
 	command.indent = current_indent
+	var real_id = RPGSYSTEM.id_to_uid("common_events", id)
 	command.parameters.id = id
 	_insert_command(command)
 	update_data()

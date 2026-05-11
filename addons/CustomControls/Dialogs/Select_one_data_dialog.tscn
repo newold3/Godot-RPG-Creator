@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://jc61dtc3w8cm"]
+[gd_scene format=3 uid="uid://jc61dtc3w8cm"]
 
 [ext_resource type="Script" uid="uid://be5kijbvvmnaf" path="res://addons/CustomControls/Dialogs/Select_one_data_dialog.gd" id="1_0854v"]
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_plxk3"]
@@ -14,9 +14,10 @@ gradient = SubResource("Gradient_4u2ec")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
-[node name="SelectOneDataDialog" type="Window"]
+[node name="SelectOneDataDialog" type="Window" unique_id=405259424]
 oversampling_override = 1.0
 title = "Title"
+position = Vector2i(0, 36)
 size = Vector2i(360, 203)
 wrap_controls = true
 transient = true
@@ -25,7 +26,7 @@ unresizable = true
 theme = ExtResource("1_plxk3")
 script = ExtResource("1_0854v")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=416822698]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -33,7 +34,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_2idcj")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1064369979]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -44,15 +45,15 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=2137615041]
 layout_mode = 2
 
-[node name="DataTitle" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="DataTitle" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1222414074]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Title:"
 
-[node name="Options" type="OptionButton" parent="MarginContainer/VBoxContainer"]
+[node name="Options" type="OptionButton" parent="MarginContainer/VBoxContainer" unique_id=8097771]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_default_cursor_shape = 2
@@ -63,44 +64,44 @@ popup/item_0/text = "Data List"
 popup/item_0/id = 0
 script = ExtResource("3_wa6ym")
 
-[node name="LevelTitle" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="LevelTitle" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1413559133]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Equipment Level:"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=952129372]
 layout_mode = 2
 
-[node name="Level" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("4_0pnnt")]
+[node name="Level" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1117568476 instance=ExtResource("4_0pnnt")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Level that the equipment to be installed will have"
 min_value = 1.0
-value = 1.0
+_custom_value = 0.0
 
-[node name="MaxLevels" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="MaxLevels" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=712368927]
 unique_name_in_owner = true
 layout_mode = 2
 text = "/ 0"
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1342790025]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=882938746]
 layout_mode = 2
 size_flags_vertical = 10
 alignment = 1
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("2_jp80e")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=740372119 instance=ExtResource("2_jp80e")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("2_jp80e")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=359181794 instance=ExtResource("2_jp80e")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2

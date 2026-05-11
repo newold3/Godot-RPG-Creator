@@ -2,17 +2,38 @@
 class_name MapInfos
 extends Resource
 
-func get_class(): return "MapInfos"
+#region VARIABLES
 
+## Array containing the file paths of all registered RPGMaps.
 @export var maps: Array
+
+## Dictionary mapping map paths to their string names.
 @export var map_names: Dictionary = {} 
+
+## Dictionary mapping map paths to their internal integer IDs.
 @export var map_ids: Dictionary = {}
+
+## Dictionary mapping map paths to their array of converted event dictionaries.
 @export var map_events: Dictionary = {}
+
+## Dictionary mapping map paths to their packed array of extraction event IDs.
 @export var map_extraction_events: Dictionary = {}
 
+## Dictionary mapping global unique event IDs to their corresponding map paths.
 @export var global_event_lookup: Dictionary = {}
 
+#endregion
 
+
+#region CORE METHODS
+
+## Returns the class name as a string.
+func get_class() -> String:
+	return "MapInfos"
+
+
+
+## Recursively checks if a node or any of its children is an RPGMap.
 func is_rpgmap_in(node: Node) -> bool:
 	if node is RPGMap:
 		return true
@@ -25,9 +46,23 @@ func is_rpgmap_in(node: Node) -> bool:
 	return false
 
 
+
+## Physically deletes the .tres events file associated with a map ID to keep the project clean.
+func _delete_events_file(map_id: int) -> void:
+	var events_path = "res://data/MapEvents/Map_%s_events.tres" % str(map_id)
+	
+	if FileAccess.file_exists(events_path):
+		var err = DirAccess.remove_absolute(events_path)
+		if err == OK:
+			print("[MapInfos] Deleted orphaned events file: ", events_path)
+		else:
+			push_error("[MapInfos] Failed to delete events file: ", events_path)
+
+
+
+## Validates project integrity by cleaning orphaned data and physically deleting missing map event files.
 func validate_and_clean_project() -> void:
 	var dirty: bool = false
-	
 	print("[MapInfos] Validating project integrity...")
 
 	for i in range(maps.size() - 1, -1, -1):
@@ -52,6 +87,9 @@ func validate_and_clean_project() -> void:
 	for map_path in paths_to_clean:
 		print("[MapInfos] Cleaning orphaned data from: ", map_path)
 		dirty = true
+		
+		if map_ids.has(map_path):
+			_delete_events_file(map_ids[map_path])
 		
 		if map_events.has(map_path):
 			var events_list = map_events[map_path]
@@ -81,7 +119,8 @@ func validate_and_clean_project() -> void:
 		print("[MapInfos] Clean project.")
 
 
-## Updates internal map data from a provided array of RPGMap nodes and removes missing ones safely.
+
+## Updates internal map data from a provided array of RPGMap nodes and removes missing ones safely, deleting their files.
 func fix_maps(data: Array) -> void:
 	for map: RPGMap in data:
 		var map_path = map.get_scene_file_path()
@@ -91,6 +130,7 @@ func fix_maps(data: Array) -> void:
 		set_map_id(map_path, map.internal_id)
 		set_map_events(map.internal_id, map.events)
 		set_map_extraction_events(map.internal_id, map.extraction_events)
+	
 	for i in range(maps.size() - 1, -1, -1):
 		var map_path = maps[i]
 		var map_in_data = false
@@ -98,8 +138,14 @@ func fix_maps(data: Array) -> void:
 			if map_node.get_scene_file_path() == map_path:
 				map_in_data = true
 				break
+		
 		if !map_in_data and !ResourceLoader.exists(map_path):
 			maps.remove_at(i)
+			
+			var map_id = map_ids.get(map_path, 0)
+			if map_id != 0:
+				_delete_events_file(map_id)
+				
 			map_names.erase(map_path)
 			map_ids.erase(map_path)
 			if map_events.has(map_path):
@@ -108,8 +154,13 @@ func fix_maps(data: Array) -> void:
 						global_event_lookup.erase(item["uid"])
 			map_events.erase(map_path)
 			map_extraction_events.erase(map_path)
+			
 	save.call_deferred()
 
+#endregion
+
+
+#region SETTERS AND DATA UPDATE
 
 ## Updates the dictionary containing all extraction event IDs for a specific map.
 func set_map_extraction_events(map_id: int, extraction_events: Array) -> void:
@@ -118,79 +169,32 @@ func set_map_extraction_events(map_id: int, extraction_events: Array) -> void:
 		if map_ids[key] == map_id:
 			map_path_key = key
 			break
+			
 	if map_path_key == "":
 		return
+		
 	var ids: PackedInt32Array = PackedInt32Array()
 	for item in extraction_events:
 		if item != null:
 			ids.append(item.id)
+			
 	map_extraction_events[map_path_key] = ids
 
 
+
+## Registers the map name in the dictionary based on its path.
 func set_map_name(map_path: String, map_name: String) -> void:
 	map_names[map_path] = map_name
 
 
+
+## Registers the map ID in the dictionary based on its path.
 func set_map_id(map_path: String, map_id: int) -> void:
 	map_ids[map_path] = map_id
 
 
-func get_map_name_from_path(map_path: String) -> String:
-	return map_names.get(map_path, "")
 
-
-func get_map_name_from_id(map_id: int) -> String:
-	for map_path: String in map_ids.keys():
-		if map_ids[map_path] == map_id:
-			return map_names.get(map_path, "")
-	
-	return ""
-
-
-func get_path_from_id(map_id: int) -> String:
-	for map_path in map_ids.keys():
-		if map_ids[map_path] == map_id:
-			return map_path
-	
-	return ""
-
-
-func _convert_event_to_dict(event: RPGEvent) -> Dictionary:
-	var pages: Array[Dictionary] = []
-	var quest_pages: PackedInt32Array = []
-	var quest_ids: Dictionary = {}
-	
-	for i in event.pages.size():
-		var page: RPGEventPage = event.pages[i]
-		pages.append({"name": page.name, "uid": page._uniq_id})
-		if page.is_quest_page:
-			quest_pages.append(i)
-	
-	var real_quest_db = RPGSYSTEM.database.quests
-	
-	for q: RPGEventPQuest in event.quests:
-		if q:
-			var _current_name = q.override_name
-			var real_quest_id = q.id
-			for rq in real_quest_db:
-				if not rq: continue
-				if rq._uniq_id == real_quest_id or rq.id == real_quest_id:
-					if not rq.name.is_empty() and _current_name.is_empty():
-						_current_name = rq.name
-					break
-			quest_ids[q._uniq_id] = {"real_quest_id": real_quest_id, "name": _current_name}
-	
-	return {
-		"id": event.id,
-		"uid": event._uniq_id,
-		"name": event.name,
-		"pages": pages,
-		"quest_pages": quest_pages,
-		"quest_ids": quest_ids,
-		"quest_count": event.quests.size()
-	}
-
-
+## Updates the events for a specific map and rebuilds the global lookup registry.
 func set_map_events(map_id: int, events: RPGEvents) -> void:
 	var map_path_key: String = ""
 	
@@ -219,6 +223,8 @@ func set_map_events(map_id: int, events: RPGEvents) -> void:
 	map_events[map_path_key] = items
 
 
+
+## Updates a single event inside the dictionary and resaves the resource.
 func update_single_event(map_id: int, event: RPGEvent) -> void:
 	var map_path = get_path_from_id(map_id)
 	if map_path.is_empty():
@@ -243,10 +249,40 @@ func update_single_event(map_id: int, event: RPGEvent) -> void:
 		map_events[map_path] = [new_event_data]
 
 	global_event_lookup[event._uniq_id] = map_path
-	
 	save.call_deferred()
 
+#endregion
 
+
+#region GETTERS
+
+## Returns the map name given its file path.
+func get_map_name_from_path(map_path: String) -> String:
+	return map_names.get(map_path, "")
+
+
+
+## Returns the map name given its internal ID.
+func get_map_name_from_id(map_id: int) -> String:
+	for map_path: String in map_ids.keys():
+		if map_ids[map_path] == map_id:
+			return map_names.get(map_path, "")
+	
+	return ""
+
+
+
+## Returns the map path given its internal ID.
+func get_path_from_id(map_id: int) -> String:
+	for map_path in map_ids.keys():
+		if map_ids[map_path] == map_id:
+			return map_path
+	
+	return ""
+
+
+
+## Retrieves the array of events dictionaries for a given map ID.
 func get_map_events(map_id: int) -> Array:
 	var events: Array = []
 	for key in map_ids:
@@ -256,24 +292,35 @@ func get_map_events(map_id: int) -> Array:
 	return events
 
 
+
+## Retrieves the name of a specific event using its map ID and event ID.
 func get_event_name(map_id: int, event_id: int) -> String:
 	var map_name = get_map_name_from_id(map_id)
 	var events = get_map_events(map_id)
+	
 	for event_data in events:
 		if event_data.has("id") and event_data["id"] == event_id:
 			return event_data.get("name", "")
 		if event_data.has("uid") and event_data["uid"] == event_id:
 			return event_data.get("name", "")
+			
 	return ""
 
 
+
+## Returns the map path where a globally unique event is stored.
 func get_map_path_for_event(event_uniq_id: int) -> String:
 	return global_event_lookup.get(event_uniq_id, "")
 
+
+
+## Checks if an event unique ID exists in the global lookup registry.
 func uniq_id_exists_globally(event_uniq_id: int) -> bool:
 	return global_event_lookup.has(event_uniq_id)
 
 
+
+## Retrieves the array of extraction event IDs for a given map ID.
 func get_map_extraction_events(map_id: int) -> PackedInt32Array:
 	var extraction_events: PackedInt32Array = PackedInt32Array()
 	for key in map_ids:
@@ -283,13 +330,57 @@ func get_map_extraction_events(map_id: int) -> PackedInt32Array:
 	
 	return extraction_events
 
+#endregion
 
+
+#region UTILS AND SAVING
+
+## Converts an RPGEvent resource into a lightweight dictionary for storage in MapInfos.
+func _convert_event_to_dict(event: RPGEvent) -> Dictionary:
+	var pages: Array[Dictionary] = []
+	var quest_pages: PackedInt32Array = []
+	var quest_ids: Dictionary = {}
+	
+	for i in event.pages.size():
+		var page: RPGEventPage = event.pages[i]
+		pages.append({"name": page.name, "uid": page._uniq_id, "id": i})
+		if page.is_quest_page:
+			quest_pages.append(i)
+	
+	var real_quest_db = RPGSYSTEM.database.quests
+	
+	for q: RPGEventPQuest in event.quests:
+		if q:
+			var _current_name = q.override_name
+			var real_quest_id = q.id
+			
+			for rq in real_quest_db:
+				if not rq: continue
+				if rq._uniq_id == real_quest_id or rq.id == real_quest_id:
+					if not rq.name.is_empty() and _current_name.is_empty():
+						_current_name = rq.name
+					break
+					
+			quest_ids[q._uniq_id] = {"real_quest_id": real_quest_id, "name": _current_name}
+	
+	return {
+		"id": event.id,
+		"uid": event._uniq_id,
+		"name": event.name,
+		"pages": pages,
+		"quest_pages": quest_pages,
+		"quest_ids": quest_ids,
+		"quest_count": event.quests.size()
+	}
+
+
+
+## Updates map registries when a file is moved, renamed, or deleted.
 func update_file_path(old_file: String, new_file: String) -> void:
 	var index = maps.find(old_file)
 	if index >= 0:
 		var old_map_name = map_names.get(old_file, "")
 		var old_map_id = map_ids.get(old_file, 0)
-		
 		var old_events = map_events.get(old_file, [])
 		var old_extractions = map_extraction_events.get(old_file, [])
 		
@@ -313,6 +404,7 @@ func update_file_path(old_file: String, new_file: String) -> void:
 				if item.has("uid"):
 					global_event_lookup[item["uid"]] = new_file
 		else:
+			_delete_events_file(old_map_id)
 			for item in old_events:
 				if item.has("uid"):
 					global_event_lookup.erase(item["uid"])
@@ -320,5 +412,9 @@ func update_file_path(old_file: String, new_file: String) -> void:
 		save.call_deferred()
 
 
+
+## Triggers the database loader to save the map infos file to disk.
 func save() -> void:
 	DatabaseLoader.save_map_infos()
+
+#endregion

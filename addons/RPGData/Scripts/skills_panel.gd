@@ -1,12 +1,15 @@
 @tool
 extends BasePanelData
 
-
+#region Lifecycle
+## Initializes the panel with default data
 func _ready() -> void:
 	super()
 	default_data_element = RPGSkill.new()
 
 
+
+## Retrieves the currently selected Skill data
 func get_data() -> RPGSkill:
 	if not data: return null
 	current_selected_index = max(1, min(current_selected_index, data.size() - 1))
@@ -14,8 +17,12 @@ func get_data() -> RPGSkill:
 		return data[current_selected_index]
 	else:
 		return default_data_element
+#endregion
 
 
+
+#region Core Data Loading
+## Updates all the visual fields based on the selected skill
 func _update_data_fields() -> void:
 	busy = true
 	
@@ -27,6 +34,7 @@ func _update_data_fields() -> void:
 		fill_required_equipment()
 		fill_scope()
 		fill_evolve_skills()
+		
 		var current_data = get_data()
 		%NameLineEdit.text = current_data.name
 		%IconPicker.set_icon(current_data.icon.path, current_data.icon.region)
@@ -42,31 +50,67 @@ func _update_data_fields() -> void:
 		%HitTypeOptions.select(current_data.invocation.hit_type)
 		%BattleMessageTextEdit.text = current_data.battle_message
 		%DamageTypeOptions.select(current_data.damage.type)
+		
 		if current_data.damage.type == 0:
 			%Damage.propagate_call("set_disabled", [true])
 			%Damage.propagate_call("set_editable", [false])
 			%DamageTypeOptions.set_disabled(false)
+			
 		%DamageFormulaLineEdit.text = current_data.damage.formula
 		%DamageVarianceSpinBox.value = current_data.damage.variance
 		%DamageCriticalHitsOptions.select(current_data.damage.critical)
 		%NoteTextEdit.text = current_data.notes
+		
 		if current_data.invocation.sequence:
 			%Sequence.texture_normal.region.position.x = 216
 		else:
 			%Sequence.texture_normal.region.position.x = 168
 		
-		var evolve_selection = max(0, min(%EvolveOptions.get_item_count(), int(current_data.evolve_to)))
-		%EvolveOptions.select(evolve_selection)
+		var node = %EvolveOptions
+		var target_uid = current_data.evolve_to
+		
+		if target_uid > 0 and target_uid < 1000000:
+			target_uid = RPGSYSTEM.id_to_uid("skills", target_uid)
+			current_data.evolve_to = target_uid
+			
+		var evolve_selection = 0
+		for i in node.get_item_count():
+			if node.get_item_metadata(i) == target_uid:
+				evolve_selection = i
+				break
+				
+		node.select(evolve_selection)
 		%EvolveSpinBox.value = int(current_data.evolve_required_uses)
 		%EvolveSpinBox.set_disabled(%EvolveOptions.get_selected_id() <= 0)
 			
 	else:
 		disable_all(true)
 	
-	
 	busy = false
 
 
+
+## Handles visibility changes
+func _on_visibility_changed() -> void:
+	super()
+	if visible:
+		busy = true
+		fill_skill_types()
+		fill_element_types()
+		fill_invocation_animation()
+		fill_required_equipment()
+		fill_evolve_skills()
+		if current_selected_index != -1:
+			%EffectsPanel.set_data(database, get_data().effects)
+		else:
+			%EffectsPanel.clear()
+		busy = false
+#endregion
+
+
+
+#region Dropdowns and Lists Setup
+## Formats the scope text based on faction and targets
 func fill_scope() -> void:
 	if data:
 		var scope = get_data().scope
@@ -97,63 +141,37 @@ func fill_scope() -> void:
 			button.text = TranslationManager.tr("The User")
 
 
+
+## Populates the evolve to list hiding the current skill and keeping UIDs
 func fill_evolve_skills() -> void:
 	if not get_data(): return
 	
-	var current_id = get_data().id
+	var current_uid = get_data()._uniq_id
 	var node = %EvolveOptions
 	node.clear()
 	
 	node.add_item("None")
+	node.set_item_metadata(0, 0)
 	
 	for i in range(1, database.skills.size()):
 		var skill = database.skills[i]
-		node.add_item("%s: %s" % [skill.id, skill.name])
-		if i == current_id:
-			node.set_item_disabled(i, true)
+		if not skill: continue
+		
+		node.add_item("%s: %s" % [str(i).pad_zeros(str(database.skills.size()).length()), skill.name])
+		var item_index = node.get_item_count() - 1
+		node.set_item_metadata(item_index, skill._uniq_id)
+		
+		if skill._uniq_id == current_uid:
+			node.set_item_disabled(item_index, true)
 
 
-func _on_auto_message_options_item_selected(index: int) -> void:
-	if index == 1:
-		%BattleMessageTextEdit.text = TranslationManager.tr("%1 cast %2!")
-	elif index == 2:
-		%BattleMessageTextEdit.text = TranslationManager.tr("%1 does %2!")
-	elif index == 3:
-		%BattleMessageTextEdit.text = TranslationManager.tr("%1 uses %2!")
-	
-	%AutoMessageOptions.select(0)
-	
-	%BattleMessageTextEdit.text_changed.emit()
 
-
-func _on_battle_message_text_edit_text_changed() -> void:
-	get_data().battle_message = %BattleMessageTextEdit.text
-
-
-func _on_icon_picker_remove_requested() -> void:
-	get_data().icon.clear()
-	%IconPicker.set_icon("")
-
-
-func _on_icon_picker_clicked() -> void:
-	var path = "res://addons/CustomControls/Dialogs/select_icon_dialog.tscn"
-	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
-	dialog.set_data(get_data().icon)
-	
-	dialog.icon_changed.connect(update_icon)
-
-
-func update_icon() -> void:
-	var icon = get_data().icon
-	%IconPicker.set_icon(icon.path, icon.region)
-
-
+## Populates the skill type options
 func fill_skill_types() -> void:
 	if !database: return
 	
 	var node = %SkillTypeOptions
 	node.clear()
-	
 	node.add_item("None")
 	
 	if database:
@@ -171,6 +189,8 @@ func fill_skill_types() -> void:
 		node.text = "⚠ Invalid Data"
 
 
+
+## Populates the element type options
 func fill_element_types() -> void:
 	if !database: return
 	
@@ -195,114 +215,178 @@ func fill_element_types() -> void:
 		node.text = "⚠ Invalid Data"
 
 
+
+## Formats the invocation animation button
 func fill_invocation_animation() -> void:
 	if !database: return
 	
 	var node = %AnimationButton
-	
 	var current_data = get_data()
-	if database.animations.size() > current_data.invocation.animation and current_data.invocation.animation > 0:
-		var animation_name = database.animations[current_data.invocation.animation].name
-		if animation_name.length() == 0:
-			animation_name = "# %s" % (current_data.invocation.animation)
-		node.text = animation_name
-	elif current_data.invocation.animation > 0:
-		node.text = "⚠ Invalid Data"
+	var uid = current_data.invocation.animation
+	
+	if uid > 0:
+		if uid < 1000000:
+			uid = RPGSYSTEM.id_to_uid("animations", uid)
+			current_data.invocation.animation = uid
+			
+		var anim_data = RPGSYSTEM.get_data("animations", uid)
+		if anim_data:
+			var classic_id = RPGSYSTEM.uid_to_id("animations", uid)
+			var animation_name = anim_data.name if not anim_data.name.is_empty() else "# %s" % classic_id
+			var id_padded = str(classic_id).pad_zeros(str(database.animations.size()).length())
+			node.text = "%s: %s" % [id_padded, animation_name]
+		else:
+			node.text = "⚠ Invalid Data"
 	else:
-		if current_data.invocation.animation == -2:
-			node.text = TranslationManager.tr("Normal Attack")
-		else:
-			node.text = TranslationManager.tr("none")
+		node.text = tr("Normal Attack") if uid == -2 else tr("none")
 
 
-func _on_visibility_changed() -> void:
-	super()
-	if visible:
-		busy = true
-		fill_skill_types()
-		fill_element_types()
-		fill_invocation_animation()
-		fill_required_equipment()
-		fill_evolve_skills()
-		if current_selected_index != -1:
-			%EffectsPanel.set_data(database, get_data().effects)
-		else:
-			%EffectsPanel.clear()
-		busy = false
 
-
+## Fills the required equipment list and formats it properly handling legacy IDs
 func fill_required_equipment(selected_index: int = -1) -> void:
 	var node = %EquipmentList
 	node.clear()
 	
-	if!database: return
+	if !database: return
 	var current_data = get_data().required_weapons
 	
-	for item: RPGSkillRequiredWeapon in current_data:
-		var item_name: String
-		if item.category_id == 0:
-			var data = database.weapons
-			if data.size() > item.item_id:
-				item_name = str(item.item_id).pad_zeros(str(data.size()).length()) + ": " + data[item.item_id].name
-		else:
-			var data = database.armors
-			if data.size() > item.item_id:
-				item_name = str(item.item_id).pad_zeros(str(data.size()).length()) + ": " + data[item.item_id].name
+	for i in range(current_data.size()):
+		var item: RPGSkillRequiredWeapon = current_data[i]
+		var item_name: String = "⚠ Invalid Data"
+		var db_key = "weapons" if item.category_id == 0 else "armors"
+		var uid = item.item_id
+		
+		if uid > 0 and uid < 1000000:
+			uid = RPGSYSTEM.id_to_uid(db_key, uid)
+			item.item_id = uid
+			
+		var res_data = RPGSYSTEM.get_data(db_key, uid)
+		if res_data:
+			var classic_id = RPGSYSTEM.uid_to_id(db_key, uid)
+			var id_padded = str(classic_id).pad_zeros(str(database[db_key].size()).length())
+			item_name = "%s: %s" % [id_padded, res_data.name]
+				
 		node.add_column([item_name])
 	
 	if current_data.size() > 0:
 		await node.columns_setted
-		if node.items.size() + 1 > selected_index and selected_index != -1:
+		if node.get_item_count() > selected_index and selected_index != -1:
 			node.select(selected_index)
 		else:
 			node.deselect_all()
-	else:
-		node.deselect_all()
+#endregion
 
 
+
+#region UI Interactions
+## Sets pre-defined battle messages
+func _on_auto_message_options_item_selected(index: int) -> void:
+	if index == 1:
+		%BattleMessageTextEdit.text = tr("%1 cast %2!")
+	elif index == 2:
+		%BattleMessageTextEdit.text = tr("%1 does %2!")
+	elif index == 3:
+		%BattleMessageTextEdit.text = tr("%1 uses %2!")
+	
+	%AutoMessageOptions.select(0)
+	%BattleMessageTextEdit.text_changed.emit()
+
+
+
+## Updates the battle message
+func _on_battle_message_text_edit_text_changed() -> void:
+	get_data().battle_message = %BattleMessageTextEdit.text
+
+
+
+## Clears the currently assigned icon
+func _on_icon_picker_remove_requested() -> void:
+	get_data().icon.clear()
+	%IconPicker.set_icon("")
+
+
+
+## Opens the icon selection dialog
+func _on_icon_picker_clicked() -> void:
+	var path = "res://addons/CustomControls/Dialogs/select_icon_dialog.tscn"
+	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
+	dialog.set_data(get_data().icon)
+	
+	dialog.icon_changed.connect(update_icon)
+
+
+
+## Refreshes the icon UI with the new data
+func update_icon() -> void:
+	var icon = get_data().icon
+	%IconPicker.set_icon(icon.path, icon.region)
+
+
+
+## Updates the description
 func _on_description_text_edit_text_changed() -> void:
 	get_data().description = %DescriptionTextEdit.text
 
 
+
+## Updates the skill type
 func _on_skill_type_options_item_selected(index: int) -> void:
 	get_data().skill_type = index
 
 
+
+## Updates the MP cost
 func _on_mp_cost_spin_box_value_changed(value: float) -> void:
 	get_data().mp_cost = value
 
 
+
+## Updates the TP cost
 func _on_tp_cost_spin_box_value_changed(value: float) -> void:
 	get_data().tp_cost = value
 
 
+
+## Updates the occasion type
 func _on_occasion_options_item_selected(index: int) -> void:
 	get_data().occasion = index
 
 
+
+## Updates the invocation speed
 func _on_speed_spin_box_value_changed(value: float) -> void:
 	get_data().invocation.speed = value
 
 
+
+## Updates the invocation success rate
 func _on_success_spin_box_value_changed(value: float) -> void:
 	get_data().invocation.success = value
 
 
+
+## Updates the invocation repeat count
 func _on_repeat_spin_box_value_changed(value: float) -> void:
 	if not get_data(): return
 	get_data().invocation.repeat = value
 
 
+
+## Updates the invocation TP gain
 func _on_tp_gain_spin_box_value_changed(value: float) -> void:
 	if not get_data(): return
 	get_data().invocation.tp_gain = value
 
 
+
+## Updates the hit type
 func _on_hit_type_options_item_selected(index: int) -> void:
 	if not get_data(): return
 	get_data().invocation.hit_type = index
 
 
+
+## Updates the damage type and toggles damage controls
 func _on_damage_type_options_item_selected(index: int) -> void:
 	if not get_data(): return
 	get_data().damage.type = index
@@ -316,31 +400,43 @@ func _on_damage_type_options_item_selected(index: int) -> void:
 		%Damage.propagate_call("set_editable", [true])
 
 
+
+## Updates the damage element
 func _on_damage_element_options_item_selected(index: int) -> void:
 	if not get_data(): return
 	get_data().damage.element_id = index
 
 
+
+## Updates the damage formula
 func _on_damage_formula_line_edit_text_changed(new_text: String) -> void:
 	if not get_data(): return
 	get_data().damage.formula = new_text
 
 
+
+## Updates the damage variance
 func _on_damage_variance_spin_box_value_changed(value: float) -> void:
 	if not get_data(): return
-	get_data().damage.variance  = value
+	get_data().damage.variance = value
 
 
+
+## Updates the damage critical hits option
 func _on_damage_critical_hits_options_item_selected(index: int) -> void:
 	if not get_data(): return
 	get_data().damage.critical = index
 
 
+
+## Updates the notes string
 func _on_note_text_edit_text_changed() -> void:
 	if not get_data(): return
 	get_data().notes = %NoteTextEdit.text
 
 
+
+## Opens the scope selection dialog
 func _on_scope_button_pressed() -> void:
 	var path = "res://addons/CustomControls/Dialogs/Select_scope_dialog.tscn"
 	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
@@ -348,72 +444,93 @@ func _on_scope_button_pressed() -> void:
 	dialog.tree_exiting.connect(fill_scope)
 
 
+
+## Opens the selection dialog to choose an animation passing the classic ID
 func _on_animation_button_pressed() -> void:
 	var path = "res://addons/CustomControls/Dialogs/select_any_data_dialog.tscn"
 	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
 	dialog.database = database
 	dialog.destroy_on_hide = true
-	var current_data = database.animations
-	var id_selected = get_data().invocation.animation
-	var title = TranslationManager.tr("Animations")
-	var target = self
+	
+	var current_anims = database.animations
+	var uid = get_data().invocation.animation
+	var classic_id = RPGSYSTEM.uid_to_id("animations", uid) if uid > 0 else 1
+	classic_id = max(1, min(classic_id, current_anims.size() - 1))
+	
 	dialog.selected.connect(_on_animation_selected, CONNECT_ONE_SHOT)
-	dialog.setup(current_data, id_selected, title, target)
+	dialog.setup(current_anims, classic_id, tr("Animations"), self)
 
 
+
+## Receives the classic ID from the sub-dialog, converts it to UID, and updates the data
 func _on_animation_selected(id: int, target: Variant) -> void:
 	if not get_data(): return
-	get_data().invocation.animation = id
+	var uid = RPGSYSTEM.id_to_uid("animations", id)
+	get_data().invocation.animation = uid
 	fill_invocation_animation()
 
 
+
+## Clears the animation setting (none)
 func _on_animation_button_middle_click_pressed() -> void:
 	if not get_data(): return
 	get_data().invocation.animation = -1
 	fill_invocation_animation()
 
 
+
+## Sets the animation to Normal Attack (-2)
 func _on_animation_button_right_click_pressed() -> void:
 	if not get_data(): return
 	get_data().invocation.animation = -2
 	fill_invocation_animation()
 
 
+
+## Opens the required equipment sub-dialog
 func _on_equipment_list_item_activated(index: int) -> void:
 	var path = "res://addons/CustomControls/Dialogs/select_skill_required_equipment.tscn"
 	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
 	dialog.item_selected.connect(_on_required_equipment_selected)
 	
 	var selected_equipment = 0
-	var selected_id = 0
-	var current_data = get_data().required_weapons
-	if current_data.size() > index:
-		selected_equipment = current_data[index].category_id
-		selected_id = current_data[index].item_id
-	dialog.set_data(database, index, selected_equipment, selected_id)
+	var selected_uid = 0
+	var current_reqs = get_data().required_weapons
+	
+	if current_reqs.size() > index:
+		selected_equipment = current_reqs[index].category_id
+		selected_uid = current_reqs[index].item_id
+		
+	dialog.set_data(database, index, selected_equipment, selected_uid)
 
 
-func _on_required_equipment_selected(target_index: int, selected_equipment: int, selected_id: int) -> void:
-	var current_data = get_data().required_weapons
-	if current_data.size() > target_index:
-		current_data[target_index].category_id = selected_equipment
-		current_data[target_index].item_id = selected_id
+
+## Receives data from the required equipment sub-dialog
+func _on_required_equipment_selected(target_index: int, selected_equipment: int, selected_uid: int) -> void:
+	var current_reqs = get_data().required_weapons
+	
+	if current_reqs.size() > target_index:
+		current_reqs[target_index].category_id = selected_equipment
+		current_reqs[target_index].item_id = selected_uid
 		fill_required_equipment(target_index)
 	else:
-		var required_weapon = RPGSkillRequiredWeapon.new(selected_equipment, selected_id)
-		current_data.append(required_weapon)
-		fill_required_equipment(current_data.size() - 1)
+		var required_weapon = RPGSkillRequiredWeapon.new(selected_equipment, selected_uid)
+		current_reqs.append(required_weapon)
+		fill_required_equipment(current_reqs.size() - 1)
 
 
+
+## Opens the fast formula dialog
 func _on_damage_set_formula_button_pressed() -> void:
 	var path = "res://addons/CustomControls/Dialogs/fast_damage_formula.tscn"
 	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
 	
 	dialog.fill_formulas(%DamageTypeOptions.get_selected_id())
-	
 	dialog.formula_selected.connect(_on_fast_formula_selected)
 
 
+
+## Replaces the formula with the fast selection
 func _on_fast_formula_selected(formula: String) -> void:
 	var node: LineEdit = %DamageFormulaLineEdit
 	node.text = formula
@@ -422,10 +539,13 @@ func _on_fast_formula_selected(formula: String) -> void:
 	node.grab_focus()
 
 
+
+## Opens the sequence editor dialog
 func _on_sequence_pressed() -> void:
 	var path = "res://addons/CustomControls/Dialogs/skill_sequence_dialog.tscn"
 	var dialog = RPGDialogFunctions.open_dialog(path)
 	dialog.set_data(get_data().invocation.sequence)
+	
 	dialog.sequence_changed.connect(
 		func(sequence: Array[RPGInvocationSequence]):
 			var current_data = get_data()
@@ -437,6 +557,8 @@ func _on_sequence_pressed() -> void:
 	)
 
 
+
+## Switches the visibility of the configuration tabs
 func _on_config_data_tabs_tab_changed(index: int) -> void:
 	var node_path = "%%Tab%s" % (index + 1)
 	var node = get_node_or_null(node_path)
@@ -446,6 +568,8 @@ func _on_config_data_tabs_tab_changed(index: int) -> void:
 		node.visible = true
 
 
+
+## Handles pasting an icon from the clipboard
 func _on_icon_picker_paste_requested(icon: String, region: Rect2) -> void:
 	var data_icon = get_data().icon
 	data_icon.path = icon
@@ -453,10 +577,16 @@ func _on_icon_picker_paste_requested(icon: String, region: Rect2) -> void:
 	%IconPicker.set_icon(data_icon.path, data_icon.region)
 
 
+
+## Updates the evolve target skill based on the dropdown metadata (UID)
 func _on_evolve_options_item_selected(index: int) -> void:
-	get_data().evolve_to = index
+	var uid = %EvolveOptions.get_item_metadata(index)
+	get_data().evolve_to = uid
 	%EvolveSpinBox.set_disabled(index == 0)
 
 
+
+## Updates the required uses to evolve
 func _on_evolve_spin_box_value_changed(value: float) -> void:
 	get_data().evolve_required_uses = int(value)
+#endregion

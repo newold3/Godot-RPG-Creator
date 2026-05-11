@@ -21,9 +21,13 @@ func _command_0012() -> void:
 		var id = current_command.parameters.get("value", 1)
 		value = GameManager.get_variable(id)
 
+	var added = value if operation_type == 0 else -value
+	
 	# Adjust the current gold based on the operation type
 	# Increase gold if operation_type is 0, otherwise decrease it
-	GameManager.game_state.current_gold += value if operation_type == 0 else -value
+	GameManager.game_state.current_gold += added
+	
+	GameManager.call_deferred("_create_popup_message", -10, -1, added)
 
 
 # Command Change Items (Code 13), button_id = 8

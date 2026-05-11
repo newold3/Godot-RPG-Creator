@@ -1339,6 +1339,23 @@ func _on_node_added(node) -> void:
 
 func _ready() -> void:
 	get_tree().node_added.connect(_on_new_node_added)
+	scene_changed.connect(_on_scene_changed)
+
+
+func _on_scene_changed(root: Node) -> void:
+	if not root or not root is RPGMap:
+		return
+
+	_force_root_selection.call_deferred(root)
+
+
+func _force_root_selection(root: Node) -> void:
+	var selection = get_editor_interface().get_selection()
+	var selected_nodes = selection.get_selected_nodes()
+
+	if selected_nodes.is_empty() or selected_nodes.has(root):
+		selection.clear()
+		selection.add_node(root)
 
 
 #func _process(delta: float) -> void:

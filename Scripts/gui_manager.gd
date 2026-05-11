@@ -10,24 +10,51 @@ func _create_popup_message(type: int, item_id: int, quantity: int, popup_prefix 
 	
 	var obj: Dictionary
 	
-	if item_id > 0:
-		@warning_ignore("incompatible_ternary")
-		var data = RPGSYSTEM.database.items if type == 0 \
-			else RPGSYSTEM.database.weapons if type == 1 \
-			else RPGSYSTEM.database.armors
+	if type == -10: # gold
+		var icon_path = RPGSYSTEM.database.system.currency_info.icon
+		var gold_name = RPGSYSTEM.database.system.currency_info.name
 		
-		if data.size() > item_id:
-			var real_data = data[item_id]
-			var rarity_type = real_data.rarity_type
+		obj = {
+			"icon_path": icon_path,
+			"item_name": gold_name,
+			"item_color": Color(0.871, 0.687, 0.144, 1.0) if quantity > 0 \
+				else Color(0.798, 0.118, 0.125, 1.0) if quantity < 0 \
+				else Color.WHITE,
+			"quantity": quantity,
+			"prefix": popup_prefix,
+			"icon_align": "right"
+		}
+	
+	elif item_id > 0:
+		@warning_ignore("incompatible_ternary")
+		var data = RPGSYSTEM.get_data("items", item_id) if type == 0 \
+			else RPGSYSTEM.get_data("weapons", item_id) if type == 1 \
+			else RPGSYSTEM.get_data("armors", item_id) if type == 2 \
+			else RPGSYSTEM.get_data("costumes", item_id)
+		
+		if data:
+			var rarity_type = data.rarity_type if item_id < 3 else 0
+			@warning_ignore("incompatible_ternary")
 			var types = RPGSYSTEM.database.types.item_rarity_color_types if type == 0 \
 				else RPGSYSTEM.database.types.weapon_rarity_color_types if type == 1 \
-				else RPGSYSTEM.database.types.armor_rarity_color_types
+				else RPGSYSTEM.database.types.armor_rarity_color_types if type == 2 \
+				else []
+			
+			var icon: RPGIcon
+			if data is RPGCostume:
+				var path = data.lpc_part
+				var preview_path = path.get_basename().trim_suffix("_data") + "_preview.png"
+				icon = RPGIcon.new(preview_path)
+			elif "icon" in data:
+				icon = data.icon
+			else:
+				icon = RPGIcon.new()
 			
 			var color = Color.WHITE if rarity_type < 1 or types.size() <= rarity_type else types[rarity_type]
 		
 			obj = {
-				"icon_path": real_data.icon,
-				"item_name": real_data.name + ("" if level == -1 else " (" + tr("Lv ") + str(level) + ")"),
+				"icon_path": icon,
+				"item_name": data.name + ("" if level == -1 else " (" + tr("Lv ") + str(level) + ")"),
 				"item_color": color,
 				"quantity": quantity,
 				"prefix": popup_prefix

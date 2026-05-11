@@ -470,23 +470,6 @@ size_flags_vertical = 6
 tooltip_text = "[title]Weapon Name[/title]
 The name of the weapon. If the name is too long, it may not be completely displayed on the Play Screen."
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer" unique_id=550257303]
-custom_minimum_size = Vector2(160, 0)
-layout_mode = 2
-
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer3" unique_id=1282335372]
-layout_mode = 2
-text = "Level Restriction:"
-
-[node name="LevelRestrictionSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer3" unique_id=2112380348 instance=ExtResource("9_nlga7")]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 6
-tooltip_text = "[title]Level Restriction[/title]
-Minimum level required to use this weapon"
-allow_greater = true
-_custom_value = 0.0
-
 [node name="VBoxContainer4" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer" unique_id=343860023]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -523,6 +506,78 @@ size_flags_vertical = 3
 tooltip_text = "[title]Description[/title]
 The description that appears when a weapon is selected in the Play Screen."
 wrap_mode = 1
+
+[node name="HBoxContainer5" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings" unique_id=1681691483]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HSeparator" type="HSeparator" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5" unique_id=766066769]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5" unique_id=998464525]
+layout_mode = 2
+text = "Usage Restriction:"
+
+[node name="VBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5" unique_id=1222117015]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer" unique_id=312947013]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer/VBoxContainer" unique_id=1720178543]
+layout_mode = 2
+text = "Requires Actor Level"
+
+[node name="RequiresActorLevel" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer/VBoxContainer" unique_id=345555480 instance=ExtResource("9_nlga7")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "Restricts its use to characters whose level is greater than or equal to the specified level"
+allow_greater = true
+value_replace = {
+"0": "Any Level"
+}
+_custom_value = 0.0
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer" unique_id=1697481474]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer/VBoxContainer2" unique_id=2032854383]
+layout_mode = 2
+text = "Requires Actor Class"
+
+[node name="RequiresActorClass" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer/VBoxContainer2" unique_id=621784070 instance=ExtResource("14_th10d")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "Restricts its use to characters whose class matches the specified class (or 0 to allow any class)"
+selected = 0
+item_count = 1
+popup/item_0/text = "Any Class"
+popup/item_0/id = 0
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer" unique_id=1515218440]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer/VBoxContainer3" unique_id=1917247267]
+layout_mode = 2
+text = "Requires Actor Gender"
+
+[node name="RequiresActorGender" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer/VBoxContainer3" unique_id=234435675 instance=ExtResource("14_th10d")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "Restricts its use to characters whose gender matches the specified gender (or 0 to allow any gender)"
+selected = 0
+item_count = 1
+popup/item_0/text = "Any Gender"
+popup/item_0/id = 0
+
+[node name="HSeparator2" type="HSeparator" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5" unique_id=1539090577]
+layout_mode = 2
 
 [node name="HboxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings" unique_id=1616547622]
 layout_mode = 2
@@ -1267,17 +1322,19 @@ wrap_mode = 1
 [connection signal="paste_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer2/IconPicker" to="." method="_on_icon_picker_paste_requested"]
 [connection signal="remove_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer2/IconPicker" to="." method="_on_icon_picker_remove_requested"]
 [connection signal="text_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer/NameLineEdit" to="." method="_on_name_line_edit_text_changed"]
-[connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer3/LevelRestrictionSpinBox" to="." method="_on_level_restriction_spin_box_value_changed"]
 [connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer4/TickInterval" to="." method="_on_tick_interval_value_changed"]
 [connection signal="text_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3/DescriptionTextEdit" to="." method="_on_description_text_edit_text_changed"]
+[connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer/VBoxContainer/RequiresActorLevel" to="." method="_on_requires_actor_level_value_changed"]
+[connection signal="item_selected" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer/VBoxContainer2/RequiresActorClass" to="." method="_on_requires_actor_class_item_selected"]
+[connection signal="item_selected" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer/VBoxContainer3/RequiresActorGender" to="." method="_on_requires_actor_gender_item_selected"]
 [connection signal="item_selected" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HboxContainer/VBoxContainer/WeaponTypeOptions" to="." method="_on_weapon_type_options_item_selected"]
 [connection signal="item_selected" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HboxContainer/VBoxContainer2/WeaponRarityTypeOptions" to="." method="_on_weapon_rarity_type_options_item_selected"]
 [connection signal="middle_click" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer4/Tools" to="." method="_on_tools_middle_click"]
 [connection signal="multi_selection_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer4/Tools" to="." method="_on_tools_multi_selection_changed"]
 [connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer2/PriceSpinBox" to="." method="_on_price_spin_box_value_changed"]
 [connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer5/MaxQuantity" to="." method="_on_max_quantity_value_changed"]
-[connection signal="button_down" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer/AnimationButton" to="." method="_on_animation_button_button_down"]
 [connection signal="middle_click_pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer/AnimationButton" to="." method="_on_animation_button_middle_click_pressed"]
+[connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2/VBoxContainer/AnimationButton" to="." method="_on_animation_button_button_pressed"]
 [connection signal="middle_click_pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/VBoxContainer/HBoxContainer/LPCPartButton" to="." method="_on_lpc_part_button_middle_click_pressed"]
 [connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/VBoxContainer/HBoxContainer/LPCPartButton" to="." method="_on_lpc_part_button_pressed"]
 [connection signal="toggled" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/VBoxContainer/HBoxContainer2/SetAttackScriptAsDefault" to="." method="_on_set_attack_script_as_default_toggled"]

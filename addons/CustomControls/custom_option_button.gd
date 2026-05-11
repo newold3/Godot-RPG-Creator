@@ -5,6 +5,7 @@ extends OptionButton
 @export var multi_selection_prefix: String = ""
 @export var can_select_item_with_button_wheel: bool = true
 @export var can_click_with_button_middle: bool = true
+@export var no_selection_text: String  = ""
 
 var _sync_timer: Timer
 const SYNC_DELAY: float = 0.025
@@ -286,7 +287,10 @@ func _update_button_text() -> void:
 		return
 		
 	if selected_items.is_empty():
-		text = tr("No Selection")
+		if not no_selection_text.is_empty():
+			text = tr(no_selection_text)
+		else:
+			text = tr("No Selection")
 	elif selected_items.size() == 1:
 		var popup = get_popup()
 		if selected_items[0] < popup.get_item_count():
@@ -546,7 +550,7 @@ func clear() -> void:
 	_request_sync()
 
 
-func set_item_selected(id: int, selected: bool = true, force_selection: bool = false) -> void:
+func set_item_selected(id: int, _selected: bool = true, force_selection: bool = false) -> void:
 	if not enable_multi_selection and not force_selection:
 		return
 		
@@ -555,7 +559,7 @@ func set_item_selected(id: int, selected: bool = true, force_selection: bool = f
 		return
 	
 	var changed = false
-	if selected:
+	if _selected:
 		if id not in selected_items:
 			selected_items.append(id)
 			changed = true
@@ -571,7 +575,7 @@ func set_item_selected(id: int, selected: bool = true, force_selection: bool = f
 		return
 		
 	if item_list:
-		if selected:
+		if _selected:
 			item_list.select(id, false)
 		else:
 			item_list.deselect(id)

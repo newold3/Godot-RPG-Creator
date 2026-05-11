@@ -16,6 +16,14 @@ func get_class(): return "IngameGearSet"
 @export var last_added_date: int = 0 # Date of most recent acquisition
 
 
+func _init() -> void:
+	uniq_id = RPGSYSTEM.generate_16_digit_id()
+
+
+func get_real_data() -> RPGCostume:
+	return RPGSYSTEM.get_data("costumes", id)
+
+
 func clear() -> void:
 	equipment_parts.clear()
 	set_preview = ""

@@ -6,17 +6,24 @@ extends Resource
 ## Handles all shared mathematical logic, parameters, states, buffs, debuffs,
 ## and trait calculations. Designed to be extended by GameActor and GameEnemy.
 
+#region VariablesAndConstants
 ## Battler's unique ID in the database.
 @export var id: int = -1
+
 ## Current name of the battler.
 @export var current_name: String = ""
+
 ## List of active GameState instances currently affecting the battler.
 @export var current_states: Array[GameState] = []
+
 ## Full list of inherent traits applied to the battler.
 @export var trait_list: Array[RPGTrait] = []
+
 ## Stores all vital parameters (HP, MP, modifiers).
 @export var params: GameParams = GameParams.new()
 
+## Stores all user parameters defined in database.
+@export var user_params: PackedInt32Array = []
 
 enum TraitCode {
 	PARAM_BASE = 5,
@@ -83,8 +90,11 @@ var is_valid: bool = true
 
 ## Emitted whenever a change in parameters occurs.
 signal parameter_changed()
+#endregion
 
 
+
+#region CoreLogicAndTraits
 ## Fully restores the battler's HP and MP and removes non-permanent states.
 func recover_all() -> void:
 	params.hp = get_parameter("hp")
@@ -99,6 +109,7 @@ func recover_all() -> void:
 	emit_changed()
 
 
+
 ## Adds a [RPGTrait] to the battler.
 func add_trait(tr: RPGTrait) -> void:
 	if !tr: return
@@ -109,6 +120,7 @@ func add_trait(tr: RPGTrait) -> void:
 		add_trait_state(tr)
 		
 	parameter_changed.emit()
+
 
 
 ## Removes a [RPGTrait] from the battler.
@@ -132,15 +144,18 @@ func remove_trait(tr: RPGTrait) -> void:
 		parameter_changed.emit()
 
 
+
 ## Adds a [GameState] based on a trait definition.
 func add_trait_state(state: RPGTrait) -> void:
-	var states_data = RPGSYSTEM.database.states
-	
-	if state.data_id > 0 and states_data.size() > state.data_id:
-		var real_state = states_data[state.data_id]
-		add_state(real_state, true, true)
+	if state.data_id > 0:
+		var real_state = RPGSYSTEM.get_data("states", state.data_id)
+		if real_state:
+			add_state(real_state, true, true)
+#endregion
 
 
+
+#region StateManagement
 ## Determines if the battler is completely immune to a specific state.
 func is_inmune_to_state(state: RPGState) -> bool:
 	var traits = _get_trait_list()
@@ -153,18 +168,21 @@ func is_inmune_to_state(state: RPGState) -> bool:
 	return not is_inmune.is_empty()
 
 
+
 ## Attempts to apply a state to the battler considering resistance and base chance.
 func apply_state_effect(state_id: int, base_chance: float) -> bool:
-	if RPGSYSTEM.database.states.size() <= state_id:
+	var real_state = RPGSYSTEM.get_data("states", state_id)
+	
+	if not real_state:
 		return false
 
 	var state_rate = get_state_rate(state_id)
 
 	if randf() < (base_chance / 100.0) * state_rate:
-		var state = RPGSYSTEM.database.states[state_id]
-		return add_state(state)
+		return add_state(real_state)
 
 	return false
+
 
 
 ## Attempts to remove a state from the battler based on a probability chance.
@@ -174,6 +192,7 @@ func remove_state_effect(state_id: int, base_chance: float) -> bool:
 		return true
 
 	return false
+
 
 
 ## Forcefully applies the removal logic of a state, decrementing stacks or removing it.
@@ -189,6 +208,7 @@ func execute_state_removal(state_id: int) -> void:
 			parameter_changed.emit()
 		else:
 			_remove_state(s)
+
 
 
 ## Adds a full [GameState] instance to the battler. Returns true if applied, false if blocked.
@@ -272,6 +292,7 @@ func add_state(state: RPGState, is_permanent: bool = false, usage_count: bool = 
 	return true
 
 
+
 ## Removes a specific state from the battler. Will not remove permanent states unless forced.
 func remove_state(state_id: int, force_permanent: bool = false) -> void:
 	var states_to_remove = current_states.filter(
@@ -288,6 +309,7 @@ func remove_state(state_id: int, force_permanent: bool = false) -> void:
 	if changed:
 		parameter_changed.emit()
 		emit_changed()
+
 
 
 ## Decreases the usage count of a permanent state and removes it if the count reaches 0.
@@ -316,12 +338,14 @@ func _remove_permanent_state_usage(state_id: int) -> void:
 		emit_changed()
 
 
+
 ## Removes a state directly from the list.
 func _remove_state(state: GameState) -> void:
 	if state in current_states:
 		current_states.erase(state)
 		parameter_changed.emit()
 		emit_changed()
+
 
 
 ## Updates all statuses added to this battler (Lifetime).
@@ -331,11 +355,15 @@ func update_states(delta: float) -> void:
 			state.update_lifetime(delta)
 
 
+
 ## Out of battle tick callback.
 func _on_state_tick(state: GameState) -> void:
 	pass
+#endregion
 
 
+
+#region BuffsAndDebuffs
 ## Adds a percentage buff to a specific parameter.
 func add_buff(param_index: int, value: float, duration: int = 0) -> void:
 	var param_list = RPGActor.get_parameter_list(true)
@@ -348,6 +376,7 @@ func add_buff(param_index: int, value: float, duration: int = 0) -> void:
 		
 	temp_buffs.append({"param_id": param_id, "value": value, "duration": duration})
 	parameter_changed.emit()
+
 
 
 ## Adds a percentage debuff to a specific parameter.
@@ -364,16 +393,19 @@ func add_debuff(param_index: int, value: float, duration: int = 0) -> void:
 	parameter_changed.emit()
 
 
+
 ## Clears all active buffs from the battler.
 func clear_buffs() -> void:
 	temp_buffs.clear()
 	parameter_changed.emit()
 
 
+
 ## Clears all active debuffs from the battler.
 func clear_debuffs() -> void:
 	temp_debuff.clear()
 	parameter_changed.emit()
+
 
 
 ## Removes a specific number of buff stacks for a parameter.
@@ -398,6 +430,7 @@ func remove_buff(param_index: int, stacks: int = 0) -> void:
 		parameter_changed.emit()
 
 
+
 ## Removes a specific number of debuff stacks for a parameter.
 func remove_debuff(param_index: int, stacks: int = 0) -> void:
 	var param_list = RPGActor.get_parameter_list(true)
@@ -418,6 +451,7 @@ func remove_debuff(param_index: int, stacks: int = 0) -> void:
 				
 	if removed_count > 0:
 		parameter_changed.emit()
+
 
 
 ## Decrements the duration of all active buffs and debuffs.
@@ -442,8 +476,11 @@ func update_buffs_duration() -> void:
 				
 	if has_changes:
 		parameter_changed.emit()
+#endregion
 
 
+
+#region CombatMathAndModifiers
 ## Applies damage or healing to the battler.
 func apply_damage(raw_amount: float, damage_type: int, element_id: int) -> void:
 	var element_rate = 1.0
@@ -466,6 +503,7 @@ func apply_damage(raw_amount: float, damage_type: int, element_id: int) -> void:
 			params.mp = clamp(params.mp + final_amount, 0, max_mp)
 
 
+
 ## Applies a recovery effect based on a percentage of the max parameter plus a flat amount.
 func apply_recovery_effect(is_hp: bool, percent: float, flat: int) -> void:
 	var max_val = get_parameter("HP") if is_hp else get_parameter("MP")
@@ -479,6 +517,7 @@ func apply_recovery_effect(is_hp: bool, percent: float, flat: int) -> void:
 		params.hp = clamp(params.hp + heal_amount, 0, max_val)
 	else:
 		params.mp = clamp(params.mp + heal_amount, 0, max_val)
+
 
 
 ## Modifies a given parameter by adding or subtracting a value.
@@ -502,6 +541,7 @@ func set_parameter(param_id: String, value: float, operation: int) -> void:
 		parameter_changed.emit()
 
 
+
 ## Permanently increases a parameter (Grow effect).
 func apply_grow_effect(param_id: int, amount: int) -> void:
 	var param_list = RPGActor.get_parameter_list(true)
@@ -509,8 +549,11 @@ func apply_grow_effect(param_id: int, amount: int) -> void:
 	if param_id >= 0 and param_id < param_list.size():
 		var stat_name = param_list[param_id]
 		set_parameter(stat_name, amount, 0)
+#endregion
 
 
+
+#region ParameterGetters
 ## Calculates a specific parameter value by combining base stats, traits, gear, and state effects.
 func get_parameter(param_id: String) -> float:
 	var search_param = _get_unified_param_key(param_id)
@@ -550,6 +593,7 @@ func get_parameter(param_id: String) -> float:
 	return clamp(value, -MAX_RESULT, MAX_RESULT)
 
 
+
 ## Returns the probability multiplier for receiving a specific state.
 func get_state_rate(state_id: int) -> float:
 	var value: float = 100.0
@@ -560,8 +604,10 @@ func get_state_rate(state_id: int) -> float:
 	return value / 100.0
 
 
+
 func get_buff_rate(param_id: int) -> float:
 	return 1.0
+
 
 
 func get_debuff_rate(param_id: int) -> float:
@@ -573,12 +619,48 @@ func get_debuff_rate(param_id: int) -> float:
 	return value / 100.0
 
 
+
+## Calculates a specific parameter value by combining base stats + gear.
+func get_user_parameter(param_id: int) -> float:
+	var current_value: float = 0
+	
+	if user_params.size() > param_id and param_id >= 0:
+		current_value += user_params[param_id]
+		
+		var real_param_id = "USER_PARAM_" + str(param_id)
+		if params.mods.has(real_param_id):
+			var mod_value = params.mods[real_param_id]
+			current_value += mod_value
+
+		if "current_gear" in self:
+			for gear in get("current_gear"):
+				if not gear: continue
+				var real_data = gear.get_real_data()
+				if real_data:
+					current_value += real_data.get_user_parameter(param_id, gear.current_level)
+		
+		var traits = _get_trait_list()
+		var trait_code = TraitCode.USER_PARAMETER
+		current_value = _add_traits_to_value(
+			traits,
+			current_value,
+			trait_code,
+			param_id,
+			false
+		)
+	
+	return current_value
+
+
+
 func get_element_attack_rate(element_id: Variant) -> float:
 	return _get_element_rate(TraitCode.ELEMENT_ATTACK, element_id)
 
 
+
 func get_element_defense_rate(element_id: Variant) -> float:
 	return _get_element_rate(TraitCode.ELEMENT_DEFENSE, element_id)
+
 
 
 func _get_element_rate(trait_code: int, element_id: Variant) -> float:
@@ -600,34 +682,39 @@ func _get_element_rate(trait_code: int, element_id: Variant) -> float:
 	value = _add_traits_to_value(traits, value, trait_code, data_id, true)
 	
 	return value
+#endregion
 
 
-## Collects all active traits from states, inherent traits, and child sources (equipment/classes).
+
+#region TraitCalculations
+## Collects all active traits from states, inherent traits, and child sources.
 func _get_trait_list() -> Array:
 	if _temp_trait_cache:
 		return _temp_trait_cache
 	
 	var traits: Array = []
-	var state_data = RPGSYSTEM.database.states
 	
 	for state in current_states:
-		if state and state.id > 0 and state_data.size() > state.id:
-			if state.cumulative_effect <= 1:
-				traits.append_array(state_data[state.id].traits)
-			else:
-				var new_traits = []
-				for old_trait in state_data[state.id].traits:
-					var new_trait = old_trait.clone(true)
-					new_trait.value *= state.cumulative_effect
-					new_traits.append(new_trait)
+		if state and state.id > 0:
+			var real_state = RPGSYSTEM.get_data("states", state.id)
+			if real_state:
+				if state.cumulative_effect <= 1:
+					traits.append_array(real_state.traits)
+				else:
+					var new_traits = []
+					for old_trait in real_state.traits:
+						var new_trait = old_trait.clone(true)
+						new_trait.value *= state.cumulative_effect
+						new_traits.append(new_trait)
 
-				if new_traits:
-					traits.append_array(new_traits)
+					if new_traits:
+						traits.append_array(new_traits)
 					
 	traits.append_array(trait_list)
 	traits.append_array(_get_extra_traits())
 
 	return traits
+
 
 
 ## Applies RPGTrait modifiers to a parameter value using multiplicative scaling.
@@ -653,6 +740,7 @@ func _add_traits_to_value(traits: Array, current_value: float, code_id: int, dat
 	return clamp(result, -MAX_RESULT, MAX_RESULT)
 
 
+
 func _get_unified_param_key(param: String) -> String:
 	var search_param = param.strip_edges().to_upper()
 	var type_id = _get_param_type_id(search_param)
@@ -663,6 +751,7 @@ func _get_unified_param_key(param: String) -> String:
 			return param_list[type_id]
 			
 	return search_param
+
 
 
 func _find_real_param(param: String) -> String:
@@ -681,10 +770,12 @@ func _find_real_param(param: String) -> String:
 	return ""
 
 
+
 func _get_trait_code(param: String) -> int:
 	if param in RPGActor.BaseParamType.keys() or param in RPGActor.ExtraParamType.keys() or param in RPGActor.SpecialParamType.keys() or param.begins_with("USER_PARAMETER_"):
 		return TraitCode.PARAM_BASE
 	return 0
+
 
 
 func _get_param_type_id(param: String) -> int:
@@ -707,17 +798,17 @@ func _get_param_type_id(param: String) -> int:
 	return -1
 
 
+
 func _is_rate_parameter(param: String) -> bool:
 	if param in RPGActor.BaseParamType.keys(): return false
 	if param.begins_with("USER_PARAMETER_"): return false
 	if param in ["LEVEL", "EXPERIENCE", "TP"]: return false
 	return true
+#endregion
 
 
-# ==============================================================================
-# VIRTUAL METHODS (To be overridden by GameActor and GameEnemy)
-# ==============================================================================
 
+#region VirtualMethods
 ## VIRTUAL: Override this to provide the raw base value of a parameter before traits/buffs.
 func _get_base_parameter(search_param: String) -> float:
 	if search_param in RPGActor.ExtraParamType.keys():
@@ -727,14 +818,17 @@ func _get_base_parameter(search_param: String) -> float:
 	return 0.0
 
 
+
 ## VIRTUAL: Override this to provide traits from equipment, classes, or database profiles.
 func _get_extra_traits() -> Array:
 	return []
 
 
+
 ## VIRTUAL: Override this to wipe and re-apply all permanent states from gear/classes/profiles.
 func restore_permanent_states_after_battle() -> void:
 	pass
+
 
 
 func clone() -> GameBattler:
@@ -758,3 +852,4 @@ func clone() -> GameBattler:
 	new_battler.temp_debuff = temp_debuff.duplicate(true)
 	
 	return new_battler
+#endregion

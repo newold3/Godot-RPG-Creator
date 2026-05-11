@@ -112,7 +112,7 @@ func _on_node_added(node: Node) -> void:
 	if not RPGDialogFunctions or node is PopupMenu or node is Window or node is Node2D:
 		return
 		
-	var any_dialog_active: bool = RPGDialogFunctions.there_are_any_dialog_open()
+	var any_dialog_active: bool = RPGDialogFunctions.there_are_any_dialog_open() or node.has_meta("force_custom_tooltips")
 
 	if !any_dialog_active:
 		if "tooltip_text" in node and node.has_meta("current_tooltip") and node.get_meta("current_tooltip").length() > 0:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://b272j73f72030"]
+[gd_scene format=3 uid="uid://b272j73f72030"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_6gxvt"]
 [ext_resource type="Script" uid="uid://ciuq3b3clrjsi" path="res://addons/CustomControls/Dialogs/CommandEvents/change_armor_dialog.gd" id="2_1endq"]
@@ -117,7 +117,7 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_w3qxn"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_b7hvy"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_ctwx1")
 fill_from = Vector2(0.542735, 0.995726)
@@ -125,7 +125,7 @@ fill_to = Vector2(0.58547, 0)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pcnnr"]
 resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_w3qxn")
+texture = SubResource("GradientTexture2D_b7hvy")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_giew5"]
 resource_local_to_scene = true
@@ -142,7 +142,7 @@ corner_radius_bottom_left = 12
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_shluh"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_50e0h"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dujnv"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -157,17 +157,17 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_xhrbc"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_a7yty"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_ctwx1")
 fill_from = Vector2(0.542735, 0.995726)
 fill_to = Vector2(0.58547, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1hyn2"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wqexx"]
 resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_xhrbc")
+texture = SubResource("GradientTexture2D_a7yty")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_josug"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w2u70"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -180,15 +180,8 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_df84p"]
-texture = ExtResource("10_i5md7")
-texture_margin_left = 6.0
-texture_margin_top = 6.0
-texture_margin_right = 6.0
-texture_margin_bottom = 6.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gjfq1"]
-texture = ExtResource("8_v55oe")
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4l1ya"]
+texture = ExtResource("7_26q37")
 texture_margin_left = 6.0
 texture_margin_top = 6.0
 texture_margin_right = 6.0
@@ -201,29 +194,15 @@ texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4l1ya"]
-texture = ExtResource("7_26q37")
-texture_margin_left = 6.0
-texture_margin_top = 6.0
-texture_margin_right = 6.0
-texture_margin_bottom = 6.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xx0ak"]
-texture = ExtResource("10_i5md7")
-texture_margin_left = 6.0
-texture_margin_top = 6.0
-texture_margin_right = 6.0
-texture_margin_bottom = 6.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_s618j"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gjfq1"]
 texture = ExtResource("8_v55oe")
 texture_margin_left = 6.0
 texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dkk42"]
-texture = ExtResource("9_upmjq")
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_df84p"]
+texture = ExtResource("10_i5md7")
 texture_margin_left = 6.0
 texture_margin_top = 6.0
 texture_margin_right = 6.0
@@ -236,7 +215,29 @@ texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[node name="ChangeArmorDialog" type="Window"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dkk42"]
+texture = ExtResource("9_upmjq")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_s618j"]
+texture = ExtResource("8_v55oe")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xx0ak"]
+texture = ExtResource("10_i5md7")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[node name="ChangeArmorDialog" type="Window" unique_id=968088568]
+oversampling_override = 1.0
 title = "Change Armor"
 position = Vector2i(0, 36)
 size = Vector2i(500, 487)
@@ -247,7 +248,7 @@ unresizable = true
 theme = ExtResource("1_6gxvt")
 script = ExtResource("2_1endq")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1115341105]
 material = SubResource("CanvasItemMaterial_p5lu3")
 anchors_preset = 15
 anchor_right = 1.0
@@ -256,7 +257,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_qxyup")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1816636748]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -269,62 +270,62 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1236241269]
 layout_mode = 2
 
-[node name="Item" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_ku7xu")]
+[node name="Item" parent="MarginContainer/VBoxContainer" unique_id=886548490 instance=ExtResource("3_ku7xu")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_w3qxn")
 style1 = SubResource("StyleBoxFlat_w3qxn")
 style2 = SubResource("StyleBoxTexture_xhrbc")
 style3 = SubResource("StyleBoxFlat_1hyn2")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Item"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Item" unique_id=1609412484]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer" unique_id=691708095]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer" unique_id=816232387]
 layout_mode = 2
 text = "Armor"
 
-[node name="ItemID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer" instance=ExtResource("4_p0yrt")]
+[node name="ItemID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer" unique_id=929803933 instance=ExtResource("4_p0yrt")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Click to select the armor for this operation"
 text = "Select an Armor"
 
-[node name="Operation" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_ku7xu")]
+[node name="Operation" parent="MarginContainer/VBoxContainer" unique_id=533548024 instance=ExtResource("3_ku7xu")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_wffy8")
 style1 = SubResource("StyleBoxFlat_wffy8")
 style2 = SubResource("StyleBoxTexture_rxr4f")
 style3 = SubResource("StyleBoxFlat_57e7e")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Operation"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Operation" unique_id=50099618]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Operation/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Operation/MarginContainer" unique_id=2002018588]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer" unique_id=1873576220]
 layout_mode = 2
 text = "Operation"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer" unique_id=1736407121]
 layout_mode = 2
 
-[node name="OperationIncrease" type="CheckBox" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="OperationIncrease" type="CheckBox" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1216615667]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -334,7 +335,7 @@ button_pressed = true
 button_group = SubResource("ButtonGroup_8fpmd")
 text = "Inrease"
 
-[node name="OperationDecrease" type="CheckBox" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="OperationDecrease" type="CheckBox" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer/HBoxContainer" unique_id=889448217]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -343,7 +344,7 @@ mouse_default_cursor_shape = 2
 button_group = SubResource("ButtonGroup_8fpmd")
 text = "Decrease"
 
-[node name="IncludeEquipment" type="CheckBox" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer"]
+[node name="IncludeEquipment" type="CheckBox" parent="MarginContainer/VBoxContainer/Operation/MarginContainer/VBoxContainer" unique_id=873164144]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Items that are equipped on party members will also be affected."
@@ -352,31 +353,31 @@ mouse_default_cursor_shape = 2
 disabled = true
 text = "Include Equipment"
 
-[node name="Operand" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_ku7xu")]
+[node name="Operand" parent="MarginContainer/VBoxContainer" unique_id=846176676 instance=ExtResource("3_ku7xu")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_wbuft")
 style1 = SubResource("StyleBoxFlat_wbuft")
 style2 = SubResource("StyleBoxTexture_pcnnr")
 style3 = SubResource("StyleBoxFlat_giew5")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Operand"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Operand" unique_id=1302732576]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Operand/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Operand/MarginContainer" unique_id=1607723174]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer" unique_id=1386597984]
 layout_mode = 2
 text = "Operand"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer" unique_id=991901046]
 layout_mode = 2
 
-[node name="OperandConstant" type="CheckBox" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="OperandConstant" type="CheckBox" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/HBoxContainer" unique_id=175087770]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(105, 0)
 layout_mode = 2
@@ -386,19 +387,19 @@ button_pressed = true
 button_group = SubResource("ButtonGroup_shluh")
 text = "Constant:"
 
-[node name="OperandValue" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_xn3y1")]
+[node name="OperandValue" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/HBoxContainer" unique_id=628171925 instance=ExtResource("5_xn3y1")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Uses a constant value"
 min_value = 1.0
-value = 1.0
 allow_greater = true
+_custom_value = 0.0
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer" unique_id=545860331]
 layout_mode = 2
 
-[node name="OperandVariable" type="CheckBox" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="OperandVariable" type="CheckBox" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=727143236]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(105, 0)
 layout_mode = 2
@@ -407,7 +408,7 @@ mouse_default_cursor_shape = 2
 button_group = SubResource("ButtonGroup_shluh")
 text = "Variable:"
 
-[node name="OperandVariableID" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("4_p0yrt")]
+[node name="OperandVariableID" parent="MarginContainer/VBoxContainer/Operand/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1895601584 instance=ExtResource("4_p0yrt")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -415,87 +416,87 @@ tooltip_text = "Uses the value stored in a variable"
 disabled = true
 text = "Select a variable"
 
-[node name="LevelContainer" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_ku7xu")]
+[node name="LevelContainer" parent="MarginContainer/VBoxContainer" unique_id=693606119 instance=ExtResource("3_ku7xu")]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_50e0h")
-style1 = SubResource("StyleBoxFlat_50e0h")
-style2 = SubResource("StyleBoxTexture_1hyn2")
-style3 = SubResource("StyleBoxFlat_josug")
+theme_override_styles/panel = SubResource("StyleBoxFlat_dujnv")
+style1 = SubResource("StyleBoxFlat_dujnv")
+style2 = SubResource("StyleBoxTexture_wqexx")
+style3 = SubResource("StyleBoxFlat_w2u70")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/LevelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/LevelContainer" unique_id=1463774760]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/LevelContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/LevelContainer/MarginContainer" unique_id=1713663757]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/LevelContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/LevelContainer/MarginContainer/VBoxContainer" unique_id=219981091]
 layout_mode = 2
 text = "Level"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/LevelContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/LevelContainer/MarginContainer/VBoxContainer" unique_id=319608310]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/LevelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/LevelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=962347570]
 custom_minimum_size = Vector2(105, 0)
 layout_mode = 2
 tooltip_text = "Uses a constant value"
 mouse_default_cursor_shape = 2
 text = "Armor Level: "
 
-[node name="ItemLevel" parent="MarginContainer/VBoxContainer/LevelContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_xn3y1")]
+[node name="ItemLevel" parent="MarginContainer/VBoxContainer/LevelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1587290958 instance=ExtResource("5_xn3y1")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Armor Level[/title]
 The added equipment will be of the level specified here."
 min_value = 1.0
-value = 1.0
+_custom_value = 0.0
 
-[node name="MaxLevels" type="Label" parent="MarginContainer/VBoxContainer/LevelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="MaxLevels" type="Label" parent="MarginContainer/VBoxContainer/LevelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1957091413]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Uses a constant value"
 mouse_default_cursor_shape = 2
 text = " / 1"
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1912446274]
 layout_mode = 2
 size_flags_vertical = 10
 theme_override_constants/separation = 12
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=779873404]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 alignment = 1
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("6_40fuu")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=471319116 instance=ExtResource("6_40fuu")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 tooltip_text = "[title]Ok[/title]
 Saves all changes and closes the windows."
-theme_override_styles/disabled = SubResource("StyleBoxTexture_df84p")
-theme_override_styles/hover = SubResource("StyleBoxTexture_gjfq1")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_s0jki")
 theme_override_styles/normal = SubResource("StyleBoxTexture_4l1ya")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_s0jki")
+theme_override_styles/hover = SubResource("StyleBoxTexture_gjfq1")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_df84p")
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("6_40fuu")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=258272530 instance=ExtResource("6_40fuu")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 tooltip_text = "[title]Cancel[/title]
 Closes this window without saving any changes."
-theme_override_styles/disabled = SubResource("StyleBoxTexture_xx0ak")
-theme_override_styles/hover = SubResource("StyleBoxTexture_s618j")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_dkk42")
 theme_override_styles/normal = SubResource("StyleBoxTexture_x58wi")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_dkk42")
+theme_override_styles/hover = SubResource("StyleBoxTexture_s618j")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_xx0ak")
 text = "CANCEL"
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/ItemID" to="." method="_on_item_id_pressed"]

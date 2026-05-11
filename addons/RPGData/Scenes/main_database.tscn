@@ -51,7 +51,7 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.372549, 0.372549, 0.372549, 1)
 
-[node name="MainDatabase" type="Control" unique_id=37949775]
+[node name="MainDatabase" type="Control" unique_id=37949775 groups=["database_main_scene"]]
 custom_minimum_size = Vector2(1480, 850)
 layout_mode = 3
 anchors_preset = 0
@@ -89,17 +89,18 @@ theme_override_constants/separation = 0
 layout_mode = 2
 theme_override_constants/margin_top = 40
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/MarginContainer" unique_id=1234518548]
+[node name="LeftColumn" type="VBoxContainer" parent="MarginContainer/HBoxContainer/MarginContainer" unique_id=1234518548]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Options" type="TextureButton" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer" unique_id=794504505]
+[node name="Options" type="TextureButton" parent="MarginContainer/HBoxContainer/MarginContainer/LeftColumn" unique_id=794504505]
 layout_mode = 2
 size_flags_vertical = 4
 mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_yt8he")
 texture_hover = SubResource("AtlasTexture_r5toj")
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Options" unique_id=787664392]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/MarginContainer/LeftColumn/Options" unique_id=787664392]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -108,7 +109,7 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "   File"
 
-[node name="OptionsMenu" type="PopupMenu" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Options" unique_id=583641156]
+[node name="OptionsMenu" type="PopupMenu" parent="MarginContainer/HBoxContainer/MarginContainer/LeftColumn/Options" unique_id=583641156]
 unique_name_in_owner = true
 oversampling_override = 1.0
 position = Vector2i(32, 32)
@@ -133,36 +134,36 @@ item_7/separator = true
 item_8/text = "Export Database"
 item_8/id = 8
 
-[node name="DeveloperSection" type="VBoxContainer" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer" unique_id=213570608]
+[node name="DeveloperSection" type="VBoxContainer" parent="MarginContainer/HBoxContainer/MarginContainer/LeftColumn" unique_id=213570608]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/DeveloperSection" unique_id=1943016444]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/MarginContainer/LeftColumn/DeveloperSection" unique_id=1943016444]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.50534403, 0.5053441, 0.50534403, 1)
 theme_override_font_sizes/font_size = 16
 text = "DATA VERSION"
 
-[node name="DatabaseVersion" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer" unique_id=1511356779 instance=ExtResource("4_yt8he")]
+[node name="DatabaseVersion" parent="MarginContainer/HBoxContainer/MarginContainer/LeftColumn" unique_id=1511356779 instance=ExtResource("4_yt8he")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Current database ID, used to determine how to upgrade from lower versions
 
 [Note]: It needs to be edited manually if data is added or removed from the database resources, increasing the version number to track what changes have been made in this version."
-value = 10.0
+value = 13.0
 allow_greater = true
-_custom_value = 10.0
+_custom_value = 13.0
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer" unique_id=1707045210]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/HBoxContainer/MarginContainer/LeftColumn" unique_id=1707045210]
 layout_mode = 2
 size_flags_vertical = 8
 
-[node name="LeftMenu" type="VBoxContainer" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer" unique_id=192036957]
+[node name="LeftMenu" type="VBoxContainer" parent="MarginContainer/HBoxContainer/MarginContainer/LeftColumn" unique_id=192036957]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="CustomButton1" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/LeftMenu" unique_id=835506697 instance=ExtResource("1_bal0x")]
+[node name="CustomButton1" parent="MarginContainer/HBoxContainer/MarginContainer/LeftColumn/LeftMenu" unique_id=835506697 instance=ExtResource("1_bal0x")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
@@ -174,7 +175,7 @@ button_pressed = true
 button_group = SubResource("ButtonGroup_yt8he")
 text = "Heroes"
 
-[node name="CustomButton2" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/LeftMenu" unique_id=771268642 instance=ExtResource("1_bal0x")]
+[node name="CustomButton2" parent="MarginContainer/HBoxContainer/MarginContainer/LeftColumn/LeftMenu" unique_id=771268642 instance=ExtResource("1_bal0x")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
@@ -185,7 +186,7 @@ toggle_mode = true
 button_group = SubResource("ButtonGroup_yt8he")
 text = "Classes"
 
-[node name="CustomButton19" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/LeftMenu" unique_id=1900327803 instance=ExtResource("1_bal0x")]
+[node name="CustomButton19" parent="MarginContainer/HBoxContainer/MarginContainer/LeftColumn/LeftMenu" unique_id=1900327803 instance=ExtResource("1_bal0x")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
@@ -196,7 +197,7 @@ toggle_mode = true
 button_group = SubResource("ButtonGroup_yt8he")
 text = "Professions"
 
-[node name="CustomButton3" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/LeftMenu" unique_id=1619108726 instance=ExtResource("1_bal0x")]
+[node name="CustomButton3" parent="MarginContainer/HBoxContainer/MarginContainer/LeftColumn/LeftMenu" unique_id=1619108726 instance=ExtResource("1_bal0x")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
@@ -207,7 +208,7 @@ toggle_mode = true
 button_group = SubResource("ButtonGroup_yt8he")
 text = "Techniques"
 
-[node name="CustomButton4" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/LeftMenu" unique_id=1100195706 instance=ExtResource("1_bal0x")]
+[node name="CustomButton4" parent="MarginContainer/HBoxContainer/MarginContainer/LeftColumn/LeftMenu" unique_id=1100195706 instance=ExtResource("1_bal0x")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
@@ -218,7 +219,7 @@ toggle_mode = true
 button_group = SubResource("ButtonGroup_yt8he")
 text = "Items"
 
-[node name="CustomButton5" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/LeftMenu" unique_id=626367205 instance=ExtResource("1_bal0x")]
+[node name="CustomButton5" parent="MarginContainer/HBoxContainer/MarginContainer/LeftColumn/LeftMenu" unique_id=626367205 instance=ExtResource("1_bal0x")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
@@ -229,7 +230,7 @@ toggle_mode = true
 button_group = SubResource("ButtonGroup_yt8he")
 text = "Equipment"
 
-[node name="CustomButton7" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/LeftMenu" unique_id=146317025 instance=ExtResource("1_bal0x")]
+[node name="CustomButton7" parent="MarginContainer/HBoxContainer/MarginContainer/LeftColumn/LeftMenu" unique_id=146317025 instance=ExtResource("1_bal0x")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
@@ -240,7 +241,7 @@ toggle_mode = true
 button_group = SubResource("ButtonGroup_yt8he")
 text = "Enemies"
 
-[node name="CustomButton8" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/LeftMenu" unique_id=932699438 instance=ExtResource("1_bal0x")]
+[node name="CustomButton8" parent="MarginContainer/HBoxContainer/MarginContainer/LeftColumn/LeftMenu" unique_id=932699438 instance=ExtResource("1_bal0x")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
@@ -251,7 +252,7 @@ toggle_mode = true
 button_group = SubResource("ButtonGroup_yt8he")
 text = "Encounters"
 
-[node name="CustomButton9" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/LeftMenu" unique_id=1069634480 instance=ExtResource("1_bal0x")]
+[node name="CustomButton9" parent="MarginContainer/HBoxContainer/MarginContainer/LeftColumn/LeftMenu" unique_id=1069634480 instance=ExtResource("1_bal0x")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
@@ -262,7 +263,7 @@ toggle_mode = true
 button_group = SubResource("ButtonGroup_yt8he")
 text = "Conditions"
 
-[node name="CustomButton10" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/LeftMenu" unique_id=1532339678 instance=ExtResource("1_bal0x")]
+[node name="CustomButton10" parent="MarginContainer/HBoxContainer/MarginContainer/LeftColumn/LeftMenu" unique_id=1532339678 instance=ExtResource("1_bal0x")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
@@ -273,7 +274,7 @@ toggle_mode = true
 button_group = SubResource("ButtonGroup_yt8he")
 text = "Animations"
 
-[node name="CustomButton11" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/LeftMenu" unique_id=1280533689 instance=ExtResource("1_bal0x")]
+[node name="CustomButton11" parent="MarginContainer/HBoxContainer/MarginContainer/LeftColumn/LeftMenu" unique_id=1280533689 instance=ExtResource("1_bal0x")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
@@ -284,7 +285,7 @@ toggle_mode = true
 button_group = SubResource("ButtonGroup_yt8he")
 text = "Global Events"
 
-[node name="CustomButton12" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/LeftMenu" unique_id=799239430 instance=ExtResource("1_bal0x")]
+[node name="CustomButton12" parent="MarginContainer/HBoxContainer/MarginContainer/LeftColumn/LeftMenu" unique_id=799239430 instance=ExtResource("1_bal0x")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
@@ -295,7 +296,7 @@ toggle_mode = true
 button_group = SubResource("ButtonGroup_yt8he")
 text = "Types"
 
-[node name="CustomButton13" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/LeftMenu" unique_id=586436734 instance=ExtResource("1_bal0x")]
+[node name="CustomButton13" parent="MarginContainer/HBoxContainer/MarginContainer/LeftColumn/LeftMenu" unique_id=586436734 instance=ExtResource("1_bal0x")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
@@ -306,7 +307,7 @@ toggle_mode = true
 button_group = SubResource("ButtonGroup_yt8he")
 text = "Terms"
 
-[node name="CustomButton14" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/LeftMenu" unique_id=1072889683 instance=ExtResource("1_bal0x")]
+[node name="CustomButton14" parent="MarginContainer/HBoxContainer/MarginContainer/LeftColumn/LeftMenu" unique_id=1072889683 instance=ExtResource("1_bal0x")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
@@ -317,7 +318,7 @@ toggle_mode = true
 button_group = SubResource("ButtonGroup_yt8he")
 text = "Settings"
 
-[node name="CustomButton17" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/LeftMenu" unique_id=1833959452 instance=ExtResource("1_bal0x")]
+[node name="CustomButton17" parent="MarginContainer/HBoxContainer/MarginContainer/LeftColumn/LeftMenu" unique_id=1833959452 instance=ExtResource("1_bal0x")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
@@ -330,7 +331,7 @@ toggle_mode = true
 button_group = SubResource("ButtonGroup_yt8he")
 text = "Talkers"
 
-[node name="CustomButton18" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/LeftMenu" unique_id=333136696 instance=ExtResource("1_bal0x")]
+[node name="CustomButton18" parent="MarginContainer/HBoxContainer/MarginContainer/LeftColumn/LeftMenu" unique_id=333136696 instance=ExtResource("1_bal0x")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
@@ -341,11 +342,11 @@ toggle_mode = true
 button_group = SubResource("ButtonGroup_yt8he")
 text = "Quests"
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/LeftMenu" unique_id=458285526]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/HBoxContainer/MarginContainer/LeftColumn/LeftMenu" unique_id=458285526]
 layout_mode = 2
 size_flags_vertical = 10
 
-[node name="CustomButton15" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/LeftMenu" unique_id=1066621988 instance=ExtResource("1_bal0x")]
+[node name="CustomButton15" parent="MarginContainer/HBoxContainer/MarginContainer/LeftColumn/LeftMenu" unique_id=1066621988 instance=ExtResource("1_bal0x")]
 unique_name_in_owner = true
 modulate = Color(0.536621, 1, 0.1875, 1)
 custom_minimum_size = Vector2(150, 0)
@@ -357,7 +358,7 @@ toggle_mode = true
 button_group = SubResource("ButtonGroup_yt8he")
 text = "Apply Canges"
 
-[node name="CustomButton16" parent="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/LeftMenu" unique_id=657744893 instance=ExtResource("1_bal0x")]
+[node name="CustomButton16" parent="MarginContainer/HBoxContainer/MarginContainer/LeftColumn/LeftMenu" unique_id=657744893 instance=ExtResource("1_bal0x")]
 unique_name_in_owner = true
 modulate = Color(0.957031, 0.530853, 0.530853, 1)
 custom_minimum_size = Vector2(150, 0)
@@ -399,6 +400,6 @@ theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
-[connection signal="pressed" from="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Options" to="." method="_on_options_pressed"]
-[connection signal="index_pressed" from="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Options/OptionsMenu" to="." method="_on_options_menu_index_pressed"]
-[connection signal="value_changed" from="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/DatabaseVersion" to="." method="_on_database_version_value_changed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/MarginContainer/LeftColumn/Options" to="." method="_on_options_pressed"]
+[connection signal="index_pressed" from="MarginContainer/HBoxContainer/MarginContainer/LeftColumn/Options/OptionsMenu" to="." method="_on_options_menu_index_pressed"]
+[connection signal="value_changed" from="MarginContainer/HBoxContainer/MarginContainer/LeftColumn/DatabaseVersion" to="." method="_on_database_version_value_changed"]

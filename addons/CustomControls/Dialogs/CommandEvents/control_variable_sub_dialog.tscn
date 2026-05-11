@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://cwvkqpbxnniv3"]
+[gd_scene format=3 uid="uid://cwvkqpbxnniv3"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_bkmsk"]
 [ext_resource type="Script" uid="uid://e1m1t5vyaqgy" path="res://addons/CustomControls/Dialogs/CommandEvents/control_variable_sub_dialog.gd" id="2_fvkt2"]
@@ -21,7 +21,7 @@ gradient = SubResource("Gradient_pe4v7")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cgfk8"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_poa2y"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -39,17 +39,17 @@ corner_radius_bottom_left = 12
 [sub_resource type="Gradient" id="Gradient_ctwx1"]
 colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_uscjk"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_fgn1u"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_ctwx1")
 fill_from = Vector2(0.542735, 0.995726)
 fill_to = Vector2(0.58547, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bcrpr"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vj5xd"]
 resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_uscjk")
+texture = SubResource("GradientTexture2D_fgn1u")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7o5ol"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a01o5"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -120,7 +120,7 @@ texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[node name="ControlVariableSubDialog" type="Window"]
+[node name="ControlVariableSubDialog" type="Window" unique_id=1041660029]
 oversampling_override = 1.0
 title = "Game Data"
 position = Vector2i(0, 36)
@@ -132,7 +132,7 @@ unresizable = true
 theme = ExtResource("1_bkmsk")
 script = ExtResource("2_fvkt2")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=66537924]
 material = SubResource("CanvasItemMaterial_p5fln")
 anchors_preset = 15
 anchor_right = 1.0
@@ -141,7 +141,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_wtngk")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=6227370]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -154,31 +154,31 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=127044283]
 layout_mode = 2
 
-[node name="Item" parent="MarginContainer/VBoxContainer" instance=ExtResource("2_us6yk")]
+[node name="Item" parent="MarginContainer/VBoxContainer" unique_id=802706548 instance=ExtResource("2_us6yk")]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_cgfk8")
-style1 = SubResource("StyleBoxFlat_cgfk8")
-style2 = SubResource("StyleBoxTexture_bcrpr")
-style3 = SubResource("StyleBoxFlat_7o5ol")
+theme_override_styles/panel = SubResource("StyleBoxFlat_poa2y")
+style1 = SubResource("StyleBoxFlat_poa2y")
+style2 = SubResource("StyleBoxTexture_vj5xd")
+style3 = SubResource("StyleBoxFlat_a01o5")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Item"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Item" unique_id=11853197]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer" unique_id=744064347]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer" unique_id=749056525]
 layout_mode = 2
 
-[node name="Item" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Item" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer" unique_id=3749987]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -188,24 +188,24 @@ mouse_default_cursor_shape = 2
 button_group = SubResource("ButtonGroup_yeuqa")
 text = "Item:"
 
-[node name="ItemID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_jihb0")]
+[node name="ItemID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer" unique_id=53940946 instance=ExtResource("3_jihb0")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Uses the count of the specified item."
 disabled = true
-text = "1:Mi item"
+text = "1:Potion"
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer" unique_id=2122147527]
 custom_minimum_size = Vector2(190, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.570313, 0.570313, 0.570313, 1)
 text = "(Possesion Count)"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer" unique_id=1897942949]
 layout_mode = 2
 
-[node name="Weapon" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Weapon" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1525782535]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -215,7 +215,7 @@ mouse_default_cursor_shape = 2
 button_group = SubResource("ButtonGroup_yeuqa")
 text = "Weapon:"
 
-[node name="WeaponID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("3_jihb0")]
+[node name="WeaponID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1863039198 instance=ExtResource("3_jihb0")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -223,16 +223,16 @@ tooltip_text = "Uses the count of the specified weapon."
 disabled = true
 text = "01:Crystal Ball"
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=678502764]
 custom_minimum_size = Vector2(190, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.570313, 0.570313, 0.570313, 1)
 text = "(Possesion Count)"
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer" unique_id=1074459322]
 layout_mode = 2
 
-[node name="Armor" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer3"]
+[node name="Armor" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=2135473427]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -242,7 +242,7 @@ mouse_default_cursor_shape = 2
 button_group = SubResource("ButtonGroup_yeuqa")
 text = "Armor:"
 
-[node name="ArmorID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("3_jihb0")]
+[node name="ArmorID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=325758534 instance=ExtResource("3_jihb0")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -250,16 +250,16 @@ tooltip_text = "Uses the count of the specified armor."
 disabled = true
 text = "1:Cloth Robe"
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer3"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1013948163]
 custom_minimum_size = Vector2(190, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.570313, 0.570313, 0.570313, 1)
 text = "(Possesion Count)"
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer" unique_id=490620671]
 layout_mode = 2
 
-[node name="Actor" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer4"]
+[node name="Actor" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer4" unique_id=943868009]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -269,15 +269,15 @@ mouse_default_cursor_shape = 2
 button_group = SubResource("ButtonGroup_yeuqa")
 text = "Actor:"
 
-[node name="ActorID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer4" instance=ExtResource("3_jihb0")]
+[node name="ActorID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer4" unique_id=1487122809 instance=ExtResource("3_jihb0")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Uses the actor's parameter (HP, MP, etc.) as the value. Specify the target actor and parameter."
 disabled = true
-text = "1:Aiden"
+text = "1:Dadarian"
 
-[node name="ActorParameter" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer4" instance=ExtResource("4_diq7a")]
+[node name="ActorParameter" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer4" unique_id=124688730 instance=ExtResource("4_diq7a")]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.6)
 custom_minimum_size = Vector2(190, 0)
@@ -286,80 +286,86 @@ tooltip_text = "Uses the actor's parameter (HP, MP, etc.) as the value. Specify 
 disabled = true
 selected = 0
 fit_to_longest_item = false
-item_count = 34
+item_count = 37
 popup/item_0/text = "Level"
 popup/item_0/id = 0
 popup/item_1/text = "Experience"
 popup/item_1/id = 1
-popup/item_2/text = "Hit Points"
+popup/item_2/text = "Base Parameters"
 popup/item_2/id = 2
-popup/item_3/text = "Magic Points"
+popup/item_3/text = "Max HP"
 popup/item_3/id = 3
-popup/item_4/text = "Attack"
+popup/item_4/text = "Max MP"
 popup/item_4/id = 4
-popup/item_5/text = "Defense"
+popup/item_5/text = "Attack"
 popup/item_5/id = 5
-popup/item_6/text = "Magical Attack"
+popup/item_6/text = "Defense"
 popup/item_6/id = 6
-popup/item_7/text = "Magical Defense"
+popup/item_7/text = "Magical Attack"
 popup/item_7/id = 7
-popup/item_8/text = "Agility"
+popup/item_8/text = "Magical Defense"
 popup/item_8/id = 8
-popup/item_9/text = "Luck"
+popup/item_9/text = "Agility"
 popup/item_9/id = 9
-popup/item_10/text = "Hit Rate"
+popup/item_10/text = "Luck"
 popup/item_10/id = 10
-popup/item_11/text = "Evasion Rate"
+popup/item_11/text = "Extra Parameters"
 popup/item_11/id = 11
-popup/item_12/text = "Critical Rate"
+popup/item_12/text = "Hit Rate"
 popup/item_12/id = 12
-popup/item_13/text = "Critical Evasion"
+popup/item_13/text = "Evasion Rate"
 popup/item_13/id = 13
-popup/item_14/text = "Magic Evasion"
+popup/item_14/text = "Critical Rate"
 popup/item_14/id = 14
-popup/item_15/text = "Magic Reflection"
+popup/item_15/text = "Critical Evasion Rate"
 popup/item_15/id = 15
-popup/item_16/text = "Counter Attack"
+popup/item_16/text = "Magic Evasion Rate"
 popup/item_16/id = 16
-popup/item_17/text = "HP Regeneration"
+popup/item_17/text = "Magic Reflection"
 popup/item_17/id = 17
-popup/item_18/text = "MP Regeneration"
+popup/item_18/text = "Counter Attack"
 popup/item_18/id = 18
-popup/item_19/text = "TP Regeneration"
+popup/item_19/text = "HP Regeneration"
 popup/item_19/id = 19
-popup/item_20/text = "Target Rate"
+popup/item_20/text = "MP Regeneration"
 popup/item_20/id = 20
-popup/item_21/text = "Guard Effect"
+popup/item_21/text = "TP Regeneration"
 popup/item_21/id = 21
-popup/item_22/text = "Recovery Effect"
+popup/item_22/text = "Special Parameters"
 popup/item_22/id = 22
-popup/item_23/text = "Healing Mastery"
+popup/item_23/text = "Target Rate"
 popup/item_23/id = 23
-popup/item_24/text = "MP Cost Rate"
+popup/item_24/text = "Guard Effect"
 popup/item_24/id = 24
-popup/item_25/text = "TP Charge Rate"
+popup/item_25/text = "Recovery Effect"
 popup/item_25/id = 25
-popup/item_26/text = "Physical Damage Rate"
+popup/item_26/text = "Healing Mastery"
 popup/item_26/id = 26
-popup/item_27/text = "Magic Damage Rate"
+popup/item_27/text = "MP Cost Rate"
 popup/item_27/id = 27
-popup/item_28/text = "Floor Damage Rate"
+popup/item_28/text = "TP Charge Rate"
 popup/item_28/id = 28
-popup/item_29/text = "Experience Rate"
+popup/item_29/text = "Physical Damage Rate"
 popup/item_29/id = 29
-popup/item_30/text = "Gold Rate"
+popup/item_30/text = "Magic Damage Rate"
 popup/item_30/id = 30
-popup/item_31/id = -1
-popup/item_31/separator = true
-popup/item_32/text = "User Parameter: Param 1"
+popup/item_31/text = "Floor Damage Rate"
+popup/item_31/id = 31
+popup/item_32/text = "Experience Rate"
 popup/item_32/id = 32
-popup/item_33/text = "User Parameter: Param 2"
+popup/item_33/text = "Gold Rate"
 popup/item_33/id = 33
+popup/item_34/id = -1
+popup/item_34/separator = true
+popup/item_35/text = "User Parameter: Param 1"
+popup/item_35/id = 35
+popup/item_36/text = "User Parameter: Param 2"
+popup/item_36/id = 36
 
-[node name="HBoxContainer10" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer10" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer" unique_id=300650946]
 layout_mode = 2
 
-[node name="Profession" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer10"]
+[node name="Profession" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer10" unique_id=455997196]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -369,24 +375,24 @@ mouse_default_cursor_shape = 2
 button_group = SubResource("ButtonGroup_yeuqa")
 text = "Profession:"
 
-[node name="ProfessionID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer10" instance=ExtResource("3_jihb0")]
+[node name="ProfessionID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer10" unique_id=1751282232 instance=ExtResource("3_jihb0")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Use the player's profession level as the value for the variable."
 disabled = true
-text = "1:Collector"
+text = "1:test Profession"
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer10"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer10" unique_id=86073761]
 custom_minimum_size = Vector2(190, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.570313, 0.570313, 0.570313, 1)
 text = "(Current Level)"
 
-[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer" unique_id=58174352]
 layout_mode = 2
 
-[node name="Enemy" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer5"]
+[node name="Enemy" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer5" unique_id=192065585]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -396,7 +402,7 @@ mouse_default_cursor_shape = 2
 button_group = SubResource("ButtonGroup_yeuqa")
 text = "Enemy:"
 
-[node name="EnemyID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer5" instance=ExtResource("4_diq7a")]
+[node name="EnemyID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer5" unique_id=317016116 instance=ExtResource("4_diq7a")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -420,7 +426,7 @@ popup/item_6/id = 6
 popup/item_7/text = "Enemy #8"
 popup/item_7/id = 7
 
-[node name="EnemyParameter" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer5" instance=ExtResource("4_diq7a")]
+[node name="EnemyParameter" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer5" unique_id=2086548653 instance=ExtResource("4_diq7a")]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.6)
 custom_minimum_size = Vector2(190, 0)
@@ -452,10 +458,10 @@ popup/item_9/id = 9
 popup/item_10/text = "TP"
 popup/item_10/id = 10
 
-[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer" unique_id=658084763]
 layout_mode = 2
 
-[node name="Character" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer6"]
+[node name="Character" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer6" unique_id=1173454011]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -469,7 +475,7 @@ mouse_default_cursor_shape = 2
 button_group = SubResource("ButtonGroup_yeuqa")
 text = "Character:"
 
-[node name="CharacterID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer6" instance=ExtResource("4_diq7a")]
+[node name="CharacterID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer6" unique_id=1970097821 instance=ExtResource("4_diq7a")]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.6)
 layout_mode = 2
@@ -487,7 +493,7 @@ popup/item_0/id = 0
 popup/item_1/text = "This Event"
 popup/item_1/id = 1
 
-[node name="CharacterParameter" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer6" instance=ExtResource("4_diq7a")]
+[node name="CharacterParameter" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer6" unique_id=398017863 instance=ExtResource("4_diq7a")]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.6)
 custom_minimum_size = Vector2(190, 0)
@@ -514,13 +520,13 @@ popup/item_5/text = "Global Position X"
 popup/item_5/id = 5
 popup/item_6/text = "Global Position Y"
 popup/item_6/id = 6
-popup/item_7/text = "Z-Index"
+popup/item_7/text = "Z Index"
 popup/item_7/id = 7
 
-[node name="HBoxContainer7" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer7" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer" unique_id=674941879]
 layout_mode = 2
 
-[node name="Party" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer7"]
+[node name="Party" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer7" unique_id=1245731479]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -530,7 +536,7 @@ mouse_default_cursor_shape = 2
 button_group = SubResource("ButtonGroup_yeuqa")
 text = "Party:"
 
-[node name="PartyID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer7" instance=ExtResource("4_diq7a")]
+[node name="PartyID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer7" unique_id=1679997006 instance=ExtResource("4_diq7a")]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.6)
 layout_mode = 2
@@ -556,16 +562,16 @@ popup/item_6/id = 6
 popup/item_7/text = "Member #8"
 popup/item_7/id = 7
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer7"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer7" unique_id=1770366761]
 custom_minimum_size = Vector2(190, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.570313, 0.570313, 0.570313, 1)
 text = "(Party ID)"
 
-[node name="HBoxContainer11" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer11" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer" unique_id=703270085]
 layout_mode = 2
 
-[node name="Stat" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer11"]
+[node name="Stat" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer11" unique_id=135710249]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -576,11 +582,11 @@ mouse_default_cursor_shape = 2
 button_group = SubResource("ButtonGroup_yeuqa")
 text = "Stat:"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer11"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer11" unique_id=1815765259]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="StatID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer11/VBoxContainer" instance=ExtResource("4_diq7a")]
+[node name="StatID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer11/VBoxContainer" unique_id=670231429 instance=ExtResource("4_diq7a")]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.6)
 layout_mode = 2
@@ -703,7 +709,7 @@ popup/item_54/id = 54
 popup/item_55/text = "Stat 2"
 popup/item_55/id = 55
 
-[node name="StatItemID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer11/VBoxContainer" instance=ExtResource("3_jihb0")]
+[node name="StatItemID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer11/VBoxContainer" unique_id=1241600438 instance=ExtResource("3_jihb0")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -711,10 +717,10 @@ tooltip_text = "Uses the count of the specified item."
 disabled = true
 text = " "
 
-[node name="HBoxContainer8" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer8" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer" unique_id=844077743]
 layout_mode = 2
 
-[node name="Last" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer8"]
+[node name="Last" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer8" unique_id=774764715]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -724,7 +730,7 @@ mouse_default_cursor_shape = 2
 button_group = SubResource("ButtonGroup_yeuqa")
 text = "Last:"
 
-[node name="LastID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer8" instance=ExtResource("4_diq7a")]
+[node name="LastID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer8" unique_id=441565399 instance=ExtResource("4_diq7a")]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.6)
 layout_mode = 2
@@ -746,10 +752,10 @@ popup/item_4/id = 4
 popup/item_5/text = "ID Of the Last Targeted Enemy"
 popup/item_5/id = 5
 
-[node name="HBoxContainer9" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer9" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer" unique_id=2030076539]
 layout_mode = 2
 
-[node name="Other" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer9"]
+[node name="Other" type="CheckBox" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer9" unique_id=395760712]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -760,7 +766,7 @@ button_pressed = true
 button_group = SubResource("ButtonGroup_yeuqa")
 text = "Other:"
 
-[node name="OtherID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer9" instance=ExtResource("4_diq7a")]
+[node name="OtherID" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/HBoxContainer9" unique_id=1995898926 instance=ExtResource("4_diq7a")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -809,16 +815,16 @@ popup/item_18/id = 18
 popup/item_19/text = "Global User Parameter"
 popup/item_19/id = 19
 
-[node name="GlobalUserParameterContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer"]
+[node name="GlobalUserParameterContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer" unique_id=2099508630]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/GlobalUserParameterContainer"]
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/GlobalUserParameterContainer" unique_id=1751293872]
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 
-[node name="GlobalUserParameter" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/GlobalUserParameterContainer" instance=ExtResource("4_diq7a")]
+[node name="GlobalUserParameter" parent="MarginContainer/VBoxContainer/Item/MarginContainer/VBoxContainer/GlobalUserParameterContainer" unique_id=1417531021 instance=ExtResource("4_diq7a")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -829,18 +835,18 @@ popup/item_0/id = 0
 popup/item_1/text = "User Parameter: Param 2"
 popup/item_1/id = 1
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=903004279]
 layout_mode = 2
 size_flags_vertical = 8
 theme_override_constants/separation = 12
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=2121469842]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 alignment = 1
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_x52s5")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1007955512 instance=ExtResource("5_x52s5")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
@@ -852,7 +858,7 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_jol07")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_2bfr8")
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_x52s5")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1750376057 instance=ExtResource("5_x52s5")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2

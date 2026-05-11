@@ -45,6 +45,7 @@ func set_data(real_data: RPGTypes) -> void:
 	for i in indexes:
 		%MainParametersList.set_item_disabled(indexes[n], true)
 		n += 1
+	fill_list(%GenderList, data.gender_types, 0, "50")
 	
 	%ElementList.lock_item(0, true)
 	%SkillList.lock_item(0, true)
@@ -59,6 +60,9 @@ func set_data(real_data: RPGTypes) -> void:
 	
 	for i in data.main_parameters.size():
 		%MainParametersList.lock_item(i, true)
+	
+	for i in 3:
+		%GenderList.lock_item(i, true)
 
 
 func fill_list(itemlist: ItemList, items: Array, item_selected: int, button_id: Variant) -> void:
@@ -87,6 +91,13 @@ func fill_list(itemlist: ItemList, items: Array, item_selected: int, button_id: 
 			if %Name20LineEdit.has_focus(): %Name20LineEdit.release_focus()
 			if %Name20LineEdit.has_meta("original_text"):
 				%Name20LineEdit.remove_meta("original_text")
+		elif str(button_id) == "50":
+			%Name50LineEdit.set_disabled(true)
+			%RemoveItem50Button.set_disabled(true)
+			%Name50LineEdit.text = ""
+			if %Name50LineEdit.has_focus(): %Name50LineEdit.release_focus()
+			if %Name50LineEdit.has_meta("original_text"):
+				%Name50LineEdit.remove_meta("original_text")
 		return
 	for i in items.size():
 		var id = str(i+1).pad_zeros(str(items.size()).length())
@@ -109,6 +120,7 @@ func fill_list(itemlist: ItemList, items: Array, item_selected: int, button_id: 
 		if button_id != "10":
 			get_node("%RemoveItem%sButton" % button_id).set_disabled(true)
 		get_node("%IconPicker%s" % button_id).set_disabled(true)
+		
 	if str(button_id) == "6b":
 		var enabled = %UserParametersList.get_selected_items().size() > 0
 		%Name6bLineEdit.set_disabled(!enabled)
@@ -124,7 +136,7 @@ func fill_list(itemlist: ItemList, items: Array, item_selected: int, button_id: 
 			if %Name7bLineEdit.has_focus(): %Name7bLineEdit.release_focus()
 		%Name7bLineEdit.set_disabled(!enabled)
 		%RemoveItem7bButton.set_disabled(!enabled)
-	if str(button_id) == "20":
+	elif str(button_id) == "20":
 		var enabled = %ToolList.get_selected_items().size() > 0
 		%Name20LineEdit.set_disabled(!enabled)
 		%RemoveItem20Button.set_disabled(!enabled)
@@ -132,6 +144,13 @@ func fill_list(itemlist: ItemList, items: Array, item_selected: int, button_id: 
 		if !enabled:
 			%Name20LineEdit.text = ""
 			if %Name20LineEdit.has_focus(): %Name20LineEdit.release_focus()
+	elif str(button_id) == "50":
+		var selected_items = %GenderList.get_selected_items()
+		var enabled = false
+		if selected_items.size() > 0:
+			enabled = selected_items[0] > 2
+		%RemoveItem50Button.set_disabled(!enabled)
+		%Name50LineEdit.set_disabled(false)
 
 
 func _on_element_list_item_selected(index: int) -> void:
@@ -820,3 +839,36 @@ func _on_tool_list_item_selected(index: int) -> void:
 	var current_icon = data.icons.tool_icons[index]
 	%IconPicker20.set_disabled(false)
 	%IconPicker20.set_icon(current_icon.path, current_icon.region)
+
+
+func _on_name_50_line_edit_text_changed(new_text: String) -> void:
+	var index = %GenderList.get_selected_items()[0]
+	data.gender_types[index] = new_text
+	var id = str(index+1).pad_zeros(str(data.gender_types.size()).length())
+	var item_name = id + ": " + new_text
+	%GenderList.set_item_text(index, item_name)
+
+
+func _on_add_item_50_button_pressed() -> void:
+	%Name50LineEdit.text = ""
+	data.gender_types.resize(data.gender_types.size() + 1)
+	fill_list(%GenderList, data.gender_types, data.gender_types.size() - 1, "50")
+	%Name50LineEdit.grab_focus()
+	need_fix_data = true
+
+
+func _on_remove_item_50_button_pressed() -> void:
+	var index = %GenderList.get_selected_items()[0]
+	data.gender_types.remove_at(index)
+	index = min(index, data.gender_types.size() - 1)
+	fill_list(%GenderList, data.gender_types, index, "50")
+	need_fix_data = true
+
+
+func _on_gender_list_item_selected(index: int) -> void:
+	%Name50LineEdit.text = data.gender_types[index]
+	%RemoveItem50Button.set_disabled(index < 3)
+
+
+func _on_gender_list_item_activated(index: int) -> void:
+	%Name50LineEdit.grab_focus()

@@ -1,6 +1,8 @@
 @tool
 extends Window
 
+
+#region Variables
 ## Style for collapsed sections
 @export var section_collapse_style: StyleBox
 
@@ -12,6 +14,7 @@ extends Window
 	set(value):
 		if value:
 			_apply_automatic_tags()
+
 
 var data: RPGEffect
 var target: int
@@ -28,10 +31,10 @@ var last_filter_used: String
 var _collapse_buttons_map: Dictionary = {}
 
 var data_id_cache = {
-	3 : 1,
-	4 : 1,
-	11 : 1,
-	12 : 1
+	3 : -1,
+	4 : -1,
+	11 : -1,
+	12 : -1
 }
 
 var favorite_buttons_need_refresh: bool = false
@@ -39,8 +42,10 @@ var show_favorites_only: bool = false
 var current_button_hovered: Control
 
 const FAVORITE_BUTTON = preload("uid://dsmo7ri8d6djp")
+#endregion
 
 
+#region Lifecycle
 ## Initializes the dialog and sets up the new collapsible sections
 func _ready() -> void:
 	if not "category_states" in FileCache.options:
@@ -73,6 +78,17 @@ func _ready() -> void:
 	fill_all()
 
 
+## Processes the filter timer updates
+func _process(delta: float) -> void:
+	if filter_update_timer > 0.0:
+		filter_update_timer -= delta
+		if filter_update_timer <= 0:
+			filter_update_timer = 0.0
+			_update_filter()
+#endregion
+
+
+#region TagSystem
 ## Applies the search tags to the checkboxes based on a JSON dictionary
 func _apply_automatic_tags() -> void:
 	var dict_path = "res://addons/CustomControls/Dialogs/effects_tags.tags"
@@ -93,8 +109,10 @@ func _apply_automatic_tags() -> void:
 			cb.set_meta("custom_search_tags", "efecto, effect")
 			
 	print("All tags assigned successfully! Please save the scene (Ctrl + S).")
+#endregion
 
 
+#region UIUtilities
 ## Disables or enables necessary UI elements globally
 func _set_disabled(value: bool) -> void:
 	propagate_call("set_disabled", [value])
@@ -103,23 +121,6 @@ func _set_disabled(value: bool) -> void:
 	nodes.append_array([%Filter, %ToggleAllButton, %FavoritesOnlyButton])
 	for node in nodes:
 		node.set_disabled(false)
-
-
-## Handles the main favorite toggle logic
-func _on_favorites_only_button_toggled(toggled_on: bool) -> void:
-	show_favorites_only = toggled_on
-	FileCache.options.effects_show_favorites_only = show_favorites_only
-	filter_update_timer = 0.01
-	%FavoritesOnlyButton.modulate.a = 0.6 if not toggled_on else 1.0
-
-
-## Processes the filter timer updates
-func _process(delta: float) -> void:
-	if filter_update_timer > 0.0:
-		filter_update_timer -= delta
-		if filter_update_timer <= 0:
-			filter_update_timer = 0.0
-			_update_filter()
 
 
 ## Prepares the collapse buttons and restores their saved states
@@ -139,28 +140,6 @@ func _setup_collapse_buttons() -> void:
 				var is_collapsed = FileCache.options.category_states.get(category_id, false)
 				btn.set_pressed_no_signal(is_collapsed)
 				_set_category_visual_state(btn, is_collapsed)
-
-
-## Adds favorite star buttons to all effect checkboxes
-func _setup_favorite_buttons(node: Node) -> void:
-	if node is CheckBox and node.name.begins_with("C"):
-		if node.get_child_count() == 0:
-			var b = FAVORITE_BUTTON.instantiate()
-			node.get_parent().add_child(b)
-			var effect_name = node.name
-			b.position = Vector2(-b.size.x - 4, node.size.y / 2 - b.size.y / 2)
-			b.toggled.connect(_on_favorite_button_toggled.bind(effect_name))
-			
-			var favorite_effects = FileCache.options.get("current_favorite_effects", [])
-			if effect_name in favorite_effects:
-				b.set_pressed_no_signal(true)
-				
-			node.set_meta("favorite_button", b)
-			var current_code = str(node.name).get_slice("-", 0)
-			var code = int(current_code) + 1
-			
-	for child in node.get_children():
-		_setup_favorite_buttons(child)
 
 
 ## Updates the visual state of a category based on user data
@@ -200,32 +179,33 @@ func is_action_for_toggle_all_collapse() -> bool:
 	return should_collapse_all
 
 
-## Handles the user toggling a collapse button directly
-func _on_collapse_button_user_toggled(toggled_on: bool, category_id: String, btn: Button) -> void:
-	FileCache.options.category_states[category_id] = toggled_on
-	_set_category_visual_state(btn, toggled_on)
+## Updates the window height when filtering changes the scroll container size
+func _update_window_size_by_filter_container() -> void:
+	var vbar = %FilterSmoothContainer.get_v_scroll_bar()
+	var max_h = 600
+	size.y = max(min_size.y, min((vbar.max_value - vbar.min_value) + vbar.page, max_h))
+#endregion
 
 
-## Handles the toggle all button action
-func _on_toggle_all_button_pressed() -> void:
-	var should_collapse_all = false
-	
-	for btn in _collapse_buttons_map:
-		if not btn.button_pressed: 
-			should_collapse_all = true
-			break
-
-	for btn in _collapse_buttons_map:
-		if btn.button_pressed != should_collapse_all:
-			btn.set_pressed_no_signal(should_collapse_all)
-			var category_id = _collapse_buttons_map[btn]
-			_on_collapse_button_user_toggled(should_collapse_all, category_id, btn)
-	
-	if has_node("%ToggleAllButton"):
-		if should_collapse_all:
-			%ToggleAllButton.icon = get_theme_icon("GuiTreeArrowRight", "EditorIcons")
-		else:
-			%ToggleAllButton.icon = get_theme_icon("Collapse", "EditorIcons")
+#region FavoriteSystem
+## Adds favorite star buttons to all effect checkboxes
+func _setup_favorite_buttons(node: Node) -> void:
+	if node is CheckBox and node.name.begins_with("C"):
+		if node.get_child_count() == 0:
+			var b = FAVORITE_BUTTON.instantiate()
+			node.get_parent().add_child(b)
+			var effect_name = node.name
+			b.position = Vector2(-b.size.x - 4, node.size.y / 2 - b.size.y / 2)
+			b.toggled.connect(_on_favorite_button_toggled.bind(effect_name))
+			
+			var favorite_effects = FileCache.options.get("current_favorite_effects", [])
+			if effect_name in favorite_effects:
+				b.set_pressed_no_signal(true)
+				
+			node.set_meta("favorite_button", b)
+			
+	for child in node.get_children():
+		_setup_favorite_buttons(child)
 
 
 ## Saves or removes a favorited effect
@@ -242,8 +222,10 @@ func _on_favorite_button_toggled(toggled_on: bool, effect_name: String) -> void:
 		
 	if show_favorites_only:
 		_update_filter()
+#endregion
 
 
+#region Filtering
 ## Updates the visibility of effect rows based on the filter text
 func _update_filter() -> void:
 	var filter = %Filter.text.to_lower()
@@ -368,15 +350,10 @@ func _search_button_recursive(node: Node, exclude_node: Node) -> Button:
 			return found
 			
 	return null
+#endregion
 
 
-## Updates the window height when filtering changes the scroll container size
-func _update_window_size_by_filter_container() -> void:
-	var vbar = %FilterSmoothContainer.get_v_scroll_bar()
-	var max_h = 600
-	size.y = max(min_size.y, min((vbar.max_value - vbar.min_value) + vbar.page, max_h))
-
-
+#region DataManagement
 ## Sets the initial data and target for the dialog
 func set_data(_data: RPGEffect, _target: int) -> void:
 	if _data:
@@ -386,40 +363,6 @@ func set_data(_data: RPGEffect, _target: int) -> void:
 	
 	set_tab_and_selected_data()
 	target = _target
-
-
-## Sets up button groups and connections for the checkboxes recursively
-func add_button_group_and_connections(node: Node, button_group: ButtonGroup) -> void:
-	if node is CheckBox:
-		node.set_button_group(button_group)
-		if !node.toggled.is_connected(_on_toggled):
-			node.toggled.connect(_on_toggled.bind(node))
-		node.set_disabled(false)
-		node.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	
-	for child in node.get_children():
-		add_button_group_and_connections(child, button_group)
-
-
-## Handles a checkbox toggle to enable or disable associated controls
-func _on_toggled(value: bool, node: CheckBox) -> void:
-	if !data:
-		return
-		
-	node.get_parent().propagate_call("set_disabled", [!value])
-	
-	var base_name = str(node.name).get_slice("-", 0)
-	
-	for i in range(2, 5):
-		var extra_node = get_node_or_null("%" + base_name + "-" + str(i))
-		if extra_node:
-			extra_node.get_parent().propagate_call("set_disabled", [!value])
-			
-	node.set_disabled(false)
-	
-	if value:
-		var current_code = base_name.replace("C", "")
-		data.code = int(current_code) + 1
 
 
 ## Configures the UI elements to reflect the currently selected data
@@ -472,21 +415,17 @@ func set_tab_and_selected_data() -> void:
 	if [4, 5, 12, 13].has(data.code):
 		node_name = "%" + "C%s-2" % str(data.code - 1)
 		node = get_node(node_name)
-		var current_data
-		
-		if [4, 5].has(data.code):
-			current_data = database.states
-		elif [12].has(data.code):
-			current_data = database.skills
-		elif [13].has(data.code):
-			current_data = database.common_events
+		var db_key = "states" if [4, 5].has(data.code) else ("skills" if [12].has(data.code) else "common_events")
 		
 		data_id_cache[data.code - 1] = data.data_id
 		
-		if current_data.size() > data.data_id:
-			node.set_text(str(data.data_id).pad_zeros(str(current_data.size()).length()) + ": " + current_data[data.data_id].name)
-		elif current_data.size() > 1:
-			node.set_text(str(1).pad_zeros(str(current_data.size()).length()) + ": " + current_data[1].name)
+		var item = RPGSYSTEM.get_data(db_key, data.data_id)
+		if item:
+			var classic_id = RPGSYSTEM.uid_to_id(db_key, data.data_id)
+			var current_db = database[db_key]
+			node.set_text(str(classic_id).pad_zeros(str(current_db.size()).length()) + ": " + item.name)
+		else:
+			node.set_text("⚠ Invalid Data")
 
 
 ## Refreshes all fill data operations
@@ -499,35 +438,59 @@ func fill_all() -> void:
 func fill_other() -> void:
 	var node_name
 	var node
-	var current_data
 	
 	if database:
-		current_data = database.states
+		var first_state = null
+		var first_state_id = -1
+		for i in range(1, database.states.size()):
+			if database.states[i] and database.states[i]._uniq_id > 0:
+				first_state = database.states[i]
+				first_state_id = i
+				break
+				
 		for i in [3, 4]:
 			node_name = "%" + "C%s-2" % str(i)
 			node = get_node(node_name)
-			if current_data.size() > 1:
-				node.set_text(str(1).pad_zeros(str(current_data.size()).length()) + ": " + current_data[1].name)
+			if first_state:
+				var padded = str(first_state_id).pad_zeros(str(database.states.size()).length())
+				node.set_text(padded + ": " + first_state.name)
+				data_id_cache[i] = first_state._uniq_id
 			else:
 				node.set_text("")
 		
-		current_data = database.skills
-		for i in [11]:
-			node_name = "%" + "C%s-2" % str(i)
-			node = get_node(node_name)
-			if current_data.size() > 1:
-				node.set_text(str(1).pad_zeros(str(current_data.size()).length()) + ": " + current_data[1].name)
-			else:
-				node.set_text("")
-		
-		current_data = database.common_events
-		for i in [12]:
-			node_name = "%" + "C%s-2" % str(i)
-			node = get_node(node_name)
-			if current_data.size() > 1:
-				node.set_text(str(1).pad_zeros(str(current_data.size()).length()) + ": " + current_data[1].name)
-			else:
-				node.set_text("")
+		var first_skill = null
+		var first_skill_id = -1
+		for i in range(1, database.skills.size()):
+			if database.skills[i] and database.skills[i]._uniq_id > 0:
+				first_skill = database.skills[i]
+				first_skill_id = i
+				break
+				
+		node_name = "%C11-2"
+		node = get_node(node_name)
+		if first_skill:
+			var padded = str(first_skill_id).pad_zeros(str(database.skills.size()).length())
+			node.set_text(padded + ": " + first_skill.name)
+			data_id_cache[11] = first_skill._uniq_id
+		else:
+			node.set_text("")
+			
+		var first_ce = null
+		var first_ce_id = -1
+		for i in range(1, database.common_events.size()):
+			if database.common_events[i] and database.common_events[i]._uniq_id > 0:
+				first_ce = database.common_events[i]
+				first_ce_id = i
+				break
+				
+		node_name = "%C12-2"
+		node = get_node(node_name)
+		if first_ce:
+			var padded = str(first_ce_id).pad_zeros(str(database.common_events.size()).length())
+			node.set_text(padded + ": " + first_ce.name)
+			data_id_cache[12] = first_ce._uniq_id
+		else:
+			node.set_text("")
 	else:
 		for i in [3, 4, 11, 12]:
 			node_name = "%" + "C%s-2" % str(i)
@@ -551,10 +514,15 @@ func _fill_parameters() -> void:
 			var header = headers[header_index] if headers.size() > header_index else ""
 			for node in nodes: node.add_separator(header)
 			header_index += 1
+#endregion
 
 
+#region DialogCallbacks
 ## Opens a sub dialog to select database specific data
-func _open_select_any_data_dialog(current_data, id_selected: int, title: String, target_id: int) -> void:
+func _open_select_any_data_dialog(current_data, uid_selected: int, title: String, target_id: int) -> void:
+	var db_key = "states" if [3, 4].has(target_id) else ("skills" if [11].has(target_id) else "common_events")
+	var array_index = RPGSYSTEM.uid_to_id(db_key, uid_selected)
+	
 	var path = "res://addons/CustomControls/Dialogs/select_any_data_dialog.tscn"
 	var dialog
 	
@@ -566,27 +534,97 @@ func _open_select_any_data_dialog(current_data, id_selected: int, title: String,
 		dialog.database = database
 	
 	dialog.selected.connect(_on_any_data_selected, CONNECT_ONE_SHOT)
-	dialog.setup(current_data, id_selected, title, target_id)
+	dialog.setup(current_data, array_index, title, target_id)
 
 
 ## Processes the selected data from the sub dialog
-func _on_any_data_selected(id: int, dialog_target: Variant) -> void:
+func _on_any_data_selected(index: int, dialog_target: Variant) -> void:
 	if !database: return
 	
-	data_id_cache[dialog_target] = id
+	var db_key = "states" if [3, 4].has(dialog_target) else ("skills" if [11].has(dialog_target) else "common_events")
+	var uid = RPGSYSTEM.id_to_uid(db_key, index)
+	
+	data_id_cache[dialog_target] = uid
 	var node = get_node_or_null("%" + "C%s-2" % str(dialog_target))
 	
 	if node:
-		var current_data
-		if [3, 4].has(dialog_target):
-			current_data = database.states
-		elif [11].has(dialog_target):
-			current_data = database.skills
-		elif [12].has(dialog_target):
-			current_data = database.common_events
+		var item = RPGSYSTEM.get_data(db_key, uid)
+		if item:
+			var current_db = database[db_key]
+			var padded = str(index).pad_zeros(str(current_db.size()).length())
+			node.set_text(padded + ": " + item.name)
+#endregion
+
+
+#region ButtonHandlers
+## Sets up button groups and connections for the checkboxes recursively
+func add_button_group_and_connections(node: Node, button_group: ButtonGroup) -> void:
+	if node is CheckBox:
+		node.set_button_group(button_group)
+		if !node.toggled.is_connected(_on_toggled):
+			node.toggled.connect(_on_toggled.bind(node))
+		node.set_disabled(false)
+		node.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	
+	for child in node.get_children():
+		add_button_group_and_connections(child, button_group)
+
+
+## Handles a checkbox toggle to enable or disable associated controls
+func _on_toggled(value: bool, node: CheckBox) -> void:
+	if !data:
+		return
+		
+	node.get_parent().propagate_call("set_disabled", [!value])
+	
+	var base_name = str(node.name).get_slice("-", 0)
+	
+	for i in range(2, 5):
+		var extra_node = get_node_or_null("%" + base_name + "-" + str(i))
+		if extra_node:
+			extra_node.get_parent().propagate_call("set_disabled", [!value])
 			
-		if current_data:
-			node.set_text(str(id).pad_zeros(str(current_data.size()).length()) + ": " + current_data[id].name)
+	node.set_disabled(false)
+	
+	if value:
+		var current_code = base_name.replace("C", "")
+		data.code = int(current_code) + 1
+
+
+## Handles the user toggling a collapse button directly
+func _on_collapse_button_user_toggled(toggled_on: bool, category_id: String, btn: Button) -> void:
+	FileCache.options.category_states[category_id] = toggled_on
+	_set_category_visual_state(btn, toggled_on)
+
+
+## Handles the toggle all button action
+func _on_toggle_all_button_pressed() -> void:
+	var should_collapse_all = false
+	
+	for btn in _collapse_buttons_map:
+		if not btn.button_pressed: 
+			should_collapse_all = true
+			break
+
+	for btn in _collapse_buttons_map:
+		if btn.button_pressed != should_collapse_all:
+			btn.set_pressed_no_signal(should_collapse_all)
+			var category_id = _collapse_buttons_map[btn]
+			_on_collapse_button_user_toggled(should_collapse_all, category_id, btn)
+	
+	if has_node("%ToggleAllButton"):
+		if should_collapse_all:
+			%ToggleAllButton.icon = get_theme_icon("GuiTreeArrowRight", "EditorIcons")
+		else:
+			%ToggleAllButton.icon = get_theme_icon("Collapse", "EditorIcons")
+
+
+## Handles the main favorite toggle logic
+func _on_favorites_only_button_toggled(toggled_on: bool) -> void:
+	show_favorites_only = toggled_on
+	FileCache.options.effects_show_favorites_only = show_favorites_only
+	filter_update_timer = 0.01
+	%FavoritesOnlyButton.modulate.a = 0.6 if not toggled_on else 1.0
 
 
 ## Refreshes the dialog contents when it becomes visible
@@ -603,7 +641,6 @@ func _on_ok_button_pressed() -> void:
 	if focus_owner is LineEdit and focus_owner.get_parent() is SpinBox:
 		focus_owner.get_parent().apply()
 		
-	var button_pressed = %"C0-1".get_button_group().get_pressed_button()
 	var node2 = get_node_or_null("%" + "C%s-2" % str(data.code - 1))
 	var node3 = get_node_or_null("%" + "C%s-3" % str(data.code - 1))
 	var node4 = get_node_or_null("%" + "C%s-4" % str(data.code - 1))
@@ -661,8 +698,10 @@ func _on_c_112_pressed() -> void:
 func _on_c_122_pressed() -> void:
 	if !database: return
 	_open_select_any_data_dialog(database.common_events, data_id_cache[12], "Global Events", 12)
+#endregion
 
 
+#region FilterInteraction
 ## Resets the filter timer and updates search icon
 func _on_filter_text_changed(new_text: String) -> void:
 	if new_text.length() != 0:
@@ -687,3 +726,4 @@ func _on_filter_gui_input(event: InputEvent) -> void:
 			%Filter.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		else:
 			%Filter.mouse_default_cursor_shape = Control.CURSOR_IBEAM
+#endregion

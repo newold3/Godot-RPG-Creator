@@ -28,6 +28,9 @@ func get_class(): return "RPGWeapon"
 ## Description of the weapon.
 @export var description: String = ""
 
+## List of usage restrictions for this equipment.
+@export var equipment_restriction: RPGEquipRestrictions = RPGEquipRestrictions.new()
+
 ## Type of equipment.
 @export var weapon_type: int = 1
 
@@ -82,15 +85,12 @@ func get_class(): return "RPGWeapon"
 ## Additional notes about the weapon.
 @export var notes: String = ""
 
-## Minimum level required to use this weapon
-@export var level_restriction: int = 0
-
 ## Time between each tick (only used if ticks are enabled).
 @export var tick_interval: float = 1.0
 
 
 func clear() -> void:
-	for v in ["name", "description", "lpc_part", "notes"]: set(v, "")
+	for v in ["name", "description", "lpc_part", "notes", "equipment_restriction"]: set(v, "")
 	for v in [traits, upgrades, craft_materials, disassemble_materials]: v.clear()
 	weapon_type = 1
 	rarity_type = 0
@@ -99,7 +99,6 @@ func clear() -> void:
 	params = PackedInt32Array([0, 0, 0, 0, 0, 0, 0, 0])
 	craft_cost = 0
 	disassemble_cost = 0
-	level_restriction = 0
 	tick_interval = 1.0
 	icon.clear()
 
@@ -155,6 +154,11 @@ func clone(value: bool = true) -> RPGWeapon:
 	new_weapon.upgrades = new_weapon.upgrades.clone(value)
 	
 	new_weapon.icon = icon.clone(value)
+	
+	if equipment_restriction:
+		new_weapon.equipment_restriction = equipment_restriction.clone(value)
+	else:
+		new_weapon.equipment_restriction = RPGEquipRestrictions.new()
 	
 	return new_weapon
 

@@ -1,20 +1,27 @@
 @tool
 extends BasePanelData
 
-
+#region Lifecycle
+## Initializes the panel with default data
 func _ready() -> void:
 	super()
 	default_data_element = RPGItem.new()
 
 
+
+## Retrieves the currently selected Item data
 func get_data() -> RPGItem:
 	current_selected_index = max(1, min(current_selected_index, data.size() - 1))
 	if data.size() > current_selected_index:
 		return data[current_selected_index]
 	else:
 		return default_data_element
+#endregion
 
 
+
+#region Core Data Loading
+## Updates all the visual fields based on the selected item
 func _update_data_fields() -> void:
 	busy = true
 
@@ -27,6 +34,7 @@ func _update_data_fields() -> void:
 		fill_invocation_animation()
 		fill_scope()
 		_fill_recipes_list()
+		
 		var current_data = get_data()
 		
 		if not current_data.recipes:
@@ -49,19 +57,23 @@ func _update_data_fields() -> void:
 		%TPGainSpinBox.value = current_data.invocation.tp_gain
 		%HitTypeOptions.select(current_data.invocation.hit_type)
 		%DamageTypeOptions.select(current_data.damage.type)
+		
 		if current_data.damage.type == 0:
 			%Damage.propagate_call("set_disabled", [true])
 			%Damage.propagate_call("set_editable", [false])
 			%DamageTypeOptions.set_disabled(false)
+			
 		%DamageFormulaLineEdit.text = current_data.damage.formula
 		%DamageVarianceSpinBox.value = current_data.damage.variance
 		%DamageCriticalHitsOptions.select(current_data.damage.critical)
 		%IsPerishableOptionButton.select(current_data.perishable.is_perishable)
 		%PerishableDurationSpinBox.value = current_data.perishable.duration
 		%PerishableActionOptionButton.select(current_data.perishable.action)
+		
 		%PerishableDurationSpinBox.set_disabled(current_data.perishable.is_perishable == 0)
 		%PerishableActionOptionButton.set_disabled(current_data.perishable.is_perishable == 0)
 		%PerishableItemConversionButton.set_disabled(current_data.perishable.is_perishable == 0 or current_data.perishable.action == 0)
+		
 		%BattleMessageTextEdit.text = current_data.battle_message
 		%NoteTextEdit.text = current_data.notes
 		%PasteDisassemble.set_disabled(!StaticEditorVars.CLIPBOARD.get("items_disassemble", false))
@@ -71,18 +83,70 @@ func _update_data_fields() -> void:
 	busy = false
 
 
+
+## Handles visibility changes
+func _on_visibility_changed() -> void:
+	super()
+	if visible:
+		busy = true
+		fill_category_types()
+		fill_rarity_types()
+		fill_element_types()
+		fill_item_conversion()
+		fill_invocation_animation()
+		if current_selected_index != -1:
+			%EffectsPanel.set_data(database, get_data().effects)
+		else:
+			%EffectsPanel.clear()
+		busy = false
+#endregion
+
+
+
+#region Dropdowns and Lists Setup
+## Populates the item recipes list
 func _fill_recipes_list(index: int = -1) -> void:
 	var node = %RecipesPanel
 	node.clear()
 	var recipes = get_data().recipes
 	var i = 1
-	for item: RPGRecipe in recipes:
-		var learned_prefix = "📜 " if item.learned_by_default else ""
-		node.add_column(["%s#%s: %s" % [learned_prefix, i, item.name]])
-		if item.learned_by_default:
+	
+	for recipe: RPGRecipe in recipes:
+		var learned_prefix = "📜 " if recipe.learned_by_default else ""
+		var materials_preview = ""
+		
+		if recipe.materials.size() > 0:
+			var mat_strings = []
+			var max_preview = min(recipe.materials.size(), 3)
+			
+			for m_idx in range(max_preview):
+				var mat_comp: RPGGearUpgradeComponent = recipe.materials[m_idx]
+				var db_key = "items" if mat_comp.component.data_id == 0 else "weapons" if mat_comp.component.data_id == 1 else "armors"
+				var uid = mat_comp.component.item_id
+				
+				if uid > 0 and uid < 1000000:
+					uid = RPGSYSTEM.id_to_uid(db_key, uid)
+					mat_comp.component.item_id = uid
+				
+				var res_data = RPGSYSTEM.get_data(db_key, uid)
+				if res_data:
+					mat_strings.append("%sx %s" % [mat_comp.quantity, res_data.name])
+				else:
+					mat_strings.append("%sx ???" % mat_comp.quantity)
+			
+			materials_preview = " (" + ", ".join(mat_strings)
+			if recipe.materials.size() > 3:
+				materials_preview += "..."
+			materials_preview += ")"
+		
+		var final_text = "%s#%s: %s%s" % [learned_prefix, i, recipe.name, materials_preview]
+		node.add_column([final_text])
+		
+		if recipe.learned_by_default:
 			node.add_row_text_color(i-1, Color.WHITE)
 		else:
 			node.add_row_text_color(i-1, Color(0.857, 0.731, 0.794))
+		
 		i += 1
 	
 	if recipes.size() > 0:
@@ -91,21 +155,34 @@ func _fill_recipes_list(index: int = -1) -> void:
 		node.select(index)
 
 
+
+## Fills the item conversion button translating UIDs and Legacy IDs
 func fill_item_conversion() -> void:
 	if !database: return
 	
-	var item_id = get_data().perishable.conversion_item_id
+	var item_uid = get_data().perishable.conversion_item_id
 	var item_name: String
 	
-	if database.items.size() > item_id and item_id > 0:
-		item_name = str(item_id).pad_zeros(str(database.items.size()).length()) + ": " + database.items[item_id].name
-	elif item_id > 0:
-		item_name = "⚠ Invalid Data"
+	if item_uid > 0:
+		if item_uid < 1000000:
+			item_uid = RPGSYSTEM.id_to_uid("items", item_uid)
+			get_data().perishable.conversion_item_id = item_uid
+			
+		var res_data = RPGSYSTEM.get_data("items", item_uid)
+		if res_data:
+			var classic_id = RPGSYSTEM.uid_to_id("items", item_uid)
+			var id_padded = str(classic_id).pad_zeros(str(database.items.size()).length())
+			item_name = "%s: %s" % [id_padded, res_data.name]
+		else:
+			item_name = "⚠ Invalid Data"
 	else:
-		item_name = "none"
+		item_name = TranslationManager.tr("none")
+		
 	%PerishableItemConversionButton.text = item_name
 
 
+
+## Populates the element type options
 func fill_element_types() -> void:
 	if !database: return
 	
@@ -130,6 +207,8 @@ func fill_element_types() -> void:
 		node.text = "⚠ Invalid Data"
 
 
+
+## Populates the item category options
 func fill_category_types() -> void:
 	if !database: return
 	
@@ -151,6 +230,8 @@ func fill_category_types() -> void:
 		node.text = "⚠ Invalid Data"
 
 
+
+## Populates the item rarity options
 func fill_rarity_types() -> void:
 	if !database: return
 	
@@ -176,23 +257,34 @@ func fill_rarity_types() -> void:
 		node.text = "⚠ Invalid Data"
 
 
+
+## Formats the invocation animation button
 func fill_invocation_animation() -> void:
 	if !database: return
 	
 	var node = %AnimationButton
-	
 	var current_data = get_data()
-	if database.animations.size() > current_data.invocation.animation and current_data.invocation.animation > 0:
-		var animation_name = database.animations[current_data.invocation.animation].name
-		if animation_name.length() == 0:
-			animation_name = "# %s" % (current_data.invocation.animation)
-		node.text = animation_name
-	elif current_data.invocation.animation > 0:
-		node.text = "⚠ Invalid Data"
+	var uid = current_data.invocation.animation
+	
+	if uid > 0:
+		if uid < 1000000:
+			uid = RPGSYSTEM.id_to_uid("animations", uid)
+			current_data.invocation.animation = uid
+			
+		var anim_data = RPGSYSTEM.get_data("animations", uid)
+		if anim_data:
+			var classic_id = RPGSYSTEM.uid_to_id("animations", uid)
+			var animation_name = anim_data.name if not anim_data.name.is_empty() else "# %s" % classic_id
+			var id_padded = str(classic_id).pad_zeros(str(database.animations.size()).length())
+			node.text = "%s: %s" % [id_padded, animation_name]
+		else:
+			node.text = "⚠ Invalid Data"
 	else:
 		node.text = TranslationManager.tr("none")
 
 
+
+## Formats the scope text based on faction and targets
 func fill_scope() -> void:
 	if data:
 		var scope = get_data().scope
@@ -221,13 +313,19 @@ func fill_scope() -> void:
 			button.text = TranslationManager.tr("All Allies and Enemies")
 		elif scope.faction == 4:
 			button.text = TranslationManager.tr("The User")
+#endregion
 
 
+
+#region UI Interactions
+## Clears the currently assigned icon
 func _on_icon_picker_remove_requested() -> void:
 	get_data().icon.clear()
 	%IconPicker.set_icon("")
 
 
+
+## Opens the icon selection dialog
 func _on_icon_picker_clicked() -> void:
 	var path = "res://addons/CustomControls/Dialogs/select_icon_dialog.tscn"
 	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
@@ -236,27 +334,15 @@ func _on_icon_picker_clicked() -> void:
 	dialog.icon_changed.connect(update_icon)
 
 
+
+## Refreshes the icon UI with the new data
 func update_icon() -> void:
 	var icon = get_data().icon
 	%IconPicker.set_icon(icon.path, icon.region)
 
 
-func _on_visibility_changed() -> void:
-	super()
-	if visible:
-		busy = true
-		fill_category_types()
-		fill_rarity_types()
-		fill_element_types()
-		fill_item_conversion()
-		fill_invocation_animation()
-		if current_selected_index != -1:
-			%EffectsPanel.set_data(database, get_data().effects)
-		else:
-			%EffectsPanel.clear()
-		busy = false
 
-
+## Updates perishable configuration
 func _on_is_perishable_option_button_item_selected(index: int) -> void:
 	if busy or not get_data() or not get_data().perishable: return
 	var current_data = get_data().perishable
@@ -267,96 +353,137 @@ func _on_is_perishable_option_button_item_selected(index: int) -> void:
 		%PerishableItemConversionButton.set_disabled(current_data.action == 0)
 
 
+
+## Updates the perishable duration
 func _on_perishable_duration_spin_box_value_changed(value: float) -> void:
 	if busy or not get_data() or not get_data().perishable: return
 	get_data().perishable.duration = value
 
 
+
+## Updates the perishable action
 func _on_perishable_action_option_button_item_selected(index: int) -> void:
 	if busy or not get_data() or not get_data().perishable: return
 	get_data().perishable.action = index
 	%PerishableItemConversionButton.set_disabled(index == 0)
 
 
+
+## Opens the dialog to select the conversion item
 func _on_perishable_item_conversion_button_pressed() -> void:
 	var path = "res://addons/CustomControls/Dialogs/select_any_data_dialog.tscn"
 	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
 	dialog.database = database
 	dialog.destroy_on_hide = true
-	var current_data = database.items
-	var id_selected = get_data().perishable.conversion_item_id
+	
+	var uid = get_data().perishable.conversion_item_id
+	var classic_id = RPGSYSTEM.uid_to_id("items", uid) if uid > 0 else 1
+	classic_id = max(1, min(classic_id, database.items.size() - 1))
+	
 	var title = TranslationManager.tr("Items")
 	var target = self
+	
 	dialog.selected.connect(_on_perishable_item_selected, CONNECT_ONE_SHOT)
-	dialog.setup(current_data, id_selected, title, target)
+	dialog.setup(database.items, classic_id, title, target)
 
 
+
+## Updates the item conversion target converting classic ID to UID
 func _on_perishable_item_selected(id: int, target: Variant) -> void:
-	get_data().perishable.conversion_item_id = id
+	if busy or not get_data() or not get_data().perishable: return
+	var uid = RPGSYSTEM.id_to_uid("items", id)
+	get_data().perishable.conversion_item_id = uid
 	fill_item_conversion()
 
 
+
+## Updates the name of the item
 func _on_name_line_edit_text_changed(new_text: String) -> void:
 	super(new_text)
 	fill_item_conversion()
 
 
+
+## Opens the selection dialog to choose an animation passing the classic ID
 func _on_animation_button_pressed() -> void:
 	var path = "res://addons/CustomControls/Dialogs/select_any_data_dialog.tscn"
 	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
 	dialog.database = database
 	dialog.destroy_on_hide = true
-	var current_data = database.animations
-	var id_selected = get_data().invocation.animation
+	
+	var uid = get_data().invocation.animation
+	var classic_id = RPGSYSTEM.uid_to_id("animations", uid) if uid > 0 else 1
+	classic_id = max(1, min(classic_id, database.animations.size() - 1))
+	
 	var title = TranslationManager.tr("Animations")
 	var target = self
+	
 	dialog.selected.connect(_on_animation_selected, CONNECT_ONE_SHOT)
-	dialog.setup(current_data, id_selected, title, target)
+	dialog.setup(database.animations, classic_id, title, target)
 
 
+
+## Receives the classic ID from the sub-dialog, converts it to UID, and updates the data
 func _on_animation_selected(id: int, target: Variant) -> void:
 	if busy or not get_data() or not get_data().invocation: return
-	get_data().invocation.animation = id
+	var uid = RPGSYSTEM.id_to_uid("animations", id)
+	get_data().invocation.animation = uid
 	fill_invocation_animation()
 
 
+
+## Clears the animation setting (none)
 func _on_animation_button_middle_click_pressed() -> void:
 	if busy or not get_data() or not get_data().invocation: return
 	get_data().invocation.animation = -1
 	fill_invocation_animation()
 
 
+
+## Sets the animation to Normal Attack (-2)
 func _on_animation_button_right_click_pressed() -> void:
 	if busy or not get_data() or not get_data().invocation: return
 	get_data().invocation.animation = -2
 	fill_invocation_animation()
 
 
+
+## Updates the invocation speed
 func _on_speed_spin_box_value_changed(value: float) -> void:
 	if busy or not get_data() or not get_data().invocation: return
 	get_data().invocation.speed = value
 
 
+
+## Updates the invocation success rate
 func _on_success_spin_box_value_changed(value: float) -> void:
 	if busy or not get_data() or not get_data().invocation: return
 	get_data().invocation.success = value
 
 
+
+## Updates the invocation repeat count
 func _on_repeat_spin_box_value_changed(value: float) -> void:
 	if busy or not get_data() or not get_data().invocation: return
 	get_data().invocation.repeat = value
 
 
+
+## Updates the invocation TP gain
 func _on_tp_gain_spin_box_value_changed(value: float) -> void:
 	if busy or not get_data() or not get_data().invocation: return
 	get_data().invocation.tp_gain = value
 
 
+
+## Updates the hit type
 func _on_hit_type_options_item_selected(index: int) -> void:
 	if busy or not get_data() or not get_data().invocation: return
 	get_data().invocation.hit_type = index
 
 
+
+## Updates the damage type and toggles damage controls
 func _on_damage_type_options_item_selected(index: int) -> void:
 	if busy or not get_data() or not get_data().damage: return
 	get_data().damage.type = index
@@ -370,55 +497,79 @@ func _on_damage_type_options_item_selected(index: int) -> void:
 		%Damage.propagate_call("set_editable", [true])
 
 
+
+## Updates the damage element
 func _on_damage_element_options_item_selected(index: int) -> void:
 	if busy or not get_data() or not get_data().damage: return
 	get_data().damage.element_id = index
 
 
+
+## Updates the damage formula
 func _on_damage_formula_line_edit_text_changed(new_text: String) -> void:
 	if busy or not get_data() or not get_data().damage: return
 	get_data().damage.formula = new_text
 
 
+
+## Updates the damage variance
 func _on_damage_variance_spin_box_value_changed(value: float) -> void:
 	if busy or not get_data() or not get_data().damage: return
 	get_data().damage.variance  = value
 
 
+
+## Updates the damage critical hits option
 func _on_damage_critical_hits_options_item_selected(index: int) -> void:
 	if busy or not get_data() or not get_data().damage: return
 	get_data().damage.critical = index
 
 
+
+## Updates the notes string
 func _on_note_text_edit_text_changed() -> void:
 	if busy: return
 	get_data().notes = %NoteTextEdit.text
 
 
+
+## Updates the description
 func _on_description_text_edit_text_changed() -> void:
 	get_data().description = %DescriptionTextEdit.text
 
 
+
+## Updates the item type
 func _on_item_type_options_item_selected(index: int) -> void:
 	get_data().item_type = index
 
 
+
+## Updates the item category
 func _on_item_category_options_item_selected(index: int) -> void:
 	get_data().item_category = index
 
 
+
+## Updates the item price
 func _on_price_spin_box_value_changed(value: float) -> void:
 	get_data().price = value
 
 
+
+## Updates the item consumable state
 func _on_consumable_options_item_selected(index: int) -> void:
 	get_data().consumable = index == 0
 
 
+
+## Updates the occasion type
 func _on_occasion_options_item_selected(index: int) -> void:
 	get_data().occasion = index
 
 
+
+## Opens the scope selection dialog
 func _on_scope_button_pressed() -> void:
 	var path = "res://addons/CustomControls/Dialogs/Select_scope_dialog.tscn"
 	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
@@ -427,10 +578,13 @@ func _on_scope_button_pressed() -> void:
 
 
 
+## Updates the item rarity type
 func _on_item_rarity_type_options_item_selected(index: int) -> void:
 	get_data().rarity_type = index
 
 
+
+## Sets pre-defined battle messages
 func _on_auto_message_options_item_selected(index: int) -> void:
 	if index == 1:
 		%BattleMessageTextEdit.text = TranslationManager.tr("%1 uses %2!")
@@ -440,23 +594,27 @@ func _on_auto_message_options_item_selected(index: int) -> void:
 		%BattleMessageTextEdit.text = TranslationManager.tr("%1 employs %2!")
 	
 	%AutoMessageOptions.select(0)
-	
 	%BattleMessageTextEdit.text_changed.emit()
 
 
+
+## Updates the battle message
 func _on_battle_message_text_edit_text_changed() -> void:
 	get_data().battle_message = %BattleMessageTextEdit.text
 
 
+
+## Opens the fast formula dialog
 func _on_damage_set_formula_button_pressed() -> void:
 	var path = "res://addons/CustomControls/Dialogs/fast_damage_formula.tscn"
 	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
 	
 	dialog.fill_formulas(%DamageTypeOptions.get_selected_id())
-	
 	dialog.formula_selected.connect(_on_fast_formula_selected)
 
 
+
+## Replaces the formula with the fast selection
 func _on_fast_formula_selected(formula: String) -> void:
 	var node: LineEdit = %DamageFormulaLineEdit
 	node.text = formula
@@ -466,6 +624,8 @@ func _on_fast_formula_selected(formula: String) -> void:
 	node.text_changed.emit(formula)
 
 
+
+## Switches the visibility of the configuration tabs
 func _on_config_data_tabs_tab_changed(index: int) -> void:
 	var node_path = "%%Tab%s" % (index + 1)
 	var node = get_node_or_null(node_path)
@@ -475,6 +635,8 @@ func _on_config_data_tabs_tab_changed(index: int) -> void:
 		node.visible = true
 
 
+
+## Handles pasting an icon from the clipboard
 func _on_icon_picker_paste_requested(icon: String, region: Rect2) -> void:
 	var data_icon = get_data().icon
 	data_icon.path = icon
@@ -482,6 +644,8 @@ func _on_icon_picker_paste_requested(icon: String, region: Rect2) -> void:
 	%IconPicker.set_icon(data_icon.path, data_icon.region)
 
 
+
+## Deletes recipes from the item
 func _on_recipes_panel_delete_pressed(indexes: PackedInt32Array) -> void:
 	var remove_recipes: Array[RPGRecipe] = []
 	var recipes = get_data().recipes
@@ -493,12 +657,15 @@ func _on_recipes_panel_delete_pressed(indexes: PackedInt32Array) -> void:
 	_fill_recipes_list(indexes[0])
 
 
+
+## Opens the recipe sub-dialog editor
 func _on_recipes_panel_item_activated(index: int) -> void:
 	var current_data = get_data()
 		
 	var path = "res://addons/CustomControls/Dialogs/create_recipe_dialog.tscn"
 	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
 	var recipe: RPGRecipe = current_data.recipes[index] if index >= 0 and current_data.recipes.size() > index else RPGRecipe.new()
+	
 	dialog.set_data(recipe)
 	dialog.recipe_changed.connect(
 		func(new_recipe: RPGRecipe) -> void:
@@ -510,6 +677,8 @@ func _on_recipes_panel_item_activated(index: int) -> void:
 	)
 
 
+
+## Copies disassemble materials to the clipboard
 func _on_copy_disassemble_pressed() -> void:
 	var current_data = get_data()
 	var components = []
@@ -523,30 +692,38 @@ func _on_copy_disassemble_pressed() -> void:
 	RPGEditorToast.show_message("Salvaged materials copied to Clipboard")
 
 
+
+## Pastes disassemble materials from the clipboard
 func _on_paste_disassemble_pressed() -> void:
 	var current_data = get_data()
 	var items_disassemble = StaticEditorVars.CLIPBOARD.get("items_disassemble", null)
 	if items_disassemble:
-		var components = []
+		var components: Array[RPGGearUpgradeComponent] = []
 		for component: RPGGearUpgradeComponent in items_disassemble.components:
 			components.append(component.clone(true))
 		current_data.disassemble_materials = components
 		current_data.disassemble_cost = items_disassemble.cost
 
 
+
+## Opens the disassemble sub-dialog editor
 func _on_disassemble_button_pressed() -> void:
 	var path = "res://addons/CustomControls/Dialogs/weapon_and_armor_craft_dialog.tscn"
 	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
 	dialog.title = "Disassemble Materials"
 	dialog.enabled_percent(true)
+	
 	var current_data = get_data()
 	var d = RPGSYSTEM.database
 	var mats = current_data.disassemble_materials
 	var cost = current_data.disassemble_cost
+	
 	dialog.set_data(d, mats, cost)
 	dialog.materials_changed.connect(_on_craft_material_changed)
 
 
+
+## Updates the disassemble materials after returning from the dialog
 func _on_craft_material_changed(new_mats: Array[RPGGearUpgradeComponent], cost: int) -> void:
 	var real_mats: Array[RPGGearUpgradeComponent] = get_data().disassemble_materials
 	get_data().disassemble_cost = cost
@@ -555,6 +732,9 @@ func _on_craft_material_changed(new_mats: Array[RPGGearUpgradeComponent], cost: 
 		real_mats.append(mat)
 
 
+
+## Updates the max stack quantity
 func _on_max_quantity_value_changed(value: float) -> void:
 	if get_data():
 		get_data().max_quantity = value
+#endregion

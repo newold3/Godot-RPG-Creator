@@ -3,7 +3,7 @@ extends Node2D
 
 
 var current_data: RPGAnimation
-var current_frame: int = 0
+var current_frame: float = 0
 var current_target: Variant
 var flash_tween: Tween
 var flash_total_duration: float
@@ -43,34 +43,39 @@ func _process(_delta: float) -> void:
 	if not current_data: return
 	
 	if target: _recualculate_position_and_scale()
-
+	
+	var previous_frame = current_frame
+	
+	current_frame += 1.0 * current_data.animation_speed
+	
 	for sound: RPGAnimationSound in current_data.sounds:
-		if sound.frame == current_frame:
+		if sound.frame >= previous_frame and sound.frame < current_frame:
 			if AssetManager.exists(sound.filename):
 				GameManager.play_se(sound.filename, sound.volume_db, randf_range(sound.pitch_min, sound.pitch_max))
 				
 	if current_target:
 		for flash: RPGAnimationFlash in current_data.flashes:
-			if flash.frame == current_frame:
+			if flash.frame >= previous_frame and flash.frame < current_frame:
 				var duration = flash.duration
 				flash_total_duration = duration
 				flash_tween = create_tween()
 				
-				if flash.target == 0: # Animation On Target
+				if flash.target == 0:
 					var original_modulate = current_target.modulate
 					var target_color = flash.color
+					
 					flash_tween.tween_method(_animate_flash_npc.bind(original_modulate, target_color, current_target), 0.0, 1.0, duration)
 					flash_tween.tween_method(_animate_flash_npc.bind(target_color, original_modulate, current_target), 0.0, 1.0, duration)
-				else: # Flash On Screen
+				else:
 					var original_color = Color.TRANSPARENT
 					var target_color = flash.color
 					var blend = flash.screen_blend_type
+					
 					flash_tween.tween_method(_animate_flash_screen.bind(original_color, target_color, blend), 0.0, 1.0, duration)
 					flash_tween.tween_method(_animate_flash_screen.bind(target_color, original_color, blend), 0.0, 1.0, duration)
 					
-	
 	for shake: RPGAnimationShake in current_data.shakes:
-		if shake.frame == current_frame:
+		if shake.frame >= previous_frame and shake.frame < current_frame:
 			var obj = current_target if shake.target == 0 else GameManager.main_scene.get_main_sub_viewport_container()
 			var magnitude = shake.amplitude
 			var frequency = shake.frequency
@@ -78,13 +83,13 @@ func _process(_delta: float) -> void:
 			shake_total_duration = duration + 0.1
 			var start_position = obj.position if shake.target == 0 else Vector2.ZERO
 			var callable = _animate_shake.bind(obj, magnitude, frequency, start_position)
+			
 			shake_tween = create_tween()
 			shake_tween.tween_method(callable, 0.0, 1.0, duration)
 			shake_tween.tween_callback(obj.set.bind("position", start_position))
-			if shake.target == 1: # Screen shake, need reset position
+			
+			if shake.target == 1:
 				shake_tween.tween_property(obj, "position", Vector2.ZERO, 0.1)
-
-	current_frame += 1
 
 
 func end() -> void:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://eme8l8wdi2tr"]
+[gd_scene format=3 uid="uid://eme8l8wdi2tr"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_6ju05"]
 [ext_resource type="Script" uid="uid://svkyp8l70jss" path="res://addons/CustomControls/Dialogs/CommandEvents/show_shop_dialog.gd" id="2_nu3ys"]
@@ -35,7 +35,7 @@ region = Rect2(0, 48, 24, 24)
 atlas = ExtResource("4_vfa8c")
 region = Rect2(0, 24, 24, 24)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xcxyf"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6r58x"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -53,17 +53,17 @@ corner_radius_bottom_left = 12
 [sub_resource type="Gradient" id="Gradient_ctwx1"]
 colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_ff345"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_1o5qs"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_ctwx1")
 fill_from = Vector2(0.542735, 0.995726)
 fill_to = Vector2(0.58547, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qpb6x"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ls5rw"]
 resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_ff345")
+texture = SubResource("GradientTexture2D_1o5qs")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hja4x"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4b2gd"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -76,10 +76,11 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[node name="ShowShopDialog" type="Window"]
+[node name="ShowShopDialog" type="Window" unique_id=589290759]
+oversampling_override = 1.0
 title = "Show Shop"
 position = Vector2i(0, 36)
-size = Vector2i(1463, 731)
+size = Vector2i(1184, 731)
 wrap_controls = true
 transient = true
 exclusive = true
@@ -87,7 +88,7 @@ min_size = Vector2i(700, 480)
 theme = ExtResource("1_6ju05")
 script = ExtResource("2_nu3ys")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=268089710]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -95,7 +96,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_ykjfa")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=552837281]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -108,36 +109,36 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1204243355]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1346686905]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6" unique_id=1044030289]
 custom_minimum_size = Vector2(135, 0)
 layout_mode = 2
 text = "Shop Name:"
 
-[node name="DialogScene" parent="MarginContainer/VBoxContainer/HBoxContainer6" instance=ExtResource("9_7tsrj")]
+[node name="DialogScene" parent="MarginContainer/VBoxContainer/HBoxContainer6" unique_id=377651387 instance=ExtResource("9_7tsrj")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Scene that will be reproduced to show the store. The scene must be of type \"GeneralShopScene\"."
 text = "Select shop scene"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=912050432]
 layout_mode = 2
 alignment = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1388177561]
 layout_mode = 2
 size_flags_horizontal = 2
 text = "Select Items to show:"
 
-[node name="AddNewItem" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_xrosl")]
+[node name="AddNewItem" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=791939995 instance=ExtResource("4_xrosl")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
@@ -145,7 +146,7 @@ tooltip_text = "Add a new saleable item to this shop."
 text = "ADD NEW ITEM"
 icon = SubResource("AtlasTexture_oqkj2")
 
-[node name="AddMultipleItems" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_xrosl")]
+[node name="AddMultipleItems" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1692298589 instance=ExtResource("4_xrosl")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
@@ -153,7 +154,7 @@ tooltip_text = "Quickly choose items to add to the list"
 text = "ADD MULTIPLE ITEMS"
 icon = SubResource("AtlasTexture_1o5qs")
 
-[node name="ClearAll" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_xrosl")]
+[node name="ClearAll" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1171281840 instance=ExtResource("4_xrosl")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
@@ -161,7 +162,7 @@ tooltip_text = "Remove all items sold in this store"
 text = "REMOVE ALL ITEMS"
 icon = SubResource("AtlasTexture_6r58x")
 
-[node name="RemoveDuplicates" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_xrosl")]
+[node name="RemoveDuplicates" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1355992716 instance=ExtResource("4_xrosl")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
@@ -169,77 +170,79 @@ tooltip_text = "Remove duplicate items added to this store"
 text = "REMOVE DUPLICATES"
 icon = SubResource("AtlasTexture_ls5rw")
 
-[node name="CustomPanel" parent="MarginContainer/VBoxContainer" instance=ExtResource("5_u5tnx")]
+[node name="CustomPanel" parent="MarginContainer/VBoxContainer" unique_id=1117200111 instance=ExtResource("5_u5tnx")]
 clip_children = 0
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_xcxyf")
-style1 = SubResource("StyleBoxFlat_xcxyf")
-style2 = SubResource("StyleBoxTexture_qpb6x")
-style3 = SubResource("StyleBoxFlat_hja4x")
+theme_override_styles/panel = SubResource("StyleBoxFlat_6r58x")
+style1 = SubResource("StyleBoxFlat_6r58x")
+style2 = SubResource("StyleBoxTexture_ls5rw")
+style3 = SubResource("StyleBoxFlat_4b2gd")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/CustomPanel"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/CustomPanel" unique_id=763739799]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer" unique_id=1307767052]
 layout_mode = 2
 size_flags_vertical = 3
 follow_focus = true
 script = ExtResource("5_c7hwc")
 scroll_duration = 0.3
 
-[node name="itemContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/ScrollContainer"]
+[node name="itemContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/ScrollContainer" unique_id=1339794280]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1908087910]
 layout_mode = 2
 
-[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer4"]
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=1378812782]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 
-[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4"]
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=472224191]
 layout_mode = 2
 text = "Purchase Ratio 🛒:"
 
-[node name="PurchaseRatio" parent="MarginContainer/VBoxContainer/HBoxContainer4" instance=ExtResource("8_gy8xy")]
+[node name="PurchaseRatio" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=1789096227 instance=ExtResource("8_gy8xy")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Specifies the ratio for purchasing items in this store (Purchase price * ratio %)."
 min_value = 1.0
 step = 0.01
-value = 100.0
+rounded = false
 allow_greater = true
 suffix = "%"
+_custom_value = 0.0
 
-[node name="SalesRatioLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4"]
+[node name="SalesRatioLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=234883797]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Sales Ratio 💰:"
 
-[node name="SalesRatio" parent="MarginContainer/VBoxContainer/HBoxContainer4" instance=ExtResource("8_gy8xy")]
+[node name="SalesRatio" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=1982363755 instance=ExtResource("8_gy8xy")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Specify the ratio at which this store will buy the allowed items (Purchase price * ratio %)."
 min_value = 1.0
 step = 0.01
-value = 30.0
+rounded = false
 allow_greater = true
 suffix = "%"
+_custom_value = 0.0
 
-[node name="HBoxContainer8" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer8" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=802880833]
 layout_mode = 2
 
-[node name="CanRestock" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer8"]
+[node name="CanRestock" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer8" unique_id=1046047406]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
@@ -247,16 +250,16 @@ tooltip_text = "Allow this store to replenish its inventory after a period of ti
 mouse_default_cursor_shape = 2
 text = "Can Restock"
 
-[node name="RestockTimerContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer8"]
+[node name="RestockTimerContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer8" unique_id=621065570]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer8/RestockTimerContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer8/RestockTimerContainer" unique_id=246291093]
 layout_mode = 2
 text = "Restock Time:  "
 
-[node name="RestockTimeHours" parent="MarginContainer/VBoxContainer/HBoxContainer8/RestockTimerContainer" instance=ExtResource("8_gy8xy")]
+[node name="RestockTimeHours" parent="MarginContainer/VBoxContainer/HBoxContainer8/RestockTimerContainer" unique_id=1441678178 instance=ExtResource("8_gy8xy")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
@@ -265,12 +268,13 @@ tooltip_text = "Specifies the number of hours required for the store to restock 
 
 [Note]: If the defined restock time is 0 seconds in total, and can_restock is enabled, this store will never reset stock."
 allow_greater = true
+_custom_value = 0.0
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer8/RestockTimerContainer"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer8/RestockTimerContainer" unique_id=2129976930]
 layout_mode = 2
 text = "hour(s)  "
 
-[node name="RestockTimeMinutes" parent="MarginContainer/VBoxContainer/HBoxContainer8/RestockTimerContainer" instance=ExtResource("8_gy8xy")]
+[node name="RestockTimeMinutes" parent="MarginContainer/VBoxContainer/HBoxContainer8/RestockTimerContainer" unique_id=792887056 instance=ExtResource("8_gy8xy")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
@@ -278,14 +282,14 @@ size_flags_horizontal = 3
 tooltip_text = "Specifies the number of minutes required for the store to restock (in-game time).
 
 [Note]: If the defined restock time is 0 seconds in total, and can_restock is enabled, this store will never reset stock."
-value = 5.0
 allow_greater = true
+_custom_value = 0.0
 
-[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer8/RestockTimerContainer"]
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer8/RestockTimerContainer" unique_id=1927186637]
 layout_mode = 2
 text = "minute(s)  "
 
-[node name="RestockTimeSeconds" parent="MarginContainer/VBoxContainer/HBoxContainer8/RestockTimerContainer" instance=ExtResource("8_gy8xy")]
+[node name="RestockTimeSeconds" parent="MarginContainer/VBoxContainer/HBoxContainer8/RestockTimerContainer" unique_id=299394003 instance=ExtResource("8_gy8xy")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
@@ -294,50 +298,51 @@ tooltip_text = "Specifies the number of seconds required for the store to restoc
 
 [Note]: If the defined restock time is 0 seconds in total, and can_restock is enabled, this store will never reset stock."
 allow_greater = true
+_custom_value = 0.0
 
-[node name="Label4" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer8/RestockTimerContainer"]
+[node name="Label4" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer8/RestockTimerContainer" unique_id=685922265]
 layout_mode = 2
 text = "second(s)"
 
-[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=933461491]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer5"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer5" unique_id=2139353770]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 text = "Shop Name:"
 
-[node name="ShopName" parent="MarginContainer/VBoxContainer/HBoxContainer5" instance=ExtResource("9_6r58x")]
+[node name="ShopName" parent="MarginContainer/VBoxContainer/HBoxContainer5" unique_id=2105634135 instance=ExtResource("9_6r58x")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Name for this shop"
 text = "SHOP"
 
-[node name="HBoxContainer7" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer7" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=151403638]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer7"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer7" unique_id=374812332]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 text = "Shop Keeper:"
 
-[node name="ShopKeeper" parent="MarginContainer/VBoxContainer/HBoxContainer7" instance=ExtResource("9_7tsrj")]
+[node name="ShopKeeper" parent="MarginContainer/VBoxContainer/HBoxContainer7" unique_id=435574125 instance=ExtResource("9_7tsrj")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Select the graphic for the shopkeeper"
 text = "Select shopkeeper image"
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1535557385]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1537446360]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 text = "Sales Mode:"
 
-[node name="SalesMode" parent="MarginContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("7_b1fvx")]
+[node name="SalesMode" parent="MarginContainer/VBoxContainer/HBoxContainer3" unique_id=137664521 instance=ExtResource("7_b1fvx")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -357,14 +362,14 @@ popup/item_4/id = 4
 popup/item_5/text = "Allows Selling Specific Objects"
 popup/item_5/id = 5
 
-[node name="HBoxContainer9" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer9" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1462050713]
 layout_mode = 2
 
-[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer9"]
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer9" unique_id=918132378]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 
-[node name="ChooseItems" parent="MarginContainer/VBoxContainer/HBoxContainer9" instance=ExtResource("9_7tsrj")]
+[node name="ChooseItems" parent="MarginContainer/VBoxContainer/HBoxContainer9" unique_id=1049370556 instance=ExtResource("9_7tsrj")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 30)
 layout_mode = 2
@@ -374,17 +379,17 @@ tooltip_text = "Choose the item to be displayed in the store"
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 text = "CLICK TO SELECT ITEMS THAT CAN BE SOLD IN THIS STORE"
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=2072526654]
 layout_mode = 2
 size_flags_vertical = 8
 theme_override_constants/separation = 12
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=787836193]
 layout_mode = 2
 size_flags_vertical = 8
 alignment = 2
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("4_xrosl")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=26645225 instance=ExtResource("4_xrosl")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -393,7 +398,7 @@ tooltip_text = "[title]Ok[/title]
 Saves all changes and closes the windows."
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("4_xrosl")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1476877677 instance=ExtResource("4_xrosl")]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Cancel[/title]

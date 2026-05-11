@@ -44,6 +44,9 @@ func get_class():
 ## Rarity types of items.
 @export var item_rarity_types: PackedStringArray = []
 
+## Rarity types of items.
+@export var gender_types: PackedStringArray = []
+
 ## Color types of item rarity.
 @export var item_rarity_color_types: PackedColorArray = []
 
@@ -97,6 +100,8 @@ func _init() -> void:
 			icons.main_parameters_icons.append(null)
 		var item = new_items[i]
 		main_parameters.append(item)
+	
+	gender_types.append_array(["None", "Male", "Female"])
 
 
 func get_item_color(item_type: Variant, rarity_type: int) -> Color:

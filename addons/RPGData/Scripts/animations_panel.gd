@@ -17,6 +17,8 @@ var flash_total_duration: float
 var shake_tween: Tween
 var shake_total_duration: float
 
+var last_tab: int = 0
+
 var last_shake_direction := Vector2.ZERO
 var shake_seed := 0.0
 
@@ -40,6 +42,7 @@ func _ready() -> void:
 	%Target.texture = load(current_animation_enemy_image)
 	%TargetShadow.texture = %Target.texture
 	%AnimationBackgroundSprite.texture = load(current_animation_background_image)
+	tree_exiting.connect(_on_stop_animation_button_pressed)
 
 
 func get_data() -> RPGAnimation:
@@ -52,7 +55,7 @@ func get_data() -> RPGAnimation:
 func _on_visibility_changed() -> void:
 	super()
 	if !visible:
-		_stop_animations()
+		_on_stop_animation_button_pressed()
 	else:
 		%PlayAnimationButton.set_disabled(false)
 		%ChangeEnemyButton.set_disabled(false)
@@ -72,6 +75,8 @@ func _stop_animations() -> void:
 	%PlayAnimationButton.set_disabled(false)
 	%ChangeEnemyButton.set_disabled(false)
 	%ChangeBackgroundButton.set_disabled(false)
+	%CurrentFrameLabel.text = "Curent Frame: 0"
+	%CurrentFrameLabel.visible = false
 
 
 func _process(delta: float) -> void:
@@ -104,9 +109,13 @@ func _process(delta: float) -> void:
 
 func _update_animation() -> void:
 	var current_data = get_data()
+	var previous_frame = current_frame
+	
+	current_frame += 1.0 * current_data.animation_speed
+	%CurrentFrameLabel.text = "Curent Frame: %s" % round(current_frame)
 	
 	for sound: RPGAnimationSound in current_data.sounds:
-		if sound.frame == current_frame:
+		if sound.frame >= previous_frame and sound.frame < current_frame:
 			if ResourceLoader.exists(sound.filename):
 				var node: AudioStreamPlayer = get_node_or_null("%%AudioStreamPlayer%s" % audio_player_index)
 				if node:
@@ -119,35 +128,35 @@ func _update_animation() -> void:
 	
 	for flash: RPGAnimationFlash in current_data.flashes:
 		var current_target = %AnimationTarget if flash.target == 0 else %ScreenFlash
-		if flash.frame == current_frame:
+		
+		if flash.frame >= previous_frame and flash.frame < current_frame:
 			var duration = flash.duration
 			flash_total_duration = duration * 2 + 0.1
 			flash_tween = create_tween()
 			
-			if flash.target == 0: # Animation On Target
+			if flash.target == 0:
 				var original_modulate = current_target.modulate
 				flash_tween.tween_property(current_target, "modulate", flash.color, duration)
 				flash_tween.tween_property(current_target, "modulate", original_modulate, duration)
-			else: # Flash On Screen
+			else:
 				current_target.get_material().blend_mode = flash.screen_blend_type
 				var original_modulate = current_target.color
 				flash_tween.tween_property(current_target, "color", flash.color, duration)
 				flash_tween.tween_property(current_target, "color", original_modulate, duration)
-					
-	
+				
 	for shake: RPGAnimationShake in current_data.shakes:
-		if shake.frame == current_frame:
+		if shake.frame >= previous_frame and shake.frame < current_frame:
 			var target = %AnimationTarget if shake.target == 0 else %FitContainer
 			var magnitude = shake.amplitude
 			var frequency = shake.frequency
-			var duration =  shake.duration
+			var duration = shake.duration
 			shake_total_duration = duration * 2 + 0.1
+			
 			var start_position = target.position
 			var callable = _animate_shake.bind(target, magnitude, frequency, start_position)
+			
 			shake_tween = create_tween()
 			shake_tween.tween_method(callable, 0.0, 1.0, duration)
-
-	current_frame += 1
 
 
 func _animate_shake(step: float, node: Node, magnitude: float, frequency: float, original_position: Vector2) -> void:
@@ -274,10 +283,25 @@ func _on_sound_list_gui_input(event: InputEvent) -> void:
 		if event.is_pressed():
 			if event.keycode == KEY_SPACE:
 				if !recording:
-					start_record()
+					_start_recording()
 				else:
-					frames.append(["sound", current_frame])
+					frames.append(["sound", round(current_frame)])
+				
 				get_viewport().set_input_as_handled()
+			elif recording and event.keycode == KEY_ESCAPE:
+				_on_stop_animation_button_pressed()
+
+
+func _start_recording() -> void:
+	var w = get_window()
+	w.set_meta("cancel_scape", true)
+	start_record()
+	%MainList.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	%AddDataButton.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	%RemoveDataButton.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var node = get_tree().get_first_node_in_group("database_main_scene")
+	if node and node.has_method("disabled_left_column"):
+		node.disabled_left_column(true)
 
 
 func _on_flash_list_gui_input(event: InputEvent) -> void:
@@ -287,10 +311,13 @@ func _on_flash_list_gui_input(event: InputEvent) -> void:
 		if event.is_pressed():
 			if event.keycode == KEY_SPACE:
 				if !recording:
-					start_record()
+					_start_recording()
 				else:
-					frames.append(["flash", current_frame])
+					frames.append(["flash", round(current_frame)])
+				
 				get_viewport().set_input_as_handled()
+		elif recording and event.keycode == KEY_ESCAPE:
+			_on_stop_animation_button_pressed()
 
 
 func _on_shake_list_gui_input(event: InputEvent) -> void:
@@ -300,10 +327,13 @@ func _on_shake_list_gui_input(event: InputEvent) -> void:
 		if event.is_pressed():
 			if event.keycode == KEY_SPACE:
 				if !recording:
-					start_record()
+					_start_recording()
 				else:
-					frames.append(["shake", current_frame])
+					frames.append(["shake", round(current_frame)])
+				
 				get_viewport().set_input_as_handled()
+			elif recording and event.keycode == KEY_ESCAPE:
+				_on_stop_animation_button_pressed()
 
 
 func _update_data_fields() -> void:
@@ -316,7 +346,7 @@ func _update_data_fields() -> void:
 		%ScaleSpinBox.value = current_data.animation_scale
 		%SpeedSpinBox.value = current_data.animation_speed
 		if ResourceLoader.exists(current_data.filename):
-			%FilenameButton.text = current_data.filename
+			%FilenameButton.text = current_data.filename.get_file()
 		else:
 			%FilenameButton.text = TranslationManager.tr("Select Animation File")
 		%DisplayTypeOptions.select(current_data.display_type)
@@ -363,7 +393,7 @@ func _on_animation_file_selected(_path: String, _scale: int, _animation_speed: f
 		current_data.filename = _path
 	else:
 		current_data.filename = ""
-	%FilenameButton.text = TranslationManager.tr("Select Animation File") if !current_data.filename else current_data.filename
+	%FilenameButton.text = TranslationManager.tr("Select Animation File") if !current_data.filename else current_data.filename.get_file()
 	%ScaleSpinBox.value = _scale
 	%SpeedSpinBox.value = _animation_speed
 
@@ -466,6 +496,10 @@ func _on_play_animation_button_pressed() -> void:
 		%PlayAnimationButton.modulate.a = 0.5
 		current_frame = 0
 		is_playing = true
+		
+	%PlayAnimationButton.visible = false
+	%StopAnimationButton.visible = true
+	%CurrentFrameLabel.visible = true
 
 
 func _clean_flashes() -> void:
@@ -512,11 +546,28 @@ func _on_animation_finished() -> void:
 	%PlayAnimationButton.set_disabled(false)
 	%ChangeEnemyButton.set_disabled(false)
 	%ChangeBackgroundButton.set_disabled(false)
+	%PlayAnimationButton.visible = true
+	%StopAnimationButton.visible = false
 	
+	if get_window().has_meta("cancel_scape"):
+		get_window().remove_meta("cancel_scape")
+	
+	%MainList.mouse_filter = Control.MOUSE_FILTER_STOP
+	%AddDataButton.mouse_filter = Control.MOUSE_FILTER_STOP
+	%RemoveDataButton.mouse_filter = Control.MOUSE_FILTER_STOP
+	var node = get_tree().get_first_node_in_group("database_main_scene")
+	if node and node.has_method("disabled_left_column"):
+		node.disabled_left_column(false)
+	
+	%CurrentFrameLabel.text = "Curent Frame: 0"
+	%CurrentFrameLabel.visible = false
 
 
 func _on_texture_button_toggled(toggled_on: bool) -> void:
 	is_recording = toggled_on
+	%SoundListExtraLabel.visible = is_recording
+	%FlashListExtraLabel.visible = is_recording
+	%ShakeListExtraLabel.visible = is_recording
 
 
 func _on_sound_list_copy_requested(indexes: PackedInt32Array) -> void:
@@ -1204,9 +1255,25 @@ func _on_notes_text_changed() -> void:
 
 
 func _on_config_data_tabs_tab_changed(index: int) -> void:
+	if index == last_tab: return
+	
+	if recording:
+		_on_stop_animation_button_pressed()
+		%ConfigDataTabs.select(last_tab, true)
+		return
+	
+	last_tab = index
+		
 	var node_path = "%%Tab%s" % (index + 1)
 	var node = get_node_or_null(node_path)
 	if node:
 		for child in node.get_parent().get_children():
 			child.visible = false
 		node.visible = true
+
+
+func _on_stop_animation_button_pressed() -> void:
+	_stop_animations()
+	_on_animation_finished()
+	%PlayAnimationButton.visible = true
+	%StopAnimationButton.visible = false

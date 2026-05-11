@@ -605,11 +605,16 @@ func set_actor(actor: GameActor) -> void:
 
 func set_equipment_compararison(slot_id: int, item: Variant) -> void:
 	if current_actor:
+		var classic_id = -1
+		if item:
+			var list_type = "weapons" if item.type == 0 else "armors"
+			classic_id = RPGSYSTEM.uid_to_id(list_type, item.id) if item.id > 0 else 1
+			
 		comparison_item = {
 			"slot_id": slot_id,
-			"id": item.id if item else -1,
+			"id": classic_id,
 			"level": item.current_level if item else -1,
-		} 
+		}
 		set_actor(current_actor)
 
 

@@ -1,17 +1,16 @@
 @tool
 extends MarginContainer
 
-
 @export var button_size: Vector2 = Vector2(100, 100) : set = _set_button_size
 
 var main_tween: Tween
-
 
 signal button_clicked(index: int)
 signal button_selected(index: int)
 signal change_focus_requested()
 signal back_pressed()
 signal change_hero_by_hotkey()
+signal ok_pressed(index: int)
 
 
 func _ready() -> void:
@@ -45,7 +44,7 @@ func _fill_actors() -> void:
 	if not GameManager.game_state: return
 	
 	var textures: Array[Dictionary] = []
-	var real_ids: PackedInt32Array = []
+	var real_ids: PackedInt64Array = []
 	for actor_id in GameManager.game_state.current_party:
 		var actor: GameActor = GameManager.get_actor(actor_id)
 		if actor:
@@ -58,7 +57,10 @@ func _fill_actors() -> void:
 					tex = ResourceLoader.load(current_icon.path)
 					
 				textures.append({"texture": tex, "region": current_icon.region})
-				real_ids.append(real_actor.id)
+				
+				# BLINDAJE UID: Priorizamos _uniq_id para que los select() funcionen correctamente
+				var safe_id = real_actor._uniq_id if "_uniq_id" in real_actor else real_actor.id
+				real_ids.append(safe_id)
 
 	set_images(textures)
 	set_real_ids(real_ids)
@@ -73,6 +75,8 @@ func _process(_delta: float) -> void:
 		elif ControllerManager.is_action_pressed("Button R1"):
 			navigate_button(1)
 			change_hero_by_hotkey.emit()
+		elif ControllerManager.is_confirm_just_pressed(true):
+			ok_pressed.emit(%ButtonsVerticalMenuContainer.selected_index)
 		elif manipulator == GameManager.MANIPULATOR_MODES.EQUIP_ACTORS_MENU:
 			var direction = ControllerManager.get_pressed_direction()
 			if direction and direction in ["up", "down"]:
@@ -98,7 +102,7 @@ func set_images(value: Array[Dictionary]) -> void:
 	%ButtonsVerticalMenuContainer.set_images(value)
 
 
-func set_real_ids(value: PackedInt32Array) -> void:
+func set_real_ids(value: PackedInt64Array) -> void:
 	%ButtonsVerticalMenuContainer.set_real_ids(value)
 
 

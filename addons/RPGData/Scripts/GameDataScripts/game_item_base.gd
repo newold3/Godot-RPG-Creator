@@ -3,7 +3,7 @@ extends Resource
 
 
 @export var uniq_id: int = -1 # Unique ID generated for this item
-@export var id: int = 0 # real database id
+@export var id: int = 0 # real database id (uniq id or id)
 @export var quantity: int = 0 # Number of items in possession of this type
 @export var type: int # Indicates the type of equipment (0 = item, 1 = weapon, 2 = armor piece)
 @export var newly_added: bool = false # This flag is activated when the item is created and will be deactivated when the player selects this item in a menu.
@@ -13,22 +13,12 @@ extends Resource
 var _name: String
 
 
-func _generate_15_digit_id() -> int:
-	var id = str(randi_range(1, 9))
-	var characters = "0123456789"
-	for i in range(15):
-		var random_index = randi() % characters.length()
-		id += characters.substr(random_index, 1)
-	
-	return int(id)
-
-
 func _init(_id: int = 0, _quantity: int = 0, _type: int = 0) -> void:
 	id = _id
 	quantity = _quantity
 	type = _type
 	newly_added = true
-	uniq_id = _generate_15_digit_id()
+	uniq_id = RPGSYSTEM.generate_16_digit_id()
 	
 	var data = get_real_data()
 	if data:
@@ -37,14 +27,11 @@ func _init(_id: int = 0, _quantity: int = 0, _type: int = 0) -> void:
 
 func get_real_data() -> Variant:
 	if self is GameItem:
-		if id > 0 and RPGSYSTEM.database.items.size() > id:
-			return RPGSYSTEM.database.items[id]
+		return RPGSYSTEM.get_data("items", id)
 	elif self is GameWeapon:
-		if id > 0 and RPGSYSTEM.database.weapons.size() > id:
-			return RPGSYSTEM.database.weapons[id]
+		return RPGSYSTEM.get_data("weapons", id)
 	elif self is GameArmor:
-		if id > 0 and RPGSYSTEM.database.armors.size() > id:
-			return RPGSYSTEM.database.armors[id]
+		return RPGSYSTEM.get_data("armors", id)
 	
 	return null
 

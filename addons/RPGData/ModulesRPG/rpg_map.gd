@@ -209,7 +209,8 @@ func _init() -> void:
 
 func _enter_tree() -> void:
 	if Engine.is_editor_hint():
-		var layers = ["GroundBase", "GroundDetail", "Environment", "Overlay"]
+		var layers = ["GroundBase", "GroundDetail", "Environment", "Walls", "Overlay"]
+		var layer_missing_found: bool = false
 		for i in layers.size():
 			var layer_name = layers[i]
 			var layer_exists = has_node(layer_name)
@@ -220,6 +221,13 @@ func _enter_tree() -> void:
 				add_child(layer)
 				layer.unique_name_in_owner = true
 				layer.owner = get_tree().edited_scene_root
+				layer_missing_found = true
+		
+		if layer_missing_found:
+			if not grid_gradient:
+				grid_gradient = preload("uid://bqcge4l0i5fro")
+			if not y_sort_enabled:
+				y_sort_enabled = true
 
 
 
@@ -227,6 +235,7 @@ func _ready() -> void:
 	MAP_LAYERS = {
 		"ground": find_child("GroundBase"),
 		"ground_detail": find_child("GroundDetail"),
+		"walls": find_child("Walls"),
 		"environment": find_child("Environment"),
 		"overlay": find_child("Overlay")
 	}

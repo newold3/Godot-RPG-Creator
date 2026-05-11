@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bvo324x1fkoln"]
+[gd_scene format=3 uid="uid://bvo324x1fkoln"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_la1xc"]
 [ext_resource type="Script" uid="uid://pgtb25gv5ds7" path="res://addons/CustomControls/Dialogs/Select_scope_dialog.gd" id="2_crfe0"]
@@ -29,22 +29,25 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="ButtonGroup" id="ButtonGroup_yhruy"]
+[sub_resource type="ButtonGroup" id="ButtonGroup_1s0te"]
 
-[sub_resource type="ButtonGroup" id="ButtonGroup_2mqov"]
+[sub_resource type="ButtonGroup" id="ButtonGroup_l1f2y"]
 
-[sub_resource type="ButtonGroup" id="ButtonGroup_u3x0h"]
+[sub_resource type="ButtonGroup" id="ButtonGroup_kqmlk"]
 
-[node name="SelectScopeDialog" type="Window"]
+[node name="SelectScopeDialog" type="Window" unique_id=399335454]
+oversampling_override = 1.0
 title = "Scope"
-size = Vector2i(591, 289)
+position = Vector2i(0, 36)
+size = Vector2i(591, 300)
+wrap_controls = true
 transient = true
 exclusive = true
 unresizable = true
 theme = ExtResource("1_la1xc")
 script = ExtResource("2_crfe0")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=434225146]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -52,7 +55,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_2idcj")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1650023385]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -63,149 +66,150 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=776431935]
 layout_mode = 2
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=404478162]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="LeftPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="LeftPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1283826093]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_2f6il")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/LeftPanel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/LeftPanel" unique_id=342436909]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/LeftPanel/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/LeftPanel/VBoxContainer" unique_id=1158799068]
 layout_mode = 2
 text = "Side:"
 
-[node name="CheckBox1" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/LeftPanel/VBoxContainer"]
+[node name="CheckBox1" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/LeftPanel/VBoxContainer" unique_id=198305956]
 layout_mode = 2
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_yhruy")
+button_group = SubResource("ButtonGroup_1s0te")
 text = "None"
 
-[node name="CheckBox2" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/LeftPanel/VBoxContainer"]
+[node name="CheckBox2" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/LeftPanel/VBoxContainer" unique_id=1574067996]
 layout_mode = 2
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_yhruy")
+button_group = SubResource("ButtonGroup_1s0te")
 text = "Enemy"
 
-[node name="CheckBox3" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/LeftPanel/VBoxContainer"]
+[node name="CheckBox3" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/LeftPanel/VBoxContainer" unique_id=460886045]
 layout_mode = 2
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_yhruy")
+button_group = SubResource("ButtonGroup_1s0te")
 text = "Ally"
 
-[node name="CheckBox4" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/LeftPanel/VBoxContainer"]
+[node name="CheckBox4" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/LeftPanel/VBoxContainer" unique_id=476584295]
 layout_mode = 2
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_yhruy")
+button_group = SubResource("ButtonGroup_1s0te")
 text = "Enemy & Ally"
 
-[node name="CheckBox5" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/LeftPanel/VBoxContainer"]
+[node name="CheckBox5" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/LeftPanel/VBoxContainer" unique_id=1942498108]
 layout_mode = 2
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_yhruy")
+button_group = SubResource("ButtonGroup_1s0te")
 text = "User"
 
-[node name="MidPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="MidPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=766470069]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_2f6il")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidPanel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidPanel" unique_id=1138983067]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidPanel/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidPanel/VBoxContainer" unique_id=362333410]
 layout_mode = 2
 text = "Number:"
 
-[node name="CheckBox1" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidPanel/VBoxContainer"]
+[node name="CheckBox1" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidPanel/VBoxContainer" unique_id=380431821]
 layout_mode = 2
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_2mqov")
+button_group = SubResource("ButtonGroup_l1f2y")
 text = "One"
 
-[node name="CheckBox2" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidPanel/VBoxContainer"]
+[node name="CheckBox2" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidPanel/VBoxContainer" unique_id=466048171]
 layout_mode = 2
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_2mqov")
+button_group = SubResource("ButtonGroup_l1f2y")
 text = "All"
 
-[node name="CheckBox3" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidPanel/VBoxContainer"]
+[node name="CheckBox3" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidPanel/VBoxContainer" unique_id=263076160]
 layout_mode = 2
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_2mqov")
+button_group = SubResource("ButtonGroup_l1f2y")
 text = "Random"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidPanel/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidPanel/VBoxContainer" unique_id=1863555288]
 layout_mode = 2
 
-[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidPanel/VBoxContainer/HBoxContainer"]
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidPanel/VBoxContainer/HBoxContainer" unique_id=1589864416]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 
-[node name="RandomSpinBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidPanel/VBoxContainer/HBoxContainer" instance=ExtResource("3_nb7ff")]
+[node name="RandomSpinBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidPanel/VBoxContainer/HBoxContainer" unique_id=2020070804 instance=ExtResource("3_nb7ff")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 min_value = 1.0
-value = 1.0
+_custom_value = 0.0
 
-[node name="RightPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="RightPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1088582830]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_2f6il")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightPanel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightPanel" unique_id=1028682135]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightPanel/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightPanel/VBoxContainer" unique_id=575635273]
 layout_mode = 2
 text = "Status:"
 
-[node name="CheckBox1" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightPanel/VBoxContainer"]
+[node name="CheckBox1" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightPanel/VBoxContainer" unique_id=1856919713]
 layout_mode = 2
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_u3x0h")
+button_group = SubResource("ButtonGroup_kqmlk")
 text = "Alive"
 
-[node name="CheckBox2" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightPanel/VBoxContainer"]
+[node name="CheckBox2" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightPanel/VBoxContainer" unique_id=780267057]
 layout_mode = 2
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_u3x0h")
+button_group = SubResource("ButtonGroup_kqmlk")
 text = "Dead"
 
-[node name="CheckBox3" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightPanel/VBoxContainer"]
+[node name="CheckBox3" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightPanel/VBoxContainer" unique_id=1734723497]
 layout_mode = 2
 mouse_default_cursor_shape = 2
-button_group = SubResource("ButtonGroup_u3x0h")
+button_group = SubResource("ButtonGroup_kqmlk")
 text = "Unconditional"
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1841245055]
 layout_mode = 2
+size_flags_vertical = 10
 theme_override_constants/separation = 12
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=821114894]
 layout_mode = 2
 size_flags_vertical = 10
 alignment = 1
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_7a0fp")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1791419735 instance=ExtResource("3_7a0fp")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_7a0fp")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1707197526 instance=ExtResource("3_7a0fp")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2

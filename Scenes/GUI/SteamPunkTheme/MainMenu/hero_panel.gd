@@ -120,12 +120,14 @@ func setup(actor: GameActor, _is_in_party: bool = false) -> void:
 func refresh() -> void:
 	if not current_actor: return
 	
-	if current_actor.id > 0 and RPGSYSTEM.database.actors.size() > current_actor.id:
-		var real_actor: RPGActor = RPGSYSTEM.database.actors[current_actor.id]
+	var real_actor: RPGActor = RPGSYSTEM.get_data("actors", current_actor.id) if current_actor.id > 0 else null
+	
+	if real_actor:
 		%Name.text = current_actor.current_name if current_actor.current_name else real_actor.name
 		
-		if current_actor.current_class > 0 and RPGSYSTEM.database.classes.size() > current_actor.current_class:
-			%Class.text = RPGSYSTEM.database.classes[current_actor.current_class].name
+		var actor_class = RPGSYSTEM.get_data("classes", current_actor.current_class) if current_actor.current_class > 0 else null
+		if actor_class:
+			%Class.text = actor_class.name
 		else:
 			%Class.text = ""
 			
@@ -159,7 +161,7 @@ func refresh() -> void:
 	else:
 		%Name.text = ""
 		%Class.text = ""
-		%LevelAmountLabel.text = 1
+		%LevelAmountLabel.text = "1"
 		var hp = "0 / 0 " + RPGSYSTEM.database.terms.search_message("Hit Points (abbr)")
 		var mp = "0 / 0 " + RPGSYSTEM.database.terms.search_message("Magic Points (abbr)")
 		%HPLabel.text = "[center]%s[/center]" % hp

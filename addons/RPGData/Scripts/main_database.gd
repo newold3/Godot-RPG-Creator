@@ -53,6 +53,19 @@ func _ready() -> void:
 		get_parent().queue_free()
 
 
+func disabled_left_column(value: bool) -> void:
+	var buttons = [
+		%DatabaseVersion, %CustomButton1, %CustomButton2, %CustomButton19,
+		%CustomButton3, %CustomButton4, %CustomButton5, %CustomButton7,
+		%CustomButton8, %CustomButton9, %CustomButton10, %CustomButton11,
+		%CustomButton12, %CustomButton13, %CustomButton14, %CustomButton17,
+		%CustomButton18, %CustomButton15, %CustomButton16
+	]
+	for b in buttons:
+		b.mouse_filter = Control.MOUSE_FILTER_IGNORE if value \
+			else Control.MOUSE_FILTER_STOP
+
+
 func clear_panels() -> void:
 	for child in %PanelContents.get_children():
 		child.queue_free()
@@ -261,6 +274,8 @@ func _on_cancel_pressed() -> void:
 
 
 func discard_changes() -> void:
+	if get_window().has_meta("cancel_scape"): return
+	
 	accept_event()
 	var database_changed = !data.is_equal_to(real_data)
 	if database_changed:

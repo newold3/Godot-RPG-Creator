@@ -22,6 +22,7 @@ const MANIPULATOR_MODES = {
 	"EQUIP_ACTORS_MENU": "equip actors menu",
 	"EQUIP_MENU": "equip menu",
 	"EQUIP_MENU_SUB_MENU": "equip menu sub menu",
+	"EQUIP_MENU_SUB_MENU_2": "equip menu sub menu 2",
 	"SAVELOAD": "main menu save/load",
 	"CONFIRM": "main confirm window",
 	"GUI_SCENE": "standard gui scene",
@@ -765,7 +766,7 @@ func remove_weather_color(duration: float) -> void:
 
 
 func setup_gui_scene(scene: Node) -> void:
-	if main_scene: main_scene._setup_gui_scene(scene)
+	if main_scene: main_scene.setup_gui_scene(scene)
 
 
 func change_scene(path: String, destroy_gui: bool = false, is_instant: bool = false) -> void:

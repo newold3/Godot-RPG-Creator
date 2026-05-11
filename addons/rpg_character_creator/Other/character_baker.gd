@@ -298,11 +298,9 @@ func _apply_actor_gear(character_data: RPGLPCCharacter, actor: Variant) -> void:
 	for item_obj in actor.current_gear:
 		if not item_obj: continue
 		
-		var db_item = null
-		if item_obj.type == 1: db_item = RPGSYSTEM.database.weapons.get(item_obj.id)
-		elif item_obj.type == 2: db_item = RPGSYSTEM.database.armors.get(item_obj.id)
-		
+		var db_item = item_obj.get_real_data()
 		if not db_item: continue
+		
 		var lpc_path: String = db_item.lpc_part
 		
 		if lpc_path.is_empty() or not ResourceLoader.exists(lpc_path): continue

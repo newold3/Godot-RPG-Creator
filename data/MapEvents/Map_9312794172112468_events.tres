@@ -1,0 +1,146 @@
+[gd_resource type="Resource" script_class="RPGEvents" format=3 uid="uid://cnosnikjgmv5n"]
+
+[ext_resource type="Script" uid="uid://dvbel4d37a2dd" path="res://addons/RPGData/ModulesRPG/rpg_event.gd" id="1_aowd7"]
+[ext_resource type="Script" uid="uid://c4n8w1wb1qopr" path="res://addons/RPGData/ModulesRPG/rpg_event_page.gd" id="2_i0t65"]
+[ext_resource type="Script" uid="uid://biahpabcgjkgs" path="res://addons/RPGData/ModulesRPG/rpg_event_page_condition.gd" id="3_a8bsm"]
+[ext_resource type="Script" uid="uid://oh1bgoqomrdj" path="res://addons/RPGData/ModulesRPG/rpg_event_command.gd" id="4_a6pyi"]
+[ext_resource type="Script" uid="uid://b7ykdbujk8i3l" path="res://addons/RPGData/ModulesRPG/rpg_movement_command.gd" id="5_rhg1a"]
+[ext_resource type="Script" uid="uid://by33wnof5fhmw" path="res://addons/RPGData/ModulesRPG/rpg_movement_route.gd" id="6_71hhc"]
+[ext_resource type="Script" uid="uid://b1paousg2byp3" path="res://addons/RPGData/ModulesRPG/rpg_event_page_options.gd" id="7_bqu07"]
+[ext_resource type="Script" uid="uid://dcx6f8knjwegv" path="res://addons/RPGData/ModulesRPG/rpg_event_quest.gd" id="8_u2m6g"]
+[ext_resource type="Script" uid="uid://ccw0uhbc0ne88" path="res://addons/RPGData/ModulesRPG/rpg_relationship_level.gd" id="9_orjup"]
+[ext_resource type="Script" uid="uid://dex58yidnaamn" path="res://addons/RPGData/ModulesRPG/rpg_relationship.gd" id="10_8e54l"]
+[ext_resource type="Script" uid="uid://cioqek6v6bgx4" path="res://addons/RPGMap/Scripts/events.gd" id="11_kyd03"]
+
+[sub_resource type="Resource" id="Resource_jbvpw"]
+script = ExtResource("3_a8bsm")
+pressure_targets = PackedInt64Array(0)
+
+[sub_resource type="Resource" id="Resource_4hppq"]
+script = ExtResource("4_a6pyi")
+
+[sub_resource type="Resource" id="Resource_im651"]
+script = ExtResource("6_71hhc")
+
+[sub_resource type="Resource" id="Resource_1qi6u"]
+script = ExtResource("7_bqu07")
+
+[sub_resource type="Resource" id="Resource_sksuy"]
+script = ExtResource("2_i0t65")
+_uniq_id = 9314987719877359
+id = 0
+list = Array[ExtResource("4_a6pyi")]([SubResource("Resource_4hppq")])
+condition = SubResource("Resource_jbvpw")
+movement_route = SubResource("Resource_im651")
+options = SubResource("Resource_1qi6u")
+event_trigger_list = PackedInt64Array()
+event_tool_list = PackedInt32Array()
+event_signal_list = PackedInt32Array()
+character_path = "res://Scenes/NPCs/Npc_1/npc_1_data.tres"
+
+[sub_resource type="Resource" id="Resource_umss1"]
+script = ExtResource("9_orjup")
+
+[sub_resource type="Resource" id="Resource_k5kse"]
+script = ExtResource("10_8e54l")
+levels = Array[ExtResource("9_orjup")]([SubResource("Resource_umss1")])
+
+[sub_resource type="Resource" id="Resource_qeoxj"]
+script = ExtResource("1_aowd7")
+_uniq_id = 3438437996322550
+name = "Juanillo"
+id = 1
+x = 13
+y = 10
+pages = Array[ExtResource("2_i0t65")]([SubResource("Resource_sksuy")])
+relationship = SubResource("Resource_k5kse")
+
+[sub_resource type="Resource" id="Resource_nuvq1"]
+script = ExtResource("3_a8bsm")
+pressure_targets = PackedInt64Array(0)
+
+[sub_resource type="Resource" id="Resource_mtcoc"]
+script = ExtResource("4_a6pyi")
+
+[sub_resource type="Resource" id="Resource_vhbg7"]
+script = ExtResource("6_71hhc")
+
+[sub_resource type="Resource" id="Resource_4wd1m"]
+script = ExtResource("7_bqu07")
+
+[sub_resource type="Resource" id="Resource_8rm5n"]
+script = ExtResource("2_i0t65")
+_uniq_id = 9903581354161392
+id = 0
+list = Array[ExtResource("4_a6pyi")]([SubResource("Resource_mtcoc")])
+condition = SubResource("Resource_nuvq1")
+movement_route = SubResource("Resource_vhbg7")
+options = SubResource("Resource_4wd1m")
+event_trigger_list = PackedInt64Array()
+event_tool_list = PackedInt32Array()
+event_signal_list = PackedInt32Array()
+character_path = "res://Scenes/NPCs/Npc_1/npc_1_data.tres"
+
+[sub_resource type="Resource" id="Resource_3ddw0"]
+script = ExtResource("9_orjup")
+
+[sub_resource type="Resource" id="Resource_uj7o3"]
+script = ExtResource("10_8e54l")
+levels = Array[ExtResource("9_orjup")]([SubResource("Resource_3ddw0")])
+
+[sub_resource type="Resource" id="Resource_b2cyk"]
+script = ExtResource("1_aowd7")
+_uniq_id = 8131785113322776
+name = "Juanillo"
+id = 2
+x = 11
+y = 11
+pages = Array[ExtResource("2_i0t65")]([SubResource("Resource_8rm5n")])
+relationship = SubResource("Resource_uj7o3")
+
+[sub_resource type="Resource" id="Resource_8jjb4"]
+script = ExtResource("3_a8bsm")
+pressure_targets = PackedInt64Array(0)
+
+[sub_resource type="Resource" id="Resource_1ut24"]
+script = ExtResource("4_a6pyi")
+
+[sub_resource type="Resource" id="Resource_tmsd3"]
+script = ExtResource("6_71hhc")
+
+[sub_resource type="Resource" id="Resource_06ymu"]
+script = ExtResource("7_bqu07")
+
+[sub_resource type="Resource" id="Resource_bshdi"]
+script = ExtResource("2_i0t65")
+_uniq_id = 8680565797425054
+id = 0
+list = Array[ExtResource("4_a6pyi")]([SubResource("Resource_1ut24")])
+condition = SubResource("Resource_8jjb4")
+movement_route = SubResource("Resource_tmsd3")
+options = SubResource("Resource_06ymu")
+event_trigger_list = PackedInt64Array()
+event_tool_list = PackedInt32Array()
+event_signal_list = PackedInt32Array()
+character_path = "res://Scenes/NPCs/Npc_1/npc_1_data.tres"
+
+[sub_resource type="Resource" id="Resource_2hn85"]
+script = ExtResource("9_orjup")
+
+[sub_resource type="Resource" id="Resource_wy32s"]
+script = ExtResource("10_8e54l")
+levels = Array[ExtResource("9_orjup")]([SubResource("Resource_2hn85")])
+
+[sub_resource type="Resource" id="Resource_x0r3n"]
+script = ExtResource("1_aowd7")
+_uniq_id = 1894845048373737
+name = "Juanillo"
+id = 3
+x = 15
+y = 11
+pages = Array[ExtResource("2_i0t65")]([SubResource("Resource_bshdi")])
+relationship = SubResource("Resource_wy32s")
+
+[resource]
+script = ExtResource("11_kyd03")
+events = Array[ExtResource("1_aowd7")]([SubResource("Resource_qeoxj"), SubResource("Resource_b2cyk"), SubResource("Resource_x0r3n")])

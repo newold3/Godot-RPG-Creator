@@ -1,10 +1,10 @@
 extends MarginContainer
 
+#region VariablesAndSignals
 @export var menu_items_start_position: Vector2
 @export var menu_items_end_position: Vector2
 
 var current_actor: GameActor
-
 var main_tween: Tween
 
 @onready var stats_container: Control = %StatsContainer
@@ -13,12 +13,16 @@ var main_tween: Tween
 @onready var buttons_vertical_menu: MarginContainer = %ButtonsVerticalMenu
 @onready var menu_items: Control = %MenuItems
 @onready var current_selected_equipment_container: Control = %CurrentSelectedEquipmentContainer
-
+@onready var costume_button_container: MarginContainer = %CostumeButtonContainer
 
 signal update_description(description: String)
 signal back_pressed()
+#endregion
 
 
+
+#region InitializationAndCore
+## Triggers on node ready, initializing states and connecting input controllers
 func _ready() -> void:
 	GameManager.set_cursor_manipulator(GameManager.MANIPULATOR_MODES.NONE)
 	ControllerManager.controller_changed.connect(_on_controlled_changed)
@@ -26,6 +30,8 @@ func _ready() -> void:
 	start()
 
 
+
+## Handles the main entrance animation and initialization of sub-components
 func start() -> void:
 	stats_container.start()
 	buttons_vertical_menu.start()
@@ -44,10 +50,24 @@ func start() -> void:
 	stats_container.started = true
 
 
+
+## Placeholder for end state or exit animations
 func end() -> void:
 	pass
 
 
+
+## Processes destruction and cancels menu state
+func destroy() -> void:
+	GameManager.play_fx("cancel")
+	GameManager.set_cursor_manipulator(GameManager.MANIPULATOR_MODES.NONE)
+	back_pressed.emit()
+#endregion
+
+
+
+#region ActorAndInputManagement
+## Change current active actor context
 func _change_actor(actor_id: int) -> void:
 	var actor: GameActor = GameManager.get_actor(actor_id)
 	if actor:
@@ -55,17 +75,63 @@ func _change_actor(actor_id: int) -> void:
 	current_actor = actor
 
 
+
+## Sets the active actor across all UI sub-components
+func set_actor(actor: GameActor) -> void:
+	if not is_inside_tree(): return
+	current_actor = actor
+	stats_container.set_actor(actor)
+	equipment_container.set_actor(actor)
+	main_actor_container.set_actor(actor)
+
+
+
+## Sets up the default cursor selection for the active actor
+func _setup_initial_selection() -> void:
+	if current_actor:
+		buttons_vertical_menu.select(current_actor.id, true)
+		equipment_container.select_last_slot()
+		GameManager.force_hand_position_over_node(GameManager.get_cursor_manipulator())
+
+
+
+## Updates help prompts dynamically depending on current input controller
+func _on_controlled_changed(type: ControllerManager.CONTROLLER_TYPE):
+	var help: String = ""
+	if type == ControllerManager.CONTROLLER_TYPE.Joypad:
+		help = "L1/R1 Change Actor  RS Stats Navigate  D-Pad Select Equipment  A Ok  B Cancel"
+	else:
+		help = "Q/E Change Actor  Mouse Stats Navigate  W/A/S/D Select Equipment  Space Ok  Escape Cancel"
+	%HelpLabel.text = help
+
+
+
+## Audio feedback when changing actor from menu buttons
+func _on_actors_menu_button_selected(_actor_index: int) -> void:
+	GameManager.play_fx("cursor")
+#endregion
+
+
+
+#region EquipmentSlotAndInventoryLogic
+## Triggered when the main equipment container detects a clicked slot
+func _on_equipment_container_slot_clicked(slot_id: int) -> void:
+	_process_start_change_equip(slot_id)
+
+
+
+## Processes the slot hover/selection and updates UI with current equipped item info
 func _on_equipment_slot_selected(slot_id: int) -> void:
 	if current_actor and slot_id >= 0 and current_actor.current_gear.size() > slot_id:
 		var obj = current_actor.current_gear[slot_id]
+		
 		if obj:
 			var real_item: Variant
 			if obj is GameWeapon:
-				if obj.id > 0 and RPGSYSTEM.database.weapons.size() > obj.id:
-					real_item = RPGSYSTEM.database.weapons[obj.id]
+				real_item = RPGSYSTEM.get_data("weapons", obj.id)
 			elif obj is GameArmor:
-				if obj.id > 0 and RPGSYSTEM.database.armors.size() > obj.id:
-					real_item = RPGSYSTEM.database.armors[obj.id]
+				real_item = RPGSYSTEM.get_data("armors", obj.id)
+				
 			if real_item:
 				update_description.emit(real_item.description)
 				var formatted_item = equipment_container._get_item_display_data(obj, slot_id)
@@ -82,40 +148,11 @@ func _on_equipment_slot_selected(slot_id: int) -> void:
 			current_selected_equipment_container.set_item({})
 
 
-func _on_controlled_changed(type: ControllerManager.CONTROLLER_TYPE):
-	var help: String = ""
-	if type == ControllerManager.CONTROLLER_TYPE.Joypad:
-		help = "L1/R1 Change Actor  RS Stats Navigate  D-Pad Select Equipment  A Ok  B Cancel"
-	else:
-		help = "Q/E Change Actor  Mouse Stats Navigate  W/A/S/D Select Equipment  Space Ok  Escape Cancel"
-	%HelpLabel.text = help
 
-
-func _on_actors_menu_button_selected(_actor_index: int) -> void:
-	GameManager.play_fx("cursor")
-
-
-func set_actor(actor: GameActor) -> void:
-	if not is_inside_tree(): return
-	current_actor = actor
-	stats_container.set_actor(actor)
-	equipment_container.set_actor(actor)
-	main_actor_container.set_actor(actor)
-
-
-func _setup_initial_selection() -> void:
-	if current_actor:
-		buttons_vertical_menu.select(current_actor.id, true)
-		equipment_container.select_last_slot()
-		GameManager.force_hand_position_over_node(GameManager.get_cursor_manipulator())
-
-
-func _on_equipment_container_slot_clicked(slot_id: int) -> void:
-	_process_start_change_equip(slot_id)
-
-
+## Prepares the sub-menu with available equippable items for the clicked slot
 func _process_start_change_equip(slot_id: int) -> void:
 	var current_button_selected = equipment_container.get_button_selected()
+	
 	if not current_button_selected or (current_button_selected and current_button_selected.disabled):
 		GameManager.play_fx("error")
 		return
@@ -123,15 +160,18 @@ func _process_start_change_equip(slot_id: int) -> void:
 	var button_selected = slot_id
 	var data = GameManager.game_state.weapons if button_selected == 0 else GameManager.game_state.armors
 	var equippable_items = []
+	
 	for item_arr: Array in data.values():
 		var item = item_arr[0]
+		
 		if item is GameArmor:
-			if item.id > 0 and RPGSYSTEM.database.armors.size() > item.id:
-				var real_armor = RPGSYSTEM.database.armors[item.id]
+			var real_armor = RPGSYSTEM.get_data("armors", item.id)
+			if real_armor:
 				if real_armor.equipment_type != 0 and real_armor.equipment_type != button_selected:
 					continue
 			else:
 				continue
+				
 		if current_actor.can_equip(button_selected, item.id):
 			var equippable_item = {
 				"levels": {},
@@ -154,15 +194,20 @@ func _process_start_change_equip(slot_id: int) -> void:
 	var inner_icon_cache: Dictionary = {}
 	
 	for item in equippable_items:
-		@warning_ignore("incompatible_ternary")
-		var real_data = RPGSYSTEM.database.weapons if button_selected == 0 else RPGSYSTEM.database.armors
 		var color_data = RPGSYSTEM.database.types.weapon_rarity_color_types if button_selected == 0 else RPGSYSTEM.database.types.armor_rarity_color_types
 		
 		for level in item.levels:
 			var current_item = item.levels[level].item
-			if current_item.id > 0 and real_data.size() > current_item.id:
-				var real_item = real_data[current_item.id]
+			var real_item = null
+			
+			if current_item is GameWeapon:
+				real_item = RPGSYSTEM.get_data("weapons", current_item.id)
+			elif current_item is GameArmor:
+				real_item = RPGSYSTEM.get_data("armors", current_item.id)
+				
+			if real_item:
 				var tex = null
+				
 				if AssetManager.exists(real_item.icon.path):
 					var icon_id = "%s_%s" % [real_item.icon.path, real_item.icon.region]
 					if not icon_id in inner_icon_cache:
@@ -193,20 +238,14 @@ func _process_start_change_equip(slot_id: int) -> void:
 	GameManager.play_fx("ok")
 	
 	formatted_items.sort_custom(func(a, b):
-		# 1. New first
 		if a.is_new_item != b.is_new_item:
 			return a.is_new_item and not b.is_new_item
-
-		# 2. Alphabetical order by name
 		var cmp = a.name.naturalnocasecmp_to(b.name)
 		if cmp != 0:
 			return cmp < 0
-
-		# 3. Same name -> descending level
 		return a.level > b.level
 	)
 	
-	# Add remove item at the beginning
 	var remove_item = {
 		"name": "- " + tr("Remove equip") + " -",
 		"icon": preload("uid://cy1pny48ukkqg"),
@@ -216,34 +255,40 @@ func _process_start_change_equip(slot_id: int) -> void:
 	}
 	formatted_items.insert(0, remove_item)
 	menu_items.set_items(formatted_items)
+	
 	if current_actor:
 		current_actor.is_comparation_enabled = true
+		
 	_show_menu()
 
 
-func destroy() -> void:
-	GameManager.play_fx("cancel")
-	GameManager.set_cursor_manipulator(GameManager.MANIPULATOR_MODES.NONE)
-	back_pressed.emit()
+func _process_start_change_costume() -> void:
+	pass
+#endregion
 
 
+
+#region InventorySubMenuLogic
+## Event triggered when canceling the sub-menu selection
 func _on_menu_items_cancel() -> void:
 	_hide_menu()
 
 
+
+## Previews the selected item from inventory and compares stats
 func _on_menu_items_item_hovered(index: int, item: Dictionary) -> void:
 	if index < 0: return
 	var slot_id = equipment_container.button_selected
 	var obj = item.get("current_item", null)
 	var description_setted = false
+	
 	if obj:
 		var real_item: Variant
 		if obj is GameWeapon:
-			if obj.id > 0 and RPGSYSTEM.database.weapons.size() > obj.id:
-				real_item = RPGSYSTEM.database.weapons[obj.id]
+			real_item = RPGSYSTEM.get_data("weapons", obj.id)
 		elif obj is GameArmor:
-			if obj.id > 0 and RPGSYSTEM.database.armors.size() > obj.id:
-				real_item = RPGSYSTEM.database.armors[obj.id]
+			real_item = RPGSYSTEM.get_data("armors", obj.id)
+			
 		if real_item:
 			update_description.emit(real_item.description)
 			description_setted = true
@@ -254,22 +299,29 @@ func _on_menu_items_item_hovered(index: int, item: Dictionary) -> void:
 		stats_container.set_equipment_compararison(slot_id, null)
 
 
+
+## Mirror function for when an item is selected by UI focus
 func _on_menu_items_item_selected(index: int, item: Dictionary) -> void:
 	_on_menu_items_item_hovered(index, item)
 
 
-func _on_menu_items_item_clicked(index: int, item: Dictionary) -> void:
+
+## Applies the selected equipment and closes the inventory sub-menu
+func _on_menu_items_item_clicked(_index: int, item: Dictionary) -> void:
 	if current_actor:
 		current_actor.is_comparation_enabled = false
 		var slot_id = equipment_container.button_selected
-		#var initial_current_equipment = current_actor.current_gear.duplicate()
-		if index != 0:
+		
+		if item.get("current_item") != null:
 			current_actor.equip_equipment_from_inventory(slot_id, item.current_item)
 		else:
 			current_actor.remove_current_equipment(slot_id)
+			
 		equipment_container.set_actor(current_actor)
 		stats_container.set_actor(current_actor)
+		
 		GameManager.play_fx("equip")
+		
 		if ControllerManager.current_controller == ControllerManager.CONTROLLER_TYPE.Mouse:
 			var slot_selected = equipment_container.get_button_selected()
 			Input.warp_mouse(slot_selected.global_position + slot_selected.size * 0.5)
@@ -277,9 +329,12 @@ func _on_menu_items_item_clicked(index: int, item: Dictionary) -> void:
 			await get_tree().process_frame
 			await get_tree().process_frame
 			DisplayServer.cursor_set_shape(DisplayServer.CURSOR_POINTING_HAND)
+			
 	_hide_menu()
 
 
+
+## Executes the entry animation for the inventory items list sub-menu
 func _show_menu() -> void:
 	GameManager.set_cursor_manipulator(GameManager.MANIPULATOR_MODES.NONE)
 	var t = create_tween()
@@ -289,10 +344,14 @@ func _show_menu() -> void:
 	
 	if not stats_container.has_meta("original_position"):
 		stats_container.set_meta("original_position", stats_container.position)
+	
+	if not costume_button_container.has_meta("original_position"):
+		costume_button_container.set_meta("original_position", costume_button_container.position)
 		
 	var gears = stats_container.get_gears()
 	for gear in gears:
 		t.tween_property(gear, "rotation", -PI / 4, 0.5).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT).set_delay(0.18)
+		
 	t.tween_property(stats_container, "position:x", stats_container.get_meta("original_position").x - 40, 0.2).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT).set_delay(0.18)
 	t.tween_callback(
 		func():
@@ -300,11 +359,16 @@ func _show_menu() -> void:
 			stats_container.set_show_comparison(true)
 			menu_items.emit_selected_item()
 	).set_delay(0.20)
+	
+	t.tween_property(costume_button_container, "position:x", costume_button_container.get_meta("original_position").x - 40, 0.2).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT).set_delay(0.18)
 
 
+
+## Executes the exit animation and hides the inventory items list sub-menu
 func _hide_menu() -> void:
 	if current_actor:
 		current_actor.is_comparation_enabled = true
+		
 	GameManager.set_cursor_manipulator(GameManager.MANIPULATOR_MODES.NONE)
 	stats_container.set_show_comparison(false)
 	menu_items.end()
@@ -321,4 +385,8 @@ func _hide_menu() -> void:
 	var gears = stats_container.get_gears()
 	for gear in gears:
 		t.tween_property(gear, "rotation", 0.0, 0.5).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT).set_delay(0.2)
+		
 	t.tween_property(stats_container, "position:x", stats_container.get_meta("original_position").x, 0.2).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT).set_delay(0.2)
+	
+	t.tween_property(costume_button_container, "position:x", costume_button_container.get_meta("original_position").x, 0.2).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT).set_delay(0.2)
+#endregion

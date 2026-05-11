@@ -1,6 +1,7 @@
 class_name PartyManager
 extends Node
 
+#region Constants & Variables
 ## The packed scene used to instantiate new followers.
 const FOLLOWER_SCENE = preload("uid://pbm7vnwv6qll")
 
@@ -15,6 +16,8 @@ var _player_cache: Dictionary = {}
 
 ## Cache for unused follower nodes to prevent instantiation lag.
 var _follower_cache: Array[SimpleFollower] = []
+#endregion
+
 
 
 #region Cache Management
@@ -37,6 +40,7 @@ func _store_player_in_cache(actor_id: int, player_node: Node2D) -> void:
 	_player_cache[actor_id] = player_node
 
 
+
 ## Retrieves a player node from the cache or instantiates a new one if not found.
 func _get_player_from_cache(actor_id: int, scene_path: String) -> Node2D:
 	if _player_cache.has(actor_id):
@@ -52,6 +56,7 @@ func _get_player_from_cache(actor_id: int, scene_path: String) -> Node2D:
 		return load(scene_path).instantiate()
 		
 	return null
+
 
 
 ## Cleans invalid nodes from the caches, typically called on map changes.
@@ -72,25 +77,42 @@ func clear_caches() -> void:
 
 
 
-#region Player
+#region Player Operations
+## Safely adds an actor to the party supporting both legacy IDs and UIDs
 func add_actor_to_party(actor_id: int) -> void:
 	var game_state = GameManager.game_state
-	if RPGSYSTEM.database.actors.size() > actor_id:
-		if !game_state.actors.has(actor_id):
-			var actor = GameActor.new(actor_id)
-			game_state.actors[actor_id] = actor
+	var uid = actor_id
+	
+	if uid > 0 and uid < 1000000:
+		uid = RPGSYSTEM.id_to_uid("actors", uid)
+		
+	var actor_data = RPGSYSTEM.get_data("actors", uid)
+	
+	if actor_data:
+		if !game_state.actors.has(uid):
+			var actor = GameActor.new(uid)
+			game_state.actors[uid] = actor
 			
-	if !game_state.current_party.has(actor_id):
-		game_state.current_party.append(actor_id)
+		if !game_state.current_party.has(uid):
+			game_state.current_party.append(uid)
 
 
+
+## Removes an actor from the active party array using UIDs
 func remove_actor_from_party(remove_actor_id: int) -> void:
 	var game_state = GameManager.game_state
-	var index = game_state.current_party.find(remove_actor_id)
+	var uid = remove_actor_id
+	
+	if uid > 0 and uid < 1000000:
+		uid = RPGSYSTEM.id_to_uid("actors", uid)
+		
+	var index = game_state.current_party.find(uid)
 	if index != -1:
 		game_state.current_party.remove_at(index)
 
 
+
+## Destroys the current active player visuals and clears the local caches
 func clear_current_player() -> void:
 	var container = GameManager.main_scene.get_node_or_null("%PlayerContainer")
 	if container:
@@ -99,6 +121,8 @@ func clear_current_player() -> void:
 	clear_caches()
 
 
+
+## Orchestrates the instantiation, positioning and configuration of the player entity
 func setup_player() -> void:
 	var game_state = GameManager.game_state
 	var current_map = GameManager.current_map
@@ -115,6 +139,8 @@ func setup_player() -> void:
 		GameManager._transfer_direction = -1
 
 
+
+## Handles the core instantiation of the player fetching the proper UID scene
 func _create_or_reuse_player() -> void:
 	var current_player = GameManager.current_player
 	
@@ -124,8 +150,15 @@ func _create_or_reuse_player() -> void:
 		
 	if (not current_player or not is_instance_valid(current_player)) and GameManager.game_state:
 		var player_id = GameManager.game_state.current_party[0] if not GameManager.game_state.current_party.is_empty() else 0
-		if player_id > 0 and RPGSYSTEM.database.actors.size() > player_id:
-			var actor = RPGSYSTEM.database.actors[player_id]
+		
+		# UID translation layer
+		if player_id > 0 and player_id < 1000000:
+			player_id = RPGSYSTEM.id_to_uid("actors", player_id)
+			GameManager.game_state.current_party[0] = player_id
+			
+		var actor = RPGSYSTEM.get_data("actors", player_id) if player_id > 0 else null
+		
+		if actor:
 			var scene_path = actor.character_scene
 			current_player = _get_player_from_cache(player_id, scene_path)
 			if current_player:
@@ -153,6 +186,8 @@ func _create_or_reuse_player() -> void:
 	GameManager.current_player = current_player
 
 
+
+## Places the player in the correct map coordinates based on the save file
 func _position_player() -> void:
 	var game_state = GameManager.game_state
 	var current_map = GameManager.current_map
@@ -174,7 +209,8 @@ func _position_player() -> void:
 	main_camera.fast_reposition.call_deferred()
 
 
-## Configures movement modes and binds the player to the camera. Prevents crash on empty party.
+
+## Configures movement modes and binds the player to the camera.
 func _setup_player_properties() -> void:
 	var current_player = GameManager.current_player
 	var game_state = GameManager.game_state
@@ -201,6 +237,7 @@ func _setup_player_properties() -> void:
 
 
 #region Followers Core
+## Spawns the party followers mapping to the active leader coordinates
 func show_followers(instant: bool = false, force_regroup: bool = true) -> void:
 	var game_state = GameManager.game_state
 	var player = GameManager.current_player
@@ -238,6 +275,8 @@ func show_followers(instant: bool = false, force_regroup: bool = true) -> void:
 	await appear(instant)
 
 
+
+## Loads and displays the specific positions and status of the followers from a save file
 func load_followers_from_save(save_data: Dictionary) -> void:
 	destroy()
 	
@@ -266,6 +305,8 @@ func load_followers_from_save(save_data: Dictionary) -> void:
 	appear(true)
 
 
+
+## Propagates visual traits down the follower cascade updating sprites
 func update_party_visuals(instant: bool = false) -> void:
 	var game_state = GameManager.game_state
 	if not game_state:
@@ -280,14 +321,20 @@ func update_party_visuals(instant: bool = false) -> void:
 			current_player.set_meta("actor_id", 0)
 			current_player.set_meta("party_id", 0)
 		else:
-			var leader_actor = RPGSYSTEM.database.actors[party[0]]
+			var leader_id = party[0]
+			
+			if leader_id > 0 and leader_id < 1000000:
+				leader_id = RPGSYSTEM.id_to_uid("actors", leader_id)
+				party[0] = leader_id
+				
+			var leader_actor = RPGSYSTEM.get_data("actors", leader_id) if leader_id > 0 else null
 			var cached_dir = current_player.current_direction
 			var cached_last_dir = current_player.get("last_direction")
 			var cached_pos = current_player.global_position
 			
-			if current_player.get_meta("actor_id", -1) != party[0] or current_player.name == "Player_Empty":
+			if current_player.get_meta("actor_id", -1) != leader_id or current_player.name == "Player_Empty":
 				if leader_actor and leader_actor.get("character_scene"):
-					var new_player = _get_player_from_cache(party[0], leader_actor.character_scene)
+					var new_player = _get_player_from_cache(leader_id, leader_actor.character_scene)
 					if new_player:
 						new_player.visible = false
 						var parent = current_player.get_parent()
@@ -367,7 +414,7 @@ func update_party_visuals(instant: bool = false) -> void:
 				current_player.name = "Player_" + leader_actor.name
 				current_player.visible = true
 				
-			current_player.set_meta("actor_id", party[0])
+			current_player.set_meta("actor_id", leader_id)
 			current_player.set_meta("party_id", 0)
 			current_player.current_direction = cached_dir
 			
@@ -385,6 +432,11 @@ func update_party_visuals(instant: bool = false) -> void:
 		if f_idx < followers.size():
 			var follower = followers[f_idx]
 			var target_actor_id = party[i]
+			
+			if target_actor_id > 0 and target_actor_id < 1000000:
+				target_actor_id = RPGSYSTEM.id_to_uid("actors", target_actor_id)
+				party[i] = target_actor_id
+				
 			if follower.get_meta("actor_id", -1) != target_actor_id or follower.get_meta("requires_init", false):
 				follower.visible = false
 				
@@ -408,6 +460,8 @@ func update_party_visuals(instant: bool = false) -> void:
 			follower.visible = true
 
 
+
+## Adds or hides followers to match the target party size limits
 func _refresh_follower_nodes(instant: bool = false, save_data_list: Array = []) -> void:
 	var current_map = GameManager.current_map
 	var current_player = GameManager.current_player
@@ -441,7 +495,12 @@ func _refresh_follower_nodes(instant: bool = false, save_data_list: Array = []) 
 			if not f.is_in_group("follower"):
 				f.add_to_group("follower")
 				
-			f.set_meta("actor_id", game_state.current_party[f_idx + 1])
+			var f_actor_id = game_state.current_party[f_idx + 1]
+			if f_actor_id > 0 and f_actor_id < 1000000:
+				f_actor_id = RPGSYSTEM.id_to_uid("actors", f_actor_id)
+				game_state.current_party[f_idx + 1] = f_actor_id
+				
+			f.set_meta("actor_id", f_actor_id)
 			f.set_meta("party_id", f_idx + 1)
 			f.follower_id = f_idx + 1
 			f.z_index = current_player.z_index
@@ -499,6 +558,7 @@ func _refresh_follower_nodes(instant: bool = false, save_data_list: Array = []) 
 
 
 #region Visual Transitions
+## Smoothly fades followers onto the screen
 func appear(instant: bool = false) -> void:
 	if followers.is_empty():
 		return
@@ -527,6 +587,8 @@ func appear(instant: bool = false) -> void:
 		f.is_fading_transition = false
 
 
+
+## Smoothly fades followers out of the screen
 func disappear(instant: bool = false, delete_after: bool = false) -> void:
 	if followers.is_empty():
 		if delete_after: destroy()
@@ -565,6 +627,8 @@ func disappear(instant: bool = false, delete_after: bool = false) -> void:
 		destroy()
 
 
+
+## Hard removes all instances of followers adding them to the cache
 func destroy() -> void:
 	for f in followers:
 		if is_instance_valid(f):
@@ -579,6 +643,7 @@ func destroy() -> void:
 
 
 #region Mode Switches
+## Ends the split party mode and recalls followers to the player
 func disable_split_mode(time: float) -> void:
 	if _is_transitioning: return
 	
@@ -627,6 +692,8 @@ func disable_split_mode(time: float) -> void:
 	_is_transitioning = false
 
 
+
+## Cycles the visible leader of the party swapping with followers
 func change_leader_to(direction: String) -> void:
 	if _is_transitioning: return
 	
@@ -773,6 +840,8 @@ func change_leader_to(direction: String) -> void:
 	_is_transitioning = false
 
 
+
+## Forces followers to pathfind to the player location
 func regroup(time: float = 0.6, delete_followers: bool = false) -> void:
 	var game_state = GameManager.game_state
 	if game_state:

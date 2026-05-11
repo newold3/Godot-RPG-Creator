@@ -1,0 +1,467 @@
+[gd_resource type="Resource" script_class="RPGEvents" format=3 uid="uid://bxoexd2a4trmn"]
+
+[ext_resource type="Script" uid="uid://dvbel4d37a2dd" path="res://addons/RPGData/ModulesRPG/rpg_event.gd" id="1_1m545"]
+[ext_resource type="Script" uid="uid://c4n8w1wb1qopr" path="res://addons/RPGData/ModulesRPG/rpg_event_page.gd" id="2_o6f06"]
+[ext_resource type="Script" uid="uid://biahpabcgjkgs" path="res://addons/RPGData/ModulesRPG/rpg_event_page_condition.gd" id="3_xwock"]
+[ext_resource type="Script" uid="uid://oh1bgoqomrdj" path="res://addons/RPGData/ModulesRPG/rpg_event_command.gd" id="4_ghxg4"]
+[ext_resource type="Script" uid="uid://b7ykdbujk8i3l" path="res://addons/RPGData/ModulesRPG/rpg_movement_command.gd" id="5_pu3ja"]
+[ext_resource type="Script" uid="uid://by33wnof5fhmw" path="res://addons/RPGData/ModulesRPG/rpg_movement_route.gd" id="6_82aou"]
+[ext_resource type="Script" uid="uid://b1paousg2byp3" path="res://addons/RPGData/ModulesRPG/rpg_event_page_options.gd" id="7_hu3o3"]
+[ext_resource type="Script" uid="uid://dcx6f8knjwegv" path="res://addons/RPGData/ModulesRPG/rpg_event_quest.gd" id="8_bavs5"]
+[ext_resource type="Script" uid="uid://ccw0uhbc0ne88" path="res://addons/RPGData/ModulesRPG/rpg_relationship_level.gd" id="9_0hdw5"]
+[ext_resource type="Script" uid="uid://dex58yidnaamn" path="res://addons/RPGData/ModulesRPG/rpg_relationship.gd" id="10_b57ov"]
+[ext_resource type="Script" uid="uid://cioqek6v6bgx4" path="res://addons/RPGMap/Scripts/events.gd" id="11_7y8a5"]
+
+[sub_resource type="Resource" id="Resource_hd3f3"]
+script = ExtResource("3_xwock")
+pressure_targets = PackedInt64Array(0)
+
+[sub_resource type="Resource" id="Resource_n7x5d"]
+script = ExtResource("4_ghxg4")
+
+[sub_resource type="Resource" id="Resource_q4kel"]
+script = ExtResource("6_82aou")
+
+[sub_resource type="Resource" id="Resource_tt4ae"]
+script = ExtResource("7_hu3o3")
+
+[sub_resource type="Resource" id="Resource_f4rfs"]
+script = ExtResource("2_o6f06")
+_uniq_id = 2031025958650933
+id = 0
+list = Array[ExtResource("4_ghxg4")]([SubResource("Resource_n7x5d")])
+condition = SubResource("Resource_hd3f3")
+movement_route = SubResource("Resource_q4kel")
+options = SubResource("Resource_tt4ae")
+event_trigger_list = PackedInt64Array()
+event_tool_list = PackedInt32Array()
+event_signal_list = PackedInt32Array()
+character_type = 1
+character_path = "res://Assets/Images/Other/gold_icon.png"
+character_region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="Resource" id="Resource_582ru"]
+script = ExtResource("9_0hdw5")
+
+[sub_resource type="Resource" id="Resource_6a5xb"]
+script = ExtResource("10_b57ov")
+levels = Array[ExtResource("9_0hdw5")]([SubResource("Resource_582ru")])
+
+[sub_resource type="Resource" id="Resource_e5pyy"]
+script = ExtResource("1_1m545")
+_uniq_id = 5221491674096361
+name = "Cofre"
+id = 1
+x = 9
+y = 29
+pages = Array[ExtResource("2_o6f06")]([SubResource("Resource_f4rfs")])
+relationship = SubResource("Resource_6a5xb")
+
+[sub_resource type="Resource" id="Resource_dakhw"]
+script = ExtResource("3_xwock")
+pressure_targets = PackedInt64Array(0)
+
+[sub_resource type="Resource" id="Resource_gnwhx"]
+script = ExtResource("4_ghxg4")
+
+[sub_resource type="Resource" id="Resource_jh05v"]
+script = ExtResource("6_82aou")
+
+[sub_resource type="Resource" id="Resource_tkti7"]
+script = ExtResource("7_hu3o3")
+
+[sub_resource type="Resource" id="Resource_40m48"]
+script = ExtResource("2_o6f06")
+_uniq_id = 2721333513321592
+id = 0
+list = Array[ExtResource("4_ghxg4")]([SubResource("Resource_gnwhx")])
+condition = SubResource("Resource_dakhw")
+movement_route = SubResource("Resource_jh05v")
+options = SubResource("Resource_tkti7")
+event_trigger_list = PackedInt64Array()
+event_tool_list = PackedInt32Array()
+event_signal_list = PackedInt32Array()
+character_type = 1
+character_path = "res://Assets/Images/Other/gold_icon.png"
+character_region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="Resource" id="Resource_x8ak3"]
+script = ExtResource("9_0hdw5")
+
+[sub_resource type="Resource" id="Resource_d4wh7"]
+script = ExtResource("10_b57ov")
+levels = Array[ExtResource("9_0hdw5")]([SubResource("Resource_x8ak3")])
+
+[sub_resource type="Resource" id="Resource_sg83w"]
+script = ExtResource("1_1m545")
+_uniq_id = 6103547752899477
+name = "Cofre"
+id = 2
+x = 17
+y = 32
+pages = Array[ExtResource("2_o6f06")]([SubResource("Resource_40m48")])
+relationship = SubResource("Resource_d4wh7")
+
+[sub_resource type="Resource" id="Resource_iivxu"]
+script = ExtResource("3_xwock")
+pressure_targets = PackedInt64Array(0)
+
+[sub_resource type="Resource" id="Resource_44hfk"]
+script = ExtResource("4_ghxg4")
+
+[sub_resource type="Resource" id="Resource_egmuc"]
+script = ExtResource("6_82aou")
+
+[sub_resource type="Resource" id="Resource_y6lpq"]
+script = ExtResource("7_hu3o3")
+
+[sub_resource type="Resource" id="Resource_o7ojl"]
+script = ExtResource("2_o6f06")
+_uniq_id = 2281381751011900
+id = 0
+list = Array[ExtResource("4_ghxg4")]([SubResource("Resource_44hfk")])
+condition = SubResource("Resource_iivxu")
+movement_route = SubResource("Resource_egmuc")
+options = SubResource("Resource_y6lpq")
+event_trigger_list = PackedInt64Array()
+event_tool_list = PackedInt32Array()
+event_signal_list = PackedInt32Array()
+character_type = 1
+character_path = "res://Assets/Images/Other/gold_icon.png"
+character_region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="Resource" id="Resource_f28h7"]
+script = ExtResource("9_0hdw5")
+
+[sub_resource type="Resource" id="Resource_j21os"]
+script = ExtResource("10_b57ov")
+levels = Array[ExtResource("9_0hdw5")]([SubResource("Resource_f28h7")])
+
+[sub_resource type="Resource" id="Resource_vv5yv"]
+script = ExtResource("1_1m545")
+_uniq_id = 5355122409679415
+name = "Cofre"
+id = 3
+x = 14
+y = 20
+pages = Array[ExtResource("2_o6f06")]([SubResource("Resource_o7ojl")])
+relationship = SubResource("Resource_j21os")
+
+[sub_resource type="Resource" id="Resource_wuwbc"]
+script = ExtResource("3_xwock")
+pressure_targets = PackedInt64Array(0)
+
+[sub_resource type="Resource" id="Resource_ajwg7"]
+script = ExtResource("4_ghxg4")
+
+[sub_resource type="Resource" id="Resource_jwn1w"]
+script = ExtResource("6_82aou")
+
+[sub_resource type="Resource" id="Resource_sufk5"]
+script = ExtResource("7_hu3o3")
+
+[sub_resource type="Resource" id="Resource_6y1k3"]
+script = ExtResource("2_o6f06")
+_uniq_id = 9797753083503558
+id = 0
+list = Array[ExtResource("4_ghxg4")]([SubResource("Resource_ajwg7")])
+condition = SubResource("Resource_wuwbc")
+movement_route = SubResource("Resource_jwn1w")
+options = SubResource("Resource_sufk5")
+event_trigger_list = PackedInt64Array()
+event_tool_list = PackedInt32Array()
+event_signal_list = PackedInt32Array()
+character_type = 1
+character_path = "res://Assets/Images/Other/gold_icon.png"
+character_region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="Resource" id="Resource_deygv"]
+script = ExtResource("9_0hdw5")
+
+[sub_resource type="Resource" id="Resource_imulw"]
+script = ExtResource("10_b57ov")
+levels = Array[ExtResource("9_0hdw5")]([SubResource("Resource_deygv")])
+
+[sub_resource type="Resource" id="Resource_f58n6"]
+script = ExtResource("1_1m545")
+_uniq_id = 4591304088040079
+name = "Cofre"
+id = 4
+x = 16
+y = 22
+pages = Array[ExtResource("2_o6f06")]([SubResource("Resource_6y1k3")])
+relationship = SubResource("Resource_imulw")
+
+[sub_resource type="Resource" id="Resource_eenni"]
+script = ExtResource("3_xwock")
+pressure_targets = PackedInt64Array(0)
+
+[sub_resource type="Resource" id="Resource_2dv2e"]
+script = ExtResource("4_ghxg4")
+
+[sub_resource type="Resource" id="Resource_s2y8q"]
+script = ExtResource("6_82aou")
+
+[sub_resource type="Resource" id="Resource_d5ff2"]
+script = ExtResource("7_hu3o3")
+
+[sub_resource type="Resource" id="Resource_6x6m3"]
+script = ExtResource("2_o6f06")
+_uniq_id = 4272613887291618
+id = 0
+list = Array[ExtResource("4_ghxg4")]([SubResource("Resource_2dv2e")])
+condition = SubResource("Resource_eenni")
+movement_route = SubResource("Resource_s2y8q")
+options = SubResource("Resource_d5ff2")
+event_trigger_list = PackedInt64Array()
+event_tool_list = PackedInt32Array()
+event_signal_list = PackedInt32Array()
+character_type = 1
+character_path = "res://Assets/Images/Other/gold_icon.png"
+character_region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="Resource" id="Resource_3h6fk"]
+script = ExtResource("9_0hdw5")
+
+[sub_resource type="Resource" id="Resource_wf2bt"]
+script = ExtResource("10_b57ov")
+levels = Array[ExtResource("9_0hdw5")]([SubResource("Resource_3h6fk")])
+
+[sub_resource type="Resource" id="Resource_adute"]
+script = ExtResource("1_1m545")
+_uniq_id = 2064586170312454
+name = "Cofre"
+id = 5
+x = 16
+y = 38
+pages = Array[ExtResource("2_o6f06")]([SubResource("Resource_6x6m3")])
+relationship = SubResource("Resource_wf2bt")
+
+[sub_resource type="Resource" id="Resource_e5ch2"]
+script = ExtResource("3_xwock")
+pressure_targets = PackedInt64Array(0)
+
+[sub_resource type="Resource" id="Resource_dotjt"]
+script = ExtResource("4_ghxg4")
+
+[sub_resource type="Resource" id="Resource_p4vby"]
+script = ExtResource("6_82aou")
+
+[sub_resource type="Resource" id="Resource_65oba"]
+script = ExtResource("7_hu3o3")
+
+[sub_resource type="Resource" id="Resource_gqr8i"]
+script = ExtResource("2_o6f06")
+_uniq_id = 3468655831444591
+id = 0
+list = Array[ExtResource("4_ghxg4")]([SubResource("Resource_dotjt")])
+condition = SubResource("Resource_e5ch2")
+movement_route = SubResource("Resource_p4vby")
+options = SubResource("Resource_65oba")
+event_trigger_list = PackedInt64Array()
+event_tool_list = PackedInt32Array()
+event_signal_list = PackedInt32Array()
+character_type = 1
+character_path = "res://Assets/Images/Other/gold_icon.png"
+character_region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="Resource" id="Resource_y1o8d"]
+script = ExtResource("9_0hdw5")
+
+[sub_resource type="Resource" id="Resource_2vg2b"]
+script = ExtResource("10_b57ov")
+levels = Array[ExtResource("9_0hdw5")]([SubResource("Resource_y1o8d")])
+
+[sub_resource type="Resource" id="Resource_krsj7"]
+script = ExtResource("1_1m545")
+_uniq_id = 9757659152561639
+name = "Cofre"
+id = 6
+x = 40
+y = 33
+pages = Array[ExtResource("2_o6f06")]([SubResource("Resource_gqr8i")])
+relationship = SubResource("Resource_2vg2b")
+
+[sub_resource type="Resource" id="Resource_jbjvu"]
+script = ExtResource("3_xwock")
+pressure_targets = PackedInt64Array(0)
+
+[sub_resource type="Resource" id="Resource_06alc"]
+script = ExtResource("4_ghxg4")
+
+[sub_resource type="Resource" id="Resource_mgnif"]
+script = ExtResource("6_82aou")
+
+[sub_resource type="Resource" id="Resource_8kjc4"]
+script = ExtResource("7_hu3o3")
+
+[sub_resource type="Resource" id="Resource_3vo1k"]
+script = ExtResource("2_o6f06")
+_uniq_id = 3005923089911638
+id = 0
+list = Array[ExtResource("4_ghxg4")]([SubResource("Resource_06alc")])
+condition = SubResource("Resource_jbjvu")
+movement_route = SubResource("Resource_mgnif")
+options = SubResource("Resource_8kjc4")
+event_trigger_list = PackedInt64Array()
+event_tool_list = PackedInt32Array()
+event_signal_list = PackedInt32Array()
+character_type = 1
+character_path = "res://Assets/Images/Other/gold_icon.png"
+character_region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="Resource" id="Resource_8sq63"]
+script = ExtResource("9_0hdw5")
+
+[sub_resource type="Resource" id="Resource_67qvc"]
+script = ExtResource("10_b57ov")
+levels = Array[ExtResource("9_0hdw5")]([SubResource("Resource_8sq63")])
+
+[sub_resource type="Resource" id="Resource_gnfpr"]
+script = ExtResource("1_1m545")
+_uniq_id = 9823467009686342
+name = "Cofre"
+id = 7
+x = 6
+y = 17
+pages = Array[ExtResource("2_o6f06")]([SubResource("Resource_3vo1k")])
+relationship = SubResource("Resource_67qvc")
+
+[sub_resource type="Resource" id="Resource_d534u"]
+script = ExtResource("3_xwock")
+pressure_targets = PackedInt64Array(0)
+
+[sub_resource type="Resource" id="Resource_myt2a"]
+script = ExtResource("4_ghxg4")
+
+[sub_resource type="Resource" id="Resource_l2rl5"]
+script = ExtResource("6_82aou")
+
+[sub_resource type="Resource" id="Resource_2t0to"]
+script = ExtResource("7_hu3o3")
+
+[sub_resource type="Resource" id="Resource_qxg58"]
+script = ExtResource("2_o6f06")
+_uniq_id = 8514331946684688
+id = 0
+list = Array[ExtResource("4_ghxg4")]([SubResource("Resource_myt2a")])
+condition = SubResource("Resource_d534u")
+movement_route = SubResource("Resource_l2rl5")
+options = SubResource("Resource_2t0to")
+event_trigger_list = PackedInt64Array()
+event_tool_list = PackedInt32Array()
+event_signal_list = PackedInt32Array()
+character_type = 1
+character_path = "res://Assets/Images/Other/gold_icon.png"
+character_region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="Resource" id="Resource_ax68r"]
+script = ExtResource("9_0hdw5")
+
+[sub_resource type="Resource" id="Resource_5sijc"]
+script = ExtResource("10_b57ov")
+levels = Array[ExtResource("9_0hdw5")]([SubResource("Resource_ax68r")])
+
+[sub_resource type="Resource" id="Resource_j7wsd"]
+script = ExtResource("1_1m545")
+_uniq_id = 6393931944759396
+name = "Cofre"
+id = 8
+x = 16
+y = 19
+pages = Array[ExtResource("2_o6f06")]([SubResource("Resource_qxg58")])
+relationship = SubResource("Resource_5sijc")
+
+[sub_resource type="Resource" id="Resource_k16nn"]
+script = ExtResource("3_xwock")
+pressure_targets = PackedInt64Array(0)
+
+[sub_resource type="Resource" id="Resource_g4vkj"]
+script = ExtResource("4_ghxg4")
+
+[sub_resource type="Resource" id="Resource_jmcnq"]
+script = ExtResource("6_82aou")
+
+[sub_resource type="Resource" id="Resource_6twxq"]
+script = ExtResource("7_hu3o3")
+
+[sub_resource type="Resource" id="Resource_b3sxn"]
+script = ExtResource("2_o6f06")
+_uniq_id = 6984149123100295
+id = 0
+list = Array[ExtResource("4_ghxg4")]([SubResource("Resource_g4vkj")])
+condition = SubResource("Resource_k16nn")
+movement_route = SubResource("Resource_jmcnq")
+options = SubResource("Resource_6twxq")
+event_trigger_list = PackedInt64Array()
+event_tool_list = PackedInt32Array()
+event_signal_list = PackedInt32Array()
+character_type = 1
+character_path = "res://Assets/Images/Other/gold_icon.png"
+character_region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="Resource" id="Resource_ejqvv"]
+script = ExtResource("9_0hdw5")
+
+[sub_resource type="Resource" id="Resource_8tm5e"]
+script = ExtResource("10_b57ov")
+levels = Array[ExtResource("9_0hdw5")]([SubResource("Resource_ejqvv")])
+
+[sub_resource type="Resource" id="Resource_l26nd"]
+script = ExtResource("1_1m545")
+_uniq_id = 5565668811999564
+name = "Cofre"
+id = 9
+x = 43
+y = 30
+pages = Array[ExtResource("2_o6f06")]([SubResource("Resource_b3sxn")])
+relationship = SubResource("Resource_8tm5e")
+
+[sub_resource type="Resource" id="Resource_ly6mk"]
+script = ExtResource("3_xwock")
+pressure_targets = PackedInt64Array(0)
+
+[sub_resource type="Resource" id="Resource_jlglu"]
+script = ExtResource("4_ghxg4")
+
+[sub_resource type="Resource" id="Resource_1wnu7"]
+script = ExtResource("6_82aou")
+
+[sub_resource type="Resource" id="Resource_vc8g3"]
+script = ExtResource("7_hu3o3")
+
+[sub_resource type="Resource" id="Resource_o4d3a"]
+script = ExtResource("2_o6f06")
+_uniq_id = 9999973678172400
+id = 0
+list = Array[ExtResource("4_ghxg4")]([SubResource("Resource_jlglu")])
+condition = SubResource("Resource_ly6mk")
+movement_route = SubResource("Resource_1wnu7")
+options = SubResource("Resource_vc8g3")
+event_trigger_list = PackedInt64Array()
+event_tool_list = PackedInt32Array()
+event_signal_list = PackedInt32Array()
+character_type = 1
+character_path = "res://Assets/Images/Other/gold_icon.png"
+character_region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="Resource" id="Resource_s5krw"]
+script = ExtResource("9_0hdw5")
+
+[sub_resource type="Resource" id="Resource_r6qhm"]
+script = ExtResource("10_b57ov")
+levels = Array[ExtResource("9_0hdw5")]([SubResource("Resource_s5krw")])
+
+[sub_resource type="Resource" id="Resource_f4k38"]
+script = ExtResource("1_1m545")
+_uniq_id = 5862975697463448
+name = "Cofre"
+id = 10
+x = 17
+y = 14
+pages = Array[ExtResource("2_o6f06")]([SubResource("Resource_o4d3a")])
+relationship = SubResource("Resource_r6qhm")
+
+[resource]
+script = ExtResource("11_7y8a5")
+events = Array[ExtResource("1_1m545")]([SubResource("Resource_e5pyy"), SubResource("Resource_sg83w"), SubResource("Resource_vv5yv"), SubResource("Resource_f58n6"), SubResource("Resource_adute"), SubResource("Resource_krsj7"), SubResource("Resource_gnfpr"), SubResource("Resource_j7wsd"), SubResource("Resource_l26nd"), SubResource("Resource_f4k38")])

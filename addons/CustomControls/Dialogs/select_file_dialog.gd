@@ -101,6 +101,8 @@ var all_button_enabled: bool = false
 
 var _load_token: int = 0
 
+var _was_all_mode_before_favorite: bool = false
+
 static var cache_last_selection: Dictionary = {}
 static var last_folder_visited: String = ""
 
@@ -358,6 +360,10 @@ func fill_files(file_id: String, update_directory: bool = true, filter_text: Str
 	current_file_filters_data = current_cache_key
 	current_file_type = 0
 	
+	if favorite_button_enabled:
+		_fill_favorite_files(filter_text)
+		return
+	
 	_clear_current_files()
 	_update_ui_controls()
 	
@@ -553,6 +559,7 @@ func _setup_file_node(node: Control, path: String) -> void:
 	node.selected.connect(_on_file_selected)
 	node.double_click.connect(select_file)
 	node.add_to_favorite_requested.connect(_add_to_favorite)
+	node.remove_from_favorite_requested.connect(_remove_from_favorite)
 	node.show_favorite_button()
 	if path in current_files_selected:
 		node.select()
@@ -654,6 +661,11 @@ func fill_files_by_regex(path: String, regex_pattern: String, cache_ids: PackedS
 	current_cache_key = regex_pattern
 	current_file_filters_data = current_cache_key
 	current_regex_cache_ids = cache_ids
+	
+	if favorite_button_enabled:
+		_fill_favorite_files(filter_text)
+		return
+	
 	_clear_current_files()
 	_update_ui_controls()
 	var base_dir = path if not all_button_enabled else "res://"
@@ -671,27 +683,35 @@ func fill_files_by_regex(path: String, regex_pattern: String, cache_ids: PackedS
 	hide_loading()
 
 
+## Restores the directory state and UI when leaving a global view (All/Favorites)
+func _restore_directory_state() -> void:
+	if not current_file_selected.is_empty() and current_file_selected != "res://":
+		current_directory = _clean_path(current_file_selected.get_base_dir())
+	elif current_directory.is_empty() or current_directory == "res://":
+		if not last_folder_visited.is_empty():
+			current_directory = last_folder_visited
+		else:
+			current_directory = "res://"
+			
+	current_directory = _clean_path(current_directory)
+	
+	if %CurrentPath:
+		%CurrentPath.text = current_directory
+		
+	_update_history_buttons()
+	_update_label_path_selected()
+
+
 func _on_all_button_toggled(toggled_on: bool) -> void:
 	all_button_enabled = toggled_on
 	
 	if toggled_on:
 		favorite_button_enabled = false
 		%FavoriteButton.set_pressed_no_signal(false)
+		_was_all_mode_before_favorite = false 
 	
 	if not toggled_on:
-		if not current_file_selected.is_empty():
-			current_directory = _clean_path(current_file_selected.get_base_dir())
-		elif current_directory.is_empty():
-			if not last_folder_visited.is_empty():
-				current_directory = last_folder_visited
-			else:
-				current_directory = "res://"
-		
-		current_directory = _clean_path(current_directory)
-		
-		%CurrentPath.text = current_directory
-		
-		_update_history_buttons()
+		_restore_directory_state()
 	
 	if FileCache.options:
 		FileCache.options.file_dialog_all_files_toggled = toggled_on
@@ -701,9 +721,19 @@ func _on_all_button_toggled(toggled_on: bool) -> void:
 
 func _on_favorite_button_toggled(toggled_on: bool) -> void:
 	favorite_button_enabled = toggled_on
+	
 	if toggled_on:
+		_was_all_mode_before_favorite = all_button_enabled
 		all_button_enabled = false
 		%AllButton.set_pressed_no_signal(false)
+	else:
+		if _was_all_mode_before_favorite:
+			all_button_enabled = true
+			%AllButton.set_pressed_no_signal(true)
+		else:
+			_restore_directory_state()
+		
+		_was_all_mode_before_favorite = false
 		
 	if FileCache.options:
 		FileCache.options.file_dialog_favorite_toggled = toggled_on
@@ -975,6 +1005,12 @@ func _add_to_favorite(path: String) -> void:
 		if not "favorite_files" in options_cache:
 			options_cache.favorite_files = {}
 		options_cache.favorite_files[path] = current_file_filters_data
+
+
+func _remove_from_favorite(path: String) -> void:
+	var options_cache = FileCache.options
+	if options_cache and "favorite_files" in options_cache:
+		options_cache.favorite_files.erase(path)
 
 
 func hide_directory_extra_controls2() -> void:

@@ -11,12 +11,13 @@
 [ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="9_25fkk"]
 [ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="10_nupqe"]
 [ext_resource type="PackedScene" uid="uid://barmev3c3hfbu" path="res://addons/CustomControls/custom_text_edit.tscn" id="11_dmsar"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="12_i4gnm"]
 [ext_resource type="PackedScene" uid="uid://c6vqhgg1w1sxj" path="res://addons/CustomControls/custom_button_2.tscn" id="13_wt2xv"]
 [ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="14_8n4ge"]
 [ext_resource type="PackedScene" uid="uid://dxcyqc2dscbvw" path="res://addons/CustomControls/custom_simple_column_item_list.tscn" id="15_sx12j"]
 [ext_resource type="PackedScene" uid="uid://os7clwyqwlka" path="res://addons/RPGData/Scenes/traits_panel.tscn" id="16_fvb6t"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cq6e5"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7cokm"]
 resource_local_to_scene = true
 content_margin_left = 3.0
 content_margin_right = 3.0
@@ -28,7 +29,7 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.113725, 0.133333, 0.160784, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i4gnm"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g3uid"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 1
@@ -45,11 +46,11 @@ gradient = SubResource("Gradient_3obsl")
 fill_from = Vector2(0.547009, 1)
 fill_to = Vector2(0.559829, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7cokm"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xvqgt"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_mtkxg")
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_g3uid"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_q5woj"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_mtkxg")
 
@@ -70,7 +71,7 @@ texture = ExtResource("6_kdl3a")
 texture_margin_left = 18.0
 texture_margin_right = 18.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xvqgt"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kdl3a"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -96,7 +97,7 @@ fill_to = Vector2(0.58547, 0)
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2t7bu"]
 texture = SubResource("GradientTexture2D_fi7ck")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q5woj"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ku36w"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -217,7 +218,7 @@ gradient = SubResource("Gradient_k46qy")
 fill_from = Vector2(0.547009, 1)
 fill_to = Vector2(0.559829, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kdl3a"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_au1b1"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_wqerl")
 
@@ -277,11 +278,11 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/v_separation = -1
-theme_override_styles/panel = SubResource("StyleBoxFlat_cq6e5")
-theme_override_styles/focus = SubResource("StyleBoxFlat_cq6e5")
-theme_override_styles/hovered = SubResource("StyleBoxFlat_i4gnm")
-theme_override_styles/selected = SubResource("StyleBoxTexture_7cokm")
-theme_override_styles/selected_focus = SubResource("StyleBoxTexture_g3uid")
+theme_override_styles/panel = SubResource("StyleBoxFlat_7cokm")
+theme_override_styles/focus = SubResource("StyleBoxFlat_7cokm")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_g3uid")
+theme_override_styles/selected = SubResource("StyleBoxTexture_xvqgt")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_q5woj")
 select_mode = 1
 odd_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 event_line_color = Color(0.145098, 0.156863, 0.164706, 1)
@@ -355,10 +356,10 @@ stylebox_tab_selected = SubResource("StyleBoxTexture_wqerl")
 custom_minimum_size = Vector2(510, 160)
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_xvqgt")
-style1 = SubResource("StyleBoxFlat_xvqgt")
+theme_override_styles/panel = SubResource("StyleBoxFlat_kdl3a")
+style1 = SubResource("StyleBoxFlat_kdl3a")
 style2 = SubResource("StyleBoxTexture_2t7bu")
-style3 = SubResource("StyleBoxFlat_q5woj")
+style3 = SubResource("StyleBoxFlat_ku36w")
 
 [node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer" unique_id=888909205]
 layout_mode = 2
@@ -481,6 +482,78 @@ size_flags_vertical = 3
 tooltip_text = "[title]Description[/title]
 The description that appears when a equipment is selected in the Play Screen."
 wrap_mode = 1
+
+[node name="HBoxContainer5" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings" unique_id=1730577754]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HSeparator" type="HSeparator" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5" unique_id=168422243]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5" unique_id=1487860826]
+layout_mode = 2
+text = "Usage Restriction:"
+
+[node name="VBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5" unique_id=1195043489]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer" unique_id=1566601179]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer/VBoxContainer" unique_id=751489796]
+layout_mode = 2
+text = "Requires Actor Level"
+
+[node name="RequiresActorLevel" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer/VBoxContainer" unique_id=544623089 instance=ExtResource("10_nupqe")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "Restricts its use to characters whose level is greater than or equal to the specified level"
+allow_greater = true
+value_replace = {
+"0": "Any Level"
+}
+_custom_value = 0.0
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer" unique_id=2056863816]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer/VBoxContainer2" unique_id=52720299]
+layout_mode = 2
+text = "Requires Actor Class"
+
+[node name="RequiresActorClass" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer/VBoxContainer2" unique_id=621784070 instance=ExtResource("12_i4gnm")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "Restricts its use to characters whose class matches the specified class (or 0 to allow any class)"
+selected = 0
+item_count = 1
+popup/item_0/text = "Any Class"
+popup/item_0/id = 0
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer" unique_id=631988825]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer/VBoxContainer3" unique_id=2141987571]
+layout_mode = 2
+text = "Requires Actor Gender"
+
+[node name="RequiresActorGender" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer/VBoxContainer3" unique_id=1794943400 instance=ExtResource("12_i4gnm")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "Restricts its use to characters whose gender matches the specified gender (or 0 to allow any gender)"
+selected = 0
+item_count = 1
+popup/item_0/text = "Any Gender"
+popup/item_0/id = 0
+
+[node name="HSeparator2" type="HSeparator" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5" unique_id=27709037]
+layout_mode = 2
 
 [node name="Tab2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer" unique_id=1601446905]
 unique_name_in_owner = true
@@ -747,7 +820,7 @@ odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
 event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 top_bar_style = SubResource("StyleBoxTexture_rmr4f")
 columns_text_colors = PackedColorArray(0.72549, 0.992157, 0.772549, 1)
-cursor_style = SubResource("StyleBoxTexture_kdl3a")
+cursor_style = SubResource("StyleBoxTexture_au1b1")
 panel_style = SubResource("StyleBoxFlat_ngag6")
 columns = 2
 names = PackedStringArray("Parameter", "Value")
@@ -935,6 +1008,9 @@ wrap_mode = 1
 [connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer4/HBoxContainer/VBoxContainer3/PriceSpinBox" to="." method="_on_price_spin_box_value_changed"]
 [connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer/VBoxContainer4/HBoxContainer/VBoxContainer5/MaxQuantity" to="." method="_on_max_quantity_value_changed"]
 [connection signal="text_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3/DescriptionTextEdit" to="." method="_on_description_text_edit_text_changed"]
+[connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer/VBoxContainer/RequiresActorLevel" to="." method="_on_requires_actor_level_value_changed"]
+[connection signal="item_selected" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer/VBoxContainer2/RequiresActorClass" to="." method="_on_requires_actor_class_item_selected"]
+[connection signal="item_selected" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer/VBoxContainer3/RequiresActorGender" to="." method="_on_requires_actor_gender_item_selected"]
 [connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer2/ParameterChanges/HBoxContainer/CopyParameters" to="." method="_on_copy_parameters_pressed"]
 [connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer2/ParameterChanges/HBoxContainer/PasteParameters" to="." method="_on_paste_parameters_pressed"]
 [connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer2/ParameterChanges/HboxContainer/VBoxContainer5/MaxHPSpinBox" to="." method="_on_max_hp_spin_box_value_changed"]

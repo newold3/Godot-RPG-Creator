@@ -6,10 +6,10 @@ extends Resource
 @export var actors: Dictionary = {}
 
 ## Array of actor IDs currently in the active party.
-@export var current_party: PackedInt32Array = []
+@export var current_party: PackedInt64Array = []
 
 ## Array of actor IDs that are locked in the party and cannot be removed.
-@export var party_member_locked: PackedInt32Array = []
+@export var party_member_locked: PackedInt64Array = []
 
 ## Dictionary of inventory items sorted by item ID.
 @export var items: Dictionary = {}

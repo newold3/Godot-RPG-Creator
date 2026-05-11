@@ -9,11 +9,13 @@ var sub_parameter_code: int = 97
 @onready var item_container: VBoxContainer = %itemContainer
 
 
+
 func _ready() -> void:
 	super()
 	parameter_code = 36
 	%SalesRatio.get_line_edit().set_expand_to_text_length_enabled(true)
 	%PurchaseRatio.get_line_edit().set_expand_to_text_length_enabled(true)
+
 
 
 func set_parameters(_parameters: Array[RPGEventCommand]) -> void:
@@ -22,6 +24,7 @@ func set_parameters(_parameters: Array[RPGEventCommand]) -> void:
 		parameters.append(param.clone(true))
 
 	set_data()
+
 
 
 func set_data() -> void:
@@ -97,6 +100,7 @@ func set_data() -> void:
 	min_size = bak
 
 
+
 func _change_panel_order(index: int, direction: int) -> void:
 	var node = %itemContainer.get_child(index)
 	%itemContainer.move_child(node, index + direction)
@@ -108,10 +112,12 @@ func _change_panel_order(index: int, direction: int) -> void:
 	node.select()
 
 
+
 func _remove_panel(panel: ShopPanel) -> void:
 	var index = panel.get_index() + 1
 	parameters.remove_at(index)
 	panel.queue_free()
+
 
 
 func build_command_list() -> Array[RPGEventCommand]:
@@ -119,13 +125,15 @@ func build_command_list() -> Array[RPGEventCommand]:
 	return parameters
 
 
+
+## Añade un nuevo item al inventario. Asume que item_id ya es un UID.
 func _on_add_new_item_pressed(item_type: int = 0, item_id: int = 1) -> void:
 	# Create sub-command
 	var command = RPGEventCommand.new()
 	command.code = sub_parameter_code
 	command.indent = parameters[0].indent
 	command.parameters.type = item_type
-	command.parameters.item_id = item_id
+	command.parameters.item_id = item_id # Now stores UID directly
 	command.parameters.quantity = 0
 	command.parameters.price_mode = 0
 	command.parameters.price = 0
@@ -142,6 +150,7 @@ func _on_add_new_item_pressed(item_type: int = 0, item_id: int = 1) -> void:
 	panel.select()
 
 
+
 func _on_sales_mode_item_selected(index: int) -> void:
 	parameters[0].parameters.sales_mode = index
 	%ChooseItems.visible = index == 5
@@ -149,19 +158,24 @@ func _on_sales_mode_item_selected(index: int) -> void:
 	%SalesRatio.visible = index != 1
 
 
+
 func _on_sales_ratio_value_changed(value: float) -> void:
 	if not parameters or parameters.is_empty(): return
 	parameters[0].parameters.sales_ratio = value
+
 
 
 func _on_choose_items_pressed() -> void:
 	var path = "res://addons/CustomControls/Dialogs/select_items_dialog.tscn"
 	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
 
+	# Se asume que 'buy_list' guarda UIDs, el diálogo 'select_items_dialog' debe manejar UIDs
 	dialog.set_data(parameters[0].parameters.buy_list)
 	dialog.changed.connect(func(buy_list: Array): parameters[0].parameters.buy_list = buy_list)
 
 
+
+## Abre la selección de múltiples ítems y convierte los IDs clásicos devueltos a UIDs.
 func _on_add_multiple_items_pressed() -> void:
 	var path = "res://addons/CustomControls/Dialogs/select_items_dialog.tscn"
 	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
@@ -175,19 +189,22 @@ func _on_add_multiple_items_pressed() -> void:
 	)
 
 
+
 func _on_purchase_ratio_value_changed(value: float) -> void:
 	if not parameters or parameters.is_empty(): return
 	
 	parameters[0].parameters.purchase_ratio = value
 
 
+
+## Fusiona objetos duplicados comparando sus UIDs
 func _on_remove_duplicates_pressed() -> void:
 	var clean_commands = []
 	var item_dict = {}
 	
 	var s = size - Vector2i(20, 0)
 	
-	# Primero agrupamos por type e item_id
+	# Primero agrupamos por type e item_id (que ahora es el UID seguro)
 	for cmd in parameters:
 		if cmd.code == 96: continue
 		var params = cmd.parameters
@@ -198,6 +215,7 @@ func _on_remove_duplicates_pressed() -> void:
 		var price = params.price
 		var level = params.get("level", -1)
 		
+		# La clave del diccionario usa el UID para evitar fusiones accidentales
 		var key = str(type) + "_" + str(item_id) + "_" + str(level)
 		
 		if not item_dict.has(key):
@@ -254,8 +272,10 @@ func _on_remove_duplicates_pressed() -> void:
 	size = s
 
 
+
 func _on_shop_name_text_changed(new_text: String) -> void:
 	parameters[0].parameters.shop_name = new_text
+
 
 
 func _on_dialog_scene_pressed() -> void:
@@ -272,8 +292,10 @@ func _on_dialog_scene_pressed() -> void:
 	dialog.fill_files("shop_scene")
 
 
+
 func _update_shop_file(path: String) -> void:
 	parameters[0].parameters.shop_scene = path
+
 
 
 func _on_shop_keeper_pressed() -> void:
@@ -292,9 +314,11 @@ func _on_shop_keeper_pressed() -> void:
 	dialog.fill_files("images")
 
 
+
 func _on_clear_all_items_pressed() -> void:
 	var new_parameters: Array[RPGEventCommand] = [parameters[0]]
 	set_parameters(new_parameters)
+
 
 
 func _on_can_restock_toggled(toggled_on: bool) -> void:
@@ -302,6 +326,7 @@ func _on_can_restock_toggled(toggled_on: bool) -> void:
 	
 	parameters[0].parameters.can_restock = toggled_on
 	%RestockTimerContainer.propagate_call("set_disabled",  [!toggled_on])
+
 
 
 func _change_restock_timer(value: float) -> void:

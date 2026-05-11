@@ -89,6 +89,20 @@ func get_event(map_id: int, event_id: int) -> Dictionary:
 	return {}
 
 
+func get_event_page(map_id: int, event_id: int, page_id: int) -> RPGEventPage:
+	var map = get_map_by_id(map_id)
+	if map in map_infos.map_events:
+		var events = map_infos.map_events[map]
+		for event in events:
+			if event.uid == event_id or event.id == event_id:
+				for i in event.pages.size():
+					var page = event.pages[i]
+					if i == page_id or page.uid == page_id:
+						return page
+	
+	return null
+
+
 func get_event_page_name(map_id: int, event_id: int, page_id: int) -> String:
 	var page_name = ""
 	

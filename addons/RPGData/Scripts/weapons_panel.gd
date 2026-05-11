@@ -1,20 +1,52 @@
 @tool
 extends BasePanelData
 
+#region Variables
+#endregion
 
+
+
+#region Lifecycle
+## Called when the node enters the scene tree for the first time
 func _ready() -> void:
 	super()
 	default_data_element = RPGWeapon.new()
-	
+	_fill_usage_restriction()
 	item_created.connect(_on_weapon_created)
 
 
+
+func _fill_usage_restriction() -> void:
+	var node = %RequiresActorClass
+	node.clear()
+	node.add_item(tr("Any Class"))
+	node.set_item_metadata(-1, 0)
+	
+	if not database: database = RPGSYSTEM.database
+	
+	for c: RPGClass in database.classes:
+		if not c: continue
+		node.add_item("%s: %s" % [c.id, c.name])
+		node.set_item_metadata(-1, c._uniq_id)
+	
+	node = %RequiresActorGender
+	node.clear()
+	node.add_item(tr("Any Gender"))
+	
+	for i: int in database.types.gender_types.size():
+		var t: String = database.types.gender_types[i]
+		node.add_item("%s: %s" % [i + 1, t])
+
+
+## Initializes user parameters for newly created weapons
 func _on_weapon_created(weapon: RPGWeapon) -> void:
 	weapon.user_parameters.resize(database.types.user_parameters.size())
 	for i in database.types.user_parameters.size():
 		weapon.user_parameters[i] = database.types.user_parameters[i].default_value
 
 
+
+## Retrieves the currently selected weapon data
 func get_data() -> RPGWeapon:
 	if not data: return null
 	current_selected_index = max(1, min(current_selected_index, data.size() - 1))
@@ -22,8 +54,12 @@ func get_data() -> RPGWeapon:
 		return data[current_selected_index]
 	else:
 		return default_data_element
+#endregion
 
 
+
+#region Core Data Loading
+## Updates all the visual fields based on the selected weapon
 func _update_data_fields() -> void:
 	busy = true
 	
@@ -33,9 +69,11 @@ func _update_data_fields() -> void:
 		fill_rarity_types()
 		fill_user_parameters()
 		fill_animation()
+		
 		var current_data = get_data()
 		if current_data.tools_family == null:
 			current_data.tools_family = []
+			
 		fill_tools(current_data.tools_family)
 		%NameLineEdit.text = current_data.name
 		%IconPicker.set_icon(current_data.icon.path, current_data.icon.region)
@@ -56,20 +94,19 @@ func _update_data_fields() -> void:
 		%UpgradeSettingsButton.set_disabled(current_data.upgrades.max_levels == 1)
 		
 		%CopyUpgradeList.set_disabled(current_data.upgrades.max_levels == 1)
-
 		%PasteUpgradeList.set_disabled(!StaticEditorVars.CLIPBOARD.get("upgrade_list", false))
 		%PasteParameters.set_disabled(!StaticEditorVars.CLIPBOARD.get("items_parameters_list", false))
 		%PasteCraft.set_disabled(!StaticEditorVars.CLIPBOARD.get("items_craft", false))
 		%PasteDisassemble.set_disabled(!StaticEditorVars.CLIPBOARD.get("items_disassemble", false))
-		%LevelRestrictionSpinBox.value = current_data.level_restriction
 		
 		var user_parameter_disabled = database.types.user_parameters.size() == 0
 		%UserParameters.set_disabled(user_parameter_disabled)
 		%CopyUserParameters.set_disabled(user_parameter_disabled)
 		%PasteUserParameters.set_disabled(user_parameter_disabled or !StaticEditorVars.CLIPBOARD.get("items_user_parameters", false))
 		
-		%InMapAttackPower.value = current_data.map_damage
+		_fill_equipment_restriction()
 		
+		%InMapAttackPower.value = current_data.map_damage
 		update_lpc_part_text()
 		
 	else:
@@ -78,170 +115,90 @@ func _update_data_fields() -> void:
 	busy = false
 
 
-func _on_icon_picker_remove_requested() -> void:
-	get_data().icon.clear()
-	%IconPicker.set_icon("")
-
-
-func _on_icon_picker_clicked() -> void:
-	var path = "res://addons/CustomControls/Dialogs/select_icon_dialog.tscn"
-	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
-	dialog.set_data(get_data().icon)
-	
-	dialog.icon_changed.connect(update_icon)
-
-
-func update_icon() -> void:
-	var icon = get_data().icon
-	%IconPicker.set_icon(icon.path, icon.region)
-
-
-func _on_description_text_edit_text_changed() -> void:
-	get_data().description = %DescriptionTextEdit.text
-
-
-func _on_weapon_type_options_item_selected(index: int) -> void:
-	get_data().weapon_type = index
-
-
-func _on_price_spin_box_value_changed(value: float) -> void:
-	get_data().price = value
-
-
-func _on_animation_button_button_down() -> void:
-	var path = "res://addons/CustomControls/Dialogs/select_any_data_dialog.tscn"
-	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
-	dialog.database = database
-	dialog.destroy_on_hide = true
-	var current_data = database.animations
-	var id_selected = get_data().animation
-	var title = TranslationManager.tr("Animations")
-	var target = self
-	dialog.selected.connect(_on_animation_selected, CONNECT_ONE_SHOT)
-	dialog.setup(current_data, id_selected, title, target)
-
-
-func _on_animation_selected(id: int, target: Variant) -> void:
-	get_data().animation = id
-	fill_animation()
-
-
-func _on_animation_button_middle_click_pressed() -> void:
-	get_data().animation = -1
-	fill_animation()
-
-
-func _on_max_hp_spin_box_value_changed(value: float) -> void:
-	get_data().params[RPGActor.BaseParamType.HP] = value
-
-
-func _on_attack_spin_box_value_changed(value: float) -> void:
-	get_data().params[RPGActor.BaseParamType.ATK] = value
-
-
-func _on_magic_attack_spin_box_value_changed(value: float) -> void:
-	get_data().params[RPGActor.BaseParamType.MATK] = value
-
-
-func _on_agility_spin_box_value_changed(value: float) -> void:
-	get_data().params[RPGActor.BaseParamType.AGI] = value
-
-
-func _on_max_mp_spin_box_value_changed(value: float) -> void:
-	get_data().params[RPGActor.BaseParamType.MP] = value
-
-
-func _on_defense_spin_box_value_changed(value: float) -> void:
-	get_data().params[RPGActor.BaseParamType.DEF] = value
-
-
-func _on_magic_defense_spin_box_value_changed(value: float) -> void:
-	get_data().params[RPGActor.BaseParamType.MDEF] = value
-
-
-func _on_luck_spin_box_value_changed(value: float) -> void:
-	get_data().params[RPGActor.BaseParamType.LUK] = value
-
-
-func _on_weapon_max_levels_spin_box_value_changed(value: float) -> void:
-	if not get_data(): return
+func _fill_equipment_restriction() -> void:
 	var current_data = get_data()
-	current_data.upgrades.max_levels = value
-	current_data.upgrades.levels.resize(value)
-	for i in value:
-		if current_data.upgrades.levels[i] == null:
-			var upgrade = RPGGearUpgradeLevel.new()
-			upgrade.user_parameters.resize(database.types.user_parameters.size())
-			current_data.upgrades.levels[i] = upgrade
+	if not current_data.equipment_restriction:
+		current_data.equipment_restriction = RPGEquipRestrictions.new()
 	
-	%UpgradeSettingsButton.set_disabled(value == 1)
-	%CopyUpgradeList.set_disabled(value == 1)
+	%RequiresActorLevel.value = current_data.equipment_restriction.level_restriction
+	
+	var class_id = current_data.equipment_restriction.class_restriction
+	var class_found: bool = false
+	for i in %RequiresActorClass.get_item_count():
+		if %RequiresActorClass.get_item_metadata(i) == class_id:
+			%RequiresActorClass.select(i)
+			class_found = true
+			break
+	if not class_found:
+		current_data.equipment_restriction.class_restriction = 0
+		%RequiresActorClass.select(0)
+		
+	var gender_id = current_data.equipment_restriction.gender_restriction
+	if gender_id < 0 or gender_id >= %RequiresActorGender.get_item_count():
+		gender_id = 0
+		current_data.equipment_restriction.gender_restriction = 0
+	%RequiresActorGender.select(gender_id)
 
 
-func _on_upgrade_settings_button_pressed() -> void:
-	var path = "res://addons/CustomControls/Dialogs/weapon_and_armor_upgrades_setting_dialog.tscn"
-	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
-	dialog.title = TranslationManager.tr("Weapon Upgrades Setting")
-	dialog.set_data(database, get_data().upgrades)
+## Handles visibility changes
+func _on_visibility_changed() -> void:
+	super()
+	if visible:
+		if not get_data(): return
+		busy = true
+		fill_weapon_types()
+		fill_rarity_types()
+		fill_user_parameters()
+		fill_animation()
+		fill_tools(get_data().tools_family)
+		_fill_usage_restriction()
+		if current_selected_index != -1:
+			%TraitsPanel.set_data(database, get_data().traits)
+		else:
+			%TraitsPanel.clear()
+		if database:
+			var user_parameter_disabled = database.types.user_parameters.size() == 0
+			%UserParameters.set_disabled(user_parameter_disabled)
+			%CopyUserParameters.set_disabled(user_parameter_disabled)
+			%PasteUserParameters.set_disabled(user_parameter_disabled or !StaticEditorVars.CLIPBOARD.get("items_user_parameters", false))
+		busy = false
+#endregion
 
 
-func _on_note_text_edit_text_changed() -> void:
-	get_data().notes = %NoteTextEdit.text
 
-
+#region Dropdowns and Lists Setup
+## Formats the animation button text handling UIDs and Legacy IDs
 func fill_animation() -> void:
 	if !database: return
 	
 	var node = %AnimationButton
-	
 	var current_data = get_data()
-	if database.animations.size() > current_data.animation and current_data.animation > 0:
-		var animation_name = database.animations[current_data.animation].name
-		if animation_name.length() == 0:
-			animation_name = "# %s" % (current_data.animation)
-		node.text = animation_name
-	elif current_data.animation > 0:
-		node.text = "⚠ Invalid Data"
-	else:
-		node.text = TranslationManager.tr("None")
-
-
-func fill_tools(_selected_ids: PackedInt32Array) -> void:
-	var node = %Tools
+	var uid = current_data.animation
 	
-	node.clear()
-	node.add_item("none")
-	
-	if not get_data(): 
-		if not node.multi_selection_changed.is_connected(_on_tools_multi_selection_changed):
-			node.multi_selection_changed.connect(_on_tools_multi_selection_changed)
-		return
-	
-	var selected_tools = _selected_ids
-	
-	if 0 in selected_tools:
-		node.set_item_selected(0, true, true)
-
-	for i in database.types.tool_types.size():
-		var tool = database.types.tool_types[i]
-		var item_index = i + 1 
-		
-		var icon = database.types.icons.tool_icons[i]
-		if AssetManager.file_exists(icon.path):
-			node.add_icon_item(load(icon.path), "Tool %s: %s" % [i + 1, tool], item_index)
+	if uid > 0:
+		if uid < 1000000:
+			uid = RPGSYSTEM.id_to_uid("animations", uid)
+			current_data.animation = uid
+			
+		var anim_data = RPGSYSTEM.get_data("animations", uid)
+		if anim_data:
+			var classic_id = RPGSYSTEM.uid_to_id("animations", uid)
+			var id_padded = str(classic_id).pad_zeros(str(database.animations.size()).length())
+			var anim_name = anim_data.name if not anim_data.name.is_empty() else "# %s" % classic_id
+			node.text = "%s: %s" % [id_padded, anim_name]
 		else:
-			node.add_item("Tool %s: %s" % [i + 1, tool], item_index)
+			node.text = "⚠ Invalid Data"
+	else:
+		node.text = tr("None")
 
-		if item_index in selected_tools:
-			node.set_item_selected(item_index, true, true)
 
 
+## Populates the weapon type options
 func fill_weapon_types() -> void:
 	if !database: return
 	
 	var node = %WeaponTypeOptions
 	node.clear()
-	
 	node.add_item("None")
 	
 	if database:
@@ -259,6 +216,8 @@ func fill_weapon_types() -> void:
 		node.text = "⚠ Invalid Data"
 
 
+
+## Populates the weapon rarity options
 func fill_rarity_types() -> void:
 	if !database: return
 	
@@ -284,6 +243,38 @@ func fill_rarity_types() -> void:
 		node.text = "⚠ Invalid Data"
 
 
+
+## Populates the tools family multi-selection list
+func fill_tools(_selected_ids: PackedInt32Array) -> void:
+	var node = %Tools
+	node.clear()
+	node.add_item("none")
+	
+	if not get_data(): 
+		if not node.multi_selection_changed.is_connected(_on_tools_multi_selection_changed):
+			node.multi_selection_changed.connect(_on_tools_multi_selection_changed)
+		return
+	
+	var selected_tools = _selected_ids
+	if 0 in selected_tools:
+		node.set_item_selected(0, true, true)
+
+	for i in database.types.tool_types.size():
+		var tool = database.types.tool_types[i]
+		var item_index = i + 1 
+		var icon = database.types.icons.tool_icons[i]
+		
+		if AssetManager.file_exists(icon.path):
+			node.add_icon_item(load(icon.path), "Tool %s: %s" % [i + 1, tool], item_index)
+		else:
+			node.add_item("Tool %s: %s" % [i + 1, tool], item_index)
+
+		if item_index in selected_tools:
+			node.set_item_selected(item_index, true, true)
+
+
+
+## Populates the user parameters list
 func fill_user_parameters(selected_index: int = 0) -> void:
 	var current_data = get_data()
 	if not current_data: return
@@ -292,7 +283,7 @@ func fill_user_parameters(selected_index: int = 0) -> void:
 	node.clear()
 	
 	var user_parameters = current_data.user_parameters
-	var user_parameter_data = RPGSYSTEM.database.types.user_parameters
+	var user_parameter_data = database.types.user_parameters
 	if user_parameters.size() != user_parameter_data.size():
 		user_parameters.resize(user_parameter_data.size())
 
@@ -300,64 +291,204 @@ func fill_user_parameters(selected_index: int = 0) -> void:
 		var column = []
 		column.append(user_parameter_data[i].name)
 		column.append("%.2f" % user_parameters[i])
-
 		node.add_column(column)
 	
 	await node.columns_setted
-	
 	if selected_index >= 0 and node.get_item_count() > selected_index:
 		node.select(selected_index)
-
-
-func _on_visibility_changed() -> void:
-	super()
-	if visible:
-		if not get_data(): return
-		busy = true
-		fill_weapon_types()
-		fill_rarity_types()
-		fill_user_parameters()
-		fill_animation()
-		fill_tools(get_data().tools_family)
-		if current_selected_index != -1:
-			%TraitsPanel.set_data(database, get_data().traits)
-		else:
-			%TraitsPanel.clear()
-		if database:
-			var user_parameter_disabled = database.types.user_parameters.size() == 0
-			%UserParameters.set_disabled(user_parameter_disabled)
-			%CopyUserParameters.set_disabled(user_parameter_disabled)
-			%PasteUserParameters.set_disabled(user_parameter_disabled or !StaticEditorVars.CLIPBOARD.get("items_user_parameters", false))
-		busy = false
+#endregion
 
 
 
+#region UI Interactions
+## Clears the icon assignment
+func _on_icon_picker_remove_requested() -> void:
+	get_data().icon.clear()
+	%IconPicker.set_icon("")
+
+
+
+## Opens the icon picker dialog
+func _on_icon_picker_clicked() -> void:
+	var path = "res://addons/CustomControls/Dialogs/select_icon_dialog.tscn"
+	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
+	dialog.set_data(get_data().icon)
+	dialog.icon_changed.connect(update_icon)
+
+
+
+## Refreshes the icon picker preview
+func update_icon() -> void:
+	var icon = get_data().icon
+	%IconPicker.set_icon(icon.path, icon.region)
+
+
+
+## Updates description notes
+func _on_description_text_edit_text_changed() -> void:
+	get_data().description = %DescriptionTextEdit.text
+
+
+
+## Updates weapon type assignment
+func _on_weapon_type_options_item_selected(index: int) -> void:
+	get_data().weapon_type = index
+
+
+
+## Updates weapon price
+func _on_price_spin_box_value_changed(value: float) -> void:
+	get_data().price = value
+
+
+
+## Opens animation selection dialog
+func _on_animation_button_button_pressed() -> void:
+	var path = "res://addons/CustomControls/Dialogs/select_any_data_dialog.tscn"
+	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
+	dialog.database = database
+	dialog.destroy_on_hide = true
+	dialog.set_animation_mode()
+	
+	var current_anims = database.animations
+	var uid = get_data().animation
+	var classic_id = RPGSYSTEM.uid_to_id("animations", uid) if uid > 0 else 1
+	classic_id = max(1, min(classic_id, current_anims.size() - 1))
+	
+	dialog.selected.connect(_on_animation_selected, CONNECT_ONE_SHOT)
+	dialog.setup(current_anims, classic_id, tr("Animations"), self)
+
+
+
+## Updates animation UID selection
+func _on_animation_selected(id: int, target: Variant) -> void:
+	var uid = RPGSYSTEM.id_to_uid("animations", id)
+	get_data().animation = uid
+	fill_animation()
+
+
+
+## Clears assigned animation
+func _on_animation_button_middle_click_pressed() -> void:
+	get_data().animation = -1
+	fill_animation()
+
+
+
+## Updates HP parameter
+func _on_max_hp_spin_box_value_changed(value: float) -> void:
+	get_data().params[RPGActor.BaseParamType.HP] = value
+
+
+
+## Updates Attack parameter
+func _on_attack_spin_box_value_changed(value: float) -> void:
+	get_data().params[RPGActor.BaseParamType.ATK] = value
+
+
+
+## Updates Magic Attack parameter
+func _on_magic_attack_spin_box_value_changed(value: float) -> void:
+	get_data().params[RPGActor.BaseParamType.MATK] = value
+
+
+
+## Updates Agility parameter
+func _on_agility_spin_box_value_changed(value: float) -> void:
+	get_data().params[RPGActor.BaseParamType.AGI] = value
+
+
+
+## Updates MP parameter
+func _on_max_mp_spin_box_value_changed(value: float) -> void:
+	get_data().params[RPGActor.BaseParamType.MP] = value
+
+
+
+## Updates Defense parameter
+func _on_defense_spin_box_value_changed(value: float) -> void:
+	get_data().params[RPGActor.BaseParamType.DEF] = value
+
+
+
+## Updates Magic Defense parameter
+func _on_magic_defense_spin_box_value_changed(value: float) -> void:
+	get_data().params[RPGActor.BaseParamType.MDEF] = value
+
+
+
+## Updates Luck parameter
+func _on_luck_spin_box_value_changed(value: float) -> void:
+	get_data().params[RPGActor.BaseParamType.LUK] = value
+
+
+
+## Resizes upgrade level array and initializes levels
+func _on_weapon_max_levels_spin_box_value_changed(value: float) -> void:
+	if not get_data(): return
+	var current_data = get_data()
+	current_data.upgrades.max_levels = value
+	current_data.upgrades.levels.resize(value)
+	
+	for i in value:
+		if current_data.upgrades.levels[i] == null:
+			var upgrade = RPGGearUpgradeLevel.new()
+			upgrade.user_parameters.resize(database.types.user_parameters.size())
+			current_data.upgrades.levels[i] = upgrade
+	
+	%UpgradeSettingsButton.set_disabled(value == 1)
+	%CopyUpgradeList.set_disabled(value == 1)
+
+
+
+## Opens weapon upgrade settings dialog
+func _on_upgrade_settings_button_pressed() -> void:
+	var path = "res://addons/CustomControls/Dialogs/weapon_and_armor_upgrades_setting_dialog.tscn"
+	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
+	dialog.title = tr("Weapon Upgrades Setting")
+	dialog.set_data(database, get_data().upgrades)
+
+
+
+## Updates notes text
+func _on_note_text_edit_text_changed() -> void:
+	get_data().notes = %NoteTextEdit.text
+
+
+
+## Handles rarity type selection
 func _on_weapon_rarity_type_options_item_selected(index: int) -> void:
 	get_data().rarity_type = index
 
 
+
+## Opens craft materials dialog
 func _on_craft_button_pressed() -> void:
-	show_craft_dialog(
-		"Craft Materials", get_data().craft_materials, "craft_cost"
-	)
+	show_craft_dialog(tr("Craft Materials"), get_data().craft_materials, "craft_cost")
 
 
+
+## Opens disassemble materials dialog
 func _on_disassemble_button_pressed() -> void:
-	show_craft_dialog(
-		"Disassemble Materials", get_data().disassemble_materials, "disassemble_cost", true
-	)
+	show_craft_dialog(tr("Disassemble Materials"), get_data().disassemble_materials, "disassemble_cost", true)
 
 
+
+## Generic craft dialog launcher
 func show_craft_dialog(_title: String, mats: Array[RPGGearUpgradeComponent], cost_id: String, percent_enabled: bool = false) -> void:
 	var path = "res://addons/CustomControls/Dialogs/weapon_and_armor_craft_dialog.tscn"
 	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
 	dialog.title = _title
+	
 	if percent_enabled:
 		dialog.enabled_percent(true)
+		
 	dialog.set_data(database, mats, get_data()[cost_id])
 	dialog.materials_changed.connect(_on_craft_material_changed.bind(mats, cost_id))
 
 
+
+## Callback for craft/disassemble material changes
 func _on_craft_material_changed(new_mats: Array[RPGGearUpgradeComponent], cost: int, real_mats: Array[RPGGearUpgradeComponent], cost_id: String ) -> void:
 	get_data()[cost_id] = cost
 	real_mats.clear()
@@ -366,52 +497,59 @@ func _on_craft_material_changed(new_mats: Array[RPGGearUpgradeComponent], cost: 
 
 
 
+## Clears LPC part configuration
 func _on_lpc_part_button_middle_click_pressed() -> void:
 	get_data().lpc_part = ""
 	get_data().lpc_part_custom_script = ""
 	update_lpc_part_text()
 
 
+
+## Opens generic file selection dialog
 func open_file_dialog() -> Window:
 	var path = "res://addons/CustomControls/Dialogs/select_file_dialog.tscn"
 	var parent = get_tree().get_nodes_in_group("main_database")[0]
 	var dialog
 	var main_panel = parent.get_child(0)
+	
 	if main_panel.cache_dialog.has(path) and is_instance_valid(main_panel.cache_dialog[path]):
 		dialog = main_panel.cache_dialog[path]
 		RPGDialogFunctions.show_dialog(dialog, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
 	else:
 		dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
 		main_panel.cache_dialog[path] = dialog
+		
 	await get_tree().process_frame
-	
 	dialog.set_dialog_mode(0)
-	
 	return dialog
 
 
+
+## Opens LPC part selection dialog
 func _on_lpc_part_button_pressed() -> void:
 	var dialog = await open_file_dialog()
-
 	dialog.target_callable = update_lpc_part
 	dialog.set_file_selected(get_data().lpc_part)
-	
 	dialog.fill_files("equipment_parts_weapons")
 
 
+
+## Updates LPC part path
 func update_lpc_part(path: String) -> void:
 	get_data().lpc_part = path
 	update_lpc_part_text(true)
 
 
+
+## Refreshes LPC weapon info and projectile/melee logic
 func update_lpc_part_text(update_ammo: bool = false, update_cache: bool = false) -> void:
-	var data = get_data()
-	var path: String = data.lpc_part
+	var data_obj = get_data()
+	var path: String = data_obj.lpc_part
 	
 	if not path.is_empty():
 		%LPCPartButton.text = path
 	else:
-		%LPCPartButton.text = TranslationManager.tr("Select LPC Weapon")
+		%LPCPartButton.text = tr("Select LPC Weapon")
 		
 	var script_path: String = ""
 	var cache_id: String = ""
@@ -440,11 +578,9 @@ func update_lpc_part_text(update_ammo: bool = false, update_cache: bool = false)
 			cache_id = "melee_attack_default"
 		
 		if update_ammo:
-			data.lpc_part_custom_script = ""
-			
+			data_obj.lpc_part_custom_script = ""
 			if not cache_id.is_empty():
 				script_path = FileCache.options.get(cache_id, "")
-				
 				if script_path.is_empty():
 					var default_path = "res://Scenes/OtherScenes/IngameProjectil/"
 					if is_melee:
@@ -457,19 +593,15 @@ func update_lpc_part_text(update_ammo: bool = false, update_cache: bool = false)
 							"arrow": script_path = default_path + "projectile_arrow_base.gd"
 							"arcane1": script_path = default_path + "projectile_arcane_base.gd"
 							_: script_path = ""
-						
-				data.lpc_part_custom_script = script_path
+				data_obj.lpc_part_custom_script = script_path
 		else:
-			script_path = data.lpc_part_custom_script
+			script_path = data_obj.lpc_part_custom_script
 			
 		if update_cache and not cache_id.is_empty() and not script_path.is_empty():
 			FileCache.options[cache_id] = script_path
 			
 		var is_valid_script = not script_path.is_empty()
-		var same_as_cache = false
-		
-		if not cache_id.is_empty():
-			same_as_cache = (FileCache.options.get(cache_id, "") == script_path)
+		var same_as_cache = (FileCache.options.get(cache_id, "") == script_path) if not cache_id.is_empty() else false
 			
 		%SetAttackScriptAsDefault.set_pressed_no_signal(same_as_cache)
 		%SetAttackScriptAsDefault.set_disabled(not is_valid_script or cache_id.is_empty())
@@ -477,17 +609,19 @@ func update_lpc_part_text(update_ammo: bool = false, update_cache: bool = false)
 		
 	else:
 		%LPCPartInfo.text = tr("No weapon part selected.")
-		data.lpc_part_custom_script = ""
+		data_obj.lpc_part_custom_script = ""
 		%SetAttackScriptAsDefault.set_pressed_no_signal(false)
 		%SetAttackScriptAsDefault.set_disabled(true)
 		%ConfigScript.set_disabled(true)
 		
-	if data.lpc_part_custom_script.is_empty():
+	if data_obj.lpc_part_custom_script.is_empty():
 		%LPCPartScript.text = tr("No script installed.")
 	else:
-		%LPCPartScript.text = tr("Script installed:") + " " + data.lpc_part_custom_script
+		%LPCPartScript.text = tr("Script installed:") + " " + data_obj.lpc_part_custom_script
 
 
+
+## Copies upgrade configuration to clipboard
 func _on_copy_upgrade_list_pressed() -> void:
 	var current_data = get_data()
 	StaticEditorVars.CLIPBOARD.upgrade_list = current_data.upgrades.clone(true)
@@ -495,6 +629,8 @@ func _on_copy_upgrade_list_pressed() -> void:
 	RPGEditorToast.show_message("Gear upgrade list copied to Clipboard")
 
 
+
+## Pastes upgrade configuration from clipboard
 func _on_paste_upgrade_list_pressed() -> void:
 	var upgrade_data = StaticEditorVars.CLIPBOARD.get("upgrade_list", null)
 	if upgrade_data:
@@ -503,6 +639,8 @@ func _on_paste_upgrade_list_pressed() -> void:
 		%WeaponMaxLevelsSpinBox.value = current_data.upgrades.max_levels
 
 
+
+## Copies base parameters to clipboard
 func _on_copy_parameters_pressed() -> void:
 	var current_data = get_data()
 	StaticEditorVars.CLIPBOARD.items_parameters_list = current_data.params.duplicate()
@@ -510,6 +648,8 @@ func _on_copy_parameters_pressed() -> void:
 	RPGEditorToast.show_message("Parameters copied to Clipboard")
 
 
+
+## Pastes base parameters from clipboard
 func _on_paste_parameters_pressed() -> void:
 	var current_data = get_data()
 	var params = StaticEditorVars.CLIPBOARD.get("items_parameters_list", null)
@@ -524,6 +664,8 @@ func _on_paste_parameters_pressed() -> void:
 		%LuckSpinBox.value = params[7]
 
 
+
+## Copies craft materials to clipboard
 func _on_copy_craft_pressed() -> void:
 	var current_data = get_data()
 	var components = []
@@ -537,6 +679,8 @@ func _on_copy_craft_pressed() -> void:
 	RPGEditorToast.show_message("Craft materials copied to Clipboard")
 
 
+
+## Pastes craft materials from clipboard
 func _on_paste_craft_pressed() -> void:
 	var current_data = get_data()
 	var items_craft = StaticEditorVars.CLIPBOARD.get("items_craft", null)
@@ -548,6 +692,8 @@ func _on_paste_craft_pressed() -> void:
 		current_data.craft_cost = items_craft.cost
 
 
+
+## Copies disassemble materials to clipboard
 func _on_copy_disassemble_pressed() -> void:
 	var current_data = get_data()
 	var components = []
@@ -561,6 +707,8 @@ func _on_copy_disassemble_pressed() -> void:
 	RPGEditorToast.show_message("Salvaged materials copied to Clipboard")
 
 
+
+## Pastes disassemble materials from clipboard
 func _on_paste_disassemble_pressed() -> void:
 	var current_data = get_data()
 	var items_disassemble = StaticEditorVars.CLIPBOARD.get("items_disassemble", null)
@@ -572,6 +720,8 @@ func _on_paste_disassemble_pressed() -> void:
 		current_data.disassemble_cost = items_disassemble.cost
 
 
+
+## Handles tab switches in the config view
 func _on_config_data_tabs_tab_changed(index: int) -> void:
 	var node_path = "%%Tab%s" % (index + 1)
 	var node = get_node_or_null(node_path)
@@ -581,14 +731,14 @@ func _on_config_data_tabs_tab_changed(index: int) -> void:
 		node.visible = true
 
 
-func _on_level_restriction_spin_box_value_changed(value: float) -> void:
-	get_data().level_restriction = value
 
-
+## Updates tick interval for effects
 func _on_tick_interval_value_changed(value: float) -> void:
 	get_data().tick_interval = value
 
 
+
+## Pastes icon from clipboard
 func _on_icon_picker_paste_requested(icon: String, region: Rect2) -> void:
 	var data_icon = get_data().icon
 	data_icon.path = icon
@@ -596,12 +746,15 @@ func _on_icon_picker_paste_requested(icon: String, region: Rect2) -> void:
 	%IconPicker.set_icon(data_icon.path, data_icon.region)
 
 
+
+## Opens dialog to set custom user parameter value
 func _on_user_parameters_item_activated(index: int) -> void:
 	if database.types.user_parameters.size() > index and index >= 0:
 		var path = "res://addons/CustomControls/Dialogs/select_number_value_dialog.tscn"
 		var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
 		var user_param_name = database.types.user_parameters[index].name
 		var user_param_value = get_data().user_parameters[index]
+		
 		dialog.set_min_max_values(0, 0, 0.01)
 		dialog.set_title_and_contents(tr("Set Parameter value"), user_param_name)
 		dialog.set_value(user_param_value)
@@ -612,12 +765,16 @@ func _on_user_parameters_item_activated(index: int) -> void:
 		)
 
 
+
+## Copies user parameters list to clipboard
 func _on_copy_user_parameters_pressed() -> void:
 	StaticEditorVars.CLIPBOARD.items_user_parameters = get_data().user_parameters.duplicate()
 	%PasteUserParameters.set_disabled(false)
 	RPGEditorToast.show_message("User parameter list copied to Clipboard")
 
 
+
+## Pastes user parameters list from clipboard
 func _on_paste_user_parameters_pressed() -> void:
 	if "items_user_parameters" in StaticEditorVars.CLIPBOARD:
 		for i in get_data().user_parameters.size():
@@ -626,6 +783,8 @@ func _on_paste_user_parameters_pressed() -> void:
 		fill_user_parameters()
 
 
+
+## Resets user parameters to global defaults
 func _on_reset_user_parameters_pressed() -> void:
 	for i in database.types.user_parameters.size():
 		if get_data().user_parameters.size() > i:
@@ -634,6 +793,8 @@ func _on_reset_user_parameters_pressed() -> void:
 	RPGEditorToast.show_message("User parameter list reset to default values")
 
 
+
+## Logic for tools family multi-selection (mutual exclusion with 'none')
 func _on_tools_multi_selection_changed(selected_ids: PackedInt32Array) -> void:
 	var node = %Tools
 	var clicked_index = node.get_hovered_item_index()
@@ -650,6 +811,8 @@ func _on_tools_multi_selection_changed(selected_ids: PackedInt32Array) -> void:
 	get_data().tools_family.append_array(PackedInt32Array(selected_ids))
 
 
+
+## Resets tool family to 'none' via middle click
 func _on_tools_middle_click() -> void:
 	get_data().tools_family.clear()
 	await get_tree().process_frame
@@ -658,29 +821,51 @@ func _on_tools_middle_click() -> void:
 	fill_tools(get_data().tools_family)
 
 
+
+## Opens file picker for custom attack script
 func _on_config_script_pressed() -> void:
 	var dialog = await open_file_dialog()
-
 	dialog.target_callable = update_attack_script
 	dialog.set_file_selected(get_data().lpc_part_custom_script)
-	
 	dialog.fill_files("weapon_attack_scripts")
 
 
+
+## Updates attack script path
 func update_attack_script(path: String) -> void:
 	get_data().lpc_part_custom_script = path
 	update_lpc_part_text(false)
 
 
+
+## Updates default script preference in cache
 func _on_set_attack_script_as_default_toggled(toggled_on: bool) -> void:
 	update_lpc_part_text(false, toggled_on)
 
 
+
+## Updates map attack power
 func _on_in_map_attack_power_value_changed(value: float) -> void:
 	if not busy and get_data():
 		get_data().map_damage = value
 
 
+
+## Updates max stack quantity
 func _on_max_quantity_value_changed(value: float) -> void:
 	if get_data():
 		get_data().max_quantity = value
+#endregion
+
+
+func _on_requires_actor_level_value_changed(value: float) -> void:
+	get_data().equipment_restriction.level_restriction = value
+
+
+func _on_requires_actor_class_item_selected(index: int) -> void:
+	var real_index = 0 if index == 0 else %RequiresActorClass.get_item_metadata(index)
+	get_data().equipment_restriction.class_restriction = real_index
+
+
+func _on_requires_actor_gender_item_selected(index: int) -> void:
+	get_data().equipment_restriction.gender_restriction = index

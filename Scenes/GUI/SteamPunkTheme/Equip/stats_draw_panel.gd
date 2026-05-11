@@ -1,6 +1,6 @@
 extends Control
 
-# Visual configuration properties
+#region ExportedVariables
 @export var increase_color: Color = Color.GREEN
 @export var decrease_color: Color = Color.RED
 @export var no_change_color: Color = Color.WHITE
@@ -26,8 +26,11 @@ extends Control
 @export var stat_separator_style: StyleBox
 
 @export var upgrade_icon: TextureRect
+#endregion
 
-# Internal data
+
+
+#region InternalVariables
 var current_actor: GameActor
 var current_stats: Dictionary = {}
 var stats_data: Array[Dictionary] = []
@@ -42,8 +45,11 @@ var stats_structure = {
 	"Other Stats": []
 }
 var stat_key_map: Dictionary = {}
+#endregion
 
 
+
+#region Initialization
 func _ready() -> void:
 	if Engine.is_editor_hint(): return
 	draw.connect(_on_stats_draw)
@@ -52,15 +58,17 @@ func _ready() -> void:
 	create_stats_data()
 	_calculate_minimum_size()
 	queue_redraw()
+#endregion
 
 
+
+#region InputHandling
 func _on_stats_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		var mouse_pos = event.position
 		var current_y: float = 0
 		var found_stat = {}
 		
-		# Find which stat the mouse is over
 		for data in stats_data:
 			var item_height = data.height + line_spacing
 			
@@ -72,10 +80,10 @@ func _on_stats_gui_input(event: InputEvent) -> void:
 			
 			current_y += item_height
 		
-		# Update stat hover only if changed
 		if found_stat != hovered_stat:
 			hovered_stat = found_stat
 			_on_hover_stat_changed()
+
 
 
 func _on_mouse_exited() -> void:
@@ -83,11 +91,14 @@ func _on_mouse_exited() -> void:
 	_on_hover_stat_changed()
 
 
+
 func _on_hover_stat_changed() -> void:
-	# Here you can add effects, cursor or tooltips
 	pass
+#endregion
 
 
+
+#region DataCreation
 func create_stats_data() -> void:
 	stat_key_map.clear()
 	
@@ -180,6 +191,7 @@ func create_stats_data() -> void:
 	_calculate_minimum_size()
 
 
+
 func _add_element_stats() -> void:
 	if not RPGSYSTEM or not RPGSYSTEM.database or not RPGSYSTEM.database.types:
 		return
@@ -191,26 +203,22 @@ func _add_element_stats() -> void:
 	for j in rates.size():
 		var rate = rates[j]
 		
-		# Spacing between sections
 		stats_data.append({
 			"type": "spacer",
 			"height": section_spacing
 		})
 		
-		# Element section title
 		stats_data.append({
 			"type": "title",
 			"text": RPGSYSTEM.database.terms.search_message(rate),
 			"height": title_font_size + margin_vertical * 2
 		})
 		
-		# Spacing after title
 		stats_data.append({
 			"type": "spacer",
 			"height": 4
 		})
 		
-		# Element stats
 		for i in elements.size():
 			var current_element: String = elements[i]
 			var current_icon: RPGIcon = icons[i] if i < icons.size() else null
@@ -236,6 +244,134 @@ func _add_element_stats() -> void:
 			})
 
 
+
+func _add_debuff_stats() -> void:
+	if not RPGSYSTEM or not RPGSYSTEM.database or not RPGSYSTEM.database.types:
+		return
+		
+	var internal_keys = RPGActor.get_parameter_list(true)
+	var main_params = RPGSYSTEM.database.types.main_parameters
+	var user_params = RPGSYSTEM.database.types.user_parameters
+	var icons = RPGSYSTEM.database.types.icons.main_parameters_icons
+	
+	var title_text = RPGSYSTEM.database.terms.search_message("Equip Stat Debuff Rates") if RPGSYSTEM.database.terms.has_method("search_message") else "Debuff Rates"
+	if title_text == "":
+		title_text = "Debuff Rates"
+		
+	stats_data.append({
+		"type": "spacer",
+		"height": section_spacing
+	})
+	
+	stats_data.append({
+		"type": "title",
+		"text": title_text,
+		"height": title_font_size + margin_vertical * 2
+	})
+	
+	stats_data.append({
+		"type": "spacer",
+		"height": 4
+	})
+	
+	for i in internal_keys.size():
+		var key = internal_keys[i]
+		
+		if key == "":
+			continue
+			
+		var display_name = ""
+		var current_icon = null
+		
+		if key.begins_with("USER_PARAMETER"):
+			var u_id = key.replace("USER_PARAMETER_", "").to_int()
+			if u_id < user_params.size():
+				display_name = user_params[u_id].name
+			else:
+				display_name = key
+		else:
+			if i < main_params.size():
+				display_name = main_params[i]
+				if icons and i < icons.size():
+					current_icon = icons[i]
+			else:
+				display_name = key
+				
+		var tex = null
+		if current_icon and AssetManager.exists(current_icon.path):
+			var t = ResourceLoader.load(current_icon.path)
+			if current_icon.region:
+				tex = ImageTexture.create_from_image(t.get_image().get_region(current_icon.region))
+			else:
+				tex = t
+				
+		stats_data.append({
+			"type": "stat",
+			"parent": "Debuff Rates",
+			"name": display_name,
+			"key": "debuff_" + str(i),
+			"icon": tex,
+			"is_percent": true,
+			"height": max(font_size + margin_vertical * 2, icon_size.y + margin_vertical * 2)
+		})
+
+
+
+func _add_state_stats() -> void:
+	if not RPGSYSTEM or not RPGSYSTEM.database:
+		return
+		
+	var states = RPGSYSTEM.database.states
+	if states.is_empty():
+		return
+		
+	var title_text = RPGSYSTEM.database.terms.search_message("Equip Stat State Rates") if RPGSYSTEM.database.terms.has_method("search_message") else "State Rates"
+	if title_text == "":
+		title_text = "State Rates"
+		
+	stats_data.append({
+		"type": "spacer",
+		"height": section_spacing
+	})
+	
+	stats_data.append({
+		"type": "title",
+		"text": title_text,
+		"height": title_font_size + margin_vertical * 2
+	})
+	
+	stats_data.append({
+		"type": "spacer",
+		"height": 4
+	})
+	
+	for i in states.size():
+		var state = states[i]
+		if not state or state.name.strip_edges() == "":
+			continue
+			
+		var tex = null
+		if state.icon and AssetManager.exists(state.icon.path):
+			var t = ResourceLoader.load(state.icon.path)
+			if state.icon.region:
+				tex = ImageTexture.create_from_image(t.get_image().get_region(state.icon.region))
+			else:
+				tex = t
+				
+		stats_data.append({
+			"type": "stat",
+			"parent": "State Rates",
+			"name": state.name,
+			"key": "state_" + str(state._uniq_id),
+			"icon": tex,
+			"is_percent": true,
+			"height": max(font_size + margin_vertical * 2, icon_size.y + margin_vertical * 2)
+		})
+#endregion
+
+
+
+#region Drawing
 func _calculate_minimum_size() -> void:
 	var font: Font = custom_font if custom_font else ThemeDB.fallback_font
 	var total_height: float = 0
@@ -251,18 +387,16 @@ func _calculate_minimum_size() -> void:
 	custom_minimum_size = Vector2(max_width, total_height)
 
 
+
 func _calculate_stat_width(font: Font, data: Dictionary) -> float:
 	var width: float = margin_left + margin_right
 	
-	# Icon
 	if data.icon:
 		width += icon_size.x + spacing
 	
-	# Stat name
 	if data.name != "":
 		width += font.get_string_size(data.name, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x + spacing
 	
-	# Simulated values for calculation
 	var sample_current = "999"
 	var sample_new = "999"
 	if data.is_percent:
@@ -276,6 +410,7 @@ func _calculate_stat_width(font: Font, data: Dictionary) -> float:
 		width += font.get_string_size(sample_new, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
 	
 	return width
+
 
 
 func _on_stats_draw() -> void:
@@ -298,8 +433,8 @@ func _on_stats_draw() -> void:
 		current_y += line_spacing
 
 
+
 func _draw_title(font: Font, title_text: String, y_pos: float, height: float) -> void:
-	# Draw title background if there is StyleBox
 	if title_background_style:
 		var title_rect = Rect2(0, y_pos, size.x - 4, height)
 		title_background_style.draw(get_canvas_item(), title_rect)
@@ -307,6 +442,7 @@ func _draw_title(font: Font, title_text: String, y_pos: float, height: float) ->
 	var text_pos = Vector2(margin_left, y_pos + height * 0.5 + title_font_size * 0.3)
 	draw_string_outline(font, text_pos, title_text, HORIZONTAL_ALIGNMENT_LEFT, -1, title_font_size, outline_size, outline_color)
 	draw_string(font, text_pos, title_text, HORIZONTAL_ALIGNMENT_LEFT, -1, title_font_size, title_color)
+
 
 
 func _draw_stat(font: Font, data: Dictionary, y_pos: float, height: float) -> void:
@@ -395,6 +531,7 @@ func _draw_stat(font: Font, data: Dictionary, y_pos: float, height: float) -> vo
 			draw_string(font, difference_pos, difference_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, new_value_color)
 
 
+
 func _get_value_color(current: float, new: float, invert: bool = false) -> Color:
 	if current == new:
 		return no_change_color
@@ -412,8 +549,11 @@ func _get_value_color(current: float, new: float, invert: bool = false) -> Color
 			return increase_color
 		else:
 			return decrease_color
+#endregion
 
 
+
+#region LogicAndStats
 func set_actor(actor: GameActor, _comparison_item: Dictionary = {}) -> void:
 	if not actor:
 		return
@@ -475,13 +615,13 @@ func set_actor(actor: GameActor, _comparison_item: Dictionary = {}) -> void:
 		if not state or state.name.strip_edges() == "":
 			continue
 			
-		var is_immune_actor = _is_state_immune(actor, i)
-		var is_immune_copy = _is_state_immune(copy_actor, i)
+		var is_immune_actor = _is_state_immune(actor, state._uniq_id)
+		var is_immune_copy = _is_state_immune(copy_actor, state._uniq_id)
 		
-		var state_rate = 0.0 if is_immune_actor else (actor.get_state_rate(i) * 100.0 if actor.has_method("get_state_rate") else 100.0)
-		var copy_state_rate = 0.0 if is_immune_copy else (copy_actor.get_state_rate(i) * 100.0 if copy_actor.has_method("get_state_rate") else 100.0)
+		var state_rate = 0.0 if is_immune_actor else (actor.get_state_rate(state._uniq_id) * 100.0 if actor.has_method("get_state_rate") else 100.0)
+		var copy_state_rate = 0.0 if is_immune_copy else (copy_actor.get_state_rate(state._uniq_id) * 100.0 if copy_actor.has_method("get_state_rate") else 100.0)
 		
-		current_stats["state_" + str(i)] = [
+		current_stats["state_" + str(state._uniq_id)] = [
 			-1.0 if is_immune_actor else state_rate,
 			-1.0 if is_immune_copy else copy_state_rate
 		]
@@ -490,131 +630,6 @@ func set_actor(actor: GameActor, _comparison_item: Dictionary = {}) -> void:
 	GameManager.cancel_actors_initialize = false
 	queue_redraw()
 
-
-func _add_debuff_stats() -> void:
-	if not RPGSYSTEM or not RPGSYSTEM.database or not RPGSYSTEM.database.types:
-		return
-		
-	var internal_keys = RPGActor.get_parameter_list(true)
-	var main_params = RPGSYSTEM.database.types.main_parameters
-	var user_params = RPGSYSTEM.database.types.user_parameters
-	var icons = RPGSYSTEM.database.types.icons.main_parameters_icons
-	
-	var title_text = RPGSYSTEM.database.terms.search_message("Equip Stat Debuff Rates") if RPGSYSTEM.database.terms.has_method("search_message") else "Debuff Rates"
-	if title_text == "":
-		title_text = "Debuff Rates"
-		
-	stats_data.append({
-		"type": "spacer",
-		"height": section_spacing
-	})
-	
-	stats_data.append({
-		"type": "title",
-		"text": title_text,
-		"height": title_font_size + margin_vertical * 2
-	})
-	
-	stats_data.append({
-		"type": "spacer",
-		"height": 4
-	})
-	
-	for i in internal_keys.size():
-		var key = internal_keys[i]
-		
-		# Ignoramos los encabezados de la lista visual, pero mantenemos intacto el índice 'i'
-		if key == "":
-			continue
-			
-		var display_name = ""
-		var current_icon = null
-		
-		if key.begins_with("USER_PARAMETER"):
-			# Extraemos el ID exacto del parámetro de usuario (ej: "USER_PARAMETER_1" -> 1)
-			var u_id = key.replace("USER_PARAMETER_", "").to_int()
-			if u_id < user_params.size():
-				display_name = user_params[u_id].name
-			else:
-				display_name = key
-		else:
-			# Usamos el índice 'i' directo que mapea 1:1 con la base de datos
-			if i < main_params.size():
-				display_name = main_params[i]
-				if icons and i < icons.size():
-					current_icon = icons[i]
-			else:
-				display_name = key
-				
-		var tex = null
-		if current_icon and AssetManager.exists(current_icon.path):
-			var t = ResourceLoader.load(current_icon.path)
-			if current_icon.region:
-				tex = ImageTexture.create_from_image(t.get_image().get_region(current_icon.region))
-			else:
-				tex = t
-				
-		stats_data.append({
-			"type": "stat",
-			"parent": "Debuff Rates",
-			"name": display_name,
-			"key": "debuff_" + str(i),
-			"icon": tex,
-			"is_percent": true,
-			"height": max(font_size + margin_vertical * 2, icon_size.y + margin_vertical * 2)
-		})
-
-
-func _add_state_stats() -> void:
-	if not RPGSYSTEM or not RPGSYSTEM.database:
-		return
-		
-	var states = RPGSYSTEM.database.states
-	if states.is_empty():
-		return
-		
-	var title_text = RPGSYSTEM.database.terms.search_message("Equip Stat State Rates") if RPGSYSTEM.database.terms.has_method("search_message") else "State Rates"
-	if title_text == "":
-		title_text = "State Rates"
-		
-	stats_data.append({
-		"type": "spacer",
-		"height": section_spacing
-	})
-	
-	stats_data.append({
-		"type": "title",
-		"text": title_text,
-		"height": title_font_size + margin_vertical * 2
-	})
-	
-	stats_data.append({
-		"type": "spacer",
-		"height": 4
-	})
-	
-	for i in states.size():
-		var state = states[i]
-		if not state or state.name.strip_edges() == "":
-			continue
-			
-		var tex = null
-		if state.icon and AssetManager.exists(state.icon.path):
-			var t = ResourceLoader.load(state.icon.path)
-			if state.icon.region:
-				tex = ImageTexture.create_from_image(t.get_image().get_region(state.icon.region))
-			else:
-				tex = t
-				
-		stats_data.append({
-			"type": "stat",
-			"parent": "State Rates",
-			"name": state.name,
-			"key": "state_" + str(i),
-			"icon": tex,
-			"is_percent": true,
-			"height": max(font_size + margin_vertical * 2, icon_size.y + margin_vertical * 2)
-		})
 
 
 func _is_state_immune(a: GameActor, state_id: int) -> bool:
@@ -630,6 +645,7 @@ func _is_state_immune(a: GameActor, state_id: int) -> bool:
 	return false
 
 
+
 func _evaluate_equipment_comparison() -> void:
 	if not current_actor or not show_comparison:
 		_on_equipment_evaluation_result(-1)
@@ -637,9 +653,10 @@ func _evaluate_equipment_comparison() -> void:
 	
 	var class_id = current_actor.current_class
 	var weights: Dictionary
+	var current_class_data = RPGSYSTEM.get_data("classes", class_id)
 	
-	if class_id > 0 and RPGSYSTEM.database.classes.size() > class_id:
-		weights = RPGSYSTEM.database.classes[class_id].weights
+	if current_class_data:
+		weights = current_class_data.weights
 	else:
 		weights = {
 			"HP": 1.5,
@@ -727,6 +744,7 @@ func _evaluate_equipment_comparison() -> void:
 	_on_equipment_evaluation_result(current_is_better)
 
 
+
 func _on_equipment_evaluation_result(result: int) -> void:
 	if not upgrade_icon: return
 	
@@ -734,8 +752,11 @@ func _on_equipment_evaluation_result(result: int) -> void:
 	if show_comparison:
 		upgrade_icon.texture.region.position.x = 0 if result == 0 else upgrade_icon.texture.region.size.x
 		comparison_result = result
+#endregion
 
 
+
+#region SetupAndGetters
 func set_show_comparison(_show_comparison: bool) -> void:
 	var last_show_comparison = show_comparison
 	show_comparison = _show_comparison
@@ -748,11 +769,13 @@ func set_show_comparison(_show_comparison: bool) -> void:
 	upgrade_icon.visible = _show_comparison
 
 
+
 func update_stat_value(stat_key: String, new_value: int) -> void:
 	if stat_key in current_stats:
 		current_stats[stat_key][1] = new_value
 		_evaluate_equipment_comparison()
 		queue_redraw()
+
 
 
 func reset_all_comparisons() -> void:
@@ -762,9 +785,12 @@ func reset_all_comparisons() -> void:
 	queue_redraw()
 
 
+
 func get_current_stats() -> Dictionary:
 	return current_stats
 
 
+
 func get_minimum_size() -> Vector2:
 	return custom_minimum_size
+#endregion

@@ -206,6 +206,7 @@ func initialize() -> void:
 	types.item_rarity_types = PackedStringArray(type_data.item_rarity_names)
 	types.item_rarity_color_types = PackedColorArray(type_data.item_rarity_colors)
 	types.equipment_types = PackedStringArray(type_data.equipment)
+	types.gender_types = PackedStringArray(["None", "Male", "Female"])
 	# Speakers
 	speakers.clear()
 	speakers.append(null)
@@ -244,6 +245,7 @@ func fill_types():
 	types.item_rarity_types = PackedStringArray(type_data.item_rarity_names)
 	types.item_rarity_color_types = PackedColorArray(type_data.item_rarity_colors)
 	types.equipment_types = PackedStringArray(type_data.equipment)
+	types.gender_types = PackedStringArray(["None", "Male", "Female"])
 
 ## Clones the RPG data.
 ## @param value bool - Whether to perform a deep clone.

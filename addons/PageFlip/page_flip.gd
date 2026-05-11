@@ -179,6 +179,10 @@ enum JumpTarget {
 @export var sfx_book_impact: AudioStream
 ## Sound played when a flexible page turns.
 @export var sfx_page_flip: AudioStream
+## Flip pitch variance between min and max
+@export_range(0.5, 1.5) var min_fpage_flip_fx_pitch: float = 0.89
+## Flip pitch variance between min and max
+@export_range(0.5, 1.5) var max_fpage_flip_fx_pitch: float = 1.12
 ## Time offset to sync the impact sound with the visual contact frame.
 @export var impact_sync_offset: float = 0.15
 ## AudioStreamPlayer node used for feedback.
@@ -1187,7 +1191,11 @@ func _animate_container_transform(target_is_closed: bool, is_back: bool, duratio
 
 func _play_sound(stream: AudioStream):
 	if not audio_player or not stream: return
-	audio_player.stream = stream; audio_player.pitch_scale = randf_range(0.95, 1.05); audio_player.play()
+	audio_player.stream = stream
+	audio_player.pitch_scale = randf_range(
+		min_fpage_flip_fx_pitch,
+		max_fpage_flip_fx_pitch)
+	audio_player.play()
 
 
 # ==============================================================================

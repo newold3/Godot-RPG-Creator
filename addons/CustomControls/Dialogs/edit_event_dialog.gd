@@ -134,7 +134,7 @@ func setup_current_page(index: int) -> void:
 	if index == -1:
 		return
 		
-	if current_event and events:
+	if current_event:
 		var page: RPGEventPage = current_event.pages[index]
 		var edit_event_page = %EditEventPage
 		edit_event_page.fill_page(page)
@@ -158,6 +158,9 @@ func _on_ok_button_pressed() -> void:
 
 func _create_undo_redo_action() -> void:
 	propagate_call("apply")
+	
+	if not undo_redo or not current_object or not events or not plugin:
+		return
 	
 	if not current_event or not events or not original_event or not undo_redo or not current_object:
 		push_error("Faltan datos para crear la acción de undo/redo")

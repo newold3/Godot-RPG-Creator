@@ -10,6 +10,11 @@
 [sub_resource type="Resource" id="Resource_2gkr7"]
 script = ExtResource("4_kagg6")
 
+[sub_resource type="TileSet" id="TileSet_3m2wn"]
+tile_size = Vector2i(32, 32)
+custom_data_layer_0/name = "Passability"
+custom_data_layer_0/type = 24
+
 [node name="RPGMap0004" type="Node2D" unique_id=1399370420]
 y_sort_enabled = true
 script = ExtResource("1_2gkr7")
@@ -45,4 +50,11 @@ unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.21)
 z_index = 1
 tile_set = ExtResource("6_xjxad")
+metadata/original_opacity = 1.0
+
+[node name="Walls" type="TileMapLayer" parent="." unique_id=598900953]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.21)
+z_index = 1
+tile_set = SubResource("TileSet_3m2wn")
 metadata/original_opacity = 1.0

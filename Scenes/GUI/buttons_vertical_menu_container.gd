@@ -2,6 +2,7 @@
 extends Control
 class_name ImageButtonControl
 
+#region InnerClasses
 class ButtonAnimator:
 	var scale: float = 1.0
 	var target_scale: float = 1.0
@@ -27,8 +28,11 @@ class ButtonAnimator:
 	
 	func get_scale() -> float:
 		return scale
+#endregion
 
 
+
+#region ExportedVariables
 @export var images: Array[Dictionary] = []
 @export var button_size: Vector2 = Vector2(100, 100) : set = _set_button_size
 @export var vertical_separation: float = 10.0
@@ -44,10 +48,14 @@ class ButtonAnimator:
 @export var max_scale: float = 1.15
 @export var scroll_container: ScrollContainer : set = _set_scroll_container
 @export var scroll_offset: Vector2 = Vector2.ZERO : set = _set_scroll_offset
+#endregion
 
+
+
+#region InternalVariablesAndSignals
 var buttons_data: Array = []
 var button_animators: Array[ButtonAnimator] = []
-var real_ids: PackedInt32Array = []
+var real_ids: PackedInt64Array = []
 var selected_index: int = -1
 var hovered_index: int = -1
 var clicked_index: int = -1
@@ -56,22 +64,77 @@ var is_fully_ready: bool = false
 
 signal button_clicked(index: int)
 signal button_selected(index: int)
+#endregion
 
 
+
+#region InitializationAndCore
+## Triggers when node enters the tree to initialize sub components
+func _ready() -> void:
+	mouse_entered.connect(_reset_hovered)
+	mouse_exited.connect(_reset_hovered)
+	_create_focus_control()
+	
+	mouse_filter = Control.MOUSE_FILTER_PASS
+	call_deferred("_initialize_after_ready")
+
+
+
+## Defers the initialization to ensure proper calculation of node sizes
+func _initialize_after_ready() -> void:
+	is_fully_ready = true
+	_update_buttons()
+	queue_redraw()
+
+
+
+## Instantiates a native Control to act as focus target for keyboard/joypad
+func _create_focus_control() -> void:
+	focus_control = Control.new()
+	focus_control.name = "FocusControl"
+	focus_control.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+	focus_control.size = Vector2.ZERO
+	focus_control.focus_mode = Control.FOCUS_CLICK
+	focus_control.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	focus_control.focus_entered.connect(_on_focus_entered)
+	add_child(focus_control)
+
+
+
+## Canvas item drawing core
+func _draw() -> void:
+	if background_style:
+		background_style.draw(get_canvas_item(), Rect2(Vector2.ZERO, size))
+	
+	for i in range(buttons_data.size()):
+		var button_data = buttons_data[i]
+		_draw_button(i, button_data)
+#endregion
+
+
+
+#region DataManagement
+## Changes the current dictionary of images to display
 func set_images(value: Array[Dictionary]) -> void:
 	_set_images(value)
 
 
-func set_real_ids(value: PackedInt32Array) -> void:
+
+## Assigns the array of true data IDs associated to each button
+func set_real_ids(value: PackedInt64Array) -> void:
 	real_ids = value
 
 
+
+## Adds a single image to the render queue
 func add_image(texture: Dictionary) -> void:
 	images.append(texture)
 	_update_buttons()
 	queue_redraw()
 
 
+
+## Removes an image safely shifting focus and states
 func remove_image(index: int) -> void:
 	if index >= 0 and index < images.size():
 		images.remove_at(index)
@@ -90,6 +153,8 @@ func remove_image(index: int) -> void:
 		queue_redraw()
 
 
+
+## Drops all current data and cleans up state
 func clear_images() -> void:
 	images.clear()
 	selected_index = -1
@@ -97,77 +162,11 @@ func clear_images() -> void:
 	clicked_index = -1
 	_update_buttons()
 	queue_redraw()
+#endregion
 
 
-func get_selected_index() -> int:
-	return selected_index
 
-
-func select_button_by_index(index: int, skip_animation: bool = false) -> void:
-	selected_index = -1
-	hovered_index = -1
-	for i in real_ids.size():
-		if real_ids[i] == index:
-			index = i
-			break
-	
-	if index >= 0 and index < buttons_data.size():
-		_select_button(index, not skip_animation)
-
-
-func grab_focus(_hide_focus: bool = false) -> void:
-	if focus_control:
-		focus_control.grab_focus()
-
-
-func get_focus_control() -> Control:
-	return focus_control
-
-
-func _ready() -> void:
-	mouse_entered.connect(_reset_hovered)
-	mouse_exited.connect(_reset_hovered)
-	_create_focus_control()
-	
-	
-	mouse_filter = Control.MOUSE_FILTER_PASS
-	call_deferred("_initialize_after_ready")
-
-
-func _create_focus_control() -> void:
-	focus_control = Control.new()
-	focus_control.name = "FocusControl"
-	focus_control.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
-	focus_control.size = Vector2.ZERO
-	focus_control.focus_mode = Control.FOCUS_CLICK
-	focus_control.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	focus_control.focus_entered.connect(_on_focus_entered)
-	add_child(focus_control)
-
-
-func _reset_hovered() -> void:
-	if hovered_index != -1:
-		hovered_index = -1
-		queue_redraw()
-
-
-func _draw() -> void:
-	if background_style:
-		background_style.draw(get_canvas_item(), Rect2(Vector2.ZERO, size))
-	
-	for i in range(buttons_data.size()):
-		var button_data = buttons_data[i]
-		_draw_button(i, button_data)
-
-
-func _gui_input(event) -> void:
-	mouse_default_cursor_shape = Control.CURSOR_ARROW
-	if event is InputEventMouseButton:
-		_handle_mouse_button(event)
-	elif event is InputEventMouseMotion:
-		_handle_mouse_motion(event)
-
-
+#region SettersAndGetters
 func _set_images(value: Array[Dictionary]) -> void:
 	images = value
 	if is_inside_tree():
@@ -175,11 +174,13 @@ func _set_images(value: Array[Dictionary]) -> void:
 		queue_redraw()
 
 
+
 func _set_button_size(value: Vector2) -> void:
 	button_size = value
 	if is_inside_tree():
 		_update_buttons()
 		queue_redraw()
+
 
 
 func _set_vertical_margin_top(value: float) -> void:
@@ -190,12 +191,14 @@ func _set_vertical_margin_top(value: float) -> void:
 		queue_redraw()
 
 
+
 func _set_vertical_margin_bottom(value: float) -> void:
 	vertical_margin_bottom = value
 	if is_inside_tree():
 		_calculate_button_positions()
 		_calculate_minimum_size()
 		queue_redraw()
+
 
 
 func _set_horizontal_margin_left(value: float) -> void:
@@ -206,12 +209,14 @@ func _set_horizontal_margin_left(value: float) -> void:
 		queue_redraw()
 
 
+
 func _set_horizontal_margin_right(value: float) -> void:
 	horizontal_margin_right = value
 	if is_inside_tree():
 		_calculate_button_positions()
 		_calculate_minimum_size()
 		queue_redraw()
+
 
 
 func _set_background_style(style: StyleBox) -> void:
@@ -222,11 +227,13 @@ func _set_background_style(style: StyleBox) -> void:
 	queue_redraw()
 
 
+
 func _set_normal_style(style: StyleBox) -> void:
 	normal_style = style
 	if style and not style.changed.is_connected(queue_redraw):
 		style.changed.connect(queue_redraw)
 	queue_redraw()
+
 
 
 func _set_hover_style(style: StyleBox) -> void:
@@ -236,11 +243,13 @@ func _set_hover_style(style: StyleBox) -> void:
 	queue_redraw()
 
 
+
 func _set_selected_style(style: StyleBox) -> void:
 	selected_style = style
 	if style and not style.changed.is_connected(queue_redraw):
 		style.changed.connect(queue_redraw)
 	queue_redraw()
+
 
 
 func _set_clicked_style(style: StyleBox) -> void:
@@ -250,10 +259,12 @@ func _set_clicked_style(style: StyleBox) -> void:
 	queue_redraw()
 
 
+
 func _set_scroll_container(value: ScrollContainer) -> void:
 	scroll_container = value
 	if is_inside_tree():
 		queue_redraw()
+
 
 
 func _set_scroll_offset(value: Vector2) -> void:
@@ -262,12 +273,53 @@ func _set_scroll_offset(value: Vector2) -> void:
 		queue_redraw()
 
 
-func _initialize_after_ready() -> void:
-	is_fully_ready = true
-	_update_buttons()
-	queue_redraw()
+
+func get_selected_index() -> int:
+	return selected_index
 
 
+
+func get_focus_control() -> Control:
+	return focus_control
+#endregion
+
+
+
+#region RectAndSizeCalculations
+## Computes and updates internal bounding box positions for each button
+func _calculate_button_positions() -> void:
+	var margins = _get_background_margins()
+	var y_offset = margins.top + vertical_margin_top
+	var center_x = margins.left + horizontal_margin_left + (button_size.x / 2.0)
+	
+	for i in range(buttons_data.size()):
+		buttons_data[i]["rect"].position = Vector2(center_x - button_size.x / 2.0, y_offset)
+		buttons_data[i]["rect"].size = button_size
+		y_offset += button_size.y + vertical_separation
+
+
+
+## Pre-calculates space required depending on amount of buttons
+func _calculate_minimum_size() -> void:
+	if buttons_data.is_empty():
+		custom_minimum_size = Vector2.ZERO
+		position = Vector2.ZERO
+		return
+	
+	var margins = _get_background_margins()
+	var content_height = (button_size.y * buttons_data.size()) + (vertical_separation * (buttons_data.size() - 1))
+	var content_width = button_size.x * max_scale
+	var extra_space_vertical = (button_size.y * (max_scale - 1.0)) / 2.0
+	
+	custom_minimum_size = Vector2(
+		content_width + margins.left + margins.right + horizontal_margin_left + horizontal_margin_right,
+		content_height + margins.top + margins.bottom + vertical_margin_top + vertical_margin_bottom + (extra_space_vertical * 2.0)
+	)
+	position = Vector2.ZERO
+
+
+
+## Rebuilds internal nodes and logic data arrays upon a data change
 func _update_buttons() -> void:
 	if images.is_empty():
 		return
@@ -292,35 +344,8 @@ func _update_buttons() -> void:
 	_update_focus_control_position()
 
 
-func _calculate_button_positions() -> void:
-	var margins = _get_background_margins()
-	var y_offset = margins.top + vertical_margin_top
-	var center_x = margins.left + horizontal_margin_left + (button_size.x / 2.0)
-	
-	for i in range(buttons_data.size()):
-		buttons_data[i]["rect"].position = Vector2(center_x - button_size.x / 2.0, y_offset)
-		buttons_data[i]["rect"].size = button_size
-		y_offset += button_size.y + vertical_separation
 
-
-func _calculate_minimum_size() -> void:
-	if buttons_data.is_empty():
-		custom_minimum_size = Vector2.ZERO
-		position = Vector2.ZERO
-		return
-	
-	var margins = _get_background_margins()
-	var content_height = (button_size.y * buttons_data.size()) + (vertical_separation * (buttons_data.size() - 1))
-	var content_width = button_size.x * max_scale
-	var extra_space_vertical = (button_size.y * (max_scale - 1.0)) / 2.0
-	
-	custom_minimum_size = Vector2(
-		content_width + margins.left + margins.right + horizontal_margin_left + horizontal_margin_right,
-		content_height + margins.top + margins.bottom + vertical_margin_top + vertical_margin_bottom + (extra_space_vertical * 2.0)
-	)
-	position = Vector2.ZERO
-
-
+## Calculates scaling offset effect for elements behind a selected one
 func _get_accumulated_growth_until(index: int) -> float:
 	var total_growth = 0.0
 	for i in range(index):
@@ -330,6 +355,8 @@ func _get_accumulated_growth_until(index: int) -> float:
 	return total_growth
 
 
+
+## Ensures position stability based on scroll container visibility
 func _get_effective_offset() -> Vector2:
 	var offset = Vector2.ZERO
 	
@@ -341,8 +368,12 @@ func _get_effective_offset() -> Vector2:
 			offset = scroll_offset
 	
 	return offset
+#endregion
 
 
+
+#region Rendering
+## Executes the canvas drawing routines for a single button
 func _draw_button(index: int, button_data: Dictionary) -> void:
 	if Engine.is_editor_hint(): return
 	var rect = button_data["rect"] as Rect2
@@ -358,11 +389,9 @@ func _draw_button(index: int, button_data: Dictionary) -> void:
 	var offset: Vector2
 	var button_rect = rect
 	
-	# Apply scroll offset if scrollbars are not visible
 	var effective_offset = _get_effective_offset()
 	button_rect.position += effective_offset
 	
-	# Each button scales from its own top-center, and items below shift accordingly
 	offset = Vector2((rect.size.x - scaled_size.x) * 0.5, 0)
 	
 	var accumulated_growth = _get_accumulated_growth_until(index)
@@ -411,39 +440,50 @@ func _draw_button(index: int, button_data: Dictionary) -> void:
 				draw_texture_rect_region(image.texture, image_rect, image.region)
 
 
-func _handle_mouse_button(event: InputEventMouseButton) -> void:
-	if event.button_index == MOUSE_BUTTON_LEFT:
-		if event.pressed:
-			var index = _get_button_at_position(event.position)
-			if index != -1:
-				clicked_index = index
-				_select_button(index, true)
-				queue_redraw()
-		else:
-			if clicked_index != -1:
-				if real_ids.size() > clicked_index:
-					button_clicked.emit(real_ids[clicked_index])
-				else:
-					button_clicked.emit(clicked_index)
-				clicked_index = -1
-				queue_redraw()
 
-
-func _handle_mouse_motion(event: InputEventMouseMotion) -> void:
-	var index = _get_button_at_position(event.position)
+## Helper to read margins setup dynamically
+func _get_background_margins() -> Dictionary:
+	if not background_style:
+		return {"left": 0, "top": 0, "right": 0, "bottom": 0}
 	
-	if index != hovered_index:
-		hovered_index = index
-		
-	if index != -1:
-		mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	else:
-		mouse_default_cursor_shape = Control.CURSOR_ARROW
-		hovered_index = -1
-		
-	queue_redraw()
+	return {
+		"left": background_style.get_content_margin(SIDE_LEFT),
+		"top": background_style.get_content_margin(SIDE_TOP),
+		"right": background_style.get_content_margin(SIDE_RIGHT),
+		"bottom": background_style.get_content_margin(SIDE_BOTTOM)
+	}
 
 
+
+## Defines space left once margins are computed out
+func _get_content_area() -> Rect2:
+	var margins = _get_background_margins()
+	var content_pos = Vector2(margins.left, margins.top)
+	var content_size = Vector2(
+		size.x - margins.left - margins.right,
+		size.y - margins.top - margins.bottom
+	)
+	
+	content_size.x = max(content_size.x, 0)
+	content_size.y = max(content_size.y, 0)
+	
+	return Rect2(content_pos, content_size)
+#endregion
+
+
+
+#region InputAndLogic
+## Routes events correctly relying on type
+func _gui_input(event) -> void:
+	mouse_default_cursor_shape = Control.CURSOR_ARROW
+	if event is InputEventMouseButton:
+		_handle_mouse_button(event)
+	elif event is InputEventMouseMotion:
+		_handle_mouse_motion(event)
+
+
+
+## Translates real world mouse position coordinates to array indexes
 func _get_button_at_position(pos: Vector2) -> int:
 	var effective_offset = _get_effective_offset()
 	
@@ -469,6 +509,55 @@ func _get_button_at_position(pos: Vector2) -> int:
 	return -1
 
 
+
+## Process mouse clicks and notifies subscribers
+func _handle_mouse_button(event: InputEventMouseButton) -> void:
+	if event.button_index == MOUSE_BUTTON_LEFT:
+		if event.pressed:
+			var index = _get_button_at_position(event.position)
+			if index != -1:
+				clicked_index = index
+				_select_button(index, true)
+				queue_redraw()
+		else:
+			if clicked_index != -1:
+				if real_ids.size() > clicked_index:
+					button_clicked.emit(real_ids[clicked_index])
+				else:
+					button_clicked.emit(clicked_index)
+				clicked_index = -1
+				queue_redraw()
+
+
+
+## Process mouse hover changing pointer shapes
+func _handle_mouse_motion(event: InputEventMouseMotion) -> void:
+	var index = _get_button_at_position(event.position)
+	
+	if index != hovered_index:
+		hovered_index = index
+		
+	if index != -1:
+		mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	else:
+		mouse_default_cursor_shape = Control.CURSOR_ARROW
+		hovered_index = -1
+		
+	queue_redraw()
+
+
+
+## Clears hover states securely
+func _reset_hovered() -> void:
+	if hovered_index != -1:
+		hovered_index = -1
+		queue_redraw()
+#endregion
+
+
+
+#region SelectionAndNavigation
+## Changes current button selection and launches the resize animations
 func _select_button(index: int, animate: bool = true) -> void:
 	if selected_index == index:
 		return
@@ -493,6 +582,22 @@ func _select_button(index: int, animate: bool = true) -> void:
 	queue_redraw()
 
 
+
+## Performs a selection lookup using the global real IDs map
+func select_button_by_index(index: int, skip_animation: bool = false) -> void:
+	selected_index = -1
+	hovered_index = -1
+	for i in real_ids.size():
+		if real_ids[i] == index:
+			index = i
+			break
+	
+	if index >= 0 and index < buttons_data.size():
+		_select_button(index, not skip_animation)
+
+
+
+## Refresh last selected button state setup
 func select_last_button() -> void:
 	var index = selected_index
 	selected_index = -1
@@ -500,6 +605,8 @@ func select_last_button() -> void:
 	_config_hand()
 
 
+
+## Force visual sizes to change instantly ignoring tweens
 func _set_button_scales_directly(previous_index: int, new_index: int) -> void:
 	if previous_index != -1 and previous_index < button_animators.size():
 		var previous_animator = button_animators[previous_index]
@@ -512,6 +619,8 @@ func _set_button_scales_directly(previous_index: int, new_index: int) -> void:
 	queue_redraw()
 
 
+
+## Trigger tweened animation sequences for selected instances
 func _animate_button_scales(previous_index: int, new_index: int) -> void:
 	if previous_index != -1 and previous_index < button_animators.size():
 		var previous_animator = button_animators[previous_index]
@@ -522,6 +631,8 @@ func _animate_button_scales(previous_index: int, new_index: int) -> void:
 		new_animator.animate_to_scale(max_scale, 0.25)
 
 
+
+## Matches internal proxy node size to currently targeted button area to avoid focus loose
 func _update_focus_control_position() -> void:
 	if not focus_control: return
 	if selected_index != -1 and selected_index < buttons_data.size():
@@ -546,6 +657,8 @@ func _update_focus_control_position() -> void:
 		focus_control.visible = false
 
 
+
+## Processes UI keyboard interactions mapping to real boundaries
 func navigate_button(direction: int) -> void:
 	if buttons_data.is_empty():
 		return
@@ -566,6 +679,23 @@ func navigate_button(direction: int) -> void:
 			button_clicked.emit(new_index)
 
 
+
+## Sets focus directly allowing to hide focus outline internally
+func grab_focus(_hide_focus: bool = false) -> void:
+	if focus_control:
+		focus_control.grab_focus()
+
+
+
+## Trigger when focus returns applying cursor properties correctly
+func _on_focus_entered() -> void:
+	if selected_index == -1 and not buttons_data.is_empty():
+		_select_button(0, true)
+	_config_hand()
+
+
+
+## Repositions custom system hand visualizer over element
 func _config_hand() -> void:
 	var hand_manipulator = GameManager.MANIPULATOR_MODES.EQUIP_ACTORS_MENU
 	GameManager.set_cursor_manipulator(hand_manipulator)
@@ -574,35 +704,4 @@ func _config_hand() -> void:
 	GameManager.set_confin_area(rect, hand_manipulator)
 	GameManager.set_hand_position(MainHandCursor.HandPosition.RIGHT, hand_manipulator)
 	GameManager.set_cursor_offset(Vector2(-2, 0), hand_manipulator)
-
-
-func _on_focus_entered() -> void:
-	if selected_index == -1 and not buttons_data.is_empty():
-		_select_button(0, true)
-	_config_hand()
-
-
-func _get_background_margins() -> Dictionary:
-	if not background_style:
-		return {"left": 0, "top": 0, "right": 0, "bottom": 0}
-	
-	return {
-		"left": background_style.get_content_margin(SIDE_LEFT),
-		"top": background_style.get_content_margin(SIDE_TOP),
-		"right": background_style.get_content_margin(SIDE_RIGHT),
-		"bottom": background_style.get_content_margin(SIDE_BOTTOM)
-	}
-
-
-func _get_content_area() -> Rect2:
-	var margins = _get_background_margins()
-	var content_pos = Vector2(margins.left, margins.top)
-	var content_size = Vector2(
-		size.x - margins.left - margins.right,
-		size.y - margins.top - margins.bottom
-	)
-	
-	content_size.x = max(content_size.x, 0)
-	content_size.y = max(content_size.y, 0)
-	
-	return Rect2(content_pos, content_size)
+#endregion

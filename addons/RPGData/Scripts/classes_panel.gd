@@ -5,15 +5,18 @@ var parameters_cache: Array[Dictionary]
 var params_need_resize: float
 
 
+
 func _ready() -> void:
 	super()
 	default_data_element = RPGClass.new()
+
 
 
 func get_data() -> RPGClass:
 	if not data: return null
 	current_selected_index = max(1, min(current_selected_index, data.size() - 1))
 	return data[current_selected_index]
+
 
 
 func _process(delta: float) -> void:
@@ -24,9 +27,10 @@ func _process(delta: float) -> void:
 			resize_params()
 
 
+
 func _update_data_fields() -> void:
 	busy = true
-	await get_tree().process_frame # Wait 1 frame to void bug (reset class 1 to max level 1)
+	await get_tree().process_frame
 	if current_selected_index != -1:
 		var current_data = get_data()
 		disable_all(false)
@@ -48,6 +52,7 @@ func _update_data_fields() -> void:
 	busy = false
 
 
+
 func fill_weights() -> void:
 	var current_data = get_data()
 	%HPWeight.value = current_data.weights.get("HP", 1.5)
@@ -61,21 +66,27 @@ func fill_weights() -> void:
 	%PasteWeights.set_disabled(!StaticEditorVars.CLIPBOARD.get("class_weights", false))
 
 
+
 func fill_learnable_list(selected_index: int = -1) -> void:
 	var node = %LearnableSkillList
 	node.clear()
 	var current_data = get_data()
+	
 	for i in current_data.learnable_skills.size():
 		var item: RPGLearnableSkill = current_data.learnable_skills[i]
 		var column = []
 		column.append(str(item.level))
-		if database.skills.size() > item.skill_id:
-			var item_name = database.skills[item.skill_id].name
+		
+		var skill_data = RPGSYSTEM.get_data("skills", item.skill_id)
+		if skill_data:
+			var item_name = skill_data.name
 			if item_name.length() == 0:
-				item_name = "# %s" % item.skill_id
+				var classic_id = RPGSYSTEM.uid_to_id("skills", item.skill_id)
+				item_name = "# %s" % classic_id
 			column.append(item_name)
 		else:
 			column.append("⚠ Invalid Data")
+			
 		column.append(item.notes)
 		node.add_column(column)
 	
@@ -84,25 +95,45 @@ func fill_learnable_list(selected_index: int = -1) -> void:
 		node.select(selected_index)
 
 
-func fill_class_list(selected_index: int = -1) -> void:
+
+func fill_class_list(target_uid: int = 0) -> void:
 	var node = %UpgradeToClass
-	
 	node.clear()
 	node.add_item("None")
+	node.set_item_metadata(0, 0)
+	
+	var selected_idx = 0
+	var disabled_idx = -1
+	var current_data = get_data()
+	
 	for i in range(1, database.classes.size(), 1):
-		var n = database.classes[i].name
-		if !n:
+		var cl = database.classes[i]
+		if not cl: continue
+		
+		var n = cl.name
+		if n.is_empty():
 			n = "Class %s" % i
+			
 		node.add_item(n)
+		var item_index = node.get_item_count() - 1
+		node.set_item_metadata(item_index, cl._uniq_id)
+		
+		if cl._uniq_id == target_uid:
+			selected_idx = item_index
+			
+		if cl == current_data:
+			disabled_idx = item_index
 	
-	if selected_index != -1 and database.classes.size() > 0 and database.classes.size() > selected_index:
-		node.select(selected_index)
-	elif selected_index != -1:
-		node.select(-1)
-		node.text = "⚠ Invalid Data"
+	if target_uid != 0 and selected_idx == 0:
+		node.add_item("⚠ Invalid Data")
+		selected_idx = node.get_item_count() - 1
+		node.set_item_metadata(selected_idx, target_uid)
+		
+	node.select(selected_idx)
 	
-	var class_id = database.classes.find(get_data())
-	node.set_item_disabled(class_id, true)
+	if disabled_idx != -1:
+		node.set_item_disabled(disabled_idx, true)
+
 
 
 func fill_params() -> void:
@@ -132,6 +163,7 @@ func fill_params() -> void:
 		parameters_cache.append(parameter_data)
 
 
+
 func resize_params() -> void:
 	var current_data = get_data()
 	if not current_data: return
@@ -152,6 +184,7 @@ func resize_params() -> void:
 	fill_params()
 
 
+
 func _on_max_level_spin_box_value_changed(value: float) -> void:
 	if busy: return
 	if not get_data(): return
@@ -159,44 +192,55 @@ func _on_max_level_spin_box_value_changed(value: float) -> void:
 	params_need_resize = 0.15
 
 
+
 func _on_note_text_edit_text_changed() -> void:
 	get_data().notes = %NoteTextEdit.text
+
 
 
 func _on_experience_clicked() -> void:
 	show_parameter_curve_editor(0)
 
 
+
 func _on_max_hp_clicked() -> void:
 	show_parameter_curve_editor(1)
+
 
 
 func _on_max_mp_clicked() -> void:
 	show_parameter_curve_editor(2)
 
 
+
 func _on_attack_clicked() -> void:
 	show_parameter_curve_editor(3)
+
 
 
 func _on_defense_clicked() -> void:
 	show_parameter_curve_editor(4)
 
 
+
 func _on_m_attack_clicked() -> void:
 	show_parameter_curve_editor(5)
+
 
 
 func _on_m_defense_clicked() -> void:
 	show_parameter_curve_editor(6)
 
 
+
 func _on_agility_clicked() -> void:
 	show_parameter_curve_editor(7)
 
 
+
 func _on_luck_clicked() -> void:
 	show_parameter_curve_editor(8)
+
 
 
 func show_parameter_curve_editor(selected_id: int) -> void:
@@ -216,6 +260,7 @@ func show_parameter_curve_editor(selected_id: int) -> void:
 	dialog.select_data_type(selected_id)
 
 
+
 func _on_parameter_curve_editor_dialog_visibility_changed(dialog: Window) -> void:
 	if !dialog.visible:
 		var current_data = get_data()
@@ -226,6 +271,7 @@ func _on_parameter_curve_editor_dialog_visibility_changed(dialog: Window) -> voi
 			current_data.params[index].min_value = parameters_cache[i].min_value
 			current_data.params[index].max_value = parameters_cache[i].max_value
 		fill_params()
+
 
 
 func _on_visibility_changed() -> void:
@@ -242,6 +288,7 @@ func _on_visibility_changed() -> void:
 			%LearnableSkillList.clear()
 
 
+
 func _on_learnable_skill_list_item_activated(index: int) -> void:
 	var path = "res://addons/CustomControls/Dialogs/add_learnable_skill_dialog.tscn"
 	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
@@ -256,6 +303,7 @@ func _on_learnable_skill_list_item_activated(index: int) -> void:
 		dialog.set_new_learnable_skill()
 		dialog.target = _learnable_skill_added.bind(-1)
 		dialog.title = TranslationManager.tr("Add Learnable Skill")
+
 
 
 func _learnable_skill_added(obj: RPGLearnableSkill, target_index: int) -> void:
@@ -282,6 +330,7 @@ func _on_learnable_skill_list_copy_requested(indexes: PackedInt32Array) -> void:
 	StaticEditorVars.CLIPBOARD["learnable_skill"] = copy_learnable_skill
 
 
+
 func _on_learnable_skill_list_cut_requested(indexes: PackedInt32Array) -> void:
 	if !database: return
 	
@@ -300,6 +349,7 @@ func _on_learnable_skill_list_cut_requested(indexes: PackedInt32Array) -> void:
 	
 	var item_selected = max(-1, indexes[0])
 	fill_learnable_list(item_selected)
+
 
 
 func _on_learnable_skill_list_paste_requested(index: int) -> void:
@@ -329,6 +379,7 @@ func _on_learnable_skill_list_paste_requested(index: int) -> void:
 			list.select(i, false)
 
 
+
 func _on_learnable_skill_list_delete_pressed(indexes: PackedInt32Array) -> void:
 	if !database: return
 	
@@ -343,9 +394,11 @@ func _on_learnable_skill_list_delete_pressed(indexes: PackedInt32Array) -> void:
 	fill_learnable_list(indexes[0])
 
 
+
 func _on_icon_picker_remove_requested() -> void:
 	get_data().icon.clear()
 	%IconPicker.set_icon("")
+
 
 
 func _on_icon_picker_clicked() -> void:
@@ -356,28 +409,44 @@ func _on_icon_picker_clicked() -> void:
 	dialog.icon_changed.connect(update_icon)
 
 
+
 func update_icon() -> void:
 	var icon = get_data().icon
 	%IconPicker.set_icon(icon.path, icon.region)
+
 
 
 func _on_description_text_edit_text_changed() -> void:
 	get_data().description = %DescriptionText.text
 
 
+
 func _on_automatic_upgrade_toggled(toggled_on: bool) -> void:
 	get_data().automatic_upgrade = toggled_on
 
 
+
 func _on_upgrade_to_class_item_selected(index: int) -> void:
-	get_data().upgrade_to_class = index
+	var target_uid = %UpgradeToClass.get_item_metadata(index)
+	get_data().upgrade_to_class = target_uid
+
 
 
 func _on_name_line_edit_text_changed_update_class_list(new_text: String) -> void:
-	var id = database.classes.find(get_data())
-	if !new_text:
-		new_text = "class %s" % id
-	%UpgradeToClass.set_item_text(id, new_text)
+	var current_data = get_data()
+	if not current_data: return
+	
+	var n = new_text
+	if n.is_empty():
+		var classic_id = RPGSYSTEM.uid_to_id("classes", current_data._uniq_id)
+		n = "Class %s" % classic_id
+		
+	var node = %UpgradeToClass
+	for i in node.get_item_count():
+		if node.get_item_metadata(i) == current_data._uniq_id:
+			node.set_item_text(i, n)
+			break
+
 
 
 func _on_copy_parameters_pressed() -> void:
@@ -393,6 +462,7 @@ func _on_copy_parameters_pressed() -> void:
 	RPGEditorToast.show_message("Class Parameters copied into Clipboard")
 
 
+
 func _on_paste_parameters_pressed() -> void:
 	var current_data = get_data()
 	var class_parameters = StaticEditorVars.CLIPBOARD.get("class_parameters", null)
@@ -405,6 +475,7 @@ func _on_paste_parameters_pressed() -> void:
 		fill_params()
 
 
+
 func _on_config_data_tabs_tab_changed(index: int) -> void:
 	var node_path = "%%Tab%s" % (index + 1)
 	var node = get_node_or_null(node_path)
@@ -414,8 +485,10 @@ func _on_config_data_tabs_tab_changed(index: int) -> void:
 		node.visible = true
 
 
+
 func _on_tick_interval_value_changed(value: float) -> void:
 	get_data().tick_interval = value
+
 
 
 func _on_hp_weight_value_changed(value: float) -> void:
@@ -423,9 +496,11 @@ func _on_hp_weight_value_changed(value: float) -> void:
 	get_data().weights["HP"] = value
 
 
+
 func _on_mp_weight_value_changed(value: float) -> void:
 	if not get_data(): return
 	get_data().weights["MP"] = value
+
 
 
 func _on_attack_weight_value_changed(value: float) -> void:
@@ -433,9 +508,11 @@ func _on_attack_weight_value_changed(value: float) -> void:
 	get_data().weights["ATK"] = value
 
 
+
 func _on_defense_weight_value_changed(value: float) -> void:
 	if not get_data(): return
 	get_data().weights["DEF"] = value
+
 
 
 func _on_magic_attack_weight_value_changed(value: float) -> void:
@@ -443,9 +520,11 @@ func _on_magic_attack_weight_value_changed(value: float) -> void:
 	get_data().weights["MATK"] = value
 
 
+
 func _on_magic_defense_weight_value_changed(value: float) -> void:
 	if not get_data(): return
 	get_data().weights["MDEF"] = value
+
 
 
 func _on_agility_weight_value_changed(value: float) -> void:
@@ -453,9 +532,11 @@ func _on_agility_weight_value_changed(value: float) -> void:
 	get_data().weights["AGI"] = value
 
 
+
 func _on_luck_weight_value_changed(value: float) -> void:
 	if not get_data(): return
 	get_data().weights["LUCK"] = value
+
 
 
 func _on_copy_weights_pressed() -> void:
@@ -466,6 +547,7 @@ func _on_copy_weights_pressed() -> void:
 	RPGEditorToast.show_message("Class parameter weights copied into Clipboard")
 
 
+
 func _on_paste_weights_pressed() -> void:
 	var current_data = get_data()
 	var class_weights = StaticEditorVars.CLIPBOARD.get("class_weights", null)
@@ -474,10 +556,12 @@ func _on_paste_weights_pressed() -> void:
 		fill_weights()
 
 
+
 func _on_reset_weights_pressed() -> void:
 	get_data().set_param_weights()
 	fill_weights()
 	RPGEditorToast.show_message("Class parameter weights reset!")
+
 
 
 func _on_icon_picker_paste_requested(icon: String, region: Rect2) -> void:

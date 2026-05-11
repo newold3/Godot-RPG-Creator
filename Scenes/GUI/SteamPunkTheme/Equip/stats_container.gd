@@ -17,9 +17,16 @@ extends Control
 # Actor data and comparison
 var current_actor: GameActor
 var comparison_item: Dictionary = {}
-var comparison_result: int
+
+var comparison_result: int = 0:
+	set(value):
+		if comparison_result != value:
+			comparison_result = value
+			if is_inside_tree():
+				_set_animation_for_upgrade_icon()
 
 var started: bool = false
+var icon_tween: Tween
 
 
 func _ready() -> void:
@@ -38,13 +45,19 @@ func _set_animation_for_upgrade_icon() -> void:
 	upgrade_icon.visible = false
 	upgrade_icon.pivot_offset = upgrade_icon.size * 0.5
 	var original_position = upgrade_icon.position
-	var t = create_tween()
-	t.set_loops()
-	t.set_parallel(true)
-	t.tween_property(upgrade_icon, "scale", Vector2(0.98, 0.8), 0.25).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	t.tween_property(upgrade_icon, "scale", Vector2.ONE, 0.25).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN).set_delay(0.25)
-	t.tween_property(upgrade_icon, "position:y", original_position.y + 3 * (-1 if comparison_result == 1 else 1), 0.25).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	t.tween_property(upgrade_icon, "position:y", original_position.y - 3 * (-1 if comparison_result == 1 else 1), 0.25).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN).set_delay(0.25)
+	
+	if icon_tween:
+		icon_tween.kill()
+		
+	icon_tween = create_tween()
+	icon_tween.set_loops()
+	icon_tween.set_parallel(true)
+	icon_tween.tween_property(upgrade_icon, "scale", Vector2(0.98, 0.8), 0.25).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	icon_tween.tween_property(upgrade_icon, "scale", Vector2.ONE, 0.25).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN).set_delay(0.25)
+	
+	var direction_multiplier = -1 if comparison_result == 1 else 1
+	icon_tween.tween_property(upgrade_icon, "position:y", original_position.y + 3 * direction_multiplier, 0.25).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	icon_tween.tween_property(upgrade_icon, "position:y", original_position.y - 3 * direction_multiplier, 0.25).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN).set_delay(0.25)
 
 
 func start() -> void:
@@ -100,7 +113,6 @@ func set_equipment_compararison(slot_id: int, item: Variant) -> void:
 			"id": item.id if item else -1,
 			"level": item.current_level if item else -1,
 		}
-		# Reload actor with new comparison
 		set_actor(current_actor)
 
 

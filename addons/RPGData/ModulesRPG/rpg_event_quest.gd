@@ -20,7 +20,7 @@ func get_class(): return "RPGEventPQuest"
 @export var override_description: String = ""
 ## Event pages that need to be active in order to obtain or deliver
 ## this mission to this event
-@export var required_pages: PackedInt32Array = []
+@export var required_pages: PackedInt64Array = []
 ## Level of relationship you must have with this NPC for
 ## this quest to be available (0 = no requirements).
 @export var relationship_requeriment_level: int = 0

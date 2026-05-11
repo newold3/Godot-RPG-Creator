@@ -1,7 +1,7 @@
 class_name SimpleFollower
 extends CharacterBody2D
 
-
+#region Variables
 ## How many "distance steps" this follower lags behind.
 @export var spacing_steps: int = 16
 
@@ -60,8 +60,12 @@ var is_fading_transition: bool = false
 @onready var body: Sprite2D = %Body
 @onready var offhand_front: Sprite2D = %OffhandFront
 @onready var mainhand_front: Sprite2D = %MainHandFront
+#endregion
 
 
+
+#region Lifecycle & Processing
+## Initializes region rendering and aligns follower to its target
 func _ready() -> void:
 	for sprite in [wings, mainhand_back, body, offhand_front]:
 		sprite.region_enabled = true
@@ -72,21 +76,103 @@ func _ready() -> void:
 		global_position = target_node.global_position
 
 
-func get_direction() -> CharacterBase.DIRECTIONS:
-	return current_direction
 
-
-func get_current_tile() -> Vector2i:
-	if GameManager.current_map:
-		return GameManager.current_map.get_tile_from_position(global_position)
+## Main processing loop handling physics syncing, jumping, and history catching
+func _process(delta: float) -> void:
+	if is_manual_animation:
+		return
 	
-	return Vector2i()
+	if GameManager.current_player and GameManager.current_player.is_on_vehicle:
+		modulate.a -= (5 + follower_id) * delta
+		
+	if not is_sync_active:
+		current_animation = "idle"
+		_process_next_frame(delta)
+		return
+
+	if not target_node or is_invalid_event or is_jumping_locally:
+		if is_jumping_locally:
+			_process_next_frame(delta)
+		return
+	
+	if is_force_walking:
+		_approach_launch_pad(target_position, delta)
+		var dist_to_launch = global_position.distance_to(target_position)
+		if dist_to_launch < 4:
+			is_force_walking = false
+			target_position = Vector2.ZERO
+			current_direction = jump_snapshot.direction
+			
+			var rect = jump_snapshot.region_rect
+			var flip = jump_snapshot.flip_h
+			body.region_rect = rect
+			body.flip_h = flip
+			wings.region_rect = rect
+			wings.flip_h = flip
+			
+			_trigger_local_jump(jump_snapshot)
+		return
+	
+	if GameManager.current_player:
+		var player_moved: bool = false
+		var head_snapshot = GameManager.current_player.get_history_step(0)
+		
+		if not head_snapshot.is_empty():
+			if _last_player_head_pos != head_snapshot.pos:
+				player_moved = true
+			_last_player_head_pos = head_snapshot.pos
+
+		var map_tile_size = GameManager.get_map_tile_size().x if GameManager.current_map else 64.0
+		var dist_per_follower = float(map_tile_size)
+		var total_needed_dist = follower_id * dist_per_follower
+
+		var dynamic_spacing_steps = _get_index_at_distance(total_needed_dist)
+		var base_offset = dynamic_spacing_steps
+
+		if _is_waiting:
+			if player_moved:
+				_extra_history_offset_f += 1.0
+			
+			current_animation = "idle"
+			_process_next_frame(delta)
+			return
+		else:
+			if _extra_history_offset_f > 0.0:
+				var catch_up_rate = _extra_history_offset_f / max_catch_up_time
+				catch_up_rate = max(catch_up_rate, 15.0) 
+				
+				if not player_moved:
+					catch_up_rate += snapshots_per_second
+					
+				_extra_history_offset_f = max(0.0, _extra_history_offset_f - (catch_up_rate * delta))
+
+		var my_step_offset = base_offset + int(_extra_history_offset_f)
+		var snapshot = GameManager.current_player.get_history_step(my_step_offset)
+		
+		if not snapshot.is_empty():
+			_last_valid_snapshot = snapshot
+			if snapshot.get("event") == "start_jump":
+				var launch_pad = snapshot.get("jump_start_pos", global_position)
+				var orig = snapshot.get("followers_position")[follower_id]
+				var dist_to_launch = orig.distance_to(launch_pad)
+				
+				if dist_to_launch > 4:
+					global_position = orig
+					_approach_launch_pad(launch_pad, delta)
+					is_force_walking = true
+					target_position = launch_pad
+					jump_snapshot = snapshot
+				else:
+					_trigger_local_jump(snapshot)
+					
+			elif snapshot.get("event") == "end_jump":
+				is_jumping_locally = false
+			else:
+				_process_follower_logic(snapshot, delta)
 
 
-func get_current_virtual_tile() -> Vector2i:
-	return get_current_tile()
 
-
+## Increments the animation frame timer based on FPS
 func _process_next_frame(delta: float) -> void:
 	_frame_timer += delta
 	if _frame_timer >= (1.0 / animation_fps):
@@ -94,8 +180,12 @@ func _process_next_frame(delta: float) -> void:
 		_frame_timer = 0.0
 
 	run_animation()
+#endregion
 
 
+
+#region Core Logic
+## Determines how many history index steps back the follower should be based on target distance
 func _get_index_at_distance(target_distance_px: float) -> int:
 	var player = GameManager.current_player
 	if not player or not "movement_history" in player:
@@ -122,103 +212,8 @@ func _get_index_at_distance(target_distance_px: float) -> int:
 	return history.size() - 1
 
 
-func _process(delta: float) -> void:
-	if is_manual_animation:
-		return
-	
-	if GameManager.current_player and GameManager.current_player.is_on_vehicle:
-		modulate.a -= (5 + follower_id) * delta
-		
-	if not is_sync_active:
-		current_animation = "idle"
-		_process_next_frame(delta)
-		return
 
-	if not target_node or is_invalid_event or is_jumping_locally:
-		if is_jumping_locally:
-			_process_next_frame(delta)
-		return
-	
-	if is_force_walking:
-		_approach_launch_pad(target_position, delta)
-		var dist_to_launch = global_position.distance_to(target_position)
-		if dist_to_launch < 4:
-			is_force_walking = false
-			target_position = Vector2.ZERO
-			current_direction = jump_snapshot.direction
-			var rect = jump_snapshot.region_rect
-			var flip = jump_snapshot.flip_h
-			body.region_rect = rect
-			body.flip_h = flip
-			wings.region_rect = rect
-			wings.flip_h = flip
-			_trigger_local_jump(jump_snapshot)
-		return
-	
-	if GameManager.current_player:
-		var player_moved: bool = false
-		var head_snapshot = GameManager.current_player.get_history_step(0)
-		
-		if not head_snapshot.is_empty():
-			if _last_player_head_pos != head_snapshot.pos:
-				player_moved = true
-			_last_player_head_pos = head_snapshot.pos
-
-		var map_tile_size = GameManager.get_map_tile_size().x if GameManager.current_map else 64.0
-		var dist_per_follower = float(map_tile_size)
-		var total_needed_dist = follower_id * dist_per_follower
-
-		var dynamic_spacing_steps = _get_index_at_distance(total_needed_dist)
-
-		var base_offset = dynamic_spacing_steps
-
-		if _is_waiting:
-			if player_moved:
-				_extra_history_offset_f += 1.0
-			
-			current_animation = "idle"
-			_process_next_frame(delta)
-			return
-		else:
-			if _extra_history_offset_f > 0.0:
-				var catch_up_rate = _extra_history_offset_f / max_catch_up_time
-				catch_up_rate = max(catch_up_rate, 15.0) 
-				
-				if not player_moved:
-					catch_up_rate += snapshots_per_second
-					
-				_extra_history_offset_f = max(0.0, _extra_history_offset_f - (catch_up_rate * delta))
-
-		var my_step_offset = base_offset + int(_extra_history_offset_f)
-
-		var snapshot = GameManager.current_player.get_history_step(my_step_offset)
-		
-		if not snapshot.is_empty():
-			_last_valid_snapshot = snapshot
-			if snapshot.get("event") == "start_jump":
-				var launch_pad = snapshot.get("jump_start_pos", global_position)
-				var orig = snapshot.get("followers_position")[follower_id]
-				var dist_to_launch = orig.distance_to(launch_pad)
-				if dist_to_launch > 4:
-					global_position = orig
-					_approach_launch_pad(launch_pad, delta)
-					is_force_walking = true
-					target_position = launch_pad
-					jump_snapshot = snapshot
-				else:
-					_trigger_local_jump(snapshot)
-					
-			elif snapshot.get("event") == "end_jump":
-				is_jumping_locally = false
-			else:
-				_process_follower_logic(snapshot, delta)
-
-
-## Pauses or resumes the follower's progression through the player's movement queue.
-func set_wait(waiting: bool) -> void:
-	_is_waiting = waiting
-
-
+## Smoothly approaches a target position if forces to walk (e.g. before jumping)
 func _approach_launch_pad(target_pos: Vector2, delta: float) -> void:
 	global_position = global_position.lerp(target_pos, speed * delta)
 	
@@ -234,6 +229,8 @@ func _approach_launch_pad(target_pos: Vector2, delta: float) -> void:
 	run_animation()
 
 
+
+## Executes a local jump animation imitating the leader's recorded jump
 func _trigger_local_jump(snap: Dictionary) -> void:
 	if is_jumping_locally: return
 	
@@ -249,7 +246,6 @@ func _trigger_local_jump(snap: Dictionary) -> void:
 	run_animation()
 	
 	var initial_delay = 0.05
-	
 	if local_tween: local_tween.kill()
 	
 	local_tween = create_tween()
@@ -286,6 +282,8 @@ func _trigger_local_jump(snap: Dictionary) -> void:
 	)
 
 
+
+## Validates changes between frames and dictates walk or idle status based on delta
 func _process_follower_logic(snap: Dictionary, delta: float) -> void:
 	_apply_snapshot_transform(snap)
 	
@@ -322,6 +320,8 @@ func _process_follower_logic(snap: Dictionary, delta: float) -> void:
 				_apply_snapshot_visuals(snap)
 
 
+
+## Applies positional and property transforms based on the recorded history step
 func _apply_snapshot_transform(snap: Dictionary) -> void:
 	global_position = snap.pos
 	
@@ -352,6 +352,8 @@ func _apply_snapshot_transform(snap: Dictionary) -> void:
 	current_direction = snap.direction
 
 
+
+## Maps sprites rendering from the player's history directly
 func _apply_snapshot_visuals(snap: Dictionary) -> void:
 	var rect = snap.region_rect
 	var flip = snap.flip_h
@@ -370,8 +372,12 @@ func _apply_snapshot_visuals(snap: Dictionary) -> void:
 	if (offhand_front.texture and offhand_front.texture.get_size() == body.texture.get_size()):
 		offhand_front.region_rect = rect
 		offhand_front.flip_h = flip
+#endregion
 
 
+
+#region Rendering & Appearance
+## Updates sprite textures if wielding weapons
 func _update_weapon_textures() -> void:
 	if current_animation == "idle" and "idle" in current_weapon_images:
 		mainhand_back.texture = current_weapon_images.idle.back
@@ -381,6 +387,8 @@ func _update_weapon_textures() -> void:
 		offhand_front.texture = current_weapon_images.walk.front
 
 
+
+## Main animation processor mapping current frame bounds to sprites
 func run_animation() -> void:
 	if not is_inside_tree():
 		return
@@ -428,6 +436,8 @@ func run_animation() -> void:
 	offhand_front.region_rect = mainhand_back.region_rect
 
 
+
+## Fetches the JSON data associated to the current body animation state
 func get_current_animation() -> Dictionary:
 	if not animations:
 		return {}
@@ -445,6 +455,8 @@ func get_current_animation() -> Dictionary:
 	return {}
 
 
+
+## Fetches the JSON data associated to the current weapon animation state
 func get_current_weapon_animation() -> Dictionary:
 	if not animations:
 		return {}
@@ -465,29 +477,65 @@ func get_current_weapon_animation() -> Dictionary:
 	return {}
 
 
+
+## Request bake and reconstructs the character appearance mapping from the database securely
+func update_appearance_cascade(actor_id: int, instant: bool = false) -> void:
+	var actor = RPGSYSTEM.get_data("actors", actor_id)
+	if not actor: return
+	
+	name = "Follower_" + actor.name
+
+	var char_data: RPGLPCCharacter = load(actor.character_data_file)
+	
+	if FileAccess.file_exists(char_data.equipment_parts.mainhand.config_path):
+		var f = FileAccess.open(char_data.equipment_parts.mainhand.config_path, FileAccess.READ)
+		current_weapon_data = JSON.parse_string(f.get_as_text())
+		f.close()
+	else:
+		current_weapon_data = {}
+	
+	modulate.a = 1.0 if instant else 0.0
+	
+	var baker = GameManager.get_character_baker()
+	if baker:
+		var bake_id = "follower_" + str(get_instance_id())
+		baker.request_bake_character(
+			bake_id, char_data, "walk", wings,
+			offhand_back,
+			mainhand_back,
+			body,
+			offhand_front,
+			offhand_front,
+			get_meta("actor_id") if has_meta("actor_id") else -1
+		)
+		await baker.character_baked
+	
+	if not instant:
+		var tween_in = create_tween()
+		tween_in.tween_property(self, "modulate:a", 1.0, 0.4)
+		await tween_in.finished
+
+
+
+## Returns the main texture layer
 func get_character_sprite() -> Sprite2D:
 	return body
 
 
+
+## Placeholder for HUD systems fetching icon
 func get_icon() -> Variant:
-	var tex: Variant
-	
-	#if has_meta("actor_id"):
-		#var actor_id = get_meta("actor_id")
-		#if typeof(actor_id) == TYPE_INT and RPGSYSTEM.database.actors.size() > actor_id and actor_id > 0:
-			#var actor = RPGSYSTEM.database.actors[actor_id]
-			#tex = actor.icon
-	
-	return tex
+	return null
 
 
+
+## Calculates the dynamic shadow positions matching active layered sprites
 func get_shadow_data() -> Dictionary:
 	if is_queued_for_deletion() or has_meta("_disable_shadow"):
 		return {}
 		
 	var tile_size = GameManager.get_map_tile_size()
 	var base_pos = body.global_position
-	#base_pos.y += tile_size.y * 0.5
 	
 	var shadow_dict = {
 		"position": base_pos,
@@ -523,41 +571,8 @@ func get_shadow_data() -> Dictionary:
 	return shadow_dict
 
 
-func update_appearance_cascade(actor_id: int, instant: bool = false) -> void:
-	var actor = RPGSYSTEM.database.actors[actor_id]
-	name = "Follower_" + actor.name
 
-	var char_data: RPGLPCCharacter = load(actor.character_data_file)
-	
-	if FileAccess.file_exists(char_data.equipment_parts.mainhand.config_path):
-		var f = FileAccess.open(char_data.equipment_parts.mainhand.config_path, FileAccess.READ)
-		current_weapon_data = JSON.parse_string(f.get_as_text())
-		f.close()
-	else:
-		current_weapon_data = {}
-	
-	modulate.a = 1.0 if instant else 0.0
-	
-	var baker = GameManager.get_character_baker()
-	if baker:
-		var bake_id = "follower_" + str(get_instance_id())
-		baker.request_bake_character(
-			bake_id, char_data, "walk", wings,
-			offhand_back,
-			mainhand_back,
-			body,
-			offhand_front,
-			offhand_front,
-			get_meta("actor_id") if has_meta("actor_id") else -1
-		)
-		await baker.character_baked
-	
-	if not instant:
-		var tween_in = create_tween()
-		tween_in.tween_property(self, "modulate:a", 1.0, 0.4)
-		await tween_in.finished
-
-
+## Handles external breathing animation scaling logic
 func _manage_animator() -> void:
 	var node = get_node_or_null("%MainAnimator")
 	if node and node is AnimationPlayer and node.has_animation("Breathing"):
@@ -573,6 +588,8 @@ func _manage_animator() -> void:
 		)
 
 
+
+## Returns the region dimensions of the base sprite
 func get_body_region_rect() -> Rect2:
 	var node = get_node_or_null("%Body")
 	if node:
@@ -581,14 +598,59 @@ func get_body_region_rect() -> Rect2:
 	return Rect2()
 
 
+
+## Returns the global anchor for dialogue bubbles
+func get_global_mouth_position() -> Vector2:
+	var mouth = get_node_or_null("%Mouth")
+	if mouth:
+		return mouth.global_position
+	
+	return Vector2.ZERO
+#endregion
+
+
+
+#region Utilities
+## Returns global orientation integer
+func get_direction() -> CharacterBase.DIRECTIONS:
+	return current_direction
+
+
+
+## Returns current map coordinate
+func get_current_tile() -> Vector2i:
+	if GameManager.current_map:
+		return GameManager.current_map.get_tile_from_position(global_position)
+	
+	return Vector2i()
+
+
+
+## Placeholder for compatibility
+func get_current_virtual_tile() -> Vector2i:
+	return get_current_tile()
+
+
+
+## Pauses or resumes the follower's progression through the player's movement queue.
+func set_wait(waiting: bool) -> void:
+	_is_waiting = waiting
+
+
+
+## Empty method for interface compliance
 func reset_movement_queue() -> void:
 	pass
 
 
+
+## Overrides history with manual control flags
 func set_manual_animation_active(active: bool) -> void:
 	is_manual_animation = active
 
 
+
+## Forces specific properties during manual control frames
 func update_manual_state(data: Dictionary) -> void:
 	if not is_manual_animation:
 		return
@@ -625,6 +687,8 @@ func update_manual_state(data: Dictionary) -> void:
 			offhand_front.flip_h = flip
 
 
+
+## Triggers a fade out logic flow overriding the history system
 func disappear(fade_time: float = 0.5) -> void:
 	is_manual_animation = true
 	is_sync_active = false
@@ -633,6 +697,8 @@ func disappear(fade_time: float = 0.5) -> void:
 	tween.tween_callback(set.bind("is_manual_animation", false))
 
 
+
+## Triggers a fade in sequence bound to the target
 func appear(fade_time: float = 0.5) -> void:
 	if is_instance_valid(target_node):
 		global_position = target_node.global_position
@@ -643,14 +709,8 @@ func appear(fade_time: float = 0.5) -> void:
 	tween.tween_property(self, "modulate:a", 1.0, fade_time)
 
 
-func get_global_mouth_position() -> Vector2:
-	var mouth = get_node_or_null("%Mouth")
-	if mouth:
-		return mouth.global_position
-	
-	return Vector2.ZERO
 
-
+## Triggers a deletion after merging with target
 func destroy(move_time: float = 0.5) -> void:
 	is_sync_active = false
 	var tween = create_tween().set_parallel(true)
@@ -662,3 +722,4 @@ func destroy(move_time: float = 0.5) -> void:
 	
 	await tween.finished
 	queue_free()
+#endregion
