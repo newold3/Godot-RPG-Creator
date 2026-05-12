@@ -13,26 +13,38 @@ var edit_scenes_menu: PopupMenu
 
 
 func _ready() -> void:
-	%MainButton.can_select_item_with_button_wheel = false
-	%MainButton.item_selected.connect(_on_item_selected)
+	%MainButton.get_popup().index_pressed.connect(_on_item_selected)
 	%MainButton.get_popup().about_to_popup.connect(_update_map_list)
+	%MainButton.get_popup().about_to_popup.connect(_change_arrow.bind(1))
+	%MainButton.get_popup().popup_hide.connect(_change_arrow.bind(0))
 
-	# 1. Configurar submenú de mapas
 	edit_maps_menu = PopupMenu.new()
 	edit_maps_menu.name = "EditMapsMenu"
 	edit_maps_menu.index_pressed.connect(_edit_map)
-	%MainButton.get_popup().add_child(edit_maps_menu) # Siempre es buena práctica añadirlo al árbol
-	%MainButton.get_popup().set_item_submenu_node(2, edit_maps_menu)
-	
-	# 2. Configurar submenú de escenas
+
+	%MainButton.get_popup().add_child(edit_maps_menu)
+	%MainButton.get_popup().set_item_submenu_node(1, edit_maps_menu)
+
 	edit_scenes_menu = PopupMenu.new()
 	edit_scenes_menu.name = "EditScenesMenu"
 	edit_scenes_menu.index_pressed.connect(_edit_scene)
+
 	%MainButton.get_popup().add_child(edit_scenes_menu)
-	%MainButton.get_popup().set_item_submenu_node(3, edit_scenes_menu)
+	%MainButton.get_popup().set_item_submenu_node(2, edit_scenes_menu)
+
+	%MainButton.alignment = HORIZONTAL_ALIGNMENT_CENTER
+	
 	_populate_scenes_menu()
 
 	CustomTooltipManager.plugin_replace_all_tooltips_with_custom.call_deferred(self)
+
+
+func _change_arrow(idx: int) -> void:
+	var text = tr("RPG Scene Manager")
+	if idx == 1:
+		%MainButton.text = text + " ▶"
+	else:
+		%MainButton.text = text + " ▼"
 
 
 
@@ -85,18 +97,16 @@ func _edit_scene(index: int) -> void:
 
 ## Gestiona las opciones del menú principal (ahora mucho más limpio)
 func _on_item_selected(index: int) -> void:
-	%MainButton.select(0)
-	
 	if !editor_interface:
 		return
-	
+
 	match index:
-		1: # Create RPG Map
-			create_rpg_map()
+		0:
 			RPGMenuAPI.close_menu()
-		2: # Edit RPG Map (Gestionado por su propio submenú)
+			create_rpg_map.call_deferred()
+		1:
 			pass
-		3: # Edit Core Scene (Gestionado por su propio submenú)
+		2:
 			pass
 
 

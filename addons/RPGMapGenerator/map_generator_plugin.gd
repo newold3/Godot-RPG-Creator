@@ -10,6 +10,7 @@ var floating_panel: MapGeneratorFloatingPanel
 var blocker_overlay: ColorRect
 var active_canvas: MapEventCanvasGenerator
 var _auto_check_timer: float = 0.0
+var map_button: Button
 #endregion
 
 
@@ -31,8 +32,38 @@ func _enter_tree() -> void:
 	var selection = get_editor_interface().get_selection()
 	if not selection.selection_changed.is_connected(_on_editor_selection_changed):
 		selection.selection_changed.connect(_on_editor_selection_changed)
+	
+	_create_button()
 		
 	_on_editor_selection_changed()
+
+
+func _create_button() -> void:
+	map_button = Button.new()
+	map_button.icon = preload("uid://daohf8pvmdk62")
+	map_button.name = "MapGeneratorButton"
+	map_button.toggle_mode = true
+	map_button.text = "Open Map Generator (ALT+M)"
+	map_button.pressed.connect(_on_map_button_pressed, CONNECT_DEFERRED)
+	map_button.theme = load("res://addons/CustomControls/Resources/Themes/editor_buitton_themes.tres")
+	map_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	map_button.tooltip_text = "[title]Open Map Generator[/title]\nOpen the map generator scene"
+	
+	RPGMenuAPI.add_menu_item(map_button)
+	
+	CustomTooltipManager.plugin_replace_all_tooltips_with_custom(map_button)
+
+
+func _shortcut_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.is_pressed() and not event.is_echo():
+		if event.keycode == KEY_M and not event.is_ctrl_pressed() and event.is_alt_pressed():
+			_on_map_button_pressed()
+
+
+func _on_map_button_pressed() -> void:
+	var map_path: String = "res://addons/RPGMapGenerator/main_map_generator.tscn"
+	if map_path and ResourceLoader.exists(map_path):
+		EditorInterface.open_scene_from_path(map_path)
 
 
 
@@ -56,6 +87,10 @@ func _exit_tree() -> void:
 		
 	if blocker_overlay:
 		blocker_overlay.queue_free()
+	
+	if map_button:
+		RPGMenuAPI.remove_menu_item(map_button)
+		map_button.queue_free()
 
 
 

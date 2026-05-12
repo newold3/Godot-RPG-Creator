@@ -35,8 +35,9 @@ func _setup_saving_scene() -> void:
 func _setup_preview_button() -> void:
 	preview_button = Button.new()
 	preview_button.name = "ScenePreviewButton"
+	preview_button.icon = preload("uid://cnlsoebqef7t4")
 	preview_button.toggle_mode = true
-	preview_button.text = "Scene Preview"
+	preview_button.text = "Open Scene Preview Window"
 	preview_button.toggled.connect(_on_preview_button_toggled, CONNECT_DEFERRED)
 	preview_button.theme = load("res://addons/CustomControls/Resources/Themes/editor_buitton_themes.tres")
 	preview_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
