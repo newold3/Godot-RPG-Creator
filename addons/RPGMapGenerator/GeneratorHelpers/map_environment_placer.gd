@@ -17,13 +17,19 @@ func _init(generator: Node) -> void:
 
 ## Iterates through the grid to place decorators based on probability and constraints
 func package_environment_layer(floor_cells: Array[Vector2i], wall_cells: Array[Vector2i], grid: PackedByteArray) -> Dictionary:
-	var out_pos: Array[Vector2i] = []
-	var out_src: Array[int] = []
-	var out_crd: Array[Vector2i] = []
+	var out_env_pos: Array[Vector2i] = []
+	var out_env_src: Array[int] = []
+	var out_env_crd: Array[Vector2i] = []
+	var out_det_pos: Array[Vector2i] = []
+	var out_det_src: Array[int] = []
+	var out_det_crd: Array[Vector2i] = []
 	var is_world: bool = _generator._is_world_mode()
 	
 	if _generator.decorator_data.is_empty():
-		return {"pos": out_pos, "src": out_src, "crd": out_crd}
+		return {
+			"environment": {"pos": out_env_pos, "src": out_env_src, "crd": out_env_crd},
+			"detail_environment": {"pos": out_det_pos, "src": out_det_src, "crd": out_det_crd}
+		}
 		
 	var visited: Dictionary = {}
 	var spawn_counts: Dictionary = {}
@@ -33,6 +39,10 @@ func package_environment_layer(floor_cells: Array[Vector2i], wall_cells: Array[V
 	var evaluate_cell = func(cell_pos: Vector2i):
 		for i in range(_generator.decorator_data.size()):
 			var dec: Dictionary = _generator.decorator_data[i]
+			
+			if not dec.get("enabled", true):
+				continue
+				
 			var max_allowed: int = int(dec.get("max_quantity", 0))
 			
 			if max_allowed > 0 and spawn_counts.get(i, 0) >= max_allowed:
@@ -49,6 +59,11 @@ func package_environment_layer(floor_cells: Array[Vector2i], wall_cells: Array[V
 					chosen_size = alt_size
 					
 			var p_mode: int = int(dec.get("placement_mode", 0))
+			var is_detail: bool = dec.get("is_detail", false)
+			
+			if is_detail:
+				p_mode = 1
+				
 			var env_pos: int = int(dec.get("environment_position", 0))
 			var can_place: bool = true
 			var all_walls: bool = true
@@ -110,10 +125,16 @@ func package_environment_layer(floor_cells: Array[Vector2i], wall_cells: Array[V
 					for dx in range(chosen_size.x):
 						var place_pos: Vector2i = cell_pos + Vector2i(dx, dy)
 						visited[place_pos] = true
-						out_pos.append(place_pos)
-						out_src.append(dec.get("source_id", 0))
-						out_crd.append(chosen_coord + Vector2i(dx, dy))
 						
+						if is_detail:
+							out_det_pos.append(place_pos)
+							out_det_src.append(dec.get("source_id", 0))
+							out_det_crd.append(chosen_coord + Vector2i(dx, dy))
+						else:
+							out_env_pos.append(place_pos)
+							out_env_src.append(dec.get("source_id", 0))
+							out_env_crd.append(chosen_coord + Vector2i(dx, dy))
+							
 				spawn_counts[i] = spawn_counts.get(i, 0) + 1
 				break
 				
@@ -126,9 +147,10 @@ func package_environment_layer(floor_cells: Array[Vector2i], wall_cells: Array[V
 		if not visited.has(cell):
 			evaluate_cell.call(cell)
 			
-	return {"pos": out_pos, "src": out_src, "crd": out_crd}
-
-
+	return {
+		"environment": {"pos": out_env_pos, "src": out_env_src, "crd": out_env_crd},
+		"detail_environment": {"pos": out_det_pos, "src": out_det_src, "crd": out_det_crd}
+	}
 
 ## Evaluates if a given rectangle conforms to the environment position rules across any terrain
 func check_environment_position(cell_pos: Vector2i, size: Vector2i, env_pos: int, grid: PackedByteArray) -> bool:

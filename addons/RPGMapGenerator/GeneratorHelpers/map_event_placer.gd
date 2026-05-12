@@ -35,7 +35,7 @@ func generate_random_events() -> void:
 	if not _generator.events_library or _generator.events_library.events.is_empty():
 		return
 		
-	_generator.current_map_events.clear()
+	var new_events_list: Array[MapPlacedEvent] = []
 	var grid_data: Dictionary = _generator._read_initial_grid()
 	var grid: PackedByteArray = grid_data["grid"]
 	var spawn_counts: Dictionary = {}
@@ -76,12 +76,24 @@ func generate_random_events() -> void:
 			new_placed_event.template_uid = candidate.event._uniq_id
 			new_placed_event.tile = cell
 			
-			_generator.current_map_events.append(new_placed_event)
+			new_events_list.append(new_placed_event)
 			spawn_counts[base_event_id] = current_count + 1
 			break
 			
-	_update_event_canvas()
-	print("MapGenerator: Generated ", _generator.current_map_events.size(), " lightweight events.")
+	var ur: Object = _generator.get("editor_undo_redo") if _generator else null
+	
+	if ur:
+		ur.create_action("Generate Map Events")
+		ur.add_do_property(_generator, "current_map_events", new_events_list)
+		ur.add_undo_property(_generator, "current_map_events", _generator.current_map_events.duplicate(true))
+		ur.add_do_method(self, "_update_event_canvas")
+		ur.add_undo_method(self, "_update_event_canvas")
+		ur.commit_action()
+	else:
+		_generator.current_map_events = new_events_list
+		_update_event_canvas()
+		
+	print("MapGenerator: Generated ", new_events_list.size(), " lightweight events.")
 
 
 
@@ -171,45 +183,69 @@ func package_random_events_filtered(grid: PackedByteArray, env_grid: PackedByteA
 
 ## Checks if a specific tile matches the placement rules defined for an event
 func is_tile_valid_for_event_placement(tile_pos: Vector2i, grid: PackedByteArray, rules: MapGeneratorEvent, env_grid: PackedByteArray = []) -> bool:
-	var idx: int = tile_pos.y * _generator.map_width + tile_pos.x
-	if idx < 0 or idx >= grid.size(): return false
-	
-	var tile_val: int = grid[idx]
-	var mode: int = rules.placement
-	
-	if not rules.ignore_environment:
-		if not env_grid.is_empty() and env_grid[idx] == 1:
-			return false
-			
-		elif env_grid.is_empty() and _generator.layer_environment and _generator.layer_environment.get_cell_source_id(tile_pos) != -1:
-			return false
-			
-	var is_wall: bool = (tile_val == 2 or tile_val == 9)
-	var is_floor: bool = (tile_val == 1 or (_generator._is_world_mode() and tile_val in [1, 4, 5, 8, 10, 6, 7]))
-	
-	if mode == MapGeneratorEvent.PLACEMENT.FLOOR and not is_floor: return false
-	if mode == MapGeneratorEvent.PLACEMENT.WALL and not is_wall: return false
-	
-	if rules.event_position != MapGeneratorEvent.EVENT_POSITION.ANYWHERE:
-		if _generator.get("environment_placer") and not _generator.environment_placer.check_environment_position(tile_pos, Vector2i(1, 1), rules.event_position, grid):
-			return false
-			
-	return true
+		var idx: int = tile_pos.y * _generator.map_width + tile_pos.x
+		if idx < 0 or idx >= grid.size(): return false
+		
+		var tile_val: int = grid[idx]
+		var mode: int = rules.placement
+		
+		if not rules.ignore_environment:
+			if not env_grid.is_empty() and env_grid[idx] == 1:
+				return false
+				
+			elif env_grid.is_empty() and _generator.layer_environment and _generator.layer_environment.get_cell_source_id(tile_pos) != -1:
+				return false
+				
+		var is_wall: bool = (tile_val == 2 or tile_val == 9)
+		var is_floor: bool = (tile_val == 1 or (_generator._is_world_mode() and tile_val in [1, 4, 5, 8, 10, 6, 7]))
+		
+		if mode == MapGeneratorEvent.PLACEMENT.FLOOR and not is_floor: return false
+		if mode == MapGeneratorEvent.PLACEMENT.WALL and not is_wall: return false
+		
+		if rules.event_position != MapGeneratorEvent.EVENT_POSITION.ANYWHERE:
+			if _generator.get("environment_placer") and not _generator.environment_placer.check_environment_position(tile_pos, Vector2i(1, 1), rules.event_position, grid):
+				return false
+				
+		return true
 
 
 
 ## Clears all events currently painted on the map and updates the visual canvas
 func clear_all_events() -> void:
-	_generator.current_map_events.clear()
-	_update_event_canvas()
+	var empty_list: Array[MapPlacedEvent] = []
+	var ur: Object = _generator.get("editor_undo_redo") if _generator else null
+	
+	if ur:
+		ur.create_action("Clear All Map Events")
+		ur.add_do_property(_generator, "current_map_events", empty_list)
+		ur.add_undo_property(_generator, "current_map_events", _generator.current_map_events.duplicate(true))
+		ur.add_do_method(self, "_update_event_canvas")
+		ur.add_undo_method(self, "_update_event_canvas")
+		ur.commit_action()
+	else:
+		_generator.current_map_events.clear()
+		_update_event_canvas()
 
 
 
 ## Removes a specific event from the array by index and updates the visual canvas
 func request_event_deletion(index: int) -> void:
 	if index >= 0 and index < _generator.current_map_events.size():
-		_generator.current_map_events.remove_at(index)
-		_update_event_canvas()
+		var ur: Object = _generator.get("editor_undo_redo") if _generator else null
+		var do_events = _generator.current_map_events.duplicate(true)
+		do_events.remove_at(index)
+		
+		if ur:
+			ur.create_action("Delete Map Event")
+			ur.add_do_property(_generator, "current_map_events", do_events)
+			ur.add_undo_property(_generator, "current_map_events", _generator.current_map_events.duplicate(true))
+			ur.add_do_method(self, "_update_event_canvas")
+			ur.add_undo_method(self, "_update_event_canvas")
+			ur.commit_action()
+		else:
+			_generator.current_map_events.remove_at(index)
+			_update_event_canvas()
+			
 		print("MapGenerator: Event removed.")
 
 

@@ -20,7 +20,8 @@ func _enter_tree() -> void:
 
 func _exit_tree() -> void:
 	update_timer.stop()
-	remove_control_from_container(EditorPlugin.CONTAINER_CANVAS_EDITOR_MENU, preview_button)
+	if preview_button:
+		RPGMenuAPI.remove_menu_item(preview_button)
 	preview_button.queue_free()
 	preview_window.queue_free()
 	saving_scene.queue_free()
@@ -33,17 +34,20 @@ func _setup_saving_scene() -> void:
 
 func _setup_preview_button() -> void:
 	preview_button = Button.new()
+	preview_button.name = "ScenePreviewButton"
 	preview_button.toggle_mode = true
 	preview_button.text = "Scene Preview"
-	preview_button.pressed.connect(_on_preview_button_pressed)
+	preview_button.toggled.connect(_on_preview_button_toggled, CONNECT_DEFERRED)
 	preview_button.theme = load("res://addons/CustomControls/Resources/Themes/editor_buitton_themes.tres")
 	preview_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	preview_button.tooltip_text = "[title]Scene Preview[/title]\nDisplays a live preview of the current scene."
 	
-	add_control_to_container(EditorPlugin.CONTAINER_CANVAS_EDITOR_MENU, preview_button)
+	RPGMenuAPI.add_menu_item(preview_button)
+	
 	CustomTooltipManager.plugin_replace_all_tooltips_with_custom(preview_button)
 
 
+## Configures the preview button and connects to its native toggle signal
 func _setup_preview_window() -> void:
 	preview_window = Window.new()
 	preview_window.title = "Scene Preview"
@@ -105,19 +109,23 @@ func _setup_update_timer() -> void:
 	preview_window.add_child(update_timer)
 
 
-func _on_preview_button_pressed() -> void:
-	if preview_button.button_pressed:
+## Handles the live preview logic using the native toggle state of the button
+func _on_preview_button_toggled(toggled_on: bool) -> void:
+	if toggled_on:
 		_update_preview()
 		preview_window.visible = true
 		get_viewport().grab_focus()
 		update_timer.start()
+		
 	else:
 		update_timer.stop()
 		preview_window.visible = false
 
 
+## Safely closes the preview window and synchronizes the button visual state without triggering signals
 func _on_preview_window_close() -> void:
-	preview_button.button_pressed = false
+	preview_button.set_pressed_no_signal(false)
+	
 	update_timer.stop()
 	preview_window.visible = false
 

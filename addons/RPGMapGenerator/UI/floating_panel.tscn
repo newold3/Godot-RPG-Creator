@@ -114,10 +114,10 @@ corner_radius_bottom_left = 4
 
 [node name="FloatingPanel" type="PanelContainer" unique_id=680044429]
 custom_minimum_size = Vector2(400, 0)
-offset_left = 1592.0
-offset_top = 304.0
-offset_right = 1992.0
-offset_bottom = 906.0
+offset_left = 1754.0
+offset_top = 236.0
+offset_right = 2154.0
+offset_bottom = 690.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_6lpfb")
 script = ExtResource("1_dru4v")
 
@@ -188,6 +188,7 @@ text = "Target Layers:"
 [node name="LayerSelect" parent="MainVBox/ContentVBox" unique_id=621784070 instance=ExtResource("2_piaam")]
 unique_name_in_owner = true
 layout_mode = 2
+tooltip_text = "Select the layer(s) you want to paint"
 selected = 0
 item_count = 5
 popup/item_0/text = "All Layers"
@@ -200,7 +201,6 @@ popup/item_3/text = "Ground Details Only"
 popup/item_3/id = 3
 popup/item_4/text = "Environment Only"
 popup/item_4/id = 4
-metadata/current_tooltip = "Select the layer(s) you want to paint"
 
 [node name="ModeLabel" type="Label" parent="MainVBox/ContentVBox" unique_id=33104220]
 layout_mode = 2
@@ -210,7 +210,7 @@ text = "Generation Mode:"
 [node name="ModeOption" parent="MainVBox/ContentVBox" unique_id=992354815 instance=ExtResource("2_piaam")]
 unique_name_in_owner = true
 layout_mode = 2
-metadata/current_tooltip = "Choose the type of map you want to generate"
+tooltip_text = "Choose the type of map you want to generate"
 
 [node name="HBoxSize" type="HBoxContainer" parent="MainVBox/ContentVBox" unique_id=2112590985]
 layout_mode = 2
@@ -252,6 +252,7 @@ _custom_value = 30.0
 [node name="CollisionCheck" type="CheckBox" parent="MainVBox/ContentVBox" unique_id=711171958]
 unique_name_in_owner = true
 layout_mode = 2
+tooltip_text = "Adds physical collisions to walls. You usually don't need to enable this because the built-in tilesets are already configured to be passable, but if you use a custom tileset that isn't configured correctly, this option will add physical collisions to all wall and ceiling tiles."
 mouse_default_cursor_shape = 2
 text = "Add Collisions"
 
@@ -266,19 +267,19 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "Generate a new map using the selected settings or the selected preset"
 mouse_default_cursor_shape = 2
 text = "Generate Map"
-metadata/current_tooltip = "Generate a new map using the selected settings or the selected preset"
 
 [node name="BtnClearMaps" type="Button" parent="MainVBox/ContentVBox/HBoxMaps" unique_id=1732686444]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "Completely clear the generated map"
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(1, 0.4, 0.4, 1)
 text = "Clear Maps"
-metadata/current_tooltip = "Completely clear the generated map"
 
 [node name="HBoxEvents" type="HBoxContainer" parent="MainVBox/ContentVBox" unique_id=1490466796]
 layout_mode = 2
@@ -288,19 +289,19 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "Populate the map with events randomly selected from the list of available events"
 mouse_default_cursor_shape = 2
 text = "Generate Events"
-metadata/current_tooltip = "Populate the map with events randomly selected from the list of available events"
 
 [node name="BtnClearEvents" type="Button" parent="MainVBox/ContentVBox/HBoxEvents" unique_id=70752238]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "Remove all events added to the map"
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(1, 0.4, 0.4, 1)
 text = "Clear Events"
-metadata/current_tooltip = "Remove all events added to the map"
 
 [node name="Sep2" type="HSeparator" parent="MainVBox/ContentVBox" unique_id=1014661295]
 layout_mode = 2
@@ -331,40 +332,44 @@ grow_horizontal = 0
 grow_vertical = 2
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
-text = "-"
+text = "+"
 script = SubResource("GDScript_piaam")
 node_parent = NodePath("../..")
 main_panel = NodePath("../../../../..")
 
 [node name="BtnDecorators" type="Button" parent="MainVBox/ContentVBox/Configuration" unique_id=408988280]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
+tooltip_text = "Open the dialog box to configure the environment settings"
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0.4, 0.75, 1, 1)
 text = "Environment Decorators..."
-metadata/current_tooltip = "Open the dialog box to configure the environment settings"
 
 [node name="BtnEditEvents" type="Button" parent="MainVBox/ContentVBox/Configuration" unique_id=465291179]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
+tooltip_text = "Open the dialog box to configure the event list"
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0.4, 0.75, 1, 1)
 text = "Edit Random Events Library"
-metadata/current_tooltip = "Open the dialog box to configure the event list"
 
 [node name="Sep3" type="HSeparator" parent="MainVBox/ContentVBox/Configuration" unique_id=1097986909]
+visible = false
 layout_mode = 2
 
 [node name="BtnDebugPath" type="Button" parent="MainVBox/ContentVBox/Configuration" unique_id=2091641410]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
+tooltip_text = "Draw a path between the player and the goal (This is just to see a visual representation of how the player should move to reach the goal)"
 mouse_default_cursor_shape = 2
 theme_override_colors/font_pressed_color = Color(0.87195957, 0.8812047, 0.9728015, 1)
 theme_override_styles/pressed = SubResource("StyleBoxFlat_dru4v")
 theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_wrwnr")
 toggle_mode = true
 text = "Draw Debug Path"
-metadata/current_tooltip = "Draw a path between the player and the goal (This is just to see a visual representation of how the player should move to reach the goal)"
 
 [node name="Sep4" type="HSeparator" parent="MainVBox/ContentVBox" unique_id=232260921]
 layout_mode = 2
@@ -395,44 +400,47 @@ grow_horizontal = 0
 grow_vertical = 2
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
-text = "-"
+text = "+"
 script = SubResource("GDScript_piaam")
 node_parent = NodePath("../..")
 main_panel = NodePath("../../../../..")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MainVBox/ContentVBox/PresetPanel" unique_id=581942227]
+visible = false
 layout_mode = 2
 
 [node name="PresetList" parent="MainVBox/ContentVBox/PresetPanel/HBoxContainer" unique_id=1148619295 instance=ExtResource("2_piaam")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "Select a preset from the list. If the preset is not \"none\", the settings stored in the preset will be used to generate the map"
 selected = 0
 fit_to_longest_item = false
-item_count = 2
+item_count = 3
 popup/item_0/text = "None"
 popup/item_0/id = 0
 popup/item_1/text = "Preset 1"
 popup/item_1/id = 1
-metadata/current_tooltip = "Select a preset from the list. If the preset is not \"none\", the settings stored in the preset will be used to generate the map"
+popup/item_2/text = "Preset 2"
+popup/item_2/id = 2
 
 [node name="BtnSavePreset" type="Button" parent="MainVBox/ContentVBox/PresetPanel/HBoxContainer" unique_id=573718404]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "Saves the most recent data used to generate the current map"
 mouse_default_cursor_shape = 2
 text = "Save"
-metadata/current_tooltip = "Saves the most recent data used to generate the current map"
 
 [node name="BtnEditPresets" type="Button" parent="MainVBox/ContentVBox/PresetPanel/HBoxContainer" unique_id=1847743874]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "Allows you to edit the list of presets, rename them, or delete them"
 mouse_default_cursor_shape = 2
 text = "Edit"
-metadata/current_tooltip = "Allows you to edit the list of presets, rename them, or delete them"
 
 [node name="Sep5" type="HSeparator" parent="MainVBox/ContentVBox" unique_id=1142706564]
 layout_mode = 2
@@ -440,9 +448,9 @@ layout_mode = 2
 [node name="BtnExport" type="Button" parent="MainVBox/ContentVBox" unique_id=1150746929]
 unique_name_in_owner = true
 layout_mode = 2
+tooltip_text = "Export the currently generated map and its events as a valid \"RPGMap\""
 mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_piaam")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_ouk8a")
 theme_override_styles/hover = SubResource("StyleBoxFlat_x8mry")
 text = "Export as RPGMap"
-metadata/current_tooltip = "Export the currently generated map and its events as a valid \"RPGMap\""

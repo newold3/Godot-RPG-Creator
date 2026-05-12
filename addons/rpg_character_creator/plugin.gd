@@ -9,10 +9,11 @@ var database_scene_path := "res://addons/rpg_character_creator/Scenes/NewEditor/
 func _enter_tree() -> void:
 	var path = "res://addons/rpg_character_creator/Scenes/character_creator_button.tscn"
 	character_creator_button = load(path).instantiate()
-	character_creator_button.pressed.connect(_on_create_character_button_pressed)
+	character_creator_button.pressed.connect(_on_create_character_button_pressed, CONNECT_DEFERRED)
 	character_creator_button.tooltip_text = "[title]Character Creator[/title]\nDisplays the character and npcs creation window."
 	
-	add_control_to_container(EditorPlugin.CONTAINER_CANVAS_EDITOR_MENU, character_creator_button)
+	#add_control_to_container(EditorPlugin.CONTAINER_CANVAS_EDITOR_MENU, character_creator_button)
+	RPGMenuAPI.add_menu_item(character_creator_button)
 	CustomTooltipManager.plugin_replace_all_tooltips_with_custom(character_creator_button)
 	
 	ResourceLoader.load_threaded_request(database_scene_path)
@@ -59,9 +60,16 @@ func _on_interface_visibility_changed() -> void:
 		#interface.propagate_call("set_focus_mode", [Control.FOCUS_NONE])
 
 
+func _shortcut_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.is_pressed() and not event.is_echo():
+		if event.keycode == KEY_C and not event.is_ctrl_pressed() and event.is_alt_pressed():
+			_on_create_character_button_pressed()
+
+
 func _exit_tree() -> void:
 	if character_creator_button:
-		remove_control_from_container(EditorPlugin.CONTAINER_CANVAS_EDITOR_MENU, character_creator_button)
+		RPGMenuAPI.remove_menu_item(character_creator_button)
+		#remove_control_from_container(EditorPlugin.CONTAINER_CANVAS_EDITOR_MENU, character_creator_button)
 		character_creator_button.queue_free()
 	if interface:
 		interface.queue_free()

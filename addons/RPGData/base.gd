@@ -21,14 +21,22 @@ func _enter_tree() -> void:
 		_setup_map_creation_ui()
 
 
+func _shortcut_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.is_pressed() and not event.is_echo():
+		if event.keycode == KEY_F9:
+			get_viewport().set_input_as_handled()
+			_on_database_button_pressed()
+
+
 func _setup_database_button() -> void:
 	var path = "res://addons/RPGData/Scenes/database_button.tscn"
 	database_button = load(path).instantiate()
-	database_button.pressed.connect(_on_database_button_pressed)
+	database_button.pressed.connect(_on_database_button_pressed, CONNECT_DEFERRED)
 	database_button.tooltip_text = "[title]DATABASE[/title]\nDisplays the database and allows to edit it"
 	
-	# RESTORED: To the 2D menu context (Canvas Editor Menu)
-	add_control_to_container(EditorPlugin.CONTAINER_CANVAS_EDITOR_MENU, database_button)
+	
+	#add_control_to_container(EditorPlugin.CONTAINER_CANVAS_EDITOR_MENU, database_button)
+	RPGMenuAPI.add_menu_item(database_button)
 	CustomTooltipManager.plugin_replace_all_tooltips_with_custom(database_button)
 	
 	RPGSYSTEM.editor_interface = get_editor_interface()
@@ -196,7 +204,8 @@ func _exit_tree() -> void:
 		remove_control_from_container(EditorPlugin.CONTAINER_TOOLBAR, update_button)
 		update_button.queue_free()
 	if database_button:
-		remove_control_from_container(EditorPlugin.CONTAINER_CANVAS_EDITOR_MENU, database_button)
+		#remove_control_from_container(EditorPlugin.CONTAINER_CANVAS_EDITOR_MENU, database_button)
+		RPGMenuAPI.remove_menu_item(database_button)
 		database_button.queue_free()
 	if main_database:
 		main_database.queue_free()

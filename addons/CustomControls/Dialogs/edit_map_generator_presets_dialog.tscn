@@ -15,7 +15,7 @@ gradient = SubResource("Gradient_vvvrv")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qkwnk"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_347i8"]
 resource_local_to_scene = true
 content_margin_left = 3.0
 content_margin_right = 3.0
@@ -27,7 +27,7 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.113725, 0.133333, 0.160784, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n14wx"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vnglm"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 1
@@ -44,11 +44,11 @@ gradient = SubResource("Gradient_3obsl")
 fill_from = Vector2(0.547009, 1)
 fill_to = Vector2(0.559829, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_k27nu"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qkwnk"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_mtkxg")
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ls6xh"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_n14wx"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_mtkxg")
 
@@ -101,11 +101,11 @@ text = "Preset List"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_qkwnk")
-theme_override_styles/focus = SubResource("StyleBoxFlat_qkwnk")
-theme_override_styles/hovered = SubResource("StyleBoxFlat_n14wx")
-theme_override_styles/selected = SubResource("StyleBoxTexture_k27nu")
-theme_override_styles/selected_focus = SubResource("StyleBoxTexture_ls6xh")
+theme_override_styles/panel = SubResource("StyleBoxFlat_347i8")
+theme_override_styles/focus = SubResource("StyleBoxFlat_347i8")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_vnglm")
+theme_override_styles/selected = SubResource("StyleBoxTexture_qkwnk")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_n14wx")
 
 [node name="DeletePreset" parent="MarginContainer/VBoxContainer/HBoxContainer2/LeftColumn" unique_id=225668214 instance=ExtResource("7_51beg")]
 unique_name_in_owner = true

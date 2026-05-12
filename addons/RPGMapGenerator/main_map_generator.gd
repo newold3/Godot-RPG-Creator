@@ -265,6 +265,8 @@ var _needs_path_update: bool = false
 const EVENTS_LIBRARY_PATH: String = "res://addons/RPGMapGenerator/Resources/random_events_library.tres"
 var events_library: MapGeneratorEvents
 
+var editor_undo_redo: Object = null
+
 # Helper Classes
 var terrain_processor: MapTerrainProcessor
 var environment_placer: MapEnvironmentPlacer
@@ -617,6 +619,10 @@ func _start_generation_thread() -> void:
 	if not layer_ground_base: return
 	if not is_world and terrain_floor == -1 and not use_single_floor: return
 	
+	if not is_world and layer_environment and layer_ground_detail:
+		layer_ground_detail.tile_set = layer_environment.tile_set
+		layer_ground_detail.set_meta("collisions_disabled", true)
+		
 	var init_data: Dictionary = _read_initial_grid()
 	
 	init_data["map_seed"] = map_seed
@@ -842,9 +848,6 @@ func _thread_math_task(data: Dictionary) -> Dictionary:
 			results["mountain"] = terrain_processor.package_terrain_layer(grid, [6], [6], _cache_mountain)
 			results["tree"] = terrain_processor.package_terrain_layer(grid, [7], [7], _cache_tree)
 		else:
-			results["floor"] = terrain_processor.package_terrain_layer(grid, [1, 2, 9], [1, 2, 9], _cache_floor)
-			if use_single_floor:
-				results["single_floor"] = terrain_processor.package_single_tile_layer(grid, [1, 2, 9], single_floor_tile)
 			if draw_shadows:
 				results["shadows"] = terrain_processor.package_shadow_layer(grid)
 				
@@ -852,7 +855,10 @@ func _thread_math_task(data: Dictionary) -> Dictionary:
 		if is_world:
 			results["water"] = terrain_processor.package_terrain_layer(grid, [3], [3, 1, 4, 5, 8, 10, 6, 7], _cache_water)
 		else:
-			results["floor"] = terrain_processor.package_terrain_layer(grid, [1, 2, 9], [1, 2, 9], _cache_floor)
+			if use_single_floor:
+				results["single_floor"] = terrain_processor.package_single_tile_layer(grid, [1, 2, 9], single_floor_tile)
+			else:
+				results["floor"] = terrain_processor.package_terrain_layer(grid, [1, 2, 9], [1, 2, 9], _cache_floor)
 			
 	if target_layer_mode == TargetLayerMode.ALL or target_layer_mode == TargetLayerMode.WALLS:
 		if not is_world:
@@ -878,12 +884,19 @@ func _thread_math_task(data: Dictionary) -> Dictionary:
 					if c_val == 1: floor_cells_env.append(Vector2i(x, y))
 					elif c_val == 2 or c_val == 9: wall_cells_env.append(Vector2i(x, y))
 					
-		results["environment"] = environment_placer.package_environment_layer(floor_cells_env, wall_cells_env, grid)
+		var env_data: Dictionary = environment_placer.package_environment_layer(floor_cells_env, wall_cells_env, grid)
 		
-		if results.has("environment") and results["environment"].has("pos"):
+		if env_data.has("environment"):
+			results["environment"] = env_data["environment"]
 			for pos in results["environment"]["pos"]:
 				if pos.x >= 0 and pos.x < map_width and pos.y >= 0 and pos.y < map_height:
 					env_grid[pos.y * map_width + pos.x] = 1
+					
+		if env_data.has("detail_environment"):
+			results["detail_environment"] = env_data["detail_environment"]
+			for pos in results["detail_environment"]["pos"]:
+				if pos.x >= 0 and pos.x < map_width and pos.y >= 0 and pos.y < map_height:
+					env_grid[pos.y * map_width + pos.x] = 2
 					
 	var used_preset: bool = data.get("used_preset", false)
 	var preset_events: Array = data.get("preset_events", [])
@@ -1140,7 +1153,9 @@ func _apply_generation_results() -> void:
 			if layer_ground_base and _thread_results.has("water"): 
 				_paint_layer(_thread_results["water"], layer_ground_base)
 		else:
-			if layer_ground_base and _thread_results.has("floor"): 
+			if layer_ground_base and _thread_results.has("single_floor"): 
+				_paint_layer(_thread_results["single_floor"], layer_ground_base)
+			elif layer_ground_base and _thread_results.has("floor"): 
 				_paint_layer(_thread_results["floor"], layer_ground_base)
 				
 	if target_layer_mode == TargetLayerMode.ALL or target_layer_mode == TargetLayerMode.WALLS:
@@ -1167,11 +1182,12 @@ func _apply_generation_results() -> void:
 			if layer_ground_detail and _thread_results.has("tree"): 
 				_paint_layer(_thread_results["tree"], layer_ground_detail)
 		else:
-			if layer_ground_detail and _thread_results.has("single_floor"): 
-				_paint_layer(_thread_results["single_floor"], layer_ground_detail)
 			if layer_shadows and _thread_results.has("shadows"):
 				_paint_layer(_thread_results["shadows"], layer_shadows)
 				
+		if layer_ground_detail and _thread_results.has("detail_environment"):
+			_paint_layer(_thread_results["detail_environment"], layer_ground_detail)
+			
 	if target_layer_mode == TargetLayerMode.ALL or target_layer_mode == TargetLayerMode.ENVIRONMENT:
 		if layer_environment and _thread_results.has("environment"):
 			_paint_layer(_thread_results["environment"], layer_environment)

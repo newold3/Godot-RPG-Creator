@@ -45,8 +45,13 @@ extends Window
 ## Reference to the WallPositions setting the wall position
 @export var environment_position: OptionButton
 
+@export var is_detail_tile: CheckBox
+
 ## Reference to the UI Label used to display the current coordinates and status
 @export var info_label: Label
+
+## Reference to the CheckBox that disables the decorator for generation
+@export var is_tile_disabled: CheckBox
 #endregion
 
 
@@ -113,6 +118,11 @@ func _ready() -> void:
 	alt_chance_spinbox.value_changed.connect(_on_alt_chance_changed)
 	placement_mode_option.item_selected.connect(_on_placement_mode_changed)
 	max_quantity_spinbox.value_changed.connect(_on_max_quantity_changed)
+	
+	is_detail_tile.toggled.connect(_on_detail_tile_toggled)
+	
+	if is_tile_disabled:
+		is_tile_disabled.toggled.connect(_on_is_tile_disabled_toggled)
 	
 	ghost_focus = Control.new()
 	ghost_focus.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -275,19 +285,25 @@ func _fill_atlas_list() -> void:
 
 ## Populates the decorator list and ensures labels reflect multi-tile info
 func _fill_data_list() -> void:
-	data_list.clear()
-	
-	for item in current_data:
-		var s: Vector2i = item.get("atlas_size", Vector2i(1, 1))
-		var text: String = "Atlas " + str(item["source_id"]) + " | " + str(item["atlas_coords"])
-		if s != Vector2i(1, 1): text += " [" + str(s.x) + "x" + str(s.y) + "]"
+		data_list.clear()
 		
-		var alt_coord: Vector2i = item.get("alt_atlas_coords", Vector2i(-1, -1))
-		if alt_coord != Vector2i(-1, -1):
-			text += " (Alt: " + str(alt_coord) + ")"
+		for item in current_data:
+			var s: Vector2i = item.get("atlas_size", Vector2i(1, 1))
+			var text: String = "Atlas " + str(item["source_id"]) + " | " + str(item["atlas_coords"])
+			if s != Vector2i(1, 1): text += " [" + str(s.x) + "x" + str(s.y) + "]"
 			
-		var idx: int = data_list.add_item(text)
-		data_list.set_item_metadata(idx, item)
+			var alt_coord: Vector2i = item.get("alt_atlas_coords", Vector2i(-1, -1))
+			if alt_coord != Vector2i(-1, -1):
+				text += " (Alt: " + str(alt_coord) + ")"
+				
+			var idx: int = data_list.add_item(text)
+			data_list.set_item_metadata(idx, item)
+			
+			var is_enabled: bool = item.get("enabled", true)
+			if not is_enabled:
+				data_list.set_item_custom_bg_color(idx, Color(0.8, 0.2, 0.2, 0.3))
+			else:
+				data_list.set_item_custom_bg_color(idx, Color(0, 0, 0, 0))
 
 
 
@@ -604,11 +620,22 @@ func _on_data_list_item_selected(index: int) -> void:
 	
 	appear_percent_spinbox.set_value_no_signal(float(item["appear_percent"]))
 	alt_chance_spinbox.set_value_no_signal(float(item.get("alt_chance_percent", 50.0)))
-	placement_mode_option.select(int(item["placement_mode"]))
 	environment_position.select(int(item["environment_position"]))
 	max_quantity_spinbox.set_value_no_signal(float(item["max_quantity"]))
 	
+	if is_tile_disabled:
+		is_tile_disabled.set_pressed_no_signal(not item.get("enabled", true))
+		
+	var is_detail: bool = item.get("is_detail", false)
+	is_detail_tile.set_pressed_no_signal(is_detail)
 	
+	if is_detail:
+		placement_mode_option.select(1)
+		placement_mode_option.set_disabled(true)
+	else:
+		placement_mode_option.select(int(item.get("placement_mode", 0)))
+		placement_mode_option.set_disabled(false)
+		
 	for i in range(atlas_list.get_item_count()):
 		var atlas_path: String = atlas_list.get_item_metadata(i)
 		if int(cache["atlases"][atlas_path]["source_id"]) == target_source_id:
@@ -699,7 +726,9 @@ func _add_new_decorator(atlas_data: Dictionary, rect: Rect2i) -> void:
 			"alt_chance_percent": 25.0,
 			"placement_mode": 0,
 			"environment_position": 0,
-			"max_quantity": 5
+			"max_quantity": 5,
+			"is_detail": false,
+			"enabled": true
 		}
 		current_data.append(new_item)
 		_fill_data_list()
@@ -786,6 +815,8 @@ func _on_alt_chance_changed(value: float) -> void:
 
 ## Updates the placement_mode value of the currently selected decorator
 func _on_placement_mode_changed(index: int) -> void:
+	if _is_syncing: return
+	
 	var selected = data_list.get_selected_items()
 	if not selected.is_empty():
 		current_data[selected[0]]["placement_mode"] = index
@@ -797,6 +828,22 @@ func _on_max_quantity_changed(value: float) -> void:
 		current_data[selected[0]]["max_quantity"] = value
 
 
+func _on_detail_tile_toggled(is_toggled: bool) -> void:
+		if _is_syncing: return
+		
+		var selected = data_list.get_selected_items()
+		if not selected.is_empty():
+			var item: Dictionary = current_data[selected[0]]
+			item["is_detail"] = is_toggled
+			
+			if is_toggled:
+				placement_mode_option.select(1)
+				placement_mode_option.set_disabled(true)
+			else:
+				placement_mode_option.select(int(item.get("placement_mode", 0)))
+				placement_mode_option.set_disabled(false)
+
+
 func _on_h_box_container_2_dragged(_offset: int) -> void:
 	_on_scroll_container_resized(true)
 
@@ -805,3 +852,20 @@ func _on_environment_positions_item_selected(index: int) -> void:
 	var selected = data_list.get_selected_items()
 	if not selected.is_empty():
 		current_data[selected[0]]["environment_position"] = index
+
+
+## Updates the enabled status of the currently selected decorator inverting the logic
+func _on_is_tile_disabled_toggled(is_toggled: bool) -> void:
+	if _is_syncing: return
+	
+	var selected = data_list.get_selected_items()
+	if not selected.is_empty():
+		var idx: int = selected[0]
+		
+		var is_enabled: bool = not is_toggled
+		current_data[idx]["enabled"] = is_enabled
+		
+		if is_enabled:
+			data_list.set_item_custom_bg_color(idx, Color(0, 0, 0, 0))
+		else:
+			data_list.set_item_custom_bg_color(idx, Color(0.8, 0.2, 0.2, 0.3))

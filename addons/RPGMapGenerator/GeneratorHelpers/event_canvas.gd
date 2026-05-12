@@ -17,6 +17,8 @@ var default_fallback_icon: Texture2D = preload("uid://b01uavgk22xq")
 
 var grid_layer: Control
 var cursor_layer: Control
+
+var editor_undo_redo: Object = null
 #endregion
 
 
@@ -293,8 +295,24 @@ func process_editor_input(event: InputEvent) -> bool:
 				if dragged_event_index != -1:
 					if is_valid_hover:
 						var ev: MapPlacedEvent = generator.current_map_events[dragged_event_index]
-						if ev:
-							ev.tile = hover_grid_pos
+						if ev and ev.tile != hover_grid_pos:
+							var ur = editor_undo_redo
+							if not ur and generator and "editor_undo_redo" in generator:
+								ur = generator.editor_undo_redo
+								
+							if ur:
+								ur.create_action("Move Map Event")
+								ur.add_do_property(ev, "tile", hover_grid_pos)
+								ur.add_undo_property(ev, "tile", ev.tile)
+								ur.add_do_method(self, "queue_redraw")
+								ur.add_undo_method(self, "queue_redraw")
+								if is_instance_valid(cursor_layer):
+									ur.add_do_method(cursor_layer, "queue_redraw")
+									ur.add_undo_method(cursor_layer, "queue_redraw")
+								ur.commit_action()
+							else:
+								ev.tile = hover_grid_pos
+								
 					dragged_event_index = -1
 					queue_redraw()
 					if is_instance_valid(cursor_layer):

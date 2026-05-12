@@ -122,6 +122,7 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 ## Updates the editor state when the selected node changes
 func _on_editor_selection_changed() -> void:
 	var selected_nodes = get_editor_interface().get_selection().get_selected_nodes()
+	var ur = get_undo_redo()
 	
 	if current_object:
 		if current_object.generation_started.is_connected(_show_blocker):
@@ -132,40 +133,59 @@ func _on_editor_selection_changed() -> void:
 	if active_canvas:
 		active_canvas.set_grid_visible(false)
 		active_canvas = null
-	
-	if selected_nodes.size() > 0 and selected_nodes[0] is MapGenerator:
-		current_object = selected_nodes[0]
+		
+	if selected_nodes.size() > 0:
+		var node = selected_nodes[0]
+		
+		if node is MapGenerator:
+			current_object = node
+			if "editor_undo_redo" in current_object:
+				current_object.editor_undo_redo = ur
 			
-		if not current_object.generation_started.is_connected(_show_blocker):
-			current_object.generation_started.connect(_show_blocker)
-		if not current_object.generation_finished.is_connected(_hide_blocker):
-			current_object.generation_finished.connect(_hide_blocker)
+			if not current_object.generation_started.is_connected(_show_blocker):
+				current_object.generation_started.connect(_show_blocker)
+			if not current_object.generation_finished.is_connected(_hide_blocker):
+				current_object.generation_finished.connect(_hide_blocker)
+				
+			var viewport = EditorInterface.get_editor_viewport_2d()
+			if viewport and floating_panel:
+				var vp_container = viewport.get_parent()
+				
+				if not floating_panel.is_inside_tree():
+					vp_container.add_child(floating_panel)
+					if not vp_container.resized.is_connected(floating_panel._clamp_panel_position):
+						vp_container.resized.connect(floating_panel._clamp_panel_position)
+						
+				vp_container.move_child(floating_panel, -1)
+				floating_panel.sync_with_generator(current_object)
+				floating_panel.visible = true
+				floating_panel.call_deferred("set_global_position", FileCache.options.get("map_generator_panel_pos", Vector2(40, 40)))
+				floating_panel.call_deferred("_clamp_panel_position")
+				
+			var canvas = current_object.get_node_or_null("%EventCanvas")
+			if canvas and canvas is MapEventCanvasGenerator:
+				active_canvas = canvas
+				active_canvas.set_grid_visible(true)
+				update_overlays()
+				
+		elif node is MapEventCanvasGenerator:
+			active_canvas = node
+			if "editor_undo_redo" in active_canvas:
+				active_canvas.editor_undo_redo = ur
+			active_canvas.set_grid_visible(true)
+			update_overlays()
 			
-		var viewport = EditorInterface.get_editor_viewport_2d()
-		if viewport and floating_panel:
-			var vp_container = viewport.get_parent()
-			
-			if not floating_panel.is_inside_tree():
-				vp_container.add_child(floating_panel)
-				if not vp_container.resized.is_connected(floating_panel._clamp_panel_position):
-					vp_container.resized.connect(floating_panel._clamp_panel_position)
-			
-			vp_container.move_child(floating_panel, -1)
-			
-			floating_panel.sync_with_generator(current_object)
-			
-			floating_panel.visible = true
-			floating_panel.call_deferred("set_global_position", FileCache.options.get("map_generator_panel_pos", Vector2(40, 40)))
-			floating_panel.call_deferred("_clamp_panel_position")
+			current_object = null 
+			if floating_panel:
+				floating_panel.visible = false
+		else:
+			current_object = null
+			if floating_panel:
+				floating_panel.visible = false
 	else:
 		current_object = null
 		if floating_panel:
 			floating_panel.visible = false
-			
-		if selected_nodes.size() > 0 and selected_nodes[0] is MapEventCanvasGenerator:
-			active_canvas = selected_nodes[0]
-			active_canvas.set_grid_visible(true)
-			update_overlays()
 
 
 

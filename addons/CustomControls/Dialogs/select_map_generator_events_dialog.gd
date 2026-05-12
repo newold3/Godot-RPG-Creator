@@ -48,6 +48,11 @@ func _fill_list() -> void:
 		
 		if current_event_selected and obj == current_event_selected:
 			selected_index = i
+		
+		if obj.locked:
+			node.add_row_color(i, Color(0.8, 0.2, 0.2, 0.3))
+		else:
+			node.restore_row_color(i)
 	
 	await node.columns_setted
 	
@@ -64,7 +69,15 @@ func _fill_list() -> void:
 
 
 func _on_remove_from_stack_toggled(toggled_on: bool) -> void:
-	if current_event_selected: current_event_selected.locked = toggled_on
+	if current_event_selected:
+		current_event_selected.locked = toggled_on
+		var idxs: PackedInt32Array = %EventList.get_selected_ids()
+		if not idxs.is_empty():
+			var idx = idxs[0]
+			if current_event_selected.locked:
+				%EventList.add_row_color(idx, Color(0.8, 0.2, 0.2, 0.3))
+			else:
+				%EventList.restore_row_color(idx)
 
 
 func _on_probability_of_appearance_value_changed(value: float) -> void:

@@ -322,8 +322,18 @@ func add_row_color(index: int, color: Variant) -> void:
 	row_colors[index] = color
 
 
+func restore_row_color(index: int) -> void:
+	if row_colors.size() > index and index >= 0:
+		var current_line_color = odd_line_color if index % 2 else event_line_color
+		row_colors[index] = current_line_color
+
+
 func add_row_text_color(index: int, color: Color) -> void:
 	text_row_colors[index] = color
+
+
+func get_selected_ids() -> PackedInt32Array:
+	return %ItemList.get_selected_items()
 
 
 # index = Item index

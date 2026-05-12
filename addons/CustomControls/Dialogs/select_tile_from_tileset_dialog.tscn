@@ -165,7 +165,7 @@ Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
 Color(1, 0.8666667, 0.39607844, 1): Color(0.83, 0.78, 0.62, 1)
 }
 
-[node name="SelectTileFromTilesetDialog" type="Window" unique_id=1795928936 node_paths=PackedStringArray("canvas", "scroll_container", "atlas_list", "data_list", "current_atlas", "cancel_button", "ok_button", "delete_button", "alt_mode_button", "appear_percent_spinbox", "max_quantity_spinbox", "alt_chance_spinbox", "placement_mode_option", "environment_position", "info_label")]
+[node name="SelectTileFromTilesetDialog" type="Window" unique_id=1795928936 node_paths=PackedStringArray("canvas", "scroll_container", "atlas_list", "data_list", "current_atlas", "cancel_button", "ok_button", "delete_button", "alt_mode_button", "appear_percent_spinbox", "max_quantity_spinbox", "alt_chance_spinbox", "placement_mode_option", "environment_position", "is_detail_tile", "info_label", "is_tile_disabled")]
 oversampling_override = 1.0
 title = "Select Title"
 position = Vector2i(0, 36)
@@ -182,14 +182,16 @@ data_list = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/D
 current_atlas = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/SmoothScrollContainer/CurrentAtlas")
 cancel_button = NodePath("MarginContainer/VBoxContainer/HBoxContainer/CancelButton")
 ok_button = NodePath("MarginContainer/VBoxContainer/HBoxContainer/OKButton")
-delete_button = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/RemoveTile")
+delete_button = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/HBoxContainer/RemoveTile")
 alt_mode_button = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer/AlternativeTile")
 appear_percent_spinbox = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer2/ProbabilityOfAppearance")
 max_quantity_spinbox = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer8/MaxQuantity")
 alt_chance_spinbox = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer3/ProbabilityOfAppearanceAlternative")
 placement_mode_option = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer7/PlacementMode")
 environment_position = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer7/EnvironmentPositions")
+is_detail_tile = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer2/IsDetailTile")
 info_label = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/MidColum/MarginContainer/TileLabel")
+is_tile_disabled = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/HBoxContainer/IsTileDisabled")
 
 [node name="Background" type="TextureRect" parent="." unique_id=169465493]
 anchors_preset = 15
@@ -321,7 +323,16 @@ allow_reselect = true
 odd_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 event_line_color = Color(0.145098, 0.156863, 0.164706, 1)
 
-[node name="RemoveTile" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=565792642 instance=ExtResource("4_b6ptd")]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=605739799]
+layout_mode = 2
+
+[node name="IsTileDisabled" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/HBoxContainer" unique_id=1047308954]
+layout_mode = 2
+tooltip_text = "Mark this tile so that it won't be eligible for inclusion on the map when you click the \"Fill in map events\" button."
+mouse_default_cursor_shape = 2
+text = "Disabled?"
+
+[node name="RemoveTile" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/HBoxContainer" unique_id=565792642 instance=ExtResource("4_b6ptd")]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.65)
 custom_minimum_size = Vector2(160, 0)
@@ -441,6 +452,13 @@ _custom_value = 0.01
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer2" unique_id=1946845137]
 layout_mode = 2
 text = " %"
+
+[node name="IsDetailTile" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer2" unique_id=465687836]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "If the tile is marked as a detail tile, it will be placed on the \"Ground Detail layer\". If this option is left unchecked, it will be placed on the \"Environment layer\"."
+mouse_default_cursor_shape = 2
+text = "Is Detail Tile"
 
 [node name="HBoxContainer8" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer" unique_id=1327141662]
 layout_mode = 2

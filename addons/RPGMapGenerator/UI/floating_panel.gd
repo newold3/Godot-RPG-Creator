@@ -279,16 +279,19 @@ func _on_save_preset_confirmed() -> void:
 	
 	var optimized_decorators: Array[Dictionary] = []
 	var env_layer: TileMapLayer = current_generator.layer_environment
+	var det_layer: TileMapLayer = current_generator.layer_ground_detail
 	var dec_data: Array = current_generator.decorator_data
 	
 	for dec in dec_data:
 		var config_copy: Dictionary = dec.duplicate(true)
 		var count: int = 0
+		var is_detail: bool = config_copy.get("is_detail", false)
+		var target_layer = det_layer if is_detail else env_layer
 		
-		if is_instance_valid(env_layer):
-			for cell in env_layer.get_used_cells():
-				var s_id: int = env_layer.get_cell_source_id(cell)
-				var a_crd: Vector2i = env_layer.get_cell_atlas_coords(cell)
+		if is_instance_valid(target_layer):
+			for cell in target_layer.get_used_cells():
+				var s_id: int = target_layer.get_cell_source_id(cell)
+				var a_crd: Vector2i = target_layer.get_cell_atlas_coords(cell)
 				
 				var match_p: bool = (s_id == config_copy.get("source_id", -1) and a_crd == config_copy.get("atlas_coords", Vector2i(-1,-1)))
 				var match_a: bool = (s_id == config_copy.get("source_id", -1) and a_crd == config_copy.get("alt_atlas_coords", Vector2i(-1,-1)))
@@ -317,6 +320,8 @@ func _on_save_preset_confirmed() -> void:
 	var new_index: int = presets_data.presets_list.size()
 	preset_list.select(new_index)
 	_on_preset_selected(new_index)
+
+
 #endregion
 
 

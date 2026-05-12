@@ -75,6 +75,9 @@ func is_tile_passable_from_direction(tile_position: Vector2i, player_direction: 
 		if not layer or not layer is TileMapLayer or not layer.tile_set:
 			continue
 			
+		if layer.get_meta("collisions_disabled", false) == true:
+			continue
+			
 		var source_id = layer.get_cell_source_id(tile_position)
 		
 		if source_id != -1:
@@ -121,6 +124,10 @@ func get_cell_data(tile_position: Vector2i) -> Dictionary:
 		if not layer or not layer is TileMapLayer or not layer.tile_set:
 			continue
 			
+		# Nota: Aquí no saltamos el collisions_disabled porque podríamos querer
+		# que una capa visual mantenga eventos encima, pero por consistencia
+		# con el bloqueo de colisiones se deja este comentario para tenerlo en cuenta.
+			
 		var source_id = layer.get_cell_source_id(tile_position)
 		
 		if source_id != -1:
@@ -158,6 +165,9 @@ func can_move_to_direction(tile_position: Vector2i, player_direction: int, ignor
 		if not layer or not layer is TileMapLayer or not layer.tile_set:
 			continue
 			
+		if layer.get_meta("collisions_disabled", false) == true:
+			continue
+			
 		var source_id = layer.get_cell_source_id(tile_position)
 		
 		if source_id != -1:
@@ -193,6 +203,9 @@ func is_tile_block(tile_position: Vector2i, default_value: bool = true) -> bool:
 		var layer: TileMapLayer = map.MAP_LAYERS.get(layer_name)
 		
 		if not layer or not layer is TileMapLayer or not layer.tile_set:
+			continue
+			
+		if layer.get_meta("collisions_disabled", false) == true:
 			continue
 			
 		var source_id = layer.get_cell_source_id(tile_position)

@@ -477,10 +477,7 @@ func _on_dialog_window_input(event: InputEvent, dialog: Window) -> void:
 					get_viewport().set_input_as_handled()
 			# Close all dialog opened
 			elif event.keycode == KEY_F and event.is_ctrl_pressed() and event.is_alt_pressed():
-				for i in range(current_opened_dialogs.size() - 1, -1, -1):
-					var d = current_opened_dialogs[i]
-					if _is_valid_window(d) and "_on_cancel_button_pressed" in d:
-						d._on_cancel_button_pressed()
+				emergency_close_all_dialogs()
 
 
 func get_current_dialog() -> Node:
@@ -494,3 +491,28 @@ func get_current_dialog() -> Node:
 
 func there_are_any_dialog_open() -> bool:
 	return current_opened_dialogs.size() > 0
+
+
+func _shortcut_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.is_pressed() and not event.is_echo():
+		if event.keycode == KEY_K and event.is_ctrl_pressed() and event.is_alt_pressed():
+			get_viewport().set_input_as_handled()
+			emergency_close_all_dialogs()
+
+
+func emergency_close_all_dialogs() -> void:
+	for i in range(current_opened_dialogs.size() - 1, -1, -1):
+		var dialog = current_opened_dialogs[i]
+
+		if _is_valid_window(dialog):
+			if "_on_cancel_button_pressed" in dialog:
+				dialog._on_cancel_button_pressed()
+			else:
+				dialog.hide()
+				dialog.queue_free()
+
+	current_opened_dialogs.clear()
+
+	if _is_valid_window(main_window):
+		main_window.set_disable_input(false)
+		main_window.grab_focus()

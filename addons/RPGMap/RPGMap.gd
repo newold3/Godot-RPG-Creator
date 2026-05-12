@@ -1467,11 +1467,22 @@ func _on_rpgmap_exited(node: RPGMap) -> void:
 func _make_visible(visible: bool) -> void:
 	is_in_2d_screen = visible
 	_update_floating_toolbar_visibility()
+	
+	if is_instance_valid(toggled_regions_button):
+		if not visible:
+			toggled_regions_button.visible = false
+		elif current_edit_mode != MODE.NONE and current_object:
+			var config = edit_configs.get(current_edit_mode)
+			if config and config.show_regions:
+				toggled_regions_button.visible = true
 
 
 func deactivate_edit_mode_and_show_output() -> void:
 	current_edit_mode = MODE.NONE
 	
+	if is_instance_valid(toggled_regions_button):
+		toggled_regions_button.visible = false
+		
 	if current_object:
 		current_object.current_edit_button_pressed = -1
 		
@@ -1734,6 +1745,9 @@ func _handles(object: Object) -> bool:
 			enemy_spawn_regions_dock.visible = false
 		if event_regions_dock:
 			event_regions_dock.visible = false
+			
+		if is_instance_valid(toggled_regions_button):
+			toggled_regions_button.visible = false
 			
 		if current_object:
 			if "shadow_manager" in current_object and current_object.shadow_manager:
