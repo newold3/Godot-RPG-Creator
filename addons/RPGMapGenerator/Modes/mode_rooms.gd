@@ -41,19 +41,28 @@ func generate(grid: PackedByteArray, width: int, height: int, config: Dictionary
 		var room_rect: Rect2i = Rect2i(r_x, r_y, r_w, r_h)
 		var overlap: bool = false
 		
-		for x in range(room_rect.position.x - 2, room_rect.end.x + 2):
-			for y in range(room_rect.position.y - 2 - top_wall_height, room_rect.end.y + 2 + top_wall_height):
-				if x >= 0 and x < width and y >= 0 and y < height:
-					if grid[y * width + x] != 0:
-						overlap = true
-						break
+		var start_x: int = clampi(room_rect.position.x - 2, 0, width)
+		var end_x: int = clampi(room_rect.end.x + 2, 0, width)
+		var start_y: int = clampi(room_rect.position.y - 2 - top_wall_height, 0, height)
+		var end_y: int = clampi(room_rect.end.y + 2 + top_wall_height, 0, height)
+		
+		for x in range(start_x, end_x):
+			for y in range(start_y, end_y):
+				if grid[y * width + x] != 0:
+					overlap = true
+					break
 			if overlap: break
 			
 		if not overlap:
-			for x in range(room_rect.position.x, room_rect.end.x):
-				for y in range(room_rect.position.y, room_rect.end.y):
-					if x >= 0 and x < width and y >= 0 and y < height:
-						grid[y * width + x] = 1
+			var carve_start_x: int = clampi(room_rect.position.x, 0, width)
+			var carve_end_x: int = clampi(room_rect.end.x, 0, width)
+			var carve_start_y: int = clampi(room_rect.position.y, 0, height)
+			var carve_end_y: int = clampi(room_rect.end.y, 0, height)
+			
+			for x in range(carve_start_x, carve_end_x):
+				for y in range(carve_start_y, carve_end_y):
+					grid[y * width + x] = 1
+					
 			room_rects.append(room_rect)
 			
 	if room_rects.size() > 1:
@@ -61,8 +70,10 @@ func generate(grid: PackedByteArray, width: int, height: int, config: Dictionary
 			var r1: Rect2i = room_rects[i]
 			var r2: Rect2i = room_rects[(i + 1) % room_rects.size()]
 			var c_width: int = randi_range(min_corridor_width, max_corridor_width)
+			
 			var p1: Vector2i = Vector2i(randi_range(r1.position.x, r1.end.x - c_width), randi_range(r1.position.y, r1.end.y - c_width))
 			var p2: Vector2i = Vector2i(randi_range(r2.position.x, r2.end.x - c_width), randi_range(r2.position.y, r2.end.y - c_width))
+			
 			carve_corridor(p1, p2, c_width, width, height, grid)
 			
 	return room_rects

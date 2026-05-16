@@ -1,14 +1,19 @@
 @tool
 extends Window
 
+
+var busy: bool = false
+
 signal selected_value(value: float)
 
 
 func _ready() -> void:
+	busy = true
 	close_requested.connect(queue_free)
 	await get_tree().process_frame
 	%ValueSpinBox.get_line_edit().select_all()
 	%ValueSpinBox.get_line_edit().grab_focus()
+	busy = false
 
 
 func set_min_max_values(min_value: float, max_value: float, step: float = 1) -> void:
@@ -32,8 +37,10 @@ func set_title_and_contents(t: String, c: String) -> void:
 
 
 func set_value(value: float) -> void:
-	%ValueSpinBox.value = value
+	busy = true
+	%ValueSpinBox.set_value_no_signal(value)
 	%ValueSpinBox.get_line_edit().select_all()
+	busy = false
 
 
 func _on_cancel_button_pressed() -> void:
@@ -47,3 +54,8 @@ func _on_ok_button_pressed() -> void:
 	else:
 		selected_value.emit(snappedf(%ValueSpinBox.value, %ValueSpinBox.step))
 	queue_free()
+
+
+func _on_value_spin_box_value_changed(_value: float) -> void:
+	if busy: return
+	_on_ok_button_pressed()

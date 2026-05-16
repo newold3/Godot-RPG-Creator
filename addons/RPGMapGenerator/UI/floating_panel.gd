@@ -6,7 +6,6 @@ extends PanelContainer
 #region VARIABLES
 var current_generator: Node
 var is_dragging_panel: bool = false
-var drag_offset: Vector2 = Vector2.ZERO
 var is_collapsed: bool = false
 
 var presets_data: MapGeneratorPresets
@@ -80,18 +79,32 @@ func _ready() -> void:
 	btn_compact1.shunked.connect(_on_compact1_toggled)
 	btn_compact2.shunked.connect(_on_compact2_toggled)
 	
+	visibility_changed.connect(_on_visibility_changed)
+	
 	_apply_visual_styles()
 	_load_presets_ui()
 	
 	CustomTooltipManager.plugin_replace_all_tooltips_with_custom.call_deferred(self)
 	
-	_restore_ui_persistence()
+	_restore_ui_persistence.call_deferred()
 
+
+
+func _on_visibility_changed() -> void:
+	if visible:
+		_restore_ui_persistence()
+
+
+func _process(delta: float) -> void:
+	var saved_pos: Vector2 = FileCache.options.get("map_generator_panel_pos", Vector2(40, 40))
+	if saved_pos != global_position:
+		_restore_ui_persistence()
 
 
 ## Recupera todos los estados guardados del panel esperando un frame para calcular dimensiones
 func _restore_ui_persistence() -> void:
-	await get_tree().process_frame
+	while not is_inside_tree() or not FileCache.cache_setted:
+		await RenderingServer.frame_post_draw
 	
 	var saved_pos: Vector2 = FileCache.options.get("map_generator_panel_pos", Vector2(40, 40))
 	global_position = saved_pos
@@ -99,13 +112,9 @@ func _restore_ui_persistence() -> void:
 	if FileCache.options.get("map_gen_main_collapsed", false):
 		_on_collapse_toggled()
 		
-	if FileCache.options.get("map_gen_comp1_shrunk", false):
-		btn_compact1.is_shrunk = false
-		btn_compact1._on_pressed()
+	btn_compact1.set_state(FileCache.options.get("map_gen_comp1_shrunk", false))
 		
-	if FileCache.options.get("map_gen_comp2_shrunk", false):
-		btn_compact2.is_shrunk = false
-		btn_compact2._on_pressed()
+	btn_compact2.set_state(FileCache.options.get("map_gen_comp2_shrunk", false))
 		
 	_clamp_panel_position()
 
@@ -392,13 +401,13 @@ func _on_drag_handle_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.is_pressed():
 			is_dragging_panel = true
-			drag_offset = get_local_mouse_position()
 		else:
 			is_dragging_panel = false
 			FileCache.options["map_generator_panel_pos"] = global_position
 			
 	elif event is InputEventMouseMotion and is_dragging_panel:
-		global_position = get_global_mouse_position() - drag_offset
+		position += event.relative
+		FileCache.options["map_generator_panel_pos"] = global_position
 		_clamp_panel_position()
 
 
@@ -487,6 +496,8 @@ func _on_collisions_toggled(pressed: bool) -> void:
 func _on_generate_pressed() -> void:
 	if not current_generator:
 		return
+	
+	propagate_call("apply")
 		
 	current_generator._start_generation_thread()
 

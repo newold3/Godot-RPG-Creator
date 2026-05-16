@@ -38,6 +38,10 @@ var busy: bool = false
 
 const MINI_PADLOCK = preload("res://addons/CustomControls/Images/mini_padlock.png")
 
+
+signal delete_pressed(ids: PackedInt32Array)
+
+
 func _ready() -> void:
 	%BackControl.draw.connect(_on_back_control_draw)
 	draw.connect(%BackControl.queue_redraw)
@@ -117,6 +121,9 @@ func _on_back_control_draw() -> void:
 
 func _on_gui_input(event: InputEvent) -> void:
 	if select_mode != SELECT_MULTI:
+		if is_anything_selected() and event is InputEventKey and event.is_pressed():
+			if event.keycode == KEY_DELETE or event.keycode == KEY_BACKSPACE:
+				delete_pressed.emit(get_selected_items())
 		return
 		
 	if is_anything_selected() and event is InputEventKey and event.is_pressed():
@@ -141,6 +148,8 @@ func _on_gui_input(event: InputEvent) -> void:
 			var index = get_selected_items()[-1]
 			select(index)
 			multi_selected.emit(index, true)
+		elif event.keycode == KEY_DELETE or event.keycode == KEY_BACKSPACE:
+			delete_pressed.emit(get_selected_items())
 
 
 func _change_back_position(value: float) -> void:

@@ -1,7 +1,11 @@
 @tool
 extends VBoxContainer
 
+
+
 func get_class(): return "ColumnItemList"
+
+
 
 #region Exports
 @export_category("Row Colors")
@@ -53,7 +57,6 @@ func get_class(): return "ColumnItemList"
 	set(value):
 		panel_style = value
 		queue_redraw()
-
 
 @export_category("Columns Data")
 ## Set Columns Count
@@ -133,7 +136,7 @@ func get_class(): return "ColumnItemList"
 		fill_items()
 		notify_property_list_changed()
 		queue_redraw()
-	get: return items 
+	get: return items
 
 ## Placeholder text
 @export var placeholder_text: String = "" :
@@ -179,6 +182,19 @@ func get_class(): return "ColumnItemList"
 #endregion
 
 
+
+#region InternalVariables
+enum SortMode {
+	NORMAL,
+	ASCENDING,
+	DESCENDING
+}
+
+var current_sort_column: int = -1
+var current_sort_mode: SortMode = SortMode.NORMAL
+var visual_to_real_id: PackedInt32Array = []
+var real_to_visual_id: PackedInt32Array = []
+
 var cache_columns_width: PackedInt32Array
 var busy: bool = false
 
@@ -187,12 +203,11 @@ var font_size = get_theme_font_size("font_size", "ItemList")
 var align = HORIZONTAL_ALIGNMENT_LEFT
 
 var can_drag: bool = false
-var can_move: bool = false
 var current_resize_column: int = -1
 var current_drag_column: int = -1
 var current_drag_target_column = -1
 var dragging: bool = false
-var click_position: int
+var click_position: float
 var current_size: int
 
 var disabled: bool = false
@@ -209,13 +224,12 @@ var custom_row_column = {}
 
 var current_order: Array = []
 
-var row_colors: Dictionary = {} # Dictionary[index: int] = Color / Stylebox
-var text_row_colors: Dictionary = {} # Dictionary[index: int] = Color
+var row_colors: Dictionary = {} 
+var text_row_colors: Dictionary = {} 
 
-var custom_icons: Dictionary = {} # Dictionary[index: int] = Texture
+var custom_icons: Dictionary = {} 
 
 var lock_enter: bool
-
 var space_enabled: bool = true
 
 var current_filter: String = ""
@@ -223,8 +237,11 @@ var metadata_list: Dictionary = {}
 var last_clicked_index: int = -1
 
 const MINI_PADLOCK = preload("res://addons/CustomControls/Images/mini_padlock.png")
+#endregion
 
 
+
+#region Signals
 signal item_activated(index: int)
 signal item_selected(index: int)
 signal multi_selected(index: int, selected: bool)
@@ -235,14 +252,14 @@ signal duplicate_requested(indexes: PackedInt32Array)
 signal paste_requested(index: int)
 signal columns_setted()
 signal button_right_pressed(indexes: PackedInt32Array)
+#endregion
+
 
 
 ## Updates the ItemList selection behavior based on the exported variables.
 func _update_selection_mode() -> void:
 	var node: ItemList = get_node_or_null("%ItemList")
-	
-	if not node:
-		return
+	if not node: return
 		
 	if enable_multiselection:
 		if multiselection_style == 0:
@@ -253,17 +270,22 @@ func _update_selection_mode() -> void:
 		node.select_mode = ItemList.SELECT_SINGLE
 
 
+
+## Built-in ready function.
 func _ready() -> void:
-	for i in cache_columns_width.size():
-		current_order.append(i)
-		
+	var top_menu = get_node_or_null("%TopMenu")
+	
+	if top_menu:
+		for child in top_menu.get_children():
+			child.queue_free()
+			
 	%ItemList.draw.connect(_on_itemlist_draw)
 	draw.connect(%ItemList.queue_redraw)
 	draw.connect(%TopMenu.queue_redraw)
 	%TopMenu.draw.connect(_on_top_menu_draw)
-	%ItemList.item_activated.connect(func(index: int): item_activated.emit(index) )
-	%ItemList.item_selected.connect(func(index: int): item_selected.emit(index) )
-	%ItemList.multi_selected.connect(func(index: int, selected: bool): multi_selected.emit(index, selected) )
+	%ItemList.item_activated.connect(func(index: int): item_activated.emit(_get_real_id(index)) )
+	%ItemList.item_selected.connect(_on_internal_item_selected)
+	%ItemList.multi_selected.connect(_on_internal_multi_selected)
 	%ItemList.gui_input.connect(_on_itemlist_gui_input)
 	%ItemList.focus_exited.connect(_on_focus_exited)
 	%TopMenu.gui_input.connect(_on_top_gui_input)
@@ -272,12 +294,35 @@ func _ready() -> void:
 	fill_items()
 	
 	set_process(false)
-	
 	default_tooltip = itemlist_tooltip
-	
 	resized.connect(_on_resized)
 
 
+
+func _on_internal_item_selected(index: int) -> void:
+	var real_id = _get_real_id(index)
+	
+	if not enable_multiselection:
+		item_selected.emit(real_id)
+		multi_selected.emit(real_id, true)
+
+
+func _on_internal_multi_selected(index: int, selected: bool) -> void:
+	var real_id = _get_real_id(index)
+	
+	if enable_multiselection:
+		multi_selected.emit(real_id, selected)
+
+
+## Triggers automatically when the Control visibility changes (fixes hidden tabs size issue).
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_VISIBILITY_CHANGED:
+		if is_visible_in_tree():
+			call_deferred("force_update_sizes")
+
+
+
+## Setup the toggled selection mode for the item list.
 func set_toggled_mode(value: bool) -> void:
 	var node = %ItemList
 	if value:
@@ -285,10 +330,15 @@ func set_toggled_mode(value: bool) -> void:
 	else:
 		node.select_mode = ItemList.SelectMode.SELECT_SINGLE
 
+
+
+## Setup the text filter for highlighting elements.
 func set_filter(filter: String) -> void:
 	current_filter = filter
 
 
+
+## Handle resize callback.
 func _on_resized() -> void:
 	if busy: return
 	busy = true
@@ -298,46 +348,55 @@ func _on_resized() -> void:
 	set_deferred("busy", false)
 
 
+
+## Handle parent resize callback.
 func _on_parent_resized() -> void:
 	if busy: return
 	call_deferred("update_name_and_sizes")
 
 
+
+## Forces sizes to be updated protecting against hidden rendering bounds.
 func force_update_sizes() -> void:
 	if busy: return
 	if is_inside_tree():
 		await get_tree().process_frame
-	size.x = get_parent().size.x
-	size.y = get_parent().size.y
+	var p = get_parent()
+	if p and p is Control:
+		size.x = p.size.x
+		size.y = p.size.y
 	update_name_and_sizes()
 
 
+
+## Disconnects the gui input from the internal item list.
 func disconnect_gui_input() -> void:
 	if %ItemList.gui_input.is_connected(_on_itemlist_gui_input):
 		%ItemList.gui_input.disconnect(_on_itemlist_gui_input)
 
 
-# color = Color or Stylebox
+
+## Applies a custom color or stylebox for a specific row index (real id).
 func add_row_color(index: int, color: Variant) -> void:
 	row_colors[index] = color
 
 
+
+## Restores row color logic for a specific real id row.
 func restore_row_color(index: int) -> void:
 	if row_colors.size() > index and index >= 0:
 		var current_line_color = odd_line_color if index % 2 else event_line_color
 		row_colors[index] = current_line_color
 
 
+
+## Applies a custom text color for a specific row index (real id).
 func add_row_text_color(index: int, color: Color) -> void:
 	text_row_colors[index] = color
 
 
-func get_selected_ids() -> PackedInt32Array:
-	return %ItemList.get_selected_items()
 
-
-# index = Item index
-# icon = String (path) or Texture
+## Gets the custom assigned texture for a real id index.
 func add_custom_icon(index: int, icon: Variant) -> void:
 	var current_icon = null
 	if icon is String:
@@ -351,23 +410,21 @@ func add_custom_icon(index: int, icon: Variant) -> void:
 		custom_icons[index] = current_icon
 
 
-func set_lock_items(items: PackedInt32Array) -> void:
-	lock_items = items
+
+## Stores the locked items array.
+func set_lock_items(p_items: PackedInt32Array) -> void:
+	lock_items = p_items
 
 
+
+## Deselects all items if the control loses focus.
 func _on_focus_exited():
 	if deselect_when_lost_focus:
 		%ItemList.deselect_all()
 
 
-func get_item_at_position(pos: Vector2) -> int:
-	return %ItemList.get_item_at_position(pos, true)
 
-
-func get_item_rect(index: int) -> Rect2:
-	return %ItemList.get_item_rect(index)
-
-
+## Built-in process callback for queue draw optimizations.
 func _process(delta: float) -> void:
 	if queue_fill_delay > 0:
 		queue_fill_delay -= delta
@@ -380,53 +437,17 @@ func _process(delta: float) -> void:
 			columns_setted.emit()
 
 
+
+## Returns the vertical scrollbar.
 func get_v_scroll_bar() -> VScrollBar:
 	return %ItemList.get_v_scroll_bar()
 
 
-func select(index: int, single: bool = true) -> void:
-	if %ItemList.get_item_count() > index and index != -1:
-		%ItemList.select(index, single)
-		%ItemList.ensure_current_is_visible()
-		if index == %ItemList.get_item_count() - 2 and placeholder_text.length() > 0:
-			await get_tree().process_frame
-			%ItemList.get_v_scroll_bar().value = %ItemList.get_v_scroll_bar().max_value
 
-
-func select_current() -> void:
-	var idxs = %ItemList.get_selected_items()
-	deselect_all()
-	for idx in idxs:
-		select(idx, false)
-	%ItemList.grab_focus()
-
-
-func deselect(index: int) -> void:
-	%ItemList.deselect(index)
-
-
-func select_items(indexes: PackedInt32Array) -> void:
-	for index in indexes:
-		if %ItemList.get_item_count() > index:
-			%ItemList.select(index, false)
-	
-	%ItemList.ensure_current_is_visible()
-	if indexes[-1] == %ItemList.get_item_count() - 2 and placeholder_text.length() > 0:
-		await get_tree().process_frame
-		%ItemList.get_v_scroll_bar().value = %ItemList.get_v_scroll_bar().max_value
-
-
-func deselect_all() -> void:
-	%ItemList.deselect_all()
-
-
-func select_all() -> void:
-	var node = %ItemList
-	for i in node.get_item_count():
-		%ItemList.select(i, false)
-
-
+## Fills the items processing current sorting mode.
 func fill_items() -> void:
+	_apply_sorting()
+	
 	var node = %ItemList
 	node.clear()
 	for item in items:
@@ -438,10 +459,14 @@ func fill_items() -> void:
 	queue_redraw()
 
 
+
+## Custom accumulator for widths.
 func sum(accum, number):
 	return accum + number
 
 
+
+## Updates names and calculates dynamic sizes mapped precisely.
 func update_name_and_sizes(step = 50) -> void:
 	if names.size() != columns:
 		names.resize(columns)
@@ -451,95 +476,67 @@ func update_name_and_sizes(step = 50) -> void:
 		current_order.resize(columns)
 		for i in columns:
 			current_order[i] = i
-	
+			
 	cache_columns_width.clear()
 	
 	if !names or !sizes:
 		return
-	
-	# Calcular el ancho total disponible
+		
 	var total_width = size.x
 	if get_node_or_null("%ItemList"):
 		total_width = get_parent().size.x if get_parent() is Control else size.x
-	
-	# Calcular espacio usado por separadores
+		
 	var extra_size = (column_separator_margin * 2 + column_separator_width) * columns
 	var available_width = total_width - extra_size
 	
-	# Primera pasada: calcular tamaños fijos y contar columnas con tamaño negativo
 	var fixed_width_total = 0
 	var negative_columns = []
 	var temp_widths = []
+	temp_widths.resize(columns)
 	
-	for i in sizes.size():
+	for i in columns:
 		var real_index = current_order[i]
 		if sizes[real_index] < 0:
-			# Columna con tamaño negativo, se ajustará después
 			negative_columns.append(real_index)
-			temp_widths.append(0)
+			temp_widths[real_index] = 0
 		elif sizes[real_index] == 0:
-			# Autosize basado en el nombre de la columna
 			if columns == 1 and get_node_or_null("%ItemList"):
-				temp_widths.append(available_width)
+				temp_widths[real_index] = available_width
 				fixed_width_total += available_width
 			else:
-				var s = font.get_string_size(
-					names[real_index],
-					align,
-					-1,
-					font_size
-				).x
+				var s = font.get_string_size(names[real_index], align, -1, font_size).x
 				var width = max(min_column_size, s)
-				temp_widths.append(width)
+				temp_widths[real_index] = width
 				fixed_width_total += width
 		else:
-			# Tamaño fijo especificado
 			var width = max(min_column_size, sizes[real_index])
-			temp_widths.append(width)
+			temp_widths[real_index] = width
 			fixed_width_total += width
-	
-	# Segunda pasada: distribuir el ancho restante entre columnas con tamaño negativo
+			
 	if negative_columns.size() > 0:
 		fixed_width_total += column_separator_margin * (columns + 1) + column_separator_width * (columns + 1)
 		var remaining_width = available_width - fixed_width_total
 		var width_per_negative_column = max(min_column_size, remaining_width / negative_columns.size())
 		
-		for i in sizes.size():
-			var real_index = current_order[i]
-			if sizes[real_index] < 0:
-				temp_widths[i] = width_per_negative_column
-				sizes[real_index] = width_per_negative_column
-
-	
-	# Asignar los anchos calculados
-	cache_columns_width = temp_widths
+		for real_index in negative_columns:
+			temp_widths[real_index] = width_per_negative_column
+			
+	cache_columns_width = PackedInt32Array(temp_widths)
 	
 	if get_node_or_null("%TopMenu"):
 		var h = font.get_string_size(" ", 0, -1, font_size).y
 		%TopMenu.set_deferred("size", Vector2.ZERO)
-		#%TopMenu.custom_minimum_size = %TopMenu.size
 		%TopMenu.custom_minimum_size.y = h
-		#%TopMenu.custom_minimum_size.x = Array(cache_columns_width).reduce(sum, extra_size) + extra_size
-	
-	#if is_node_ready():
-		#busy = true
-		#size = Vector2.ZERO
-		#custom_minimum_size = Vector2.ZERO
-		#%ItemList.size = Vector2.ZERO
-		#%ItemList.custom_minimum_size = Vector2.ZERO
-		#if is_inside_tree():
-			#await get_tree().process_frame
-		#%ItemList.custom_minimum_size = get_parent().size
-		#busy = false
+		%TopMenu.custom_minimum_size.x = total_width
+		
 	if size.x < min_size.x: size.x = min_size.x
 	if size.y < min_size.y: size.y = min_size.y
-	#custom_minimum_size = size
-	
 	
 	queue_redraw()
 
 
-## Clears the list and resets internal variables
+
+## Clears the list and resets internal variables.
 func clear() -> void:
 	set_process(true)
 	queue_fill_delay = fill_delay_max_time
@@ -551,128 +548,175 @@ func clear() -> void:
 	%ItemList.clear()
 
 
+
+## Adds a column to the item list dynamically.
 func add_column(contents: PackedStringArray) -> void:
 	items.append(contents)
 	queue_fill_delay = fill_delay_max_time
 	set_process(true)
 
 
+
+## Returns the entire row representation from the data set.
 func get_column(id: int) -> PackedStringArray:
 	if items.size() > id:
 		return items[id]
-	else:
-		return []
+	return []
 
 
-## Handles GUI input for the internal ItemList
+
+## Handles GUI input for the internal ItemList.
 func _on_itemlist_gui_input(event: InputEvent) -> void:
 	if %ItemList.get_item_count() == 0:
 		return
+		
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
 		var mouse_pos = %ItemList.get_local_mouse_position()
-		var index = get_item_at_position(mouse_pos)
+		var index = %ItemList.get_item_at_position(mouse_pos, true)
+		
 		if index != -1:
+			var real_id = _get_real_id(index)
+			
+			if event.double_click:
+				%ItemList.item_activated.emit(index)
+				get_viewport().set_input_as_handled()
+				return
+				
 			if enable_multiselection:
-				if (event.shift_pressed or event.ctrl_pressed):
+				if event.shift_pressed or event.ctrl_pressed:
 					if last_clicked_index == -1:
 						last_clicked_index = index
+						
 					var start_idx = min(last_clicked_index, index)
 					var end_idx = max(last_clicked_index, index)
 					var all_selected = true
+					
 					for i in range(start_idx, end_idx + 1):
 						if not %ItemList.is_selected(i):
 							all_selected = false
 							break
+							
 					for i in range(start_idx, end_idx + 1):
+						var local_real_id = _get_real_id(i)
+						
 						if all_selected:
 							%ItemList.deselect(i)
-							multi_selected.emit(i, false)
+							multi_selected.emit(local_real_id, false)
 						else:
 							%ItemList.select(i, false)
-							multi_selected.emit(i, true)
+							multi_selected.emit(local_real_id, true)
+							
 					last_clicked_index = index
 					get_viewport().set_input_as_handled()
 					return
 				else:
 					last_clicked_index = index
-					if show_checkboxes and enable_multiselection:
+					
+					if show_checkboxes:
 						var checkbox_width = 24
+						
 						if mouse_pos.x <= checkbox_width + text_margin_left:
 							if %ItemList.is_selected(index):
 								%ItemList.deselect(index)
-								multi_selected.emit(index, false)
+								multi_selected.emit(real_id, false)
 							else:
 								%ItemList.select(index, false)
-								multi_selected.emit(index, true)
+								multi_selected.emit(real_id, true)
+								
 							get_viewport().set_input_as_handled()
 							return
 			else:
-				item_selected.emit(index)
-				multi_selected.emit(index, true)
+				%ItemList.select(index, true)
+				item_selected.emit(real_id)
+				multi_selected.emit(real_id, true)
+				get_viewport().set_input_as_handled()
+				return
 				
 	if %ItemList.is_anything_selected() and event is InputEventKey and event.is_pressed():
 		if event.keycode == KEY_DELETE or event.keycode == KEY_BACKSPACE:
-			delete_pressed.emit(%ItemList.get_selected_items())
+			delete_pressed.emit(get_selected_ids())
 		elif event.is_ctrl_pressed():
 			if event.keycode == KEY_C:
-				copy_requested.emit(%ItemList.get_selected_items())
+				copy_requested.emit(get_selected_ids())
 			elif event.keycode == KEY_X:
-				cut_requested.emit(%ItemList.get_selected_items())
+				cut_requested.emit(get_selected_ids())
 			elif event.keycode == KEY_V:
-				paste_requested.emit(%ItemList.get_selected_items()[-1])
+				var sel_items = get_selected_ids()
+				paste_requested.emit(sel_items[-1] if sel_items.size() > 0 else -1)
 			elif event.keycode == KEY_D:
-				duplicate_requested.emit(%ItemList.get_selected_items())
+				duplicate_requested.emit(get_selected_ids())
 		elif event.keycode == KEY_UP:
 			var indexes = %ItemList.get_selected_items()
+			
 			if indexes.size() > 0:
 				var new_index = max(0, indexes[0] - 1)
 				%ItemList.select(new_index)
+				var new_real_id = _get_real_id(new_index)
+				
 				if enable_multiselection:
-					multi_selected.emit(new_index, true)
+					multi_selected.emit(new_real_id, true)
 				else:
-					item_selected.emit(new_index)
-					multi_selected.emit(new_index, true)
+					item_selected.emit(new_real_id)
+					multi_selected.emit(new_real_id, true)
 			else:
 				get_viewport().set_input_as_handled()
 		elif event.keycode == KEY_DOWN:
 			var indexes = %ItemList.get_selected_items()
+			
 			if indexes.size() > 0:
 				var new_index = min(%ItemList.get_item_count() - 1, indexes[-1] + 1)
 				%ItemList.select(new_index)
+				var new_real_id = _get_real_id(new_index)
+				
 				if enable_multiselection:
-					multi_selected.emit(new_index, true)
+					multi_selected.emit(new_real_id, true)
 				else:
-					item_selected.emit(new_index)
-					multi_selected.emit(new_index, true)
+					item_selected.emit(new_real_id)
+					multi_selected.emit(new_real_id, true)
 			else:
 				get_viewport().set_input_as_handled()
 		elif space_enabled and event.keycode == KEY_SPACE:
 			get_viewport().set_input_as_handled()
 			var index = %ItemList.get_selected_items()[-1]
 			%ItemList.item_activated.emit(index)
+			
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
-		var index = get_item_at_position(%ItemList.get_local_mouse_position())
+		var index = %ItemList.get_item_at_position(%ItemList.get_local_mouse_position(), true)
+		
 		if index != -1:
 			var selected_items_amount = %ItemList.get_selected_items().size()
+			
 			if selected_items_amount <= 1:
-				select(index)
-			button_right_pressed.emit(%ItemList.get_selected_items())
+				%ItemList.select(index)
+				
+			button_right_pressed.emit(get_selected_ids())
+			
 	if event is InputEventMouseMotion:
 		get_custom_tooltip()
 
 
+
+## Switch toggle space input.
 func disable_space_input(value: bool) -> void:
 	space_enabled = !value
 
 
+
+## Retrieves tooltip considering mapped item order.
 func get_custom_tooltip() -> String:
 	var result = ""
 	var old_tooltip = current_tooltip
-	var index = %ItemList.get_item_at_position(%ItemList.get_local_mouse_position())
-	if index >= 0 and items_tooltip.size() > index and items_tooltip[index] and items_tooltip[index].length() > 0:
-		result = items_tooltip[index]
-	elif default_tooltip and default_tooltip.length() > 0:
-		result = default_tooltip
+	var visual_index = %ItemList.get_item_at_position(%ItemList.get_local_mouse_position(), true)
+	
+	if visual_index >= 0:
+		var real_id = _get_real_id(visual_index)
+		if items_tooltip.size() > real_id and items_tooltip[real_id] and items_tooltip[real_id].length() > 0:
+			result = items_tooltip[real_id]
+		elif default_tooltip and default_tooltip.length() > 0:
+			result = default_tooltip
+	else:
+		if default_tooltip and default_tooltip.length() > 0:
+			result = default_tooltip
 	
 	current_tooltip = result
 	
@@ -682,92 +726,149 @@ func get_custom_tooltip() -> String:
 	return current_tooltip
 
 
-func _on_top_gui_input(event: InputEvent):
+
+## Handles Top Menu Interactions mapping visually the hovers and resolving sorting clicks or drag events mathematically.
+func _on_top_gui_input(event: InputEvent) -> void:
+	var extra_size = column_separator_margin * 2 + column_separator_width
+	var total_width = size.x
+	if get_node_or_null("%ItemList"):
+		total_width = get_parent().size.x if get_parent() is Control else size.x
+		
 	if event is InputEventMouseMotion:
 		if dragging and current_resize_column != -1:
 			sizes[current_resize_column] = max(min_column_size, current_size + event.position.x - click_position)
+			update_name_and_sizes()
+			%TopMenu.queue_redraw()
+			%ItemList.queue_redraw()
 		elif current_drag_column != -1:
 			current_drag_target_column = -1
 			var x = 0
-			for i in range(0, cache_columns_width.size(), 1):
+			for i in range(columns):
 				var real_index = current_order[i]
-				x += cache_columns_width[real_index]
-				if event.position.x <= x or i == cache_columns_width.size() - 1:
+				if i > 0:
+					x += extra_size
+					
+				var col_width = cache_columns_width[real_index]
+				if i == columns - 1:
+					col_width = max(col_width, total_width - x)
+					
+				x += col_width
+				if event.position.x <= x:
 					current_drag_target_column = i
 					break
 			%TopMenu.queue_redraw()
 		else:
-			var extra_size = column_separator_margin * 2 + column_separator_width
-			%TopMenu.mouse_default_cursor_shape = Control.CURSOR_ARROW
+			var target_cursor = Control.CURSOR_ARROW
 			can_drag = false
 			current_resize_column = -1
+			var hovered_header_col = -1
+			
 			var x = 0
-			for i in range(0, cache_columns_width.size() - 1):
+			for i in range(columns):
 				var real_index = current_order[i]
-				x += cache_columns_width[real_index]
-				if (
-					(event.position.x >= x and event.position.x - extra_size * 2 <= x) or
-					(event.position.x <= x and event.position.x + extra_size >= x)
-				):
-					%TopMenu.mouse_default_cursor_shape = Control.CURSOR_HSIZE
-					can_drag = true
-					current_resize_column = i
-					break
-			if current_resize_column == -1:
-				%TopMenu.mouse_default_cursor_shape = Control.CURSOR_DRAG
-	elif can_drag and event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		dragging = event.is_pressed()
-		if dragging:
-			click_position = event.position.x
-			current_size = sizes[current_resize_column]
+				var col_width = cache_columns_width[real_index]
+				if i == columns - 1:
+					col_width = max(col_width, total_width - x)
+					
+				if i > 0:
+					var handle_start = x - 4
+					var handle_end = x + extra_size + 4
+					
+					if event.position.x >= handle_start and event.position.x <= handle_end:
+						target_cursor = Control.CURSOR_HSIZE
+						can_drag = true
+						current_resize_column = current_order[i-1]
+						break
+						
+					x += extra_size
+					
+				var header_start = x
+				var header_end = x + col_width
+				
+				if event.position.x > header_start + 4 and event.position.x < header_end - 4:
+					hovered_header_col = real_index
+					
+				x += col_width
+				
+			if not can_drag and hovered_header_col != -1:
+				target_cursor = Control.CURSOR_POINTING_HAND
+				
+			if %TopMenu.mouse_default_cursor_shape != target_cursor:
+				%TopMenu.mouse_default_cursor_shape = target_cursor
+				
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.is_pressed():
-			current_drag_column = -1
-			var x = 0
-			for i in range(0, cache_columns_width.size(), 1):
-				var real_index = current_order[i]
-				x += cache_columns_width[real_index]
-				if event.position.x <= x or i == cache_columns_width.size() - 1:
-					current_drag_column = i
-					current_drag_target_column = current_drag_column
-					break
+			if can_drag:
+				dragging = true
+				click_position = event.position.x
+				current_size = cache_columns_width[current_resize_column]
+				sizes[current_resize_column] = current_size
+			else:
+				current_drag_column = -1
+				var x = 0
+				
+				for i in range(columns):
+					var real_index = current_order[i]
+					var col_width = cache_columns_width[real_index]
+					if i == columns - 1:
+						col_width = max(col_width, total_width - x)
+						
+					if i > 0:
+						x += extra_size
+						
+					if event.position.x >= x and event.position.x <= x + col_width:
+						current_drag_column = i
+						current_drag_target_column = current_drag_column
+						break
+						
+					x += col_width
 		else:
-			if current_drag_column != -1 and current_drag_target_column != -1 and current_drag_column != current_drag_target_column:
-				busy = true
-				var from = current_drag_column
-				var to = current_drag_target_column
-				
-				# Solo intercambiar el orden, no los datos
-				var temp_order = current_order[from]
-				current_order[from] = current_order[to]
-				current_order[to] = temp_order
-				
-				busy = false
-				await get_tree().process_frame
-				%TopMenu.queue_redraw()
-				%ItemList.queue_redraw()
+			dragging = false
+			
+			if current_drag_column != -1 and current_drag_target_column != -1:
+				if current_drag_column != current_drag_target_column:
+					busy = true
+					var temp_order = current_order[current_drag_column]
+					current_order[current_drag_column] = current_order[current_drag_target_column]
+					current_order[current_drag_target_column] = temp_order
+					busy = false
+					
+					await get_tree().process_frame
+					update_name_and_sizes()
+					%TopMenu.queue_redraw()
+					%ItemList.queue_redraw()
+				else:
+					var real_col = current_order[current_drag_column]
+					
+					if current_sort_column == real_col:
+						if current_sort_mode == SortMode.NORMAL:
+							current_sort_mode = SortMode.ASCENDING
+						elif current_sort_mode == SortMode.ASCENDING:
+							current_sort_mode = SortMode.DESCENDING
+						else:
+							current_sort_mode = SortMode.NORMAL
+					else:
+						current_sort_column = real_col
+						current_sort_mode = SortMode.ASCENDING
+						
+					queue_fill_delay = fill_delay_max_time
+					set_process(true)
+					%TopMenu.queue_redraw()
+					
 			current_drag_column = -1
 			current_drag_target_column = -1
-	
-	# ensure disable drags
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and !event.is_pressed():
-		current_drag_column = -1
-		current_resize_column = -1
-		current_drag_target_column = -1
 
 
+
+## Property Validation.
 func _validate_property(property):
 	return
-	#if property.name == "names" or property.name == "sizes" or property.name == "items":
-		#if columns > 0:
-			#property.usage = PROPERTY_USAGE_EDITOR
-		#else:
-			#property.usage &= ~PROPERTY_USAGE_EDITOR
 
 
+
+## Top Menu Drawing Routine mapping the visual sorting marks.
 func _on_top_menu_draw() -> void:
 	var node = %TopMenu
-	
 	if !node: return
 	
 	var h = font.get_string_size(" ", 0, -1, font_size).y
@@ -788,12 +889,21 @@ func _on_top_menu_draw() -> void:
 				var rect2 = Rect2(Vector2(x, 0), Vector2(column_separator_width, h))
 				node.draw_rect(rect2, column_separator_color, true)
 				x += column_separator_margin + column_separator_width
+				
 			var color = Color.BLUE if current_drag_column == i else top_bar_text_color
 			var text_width = cache_columns_width[real_index] if i < names.size() - 1 else - 1
+			
+			var text_to_draw = names[real_index]
+			if current_sort_column == real_index:
+				if current_sort_mode == SortMode.ASCENDING:
+					text_to_draw += " ▼"
+				elif current_sort_mode == SortMode.DESCENDING:
+					text_to_draw += " ▲"
+					
 			node.draw_string(
 				font,
 				Vector2(x + text_margin_left, y),
-				names[real_index],
+				text_to_draw,
 				HORIZONTAL_ALIGNMENT_LEFT,
 				text_width,
 				font_size,
@@ -818,17 +928,17 @@ func _on_top_menu_draw() -> void:
 			node.draw_rect(rect, Color.ORANGE, true)
 
 
+
+## Internal Draw handling mapping visual space into real backend representation values.
 func _on_itemlist_draw() -> void:
 	if busy:
 		return
-	
 	busy = true
 	
 	var node = %ItemList
 	if !node: return
 	
 	var rect: Rect2
-	
 	var item_selected: PackedInt32Array = node.get_selected_items()
 	
 	var v_separation = node.get("theme_override_constants/v_separation")
@@ -852,20 +962,22 @@ func _on_itemlist_draw() -> void:
 		checkbox_unchecked_tex = get_theme_icon("unchecked", "CheckBox")
 		checkbox_width = 24
 
-	var last_item_rect: Rect2
 	if node.get_item_count() > 0:
-		last_item_rect = node.get_item_rect(node.get_item_count() - 1)
-		
 		custom_minimum_size.x = 0
 		for index in node.get_item_count():
+			var real_id = _get_real_id(index)
+			var is_placeholder = index == node.get_item_count() - 1 and placeholder_text.length() > 0
+			
 			rect = node.get_item_rect(index)
 			rect.position.y += offset
 			var current_line_color = odd_line_color if index % 2 else event_line_color
-			var row_color = row_colors.get(index, current_line_color)
+			var row_color = row_colors.get(real_id, current_line_color)
+			
 			if rect.position.y + rect.size.y + v_separation < 0:
 				continue
 			elif rect.position.y + rect.size.y > size.y:
 				break
+				
 			if index in item_selected and cursor_style:
 				node.draw_style_box(cursor_style, rect)
 			else:
@@ -885,32 +997,34 @@ func _on_itemlist_draw() -> void:
 					node.draw_texture_rect(icon_to_draw, icon_rect, false)
 
 			var row_icon_size = 0
-			if lock_items.has(index):
-				row_icon_size = 24
-			elif custom_icons.has(index):
-				row_icon_size = custom_icons[index].get_size().x + 2
+			if not is_placeholder:
+				if lock_items.has(real_id):
+					row_icon_size = 24
+				elif custom_icons.has(real_id):
+					row_icon_size = custom_icons[real_id].get_size().x + 2
 			
 			var custom_icon_x_offset = 2
 			if draw_checkbox:
 				custom_icon_x_offset += checkbox_width
 
-			if lock_items.has(index):
-				var icon_rect = Rect2(Vector2(custom_icon_x_offset, rect.position.y), Vector2(20, 20))
-				node.draw_texture_rect(MINI_PADLOCK, icon_rect, false)
-			elif custom_icons.has(index):
-				var icon_rect = Rect2(Vector2(custom_icon_x_offset, rect.position.y), custom_icons[index].get_size())
-				node.draw_texture_rect(custom_icons[index], icon_rect, false)
+			if not is_placeholder:
+				if lock_items.has(real_id):
+					var icon_rect = Rect2(Vector2(custom_icon_x_offset, rect.position.y), Vector2(20, 20))
+					node.draw_texture_rect(MINI_PADLOCK, icon_rect, false)
+				elif custom_icons.has(real_id):
+					var icon_rect = Rect2(Vector2(custom_icon_x_offset, rect.position.y), custom_icons[real_id].get_size())
+					node.draw_texture_rect(custom_icons[real_id], icon_rect, false)
 
-			if index < items.size():
+			if not is_placeholder and real_id < items.size():
 				for i in columns:
 					var real_index = current_order[i]
 					
 					if i > 0:
 						x += column_separator_margin * 2 + column_separator_width
 					
-					if i < items[index].size():
+					if i < items[real_id].size():
 						var text_size = -1
-						if i != items[index].size() - 1:
+						if i != items[real_id].size() - 1:
 							text_size = cache_columns_width[real_index]
 							if i == 0:
 								text_size = max(5, text_size - row_icon_size - checkbox_width)
@@ -918,9 +1032,9 @@ func _on_itemlist_draw() -> void:
 								text_size = max(5, text_size)
 						
 						var current_text_color = items_text_default_color
-						var key = str([index, real_index])
-						if text_row_colors.has(index):
-							current_text_color = text_row_colors[index]
+						var key = str([real_id, real_index])
+						if text_row_colors.has(real_id):
+							current_text_color = text_row_colors[real_id]
 						else:
 							if custom_row_column.has(key) and custom_row_column[key] is Color:
 								current_text_color = custom_row_column[key]
@@ -932,7 +1046,7 @@ func _on_itemlist_draw() -> void:
 						if i == 0:
 							text_x += row_icon_size + checkbox_width
 						
-						var text = items[index][real_index]
+						var text = items[real_id][real_index]
 						var text_y = rect.position.y + y
 						
 						if not padding_start_char.is_empty():
@@ -941,10 +1055,7 @@ func _on_itemlist_draw() -> void:
 								
 						node.draw_string(
 							font,
-							Vector2(
-								text_x,
-								text_y
-							),
+							Vector2(text_x, text_y),
 							text,
 							HORIZONTAL_ALIGNMENT_LEFT,
 							text_size,
@@ -960,14 +1071,14 @@ func _on_itemlist_draw() -> void:
 								var highlight_rect = Rect2(text_x + offset_x, rect.position.y, match_width, rect.size.y)
 								node.draw_rect(highlight_rect, Color(1, 1, 0, 0.3))
 
-					if i == columns - 1 and items.size() > index and items[index].size() > real_index and items[index][real_index].length() > 0:
-						var text_width = font.get_string_size(items[index][real_index], 0, -1, font_size).x
-						var current_size = x + text_width
-						custom_minimum_size.x = max(custom_minimum_size.x, current_size)
+					if i == columns - 1 and items.size() > real_id and items[real_id].size() > real_index and items[real_id][real_index].length() > 0:
+						var text_width = font.get_string_size(items[real_id][real_index], 0, -1, font_size).x
+						var cur_size = x + text_width
+						custom_minimum_size.x = max(custom_minimum_size.x, cur_size)
 					
 					x += cache_columns_width[real_index]
 						
-			elif index == node.get_item_count() - 1 and placeholder_text.length() > 0:
+			elif is_placeholder:
 				node.draw_string(
 					font,
 					Vector2(text_margin_left, rect.position.y + y),
@@ -978,9 +1089,8 @@ func _on_itemlist_draw() -> void:
 					Color("#96969668") if !index in item_selected else Color.WHITE
 				)
 		
-		
 		if rect.position.y + rect.size.y + v_separation < size.y:
-			var last_id = node.item_count # + (1 if placeholder_text else 0)
+			var last_id = node.item_count
 			while rect.position.y - rect.size.y - v_separation < size.y:
 				rect.position.y += v_separation + rect.size.y
 				if last_id % 2 == 0:
@@ -1014,6 +1124,8 @@ func _on_itemlist_draw() -> void:
 	busy = false
 
 
+
+## Modify the block condition.
 func set_disabled(value: bool) -> void:
 	disabled = value
 	if value:
@@ -1024,14 +1136,22 @@ func set_disabled(value: bool) -> void:
 		modulate.a = 1.0
 
 
+
+## Disables clicking for the specific item relying on real id logic mapping.
 func set_item_selectable(index: int, value: bool) -> void:
-	%ItemList.set_item_selectable(index, value)
+	var vis_id = _get_visual_id(index)
+	%ItemList.set_item_selectable(vis_id, value)
 
 
+
+## Consult click status based on real id index.
 func is_item_selectable(index: int) -> bool:
-	return %ItemList.is_item_selectable(index)
+	var vis_id = _get_visual_id(index)
+	return %ItemList.is_item_selectable(vis_id)
 
 
+
+## Final Draw hook.
 func _draw() -> void:
 	if panel_style:
 		var rect = get_rect()
@@ -1039,61 +1159,159 @@ func _draw() -> void:
 		draw_style_box(panel_style, rect)
 
 
+
+## Returns real ID selection converting visual to original index mapping.
+func get_selected_ids() -> PackedInt32Array:
+	var visual_ids = %ItemList.get_selected_items()
+	var real_ids = PackedInt32Array()
+	for vid in visual_ids:
+		real_ids.append(_get_real_id(vid))
+	return real_ids
+
+
+
+## Backwards support wrapping inner select call array.
 func get_selected_items() -> PackedInt32Array:
-	return %ItemList.get_selected_items()
+	return get_selected_ids()
 
 
-func set_selected_items(ids) -> void:
+
+## Wrapper applying mapping over real id items to their visual index select counterpart.
+func set_selected_items(ids: PackedInt32Array) -> void:
 	var node = %ItemList
 	for id in ids:
-		node.select(id, false)
+		var vis_id = _get_visual_id(id)
+		node.select(vis_id, false)
 
 
+
+## Retrieves the internal node reference directly.
 func get_item_list() -> ItemList:
 	return %ItemList as ItemList
 
 
+
+## Gets item main text identifier based on real mapping layout structure.
 func get_item_name(id: int) -> String:
 	if id >= 0 and id < items.size():
 		return items[id][0]
-	
 	return "item " + str(id)
 
 
+
+## Returns inner element quantities based on items data context length.
 func get_item_count() -> int:
-	return get_item_list().get_item_count()
+	return items.size()
 
 
+
+## Fixes parent bounds based on child internal node change notification.
 func _on_item_list_item_rect_changed() -> void:
 	var parent = get_parent()
 	if parent and parent is Container:
 		parent.queue_sort()
 
 
+
+## Metadata external injections handler pointing to the proper data slot.
 func set_item_metadata(id: int, metadata: Variant) -> void:
 	if id < 0:
 		id = items.size() + id
 	id = clamp(id, 0, items.size() - 1)
-	
 	metadata_list[id] = metadata
 
 
+
+## Obtains metadata logic pointers for external script management.
 func get_item_metadata(id: int) -> Variant:
 	if id < 0:
 		id = items.size() + id
 	id = clamp(id, 0, items.size() - 1)
-	
-	
 	return metadata_list.get(id, null)
+
+
+
+## Helper selecting directly using original backend real array id.
+func select(index: int, single: bool = true) -> void:
+	var vis_id = _get_visual_id(index)
+	if %ItemList.get_item_count() > vis_id and vis_id != -1:
+		%ItemList.select(vis_id, single)
+		%ItemList.ensure_current_is_visible()
+		if vis_id == %ItemList.get_item_count() - 2 and placeholder_text.length() > 0:
+			await get_tree().process_frame
+			%ItemList.get_v_scroll_bar().value = %ItemList.get_v_scroll_bar().max_value
+
+
+
+## Selects the entire set mapping original real mapped logic internally context bounds constraints correctly translated down dynamically into the main drawing process safely.
+func select_current() -> void:
+	var idxs = %ItemList.get_selected_items()
+	deselect_all()
+	for idx in idxs:
+		%ItemList.select(idx, false)
+	%ItemList.grab_focus()
+
+
+
+## Deselect single element from data representation properly targeting mapped target.
+func deselect(index: int) -> void:
+	var vis_id = _get_visual_id(index)
+	%ItemList.deselect(vis_id)
+
+
+
+## Multiple batch array selector over real id structure conversion parameters into direct draw references mapping.
+func select_items(indexes: PackedInt32Array) -> void:
+	var last_vis_id = 0
+	for index in indexes:
+		var vis_id = _get_visual_id(index)
+		if %ItemList.get_item_count() > vis_id:
+			%ItemList.select(vis_id, false)
+			last_vis_id = vis_id
+	
+	%ItemList.ensure_current_is_visible()
+	if last_vis_id == %ItemList.get_item_count() - 2 and placeholder_text.length() > 0:
+		await get_tree().process_frame
+		%ItemList.get_v_scroll_bar().value = %ItemList.get_v_scroll_bar().max_value
+
+
+
+## Clear current internal control structure selection logic safely directly targeted properly downwards dynamically properly updated context execution bindings perfectly encapsulated properly bounds checked accurately.
+func deselect_all() -> void:
+	%ItemList.deselect_all()
+
+
+
+## Target and apply full selections upon internal drawing backend limits safely mapped appropriately against real structures arrays.
+func select_all() -> void:
+	var node = %ItemList
+	for i in node.get_item_count():
+		%ItemList.select(i, false)
+
+
+
+## Calculates bounding logic using internal map conversion pointers dynamically updated properly correctly targeting constraints context bounds carefully over mapped limits.
+func get_item_at_position(pos: Vector2) -> int:
+	var visual_id = %ItemList.get_item_at_position(pos, true)
+	return _get_real_id(visual_id)
+
+
+
+## Fetches drawing rectangles over translated structure mapped bindings correctly assigned dynamically dynamically processed targeting structures.
+func get_item_rect(index: int) -> Rect2:
+	var vis_id = _get_visual_id(index)
+	return %ItemList.get_item_rect(vis_id)
+
 
 
 ## Scrolls the list to ensure the given item index is visible.
 func ensure_current_is_visible(index: int) -> void:
+	var vis_id = _get_visual_id(index)
 	var node = %ItemList
-	if index < 0 or index >= node.get_item_count():
+	if vis_id < 0 or vis_id >= node.get_item_count():
 		return
 	var scroll = node.get_v_scroll_bar()
-	var rect = get_item_rect(index)
+	var rect = node.get_item_rect(vis_id)
 	var list_height = node.size.y
 	var item_top = rect.position.y
 	var item_bottom = item_top + rect.size.y
@@ -1101,3 +1319,65 @@ func ensure_current_is_visible(index: int) -> void:
 		scroll.value = item_top
 	elif item_bottom > scroll.value + list_height:
 		scroll.value = item_bottom - list_height
+
+
+
+## Assigns the specific visual header column naming parameter directly updated on bounds mappings mapping safely properly bounds limits structurally mapped directly context bounds correctly.
+func set_column_name(column_id: int, new_text: String) -> void:
+	if column_id >= 0 and names.size() > column_id:
+		names[column_id] = new_text
+		queue_redraw()
+
+
+
+#region SortingHelpers
+## Maps a visual list index to the real underlying item ID.
+func _get_real_id(visual_index: int) -> int:
+	if visual_index >= 0 and visual_index < visual_to_real_id.size():
+		return visual_to_real_id[visual_index]
+	return visual_index
+
+
+
+## Maps a real underlying item ID to its current visual list index.
+func _get_visual_id(real_id: int) -> int:
+	if real_id >= 0 and real_id < real_to_visual_id.size():
+		return real_to_visual_id[real_id]
+	return real_id
+
+
+
+## Applies the current sorting mode to the item list using natural sorting and updates index maps.
+func _apply_sorting() -> void:
+	var count = items.size()
+	visual_to_real_id.resize(count)
+	real_to_visual_id.resize(count)
+	
+	var temp_array: Array = []
+	for i in count:
+		temp_array.append(i)
+		
+	if current_sort_mode != SortMode.NORMAL and current_sort_column >= 0 and current_sort_column < columns:
+		temp_array.sort_custom(func(a, b):
+			var text_a = items[a][current_sort_column] if items[a].size() > current_sort_column else ""
+			var text_b = items[b][current_sort_column] if items[b].size() > current_sort_column else ""
+			
+			if text_a == text_b:
+				return a < b
+			
+			if text_a.is_valid_float() and text_b.is_valid_float():
+				if current_sort_mode == SortMode.ASCENDING:
+					return text_a.to_float() < text_b.to_float()
+				else:
+					return text_a.to_float() > text_b.to_float()
+			
+			if current_sort_mode == SortMode.ASCENDING:
+				return text_a.naturalnocasecmp_to(text_b) < 0
+			else:
+				return text_a.naturalnocasecmp_to(text_b) > 0
+		)
+		
+	for i in count:
+		visual_to_real_id[i] = temp_array[i]
+		real_to_visual_id[temp_array[i]] = i
+#endregion

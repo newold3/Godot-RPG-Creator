@@ -433,6 +433,8 @@ func _set_contact_area_size(width: float, collision_shape: CollisionShape2D, mot
 
 ## Resolves final alignment and camera tracking on grid movement completion
 func _on_grid_movement_finished(target_position: Vector2) -> void:
+	if not GameManager.current_map: return 
+	
 	var wrapped_position = GameManager.current_map.get_wrapped_position(target_position)
 	
 	if wrapped_position != target_position:

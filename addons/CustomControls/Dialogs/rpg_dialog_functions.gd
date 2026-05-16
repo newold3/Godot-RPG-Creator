@@ -199,7 +199,7 @@ func show_file_dialog(callback: Callable, base_types: Array[StringName] = []) ->
 func open_dialog(path: Variant, mode: OPEN_MODE = OPEN_MODE.CENTERED_ON_MOUSE, dialog_size = null, disable_exclusive_flag: bool = false, enable_transition: bool = true) -> Window:
 	if (path is String and !ResourceLoader.exists(path)) and not path is Window:
 		return null
-	
+		
 	var dialog: Window
 	
 	if path is String:
@@ -208,31 +208,19 @@ func open_dialog(path: Variant, mode: OPEN_MODE = OPEN_MODE.CENTERED_ON_MOUSE, d
 		dialog = path
 		
 	TranslationManager.translate(dialog)
-	#dialog.set_transparent_background(true)
 	dialog.visible = false
-	#if disable_exclusive_flag:
-		#dialog.exclusive = false
-	#else:
-		#dialog.exclusive = true
-	#dialog.force_native = true
+	
 	if dialog.name in ["DatabaseDialog", "LPCCharacterCreatorDialog", "EditEventDialog"]:
 		dialog.exclusive = true
 		dialog.transient = true
 	else:
 		dialog.exclusive = true
 		dialog.transient = true
-
-	var dialog_parent = get_viewport()
-	if current_opened_dialogs.size() > 0 and _is_valid_window(current_opened_dialogs[-1]):
-		dialog_parent = current_opened_dialogs[-1]
 		
 	if enable_transition:
 		dialog.transient = true
 		dialog.transient_to_focused = true
-	
-	if dialog_parent != dialog and not dialog.is_inside_tree():
-		dialog_parent.add_child(dialog)
-	
+		
 	show_dialog(dialog, mode, dialog_size)
 	
 	return dialog
@@ -251,15 +239,19 @@ func show_dialog(dialog: Window, mode: OPEN_MODE = OPEN_MODE.CENTERED_ON_MOUSE, 
 			dialog.get_parent().remove_child(dialog)
 		current_opened_dialogs.erase(dialog)
 		
-	if not dialog.is_inside_tree():
-		if current_opened_dialogs.size() > 0 and _is_valid_window(current_opened_dialogs[-1]):
-			current_opened_dialogs[-1].add_child(dialog)
-		else:
-			get_viewport().add_child(dialog)
+	var dialog_parent = get_viewport()
 	
+	if current_opened_dialogs.size() > 0 and _is_valid_window(current_opened_dialogs[-1]):
+		dialog_parent = current_opened_dialogs[-1]
+		
+	current_opened_dialogs.append(dialog)
+	
+	if not dialog.is_inside_tree():
+		dialog_parent.add_child(dialog)
+		
 	if dialog_size:
 		dialog.set_deferred("size", dialog_size)
-	
+		
 	if dialog.visibility_changed.is_connected(dialog_visibility_changed):
 		dialog.visibility_changed.disconnect(dialog_visibility_changed)
 	dialog.visibility_changed.connect(dialog_visibility_changed.bind(dialog))
@@ -282,23 +274,26 @@ func show_dialog(dialog: Window, mode: OPEN_MODE = OPEN_MODE.CENTERED_ON_MOUSE, 
 		var p = _repos_dialog(dialog)
 		var rect: Rect2 = Rect2(p, dialog.size)
 		dialog.popup(rect)
+		
 		if not dialog.size_changed.is_connected(_repos_dialog):
 			dialog.size_changed.connect(self._repos_dialog.bind(dialog, true))
-
-	if current_opened_dialogs.size() > 0:
-		var last_dialog = current_opened_dialogs[-1]
+			
+	if current_opened_dialogs.size() > 1:
+		var last_dialog = current_opened_dialogs[-2]
+		
 		if _is_valid_window(last_dialog):
 			last_dialog.set_disable_input.call_deferred(true)
 	else:
 		get_viewport().set_disable_input.call_deferred(true)
 		
-	current_opened_dialogs.append(dialog)
 	initial_delay = 0.1
 	_update_file_cache_activity()
+	
 	await get_tree().process_frame
+	
 	if _is_valid_window(dialog):
 		dialog.grab_focus.call_deferred()
-
+		
 	busy = false
 
 
@@ -468,7 +463,8 @@ func _on_dialog_window_input(event: InputEvent, dialog: Window) -> void:
 						focus_owner.get_parent().apply()
 						focus_owner.release_focus()
 						await get_tree().process_frame
-						focus_owner.deselect()
+						if is_instance_valid(focus_owner):
+							focus_owner.deselect()
 						return
 					elif focus_owner.get_class() == "SpecialItemList" and focus_owner.get_parent().lock_enter and !event.is_ctrl_pressed():
 						return

@@ -8,7 +8,6 @@ var _generator: Node
 #endregion
 
 
-
 ## Initializes the processor with a reference to the main generator to access dimensions and settings
 func _init(generator: Node) -> void:
 	_generator = generator
@@ -82,31 +81,31 @@ func build_terrain_cache(tm: TileMapLayer, t_id: int) -> Dictionary:
 
 
 
-## Checks if a cell inside the flat array matches a specific terrain value
-func check_grid(grid: PackedByteArray, x: int, y: int, targets: Array[int]) -> bool:
-	if x >= 0 and x < _generator.map_width and y >= 0 and y < _generator.map_height:
-		return grid[y * _generator.map_width + x] in targets
+## Checks if a cell inside the flat array matches a specific terrain value using dynamic boundaries
+func check_grid_dynamic(grid: PackedByteArray, x: int, y: int, targets: Array, w: int, h: int) -> bool:
+	if x >= 0 and x < w and y >= 0 and y < h:
+		return grid[y * w + x] in targets
 		
 	return false
 
 
 
-## Generates the bitmask for a coordinate analyzing neighbors
-func get_bitmask(grid: PackedByteArray, x: int, y: int, targets: Array[int]) -> int:
+## Generates the bitmask for a coordinate analyzing neighbors using dynamic boundaries
+func get_bitmask_dynamic(grid: PackedByteArray, x: int, y: int, targets: Array, w: int, h: int) -> int:
 	var mask: int = 0
-	var n: bool = check_grid(grid, x, y - 1, targets)
-	var s: bool = check_grid(grid, x, y + 1, targets)
-	var w: bool = check_grid(grid, x - 1, y, targets)
-	var e: bool = check_grid(grid, x + 1, y, targets)
+	var n: bool = check_grid_dynamic(grid, x, y - 1, targets, w, h)
+	var s: bool = check_grid_dynamic(grid, x, y + 1, targets, w, h)
+	var w_d: bool = check_grid_dynamic(grid, x - 1, y, targets, w, h)
+	var e: bool = check_grid_dynamic(grid, x + 1, y, targets, w, h)
 	
 	if e: mask |= 1
-	if s and e and check_grid(grid, x + 1, y + 1, targets): mask |= 2
+	if s and e and check_grid_dynamic(grid, x + 1, y + 1, targets, w, h): mask |= 2
 	if s: mask |= 4
-	if s and w and check_grid(grid, x - 1, y + 1, targets): mask |= 8
-	if w: mask |= 16
-	if n and w and check_grid(grid, x - 1, y - 1, targets): mask |= 32
+	if s and w_d and check_grid_dynamic(grid, x - 1, y + 1, targets, w, h): mask |= 8
+	if w_d: mask |= 16
+	if n and w_d and check_grid_dynamic(grid, x - 1, y - 1, targets, w, h): mask |= 32
 	if n: mask |= 64
-	if n and e and check_grid(grid, x + 1, y - 1, targets): mask |= 128
+	if n and e and check_grid_dynamic(grid, x + 1, y - 1, targets, w, h): mask |= 128
 	
 	return mask
 
@@ -135,16 +134,18 @@ func resolve_tile(mask: int, cache: Dictionary) -> Dictionary:
 
 
 
-## Extracts specific terrain cells from the grid into a ready-to-draw package
-func package_terrain_layer(grid: PackedByteArray, self_targets: Array[int], neighbor_targets: Array[int], cache: Dictionary) -> Dictionary:
+## Extracts specific terrain cells from the grid into a ready-to-draw package using dynamic boundaries
+func package_terrain_layer(grid: PackedByteArray, self_targets: Array, neighbor_targets: Array, cache: Dictionary, w: int = -1, h: int = -1) -> Dictionary:
+	var cur_w: int = w if w != -1 else _generator.map_width
+	var cur_h: int = h if h != -1 else _generator.map_height
 	var out_pos: Array[Vector2i] = []
 	var out_src: Array[int] = []
 	var out_crd: Array[Vector2i] = []
 	
-	for y in range(_generator.map_height):
-		for x in range(_generator.map_width):
-			if grid[y * _generator.map_width + x] in self_targets:
-				var mask: int = get_bitmask(grid, x, y, neighbor_targets)
+	for y in range(cur_h):
+		for x in range(cur_w):
+			if grid[y * cur_w + x] in self_targets:
+				var mask: int = get_bitmask_dynamic(grid, x, y, neighbor_targets, cur_w, cur_h)
 				var tile: Dictionary = resolve_tile(mask, cache)
 				
 				out_pos.append(Vector2i(x, y))
@@ -155,8 +156,8 @@ func package_terrain_layer(grid: PackedByteArray, self_targets: Array[int], neig
 
 
 
-## Packages a single specific tile into an array bypassing bitmask calculations
-func package_single_tile_layer(grid: PackedByteArray, self_targets: Array[int], tile_data: Dictionary) -> Dictionary:
+## Packages a single specific tile into an array bypassing bitmask calculations using dynamic boundaries
+func package_single_tile_layer_dynamic(grid: PackedByteArray, self_targets: Array, tile_data: Dictionary, w: int, h: int) -> Dictionary:
 	var out_pos: Array[Vector2i] = []
 	var out_src: Array[int] = []
 	var out_crd: Array[Vector2i] = []
@@ -164,9 +165,9 @@ func package_single_tile_layer(grid: PackedByteArray, self_targets: Array[int], 
 	var c_id: Vector2i = tile_data.get("tile_id", Vector2i(-1, -1))
 	
 	if s_id != -1 and c_id != Vector2i(-1, -1):
-		for y in range(_generator.map_height):
-			for x in range(_generator.map_width):
-				if grid[y * _generator.map_width + x] in self_targets:
+		for y in range(h):
+			for x in range(w):
+				if grid[y * w + x] in self_targets:
 					out_pos.append(Vector2i(x, y))
 					out_src.append(s_id)
 					out_crd.append(c_id)
@@ -175,8 +176,8 @@ func package_single_tile_layer(grid: PackedByteArray, self_targets: Array[int], 
 
 
 
-## Scans floor cells and generates shadows if there is a wall to their left
-func package_shadow_layer(grid: PackedByteArray) -> Dictionary:
+## Scans floor cells and generates shadows if there is a wall to their left using dynamic boundaries
+func package_shadow_layer_dynamic(grid: PackedByteArray, w: int, h: int) -> Dictionary:
 	var out_pos: Array[Vector2i] = []
 	var out_src: Array[int] = []
 	var out_crd: Array[Vector2i] = []
@@ -189,32 +190,32 @@ func package_shadow_layer(grid: PackedByteArray) -> Dictionary:
 	if s_id == -1 or s_crd == Vector2i(-1, -1):
 		return {"pos": out_pos, "src": out_src, "crd": out_crd}
 		
-	for y in range(_generator.map_height):
-		for x in range(1, _generator.map_width + 1):
+	for y in range(h):
+		for x in range(1, w + 1):
 			var current_val: int = 0
 			
-			if x < _generator.map_width:
-				current_val = grid[y * _generator.map_width + x]
+			if x < w:
+				current_val = grid[y * w + x]
 				
 			if current_val in [0, 1]:
 				var wall_x: int = x - 1
 				
-				if grid[y * _generator.map_width + wall_x] in [2, 9]:
+				if grid[y * w + wall_x] in [2, 9]:
 					var wall_above: bool = false
 					
-					if y > 0 and grid[(y - 1) * _generator.map_width + wall_x] in [2, 9]:
+					if y > 0 and grid[(y - 1) * w + wall_x] in [2, 9]:
 						wall_above = true
 						
 					var wall_below: bool = false
 					var wall_below_can_draw: bool = false
 					
-					if y + 1 < _generator.map_height:
-						if grid[(y + 1) * _generator.map_width + wall_x] in [2, 9]:
+					if y + 1 < h:
+						if grid[(y + 1) * w + wall_x] in [2, 9]:
 							wall_below = true
 							var target_below_val: int = 0
 							
-							if x < _generator.map_width:
-								target_below_val = grid[(y + 1) * _generator.map_width + x]
+							if x < w:
+								target_below_val = grid[(y + 1) * w + x]
 								
 							if target_below_val in [0, 1]:
 								wall_below_can_draw = true

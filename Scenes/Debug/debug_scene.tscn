@@ -3,8 +3,11 @@
 [ext_resource type="Script" uid="uid://ceovd56yy0n2n" path="res://Scripts/debug_scene.gd" id="1_81ui7"]
 [ext_resource type="Texture2D" uid="uid://bvc2gub3sa2wm" path="res://Assets/Images/GUI/window2.png" id="2_ueffu"]
 [ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="3_cp7oy"]
+[ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="4_g83qs"]
 [ext_resource type="PackedScene" uid="uid://dxcyqc2dscbvw" path="res://addons/CustomControls/custom_simple_column_item_list.tscn" id="4_r6wuy"]
 [ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="5_4wq3s"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="5_ck51g"]
+[ext_resource type="FontFile" uid="uid://dvh0mi6yu0ywx" path="res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf" id="6_xw43c"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mb2j1"]
 bg_color = Color(0.168627, 0.0588235, 0, 1)
@@ -63,6 +66,15 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
+[sub_resource type="LabelSettings" id="LabelSettings_8xmjx"]
+font = ExtResource("6_xw43c")
+font_size = 22
+font_color = Color(1, 0.7176471, 0, 1)
+outline_size = 1
+outline_color = Color(0.99215686, 0.93333334, 0.5803922, 1)
+stacked_outline_count = 1
+stacked_outline_0/size = 5
+
 [sub_resource type="Gradient" id="Gradient_otrhk"]
 colors = PackedColorArray(0.168627, 0.0588235, 0, 1, 0.148438, 0.0517805, 0, 1)
 
@@ -83,7 +95,7 @@ gradient = SubResource("Gradient_3ve6v")
 fill_from = Vector2(0.547009, 1)
 fill_to = Vector2(0.559829, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ewqb6"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ck51g"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_ygvtv")
 
@@ -208,6 +220,7 @@ size_flags_vertical = 3
 unique_name_in_owner = true
 modulate = Color(0.820313, 0.608375, 0.493469, 1)
 layout_mode = 2
+size_flags_vertical = 10
 focus_mode = 1
 theme_override_colors/font_color = Color(66.478, 89.772, 28.409, 1)
 theme_override_colors/font_pressed_color = Color(23.295, 22.159, 24.432, 1)
@@ -257,7 +270,52 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="DataList" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer" unique_id=1250084832 instance=ExtResource("4_r6wuy")]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer" unique_id=672361277]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer" unique_id=140886441]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1235260691]
+layout_mode = 2
+text = "Filter:"
+
+[node name="SearchLineEdit" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/HBoxContainer" unique_id=313912872 instance=ExtResource("4_g83qs")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+focus_neighbor_right = NodePath("../GoldNumber")
+focus_next = NodePath("../GoldNumber")
+
+[node name="HSeparator" type="VSeparator" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1620633231]
+layout_mode = 2
+
+[node name="GoldIcon" type="TextureRect" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/HBoxContainer" unique_id=2135166740]
+unique_name_in_owner = true
+texture_filter = 1
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_vertical = 4
+expand_mode = 1
+stretch_mode = 5
+
+[node name="GoldNumber" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1557344405 instance=ExtResource("5_ck51g")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+focus_mode = 1
+allow_greater = true
+select_all_on_focus = true
+_custom_value = 0.0
+
+[node name="GoldLabel" type="Label" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/HBoxContainer" unique_id=297815324]
+unique_name_in_owner = true
+layout_mode = 2
+text = "G"
+label_settings = SubResource("LabelSettings_8xmjx")
+
+[node name="DataList" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer" unique_id=1250084832 instance=ExtResource("4_r6wuy")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -267,12 +325,40 @@ odd_line_color = Color(0.4375, 0.336182, 0.295654, 1)
 event_line_color = Color(0.371094, 0.282473, 0.24498, 1)
 top_bar_style = SubResource("StyleBoxTexture_rf2xa")
 columns_text_colors = PackedColorArray(1, 1, 1, 1, 0.72549, 0.992157, 0.772549, 1)
-cursor_style = SubResource("StyleBoxTexture_ewqb6")
+cursor_style = SubResource("StyleBoxTexture_ck51g")
 panel_style = SubResource("StyleBoxFlat_cgt5q")
 columns = 2
 names = PackedStringArray("ID", "Current Value")
 sizes = PackedInt32Array(400, 0)
 text_margin_left = 20
+
+[node name="ValuesExtra" type="HBoxContainer" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer" unique_id=678126980]
+unique_name_in_owner = true
+layout_mode = 2
+alignment = 2
+
+[node name="Label" type="Label" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/ValuesExtra" unique_id=2112921276]
+layout_mode = 2
+text = "Set all values at: "
+
+[node name="SetAllValues" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/ValuesExtra" unique_id=725513210 instance=ExtResource("5_ck51g")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+min_value = 1.0
+max_value = 9999.0
+value = 100.0
+_custom_value = 100.0
+
+[node name="SetAllValuesButton" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/ValuesExtra" unique_id=225668214 instance=ExtResource("3_cp7oy")]
+modulate = Color(0.820313, 0.608375, 0.493469, 1)
+layout_mode = 2
+size_flags_vertical = 10
+focus_mode = 1
+theme_override_colors/font_color = Color(66.478, 89.772, 28.409, 1)
+theme_override_colors/font_pressed_color = Color(23.295, 22.159, 24.432, 1)
+theme_override_colors/font_hover_color = Color(25, 25, 25, 1)
+text = "Set"
 
 [node name="FunctionButtonContainer" type="Control" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer" unique_id=1279345176]
 unique_name_in_owner = true
@@ -363,8 +449,10 @@ text = "Use 🢀 Left or 🢂 Right To change the value. Or double click to ente
 horizontal_alignment = 1
 
 [connection signal="pressed" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/CloseButton" to="." method="_on_close_button_pressed"]
-[connection signal="item_activated" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/DataList" to="." method="_on_data_list_item_activated"]
-[connection signal="item_selected" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/DataList" to="." method="_on_data_list_item_selected"]
+[connection signal="value_changed" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/HBoxContainer/GoldNumber" to="." method="_on_gold_number_value_changed"]
+[connection signal="item_activated" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/DataList" to="." method="_on_data_list_item_activated"]
+[connection signal="item_selected" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/DataList" to="." method="_on_data_list_item_selected"]
+[connection signal="pressed" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/ValuesExtra/SetAllValuesButton" to="." method="_on_set_all_values_button_pressed"]
 [connection signal="pressed" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/FunctionButtonContainer/HBoxContainer/AddValue" to="." method="_on_add_value_pressed"]
 [connection signal="pressed" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/FunctionButtonContainer/HBoxContainer/SubtractValue" to="." method="_on_subtract_value_pressed"]
 [connection signal="pressed" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/FunctionButtonContainer/HBoxContainer/ToggleValue" to="." method="_on_toggle_value_pressed"]

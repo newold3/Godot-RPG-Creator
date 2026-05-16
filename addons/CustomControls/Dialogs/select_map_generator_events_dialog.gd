@@ -28,6 +28,13 @@ func _fill_parameters(data_selected: MapGeneratorEvent) -> void:
 		%Quantity.set_value_no_signal(data_selected.max_quantity)
 		%PlacementMode.select(data_selected.placement)
 		%RightColumn.propagate_call("set_disabled", [false])
+		%Width.set_value_no_signal(data_selected.width)
+		%Height.set_value_no_signal(data_selected.height)
+		%FootprintHeight.set_value_no_signal(data_selected.footprint_height)
+		%MarginLeft.set_value_no_signal(data_selected.wall_margins.x)
+		%MarginRight.set_value_no_signal(data_selected.wall_margins.z)
+		%MarginTop.set_value_no_signal(data_selected.wall_margins.y)
+		%MarginBottom.set_value_no_signal(data_selected.wall_margins.w)
 	else:
 		%RightColumn.propagate_call("set_disabled", [true])
 
@@ -178,3 +185,31 @@ func _on_delete_event_pressed() -> void:
 					
 					_fill_list()
 	)
+
+
+func _on_footprint_height_value_changed(value: float) -> void:
+	if current_event_selected: current_event_selected.footprint_height = value
+
+
+func _on_margin_left_value_changed(value: float) -> void:
+	if current_event_selected: current_event_selected.wall_margins.x = value
+
+
+func _on_margin_right_value_changed(value: float) -> void:
+	if current_event_selected: current_event_selected.wall_margins.z = value
+
+
+func _on_margin_top_value_changed(value: float) -> void:
+	if current_event_selected: current_event_selected.wall_margins.y = value
+
+
+func _on_margin_bottom_value_changed(value: float) -> void:
+	if current_event_selected: current_event_selected.wall_margins.w = value
+
+
+func _on_width_value_changed(value: float) -> void:
+	if current_event_selected: current_event_selected.width = value
+
+
+func _on_height_value_changed(value: float) -> void:
+	if current_event_selected: current_event_selected.height = value

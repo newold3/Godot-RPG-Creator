@@ -17,6 +17,9 @@ func _ready() -> void:
 	%MainButton.get_popup().about_to_popup.connect(_update_map_list)
 	%MainButton.get_popup().about_to_popup.connect(_change_arrow.bind(1))
 	%MainButton.get_popup().popup_hide.connect(_change_arrow.bind(0))
+	%MainButton.get_popup().visibility_changed.connect(
+		_on_main_button_popup_visibility_changed
+	)
 
 	edit_maps_menu = PopupMenu.new()
 	edit_maps_menu.name = "EditMapsMenu"
@@ -37,6 +40,10 @@ func _ready() -> void:
 	_populate_scenes_menu()
 
 	CustomTooltipManager.plugin_replace_all_tooltips_with_custom.call_deferred(self)
+
+
+func _on_main_button_popup_visibility_changed() -> void:
+	%MainButton.get_popup().size.x = max(%MainButton.get_popup().size.x, size.x)
 
 
 func _change_arrow(idx: int) -> void:

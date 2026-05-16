@@ -164,7 +164,7 @@ var current_interpreter: Interpreter  # The current interpreter whose command is
 var current_automatic_interpreter: Interpreter  # The current automatic interpreter whose command is being processed
 var selected_choice_id: int = 0 # Variable used to retain the option selected in a choice dialog.
 var code_eval: CodeEval = preload("res://Scripts/code_eval.gd").new() # call code_eval.execute(code) to eval block code
-var prints_debugs: bool = true  # For debugging purposes only
+var prints_debugs: bool = false  # For debugging purposes only
 var transfer_in_progress: bool = false # block input when transfer player
 
 var command_handler_scripts: Array = []

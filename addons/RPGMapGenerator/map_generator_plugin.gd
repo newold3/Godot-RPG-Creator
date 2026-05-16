@@ -38,6 +38,22 @@ func _enter_tree() -> void:
 	_on_editor_selection_changed()
 
 
+func _ready() -> void:
+	_repos_floating_panel()
+	var saved_pos: Vector2 = FileCache.options.get("map_generator_panel_pos", Vector2(40, 40))
+	print(saved_pos)
+	floating_panel.set_deferred("global_position", saved_pos)
+
+
+func _repos_floating_panel() -> void:
+	while not floating_panel or not FileCache.cache_setted:
+		await RenderingServer.frame_post_draw
+		
+	var saved_pos: Vector2 = FileCache.options.get("map_generator_panel_pos", Vector2(40, 40))
+	print(saved_pos, " from plugin")
+	floating_panel.set_deferred("global_position", saved_pos)
+
+
 func _create_button() -> void:
 	map_button = Button.new()
 	map_button.icon = preload("uid://daohf8pvmdk62")
@@ -148,8 +164,12 @@ func _handles(object: Object) -> bool:
 
 ## Intercepts mouse events in the 2D editor viewport and passes them to the canvas
 func _forward_canvas_gui_input(event: InputEvent) -> bool:
+	if floating_panel and floating_panel.get_global_rect().has_point(floating_panel.get_global_mouse_position()):
+		return false
+		
 	if active_canvas and active_canvas.is_visible_in_tree():
 		return active_canvas.process_editor_input(event)
+		
 	return false
 
 
@@ -226,6 +246,7 @@ func _on_editor_selection_changed() -> void:
 
 func _check_auto_selection() -> void:
 	var editor_selection: EditorSelection = get_editor_interface().get_selection()
+	
 	if editor_selection.get_selected_nodes().is_empty():
 		var root: Node = EditorInterface.get_edited_scene_root()
 		if root and root is MapGenerator:

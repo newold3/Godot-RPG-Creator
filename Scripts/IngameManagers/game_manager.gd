@@ -961,7 +961,7 @@ func add_weapon_amount(id: int, amount: int, level: int = 1, auto_popup_enabled:
 	return 0
 
 
-func remove_weapon_amount(id: int, amount: int, include_equipment: bool) -> void:
+func remove_weapon_amount(id: int, amount: int, include_equipment: bool = false) -> void:
 	if inventory_manager: inventory_manager.remove_weapon_amount(id, amount, include_equipment)
 
 
@@ -975,7 +975,7 @@ func add_armor_amount(id: int, amount: int, level: int = 1, auto_popup_enabled: 
 	return 0
 
 
-func remove_armor_amount(id: int, amount: int, include_equipment: bool) -> void:
+func remove_armor_amount(id: int, amount: int, include_equipment: bool = false) -> void:
 	if inventory_manager: inventory_manager.remove_armor_amount(id, amount, include_equipment)
 
 
@@ -989,7 +989,7 @@ func add_costume_amount(id: int, amount: int, auto_popup_enabled: bool = false, 
 	return 0
 
 
-func remove_costume_amount(id: int, amount: int, include_equipment: bool) -> void:
+func remove_costume_amount(id: int, amount: int, include_equipment: bool = false) -> void:
 	if inventory_manager: inventory_manager.remove_costume_amount(id, amount, include_equipment)
 #endregion
 
@@ -1172,10 +1172,18 @@ func get_real_actor(id: int) -> RPGActor:
 
 func add_party_member(actor_id: int, initialize: bool = true) -> void:
 	if actor_stats_manager: actor_stats_manager.add_party_member(actor_id, initialize)
+	if not game_state.current_party.is_empty() and current_player:
+		current_player.set_process(true)
+		current_player.set_physics_process(true)
+		current_player.set_process_input(true)
 
 
 func remove_party_member(actor_id: int) -> void:
 	if actor_stats_manager: actor_stats_manager.remove_party_member(actor_id)
+	if game_state.current_party.is_empty() and current_player:
+		current_player.set_process(false)
+		current_player.set_physics_process(false)
+		current_player.set_process_input(false)
 
 
 func change_formation(actor_id1: int, actor_id2: int) -> void:

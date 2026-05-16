@@ -27,6 +27,9 @@ func generate(grid: PackedByteArray, width: int, height: int, config: Dictionary
 	var min_corridor_width: int = config.get("min_corridor_width", 1)
 	var max_corridor_width: int = config.get("max_corridor_width", 2)
 	
+	var stack: PackedInt64Array = PackedInt64Array()
+	stack.resize(width * height)
+	
 	while not is_valid and attempts < 10:
 		attempts += 1
 		grid.fill(0)
@@ -47,35 +50,57 @@ func generate(grid: PackedByteArray, width: int, height: int, config: Dictionary
 					var neighbors: int = 0
 					for dy in range(-1, 2):
 						for dx in range(-1, 2):
-							if dx == 0 and dy == 0: continue
-							if temp[(y + dy) * width + (x + dx)] == 1: neighbors += 1
+							if dx == 0 and dy == 0: 
+								continue
+							if temp[(y + dy) * width + (x + dx)] == 1: 
+								neighbors += 1
 					grid[y * width + x] = 1 if neighbors > 4 else (0 if neighbors < 4 else temp[y * width + x])
 					
 		var visited: PackedByteArray = PackedByteArray()
 		visited.resize(width * height)
 		visited.fill(0)
 		var regions: Array[Array] = []
+		var stack_ptr: int = 0
 		
 		for y in range(height):
 			for x in range(width):
 				var idx: int = y * width + x
+				
 				if grid[idx] == 1 and visited[idx] == 0:
-					var stack: Array[Vector2i] = [Vector2i(x, y)]
+					stack_ptr = 0
+					stack[stack_ptr] = idx
+					visited[idx] = 1
+					stack_ptr += 1
 					var current_region: Array[Vector2i] = []
 					
-					while stack.size() > 0:
-						var curr: Vector2i = stack.pop_back()
-						var cidx: int = curr.y * width + curr.x
+					while stack_ptr > 0:
+						stack_ptr -= 1
+						var cidx: int = stack[stack_ptr]
 						
-						if visited[cidx] == 1: continue
-						visited[cidx] = 1
-						current_region.append(curr)
+						var curr_x: int = cidx % width
+						var curr_y: int = cidx / width
+						current_region.append(Vector2i(curr_x, curr_y))
 						
-						if curr.y > 0 and grid[cidx - width] == 1 and visited[cidx - width] == 0: stack.append(Vector2i(curr.x, curr.y - 1))
-						if curr.y < height - 1 and grid[cidx + width] == 1 and visited[cidx + width] == 0: stack.append(Vector2i(curr.x, curr.y + 1))
-						if curr.x > 0 and grid[cidx - 1] == 1 and visited[cidx - 1] == 0: stack.append(Vector2i(curr.x - 1, curr.y))
-						if curr.x < width - 1 and grid[cidx + 1] == 1 and visited[cidx + 1] == 0: stack.append(Vector2i(curr.x + 1, curr.y))
-						
+						if curr_y > 0 and grid[cidx - width] == 1 and visited[cidx - width] == 0:
+							visited[cidx - width] = 1
+							stack[stack_ptr] = cidx - width
+							stack_ptr += 1
+							
+						if curr_y < height - 1 and grid[cidx + width] == 1 and visited[cidx + width] == 0:
+							visited[cidx + width] = 1
+							stack[stack_ptr] = cidx + width
+							stack_ptr += 1
+							
+						if curr_x > 0 and grid[cidx - 1] == 1 and visited[cidx - 1] == 0:
+							visited[cidx - 1] = 1
+							stack[stack_ptr] = cidx - 1
+							stack_ptr += 1
+							
+						if curr_x < width - 1 and grid[cidx + 1] == 1 and visited[cidx + 1] == 0:
+							visited[cidx + 1] = 1
+							stack[stack_ptr] = cidx + 1
+							stack_ptr += 1
+							
 					regions.append(current_region)
 					
 		if regions.size() > 0:
@@ -117,4 +142,5 @@ func generate(grid: PackedByteArray, width: int, height: int, config: Dictionary
 					grid[y * width + x] = 0
 					
 	return []
+
 #endregion

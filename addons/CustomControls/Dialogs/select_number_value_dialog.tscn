@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bf6p7qvxppovl"]
+[gd_scene format=3 uid="uid://bf6p7qvxppovl"]
 
 [ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="1_2ywxf"]
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_h5atl"]
@@ -13,7 +13,7 @@ gradient = SubResource("Gradient_vvvrv")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
-[node name="SelectNumberValueDialog" type="Window"]
+[node name="SelectNumberValueDialog" type="Window" unique_id=476888739]
 oversampling_override = 1.0
 title = "Number Input"
 position = Vector2i(0, 36)
@@ -24,7 +24,7 @@ unresizable = true
 theme = ExtResource("1_h5atl")
 script = ExtResource("1_nvvsr")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1833699188]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -32,7 +32,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_ykjfa")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1049203972]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -43,46 +43,47 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=998546724]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Contents" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="Contents" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1778442139]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Number:"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=2110614192]
 layout_mode = 2
 
-[node name="Prefix" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Prefix" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=518588588]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ValueSpinBox" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("1_2ywxf")]
+[node name="ValueSpinBox" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=895373237 instance=ExtResource("1_2ywxf")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Number[/title]
 Select the desired value"
 allow_greater = true
+_custom_value = 0.0
 
-[node name="Suffix" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Suffix" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=863533079]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1402245859]
 layout_mode = 2
 size_flags_vertical = 10
 theme_override_constants/separation = 12
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=749216619]
 layout_mode = 2
 size_flags_vertical = 10
 alignment = 2
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("2_p1iib")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1526213236 instance=ExtResource("2_p1iib")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -91,12 +92,13 @@ tooltip_text = "[title]Ok[/title]
 Saves all changes and closes the windows."
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("2_p1iib")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=82946225 instance=ExtResource("2_p1iib")]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Cancel[/title]
 Closes this window without saving any changes."
 text = "CANCEL"
 
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer/ValueSpinBox" to="." method="_on_value_spin_box_value_changed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/OKButton" to="." method="_on_ok_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/CancelButton" to="." method="_on_cancel_button_pressed"]

@@ -100,14 +100,16 @@ func _request_update_preview(_preview: String) -> void:
 					_update_image("", img, img, true)
 			else:
 				var main_database = get_tree().get_nodes_in_group("main_database")
+				var event_editor = get_tree().get_nodes_in_group("event_editor")
 				if main_database:
 					main_database = main_database[0]
 					main_database.get_child(0).resource_previewer.queue_resource_preview(path, self, "_update_image", true)
-				else:
-					var event_editor = get_tree().get_nodes_in_group("event_editor")
-					if event_editor:
+				elif event_editor:
 						event_editor = event_editor[0]
 						event_editor.resource_previewer.queue_resource_preview(path, self, "_update_image", true)
+				elif RPGSYSTEM.editor_interface:
+					var rp = RPGSYSTEM.editor_interface.get_resource_previewer()
+					rp.queue_resource_preview(path, self, "_update_image", true)
 
 
 func set_directory(_path: String, img: Texture2D) -> void:

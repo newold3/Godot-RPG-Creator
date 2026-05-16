@@ -282,6 +282,7 @@ theme_override_constants/margin_bottom = 12
 
 [node name="Tab1" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer" unique_id=2044336672]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
 [node name="General" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1" unique_id=1193028855]
@@ -1227,7 +1228,6 @@ List of user signals. These signals can be used in different parts to execute so
 
 [node name="Tab6" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer" unique_id=1999145550]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 
 [node name="Group1" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6" unique_id=201666254]
@@ -1358,8 +1358,10 @@ size_flags_horizontal = 3
 tooltip_text = "Maximum number of stacks an item, armor or weapon can have in the inventory
 
 [Note]: Set it to 0 to have unlimited item stacks."
+min_value = 1.0
 max_value = 10000000.0
-_custom_value = 0.0
+value = 1.0
+_custom_value = 1.0
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer/Items" unique_id=1092191385]
 layout_mode = 2
@@ -1377,8 +1379,10 @@ size_flags_horizontal = 3
 tooltip_text = "Maximum number of different items that the player can carry in their inventory (items + weapons + armors)
 
 [Note]: Set it to 0 to have unlimited item slots."
-max_value = 10000000.0
-_custom_value = 0.0
+min_value = 1.0
+max_value = 9999.0
+value = 1.0
+_custom_value = 1.0
 
 [node name="MovementMode" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer" unique_id=1762189809]
 layout_mode = 2

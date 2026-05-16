@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://b8vm8gqseu2lq" path="res://Scenes/GUI/SteamPunkTheme/Equip/items_menu.gd" id="1_knrlo"]
 [ext_resource type="Script" uid="uid://b0cv34hixtpg0" path="res://Scenes/GUI/simple_menu_main.gd" id="2_knrlo"]
 [ext_resource type="FontFile" uid="uid://dvh0mi6yu0ywx" path="res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf" id="3_0ylrt"]
+[ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="4_p4cnb"]
 [ext_resource type="Texture2D" uid="uid://duu13dsov6vp5" path="res://Assets/Images/GUI/main_gui.png" id="5_0ylrt"]
 [ext_resource type="Texture2D" uid="uid://p7xallgkjnm0" path="res://Assets/Images/GUI/buttons_style_steampunk.png" id="5_ehgam"]
 
@@ -94,7 +95,7 @@ region = Rect2(689, 319, 35, 35)
 
 [node name="ItemsMenu" type="Control" unique_id=1094403720]
 z_index = 10
-custom_minimum_size = Vector2(416, 0)
+custom_minimum_size = Vector2(416, 400)
 layout_mode = 3
 anchors_preset = 0
 offset_right = 461.0
@@ -251,22 +252,27 @@ text = "EQUIPMENT"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Contents" type="MarginContainer" parent="." unique_id=86549717]
+[node name="Contents" type="MarginContainer" parent="." unique_id=809069691]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 45
-theme_override_constants/margin_right = 8
-theme_override_constants/margin_bottom = 43
+theme_override_constants/margin_left = 26
+theme_override_constants/margin_top = 35
+theme_override_constants/margin_right = 56
+theme_override_constants/margin_bottom = 16
 
-[node name="MainScene" type="Control" parent="Contents" unique_id=1983451043]
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="Contents" unique_id=619399775]
+layout_mode = 2
+script = ExtResource("4_p4cnb")
+metadata/_custom_type_script = "uid://cs6g8remlafby"
+
+[node name="MainScene" type="Control" parent="Contents/SmoothScrollContainer" unique_id=1983451043]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("2_knrlo")
 max_columns = 1
@@ -311,7 +317,7 @@ scale = Vector2(1.134, 1)
 texture = SubResource("AtlasTexture_knrlo")
 expand_mode = 1
 
-[connection signal="cancel" from="Contents/MainScene" to="." method="_on_main_scene_cancel"]
-[connection signal="item_clicked" from="Contents/MainScene" to="." method="_on_main_scene_item_clicked"]
-[connection signal="item_hovered" from="Contents/MainScene" to="." method="_on_main_scene_item_hovered"]
-[connection signal="item_selected" from="Contents/MainScene" to="." method="_on_main_scene_item_selected"]
+[connection signal="cancel" from="Contents/SmoothScrollContainer/MainScene" to="." method="_on_main_scene_cancel"]
+[connection signal="item_clicked" from="Contents/SmoothScrollContainer/MainScene" to="." method="_on_main_scene_item_clicked"]
+[connection signal="item_hovered" from="Contents/SmoothScrollContainer/MainScene" to="." method="_on_main_scene_item_hovered"]
+[connection signal="item_selected" from="Contents/SmoothScrollContainer/MainScene" to="." method="_on_main_scene_item_selected"]

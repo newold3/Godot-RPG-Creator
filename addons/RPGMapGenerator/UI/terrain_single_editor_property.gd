@@ -38,7 +38,7 @@ func _init(prop_name: String) -> void:
 	single_btn.pressed.connect(_on_single_btn_pressed)
 	hbox.add_child(single_btn)
 	
-	if base_prop in ["large_tile_shadow", "small_tile_shadow"]:
+	if base_prop in ["large_tile_shadow", "small_tile_shadow", "carve_door_tile", "carve_window_tile"]:
 		option_button.visible = false
 		single_btn.visible = true
 	else:
@@ -53,7 +53,7 @@ func _update_property() -> void:
 	updating = true
 	var obj: Object = get_edited_object()
 	
-	if base_prop in ["large_tile_shadow", "small_tile_shadow"]:
+	if base_prop in ["large_tile_shadow", "small_tile_shadow", "carve_door_tile", "carve_window_tile"]:
 		var tile_data: Dictionary = obj[base_prop]
 		var prefix: String = _get_button_prefix()
 		
@@ -106,6 +106,8 @@ func _get_button_prefix() -> String:
 	if base_prop == "terrain_wall": return "Wall Tile: "
 	if base_prop == "large_tile_shadow": return "Large Tile Shadow: "
 	if base_prop == "small_tile_shadow": return "Small Tile Shadow: "
+	if base_prop == "carve_door_tile": return "Door/Hole: "
+	if base_prop == "carve_window_tile": return "Window: "
 	return "Roof Tile: "
 
 
@@ -118,6 +120,8 @@ func _get_tile_icon(atlas_id: int, tile_coords: Vector2i) -> AtlasTexture:
 		tm = map_generator.layer_ground_base
 	elif base_prop in ["large_tile_shadow", "small_tile_shadow"]:
 		tm = map_generator.layer_shadows
+	elif base_prop in ["carve_door_tile", "carve_window_tile"]:
+		tm = map_generator.layer_walls
 		
 	if not tm or not tm.tile_set or atlas_id == -1:
 		return null
@@ -187,6 +191,9 @@ func _on_single_btn_pressed() -> void:
 		elif base_prop in ["large_tile_shadow", "small_tile_shadow"]:
 			tm = map_gen.layer_shadows
 			current_tile = map_gen[base_prop]
+		elif base_prop in ["carve_door_tile", "carve_window_tile"]:
+			tm = map_gen.layer_walls
+			current_tile = map_gen[base_prop]
 		else:
 			current_tile = map_gen[_get_single_tile_prop()]
 			
@@ -201,7 +208,7 @@ func _on_dialog_tile_selected(atlas_id: int, tile_id: Vector2i) -> void:
 	var new_data: Dictionary = {"atlas_id": atlas_id, "tile_id": tile_id}
 	var prop_to_emit: String = base_prop
 	
-	if not base_prop in ["large_tile_shadow", "small_tile_shadow"]:
+	if not base_prop in ["large_tile_shadow", "small_tile_shadow", "carve_door_tile", "carve_window_tile"]:
 		prop_to_emit = _get_single_tile_prop()
 	
 	emit_changed(prop_to_emit, new_data)

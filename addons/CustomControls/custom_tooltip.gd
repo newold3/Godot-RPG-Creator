@@ -107,6 +107,7 @@ func _is_valid_window() -> bool:
 func _process(delta: float) -> void:
 	if !started or not is_alive:
 		return
+	
 		
 	if _is_valid_window():
 		call_deferred("set_window_position")

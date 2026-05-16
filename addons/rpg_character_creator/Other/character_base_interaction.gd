@@ -398,7 +398,7 @@ func _check_contact(tile: Vector2i, check_passable: bool = false) -> bool:
 
 ## Analyzes proximity across axis lines for adjacent event bumps
 func _check_nearby_events_for_activation() -> void:
-	if current_entity.activated_this_frame:
+	if current_entity.activated_this_frame or not GameManager.current_map:
 		return
 
 	var valid_contacts: Array = []

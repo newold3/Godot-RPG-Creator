@@ -39,6 +39,7 @@ func generate_random_events() -> void:
 	var grid_data: Dictionary = _generator._read_initial_grid()
 	var grid: PackedByteArray = grid_data["grid"]
 	var spawn_counts: Dictionary = {}
+	var visited_cells: Dictionary = {}
 	var available_cells: Array[Vector2i] = []
 	
 	for y in range(_generator.map_height):
@@ -57,7 +58,11 @@ func generate_random_events() -> void:
 		return
 		
 	for cell in available_cells:
+		if visited_cells.has(cell):
+			continue
+			
 		valid_candidates.shuffle()
+		
 		for candidate in valid_candidates:
 			var base_event_id: int = candidate.event.get_instance_id()
 			var max_allowed: int = candidate.max_quantity
@@ -69,9 +74,34 @@ func generate_random_events() -> void:
 			if randf() * 100.0 > candidate.probability:
 				continue
 				
+			var ev_w: int = candidate.get("width") if "width" in candidate else 1
+			var ev_h: int = candidate.get("height") if "height" in candidate else 1
+			
+			if ev_w <= 0:
+				ev_w = 1
+			if ev_h <= 0:
+				ev_h = 1
+				
+			var area_free: bool = true
+			
+			for dy in range(ev_h):
+				for dx in range(ev_w):
+					if visited_cells.has(cell + Vector2i(dx, dy)):
+						area_free = false
+						break
+				if not area_free:
+					break
+					
+			if not area_free:
+				continue
+				
 			if not is_tile_valid_for_event_placement(cell, grid, candidate):
 				continue
 				
+			for dy in range(ev_h):
+				for dx in range(ev_w):
+					visited_cells[cell + Vector2i(dx, dy)] = true
+					
 			var new_placed_event: MapPlacedEvent = MapPlacedEvent.new()
 			new_placed_event.template_uid = candidate.event._uniq_id
 			new_placed_event.tile = cell
@@ -126,8 +156,10 @@ func get_template_from_uid(uid: int) -> RPGEvent:
 ## Generates events randomly but forcing the exact counts from the preset dictionary ensuring strict typing
 func package_random_events_filtered(grid: PackedByteArray, env_grid: PackedByteArray, preset_data: Array) -> Array[MapPlacedEvent]:
 	var out_events: Array[MapPlacedEvent] = []
-	if not _generator.events_library: return out_events
 	
+	if not _generator.events_library:
+		return out_events
+		
 	var target_counts: Dictionary = {}
 	
 	for item in preset_data:
@@ -146,6 +178,7 @@ func package_random_events_filtered(grid: PackedByteArray, env_grid: PackedByteA
 			
 	available_cells.shuffle()
 	var current_spawn_counts: Dictionary = {}
+	var visited_cells: Dictionary = {}
 	var valid_candidates: Array = []
 	
 	for wrapper in _generator.events_library.events:
@@ -158,6 +191,9 @@ func package_random_events_filtered(grid: PackedByteArray, env_grid: PackedByteA
 		return out_events
 		
 	for cell in available_cells:
+		if visited_cells.has(cell):
+			continue
+			
 		valid_candidates.shuffle()
 		
 		for candidate in valid_candidates:
@@ -168,7 +204,32 @@ func package_random_events_filtered(grid: PackedByteArray, env_grid: PackedByteA
 			if target_amount != -1 and current >= target_amount:
 				continue
 				
+			var ev_w: int = candidate.get("width") if "width" in candidate else 1
+			var ev_h: int = candidate.get("height") if "height" in candidate else 1
+			
+			if ev_w <= 0:
+				ev_w = 1
+			if ev_h <= 0:
+				ev_h = 1
+				
+			var area_free: bool = true
+			
+			for dy in range(ev_h):
+				for dx in range(ev_w):
+					if visited_cells.has(cell + Vector2i(dx, dy)):
+						area_free = false
+						break
+				if not area_free:
+					break
+					
+			if not area_free:
+				continue
+				
 			if is_tile_valid_for_event_placement(cell, grid, candidate, env_grid):
+				for dy in range(ev_h):
+					for dx in range(ev_w):
+						visited_cells[cell + Vector2i(dx, dy)] = true
+						
 				var new_ev: MapPlacedEvent = MapPlacedEvent.new()
 				new_ev.template_uid = int(s_uid)
 				new_ev.tile = cell
@@ -182,31 +243,105 @@ func package_random_events_filtered(grid: PackedByteArray, env_grid: PackedByteA
 
 
 ## Checks if a specific tile matches the placement rules defined for an event
-func is_tile_valid_for_event_placement(tile_pos: Vector2i, grid: PackedByteArray, rules: MapGeneratorEvent, env_grid: PackedByteArray = []) -> bool:
-		var idx: int = tile_pos.y * _generator.map_width + tile_pos.x
-		if idx < 0 or idx >= grid.size(): return false
+func is_tile_valid_for_event_placement(tile_pos: Vector2i, grid: PackedByteArray, rules: MapGeneratorEvent, env_grid: PackedByteArray = [], w: int = -1, h: int = -1) -> bool:
+	var cur_w: int = w if w != -1 else _generator.map_width
+	var cur_h: int = h if h != -1 else _generator.map_height
+	
+	var ev_w: int = rules.get("width") if "width" in rules else 1
+	var ev_h: int = rules.get("height") if "height" in rules else 1
+	var footprint_height: int = rules.get("footprint_height") if "footprint_height" in rules else ev_h
+	var wall_margins: Vector4i = rules.get("wall_margins") if "wall_margins" in rules else Vector4i(0, 0, 0, 0)
+	
+	if footprint_height <= 0 or footprint_height > ev_h:
+		footprint_height = ev_h
 		
-		var tile_val: int = grid[idx]
-		var mode: int = rules.placement
-		
-		if not rules.ignore_environment:
-			if not env_grid.is_empty() and env_grid[idx] == 1:
+	var vertical_offset: int = ev_h - footprint_height
+	var physical_y: int = tile_pos.y + vertical_offset
+	
+	for dy in range(ev_h):
+		for dx in range(ev_w):
+			var check_pos: Vector2i = tile_pos + Vector2i(dx, dy)
+			var is_physical: bool = dy >= vertical_offset
+			
+			if check_pos.x < 0 or check_pos.x >= cur_w or check_pos.y < 0 or check_pos.y >= cur_h:
 				return false
 				
-			elif env_grid.is_empty() and _generator.layer_environment and _generator.layer_environment.get_cell_source_id(tile_pos) != -1:
+			if not is_physical:
+				continue
+				
+			var idx: int = check_pos.y * cur_w + check_pos.x
+			
+			if not rules.ignore_environment:
+				if not env_grid.is_empty() and env_grid[idx] == 1:
+					return false
+				elif env_grid.is_empty() and _generator.layer_environment and _generator.layer_environment.get_cell_source_id(check_pos) != -1:
+					return false
+					
+			var tile_val: int = grid[idx]
+			var mode: int = rules.placement
+			var is_wall: bool = (tile_val == 2 or tile_val == 9)
+			var is_floor: bool = (tile_val == 1 or (_generator._is_world_mode() and tile_val in [1, 4, 5, 8, 10, 6, 7]))
+			
+			if mode == MapGeneratorEvent.PLACEMENT.FLOOR and not is_floor:
 				return false
 				
-		var is_wall: bool = (tile_val == 2 or tile_val == 9)
-		var is_floor: bool = (tile_val == 1 or (_generator._is_world_mode() and tile_val in [1, 4, 5, 8, 10, 6, 7]))
-		
-		if mode == MapGeneratorEvent.PLACEMENT.FLOOR and not is_floor: return false
-		if mode == MapGeneratorEvent.PLACEMENT.WALL and not is_wall: return false
-		
-		if rules.event_position != MapGeneratorEvent.EVENT_POSITION.ANYWHERE:
-			if _generator.get("environment_placer") and not _generator.environment_placer.check_environment_position(tile_pos, Vector2i(1, 1), rules.event_position, grid):
+			if mode == MapGeneratorEvent.PLACEMENT.WALL and not is_wall:
 				return false
 				
-		return true
+	if wall_margins != Vector4i(0, 0, 0, 0):
+		var clearance_failed: bool = false
+		
+		if wall_margins.x > 0:
+			for my in range(physical_y, physical_y + footprint_height):
+				for mx in range(tile_pos.x - wall_margins.x, tile_pos.x):
+					if mx >= 0 and mx < cur_w and my >= 0 and my < cur_h:
+						var val: int = grid[my * cur_w + mx]
+						if val == 2 or val == 9:
+							clearance_failed = true
+							break
+			if clearance_failed: return false
+			
+		if not clearance_failed and wall_margins.y > 0:
+			for mx in range(tile_pos.x, tile_pos.x + ev_w):
+				for my in range(physical_y - wall_margins.y, physical_y):
+					if mx >= 0 and mx < cur_w and my >= 0 and my < cur_h:
+						var val: int = grid[my * cur_w + mx]
+						if val == 2 or val == 9:
+							clearance_failed = true
+							break
+			if clearance_failed: return false
+			
+		if not clearance_failed and wall_margins.z > 0:
+			for my in range(physical_y, physical_y + footprint_height):
+				for mx in range(tile_pos.x + ev_w, tile_pos.x + ev_w + wall_margins.z):
+					if mx >= 0 and mx < cur_w and my >= 0 and my < cur_h:
+						var val: int = grid[my * cur_w + mx]
+						if val == 2 or val == 9:
+							clearance_failed = true
+							break
+			if clearance_failed: return false
+			
+		if not clearance_failed and wall_margins.w > 0:
+			for mx in range(tile_pos.x, tile_pos.x + ev_w):
+				for my in range(physical_y + footprint_height, physical_y + footprint_height + wall_margins.w):
+					if mx >= 0 and mx < cur_w and my >= 0 and my < cur_h:
+						var val: int = grid[my * cur_w + mx]
+						if val == 2 or val == 9:
+							clearance_failed = true
+							break
+			if clearance_failed: return false
+			
+	if rules.event_position != MapGeneratorEvent.EVENT_POSITION.ANYWHERE:
+		if _generator.get("environment_placer"):
+			var env_placer = _generator.environment_placer
+			if env_placer.has_method("check_environment_position_dynamic"):
+				if not env_placer.check_environment_position_dynamic(tile_pos, Vector2i(ev_w, ev_h), rules.event_position, grid, vertical_offset, cur_w, cur_h):
+					return false
+			else:
+				if not env_placer.check_environment_position(tile_pos, Vector2i(ev_w, ev_h), rules.event_position, grid, vertical_offset):
+					return false
+					
+	return true
 
 
 

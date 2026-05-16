@@ -47,6 +47,12 @@ func _ready() -> void:
 	pressed.connect(_on_pressed)
 
 
+func set_state(value: bool) -> void:
+	is_shrunk = !value
+	FileCache.options[\"map_gen_comp%s_shrunk\" % int(name)] = value
+	_on_pressed()
+
+
 func _on_pressed() -> void:
 	is_shrunk = !is_shrunk
 	text = \"+\" if is_shrunk else \"-\"
@@ -114,10 +120,10 @@ corner_radius_bottom_left = 4
 
 [node name="FloatingPanel" type="PanelContainer" unique_id=680044429]
 custom_minimum_size = Vector2(400, 0)
-offset_left = 1728.0
-offset_top = 236.0
-offset_right = 2128.0
-offset_bottom = 690.0
+offset_left = 1276.0
+offset_top = 331.0
+offset_right = 1676.0
+offset_bottom = 933.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_6lpfb")
 script = ExtResource("1_dru4v")
 
@@ -132,6 +138,7 @@ layout_mode = 2
 unique_name_in_owner = true
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
+tooltip_text = "Expand or Collapse \"main\" panel"
 mouse_default_cursor_shape = 2
 text = " - "
 
@@ -140,6 +147,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 24)
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "Left Click (keep) to change panel position."
 mouse_default_cursor_shape = 6
 theme_override_styles/panel = SubResource("StyleBoxEmpty_dru4v")
 
@@ -331,15 +339,15 @@ offset_bottom = 15.5
 grow_horizontal = 0
 grow_vertical = 2
 size_flags_horizontal = 3
+tooltip_text = "Expand or Collapse \"configuration\" panel"
 mouse_default_cursor_shape = 2
-text = "+"
+text = "-"
 script = SubResource("GDScript_piaam")
 node_parent = NodePath("../..")
 main_panel = NodePath("../../../../..")
 
 [node name="BtnDecorators" type="Button" parent="MainVBox/ContentVBox/Configuration" unique_id=408988280]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 tooltip_text = "Open the dialog box to configure the environment settings"
 mouse_default_cursor_shape = 2
@@ -348,7 +356,6 @@ text = "Environment Decorators..."
 
 [node name="BtnEditEvents" type="Button" parent="MainVBox/ContentVBox/Configuration" unique_id=465291179]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 tooltip_text = "Open the dialog box to configure the event list"
 mouse_default_cursor_shape = 2
@@ -356,12 +363,10 @@ theme_override_colors/font_color = Color(0.4, 0.75, 1, 1)
 text = "Edit Random Events Library"
 
 [node name="Sep3" type="HSeparator" parent="MainVBox/ContentVBox/Configuration" unique_id=1097986909]
-visible = false
 layout_mode = 2
 
 [node name="BtnDebugPath" type="Button" parent="MainVBox/ContentVBox/Configuration" unique_id=2091641410]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 tooltip_text = "Draw a path between the player and the goal (This is just to see a visual representation of how the player should move to reach the goal)"
 mouse_default_cursor_shape = 2
@@ -399,14 +404,14 @@ offset_bottom = 15.5
 grow_horizontal = 0
 grow_vertical = 2
 size_flags_horizontal = 3
+tooltip_text = "Expand or Collapse \"presets\" panel"
 mouse_default_cursor_shape = 2
-text = "+"
+text = "-"
 script = SubResource("GDScript_piaam")
 node_parent = NodePath("../..")
 main_panel = NodePath("../../../../..")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MainVBox/ContentVBox/PresetPanel" unique_id=581942227]
-visible = false
 layout_mode = 2
 
 [node name="PresetList" parent="MainVBox/ContentVBox/PresetPanel/HBoxContainer" unique_id=1148619295 instance=ExtResource("2_piaam")]

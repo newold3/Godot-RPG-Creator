@@ -153,13 +153,20 @@ func _process(delta: float) -> void:
 func process_pending_files() -> void:
 	if is_processing_files:
 		return
+		
+	if Engine.is_editor_hint():
+		if EditorInterface.get_resource_filesystem().is_scanning():
+			return
+			
 	is_processing_files = true
 	var files_to_process = min(file_batch_size, pending_files_to_process.size())
 	var processed = 0
+	
 	while processed < files_to_process and !pending_files_to_process.is_empty():
 		var file_path = pending_files_to_process.pop_front()
 		cache_file(file_path)
 		processed += 1
+		
 	if !pending_files_to_process.is_empty():
 		get_tree().create_timer(scan_throttle_time).timeout.connect(func(): is_processing_files = false)
 	else:
@@ -184,6 +191,7 @@ func _on_resource_save(resource) -> void:
 	var path = resource.get_path()
 	if !pending_files_to_process.has(path):
 		pending_files_to_process.append(path)
+		set_process(true)
 
 
 ## Updates cache entries when files are moved or renamed in the file system.
@@ -222,12 +230,16 @@ func _on_resources_imports(paths: PackedStringArray) -> void:
 	for path in paths:
 		if !pending_files_to_process.has(path):
 			pending_files_to_process.append(path)
+			
+	if not pending_files_to_process.is_empty():
+		set_process(true)
 
 
 ## Updates the cache when a scene file is saved in the editor.
 func _on_scene_saved(path: String) -> void:
 	if !pending_files_to_process.has(path):
 		pending_files_to_process.append(path)
+		set_process(true)
 
 #endregion
 
@@ -355,8 +367,9 @@ func _rescan_files() -> void:
 		if !pending_files_to_process.has(file_path):
 			pending_files_to_process.append(file_path)
 			_known_files[file_path] = true
-	
+			
 	if !pending_files_to_process.is_empty():
+		set_process(true)
 		rescan_files()
 
 
@@ -376,7 +389,11 @@ func _find_new_files_only(dir: EditorFileSystemDirectory) -> Array:
 static func rescan_files() -> void:
 	if _show_prints:
 		print("rebuilding cache...")
+		
 	refresh_timer = 0.15
+	
+	if main_scene:
+		main_scene.set_process(true)
 
 
 ## Analyzes and categorizes a file by its type and content.

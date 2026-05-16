@@ -19,6 +19,15 @@ var grid_layer: Control
 var cursor_layer: Control
 
 var editor_undo_redo: Object = null
+
+enum HoverMode { NONE, EVENT, GROUND, DECORATOR }
+var current_hover_mode: HoverMode = HoverMode.NONE
+
+var dragged_dec_dict: Dictionary = {}
+var dragged_dec_root: Vector2i = Vector2i(-1, -1)
+var dragged_dec_layer: TileMapLayer = null
+
+var _last_carved_pos: Vector2i = Vector2i(-1, -1)
 #endregion
 
 
@@ -140,7 +149,18 @@ func _on_cursor_draw() -> void:
 	
 	var snap_pos: Vector2 = Vector2(hover_grid_pos.x * tile_size.x, hover_grid_pos.y * tile_size.y)
 	var valid_color: Color = Color(0.2, 1.0, 0.2, 0.5) if is_valid_hover else Color(1.0, 0.2, 0.2, 0.5)
+	var color_border: Color = Color(1, 1, 1, 0.90)
+	var color_fill: Color = Color(0, 0, 0, 0.65)
 	
+	if Input.is_key_pressed(KEY_CTRL):
+		cursor_layer.draw_rect(Rect2(snap_pos, tile_size), Color(0.2, 0.8, 1.0, 0.5), true)
+		cursor_layer.draw_rect(Rect2(snap_pos, tile_size), Color(0.2, 0.8, 1.0, 0.9), false, 2)
+		return
+	elif Input.is_key_pressed(KEY_ALT):
+		cursor_layer.draw_rect(Rect2(snap_pos, tile_size), Color(0.8, 0.2, 1.0, 0.5), true)
+		cursor_layer.draw_rect(Rect2(snap_pos, tile_size), Color(0.8, 0.2, 1.0, 0.9), false, 2)
+		return
+		
 	if dragged_event_index != -1:
 		cursor_layer.draw_rect(Rect2(snap_pos, tile_size), valid_color, true)
 		
@@ -148,17 +168,62 @@ func _on_cursor_draw() -> void:
 		var template: RPGEvent = generator.event_placer.get_template_from_uid(ev.template_uid)
 		
 		if template:
-			var color_border: Color = Color(1, 1, 1, 0.90)
-			var color_fill: Color = Color(0, 0, 0, 0.65)
 			var drag_rect: Rect2 = Rect2(drag_position - (tile_size / 2.0) + Vector2(1, 1), tile_size - Vector2(2, 2))
-			
 			cursor_layer.draw_rect(drag_rect, color_border, false, 2)
 			cursor_layer.draw_rect(drag_rect, color_fill, true)
 			_draw_event_graphic(template, drag_rect, color_border.a, cursor_layer)
-	else:
-		cursor_layer.draw_rect(Rect2(snap_pos, tile_size), Color(1, 1, 1, 0.2), true)
-		cursor_layer.draw_rect(Rect2(snap_pos, tile_size), Color(1, 1, 1, 0.8), false, 1)
+			
+	elif not dragged_dec_dict.is_empty():
+		var dec_size: Vector2i = dragged_dec_dict.get("size", Vector2i(1, 1))
+		var total_size: Vector2 = Vector2(dec_size.x * tile_size.x, dec_size.y * tile_size.y)
 		
+		if dragged_dec_root != Vector2i(-1, -1):
+			var orig_pos: Vector2 = Vector2(dragged_dec_root.x * tile_size.x, dragged_dec_root.y * tile_size.y)
+			var orig_rect: Rect2 = Rect2(orig_pos, total_size)
+			cursor_layer.draw_rect(orig_rect, Color(0, 0, 0, 0.6), true)
+			cursor_layer.draw_rect(orig_rect, Color(1, 0.6, 0.2, 0.8), false, 2)
+			
+		var snap_rect: Rect2 = Rect2(snap_pos, total_size)
+		cursor_layer.draw_rect(snap_rect, valid_color, true)
+		
+		var visual_rect: Rect2 = Rect2(drag_position - (total_size / 2.0), total_size)
+		cursor_layer.draw_rect(visual_rect, color_border, false, 2)
+		cursor_layer.draw_rect(visual_rect, color_fill, true)
+		
+		if is_instance_valid(dragged_dec_layer) and dragged_dec_layer.tile_set:
+			var ts: TileSet = dragged_dec_layer.tile_set
+			var s_id: int = dragged_dec_dict["data"].get("source_id", -1)
+			var base_coords: Vector2i = dragged_dec_dict["data"].get("atlas_coords", Vector2i(0,0))
+			
+			if dec_size == dragged_dec_dict["data"].get("alt_atlas_size", Vector2i(1,1)):
+				base_coords = dragged_dec_dict["data"].get("alt_atlas_coords", base_coords)
+				
+			if ts.has_source(s_id):
+				var source: TileSetSource = ts.get_source(s_id)
+				if source is TileSetAtlasSource:
+					var modulate_color: Color = Color(1, 1, 1, 0.9)
+					for dy in range(dec_size.y):
+						for dx in range(dec_size.x):
+							var target_coord: Vector2i = base_coords + Vector2i(dx, dy)
+							if source.has_tile(target_coord):
+								var region: Rect2 = source.get_tile_texture_region(target_coord)
+								var dest_rect: Rect2 = Rect2(visual_rect.position + Vector2(dx * tile_size.x, dy * tile_size.y), tile_size)
+								cursor_layer.draw_texture_rect_region(source.texture, dest_rect, region, modulate_color)
+								
+	else:
+		if current_hover_mode == HoverMode.DECORATOR:
+			var dec_info: Dictionary = _find_decorator_under_cursor(hover_grid_pos)
+			if not dec_info.is_empty():
+				var dec_size: Vector2i = dec_info.get("size", Vector2i(1, 1))
+				var root: Vector2i = dec_info.get("root", hover_grid_pos)
+				var root_pos: Vector2 = Vector2(root.x * tile_size.x, root.y * tile_size.y)
+				var total_size: Vector2 = Vector2(dec_size.x * tile_size.x, dec_size.y * tile_size.y)
+				cursor_layer.draw_rect(Rect2(root_pos, total_size), Color(1, 0.8, 0.2, 0.4), true)
+				cursor_layer.draw_rect(Rect2(root_pos, total_size), Color(1, 0.8, 0.2, 0.9), false, 2)
+		else:
+			cursor_layer.draw_rect(Rect2(snap_pos, tile_size), Color(1, 1, 1, 0.2), true)
+			cursor_layer.draw_rect(Rect2(snap_pos, tile_size), Color(1, 1, 1, 0.8), false, 1)
+			
 		if generator and "current_map_events" in generator:
 			var current_id: int = 1
 			for ev in generator.current_map_events:
@@ -169,6 +234,38 @@ func _on_cursor_draw() -> void:
 							_draw_hover_tooltip(current_id, template)
 						break
 					current_id += 1
+					
+		_draw_interaction_tooltip()
+
+
+## Helper function to draw interaction hints near the cursor below the main tooltip
+func _draw_interaction_tooltip() -> void:
+	if current_hover_mode == HoverMode.NONE or dragged_event_index != -1 or not dragged_dec_dict.is_empty(): return
+	
+	var hint_text: String = ""
+	if current_hover_mode == HoverMode.EVENT:
+		hint_text = "Left click to move event, Right Click to delete event"
+	elif current_hover_mode == HoverMode.GROUND:
+		hint_text = "Left Click to place player, Right Click to place goal"
+	elif current_hover_mode == HoverMode.DECORATOR:
+		hint_text = "Left click to move decoration"
+		
+	if hint_text.is_empty(): return
+	
+	var font: Font = ThemeDB.fallback_font
+	var font_size: int = 12
+	var text_size: Vector2 = font.get_string_size(hint_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size)
+	
+	var padding: Vector2 = Vector2(8, 6)
+	var tooltip_pos: Vector2 = cursor_layer.get_local_mouse_position() + Vector2(15, 45)
+	
+	var bg_rect: Rect2 = Rect2(tooltip_pos, text_size + padding * 2)
+	
+	cursor_layer.draw_rect(bg_rect, Color(0.1, 0.1, 0.1, 0.9), true)
+	cursor_layer.draw_rect(bg_rect, Color(0.6, 0.6, 0.6, 0.5), false, 1.0)
+	
+	var text_pos: Vector2 = tooltip_pos + padding + Vector2(0, font.get_ascent(font_size))
+	cursor_layer.draw_string(font, text_pos, hint_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, Color.WHITE)
 
 
 ## Helper function to draw a tooltip with the event's dynamic ID and Name floating near the cursor
@@ -257,10 +354,21 @@ func process_editor_input(event: InputEvent) -> bool:
 	var mouse_pos: Vector2 = get_local_mouse_position()
 	var grid_pos: Vector2i = Vector2i(floor(mouse_pos.x / tile_size.x), floor(mouse_pos.y / tile_size.y))
 	
+	var is_valid_ground: bool = false
+	if generator.layer_ground_base and generator.layer_ground_base.get_cell_source_id(grid_pos) != -1:
+		if not generator.layer_walls or generator.layer_walls.get_cell_source_id(grid_pos) == -1:
+			is_valid_ground = true
+			
 	if event is InputEventMouseMotion:
 		hover_grid_pos = grid_pos
 		drag_position = mouse_pos
+		current_hover_mode = HoverMode.NONE
 		
+		if event.button_mask & MOUSE_BUTTON_MASK_LEFT:
+			if Input.is_key_pressed(KEY_CTRL) or Input.is_key_pressed(KEY_ALT):
+				_handle_carving_action(grid_pos, Input.is_key_pressed(KEY_CTRL))
+				return true
+				
 		if dragged_event_index != -1:
 			var grid_data: Dictionary = generator.call("_read_initial_grid")
 			var ev: MapPlacedEvent = generator.current_map_events[dragged_event_index]
@@ -274,7 +382,33 @@ func process_editor_input(event: InputEvent) -> bool:
 			if is_instance_valid(cursor_layer):
 				cursor_layer.queue_redraw()
 			return true
+			
+		elif not dragged_dec_dict.is_empty():
+			var grid_data: Dictionary = generator.call("_read_initial_grid")
+			
+			if generator.environment_placer.has_method("is_valid_for_decorator"):
+				is_valid_hover = generator.environment_placer.is_valid_for_decorator(hover_grid_pos, dragged_dec_dict["data"], grid_data["grid"], generator.map_width, generator.map_height, dragged_dec_root)
+			else:
+				is_valid_hover = false
+				
+			if is_instance_valid(cursor_layer):
+				cursor_layer.queue_redraw()
+			return true
+			
 		else:
+			var hovering_event: bool = false
+			for ev in generator.current_map_events:
+				if ev is MapPlacedEvent and ev.tile == grid_pos:
+					hovering_event = true
+					break
+					
+			if hovering_event:
+				current_hover_mode = HoverMode.EVENT
+			elif not _find_decorator_under_cursor(grid_pos).is_empty():
+				current_hover_mode = HoverMode.DECORATOR
+			elif is_valid_ground:
+				current_hover_mode = HoverMode.GROUND
+				
 			if is_instance_valid(cursor_layer):
 				cursor_layer.queue_redraw()
 			return true
@@ -282,6 +416,10 @@ func process_editor_input(event: InputEvent) -> bool:
 	elif event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.is_pressed():
+				if Input.is_key_pressed(KEY_CTRL) or Input.is_key_pressed(KEY_ALT):
+					_handle_carving_action(grid_pos, Input.is_key_pressed(KEY_CTRL))
+					return true
+					
 				for i in range(generator.current_map_events.size()):
 					var ev: MapPlacedEvent = generator.current_map_events[i]
 					if ev and ev.tile == grid_pos:
@@ -291,7 +429,26 @@ func process_editor_input(event: InputEvent) -> bool:
 						if is_instance_valid(cursor_layer):
 							cursor_layer.queue_redraw()
 						return true
+						
+				var dec_info: Dictionary = _find_decorator_under_cursor(grid_pos)
+				if not dec_info.is_empty():
+					dragged_dec_dict = dec_info
+					dragged_dec_root = dec_info["root"]
+					dragged_dec_layer = dec_info["layer"]
+					is_valid_hover = true
+					queue_redraw()
+					if is_instance_valid(cursor_layer):
+						cursor_layer.queue_redraw()
+					return true
+						
+				if is_valid_ground:
+					if generator.player:
+						_move_debug_marker(generator.player, grid_pos, "Move Player Start")
+						return true
+						
 			else:
+				_last_carved_pos = Vector2i(-1, -1)
+				
 				if dragged_event_index != -1:
 					if is_valid_hover:
 						var ev: MapPlacedEvent = generator.current_map_events[dragged_event_index]
@@ -319,6 +476,18 @@ func process_editor_input(event: InputEvent) -> bool:
 						cursor_layer.queue_redraw()
 					return true
 					
+				elif not dragged_dec_dict.is_empty():
+					if is_valid_hover and hover_grid_pos != dragged_dec_root:
+						_move_decorator_action(dragged_dec_dict, dragged_dec_root, hover_grid_pos, dragged_dec_layer)
+						
+					dragged_dec_dict.clear()
+					dragged_dec_root = Vector2i(-1, -1)
+					dragged_dec_layer = null
+					queue_redraw()
+					if is_instance_valid(cursor_layer):
+						cursor_layer.queue_redraw()
+					return true
+					
 		elif event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
 			for i in range(generator.current_map_events.size()):
 				var ev: MapPlacedEvent = generator.current_map_events[i]
@@ -326,8 +495,167 @@ func process_editor_input(event: InputEvent) -> bool:
 					generator.request_event_deletion(i)
 					return true
 					
+			if is_valid_ground:
+				if generator.goal:
+					_move_debug_marker(generator.goal, grid_pos, "Move Goal Marker")
+					return true
+					
 	return false
 
+
+func _handle_carving_action(grid_pos: Vector2i, is_door: bool) -> void:
+	if grid_pos == _last_carved_pos: 
+		return
+		
+	if not generator.layer_walls: 
+		return
+		
+	var s_id: int = generator.layer_walls.get_cell_source_id(grid_pos)
+	if s_id == -1: 
+		return
+		
+	_last_carved_pos = grid_pos
+	var ur: Object = editor_undo_redo
+	
+	if not ur and generator and "editor_undo_redo" in generator:
+		ur = generator.editor_undo_redo
+		
+	if is_door:
+		var door_data: Dictionary = generator.carve_door_tile
+		var has_door: bool = door_data.get("atlas_id", -1) != -1
+		
+		if ur:
+			ur.create_action("Carve Door/Hole")
+			ur.add_do_method(generator.layer_walls, "set_cell", grid_pos, door_data.get("atlas_id", -1), door_data.get("tile_id", Vector2i(-1, -1)), 0 if has_door else -1)
+			ur.add_do_method(generator, "update_collisions_from_tilemap")
+			
+			ur.add_undo_method(generator, "update_collisions_from_tilemap")
+			ur.add_undo_method(generator.layer_walls, "set_cell", grid_pos, s_id, generator.layer_walls.get_cell_atlas_coords(grid_pos), 0)
+			ur.commit_action()
+		else:
+			generator.layer_walls.set_cell(grid_pos, door_data.get("atlas_id", -1), door_data.get("tile_id", Vector2i(-1, -1)), 0 if has_door else -1)
+			generator.update_collisions_from_tilemap()
+			
+	else:
+		var window_data: Dictionary = generator.carve_window_tile
+		if window_data.get("atlas_id", -1) == -1: 
+			return
+			
+		if ur:
+			ur.create_action("Carve Window")
+			ur.add_do_method(generator.layer_walls, "set_cell", grid_pos, window_data.get("atlas_id", -1), window_data.get("tile_id", Vector2i(-1, -1)), 0)
+			ur.add_do_method(generator, "update_collisions_from_tilemap")
+			
+			ur.add_undo_method(generator, "update_collisions_from_tilemap")
+			ur.add_undo_method(generator.layer_walls, "set_cell", grid_pos, s_id, generator.layer_walls.get_cell_atlas_coords(grid_pos), 0)
+			ur.commit_action()
+		else:
+			generator.layer_walls.set_cell(grid_pos, window_data.get("atlas_id", -1), window_data.get("tile_id", Vector2i(-1, -1)), 0)
+			generator.update_collisions_from_tilemap()
+
+
+func _find_decorator_under_cursor(grid_pos: Vector2i) -> Dictionary:
+	var layers: Array = [generator.layer_environment, generator.layer_ground_detail]
+	
+	for l in layers:
+		if not is_instance_valid(l): 
+			continue
+			
+		var s_id: int = l.get_cell_source_id(grid_pos)
+		if s_id == -1: 
+			continue
+			
+		var a_crd: Vector2i = l.get_cell_atlas_coords(grid_pos)
+		
+		for dec in generator.decorator_data:
+			var ref_id: int = dec.get("source_id", -1)
+			if s_id != ref_id: 
+				continue
+				
+			var base_coords: Vector2i = dec.get("atlas_coords", Vector2i(-1,-1))
+			var alt_coords: Vector2i = dec.get("alt_atlas_coords", Vector2i(-1,-1))
+			var size: Vector2i = dec.get("atlas_size", Vector2i(1,1))
+			var alt_size: Vector2i = dec.get("alt_atlas_size", Vector2i(1,1))
+			
+			var root_pos: Vector2i = Vector2i(-1, -1)
+			var used_size: Vector2i = size
+			var used_base: Vector2i = base_coords
+			
+			var diff: Vector2i = a_crd - base_coords
+			if diff.x >= 0 and diff.x < size.x and diff.y >= 0 and diff.y < size.y:
+				root_pos = grid_pos - diff
+				
+			if root_pos == Vector2i(-1,-1) and alt_coords != Vector2i(-1,-1):
+				diff = a_crd - alt_coords
+				if diff.x >= 0 and diff.x < alt_size.x and diff.y >= 0 and diff.y < alt_size.y:
+					root_pos = grid_pos - diff
+					used_size = alt_size
+					used_base = alt_coords
+					
+			if root_pos != Vector2i(-1,-1):
+				var valid_match: bool = true
+				for dy in range(used_size.y):
+					for dx in range(used_size.x):
+						var check_pos: Vector2i = root_pos + Vector2i(dx, dy)
+						var expect_crd: Vector2i = used_base + Vector2i(dx, dy)
+						if l.get_cell_source_id(check_pos) != ref_id or l.get_cell_atlas_coords(check_pos) != expect_crd:
+							valid_match = false
+							break
+					if not valid_match:
+						break
+						
+				if valid_match:
+					return {"data": dec, "root": root_pos, "layer": l, "size": used_size}
+					
+	return {}
+
+
+func _move_decorator_action(dec_info: Dictionary, old_root: Vector2i, new_root: Vector2i, target_layer: TileMapLayer) -> void:
+	var ur: Object = editor_undo_redo
+	if not ur and generator and "editor_undo_redo" in generator:
+		ur = generator.editor_undo_redo
+		
+	var s_id: int = dec_info["data"].get("source_id", -1)
+	var size: Vector2i = dec_info["size"]
+	var base_coords: Vector2i = dec_info["data"].get("atlas_coords", Vector2i(0,0))
+	
+	if size == dec_info["data"].get("alt_atlas_size", Vector2i(1,1)):
+		base_coords = dec_info["data"].get("alt_atlas_coords", base_coords)
+		
+	if ur:
+		ur.create_action("Move Decoration")
+		
+		for dy in range(size.y):
+			for dx in range(size.x):
+				var old_cell: Vector2i = old_root + Vector2i(dx, dy)
+				var new_cell: Vector2i = new_root + Vector2i(dx, dy)
+				
+				ur.add_do_method(target_layer, "set_cell", old_cell, -1, Vector2i(-1, -1), -1)
+				ur.add_undo_method(target_layer, "set_cell", new_cell, -1, Vector2i(-1, -1), -1)
+				
+		for dy in range(size.y):
+			for dx in range(size.x):
+				var new_cell: Vector2i = new_root + Vector2i(dx, dy)
+				var old_cell: Vector2i = old_root + Vector2i(dx, dy)
+				var target_coord: Vector2i = base_coords + Vector2i(dx, dy)
+				
+				ur.add_do_method(target_layer, "set_cell", new_cell, s_id, target_coord, 0)
+				ur.add_undo_method(target_layer, "set_cell", old_cell, s_id, target_coord, 0)
+				
+		ur.commit_action()
+	else:
+		for dy in range(size.y):
+			for dx in range(size.x):
+				var old_cell: Vector2i = old_root + Vector2i(dx, dy)
+				
+				target_layer.set_cell(old_cell, -1, Vector2i(-1, -1), -1)
+				
+		for dy in range(size.y):
+			for dx in range(size.x):
+				var new_cell: Vector2i = new_root + Vector2i(dx, dy)
+				var target_coord: Vector2i = base_coords + Vector2i(dx, dy)
+				
+				target_layer.set_cell(new_cell, s_id, target_coord, 0)
 
 
 ## Retrieves the library wrapper to check for placement rules during dragging
@@ -337,4 +665,20 @@ func _get_generator_event_rules(uid: int) -> MapGeneratorEvent:
 			if ev.event and ev.event._uniq_id == uid:
 				return ev
 	return null
+
+
+func _move_debug_marker(marker: Node2D, grid_pos: Vector2i, action_name: String) -> void:
+	var new_pos: Vector2 = generator.layer_ground_base.to_global(generator.layer_ground_base.map_to_local(grid_pos))
+	var ur = editor_undo_redo
+	
+	if not ur and generator and "editor_undo_redo" in generator:
+		ur = generator.editor_undo_redo
+		
+	if ur:
+		ur.create_action(action_name)
+		ur.add_do_property(marker, "global_position", new_pos)
+		ur.add_undo_property(marker, "global_position", marker.global_position)
+		ur.commit_action()
+	else:
+		marker.global_position = new_pos
 #endregion

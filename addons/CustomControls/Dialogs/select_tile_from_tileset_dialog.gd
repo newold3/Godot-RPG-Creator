@@ -52,6 +52,26 @@ extends Window
 
 ## Reference to the CheckBox that disables the decorator for generation
 @export var is_tile_disabled: CheckBox
+
+## Defines the height of the physical “footprint.”
+## Usage: Determines how many tiles from the base upward block the path and require floor validation.
+@export var footprint_height: SpinBox
+
+## Defines the required clearance (Left).
+## Usage: If a value is greater than 0, the generator will invalidate the position if it encounters a wall within that distance in that specific direction.
+@export var wall_margin_left: SpinBox
+
+## Defines the required clearance (Right).
+## Usage: If a value is greater than 0, the generator will invalidate the position if it encounters a wall within that distance in that specific direction.
+@export var wall_margin_right: SpinBox 
+
+## Defines the required clearance (Top).
+## Usage: If a value is greater than 0, the generator will invalidate the position if it encounters a wall within that distance in that specific direction.
+@export var wall_margin_top: SpinBox 
+
+## Defines the required clearance (Bottom).
+## Usage: If a value is greater than 0, the generator will invalidate the position if it encounters a wall within that distance in that specific direction.
+@export var wall_margin_bottom: SpinBox 
 #endregion
 
 
@@ -118,6 +138,12 @@ func _ready() -> void:
 	alt_chance_spinbox.value_changed.connect(_on_alt_chance_changed)
 	placement_mode_option.item_selected.connect(_on_placement_mode_changed)
 	max_quantity_spinbox.value_changed.connect(_on_max_quantity_changed)
+	
+	footprint_height.value_changed.connect(_on_footprint_height_value_changed)
+	wall_margin_left.value_changed.connect(_on_margin_left_value_changed)
+	wall_margin_right.value_changed.connect(_on_margin_right_value_changed)
+	wall_margin_top.value_changed.connect(_on_margin_top_value_changed)
+	wall_margin_top.value_changed.connect(_on_margin_bottom_value_changed)
 	
 	is_detail_tile.toggled.connect(_on_detail_tile_toggled)
 	
@@ -623,6 +649,13 @@ func _on_data_list_item_selected(index: int) -> void:
 	environment_position.select(int(item["environment_position"]))
 	max_quantity_spinbox.set_value_no_signal(float(item["max_quantity"]))
 	
+	footprint_height.set_value_no_signal(float(item["footprint_height"]))
+	wall_margin_left.set_value_no_signal(float(item["wall_margins"].x))
+	wall_margin_right.set_value_no_signal(float(item["wall_margins"].z))
+	wall_margin_top.set_value_no_signal(float(item["wall_margins"].y))
+	wall_margin_bottom.set_value_no_signal(float(item["wall_margins"].w))
+	
+	
 	if is_tile_disabled:
 		is_tile_disabled.set_pressed_no_signal(not item.get("enabled", true))
 		
@@ -728,7 +761,9 @@ func _add_new_decorator(atlas_data: Dictionary, rect: Rect2i) -> void:
 			"environment_position": 0,
 			"max_quantity": 5,
 			"is_detail": false,
-			"enabled": true
+			"enabled": true,
+			"footprint_height": 0,
+			"wall_margins": Vector4.ZERO
 		}
 		current_data.append(new_item)
 		_fill_data_list()
@@ -869,3 +904,38 @@ func _on_is_tile_disabled_toggled(is_toggled: bool) -> void:
 			data_list.set_item_custom_bg_color(idx, Color(0, 0, 0, 0))
 		else:
 			data_list.set_item_custom_bg_color(idx, Color(0.8, 0.2, 0.2, 0.3))
+
+
+func _on_footprint_height_value_changed(value: float) -> void:
+	var selected = data_list.get_selected_items()
+	if not selected.is_empty():
+		var idx: int = selected[0]
+		current_data[idx]["footprint_height"] = value
+
+
+func _on_margin_left_value_changed(value: float) -> void:
+	var selected = data_list.get_selected_items()
+	if not selected.is_empty():
+		var idx: int = selected[0]
+		current_data[idx]["wall_margins"].x = value
+
+
+func _on_margin_right_value_changed(value: float) -> void:
+	var selected = data_list.get_selected_items()
+	if not selected.is_empty():
+		var idx: int = selected[0]
+		current_data[idx]["wall_margins"].z = value
+
+
+func _on_margin_top_value_changed(value: float) -> void:
+	var selected = data_list.get_selected_items()
+	if not selected.is_empty():
+		var idx: int = selected[0]
+		current_data[idx]["wall_margins"].y = value
+
+
+func _on_margin_bottom_value_changed(value: float) -> void:
+	var selected = data_list.get_selected_items()
+	if not selected.is_empty():
+		var idx: int = selected[0]
+		current_data[idx]["wall_margins"].w = value

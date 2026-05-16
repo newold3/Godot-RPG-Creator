@@ -18,6 +18,7 @@ var fx_busy: bool:
 	set(value):
 		if has_node("%SystemAudioManager"):
 			%SystemAudioManager.fx_busy = value
+var is_placeholder: bool = false
 
 @onready var interpreter = %Interpreter
 @onready var main_camera: Camera2D = %MainCamera
@@ -30,6 +31,10 @@ signal scene_changed()
 
 
 func _ready() -> void:
+	if is_placeholder:
+		%MainSubViewportContainer.visible = false
+		return
+	
 	get_viewport().transparent_bg = false
 	preload_system_scenes()
 	GameManager.main_scene = self

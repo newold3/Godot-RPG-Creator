@@ -7,7 +7,6 @@ extends Control
 ## Main tooltip manager that handles custom tooltip creation and lifecycle management.
 ## Replaces standard Godot tooltips with custom styled tooltips that support rich text formatting.
 ## Manages tooltip visibility based on dialog states and provides keyboard shortcuts for toggling.
-
 const CUSTOM_TOOLTIP = preload("res://addons/CustomControls/custom_tooltip.tscn")
 const TWEEN_INTERVAL: float = 0.35
 const MAX_TOOLTIPS: int = 10
@@ -36,12 +35,11 @@ var tooltip_count: int = 0
 
 var tooltip_regex: Dictionary = {}
 
-var _delay_to_show_tooltip_timer: float = 0.0
-var _max_delay_to_show_tooltip_timer: float = 0.1
 var _current_tooltip_to_show: Node
 
 ## Emitted to destroy all active tooltips
 signal destroy_all_tooltips()
+
 
 
 ## Initialize the tooltip manager and set up node monitoring
@@ -61,24 +59,19 @@ func _ready() -> void:
 	tooltip_regex.filter2.compile('\\[(\\d*) *([^\\]]+) *\\]')
 	tooltip_regex.filter3.compile("(?<!\\[)(-?\\s*\\b\\d+\\b\\s*%?)(?![\\]])")
 	tooltip_regex.filter4.compile('(?<!\\[)["“]([^"“”]+)["”](?!\\])')
+	
+	set_process(false)
 
 
-func _process(delta: float) -> void:
-	if _delay_to_show_tooltip_timer > 0.0:
-		_delay_to_show_tooltip_timer -= delta
-		if _delay_to_show_tooltip_timer <= 0.0:
-			if is_instance_valid(_current_tooltip_to_show) and _current_tooltip_to_show.is_inside_tree() and _current_tooltip_to_show.is_visible_in_tree():
-				var w = _current_tooltip_to_show.get_window()
-				if is_instance_valid(w) and w.has_focus():
-					_on_node_mouse_entered(_current_tooltip_to_show, false)
-			else:
-				# Reset if invalid
-				_current_tooltip_to_show = null
+func _process(_delta: float) -> void:
+	pass
+
 
 
 func _on_destroy_all_tooltips() -> void:
-	if tooltip_tween:
+	if tooltip_tween and tooltip_tween.is_valid():
 		tooltip_tween.kill()
+
 
 
 ## Handle keyboard shortcuts for toggling tooltips in editor
@@ -93,11 +86,13 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 
 
+
 ## Set the global tooltip disable state
 func set_no_tooltips(mode: bool) -> void:
 	no_tooltips_enabled = mode
 	if no_tooltips_enabled:
 		destroy_all_tooltips.emit()
+
 
 
 ## Set the force disable tooltips option and destroy active tooltips if enabled
@@ -107,48 +102,49 @@ func set_force_no_tooltips_enabled(mode: bool) -> void:
 		destroy_all_tooltips.emit()
 
 
+
 ## Handle newly added nodes by setting up tooltip behavior based on dialog state
 func _on_node_added(node: Node) -> void:
-	if not RPGDialogFunctions or node is PopupMenu or node is Window or node is Node2D:
+	if node is PopupMenu or node is Window or node is Node2D:
 		return
 		
-	var any_dialog_active: bool = RPGDialogFunctions.there_are_any_dialog_open() or node.has_meta("force_custom_tooltips")
+	var any_dialog_active: bool = node.has_meta("force_custom_tooltips")
+	
+	if RPGDialogFunctions:
+		any_dialog_active = any_dialog_active or RPGDialogFunctions.there_are_any_dialog_open()
 
-	if !any_dialog_active:
-		if "tooltip_text" in node and node.has_meta("current_tooltip") and node.get_meta("current_tooltip").length() > 0:
-			node.tooltip_text = node.get_meta("current_tooltip")
+	if not any_dialog_active:
+		if "tooltip_text" in node and node.has_meta("current_tooltip"):
+			var saved_tooltip: String = node.get_meta("current_tooltip")
+			if saved_tooltip.length() > 0:
+				node.tooltip_text = saved_tooltip
 			node.remove_meta("current_tooltip")
-		if node.has_signal("mouse_entered"):
-			if node.mouse_entered.is_connected(_on_node_mouse_entered):
+			
+			if node.has_signal("mouse_entered") and node.mouse_entered.is_connected(_on_node_mouse_entered):
 				node.mouse_entered.disconnect(_on_node_mouse_entered)
-			node.mouse_entered.connect(_on_node_mouse_entered.bind(node))
-		if node.has_signal("mouse_exited"):
-			if node.mouse_exited.is_connected(_on_node_mouse_exited):
+			if node.has_signal("mouse_exited") and node.mouse_exited.is_connected(_on_node_mouse_exited):
 				node.mouse_exited.disconnect(_on_node_mouse_exited)
-			node.mouse_exited.connect(_on_node_mouse_exited.bind(node))
-		return
 	else:
-		if "tooltip_text" in node:
-			if node.tooltip_text.length() > 0:
-				var tooltip = node.tooltip_text
-				node.set_meta("current_tooltip", tooltip)
-				node.tooltip_text = ""
-				if node.mouse_entered.is_connected(_show_custom_tooltip_text_for_node):
-					node.mouse_entered.disconnect(_show_custom_tooltip_text_for_node)
-				node.mouse_entered.connect(_show_custom_tooltip_text_for_node.bind(node))
-				if node is SpinBox:
-					if not tooltip.begins_with("[title]"):
-						tooltip = "[title]%s[/title]%s" % [node.name.to_pascal_case(), tooltip]
-					var line_edit = node.get_line_edit()
-					if is_instance_valid(line_edit):
-						line_edit.tooltip_text = tooltip
-						replace_all_tooltips_with_custom(line_edit)
-			elif node.has_meta("current_tooltip") and node.get_meta("current_tooltip").length() > 0:
-				if node.mouse_entered.is_connected(_show_custom_tooltip_text_for_node):
-					node.mouse_entered.disconnect(_show_custom_tooltip_text_for_node)
-				node.mouse_entered.connect(_show_custom_tooltip_text_for_node.bind(node))
-			elif node.mouse_entered.is_connected(_show_custom_tooltip_text_for_node):
-				node.mouse_entered.disconnect(_show_custom_tooltip_text_for_node)
+		if "tooltip_text" in node and node.tooltip_text.length() > 0:
+			var tooltip = node.tooltip_text
+			node.set_meta("current_tooltip", tooltip)
+			node.tooltip_text = ""
+			
+			if node is SpinBox:
+				if not tooltip.begins_with("[title]"):
+					tooltip = "[title]%s[/title]%s" % [node.name.to_pascal_case(), tooltip]
+				var line_edit = node.get_line_edit()
+				if is_instance_valid(line_edit):
+					line_edit.tooltip_text = tooltip
+					replace_all_tooltips_with_custom(line_edit)
+					
+		if node.has_signal("mouse_entered"):
+			if not node.mouse_entered.is_connected(_on_node_mouse_entered):
+				node.mouse_entered.connect(_on_node_mouse_entered.bind(node))
+		if node.has_signal("mouse_exited"):
+			if not node.mouse_exited.is_connected(_on_node_mouse_exited):
+				node.mouse_exited.connect(_on_node_mouse_exited.bind(node))
+
 
 
 ## Replace all standard tooltips with custom tooltips recursively for a node and its children
@@ -161,15 +157,18 @@ func replace_all_tooltips_with_custom(node: Node) -> void:
 		replace_all_tooltips_with_custom(child)
 
 
+
 func plugin_replace_all_tooltips_with_custom(node: Node) -> void:
 	if "tooltip_text" in node:
 		if node.tooltip_text.length() > 0:
 			var tooltip = node.tooltip_text
 			node.set_meta("current_tooltip", tooltip)
 			node.tooltip_text = ""
+			
 			if node.mouse_entered.is_connected(_show_custom_tooltip_text_for_node):
 				node.mouse_entered.disconnect(_show_custom_tooltip_text_for_node)
 			node.mouse_entered.connect(_show_custom_tooltip_text_for_node.bind(node))
+			
 			if node is SpinBox:
 				if not tooltip.begins_with("[title]"):
 					tooltip = "[title]%s[/title]%s" % [node.name.to_pascal_case(), tooltip]
@@ -178,15 +177,22 @@ func plugin_replace_all_tooltips_with_custom(node: Node) -> void:
 					line_edit.tooltip_text = tooltip
 					plugin_replace_all_tooltips_with_custom(line_edit)
 				return
+				
 		elif node.has_meta("current_tooltip") and node.get_meta("current_tooltip").length() > 0:
 			if node.mouse_entered.is_connected(_show_custom_tooltip_text_for_node):
 				node.mouse_entered.disconnect(_show_custom_tooltip_text_for_node)
 			node.mouse_entered.connect(_show_custom_tooltip_text_for_node.bind(node))
+			
 		elif node.mouse_entered.is_connected(_show_custom_tooltip_text_for_node):
 			node.mouse_entered.disconnect(_show_custom_tooltip_text_for_node)
-	
+			
+	if node.has_signal("mouse_exited"):
+		if not node.mouse_exited.is_connected(_on_node_mouse_exited):
+			node.mouse_exited.connect(_on_node_mouse_exited.bind(node))
+			
 	for child in node.get_children():
 		plugin_replace_all_tooltips_with_custom(child)
+
 
 
 ## Restore all standard tooltips for a node and its children
@@ -194,25 +200,54 @@ func restore_all_tooltips_for(node: Node) -> void:
 	if node.has_meta("current_tooltip"):
 		node.tooltip_text = node.get_meta("current_tooltip")
 		node.remove_meta("current_tooltip")
-		if node.mouse_entered.is_connected(_show_custom_tooltip_text_for_node):
-			node.mouse_entered.disconnect(_show_custom_tooltip_text_for_node)
+		if node.has_signal("mouse_entered") and node.mouse_entered.is_connected(_on_node_mouse_entered):
+			node.mouse_entered.disconnect(_on_node_mouse_entered)
 	
 	for child in node.get_children():
 		restore_all_tooltips_for(child)
+
+
+
+## Handle mouse entering a node to set up tooltip behavior dynamically
+func _on_node_mouse_entered(node: Node) -> void:
+	if not is_instance_valid(node) or busy:
+		return
+
+	var any_dialog_active: bool = node.has_meta("force_custom_tooltips")
+	
+	if RPGDialogFunctions:
+		any_dialog_active = any_dialog_active or RPGDialogFunctions.there_are_any_dialog_open()
+		
+	if not any_dialog_active:
+		return
+		
+	if "tooltip_text" in node and node.tooltip_text.length() > 0:
+		var tooltip = node.tooltip_text
+		node.set_meta("current_tooltip", tooltip)
+		node.tooltip_text = ""
+		
+	_show_custom_tooltip_text_for_node(node)
 
 
 ## Display a custom tooltip for a node with delay and formatting
 func _show_custom_tooltip_text_for_node(node: Node) -> void:
 	if not is_instance_valid(node): return
 	var w = node.get_window()
-	if not is_instance_valid(w) or not w.has_focus(): return
+	if not is_instance_valid(w): return
 	
 	if no_tooltips_enabled or FileCache.options.get("force_no_tooltips_enabled", false): return
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT): return
-	if node.has_meta("current_tooltip"):
+	
+	if node.has_meta("current_tooltip") or node.has_method("get_custom_tooltip"):
 		destroy_all_tooltips.emit()
+		
+		if "tooltip_text" in node and node.tooltip_text.length() > 0:
+			node.set_meta("current_tooltip", node.tooltip_text)
+			node.tooltip_text = ""
+			
 		var title: String = node.name
 		var contents: String
+		
 		if node.has_method("get_custom_tooltip"):
 			contents = node.get_custom_tooltip()
 			if contents.length() == 0:
@@ -223,20 +258,40 @@ func _show_custom_tooltip_text_for_node(node: Node) -> void:
 		else:
 			contents = node.get_meta("current_tooltip")
 			
-		if tooltip_tween:
+		if tooltip_tween and tooltip_tween.is_valid():
 			tooltip_tween.kill()
 
+		_current_tooltip_to_show = node
+		set_process(true)
+		
 		tooltip_tween = create_tween()
 		tooltip_tween.tween_interval(TWEEN_INTERVAL)
-		tooltip_tween.tween_callback(show_tooltip.bind(title, contents, node))
+		tooltip_tween.tween_callback(func():
+			set_process(false)
+			show_tooltip(title, contents, node)
+		)
+
+
+
+## Cleanup when mouse leaves the node
+func _on_node_mouse_exited(node: Node) -> void:
+	if _current_tooltip_to_show == node:
+		_current_tooltip_to_show = null
+		set_process(false)
+		
+		if tooltip_tween and tooltip_tween.is_valid():
+			tooltip_tween.kill()
+
 
 
 func show_tooltip(title: String, contents: String, parent_node) -> void:
 	call_deferred("_create_tooltip", title, contents, parent_node)
 
 
+
 func show_tooltip_from_node(node: Node) -> void:
 	_show_custom_tooltip_text_for_node(node)
+
 
 
 ## Create and configure a new custom tooltip with rich text formatting
@@ -366,6 +421,7 @@ func _create_tooltip(title: String, contents: String, parent_node) -> void:
 	)
 
 
+
 ## Finalizes the setup of a tooltip after being deferred
 func _finalize_tooltip_setup(tooltip: Window, parent_node: Node, title: String, contents: String, is_new: bool) -> void:
 	if not is_instance_valid(tooltip):
@@ -376,12 +432,13 @@ func _finalize_tooltip_setup(tooltip: Window, parent_node: Node, title: String, 
 			add_child(tooltip)
 		tooltip.visible = false
 		tooltip.set_meta("is_in_pool", true)
-		if not tooltip in tooltip_list:
-			tooltip_list.append(tooltip)
 		return
 		
 	if not tooltip.tree_exiting.is_connected(_on_tooltip_tree_exiting):
 		tooltip.tree_exiting.connect(_on_tooltip_tree_exiting.bind(tooltip))
+		
+	if tooltip.position.x < -50000:
+		tooltip.position = parent_node.get_window().position + Vector2i(50, 50)
 		
 	if tooltip.get_parent() != parent_node:
 		if tooltip.get_parent():
@@ -389,14 +446,24 @@ func _finalize_tooltip_setup(tooltip: Window, parent_node: Node, title: String, 
 		else:
 			parent_node.add_child(tooltip)
 			
-	if not is_new:
-		tooltip.restart()
-		
+	await get_tree().process_frame
+	await get_tree().process_frame
+	
+	if not is_instance_valid(tooltip) or not is_instance_valid(parent_node):
+		return
+			
 	parent_node.set_meta("current_tooltip_node", tooltip)
 	tooltip.set_data(title, contents)
 	
+	if tooltip.has_method("restart"):
+		tooltip.restart()
+	
+	tooltip.position = Vector2i(parent_node.get_window().get_mouse_position()) + Vector2i(10, 10)
+	tooltip.visible = true
+	
 	current_tooltip = tooltip
 	current_node_showing_tooltip = parent_node
+
 
 
 ## Handles when a tooltip becomes inactive
@@ -424,6 +491,7 @@ func _on_tooltip_inactive(tooltip: Window) -> void:
 		tooltip.queue_free()
 
 
+
 ## Remove tooltip reference and disconnect signals when tooltip is destroyed
 func _remove_tooltip_for(node: Node, original_tooltip) -> void:
 	if is_instance_valid(node) and node.has_meta("current_tooltip_node"):
@@ -436,48 +504,6 @@ func _remove_tooltip_for(node: Node, original_tooltip) -> void:
 				current_tooltip = null
 				current_node_showing_tooltip = null
 
-
-## Handle mouse entering a node to set up tooltip behavior based on dialog state
-## Handle mouse entering a node to set up tooltip behavior based on dialog state
-func _on_node_mouse_entered(node: Node, show_delayed: bool = true) -> void:
-	if not RPGDialogFunctions or busy:
-		return
-
-	var any_dialog_active: bool = RPGDialogFunctions.there_are_any_dialog_open()
-	if !any_dialog_active:
-		return
-		
-	if "tooltip_text" in node and node.tooltip_text.length() > 0:
-		var tooltip = node.tooltip_text
-		node.set_meta("current_tooltip", tooltip)
-		node.tooltip_text = ""
-		
-		if node is SpinBox:
-			if not tooltip.begins_with("[title]"):
-				tooltip = "[title]%s[/title]%s" % [node.name.to_pascal_case(), tooltip]
-			var line_edit = node.get_line_edit()
-			if is_instance_valid(line_edit):
-				line_edit.tooltip_text = tooltip
-				replace_all_tooltips_with_custom(line_edit)
-				
-	if show_delayed:
-		_delay_to_show_tooltip_timer = _max_delay_to_show_tooltip_timer
-		_current_tooltip_to_show = node
-		return
-
-	if node.mouse_entered.is_connected(_on_node_mouse_entered):
-		node.mouse_entered.disconnect(_on_node_mouse_entered)
-		
-	if not node.mouse_entered.is_connected(_show_custom_tooltip_text_for_node):
-		node.mouse_entered.connect(_show_custom_tooltip_text_for_node.bind(node))
-		
-	call_deferred("_show_custom_tooltip_text_for_node", node)
-
-
-func _on_node_mouse_exited(node: Node) -> void:
-	if _current_tooltip_to_show == node:
-		_current_tooltip_to_show = null
-		_delay_to_show_tooltip_timer = 0.0
 
 
 ## CRITICAL FIX: Cleanup handler for when a tooltip is destroyed forcefully

@@ -56,7 +56,6 @@ enum TargetLayerMode { ALL, BASE, WALLS, DETAIL, ENVIRONMENT }
 			notify_property_list_changed()
 			update_configuration_warnings()
 
-
 @export_group("Core Settings")
 ## Array of dictionaries storing the events currently placed on the map
 @export var current_map_events: Array[MapPlacedEvent] = []
@@ -87,7 +86,6 @@ enum TargetLayerMode { ALL, BASE, WALLS, DETAIL, ENVIRONMENT }
 
 ## The specific seed value used for math and noise generation
 @export var map_seed: int = 0
-
 
 @export_group("Common Terrains")
 ## If true, paints a specific single tile for the floor instead of resolving autotiles
@@ -125,7 +123,6 @@ enum TargetLayerMode { ALL, BASE, WALLS, DETAIL, ENVIRONMENT }
 
 ## Dictionary storing the tile data for single-tile height shadows (Small shadows)
 @export var small_tile_shadow: Dictionary = {"atlas_id": -1, "tile_id": Vector2i(-1, -1)}
-
 
 @export_group("Mode Specific Settings")
 ## ID of the terrain used for the base land/grass of the continents
@@ -194,6 +191,12 @@ enum TargetLayerMode { ALL, BASE, WALLS, DETAIL, ENVIRONMENT }
 ## Number of walkers to spawn simultaneously
 @export_range(1, 10) var drunkard_walkers: int = 1
 
+@export_group("Carving Tools (Canvas)")
+## Dictionary storing the specific tile data for doors or tunnels (Ctrl + Click)
+@export var carve_door_tile: Dictionary = {"atlas_id": -1, "tile_id": Vector2i(-1, -1)}
+
+## Dictionary storing the specific tile data for windows (Alt + Click)
+@export var carve_window_tile: Dictionary = {"atlas_id": -1, "tile_id": Vector2i(-1, -1)}
 
 @export_group("Perspective Settings")
 ## How many tiles high the top walls should be to simulate 3D perspective
@@ -202,11 +205,9 @@ enum TargetLayerMode { ALL, BASE, WALLS, DETAIL, ENVIRONMENT }
 ## How many tiles thick the roofs/top walls should expand horizontally (minimum 1)
 @export_range(1, 5) var roof_thickness: int = 2
 
-
 @export_group("Collision Settings")
 ## If true, a StaticBody2D with optimized 2D collisions will be added automatically
 @export var add_collisions_after_generation: bool = false
-
 
 @export_group("Debug")
 ## Node used to select the starting point for the debug path
@@ -246,6 +247,9 @@ const DECORATORS_PATH: String = "res://addons/RPGMapGenerator/Resources/environm
 var decorator_data: Array[Dictionary] = []
 var _modes: Array[BaseMapMode] = []
 
+var _last_generated_w: int = 0
+var _last_generated_h: int = 0
+
 var _cache_floor: Dictionary = {}
 var _cache_wall: Dictionary = {}
 var _cache_roof: Dictionary = {}
@@ -264,15 +268,15 @@ var _needs_path_update: bool = false
 
 const EVENTS_LIBRARY_PATH: String = "res://addons/RPGMapGenerator/Resources/random_events_library.tres"
 var events_library: MapGeneratorEvents
-
 var editor_undo_redo: Object = null
 
-# Helper Classes
 var terrain_processor: MapTerrainProcessor
 var environment_placer: MapEnvironmentPlacer
 var event_placer: MapEventPlacer
 var scene_exporter: MapSceneExporter
 #endregion
+
+
 
 #region INIT & SETUP
 ## Initializes the generator, its helpers, and loads all modular modes
@@ -286,6 +290,7 @@ func _init() -> void:
 	_load_events_library()
 
 
+
 ## Loads the events library from disk or creates a fresh instance if it does not exist
 func _load_events_library() -> void:
 	if ResourceLoader.exists(EVENTS_LIBRARY_PATH):
@@ -294,16 +299,20 @@ func _load_events_library() -> void:
 		events_library = MapGeneratorEvents.new()
 
 
+
 ## Enables processing in the editor to monitor the background thread
 func _enter_tree() -> void:
 	if Engine.is_editor_hint():
 		set_process(true)
 
 
+
+## Setups internal resources when the node enters the scene tree
 func _ready() -> void:
 	if not Engine.is_editor_hint():
-		set_process(false)
 		_clear_debug_path()
+		set_process(false)
+		_setup_preview_scene()
 	else:
 		_load_events_library()
 		_load_decorators()
@@ -311,6 +320,13 @@ func _ready() -> void:
 		var event_canvas = get_node_or_null("%EventCanvas")
 		if event_canvas and event_canvas.has_method("setup"):
 			event_canvas.setup(self)
+
+
+
+## Prepares a preview scene context if required for runtime instances
+func _setup_preview_scene() -> void:
+	pass
+
 
 
 ## Loads the decorators configuration from disk or creates an empty array
@@ -323,6 +339,7 @@ func _load_decorators() -> void:
 		decorator_data = []
 
 
+
 ## Persists the decorators configuration to disk in JSON format for easy reading
 func save_decorators() -> void:
 	var dir = DECORATORS_PATH.get_base_dir()
@@ -333,8 +350,8 @@ func save_decorators() -> void:
 	res.decorators = decorator_data.duplicate(true)
 	
 	ResourceSaver.save(res, DECORATORS_PATH)
-	
 	EditorInterface.get_resource_filesystem().scan()
+
 
 
 ## Monitors the background thread and tracks marker movements for auto-pathfinding
@@ -346,6 +363,11 @@ func _process(delta: float) -> void:
 		if not _thread.is_alive() and _thread.is_started():
 			_thread_results = _thread.wait_to_finish()
 			_thread = null
+			
+			if _thread_results.has("final_w"):
+				_last_generated_w = _thread_results["final_w"]
+				_last_generated_h = _thread_results["final_h"]
+				
 			_apply_generation_results()
 			
 	if (auto_update_path or debug_path_enabled) and not is_generating and not _is_world_mode():
@@ -371,6 +393,8 @@ func _process(delta: float) -> void:
 					_draw_debug_path()
 #endregion
 
+
+
 #region EDITOR UI LOGIC
 ## Scans the assigned TileMapLayers and issues a warning if their tile sizes are mismatched
 func _get_configuration_warnings() -> PackedStringArray:
@@ -390,11 +414,13 @@ func _get_configuration_warnings() -> PackedStringArray:
 	return warnings
 
 
+
 ## Helper function to strictly identify if the currently selected mode is a World Map
 func _is_world_mode() -> bool:
 	if _modes.size() > generation_mode:
 		return _modes[generation_mode] is ModeWorldMap
 	return false
+
 
 
 ## Dynamically hides or shows exports based on the selected modular algorithm
@@ -439,6 +465,7 @@ func _validate_property(property: Dictionary) -> void:
 			property.usage &= ~PROPERTY_USAGE_EDITOR
 
 
+
 ## Scans the project folder and instantiates scripts inheriting from BaseMapMode
 func _load_modes() -> void:
 	_modes.clear()
@@ -461,6 +488,7 @@ func _load_modes() -> void:
 	_modes.sort_custom(func(a, b): return a.get_mode_name() < b.get_mode_name())
 
 
+
 ## Returns the dynamically formatted name of a mode including its zero-padded ID
 func get_formatted_mode_name(index: int) -> String:
 	if index < 0 or index >= _modes.size():
@@ -468,6 +496,7 @@ func get_formatted_mode_name(index: int) -> String:
 	var pad_length: int = str(_modes.size()).length()
 	var id_str: String = str(index + 1).pad_zeros(pad_length)
 	return id_str + " - " + _modes[index].get_mode_name()
+
 
 
 ## Returns a list of formatted display names for all loaded modular generation modes
@@ -478,12 +507,14 @@ func get_mode_names() -> Array[String]:
 	return names
 
 
+
 ## Safely updates the generation progress variables using a Mutex
 func _set_progress(value: float, text: String) -> void:
 	_mutex.lock()
 	_progress = value
 	_status = text
 	_mutex.unlock()
+
 
 
 ## Safely reads the current generation progress and status for the UI
@@ -494,6 +525,8 @@ func get_progress_data() -> Dictionary:
 	_mutex.unlock()
 	return {"progress": p, "status": s}
 #endregion
+
+
 
 #region GRID & LAYER MANAGEMENT
 ## Purges all nodes completely, disregarding layer selection mode
@@ -525,6 +558,7 @@ func clear_all_maps() -> void:
 		event_placer._update_event_canvas()
 
 
+
 ## Selective clearing of layers ensuring non-targeted layers remain untouched
 func _clear_all_layers() -> void:
 	if target_layer_mode == TargetLayerMode.ALL or target_layer_mode == TargetLayerMode.BASE:
@@ -533,22 +567,27 @@ func _clear_all_layers() -> void:
 			for child in layer_ground_base.get_children():
 				if child is Line2D or child is Label:
 					child.free()
+					
 	if target_layer_mode == TargetLayerMode.ALL or target_layer_mode == TargetLayerMode.WALLS:
 		if layer_walls:
 			layer_walls.clear()
 			for child in layer_walls.get_children():
 				if child is StaticBody2D:
 					child.free()
+					
 	if target_layer_mode == TargetLayerMode.ALL or target_layer_mode == TargetLayerMode.DETAIL:
 		if layer_ground_detail:
 			layer_ground_detail.clear()
 		if layer_shadows:
 			layer_shadows.clear()
+			
 	if target_layer_mode == TargetLayerMode.ALL or target_layer_mode == TargetLayerMode.ENVIRONMENT:
 		if layer_environment:
 			layer_environment.clear()
+			
 	if target_layer_mode == TargetLayerMode.ALL:
 		current_map_events.clear()
+
 
 
 ## Scans the scene to pre-populate the grid with existing layer data
@@ -557,7 +596,6 @@ func _read_initial_grid() -> Dictionary:
 	grid.resize(map_width * map_height)
 	grid.fill(0)
 	
-	# Mapa auxiliar para que el hilo sepa dónde hay decoraciones sin tocar nodos
 	var env_grid: PackedByteArray = PackedByteArray()
 	env_grid.resize(map_width * map_height)
 	env_grid.fill(0)
@@ -582,7 +620,7 @@ func _read_initial_grid() -> Dictionary:
 	if layer_walls:
 		for cell in layer_walls.get_used_cells():
 			if cell.x >= 0 and cell.x < map_width and cell.y >= 0 and cell.y < map_height:
-				grid[cell.y * map_width + cell.x] = 2 # Simplificado para el hilo
+				grid[cell.y * map_width + cell.x] = 2
 				w_cells.append(cell)
 				has_w = true
 
@@ -601,6 +639,8 @@ func _read_initial_grid() -> Dictionary:
 	}
 #endregion
 
+
+
 #region GENERATION LOGIC
 ## Initiates the background thread for heavy math logic evaluating the context first
 func _start_generation_thread() -> void:
@@ -609,7 +649,6 @@ func _start_generation_thread() -> void:
 		map_seed = randi()
 		
 	seed(map_seed)
-	
 	var is_world: bool = _is_world_mode()
 	
 	if use_random_noise:
@@ -627,6 +666,8 @@ func _start_generation_thread() -> void:
 	
 	init_data["map_seed"] = map_seed
 	init_data["events"] = current_map_events.duplicate(true)
+	init_data["map_width"] = map_width
+	init_data["map_height"] = map_height
 	
 	if has_meta("preset_events_data"):
 		init_data["preset_events"] = get_meta("preset_events_data")
@@ -670,6 +711,7 @@ func _start_generation_thread() -> void:
 	generation_started.emit()
 
 
+
 ## Builds a dictionary containing all exported variables to pass to the active mode
 func _build_config_dict() -> Dictionary:
 	return {
@@ -688,39 +730,73 @@ func _build_config_dict() -> Dictionary:
 	}
 
 
-## Performs a flood fill to find the interior space of existing walls and fill it with floors
-func _derive_floor_from_walls(grid: PackedByteArray) -> void:
+
+## Performs a flood fill to find the interior space of existing walls and fill it with floors using dynamic boundaries
+func _derive_floor_from_walls(grid: PackedByteArray, w: int, h: int) -> void:
 	var visited: PackedByteArray = PackedByteArray()
-	visited.resize(map_width * map_height)
+	visited.resize(w * h)
 	visited.fill(0)
-	var stack: Array[Vector2i] = []
 	
-	for x in range(map_width):
-		if grid[x] != 2: stack.append(Vector2i(x, 0))
-		if grid[(map_height - 1) * map_width + x] != 2: stack.append(Vector2i(x, map_height - 1))
+	var stack: PackedInt64Array = PackedInt64Array()
+	stack.resize(w * h)
+	var stack_ptr: int = 0
+	
+	for x in range(w):
+		if grid[x] != 2 and visited[x] == 0:
+			stack[stack_ptr] = x
+			visited[x] = 1
+			stack_ptr += 1
 			
-	for y in range(map_height):
-		if grid[y * map_width] != 2: stack.append(Vector2i(0, y))
-		if grid[y * map_width + map_width - 1] != 2: stack.append(Vector2i(map_width - 1, y))
+		var bottom_idx: int = (h - 1) * w + x
+		if grid[bottom_idx] != 2 and visited[bottom_idx] == 0:
+			stack[stack_ptr] = bottom_idx
+			visited[bottom_idx] = 1
+			stack_ptr += 1
 			
-	while stack.size() > 0:
-		var curr: Vector2i = stack.pop_back()
-		var idx: int = curr.y * map_width + curr.x
-		if visited[idx] == 1: continue
-		visited[idx] = 1
+	for y in range(h):
+		var left_idx: int = y * w
+		if grid[left_idx] != 2 and visited[left_idx] == 0:
+			stack[stack_ptr] = left_idx
+			visited[left_idx] = 1
+			stack_ptr += 1
+			
+		var right_idx: int = y * w + w - 1
+		if grid[right_idx] != 2 and visited[right_idx] == 0:
+			stack[stack_ptr] = right_idx
+			visited[right_idx] = 1
+			stack_ptr += 1
+			
+	while stack_ptr > 0:
+		stack_ptr -= 1
+		var idx: int = stack[stack_ptr]
 		
-		if curr.y > 0 and grid[idx - map_width] != 2 and visited[idx - map_width] == 0:
-			stack.append(Vector2i(curr.x, curr.y - 1))
-		if curr.y < map_height - 1 and grid[idx + map_width] != 2 and visited[idx + map_width] == 0:
-			stack.append(Vector2i(curr.x, curr.y + 1))
-		if curr.x > 0 and grid[idx - 1] != 2 and visited[idx - 1] == 0:
-			stack.append(Vector2i(curr.x - 1, curr.y))
-		if curr.x < map_width - 1 and grid[idx + 1] != 2 and visited[idx + 1] == 0:
-			stack.append(Vector2i(curr.x + 1, curr.y))
+		var curr_y: int = idx / w
+		var curr_x: int = idx % w
+		
+		if curr_y > 0 and grid[idx - w] != 2 and visited[idx - w] == 0:
+			visited[idx - w] = 1
+			stack[stack_ptr] = idx - w
+			stack_ptr += 1
+			
+		if curr_y < h - 1 and grid[idx + w] != 2 and visited[idx + w] == 0:
+			visited[idx + w] = 1
+			stack[stack_ptr] = idx + w
+			stack_ptr += 1
+			
+		if curr_x > 0 and grid[idx - 1] != 2 and visited[idx - 1] == 0:
+			visited[idx - 1] = 1
+			stack[stack_ptr] = idx - 1
+			stack_ptr += 1
+			
+		if curr_x < w - 1 and grid[idx + 1] != 2 and visited[idx + 1] == 0:
+			visited[idx + 1] = 1
+			stack[stack_ptr] = idx + 1
+			stack_ptr += 1
 			
 	for i in range(grid.size()):
 		if visited[i] == 0 and grid[i] != 2:
 			grid[i] = 1
+
 
 
 ## Executes all procedural generation purely in the background evaluating context rules
@@ -738,6 +814,9 @@ func _thread_math_task(data: Dictionary) -> Dictionary:
 	var debug_start: Vector2i = Vector2i(-1, -1)
 	var debug_end: Vector2i = Vector2i(-1, -1)
 	var is_world: bool = _is_world_mode()
+	
+	var cur_w: int = data.get("map_width", map_width)
+	var cur_h: int = data.get("map_height", map_height)
 	
 	if target_layer_mode == TargetLayerMode.ALL:
 		needs_new_shape = true
@@ -757,71 +836,81 @@ func _thread_math_task(data: Dictionary) -> Dictionary:
 		var active_mode: BaseMapMode = _modes[generation_mode]
 		_set_progress(10.0, "Carving: " + get_formatted_mode_name(generation_mode))
 		var config: Dictionary = _build_config_dict()
-		var rooms: Array[Rect2i] = active_mode.generate(grid, map_width, map_height, config)
+		var rooms: Array[Rect2i] = active_mode.generate(grid, cur_w, cur_h, config)
 		
 		if not rooms.is_empty():
 			debug_start = rooms[0].get_center()
 			debug_end = rooms.back().get_center()
 			
 		if not is_world:
-			var offset: Vector2i = _align_layout_to_top_left(grid)
+			var align_data: Dictionary = _align_layout_to_top_left(grid, cur_w, cur_h)
+			grid = align_data["grid"]
+			var offset: Vector2i = align_data["offset"]
+			cur_w = align_data["w"]
+			cur_h = align_data["h"]
+			
+			if env_grid.size() != grid.size():
+				env_grid.resize(grid.size())
+				env_grid.fill(0)
+				
 			if debug_start != Vector2i(-1, -1):
 				debug_start -= offset
 				debug_end -= offset
-			_remove_impossible_perspective_gaps(grid)
+				
+			_remove_impossible_perspective_gaps(grid, cur_w, cur_h)
 	else:
 		if target_layer_mode == TargetLayerMode.WALLS:
 			for i in range(grid.size()):
 				if grid[i] == 2 or grid[i] == 9:
 					grid[i] = 0
 		if target_layer_mode == TargetLayerMode.BASE and has_walls:
-			_derive_floor_from_walls(grid)
+			_derive_floor_from_walls(grid, cur_w, cur_h)
 			
 	if not is_world:
 		if target_layer_mode == TargetLayerMode.ALL or target_layer_mode == TargetLayerMode.WALLS or (not needs_new_shape and target_layer_mode == TargetLayerMode.WALLS):
 			_set_progress(50.0, "Walls...")
 			if terrain_wall != -1 or use_single_wall:
-				for y in range(map_height):
-					for x in range(map_width):
-						if grid[y * map_width + x] == 1:
+				for y in range(cur_h):
+					for x in range(cur_w):
+						if grid[y * cur_w + x] == 1:
 							for dy in range(1, top_wall_height + 1):
 								var ny: int = y - dy
-								if ny >= 0 and grid[ny * map_width + x] == 0:
-									grid[ny * map_width + x] = 2
+								if ny >= 0 and grid[ny * cur_w + x] == 0:
+									grid[ny * cur_w + x] = 2
 									
 			if terrain_roof != -1 or use_single_roof:
 				var temp_grid: PackedByteArray = grid.duplicate()
 				for iter in range(roof_thickness):
 					var next_grid: PackedByteArray = temp_grid.duplicate()
-					for y in range(map_height):
-						for x in range(map_width):
-							if temp_grid[y * map_width + x] == 0:
+					for y in range(cur_h):
+						for x in range(cur_w):
+							if temp_grid[y * cur_w + x] == 0:
 								var touches: bool = false
 								for dy in [-1, 0, 1]:
 									for dx in [-1, 0, 1]:
 										var ny: int = y + dy
 										var nx: int = x + dx
-										if ny >= 0 and ny < map_height and nx >= 0 and nx < map_width:
-											if temp_grid[ny * map_width + nx] in [1, 2, 9]:
+										if ny >= 0 and ny < cur_h and nx >= 0 and nx < cur_w:
+											if temp_grid[ny * cur_w + nx] in [1, 2, 9]:
 												touches = true
 												break
 									if touches: break
 								if touches:
-									next_grid[y * map_width + x] = 9
+									next_grid[y * cur_w + x] = 9
 					temp_grid = next_grid
 				grid = temp_grid
-				_fill_enclosed_roof_holes(grid)
+				_fill_enclosed_roof_holes(grid, cur_w, cur_h)
 				
 		if debug_start == Vector2i(-1, -1):
-			for y in range(map_height):
-				for x in range(map_width):
-					if grid[y * map_width + x] == 1:
+			for y in range(cur_h):
+				for x in range(cur_w):
+					if grid[y * cur_w + x] == 1:
 						debug_start = Vector2i(x, y)
 						break
 				if debug_start != Vector2i(-1, -1): break
-			for y in range(map_height - 1, -1, -1):
-				for x in range(map_width - 1, -1, -1):
-					if grid[y * map_width + x] == 1:
+			for y in range(cur_h - 1, -1, -1):
+				for x in range(cur_w - 1, -1, -1):
+					if grid[y * cur_w + x] == 1:
 						debug_end = Vector2i(x, y)
 						break
 				if debug_end != Vector2i(-1, -1): break
@@ -833,70 +922,70 @@ func _thread_math_task(data: Dictionary) -> Dictionary:
 	if not is_world and add_collisions_after_generation:
 		if target_layer_mode == TargetLayerMode.ALL or target_layer_mode == TargetLayerMode.WALLS:
 			_set_progress(60.0, "Collisions...")
-			rects = _calculate_greedy_meshing(grid)
+			rects = _calculate_greedy_meshing(grid, cur_w, cur_h)
 			
 	_set_progress(80.0, "Packaging...")
-	var results: Dictionary = {"rects": rects, "debug_cells": [debug_start, debug_end]}
+	var results: Dictionary = {"rects": rects, "debug_cells": [debug_start, debug_end], "final_w": cur_w, "final_h": cur_h}
 	
 	if target_layer_mode == TargetLayerMode.ALL or target_layer_mode == TargetLayerMode.DETAIL:
 		if is_world:
-			results["floor"] = terrain_processor.package_terrain_layer(grid, [1], [1, 4, 5, 8, 10, 6, 7], _cache_floor)
-			results["snow"] = terrain_processor.package_terrain_layer(grid, [4], [4, 6], _cache_snow)
-			results["desert"] = terrain_processor.package_terrain_layer(grid, [5], [5, 6], _cache_desert)
-			results["volcano"] = terrain_processor.package_terrain_layer(grid, [8], [8, 6], _cache_volcano)
-			results["swamp"] = terrain_processor.package_terrain_layer(grid, [10], [10, 7], _cache_swamp)
-			results["mountain"] = terrain_processor.package_terrain_layer(grid, [6], [6], _cache_mountain)
-			results["tree"] = terrain_processor.package_terrain_layer(grid, [7], [7], _cache_tree)
+			results["floor"] = terrain_processor.package_terrain_layer(grid, [1], [1, 4, 5, 8, 10, 6, 7], _cache_floor, cur_w, cur_h)
+			results["snow"] = terrain_processor.package_terrain_layer(grid, [4], [4, 6], _cache_snow, cur_w, cur_h)
+			results["desert"] = terrain_processor.package_terrain_layer(grid, [5], [5, 6], _cache_desert, cur_w, cur_h)
+			results["volcano"] = terrain_processor.package_terrain_layer(grid, [8], [8, 6], _cache_volcano, cur_w, cur_h)
+			results["swamp"] = terrain_processor.package_terrain_layer(grid, [10], [10, 7], _cache_swamp, cur_w, cur_h)
+			results["mountain"] = terrain_processor.package_terrain_layer(grid, [6], [6], _cache_mountain, cur_w, cur_h)
+			results["tree"] = terrain_processor.package_terrain_layer(grid, [7], [7], _cache_tree, cur_w, cur_h)
 		else:
 			if draw_shadows:
-				results["shadows"] = terrain_processor.package_shadow_layer(grid)
+				results["shadows"] = terrain_processor.package_shadow_layer_dynamic(grid, cur_w, cur_h)
 				
 	if target_layer_mode == TargetLayerMode.ALL or target_layer_mode == TargetLayerMode.BASE:
 		if is_world:
-			results["water"] = terrain_processor.package_terrain_layer(grid, [3], [3, 1, 4, 5, 8, 10, 6, 7], _cache_water)
+			results["water"] = terrain_processor.package_terrain_layer(grid, [3], [3, 1, 4, 5, 8, 10, 6, 7], _cache_water, cur_w, cur_h)
 		else:
 			if use_single_floor:
-				results["single_floor"] = terrain_processor.package_single_tile_layer(grid, [1, 2, 9], single_floor_tile)
+				results["single_floor"] = terrain_processor.package_single_tile_layer_dynamic(grid, [1, 2, 9], single_floor_tile, cur_w, cur_h)
 			else:
-				results["floor"] = terrain_processor.package_terrain_layer(grid, [1, 2, 9], [1, 2, 9], _cache_floor)
+				results["floor"] = terrain_processor.package_terrain_layer(grid, [1, 2, 9], [1, 2, 9], _cache_floor, cur_w, cur_h)
 			
 	if target_layer_mode == TargetLayerMode.ALL or target_layer_mode == TargetLayerMode.WALLS:
 		if not is_world:
 			if use_single_wall:
-				results["wall"] = terrain_processor.package_single_tile_layer(grid, [2], single_wall_tile)
+				results["wall"] = terrain_processor.package_single_tile_layer_dynamic(grid, [2], single_wall_tile, cur_w, cur_h)
 			elif terrain_wall != -1:
-				results["wall"] = terrain_processor.package_terrain_layer(grid, [2], [2], _cache_wall)
+				results["wall"] = terrain_processor.package_terrain_layer(grid, [2], [2], _cache_wall, cur_w, cur_h)
 			if use_single_roof:
-				results["roof"] = terrain_processor.package_single_tile_layer(grid, [9], single_roof_tile)
+				results["roof"] = terrain_processor.package_single_tile_layer_dynamic(grid, [9], single_roof_tile, cur_w, cur_h)
 			elif terrain_roof != -1:
-				results["roof"] = terrain_processor.package_terrain_layer(grid, [9], [9], _cache_roof)
+				results["roof"] = terrain_processor.package_terrain_layer(grid, [9], [9], _cache_roof, cur_w, cur_h)
 				
 	if target_layer_mode == TargetLayerMode.ALL or target_layer_mode == TargetLayerMode.ENVIRONMENT:
 		var floor_cells_env: Array[Vector2i] = []
 		var wall_cells_env: Array[Vector2i] = []
 		
-		for y in range(map_height):
-			for x in range(map_width):
-				var c_val: int = grid[y * map_width + x]
+		for y in range(cur_h):
+			for x in range(cur_w):
+				var c_val: int = grid[y * cur_w + x]
 				if is_world:
 					if c_val in [1, 4, 5, 8, 10, 6, 7]: floor_cells_env.append(Vector2i(x, y))
 				else:
 					if c_val == 1: floor_cells_env.append(Vector2i(x, y))
 					elif c_val == 2 or c_val == 9: wall_cells_env.append(Vector2i(x, y))
 					
-		var env_data: Dictionary = environment_placer.package_environment_layer(floor_cells_env, wall_cells_env, grid)
+		var env_data: Dictionary = environment_placer.package_environment_layer_dynamic(floor_cells_env, wall_cells_env, grid, cur_w, cur_h)
 		
 		if env_data.has("environment"):
 			results["environment"] = env_data["environment"]
 			for pos in results["environment"]["pos"]:
-				if pos.x >= 0 and pos.x < map_width and pos.y >= 0 and pos.y < map_height:
-					env_grid[pos.y * map_width + pos.x] = 1
+				if pos.x >= 0 and pos.x < cur_w and pos.y >= 0 and pos.y < cur_h:
+					env_grid[pos.y * cur_w + pos.x] = 1
 					
 		if env_data.has("detail_environment"):
 			results["detail_environment"] = env_data["detail_environment"]
 			for pos in results["detail_environment"]["pos"]:
-				if pos.x >= 0 and pos.x < map_width and pos.y >= 0 and pos.y < map_height:
-					env_grid[pos.y * map_width + pos.x] = 2
+				if pos.x >= 0 and pos.x < cur_w and pos.y >= 0 and pos.y < cur_h:
+					env_grid[pos.y * cur_w + pos.x] = 2
 					
 	var used_preset: bool = data.get("used_preset", false)
 	var preset_events: Array = data.get("preset_events", [])
@@ -912,8 +1001,8 @@ func _thread_math_task(data: Dictionary) -> Dictionary:
 		var occupied_cells: Dictionary = {}
 		var available_cells: Array[Vector2i] = []
 		
-		for y in range(map_height):
-			for x in range(map_width):
+		for y in range(cur_h):
+			for x in range(cur_w):
 				available_cells.append(Vector2i(x, y))
 				
 		available_cells.shuffle()
@@ -922,19 +1011,53 @@ func _thread_math_task(data: Dictionary) -> Dictionary:
 			var rules: MapGeneratorEvent = event_placer.get_wrapper_from_uid(ev.template_uid)
 			if not rules: continue
 			
-			var is_valid: bool = event_placer.is_tile_valid_for_event_placement(ev.tile, grid, rules, env_grid)
+			var ev_w: int = rules.get("width") if "width" in rules else 1
+			var ev_h: int = rules.get("height") if "height" in rules else 1
 			
-			if is_valid and not occupied_cells.has(ev.tile):
+			if ev_w <= 0:
+				ev_w = 1
+			if ev_h <= 0:
+				ev_h = 1
+				
+			var area_free: bool = true
+			
+			for dy in range(ev_h):
+				for dx in range(ev_w):
+					if occupied_cells.has(ev.tile + Vector2i(dx, dy)):
+						area_free = false
+						break
+				if not area_free:
+					break
+					
+			var is_valid: bool = area_free and event_placer.is_tile_valid_for_event_placement(ev.tile, grid, rules, env_grid, cur_w, cur_h)
+			
+			if is_valid:
 				survivor_events.append(ev)
-				occupied_cells[ev.tile] = true
+				for dy in range(ev_h):
+					for dx in range(ev_w):
+						occupied_cells[ev.tile + Vector2i(dx, dy)] = true
 			else:
 				var found: bool = false
 				
 				for cell in available_cells:
-					if not occupied_cells.has(cell) and event_placer.is_tile_valid_for_event_placement(cell, grid, rules, env_grid):
+					var cell_free: bool = true
+					
+					for dy in range(ev_h):
+						for dx in range(ev_w):
+							if occupied_cells.has(cell + Vector2i(dx, dy)):
+								cell_free = false
+								break
+						if not cell_free:
+							break
+							
+					if cell_free and event_placer.is_tile_valid_for_event_placement(cell, grid, rules, env_grid, cur_w, cur_h):
 						ev.tile = cell
 						survivor_events.append(ev)
-						occupied_cells[cell] = true
+						
+						for dy in range(ev_h):
+							for dx in range(ev_w):
+								occupied_cells[cell + Vector2i(dx, dy)] = true
+								
 						found = true
 						break
 						
@@ -943,51 +1066,83 @@ func _thread_math_task(data: Dictionary) -> Dictionary:
 	return results
 
 
-## Finds empty spaces fully enclosed by the structure using flood fill from edges and fills them with roof tiles
-func _fill_enclosed_roof_holes(grid: PackedByteArray) -> void:
+
+## Finds empty spaces fully enclosed by the structure using flood fill from edges and fills them with roof tiles using dynamic boundaries
+func _fill_enclosed_roof_holes(grid: PackedByteArray, w: int, h: int) -> void:
 	var temp_grid: PackedByteArray = grid.duplicate()
-	var stack: Array[Vector2i] = []
+	var stack: PackedInt64Array = PackedInt64Array()
+	stack.resize(w * h)
+	var stack_ptr: int = 0
 	
-	for y in range(map_height):
-		if temp_grid[y * map_width + 0] == 0: stack.append(Vector2i(0, y))
-		if temp_grid[y * map_width + (map_width - 1)] == 0: stack.append(Vector2i(map_width - 1, y))
-		
-	for x in range(map_width):
-		if temp_grid[0 * map_width + x] == 0: stack.append(Vector2i(x, 0))
-		if temp_grid[(map_height - 1) * map_width + x] == 0: stack.append(Vector2i(x, map_height - 1))
-		
-	while not stack.is_empty():
-		var pos: Vector2i = stack.pop_back()
-		var idx: int = pos.y * map_width + pos.x
-		
-		if temp_grid[idx] == 0:
-			temp_grid[idx] = 255 
+	for y in range(h):
+		var left_idx: int = y * w
+		if temp_grid[left_idx] == 0:
+			stack[stack_ptr] = left_idx
+			temp_grid[left_idx] = 255
+			stack_ptr += 1
 			
-			var dirs: Array[Vector2i] = [Vector2i(0, -1), Vector2i(0, 1), Vector2i(-1, 0), Vector2i(1, 0)]
-			for d in dirs:
-				var nx: int = pos.x + d.x
-				var ny: int = pos.y + d.y
-				
-				if nx >= 0 and nx < map_width and ny >= 0 and ny < map_height:
-					if temp_grid[ny * map_width + nx] == 0:
-						stack.append(Vector2i(nx, ny))
-						
+		var right_idx: int = y * w + (w - 1)
+		if temp_grid[right_idx] == 0:
+			stack[stack_ptr] = right_idx
+			temp_grid[right_idx] = 255
+			stack_ptr += 1
+			
+	for x in range(w):
+		if temp_grid[x] == 0:
+			stack[stack_ptr] = x
+			temp_grid[x] = 255
+			stack_ptr += 1
+			
+		var bottom_idx: int = (h - 1) * w + x
+		if temp_grid[bottom_idx] == 0:
+			stack[stack_ptr] = bottom_idx
+			temp_grid[bottom_idx] = 255
+			stack_ptr += 1
+			
+	while stack_ptr > 0:
+		stack_ptr -= 1
+		var idx: int = stack[stack_ptr]
+		
+		var curr_y: int = idx / w
+		var curr_x: int = idx % w
+		
+		if curr_y > 0 and temp_grid[idx - w] == 0:
+			temp_grid[idx - w] = 255
+			stack[stack_ptr] = idx - w
+			stack_ptr += 1
+			
+		if curr_y < h - 1 and temp_grid[idx + w] == 0:
+			temp_grid[idx + w] = 255
+			stack[stack_ptr] = idx + w
+			stack_ptr += 1
+			
+		if curr_x > 0 and temp_grid[idx - 1] == 0:
+			temp_grid[idx - 1] = 255
+			stack[stack_ptr] = idx - 1
+			stack_ptr += 1
+			
+		if curr_x < w - 1 and temp_grid[idx + 1] == 0:
+			temp_grid[idx + 1] = 255
+			stack[stack_ptr] = idx + 1
+			stack_ptr += 1
+			
 	for i in range(grid.size()):
 		if grid[i] == 0 and temp_grid[i] == 0:
 			grid[i] = 9
 
 
-## Scans the generated layout and shifts it to the top-left corner to keep it visible in the editor
-func _align_layout_to_top_left(grid: PackedByteArray) -> Vector2i:
-	var min_x: int = map_width
-	var min_y: int = map_height
+
+## Dynamically resizes the grid to ensure content plus perspective margins always fit without modifying inspector settings
+func _align_layout_to_top_left(grid: PackedByteArray, w: int, h: int) -> Dictionary:
+	var min_x: int = w
+	var min_y: int = h
 	var max_x: int = 0
 	var max_y: int = 0
 	var has_content: bool = false
 	
-	for y in range(map_height):
-		for x in range(map_width):
-			if grid[y * map_width + x] != 0:
+	for y in range(h):
+		for x in range(w):
+			if grid[y * w + x] != 0:
 				if x < min_x: min_x = x
 				if y < min_y: min_y = y
 				if x > max_x: max_x = x
@@ -995,72 +1150,69 @@ func _align_layout_to_top_left(grid: PackedByteArray) -> Vector2i:
 				has_content = true
 				
 	if not has_content:
-		return Vector2i.ZERO
+		return {"grid": grid, "offset": Vector2i.ZERO, "w": w, "h": h}
 		
-	var target_x: int = 5
-	var target_y: int = 5 + top_wall_height
-	var offset_x: int = min_x - target_x
-	var offset_y: int = min_y - target_y
+	var margin_t: int = top_wall_height + roof_thickness + 2
+	var margin_b: int = roof_thickness + 2
+	var margin_s: int = roof_thickness + 2
 	
-	if max_x - offset_x >= map_width - 4:
-		offset_x = max_x - (map_width - 5)
-		if offset_x < 0: offset_x = 0
-		
-	if max_y - offset_y >= map_height - 4:
-		offset_y = max_y - (map_height - 5)
-		if offset_y < 0: offset_y = 0
-		
-	if offset_x == 0 and offset_y == 0:
-		return Vector2i.ZERO
-		
-	var temp_grid: PackedByteArray = PackedByteArray()
-	temp_grid.resize(map_width * map_height)
-	temp_grid.fill(0)
+	var content_w: int = max_x - min_x + 1
+	var content_h: int = max_y - min_y + 1
 	
-	for y in range(map_height):
-		for x in range(map_width):
-			if grid[y * map_width + x] != 0:
-				var new_x: int = x - offset_x
-				var new_y: int = y - offset_y
-				if new_x >= 0 and new_x < map_width and new_y >= 0 and new_y < map_height:
-					temp_grid[new_y * map_width + new_x] = grid[y * map_width + x]
+	var final_w: int = content_w + (margin_s * 2)
+	var final_h: int = content_h + margin_t + margin_b
+	
+	var new_grid: PackedByteArray = PackedByteArray()
+	new_grid.resize(final_w * final_h)
+	new_grid.fill(0)
+	
+	var offset_x: int = min_x - margin_s
+	var offset_y: int = min_y - margin_t
+	
+	for y in range(min_y, max_y + 1):
+		for x in range(min_x, max_x + 1):
+			var val: int = grid[y * w + x]
+			if val != 0:
+				var nx: int = x - offset_x
+				var ny: int = y - offset_y
+				if nx >= 0 and nx < final_w and ny >= 0 and ny < final_h:
+					new_grid[ny * final_w + nx] = val
 					
-	for i in range(grid.size()):
-		grid[i] = temp_grid[i]
-		
-	return Vector2i(offset_x, offset_y)
+	return {"grid": new_grid, "offset": Vector2i(offset_x, offset_y), "w": final_w, "h": final_h}
 
 
-## Scans the grid for vertical gaps between floors that are too small for 3D walls and bridges them
-func _remove_impossible_perspective_gaps(grid: PackedByteArray) -> void:
+
+## Scans the grid for vertical gaps between floors that are too small for 3D walls and bridges them using dynamic boundaries
+func _remove_impossible_perspective_gaps(grid: PackedByteArray, w: int, h: int) -> void:
 	var min_gap: int = top_wall_height + roof_thickness
-	for x in range(map_width):
+	for x in range(w):
 		var gap_start: int = -1
-		for y in range(map_height):
-			var idx: int = y * map_width + x
+		for y in range(h):
+			var idx: int = y * w + x
 			if grid[idx] == 0:
 				if gap_start == -1:
 					gap_start = y
 			elif grid[idx] == 1:
 				if gap_start != -1:
 					var gap_size: int = y - gap_start
-					if gap_start > 0 and grid[(gap_start - 1) * map_width + x] == 1:
+					if gap_start > 0 and grid[(gap_start - 1) * w + x] == 1:
 						if gap_size < min_gap:
 							for gy in range(gap_start, y):
-								grid[gy * map_width + x] = 1
+								grid[gy * w + x] = 1
 				gap_start = -1
 
 
-## Processes mathematical grouping of collisions sequentially
-func _calculate_greedy_meshing(grid: PackedByteArray) -> Array[Rect2i]:
+
+## Processes mathematical grouping of collisions sequentially using dynamic boundaries
+func _calculate_greedy_meshing(grid: PackedByteArray, w: int, h: int) -> Array[Rect2i]:
 	var visited: PackedByteArray = PackedByteArray()
-	visited.resize(map_width * map_height)
+	visited.resize(w * h)
 	visited.fill(0)
 	var rects: Array[Rect2i] = []
 	
-	for y in range(map_height):
-		for x in range(map_width):
-			var idx: int = y * map_width + x
+	for y in range(h):
+		for x in range(w):
+			var idx: int = y * w + x
 			var val: int = grid[idx]
 			if val == 1 or val == 0 or visited[idx] == 1: 
 				continue
@@ -1070,8 +1222,8 @@ func _calculate_greedy_meshing(grid: PackedByteArray) -> Array[Rect2i]:
 			var end_x: int = x
 			var end_y: int = y
 			
-			while end_x + 1 < map_width:
-				var next_idx: int = start_y * map_width + (end_x + 1)
+			while end_x + 1 < w:
+				var next_idx: int = start_y * w + (end_x + 1)
 				var next_val: int = grid[next_idx]
 				if (next_val == 2 or next_val == 9) and visited[next_idx] == 0:
 					end_x += 1
@@ -1080,10 +1232,10 @@ func _calculate_greedy_meshing(grid: PackedByteArray) -> Array[Rect2i]:
 					
 			var can_expand: bool = true
 			while can_expand:
-				if end_y + 1 >= map_height: 
+				if end_y + 1 >= h: 
 					break
 				for tx in range(start_x, end_x + 1):
-					var chk_idx: int = (end_y + 1) * map_width + tx
+					var chk_idx: int = (end_y + 1) * w + tx
 					var chk_val: int = grid[chk_idx]
 					if (chk_val != 2 and chk_val != 9) or visited[chk_idx] == 1:
 						can_expand = false
@@ -1093,12 +1245,14 @@ func _calculate_greedy_meshing(grid: PackedByteArray) -> Array[Rect2i]:
 					
 			for fy in range(start_y, end_y + 1):
 				for fx in range(start_x, end_x + 1): 
-					visited[fy * map_width + fx] = 1
+					visited[fy * w + fx] = 1
 					
 			rects.append(Rect2i(start_x, start_y, end_x - start_x + 1, end_y - start_y + 1))
 			
 	return rects
 #endregion
+
+
 
 #region PAINTING & APPLYING
 ## Constructs collision nodes into the SceneTree
@@ -1128,6 +1282,7 @@ func _build_collision_nodes(rects: Array[Rect2i], tm: TileMapLayer) -> void:
 			shape.owner = root
 
 
+
 ## Paints a pre-packaged layer array directly into a TileMapLayer including alternate tiles
 func _paint_layer(data: Dictionary, target: TileMapLayer) -> void:
 	if not target or not target.tile_set: 
@@ -1141,6 +1296,7 @@ func _paint_layer(data: Dictionary, target: TileMapLayer) -> void:
 			var source = ts.get_source(src_id)
 			if source is TileSetAtlasSource and source.has_tile(coords):
 				target.set_cell(data["pos"][i], src_id, coords, 0)
+
 
 
 ## Applies results based on selective painting mode avoiding erasing untouched layers
@@ -1216,20 +1372,26 @@ func _apply_generation_results() -> void:
 		
 	_set_progress(100.0, "Done!")
 	is_generating = false
+	
+	if Engine.is_editor_hint():
+		notify_property_list_changed.call_deferred()
+		
 	generation_finished.emit()
+
 
 
 ## Finds and draws a debug line between markers
 func _draw_debug_path() -> void:
 	if _is_world_mode() or not layer_ground_base or not player or not goal or not Engine.is_editor_hint(): 
 		return
-	if terrain_floor == -1 and not use_single_floor:
-		return
 		
 	var sc: Vector2i = layer_ground_base.local_to_map(layer_ground_base.to_local(player.global_position))
 	var ec: Vector2i = layer_ground_base.local_to_map(layer_ground_base.to_local(goal.global_position))
 	
-	var valid_region: Rect2i = Rect2i(0, 0, map_width, map_height)
+	var w: int = _last_generated_w if _last_generated_w > 0 else map_width
+	var h: int = _last_generated_h if _last_generated_h > 0 else map_height
+	var valid_region: Rect2i = Rect2i(0, 0, w, h)
+	
 	if not valid_region.has_point(sc) or not valid_region.has_point(ec):
 		return
 		
@@ -1241,18 +1403,10 @@ func _draw_debug_path() -> void:
 	astar.region = valid_region
 	astar.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_NEVER
 	astar.update()
-	
-	var f_terrain: int = terrain_floor
-	if use_single_floor and layer_ground_base.tile_set:
-		for tid in range(layer_ground_base.tile_set.get_terrains_count(0)):
-			if layer_ground_base.tile_set.get_terrain_name(0, tid) == "Grass 1":
-				f_terrain = tid
-				break
 				
-	for y in range(map_height):
-		for x in range(map_width):
-			var d: TileData = layer_ground_base.get_cell_tile_data(Vector2i(x, y))
-			if not (d and d.terrain == f_terrain): 
+	for y in range(h):
+		for x in range(w):
+			if layer_ground_base.get_cell_source_id(Vector2i(x, y)) == -1:
 				astar.set_point_solid(Vector2i(x, y))
 				
 	if layer_walls:
@@ -1260,7 +1414,8 @@ func _draw_debug_path() -> void:
 			if valid_region.has_point(cell):
 				astar.set_point_solid(cell)
 			
-	if astar.is_point_solid(sc) or astar.is_point_solid(ec): 
+	if astar.is_point_solid(sc) or astar.is_point_solid(ec):
+		push_warning("RPGMap: Debug path failed. Player or Goal are inside a wall or empty space.")
 		return
 		
 	var id_path: Array[Vector2i] = astar.get_id_path(sc, ec)
@@ -1287,11 +1442,13 @@ func _draw_debug_path() -> void:
 		l.owner = root
 
 
+
 func _clear_debug_path() -> void:
 	if layer_ground_base:
 		for child in layer_ground_base.get_children():
 			if child is Line2D or child is Label:
 				child.free()
+
 
 
 ## Creates a circular badge node with a letter
@@ -1312,6 +1469,7 @@ func _create_marker_badge(letter: String, bg: Color, tx: Color, pos: Vector2) ->
 	return lbl
 
 
+
 ## Provides a manual fallback to generate collisions
 func _force_collisions_main_thread() -> void:
 	if not layer_walls or terrain_wall == -1: 
@@ -1326,8 +1484,35 @@ func _force_collisions_main_thread() -> void:
 		if d and d.terrain == terrain_wall: 
 			grid[cell.y * map_width + cell.x] = 2
 			
-	_build_collision_nodes(_calculate_greedy_meshing(grid), layer_walls)
+	_build_collision_nodes(_calculate_greedy_meshing(grid, map_width, map_height), layer_walls)
+
+
+## Dynamically rebuilds all collisions based on the current visual state of the walls layer to adapt to carving
+func update_collisions_from_tilemap() -> void:
+	if not layer_walls or not add_collisions_after_generation:
+		return
+		
+	var grid: PackedByteArray = PackedByteArray()
+	grid.resize(map_width * map_height)
+	grid.fill(0)
+	
+	var door_s_id: int = carve_door_tile.get("atlas_id", -1)
+	var door_coord: Vector2i = carve_door_tile.get("tile_id", Vector2i(-1, -1))
+	
+	for cell in layer_walls.get_used_cells():
+		if cell.x >= 0 and cell.x < map_width and cell.y >= 0 and cell.y < map_height:
+			var s_id: int = layer_walls.get_cell_source_id(cell)
+			var a_coord: Vector2i = layer_walls.get_cell_atlas_coords(cell)
+			
+			if door_s_id != -1 and s_id == door_s_id and a_coord == door_coord:
+				continue
+				
+			grid[cell.y * map_width + cell.x] = 2
+			
+	_build_collision_nodes(_calculate_greedy_meshing(grid, map_width, map_height), layer_walls)
 #endregion
+
+
 
 #region EXTERNAL ACTIONS
 ## Persists the events library resource to the disk to ensure data is not lost on reload
@@ -1348,6 +1533,7 @@ func save_events_library() -> void:
 		push_error("MapGenerator: Failed to save events library. Error: " + str(err))
 
 
+
 ## Open the sub-dialog box and ensures saving on close
 func open_environment_decorator_dialog() -> void:
 	if not layer_environment or not layer_environment.tile_set: return
@@ -1360,18 +1546,27 @@ func open_environment_decorator_dialog() -> void:
 		dialog.tree_exited.connect(save_decorators)
 
 
+
 ## External access to helpers
 func export_to_rpgmap() -> void:
 	scene_exporter.export_to_rpgmap()
 
+
+
 func open_event_editor_dialog() -> void:
 	event_placer.open_event_editor_dialog()
+
+
 
 func generate_random_events() -> void:
 	event_placer.generate_random_events()
 
+
+
 func clear_all_events() -> void:
 	event_placer.clear_all_events()
+
+
 
 func request_event_deletion(index: int) -> void:
 	event_placer.request_event_deletion(index)

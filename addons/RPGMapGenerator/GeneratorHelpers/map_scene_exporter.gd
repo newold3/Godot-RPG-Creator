@@ -69,13 +69,14 @@ func _get_latest_template_event(template_uid: int) -> RPGEvent:
 
 
 ## Executes the export saving the scene and the external events resource using the internal ID
-func _perform_export_save(base_dir: String, snake_name: String, display_name: String, map_id: int, confirm_dialog: ConfirmationDialog) -> void:
+func _perform_export_save(base_dir: String, snake_name: String, display_name: String, map_id: int, confirm_dialog: ConfirmationDialog,
+	default_events_dir: String = "res://data/MapEvents/") -> void:
 	if confirm_dialog:
 		confirm_dialog.queue_free()
 		
 	var final_scene_path: String = base_dir + "/" + snake_name + ".tscn"
 	var script_path: String = base_dir + "/" + snake_name + ".gd"
-	var events_dir: String = "res://data/MapEvents/"
+	var events_dir: String = default_events_dir
 	var events_path: String = events_dir + "Map_" + str(map_id) + "_events.tres"
 	
 	if not DirAccess.dir_exists_absolute(events_dir):

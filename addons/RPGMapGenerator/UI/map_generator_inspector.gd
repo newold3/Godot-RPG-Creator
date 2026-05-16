@@ -21,7 +21,7 @@ func _parse_property(object: Object, _type: Variant.Type, name: String, _hint_ty
 	if name in ["use_single_floor", "single_floor_tile", "use_single_wall", "single_wall_tile", "use_single_roof", "single_roof_tile"]:
 		return true
 		
-	if name in ["terrain_floor", "terrain_wall", "terrain_roof", "terrain_water", "terrain_snow", "terrain_desert", "terrain_mountain", "terrain_tree", "large_tile_shadow", "small_tile_shadow", "terrain_land", "terrain_volcano", "terrain_swamp"]:
+	if name in ["terrain_floor", "terrain_wall", "terrain_roof", "terrain_water", "terrain_snow", "terrain_desert", "terrain_mountain", "terrain_tree", "large_tile_shadow", "small_tile_shadow", "terrain_land", "terrain_volcano", "terrain_swamp", "carve_door_tile", "carve_window_tile"]:
 		var property_script = load("res://addons/RPGMapGenerator/UI/terrain_single_editor_property.gd")
 		
 		if property_script:

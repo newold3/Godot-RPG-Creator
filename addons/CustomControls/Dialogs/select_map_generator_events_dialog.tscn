@@ -19,13 +19,13 @@ fill_to = Vector2(0.5, 0)
 [sub_resource type="Gradient" id="Gradient_3f8cb"]
 colors = PackedColorArray(0.333333, 0.352941, 0.360784, 1, 0.380392, 0.4, 0.407843, 1)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_0n3ye"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_8v0fm"]
 gradient = SubResource("Gradient_3f8cb")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_aq1a2"]
-texture = SubResource("GradientTexture2D_0n3ye")
+texture = SubResource("GradientTexture2D_8v0fm")
 
 [sub_resource type="Gradient" id="Gradient_un8fw"]
 offsets = PackedFloat32Array(0, 0.369535, 1)
@@ -61,7 +61,7 @@ region = Rect2(144, 72, 24, 24)
 oversampling_override = 1.0
 title = "Edit Map Generator Events"
 position = Vector2i(0, 36)
-size = Vector2i(809, 560)
+size = Vector2i(900, 759)
 wrap_controls = true
 transient = true
 exclusive = true
@@ -111,7 +111,7 @@ cursor_style = SubResource("StyleBoxTexture_8v0fm")
 panel_style = SubResource("StyleBoxFlat_k2edk")
 names = PackedStringArray("Event List")
 sizes = PackedInt32Array(260)
-placeholder_text = "Add Event.."
+placeholder_text = "Add Event..."
 itemlist_tooltip = "Event lists saved in the map generator, ready to be randomly added to the map.
 
 [Note]: You can limit the number of times the same event appears and also exclude events from the list so they aren't used when populating the map."
@@ -261,6 +261,162 @@ popup/item_9/id = 9
 metadata/original_focus_mode = 2
 metadata/original_mouse_filer = 0
 
+[node name="HSeparator4" type="HSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer" unique_id=40848094]
+layout_mode = 2
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer" unique_id=2112632917]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/VBoxContainer3" unique_id=2012778852]
+layout_mode = 2
+text = "Size:"
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/VBoxContainer3" unique_id=220849401]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/VBoxContainer3/HBoxContainer4" unique_id=1667630838]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+text = "Width:"
+
+[node name="Width" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/VBoxContainer3/HBoxContainer4" unique_id=2087219769 instance=ExtResource("10_od61c")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Total width of the event in tiles."
+mouse_filter = 2
+min_value = 1.0
+value = 1.0
+allow_greater = true
+editable = false
+disabled = true
+_custom_value = 1.0
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/VBoxContainer3/HBoxContainer4" unique_id=325847285]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+text = "Height:"
+
+[node name="Height" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/VBoxContainer3/HBoxContainer4" unique_id=1896205022 instance=ExtResource("10_od61c")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Total height of the event in tiles."
+mouse_filter = 2
+min_value = 1.0
+value = 1.0
+allow_greater = true
+editable = false
+disabled = true
+_custom_value = 1.0
+
+[node name="HSeparator5" type="HSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer" unique_id=1185174967]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer" unique_id=1147485316]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/VBoxContainer" unique_id=550858926]
+layout_mode = 2
+text = "Footprint Height:"
+
+[node name="FootprintHeight" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/VBoxContainer" unique_id=1542710048 instance=ExtResource("10_od61c")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Defines the height of the physical “footprint.”
+
+\"Usage\": Determines how many tiles from the base upward block the path and require floor validation (0 = requires all free iles)."
+mouse_filter = 2
+allow_greater = true
+editable = false
+disabled = true
+_custom_value = 0.0
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer" unique_id=773939222]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/VBoxContainer2" unique_id=303847209]
+layout_mode = 2
+text = "Wall Margins:"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/VBoxContainer2" unique_id=1039559963]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/VBoxContainer2/HBoxContainer" unique_id=1654645026]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+text = "Left:"
+
+[node name="MarginLeft" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/VBoxContainer2/HBoxContainer" unique_id=2056858870 instance=ExtResource("10_od61c")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Defines the required clearance.
+
+\"Usage\": If a value is greater than 0, the generator will invalidate the position if it encounters a wall within that distance in that specific direction."
+mouse_filter = 2
+allow_greater = true
+editable = false
+disabled = true
+_custom_value = 0.0
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/VBoxContainer2/HBoxContainer" unique_id=323792794]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+text = " Right:"
+
+[node name="MarginRight" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/VBoxContainer2/HBoxContainer" unique_id=1493953671 instance=ExtResource("10_od61c")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Defines the required clearance.
+
+\"Usage\": If a value is greater than 0, the generator will invalidate the position if it encounters a wall within that distance in that specific direction."
+mouse_filter = 2
+allow_greater = true
+editable = false
+disabled = true
+_custom_value = 0.0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/VBoxContainer2" unique_id=155359092]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/VBoxContainer2/HBoxContainer2" unique_id=1800529377]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+text = "Top:"
+
+[node name="MarginTop" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/VBoxContainer2/HBoxContainer2" unique_id=877403680 instance=ExtResource("10_od61c")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Defines the required clearance.
+
+\"Usage\": If a value is greater than 0, the generator will invalidate the position if it encounters a wall within that distance in that specific direction."
+mouse_filter = 2
+allow_greater = true
+editable = false
+disabled = true
+_custom_value = 0.0
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/VBoxContainer2/HBoxContainer2" unique_id=334841564]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+text = " Bottom:"
+
+[node name="MarginBottom" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/VBoxContainer2/HBoxContainer2" unique_id=260958514 instance=ExtResource("10_od61c")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Defines the required clearance.
+
+\"Usage\": If a value is greater than 0, the generator will invalidate the position if it encounters a wall within that distance in that specific direction."
+mouse_filter = 2
+allow_greater = true
+editable = false
+disabled = true
+_custom_value = 0.0
+
 [node name="HSeparator3" type="HSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer" unique_id=864515769]
 layout_mode = 2
 
@@ -300,5 +456,12 @@ text = "Close"
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/HBoxContainer2/ProbabilityOfAppearance" to="." method="_on_probability_of_appearance_value_changed"]
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/Quantity" to="." method="_on_quantity_value_changed"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/HBoxContainer3/PlacementMode" to="." method="_on_placement_mode_item_selected"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/VBoxContainer3/HBoxContainer4/Width" to="." method="_on_width_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/VBoxContainer3/HBoxContainer4/Height" to="." method="_on_height_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/VBoxContainer/FootprintHeight" to="." method="_on_footprint_height_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/VBoxContainer2/HBoxContainer/MarginLeft" to="." method="_on_margin_left_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/VBoxContainer2/HBoxContainer/MarginRight" to="." method="_on_margin_right_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/VBoxContainer2/HBoxContainer2/MarginTop" to="." method="_on_margin_top_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/VBoxContainer2/HBoxContainer2/MarginBottom" to="." method="_on_margin_bottom_value_changed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/VBoxContainer/DeleteEvent" to="." method="_on_delete_event_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

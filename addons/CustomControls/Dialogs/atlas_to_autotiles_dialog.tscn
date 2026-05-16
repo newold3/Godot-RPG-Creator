@@ -1,0 +1,582 @@
+[gd_scene format=3 uid="uid://d1in3j5xoav5m"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_xfjgv"]
+[ext_resource type="Script" uid="uid://bykabr3j23oya" path="res://addons/CustomControls/Dialogs/atlas_to_autotiles_dialog.gd" id="2_p54pm"]
+[ext_resource type="PackedScene" uid="uid://m1iixxkyrur5" path="res://addons/CustomControls/custom_simple_item_list.tscn" id="3_3ebtj"]
+[ext_resource type="Script" uid="uid://db7qqa0yg4kyo" path="res://addons/TilesetConversor/tileset_conversor.gd" id="3_kx1ii"]
+[ext_resource type="PackedScene" uid="uid://dxcyqc2dscbvw" path="res://addons/CustomControls/custom_simple_column_item_list.tscn" id="3_yp56s"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="4_kbouy"]
+[ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="4_xtkn1"]
+[ext_resource type="Script" uid="uid://50mca6pd7ml6" path="res://addons/TilesetConversor/atlas_selector_canvas.gd" id="5_kbouy"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="5_xfjgv"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="6_wwgmp"]
+[ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="6_xfjgv"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="12_3ebtj"]
+
+[sub_resource type="Gradient" id="Gradient_vvvrv"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_fg0k8"]
+gradient = SubResource("Gradient_vvvrv")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="Gradient" id="Gradient_xfjgv"]
+colors = PackedColorArray(0.333333, 0.352941, 0.360784, 1, 0.380392, 0.4, 0.407843, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_0n3ye"]
+gradient = SubResource("Gradient_xfjgv")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kx1ii"]
+texture = SubResource("GradientTexture2D_0n3ye")
+
+[sub_resource type="Gradient" id="Gradient_un8fw"]
+offsets = PackedFloat32Array(0, 0.369535, 1)
+colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ygvtv"]
+gradient = SubResource("Gradient_un8fw")
+fill_from = Vector2(0.547009, 1)
+fill_to = Vector2(0.559829, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3ebtj"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_ygvtv")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xtkn1"]
+bg_color = Color(0, 0, 0, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aycp5"]
+content_margin_left = 12.0
+content_margin_top = 12.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+draw_center = false
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.14509805, 0.15686275, 0.16470589, 1)
+border_blend = true
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gbpf1"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 8.0
+bg_color = Color(0, 0, 0, 0.5176471)
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r5pt5"]
+resource_local_to_scene = true
+content_margin_left = 3.0
+content_margin_right = 3.0
+bg_color = Color(1, 1, 1, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wwgmp"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="Gradient" id="Gradient_3obsl"]
+offsets = PackedFloat32Array(0, 0.369535, 1)
+colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_mtkxg"]
+gradient = SubResource("Gradient_3obsl")
+fill_from = Vector2(0.547009, 1)
+fill_to = Vector2(0.559829, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4mvil"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_770tq"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xfjgv"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.17254902, 0.18431373, 0.19215687, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.4228827, 0.42288283, 0.42288253, 1)
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kx1ii"]
+content_margin_left = 12.0
+content_margin_top = 12.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+bg_color = Color(0.121098585, 0.08260276, 0.15539947, 0.6)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.10313561, 0.1131906, 0.11821721, 1)
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xtkn1"]
+atlas = ExtResource("12_3ebtj")
+region = Rect2(0, 48, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r5pt5"]
+atlas = ExtResource("12_3ebtj")
+region = Rect2(24, 48, 24, 24)
+
+[node name="AtlasToAutotilesDialog" type="Window" unique_id=1795928936 node_paths=PackedStringArray("anim_main_container", "anim_frames_container", "merge_anim_button", "clear_anim_button", "close_anim_panel_button", "anim_speed_spinbox")]
+oversampling_override = 1.0
+title = "Atlas to Autotiles"
+position = Vector2i(0, 36)
+size = Vector2i(1300, 722)
+wrap_controls = true
+transient = true
+exclusive = true
+theme = ExtResource("1_xfjgv")
+script = ExtResource("2_p54pm")
+anim_main_container = NodePath("MarginContainer/VBoxContainer/FloatingAnimationPanel")
+anim_frames_container = NodePath("MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/SmoothScrollContainer/AnimatorContainer")
+merge_anim_button = NodePath("MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/HBoxContainer/MergeFrames")
+clear_anim_button = NodePath("MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/HBoxContainer/ClearFrames")
+close_anim_panel_button = NodePath("MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/HBoxContainer2/CloseFloatingAnimationPanel")
+anim_speed_spinbox = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/HBoxContainer/AnimationSpeed")
+
+[node name="Conversor" type="Node" parent="." unique_id=1870511595]
+unique_name_in_owner = true
+script = ExtResource("3_kx1ii")
+
+[node name="Background" type="TextureRect" parent="." unique_id=169465493]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_fg0k8")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1739132568]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=2107948163]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HSplitContainer" parent="MarginContainer/VBoxContainer" unique_id=2038778398]
+layout_mode = 2
+size_flags_vertical = 3
+split_offsets = PackedInt32Array(200, 0)
+split_offset = 200
+
+[node name="LeftColumn" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=573033032]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+
+[node name="AtlasList" parent="MarginContainer/VBoxContainer/HBoxContainer2/LeftColumn" unique_id=29010192 instance=ExtResource("3_yp56s")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
+event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
+top_bar_style = SubResource("StyleBoxTexture_kx1ii")
+columns_text_colors = PackedColorArray(0.72549, 0.992157, 0.772549, 1)
+cursor_style = SubResource("StyleBoxTexture_3ebtj")
+panel_style = SubResource("StyleBoxFlat_xtkn1")
+names = PackedStringArray("Atlas List")
+sizes = PackedInt32Array(260)
+placeholder_text = "Add Atlas..."
+
+[node name="MidColum" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=649839381]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_aycp5")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum" unique_id=605220506]
+layout_mode = 2
+
+[node name="TopButtons" type="HFlowContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer" unique_id=2068709785]
+layout_mode = 2
+
+[node name="Controls1" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons" unique_id=154270984]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/Controls1" unique_id=1753371705]
+layout_mode = 2
+text = "Tile Size:"
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/Controls1" unique_id=1037980811]
+layout_mode = 2
+text = " Width:"
+
+[node name="Width" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/Controls1" unique_id=2061298059 instance=ExtResource("4_kbouy")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Width of the tile used in this atlas"
+min_value = 1.0
+value = 32.0
+allow_greater = true
+_custom_value = 32.0
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/Controls1" unique_id=1530870668]
+layout_mode = 2
+text = " Height:"
+
+[node name="Height" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/Controls1" unique_id=4573563 instance=ExtResource("4_kbouy")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Height of the tile used in this atlas"
+min_value = 1.0
+value = 32.0
+allow_greater = true
+_custom_value = 32.0
+
+[node name="Controls2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons" unique_id=1925942947]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/Controls2" unique_id=1428541701]
+layout_mode = 2
+text = "Autotile Tipe:"
+
+[node name="AutototileType" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/Controls2" unique_id=621784070 instance=ExtResource("5_xfjgv")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Type of the autotile currently selected in the UI"
+selected = 0
+item_count = 4
+popup/item_0/text = "Extended"
+popup/item_0/id = 0
+popup/item_1/text = "Compact"
+popup/item_1/id = 1
+popup/item_2/text = "Wall"
+popup/item_2/id = 2
+popup/item_3/text = "Single Tile"
+popup/item_3/id = 3
+metadata/original_focus_mode = 2
+metadata/original_mouse_filer = 0
+
+[node name="Controls3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons" unique_id=592532108]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/Controls3" unique_id=1787327928]
+layout_mode = 2
+text = "Terrain Name:"
+
+[node name="TerrainName" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/Controls3" unique_id=1532289496 instance=ExtResource("6_xfjgv")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+metadata/original_text = ""
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons" unique_id=384505281]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/HBoxContainer" unique_id=1425975331]
+layout_mode = 2
+text = "Animation Speed (fps):"
+
+[node name="AnimationSpeed" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/HBoxContainer" unique_id=226381042 instance=ExtResource("4_kbouy")]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.05
+max_value = 50.0
+step = 0.01
+value = 5.0
+rounded = false
+_custom_value = 5.0
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer" unique_id=323482965]
+layout_mode = 2
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer" unique_id=1996378324]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("4_xtkn1")
+metadata/_custom_type_script = "uid://cs6g8remlafby"
+
+[node name="Canvas" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/SmoothScrollContainer" unique_id=590773381 node_paths=PackedStringArray("scroll_container", "info_label", "help_label")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(700, 700)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("5_kbouy")
+scroll_container = NodePath("..")
+info_label = NodePath("../../../MarginContainer/TileLabel")
+help_label = NodePath("../../Control/CanvasHelp")
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer" unique_id=974236069]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+
+[node name="CanvasHelp" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/Control" unique_id=1750663132]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 8
+theme_override_colors/font_color = Color(1, 0.22745098, 0.22352941, 1)
+text = "Click to extract a standard autotile (CTRL Toggled Animation)"
+horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum" unique_id=1390375597]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+mouse_filter = 2
+theme_override_constants/margin_right = 26
+theme_override_constants/margin_bottom = 48
+
+[node name="TileLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/MarginContainer" unique_id=1003200315]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(1.1670696, 0.16315776, 0.3630316, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("StyleBoxFlat_gbpf1")
+
+[node name="RightColumn" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=602407482]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=40722580]
+layout_mode = 2
+text = "Autotile List:"
+
+[node name="AutoTilesList" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=1744179405 instance=ExtResource("3_3ebtj")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+theme_override_constants/v_separation = -1
+theme_override_styles/panel = SubResource("StyleBoxFlat_r5pt5")
+theme_override_styles/focus = SubResource("StyleBoxFlat_r5pt5")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_wwgmp")
+theme_override_styles/selected = SubResource("StyleBoxTexture_4mvil")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_770tq")
+allow_reselect = true
+odd_line_color = Color(0.172549, 0.184314, 0.192157, 1)
+event_line_color = Color(0.145098, 0.156863, 0.164706, 1)
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=1981552580]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5449743, 0.54497427, 0.54497427, 1)
+theme_override_font_sizes/font_size = 16
+text = "TERRAIN"
+horizontal_alignment = 1
+
+[node name="LabelTerrainTileSelected" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=693951917]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5449743, 0.54497427, 0.54497427, 1)
+theme_override_font_sizes/font_size = 16
+text = "-"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=1730610055]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=1139888756]
+custom_minimum_size = Vector2(0, 256)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_xfjgv")
+
+[node name="AutotilePreview" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/PanelContainer" unique_id=1596443196]
+unique_name_in_owner = true
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="GenerateTileset" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=479703736 instance=ExtResource("6_wwgmp")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.65)
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Create a pre-made tileset with all textures set as terrain"
+disabled = true
+text = "Generate Tileset"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=493259790]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=2142477788]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="CloseButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=529615738 instance=ExtResource("6_wwgmp")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Close[/title]
+Close this dialog box"
+text = "Close"
+
+[node name="FloatingAnimationPanel" type="Control" parent="MarginContainer/VBoxContainer" unique_id=1271569104]
+unique_name_in_owner = true
+top_level = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="FloatingMainPanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/FloatingAnimationPanel" unique_id=23913030]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(320, 320)
+layout_mode = 1
+offset_left = 51.0
+offset_top = -507.0
+offset_right = 399.0
+offset_bottom = -102.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_kx1ii")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer" unique_id=914545147]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer" unique_id=2038079900]
+layout_mode = 2
+
+[node name="FloatingAnimationHandle" type="Panel" parent="MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/HBoxContainer2" unique_id=1271588568]
+custom_minimum_size = Vector2(0, 14)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+mouse_default_cursor_shape = 13
+
+[node name="CloseFloatingAnimationPanel" type="TextureButton" parent="MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/HBoxContainer2" unique_id=1020184700]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_xtkn1")
+texture_hover = SubResource("AtlasTexture_r5pt5")
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer" unique_id=564148905]
+layout_mode = 2
+text = "Animation Frames"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer" unique_id=1789238328]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer" unique_id=2141881110]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+script = ExtResource("4_xtkn1")
+metadata/_custom_type_script = "uid://cs6g8remlafby"
+
+[node name="AnimatorContainer" type="HFlowContainer" parent="MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/SmoothScrollContainer" unique_id=209086931]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer" unique_id=1975014610]
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer" unique_id=231436239]
+layout_mode = 2
+
+[node name="MergeFrames" parent="MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/HBoxContainer" unique_id=225668214 instance=ExtResource("6_wwgmp")]
+modulate = Color(1, 1, 1, 0.65)
+z_index = 10
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+tooltip_text = "Create a pre-made tileset with all textures set as terrain"
+disabled = true
+text = "Merge Frames"
+
+[node name="ClearFrames" parent="MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/HBoxContainer" unique_id=29316152 instance=ExtResource("6_wwgmp")]
+modulate = Color(1, 1, 1, 0.65)
+z_index = 10
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+tooltip_text = "Create a pre-made tileset with all textures set as terrain"
+disabled = true
+text = "Clear Frames"
+
+[connection signal="delete_pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/LeftColumn/AtlasList" to="." method="_on_atlas_list_delete_pressed"]
+[connection signal="item_activated" from="MarginContainer/VBoxContainer/HBoxContainer2/LeftColumn/AtlasList" to="." method="_on_atlas_list_item_activated"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer2/LeftColumn/AtlasList" to="." method="_on_atlas_list_item_selected"]
+[connection signal="value_updated" from="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/Controls1/Width" to="." method="_on_width_value_updated"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/Controls1/Height" to="." method="_on_height_value_changed"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/Controls2/AutototileType" to="." method="_on_custom_option_button_item_selected"]
+[connection signal="autotile_selected" from="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/SmoothScrollContainer/Canvas" to="." method="_on_canvas_autotile_selected"]
+[connection signal="delete_pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/AutoTilesList" to="." method="_on_auto_tiles_list_delete_pressed"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/AutoTilesList" to="." method="_on_auto_tiles_list_item_selected"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/GenerateTileset" to="." method="_on_generate_tileset_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CloseButton" to="." method="_on_close_button_pressed"]
+[connection signal="gui_input" from="MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/HBoxContainer2/FloatingAnimationHandle" to="." method="_on_floating_animation_handle_gui_input"]

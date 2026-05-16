@@ -165,7 +165,7 @@ Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
 Color(1, 0.8666667, 0.39607844, 1): Color(0.83, 0.78, 0.62, 1)
 }
 
-[node name="SelectTileFromTilesetDialog" type="Window" unique_id=1795928936 node_paths=PackedStringArray("canvas", "scroll_container", "atlas_list", "data_list", "current_atlas", "cancel_button", "ok_button", "delete_button", "alt_mode_button", "appear_percent_spinbox", "max_quantity_spinbox", "alt_chance_spinbox", "placement_mode_option", "environment_position", "is_detail_tile", "info_label", "is_tile_disabled")]
+[node name="SelectTileFromTilesetDialog" type="Window" unique_id=1795928936 node_paths=PackedStringArray("canvas", "scroll_container", "atlas_list", "data_list", "current_atlas", "cancel_button", "ok_button", "delete_button", "alt_mode_button", "appear_percent_spinbox", "max_quantity_spinbox", "alt_chance_spinbox", "placement_mode_option", "environment_position", "is_detail_tile", "info_label", "is_tile_disabled", "footprint_height", "wall_margin_left", "wall_margin_right", "wall_margin_top", "wall_margin_bottom")]
 oversampling_override = 1.0
 title = "Select Title"
 position = Vector2i(0, 36)
@@ -183,15 +183,20 @@ current_atlas = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/MidColum/
 cancel_button = NodePath("MarginContainer/VBoxContainer/HBoxContainer/CancelButton")
 ok_button = NodePath("MarginContainer/VBoxContainer/HBoxContainer/OKButton")
 delete_button = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/HBoxContainer/RemoveTile")
-alt_mode_button = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer/AlternativeTile")
-appear_percent_spinbox = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer2/ProbabilityOfAppearance")
-max_quantity_spinbox = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer8/MaxQuantity")
-alt_chance_spinbox = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer3/ProbabilityOfAppearanceAlternative")
-placement_mode_option = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer7/PlacementMode")
-environment_position = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer7/EnvironmentPositions")
-is_detail_tile = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer2/IsDetailTile")
+alt_mode_button = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/HBoxContainer/AlternativeTile")
+appear_percent_spinbox = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/HBoxContainer2/ProbabilityOfAppearance")
+max_quantity_spinbox = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/HBoxContainer8/MaxQuantity")
+alt_chance_spinbox = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/HBoxContainer3/ProbabilityOfAppearanceAlternative")
+placement_mode_option = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/HBoxContainer7/PlacementMode")
+environment_position = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/HBoxContainer7/EnvironmentPositions")
+is_detail_tile = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/HBoxContainer2/IsDetailTile")
 info_label = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/MidColum/MarginContainer/TileLabel")
 is_tile_disabled = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/HBoxContainer/IsTileDisabled")
+footprint_height = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/VBoxContainer/FootprintHeight")
+wall_margin_left = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/VBoxContainer2/HBoxContainer/MarginLeft")
+wall_margin_right = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/VBoxContainer2/HBoxContainer/MarginRight")
+wall_margin_top = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/VBoxContainer2/HBoxContainer2/MarginTop")
+wall_margin_bottom = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/VBoxContainer2/HBoxContainer2/MarginBottom")
 
 [node name="Background" type="TextureRect" parent="." unique_id=169465493]
 anchors_preset = 15
@@ -306,6 +311,7 @@ text = "Tile 0, 0"
 
 [node name="RightColumn" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=602407482]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(420, 0)
 layout_mode = 2
 
 [node name="DataList" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=1744179405 instance=ExtResource("3_b6ptd")]
@@ -330,6 +336,7 @@ layout_mode = 2
 layout_mode = 2
 tooltip_text = "Mark this tile so that it won't be eligible for inclusion on the map when you click the \"Fill in map events\" button."
 mouse_default_cursor_shape = 2
+disabled = true
 text = "Disabled?"
 
 [node name="RemoveTile" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/HBoxContainer" unique_id=565792642 instance=ExtResource("4_b6ptd")]
@@ -346,27 +353,36 @@ icon = SubResource("DPITexture_570cm")
 
 [node name="ExtraControls" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=831860319]
 layout_mode = 2
+size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_rka3q")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls" unique_id=422186291]
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls" unique_id=133813688]
+custom_minimum_size = Vector2(0, 360)
 layout_mode = 2
+script = ExtResource("4_em6i0")
+metadata/_custom_type_script = "uid://cs6g8remlafby"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer" unique_id=422186291]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_override_constants/separation = 14
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer" unique_id=1451389705]
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer" unique_id=1451389705]
 layout_mode = 2
 
-[node name="Icon" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer4" unique_id=1869067021]
+[node name="Icon" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/HBoxContainer4" unique_id=1869067021]
 layout_mode = 2
 texture = SubResource("AtlasTexture_g2g1m")
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer4" unique_id=1383031950]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/HBoxContainer4" unique_id=1383031950]
 layout_mode = 2
 text = "Placement Mode:"
 
-[node name="HBoxContainer7" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer" unique_id=822848685]
+[node name="HBoxContainer7" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer" unique_id=822848685]
 layout_mode = 2
 
-[node name="PlacementMode" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer7" unique_id=621784070 instance=ExtResource("6_em6i0")]
+[node name="PlacementMode" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/HBoxContainer7" unique_id=621784070 instance=ExtResource("6_em6i0")]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.6)
 layout_mode = 2
@@ -386,7 +402,7 @@ popup/item_2/id = 2
 metadata/original_focus_mode = 2
 metadata/original_mouse_filer = 0
 
-[node name="EnvironmentPositions" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer7" unique_id=613183654 instance=ExtResource("6_em6i0")]
+[node name="EnvironmentPositions" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/HBoxContainer7" unique_id=613183654 instance=ExtResource("6_em6i0")]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.6)
 layout_mode = 2
@@ -420,22 +436,22 @@ popup/item_9/id = 9
 metadata/original_focus_mode = 2
 metadata/original_mouse_filer = 0
 
-[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer" unique_id=1997441179]
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer" unique_id=1997441179]
 layout_mode = 2
 
-[node name="Icon" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer5" unique_id=1721015320]
+[node name="Icon" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/HBoxContainer5" unique_id=1721015320]
 layout_mode = 2
 size_flags_vertical = 4
 texture = SubResource("AtlasTexture_aycp5")
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer5" unique_id=1189627869]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/HBoxContainer5" unique_id=1189627869]
 layout_mode = 2
 text = "Probability Of Appearance:"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer" unique_id=1345086579]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer" unique_id=1345086579]
 layout_mode = 2
 
-[node name="ProbabilityOfAppearance" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer2" unique_id=20733617 instance=ExtResource("7_6odri")]
+[node name="ProbabilityOfAppearance" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/HBoxContainer2" unique_id=20733617 instance=ExtResource("7_6odri")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -449,25 +465,26 @@ editable = false
 disabled = true
 _custom_value = 0.01
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer2" unique_id=1946845137]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/HBoxContainer2" unique_id=1946845137]
 layout_mode = 2
 text = " %"
 
-[node name="IsDetailTile" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer2" unique_id=465687836]
+[node name="IsDetailTile" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/HBoxContainer2" unique_id=465687836]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "If the tile is marked as a detail tile, it will be placed on the \"Ground Detail layer\". If this option is left unchecked, it will be placed on the \"Environment layer\"."
 mouse_default_cursor_shape = 2
+disabled = true
 text = "Is Detail Tile"
 
-[node name="HBoxContainer8" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer" unique_id=1327141662]
+[node name="HBoxContainer8" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer" unique_id=1327141662]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer8" unique_id=1325964842]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/HBoxContainer8" unique_id=1325964842]
 layout_mode = 2
 text = "Max Quantity:"
 
-[node name="MaxQuantity" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer8" unique_id=1854987636 instance=ExtResource("7_6odri")]
+[node name="MaxQuantity" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/HBoxContainer8" unique_id=1854987636 instance=ExtResource("7_6odri")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -482,22 +499,22 @@ value_replace = {
 }
 _custom_value = 1.0
 
-[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer" unique_id=857985149]
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer" unique_id=857985149]
 layout_mode = 2
 
-[node name="Icon" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer6" unique_id=158698767]
+[node name="Icon" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/HBoxContainer6" unique_id=158698767]
 layout_mode = 2
 size_flags_vertical = 4
 texture = SubResource("AtlasTexture_akxct")
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer6" unique_id=414544734]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/HBoxContainer6" unique_id=414544734]
 layout_mode = 2
 text = "Probability Of Alternative:"
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer" unique_id=1136318787]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer" unique_id=1136318787]
 layout_mode = 2
 
-[node name="ProbabilityOfAppearanceAlternative" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer3" unique_id=1799206523 instance=ExtResource("7_6odri")]
+[node name="ProbabilityOfAppearanceAlternative" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/HBoxContainer3" unique_id=1799206523 instance=ExtResource("7_6odri")]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "the probability (0–100%) that this tile will appear when painted in its alternate version"
@@ -510,14 +527,14 @@ editable = false
 disabled = true
 _custom_value = 0.01
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer3" unique_id=1033094710]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/HBoxContainer3" unique_id=1033094710]
 layout_mode = 2
 text = " %"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer" unique_id=837142283]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer" unique_id=837142283]
 layout_mode = 2
 
-[node name="AlternativeTile" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer" unique_id=225668214 instance=ExtResource("4_b6ptd")]
+[node name="AlternativeTile" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/HBoxContainer" unique_id=225668214 instance=ExtResource("4_b6ptd")]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.65)
 custom_minimum_size = Vector2(160, 0)
@@ -530,6 +547,95 @@ disabled = true
 toggle_mode = true
 text = "Pick Alternative tile"
 icon = SubResource("DPITexture_afqh7")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer" unique_id=1009477403]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/VBoxContainer" unique_id=1726059076]
+layout_mode = 2
+text = "Footprint Height:"
+
+[node name="FootprintHeight" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/VBoxContainer" unique_id=705552142 instance=ExtResource("7_6odri")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Defines the height of the physical “footprint.”
+
+\"Usage\": Determines how many tiles from the base upward block the path and require floor validation  (0 = requires all free iles)."
+allow_greater = true
+_custom_value = 0.0
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer" unique_id=1159674076]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/VBoxContainer2" unique_id=859347300]
+layout_mode = 2
+text = "Wall Margins:"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/VBoxContainer2" unique_id=180031895]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/VBoxContainer2/HBoxContainer" unique_id=274787684]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+text = "Left:"
+
+[node name="MarginLeft" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/VBoxContainer2/HBoxContainer" unique_id=124661608 instance=ExtResource("7_6odri")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Defines the required clearance.
+
+\"Usage\": If a value is greater than 0, the generator will invalidate the position if it encounters a wall within that distance in that specific direction."
+allow_greater = true
+_custom_value = 0.0
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/VBoxContainer2/HBoxContainer" unique_id=188766478]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+text = " Right:"
+
+[node name="MarginRight" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/VBoxContainer2/HBoxContainer" unique_id=947030083 instance=ExtResource("7_6odri")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Defines the required clearance.
+
+\"Usage\": If a value is greater than 0, the generator will invalidate the position if it encounters a wall within that distance in that specific direction."
+allow_greater = true
+_custom_value = 0.0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/VBoxContainer2" unique_id=1263726908]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/VBoxContainer2/HBoxContainer2" unique_id=1908116801]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+text = "Top:"
+
+[node name="MarginTop" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/VBoxContainer2/HBoxContainer2" unique_id=2030868606 instance=ExtResource("7_6odri")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Defines the required clearance.
+
+\"Usage\": If a value is greater than 0, the generator will invalidate the position if it encounters a wall within that distance in that specific direction."
+allow_greater = true
+_custom_value = 0.0
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/VBoxContainer2/HBoxContainer2" unique_id=1086427648]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+text = " Bottom:"
+
+[node name="MarginBottom" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/VBoxContainer2/HBoxContainer2" unique_id=87907094 instance=ExtResource("7_6odri")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Defines the required clearance.
+
+\"Usage\": If a value is greater than 0, the generator will invalidate the position if it encounters a wall within that distance in that specific direction."
+allow_greater = true
+_custom_value = 0.0
 
 [node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=493259790]
 layout_mode = 2
@@ -558,4 +664,4 @@ Closes this window without saving any changes."
 text = "Cancel"
 
 [connection signal="dragged" from="MarginContainer/VBoxContainer/HBoxContainer2" to="." method="_on_h_box_container_2_dragged"]
-[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/VBoxContainer/HBoxContainer7/EnvironmentPositions" to="." method="_on_environment_positions_item_selected"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/HBoxContainer7/EnvironmentPositions" to="." method="_on_environment_positions_item_selected"]
