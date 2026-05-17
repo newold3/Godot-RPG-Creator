@@ -42,7 +42,7 @@ var image_dir_dialog: EditorFileDialog
 var selected_image_dir: String = ""
 var selected_tileset_path: String = ""
 
-var anim_frames_rects: Array[Rect2i] = []
+var anim_frames_data: Array[Dictionary] = []
 var selected_anim_frames: Array[TextureRect] = []
 var draggin_animation_panel: bool = false
 var is_animation_mode: bool = false
@@ -258,13 +258,19 @@ func _clamp_panel_position() -> void:
 
 ## Re-evaluates the array size to correctly disable or enable the merge and clear action buttons
 func _update_anim_buttons_state() -> void:
-	var has_frames: bool = anim_frames_rects.size() > 0
+	var has_frames: bool = anim_frames_data.size() > 0
 	
 	if is_instance_valid(merge_anim_button):
 		merge_anim_button.disabled = not has_frames
 		
 	if is_instance_valid(clear_anim_button):
 		clear_anim_button.disabled = not has_frames
+		
+	if is_instance_valid(canvas):
+		canvas.is_anim_size_locked = has_frames
+		if not has_frames and canvas.current_autotile_type == canvas.AutotileType.SINGLE:
+			canvas.locked_anim_size = Vector2i(1, 1)
+		canvas.cursor_canvas.queue_redraw()
 
 
 ## Toggles the selection visually and logically of a clicked animation frame thumbnail
@@ -292,7 +298,7 @@ func _delete_selected_anim_frames() -> void:
 	indices.reverse()
 	
 	for idx in indices:
-		anim_frames_rects.remove_at(idx)
+		anim_frames_data.remove_at(idx)
 		var child: Node = anim_frames_container.get_child(idx)
 		if is_instance_valid(child):
 			child.queue_free()
@@ -303,7 +309,7 @@ func _delete_selected_anim_frames() -> void:
 
 ## Flushes all stored animation data and visually removes the thumbnails
 func _clear_anim_frames() -> void:
-	anim_frames_rects.clear()
+	anim_frames_data.clear()
 	selected_anim_frames.clear()
 	
 	if is_instance_valid(anim_frames_container):
@@ -495,9 +501,10 @@ func _on_canvas_anim_frame_selected(rect: Rect2i) -> void:
 	if not canvas.current_texture or not is_instance_valid(anim_frames_container):
 		return
 		
-	anim_frames_rects.append(rect)
+	var source_image: Image = canvas.current_texture.get_image()
+	anim_frames_data.append({"rect": rect, "image": source_image})
 	
-	var preview_img: Image = canvas.current_texture.get_image().get_region(rect)
+	var preview_img: Image = source_image.get_region(rect)
 	var tex_rect: TextureRect = TextureRect.new()
 	tex_rect.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	tex_rect.texture = ImageTexture.create_from_image(preview_img)
@@ -513,14 +520,15 @@ func _on_canvas_anim_frame_selected(rect: Rect2i) -> void:
 
 ## Merges all stored temporary frames horizontally into a single autotile data dictionary
 func _on_merge_anim_frames_pressed() -> void:
-	if anim_frames_rects.size() == 0 or not canvas.current_texture:
+	if anim_frames_data.size() == 0:
 		return
 		
-	var source_image: Image = canvas.current_texture.get_image()
 	var frame_images: Array[Image] = []
-	var frames_count: int = anim_frames_rects.size()
+	var frames_count: int = anim_frames_data.size()
 	
-	for rect in anim_frames_rects:
+	for data in anim_frames_data:
+		var source_image: Image = data["image"]
+		var rect: Rect2i = data["rect"]
 		var region_image: Image = source_image.get_region(rect)
 		var region_texture: ImageTexture = ImageTexture.create_from_image(region_image)
 		var extracted_frame: Image
@@ -543,21 +551,29 @@ func _on_merge_anim_frames_pressed() -> void:
 	var final_width: int = base_w * frames_count
 	var final_height: int = base_h
 	
-	var merged_image: Image = Image.create(final_width, final_height, false, source_image.get_format())
-	var t_w: int = %Width.value
-	var t_h: int = %Height.value
-	var cols: int = base_w / t_w
-	var rows: int = base_h / t_h
+	var merged_image: Image = Image.create(final_width, final_height, false, frame_images[0].get_format())
 	
-	for y in range(rows):
-		for x in range(cols):
-			for f in range(frames_count):
-				var src_rect: Rect2i = Rect2i(x * t_w, y * t_h, t_w, t_h)
-				var dest_pos: Vector2i = Vector2i((x * frames_count + f) * t_w, y * t_h)
-				merged_image.blit_rect(frame_images[f], src_rect, dest_pos)
+	if canvas.current_autotile_type == canvas.AutotileType.SINGLE:
+		for f in range(frames_count):
+			var src_rect: Rect2i = Rect2i(0, 0, base_w, base_h)
+			var dest_pos: Vector2i = Vector2i(f * base_w, 0)
+			merged_image.blit_rect(frame_images[f], src_rect, dest_pos)
+	else:
+		var t_w: int = %Width.value
+		var t_h: int = %Height.value
+		var cols: int = base_w / t_w
+		var rows: int = base_h / t_h
 		
+		for y in range(rows):
+			for x in range(cols):
+				for f in range(frames_count):
+					var src_rect: Rect2i = Rect2i(x * t_w, y * t_h, t_w, t_h)
+					var dest_pos: Vector2i = Vector2i((x * frames_count + f) * t_w, y * t_h)
+					merged_image.blit_rect(frame_images[f], src_rect, dest_pos)
+			
 	var final_tex: ImageTexture = ImageTexture.create_from_image(merged_image)
-	var autotile_name: String = "Anim Autotile " + str(autotiles.size() + 1)
+	var prefix: String = "Anim Tile " if canvas.current_autotile_type == canvas.AutotileType.SINGLE else "Anim Autotile "
+	var autotile_name: String = prefix + str(autotiles.size() + 1)
 	
 	var autotile_data: Dictionary = {
 		"image": final_tex,
@@ -821,8 +837,13 @@ func _generate_everything() -> void:
 		var frames: int = autotile.get("frames", 1)
 		
 		if autotile["mode"] == canvas.AutotileType.SINGLE:
+			var frame_w_px: int = autotile["rect"].size.x / frames
+			var frame_h_px: int = autotile["rect"].size.y
+			var size_in_atlas: Vector2i = Vector2i(frame_w_px / tileset.tile_size.x, frame_h_px / tileset.tile_size.y)
+			size_in_atlas = Vector2i(maxi(1, size_in_atlas.x), maxi(1, size_in_atlas.y))
+			
 			if not source.has_tile(start_coord):
-				source.create_tile(start_coord)
+				source.create_tile(start_coord, size_in_atlas)
 				
 			if is_animated and frames > 1:
 				source.set_tile_animation_columns(start_coord, frames)
@@ -967,14 +988,14 @@ func _exit() -> void:
 		for item in _pending_saves:
 			if item["type"] == "image":
 				var img: Image = item["data"]
+				img.take_over_path("")
 				img.save_png(item["path"])
 			elif item["type"] == "resource":
 				var res: Resource = item["data"]
 				ResourceSaver.save(res, item["path"])
 				
 		var efs: EditorFileSystem = EditorInterface.get_resource_filesystem()
-		for item in _pending_saves:
-			efs.update_file(item["path"])
+		efs.scan()
 			
 		_pending_saves.clear()
 		

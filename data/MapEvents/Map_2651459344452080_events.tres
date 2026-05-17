@@ -211,11 +211,11 @@ relationship = SubResource("Resource_au2yk")
 _editor_last_page_used = 1
 legacy_mode = true
 
-[sub_resource type="Resource" id="Resource_ccujv"]
+[sub_resource type="Resource" id="Resource_afhs7"]
 script = ExtResource("3_pu3ch")
 pressure_targets = PackedInt64Array(0)
 
-[sub_resource type="Resource" id="Resource_7sp8j"]
+[sub_resource type="Resource" id="Resource_x6eqn"]
 script = ExtResource("4_4d10c")
 code = 90
 parameters = {
@@ -225,7 +225,7 @@ parameters = {
 &"volume": 0.0
 }
 
-[sub_resource type="Resource" id="Resource_bjkid"]
+[sub_resource type="Resource" id="Resource_g68ha"]
 script = ExtResource("4_4d10c")
 code = 17
 parameters = {
@@ -234,22 +234,22 @@ parameters = {
 &"to": 20
 }
 
-[sub_resource type="Resource" id="Resource_ko00s"]
+[sub_resource type="Resource" id="Resource_37khg"]
 script = ExtResource("4_4d10c")
 code = 5000
 parameters = {
 &"script": "print(\"Someone's standing over me!\")"
 }
 
-[sub_resource type="Resource" id="Resource_io5jk"]
+[sub_resource type="Resource" id="Resource_8b7rb"]
 script = ExtResource("4_4d10c")
 
-[sub_resource type="Resource" id="Resource_qtwph"]
+[sub_resource type="Resource" id="Resource_he1ps"]
 script = ExtResource("7_nw8pp")
 target = 0
 skippable = true
 
-[sub_resource type="Resource" id="Resource_dlfwk"]
+[sub_resource type="Resource" id="Resource_xnqgx"]
 script = ExtResource("8_oon1j")
 passable = true
 type_params = {
@@ -259,14 +259,14 @@ use_extra_config = true
 is_inmortal = false
 hp = 5
 
-[sub_resource type="Resource" id="Resource_o7sdx"]
+[sub_resource type="Resource" id="Resource_ape1a"]
 script = ExtResource("2_7i1fv")
 _uniq_id = 6187549489745344
 id = 0
-list = Array[ExtResource("4_4d10c")]([SubResource("Resource_7sp8j"), SubResource("Resource_bjkid"), SubResource("Resource_ko00s"), SubResource("Resource_io5jk")])
-condition = SubResource("Resource_ccujv")
-movement_route = SubResource("Resource_qtwph")
-options = SubResource("Resource_dlfwk")
+list = Array[ExtResource("4_4d10c")]([SubResource("Resource_x6eqn"), SubResource("Resource_g68ha"), SubResource("Resource_37khg"), SubResource("Resource_8b7rb")])
+condition = SubResource("Resource_afhs7")
+movement_route = SubResource("Resource_he1ps")
+options = SubResource("Resource_xnqgx")
 z_index = 0
 launcher = 1
 event_trigger_list = PackedInt64Array()
@@ -280,12 +280,12 @@ external_pressure_targets = {
 2651459344452080: [1129373089051834]
 }
 
-[sub_resource type="Resource" id="Resource_ufcrd"]
+[sub_resource type="Resource" id="Resource_iprtq"]
 script = ExtResource("3_pu3ch")
 use_pressure = true
 pressure_targets = PackedInt64Array(1129373089051834)
 
-[sub_resource type="Resource" id="Resource_cb3oh"]
+[sub_resource type="Resource" id="Resource_vy8vw"]
 script = ExtResource("4_4d10c")
 code = 90
 parameters = {
@@ -295,7 +295,7 @@ parameters = {
 &"volume": 0.0
 }
 
-[sub_resource type="Resource" id="Resource_sx4mc"]
+[sub_resource type="Resource" id="Resource_4gawf"]
 script = ExtResource("4_4d10c")
 code = 17
 parameters = {
@@ -304,22 +304,22 @@ parameters = {
 &"to": 20.0
 }
 
-[sub_resource type="Resource" id="Resource_us1rt"]
+[sub_resource type="Resource" id="Resource_subxu"]
 script = ExtResource("4_4d10c")
 code = 5000
 parameters = {
 &"script": "print(\"Im free!!!!!\")"
 }
 
-[sub_resource type="Resource" id="Resource_xioh6"]
+[sub_resource type="Resource" id="Resource_bqhtt"]
 script = ExtResource("4_4d10c")
 
-[sub_resource type="Resource" id="Resource_v1d5o"]
+[sub_resource type="Resource" id="Resource_ol140"]
 script = ExtResource("7_nw8pp")
 target = 0
 skippable = true
 
-[sub_resource type="Resource" id="Resource_8yjsf"]
+[sub_resource type="Resource" id="Resource_aptra"]
 script = ExtResource("8_oon1j")
 passable = true
 type_params = {
@@ -339,16 +339,15 @@ use_extra_config = true
 is_inmortal = false
 hp = 5
 
-[sub_resource type="Resource" id="Resource_6yl0v"]
+[sub_resource type="Resource" id="Resource_ni8b4"]
 script = ExtResource("2_7i1fv")
 _uniq_id = 9982019807072408
 id = 0
-list = Array[ExtResource("4_4d10c")]([SubResource("Resource_cb3oh"), SubResource("Resource_sx4mc"), SubResource("Resource_us1rt"), SubResource("Resource_xioh6")])
-condition = SubResource("Resource_ufcrd")
-movement_route = SubResource("Resource_v1d5o")
-options = SubResource("Resource_8yjsf")
+list = Array[ExtResource("4_4d10c")]([SubResource("Resource_vy8vw"), SubResource("Resource_4gawf"), SubResource("Resource_subxu"), SubResource("Resource_bqhtt")])
+condition = SubResource("Resource_iprtq")
+movement_route = SubResource("Resource_ol140")
+options = SubResource("Resource_aptra")
 z_index = 0
-launcher = -1
 event_trigger_list = PackedInt64Array()
 event_tool_list = PackedInt32Array()
 event_signal_list = PackedInt32Array()
@@ -361,22 +360,22 @@ external_pressure_targets = {
 2651459344452080: [1129373089051834]
 }
 
-[sub_resource type="Resource" id="Resource_f4f80"]
+[sub_resource type="Resource" id="Resource_asyfa"]
 script = ExtResource("10_k8bko")
 
-[sub_resource type="Resource" id="Resource_2dj86"]
+[sub_resource type="Resource" id="Resource_4qbsb"]
 script = ExtResource("11_8au4t")
-levels = Array[ExtResource("10_k8bko")]([SubResource("Resource_f4f80")])
+levels = Array[ExtResource("10_k8bko")]([SubResource("Resource_asyfa")])
 
-[sub_resource type="Resource" id="Resource_j2y7p"]
+[sub_resource type="Resource" id="Resource_lbrkh"]
 script = ExtResource("1_546u1")
 _uniq_id = 7066271306391886
 name = "EV0002"
 id = 2
 x = 13
 y = 15
-pages = Array[ExtResource("2_7i1fv")]([SubResource("Resource_o7sdx"), SubResource("Resource_6yl0v")])
-relationship = SubResource("Resource_2dj86")
+pages = Array[ExtResource("2_7i1fv")]([SubResource("Resource_ape1a"), SubResource("Resource_ni8b4")])
+relationship = SubResource("Resource_4qbsb")
 _editor_last_page_used = 1
 legacy_mode = true
 
@@ -3961,4 +3960,4 @@ legacy_mode = true
 
 [resource]
 script = ExtResource("12_m2ele")
-events = Array[ExtResource("1_546u1")]([SubResource("Resource_em1s3"), SubResource("Resource_j2y7p"), SubResource("Resource_ehbhv"), SubResource("Resource_ixleh"), SubResource("Resource_n6ngd"), SubResource("Resource_fxc3q"), SubResource("Resource_61jql"), SubResource("Resource_m64xv"), SubResource("Resource_063iu"), SubResource("Resource_jp37q"), SubResource("Resource_ww6ku"), SubResource("Resource_3ufao"), SubResource("Resource_7i1fv"), SubResource("Resource_3l2xv")])
+events = Array[ExtResource("1_546u1")]([SubResource("Resource_em1s3"), SubResource("Resource_lbrkh"), SubResource("Resource_ehbhv"), SubResource("Resource_ixleh"), SubResource("Resource_n6ngd"), SubResource("Resource_fxc3q"), SubResource("Resource_61jql"), SubResource("Resource_m64xv"), SubResource("Resource_063iu"), SubResource("Resource_jp37q"), SubResource("Resource_ww6ku"), SubResource("Resource_3ufao"), SubResource("Resource_7i1fv"), SubResource("Resource_3l2xv")])

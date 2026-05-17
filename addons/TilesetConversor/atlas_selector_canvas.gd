@@ -51,6 +51,12 @@ var drag_start_pos: Vector2i = Vector2i.ZERO
 var drag_end_pos: Vector2i = Vector2i.ZERO
 var is_animation_mode: bool = false
 
+var is_anim_size_locked: bool = false:
+	set(value):
+		is_anim_size_locked = value
+		_update_help_text()
+var locked_anim_size: Vector2i = Vector2i(1, 1)
+
 
 signal autotile_selected(rect: Rect2i)
 
@@ -130,7 +136,7 @@ func _on_cursor_canvas_draw() -> void:
 	if is_animation_mode:
 		active_color = Color(0.2, 1.0, 0.4, 0.8)
 		
-	if is_selecting_multiple and current_autotile_type == AutotileType.SINGLE and not is_animation_mode:
+	if is_selecting_multiple and current_autotile_type == AutotileType.SINGLE and not (is_animation_mode and is_anim_size_locked):
 		var start_tile: Vector2i = drag_start_pos / tile_size
 		var end_tile: Vector2i = drag_end_pos / tile_size
 		var min_x: int = mini(start_tile.x, end_tile.x)
@@ -183,7 +189,7 @@ func _gui_input(event: InputEvent) -> void:
 		var local_pos: Vector2 = event.position
 		var scaled_pos: Vector2 = local_pos / zoom_level
 		
-		if is_selecting_multiple and not is_animation_mode:
+		if is_selecting_multiple and not (is_animation_mode and is_anim_size_locked):
 			drag_end_pos = _get_snapped_pos_from_scaled(scaled_pos)
 			cursor_canvas.queue_redraw()
 		else:
@@ -212,21 +218,22 @@ func _gui_input(event: InputEvent) -> void:
 			
 		elif event.button_index == MOUSE_BUTTON_LEFT:
 			if event.pressed:
-				if is_animation_mode:
-					snapped_mouse_pos = current_snapped
-					_try_extract_selection(true)
-				elif current_autotile_type == AutotileType.SINGLE:
-					is_selecting_multiple = true
-					drag_start_pos = current_snapped
-					drag_end_pos = current_snapped
-					cursor_canvas.queue_redraw()
+				if current_autotile_type == AutotileType.SINGLE:
+					if is_animation_mode and is_anim_size_locked:
+						snapped_mouse_pos = current_snapped
+						_try_extract_selection(true)
+					else:
+						is_selecting_multiple = true
+						drag_start_pos = current_snapped
+						drag_end_pos = current_snapped
+						cursor_canvas.queue_redraw()
 				else:
 					snapped_mouse_pos = current_snapped
-					_try_extract_selection(false)
+					_try_extract_selection(is_animation_mode)
 			else:
 				if is_selecting_multiple:
 					is_selecting_multiple = false
-					_try_extract_multiple_selection()
+					_process_drag_selection()
 					cursor_canvas.queue_redraw()
 
 
@@ -397,8 +404,8 @@ func _try_extract_selection(force_anim: bool) -> void:
 
 
 
-## Processes the multiple drag selection and extracts valid single tiles
-func _try_extract_multiple_selection() -> void:
+## Processes the drag selection and extracts a single block for the first animation frame or single tile
+func _process_drag_selection() -> void:
 	var start_tile: Vector2i = drag_start_pos / tile_size
 	var end_tile: Vector2i = drag_end_pos / tile_size
 	var min_x: int = mini(start_tile.x, end_tile.x)
@@ -406,16 +413,21 @@ func _try_extract_multiple_selection() -> void:
 	var max_x: int = maxi(start_tile.x, end_tile.x)
 	var max_y: int = maxi(start_tile.y, end_tile.y)
 	
-	var rects: Array[Rect2i] = []
+	var rect_pos: Vector2i = Vector2i(min_x, min_y) * tile_size
+	var tiles_w: int = max_x - min_x + 1
+	var tiles_h: int = max_y - min_y + 1
+	var rect_size: Vector2i = Vector2i(tiles_w, tiles_h) * tile_size
 	
-	for x in range(min_x, max_x + 1):
-		for y in range(min_y, max_y + 1):
-			var pos: Vector2i = Vector2i(x, y) * tile_size
-			if _is_valid_cursor_position(pos, Vector2i(1, 1)):
-				rects.append(Rect2i(pos, tile_size))
-				
-	if rects.size() > 0:
-		single_tiles_selected.emit(rects)
+	var final_rect: Rect2i = Rect2i(rect_pos, rect_size)
+	
+	if _is_valid_cursor_position(rect_pos, Vector2i(tiles_w, tiles_h)):
+		if is_animation_mode:
+			locked_anim_size = Vector2i(tiles_w, tiles_h)
+			is_anim_size_locked = true
+			autotile_anim_frame_selected.emit(final_rect)
+		else:
+			var rects: Array[Rect2i] = [final_rect]
+			single_tiles_selected.emit(rects)
 
 
 
@@ -440,6 +452,8 @@ func clear() -> void:
 	is_mouse_inside = false
 	snapped_mouse_pos = Vector2i.ZERO
 	is_selecting_multiple = false
+	is_anim_size_locked = false
+	locked_anim_size = Vector2i(1, 1)
 	
 	if is_instance_valid(blink_timer):
 		blink_timer.stop()
@@ -458,6 +472,8 @@ func clear() -> void:
 func update_grid_and_mode(new_tile_size: Vector2i, new_mode: AutotileType) -> void:
 	tile_size = new_tile_size
 	current_autotile_type = new_mode
+	is_anim_size_locked = false
+	locked_anim_size = Vector2i(1, 1)
 	
 	_update_help_text()
 	queue_redraw()
@@ -472,7 +488,14 @@ func _update_help_text() -> void:
 		return
 		
 	if is_animation_mode:
-		help_label.text = "ANIMATION MODE: Click to add current selection as an animation frame"
+		if not is_anim_size_locked:
+			match current_autotile_type:
+				AutotileType.SINGLE:
+					help_label.text = "Click or drag to add the first frame"
+				AutotileType.EXTENDED, AutotileType.COMPACT, AutotileType.WALL:
+					help_label.text = "Click to add the first frame"
+		else:
+			help_label.text = "Click to select the next frame"
 	else:
 		match current_autotile_type:
 			AutotileType.SINGLE:
@@ -484,6 +507,9 @@ func _update_help_text() -> void:
 
 ## Returns the expected column and row count for the current autotile type
 func _get_cursor_dimensions() -> Vector2i:
+	if is_animation_mode and is_anim_size_locked and current_autotile_type == AutotileType.SINGLE:
+		return locked_anim_size
+		
 	match current_autotile_type:
 		AutotileType.EXTENDED:
 			return Vector2i(3, 4)
