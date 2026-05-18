@@ -556,6 +556,8 @@ func clear_all_maps() -> void:
 	
 	if event_placer:
 		event_placer._update_event_canvas()
+		
+	_update_wall_passability()
 
 
 
@@ -1370,6 +1372,8 @@ func _apply_generation_results() -> void:
 	if debug_path_enabled:
 		_draw_debug_path()
 		
+	_update_wall_passability()
+	
 	_set_progress(100.0, "Done!")
 	is_generating = false
 	
@@ -1377,7 +1381,6 @@ func _apply_generation_results() -> void:
 		notify_property_list_changed.call_deferred()
 		
 	generation_finished.emit()
-
 
 
 ## Finds and draws a debug line between markers
@@ -1475,41 +1478,156 @@ func _force_collisions_main_thread() -> void:
 	if not layer_walls or terrain_wall == -1: 
 		return
 		
-	var grid: PackedByteArray = PackedByteArray()
-	grid.resize(map_width * map_height)
-	grid.fill(0)
-	
-	for cell in layer_walls.get_used_cells():
-		var d: TileData = layer_walls.get_cell_tile_data(cell)
-		if d and d.terrain == terrain_wall: 
-			grid[cell.y * map_width + cell.x] = 2
-			
-	_build_collision_nodes(_calculate_greedy_meshing(grid, map_width, map_height), layer_walls)
+	if add_collisions_after_generation:
+		var grid: PackedByteArray = PackedByteArray()
+		grid.resize(map_width * map_height)
+		grid.fill(0)
+		
+		for cell in layer_walls.get_used_cells():
+			var d: TileData = layer_walls.get_cell_tile_data(cell)
+			if d and d.terrain == terrain_wall: 
+				grid[cell.y * map_width + cell.x] = 2
+				
+		_build_collision_nodes(_calculate_greedy_meshing(grid, map_width, map_height), layer_walls)
+		
+	_update_wall_passability()
 
 
 ## Dynamically rebuilds all collisions based on the current visual state of the walls layer to adapt to carving
 func update_collisions_from_tilemap() -> void:
-	if not layer_walls or not add_collisions_after_generation:
+	if not layer_walls:
 		return
 		
-	var grid: PackedByteArray = PackedByteArray()
-	grid.resize(map_width * map_height)
-	grid.fill(0)
+	if add_collisions_after_generation:
+		var grid: PackedByteArray = PackedByteArray()
+		grid.resize(map_width * map_height)
+		grid.fill(0)
+		
+		var door_s_id: int = carve_door_tile.get("atlas_id", -1)
+		var door_coord: Vector2i = carve_door_tile.get("tile_id", Vector2i(-1, -1))
+		
+		for cell in layer_walls.get_used_cells():
+			if cell.x >= 0 and cell.x < map_width and cell.y >= 0 and cell.y < map_height:
+				var s_id: int = layer_walls.get_cell_source_id(cell)
+				var a_coord: Vector2i = layer_walls.get_cell_atlas_coords(cell)
+				
+				if door_s_id != -1 and s_id == door_s_id and a_coord == door_coord:
+					continue
+					
+				grid[cell.y * map_width + cell.x] = 2
+				
+		_build_collision_nodes(_calculate_greedy_meshing(grid, map_width, map_height), layer_walls)
+		
+	_update_wall_passability()
+
+
+## Updates the custom data layer 'Passability' on the walls TileSet based on the currently used tiles
+func _update_wall_passability() -> void:
+	if add_collisions_after_generation:
+		return
+		
+	if not layer_walls or not layer_walls.tile_set:
+		return
+		
+	var ts: TileSet = layer_walls.tile_set
+	var layer_idx: int = -1
 	
-	var door_s_id: int = carve_door_tile.get("atlas_id", -1)
-	var door_coord: Vector2i = carve_door_tile.get("tile_id", Vector2i(-1, -1))
-	
-	for cell in layer_walls.get_used_cells():
-		if cell.x >= 0 and cell.x < map_width and cell.y >= 0 and cell.y < map_height:
-			var s_id: int = layer_walls.get_cell_source_id(cell)
-			var a_coord: Vector2i = layer_walls.get_cell_atlas_coords(cell)
+	for i in range(ts.get_custom_data_layers_count()):
+		if ts.get_custom_data_layer_name(i) == "Passability":
+			layer_idx = i
+			break
 			
-			if door_s_id != -1 and s_id == door_s_id and a_coord == door_coord:
+	if layer_idx == -1:
+		ts.add_custom_data_layer()
+		layer_idx = ts.get_custom_data_layers_count() - 1
+		ts.set_custom_data_layer_name(layer_idx, "Passability")
+		ts.set_custom_data_layer_type(layer_idx, TYPE_OBJECT)
+		
+	var pass_res: Resource = preload("uid://bhkyl2nefh0vw")
+	
+	for i in range(ts.get_source_count()):
+		var s_id: int = ts.get_source_id(i)
+		var source: TileSetSource = ts.get_source(s_id)
+		
+		if source is TileSetAtlasSource:
+			for t_idx in range(source.get_tiles_count()):
+				var coord: Vector2i = source.get_tile_id(t_idx)
+				
+				for alt_idx in range(source.get_alternative_tiles_count(coord)):
+					var alt_id: int = source.get_alternative_tile_id(coord, alt_idx)
+					var td: TileData = source.get_tile_data(coord, alt_id)
+					
+					if td:
+						var is_wall: bool = (not use_single_wall and terrain_wall != -1 and td.terrain_set == terrain_set and td.terrain == terrain_wall)
+						var is_roof: bool = (not use_single_roof and terrain_roof != -1 and td.terrain_set == terrain_set and td.terrain == terrain_roof)
+						
+						if (is_wall or is_roof) and td.get_custom_data("Passability") == null:
+							td.set_custom_data("Passability", pass_res)
+							
+	if use_single_wall and single_wall_tile.get("atlas_id", -1) != -1:
+		var s_id: int = single_wall_tile["atlas_id"]
+		var coord: Vector2i = single_wall_tile["tile_id"]
+		
+		if ts.has_source(s_id):
+			var source: TileSetSource = ts.get_source(s_id)
+			
+			if source is TileSetAtlasSource and source.has_tile(coord):
+				var td: TileData = source.get_tile_data(coord, 0)
+				
+				if td and td.get_custom_data("Passability") == null: 
+					td.set_custom_data("Passability", pass_res)
+					
+	if use_single_roof and single_roof_tile.get("atlas_id", -1) != -1:
+		var s_id: int = single_roof_tile["atlas_id"]
+		var coord: Vector2i = single_roof_tile["tile_id"]
+		
+		if ts.has_source(s_id):
+			var source: TileSetSource = ts.get_source(s_id)
+			
+			if source is TileSetAtlasSource and source.has_tile(coord):
+				var td: TileData = source.get_tile_data(coord, 0)
+				
+				if td and td.get_custom_data("Passability") == null: 
+					td.set_custom_data("Passability", pass_res)
+					
+	if layer_environment and layer_environment.tile_set:
+		var env_ts: TileSet = layer_environment.tile_set
+		var env_layer_idx: int = -1
+		
+		for i in range(env_ts.get_custom_data_layers_count()):
+			if env_ts.get_custom_data_layer_name(i) == "Passability":
+				env_layer_idx = i
+				break
+				
+		if env_layer_idx == -1:
+			env_ts.add_custom_data_layer()
+			env_layer_idx = env_ts.get_custom_data_layers_count() - 1
+			env_ts.set_custom_data_layer_name(env_layer_idx, "Passability")
+			env_ts.set_custom_data_layer_type(env_layer_idx, TYPE_OBJECT)
+			
+		var processed_env_tiles: Dictionary = {}
+		
+		for cell in layer_environment.get_used_cells():
+			var s_id: int = layer_environment.get_cell_source_id(cell)
+			var coord: Vector2i = layer_environment.get_cell_atlas_coords(cell)
+			var alt: int = layer_environment.get_cell_alternative_tile(cell)
+			var key: String = str(s_id) + "_" + str(coord) + "_" + str(alt)
+			
+			if processed_env_tiles.has(key):
 				continue
 				
-			grid[cell.y * map_width + cell.x] = 2
+			processed_env_tiles[key] = true
 			
-	_build_collision_nodes(_calculate_greedy_meshing(grid, map_width, map_height), layer_walls)
+			if env_ts.has_source(s_id):
+				var source: TileSetSource = env_ts.get_source(s_id)
+				
+				if source is TileSetAtlasSource and source.has_tile(coord):
+					var td: TileData = source.get_tile_data(coord, alt)
+					
+					if td and td.get_custom_data("Passability") == null:
+						td.set_custom_data("Passability", pass_res)
+
+
 #endregion
 
 

@@ -164,7 +164,7 @@ region = Rect2(0, 48, 24, 24)
 atlas = ExtResource("12_3ebtj")
 region = Rect2(24, 48, 24, 24)
 
-[node name="AtlasToAutotilesDialog" type="Window" unique_id=1795928936 node_paths=PackedStringArray("anim_main_container", "anim_frames_container", "merge_anim_button", "clear_anim_button", "close_anim_panel_button", "anim_speed_spinbox")]
+[node name="AtlasToAutotilesDialog" type="Window" unique_id=1795928936 node_paths=PackedStringArray("anim_main_container", "anim_frames_container", "merge_anim_button", "clear_anim_button", "close_anim_panel_button", "anim_speed_spinbox", "autotile_action_options", "alt_main_container", "alt_frames_container", "merge_alt_button", "close_alt_panel_button", "clear_alt_button", "alt_prob_spinbox", "anim_prob_spinbox", "anim_prob_main_container")]
 oversampling_override = 1.0
 title = "Atlas to Autotiles"
 position = Vector2i(0, 36)
@@ -180,6 +180,15 @@ merge_anim_button = NodePath("MarginContainer/VBoxContainer/FloatingAnimationPan
 clear_anim_button = NodePath("MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/HBoxContainer/ClearFrames")
 close_anim_panel_button = NodePath("MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/HBoxContainer2/CloseFloatingAnimationPanel")
 anim_speed_spinbox = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/HBoxContainer/AnimationSpeed")
+autotile_action_options = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/AutotileActions")
+alt_main_container = NodePath("MarginContainer/VBoxContainer/FloatingAlternativePanel")
+alt_frames_container = NodePath("MarginContainer/VBoxContainer/FloatingAlternativePanel/FloatingAlternativePanelContainer/VBoxContainer/SmoothScrollContainer/AlternativeContainer")
+merge_alt_button = NodePath("MarginContainer/VBoxContainer/FloatingAlternativePanel/FloatingAlternativePanelContainer/VBoxContainer/HBoxContainer/MergeAlternativeTiles")
+close_alt_panel_button = NodePath("MarginContainer/VBoxContainer/FloatingAlternativePanel/FloatingAlternativePanelContainer/VBoxContainer/HBoxContainer2/CloseFloatingAlternativePanel")
+clear_alt_button = NodePath("MarginContainer/VBoxContainer/FloatingAlternativePanel/FloatingAlternativePanelContainer/VBoxContainer/HBoxContainer/ClearAlternativeTiles")
+alt_prob_spinbox = NodePath("MarginContainer/VBoxContainer/FloatingAlternativePanel/FloatingAlternativePanelContainer/VBoxContainer/HBoxContainer3/AlternativeProbability")
+anim_prob_spinbox = NodePath("MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/AnimationProbabilityMainContainer/HBoxContainer3/AnimationAlternativeProbability")
+anim_prob_main_container = NodePath("MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/AnimationProbabilityMainContainer")
 
 [node name="Conversor" type="Node" parent="." unique_id=1870511595]
 unique_name_in_owner = true
@@ -421,6 +430,22 @@ allow_reselect = true
 odd_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 event_line_color = Color(0.145098, 0.156863, 0.164706, 1)
 
+[node name="AutotileActions" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=608947027 instance=ExtResource("5_xfjgv")]
+layout_mode = 2
+selected = 0
+fit_to_longest_item = false
+item_count = 5
+popup/item_0/text = "Select Action..."
+popup/item_0/id = 0
+popup/item_1/text = "Remove Tile Selected"
+popup/item_1/id = 1
+popup/item_2/text = "Pick Alternative Tile/s"
+popup/item_2/id = 2
+popup/item_3/text = "Pick Alternative Animated Tile"
+popup/item_3/id = 3
+popup/item_4/text = "Clear Alternative Tiles          ▶"
+popup/item_4/id = 4
+
 [node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=1981552580]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.5449743, 0.54497427, 0.54497427, 1)
@@ -488,10 +513,10 @@ size_flags_vertical = 0
 unique_name_in_owner = true
 custom_minimum_size = Vector2(320, 320)
 layout_mode = 1
-offset_left = 51.0
-offset_top = -507.0
-offset_right = 399.0
-offset_bottom = -102.0
+offset_left = 334.0
+offset_top = 189.0
+offset_right = 682.0
+offset_bottom = 594.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_kx1ii")
 
@@ -521,6 +546,35 @@ text = "Animation Frames"
 horizontal_alignment = 1
 
 [node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer" unique_id=1789238328]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="AnimationProbabilityMainContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer" unique_id=1188583991]
+visible = false
+layout_mode = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/AnimationProbabilityMainContainer" unique_id=885566424]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/AnimationProbabilityMainContainer/HBoxContainer3" unique_id=2120735894]
+layout_mode = 2
+text = "Probability:"
+
+[node name="AnimationAlternativeProbability" parent="MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/AnimationProbabilityMainContainer/HBoxContainer3" unique_id=667257808 instance=ExtResource("4_kbouy")]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.01
+max_value = 1.0
+step = 0.01
+value = 0.05
+rounded = false
+_custom_value = 0.05
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/AnimationProbabilityMainContainer/HBoxContainer3" unique_id=877498507]
+layout_mode = 2
+text = " %"
+
+[node name="HSeparator3" type="HSeparator" parent="MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/AnimationProbabilityMainContainer" unique_id=865067724]
 layout_mode = 2
 mouse_filter = 2
 
@@ -568,13 +622,126 @@ tooltip_text = "Create a pre-made tileset with all textures set as terrain"
 disabled = true
 text = "Clear Frames"
 
+[node name="FloatingAlternativePanel" type="Control" parent="MarginContainer/VBoxContainer" unique_id=1891478520]
+unique_name_in_owner = true
+top_level = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="FloatingAlternativePanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/FloatingAlternativePanel" unique_id=741018007]
+custom_minimum_size = Vector2(320, 320)
+layout_mode = 1
+offset_left = 719.0
+offset_top = 184.0
+offset_right = 1067.0
+offset_bottom = 589.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_kx1ii")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/FloatingAlternativePanel/FloatingAlternativePanelContainer" unique_id=93122815]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/FloatingAlternativePanel/FloatingAlternativePanelContainer/VBoxContainer" unique_id=2041076916]
+layout_mode = 2
+
+[node name="FloatingAnimationHandle" type="Panel" parent="MarginContainer/VBoxContainer/FloatingAlternativePanel/FloatingAlternativePanelContainer/VBoxContainer/HBoxContainer2" unique_id=724996496]
+custom_minimum_size = Vector2(0, 14)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+mouse_default_cursor_shape = 13
+
+[node name="CloseFloatingAlternativePanel" type="TextureButton" parent="MarginContainer/VBoxContainer/FloatingAlternativePanel/FloatingAlternativePanelContainer/VBoxContainer/HBoxContainer2" unique_id=1915765779]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_xtkn1")
+texture_hover = SubResource("AtlasTexture_r5pt5")
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/FloatingAlternativePanel/FloatingAlternativePanelContainer/VBoxContainer" unique_id=591593469]
+layout_mode = 2
+text = "Alternative Tiles"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/FloatingAlternativePanel/FloatingAlternativePanelContainer/VBoxContainer" unique_id=836271133]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/FloatingAlternativePanel/FloatingAlternativePanelContainer/VBoxContainer" unique_id=317441685]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/FloatingAlternativePanel/FloatingAlternativePanelContainer/VBoxContainer/HBoxContainer3" unique_id=943922373]
+layout_mode = 2
+text = "Probability:"
+
+[node name="AlternativeProbability" parent="MarginContainer/VBoxContainer/FloatingAlternativePanel/FloatingAlternativePanelContainer/VBoxContainer/HBoxContainer3" unique_id=1756109801 instance=ExtResource("4_kbouy")]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.01
+max_value = 1.0
+step = 0.01
+value = 0.05
+rounded = false
+_custom_value = 0.05
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/FloatingAlternativePanel/FloatingAlternativePanelContainer/VBoxContainer/HBoxContainer3" unique_id=1318530889]
+layout_mode = 2
+text = " %"
+
+[node name="HSeparator3" type="HSeparator" parent="MarginContainer/VBoxContainer/FloatingAlternativePanel/FloatingAlternativePanelContainer/VBoxContainer" unique_id=68732763]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/FloatingAlternativePanel/FloatingAlternativePanelContainer/VBoxContainer" unique_id=1532839666]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+script = ExtResource("4_xtkn1")
+metadata/_custom_type_script = "uid://cs6g8remlafby"
+
+[node name="AlternativeContainer" type="HFlowContainer" parent="MarginContainer/VBoxContainer/FloatingAlternativePanel/FloatingAlternativePanelContainer/VBoxContainer/SmoothScrollContainer" unique_id=947689214]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer/FloatingAlternativePanel/FloatingAlternativePanelContainer/VBoxContainer" unique_id=746479023]
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/FloatingAlternativePanel/FloatingAlternativePanelContainer/VBoxContainer" unique_id=285490195]
+layout_mode = 2
+
+[node name="MergeAlternativeTiles" parent="MarginContainer/VBoxContainer/FloatingAlternativePanel/FloatingAlternativePanelContainer/VBoxContainer/HBoxContainer" unique_id=663715057 instance=ExtResource("6_wwgmp")]
+modulate = Color(1, 1, 1, 0.65)
+z_index = 10
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+tooltip_text = "Create a pre-made tileset with all textures set as terrain"
+disabled = true
+text = "Add Alternatives"
+
+[node name="ClearAlternativeTiles" parent="MarginContainer/VBoxContainer/FloatingAlternativePanel/FloatingAlternativePanelContainer/VBoxContainer/HBoxContainer" unique_id=1883777778 instance=ExtResource("6_wwgmp")]
+modulate = Color(1, 1, 1, 0.65)
+z_index = 10
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+tooltip_text = "Create a pre-made tileset with all textures set as terrain"
+disabled = true
+text = "Clear Alternatives"
+
 [connection signal="delete_pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/LeftColumn/AtlasList" to="." method="_on_atlas_list_delete_pressed"]
 [connection signal="item_activated" from="MarginContainer/VBoxContainer/HBoxContainer2/LeftColumn/AtlasList" to="." method="_on_atlas_list_item_activated"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer2/LeftColumn/AtlasList" to="." method="_on_atlas_list_item_selected"]
 [connection signal="value_updated" from="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/Controls1/Width" to="." method="_on_width_value_updated"]
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/Controls1/Height" to="." method="_on_height_value_changed"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/Controls2/AutototileType" to="." method="_on_custom_option_button_item_selected"]
-[connection signal="autotile_selected" from="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/SmoothScrollContainer/Canvas" to="." method="_on_canvas_autotile_selected"]
 [connection signal="delete_pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/AutoTilesList" to="." method="_on_auto_tiles_list_delete_pressed"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/AutoTilesList" to="." method="_on_auto_tiles_list_item_selected"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/GenerateTileset" to="." method="_on_generate_tileset_pressed"]
