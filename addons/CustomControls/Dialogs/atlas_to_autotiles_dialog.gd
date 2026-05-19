@@ -1,6 +1,7 @@
 @tool
 extends Window
 
+
 #region VARIABLES
 
 ## Maximum width for the generated atlas images
@@ -50,6 +51,8 @@ extends Window
 
 ## SpinBox to adjust the terrain probability of the resulting animated alternative tile
 @export var anim_prob_spinbox: SpinBox
+
+## Container for the animation probability spinbox
 @export var anim_prob_main_container: Container
 
 var atlas: Array = []
@@ -81,6 +84,11 @@ var clear_alt_popup: PopupMenu
 
 var _pending_saves: Array[Dictionary] = []
 
+var preview_is_animated: bool = false
+var preview_frames: int = 1
+var preview_current_frame: int = 0
+var preview_timer: float = 0.0
+
 #endregion
 
 
@@ -99,6 +107,17 @@ func _load_cached_preferences() -> void:
 	var cached_mode: int = _get_cache_value("last_mode_used", 0)
 	%AutototileType.select(cached_mode)
 	
+	if is_instance_valid(anim_speed_spinbox):
+		anim_speed_spinbox.set_value_no_signal(_get_cache_value("last_anim_speed", 5.0))
+		
+	var add_col_node: OptionButton = get_node_or_null("%AddCollision")
+	if is_instance_valid(add_col_node):
+		add_col_node.select(_get_cache_value("last_collision_mode", 0))
+		
+	var terrain_node: LineEdit = get_node_or_null("%TerrainName")
+	if is_instance_valid(terrain_node):
+		terrain_node.text = _get_cache_value("last_terrain_name", "")
+		
 	canvas.update_grid_and_mode(cached_size, cached_mode as AtlasSelectorCanvas.AutotileType)
 	
 	is_animation_mode = _get_cache_value("last_anim_mode_state", false)
@@ -114,6 +133,24 @@ func _load_cached_preferences() -> void:
 			
 	if atlas.size() > 0:
 		_fill_atlas_list(0)
+
+
+
+## Caches the animation speed when changed by the user
+func _on_anim_speed_value_changed(value: float) -> void:
+	_update_cache("last_anim_speed", value)
+
+
+
+## Caches the collision mode when selected by the user
+func _on_add_collision_item_selected(index: int) -> void:
+	_update_cache("last_collision_mode", index)
+
+
+
+## Caches the terrain name when typed by the user
+func _on_terrain_name_text_changed(new_text: String) -> void:
+	_update_cache("last_terrain_name", new_text)
 
 
 
@@ -149,6 +186,16 @@ func _ready() -> void:
 	%AutotilePreview.texture = null
 	%RightColumn.propagate_call("set_disabled", [true])
 	%LabelTerrainTileSelected.text = "-"
+	%LabelTerrainTileSelected.set_disabled(true)
+	%AnimationSpeed.get_line_edit().set("theme_override_colors/font_color", Color("bfe5dd"))
+	%CurrentAnimationSpeedContainer.visible = false
+	%CurrentAnimationSpeed.get_line_edit().set("theme_override_colors/font_color", Color("bfe5dd"))
+	
+	%CurrentAnimationSpeed.value_changed.connect(_on_current_animation_speed_value_changed)
+	
+	var current_col_node: OptionButton = get_node_or_null("%CurrentCollision")
+	if is_instance_valid(current_col_node):
+		current_col_node.item_selected.connect(_on_current_collision_item_selected)
 	
 	CustomTooltipManager.plugin_replace_all_tooltips_with_custom(self)
 	
@@ -158,6 +205,10 @@ func _ready() -> void:
 	canvas.autotile_anim_frame_selected.connect(_on_canvas_anim_frame_selected)
 	canvas.autotile_selected.connect(_on_canvas_autotile_selected)
 	
+	if is_instance_valid(auto_tiles_list):
+		if not auto_tiles_list.item_moved.is_connected(_on_auto_tiles_list_item_moved):
+			auto_tiles_list.item_moved.connect(_on_auto_tiles_list_item_moved)
+			
 	if is_instance_valid(merge_anim_button):
 		merge_anim_button.pressed.connect(_on_merge_anim_frames_pressed)
 		
@@ -176,9 +227,6 @@ func _ready() -> void:
 	if is_instance_valid(clear_alt_button):
 		clear_alt_button.pressed.connect(_clear_alt_frames)
 		
-	if is_instance_valid(close_alt_panel_button):
-		close_alt_panel_button.pressed.connect(_on_close_alt_panel_pressed)
-		
 	if is_instance_valid(alt_prob_spinbox):
 		alt_prob_spinbox.min_value = 0.0
 		alt_prob_spinbox.max_value = 1.0
@@ -190,6 +238,17 @@ func _ready() -> void:
 		anim_prob_spinbox.max_value = 1.0
 		anim_prob_spinbox.step = 0.01
 		anim_prob_spinbox.value = 0.1
+		
+	if is_instance_valid(anim_speed_spinbox):
+		anim_speed_spinbox.value_changed.connect(_on_anim_speed_value_changed)
+		
+	var add_col_node: OptionButton = get_node_or_null("%AddCollision")
+	if is_instance_valid(add_col_node):
+		add_col_node.item_selected.connect(_on_add_collision_item_selected)
+		
+	var terrain_node: LineEdit = get_node_or_null("%TerrainName")
+	if is_instance_valid(terrain_node):
+		terrain_node.text_changed.connect(_on_terrain_name_text_changed)
 		
 	clear_alt_popup = PopupMenu.new()
 	clear_alt_popup.id_pressed.connect(_on_clear_alt_popup_id_pressed)
@@ -217,12 +276,22 @@ func _ready() -> void:
 	set_process(true)
 
 
+## Reorders the internal autotiles array when a drag and drop happens in the list
+func _on_auto_tiles_list_item_moved(old_index: int, new_index: int) -> void:
+	var item: Dictionary = autotiles.pop_at(old_index)
+	autotiles.insert(new_index, item)
+	auto_tiles_list.select(new_index)
+	auto_tiles_list.item_selected.emit(new_index)
+
+
+
 ## Updates the probability value for all currently selected alternative frames in the UI panel
 func _on_alt_prob_value_changed(value: float) -> void:
 	if selected_alt_frames.size() == 1:
 		var idx: int = selected_alt_frames[0].get_index()
 		if idx >= 0 and idx < alt_frames_data.size():
 			alt_frames_data[idx]["probability"] = value
+
 
 
 ## Re-evaluates the array size to correctly disable or enable the merge and clear action buttons for alternatives
@@ -247,10 +316,11 @@ func _update_alt_buttons_state() -> void:
 		alt_prob_spinbox.set_block_signals(false)
 
 
+
 ## Catches the Ctrl key input dynamically to act as a toggle for the animation mode and handles frame deletion
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == KEY_CTRL:
+		if event.keycode == KEY_F1:
 			_toggle_animation_mode()
 		elif event.keycode == KEY_DELETE or event.keycode == KEY_BACKSPACE:
 			var focus_owner: Control = get_viewport().gui_get_focus_owner()
@@ -260,6 +330,7 @@ func _input(event: InputEvent) -> void:
 				_delete_selected_alt_frames()
 			elif is_animation_mode or is_alternative_animated_mode:
 				_delete_selected_anim_frames()
+
 
 
 ## Toggles the selection visually and logically of a clicked alternative frame thumbnail
@@ -282,6 +353,7 @@ func _on_alt_frame_gui_input(event: InputEvent, tex_rect: TextureRect) -> void:
 		_update_alt_buttons_state()
 
 
+
 ## Draws a custom high-contrast cursor over the texture if it is currently selected
 func _on_tex_rect_draw(tex_rect: TextureRect) -> void:
 	if selected_anim_frames.has(tex_rect) or selected_alt_frames.has(tex_rect):
@@ -293,10 +365,12 @@ func _on_tex_rect_draw(tex_rect: TextureRect) -> void:
 		tex_rect.draw_rect(Rect2(3, 3, w - 6, h - 6), Color.WHITE, false, 2.0)
 
 
+
 ## Handles the delayed refresh trigger and constantly enforces panel bounds if visible
 func _process(delta: float) -> void:
 	if refresh_time > 0.0:
 		refresh_time -= delta
+		
 		if refresh_time <= 0.0:
 			refresh_time = 0.0
 			var tile_size = Vector2i(%Width.value, %Height.value)
@@ -305,6 +379,25 @@ func _process(delta: float) -> void:
 			
 	if is_animation_mode:
 		_clamp_panel_position()
+		
+	if preview_is_animated and is_instance_valid(%AutotilePreview) and %AutotilePreview.texture is AtlasTexture:
+		var fps: float = 5.0
+		
+		if is_instance_valid(%CurrentAnimationSpeed) and %CurrentAnimationSpeedContainer.visible:
+			fps = %CurrentAnimationSpeed.value
+		elif is_instance_valid(anim_speed_spinbox):
+			fps = anim_speed_spinbox.value
+			
+		preview_timer += delta
+		var frame_duration: float = 1.0 / fps
+		
+		if preview_timer >= frame_duration:
+			preview_timer -= frame_duration
+			preview_current_frame = (preview_current_frame + 1) % preview_frames
+			
+			var atlas_tex: AtlasTexture = %AutotilePreview.texture
+			var frame_w: float = atlas_tex.atlas.get_width() / float(preview_frames)
+			atlas_tex.region = Rect2(preview_current_frame * frame_w, 0, frame_w, atlas_tex.atlas.get_height())
 
 
 
@@ -313,6 +406,7 @@ func _toggle_animation_mode() -> void:
 	is_animation_mode = !is_animation_mode
 	_update_cache("last_anim_mode_state", is_animation_mode)
 	_apply_animation_mode_state()
+	%AnimationSpeedContainer.visible = is_animation_mode
 
 
 
@@ -333,6 +427,7 @@ func _apply_animation_mode_state() -> void:
 	
 	if is_instance_valid(anim_main_container):
 		anim_main_container.visible = is_animation_mode
+		%AnimationSpeedContainer.visible = is_animation_mode
 		
 	%FloatingAnimationPanel.propagate_call("set_disabled", [not is_animation_mode])
 	
@@ -463,6 +558,7 @@ func _delete_selected_anim_frames() -> void:
 	_update_anim_buttons_state()
 
 
+
 ## Removes safely from memory and UI all user-selected alternative frames
 func _delete_selected_alt_frames() -> void:
 	if selected_alt_frames.is_empty():
@@ -486,6 +582,7 @@ func _delete_selected_alt_frames() -> void:
 	_update_alt_buttons_state()
 
 
+
 ## Flushes all stored animation data and visually removes the thumbnails
 func _clear_anim_frames() -> void:
 	anim_frames_data.clear()
@@ -501,6 +598,7 @@ func _clear_anim_frames() -> void:
 	_update_anim_buttons_state()
 
 
+
 ## Flushes all stored alternative frame data and visually removes the thumbnails
 func _clear_alt_frames() -> void:
 	alt_frames_data.clear()
@@ -511,6 +609,7 @@ func _clear_alt_frames() -> void:
 			child.queue_free()
 			
 	_update_alt_buttons_state()
+
 
 
 ## Evaluates if an atlas exists at the requested index or opens the dialog to load a new one
@@ -553,6 +652,7 @@ func _fill_atlas_list(_selected_id: int = -1) -> void:
 	%AutotilePreview.texture = null
 	%RightColumn.propagate_call("set_disabled", [true])
 	%LabelTerrainTileSelected.text = "-"
+	%LabelTerrainTileSelected.set_disabled(true)
 	
 	for path in atlas:
 		list.add_column([path.get_file().replace(path.get_extension(), "")])
@@ -601,6 +701,7 @@ func _fill_autotiles_list(_selected_id: int = -1) -> void:
 		%AutotilePreview.texture = null
 		%RightColumn.propagate_call("set_disabled", [true])
 		%LabelTerrainTileSelected.text = "-"
+		%LabelTerrainTileSelected.set_disabled(true)
 
 
 
@@ -619,17 +720,67 @@ func _on_atlas_list_item_selected(index: int) -> void:
 
 
 
-## Updates the preview texture using the dictionary image data
+## Updates the stored animation speed value for the currently selected animated tile
+func _on_current_animation_speed_value_changed(value: float) -> void:
+	var selected_items: PackedInt32Array = auto_tiles_list.get_selected_items()
+	
+	if selected_items.size() > 0:
+		var target_idx: int = selected_items[0]
+		autotiles[target_idx]["anim_speed"] = value
+
+
+
+## Updates the preview texture using the dictionary image data and displays the specific animation speed
 func _on_auto_tiles_list_item_selected(index: int) -> void:
 	if index >= 0 and autotiles.size() > index:
-		%AutotilePreview.texture = autotiles[index]["image"]
-		var terrain = "-" if autotiles[index]["terrain"].is_empty() else autotiles[index]["terrain"]
-		%LabelTerrainTileSelected.text = terrain
+		var tile_data: Dictionary = autotiles[index]
+		var img_texture: Texture2D = tile_data["image"]
+		
+		if tile_data.get("is_animated", false):
+			preview_is_animated = true
+			preview_frames = tile_data.get("frames", 1)
+			preview_current_frame = 0
+			preview_timer = 0.0
+			
+			%CurrentAnimationSpeedContainer.visible = true
+			%CurrentAnimationSpeed.set_value_no_signal(tile_data.get("anim_speed", 5.0))
+			
+			var atlas_tex: AtlasTexture = AtlasTexture.new()
+			atlas_tex.atlas = img_texture
+			var frame_w: int = img_texture.get_width() / preview_frames
+			atlas_tex.region = Rect2(0, 0, frame_w, img_texture.get_height())
+			%AutotilePreview.texture = atlas_tex
+		else:
+			preview_is_animated = false
+			%AutotilePreview.texture = img_texture
+			%CurrentAnimationSpeedContainer.visible = false
+			
+		var terrain: String = "-" if tile_data["terrain"].is_empty() else tile_data["terrain"]
+		%LabelTerrainTileSelected.set_disabled(false)
+		%LabelTerrainTileSelected.set_deferred("text", terrain)
+		%LabelTerrainTileSelected.set_meta("selected_index", index)
+		
+		var current_col_node: OptionButton = get_node_or_null("%CurrentCollision")
+		if is_instance_valid(current_col_node):
+			current_col_node.select(tile_data.get("collision_mode", 0))
 
+
+## Updates the stored collision mode value for the currently selected tile
+func _on_current_collision_item_selected(index: int) -> void:
+	var selected_items: PackedInt32Array = auto_tiles_list.get_selected_items()
+	
+	if selected_items.size() > 0:
+		var target_idx: int = selected_items[0]
+		autotiles[target_idx]["collision_mode"] = index
 
 
 ## Caches the target tile and triggers the appropriate mode or deletes the tile based on selection
 func _on_autotile_action_selected(index: int) -> void:
+	if index == 5:
+		_show_tileset_preview()
+		autotile_action_options.select(0)
+		return
+		
 	var selected_items: PackedInt32Array = auto_tiles_list.get_selected_items()
 	
 	if selected_items.is_empty() or index == 0:
@@ -647,6 +798,36 @@ func _on_autotile_action_selected(index: int) -> void:
 			_show_clear_alt_popup(selected_items[0])
 			
 	autotile_action_options.select(0)
+
+
+
+## Generates temporary atlases in memory and displays them in a scrollable popup
+func _show_tileset_preview() -> void:
+	if autotiles.is_empty():
+		return
+		
+	var atlases: Array[Image] = _build_atlases_images()
+	var popup: AcceptDialog = AcceptDialog.new()
+	popup.title = "Tileset Final Preview"
+	
+	var scroll: ScrollContainer = ScrollContainer.new()
+	scroll.custom_minimum_size = Vector2(800, 600)
+	
+	var vbox: VBoxContainer = VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 20)
+	
+	for img in atlases:
+		var tex_rect: TextureRect = TextureRect.new()
+		tex_rect.texture = ImageTexture.create_from_image(img)
+		tex_rect.stretch_mode = TextureRect.STRETCH_KEEP
+		vbox.add_child(tex_rect)
+		
+	scroll.add_child(vbox)
+	popup.add_child(scroll)
+	
+	add_child(popup)
+	popup.popup_centered(Vector2(850, 650))
+	popup.visibility_changed.connect(func(): if not popup.visible: popup.queue_free())
 
 
 
@@ -778,12 +959,21 @@ func _on_canvas_autotile_selected(region: Rect2i) -> void:
 				final_image = conversor.extract_compact_autotile(region_texture)
 			canvas.AutotileType.WALL:
 				final_image = conversor.extract_wall_autotile(region_texture)
+			canvas.AutotileType.NINE_SLICE:
+				final_image = conversor.extract_nine_slice_autotile(region_texture)
+			canvas.AutotileType.WATERFALL:
+				final_image = conversor.extract_waterfall_autotile(region_texture)
 			
 	if final_image:
 		var final_tex: ImageTexture = ImageTexture.create_from_image(final_image)
 		var base_name: String = "Tile " if canvas.current_autotile_type == canvas.AutotileType.SINGLE else "Autotile "
 		var autotile_name: String = base_name + str(autotiles.size() + 1)
 		
+		var col_mode: int = 0
+		var add_col_node: OptionButton = get_node_or_null("%AddCollision")
+		if is_instance_valid(add_col_node):
+			col_mode = add_col_node.selected
+			
 		var autotile_data: Dictionary = {
 			"image": final_tex,
 			"name": autotile_name,
@@ -791,6 +981,7 @@ func _on_canvas_autotile_selected(region: Rect2i) -> void:
 			"terrain": %TerrainName.text if not %TerrainName.text.is_empty() else "floor",
 			"is_animated": false,
 			"frames": 1,
+			"collision_mode": col_mode,
 			"alternatives": []
 		}
 		
@@ -852,6 +1043,11 @@ func _on_canvas_single_tiles_selected(rects: Array[Rect2i]) -> void:
 		
 	var source_image: Image = canvas.current_texture.get_image()
 	
+	var col_mode: int = 0
+	var add_col_node: OptionButton = get_node_or_null("%AddCollision")
+	if is_instance_valid(add_col_node):
+		col_mode = add_col_node.selected
+		
 	for region in rects:
 		var region_image: Image = source_image.get_region(region)
 		var final_tex: ImageTexture = ImageTexture.create_from_image(region_image)
@@ -864,6 +1060,7 @@ func _on_canvas_single_tiles_selected(rects: Array[Rect2i]) -> void:
 			"terrain": %TerrainName.text if not %TerrainName.text.is_empty() else "floor",
 			"is_animated": false,
 			"frames": 1,
+			"collision_mode": col_mode,
 			"alternatives": []
 		}
 		
@@ -938,6 +1135,10 @@ func _on_merge_anim_frames_pressed() -> void:
 					extracted_frame = conversor.extract_compact_autotile(region_texture)
 				canvas.AutotileType.WALL:
 					extracted_frame = conversor.extract_wall_autotile(region_texture)
+				canvas.AutotileType.NINE_SLICE:
+					extracted_frame = conversor.extract_nine_slice_autotile(region_texture)
+				canvas.AutotileType.WATERFALL:
+					extracted_frame = conversor.extract_waterfall_autotile(region_texture)
 				
 		frame_images.append(extracted_frame)
 		
@@ -968,6 +1169,7 @@ func _on_merge_anim_frames_pressed() -> void:
 			
 	var final_tex: ImageTexture = ImageTexture.create_from_image(merged_image)
 	var is_truly_animated: bool = frames_count > 1
+	var current_anim_fps: float = anim_speed_spinbox.value if is_instance_valid(anim_speed_spinbox) else 5.0
 	
 	if is_alternative_mode and is_alternative_animated_mode:
 		var target_idx: int = auto_tiles_list.get_selected_items()[0]
@@ -980,7 +1182,8 @@ func _on_merge_anim_frames_pressed() -> void:
 			"image": final_tex,
 			"is_animated": is_truly_animated,
 			"frames": frames_count,
-			"probability": prob_val
+			"probability": prob_val,
+			"anim_speed": current_anim_fps
 		}
 		
 		if not autotiles[target_idx].has("alternatives"):
@@ -998,6 +1201,11 @@ func _on_merge_anim_frames_pressed() -> void:
 			
 		var autotile_name: String = prefix + str(autotiles.size() + 1)
 		
+		var col_mode: int = 0
+		var add_col_node: OptionButton = get_node_or_null("%AddCollision")
+		if is_instance_valid(add_col_node):
+			col_mode = add_col_node.selected
+			
 		var autotile_data: Dictionary = {
 			"image": final_tex,
 			"name": autotile_name,
@@ -1005,6 +1213,8 @@ func _on_merge_anim_frames_pressed() -> void:
 			"terrain": %TerrainName.text,
 			"is_animated": is_truly_animated,
 			"frames": frames_count,
+			"collision_mode": col_mode,
+			"anim_speed": current_anim_fps,
 			"alternatives": []
 		}
 		
@@ -1017,6 +1227,47 @@ func _on_merge_anim_frames_pressed() -> void:
 		
 	_clear_anim_frames()
 	_on_close_anim_panel_pressed()
+
+
+
+## Configures the required collision layer (physics or passability object) on a target TileData
+func _apply_collision_data(tile_data: TileData, col_mode: int, tile_size: Vector2i) -> void:
+	if col_mode == 0:
+		return
+		
+	if col_mode == 1:
+		var hw: float = tile_size.x / 2.0
+		var hh: float = tile_size.y / 2.0
+		var poly: PackedVector2Array = PackedVector2Array([Vector2(-hw, -hh), Vector2(hw, -hh), Vector2(hw, hh), Vector2(-hw, hh)])
+		tile_data.add_collision_polygon(0)
+		tile_data.set_collision_polygon_points(0, 0, poly)
+		return
+		
+	var passability_uids: Array[String] = [
+		"uid://bhkyl2nefh0vw",
+		"uid://dh13f2nbimgdk",
+		"uid://dvbf7nj3d1pqi",
+		"uid://ctj5rixmpxmh",
+		"uid://cswt1yiv64ii5",
+		"uid://bj7q3uwkrex11",
+		"uid://dd5dkqrcsm3ot",
+		"uid://fmedhw832qkr",
+		"uid://drbkoriiny12k",
+		"uid://c5bhm1ifci6fm",
+		"uid://co1crjt1oeegv",
+		"uid://dy7v82dul0mms",
+		"uid://d4gn0ppkrr5jh",
+		"uid://cfinb3hqtr715",
+		"uid://bnf5ocksurqmm"
+	]
+	
+	var resource_index: int = col_mode - 3
+	
+	if resource_index >= 0 and resource_index < passability_uids.size():
+		var passability_res: Resource = load(passability_uids[resource_index])
+		if passability_res != null:
+			tile_data.set_custom_data("Passability", passability_res)
+
 
 
 ## Processes the static alternative frames and assigns them to the target base tile
@@ -1047,6 +1298,10 @@ func _on_merge_alt_frames_pressed() -> void:
 					extracted_frame = conversor.extract_compact_autotile(region_texture)
 				canvas.AutotileType.WALL:
 					extracted_frame = conversor.extract_wall_autotile(region_texture)
+				canvas.AutotileType.NINE_SLICE:
+					extracted_frame = conversor.extract_nine_slice_autotile(region_texture)
+				canvas.AutotileType.WATERFALL:
+					extracted_frame = conversor.extract_waterfall_autotile(region_texture)
 					
 		var final_tex: ImageTexture = ImageTexture.create_from_image(extracted_frame)
 		var alt_data: Dictionary = {
@@ -1182,37 +1437,21 @@ func _get_unique_path(original_path: String) -> String:
 	return new_path
 
 
-## Processes images and builds the TileSet in memory with robust terrain ID indexing to avoid out of bounds crashes
-func _generate_everything() -> void:
-	if Engine.is_editor_hint():
-		var inspector: EditorInspector = EditorInterface.get_inspector()
-		if is_instance_valid(inspector):
-			var edited_obj: Object = inspector.get_edited_object()
-			if edited_obj is TileSet and edited_obj.resource_path == selected_tileset_path:
-				var alert: AcceptDialog = AcceptDialog.new()
-				alert.title = "File locked!"
-				alert.dialog_text = "The TileSet file you're trying to overwrite is open in the Inspector.\n\nTo prevent unexpected crashes, select another node in your scene to release the file, and then click Save again."
-				add_child(alert)
-				alert.popup_centered()
-				alert.visibility_changed.connect(func(): if not alert.visible: alert.queue_free())
-				return
-				
-	var anim_fps: float = 5.0
-	if is_instance_valid(anim_speed_spinbox):
-		anim_fps = anim_speed_spinbox.value
-		
-	var base_name: String = selected_tileset_path.get_file().get_basename()
+
+## Processes images entirely in memory respecting the dynamic layout constraints and returns the atlas segments
+func _build_atlases_images() -> Array[Image]:
 	var current_atlas_idx: int = 0
 	var current_x: int = 0
 	var current_y: int = 0
 	var row_height: int = 0
 	var actual_w: int = 0
 	var actual_h: int = 0
-	var current_image: Image = Image.create(max_atlas_width, max_atlas_height, false, Image.FORMAT_RGBA8)
-	var generated_atlases: Array[Dictionary] = []
+	var current_image: Image = null
+	var result_images: Array[Image] = []
 	
 	for i in autotiles.size():
 		var elements_to_pack: Array = [autotiles[i]]
+		
 		if autotiles[i].has("alternatives"):
 			elements_to_pack.append_array(autotiles[i]["alternatives"])
 			
@@ -1224,22 +1463,17 @@ func _generate_everything() -> void:
 				
 			var w: int = img.get_width()
 			var h: int = img.get_height()
-			
 			var grid_w: int = ceil(float(w) / %Width.value) * %Width.value
 			var grid_h: int = ceil(float(h) / %Height.value) * %Height.value
 			
-			if current_x + grid_w > max_atlas_width:
+			if current_x > 0 and current_x + grid_w > max_atlas_width:
 				current_x = 0
 				current_y += row_height
 				row_height = 0
 				
-			if current_y + grid_h > max_atlas_height:
-				var expected_atlas_path: String = selected_image_dir.path_join(base_name + "_atlas_" + str(current_atlas_idx) + ".png")
-				var atlas_path: String = expected_atlas_path
+			if current_y > 0 and current_y + grid_h > max_atlas_height:
 				var cropped_image: Image = current_image.get_region(Rect2i(0, 0, maxi(1, actual_w), maxi(1, actual_h)))
-				
-				_pending_saves.append({"type": "image", "path": atlas_path, "data": cropped_image})
-				generated_atlases.append({"path": atlas_path, "image": cropped_image})
+				result_images.append(cropped_image)
 				
 				current_atlas_idx += 1
 				current_x = 0
@@ -1247,7 +1481,12 @@ func _generate_everything() -> void:
 				row_height = 0
 				actual_w = 0
 				actual_h = 0
-				current_image = Image.create(max_atlas_width, max_atlas_height, false, Image.FORMAT_RGBA8)
+				current_image = null
+				
+			if current_image == null:
+				var req_w: int = maxi(max_atlas_width, grid_w)
+				var req_h: int = maxi(max_atlas_height, grid_h)
+				current_image = Image.create(req_w, req_h, false, Image.FORMAT_RGBA8)
 				
 			current_image.blit_rect(img, Rect2i(0, 0, w, h), Vector2i(current_x, current_y))
 			element["atlas_idx"] = current_atlas_idx
@@ -1258,13 +1497,49 @@ func _generate_everything() -> void:
 			actual_w = maxi(actual_w, current_x)
 			actual_h = maxi(actual_h, current_y + grid_h)
 			
-	var last_path: String = selected_image_dir.path_join(base_name + "_atlas_" + str(current_atlas_idx) + ".png")
-	var cropped_last: Image = current_image.get_region(Rect2i(0, 0, maxi(1, actual_w), maxi(1, actual_h)))
+	if current_image != null:
+		var cropped_last: Image = current_image.get_region(Rect2i(0, 0, maxi(1, actual_w), maxi(1, actual_h)))
+		result_images.append(cropped_last)
+		
+	return result_images
+
+
+
+## Processes images and builds the TileSet dynamically scaling the atlas limits if a sequence exceeds them
+func _generate_everything() -> void:
+	if Engine.is_editor_hint():
+		var inspector: EditorInspector = EditorInterface.get_inspector()
+		
+		if is_instance_valid(inspector):
+			var edited_obj: Object = inspector.get_edited_object()
+			
+			if edited_obj is TileSet and edited_obj.resource_path == selected_tileset_path:
+				var alert: AcceptDialog = AcceptDialog.new()
+				alert.title = "File locked!"
+				alert.dialog_text = "The TileSet file you're trying to overwrite is open in the Inspector.\n\nTo prevent unexpected crashes, select another node in your scene to release the file, and then click Save again."
+				add_child(alert)
+				alert.popup_centered()
+				alert.visibility_changed.connect(func(): if not alert.visible: alert.queue_free())
+				return
+				
+	var anim_fps: float = 5.0
 	
-	_pending_saves.append({"type": "image", "path": last_path, "data": cropped_last})
-	generated_atlases.append({"path": last_path, "image": cropped_last})
+	if is_instance_valid(anim_speed_spinbox):
+		anim_fps = anim_speed_spinbox.value
+		
+	var base_name: String = selected_tileset_path.get_file().get_basename()
+	var generated_atlases: Array[Dictionary] = []
+	var atlases_images: Array[Image] = _build_atlases_images()
 	
+	for i in atlases_images.size():
+		var img: Image = atlases_images[i]
+		var path: String = selected_image_dir.path_join(base_name + "_atlas_" + str(i) + ".png")
+		
+		_pending_saves.append({"type": "image", "path": path, "data": img})
+		generated_atlases.append({"path": path, "image": img})
+		
 	var tileset: TileSet
+	
 	if FileAccess.file_exists(selected_tileset_path):
 		tileset = load(selected_tileset_path)
 		if is_instance_valid(tileset):
@@ -1274,6 +1549,8 @@ func _generate_everything() -> void:
 				tileset.remove_terrain_set(0)
 			while tileset.get_custom_data_layers_count() > 0:
 				tileset.remove_custom_data_layer(0)
+			while tileset.get_physics_layers_count() > 0:
+				tileset.remove_physics_layer(0)
 		else:
 			tileset = TileSet.new()
 			tileset.take_over_path(selected_tileset_path)
@@ -1282,12 +1559,19 @@ func _generate_everything() -> void:
 		tileset.take_over_path(selected_tileset_path)
 		
 	tileset.tile_size = Vector2i(%Width.value, %Height.value)
+	
 	tileset.add_terrain_set(0)
 	tileset.set_terrain_set_mode(0, TileSet.TERRAIN_MODE_MATCH_CORNERS_AND_SIDES)
 	
 	tileset.add_custom_data_layer(0)
 	tileset.set_custom_data_layer_name(0, "TerrainName")
 	tileset.set_custom_data_layer_type(0, TYPE_PACKED_STRING_ARRAY)
+	
+	tileset.add_custom_data_layer(1)
+	tileset.set_custom_data_layer_name(1, "Passability")
+	tileset.set_custom_data_layer_type(1, TYPE_OBJECT)
+	
+	tileset.add_physics_layer(0)
 	
 	var atlas_sources: Dictionary = {}
 	
@@ -1308,6 +1592,7 @@ func _generate_everything() -> void:
 		var autotile: Dictionary = autotiles[i]
 		var mode: AtlasSelectorCanvas.AutotileType = autotile["mode"]
 		var is_single: bool = mode == canvas.AutotileType.SINGLE
+		var col_mode: int = autotile.get("collision_mode", 0)
 		
 		tileset.add_terrain(0, -1)
 		var terrain_id: int = tileset.get_terrains_count(0) - 1
@@ -1324,6 +1609,7 @@ func _generate_everything() -> void:
 			var start_coord: Vector2i = element["rect"].position / tileset.tile_size
 			var is_animated: bool = element.get("is_animated", false)
 			var frames: int = element.get("frames", 1)
+			var current_anim_fps: float = element.get("anim_speed", anim_fps)
 			
 			if is_single:
 				var frame_w_px: int = element["rect"].size.x / frames
@@ -1338,8 +1624,8 @@ func _generate_everything() -> void:
 					source.set_tile_animation_columns(start_coord, frames)
 					source.set_tile_animation_frames_count(start_coord, frames)
 					source.set_tile_animation_separation(start_coord, Vector2i.ZERO)
-					source.set_tile_animation_speed(start_coord, anim_fps)
-				
+					source.set_tile_animation_speed(start_coord, current_anim_fps)
+					
 				var single_data: TileData = source.get_tile_data(start_coord, 0)
 				if single_data:
 					var t_name: String = autotile["terrain"] if autotile["terrain"] != "" else "floor"
@@ -1347,12 +1633,13 @@ func _generate_everything() -> void:
 					single_data.probability = element.get("probability", 1.0)
 					single_data.terrain_set = 0
 					single_data.terrain = terrain_id
+					_apply_collision_data(single_data, col_mode, tileset.tile_size)
 				continue
 				
 			var real_img: Image = generated_atlases[atlas_idx]["image"]
 			var tex_size: Vector2i = real_img.get_size()
 			var valid_masks: Array[int] = _get_valid_masks(mode)
-			var columns: int = 8 if mode != AtlasSelectorCanvas.AutotileType.WALL else 4
+			var columns: int = 4 if (mode == AtlasSelectorCanvas.AutotileType.WALL or mode == AtlasSelectorCanvas.AutotileType.WATERFALL) else 8
 			
 			for t in valid_masks.size():
 				var local_coord: Vector2i = Vector2i((t % columns) * frames, t / columns) if is_animated else Vector2i(t % columns, t / columns)
@@ -1369,14 +1656,15 @@ func _generate_everything() -> void:
 					source.set_tile_animation_columns(tile_coord, frames)
 					source.set_tile_animation_frames_count(tile_coord, frames)
 					source.set_tile_animation_separation(tile_coord, Vector2i.ZERO)
-					source.set_tile_animation_speed(tile_coord, anim_fps)
+					source.set_tile_animation_speed(tile_coord, current_anim_fps)
 					
 				_apply_peering_bits(source, tile_coord, valid_masks[t], terrain_id, mode)
 				
 				var tile_data: TileData = source.get_tile_data(tile_coord, 0)
 				if tile_data:
 					tile_data.probability = element.get("probability", 1.0)
-				
+					_apply_collision_data(tile_data, col_mode, tileset.tile_size)
+					
 			if mode == canvas.AutotileType.EXTENDED:
 				var alt_local_coord: Vector2i = Vector2i(7 * frames, 5) if is_animated else Vector2i(7, 5)
 				var alt_tile_coord: Vector2i = start_coord + alt_local_coord
@@ -1393,21 +1681,23 @@ func _generate_everything() -> void:
 							var alt_data: TileData = source.get_tile_data(alt_tile_coord, 0)
 							if alt_data:
 								alt_data.probability = element.get("probability", 1.0) * 0.05
+								_apply_collision_data(alt_data, col_mode, tileset.tile_size)
 								
 							if is_animated and frames > 1:
 								source.set_tile_animation_columns(alt_tile_coord, frames)
 								source.set_tile_animation_frames_count(alt_tile_coord, frames)
 								source.set_tile_animation_separation(alt_tile_coord, Vector2i.ZERO)
-								source.set_tile_animation_speed(alt_tile_coord, anim_fps)
+								source.set_tile_animation_speed(alt_tile_coord, current_anim_fps)
 								
 	_pending_saves.append({"type": "resource", "path": selected_tileset_path, "data": tileset})
+
 
 
 ## Returns an array with the specific 8-bit masks valid for the requested autotile mode
 func _get_valid_masks(mode: AtlasSelectorCanvas.AutotileType) -> Array[int]:
 	var valid_masks: Array[int] = []
 	
-	if mode == AtlasSelectorCanvas.AutotileType.WALL:
+	if mode == AtlasSelectorCanvas.AutotileType.WALL or mode == AtlasSelectorCanvas.AutotileType.WATERFALL:
 		for mask in 16:
 			valid_masks.append(mask)
 		return valid_masks
@@ -1439,7 +1729,7 @@ func _apply_peering_bits(source: TileSetAtlasSource, coords: Vector2i, mask: int
 	tile_data.terrain_set = 0
 	tile_data.terrain = terrain_id
 	
-	if mode == AtlasSelectorCanvas.AutotileType.WALL:
+	if mode == AtlasSelectorCanvas.AutotileType.WALL or mode == AtlasSelectorCanvas.AutotileType.WATERFALL:
 		if (mask & 1) != 0: 
 			tile_data.set_terrain_peering_bit(TileSet.CELL_NEIGHBOR_TOP_SIDE, terrain_id)
 		if (mask & 2) != 0: 
@@ -1448,6 +1738,15 @@ func _apply_peering_bits(source: TileSetAtlasSource, coords: Vector2i, mask: int
 			tile_data.set_terrain_peering_bit(TileSet.CELL_NEIGHBOR_BOTTOM_SIDE, terrain_id)
 		if (mask & 8) != 0: 
 			tile_data.set_terrain_peering_bit(TileSet.CELL_NEIGHBOR_LEFT_SIDE, terrain_id)
+			
+		if (mask & 1) != 0 and (mask & 2) != 0:
+			tile_data.set_terrain_peering_bit(TileSet.CELL_NEIGHBOR_TOP_RIGHT_CORNER, terrain_id)
+		if (mask & 2) != 0 and (mask & 4) != 0:
+			tile_data.set_terrain_peering_bit(TileSet.CELL_NEIGHBOR_BOTTOM_RIGHT_CORNER, terrain_id)
+		if (mask & 4) != 0 and (mask & 8) != 0:
+			tile_data.set_terrain_peering_bit(TileSet.CELL_NEIGHBOR_BOTTOM_LEFT_CORNER, terrain_id)
+		if (mask & 8) != 0 and (mask & 1) != 0:
+			tile_data.set_terrain_peering_bit(TileSet.CELL_NEIGHBOR_TOP_LEFT_CORNER, terrain_id)
 	else:
 		if (mask & 1) != 0: 
 			tile_data.set_terrain_peering_bit(TileSet.CELL_NEIGHBOR_TOP_SIDE, terrain_id)
@@ -1510,4 +1809,9 @@ func _on_floating_animation_handle_gui_input(event: InputEvent) -> void:
 	elif draggin_animation_panel and event is InputEventMouseMotion:
 		%FloatingMainPanelContainer.global_position += event.relative
 
-#endregion
+
+
+func _on_label_terrain_tile_selected_text_changed(new_text: String) -> void:
+	if %LabelTerrainTileSelected.has_meta("selected_index"):
+		var index = %LabelTerrainTileSelected.get_meta("selected_index")
+		autotiles[index]["terrain"] = new_text

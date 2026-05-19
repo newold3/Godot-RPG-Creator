@@ -25,12 +25,13 @@ extends Control
 ## Reference to the UI Label used to display contextual help per mode
 @export var help_label: Label
 
-
 enum AutotileType {
 	EXTENDED,
 	COMPACT,
 	WALL,
-	SINGLE
+	SINGLE,
+	NINE_SLICE,
+	WATERFALL
 }
 
 var current_texture: Texture2D
@@ -57,6 +58,8 @@ var is_anim_size_locked: bool = false:
 		_update_help_text()
 var locked_anim_size: Vector2i = Vector2i(1, 1)
 
+var is_stretched: bool = false
+var stretch_vector: Vector2 = Vector2(1.0, 1.0)
 
 signal autotile_selected(rect: Rect2i)
 
@@ -96,11 +99,50 @@ func _ready() -> void:
 
 
 
-## Draws the main underlying atlas texture strictly scaled to the zoom level
+## Safely stores the current viewing scale variables into the global FileCache dictionary
+func _save_zoom_cache() -> void:
+	if not FileCache.options.has("tile_conversor"):
+		FileCache.options["tile_conversor"] = {}
+		
+	FileCache.options["tile_conversor"]["main_canvas_zoom"] = {
+		"is_stretched": is_stretched,
+		"stretch_vector": stretch_vector,
+		"zoom_level": zoom_level
+	}
+
+
+
+## Calculates asymmetric scaling to fill the entire scroll container with no scrollbars and caches state
+func _apply_stretch_fill() -> void:
+	if not current_texture or not is_instance_valid(scroll_container):
+		return
+		
+	var tex_size: Vector2 = current_texture.get_size()
+	
+	if tex_size.x == 0 or tex_size.y == 0:
+		return
+		
+	var available: Vector2 = scroll_container.size
+	
+	stretch_vector = Vector2(available.x / tex_size.x, available.y / tex_size.y)
+	is_stretched = true
+	custom_minimum_size = available
+	
+	_save_zoom_cache()
+	queue_redraw()
+	
+	if is_instance_valid(cursor_canvas):
+		cursor_canvas.queue_redraw()
+
+
+
+## Draws the main underlying atlas texture strictly scaled to the effective zoom level
 func _draw() -> void:
 	if current_texture:
 		var tex_size: Vector2 = current_texture.get_size()
-		draw_texture_rect(current_texture, Rect2(Vector2.ZERO, tex_size * zoom_level), false)
+		var effective_zoom: Vector2 = stretch_vector if is_stretched else Vector2(zoom_level, zoom_level)
+		
+		draw_texture_rect(current_texture, Rect2(Vector2.ZERO, tex_size * effective_zoom), false)
 
 
 
@@ -110,15 +152,16 @@ func _on_grid_canvas_draw() -> void:
 		return
 		
 	var tex_size: Vector2 = current_texture.get_size()
-	var exact_scale: Vector2 = Vector2(zoom_level, zoom_level)
+	var effective_zoom: Vector2 = stretch_vector if is_stretched else Vector2(zoom_level, zoom_level)
+	var line_thickness: float = 1.0 / maxf(effective_zoom.x, effective_zoom.y)
 	
-	grid_canvas.draw_set_transform(Vector2.ZERO, 0.0, exact_scale)
+	grid_canvas.draw_set_transform(Vector2.ZERO, 0.0, effective_zoom)
 	
 	for x in range(0, int(tex_size.x) + 1, tile_size.x):
-		grid_canvas.draw_line(Vector2(x, 0), Vector2(x, tex_size.y), grid_color, 1.0 / zoom_level)
+		grid_canvas.draw_line(Vector2(x, 0), Vector2(x, tex_size.y), grid_color, line_thickness)
 		
 	for y in range(0, int(tex_size.y) + 1, tile_size.y):
-		grid_canvas.draw_line(Vector2(0, y), Vector2(tex_size.x, y), grid_color, 1.0 / zoom_level)
+		grid_canvas.draw_line(Vector2(0, y), Vector2(tex_size.x, y), grid_color, line_thickness)
 		
 	grid_canvas.draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 
@@ -129,8 +172,10 @@ func _on_cursor_canvas_draw() -> void:
 	if not current_texture or not is_mouse_inside:
 		return
 		
-	var exact_scale: Vector2 = Vector2(zoom_level, zoom_level)
-	cursor_canvas.draw_set_transform(Vector2.ZERO, 0.0, exact_scale)
+	var effective_zoom: Vector2 = stretch_vector if is_stretched else Vector2(zoom_level, zoom_level)
+	var line_thickness: float = 2.0 / maxf(effective_zoom.x, effective_zoom.y)
+	
+	cursor_canvas.draw_set_transform(Vector2.ZERO, 0.0, effective_zoom)
 	
 	var active_color: Color = cursor_color
 	if is_animation_mode:
@@ -149,7 +194,7 @@ func _on_cursor_canvas_draw() -> void:
 		var drag_rect: Rect2 = Rect2(rect_pos, rect_size)
 		
 		var drag_color: Color = Color(0.2, 0.8, 1.0, 0.8)
-		cursor_canvas.draw_rect(drag_rect, drag_color, false, 2.0 / zoom_level)
+		cursor_canvas.draw_rect(drag_rect, drag_color, false, line_thickness)
 		cursor_canvas.draw_rect(drag_rect, drag_color * Color(1.0, 1.0, 1.0, 0.2), true)
 		
 	elif is_cursor_visible:
@@ -158,11 +203,11 @@ func _on_cursor_canvas_draw() -> void:
 		var rect: Rect2 = Rect2(Vector2(snapped_mouse_pos), cursor_size)
 		
 		if _is_valid_cursor_position(snapped_mouse_pos, dimensions):
-			cursor_canvas.draw_rect(rect, active_color, false, 2.0 / zoom_level)
+			cursor_canvas.draw_rect(rect, active_color, false, line_thickness)
 			cursor_canvas.draw_rect(rect, active_color * Color(1.0, 1.0, 1.0, 0.2), true)
 		else:
 			var error_color: Color = Color(1.0, 0.0, 0.0, 0.8)
-			cursor_canvas.draw_rect(rect, error_color, false, 2.0 / zoom_level)
+			cursor_canvas.draw_rect(rect, error_color, false, line_thickness)
 			cursor_canvas.draw_rect(rect, error_color * Color(1.0, 1.0, 1.0, 0.2), true)
 			
 	cursor_canvas.draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
@@ -175,11 +220,12 @@ func _gui_input(event: InputEvent) -> void:
 		return
 		
 	var tex_size: Vector2 = current_texture.get_size()
+	var effective_zoom: Vector2 = stretch_vector if is_stretched else Vector2(zoom_level, zoom_level)
 	
 	if event is InputEventMouseMotion:
 		if is_panning and is_instance_valid(scroll_container):
 			_has_dragged_while_panning = true
-			var new_size: Vector2 = tex_size * zoom_level
+			var new_size: Vector2 = tex_size * effective_zoom
 			var max_scroll_x: float = maxf(0.0, new_size.x - scroll_container.size.x)
 			var max_scroll_y: float = maxf(0.0, new_size.y - scroll_container.size.y)
 			
@@ -187,7 +233,7 @@ func _gui_input(event: InputEvent) -> void:
 			scroll_container.scroll_vertical = int(clamp(scroll_container.scroll_vertical - event.relative.y, 0.0, max_scroll_y))
 			
 		var local_pos: Vector2 = event.position
-		var scaled_pos: Vector2 = local_pos / zoom_level
+		var scaled_pos: Vector2 = local_pos / effective_zoom
 		
 		if is_selecting_multiple and not (is_animation_mode and is_anim_size_locked):
 			drag_end_pos = _get_snapped_pos_from_scaled(scaled_pos)
@@ -196,7 +242,7 @@ func _gui_input(event: InputEvent) -> void:
 			_update_cursor_position(scaled_pos)
 			
 	elif event is InputEventMouseButton:
-		var scaled_pos: Vector2 = event.position / zoom_level
+		var scaled_pos: Vector2 = event.position / effective_zoom
 		var current_snapped: Vector2i = _get_snapped_pos_from_scaled(scaled_pos)
 		
 		if event.button_index == MOUSE_BUTTON_MIDDLE:
@@ -205,14 +251,20 @@ func _gui_input(event: InputEvent) -> void:
 				_has_dragged_while_panning = false
 			else:
 				is_panning = false
+				
 				if not _has_dragged_while_panning:
-					_update_zoom(1.0, scaled_pos)
-					
+					if is_stretched:
+						_update_zoom(zoom_level, Vector2(-1, -1), true)
+					else:
+						_apply_stretch_fill()
+						
 		elif event.button_index == MOUSE_BUTTON_WHEEL_UP and event.ctrl_pressed and event.pressed:
+			is_stretched = false
 			_update_zoom(zoom_level + 0.25, scaled_pos)
 			get_viewport().set_input_as_handled()
 			
 		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.ctrl_pressed and event.pressed:
+			is_stretched = false
 			_update_zoom(zoom_level - 0.25, scaled_pos)
 			get_viewport().set_input_as_handled()
 			
@@ -287,9 +339,12 @@ func _get_min_zoom() -> float:
 
 
 
-## Updates the zoom level adjusting the size and focusing via scroll bars
+## Updates the zoom level adjusting the size and focusing via scroll bars, and caches state
 func _update_zoom(new_zoom: float, focus_local_pos: Vector2 = Vector2(-1, -1), force_update: bool = false) -> void:
-	if not current_texture: return
+	if not current_texture: 
+		return
+		
+	is_stretched = false
 	
 	var min_z: float = _get_min_zoom()
 	var old_zoom: float = zoom_level
@@ -327,6 +382,7 @@ func _update_zoom(new_zoom: float, focus_local_pos: Vector2 = Vector2(-1, -1), f
 		scroll_container.scroll_horizontal = int(clamp(target_scroll_x, 0.0, max_scroll_x))
 		scroll_container.scroll_vertical = int(clamp(target_scroll_y, 0.0, max_scroll_y))
 		
+	_save_zoom_cache()
 	queue_redraw()
 	grid_canvas.queue_redraw()
 	cursor_canvas.queue_redraw()
@@ -431,11 +487,23 @@ func _process_drag_selection() -> void:
 
 
 
-## Loads a new texture into the canvas and resets dimensions correctly via math
+## Loads a new texture into the canvas and restores the cached zoom state or calculates the default
 func set_texture(tex: Texture2D) -> void:
 	current_texture = tex
-	zoom_level = _get_min_zoom()
-	_update_zoom(zoom_level, Vector2.ZERO, true)
+	
+	if FileCache.options.has("tile_conversor") and FileCache.options["tile_conversor"].has("main_canvas_zoom"):
+		var cache: Dictionary = FileCache.options["tile_conversor"]["main_canvas_zoom"]
+		is_stretched = cache.get("is_stretched", false)
+		zoom_level = cache.get("zoom_level", _get_min_zoom())
+		
+		if is_stretched:
+			_apply_stretch_fill()
+		else:
+			_update_zoom(zoom_level, Vector2.ZERO, true)
+	else:
+		is_stretched = false
+		zoom_level = _get_min_zoom()
+		_update_zoom(zoom_level, Vector2.ZERO, true)
 
 
 
@@ -447,6 +515,9 @@ func clear() -> void:
 	size = Vector2.ZERO
 	
 	zoom_level = 1.0
+	is_stretched = false
+	stretch_vector = Vector2(1.0, 1.0)
+	
 	is_panning = false
 	_has_dragged_while_panning = false
 	is_mouse_inside = false
@@ -492,16 +563,16 @@ func _update_help_text() -> void:
 			match current_autotile_type:
 				AutotileType.SINGLE:
 					help_label.text = "Click or drag to add the first frame"
-				AutotileType.EXTENDED, AutotileType.COMPACT, AutotileType.WALL:
+				AutotileType.EXTENDED, AutotileType.COMPACT, AutotileType.WALL, AutotileType.NINE_SLICE, AutotileType.WATERFALL:
 					help_label.text = "Click to add the first frame"
 		else:
 			help_label.text = "Click to select the next frame"
 	else:
 		match current_autotile_type:
 			AutotileType.SINGLE:
-				help_label.text = "Click and drag to select standalone tiles (CTRL Toggled Animation)"
-			AutotileType.EXTENDED, AutotileType.COMPACT, AutotileType.WALL:
-				help_label.text = "Click to extract a standard autotile (CTRL Toggled Animation)"
+				help_label.text = "Click and drag to select standalone tiles (F1 Toggled Animation)"
+			AutotileType.EXTENDED, AutotileType.COMPACT, AutotileType.WALL, AutotileType.NINE_SLICE, AutotileType.WATERFALL:
+				help_label.text = "Click to extract a standard autotile (F1 Toggled Animation)"
 
 
 
@@ -517,6 +588,10 @@ func _get_cursor_dimensions() -> Vector2i:
 			return Vector2i(2, 3)
 		AutotileType.WALL:
 			return Vector2i(2, 2)
+		AutotileType.NINE_SLICE:
+			return Vector2i(3, 3)
+		AutotileType.WATERFALL:
+			return Vector2i(2, 3)
 		AutotileType.SINGLE:
 			return Vector2i(1, 1)
 	return Vector2i(1, 1)

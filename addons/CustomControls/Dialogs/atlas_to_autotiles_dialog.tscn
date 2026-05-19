@@ -168,7 +168,7 @@ region = Rect2(24, 48, 24, 24)
 oversampling_override = 1.0
 title = "Atlas to Autotiles"
 position = Vector2i(0, 36)
-size = Vector2i(1300, 722)
+size = Vector2i(1300, 800)
 wrap_controls = true
 transient = true
 exclusive = true
@@ -179,7 +179,7 @@ anim_frames_container = NodePath("MarginContainer/VBoxContainer/FloatingAnimatio
 merge_anim_button = NodePath("MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/HBoxContainer/MergeFrames")
 clear_anim_button = NodePath("MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/HBoxContainer/ClearFrames")
 close_anim_panel_button = NodePath("MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/HBoxContainer2/CloseFloatingAnimationPanel")
-anim_speed_spinbox = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/HBoxContainer/AnimationSpeed")
+anim_speed_spinbox = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/AnimationSpeedContainer/AnimationSpeed")
 autotile_action_options = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/AutotileActions")
 alt_main_container = NodePath("MarginContainer/VBoxContainer/FloatingAlternativePanel")
 alt_frames_container = NodePath("MarginContainer/VBoxContainer/FloatingAlternativePanel/FloatingAlternativePanelContainer/VBoxContainer/SmoothScrollContainer/AlternativeContainer")
@@ -219,8 +219,7 @@ layout_mode = 2
 [node name="HBoxContainer2" type="HSplitContainer" parent="MarginContainer/VBoxContainer" unique_id=2038778398]
 layout_mode = 2
 size_flags_vertical = 3
-split_offsets = PackedInt32Array(200, 0)
-split_offset = 200
+split_offsets = PackedInt32Array(0, 0)
 
 [node name="LeftColumn" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=573033032]
 unique_name_in_owner = true
@@ -306,15 +305,19 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Type of the autotile currently selected in the UI"
 selected = 0
-item_count = 4
-popup/item_0/text = "Extended"
+item_count = 6
+popup/item_0/text = "Extended (3 x 4)"
 popup/item_0/id = 0
-popup/item_1/text = "Compact"
+popup/item_1/text = "Compact (2 x 3)"
 popup/item_1/id = 1
-popup/item_2/text = "Wall"
+popup/item_2/text = "Wall (2 x 2)"
 popup/item_2/id = 2
 popup/item_3/text = "Single Tile"
 popup/item_3/id = 3
+popup/item_4/text = "Nine Slice (3 x 3)"
+popup/item_4/id = 4
+popup/item_5/text = "Waterfall (2 x 3)"
+popup/item_5/id = 5
 metadata/original_focus_mode = 2
 metadata/original_mouse_filer = 0
 
@@ -332,15 +335,72 @@ layout_mode = 2
 size_flags_horizontal = 3
 metadata/original_text = ""
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons" unique_id=384505281]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons" unique_id=17906098]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/HBoxContainer" unique_id=1425975331]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/HBoxContainer2" unique_id=108173781]
 layout_mode = 2
+text = "Collision: "
+
+[node name="AddCollision" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/HBoxContainer2" unique_id=588846690 instance=ExtResource("5_xfjgv")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 0
+fit_to_longest_item = false
+item_count = 18
+popup/item_0/text = "No Collision"
+popup/item_0/id = 0
+popup/item_1/text = "Native Physics Collision"
+popup/item_1/id = 1
+popup/item_2/text = "Passability"
+popup/item_2/id = 2
+popup/item_2/separator = true
+popup/item_3/text = "Block All ❌"
+popup/item_3/id = 3
+popup/item_4/text = "Right ➡️"
+popup/item_4/id = 4
+popup/item_5/text = "Right, Up ➡️ ⬆️"
+popup/item_5/id = 5
+popup/item_6/text = "Right, Up, Down ➡️ ⬆️ ⬇️"
+popup/item_6/id = 6
+popup/item_7/text = "Right, Down ➡️ ⬇️"
+popup/item_7/id = 7
+popup/item_8/text = "Left ⬅️"
+popup/item_8/id = 8
+popup/item_9/text = "Left, Right ⬅️ ➡️"
+popup/item_9/id = 9
+popup/item_10/text = "Left, Right, Up ⬅️ ➡️ ⬆️"
+popup/item_10/id = 10
+popup/item_11/text = "Left, Right, Down ⬅️ ➡️ ⬇️"
+popup/item_11/id = 11
+popup/item_12/text = "Left, Up ⬅️ ⬆️"
+popup/item_12/id = 12
+popup/item_13/text = "Left, Up, Down ⬅️ ⬆️ ⬇️"
+popup/item_13/id = 13
+popup/item_14/text = "Left, Down ⬅️ ⬇️"
+popup/item_14/id = 14
+popup/item_15/text = "Up ⬆️"
+popup/item_15/id = 15
+popup/item_16/text = "Up, Down ⬆️ ⬇️"
+popup/item_16/id = 16
+popup/item_17/text = "Down ⬇️"
+popup/item_17/id = 17
+
+[node name="AnimationSpeedContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons" unique_id=384505281]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/AnimationSpeedContainer" unique_id=1425975331]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7487919, 0.898451, 0.8664404, 1)
 text = "Animation Speed (fps):"
 
-[node name="AnimationSpeed" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/HBoxContainer" unique_id=226381042 instance=ExtResource("4_kbouy")]
+[node name="AnimationSpeed" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/AnimationSpeedContainer" unique_id=226381042 instance=ExtResource("4_kbouy")]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 min_value = 0.05
@@ -408,7 +468,8 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_gbpf1")
 [node name="RightColumn" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=602407482]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 0
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=40722580]
 layout_mode = 2
@@ -418,7 +479,6 @@ text = "Autotile List:"
 unique_name_in_owner = true
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
-size_flags_horizontal = 0
 size_flags_vertical = 3
 theme_override_constants/v_separation = -1
 theme_override_styles/panel = SubResource("StyleBoxFlat_r5pt5")
@@ -429,12 +489,13 @@ theme_override_styles/selected_focus = SubResource("StyleBoxTexture_770tq")
 allow_reselect = true
 odd_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 event_line_color = Color(0.145098, 0.156863, 0.164706, 1)
+drag_and_drop_enabled = true
 
 [node name="AutotileActions" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=608947027 instance=ExtResource("5_xfjgv")]
 layout_mode = 2
 selected = 0
 fit_to_longest_item = false
-item_count = 5
+item_count = 6
 popup/item_0/text = "Select Action..."
 popup/item_0/id = 0
 popup/item_1/text = "Remove Tile Selected"
@@ -443,29 +504,103 @@ popup/item_2/text = "Pick Alternative Tile/s"
 popup/item_2/id = 2
 popup/item_3/text = "Pick Alternative Animated Tile"
 popup/item_3/id = 3
-popup/item_4/text = "Clear Alternative Tiles          ▶"
+popup/item_4/text = "Clear Alternative Tiles ▶"
 popup/item_4/id = 4
+popup/item_5/text = "Preview Tileset"
+popup/item_5/id = 5
 
 [node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=1981552580]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.5449743, 0.54497427, 0.54497427, 1)
+theme_override_colors/font_color = Color(0.33014855, 0.5825825, 0.6960718, 1)
 theme_override_font_sizes/font_size = 16
-text = "TERRAIN"
+text = "Tile Current Terrain"
 horizontal_alignment = 1
 
-[node name="LabelTerrainTileSelected" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=693951917]
+[node name="LabelTerrainTileSelected" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=1803030501 instance=ExtResource("6_xfjgv")]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.5449743, 0.54497427, 0.54497427, 1)
+theme_override_colors/font_color = Color(0.33014855, 0.5825825, 0.6960718, 1)
+
+[node name="Label4" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=1874448555]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.33014855, 0.5825825, 0.6960718, 1)
 theme_override_font_sizes/font_size = 16
-text = "-"
+text = "Tile Current Collision"
 horizontal_alignment = 1
+
+[node name="CurrentCollision" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=1255535828 instance=ExtResource("5_xfjgv")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.33014855, 0.5825825, 0.6960718, 1)
+selected = 0
+fit_to_longest_item = false
+item_count = 18
+popup/item_0/text = "No Collision"
+popup/item_0/id = 0
+popup/item_1/text = "Native Physics Collision"
+popup/item_1/id = 1
+popup/item_2/text = "Passability"
+popup/item_2/id = 2
+popup/item_2/separator = true
+popup/item_3/text = "Block All ❌"
+popup/item_3/id = 3
+popup/item_4/text = "Right ➡️"
+popup/item_4/id = 4
+popup/item_5/text = "Right, Up ➡️ ⬆️"
+popup/item_5/id = 5
+popup/item_6/text = "Right, Up, Down ➡️ ⬆️ ⬇️"
+popup/item_6/id = 6
+popup/item_7/text = "Right, Down ➡️ ⬇️"
+popup/item_7/id = 7
+popup/item_8/text = "Left ⬅️"
+popup/item_8/id = 8
+popup/item_9/text = "Left, Right ⬅️ ➡️"
+popup/item_9/id = 9
+popup/item_10/text = "Left, Right, Up ⬅️ ➡️ ⬆️"
+popup/item_10/id = 10
+popup/item_11/text = "Left, Right, Down ⬅️ ➡️ ⬇️"
+popup/item_11/id = 11
+popup/item_12/text = "Left, Up ⬅️ ⬆️"
+popup/item_12/id = 12
+popup/item_13/text = "Left, Up, Down ⬅️ ⬆️ ⬇️"
+popup/item_13/id = 13
+popup/item_14/text = "Left, Down ⬅️ ⬇️"
+popup/item_14/id = 14
+popup/item_15/text = "Up ⬆️"
+popup/item_15/id = 15
+popup/item_16/text = "Up, Down ⬆️ ⬇️"
+popup/item_16/id = 16
+popup/item_17/text = "Down ⬇️"
+popup/item_17/id = 17
+
+[node name="CurrentAnimationSpeedContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=91391295]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/CurrentAnimationSpeedContainer" unique_id=131584679]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7487919, 0.898451, 0.8664404, 1)
+theme_override_font_sizes/font_size = 16
+text = "Tile Animation Speed"
+horizontal_alignment = 1
+
+[node name="CurrentAnimationSpeed" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/CurrentAnimationSpeedContainer" unique_id=264334171 instance=ExtResource("4_kbouy")]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 0.05
+max_value = 50.0
+step = 0.01
+value = 0.05
+rounded = false
+_custom_value = 0.05
 
 [node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=1730610055]
 layout_mode = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=1139888756]
-custom_minimum_size = Vector2(0, 256)
+custom_minimum_size = Vector2(0, 220)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_xfjgv")
 
@@ -504,6 +639,7 @@ text = "Close"
 
 [node name="FloatingAnimationPanel" type="Control" parent="MarginContainer/VBoxContainer" unique_id=1271569104]
 unique_name_in_owner = true
+visible = false
 top_level = true
 layout_mode = 2
 size_flags_horizontal = 0
@@ -624,6 +760,7 @@ text = "Clear Frames"
 
 [node name="FloatingAlternativePanel" type="Control" parent="MarginContainer/VBoxContainer" unique_id=1891478520]
 unique_name_in_owner = true
+visible = false
 top_level = true
 layout_mode = 2
 size_flags_horizontal = 0
@@ -744,6 +881,7 @@ text = "Clear Alternatives"
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/Controls2/AutototileType" to="." method="_on_custom_option_button_item_selected"]
 [connection signal="delete_pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/AutoTilesList" to="." method="_on_auto_tiles_list_delete_pressed"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/AutoTilesList" to="." method="_on_auto_tiles_list_item_selected"]
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/LabelTerrainTileSelected" to="." method="_on_label_terrain_tile_selected_text_changed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/GenerateTileset" to="." method="_on_generate_tileset_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CloseButton" to="." method="_on_close_button_pressed"]
 [connection signal="gui_input" from="MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/HBoxContainer2/FloatingAnimationHandle" to="." method="_on_floating_animation_handle_gui_input"]

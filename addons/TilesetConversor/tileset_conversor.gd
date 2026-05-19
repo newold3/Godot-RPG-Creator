@@ -32,6 +32,34 @@ const EXTENDED_BR_STATES: Array[Vector2i] = [
 	Vector2i(1, 7), Vector2i(3, 7), Vector2i(5, 7), Vector2i(5, 1)
 ]
 
+## 11-State mapped coordinates for the Top-Left quadrant of a 3x3 autotile
+const NINE_SLICE_TL_STATES: Array[Vector2i] = [
+	Vector2i(2, 2), Vector2i(0, 0), Vector2i(2, 0), Vector2i(4, 0),
+	Vector2i(0, 2), Vector2i(2, 2), Vector2i(4, 2),
+	Vector2i(0, 4), Vector2i(2, 4), Vector2i(4, 4), Vector2i(2, 2)
+]
+
+## 11-State mapped coordinates for the Top-Right quadrant of a 3x3 autotile
+const NINE_SLICE_TR_STATES: Array[Vector2i] = [
+	Vector2i(3, 2), Vector2i(1, 0), Vector2i(3, 0), Vector2i(5, 0),
+	Vector2i(1, 2), Vector2i(3, 2), Vector2i(5, 2),
+	Vector2i(1, 4), Vector2i(3, 4), Vector2i(5, 4), Vector2i(3, 2)
+]
+
+## 11-State mapped coordinates for the Bottom-Left quadrant of a 3x3 autotile
+const NINE_SLICE_BL_STATES: Array[Vector2i] = [
+	Vector2i(2, 3), Vector2i(0, 1), Vector2i(2, 1), Vector2i(4, 1),
+	Vector2i(0, 3), Vector2i(2, 3), Vector2i(4, 3),
+	Vector2i(0, 5), Vector2i(2, 5), Vector2i(4, 5), Vector2i(2, 3)
+]
+
+## 11-State mapped coordinates for the Bottom-Right quadrant of a 3x3 autotile
+const NINE_SLICE_BR_STATES: Array[Vector2i] = [
+	Vector2i(3, 3), Vector2i(1, 1), Vector2i(3, 1), Vector2i(5, 1),
+	Vector2i(1, 3), Vector2i(3, 3), Vector2i(5, 3),
+	Vector2i(1, 5), Vector2i(3, 5), Vector2i(5, 5), Vector2i(3, 3)
+]
+
 #endregion
 
 
@@ -86,6 +114,22 @@ const WALL_BR_STATES: Array[Vector2i] = [Vector2i(0, 0), Vector2i(3, 3), Vector2
 
 #endregion
 
+
+#region CONSTANTS_WATERFALL
+
+## Native 16-State mapped coordinates for the Top-Left quadrant of a 2x3 Waterfall autotile
+const WATERFALL_TL_STATES: Array[Vector2i] = [Vector2i(0, 0), Vector2i(0, 0), Vector2i(1, 0), Vector2i(0, 2), Vector2i(1, 2)]
+
+## Native 16-State mapped coordinates for the Top-Right quadrant of a 2x3 Waterfall autotile
+const WATERFALL_TR_STATES: Array[Vector2i] = [Vector2i(3, 0), Vector2i(3, 0), Vector2i(2, 0), Vector2i(3, 2), Vector2i(2, 2)]
+
+## Native 16-State mapped coordinates for the Bottom-Left quadrant of a 2x3 Waterfall autotile
+const WATERFALL_BL_STATES: Array[Vector2i] = [Vector2i(0, 5), Vector2i(0, 5), Vector2i(1, 5), Vector2i(0, 3), Vector2i(1, 3)]
+
+## Native 16-State mapped coordinates for the Bottom-Right quadrant of a 2x3 Waterfall autotile
+const WATERFALL_BR_STATES: Array[Vector2i] = [Vector2i(3, 5), Vector2i(3, 5), Vector2i(2, 5), Vector2i(3, 3), Vector2i(2, 3)]
+
+#endregion
 
 
 #region EXTRACTION_FUNCTIONS
@@ -167,6 +211,79 @@ func extract_wall_autotile(source_texture: Texture2D) -> Image:
 		current_tile_index += 1
 		
 	return final_image
+
+
+## Generates an image with 47 extracted tiles from a pure 3x3 nine-slice format autotile.
+func extract_nine_slice_autotile(source_texture: Texture2D) -> Image:
+	var source_image: Image = source_texture.get_image()
+	var tile_size: int = source_image.get_width() / 3
+	var sub_tile_size: int = tile_size / 2
+	var final_width: int = tile_size * 8
+	var final_height: int = tile_size * 6
+	var final_image: Image = Image.create(final_width, final_height, false, source_image.get_format())
+	var unique_hashes: Array[String] = []
+	var current_tile_index: int = 0
+	
+	for mask in 256:
+		var tl: int = _get_tl_state_47(mask)
+		var tr: int = _get_tr_state_47(mask)
+		var bl: int = _get_bl_state_47(mask)
+		var br: int = _get_br_state_47(mask)
+		var tile_hash: String = str(tl) + str(tr) + str(bl) + str(br)
+		
+		if not unique_hashes.has(tile_hash):
+			unique_hashes.append(tile_hash)
+			_blit_tile_to_image(source_image, final_image, current_tile_index, tl, tr, bl, br, tile_size, sub_tile_size, NINE_SLICE_TL_STATES, NINE_SLICE_TR_STATES, NINE_SLICE_BL_STATES, NINE_SLICE_BR_STATES, 8)
+			current_tile_index += 1
+			
+	return final_image
+
+
+
+## Generates an image with 16 extracted tiles from a 2x3 waterfall format autotile.
+func extract_waterfall_autotile(source_texture: Texture2D) -> Image:
+	var source_image: Image = source_texture.get_image()
+	var tile_size: int = source_image.get_width() / 2
+	var sub_tile_size: int = tile_size / 2
+	var final_width: int = tile_size * 4
+	var final_height: int = tile_size * 4
+	var final_image: Image = Image.create(final_width, final_height, false, source_image.get_format())
+	
+	for mask in 16:
+		var n: bool = (mask & 1) != 0
+		var e: bool = (mask & 2) != 0
+		var s: bool = (mask & 4) != 0
+		var w: bool = (mask & 8) != 0
+		
+		var left_col: int = 2 if w else 0
+		var right_col: int = 1 if e else 3
+		
+		var top_row: int
+		var bot_row: int
+		
+		if not n and not s:
+			top_row = 0
+			bot_row = 5
+		elif not n and s:
+			top_row = 0
+			bot_row = 1
+		elif n and not s:
+			top_row = 4
+			bot_row = 5
+		else:
+			top_row = 2
+			bot_row = 3
+			
+		var dest_x: int = (mask % 4) * tile_size
+		var dest_y: int = (mask / 4) * tile_size
+		
+		final_image.blit_rect(source_image, Rect2i(left_col * sub_tile_size, top_row * sub_tile_size, sub_tile_size, sub_tile_size), Vector2i(dest_x, dest_y))
+		final_image.blit_rect(source_image, Rect2i(right_col * sub_tile_size, top_row * sub_tile_size, sub_tile_size, sub_tile_size), Vector2i(dest_x + sub_tile_size, dest_y))
+		final_image.blit_rect(source_image, Rect2i(left_col * sub_tile_size, bot_row * sub_tile_size, sub_tile_size, sub_tile_size), Vector2i(dest_x, dest_y + sub_tile_size))
+		final_image.blit_rect(source_image, Rect2i(right_col * sub_tile_size, bot_row * sub_tile_size, sub_tile_size, sub_tile_size), Vector2i(dest_x + sub_tile_size, dest_y + sub_tile_size))
+		
+	return final_image
+
 
 #endregion
 

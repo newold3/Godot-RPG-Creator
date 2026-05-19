@@ -361,10 +361,6 @@ func force_update_sizes() -> void:
 	if busy: return
 	if is_inside_tree():
 		await get_tree().process_frame
-	var p = get_parent()
-	if p and p is Control:
-		size.x = p.size.x
-		size.y = p.size.y
 	update_name_and_sizes()
 
 
@@ -482,12 +478,10 @@ func update_name_and_sizes(step = 50) -> void:
 	if !names or !sizes:
 		return
 		
-	var total_width = size.x
-	if get_node_or_null("%ItemList"):
-		total_width = get_parent().size.x if get_parent() is Control else size.x
+	var total_width = size.x 
 		
 	var extra_size = (column_separator_margin * 2 + column_separator_width) * columns
-	var available_width = total_width - extra_size
+	var available_width = max(0, total_width - extra_size)
 	
 	var fixed_width_total = 0
 	var negative_columns = []
@@ -523,17 +517,48 @@ func update_name_and_sizes(step = 50) -> void:
 			
 	cache_columns_width = PackedInt32Array(temp_widths)
 	
+	var true_min_width: float = 0.0
+	var last_col_max_text_width: float = 0.0
+	var last_col_real_index: int = current_order[columns - 1]
+	
+	for row in items:
+		if row.size() > last_col_real_index and row[last_col_real_index].length() > 0:
+			var tw = font.get_string_size(row[last_col_real_index], 0, -1, font_size).x
+			if tw > last_col_max_text_width:
+				last_col_max_text_width = tw
+				
+	for i in columns:
+		var real_index = current_order[i]
+		var col_min: float = 0.0
+		
+		if sizes[real_index] > 0:
+			col_min = max(min_column_size, sizes[real_index])
+		else:
+			var header_w = font.get_string_size(names[real_index], align, -1, font_size).x if names.size() > real_index else 0
+			col_min = max(min_column_size, header_w)
+			
+		if i == columns - 1:
+			col_min = max(col_min, last_col_max_text_width)
+			
+		true_min_width += col_min
+		
+	var extra_padding = 24 if (show_checkboxes and enable_multiselection) else 0
+	extra_padding += 24 
+	extra_padding += text_margin_left * columns
+	var sep_space = (column_separator_margin * 2 + column_separator_width) * max(0, columns - 1)
+	
+	custom_minimum_size.x = max(min_size.x, true_min_width + extra_padding + sep_space)
+	
 	if get_node_or_null("%TopMenu"):
 		var h = font.get_string_size(" ", 0, -1, font_size).y
-		%TopMenu.set_deferred("size", Vector2.ZERO)
 		%TopMenu.custom_minimum_size.y = h
-		%TopMenu.custom_minimum_size.x = total_width
+		%TopMenu.custom_minimum_size.x = 0 
+		%TopMenu.size_flags_horizontal = Control.SIZE_FILL 
 		
 	if size.x < min_size.x: size.x = min_size.x
 	if size.y < min_size.y: size.y = min_size.y
 	
 	queue_redraw()
-
 
 
 ## Clears the list and resets internal variables.
@@ -731,8 +756,6 @@ func get_custom_tooltip() -> String:
 func _on_top_gui_input(event: InputEvent) -> void:
 	var extra_size = column_separator_margin * 2 + column_separator_width
 	var total_width = size.x
-	if get_node_or_null("%ItemList"):
-		total_width = get_parent().size.x if get_parent() is Control else size.x
 		
 	if event is InputEventMouseMotion:
 		if dragging and current_resize_column != -1:
@@ -859,7 +882,6 @@ func _on_top_gui_input(event: InputEvent) -> void:
 			current_drag_target_column = -1
 
 
-
 ## Property Validation.
 func _validate_property(property):
 	return
@@ -963,7 +985,6 @@ func _on_itemlist_draw() -> void:
 		checkbox_width = 24
 
 	if node.get_item_count() > 0:
-		custom_minimum_size.x = 0
 		for index in node.get_item_count():
 			var real_id = _get_real_id(index)
 			var is_placeholder = index == node.get_item_count() - 1 and placeholder_text.length() > 0
@@ -1070,11 +1091,6 @@ func _on_itemlist_draw() -> void:
 								var match_width = font.get_string_size(text.substr(find_pos, current_filter.length()), HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
 								var highlight_rect = Rect2(text_x + offset_x, rect.position.y, match_width, rect.size.y)
 								node.draw_rect(highlight_rect, Color(1, 1, 0, 0.3))
-
-					if i == columns - 1 and items.size() > real_id and items[real_id].size() > real_index and items[real_id][real_index].length() > 0:
-						var text_width = font.get_string_size(items[real_id][real_index], 0, -1, font_size).x
-						var cur_size = x + text_width
-						custom_minimum_size.x = max(custom_minimum_size.x, cur_size)
 					
 					x += cache_columns_width[real_index]
 						
