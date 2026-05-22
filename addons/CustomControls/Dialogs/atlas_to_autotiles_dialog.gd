@@ -55,6 +55,9 @@ extends Window
 ## Container for the animation probability spinbox
 @export var anim_prob_main_container: Container
 
+## OptionButton to select the target tile size for the generated TileSet
+@export var target_tile_size_options: OptionButton
+
 var atlas: Array = []
 var autotiles: Array = []
 
@@ -66,9 +69,11 @@ var autotiles: Array = []
 var refresh_time: float = 0.0
 var save_dialog: EditorFileDialog
 var image_dir_dialog: EditorFileDialog
+var load_dialog: EditorFileDialog
 
 var selected_image_dir: String = ""
 var selected_tileset_path: String = ""
+var current_editing_tileset_path: String = ""
 
 var anim_frames_data: Array[Dictionary] = []
 var selected_anim_frames: Array[TextureRect] = []
@@ -88,6 +93,18 @@ var preview_is_animated: bool = false
 var preview_frames: int = 1
 var preview_current_frame: int = 0
 var preview_timer: float = 0.0
+
+var TARGET_SIZES: Array[Vector2i] = [
+	Vector2i.ZERO,
+	Vector2i(16, 16),
+	Vector2i(24, 24),
+	Vector2i(32, 32),
+	Vector2i(48, 48),
+	Vector2i(64, 64),
+	Vector2i(96, 96),
+	Vector2i(128, 128),
+	Vector2i(256, 256)
+]
 
 #endregion
 
@@ -185,11 +202,12 @@ func _ready() -> void:
 	%MidColum.propagate_call("set_disabled", [true])
 	%AutotilePreview.texture = null
 	%RightColumn.propagate_call("set_disabled", [true])
+	%LoadTileset.set_disabled(false)
 	%LabelTerrainTileSelected.text = "-"
 	%LabelTerrainTileSelected.set_disabled(true)
 	%AnimationSpeed.get_line_edit().set("theme_override_colors/font_color", Color("bfe5dd"))
 	%CurrentAnimationSpeedContainer.visible = false
-	%CurrentAnimationSpeed.get_line_edit().set("theme_override_colors/font_color", Color("bfe5dd"))
+	%CurrentAnimationSpeed.set("theme_override_colors/font_color", Color("bfe5dd"))
 	
 	%CurrentAnimationSpeed.value_changed.connect(_on_current_animation_speed_value_changed)
 	
@@ -226,6 +244,9 @@ func _ready() -> void:
 		
 	if is_instance_valid(clear_alt_button):
 		clear_alt_button.pressed.connect(_clear_alt_frames)
+		
+	if is_instance_valid(close_alt_panel_button):
+		close_alt_panel_button.pressed.connect(_on_close_alt_panel_pressed)
 		
 	if is_instance_valid(alt_prob_spinbox):
 		alt_prob_spinbox.min_value = 0.0
@@ -273,7 +294,71 @@ func _ready() -> void:
 	save_dialog.file_selected.connect(_on_save_file_selected)
 	add_child(save_dialog)
 	
+	load_dialog = EditorFileDialog.new()
+	load_dialog.file_mode = EditorFileDialog.FILE_MODE_OPEN_FILE
+	load_dialog.title = "Load Godot RPG Creator TileSet"
+	load_dialog.add_filter("*.tres", "TileSet Resource")
+	load_dialog.current_dir = _get_cache_value("last_tileset_folder", "res://Assets/Tilesets")
+	load_dialog.file_selected.connect(_load_tileset_from_file)
+	add_child(load_dialog)
+	
+	_populate_target_tile_sizes()
 	set_process(true)
+
+
+## Fills the option button with predefined target tile sizes and connects the caching signal
+func _populate_target_tile_sizes() -> void:
+	if not is_instance_valid(target_tile_size_options):
+		return
+		
+	target_tile_size_options.clear()
+	
+	for size in TARGET_SIZES:
+		if size == Vector2i.ZERO:
+			target_tile_size_options.add_item("Source Size")
+		else:
+			target_tile_size_options.add_item(str(size.x) + "x" + str(size.y))
+			
+	target_tile_size_options.item_selected.connect(_on_target_tile_size_item_selected)
+	
+	var cached_idx: int = _get_cache_value("last_target_size_idx", 0)
+	
+	if cached_idx >= 0 and cached_idx < target_tile_size_options.item_count:
+		target_tile_size_options.select(cached_idx)
+
+
+## Caches the target size option selected by the user
+func _on_target_tile_size_item_selected(index: int) -> void:
+	_update_cache("last_target_size_idx", index)
+
+
+## Retrieves the user selected target tile size falling back to zero vector if invalid
+func _get_current_target_tile_size() -> Vector2i:
+	if not is_instance_valid(target_tile_size_options):
+		return Vector2i.ZERO
+		
+	var idx: int = target_tile_size_options.selected
+	
+	if idx >= 0 and idx < TARGET_SIZES.size():
+		return TARGET_SIZES[idx]
+		
+	return Vector2i.ZERO
+
+
+## Resolves the final effective tile size falling back to the source dimensions if needed
+func _get_active_tile_size() -> Vector2i:
+	var target_size: Vector2i = _get_current_target_tile_size()
+	
+	if target_size == Vector2i.ZERO:
+		return Vector2i(%Width.value, %Height.value)
+		
+	return target_size
+
+
+## Locks the target tile size selector if there are stored tiles preventing visual inconsistency
+func _update_target_size_lock() -> void:
+	if is_instance_valid(target_tile_size_options):
+		target_tile_size_options.disabled = autotiles.size() > 0
 
 
 ## Reorders the internal autotiles array when a drag and drop happens in the list
@@ -439,10 +524,12 @@ func _apply_animation_mode_state() -> void:
 	
 	if is_animation_mode:
 		%RightColumn.propagate_call("set_disabled", [true])
+		%LoadTileset.set_disabled(false)
 		_restore_panel_position.call_deferred()
 		_update_anim_buttons_state()
 	else:
 		%RightColumn.propagate_call("set_disabled", [autotiles.size() == 0])
+		%LoadTileset.set_disabled(false)
 
 
 
@@ -612,6 +699,12 @@ func _clear_alt_frames() -> void:
 
 
 
+## Opens the dialog to load an existing RPG Creator tileset
+func _on_load_tileset_pressed() -> void:
+	load_dialog.popup_centered_ratio(0.5)
+
+
+
 ## Evaluates if an atlas exists at the requested index or opens the dialog to load a new one
 func _on_atlas_list_item_activated(index: int) -> void:
 	if index >= 0 and atlas.size() > index:
@@ -651,6 +744,7 @@ func _fill_atlas_list(_selected_id: int = -1) -> void:
 	%MidColum.propagate_call("set_disabled", [true])
 	%AutotilePreview.texture = null
 	%RightColumn.propagate_call("set_disabled", [true])
+	%LoadTileset.set_disabled(false)
 	%LabelTerrainTileSelected.text = "-"
 	%LabelTerrainTileSelected.set_disabled(true)
 	
@@ -700,6 +794,7 @@ func _fill_autotiles_list(_selected_id: int = -1) -> void:
 	else:
 		%AutotilePreview.texture = null
 		%RightColumn.propagate_call("set_disabled", [true])
+		%LoadTileset.set_disabled(false)
 		%LabelTerrainTileSelected.text = "-"
 		%LabelTerrainTileSelected.set_disabled(true)
 
@@ -727,6 +822,16 @@ func _on_current_animation_speed_value_changed(value: float) -> void:
 	if selected_items.size() > 0:
 		var target_idx: int = selected_items[0]
 		autotiles[target_idx]["anim_speed"] = value
+
+
+
+## Updates the stored collision mode value for the currently selected tile
+func _on_current_collision_item_selected(index: int) -> void:
+	var selected_items: PackedInt32Array = auto_tiles_list.get_selected_items()
+	
+	if selected_items.size() > 0:
+		var target_idx: int = selected_items[0]
+		autotiles[target_idx]["collision_mode"] = index
 
 
 
@@ -764,14 +869,6 @@ func _on_auto_tiles_list_item_selected(index: int) -> void:
 		if is_instance_valid(current_col_node):
 			current_col_node.select(tile_data.get("collision_mode", 0))
 
-
-## Updates the stored collision mode value for the currently selected tile
-func _on_current_collision_item_selected(index: int) -> void:
-	var selected_items: PackedInt32Array = auto_tiles_list.get_selected_items()
-	
-	if selected_items.size() > 0:
-		var target_idx: int = selected_items[0]
-		autotiles[target_idx]["collision_mode"] = index
 
 
 ## Caches the target tile and triggers the appropriate mode or deletes the tile based on selection
@@ -894,8 +991,9 @@ func _prepare_alternative_mode(animated: bool, target_index: int) -> void:
 		var w: int = target_tile["image"].get_width()
 		var h: int = target_tile["image"].get_height()
 		var frames: int = target_tile.get("frames", 1)
-		var base_w_tiles: int = maxi(1, (w / frames) / %Width.value)
-		var base_h_tiles: int = maxi(1, h / %Height.value)
+		var t_size: Vector2i = _get_active_tile_size()
+		var base_w_tiles: int = maxi(1, (w / frames) / t_size.x)
+		var base_h_tiles: int = maxi(1, h / t_size.y)
 		
 		canvas.is_anim_size_locked = true
 		canvas.locked_anim_size = Vector2i(base_w_tiles, base_h_tiles)
@@ -908,7 +1006,6 @@ func _prepare_alternative_mode(animated: bool, target_index: int) -> void:
 		_apply_alt_panel_state(true)
 
 
-
 ## Synchronizes the visibility of the alternative UI panel
 func _apply_alt_panel_state(state: bool) -> void:
 	if is_instance_valid(alt_main_container):
@@ -916,9 +1013,11 @@ func _apply_alt_panel_state(state: bool) -> void:
 		
 	if state:
 		%RightColumn.propagate_call("set_disabled", [true])
+		%LoadTileset.set_disabled(false)
 		_update_alt_buttons_state()
 	else:
 		%RightColumn.propagate_call("set_disabled", [autotiles.size() == 0])
+		%LoadTileset.set_disabled(false)
 
 
 
@@ -935,6 +1034,45 @@ func _on_close_alt_panel_pressed() -> void:
 
 
 
+## Extracts the final visual image from a raw region depending on the autotile mode requested
+## Extracts the final visual image from a raw region depending on the autotile mode requested and applies target scaling
+func _extract_frame_image(region_image: Image, mode: AtlasSelectorCanvas.AutotileType) -> Image:
+	var final_image: Image
+	
+	if mode == canvas.AutotileType.SINGLE:
+		final_image = region_image.duplicate()
+	else:
+		var region_texture: ImageTexture = ImageTexture.create_from_image(region_image)
+		
+		match mode:
+			canvas.AutotileType.EXTENDED:
+				final_image = conversor.extract_extended_autotile(region_texture)
+			canvas.AutotileType.COMPACT:
+				final_image = conversor.extract_compact_autotile(region_texture)
+			canvas.AutotileType.WALL:
+				final_image = conversor.extract_wall_autotile(region_texture)
+			canvas.AutotileType.NINE_SLICE:
+				final_image = conversor.extract_nine_slice_autotile(region_texture)
+			canvas.AutotileType.WATERFALL:
+				final_image = conversor.extract_waterfall_autotile(region_texture)
+				
+	var target_size: Vector2i = _get_current_target_tile_size()
+	
+	if target_size != Vector2i.ZERO:
+		var source_size: Vector2i = Vector2i(%Width.value, %Height.value)
+		
+		if source_size != target_size and source_size.x > 0 and source_size.y > 0:
+			var scale_x: float = float(target_size.x) / float(source_size.x)
+			var scale_y: float = float(target_size.y) / float(source_size.y)
+			var new_w: int = roundi(final_image.get_width() * scale_x)
+			var new_h: int = roundi(final_image.get_height() * scale_y)
+			
+			if new_w > 0 and new_h > 0:
+				final_image.resize(new_w, new_h, Image.INTERPOLATE_NEAREST)
+				
+	return final_image
+
+
 ## Evaluates if the current canvas selection should go to the main list, animation panel, or alternative panel
 func _on_canvas_autotile_selected(region: Rect2i) -> void:
 	if not canvas.current_texture:
@@ -946,23 +1084,7 @@ func _on_canvas_autotile_selected(region: Rect2i) -> void:
 		
 	var source_image: Image = canvas.current_texture.get_image()
 	var region_image: Image = source_image.get_region(region)
-	var final_image: Image
-	
-	if canvas.current_autotile_type == canvas.AutotileType.SINGLE:
-		final_image = region_image
-	else:
-		var region_texture: ImageTexture = ImageTexture.create_from_image(region_image)
-		match canvas.current_autotile_type:
-			canvas.AutotileType.EXTENDED:
-				final_image = conversor.extract_extended_autotile(region_texture)
-			canvas.AutotileType.COMPACT:
-				final_image = conversor.extract_compact_autotile(region_texture)
-			canvas.AutotileType.WALL:
-				final_image = conversor.extract_wall_autotile(region_texture)
-			canvas.AutotileType.NINE_SLICE:
-				final_image = conversor.extract_nine_slice_autotile(region_texture)
-			canvas.AutotileType.WATERFALL:
-				final_image = conversor.extract_waterfall_autotile(region_texture)
+	var final_image: Image = _extract_frame_image(region_image, canvas.current_autotile_type)
 			
 	if final_image:
 		var final_tex: ImageTexture = ImageTexture.create_from_image(final_image)
@@ -982,6 +1104,8 @@ func _on_canvas_autotile_selected(region: Rect2i) -> void:
 			"is_animated": false,
 			"frames": 1,
 			"collision_mode": col_mode,
+			"source_atlas_path": canvas.current_texture.resource_path,
+			"source_rect": region,
 			"alternatives": []
 		}
 		
@@ -991,9 +1115,11 @@ func _on_canvas_autotile_selected(region: Rect2i) -> void:
 		var item_selected: int = autotiles.size() - 1
 		auto_tiles_list.select(item_selected)
 		auto_tiles_list.item_selected.emit(item_selected)
+		
 		if not is_animation_mode:
 			%RightColumn.propagate_call("set_disabled", [false])
-
+			
+		_update_target_size_lock()
 
 
 ## Generates the preview rect in the alternative floating panel
@@ -1002,7 +1128,12 @@ func _add_to_alternative_panel(rect: Rect2i) -> void:
 		return
 		
 	var source_image: Image = canvas.current_texture.get_image()
-	alt_frames_data.append({"rect": rect, "image": source_image, "probability": 0.1})
+	alt_frames_data.append({
+		"rect": rect, 
+		"image": source_image, 
+		"probability": 0.1,
+		"source_atlas_path": canvas.current_texture.resource_path
+	})
 	
 	var preview_img: Image = source_image.get_region(rect)
 	var tex_rect: TextureRect = TextureRect.new()
@@ -1050,7 +1181,8 @@ func _on_canvas_single_tiles_selected(rects: Array[Rect2i]) -> void:
 		
 	for region in rects:
 		var region_image: Image = source_image.get_region(region)
-		var final_tex: ImageTexture = ImageTexture.create_from_image(region_image)
+		var extracted_image: Image = _extract_frame_image(region_image, canvas.AutotileType.SINGLE)
+		var final_tex: ImageTexture = ImageTexture.create_from_image(extracted_image)
 		var autotile_name: String = "Tile " + str(autotiles.size() + 1)
 		
 		var autotile_data: Dictionary = {
@@ -1061,6 +1193,8 @@ func _on_canvas_single_tiles_selected(rects: Array[Rect2i]) -> void:
 			"is_animated": false,
 			"frames": 1,
 			"collision_mode": col_mode,
+			"source_atlas_path": canvas.current_texture.resource_path,
+			"source_rect": region,
 			"alternatives": []
 		}
 		
@@ -1070,9 +1204,11 @@ func _on_canvas_single_tiles_selected(rects: Array[Rect2i]) -> void:
 	var item_selected: int = autotiles.size() - 1
 	auto_tiles_list.select(item_selected)
 	auto_tiles_list.item_selected.emit(item_selected)
+	
 	if not is_animation_mode:
 		%RightColumn.propagate_call("set_disabled", [false])
-
+		
+	_update_target_size_lock()
 
 
 ## Triggers the temporary preview panel for building animated autotiles and links input handling
@@ -1081,7 +1217,11 @@ func _on_canvas_anim_frame_selected(rect: Rect2i) -> void:
 		return
 		
 	var source_image: Image = canvas.current_texture.get_image()
-	anim_frames_data.append({"rect": rect, "image": source_image})
+	anim_frames_data.append({
+		"rect": rect, 
+		"image": source_image,
+		"source_atlas_path": canvas.current_texture.resource_path
+	})
 	
 	var preview_img: Image = source_image.get_region(rect)
 	var tex_rect: TextureRect = TextureRect.new()
@@ -1117,30 +1257,19 @@ func _on_merge_anim_frames_pressed() -> void:
 		
 	var frame_images: Array[Image] = []
 	var frames_count: int = anim_frames_data.size()
+	var source_rects: Array = []
 	
 	for data in anim_frames_data:
 		var source_image: Image = data["image"]
 		var rect: Rect2i = data["rect"]
 		var region_image: Image = source_image.get_region(rect)
-		var region_texture: ImageTexture = ImageTexture.create_from_image(region_image)
-		var extracted_frame: Image
-		
-		if canvas.current_autotile_type == canvas.AutotileType.SINGLE:
-			extracted_frame = region_image
-		else:
-			match canvas.current_autotile_type:
-				canvas.AutotileType.EXTENDED:
-					extracted_frame = conversor.extract_extended_autotile(region_texture)
-				canvas.AutotileType.COMPACT:
-					extracted_frame = conversor.extract_compact_autotile(region_texture)
-				canvas.AutotileType.WALL:
-					extracted_frame = conversor.extract_wall_autotile(region_texture)
-				canvas.AutotileType.NINE_SLICE:
-					extracted_frame = conversor.extract_nine_slice_autotile(region_texture)
-				canvas.AutotileType.WATERFALL:
-					extracted_frame = conversor.extract_waterfall_autotile(region_texture)
+		var extracted_frame: Image = _extract_frame_image(region_image, canvas.current_autotile_type)
 				
 		frame_images.append(extracted_frame)
+		source_rects.append({
+			"path": data.get("source_atlas_path", ""),
+			"rect": rect
+		})
 		
 	var base_w: int = frame_images[0].get_width()
 	var base_h: int = frame_images[0].get_height()
@@ -1155,8 +1284,9 @@ func _on_merge_anim_frames_pressed() -> void:
 			var dest_pos: Vector2i = Vector2i(f * base_w, 0)
 			merged_image.blit_rect(frame_images[f], src_rect, dest_pos)
 	else:
-		var t_w: int = %Width.value
-		var t_h: int = %Height.value
+		var t_size: Vector2i = _get_active_tile_size()
+		var t_w: int = t_size.x
+		var t_h: int = t_size.y
 		var cols: int = base_w / t_w
 		var rows: int = base_h / t_h
 		
@@ -1183,7 +1313,8 @@ func _on_merge_anim_frames_pressed() -> void:
 			"is_animated": is_truly_animated,
 			"frames": frames_count,
 			"probability": prob_val,
-			"anim_speed": current_anim_fps
+			"anim_speed": current_anim_fps,
+			"source_rects": source_rects
 		}
 		
 		if not autotiles[target_idx].has("alternatives"):
@@ -1215,6 +1346,7 @@ func _on_merge_anim_frames_pressed() -> void:
 			"frames": frames_count,
 			"collision_mode": col_mode,
 			"anim_speed": current_anim_fps,
+			"source_rects": source_rects,
 			"alternatives": []
 		}
 		
@@ -1227,7 +1359,7 @@ func _on_merge_anim_frames_pressed() -> void:
 		
 	_clear_anim_frames()
 	_on_close_anim_panel_pressed()
-
+	_update_target_size_lock()
 
 
 ## Configures the required collision layer (physics or passability object) on a target TileData
@@ -1285,30 +1417,16 @@ func _on_merge_alt_frames_pressed() -> void:
 		var source_image: Image = data["image"]
 		var rect: Rect2i = data["rect"]
 		var region_image: Image = source_image.get_region(rect)
-		var extracted_frame: Image
-		
-		if canvas.current_autotile_type == canvas.AutotileType.SINGLE:
-			extracted_frame = region_image
-		else:
-			var region_texture: ImageTexture = ImageTexture.create_from_image(region_image)
-			match canvas.current_autotile_type:
-				canvas.AutotileType.EXTENDED:
-					extracted_frame = conversor.extract_extended_autotile(region_texture)
-				canvas.AutotileType.COMPACT:
-					extracted_frame = conversor.extract_compact_autotile(region_texture)
-				canvas.AutotileType.WALL:
-					extracted_frame = conversor.extract_wall_autotile(region_texture)
-				canvas.AutotileType.NINE_SLICE:
-					extracted_frame = conversor.extract_nine_slice_autotile(region_texture)
-				canvas.AutotileType.WATERFALL:
-					extracted_frame = conversor.extract_waterfall_autotile(region_texture)
+		var extracted_frame: Image = _extract_frame_image(region_image, canvas.current_autotile_type)
 					
 		var final_tex: ImageTexture = ImageTexture.create_from_image(extracted_frame)
 		var alt_data: Dictionary = {
 			"image": final_tex,
 			"is_animated": false,
 			"frames": 1,
-			"probability": data.get("probability", 0.1)
+			"probability": data.get("probability", 0.1),
+			"source_atlas_path": data.get("source_atlas_path", ""),
+			"source_rect": rect
 		}
 		
 		if not autotiles[target_idx].has("alternatives"):
@@ -1366,6 +1484,7 @@ func _on_auto_tiles_list_delete_pressed(indexes: PackedInt32Array) -> void:
 			
 	autotiles = new_autotiles
 	_fill_autotiles_list(indexes[-1])
+	_update_target_size_lock()
 
 #endregion
 
@@ -1373,7 +1492,7 @@ func _on_auto_tiles_list_delete_pressed(indexes: PackedInt32Array) -> void:
 
 #region GENERATION_AND_SAVING
 
-## Checks directories and opens the dialog to select where textures will be saved
+## Checks directories and opens the dialog to select where textures will be saved or preselects the edit path
 func _on_generate_tileset_pressed() -> void:
 	if autotiles.is_empty():
 		return
@@ -1386,7 +1505,12 @@ func _on_generate_tileset_pressed() -> void:
 	if not dir.dir_exists("Assets/Tilesets"):
 		dir.make_dir_recursive("Assets/Tilesets")
 		
-	image_dir_dialog.popup_centered_ratio(0.5)
+	if current_editing_tileset_path != "":
+		save_dialog.current_dir = current_editing_tileset_path.get_base_dir()
+		save_dialog.current_file = current_editing_tileset_path.get_file()
+		save_dialog.popup_centered_ratio(0.5)
+	else:
+		image_dir_dialog.popup_centered_ratio(0.5)
 
 
 
@@ -1401,6 +1525,7 @@ func _on_image_dir_selected(dir: String) -> void:
 ## Main execution flow handler that caches the target path
 func _on_save_file_selected(path: String) -> void:
 	selected_tileset_path = path
+	current_editing_tileset_path = path
 	_update_cache("last_tileset_folder", path.get_base_dir())
 	call_deferred("_generate_everything")
 
@@ -1448,6 +1573,7 @@ func _build_atlases_images() -> Array[Image]:
 	var actual_h: int = 0
 	var current_image: Image = null
 	var result_images: Array[Image] = []
+	var t_size: Vector2i = _get_active_tile_size()
 	
 	for i in autotiles.size():
 		var elements_to_pack: Array = [autotiles[i]]
@@ -1463,8 +1589,8 @@ func _build_atlases_images() -> Array[Image]:
 				
 			var w: int = img.get_width()
 			var h: int = img.get_height()
-			var grid_w: int = ceil(float(w) / %Width.value) * %Width.value
-			var grid_h: int = ceil(float(h) / %Height.value) * %Height.value
+			var grid_w: int = ceil(float(w) / t_size.x) * t_size.x
+			var grid_h: int = ceil(float(h) / t_size.y) * t_size.y
 			
 			if current_x > 0 and current_x + grid_w > max_atlas_width:
 				current_x = 0
@@ -1502,7 +1628,6 @@ func _build_atlases_images() -> Array[Image]:
 		result_images.append(cropped_last)
 		
 	return result_images
-
 
 
 ## Processes images and builds the TileSet dynamically scaling the atlas limits if a sequence exceeds them
@@ -1558,7 +1683,7 @@ func _generate_everything() -> void:
 		tileset = TileSet.new()
 		tileset.take_over_path(selected_tileset_path)
 		
-	tileset.tile_size = Vector2i(%Width.value, %Height.value)
+	tileset.tile_size = _get_active_tile_size()
 	
 	tileset.add_terrain_set(0)
 	tileset.set_terrain_set_mode(0, TileSet.TERRAIN_MODE_MATCH_CORNERS_AND_SIDES)
@@ -1689,8 +1814,8 @@ func _generate_everything() -> void:
 								source.set_tile_animation_separation(alt_tile_coord, Vector2i.ZERO)
 								source.set_tile_animation_speed(alt_tile_coord, current_anim_fps)
 								
+	_inject_metadata_to_tileset(tileset)
 	_pending_saves.append({"type": "resource", "path": selected_tileset_path, "data": tileset})
-
 
 
 ## Returns an array with the specific 8-bit masks valid for the requested autotile mode
@@ -1765,7 +1890,194 @@ func _apply_peering_bits(source: TileSetAtlasSource, coords: Vector2i, mask: int
 		if (mask & 128) != 0: 
 			tile_data.set_terrain_peering_bit(TileSet.CELL_NEIGHBOR_TOP_LEFT_CORNER, terrain_id)
 
+#endregion
 
+
+
+#region LOAD_AND_METADATA
+
+## Packages current configuration into a lightweight dictionary and injects it into the TileSet metadata before saving
+func _inject_metadata_to_tileset(tileset: TileSet) -> void:
+	var clean_autotiles_data: Array = []
+	
+	for tile in autotiles:
+		var safe_tile: Dictionary = {
+			"name": tile["name"],
+			"mode": tile["mode"],
+			"terrain": tile["terrain"],
+			"is_animated": tile["is_animated"],
+			"frames": tile["frames"],
+			"collision_mode": tile["collision_mode"],
+			"anim_speed": tile.get("anim_speed", 5.0),
+			"source_atlas_path": tile.get("source_atlas_path", ""),
+			"source_rect": tile.get("source_rect", Rect2i()),
+			"source_rects": tile.get("source_rects", [])
+		}
+		
+		var safe_alts: Array = []
+		if tile.has("alternatives"):
+			for alt in tile["alternatives"]:
+				safe_alts.append({
+					"is_animated": alt["is_animated"],
+					"frames": alt["frames"],
+					"probability": alt["probability"],
+					"anim_speed": alt.get("anim_speed", 5.0),
+					"source_atlas_path": alt.get("source_atlas_path", ""),
+					"source_rect": alt.get("source_rect", Rect2i()),
+					"source_rects": alt.get("source_rects", [])
+				})
+				
+		safe_tile["alternatives"] = safe_alts
+		clean_autotiles_data.append(safe_tile)
+		
+	var tool_data: Dictionary = {
+		"version": "1.0",
+		"tile_width": %Width.value,
+		"tile_height": %Height.value,
+		"target_tile_width": _get_active_tile_size().x,
+		"target_tile_height": _get_active_tile_size().y,
+		"images_export_folder": selected_image_dir,
+		"autotiles": clean_autotiles_data
+	}
+	
+	tileset.set_meta("rpg_creator_data", tool_data)
+
+
+## Opens a selected TileSet file, validates its origin, filters missing textures, and reconstructs the UI state
+func _load_tileset_from_file(path: String) -> void:
+	var loaded_tileset: TileSet = ResourceLoader.load(path)
+	
+	if not is_instance_valid(loaded_tileset) or not loaded_tileset.has_meta("rpg_creator_data"):
+		var alert: AcceptDialog = AcceptDialog.new()
+		alert.title = "Invalid TileSet"
+		alert.dialog_text = "This TileSet was not generated by Godot RPG Creator or is missing its configuration metadata."
+		add_child(alert)
+		alert.popup_centered()
+		alert.visibility_changed.connect(func(): if not alert.visible: alert.queue_free())
+		return
+		
+	var tool_data: Dictionary = loaded_tileset.get_meta("rpg_creator_data")
+	
+	_clear_anim_frames()
+	_clear_alt_frames()
+	autotiles.clear()
+	atlas.clear()
+	
+	%Width.value = tool_data.get("tile_width", 32)
+	%Height.value = tool_data.get("tile_height", 32)
+	selected_image_dir = tool_data.get("images_export_folder", "res://Assets/Images/Tilesets")
+	current_editing_tileset_path = path
+	
+	var t_w: int = tool_data.get("target_tile_width", tool_data.get("tile_width", 32))
+	var t_h: int = tool_data.get("target_tile_height", tool_data.get("tile_height", 32))
+	var loaded_target: Vector2i = Vector2i(t_w, t_h)
+	var source_size: Vector2i = Vector2i(tool_data.get("tile_width", 32), tool_data.get("tile_height", 32))
+	
+	if is_instance_valid(target_tile_size_options):
+		var target_idx: int = 0
+		if loaded_target != source_size:
+			for i in TARGET_SIZES.size():
+				if TARGET_SIZES[i] == loaded_target:
+					target_idx = i
+					break
+		target_tile_size_options.select(target_idx)
+	
+	for tile_data in tool_data.get("autotiles", []):
+		var reconstructed_tile: Dictionary = _reconstruct_tile_from_metadata(tile_data)
+		
+		if reconstructed_tile.is_empty():
+			continue
+			
+		reconstructed_tile["alternatives"] = []
+		
+		if tile_data.has("alternatives"):
+			for alt_data in tile_data["alternatives"]:
+				var reconstructed_alt: Dictionary = _reconstruct_tile_from_metadata(alt_data)
+				
+				if not reconstructed_alt.is_empty():
+					reconstructed_tile["alternatives"].append(reconstructed_alt)
+					
+		autotiles.append(reconstructed_tile)
+		
+	_update_target_size_lock()
+	_update_cache("last_files_used", atlas)
+	_fill_atlas_list(0)
+	_fill_autotiles_list(0)
+
+
+## Rebuilds the visual texture from the raw stored paths handling animated merging and single tiles
+func _reconstruct_tile_from_metadata(data: Dictionary) -> Dictionary:
+	var result: Dictionary = data.duplicate(true)
+	var mode: AtlasSelectorCanvas.AutotileType = data.get("mode", canvas.AutotileType.SINGLE)
+	
+	if data.get("is_animated", false) and data.has("source_rects") and data["source_rects"].size() > 0:
+		var frame_images: Array[Image] = []
+		var frames_count: int = data["source_rects"].size()
+		
+		for frame_data in data["source_rects"]:
+			var path: String = frame_data.get("path", "")
+			var rect: Rect2i = frame_data.get("rect", Rect2i())
+			
+			if not FileAccess.file_exists(path):
+				printerr("Missing animation frame at ", path)
+				return {}
+				
+			if not atlas.has(path):
+				atlas.append(path)
+				
+			var s_tex: Texture2D = load(path)
+			var s_img: Image = s_tex.get_image()
+			var r_img: Image = s_img.get_region(rect)
+			var extracted: Image = _extract_frame_image(r_img, mode)
+			frame_images.append(extracted)
+			
+		var base_w: int = frame_images[0].get_width()
+		var base_h: int = frame_images[0].get_height()
+		var merged_image: Image = Image.create(base_w * frames_count, base_h, false, frame_images[0].get_format())
+		
+		if mode == canvas.AutotileType.SINGLE:
+			for f in range(frames_count):
+				merged_image.blit_rect(frame_images[f], Rect2i(0, 0, base_w, base_h), Vector2i(f * base_w, 0))
+		else:
+			var t_size: Vector2i = _get_active_tile_size()
+			var t_w: int = t_size.x
+			var t_h: int = t_size.y
+			var cols: int = base_w / t_w
+			var rows: int = base_h / t_h
+			
+			for y in range(rows):
+				for x in range(cols):
+					for f in range(frames_count):
+						var src_rect: Rect2i = Rect2i(x * t_w, y * t_h, t_w, t_h)
+						var dest_pos: Vector2i = Vector2i((x * frames_count + f) * t_w, y * t_h)
+						merged_image.blit_rect(frame_images[f], src_rect, dest_pos)
+						
+		result["image"] = ImageTexture.create_from_image(merged_image)
+	else:
+		var path: String = data.get("source_atlas_path", "")
+		var rect: Rect2i = data.get("source_rect", Rect2i())
+		
+		if not FileAccess.file_exists(path):
+			printerr("Missing tile source at ", path)
+			return {}
+			
+		if not atlas.has(path):
+			atlas.append(path)
+			
+		var s_tex: Texture2D = load(path)
+		var s_img: Image = s_tex.get_image()
+		var r_img: Image = s_img.get_region(rect)
+		var extracted: Image = _extract_frame_image(r_img, mode)
+		
+		result["image"] = ImageTexture.create_from_image(extracted)
+		
+	return result
+
+#endregion
+
+
+
+#region FINALIZATION
 
 ## Triggers the manual exit workflow
 func _on_close_button_pressed() -> void:
@@ -1811,7 +2123,10 @@ func _on_floating_animation_handle_gui_input(event: InputEvent) -> void:
 
 
 
+## Saves the updated terrain name label mapping it internally to the selected autotile
 func _on_label_terrain_tile_selected_text_changed(new_text: String) -> void:
 	if %LabelTerrainTileSelected.has_meta("selected_index"):
 		var index = %LabelTerrainTileSelected.get_meta("selected_index")
 		autotiles[index]["terrain"] = new_text
+
+#endregion

@@ -84,6 +84,14 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_3ebtj"]
+atlas = ExtResource("12_3ebtj")
+region = Rect2(48, 120, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wwgmp"]
+atlas = ExtResource("12_3ebtj")
+region = Rect2(72, 120, 24, 24)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r5pt5"]
 resource_local_to_scene = true
 content_margin_left = 3.0
@@ -164,11 +172,11 @@ region = Rect2(0, 48, 24, 24)
 atlas = ExtResource("12_3ebtj")
 region = Rect2(24, 48, 24, 24)
 
-[node name="AtlasToAutotilesDialog" type="Window" unique_id=1795928936 node_paths=PackedStringArray("anim_main_container", "anim_frames_container", "merge_anim_button", "clear_anim_button", "close_anim_panel_button", "anim_speed_spinbox", "autotile_action_options", "alt_main_container", "alt_frames_container", "merge_alt_button", "close_alt_panel_button", "clear_alt_button", "alt_prob_spinbox", "anim_prob_spinbox", "anim_prob_main_container")]
+[node name="AtlasToAutotilesDialog" type="Window" unique_id=1795928936 node_paths=PackedStringArray("anim_main_container", "anim_frames_container", "merge_anim_button", "clear_anim_button", "close_anim_panel_button", "anim_speed_spinbox", "autotile_action_options", "alt_main_container", "alt_frames_container", "merge_alt_button", "close_alt_panel_button", "clear_alt_button", "alt_prob_spinbox", "anim_prob_spinbox", "anim_prob_main_container", "target_tile_size_options")]
 oversampling_override = 1.0
 title = "Atlas to Autotiles"
 position = Vector2i(0, 36)
-size = Vector2i(1300, 800)
+size = Vector2i(1334, 810)
 wrap_controls = true
 transient = true
 exclusive = true
@@ -189,6 +197,7 @@ clear_alt_button = NodePath("MarginContainer/VBoxContainer/FloatingAlternativePa
 alt_prob_spinbox = NodePath("MarginContainer/VBoxContainer/FloatingAlternativePanel/FloatingAlternativePanelContainer/VBoxContainer/HBoxContainer3/AlternativeProbability")
 anim_prob_spinbox = NodePath("MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/AnimationProbabilityMainContainer/HBoxContainer3/AnimationAlternativeProbability")
 anim_prob_main_container = NodePath("MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/AnimationProbabilityMainContainer")
+target_tile_size_options = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/Controls1/TargetTileSize")
 
 [node name="Conversor" type="Node" parent="." unique_id=1870511595]
 unique_name_in_owner = true
@@ -228,6 +237,7 @@ layout_mode = 2
 
 [node name="AtlasList" parent="MarginContainer/VBoxContainer/HBoxContainer2/LeftColumn" unique_id=29010192 instance=ExtResource("3_yp56s")]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(286, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -291,6 +301,15 @@ value = 32.0
 allow_greater = true
 _custom_value = 32.0
 
+[node name="Label4" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/Controls1" unique_id=816115090]
+layout_mode = 2
+text = "Target:"
+
+[node name="TargetTileSize" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/Controls1" unique_id=621784070 instance=ExtResource("5_xfjgv")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+
 [node name="Controls2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons" unique_id=1925942947]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -299,24 +318,24 @@ size_flags_horizontal = 3
 layout_mode = 2
 text = "Autotile Tipe:"
 
-[node name="AutototileType" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/Controls2" unique_id=621784070 instance=ExtResource("5_xfjgv")]
+[node name="AutototileType" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/Controls2" unique_id=813695187 instance=ExtResource("5_xfjgv")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Type of the autotile currently selected in the UI"
 selected = 0
 item_count = 6
-popup/item_0/text = "Extended (3 x 4)"
+popup/item_0/text = "Extended (3 X 4)"
 popup/item_0/id = 0
-popup/item_1/text = "Compact (2 x 3)"
+popup/item_1/text = "Compact (2 X 3)"
 popup/item_1/id = 1
-popup/item_2/text = "Wall (2 x 2)"
+popup/item_2/text = "Wall (2 X 2)"
 popup/item_2/id = 2
 popup/item_3/text = "Single Tile"
 popup/item_3/id = 3
-popup/item_4/text = "Nine Slice (3 x 3)"
+popup/item_4/text = "Nine Slice (3 X 3)"
 popup/item_4/id = 4
-popup/item_5/text = "Waterfall (2 x 3)"
+popup/item_5/text = "Waterfall (2 X 3)"
 popup/item_5/id = 5
 metadata/original_focus_mode = 2
 metadata/original_mouse_filer = 0
@@ -333,6 +352,7 @@ text = "Terrain Name:"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "Name of the terrain to be assigned to the created tile (used in Godot RPG Creator for passability)"
 metadata/original_text = ""
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons" unique_id=17906098]
@@ -348,6 +368,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(240, 0)
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "The type of collision to be added to the created tile (used in Godot RPG Creator for collision detection)"
 selected = 0
 fit_to_longest_item = false
 item_count = 18
@@ -403,6 +424,7 @@ text = "Animation Speed (fps):"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "Frame animation speed for the created tile"
 min_value = 0.05
 max_value = 50.0
 step = 0.01
@@ -445,7 +467,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 8
 theme_override_colors/font_color = Color(1, 0.22745098, 0.22352941, 1)
-text = "Click to extract a standard autotile (CTRL Toggled Animation)"
+text = "Click to extract a standard autotile (F1 Toggled Animation)"
 horizontal_alignment = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum" unique_id=1390375597]
@@ -471,9 +493,22 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.1
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=40722580]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=889890362]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/HBoxContainer" unique_id=40722580]
 layout_mode = 2
 text = "Autotile List:"
+
+[node name="LoadTileset" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/HBoxContainer" unique_id=1001211768]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+tooltip_text = "Load a tileset to edit (The tileset must be a valid one created with this tool)"
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_3ebtj")
+texture_hover = SubResource("AtlasTexture_wwgmp")
 
 [node name="AutoTilesList" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=1744179405 instance=ExtResource("3_3ebtj")]
 unique_name_in_owner = true
@@ -493,6 +528,7 @@ drag_and_drop_enabled = true
 
 [node name="AutotileActions" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=608947027 instance=ExtResource("5_xfjgv")]
 layout_mode = 2
+tooltip_text = "Select an action from the list to apply it to the list of added tiles"
 selected = 0
 fit_to_longest_item = false
 item_count = 6
@@ -519,6 +555,7 @@ horizontal_alignment = 1
 [node name="LabelTerrainTileSelected" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=1803030501 instance=ExtResource("6_xfjgv")]
 unique_name_in_owner = true
 layout_mode = 2
+tooltip_text = "Name of the terrain type for the selected tile (used in Godot RPG Creator to determine passability)"
 theme_override_colors/font_color = Color(0.33014855, 0.5825825, 0.6960718, 1)
 
 [node name="Label4" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=1874448555]
@@ -533,6 +570,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(240, 0)
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "Collision type of the selected cell (used in Godot RPG Creator to determine passability)"
 theme_override_colors/font_color = Color(0.33014855, 0.5825825, 0.6960718, 1)
 selected = 0
 fit_to_longest_item = false
@@ -589,6 +627,7 @@ horizontal_alignment = 1
 [node name="CurrentAnimationSpeed" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/CurrentAnimationSpeedContainer" unique_id=264334171 instance=ExtResource("4_kbouy")]
 unique_name_in_owner = true
 layout_mode = 2
+tooltip_text = "Frame animation speed for the selected tile"
 min_value = 0.05
 max_value = 50.0
 step = 0.01
@@ -672,6 +711,7 @@ mouse_default_cursor_shape = 13
 
 [node name="CloseFloatingAnimationPanel" type="TextureButton" parent="MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/HBoxContainer2" unique_id=1020184700]
 layout_mode = 2
+tooltip_text = "Close this box and exit animation mode"
 mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_xtkn1")
 texture_hover = SubResource("AtlasTexture_r5pt5")
@@ -754,7 +794,7 @@ custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
-tooltip_text = "Create a pre-made tileset with all textures set as terrain"
+tooltip_text = "Clear all frames added to this box"
 disabled = true
 text = "Clear Frames"
 
@@ -792,6 +832,7 @@ mouse_default_cursor_shape = 13
 
 [node name="CloseFloatingAlternativePanel" type="TextureButton" parent="MarginContainer/VBoxContainer/FloatingAlternativePanel/FloatingAlternativePanelContainer/VBoxContainer/HBoxContainer2" unique_id=1915765779]
 layout_mode = 2
+tooltip_text = "Close this dialog box and finish editing the alternative tiles for the selected tile"
 mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_xtkn1")
 texture_hover = SubResource("AtlasTexture_r5pt5")
@@ -815,6 +856,7 @@ text = "Probability:"
 [node name="AlternativeProbability" parent="MarginContainer/VBoxContainer/FloatingAlternativePanel/FloatingAlternativePanelContainer/VBoxContainer/HBoxContainer3" unique_id=1756109801 instance=ExtResource("4_kbouy")]
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "Probability that the selected tile will appear"
 min_value = 0.01
 max_value = 1.0
 step = 0.01
@@ -858,7 +900,7 @@ custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
-tooltip_text = "Create a pre-made tileset with all textures set as terrain"
+tooltip_text = "Create alternative tiles for the selected tile"
 disabled = true
 text = "Add Alternatives"
 
@@ -869,7 +911,7 @@ custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
-tooltip_text = "Create a pre-made tileset with all textures set as terrain"
+tooltip_text = "Clear all alternative tiles added to the selected tile"
 disabled = true
 text = "Clear Alternatives"
 
@@ -879,6 +921,7 @@ text = "Clear Alternatives"
 [connection signal="value_updated" from="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/Controls1/Width" to="." method="_on_width_value_updated"]
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/Controls1/Height" to="." method="_on_height_value_changed"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/Controls2/AutototileType" to="." method="_on_custom_option_button_item_selected"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/HBoxContainer/LoadTileset" to="." method="_on_load_tileset_pressed"]
 [connection signal="delete_pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/AutoTilesList" to="." method="_on_auto_tiles_list_delete_pressed"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/AutoTilesList" to="." method="_on_auto_tiles_list_item_selected"]
 [connection signal="text_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/LabelTerrainTileSelected" to="." method="_on_label_terrain_tile_selected_text_changed"]

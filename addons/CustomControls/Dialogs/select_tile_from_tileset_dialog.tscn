@@ -561,7 +561,10 @@ layout_mode = 2
 tooltip_text = "Defines the height of the physical “footprint.”
 
 \"Usage\": Determines how many tiles from the base upward block the path and require floor validation  (0 = requires all free iles)."
+mouse_filter = 2
 allow_greater = true
+editable = false
+disabled = true
 _custom_value = 0.0
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer" unique_id=1159674076]
@@ -586,7 +589,10 @@ size_flags_horizontal = 3
 tooltip_text = "Defines the required clearance.
 
 \"Usage\": If a value is greater than 0, the generator will invalidate the position if it encounters a wall within that distance in that specific direction."
+mouse_filter = 2
 allow_greater = true
+editable = false
+disabled = true
 _custom_value = 0.0
 
 [node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/VBoxContainer2/HBoxContainer" unique_id=188766478]
@@ -601,7 +607,10 @@ size_flags_horizontal = 3
 tooltip_text = "Defines the required clearance.
 
 \"Usage\": If a value is greater than 0, the generator will invalidate the position if it encounters a wall within that distance in that specific direction."
+mouse_filter = 2
 allow_greater = true
+editable = false
+disabled = true
 _custom_value = 0.0
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/VBoxContainer2" unique_id=1263726908]
@@ -619,7 +628,10 @@ size_flags_horizontal = 3
 tooltip_text = "Defines the required clearance.
 
 \"Usage\": If a value is greater than 0, the generator will invalidate the position if it encounters a wall within that distance in that specific direction."
+mouse_filter = 2
 allow_greater = true
+editable = false
+disabled = true
 _custom_value = 0.0
 
 [node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/VBoxContainer2/HBoxContainer2" unique_id=1086427648]
@@ -634,7 +646,10 @@ size_flags_horizontal = 3
 tooltip_text = "Defines the required clearance.
 
 \"Usage\": If a value is greater than 0, the generator will invalidate the position if it encounters a wall within that distance in that specific direction."
+mouse_filter = 2
 allow_greater = true
+editable = false
+disabled = true
 _custom_value = 0.0
 
 [node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=493259790]
@@ -664,4 +679,3 @@ Closes this window without saving any changes."
 text = "Cancel"
 
 [connection signal="dragged" from="MarginContainer/VBoxContainer/HBoxContainer2" to="." method="_on_h_box_container_2_dragged"]
-[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/ExtraControls/SmoothScrollContainer/VBoxContainer/HBoxContainer7/EnvironmentPositions" to="." method="_on_environment_positions_item_selected"]

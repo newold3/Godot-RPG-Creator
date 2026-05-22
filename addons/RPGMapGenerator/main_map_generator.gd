@@ -233,9 +233,14 @@ enum TargetLayerMode { ALL, BASE, WALLS, DETAIL, ENVIRONMENT }
 
 ## Internal state to persist the debug path visibility across sessions
 @export var debug_path_enabled: bool = false
+
+## Array of dictionaries storing the decorators currently placed on the map
+@export var placed_decorators_data: Array[Dictionary] = []
+
 #endregion
 
 #region VARIABLES
+var _decorator_cache: Dictionary = {}
 var terrain_set: int = 0
 var is_generating: bool = false
 var _thread: Thread
@@ -316,10 +321,22 @@ func _ready() -> void:
 	else:
 		_load_events_library()
 		_load_decorators()
+		rebuild_decorator_cache()
 		
 		var event_canvas = get_node_or_null("%EventCanvas")
 		if event_canvas and event_canvas.has_method("setup"):
 			event_canvas.setup(self)
+
+
+## Rebuilds the fast lookup cache mapping every occupied cell to its decorator instance
+func rebuild_decorator_cache() -> void:
+	_decorator_cache.clear()
+	for inst in placed_decorators_data:
+		var size: Vector2i = inst.get("size", Vector2i(1, 1))
+		var root: Vector2i = inst.get("root", Vector2i(0, 0))
+		for dy in range(size.y):
+			for dx in range(size.x):
+				_decorator_cache[root + Vector2i(dx, dy)] = inst
 
 
 
@@ -553,12 +570,13 @@ func clear_all_maps() -> void:
 		layer_environment.clear()
 		
 	current_map_events.clear()
+	placed_decorators_data.clear()
+	_decorator_cache.clear()
 	
 	if event_placer:
 		event_placer._update_event_canvas()
 		
 	_update_wall_passability()
-
 
 
 ## Selective clearing of layers ensuring non-targeted layers remain untouched
@@ -989,6 +1007,9 @@ func _thread_math_task(data: Dictionary) -> Dictionary:
 				if pos.x >= 0 and pos.x < cur_w and pos.y >= 0 and pos.y < cur_h:
 					env_grid[pos.y * cur_w + pos.x] = 2
 					
+		if env_data.has("instances"):
+			results["decorator_instances"] = env_data["instances"]
+					
 	var used_preset: bool = data.get("used_preset", false)
 	var preset_events: Array = data.get("preset_events", [])
 	
@@ -1066,7 +1087,6 @@ func _thread_math_task(data: Dictionary) -> Dictionary:
 		results["events"] = survivor_events
 		
 	return results
-
 
 
 ## Finds empty spaces fully enclosed by the structure using flood fill from edges and fills them with roof tiles using dynamic boundaries
@@ -1349,6 +1369,10 @@ func _apply_generation_results() -> void:
 	if target_layer_mode == TargetLayerMode.ALL or target_layer_mode == TargetLayerMode.ENVIRONMENT:
 		if layer_environment and _thread_results.has("environment"):
 			_paint_layer(_thread_results["environment"], layer_environment)
+			
+	if _thread_results.has("decorator_instances"):
+		placed_decorators_data = _thread_results["decorator_instances"].duplicate(true)
+		rebuild_decorator_cache()
 			
 	if not is_world and add_collisions_after_generation and layer_walls:
 		if target_layer_mode == TargetLayerMode.ALL or target_layer_mode == TargetLayerMode.WALLS:

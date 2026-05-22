@@ -136,14 +136,23 @@ func _ready() -> void:
 	
 	appear_percent_spinbox.value_changed.connect(_on_appear_percent_changed)
 	alt_chance_spinbox.value_changed.connect(_on_alt_chance_changed)
-	placement_mode_option.item_selected.connect(_on_placement_mode_changed)
 	max_quantity_spinbox.value_changed.connect(_on_max_quantity_changed)
 	
 	footprint_height.value_changed.connect(_on_footprint_height_value_changed)
 	wall_margin_left.value_changed.connect(_on_margin_left_value_changed)
 	wall_margin_right.value_changed.connect(_on_margin_right_value_changed)
 	wall_margin_top.value_changed.connect(_on_margin_top_value_changed)
-	wall_margin_top.value_changed.connect(_on_margin_bottom_value_changed)
+	wall_margin_bottom.value_changed.connect(_on_margin_bottom_value_changed)
+	
+	if is_instance_valid(placement_mode_option):
+		placement_mode_option.item_selected.connect(_on_placement_mode_changed)
+	else:
+		push_warning("MapGenerator: placement_mode_option no está asignado en el Inspector.")
+		
+	if is_instance_valid(environment_position):
+		environment_position.item_selected.connect(_on_environment_positions_item_selected)
+	else:
+		push_warning("MapGenerator: environment_position no está asignado en el Inspector.")
 	
 	is_detail_tile.toggled.connect(_on_detail_tile_toggled)
 	
@@ -177,6 +186,7 @@ func set_single_mode(value: bool = true) -> void:
 	await get_tree().process_frame
 	
 	_on_scroll_container_resized(true)
+
 
 
 ## Animates the blinking cursor effect for selected tiles
@@ -229,7 +239,8 @@ func set_data(tileset: TileSet, _current_data: Array = [], initial_tile: Diction
 		_select_initial_tile(initial_tile)
 	elif data_list.get_item_count() > 0:
 		data_list.select(0)
-		_on_data_list_item_selected(0)
+		_on_data_list_item_selected.call_deferred(0)
+
 
 
 ## Helper that finds and selects an atlas and tile coordinate from external data
@@ -259,29 +270,24 @@ func _select_initial_tile(initial_tile: Dictionary) -> void:
 				_on_data_list_item_selected.call_deferred(i)
 				break
 		
-		if is_instance_valid(scroll_container):
-			if scroll_container.has_method("bring_target_into_view"):
-				_set_focus_and_bring_into_view.call_deferred(target_coords)
-			
+		_focus_tile_in_canvas.call_deferred(target_coords, Vector2i(1, 1))
 		canvas.queue_redraw()
 
 
-func _set_focus_and_bring_into_view(target_coords: Vector2i) -> void:
-	if scroll_container.has_method("bring_target_into_view"):
+
+func _focus_tile_in_canvas(target_coords: Vector2i, target_size: Vector2i, alt_coords: Vector2i = Vector2i(-1, -1)) -> void:
+	
+	if is_instance_valid(scroll_container) and is_instance_valid(ghost_focus):
+		var tile_size: Vector2i = cache["tile_size"]
+		ghost_focus.custom_minimum_size = Vector2(target_size * tile_size) * zoom_level
+		ghost_focus.size = Vector2(target_size * tile_size) * zoom_level
 		
-		await get_tree().process_frame
-		await get_tree().process_frame
-		
-		if is_instance_valid(ghost_focus):
-			var target_size: Vector2i = Vector2i(1, 1)
-			var tile_size: Vector2i = cache["tile_size"]
+		if alt_coords != Vector2i(-1, -1):
+			ghost_focus.position = Vector2(alt_coords.x * tile_size.x, alt_coords.y * tile_size.y) * zoom_level
+			scroll_container.bring_target_into_view.call_deferred(ghost_focus)
 			
-			ghost_focus.custom_minimum_size = Vector2(target_size * tile_size) * zoom_level
-			ghost_focus.size = Vector2(target_size * tile_size) * zoom_level
-				
-			ghost_focus.position = Vector2(target_coords.x * tile_size.x, target_coords.y * tile_size.y) * zoom_level
-			
-			scroll_container.ensure_control_visible(ghost_focus)
+		ghost_focus.position = Vector2(target_coords.x * tile_size.x, target_coords.y * tile_size.y) * zoom_level
+		scroll_container.bring_target_into_view.call_deferred(ghost_focus)
 
 
 
@@ -311,25 +317,25 @@ func _fill_atlas_list() -> void:
 
 ## Populates the decorator list and ensures labels reflect multi-tile info
 func _fill_data_list() -> void:
-		data_list.clear()
+	data_list.clear()
+	
+	for item in current_data:
+		var s: Vector2i = item.get("atlas_size", Vector2i(1, 1))
+		var text: String = "Atlas " + str(item["source_id"]) + " | " + str(item["atlas_coords"])
+		if s != Vector2i(1, 1): text += " [" + str(s.x) + "x" + str(s.y) + "]"
 		
-		for item in current_data:
-			var s: Vector2i = item.get("atlas_size", Vector2i(1, 1))
-			var text: String = "Atlas " + str(item["source_id"]) + " | " + str(item["atlas_coords"])
-			if s != Vector2i(1, 1): text += " [" + str(s.x) + "x" + str(s.y) + "]"
+		var alt_coord: Vector2i = item.get("alt_atlas_coords", Vector2i(-1, -1))
+		if alt_coord != Vector2i(-1, -1):
+			text += " (Alt: " + str(alt_coord) + ")"
 			
-			var alt_coord: Vector2i = item.get("alt_atlas_coords", Vector2i(-1, -1))
-			if alt_coord != Vector2i(-1, -1):
-				text += " (Alt: " + str(alt_coord) + ")"
-				
-			var idx: int = data_list.add_item(text)
-			data_list.set_item_metadata(idx, item)
-			
-			var is_enabled: bool = item.get("enabled", true)
-			if not is_enabled:
-				data_list.set_item_custom_bg_color(idx, Color(0.8, 0.2, 0.2, 0.3))
-			else:
-				data_list.set_item_custom_bg_color(idx, Color(0, 0, 0, 0))
+		var idx: int = data_list.add_item(text)
+		data_list.set_item_metadata(idx, item)
+		
+		var is_enabled: bool = item.get("enabled", true)
+		if not is_enabled:
+			data_list.set_item_custom_bg_color(idx, Color(0.8, 0.2, 0.2, 0.3))
+		else:
+			data_list.set_item_custom_bg_color(idx, Color(0, 0, 0, 0))
 
 
 
@@ -512,7 +518,20 @@ func _on_canvas_input(event: InputEvent) -> void:
 					_select_single_tile(atlas_id, tile_id)
 					return
 					
+				var can_select: bool = false
 				if hovered_coord in atlas_data["tile_ids"]:
+					can_select = true
+				else:
+					for item in current_data:
+						if item["source_id"] == atlas_data["source_id"]:
+							var item_coords: Vector2i = item["atlas_coords"]
+							var item_size: Vector2i = item.get("atlas_size", Vector2i(1, 1))
+							var item_rect := Rect2i(item_coords, item_size)
+							if item_rect.has_point(hovered_coord):
+								can_select = true
+								break
+								
+				if can_select:
 					is_dragging_selection = true
 					drag_start_coord = hovered_coord
 					canvas.queue_redraw()
@@ -531,7 +550,6 @@ func _on_canvas_input(event: InputEvent) -> void:
 				else:
 					is_dragging_selection = false
 				if has_method("_update_info_label"): call("_update_info_label")
-
 
 
 func _select_single_tile(atlas_id: int, tile_id: Vector2i) -> void:
@@ -633,28 +651,47 @@ func _on_atlas_list_item_selected(index: int) -> void:
 		canvas.queue_redraw()
 
 
+## Helper function to safely select an OptionButton item by its ID, preventing Index desyncs
+func _select_option_by_id(option_btn: OptionButton, target_id: int) -> void:
+	if not is_instance_valid(option_btn): return
+	
+	for i in range(option_btn.get_item_count()):
+		if option_btn.get_item_id(i) == target_id:
+			option_btn.select(i)
+			return
+			
+	# Fallback si el ID no existe en la lista
+	if option_btn.get_item_count() > 0:
+		option_btn.select(0)
+
 
 ## Syncs the UI inputs and smartly focuses the canvas on the selected multi-tile bounds
-func _on_data_list_item_selected(index: int) -> void:
+func _on_data_list_item_selected(index: int, _loop: int = 1) -> void:
 	_is_syncing = true
 	var item: Dictionary = data_list.get_item_metadata(index)
-	var target_source_id: int = int(item["source_id"])
-	var target_coords: Vector2i = item["atlas_coords"]
+	var target_source_id: int = int(item.get("source_id", -1))
+	var target_coords: Vector2i = item.get("atlas_coords", Vector2i.ZERO)
 	var target_size: Vector2i = item.get("atlas_size", Vector2i(1, 1))
 	var alt_coords: Vector2i = item.get("alt_atlas_coords", Vector2i(-1, -1))
 	var alt_size: Vector2i = item.get("alt_atlas_size", Vector2i(1, 1))
 	
-	appear_percent_spinbox.set_value_no_signal(float(item["appear_percent"]))
+	appear_percent_spinbox.set_value_no_signal(float(item.get("appear_percent", 100.0)))
 	alt_chance_spinbox.set_value_no_signal(float(item.get("alt_chance_percent", 50.0)))
-	environment_position.select(int(item["environment_position"]))
-	max_quantity_spinbox.set_value_no_signal(float(item["max_quantity"]))
+	max_quantity_spinbox.set_value_no_signal(float(item.get("max_quantity", 5)))
 	
-	footprint_height.set_value_no_signal(float(item["footprint_height"]))
-	wall_margin_left.set_value_no_signal(float(item["wall_margins"].x))
-	wall_margin_right.set_value_no_signal(float(item["wall_margins"].z))
-	wall_margin_top.set_value_no_signal(float(item["wall_margins"].y))
-	wall_margin_bottom.set_value_no_signal(float(item["wall_margins"].w))
+	footprint_height.set_value_no_signal(float(item.get("footprint_height", 0)))
 	
+	var margins = item.get("wall_margins")
+	if typeof(margins) == TYPE_VECTOR4I or typeof(margins) == TYPE_VECTOR4:
+		wall_margin_left.set_value_no_signal(float(margins.x))
+		wall_margin_right.set_value_no_signal(float(margins.z))
+		wall_margin_top.set_value_no_signal(float(margins.y))
+		wall_margin_bottom.set_value_no_signal(float(margins.w))
+	else:
+		wall_margin_left.set_value_no_signal(0.0)
+		wall_margin_right.set_value_no_signal(0.0)
+		wall_margin_top.set_value_no_signal(0.0)
+		wall_margin_bottom.set_value_no_signal(0.0)
 	
 	if is_tile_disabled:
 		is_tile_disabled.set_pressed_no_signal(not item.get("enabled", true))
@@ -663,11 +700,15 @@ func _on_data_list_item_selected(index: int) -> void:
 	is_detail_tile.set_pressed_no_signal(is_detail)
 	
 	if is_detail:
-		placement_mode_option.select(1)
-		placement_mode_option.set_disabled(true)
+		_select_option_by_id(placement_mode_option, 1)
+		if is_instance_valid(placement_mode_option):
+			placement_mode_option.set_disabled(true)
 	else:
-		placement_mode_option.select(int(item.get("placement_mode", 0)))
-		placement_mode_option.set_disabled(false)
+		_select_option_by_id(placement_mode_option, int(item.get("placement_mode", 0)))
+		if is_instance_valid(placement_mode_option):
+			placement_mode_option.set_disabled(false)
+			
+	_select_option_by_id(environment_position, int(item.get("environment_position", 0)))
 		
 	for i in range(atlas_list.get_item_count()):
 		var atlas_path: String = atlas_list.get_item_metadata(i)
@@ -682,23 +723,19 @@ func _on_data_list_item_selected(index: int) -> void:
 	alt_selected_rect = Rect2i(alt_coords, alt_size)
 	canvas.queue_redraw()
 	
-	var tile_size: Vector2i = cache["tile_size"]
+	_focus_tile_in_canvas.call_deferred(target_coords, target_size, alt_coords)
 	
-	if is_instance_valid(scroll_container) and is_instance_valid(ghost_focus):
-		ghost_focus.custom_minimum_size = Vector2(target_size * tile_size) * zoom_level
-		ghost_focus.size = Vector2(target_size * tile_size) * zoom_level
-		
-		if alt_coords != Vector2i(-1, -1):
-			ghost_focus.position = Vector2(alt_coords.x * tile_size.x, alt_coords.y * tile_size.y) * zoom_level
-			scroll_container.ensure_control_visible(ghost_focus)
-			
-		ghost_focus.position = Vector2(target_coords.x * tile_size.x, target_coords.y * tile_size.y) * zoom_level
-		scroll_container.ensure_control_visible(ghost_focus)
-		
 	_is_syncing = false
-	
 	%RightColumn.propagate_call("set_disabled", [false])
-
+	
+	if is_instance_valid(data_list):
+		data_list.ensure_current_is_visible()
+	
+	if _loop > 0:
+		await get_tree().process_frame
+		await get_tree().process_frame
+		if is_instance_valid(self):
+			_on_data_list_item_selected.call_deferred(index, _loop - 1)
 
 
 ## Toggles the picking mode for alternative tiles safely
@@ -736,19 +773,33 @@ func _apply_alternative_tile(rect: Rect2i) -> void:
 	_disable_alt_mode()
 	_fill_data_list()
 	data_list.select(idx)
-	_on_data_list_item_selected(idx)
+	_on_data_list_item_selected.call_deferred(idx)
 
 
 
 ## Helper to add a new multi-tile decorator entry ensuring no identical duplicates are created
 func _add_new_decorator(atlas_data: Dictionary, rect: Rect2i) -> void:
-	var exists: bool = false
-	for item in current_data:
-		if item["source_id"] == atlas_data["source_id"] and item["atlas_coords"] == rect.position and item.get("atlas_size", Vector2i(1, 1)) == rect.size:
-			exists = true
-			break
+	var exists_idx: int = -1
+	
+	for i in range(current_data.size()):
+		var item = current_data[i]
+		if item["source_id"] != atlas_data["source_id"]:
+			continue
 			
-	if not exists:
+		var item_coords: Vector2i = item["atlas_coords"]
+		var item_size: Vector2i = item.get("atlas_size", Vector2i(1, 1))
+		var item_rect := Rect2i(item_coords, item_size)
+		
+		if rect.size == Vector2i(1, 1):
+			if item_rect.has_point(rect.position):
+				exists_idx = i
+				break
+		else:
+			if item_coords == rect.position and item_size == rect.size:
+				exists_idx = i
+				break
+				
+	if exists_idx == -1:
 		var new_item: Dictionary = {
 			"source_id": atlas_data["source_id"],
 			"atlas_coords": rect.position,
@@ -763,13 +814,17 @@ func _add_new_decorator(atlas_data: Dictionary, rect: Rect2i) -> void:
 			"is_detail": false,
 			"enabled": true,
 			"footprint_height": 0,
-			"wall_margins": Vector4.ZERO
+			"wall_margins": Vector4i(0, 0, 0, 0)
 		}
 		current_data.append(new_item)
 		_fill_data_list()
-		data_list.select(data_list.get_item_count() - 1)
-		_on_data_list_item_selected(data_list.get_item_count() - 1)
-
+		data_list.select(current_data.size() - 1)
+		_on_data_list_item_selected.call_deferred(current_data.size() - 1)
+	else:
+		data_list.select(exists_idx)
+		_on_data_list_item_selected.call_deferred(exists_idx)
+		if is_instance_valid(data_list):
+			data_list.ensure_current_is_visible()
 
 
 ## Removes the selected item and smartly selects the next available neighbor
@@ -786,7 +841,7 @@ func _delete_selected_item() -> void:
 	if data_list.get_item_count() > 0:
 		var next_idx = clamp(idx, 0, data_list.get_item_count() - 1)
 		data_list.select(next_idx)
-		_on_data_list_item_selected(next_idx)
+		_on_data_list_item_selected.call_deferred(next_idx)
 	else:
 		selected_rect = Rect2i(-1, -1, 0, 0)
 		alt_selected_rect = Rect2i(-1, -1, 0, 0)
@@ -834,6 +889,7 @@ func _on_ok_button_pressed() -> void:
 
 ## Updates the appear_percent value of the currently selected decorator
 func _on_appear_percent_changed(value: float) -> void:
+	if _is_syncing: return
 	var selected = data_list.get_selected_items()
 	if not selected.is_empty():
 		current_data[selected[0]]["appear_percent"] = value
@@ -842,22 +898,24 @@ func _on_appear_percent_changed(value: float) -> void:
 
 ## Updates the alt_chance_percent value of the currently selected decorator
 func _on_alt_chance_changed(value: float) -> void:
+	if _is_syncing: return
 	var selected = data_list.get_selected_items()
 	if not selected.is_empty():
 		current_data[selected[0]]["alt_chance_percent"] = value
 
 
 
-## Updates the placement_mode value of the currently selected decorator
+## Updates the placement_mode value of the currently selected decorator via its exact ID
 func _on_placement_mode_changed(index: int) -> void:
-	if _is_syncing: return
+	if _is_syncing or not is_instance_valid(placement_mode_option): return
 	
 	var selected = data_list.get_selected_items()
 	if not selected.is_empty():
-		current_data[selected[0]]["placement_mode"] = index
+		current_data[selected[0]]["placement_mode"] = placement_mode_option.get_item_id(index)
 
 
 func _on_max_quantity_changed(value: float) -> void:
+	if _is_syncing: return
 	var selected = data_list.get_selected_items()
 	if not selected.is_empty():
 		current_data[selected[0]]["max_quantity"] = value
@@ -872,21 +930,26 @@ func _on_detail_tile_toggled(is_toggled: bool) -> void:
 			item["is_detail"] = is_toggled
 			
 			if is_toggled:
-				placement_mode_option.select(1)
-				placement_mode_option.set_disabled(true)
+				_select_option_by_id(placement_mode_option, 1)
+				if is_instance_valid(placement_mode_option):
+					placement_mode_option.set_disabled(true)
 			else:
-				placement_mode_option.select(int(item.get("placement_mode", 0)))
-				placement_mode_option.set_disabled(false)
+				_select_option_by_id(placement_mode_option, int(item.get("placement_mode", 0)))
+				if is_instance_valid(placement_mode_option):
+					placement_mode_option.set_disabled(false)
 
 
 func _on_h_box_container_2_dragged(_offset: int) -> void:
 	_on_scroll_container_resized(true)
 
 
+## Updates the environment_position value of the currently selected decorator via its exact ID
 func _on_environment_positions_item_selected(index: int) -> void:
+	if _is_syncing or not is_instance_valid(environment_position): return
+	
 	var selected = data_list.get_selected_items()
 	if not selected.is_empty():
-		current_data[selected[0]]["environment_position"] = index
+		current_data[selected[0]]["environment_position"] = environment_position.get_item_id(index)
 
 
 ## Updates the enabled status of the currently selected decorator inverting the logic
@@ -907,6 +970,7 @@ func _on_is_tile_disabled_toggled(is_toggled: bool) -> void:
 
 
 func _on_footprint_height_value_changed(value: float) -> void:
+	if _is_syncing: return
 	var selected = data_list.get_selected_items()
 	if not selected.is_empty():
 		var idx: int = selected[0]
@@ -914,6 +978,7 @@ func _on_footprint_height_value_changed(value: float) -> void:
 
 
 func _on_margin_left_value_changed(value: float) -> void:
+	if _is_syncing: return
 	var selected = data_list.get_selected_items()
 	if not selected.is_empty():
 		var idx: int = selected[0]
@@ -921,6 +986,7 @@ func _on_margin_left_value_changed(value: float) -> void:
 
 
 func _on_margin_right_value_changed(value: float) -> void:
+	if _is_syncing: return
 	var selected = data_list.get_selected_items()
 	if not selected.is_empty():
 		var idx: int = selected[0]
@@ -928,6 +994,7 @@ func _on_margin_right_value_changed(value: float) -> void:
 
 
 func _on_margin_top_value_changed(value: float) -> void:
+	if _is_syncing: return
 	var selected = data_list.get_selected_items()
 	if not selected.is_empty():
 		var idx: int = selected[0]
@@ -935,6 +1002,7 @@ func _on_margin_top_value_changed(value: float) -> void:
 
 
 func _on_margin_bottom_value_changed(value: float) -> void:
+	if _is_syncing: return
 	var selected = data_list.get_selected_items()
 	if not selected.is_empty():
 		var idx: int = selected[0]

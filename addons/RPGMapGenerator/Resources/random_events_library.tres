@@ -11,52 +11,81 @@
 [ext_resource type="Script" uid="uid://ccw0uhbc0ne88" path="res://addons/RPGData/ModulesRPG/rpg_relationship_level.gd" id="9_fo4n0"]
 [ext_resource type="Script" uid="uid://dex58yidnaamn" path="res://addons/RPGData/ModulesRPG/rpg_relationship.gd" id="10_7k1lw"]
 [ext_resource type="Script" uid="uid://dvbel4d37a2dd" path="res://addons/RPGData/ModulesRPG/rpg_event.gd" id="11_7px14"]
+[ext_resource type="Script" uid="uid://jy4tlmnmv3dk" path="res://addons/RPGData/ModulesRPG/rpg_icon.gd" id="12_bd026"]
 [ext_resource type="Script" uid="uid://vk85xlnpsck8" path="res://addons/RPGData/ModulesRPG/rpg_map_generator_events.gd" id="12_yj1qp"]
 
-[sub_resource type="Resource" id="Resource_ssqax"]
+[sub_resource type="Resource" id="Resource_7k1lw"]
 script = ExtResource("3_8qpab")
 pressure_targets = PackedInt64Array(0)
 
-[sub_resource type="Resource" id="Resource_bd026"]
+[sub_resource type="Resource" id="Resource_7px14"]
+script = ExtResource("12_bd026")
+
+[sub_resource type="Resource" id="Resource_yj1qp"]
+script = ExtResource("4_cq6n4")
+code = 2
+parameters = {
+&"character_name": {
+"type": 0,
+"value": ""
+},
+&"face": SubResource("Resource_7px14"),
+&"height": 0.0,
+&"is_floating_dialog": false,
+&"position": 0,
+&"width": 0.0
+}
+
+[sub_resource type="Resource" id="Resource_5l08e"]
+script = ExtResource("4_cq6n4")
+code = 3
+parameters = {
+"line": "Hi!"
+}
+
+[sub_resource type="Resource" id="Resource_xpamb"]
 script = ExtResource("4_cq6n4")
 
-[sub_resource type="Resource" id="Resource_8qpab"]
+[sub_resource type="Resource" id="Resource_1en5r"]
 script = ExtResource("6_q4onq")
 
-[sub_resource type="Resource" id="Resource_cq6n4"]
+[sub_resource type="Resource" id="Resource_x3v7n"]
 script = ExtResource("7_qx2o7")
 
-[sub_resource type="Resource" id="Resource_t38lc"]
+[sub_resource type="Resource" id="Resource_wsegc"]
 script = ExtResource("2_bd026")
-_uniq_id = 6185893098301346
+_uniq_id = 4079065212000016
 id = 0
-list = Array[ExtResource("4_cq6n4")]([SubResource("Resource_bd026")])
-condition = SubResource("Resource_ssqax")
-movement_route = SubResource("Resource_8qpab")
-options = SubResource("Resource_cq6n4")
+list = Array[ExtResource("4_cq6n4")]([SubResource("Resource_yj1qp"), SubResource("Resource_5l08e"), SubResource("Resource_xpamb")])
+condition = SubResource("Resource_7k1lw")
+movement_route = SubResource("Resource_1en5r")
+options = SubResource("Resource_x3v7n")
 event_trigger_list = PackedInt64Array()
 event_tool_list = PackedInt32Array()
 event_signal_list = PackedInt32Array()
 character_path = "res://Scenes/NPCs/juanillo/juanillo_data.tres"
 
-[sub_resource type="Resource" id="Resource_q4onq"]
+[sub_resource type="Resource" id="Resource_dagno"]
 script = ExtResource("9_fo4n0")
 
-[sub_resource type="Resource" id="Resource_qx2o7"]
+[sub_resource type="Resource" id="Resource_prdih"]
 script = ExtResource("10_7k1lw")
-levels = Array[ExtResource("9_fo4n0")]([SubResource("Resource_q4onq")])
+levels = Array[ExtResource("9_fo4n0")]([SubResource("Resource_dagno")])
 
-[sub_resource type="Resource" id="Resource_iygfw"]
+[sub_resource type="Resource" id="Resource_umu3u"]
 script = ExtResource("11_7px14")
-_uniq_id = 5014197556856810
-name = "juanillo"
-pages = Array[ExtResource("2_bd026")]([SubResource("Resource_t38lc")])
-relationship = SubResource("Resource_qx2o7")
+_uniq_id = 1450561077378195
+name = "Event Preset"
+pages = Array[ExtResource("2_bd026")]([SubResource("Resource_wsegc")])
+relationship = SubResource("Resource_prdih")
 
-[sub_resource type="Resource" id="Resource_fo4n0"]
+[sub_resource type="Resource" id="Resource_mnxga"]
 script = ExtResource("1_ssqax")
-event = SubResource("Resource_iygfw")
+event = SubResource("Resource_umu3u")
+max_quantity = 3
+placement = 1
+wall_margins = Vector4(2, 2, 2, 2)
 
 [resource]
 script = ExtResource("12_yj1qp")
-events = Array[ExtResource("1_ssqax")]([SubResource("Resource_fo4n0")])
+events = Array[ExtResource("1_ssqax")]([SubResource("Resource_mnxga")])

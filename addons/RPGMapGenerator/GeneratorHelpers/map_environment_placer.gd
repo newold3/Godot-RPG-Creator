@@ -124,46 +124,103 @@ func package_environment_layer_dynamic(floor_cells: Array[Vector2i], wall_cells:
 			if wall_margins != Vector4i(0, 0, 0, 0):
 				var clearance_failed: bool = false
 				
-				if wall_margins.x > 0:
-					for my in range(physical_y, physical_y + footprint_height):
-						for mx in range(cell_pos.x - wall_margins.x, cell_pos.x):
-							if mx >= 0 and mx < w and my >= 0 and my < h:
-								var val: int = grid[my * w + mx]
-								if val == 2 or val == 9:
-									clearance_failed = true
+				if p_mode == 2:
+					if wall_margins.x > 0:
+						for my in range(cell_pos.y, cell_pos.y + chosen_size.y):
+							var count_left: int = 0
+							var cx: int = cell_pos.x - 1
+							while cx >= 0:
+								if grid[my * w + cx] == 2:
+									count_left += 1
+									cx -= 1
+								else:
 									break
-						if clearance_failed: break
-						
-				if not clearance_failed and wall_margins.y > 0:
-					for mx in range(cell_pos.x, cell_pos.x + chosen_size.x):
-						for my in range(physical_y - wall_margins.y, physical_y):
-							if mx >= 0 and mx < w and my >= 0 and my < h:
-								var val: int = grid[my * w + mx]
-								if val == 2 or val == 9:
-									clearance_failed = true
+							if count_left <= wall_margins.x:
+								clearance_failed = true
+								break
+								
+					if not clearance_failed and wall_margins.y > 0:
+						for mx in range(cell_pos.x, cell_pos.x + chosen_size.x):
+							var count_top: int = 0
+							var cy: int = cell_pos.y - 1
+							while cy >= 0:
+								if grid[cy * w + mx] == 2:
+									count_top += 1
+									cy -= 1
+								else:
 									break
-						if clearance_failed: break
-						
-				if not clearance_failed and wall_margins.z > 0:
-					for my in range(physical_y, physical_y + footprint_height):
-						for mx in range(cell_pos.x + chosen_size.x, cell_pos.x + chosen_size.x + wall_margins.z):
-							if mx >= 0 and mx < w and my >= 0 and my < h:
-								var val: int = grid[my * w + mx]
-								if val == 2 or val == 9:
-									clearance_failed = true
+							if count_top <= wall_margins.y:
+								clearance_failed = true
+								break
+								
+					if not clearance_failed and wall_margins.z > 0:
+						for my in range(cell_pos.y, cell_pos.y + chosen_size.y):
+							var count_right: int = 0
+							var cx: int = cell_pos.x + chosen_size.x
+							while cx < w:
+								if grid[my * w + cx] == 2:
+									count_right += 1
+									cx += 1
+								else:
 									break
-						if clearance_failed: break
-						
-				if not clearance_failed and wall_margins.w > 0:
-					for mx in range(cell_pos.x, cell_pos.x + chosen_size.x):
-						for my in range(physical_y + footprint_height, physical_y + footprint_height + wall_margins.w):
-							if mx >= 0 and mx < w and my >= 0 and my < h:
-								var val: int = grid[my * w + mx]
-								if val == 2 or val == 9:
-									clearance_failed = true
+							if count_right <= wall_margins.z:
+								clearance_failed = true
+								break
+								
+					if not clearance_failed and wall_margins.w > 0:
+						for mx in range(cell_pos.x, cell_pos.x + chosen_size.x):
+							var count_bottom: int = 0
+							var cy: int = cell_pos.y + chosen_size.y
+							while cy < h:
+								if grid[cy * w + mx] == 2:
+									count_bottom += 1
+									cy += 1
+								else:
 									break
-						if clearance_failed: break
-						
+							if count_bottom <= wall_margins.w:
+								clearance_failed = true
+								break
+				else:
+					if wall_margins.x > 0:
+						for my in range(physical_y, physical_y + footprint_height):
+							for mx in range(cell_pos.x - wall_margins.x, cell_pos.x):
+								if mx >= 0 and mx < w and my >= 0 and my < h:
+									var val: int = grid[my * w + mx]
+									if val == 2 or val == 9:
+										clearance_failed = true
+										break
+							if clearance_failed: break
+							
+					if not clearance_failed and wall_margins.y > 0:
+						for mx in range(cell_pos.x, cell_pos.x + chosen_size.x):
+							for my in range(physical_y - wall_margins.y, physical_y):
+								if mx >= 0 and mx < w and my >= 0 and my < h:
+									var val: int = grid[my * w + mx]
+									if val == 2 or val == 9:
+										clearance_failed = true
+										break
+							if clearance_failed: break
+							
+					if not clearance_failed and wall_margins.z > 0:
+						for my in range(physical_y, physical_y + footprint_height):
+							for mx in range(cell_pos.x + chosen_size.x, cell_pos.x + chosen_size.x + wall_margins.z):
+								if mx >= 0 and mx < w and my >= 0 and my < h:
+									var val: int = grid[my * w + mx]
+									if val == 2 or val == 9:
+										clearance_failed = true
+										break
+							if clearance_failed: break
+							
+					if not clearance_failed and wall_margins.w > 0:
+						for mx in range(cell_pos.x, cell_pos.x + chosen_size.x):
+							for my in range(physical_y + footprint_height, physical_y + footprint_height + wall_margins.w):
+								if mx >= 0 and mx < w and my >= 0 and my < h:
+									var val: int = grid[my * w + mx]
+									if val == 2 or val == 9:
+										clearance_failed = true
+										break
+							if clearance_failed: break
+							
 				if clearance_failed:
 					continue
 					
@@ -280,6 +337,7 @@ func check_environment_position_dynamic(cell_pos: Vector2i, size: Vector2i, env_
 	return true
 
 
+## Evaluates if a tile position is valid for manually placing a specific decorator
 func is_valid_for_decorator(grid_pos: Vector2i, dec_data: Dictionary, grid: PackedByteArray, w: int, h: int, ignore_root: Vector2i = Vector2i(-1, -1)) -> bool:
 	var size: Vector2i = dec_data.get("atlas_size", Vector2i(1, 1))
 	var p_mode: int = int(dec_data.get("placement_mode", 0))
@@ -297,7 +355,7 @@ func is_valid_for_decorator(grid_pos: Vector2i, dec_data: Dictionary, grid: Pack
 	
 	if is_detail:
 		p_mode = 1
-		
+	
 	var target_layer: TileMapLayer = _generator.layer_ground_detail if is_detail else _generator.layer_environment
 	var all_walls: bool = true
 	var all_floors: bool = true
@@ -359,46 +417,105 @@ func is_valid_for_decorator(grid_pos: Vector2i, dec_data: Dictionary, grid: Pack
 	if wall_margins != Vector4i(0, 0, 0, 0):
 		var clearance_failed: bool = false
 		
-		if wall_margins.x > 0:
-			for my in range(physical_y, physical_y + footprint_height):
-				for mx in range(grid_pos.x - wall_margins.x, grid_pos.x):
-					if mx >= 0 and mx < w and my >= 0 and my < h:
-						var val: int = grid[my * w + mx]
-						if val == 2 or val == 9:
-							clearance_failed = true
+		if p_mode == 2:
+			if wall_margins.x > 0:
+				for my in range(grid_pos.y, grid_pos.y + size.y):
+					var count_left: int = 0
+					var cx: int = grid_pos.x - 1
+					while cx >= 0:
+						if grid[my * w + cx] == 2:
+							count_left += 1
+							cx -= 1
+						else:
 							break
-			if clearance_failed: return false
-			
-		if not clearance_failed and wall_margins.y > 0:
-			for mx in range(grid_pos.x, grid_pos.x + size.x):
-				for my in range(physical_y - wall_margins.y, physical_y):
-					if mx >= 0 and mx < w and my >= 0 and my < h:
-						var val: int = grid[my * w + mx]
-						if val == 2 or val == 9:
-							clearance_failed = true
+					if count_left <= wall_margins.x:
+						clearance_failed = true
+						break
+						
+			if not clearance_failed and wall_margins.y > 0:
+				for mx in range(grid_pos.x, grid_pos.x + size.x):
+					var count_top: int = 0
+					var cy: int = grid_pos.y - 1
+					while cy >= 0:
+						if grid[cy * w + mx] == 2:
+							count_top += 1
+							cy -= 1
+						else:
 							break
-			if clearance_failed: return false
-			
-		if not clearance_failed and wall_margins.z > 0:
-			for my in range(physical_y, physical_y + footprint_height):
-				for mx in range(grid_pos.x + size.x, grid_pos.x + size.x + wall_margins.z):
-					if mx >= 0 and mx < w and my >= 0 and my < h:
-						var val: int = grid[my * w + mx]
-						if val == 2 or val == 9:
-							clearance_failed = true
+					if count_top <= wall_margins.y:
+						clearance_failed = true
+						break
+						
+			if not clearance_failed and wall_margins.z > 0:
+				for my in range(grid_pos.y, grid_pos.y + size.y):
+					var count_right: int = 0
+					var cx: int = grid_pos.x + size.x
+					while cx < w:
+						if grid[my * w + cx] == 2:
+							count_right += 1
+							cx += 1
+						else:
 							break
-			if clearance_failed: return false
-			
-		if not clearance_failed and wall_margins.w > 0:
-			for mx in range(grid_pos.x, grid_pos.x + size.x):
-				for my in range(physical_y + footprint_height, physical_y + footprint_height + wall_margins.w):
-					if mx >= 0 and mx < w and my >= 0 and my < h:
-						var val: int = grid[my * w + mx]
-						if val == 2 or val == 9:
-							clearance_failed = true
+					if count_right <= wall_margins.z:
+						clearance_failed = true
+						break
+						
+			if not clearance_failed and wall_margins.w > 0:
+				for mx in range(grid_pos.x, grid_pos.x + size.x):
+					var count_bottom: int = 0
+					var cy: int = grid_pos.y + size.y
+					while cy < h:
+						if grid[cy * w + mx] == 2:
+							count_bottom += 1
+							cy += 1
+						else:
 							break
+					if count_bottom <= wall_margins.w:
+						clearance_failed = true
+						break
+						
 			if clearance_failed: return false
-			
+		else:
+			if wall_margins.x > 0:
+				for my in range(physical_y, physical_y + footprint_height):
+					for mx in range(grid_pos.x - wall_margins.x, grid_pos.x):
+						if mx >= 0 and mx < w and my >= 0 and my < h:
+							var val: int = grid[my * w + mx]
+							if val == 2 or val == 9:
+								clearance_failed = true
+								break
+				if clearance_failed: return false
+				
+			if not clearance_failed and wall_margins.y > 0:
+				for mx in range(grid_pos.x, grid_pos.x + size.x):
+					for my in range(physical_y - wall_margins.y, physical_y):
+						if mx >= 0 and mx < w and my >= 0 and my < h:
+							var val: int = grid[my * w + mx]
+							if val == 2 or val == 9:
+								clearance_failed = true
+								break
+				if clearance_failed: return false
+				
+			if not clearance_failed and wall_margins.z > 0:
+				for my in range(physical_y, physical_y + footprint_height):
+					for mx in range(grid_pos.x + size.x, grid_pos.x + size.x + wall_margins.z):
+						if mx >= 0 and mx < w and my >= 0 and my < h:
+							var val: int = grid[my * w + mx]
+							if val == 2 or val == 9:
+								clearance_failed = true
+								break
+				if clearance_failed: return false
+				
+			if not clearance_failed and wall_margins.w > 0:
+				for mx in range(grid_pos.x, grid_pos.x + size.x):
+					for my in range(physical_y + footprint_height, physical_y + footprint_height + wall_margins.w):
+						if mx >= 0 and mx < w and my >= 0 and my < h:
+							var val: int = grid[my * w + mx]
+							if val == 2 or val == 9:
+								clearance_failed = true
+								break
+				if clearance_failed: return false
+				
 	if env_pos != 0:
 		if not check_environment_position_dynamic(grid_pos, size, env_pos, grid, vertical_offset, w, h):
 			return false

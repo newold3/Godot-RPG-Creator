@@ -1,6 +1,7 @@
 @tool
 extends EditorPlugin
 
+
 #region VARIABLES
 
 var active_layer: TileMapLayer
@@ -9,6 +10,7 @@ var drag_path: Array[Vector2i] = []
 var was_pressed: bool = false
 
 #endregion
+
 
 
 ## Binds the plugin to the active TileMapLayer in the editor
@@ -35,7 +37,7 @@ func _make_visible(visible: bool) -> void:
 
 ## Spies on the global mouse state to detect drag operations and tracks the exact path of the brush
 func _process(_delta: float) -> void:
-	if not is_instance_valid(active_layer):
+	if not is_instance_valid(active_layer) or active_layer.tile_set == null:
 		return
 		
 	var is_pressed: bool = Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
@@ -59,7 +61,7 @@ func _process(_delta: float) -> void:
 ## Caches the current state of the TileMapLayer cells to use as a clean background reference
 func _cache_layer() -> void:
 	cached_cells.clear()
-	if not is_instance_valid(active_layer):
+	if not is_instance_valid(active_layer) or active_layer.tile_set == null:
 		return
 		
 	for pos in active_layer.get_used_cells():
@@ -72,13 +74,10 @@ func _cache_layer() -> void:
 
 ## Reconstructs the stroke filtering overlapping giant tiles while respecting the exact drag path
 func _apply_surgical_cleanup() -> void:
-	if not is_instance_valid(active_layer) or drag_path.is_empty():
+	if not is_instance_valid(active_layer) or active_layer.tile_set == null or drag_path.is_empty():
 		return
 		
 	var tileset: TileSet = active_layer.tile_set
-	if not is_instance_valid(tileset):
-		return
-		
 	var brush_data: Dictionary = {}
 	
 	for pos in drag_path:

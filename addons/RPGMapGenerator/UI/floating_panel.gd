@@ -346,12 +346,7 @@ func sync_with_generator(generator: Node) -> void:
 	
 	layer_select.select(current_generator.target_layer_mode)
 	
-	mode_option.clear()
-	var names = current_generator.get_mode_names()
-	for i in range(names.size()):
-		mode_option.add_item(names[i], i)
-		
-	mode_option.select(current_generator.generation_mode)
+	_update_mode_options()
 	width_spin.set_value_no_signal(current_generator.map_width)
 	height_spin.set_value_no_signal(current_generator.map_height)
 	collision_check.set_pressed_no_signal(current_generator.add_collisions_after_generation)
@@ -359,6 +354,14 @@ func sync_with_generator(generator: Node) -> void:
 	
 	_update_debug_btn_color(current_generator.debug_path_enabled)
 
+
+func _update_mode_options() -> void:
+	mode_option.clear()
+	var names = current_generator.get_mode_names()
+	for i in range(names.size()):
+		mode_option.add_item(names[i], i)
+		
+	mode_option.select(current_generator.generation_mode)
 
 
 ## Restaura los estilos por código para asegurar los colores de interacción
@@ -542,3 +545,8 @@ func _on_debug_toggled(toggled_on: bool) -> void:
 func _on_export_pressed() -> void:
 	if current_generator: current_generator.export_to_rpgmap()
 #endregion
+
+
+func _on_update_modes_pressed() -> void:
+	if current_generator: current_generator._load_modes()
+	_update_mode_options()

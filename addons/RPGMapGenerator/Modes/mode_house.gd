@@ -3,18 +3,14 @@ extends BaseMapMode
 
 
 #region INTERFACE
-
-
 ## Returns the display name of this generation mode for the editor dropdown
 func get_mode_name() -> String:
 	return "House Interior"
 
 
-
 ## Returns an array of core property names that this specific mode uses
 func get_used_properties() -> Array[String]:
 	return ["min_room_size", "max_room_size", "min_corridor_width", "max_corridor_width"]
-
 
 
 ## Executes the core math logic to divide a rectangular boundary into connected interior rooms
@@ -25,14 +21,10 @@ func generate(grid: PackedByteArray, width: int, height: int, config: Dictionary
 	var max_corridor_width: int = config.get("max_corridor_width", 2)
 	var top_wall_height: int = config.get("top_wall_height", 3)
 	
-	var max_w: int = width - 10
-	var max_h: int = height - 10 - top_wall_height
-	var min_w_allowed: int = min_room_size * 2
-	var min_h_allowed: int = (min_room_size + top_wall_height + 2) * 2
-	var house_w: int = randi_range(min(min_w_allowed * 2, max_w), max_w)
-	var house_h: int = randi_range(min(min_h_allowed * 2, max_h), max_h)
-	var start_x: int = 5 + randi_range(0, max_w - house_w)
-	var start_y: int = 5 + top_wall_height + randi_range(0, max_h - house_h)
+	var start_x: int = 1
+	var start_y: int = top_wall_height + 1
+	var house_w: int = width - 2
+	var house_h: int = height - start_y - 1
 	
 	var rooms: Array[Rect2i] = []
 	var queue: Array[Rect2i] = []

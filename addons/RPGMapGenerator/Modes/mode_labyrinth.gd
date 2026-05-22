@@ -10,31 +10,32 @@ func get_mode_name() -> String:
 	return "Labyrinth"
 
 
-
 ## Returns an array of core property names that this specific mode uses
 func get_used_properties() -> Array[String]:
 	return ["labyrinth_path_thickness"]
-
 
 
 ## Executes the core math logic to carve a thick-corridor maze respecting 3D perspective
 func generate(grid: PackedByteArray, width: int, height: int, config: Dictionary) -> Array[Rect2i]:
 	var path_width: int = config.get("labyrinth_path_thickness", 1)
 	var top_wall_height: int = config.get("top_wall_height", 3)
+	
 	var gap_x: int = 2
 	var gap_y: int = top_wall_height + 2
 	var step_x: int = path_width + gap_x
 	var step_y: int = path_width + gap_y
 	
-	var max_w: int = width - 10
-	var max_h: int = height - 10 - top_wall_height
-	var min_w_allowed: int = step_x * 4
-	var min_h_allowed: int = step_y * 4
+	var max_w: int = width - 4
+	var max_h: int = height - 4 - top_wall_height
 	
-	var lab_w: int = randi_range(min(min_w_allowed * 2, max_w), max_w)
-	var lab_h: int = randi_range(min(min_h_allowed * 2, max_h), max_h)
-	var start_x: int = 5 + randi_range(0, max_w - lab_w)
-	var start_y: int = 5 + top_wall_height + randi_range(0, max_h - lab_h)
+	var cells_x: int = (max_w - path_width) / step_x
+	var cells_y: int = (max_h - path_width) / step_y
+	
+	var lab_w: int = cells_x * step_x + path_width
+	var lab_h: int = cells_y * step_y + path_width
+	
+	var start_x: int = (width - lab_w) / 2
+	var start_y: int = top_wall_height + (height - top_wall_height - lab_h) / 2
 	
 	var zones: Array[Rect2i] = []
 	var shape_roll: float = randf()
@@ -42,19 +43,19 @@ func generate(grid: PackedByteArray, width: int, height: int, config: Dictionary
 	if shape_roll < 0.50:
 		zones.append(Rect2i(start_x, start_y, lab_w, lab_h))
 	elif shape_roll < 0.75:
-		var l_w: int = lab_w / 2
-		var l_h: int = lab_h / 2
+		var l_w: int = (cells_x / 2) * step_x + path_width
+		var l_h: int = (cells_y / 2) * step_y + path_width
 		zones.append(Rect2i(start_x, start_y, l_w, lab_h))
-		zones.append(Rect2i(start_x + l_w, start_y + l_h, lab_w - l_w, lab_h - l_h))
+		zones.append(Rect2i(start_x + l_w - path_width, start_y + l_h - path_width, lab_w - l_w + path_width, lab_h - l_h + path_width))
 	else:
-		var t_w: int = lab_w / 3
-		var t_h: int = lab_h / 2
+		var t_w: int = (cells_x / 3) * step_x + path_width
+		var t_h: int = (cells_y / 2) * step_y + path_width
 		zones.append(Rect2i(start_x, start_y, lab_w, t_h))
-		zones.append(Rect2i(start_x + t_w, start_y + t_h, t_w, lab_h - t_h))
+		zones.append(Rect2i(start_x + t_w - path_width, start_y + t_h - path_width, t_w, lab_h - t_h + path_width))
 		
 	var z0 = zones[0]
-	var s_x: int = z0.position.x + (step_x - (z0.position.x % step_x)) % step_x
-	var s_y: int = z0.position.y + (step_y - (z0.position.y % step_y)) % step_y
+	var s_x: int = z0.position.x
+	var s_y: int = z0.position.y
 	var current: Vector2i = Vector2i(s_x, s_y)
 	var stack: Array[Vector2i] = []
 	

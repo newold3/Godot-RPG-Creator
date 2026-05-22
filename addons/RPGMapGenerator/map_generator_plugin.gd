@@ -41,7 +41,6 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	_repos_floating_panel()
 	var saved_pos: Vector2 = FileCache.options.get("map_generator_panel_pos", Vector2(40, 40))
-	print(saved_pos)
 	floating_panel.set_deferred("global_position", saved_pos)
 
 
@@ -50,7 +49,6 @@ func _repos_floating_panel() -> void:
 		await RenderingServer.frame_post_draw
 		
 	var saved_pos: Vector2 = FileCache.options.get("map_generator_panel_pos", Vector2(40, 40))
-	print(saved_pos, " from plugin")
 	floating_panel.set_deferred("global_position", saved_pos)
 
 
