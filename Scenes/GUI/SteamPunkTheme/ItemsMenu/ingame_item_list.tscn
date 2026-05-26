@@ -207,7 +207,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("../../../../../../../ExtraGraphics/Control/Piece3:rotation")
+tracks/1/path = NodePath("../../../../../../../ExtraGraphics/Control/DecorationContainer/Piece3:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -219,7 +219,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("../../../../../../../ExtraGraphics/Control/Piece5:rotation")
+tracks/2/path = NodePath("../../../../../../../ExtraGraphics/Control/DecorationContainer/Piece5:rotation")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -231,7 +231,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("../../../../../../../ExtraGraphics/Control/Piece7:rotation")
+tracks/3/path = NodePath("../../../../../../../ExtraGraphics/Control/DecorationContainer/Piece7:rotation")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -243,7 +243,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("../../../../../../../ExtraGraphics/Control/Clock1/TextureRect:rotation")
+tracks/4/path = NodePath("../../../../../../../ExtraGraphics/Control/DecorationContainer/Clock1/TextureRect:rotation")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -255,7 +255,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("../../../../../../../ExtraGraphics/Control/Clock2/TextureRect:rotation")
+tracks/5/path = NodePath("../../../../../../../ExtraGraphics/Control/DecorationContainer/Clock2/TextureRect:rotation")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -267,7 +267,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("../../../../../../../ExtraGraphics/Control/Clock1/TextureRect:position")
+tracks/6/path = NodePath("../../../../../../../ExtraGraphics/Control/DecorationContainer/Clock1/TextureRect:position")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -295,7 +295,7 @@ region = Rect2(212, 420, 52, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8yqpp"]
 atlas = ExtResource("1_c7iu6")
-region = Rect2(273, 421, 52, 64)
+region = Rect2(212, 420, 52, 64)
 
 [sub_resource type="Animation" id="Animation_p8ccs"]
 resource_name = "new_animation"
@@ -317,7 +317,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("../../../../../../../ExtraGraphics/Control/Piece3:rotation")
+tracks/1/path = NodePath("../../../../../../../ExtraGraphics/Control/DecorationContainer/Piece3:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -329,7 +329,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("../../../../../../../ExtraGraphics/Control/Piece5:rotation")
+tracks/2/path = NodePath("../../../../../../../ExtraGraphics/Control/DecorationContainer/Piece5:rotation")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -341,7 +341,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("../../../../../../../ExtraGraphics/Control/Piece7:rotation")
+tracks/3/path = NodePath("../../../../../../../ExtraGraphics/Control/DecorationContainer/Piece7:rotation")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -353,7 +353,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("../../../../../../../ExtraGraphics/Control/Clock1/TextureRect:rotation")
+tracks/4/path = NodePath("../../../../../../../ExtraGraphics/Control/DecorationContainer/Clock1/TextureRect:rotation")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -365,7 +365,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("../../../../../../../ExtraGraphics/Control/Clock2/TextureRect:rotation")
+tracks/5/path = NodePath("../../../../../../../ExtraGraphics/Control/DecorationContainer/Clock2/TextureRect:rotation")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -377,7 +377,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("../../../../../../../ExtraGraphics/Control/Clock1/TextureRect:position")
+tracks/6/path = NodePath("../../../../../../../ExtraGraphics/Control/DecorationContainer/Clock1/TextureRect:position")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -415,7 +415,11 @@ size_flags_horizontal = 0
 size_flags_vertical = 0
 mouse_filter = 2
 
-[node name="Piece6" type="NinePatchRect" parent="ExtraGraphics/Control" unique_id=343281399]
+[node name="DecorationContainer" type="Control" parent="ExtraGraphics/Control" unique_id=1414388270]
+unique_name_in_owner = true
+anchors_preset = 0
+
+[node name="Piece6" type="NinePatchRect" parent="ExtraGraphics/Control/DecorationContainer" unique_id=343281399]
 layout_mode = 0
 offset_left = 323.0
 offset_top = 1.0
@@ -426,7 +430,7 @@ region_rect = Rect2(597, 98, 37, 8)
 patch_margin_left = 9
 patch_margin_right = 8
 
-[node name="Piece9" type="NinePatchRect" parent="ExtraGraphics/Control" unique_id=1027801078]
+[node name="Piece9" type="NinePatchRect" parent="ExtraGraphics/Control/DecorationContainer" unique_id=1027801078]
 modulate = Color(0.8158153, 0.81581545, 0.8158154, 1)
 z_index = 10
 z_as_relative = false
@@ -440,7 +444,7 @@ region_rect = Rect2(597, 98, 37, 8)
 patch_margin_left = 9
 patch_margin_right = 8
 
-[node name="Piece7" type="TextureRect" parent="ExtraGraphics/Control" unique_id=1136769866]
+[node name="Piece7" type="TextureRect" parent="ExtraGraphics/Control/DecorationContainer" unique_id=1136769866]
 layout_mode = 0
 offset_left = 282.0
 offset_top = -19.0
@@ -450,7 +454,7 @@ pivot_offset = Vector2(22, 21)
 texture = SubResource("AtlasTexture_6kl3u")
 expand_mode = 1
 
-[node name="Piece5" type="TextureRect" parent="ExtraGraphics/Control" unique_id=825204787]
+[node name="Piece5" type="TextureRect" parent="ExtraGraphics/Control/DecorationContainer" unique_id=825204787]
 layout_mode = 0
 offset_left = 231.0
 offset_top = -52.0
@@ -459,7 +463,7 @@ offset_bottom = 20.0
 pivot_offset = Vector2(38, 36)
 texture = SubResource("AtlasTexture_6kl3u")
 
-[node name="Piece4" type="TextureRect" parent="ExtraGraphics/Control" unique_id=506167669]
+[node name="Piece4" type="TextureRect" parent="ExtraGraphics/Control/DecorationContainer" unique_id=506167669]
 layout_mode = 0
 offset_left = 113.0
 offset_top = -35.0
@@ -467,16 +471,16 @@ offset_right = 237.0
 offset_bottom = 17.0
 texture = SubResource("AtlasTexture_25pgl")
 
-[node name="Piece3" type="TextureRect" parent="ExtraGraphics/Control" unique_id=1337546255]
+[node name="Piece3" type="TextureRect" parent="ExtraGraphics/Control/DecorationContainer" unique_id=1337546255]
 layout_mode = 0
 offset_left = 48.0
 offset_top = -74.0
 offset_right = 178.0
-offset_bottom = 57.0
+offset_bottom = 58.0
 pivot_offset = Vector2(64, 65)
 texture = SubResource("AtlasTexture_f5tdb")
 
-[node name="Piece11" type="TextureRect" parent="ExtraGraphics/Control" unique_id=692100705]
+[node name="Piece11" type="TextureRect" parent="ExtraGraphics/Control/DecorationContainer" unique_id=692100705]
 layout_mode = 0
 offset_left = 129.0
 offset_top = -16.0
@@ -485,7 +489,7 @@ offset_bottom = -2.0
 texture = SubResource("AtlasTexture_rcx8u")
 expand_mode = 1
 
-[node name="Clock1" type="TextureRect" parent="ExtraGraphics/Control" unique_id=759308023]
+[node name="Clock1" type="TextureRect" parent="ExtraGraphics/Control/DecorationContainer" unique_id=759308023]
 layout_mode = 0
 offset_left = 170.0
 offset_top = -21.0
@@ -494,11 +498,11 @@ offset_bottom = 11.0
 texture = SubResource("AtlasTexture_vvv3u")
 expand_mode = 1
 
-[node name="TextureRect" type="TextureRect" parent="ExtraGraphics/Control/Clock1" unique_id=1977729701]
+[node name="TextureRect" type="TextureRect" parent="ExtraGraphics/Control/DecorationContainer/Clock1" unique_id=1977729701]
 layout_mode = 0
 offset_left = 13.202623
 offset_top = 13.36017
-offset_right = 22.202122
+offset_right = 22.202114
 offset_bottom = 22.36017
 rotation = -0.13372344
 pivot_offset = Vector2(0.9397125, 3.8391113)
@@ -506,14 +510,14 @@ texture = SubResource("AtlasTexture_qub4v")
 expand_mode = 1
 stretch_mode = 4
 
-[node name="Piece1" type="TextureRect" parent="ExtraGraphics/Control" unique_id=208866990]
+[node name="Piece1" type="TextureRect" parent="ExtraGraphics/Control/DecorationContainer" unique_id=208866990]
 layout_mode = 0
 offset_top = -21.0
 offset_right = 128.0
 offset_bottom = 260.0
 texture = SubResource("AtlasTexture_3yw4y")
 
-[node name="Piece2" type="TextureRect" parent="ExtraGraphics/Control" unique_id=941102527]
+[node name="Piece2" type="TextureRect" parent="ExtraGraphics/Control/DecorationContainer" unique_id=941102527]
 modulate = Color(0.5641601, 0.56416, 0.56416, 1)
 layout_mode = 0
 offset_left = 16.0
@@ -522,7 +526,7 @@ offset_right = 456.0
 offset_bottom = 497.0
 texture = SubResource("AtlasTexture_n7q05")
 
-[node name="Clock2" type="TextureRect" parent="ExtraGraphics/Control" unique_id=1360052047]
+[node name="Clock2" type="TextureRect" parent="ExtraGraphics/Control/DecorationContainer" unique_id=1360052047]
 modulate = Color(0.5641601, 0.56416, 0.56416, 1)
 layout_mode = 0
 offset_left = 135.0
@@ -532,7 +536,7 @@ offset_bottom = 499.0
 texture = SubResource("AtlasTexture_vvv3u")
 expand_mode = 1
 
-[node name="TextureRect" type="TextureRect" parent="ExtraGraphics/Control/Clock2" unique_id=1733092719]
+[node name="TextureRect" type="TextureRect" parent="ExtraGraphics/Control/DecorationContainer/Clock2" unique_id=1733092719]
 layout_mode = 0
 offset_left = 14.0
 offset_top = 15.0
@@ -544,7 +548,7 @@ texture = SubResource("AtlasTexture_qub4v")
 expand_mode = 1
 stretch_mode = 4
 
-[node name="Piece8" type="NinePatchRect" parent="ExtraGraphics/Control" unique_id=1958480975]
+[node name="Piece8" type="NinePatchRect" parent="ExtraGraphics/Control/DecorationContainer" unique_id=1958480975]
 custom_minimum_size = Vector2(0, 26)
 layout_mode = 0
 offset_left = 19.102547
@@ -783,8 +787,8 @@ metadata/_custom_type_script = "uid://cs6g8remlafby"
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/margin_left = 18
-theme_override_constants/margin_right = 18
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_right = 24
 
 [node name="ItemList" type="Control" parent="TopBorder/VBoxContainer/VBoxContainer/BottomContainer/MainScrollContainer/MarginContainer" unique_id=57789859 node_paths=PackedStringArray("paginator", "scroll_container_node")]
 unique_name_in_owner = true

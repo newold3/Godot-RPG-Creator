@@ -5,15 +5,22 @@ extends Resource
 func get_class(): return "IngameGearSet"
 
 
+## Resource [RPGLPCEquipmentData] that specifies the configuration files for the parts used by this item
 @export var equipment_parts: RPGLPCEquipmentData = RPGLPCEquipmentData.new()
+## Image used to define the preview for this part
 @export var set_preview: String = ""
-
-@export var uniq_id: int = -1 # Unique ID generated for this item
-@export var id: int = 0 # real database id
-@export var quantity: int = 0 # Number of items in possession of this type
-@export var type: int # Indicates the type of equipment (0 = IngameCostume, 1 = IngameGearSet)
+## Unique ID generated for this item
+@export var uniq_id: int = -1
+## Real database ID
+@export var id: int = 0
+## Number of items in possession of this type
+@export var quantity: int = 0
+## Indicates the type of equipment (0 = IngameCostume, 1 = IngameGearSet)
+@export var type: int
+## Flag indicating that the item has just been acquired
 @export var newly_added: bool = false
-@export var last_added_date: int = 0 # Date of most recent acquisition
+## Date of most recent acquisition
+@export var last_added_date: int = 0
 
 
 func _init() -> void:

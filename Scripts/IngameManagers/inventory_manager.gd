@@ -543,6 +543,140 @@ func get_items(include_hidden_items: bool = false, sort_mode: int = 0, collectio
 	return items
 
 
+## Returns a list of equippable items for a specific actor and slot, ordered by the specified sort mode.
+## slot_id: 0 for weapon, 1+ for armors, -1 for sets/costumes.
+func get_equippable_items(actor: GameActor, slot_id: int, sort_mode: int = 0, include_remove_option: bool = true) -> Array:
+	var items: Array = []
+	var state = GameManager.game_state
+	
+	if not state or not is_instance_valid(actor):
+		return items
+		
+	if include_remove_option:
+		items.append({
+			"item": null,
+			"real_item": null,
+			"name": "Remove",
+			"icon": RPGIcon.new(),
+			"item_color": Color.WHITE,
+			"quantity": 0,
+			"item_type": -1,
+			"item_id": -1,
+			"is_disabled": false,
+			"is_new": false,
+			"date_added": 0,
+			"is_equipped": false,
+			"is_remove_option": true,
+			"description": ""
+		})
+		
+	var raw_items: Array = []
+	var is_set = slot_id == -1
+	var is_weapon = slot_id == 0
+	
+	if is_set:
+		raw_items.append_array(_extract_items_from_dict(state.sets))
+	elif is_weapon:
+		raw_items.append_array(_extract_items_from_dict(state.weapons))
+	else:
+		raw_items.append_array(_extract_items_from_dict(state.armors))
+		
+	var current_equipped = null
+	
+	if is_set:
+		current_equipped = actor.current_set
+	else:
+		if actor.current_gear.size() > slot_id:
+			current_equipped = actor.current_gear[slot_id]
+			
+	for item in raw_items:
+		var item_total_equipped = item.get("total_equipped", 0) if "total_equipped" in item else 0
+		var available_qty = item.quantity - item_total_equipped
+		var is_equipped_by_me = (item == current_equipped)
+		
+		if available_qty <= 0 and not is_equipped_by_me:
+			continue
+			
+		if not is_set and not actor.can_equip(slot_id, item.id):
+			continue
+			
+		var real_data = item.get_real_data()
+		
+		if not real_data:
+			continue
+			
+		var item_type: int = 3 if is_set else (1 if is_weapon else 2)
+		var level = -1 if not "current_level" in item else item.current_level
+		
+		var icon: RPGIcon
+		
+		if real_data is RPGCostume:
+			var path = real_data.lpc_part
+			var preview_path = path.get_basename().trim_suffix("_data") + "_preview.png"
+			icon = RPGIcon.new(preview_path)
+		elif "icon" in real_data:
+			icon = real_data.icon
+		else:
+			icon = RPGIcon.new()
+			
+		var display_qty = available_qty + (1 if is_equipped_by_me else 0)
+		var equipped_text = " E" if is_equipped_by_me else ""
+		var date_add = item.last_added_date if "last_added_date" in item else 0
+		var is_new_item = item.newly_added if "newly_added" in item else false
+		
+		items.append({
+			"item": item,
+			"real_item": real_data,
+			"name": real_data.name + (" ⬥" + str(level) if level != -1 else "") + equipped_text,
+			"icon": icon,
+			"item_color": _get_item_color_for_item(real_data),
+			"quantity": display_qty,
+			"item_type": item_type,
+			"item_id": item.id,
+			"is_disabled": false,
+			"is_new": is_new_item,
+			"date_added": date_add,
+			"is_equipped": is_equipped_by_me,
+			"is_remove_option": false,
+			"description": real_data.description if "description" in real_data else ""
+		})
+		
+	var sort_func: Callable
+	match sort_mode:
+		1:
+			sort_func = func(a, b):
+				if a.is_remove_option != b.is_remove_option: return a.is_remove_option
+				return a.name.nocasecmp_to(b.name) < 0
+		2:
+			sort_func = func(a, b):
+				if a.is_remove_option != b.is_remove_option: return a.is_remove_option
+				return a.name.nocasecmp_to(b.name) > 0
+		3:
+			sort_func = func(a, b):
+				if a.is_remove_option != b.is_remove_option: return a.is_remove_option
+				return a.name.nocasecmp_to(b.name) < 0
+		4:
+			sort_func = func(a, b):
+				if a.is_remove_option != b.is_remove_option: return a.is_remove_option
+				var rar_a = a.real_item.rarity_type if a.real_item and "rarity_type" in a.real_item else 0
+				var rar_b = b.real_item.rarity_type if b.real_item and "rarity_type" in b.real_item else 0
+				if rar_a != rar_b: return rar_a > rar_b
+				return a.name.nocasecmp_to(b.name) < 0
+		5:
+			sort_func = func(a, b):
+				if a.is_remove_option != b.is_remove_option: return a.is_remove_option
+				if a.quantity != b.quantity: return a.quantity > b.quantity
+				return a.name.nocasecmp_to(b.name) < 0
+		0, _:
+			sort_func = func(a, b):
+				if a.is_remove_option != b.is_remove_option: return a.is_remove_option
+				if a.is_equipped != b.is_equipped: return a.is_equipped
+				if a.is_new != b.is_new: return a.is_new
+				if a.is_new and b.is_new and a.date_added != b.date_added: return a.date_added > b.date_added
+				return a.name.nocasecmp_to(b.name) < 0
+				
+	items.sort_custom(sort_func)
+	return items
 
 func _get_item_color_for_item(item: Variant) -> Color:
 	var color = Color.WHITE

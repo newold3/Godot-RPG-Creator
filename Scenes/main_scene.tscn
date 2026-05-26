@@ -141,6 +141,7 @@ script = ExtResource("9_lhp3t")
 
 [node name="MainSubViewportContainer" type="SubViewportContainer" parent="." unique_id=1938859068]
 unique_name_in_owner = true
+y_sort_enabled = true
 offset_right = 1152.0
 offset_bottom = 640.0
 focus_mode = 0
@@ -181,7 +182,6 @@ zoom_speed = 2.0
 
 [node name="MainModulate" type="CanvasModulate" parent="MainSubViewportContainer/MainGameViewport" unique_id=155968943]
 unique_name_in_owner = true
-y_sort_enabled = true
 
 [node name="MapContainer" type="Parallax2D" parent="MainSubViewportContainer/MainGameViewport/MainModulate" unique_id=820017641]
 unique_name_in_owner = true
@@ -445,4 +445,4 @@ bus = &"SE"
 unique_name_in_owner = true
 bus = &"SE"
 
-[connection signal="item_rect_changed" from="MessageCanvas/Control/Dialog/@CanvasLayer@19346/Message" to="MessageCanvas/Control/Dialog" method="_on_message_item_rect_changed"]
+[connection signal="item_rect_changed" from="MessageCanvas/Control/Dialog/@CanvasLayer@22239/Message" to="MessageCanvas/Control/Dialog" method="_on_message_item_rect_changed"]

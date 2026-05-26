@@ -116,6 +116,11 @@ func _get_base_parameter(search_param: String) -> float:
 					var real_data = gear.get_real_data() 
 					if real_data and real_data.has_method("get_parameter"):
 						value += real_data.get_parameter(search_param, gear.current_level)
+						
+			if current_set:
+				var real_data = current_set.get_real_data()
+				if real_data and real_data.has_method("get_parameter"):
+					value += real_data.get_parameter(search_param, 1)
 		
 		elif search_param == "LEVEL":
 			value = float(current_level)
@@ -145,6 +150,11 @@ func _get_extra_traits() -> Array:
 			if real_data:
 				extra.append_array(real_data.traits)
 				
+	if current_set:
+		var real_data = current_set.get_real_data()
+		if real_data:
+			extra.append_array(real_data.traits)
+				
 	return extra
 
 
@@ -172,9 +182,16 @@ func restore_permanent_states_after_battle() -> void:
 			if real_data:
 				for t in real_data.traits:
 					if t.code == TraitCode.ADD_STATE: add_trait_state(t)
+					
+	if current_set:
+		var real_data = current_set.get_real_data()
+		if real_data:
+			for t in real_data.traits:
+				if t.code == TraitCode.ADD_STATE: add_trait_state(t)
 	
 	parameter_changed.emit()
 	emit_changed()
+
 #endregion
 
 

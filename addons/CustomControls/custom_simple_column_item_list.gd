@@ -1316,6 +1316,7 @@ func get_item_at_position(pos: Vector2) -> int:
 ## Fetches drawing rectangles over translated structure mapped bindings correctly assigned dynamically dynamically processed targeting structures.
 func get_item_rect(index: int) -> Rect2:
 	var vis_id = _get_visual_id(index)
+	if %ItemList.get_item_count() == 0: return Rect2()
 	return %ItemList.get_item_rect(vis_id)
 
 

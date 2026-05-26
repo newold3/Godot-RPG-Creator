@@ -5,11 +5,17 @@ extends RPGLPCCharacter
 func get_class(): return "IngameCostume"
 
 
-@export var uniq_id: int = -1 # Unique ID generated for this item
-@export var id: int = 0 # real database id
-@export var quantity: int = 0 # Number of items in possession of this type
-@export var type: int # Indicates the type of equipment (0 = IngameCostume, 1 = IngameGearSet)
+## Unique ID generated for this item
+@export var uniq_id: int = -1
+## Real database ID
+@export var id: int = 0
+## Number of items in possession of this type
+@export var quantity: int = 0
+## Indicates the type of equipment (0 = IngameCostume, 1 = IngameGearSet)
+@export var type: int
+## Flag indicating that the item has just been acquired
 @export var newly_added: bool = false
+## Date of most recent acquisition
 @export var last_added_date: int = 0
 
 

@@ -348,7 +348,7 @@ func _process(delta: float) -> void:
 	var count = _get_current_page_count()
 	if anim_states.size() != count:
 		anim_states.resize(count)
-		anim_states.fill(1.0)
+		anim_states.fill(0.95)
 		needs_redraw = true
 		
 	var visible_range = _get_visible_row_range()
@@ -359,11 +359,11 @@ func _process(delta: float) -> void:
 	var page_offset = 0 if ipp <= 0 else _get_current_page() * ipp
 	
 	for i in range(start_idx, end_idx):
-		var target_scale = 1.0
+		var target_scale = 0.95
 		if i == pressed_index:
-			target_scale = 0.95
+			target_scale = 0.9
 		elif i == selected_index:
-			target_scale = 1.05
+			target_scale = 1.0
 			
 		if abs(anim_states[i] - target_scale) > 0.005:
 			anim_states[i] = lerpf(anim_states[i], target_scale, 15.0 * delta)
@@ -375,18 +375,18 @@ func _process(delta: float) -> void:
 			has_perishable = true
 			
 	if selected_index >= 0 and selected_index < count and (selected_index < start_idx or selected_index >= end_idx):
-		if abs(anim_states[selected_index] - 1.05) > 0.005:
-			anim_states[selected_index] = lerpf(anim_states[selected_index], 1.05, 15.0 * delta)
+		if abs(anim_states[selected_index] - 1.0) > 0.005:
+			anim_states[selected_index] = lerpf(anim_states[selected_index], 1.0, 15.0 * delta)
 			needs_redraw = true
 		else:
-			anim_states[selected_index] = 1.05
+			anim_states[selected_index] = 1.0
 			
 	if pressed_index >= 0 and pressed_index < count and (pressed_index < start_idx or pressed_index >= end_idx):
-		if abs(anim_states[pressed_index] - 0.95) > 0.005:
-			anim_states[pressed_index] = lerpf(anim_states[pressed_index], 0.95, 15.0 * delta)
+		if abs(anim_states[pressed_index] - 0.9) > 0.005:
+			anim_states[pressed_index] = lerpf(anim_states[pressed_index], 0.9, 15.0 * delta)
 			needs_redraw = true
 		else:
-			anim_states[pressed_index] = 0.95
+			anim_states[pressed_index] = 0.9
 			
 	if has_perishable:
 		needs_redraw = true
@@ -456,7 +456,7 @@ func _draw() -> void:
 		var is_empty_item = item.get("is_empty", false)
 		var item_type = item.get("item_type", 0)
 		var item_rect = item_rects[i]
-		var current_scale = anim_states[i] if i < anim_states.size() else 1.0
+		var current_scale = anim_states[i] if i < anim_states.size() else 0.95
 		var local_rect = item_rect
 		if current_scale != 1.0:
 			var center = item_rect.position + item_rect.size / 2.0
@@ -568,7 +568,6 @@ func _draw() -> void:
 			else:
 				draw_circle(indicator_pos, 4.0, Color.RED)
 	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
-
 
 
 ## Extractor helper mapping external properties securely
@@ -734,17 +733,18 @@ func _get_item_at_pos(pos: Vector2) -> int:
 	if columns <= 0 or pos.x < 0.0 or pos.y < 0.0:
 		return -1
 	var max_width = _get_available_width()
-	if pos.x > max_width:
-		return -1
 	var col_width = int((max_width - (columns - 1) * horizontal_separation) / float(columns))
+	var total_grid_width = (columns * col_width) + ((columns - 1) * horizontal_separation)
+	var offset_x = int((max_width - total_grid_width) / 2.0)
+	if pos.x < offset_x or pos.x > (offset_x + total_grid_width):
+		return -1
 	var row_height: int = button_height + vertical_separation
-	var col = int(floor(pos.x / float(col_width + horizontal_separation)))
+	var col = int(floor((pos.x - offset_x) / float(col_width + horizontal_separation)))
 	var row = int(floor(pos.y / float(row_height)))
 	var idx = row * columns + col
 	if idx >= 0 and idx < _get_current_page_count() and col < columns:
 		return idx
 	return -1
-
 
 
 ## Selects an item forcefully based on index
@@ -850,14 +850,15 @@ func _recalculate_cache() -> void:
 	var max_width = _get_available_width()
 	var col_width = int((max_width - (columns - 1) * horizontal_separation) / float(columns))
 	var row_height: int = button_height + vertical_separation
+	var total_grid_width = (columns * col_width) + ((columns - 1) * horizontal_separation)
+	var offset_x = int((max_width - total_grid_width) / 2.0)
 	for i in range(count):
 		@warning_ignore("integer_division")
 		var row: int = i / columns
 		var col: int = i % columns
 		var item_local_y: int = row * row_height
-		var item_local_x: int = col * (col_width + horizontal_separation)
+		var item_local_x: int = offset_x + col * (col_width + horizontal_separation)
 		item_rects.append(Rect2(item_local_x, item_local_y, col_width, button_height))
-
 
 
 ## Restores the selection based on the cached target ID and item type, adapting to pagination

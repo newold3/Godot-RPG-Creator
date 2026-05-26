@@ -317,6 +317,7 @@ label_settings = SubResource("LabelSettings_8xmjx")
 
 [node name="DataList" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer" unique_id=1250084832 instance=ExtResource("4_r6wuy")]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(578, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -335,11 +336,11 @@ text_margin_left = 20
 [node name="ValuesExtra" type="HBoxContainer" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer" unique_id=678126980]
 unique_name_in_owner = true
 layout_mode = 2
-alignment = 2
 
-[node name="Label" type="Label" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/ValuesExtra" unique_id=2112921276]
+[node name="IncreasesLabel" type="Label" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/ValuesExtra" unique_id=2112921276]
+unique_name_in_owner = true
 layout_mode = 2
-text = "Set all values at: "
+text = "Increases by: "
 
 [node name="SetAllValues" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/ValuesExtra" unique_id=725513210 instance=ExtResource("5_ck51g")]
 unique_name_in_owner = true

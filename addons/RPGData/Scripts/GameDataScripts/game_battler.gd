@@ -634,10 +634,20 @@ func get_user_parameter(param_id: int) -> float:
 
 		if "current_gear" in self:
 			for gear in get("current_gear"):
-				if not gear: continue
+				if not gear:
+					continue
+					
 				var real_data = gear.get_real_data()
-				if real_data:
-					current_value += real_data.get_user_parameter(param_id, gear.current_level)
+				if real_data and real_data.has_method("get_user_parameter"):
+					var item_level = gear.get("current_level") if "current_level" in gear else 1
+					current_value += real_data.get_user_parameter(param_id, item_level)
+					
+		if "current_set" in self:
+			var c_set = get("current_set")
+			if c_set:
+				var real_data = c_set.get_real_data()
+				if real_data and real_data.has_method("get_user_parameter"):
+					current_value += real_data.get_user_parameter(param_id, 1)
 		
 		var traits = _get_trait_list()
 		var trait_code = TraitCode.USER_PARAMETER
@@ -650,7 +660,6 @@ func get_user_parameter(param_id: int) -> float:
 		)
 	
 	return current_value
-
 
 
 func get_element_attack_rate(element_id: Variant) -> float:

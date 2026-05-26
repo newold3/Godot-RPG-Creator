@@ -49,14 +49,19 @@ func _ready() -> void:
 #region Queue Management
 
 ## Queues a request to bake the character and update specific Sprite2D nodes.
-func request_bake_character(id: String, data: RPGLPCCharacter, weapon_anim: String, 
+func request_bake_character(
+		id: String,
+		data: RPGLPCCharacter,
+		weapon_anim: String, 
 		target_wings: Sprite2D, 
 		target_off_back: Sprite2D,
 		target_wb: Sprite2D, 
 		target_body: Sprite2D, 
 		target_off_front: Sprite2D,
 		target_wf: Sprite2D,
-		actor_id: int = -1) -> void:
+		actor_id: int = -1,
+		current_set: Variant = null
+	) -> void:
 
 	_queue.append({
 		"type": "character",
@@ -69,7 +74,8 @@ func request_bake_character(id: String, data: RPGLPCCharacter, weapon_anim: Stri
 		"target_body": target_body,
 		"target_off_front": target_off_front,
 		"target_wf": target_wf,
-		"actor_id": actor_id
+		"actor_id": actor_id,
+		"current_set": current_set
 	})
 	_process_queue()
 
@@ -295,15 +301,23 @@ func _get_updated_character_data(base_data: RPGLPCCharacter, actor_id: int) -> R
 
 func _apply_actor_gear(character_data: RPGLPCCharacter, actor: Variant) -> void:
 	var ammo_context = {"explicitly_equipped": false, "weapon_embedded": null}
+
 	for item_obj in actor.current_gear:
-		if not item_obj: continue
+		if not item_obj:
+			continue
+		
+		if item_obj is IngameCostume or item_obj is IngameGearSet:
+			_equip_resource(character_data, item_obj, ammo_context)
+			continue
 		
 		var db_item = item_obj.get_real_data()
-		if not db_item: continue
+		if not db_item:
+			continue
 		
 		var lpc_path: String = db_item.lpc_part
 		
-		if lpc_path.is_empty() or not ResourceLoader.exists(lpc_path): continue
+		if lpc_path.is_empty() or not ResourceLoader.exists(lpc_path):
+			continue
 		
 		var resource = load(lpc_path)
 		_equip_resource(character_data, resource, ammo_context)
@@ -326,11 +340,20 @@ func _equip_resource(character_data: RPGLPCCharacter, resource: Resource, ammo_c
 			ammo_context.weapon_embedded = mainhand.ammo
 		else:
 			ammo_context.weapon_embedded = null
-		return
+
+	elif resource is IngameGearSet:
+		var set_parts = resource.equipment_parts
+		var slots = CLOTHING_KEYS + MAINHAND_KEYS + OFFHAND_KEYS
 		
+		for slot_key in slots:
+			var part = set_parts.get(slot_key)
+			if part and part is RPGLPCEquipmentPart and not part.config_path.is_empty():
+				_try_equip_single_part(character_data, part, ammo_context)
+
 	elif resource is RPGLPCEquipmentData:
 		var mode = resource.get("application_mode")
-		if mode == null: mode = 0
+		if mode == null:
+			mode = 0
 		
 		var slots = CLOTHING_KEYS + MAINHAND_KEYS + OFFHAND_KEYS
 		var weapon_slots = ["mainhand", "offhand", "ammo"]
@@ -340,14 +363,20 @@ func _equip_resource(character_data: RPGLPCCharacter, resource: Resource, ammo_c
 			var has_valid_part = part and part is RPGLPCEquipmentPart and not part.config_path.is_empty()
 			
 			match mode:
-				0: # FULL_STRICT
-					if has_valid_part: _try_equip_single_part(character_data, part, ammo_context)
-					else: character_data.equipment_parts.set(slot_key, null)
-				1: # FULL_HYBRID
-					if has_valid_part: _try_equip_single_part(character_data, part, ammo_context)
-					else: if not slot_key in weapon_slots: character_data.equipment_parts.set(slot_key, null)
-				2: # PARTIAL
-					if has_valid_part: _try_equip_single_part(character_data, part, ammo_context)
+				0:
+					if has_valid_part:
+						_try_equip_single_part(character_data, part, ammo_context)
+					else:
+						character_data.equipment_parts.set(slot_key, null)
+				1:
+					if has_valid_part:
+						_try_equip_single_part(character_data, part, ammo_context)
+					else:
+						if not slot_key in weapon_slots:
+							character_data.equipment_parts.set(slot_key, null)
+				2:
+					if has_valid_part:
+						_try_equip_single_part(character_data, part, ammo_context)
 
 	elif resource is RPGLPCEquipmentPart:
 		_try_equip_single_part(character_data, resource, ammo_context)

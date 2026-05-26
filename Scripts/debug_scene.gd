@@ -309,6 +309,8 @@ func _load_data(value: bool, tab: String, skip_selection: bool = false) -> void:
 	backup_mouse_position = %DataList.get_local_mouse_position()
 	if value:
 		current_tab = tab
+	
+	%IncreasesLabel.text = tr("Increases by") + " :"
 		
 	if value and GameManager.game_state:
 		var data = null
@@ -321,46 +323,47 @@ func _load_data(value: bool, tab: String, skip_selection: bool = false) -> void:
 				data = GameManager.game_state.game_switches
 				real_data = RPGSYSTEM.system.switches
 				text = tr("Use 🢀 Left or 🢂 Right To change the value.")
-				col_name = "Current value"
+				col_name = tr("Current value")
 			"Variable":
 				data = GameManager.game_state.game_variables
 				real_data = RPGSYSTEM.system.variables
 				text = tr("Use 🢀 Left or 🢂 Right To change the value. Or double click to enter value manually")
-				col_name = "Current value"
+				col_name = tr("Current value")
+				%IncreasesLabel.text = tr("Set value/s to") + " :"
 			"Text Variable":
 				data = GameManager.game_state.game_text_variables
 				real_data = RPGSYSTEM.system.text_variables
 				text = tr("Double click to enter value manually")
-				col_name = "Current value"
+				col_name = tr("Current value")
 			"Self Switch":
 				data = GameManager.game_state.game_self_switches
 				real_data = RPGSYSTEM.system.self_switches
 				text = tr("Use 🢀 Left or 🢂 Right To change the value.")
-				col_name = "Current value"
+				col_name = tr("Current value")
 			"Item":
 				real_data = RPGSYSTEM.database.items
 				text = tr("Use 🢀 Left or 🢂 Right To change the amount. Or double click to enter value manually")
-				col_name = "Type in Stock"
+				col_name = tr("Items in Stock")
 			"Weapon":
 				real_data = RPGSYSTEM.database.weapons
 				text = tr("Use 🢀 Left or 🢂 Right To change the amount. Or double click to enter value manually")
-				col_name = "Type in Stock"
+				col_name = tr("Weapons in Stock")
 			"Armor":
 				real_data = RPGSYSTEM.database.armors
 				text = tr("Use 🢀 Left or 🢂 Right To change the amount. Or double click to enter value manually")
-				col_name = "Type in Stock"
+				col_name = tr("Armors in Stock")
 			"Costume/Set":
 				real_data = RPGSYSTEM.database.costumes
 				text = tr("Use 🢀 Left or 🢂 Right To change the amount. Or double click to enter value manually")
-				col_name = "Type in Stock"
+				col_name = tr("Costumes/Sets in Stock")
 			"Quest":
 				real_data = RPGSYSTEM.database.quests
 				text = tr("Use 🢀 Left or 🢂 Right To change unlock status.")
-				col_name = "Is Unlocked?"
+				col_name = tr("Is Unlocked?")
 			"Actor":
 				real_data = RPGSYSTEM.database.actors
 				text = tr("Use 🢀 Left or 🢂 Right To add or remove actor from party.")
-				col_name = "Is In Party?"
+				col_name = tr("Is In Party?")
 		
 		text += " " + tr("Use Tab to change between left buttons or list.")
 		_set_label_info(text)
@@ -434,7 +437,10 @@ func fill_data(tab: String, data: Variant, real_data: Variant, selected_id: int,
 				"Weapon": amount = GameManager.get_weapon_amount(i)
 				"Armor": amount = GameManager.get_armor_amount(i)
 				"Costume/Set": amount = GameManager.get_costume_amount(i)
-				
+
+			if db_item.max_quantity != 0 and amount >= db_item.max_quantity:
+				amount = str(amount) + " (" + tr("max quantity") + ")"
+
 			node.add_column(["[%s] %s" % [i, data_name], str(amount)])
 			current_data.append(i)
 		await node.columns_setted
@@ -474,8 +480,10 @@ func fill_data(tab: String, data: Variant, real_data: Variant, selected_id: int,
 	if not skip_selection:
 		if node.get_item_count() > selected_id:
 			node.select(selected_id)
+			node.item_selected.emit(selected_id)
 		elif node.get_item_count() > 0:
 			node.select(0)
+			node.item_selected.emit(0)
 			
 		if current_data.size() > 0:
 			node.get_item_list().grab_focus()
@@ -693,12 +701,13 @@ func select_item_under_mouse() -> int:
 	var node = %DataList
 	var pos = node.get_local_mouse_position() - Vector2(0, node.get_item_rect(0).size.y)
 	var index = node.get_item_at_position(pos)
-	
+
 	if index >= 0:
 		node.select(index)
-	
+		node.item_selected.emit(index)
+
 	backup_mouse_position = node.get_local_mouse_position()
-	
+
 	return index
 
 
