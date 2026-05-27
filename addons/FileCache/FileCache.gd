@@ -53,7 +53,7 @@ var image_extensions = ["png", "bmp", "jpg", "jpeg", "svg", "tga", "webp"]
 var sound_extensions = ["mp3str", "oggvorbisstr", "sample", "wav", "ogg", "mp3"]
 
 ## List of file extensions recognized as font files.
-var font_extensions = ["fondata", "ttf", "ttc", "otf", "otc", "woff", "woff2", "pfb", "pfm", "font"]
+var font_extensions = ["fondata", "ttf", "ttc", "otf", "otc", "woff", "woff2", "pfb", "pfm", "font", "fnt"]
 
 ## List of file extensions recognized as videos.
 var video_extensions = ["ogv"]

@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://cswl8dxfrxi2"]
+
+[ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="1_gdia6"]
+[ext_resource type="Script" uid="uid://dfwxiovntd8dt" path="res://addons/BitmapFontCreator/letter.gd" id="1_xyper"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_akcso"]
+resource_local_to_scene = true
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.5834499, 0.58344984, 0.58345, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.078431375, 0.078431375, 0.078431375, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="Letter" type="PanelContainer" unique_id=2126709731]
+custom_minimum_size = Vector2(120, 120)
+tooltip_text = "Double click to edit the kerning pairs for this letter."
+mouse_default_cursor_shape = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_akcso")
+script = ExtResource("1_xyper")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=328882142]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="LetterTexture" type="TextureRect" parent="VBoxContainer" unique_id=981398463]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="SelectChar" parent="VBoxContainer" unique_id=1193177360 instance=ExtResource("1_gdia6")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Type the character you see in this image"
+placeholder_text = "char?"
+alignment = 1
+max_length = 1
+select_all_on_focus = true
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="focus_entered" from="VBoxContainer/SelectChar" to="." method="_on_select_char_focus_entered"]
+[connection signal="focus_exited" from="VBoxContainer/SelectChar" to="." method="_on_select_char_focus_exited"]
+[connection signal="text_changed" from="VBoxContainer/SelectChar" to="." method="_on_select_char_text_changed"]

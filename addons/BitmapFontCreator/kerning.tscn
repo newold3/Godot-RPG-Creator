@@ -1,0 +1,65 @@
+[gd_scene format=3 uid="uid://n6v1d3ijka7d"]
+
+[ext_resource type="Script" uid="uid://denbrqhj8viph" path="res://addons/BitmapFontCreator/kerning.gd" id="1_sf7d6"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="1_sti38"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="2_sf7d6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_11n46"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 16.0
+content_margin_bottom = 6.0
+bg_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+corner_radius_top_right = 16
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7erdm"]
+atlas = ExtResource("2_sf7d6")
+region = Rect2(0, 48, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xvhj3"]
+atlas = ExtResource("2_sf7d6")
+region = Rect2(24, 48, 24, 24)
+
+[node name="Kerning" type="PanelContainer" unique_id=1420221972]
+custom_minimum_size = Vector2(0, 32)
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_11n46")
+script = ExtResource("1_sf7d6")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=640407369]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer" unique_id=1551794790]
+layout_mode = 2
+text = "Preview:"
+
+[node name="PreviewLabel" type="Label" parent="HBoxContainer" unique_id=1052415775]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="HBoxContainer" unique_id=1626700807]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "kerning:"
+
+[node name="kerning" parent="HBoxContainer" unique_id=1915823716 instance=ExtResource("1_sti38")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Change the spacing between the selected letter and its counterpart to make them appear closer together or farther apart"
+allow_greater = true
+allow_lesser = true
+_custom_value = 0.0
+
+[node name="RemoveButton" type="TextureButton" parent="HBoxContainer" unique_id=1977823874]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "[title]Remove Pair[/title]
+Remove the pair from the list"
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_7erdm")
+texture_hover = SubResource("AtlasTexture_xvhj3")

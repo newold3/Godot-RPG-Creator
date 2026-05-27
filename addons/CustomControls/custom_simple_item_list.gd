@@ -50,7 +50,7 @@ signal item_moved(old_index: int, new_index: int)
 func _ready() -> void:
 	%BackControl.draw.connect(_on_back_control_draw)
 	draw.connect(%BackControl.queue_redraw)
-	get_v_scroll_bar().value_changed.connect(_change_back_position)
+	get_v_scroll_bar().value_changed.connect(_change_back_position, CONNECT_DEFERRED)
 	gui_input.connect(_on_gui_input)
 
 
@@ -189,6 +189,7 @@ func _change_back_position(value: float) -> void:
 	var control = %BackControl
 	control.position.y = -value
 	control.size = size
+	control.queue_redraw()
 
 
 
@@ -252,6 +253,11 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 		return true
 		
 	return false
+
+
+func ensure_current_is_visible() -> void:
+	super.ensure_current_is_visible()
+	queue_redraw.call_deferred()
 
 
 

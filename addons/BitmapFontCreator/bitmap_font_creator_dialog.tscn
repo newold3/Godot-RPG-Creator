@@ -1,0 +1,305 @@
+[gd_scene format=3 uid="uid://clvm3hsd8cm1m"]
+
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="1_drk1d"]
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_j8eg2"]
+[ext_resource type="Script" uid="uid://bqteiqnul7030" path="res://addons/BitmapFontCreator/bitmap_font_creator_dialog.gd" id="2_ao64f"]
+[ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="4_ao64f"]
+[ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="5_akcso"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="5_hdeft"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="6_jiiu4"]
+
+[sub_resource type="Gradient" id="Gradient_hdeft"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_6ochn"]
+gradient = SubResource("Gradient_hdeft")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_akcso"]
+bg_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+
+[node name="BitmapFontCreatorDialog" type="Window" unique_id=192347201]
+oversampling_override = 1.0
+title = "Bitmap Font Creator"
+position = Vector2i(0, 36)
+size = Vector2i(1200, 800)
+wrap_controls = true
+theme = ExtResource("1_j8eg2")
+script = ExtResource("2_ao64f")
+
+[node name="Background" type="TextureRect" parent="." unique_id=132407243]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_6ochn")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=819209410]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1934630996]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=329064681]
+layout_mode = 2
+
+[node name="SelectNewImage" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=225668214 instance=ExtResource("1_drk1d")]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Upload a new image"
+text = "Select New Image"
+
+[node name="ImportButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=579836556 instance=ExtResource("1_drk1d")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Import a bitmap font so you can edit it"
+text = "Import Bitmap Font"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1421703698]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 24
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer" unique_id=1170802999]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_akcso")
+script = ExtResource("4_ao64f")
+metadata/_custom_type_script = "uid://cs6g8remlafby"
+
+[node name="MainContainer" type="FlowContainer" parent="MarginContainer/VBoxContainer/SmoothScrollContainer" unique_id=811248937]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer" unique_id=2034346231]
+layout_mode = 2
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=2124516128]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 24
+
+[node name="CommandConrtainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1108159280]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 9
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CommandConrtainer" unique_id=1161115034]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/CommandConrtainer/HBoxContainer2" unique_id=8826765]
+layout_mode = 2
+text = "Commands:"
+
+[node name="SelectionMode" parent="MarginContainer/VBoxContainer/CommandConrtainer/HBoxContainer2" unique_id=621784070 instance=ExtResource("5_hdeft")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.6)
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Quick selection/deselection options"
+focus_mode = 0
+mouse_filter = 2
+disabled = true
+metadata/original_focus_mode = 2
+metadata/original_mouse_filer = 0
+
+[node name="AutoFillButton" parent="MarginContainer/VBoxContainer/CommandConrtainer/HBoxContainer2" unique_id=1201748161 instance=ExtResource("1_drk1d")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.65)
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+tooltip_text = "[title]Auto Fill[/title]
+If your character image is arranged as 0-9, a-z, and A-Z, you can enter \"0\", \"a,\" and \"A\", then click this button to have the rest filled in automatically"
+disabled = true
+text = "Auto Fill"
+
+[node name="FixRects" parent="MarginContainer/VBoxContainer/CommandConrtainer/HBoxContainer2" unique_id=33731155 instance=ExtResource("1_drk1d")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.65)
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+tooltip_text = "Edit the rectangles of the detected glyphs (this usually isn't necessary)"
+disabled = true
+text = "Fix Rects"
+
+[node name="ClearButton" parent="MarginContainer/VBoxContainer/CommandConrtainer/HBoxContainer2" unique_id=1757600489 instance=ExtResource("1_drk1d")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.65)
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+tooltip_text = "[title]Clear All[/title]
+clears all glyphs added to the current font"
+disabled = true
+text = "Clear"
+
+[node name="SaveButton" parent="MarginContainer/VBoxContainer/CommandConrtainer/HBoxContainer2" unique_id=1265289243 instance=ExtResource("1_drk1d")]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.65)
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+tooltip_text = "[title]Save Font[/title]
+Save the current font."
+disabled = true
+text = "Save"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CommandConrtainer" unique_id=395893151]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/CommandConrtainer/HBoxContainer3" unique_id=1032385526]
+layout_mode = 2
+text = "Align:"
+
+[node name="AlignX" parent="MarginContainer/VBoxContainer/CommandConrtainer/HBoxContainer3" unique_id=233263331 instance=ExtResource("6_jiiu4")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Change the x-coordinate where this character is drawn
+
+[Note]: This only affects the selected letters (select them by clicking on them)"
+mouse_filter = 2
+allow_greater = true
+allow_lesser = true
+editable = false
+suffix = " "
+disabled = true
+_custom_value = 0.0
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/CommandConrtainer/HBoxContainer3" unique_id=969838539]
+layout_mode = 2
+text = "x"
+
+[node name="AlignY" parent="MarginContainer/VBoxContainer/CommandConrtainer/HBoxContainer3" unique_id=1243719798 instance=ExtResource("6_jiiu4")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Change the y-coordinate where this character is drawn
+
+[Note]: This only affects the selected letters (select them by clicking on them)"
+mouse_filter = 2
+allow_greater = true
+allow_lesser = true
+editable = false
+suffix = " "
+disabled = true
+_custom_value = 0.0
+
+[node name="Label4" type="Label" parent="MarginContainer/VBoxContainer/CommandConrtainer/HBoxContainer3" unique_id=1781604661]
+layout_mode = 2
+text = "y"
+
+[node name="VSeparator2" type="VSeparator" parent="MarginContainer/VBoxContainer/CommandConrtainer/HBoxContainer3" unique_id=1422497622]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label5" type="Label" parent="MarginContainer/VBoxContainer/CommandConrtainer/HBoxContainer3" unique_id=859830475]
+layout_mode = 2
+text = "Space Length:"
+
+[node name="SpaceLength" parent="MarginContainer/VBoxContainer/CommandConrtainer/HBoxContainer3" unique_id=921288894 instance=ExtResource("6_jiiu4")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Maximum length of the space"
+mouse_filter = 2
+min_value = 1.0
+value = 13.0
+allow_greater = true
+editable = false
+suffix = " "
+disabled = true
+_custom_value = 13.0
+
+[node name="VSeparator3" type="VSeparator" parent="MarginContainer/VBoxContainer/CommandConrtainer/HBoxContainer3" unique_id=1630540058]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label6" type="Label" parent="MarginContainer/VBoxContainer/CommandConrtainer/HBoxContainer3" unique_id=53520126]
+layout_mode = 2
+text = "Font Size:"
+
+[node name="FontSize" parent="MarginContainer/VBoxContainer/CommandConrtainer/HBoxContainer3" unique_id=857015139 instance=ExtResource("6_jiiu4")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "The default size of this font"
+mouse_filter = 2
+min_value = 8.0
+value = 48.0
+allow_greater = true
+editable = false
+suffix = " "
+disabled = true
+_custom_value = 48.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CommandConrtainer" unique_id=380241452]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/CommandConrtainer/HBoxContainer" unique_id=1791350422]
+layout_mode = 2
+text = "Preview text:"
+
+[node name="PreviewText" parent="MarginContainer/VBoxContainer/CommandConrtainer/HBoxContainer" unique_id=1223088426 instance=ExtResource("5_akcso")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_filter = 2
+editable = false
+selecting_enabled = false
+disabled = true
+metadata/original_text = ""
+
+[node name="PreviewLabel" type="Label" parent="MarginContainer/VBoxContainer/CommandConrtainer" unique_id=349613728]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 22
+text = "Texto de prueba"
+
+[node name="HSeparator3" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1222704037]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 24
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=196940476]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1950214659 instance=ExtResource("1_drk1d")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window."
+text = "Close"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/SelectNewImage" to="." method="_on_select_new_image_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/CommandConrtainer/HBoxContainer2/FixRects" to="." method="_on_visual_editor_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

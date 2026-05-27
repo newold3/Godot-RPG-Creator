@@ -1,0 +1,110 @@
+[gd_scene format=3 uid="uid://dxeqohth6qno1"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_rxkk5"]
+[ext_resource type="Script" uid="uid://cgegp37f0gjuh" path="res://addons/BitmapFontCreator/kerning_dialog.gd" id="2_vcwm5"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="3_q5fyq"]
+[ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="4_0bgkd"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="5_qaqur"]
+
+[sub_resource type="Gradient" id="Gradient_vvvrv"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_6ochn"]
+gradient = SubResource("Gradient_vvvrv")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[node name="KerningDialog" type="Window" unique_id=192347201]
+oversampling_override = 1.0
+title = "Kerning"
+position = Vector2i(0, 36)
+size = Vector2i(800, 640)
+wrap_controls = true
+theme = ExtResource("1_rxkk5")
+script = ExtResource("2_vcwm5")
+
+[node name="Background" type="TextureRect" parent="." unique_id=132407243]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_6ochn")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=819209410]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1934630996]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1637133435]
+layout_mode = 2
+
+[node name="CurrentChar" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=898599618]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1431278040]
+layout_mode = 2
+
+[node name="LetterList" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=621784070 instance=ExtResource("5_qaqur")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "List of characters currently added to the font. Select one to pair it with the selected character and set the kerning between those two chars."
+
+[node name="AddPairButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=225668214 instance=ExtResource("3_q5fyq")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "[title]Add Pair[/title]
+Inserts a space between the selected character and the current character. You can adjust the kerning so that it appears closer to or farther from that character."
+text = "Add Pair"
+
+[node name="HSeparator3" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1222704037]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 24
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer" unique_id=850783759]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("4_0bgkd")
+metadata/_custom_type_script = "uid://cs6g8remlafby"
+
+[node name="MainContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/SmoothScrollContainer" unique_id=1846528581]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HSeparator4" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=972926065]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 24
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=196940476]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1950214659 instance=ExtResource("3_q5fyq")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window."
+text = "Close"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

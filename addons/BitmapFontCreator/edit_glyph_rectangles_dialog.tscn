@@ -1,0 +1,197 @@
+[gd_scene format=3 uid="uid://dv86yp63kvh2y"]
+
+[ext_resource type="PackedScene" uid="uid://m1iixxkyrur5" path="res://addons/CustomControls/custom_simple_item_list.tscn" id="1_g08ye"]
+[ext_resource type="Script" uid="uid://cd0ewtjwpix7f" path="res://addons/BitmapFontCreator/edit_glyph_rectangles_dialog.gd" id="1_kly40"]
+[ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="2_kly40"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="3_op030"]
+
+[sub_resource type="Gradient" id="Gradient_vvvrv"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7wo6r"]
+gradient = SubResource("Gradient_vvvrv")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_temqa"]
+resource_local_to_scene = true
+content_margin_left = 3.0
+content_margin_right = 3.0
+bg_color = Color(1, 1, 1, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_57qky"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="Gradient" id="Gradient_3obsl"]
+offsets = PackedFloat32Array(0, 0.369535, 1)
+colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_mtkxg"]
+gradient = SubResource("Gradient_3obsl")
+fill_from = Vector2(0.547009, 1)
+fill_to = Vector2(0.559829, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nwi1r"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ovqqj"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[node name="EditGlyphRectanglesDialog" type="Window" unique_id=1073451828]
+oversampling_override = 1.0
+title = "Edit Glyph Rectangles"
+position = Vector2i(0, 36)
+size = Vector2i(800, 600)
+wrap_controls = true
+script = ExtResource("1_kly40")
+
+[node name="Background" type="TextureRect" parent="." unique_id=252390729]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_7wo6r")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=462580953]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1962261071]
+layout_mode = 2
+
+[node name="HSplitContainer" type="HSplitContainer" parent="MarginContainer/VBoxContainer" unique_id=1749418146]
+layout_mode = 2
+size_flags_vertical = 3
+split_offsets = PackedInt32Array(160)
+split_offset = 160
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HSplitContainer" unique_id=2074048140]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HSplitContainer/VBoxContainer" unique_id=133860213]
+layout_mode = 2
+text = "List of glyphs"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/HSplitContainer/VBoxContainer" unique_id=507771137]
+layout_mode = 2
+
+[node name="ItemList" parent="MarginContainer/VBoxContainer/HSplitContainer/VBoxContainer" unique_id=1646558456 instance=ExtResource("1_g08ye")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_temqa")
+theme_override_styles/focus = SubResource("StyleBoxFlat_temqa")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_57qky")
+theme_override_styles/selected = SubResource("StyleBoxTexture_nwi1r")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_ovqqj")
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/HSplitContainer" unique_id=1442283987]
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("2_kly40")
+metadata/_custom_type_script = "uid://cs6g8remlafby"
+
+[node name="Canvas" type="TextureRect" parent="MarginContainer/VBoxContainer/HSplitContainer/SmoothScrollContainer" unique_id=1678018795]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 2
+
+[node name="HSeparator3" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=574498270]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 24
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=555709309]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer" unique_id=167838074]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer" unique_id=128120630]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.68552935, 0.7398805, 0.78828746, 1)
+theme_override_constants/outline_size = 8
+text = "Left Click: Create / Edit Rectangle"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer" unique_id=995490385]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer" unique_id=2049555528]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.68552935, 0.7398805, 0.78828746, 1)
+theme_override_constants/outline_size = 8
+text = "Right Click: Delete Rectangle"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer" unique_id=1735265482]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2" unique_id=1069239324]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.68552935, 0.7398805, 0.78828746, 1)
+theme_override_constants/outline_size = 8
+text = "Ctrl+Z / Ctrl+Alt+Z: Undo"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2" unique_id=994906889]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2" unique_id=1029192414]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.68552935, 0.7398805, 0.78828746, 1)
+theme_override_constants/outline_size = 8
+text = "Ctrl+Mouse Wheel: Zoom In / Out"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator4" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=654096622]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 24
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=2124644179]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=225668214 instance=ExtResource("3_op030")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window."
+text = "Close"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]
