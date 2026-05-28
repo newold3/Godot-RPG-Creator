@@ -93,6 +93,9 @@ var preview_is_animated: bool = false
 var preview_frames: int = 1
 var preview_current_frame: int = 0
 var preview_timer: float = 0.0
+var preview_autotile_mode: int = 0
+var preview_base_image: Image
+var preview_lpc_composite: Image
 
 var TARGET_SIZES: Array[Vector2i] = [
 	Vector2i.ZERO,
@@ -465,7 +468,7 @@ func _process(delta: float) -> void:
 	if is_animation_mode:
 		_clamp_panel_position()
 		
-	if preview_is_animated and is_instance_valid(%AutotilePreview) and %AutotilePreview.texture is AtlasTexture:
+	if preview_is_animated and is_instance_valid(%AutotilePreview) and %AutotilePreview.texture != null:
 		var fps: float = 5.0
 		
 		if is_instance_valid(%CurrentAnimationSpeed) and %CurrentAnimationSpeedContainer.visible:
@@ -480,10 +483,19 @@ func _process(delta: float) -> void:
 			preview_timer -= frame_duration
 			preview_current_frame = (preview_current_frame + 1) % preview_frames
 			
-			var atlas_tex: AtlasTexture = %AutotilePreview.texture
-			var frame_w: float = atlas_tex.atlas.get_width() / float(preview_frames)
-			atlas_tex.region = Rect2(preview_current_frame * frame_w, 0, frame_w, atlas_tex.atlas.get_height())
-
+			if preview_autotile_mode == canvas.AutotileType.LPC_FULL_ANIMATED:
+				if %AutotilePreview.texture is ImageTexture and preview_base_image != null and preview_lpc_composite != null:
+					var tile_w: int = preview_base_image.get_width() / 8
+					var frame_rect: Rect2i = Rect2i(preview_current_frame * tile_w, tile_w * 6, tile_w, tile_w)
+					
+					preview_lpc_composite.fill_rect(Rect2i(0, tile_w * 6, tile_w * 8, int(tile_w * 2.5)), Color.TRANSPARENT)
+					preview_lpc_composite.blit_rect(preview_base_image, frame_rect, Vector2i(tile_w * 3, tile_w * 6 + int(tile_w * 0.5)))
+					
+					%AutotilePreview.texture.update(preview_lpc_composite)
+			elif %AutotilePreview.texture is AtlasTexture:
+				var atlas_tex: AtlasTexture = %AutotilePreview.texture
+				var frame_w: float = atlas_tex.atlas.get_width() / float(preview_frames)
+				atlas_tex.region = Rect2(preview_current_frame * frame_w, 0, frame_w, atlas_tex.atlas.get_height())
 
 
 ## Toggles the internal animation mode flag, caches it, and forces UI updates
@@ -840,24 +852,46 @@ func _on_auto_tiles_list_item_selected(index: int) -> void:
 	if index >= 0 and autotiles.size() > index:
 		var tile_data: Dictionary = autotiles[index]
 		var img_texture: Texture2D = tile_data["image"]
+		var is_anim: bool = tile_data.get("is_animated", false)
+		var mode: AtlasSelectorCanvas.AutotileType = tile_data.get("mode", canvas.AutotileType.SINGLE)
 		
-		if tile_data.get("is_animated", false):
+		preview_autotile_mode = mode
+		
+		if is_anim:
 			preview_is_animated = true
 			preview_frames = tile_data.get("frames", 1)
 			preview_current_frame = 0
 			preview_timer = 0.0
-			
-			%CurrentAnimationSpeedContainer.visible = true
-			%CurrentAnimationSpeed.set_value_no_signal(tile_data.get("anim_speed", 5.0))
 			
 			var atlas_tex: AtlasTexture = AtlasTexture.new()
 			atlas_tex.atlas = img_texture
 			var frame_w: int = img_texture.get_width() / preview_frames
 			atlas_tex.region = Rect2(0, 0, frame_w, img_texture.get_height())
 			%AutotilePreview.texture = atlas_tex
+		elif mode == canvas.AutotileType.LPC_FULL_ANIMATED:
+			preview_is_animated = true
+			preview_frames = 3
+			preview_current_frame = 0
+			preview_timer = 0.0
+			
+			preview_base_image = img_texture.get_image()
+			var tile_w: int = preview_base_image.get_width() / 8
+			
+			preview_lpc_composite = Image.create(tile_w * 8, int(tile_w * 8.5), false, preview_base_image.get_format())
+			preview_lpc_composite.blit_rect(preview_base_image, Rect2i(0, 0, tile_w * 8, tile_w * 6), Vector2i(0, 0))
+			
+			var frame_rect: Rect2i = Rect2i(0, tile_w * 6, tile_w, tile_w)
+			preview_lpc_composite.blit_rect(preview_base_image, frame_rect, Vector2i(tile_w * 3, tile_w * 6 + int(tile_w * 0.5)))
+			
+			%AutotilePreview.texture = ImageTexture.create_from_image(preview_lpc_composite)
 		else:
 			preview_is_animated = false
 			%AutotilePreview.texture = img_texture
+			
+		if is_anim or mode == canvas.AutotileType.LPC_FULL_ANIMATED:
+			%CurrentAnimationSpeedContainer.visible = true
+			%CurrentAnimationSpeed.set_value_no_signal(tile_data.get("anim_speed", 5.0))
+		else:
 			%CurrentAnimationSpeedContainer.visible = false
 			
 		var terrain: String = "-" if tile_data["terrain"].is_empty() else tile_data["terrain"]
@@ -868,7 +902,6 @@ func _on_auto_tiles_list_item_selected(index: int) -> void:
 		var current_col_node: OptionButton = get_node_or_null("%CurrentCollision")
 		if is_instance_valid(current_col_node):
 			current_col_node.select(tile_data.get("collision_mode", 0))
-
 
 
 ## Caches the target tile and triggers the appropriate mode or deletes the tile based on selection
@@ -1035,7 +1068,6 @@ func _on_close_alt_panel_pressed() -> void:
 
 
 ## Extracts the final visual image from a raw region depending on the autotile mode requested
-## Extracts the final visual image from a raw region depending on the autotile mode requested and applies target scaling
 func _extract_frame_image(region_image: Image, mode: AtlasSelectorCanvas.AutotileType) -> Image:
 	var final_image: Image
 	
@@ -1055,6 +1087,8 @@ func _extract_frame_image(region_image: Image, mode: AtlasSelectorCanvas.Autotil
 				final_image = conversor.extract_nine_slice_autotile(region_texture)
 			canvas.AutotileType.WATERFALL:
 				final_image = conversor.extract_waterfall_autotile(region_texture)
+			canvas.AutotileType.LPC_FULL, canvas.AutotileType.LPC_FULL_ANIMATED, canvas.AutotileType.LPC_BASIC:
+				final_image = conversor.extract_lpc_autotile(region_texture)
 				
 	var target_size: Vector2i = _get_current_target_tile_size()
 	
@@ -1764,7 +1798,7 @@ func _generate_everything() -> void:
 			var real_img: Image = generated_atlases[atlas_idx]["image"]
 			var tex_size: Vector2i = real_img.get_size()
 			var valid_masks: Array[int] = _get_valid_masks(mode)
-			var columns: int = 4 if (mode == AtlasSelectorCanvas.AutotileType.WALL or mode == AtlasSelectorCanvas.AutotileType.WATERFALL) else 8
+			var columns: int = 4 if (mode == canvas.AutotileType.WALL or mode == canvas.AutotileType.WATERFALL) else 8
 			
 			for t in valid_masks.size():
 				var local_coord: Vector2i = Vector2i((t % columns) * frames, t / columns) if is_animated else Vector2i(t % columns, t / columns)
@@ -1814,6 +1848,52 @@ func _generate_everything() -> void:
 								source.set_tile_animation_separation(alt_tile_coord, Vector2i.ZERO)
 								source.set_tile_animation_speed(alt_tile_coord, current_anim_fps)
 								
+			if mode in [canvas.AutotileType.LPC_FULL, canvas.AutotileType.LPC_FULL_ANIMATED, canvas.AutotileType.LPC_BASIC]:
+				var alt_iso_coord: Vector2i = start_coord + Vector2i(7, 5)
+				
+				if not source.has_tile(alt_iso_coord):
+					var alt_pixel_pos: Vector2i = alt_iso_coord * tileset.tile_size
+					
+					if alt_pixel_pos.x < tex_size.x and alt_pixel_pos.y < tex_size.y:
+						var alt_img: Image = real_img.get_region(Rect2i(alt_pixel_pos, tileset.tile_size))
+						if not conversor._is_image_rect_empty(alt_img, Rect2i(Vector2i.ZERO, tileset.tile_size)):
+							source.create_tile(alt_iso_coord)
+							_apply_peering_bits(source, alt_iso_coord, 0, terrain_id, mode)
+							
+							var alt_iso_data: TileData = source.get_tile_data(alt_iso_coord, 0)
+							if alt_iso_data:
+								alt_iso_data.probability = element.get("probability", 1.0) * 0.1
+								_apply_collision_data(alt_iso_data, col_mode, tileset.tile_size)
+						
+				if mode == canvas.AutotileType.LPC_FULL_ANIMATED:
+					var anim_center_coord: Vector2i = start_coord + Vector2i(0, 6)
+					
+					if not source.has_tile(anim_center_coord):
+						source.create_tile(anim_center_coord)
+						_apply_peering_bits(source, anim_center_coord, 255, terrain_id, mode)
+						
+						var anim_data: TileData = source.get_tile_data(anim_center_coord, 0)
+						if anim_data:
+							anim_data.probability = element.get("probability", 1.0) * 0.2
+							_apply_collision_data(anim_data, col_mode, tileset.tile_size)
+							
+						source.set_tile_animation_columns(anim_center_coord, 3)
+						source.set_tile_animation_frames_count(anim_center_coord, 3)
+						source.set_tile_animation_separation(anim_center_coord, Vector2i.ZERO)
+						source.set_tile_animation_speed(anim_center_coord, current_anim_fps)
+				elif mode == canvas.AutotileType.LPC_FULL:
+					for alt_idx in range(3):
+						var alt_c_coord: Vector2i = start_coord + Vector2i(alt_idx, 6)
+						
+						if not source.has_tile(alt_c_coord):
+							source.create_tile(alt_c_coord)
+							_apply_peering_bits(source, alt_c_coord, 255, terrain_id, mode)
+							
+							var c_data: TileData = source.get_tile_data(alt_c_coord, 0)
+							if c_data:
+								c_data.probability = element.get("probability", 1.0) * 0.1
+								_apply_collision_data(c_data, col_mode, tileset.tile_size)
+								
 	_inject_metadata_to_tileset(tileset)
 	_pending_saves.append({"type": "resource", "path": selected_tileset_path, "data": tileset})
 
@@ -1841,7 +1921,6 @@ func _get_valid_masks(mode: AtlasSelectorCanvas.AutotileType) -> Array[int]:
 			valid_masks.append(mask)
 			
 	return valid_masks
-
 
 
 ## Configures the TileData peering bits safely enforcing the grid integrity

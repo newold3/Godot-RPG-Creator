@@ -60,6 +60,34 @@ const NINE_SLICE_BR_STATES: Array[Vector2i] = [
 	Vector2i(1, 5), Vector2i(3, 5), Vector2i(5, 5), Vector2i(3, 3)
 ]
 
+## 11-State mapped coordinates for the Top-Left quadrant of an LPC autotile
+const LPC_TL_STATES: Array[Vector2i] = [
+	Vector2i(2, 6), Vector2i(0, 4), Vector2i(2, 4), Vector2i(4, 4),
+	Vector2i(0, 6), Vector2i(2, 6), Vector2i(4, 6),
+	Vector2i(0, 8), Vector2i(2, 8), Vector2i(4, 8), Vector2i(4, 2)
+]
+
+## 11-State mapped coordinates for the Top-Right quadrant of an LPC autotile
+const LPC_TR_STATES: Array[Vector2i] = [
+	Vector2i(3, 6), Vector2i(1, 4), Vector2i(3, 4), Vector2i(5, 4),
+	Vector2i(1, 6), Vector2i(3, 6), Vector2i(5, 6),
+	Vector2i(1, 8), Vector2i(3, 8), Vector2i(5, 8), Vector2i(3, 2)
+]
+
+## 11-State mapped coordinates for the Bottom-Left quadrant of an LPC autotile
+const LPC_BL_STATES: Array[Vector2i] = [
+	Vector2i(2, 7), Vector2i(0, 5), Vector2i(2, 5), Vector2i(4, 5),
+	Vector2i(0, 7), Vector2i(2, 7), Vector2i(4, 7),
+	Vector2i(0, 9), Vector2i(2, 9), Vector2i(4, 9), Vector2i(4, 1)
+]
+
+## 11-State mapped coordinates for the Bottom-Right quadrant of an LPC autotile
+const LPC_BR_STATES: Array[Vector2i] = [
+	Vector2i(3, 7), Vector2i(1, 5), Vector2i(3, 5), Vector2i(5, 5),
+	Vector2i(1, 7), Vector2i(3, 7), Vector2i(5, 7),
+	Vector2i(1, 9), Vector2i(3, 9), Vector2i(5, 9), Vector2i(3, 1)
+]
+
 #endregion
 
 
@@ -284,6 +312,66 @@ func extract_waterfall_autotile(source_texture: Texture2D) -> Image:
 		
 	return final_image
 
+
+## Generates an image with 47 extracted tiles from an LPC format autotile, blending the 2x2 inner corners and adding alternatives.
+func extract_lpc_autotile(source_texture: Texture2D) -> Image:
+	var source_image: Image = source_texture.get_image()
+	var tile_size: int = source_image.get_width() / 3
+	var sub_tile_size: int = tile_size / 2
+	var final_width: int = tile_size * 8
+	var final_height: int = tile_size * 7
+	var final_image: Image = Image.create(final_width, final_height, false, source_image.get_format())
+	var unique_hashes: Array[String] = []
+	var current_tile_index: int = 0
+	
+	for mask in 256:
+		var tl: int = _get_tl_state_47(mask)
+		var tr: int = _get_tr_state_47(mask)
+		var bl: int = _get_bl_state_47(mask)
+		var br: int = _get_br_state_47(mask)
+		var tile_hash: String = str(tl) + str(tr) + str(bl) + str(br)
+		
+		if not unique_hashes.has(tile_hash):
+			unique_hashes.append(tile_hash)
+			var dest_x: int = (current_tile_index % 8) * tile_size
+			var dest_y: int = (current_tile_index / 8) * tile_size
+			
+			if mask == 0:
+				var isolated: Image = source_image.get_region(Rect2i(0, 0, tile_size, tile_size))
+				final_image.blit_rect(isolated, Rect2i(0, 0, tile_size, tile_size), Vector2i(dest_x, dest_y))
+			elif mask == 127:
+				var inner_nw: Image = source_image.get_region(Rect2i(2 * tile_size, 1 * tile_size, tile_size, tile_size))
+				final_image.blit_rect(inner_nw, Rect2i(0, 0, tile_size, tile_size), Vector2i(dest_x, dest_y))
+			elif mask == 253:
+				var inner_ne: Image = source_image.get_region(Rect2i(1 * tile_size, 1 * tile_size, tile_size, tile_size))
+				final_image.blit_rect(inner_ne, Rect2i(0, 0, tile_size, tile_size), Vector2i(dest_x, dest_y))
+			elif mask == 223:
+				var inner_sw: Image = source_image.get_region(Rect2i(2 * tile_size, 0, tile_size, tile_size))
+				final_image.blit_rect(inner_sw, Rect2i(0, 0, tile_size, tile_size), Vector2i(dest_x, dest_y))
+			elif mask == 247:
+				var inner_se: Image = source_image.get_region(Rect2i(1 * tile_size, 0, tile_size, tile_size))
+				final_image.blit_rect(inner_se, Rect2i(0, 0, tile_size, tile_size), Vector2i(dest_x, dest_y))
+			else:
+				_blit_tile_to_image(source_image, final_image, current_tile_index, tl, tr, bl, br, tile_size, sub_tile_size, LPC_TL_STATES, LPC_TR_STATES, LPC_BL_STATES, LPC_BR_STATES, 8)
+				
+			current_tile_index += 1
+			
+	var src_size: Vector2i = source_image.get_size()
+	
+	if src_size.y >= 2 * tile_size:
+		var alt_iso: Image = source_image.get_region(Rect2i(0, tile_size, tile_size, tile_size))
+		final_image.blit_rect(alt_iso, Rect2i(0, 0, tile_size, tile_size), Vector2i(7 * tile_size, 5 * tile_size))
+		
+	if src_size.y >= 6 * tile_size:
+		var c1: Image = source_image.get_region(Rect2i(0, 5 * tile_size, tile_size, tile_size))
+		var c2: Image = source_image.get_region(Rect2i(1 * tile_size, 5 * tile_size, tile_size, tile_size))
+		var c3: Image = source_image.get_region(Rect2i(2 * tile_size, 5 * tile_size, tile_size, tile_size))
+		
+		final_image.blit_rect(c1, Rect2i(0, 0, tile_size, tile_size), Vector2i(0, 6 * tile_size))
+		final_image.blit_rect(c2, Rect2i(0, 0, tile_size, tile_size), Vector2i(1 * tile_size, 6 * tile_size))
+		final_image.blit_rect(c3, Rect2i(0, 0, tile_size, tile_size), Vector2i(2 * tile_size, 6 * tile_size))
+		
+	return final_image
 
 #endregion
 

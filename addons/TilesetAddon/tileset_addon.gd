@@ -5,6 +5,7 @@ extends EditorPlugin
 #region VARIABLES
 
 var active_layer: TileMapLayer
+var cached_tileset: TileSet
 var cached_cells: Dictionary = {}
 var drag_path: Array[Vector2i] = []
 var was_pressed: bool = false
@@ -45,6 +46,9 @@ func _enter_tree() -> void:
 	shape_selector_1.add_item("⬣ Paint Hendecagon")
 	shape_selector_1.add_item("⯄ Paint Dodecagon")
 	shape_selector_1.add_item("● Paint Circle")
+	shape_selector_1.add_item("♥ Paint Heart")
+	shape_selector_1.add_item("★ Paint Star")
+	shape_selector_1.add_item("◆ Paint Diamond")
 	
 	shape_selector_1.item_selected.connect(_on_shape_selected_1)
 	shape_selector_1.visibility_changed.connect(
@@ -88,6 +92,9 @@ func _enter_tree() -> void:
 	shape_selector_2.add_item("⬣ Paint Hendecagon")
 	shape_selector_2.add_item("⯄ Paint Dodecagon")
 	shape_selector_2.add_item("● Paint Circle")
+	shape_selector_2.add_item("♥ Paint Heart")
+	shape_selector_2.add_item("★ Paint Star")
+	shape_selector_2.add_item("◆ Paint Diamond")
 	
 	shape_selector_2.item_selected.connect(_on_shape_selected_2)
 	shape_selector_2.visibility_changed.connect(
@@ -158,8 +165,10 @@ func _handles(object: Object) -> bool:
 ## Activates the supervisor and caches the initial state of the map
 func _edit(object: Object) -> void:
 	active_layer = object
+	if is_instance_valid(active_layer):
+		cached_tileset = active_layer.tile_set
+		
 	_cache_layer()
-
 
 
 ## Manages dynamic injection of custom buttons into their respective native TileMap toolbars
@@ -222,6 +231,7 @@ func _make_visible(visible: bool) -> void:
 				large_tile_checkbox_2.get_parent().remove_child(large_tile_checkbox_2)
 				
 		active_layer = null
+		cached_tileset = null
 		cached_cells.clear()
 		drag_path.clear()
 		rect_button_1 = null
@@ -229,7 +239,6 @@ func _make_visible(visible: bool) -> void:
 		toolbar_1 = null
 		toolbar_2 = null
 		update_overlays()
-
 
 
 ## Handles selection on the first dropdown and synchronizes the second one
@@ -327,10 +336,25 @@ func _force_rect_tool() -> void:
 			rect_button_2.toggled.emit(true)
 
 
-
 ## Spies on the global mouse state to detect drag operations and tracks the exact path of the brush
 func _process(_delta: float) -> void:
-	if not is_instance_valid(active_layer) or active_layer.tile_set == null:
+	if not is_instance_valid(active_layer):
+		return
+		
+	if active_layer.tile_set != cached_tileset:
+		cached_tileset = active_layer.tile_set
+		
+		var selection: EditorSelection = EditorInterface.get_selection()
+		selection.clear()
+		
+		var reselect = func():
+			if is_instance_valid(active_layer):
+				selection.add_node(active_layer)
+				
+		reselect.call_deferred()
+		return
+		
+	if cached_tileset == null:
 		return
 		
 	var is_left: bool = Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
@@ -380,7 +404,6 @@ func _process(_delta: float) -> void:
 			_apply_surgical_cleanup()
 			
 		update_overlays()
-
 
 
 ## Draws a real-time 1:1 cell preview of the shape over the 2D viewport while dragging
@@ -540,6 +563,50 @@ func _get_shape_cells() -> Array[Vector2i]:
 					if (dx * dx) + (dy * dy) <= 1.0:
 						target_cells.append(Vector2i(x, y))
 						
+		elif shape_idx == 13:
+			var polygon: PackedVector2Array = PackedVector2Array()
+			var steps: int = 64
+			
+			for i in range(steps):
+				var t: float = TAU * i / float(steps)
+				var st: float = sin(t)
+				var hx: float = st * st * st
+				var raw_y: float = 13.0 * cos(t) - 5.0 * cos(2.0 * t) - 2.0 * cos(3.0 * t) - cos(4.0 * t)
+				var hy: float = (raw_y + 2.5) / 14.5
+				polygon.append(center + Vector2(hx * radius.x, -hy * radius.y * invert_y))
+				
+			for x in range(rect.position.x, rect.end.x):
+				for y in range(rect.position.y, rect.end.y):
+					var p: Vector2 = Vector2(x, y) + Vector2(0.5, 0.5)
+					
+					if Geometry2D.is_point_in_polygon(p, polygon):
+						target_cells.append(Vector2i(x, y))
+						
+		elif shape_idx == 14:
+			var polygon: PackedVector2Array = PackedVector2Array()
+			
+			for i in range(10):
+				var r_mult: float = 1.0 if i % 2 == 0 else 0.5
+				var angle: float = -PI / 2.0 + (TAU * i / 10.0)
+				polygon.append(center + Vector2(cos(angle) * radius.x * r_mult, sin(angle) * radius.y * invert_y * r_mult))
+				
+			for x in range(rect.position.x, rect.end.x):
+				for y in range(rect.position.y, rect.end.y):
+					var p: Vector2 = Vector2(x, y) + Vector2(0.5, 0.5)
+					
+					if Geometry2D.is_point_in_polygon(p, polygon):
+						target_cells.append(Vector2i(x, y))
+						
+		elif shape_idx == 15:
+			for x in range(rect.position.x, rect.end.x):
+				for y in range(rect.position.y, rect.end.y):
+					var p: Vector2 = Vector2(x, y) + Vector2(0.5, 0.5)
+					var dx: float = abs((p.x - center.x) / maxf(radius.x, 0.0001))
+					var dy: float = abs((p.y - center.y) / maxf(radius.y, 0.0001))
+					
+					if dx + dy <= 1.0:
+						target_cells.append(Vector2i(x, y))
+						
 		else:
 			var sides: int = shape_idx + 1
 			var polygon: PackedVector2Array = PackedVector2Array()
@@ -582,7 +649,6 @@ func _get_shape_cells() -> Array[Vector2i]:
 		target_cells = hollow_cells
 		
 	return target_cells
-
 
 
 ## Caches the current state of the TileMapLayer cells to use as a clean background reference

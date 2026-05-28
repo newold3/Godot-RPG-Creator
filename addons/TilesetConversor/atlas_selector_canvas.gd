@@ -31,7 +31,10 @@ enum AutotileType {
 	WALL,
 	SINGLE,
 	NINE_SLICE,
-	WATERFALL
+	WATERFALL,
+	LPC_FULL,
+	LPC_FULL_ANIMATED,
+	LPC_BASIC
 }
 
 var current_texture: Texture2D
@@ -563,7 +566,7 @@ func _update_help_text() -> void:
 			match current_autotile_type:
 				AutotileType.SINGLE:
 					help_label.text = "Click or drag to add the first frame"
-				AutotileType.EXTENDED, AutotileType.COMPACT, AutotileType.WALL, AutotileType.NINE_SLICE, AutotileType.WATERFALL:
+				AutotileType.EXTENDED, AutotileType.COMPACT, AutotileType.WALL, AutotileType.NINE_SLICE, AutotileType.WATERFALL, AutotileType.LPC_FULL, AutotileType.LPC_FULL_ANIMATED, AutotileType.LPC_BASIC:
 					help_label.text = "Click to add the first frame"
 		else:
 			help_label.text = "Click to select the next frame"
@@ -571,9 +574,8 @@ func _update_help_text() -> void:
 		match current_autotile_type:
 			AutotileType.SINGLE:
 				help_label.text = "Click and drag to select standalone tiles (F1 Toggled Animation)"
-			AutotileType.EXTENDED, AutotileType.COMPACT, AutotileType.WALL, AutotileType.NINE_SLICE, AutotileType.WATERFALL:
+			AutotileType.EXTENDED, AutotileType.COMPACT, AutotileType.WALL, AutotileType.NINE_SLICE, AutotileType.WATERFALL, AutotileType.LPC_FULL, AutotileType.LPC_FULL_ANIMATED, AutotileType.LPC_BASIC:
 				help_label.text = "Click to extract a standard autotile (F1 Toggled Animation)"
-
 
 
 ## Returns the expected column and row count for the current autotile type
@@ -594,6 +596,12 @@ func _get_cursor_dimensions() -> Vector2i:
 			return Vector2i(2, 3)
 		AutotileType.SINGLE:
 			return Vector2i(1, 1)
+		AutotileType.LPC_FULL:
+			return Vector2i(3, 6)
+		AutotileType.LPC_FULL_ANIMATED:
+			return Vector2i(3, 6)
+		AutotileType.LPC_BASIC:
+			return Vector2i(3, 5)
 	return Vector2i(1, 1)
 
 #endregion
