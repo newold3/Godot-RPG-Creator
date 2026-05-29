@@ -2,8 +2,6 @@
 class_name AtlasSelectorCanvas
 extends Control
 
-#region ATLAS_CANVAS
-
 ## Reference to the ScrollContainer holding the Canvas
 @export var scroll_container: ScrollContainer
 
@@ -37,6 +35,28 @@ enum AutotileType {
 	LPC_BASIC
 }
 
+## Array mapping collision indexes to their readable names based on the UI dropdown
+const COLLISION_NAMES: Array[String] = [
+	"No Collision",
+	"Native Physics Collision",
+	"Passability",
+	"Block All ❌",
+	"Right ➡️",
+	"Right, Up ➡️ ⬆️",
+	"Right, Up, Down ➡️ ⬆️ ⬇️",
+	"Right, Down ➡️ ⬇️",
+	"Left ⬅️",
+	"Left, Right ⬅️ ➡️",
+	"Left, Right, Up ⬅️ ➡️ ⬆️",
+	"Left, Right, Down ⬅️ ➡️ ⬇️",
+	"Left, Up ⬅️ ⬆️",
+	"Left, Up, Down ⬅️ ⬆️ ⬇️",
+	"Left, Down ⬅️ ⬇️",
+	"Up ⬆️",
+	"Up, Down ⬆️ ⬇️",
+	"Down ⬇️"
+]
+
 var current_texture: Texture2D
 var grid_canvas: Control
 var cursor_canvas: Control
@@ -59,16 +79,22 @@ var is_anim_size_locked: bool = false:
 	set(value):
 		is_anim_size_locked = value
 		_update_help_text()
+		
 var locked_anim_size: Vector2i = Vector2i(1, 1)
 
 var is_stretched: bool = false
 var stretch_vector: Vector2 = Vector2(1.0, 1.0)
 
+var is_painting_mode: bool = false
+var is_painting_collision: bool = false
+var is_painting_terrain: bool = false
+var painted_data_ref: Dictionary = {}
+var current_atlas_path: String = ""
+
 signal autotile_selected(rect: Rect2i)
-
 signal single_tiles_selected(rects: Array[Rect2i])
-
 signal autotile_anim_frame_selected(rect: Rect2i)
+signal paint_tile_requested(coord: Vector2i, erase: bool)
 
 
 
@@ -176,10 +202,25 @@ func _on_cursor_canvas_draw() -> void:
 		return
 		
 	var effective_zoom: Vector2 = stretch_vector if is_stretched else Vector2(zoom_level, zoom_level)
-	var line_thickness: float = 2.0 / maxf(effective_zoom.x, effective_zoom.y)
+	var paint_line_thickness: float = 1.0 / maxf(effective_zoom.x, effective_zoom.y)
+	var cursor_thickness: float = 2.0 / maxf(effective_zoom.x, effective_zoom.y)
 	
 	cursor_canvas.draw_set_transform(Vector2.ZERO, 0.0, effective_zoom)
 	
+	if current_atlas_path != "" and painted_data_ref.has(current_atlas_path):
+		var p_dict: Dictionary = painted_data_ref[current_atlas_path]
+		for coord in p_dict:
+			var p_data: Dictionary = p_dict[coord]
+			var px_pos: Vector2 = Vector2(coord) * Vector2(tile_size)
+			var rect: Rect2 = Rect2(px_pos, Vector2(tile_size))
+			
+			if p_data.has("col"):
+				cursor_canvas.draw_rect(rect, Color(1.0, 0.2, 0.2, 0.8), false, paint_line_thickness)
+				
+			if p_data.has("ter") and p_data["ter"] != "":
+				var inner_rect: Rect2 = rect.grow(-4)
+				cursor_canvas.draw_rect(inner_rect, Color(0.2, 1.0, 0.2, 0.8), false, paint_line_thickness)
+				
 	var active_color: Color = cursor_color
 	if is_animation_mode:
 		active_color = Color(0.2, 1.0, 0.4, 0.8)
@@ -197,7 +238,7 @@ func _on_cursor_canvas_draw() -> void:
 		var drag_rect: Rect2 = Rect2(rect_pos, rect_size)
 		
 		var drag_color: Color = Color(0.2, 0.8, 1.0, 0.8)
-		cursor_canvas.draw_rect(drag_rect, drag_color, false, line_thickness)
+		cursor_canvas.draw_rect(drag_rect, drag_color, false, cursor_thickness)
 		cursor_canvas.draw_rect(drag_rect, drag_color * Color(1.0, 1.0, 1.0, 0.2), true)
 		
 	elif is_cursor_visible:
@@ -206,15 +247,14 @@ func _on_cursor_canvas_draw() -> void:
 		var rect: Rect2 = Rect2(Vector2(snapped_mouse_pos), cursor_size)
 		
 		if _is_valid_cursor_position(snapped_mouse_pos, dimensions):
-			cursor_canvas.draw_rect(rect, active_color, false, line_thickness)
+			cursor_canvas.draw_rect(rect, active_color, false, cursor_thickness)
 			cursor_canvas.draw_rect(rect, active_color * Color(1.0, 1.0, 1.0, 0.2), true)
 		else:
 			var error_color: Color = Color(1.0, 0.0, 0.0, 0.8)
-			cursor_canvas.draw_rect(rect, error_color, false, line_thickness)
+			cursor_canvas.draw_rect(rect, error_color, false, cursor_thickness)
 			cursor_canvas.draw_rect(rect, error_color * Color(1.0, 1.0, 1.0, 0.2), true)
 			
 	cursor_canvas.draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
-
 
 
 ## Handles user inputs perfectly matching the reference panning, zoom logic, and new selections
@@ -238,6 +278,13 @@ func _gui_input(event: InputEvent) -> void:
 		var local_pos: Vector2 = event.position
 		var scaled_pos: Vector2 = local_pos / effective_zoom
 		
+		if is_painting_mode:
+			var current_snapped: Vector2i = _get_snapped_pos_from_scaled(scaled_pos)
+			if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+				paint_tile_requested.emit(current_snapped / tile_size, false)
+			elif Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
+				paint_tile_requested.emit(current_snapped / tile_size, true)
+				
 		if is_selecting_multiple and not (is_animation_mode and is_anim_size_locked):
 			drag_end_pos = _get_snapped_pos_from_scaled(scaled_pos)
 			cursor_canvas.queue_redraw()
@@ -271,26 +318,33 @@ func _gui_input(event: InputEvent) -> void:
 			_update_zoom(zoom_level - 0.25, scaled_pos)
 			get_viewport().set_input_as_handled()
 			
-		elif event.button_index == MOUSE_BUTTON_LEFT:
-			if event.pressed:
-				if current_autotile_type == AutotileType.SINGLE:
-					if is_animation_mode and is_anim_size_locked:
-						snapped_mouse_pos = current_snapped
-						_try_extract_selection(true)
+		elif event.button_index == MOUSE_BUTTON_LEFT or event.button_index == MOUSE_BUTTON_RIGHT:
+			if is_painting_mode:
+				if event.pressed:
+					var is_erase: bool = event.button_index == MOUSE_BUTTON_RIGHT
+					paint_tile_requested.emit(current_snapped / tile_size, is_erase)
+				get_viewport().set_input_as_handled()
+				return
+				
+			if event.button_index == MOUSE_BUTTON_LEFT:
+				if event.pressed:
+					if current_autotile_type == AutotileType.SINGLE:
+						if is_animation_mode and is_anim_size_locked:
+							snapped_mouse_pos = current_snapped
+							_try_extract_selection(true)
+						else:
+							is_selecting_multiple = true
+							drag_start_pos = current_snapped
+							drag_end_pos = current_snapped
+							cursor_canvas.queue_redraw()
 					else:
-						is_selecting_multiple = true
-						drag_start_pos = current_snapped
-						drag_end_pos = current_snapped
-						cursor_canvas.queue_redraw()
+						snapped_mouse_pos = current_snapped
+						_try_extract_selection(is_animation_mode)
 				else:
-					snapped_mouse_pos = current_snapped
-					_try_extract_selection(is_animation_mode)
-			else:
-				if is_selecting_multiple:
-					is_selecting_multiple = false
-					_process_drag_selection()
-					cursor_canvas.queue_redraw()
-
+					if is_selecting_multiple:
+						is_selecting_multiple = false
+						_process_drag_selection()
+						cursor_canvas.queue_redraw()
 
 
 ## Toggles the cursor visibility to create a blink effect
@@ -421,7 +475,21 @@ func _update_cursor_position(scaled_local_mouse_pos: Vector2) -> void:
 	
 	if is_instance_valid(info_label):
 		var tile_coord: Vector2i = new_snapped_pos / tile_size
-		info_label.text = "Tile " + str(tile_coord.x) + ", " + str(tile_coord.y)
+		var txt: String = "Tile " + str(tile_coord.x) + ", " + str(tile_coord.y)
+		
+		if current_atlas_path != "" and painted_data_ref.has(current_atlas_path):
+			if painted_data_ref[current_atlas_path].has(tile_coord):
+				var p_data: Dictionary = painted_data_ref[current_atlas_path][tile_coord]
+				
+				if p_data.has("col"):
+					var col_idx: int = p_data["col"]
+					var col_name: String = COLLISION_NAMES[col_idx] if col_idx >= 0 and col_idx < COLLISION_NAMES.size() else str(col_idx)
+					txt += "\nCol: " + col_name
+					
+				if p_data.has("ter") and p_data["ter"] != "":
+					txt += "\nTer: " + p_data["ter"]
+					
+		info_label.text = txt
 		info_label.visible = true
 		
 	if new_snapped_pos != snapped_mouse_pos:
@@ -429,7 +497,6 @@ func _update_cursor_position(scaled_local_mouse_pos: Vector2) -> void:
 		is_cursor_visible = true
 		blink_timer.start()
 		cursor_canvas.queue_redraw()
-
 
 
 ## Verifies if a given snapped position and dimensions are fully inside the texture bounds
@@ -529,6 +596,12 @@ func clear() -> void:
 	is_anim_size_locked = false
 	locked_anim_size = Vector2i(1, 1)
 	
+	is_painting_mode = false
+	is_painting_collision = false
+	is_painting_terrain = false
+	painted_data_ref.clear()
+	current_atlas_path = ""
+	
 	if is_instance_valid(blink_timer):
 		blink_timer.stop()
 		is_cursor_visible = false
@@ -578,8 +651,12 @@ func _update_help_text() -> void:
 				help_label.text = "Click to extract a standard autotile (F1 Toggled Animation)"
 
 
+
 ## Returns the expected column and row count for the current autotile type
 func _get_cursor_dimensions() -> Vector2i:
+	if is_painting_mode:
+		return Vector2i(1, 1)
+		
 	if is_animation_mode and is_anim_size_locked and current_autotile_type == AutotileType.SINGLE:
 		return locked_anim_size
 		
@@ -602,6 +679,5 @@ func _get_cursor_dimensions() -> Vector2i:
 			return Vector2i(3, 6)
 		AutotileType.LPC_BASIC:
 			return Vector2i(3, 5)
+			
 	return Vector2i(1, 1)
-
-#endregion

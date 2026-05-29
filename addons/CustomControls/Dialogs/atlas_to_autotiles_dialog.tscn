@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="5_xfjgv"]
 [ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="6_wwgmp"]
 [ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="6_xfjgv"]
+[ext_resource type="Texture2D" uid="uid://du1pg3tomwytq" path="res://addons/TilesetConversor/control_icons.png" id="8_xtkn1"]
 [ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="12_3ebtj"]
 
 [sub_resource type="Gradient" id="Gradient_vvvrv"]
@@ -70,6 +71,22 @@ corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4mvil"]
+atlas = ExtResource("8_xtkn1")
+region = Rect2(0, 0, 20, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_770tq"]
+atlas = ExtResource("8_xtkn1")
+region = Rect2(20, 20, 20, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tiguk"]
+atlas = ExtResource("8_xtkn1")
+region = Rect2(20, 0, 20, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2s1wr"]
+atlas = ExtResource("8_xtkn1")
+region = Rect2(0, 20, 20, 20)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gbpf1"]
 content_margin_left = 4.0
@@ -176,7 +193,7 @@ region = Rect2(24, 48, 24, 24)
 oversampling_override = 1.0
 title = "Atlas to Autotiles"
 position = Vector2i(0, 36)
-size = Vector2i(1334, 810)
+size = Vector2i(1400, 810)
 wrap_controls = true
 transient = true
 exclusive = true
@@ -361,6 +378,19 @@ size_flags_horizontal = 3
 tooltip_text = "Name of the terrain to be assigned to the created tile (used in Godot RPG Creator for passability)"
 metadata/original_text = ""
 
+[node name="PaintTerrainButton" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/Controls3" unique_id=1213130719]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Pre-paints terrain in the selected tileset that will be automatically assigned when autotiles are created
+
+[Note]: hotkeys T or B"
+mouse_default_cursor_shape = 2
+toggle_mode = true
+texture_normal = SubResource("AtlasTexture_4mvil")
+texture_pressed = SubResource("AtlasTexture_770tq")
+texture_hover = SubResource("AtlasTexture_tiguk")
+
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons" unique_id=17906098]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -416,6 +446,19 @@ popup/item_16/id = 16
 popup/item_17/text = "Down ⬇️"
 popup/item_17/id = 17
 
+[node name="PaintCollisionButton" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/HBoxContainer2" unique_id=1524587523]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Pre-paints collision in the selected tileset that will be automatically assigned when autotiles are created
+
+[Note]: hotkeys C or B"
+mouse_default_cursor_shape = 2
+toggle_mode = true
+texture_normal = SubResource("AtlasTexture_2s1wr")
+texture_pressed = SubResource("AtlasTexture_770tq")
+texture_hover = SubResource("AtlasTexture_tiguk")
+
 [node name="AnimationSpeedContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons" unique_id=384505281]
 unique_name_in_owner = true
 layout_mode = 2
@@ -450,7 +493,7 @@ metadata/_custom_type_script = "uid://cs6g8remlafby"
 
 [node name="Canvas" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/SmoothScrollContainer" unique_id=590773381 node_paths=PackedStringArray("scroll_container", "info_label", "help_label")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(700, 700)
+custom_minimum_size = Vector2(600, 700)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -537,7 +580,7 @@ layout_mode = 2
 tooltip_text = "Select an action from the list to apply it to the list of added tiles"
 selected = 0
 fit_to_longest_item = false
-item_count = 6
+item_count = 8
 popup/item_0/text = "Select Action..."
 popup/item_0/id = 0
 popup/item_1/text = "Remove Tile Selected"
@@ -546,10 +589,14 @@ popup/item_2/text = "Pick Alternative Tile/s"
 popup/item_2/id = 2
 popup/item_3/text = "Pick Alternative Animated Tile"
 popup/item_3/id = 3
-popup/item_4/text = "Clear Alternative Tiles ▶"
+popup/item_4/text = "Pick Alternative center"
 popup/item_4/id = 4
-popup/item_5/text = "Preview Tileset"
+popup/item_5/text = "Pick Animated Alternative center"
 popup/item_5/id = 5
+popup/item_6/text = "Clear Alternative Tiles ▶"
+popup/item_6/id = 6
+popup/item_7/text = "Preview Tileset"
+popup/item_7/id = 7
 
 [node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=1981552580]
 layout_mode = 2
@@ -619,18 +666,23 @@ popup/item_16/id = 16
 popup/item_17/text = "Down ⬇️"
 popup/item_17/id = 17
 
-[node name="CurrentAnimationSpeedContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=91391295]
+[node name="CurrentAnimationSpeedContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=2021574185]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/CurrentAnimationSpeedContainer" unique_id=131584679]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/CurrentAnimationSpeedContainer" unique_id=162895299]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/CurrentAnimationSpeedContainer/VBoxContainer" unique_id=131584679]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.7487919, 0.898451, 0.8664404, 1)
 theme_override_font_sizes/font_size = 16
-text = "Tile Animation Speed"
+text = "Animation
+Speed"
 horizontal_alignment = 1
 
-[node name="CurrentAnimationSpeed" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/CurrentAnimationSpeedContainer" unique_id=264334171 instance=ExtResource("4_kbouy")]
+[node name="CurrentAnimationSpeed" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/CurrentAnimationSpeedContainer/VBoxContainer" unique_id=264334171 instance=ExtResource("4_kbouy")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Frame animation speed for the selected tile"
@@ -640,6 +692,34 @@ step = 0.01
 value = 0.05
 rounded = false
 _custom_value = 0.05
+
+[node name="HSeparator" type="VSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/CurrentAnimationSpeedContainer" unique_id=1236030595]
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/CurrentAnimationSpeedContainer" unique_id=2030595856]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/CurrentAnimationSpeedContainer/VBoxContainer2" unique_id=132128787]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_colors/font_color = Color(0.7487919, 0.898451, 0.8664404, 1)
+theme_override_font_sizes/font_size = 16
+text = "Mode"
+horizontal_alignment = 1
+
+[node name="AnimationMode" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/CurrentAnimationSpeedContainer/VBoxContainer2" unique_id=710265198 instance=ExtResource("5_xfjgv")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 10
+tooltip_text = "Select the animation mode for the selected tile"
+selected = 0
+fit_to_longest_item = false
+item_count = 2
+popup/item_0/text = "Normal"
+popup/item_0/id = 0
+popup/item_1/text = "Random"
+popup/item_1/id = 1
 
 [node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=1730610055]
 layout_mode = 2
@@ -931,6 +1011,7 @@ text = "Clear Alternatives"
 [connection signal="delete_pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/AutoTilesList" to="." method="_on_auto_tiles_list_delete_pressed"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/AutoTilesList" to="." method="_on_auto_tiles_list_item_selected"]
 [connection signal="text_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/LabelTerrainTileSelected" to="." method="_on_label_terrain_tile_selected_text_changed"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/CurrentAnimationSpeedContainer/VBoxContainer2/AnimationMode" to="." method="_on_animation_mode_item_selected"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/GenerateTileset" to="." method="_on_generate_tileset_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CloseButton" to="." method="_on_close_button_pressed"]
 [connection signal="gui_input" from="MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/HBoxContainer2/FloatingAnimationHandle" to="." method="_on_floating_animation_handle_gui_input"]
