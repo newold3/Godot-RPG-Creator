@@ -3,7 +3,7 @@ class_name GameDayNight
 extends Resource
 
 ## Duration of a full day cycle in seconds
-@export var day_duration_seconds: int = 300
+@export var day_duration_seconds: int = 1440 # 24 minutes
 ## Starting time of day (in 24-hour format, e.g., 13 = 1:00 PM)
 @export var start_time: float = 13
 

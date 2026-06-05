@@ -3933,36 +3933,45 @@ parameters = {
 
 [sub_resource type="Resource" id="Resource_243in"]
 script = ExtResource("4_4d10c")
+code = 9999
+parameters = {
+&"background_color": Color(0.23529412, 0.019607844, 0.03137255, 1),
+&"text": "Nuevos comandos",
+&"text_color": Color(0.84705883, 0.1882353, 0.22352941, 1)
+}
 
 [sub_resource type="Resource" id="Resource_ge7ku"]
-script = ExtResource("7_nw8pp")
+script = ExtResource("4_4d10c")
 
 [sub_resource type="Resource" id="Resource_3sx3u"]
+script = ExtResource("7_nw8pp")
+
+[sub_resource type="Resource" id="Resource_hqwfp"]
 script = ExtResource("8_oon1j")
 passable = true
 
-[sub_resource type="Resource" id="Resource_hqwfp"]
+[sub_resource type="Resource" id="Resource_cmk0m"]
 script = ExtResource("2_7i1fv")
 _uniq_id = 4545268009040837
 id = 0
-list = Array[ExtResource("4_4d10c")]([SubResource("Resource_utrrl"), SubResource("Resource_0mca8"), SubResource("Resource_4nyxr"), SubResource("Resource_243in")])
+list = Array[ExtResource("4_4d10c")]([SubResource("Resource_utrrl"), SubResource("Resource_0mca8"), SubResource("Resource_4nyxr"), SubResource("Resource_243in"), SubResource("Resource_ge7ku")])
 condition = SubResource("Resource_2ra5b")
-movement_route = SubResource("Resource_ge7ku")
-options = SubResource("Resource_3sx3u")
+movement_route = SubResource("Resource_3sx3u")
+options = SubResource("Resource_hqwfp")
 event_trigger_list = PackedInt64Array(1129373089051834)
 event_tool_list = PackedInt32Array()
 event_signal_list = PackedInt32Array()
 character_path = "res://Scenes/NPCs/juanillo/juanillo_data.tres"
 modulate = Color(0.7624998, 0, 1, 1)
 
-[sub_resource type="Resource" id="Resource_cmk0m"]
+[sub_resource type="Resource" id="Resource_ukw56"]
 script = ExtResource("3_pu3ch")
 pressure_targets = PackedInt64Array(0)
 
-[sub_resource type="Resource" id="Resource_ukw56"]
+[sub_resource type="Resource" id="Resource_lwykn"]
 script = ExtResource("5_r4f3p")
 
-[sub_resource type="Resource" id="Resource_lwykn"]
+[sub_resource type="Resource" id="Resource_23l8k"]
 script = ExtResource("4_4d10c")
 code = 2
 parameters = {
@@ -3970,38 +3979,38 @@ parameters = {
 "type": 0,
 "value": ""
 },
-&"face": SubResource("Resource_ukw56"),
+&"face": SubResource("Resource_lwykn"),
 &"height": 0.0,
 &"is_floating_dialog": false,
 &"position": 0,
 &"width": 0.0
 }
 
-[sub_resource type="Resource" id="Resource_23l8k"]
+[sub_resource type="Resource" id="Resource_oigkp"]
 script = ExtResource("4_4d10c")
 code = 3
 parameters = {
 "line": "hola soy el nuevo!"
 }
 
-[sub_resource type="Resource" id="Resource_oigkp"]
+[sub_resource type="Resource" id="Resource_22kfh"]
 script = ExtResource("4_4d10c")
 
-[sub_resource type="Resource" id="Resource_22kfh"]
+[sub_resource type="Resource" id="Resource_veelq"]
 script = ExtResource("7_nw8pp")
 
-[sub_resource type="Resource" id="Resource_veelq"]
+[sub_resource type="Resource" id="Resource_ebtnq"]
 script = ExtResource("8_oon1j")
 passable = true
 
-[sub_resource type="Resource" id="Resource_ebtnq"]
+[sub_resource type="Resource" id="Resource_0l7b5"]
 script = ExtResource("2_7i1fv")
 _uniq_id = 6660602690426521
 id = 0
-list = Array[ExtResource("4_4d10c")]([SubResource("Resource_lwykn"), SubResource("Resource_23l8k"), SubResource("Resource_oigkp")])
-condition = SubResource("Resource_cmk0m")
-movement_route = SubResource("Resource_22kfh")
-options = SubResource("Resource_veelq")
+list = Array[ExtResource("4_4d10c")]([SubResource("Resource_23l8k"), SubResource("Resource_oigkp"), SubResource("Resource_22kfh")])
+condition = SubResource("Resource_ukw56")
+movement_route = SubResource("Resource_veelq")
+options = SubResource("Resource_ebtnq")
 launcher = 2
 event_trigger_list = PackedInt64Array(1129373089051834)
 event_tool_list = PackedInt32Array()
@@ -4010,24 +4019,24 @@ character_path = "res://Scenes/NPCs/juanillo/juanillo_data.tres"
 modulate = Color(0.7624998, 0, 1, 1)
 is_quest_page = true
 
-[sub_resource type="Resource" id="Resource_0l7b5"]
+[sub_resource type="Resource" id="Resource_kdbcp"]
 script = ExtResource("10_k8bko")
 
-[sub_resource type="Resource" id="Resource_kdbcp"]
-script = ExtResource("11_8au4t")
-levels = Array[ExtResource("10_k8bko")]([SubResource("Resource_0l7b5")])
-
 [sub_resource type="Resource" id="Resource_3l2xv"]
+script = ExtResource("11_8au4t")
+levels = Array[ExtResource("10_k8bko")]([SubResource("Resource_kdbcp")])
+
+[sub_resource type="Resource" id="Resource_ps66w"]
 script = ExtResource("1_546u1")
 _uniq_id = 6688471195478270
 name = "EV0014"
 id = 14
 x = 17
 y = 13
-pages = Array[ExtResource("2_7i1fv")]([SubResource("Resource_hqwfp"), SubResource("Resource_ebtnq")])
-relationship = SubResource("Resource_kdbcp")
+pages = Array[ExtResource("2_7i1fv")]([SubResource("Resource_cmk0m"), SubResource("Resource_0l7b5")])
+relationship = SubResource("Resource_3l2xv")
 legacy_mode = true
 
 [resource]
 script = ExtResource("12_m2ele")
-events = Array[ExtResource("1_546u1")]([SubResource("Resource_em1s3"), SubResource("Resource_lbrkh"), SubResource("Resource_ehbhv"), SubResource("Resource_ixleh"), SubResource("Resource_n6ngd"), SubResource("Resource_fxc3q"), SubResource("Resource_61jql"), SubResource("Resource_m64xv"), SubResource("Resource_063iu"), SubResource("Resource_jp37q"), SubResource("Resource_ww6ku"), SubResource("Resource_3ufao"), SubResource("Resource_r75ka"), SubResource("Resource_3l2xv")])
+events = Array[ExtResource("1_546u1")]([SubResource("Resource_em1s3"), SubResource("Resource_lbrkh"), SubResource("Resource_ehbhv"), SubResource("Resource_ixleh"), SubResource("Resource_n6ngd"), SubResource("Resource_fxc3q"), SubResource("Resource_61jql"), SubResource("Resource_m64xv"), SubResource("Resource_063iu"), SubResource("Resource_jp37q"), SubResource("Resource_ww6ku"), SubResource("Resource_3ufao"), SubResource("Resource_r75ka"), SubResource("Resource_ps66w")])

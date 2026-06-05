@@ -756,6 +756,18 @@ func smooth_scroll_to(scroll_position: Vector2) -> void:
 		v.value = clamp(scroll_position.y, v.min_value, v.max_value - v.page)
 
 
+func smoot_scroll_to_rect(rect: Rect2) -> void:
+	var scroll_h: float = scroll_horizontal
+	var scroll_v: float = scroll_vertical
+	var viewport_size: Vector2 = size
+	
+	if rect.position.x < scroll_h or rect.position.x + rect.size.x > scroll_h + viewport_size.x:
+		scroll_horizontal = int(rect.position.x - (viewport_size.x / 2.0) + (rect.size.x / 2.0))
+		
+	if rect.position.y < scroll_v or rect.position.y + rect.size.y > scroll_v + viewport_size.y:
+		scroll_vertical = int(rect.position.y - (viewport_size.y / 2.0) + (rect.size.y / 2.0))
+
+
 ## Registers a control to track focus exclusively
 func set_focus_target(target: Control) -> void:
 	single_target_focus = target

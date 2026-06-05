@@ -950,6 +950,38 @@ func _on_top_menu_draw() -> void:
 			node.draw_rect(rect, Color.ORANGE, true)
 
 
+func get_item_text(index: int) -> String:
+	return %ItemList.get_item_text(index)
+
+
+func add_item(_item: String, _icon: Texture2D) -> int:
+	if _item:
+		var column = [_item]
+		column.resize(columns)
+		add_column(PackedStringArray(column))
+		await columns_setted
+	
+	return items.size() - 1
+
+
+func select_or_add_item(item_text: String, metadata: Variant = null, icon: Texture2D = null) -> int:
+	var found_index: int = -1
+	
+	for i in range(get_item_count()):
+		if get_item_text(i) == item_text or (metadata != null and get_item_metadata(i) == metadata):
+			found_index = i
+			break
+			
+	if found_index == -1:
+		found_index = await add_item(item_text, icon)
+		if metadata != null:
+			set_item_metadata(found_index, metadata)
+
+	select(found_index)
+	
+	return found_index
+
+
 
 ## Internal Draw handling mapping visual space into real backend representation values.
 func _on_itemlist_draw() -> void:

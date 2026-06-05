@@ -282,7 +282,6 @@ theme_override_constants/margin_bottom = 12
 
 [node name="Tab1" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer" unique_id=2044336672]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 
 [node name="General" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1" unique_id=1193028855]
@@ -422,6 +421,7 @@ metadata/_custom_type_script = "uid://cs6g8remlafby"
 
 [node name="InitialPartyMembers" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/InitialParty/MarginContainer/VBoxContainer/SmoothScrollContainer" unique_id=647890633 instance=ExtResource("3_queqv")]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(106, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -561,7 +561,7 @@ size_flags_vertical = 3
 
 [node name="StartPositions" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/StartPositions/MarginContainer/VBoxContainer2/ScrollContainer" unique_id=282607984 instance=ExtResource("3_queqv")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(1164, 23)
+custom_minimum_size = Vector2(502, 23)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -614,7 +614,7 @@ size_flags_vertical = 3
 
 [node name="MusicList" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Music/MarginContainer/VBoxContainer/ScrollContainer" unique_id=109732637 instance=ExtResource("3_queqv")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 23)
+custom_minimum_size = Vector2(549, 23)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -662,7 +662,7 @@ size_flags_vertical = 3
 
 [node name="SoundList" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Sound/MarginContainer/VBoxContainer2/ScrollContainer" unique_id=697495913 instance=ExtResource("3_queqv")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 23)
+custom_minimum_size = Vector2(549, 23)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1210,7 +1210,7 @@ text = "User Signals:"
 
 [node name="UserSignalList" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab5/UserSignal/MarginContainer/VBoxContainer" unique_id=1719691016 instance=ExtResource("3_queqv")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 23)
+custom_minimum_size = Vector2(106, 23)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1228,6 +1228,7 @@ List of user signals. These signals can be used in different parts to execute so
 
 [node name="Tab6" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer" unique_id=1999145550]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
 [node name="Group1" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6" unique_id=201666254]
@@ -1730,7 +1731,7 @@ alignment = 0
 
 [node name="GameSceneList" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab7/GameScenes/MarginContainer/VBoxContainer" unique_id=1140829683 instance=ExtResource("3_queqv")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 23)
+custom_minimum_size = Vector2(430, 23)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1778,7 +1779,7 @@ text = "Preload Scenes:"
 
 [node name="PreloadSceneList" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab8/PreloadScenes/MarginContainer/VBoxContainer" unique_id=308895616 instance=ExtResource("3_queqv")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 23)
+custom_minimum_size = Vector2(106, 23)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3

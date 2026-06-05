@@ -117,6 +117,7 @@ func _precalculate_cell(pos: Vector2i, cell_layers: Dictionary) -> void:
 		var res_std = true
 		for layer_name in map.MAP_LAYERS:
 			var layer: TileMapLayer = map.MAP_LAYERS[layer_name]
+			if not layer: continue
 			if layer.get_meta("collisions_disabled", false) == true:
 				continue
 			if cell_layers.has(layer_name):
@@ -139,6 +140,7 @@ func _precalculate_cell(pos: Vector2i, cell_layers: Dictionary) -> void:
 		var res_inv = true
 		for layer_name in map.MAP_LAYERS:
 			var layer: TileMapLayer = map.MAP_LAYERS[layer_name]
+			if not layer: continue
 			if layer.get_meta("collisions_disabled", false) == true:
 				continue
 			if cell_layers.has(layer_name):

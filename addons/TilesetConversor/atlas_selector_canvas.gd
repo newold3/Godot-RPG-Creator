@@ -91,6 +91,9 @@ var is_painting_terrain: bool = false
 var painted_data_ref: Dictionary = {}
 var current_atlas_path: String = ""
 
+var has_selected_region: bool = false
+var selected_region: Rect2i = Rect2i()
+
 signal autotile_selected(rect: Rect2i)
 signal single_tiles_selected(rects: Array[Rect2i])
 signal autotile_anim_frame_selected(rect: Rect2i)
@@ -198,7 +201,7 @@ func _on_grid_canvas_draw() -> void:
 
 ## Draws the blinking selection cursor applying a transform and validity checks
 func _on_cursor_canvas_draw() -> void:
-	if not current_texture or not is_mouse_inside:
+	if not current_texture:
 		return
 		
 	var effective_zoom: Vector2 = stretch_vector if is_stretched else Vector2(zoom_level, zoom_level)
@@ -221,7 +224,21 @@ func _on_cursor_canvas_draw() -> void:
 				var inner_rect: Rect2 = rect.grow(-4)
 				cursor_canvas.draw_rect(inner_rect, Color(0.2, 1.0, 0.2, 0.8), false, paint_line_thickness)
 				
+	if has_selected_region:
+		var highlight_color: Color = Color(1.0, 0.5, 0.0, 0.9)
+		var dark_highlight_color: Color = highlight_color.darkened(0.4)
+		
+		cursor_canvas.draw_rect(selected_region.grow(cursor_thickness * 2.0), Color(0.0, 0.0, 0.0, 0.8), false, cursor_thickness * 2.0)
+		cursor_canvas.draw_rect(selected_region, highlight_color, false, cursor_thickness * 2.0)
+		cursor_canvas.draw_rect(selected_region.grow(-cursor_thickness * 1.75), dark_highlight_color, false, cursor_thickness * 1.5)
+		cursor_canvas.draw_rect(selected_region, highlight_color * Color(1.0, 1.0, 1.0, 0.2), true)
+		
+	if not is_mouse_inside:
+		cursor_canvas.draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+		return
+		
 	var active_color: Color = cursor_color
+	
 	if is_animation_mode:
 		active_color = Color(0.2, 1.0, 0.4, 0.8)
 		
@@ -238,7 +255,11 @@ func _on_cursor_canvas_draw() -> void:
 		var drag_rect: Rect2 = Rect2(rect_pos, rect_size)
 		
 		var drag_color: Color = Color(0.2, 0.8, 1.0, 0.8)
-		cursor_canvas.draw_rect(drag_rect, drag_color, false, cursor_thickness)
+		var dark_drag_color: Color = drag_color.darkened(0.4)
+		
+		cursor_canvas.draw_rect(drag_rect.grow(cursor_thickness * 2.0), Color(0.0, 0.0, 0.0, 0.8), false, cursor_thickness * 2.0)
+		cursor_canvas.draw_rect(drag_rect, drag_color, false, cursor_thickness * 2.0)
+		cursor_canvas.draw_rect(drag_rect.grow(-cursor_thickness * 1.75), dark_drag_color, false, cursor_thickness * 1.5)
 		cursor_canvas.draw_rect(drag_rect, drag_color * Color(1.0, 1.0, 1.0, 0.2), true)
 		
 	elif is_cursor_visible:
@@ -247,14 +268,53 @@ func _on_cursor_canvas_draw() -> void:
 		var rect: Rect2 = Rect2(Vector2(snapped_mouse_pos), cursor_size)
 		
 		if _is_valid_cursor_position(snapped_mouse_pos, dimensions):
-			cursor_canvas.draw_rect(rect, active_color, false, cursor_thickness)
+			var dark_active_color: Color = active_color.darkened(0.4)
+			
+			cursor_canvas.draw_rect(rect.grow(cursor_thickness * 2.0), Color(0.0, 0.0, 0.0, 0.8), false, cursor_thickness * 2.0)
+			cursor_canvas.draw_rect(rect, active_color, false, cursor_thickness * 2.0)
+			cursor_canvas.draw_rect(rect.grow(-cursor_thickness * 1.75), dark_active_color, false, cursor_thickness * 1.5)
 			cursor_canvas.draw_rect(rect, active_color * Color(1.0, 1.0, 1.0, 0.2), true)
 		else:
 			var error_color: Color = Color(1.0, 0.0, 0.0, 0.8)
-			cursor_canvas.draw_rect(rect, error_color, false, cursor_thickness)
+			var dark_error_color: Color = error_color.darkened(0.4)
+			
+			cursor_canvas.draw_rect(rect.grow(cursor_thickness * 2.0), Color(0.0, 0.0, 0.0, 0.8), false, cursor_thickness * 2.0)
+			cursor_canvas.draw_rect(rect, error_color, false, cursor_thickness * 2.0)
+			cursor_canvas.draw_rect(rect.grow(-cursor_thickness * 1.75), dark_error_color, false, cursor_thickness * 1.5)
 			cursor_canvas.draw_rect(rect, error_color * Color(1.0, 1.0, 1.0, 0.2), true)
 			
 	cursor_canvas.draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+
+
+## Highlights a specific region on the canvas and scrolls to make it visible
+func highlight_and_focus_rect(rect: Rect2i) -> void:
+	if rect.size == Vector2i.ZERO:
+		has_selected_region = false
+		cursor_canvas.queue_redraw()
+		return
+		
+	has_selected_region = true
+	selected_region = rect
+	cursor_canvas.queue_redraw()
+	
+	if not is_instance_valid(scroll_container) or not current_texture:
+		return
+		
+	var effective_zoom: Vector2 = stretch_vector if is_stretched else Vector2(zoom_level, zoom_level)
+	var scaled_rect: Rect2 = Rect2(Vector2(rect.position) * effective_zoom, Vector2(rect.size) * effective_zoom)
+	
+	if scroll_container and scroll_container.has_method("smoot_scroll_to_rect"):
+		scroll_container.smoot_scroll_to_rect(scaled_rect)
+	else:
+		var scroll_h: float = scroll_container.scroll_horizontal
+		var scroll_v: float = scroll_container.scroll_vertical
+		var viewport_size: Vector2 = scroll_container.size
+		
+		if scaled_rect.position.x < scroll_h or scaled_rect.position.x + scaled_rect.size.x > scroll_h + viewport_size.x:
+			scroll_container.scroll_horizontal = int(scaled_rect.position.x - (viewport_size.x / 2.0) + (scaled_rect.size.x / 2.0))
+			
+		if scaled_rect.position.y < scroll_v or scaled_rect.position.y + scaled_rect.size.y > scroll_v + viewport_size.y:
+			scroll_container.scroll_vertical = int(scaled_rect.position.y - (viewport_size.y / 2.0) + (scaled_rect.size.y / 2.0))
 
 
 ## Handles user inputs perfectly matching the reference panning, zoom logic, and new selections
@@ -328,6 +388,9 @@ func _gui_input(event: InputEvent) -> void:
 				
 			if event.button_index == MOUSE_BUTTON_LEFT:
 				if event.pressed:
+					has_selected_region = false
+					cursor_canvas.queue_redraw()
+					
 					if current_autotile_type == AutotileType.SINGLE:
 						if is_animation_mode and is_anim_size_locked:
 							snapped_mouse_pos = current_snapped
@@ -602,6 +665,9 @@ func clear() -> void:
 	painted_data_ref.clear()
 	current_atlas_path = ""
 	
+	has_selected_region = false
+	selected_region = Rect2i()
+	
 	if is_instance_valid(blink_timer):
 		blink_timer.stop()
 		is_cursor_visible = false
@@ -612,7 +678,6 @@ func clear() -> void:
 	queue_redraw()
 	grid_canvas.queue_redraw()
 	cursor_canvas.queue_redraw()
-
 
 
 ## Updates the working grid dimensions and autotile type dynamically from the parent window

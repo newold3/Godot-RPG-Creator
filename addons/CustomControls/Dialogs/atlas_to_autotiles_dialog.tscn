@@ -42,7 +42,7 @@ gradient = SubResource("Gradient_un8fw")
 fill_from = Vector2(0.547009, 1)
 fill_to = Vector2(0.559829, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3ebtj"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xtkn1"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_ygvtv")
 
@@ -204,7 +204,7 @@ anim_frames_container = NodePath("MarginContainer/VBoxContainer/FloatingAnimatio
 merge_anim_button = NodePath("MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/HBoxContainer/MergeFrames")
 clear_anim_button = NodePath("MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/HBoxContainer/ClearFrames")
 close_anim_panel_button = NodePath("MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/HBoxContainer2/CloseFloatingAnimationPanel")
-anim_speed_spinbox = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/AnimationSpeedContainer/AnimationSpeed")
+anim_speed_spinbox = NodePath("MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/TopControls/AnimationSpeedContainer/AnimationSpeed")
 autotile_action_options = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/AutotileActions")
 alt_main_container = NodePath("MarginContainer/VBoxContainer/FloatingAlternativePanel")
 alt_frames_container = NodePath("MarginContainer/VBoxContainer/FloatingAlternativePanel/FloatingAlternativePanelContainer/VBoxContainer/SmoothScrollContainer/AlternativeContainer")
@@ -262,7 +262,7 @@ odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
 event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 top_bar_style = SubResource("StyleBoxTexture_kx1ii")
 columns_text_colors = PackedColorArray(0.72549, 0.992157, 0.772549, 1)
-cursor_style = SubResource("StyleBoxTexture_3ebtj")
+cursor_style = SubResource("StyleBoxTexture_xtkn1")
 panel_style = SubResource("StyleBoxFlat_xtkn1")
 names = PackedStringArray("Atlas List")
 sizes = PackedInt32Array(260)
@@ -459,28 +459,6 @@ texture_normal = SubResource("AtlasTexture_2s1wr")
 texture_pressed = SubResource("AtlasTexture_770tq")
 texture_hover = SubResource("AtlasTexture_tiguk")
 
-[node name="AnimationSpeedContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons" unique_id=384505281]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/AnimationSpeedContainer" unique_id=1425975331]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.7487919, 0.898451, 0.8664404, 1)
-text = "Animation Speed (fps):"
-
-[node name="AnimationSpeed" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer/TopButtons/AnimationSpeedContainer" unique_id=226381042 instance=ExtResource("4_kbouy")]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-tooltip_text = "Frame animation speed for the created tile"
-min_value = 0.05
-max_value = 50.0
-step = 0.01
-value = 5.0
-rounded = false
-_custom_value = 5.0
-
 [node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer2/MidColum/VBoxContainer" unique_id=323482965]
 layout_mode = 2
 
@@ -580,7 +558,7 @@ layout_mode = 2
 tooltip_text = "Select an action from the list to apply it to the list of added tiles"
 selected = 0
 fit_to_longest_item = false
-item_count = 8
+item_count = 9
 popup/item_0/text = "Select Action..."
 popup/item_0/id = 0
 popup/item_1/text = "Remove Tile Selected"
@@ -589,14 +567,16 @@ popup/item_2/text = "Pick Alternative Tile/s"
 popup/item_2/id = 2
 popup/item_3/text = "Pick Alternative Animated Tile"
 popup/item_3/id = 3
-popup/item_4/text = "Pick Alternative center"
+popup/item_4/text = "Pick Alternative Center"
 popup/item_4/id = 4
-popup/item_5/text = "Pick Animated Alternative center"
+popup/item_5/text = "Pick Animated Alternative Center"
 popup/item_5/id = 5
 popup/item_6/text = "Clear Alternative Tiles ▶"
 popup/item_6/id = 6
 popup/item_7/text = "Preview Tileset"
 popup/item_7/id = 7
+popup/item_8/text = "Edit Autotile"
+popup/item_8/id = 8
 
 [node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=1981552580]
 layout_mode = 2
@@ -708,7 +688,7 @@ theme_override_font_sizes/font_size = 16
 text = "Mode"
 horizontal_alignment = 1
 
-[node name="AnimationMode" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/CurrentAnimationSpeedContainer/VBoxContainer2" unique_id=710265198 instance=ExtResource("5_xfjgv")]
+[node name="CurrentAnimationMode" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/CurrentAnimationSpeedContainer/VBoxContainer2" unique_id=710265198 instance=ExtResource("5_xfjgv")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 10
@@ -808,6 +788,60 @@ text = "Animation Frames"
 horizontal_alignment = 1
 
 [node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer" unique_id=1789238328]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TopControls" type="HBoxContainer" parent="MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer" unique_id=925125023]
+layout_mode = 2
+
+[node name="AnimationSpeedContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/TopControls" unique_id=469928696]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/TopControls/AnimationSpeedContainer" unique_id=1993405979]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7487919, 0.898451, 0.8664404, 1)
+text = "Speed (fps):"
+horizontal_alignment = 1
+
+[node name="AnimationSpeed" parent="MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/TopControls/AnimationSpeedContainer" unique_id=2128487109 instance=ExtResource("4_kbouy")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Frame animation speed for the created tile"
+min_value = 0.05
+max_value = 50.0
+step = 0.01
+value = 5.0
+rounded = false
+_custom_value = 5.0
+
+[node name="AnimationModeContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/TopControls" unique_id=201974426]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/TopControls/AnimationModeContainer" unique_id=931105760]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7487919, 0.898451, 0.8664404, 1)
+text = "Mode:"
+horizontal_alignment = 1
+
+[node name="AnimationMode" parent="MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/TopControls/AnimationModeContainer" unique_id=2134464648 instance=ExtResource("5_xfjgv")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 10
+tooltip_text = "Select the animation mode for the selected tile"
+selected = 0
+fit_to_longest_item = false
+item_count = 2
+popup/item_0/text = "Normal"
+popup/item_0/id = 0
+popup/item_1/text = "Random"
+popup/item_1/id = 1
+
+[node name="HSeparator3" type="HSeparator" parent="MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer" unique_id=1610016650]
 layout_mode = 2
 mouse_filter = 2
 
@@ -1011,7 +1045,7 @@ text = "Clear Alternatives"
 [connection signal="delete_pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/AutoTilesList" to="." method="_on_auto_tiles_list_delete_pressed"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/AutoTilesList" to="." method="_on_auto_tiles_list_item_selected"]
 [connection signal="text_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/LabelTerrainTileSelected" to="." method="_on_label_terrain_tile_selected_text_changed"]
-[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/CurrentAnimationSpeedContainer/VBoxContainer2/AnimationMode" to="." method="_on_animation_mode_item_selected"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/CurrentAnimationSpeedContainer/VBoxContainer2/CurrentAnimationMode" to="." method="_on_animation_mode_item_selected"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/GenerateTileset" to="." method="_on_generate_tileset_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CloseButton" to="." method="_on_close_button_pressed"]
 [connection signal="gui_input" from="MarginContainer/VBoxContainer/FloatingAnimationPanel/FloatingMainPanelContainer/VBoxContainer/HBoxContainer2/FloatingAnimationHandle" to="." method="_on_floating_animation_handle_gui_input"]

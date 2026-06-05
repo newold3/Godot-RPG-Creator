@@ -1,0 +1,349 @@
+[gd_scene format=3 uid="uid://dkqtab6iisu1x"]
+
+[ext_resource type="PackedScene" uid="uid://m1iixxkyrur5" path="res://addons/CustomControls/custom_simple_item_list.tscn" id="1_6b24k"]
+[ext_resource type="Script" uid="uid://b1j6cjn1mueb2" path="res://addons/CustomControls/Dialogs/autotile_editor_dialog.gd" id="1_y4lgm"]
+[ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="2_y4lgm"]
+[ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="3_2me1p"]
+[ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="4_1eyp7"]
+[ext_resource type="Texture2D" uid="uid://du1pg3tomwytq" path="res://addons/TilesetConversor/control_icons.png" id="4_2me1p"]
+[ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="5_0h33p"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="7_u3jn7"]
+
+[sub_resource type="Gradient" id="Gradient_vvvrv"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_21cmx"]
+gradient = SubResource("Gradient_vvvrv")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2scni"]
+resource_local_to_scene = true
+content_margin_left = 3.0
+content_margin_right = 3.0
+bg_color = Color(1, 1, 1, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hkha6"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="Gradient" id="Gradient_3obsl"]
+offsets = PackedFloat32Array(0, 0.369535, 1)
+colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_mtkxg"]
+gradient = SubResource("Gradient_3obsl")
+fill_from = Vector2(0.547009, 1)
+fill_to = Vector2(0.559829, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_htguc"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8uol8"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_mtkxg")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1eyp7"]
+atlas = ExtResource("4_2me1p")
+region = Rect2(0, 0, 20, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0h33p"]
+atlas = ExtResource("4_2me1p")
+region = Rect2(20, 20, 20, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_djan5"]
+atlas = ExtResource("4_2me1p")
+region = Rect2(20, 0, 20, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u3jn7"]
+atlas = ExtResource("4_2me1p")
+region = Rect2(0, 20, 20, 20)
+
+[node name="AutotileEditorDialog" type="Window" unique_id=253452243 node_paths=PackedStringArray("items_list", "tools_container", "animation_container", "canvas_scroll", "editor_canvas", "anim_speed_spinbox", "anim_mode_options", "collision_options", "terrain_name_input", "paint_collision_button", "paint_terrain_button", "canvas_help_label")]
+oversampling_override = 1.0
+title = "Autotile Editor"
+position = Vector2i(0, 36)
+size = Vector2i(920, 680)
+script = ExtResource("1_y4lgm")
+items_list = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/LeftColumn/AutotileList")
+tools_container = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/TopColumn/ToolsContainer")
+animation_container = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/TopColumn/AnimationsContainer")
+canvas_scroll = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/BottomColumn/SmoothScrollContainer")
+editor_canvas = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/BottomColumn/SmoothScrollContainer/Canvas")
+anim_speed_spinbox = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/TopColumn/AnimationsContainer/1/AnimationSpeed")
+anim_mode_options = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/TopColumn/AnimationsContainer/2/AnimationMode")
+collision_options = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/TopColumn/ToolsContainer/2/HBoxContainer/AddCollision")
+terrain_name_input = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/TopColumn/ToolsContainer/1/HBoxContainer/TerrainName")
+paint_collision_button = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/TopColumn/ToolsContainer/2/HBoxContainer/PaintCollisionButton")
+paint_terrain_button = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/TopColumn/ToolsContainer/1/HBoxContainer/PaintTerrainButton")
+canvas_help_label = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/BottomColumn/CanvasHelp")
+
+[node name="Background" type="TextureRect" parent="." unique_id=1861192099]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_21cmx")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1807416338]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=914687037]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1054905656]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="LeftColumn" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1348786679]
+layout_mode = 2
+
+[node name="AutotileList" parent="MarginContainer/VBoxContainer/HBoxContainer2/LeftColumn" unique_id=2041091292 instance=ExtResource("1_6b24k")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/v_separation = -1
+theme_override_styles/panel = SubResource("StyleBoxFlat_2scni")
+theme_override_styles/focus = SubResource("StyleBoxFlat_2scni")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_hkha6")
+theme_override_styles/selected = SubResource("StyleBoxTexture_htguc")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_8uol8")
+odd_line_color = Color(0.172549, 0.184314, 0.192157, 1)
+event_line_color = Color(0.145098, 0.156863, 0.164706, 1)
+
+[node name="RightColumn" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1670535453]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TopColumn" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=1810486372]
+layout_mode = 2
+
+[node name="ToolsContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/TopColumn" unique_id=1492594163]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="1" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/TopColumn/ToolsContainer" unique_id=1967880947]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/TopColumn/ToolsContainer/1" unique_id=1882086993]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Terrain Name:"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/TopColumn/ToolsContainer/1" unique_id=1323532582]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TerrainName" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/TopColumn/ToolsContainer/1/HBoxContainer" unique_id=1978358587 instance=ExtResource("2_y4lgm")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Name of the terrain to be assigned to the created tile (used in Godot RPG Creator for passability)"
+metadata/original_text = ""
+
+[node name="PaintTerrainButton" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/TopColumn/ToolsContainer/1/HBoxContainer" unique_id=1255642944]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Pre-paints terrain in the selected tileset that will be automatically assigned when autotiles are created
+
+[Note]: hotkeys T or B"
+mouse_default_cursor_shape = 2
+toggle_mode = true
+texture_normal = SubResource("AtlasTexture_1eyp7")
+texture_pressed = SubResource("AtlasTexture_0h33p")
+texture_hover = SubResource("AtlasTexture_djan5")
+
+[node name="2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/TopColumn/ToolsContainer" unique_id=447773742]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/TopColumn/ToolsContainer/2" unique_id=1177403622]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Collision: "
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/TopColumn/ToolsContainer/2" unique_id=173756760]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="AddCollision" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/TopColumn/ToolsContainer/2/HBoxContainer" unique_id=621784070 instance=ExtResource("3_2me1p")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "The type of collision to be added to the created tile (used in Godot RPG Creator for collision detection)"
+selected = 0
+fit_to_longest_item = false
+item_count = 18
+popup/item_0/text = "No Collision"
+popup/item_0/id = 0
+popup/item_1/text = "Native Physics Collision"
+popup/item_1/id = 1
+popup/item_2/text = "Passability"
+popup/item_2/id = 2
+popup/item_2/separator = true
+popup/item_3/text = "Block All ❌"
+popup/item_3/id = 3
+popup/item_4/text = "Right ➡️"
+popup/item_4/id = 4
+popup/item_5/text = "Right, Up ➡️ ⬆️"
+popup/item_5/id = 5
+popup/item_6/text = "Right, Up, Down ➡️ ⬆️ ⬇️"
+popup/item_6/id = 6
+popup/item_7/text = "Right, Down ➡️ ⬇️"
+popup/item_7/id = 7
+popup/item_8/text = "Left ⬅️"
+popup/item_8/id = 8
+popup/item_9/text = "Left, Right ⬅️ ➡️"
+popup/item_9/id = 9
+popup/item_10/text = "Left, Right, Up ⬅️ ➡️ ⬆️"
+popup/item_10/id = 10
+popup/item_11/text = "Left, Right, Down ⬅️ ➡️ ⬇️"
+popup/item_11/id = 11
+popup/item_12/text = "Left, Up ⬅️ ⬆️"
+popup/item_12/id = 12
+popup/item_13/text = "Left, Up, Down ⬅️ ⬆️ ⬇️"
+popup/item_13/id = 13
+popup/item_14/text = "Left, Down ⬅️ ⬇️"
+popup/item_14/id = 14
+popup/item_15/text = "Up ⬆️"
+popup/item_15/id = 15
+popup/item_16/text = "Up, Down ⬆️ ⬇️"
+popup/item_16/id = 16
+popup/item_17/text = "Down ⬇️"
+popup/item_17/id = 17
+
+[node name="PaintCollisionButton" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/TopColumn/ToolsContainer/2/HBoxContainer" unique_id=157789606]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Pre-paints collision in the selected tileset that will be automatically assigned when autotiles are created
+
+[Note]: hotkeys C or B"
+mouse_default_cursor_shape = 2
+toggle_mode = true
+texture_normal = SubResource("AtlasTexture_u3jn7")
+texture_pressed = SubResource("AtlasTexture_0h33p")
+texture_hover = SubResource("AtlasTexture_djan5")
+
+[node name="AnimationsContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/TopColumn" unique_id=346286800]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="1" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/TopColumn/AnimationsContainer" unique_id=30113607]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/TopColumn/AnimationsContainer/1" unique_id=1334301493]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7487919, 0.898451, 0.8664404, 1)
+text = "Speed (fps):"
+
+[node name="AnimationSpeed" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/TopColumn/AnimationsContainer/1" unique_id=2110822799 instance=ExtResource("4_1eyp7")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Frame animation speed for the created tile"
+min_value = 0.05
+max_value = 50.0
+step = 0.01
+value = 5.0
+rounded = false
+_custom_value = 5.0
+
+[node name="2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/TopColumn/AnimationsContainer" unique_id=1006395024]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/TopColumn/AnimationsContainer/2" unique_id=229918255]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_colors/font_color = Color(0.7487919, 0.898451, 0.8664404, 1)
+text = "Mode:"
+
+[node name="AnimationMode" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/TopColumn/AnimationsContainer/2" unique_id=1126160473 instance=ExtResource("3_2me1p")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 10
+tooltip_text = "Select the animation mode for the selected tile"
+selected = 0
+fit_to_longest_item = false
+item_count = 2
+popup/item_0/text = "Normal"
+popup/item_0/id = 0
+popup/item_1/text = "Random"
+popup/item_1/id = 1
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=201009273]
+layout_mode = 2
+
+[node name="BottomColumn" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn" unique_id=1771580188]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/BottomColumn" unique_id=1942971413]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("5_0h33p")
+metadata/_custom_type_script = "uid://cs6g8remlafby"
+
+[node name="Canvas" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/BottomColumn/SmoothScrollContainer" unique_id=1794733199]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 1
+
+[node name="CanvasHelp" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/RightColumn/BottomColumn" unique_id=1191616478]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_colors/font_color = Color(1, 0.22745098, 0.22352941, 1)
+text = "help"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=183903463]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1699786086]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=225668214 instance=ExtResource("7_u3jn7")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+text = "Close"

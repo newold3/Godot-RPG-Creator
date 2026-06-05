@@ -3925,4 +3925,11 @@ func _format_command_5000(data: FormatData) -> Array:
 	}]
 
 
+func _format_command_9999(data: FormatData) -> Array:
+	return [{
+		"texts": [],
+		"offset_y": default_text_offset_y
+	}]
+
+
 #endregion

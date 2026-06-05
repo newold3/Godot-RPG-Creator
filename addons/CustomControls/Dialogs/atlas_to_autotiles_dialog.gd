@@ -202,6 +202,11 @@ func _ready() -> void:
 	var btn_paint_ter: BaseButton = get_node_or_null("%PaintTerrainButton")
 	if is_instance_valid(btn_paint_ter):
 		btn_paint_ter.toggled.connect(_on_paint_terrain_toggled)
+	
+	if is_instance_valid(auto_tiles_list):
+		if not auto_tiles_list.item_moved.is_connected(_on_auto_tiles_list_item_moved):
+			auto_tiles_list.item_moved.connect(_on_auto_tiles_list_item_moved)
+		auto_tiles_list.item_activated.connect(_on_auto_tiles_list_item_activated)
 		
 	clear_alt_popup = PopupMenu.new()
 	clear_alt_popup.id_pressed.connect(_on_clear_alt_popup_id_pressed)
@@ -815,7 +820,7 @@ func _fill_atlas_list(_selected_id: int = -1) -> void:
 	%LabelTerrainTileSelected.set_disabled(true)
 	
 	for path in atlas:
-		list.add_column([path.get_file().replace(path.get_extension(), "")])
+		list.add_column([path.get_file().replace("." + path.get_extension(), "")])
 		
 	if atlas.size() > 0:
 		await list.columns_setted
@@ -950,18 +955,18 @@ func _on_auto_tiles_list_item_selected(index: int) -> void:
 			%CurrentAnimationSpeedContainer.visible = true
 			%CurrentAnimationSpeed.set_value_no_signal(tile_data.get("anim_speed", 5.0))
 			
-			var anim_mode_node: OptionButton = get_node_or_null("%AnimationMode")
-			if is_instance_valid(anim_mode_node):
-				anim_mode_node.visible = true
-				anim_mode_node.select(tile_data.get("anim_mode", 0))
+			var current_anim_mode_node: OptionButton = get_node_or_null("%CurrentAnimationMode")
+			if is_instance_valid(current_anim_mode_node):
+				current_anim_mode_node.visible = true
+				current_anim_mode_node.select(tile_data.get("anim_mode", 0))
 				
-				if not anim_mode_node.item_selected.is_connected(_on_animation_mode_item_selected):
-					anim_mode_node.item_selected.connect(_on_animation_mode_item_selected)
+				if not current_anim_mode_node.item_selected.is_connected(_on_current_animation_mode_item_selected):
+					current_anim_mode_node.item_selected.connect(_on_current_animation_mode_item_selected)
 		else:
 			%CurrentAnimationSpeedContainer.visible = false
-			var anim_mode_node: OptionButton = get_node_or_null("%AnimationMode")
-			if is_instance_valid(anim_mode_node):
-				anim_mode_node.visible = false
+			var current_anim_mode_node: OptionButton = get_node_or_null("%CurrentAnimationMode")
+			if is_instance_valid(current_anim_mode_node):
+				current_anim_mode_node.visible = false
 				
 		if is_instance_valid(autotile_action_options):
 			var disable_static_alt: bool = is_anim or mode == canvas.AutotileType.LPC_FULL_ANIMATED
@@ -981,7 +986,47 @@ func _on_auto_tiles_list_item_selected(index: int) -> void:
 		var current_col_node: OptionButton = get_node_or_null("%CurrentCollision")
 		if is_instance_valid(current_col_node):
 			current_col_node.select(tile_data.get("collision_mode", 0))
+			
+		var source_path: String = tile_data.get("source_atlas_path", "")
+		var possible_rect: Variant = null
+		var region: Rect2i = Rect2i()
+		
+		if tile_data.has("source_rect"):
+			possible_rect = tile_data["source_rect"]
+		elif tile_data.has("source_rects") and tile_data["source_rects"].size() > 0:
+			possible_rect = tile_data["source_rects"][0]
+		elif tile_data.has("frames_rects") and tile_data["frames_rects"].size() > 0:
+			possible_rect = tile_data["frames_rects"][0]
+		elif tile_data.has("rects") and tile_data["rects"].size() > 0:
+			possible_rect = tile_data["rects"][0]
+			
+		if typeof(possible_rect) == TYPE_RECT2I:
+			region = possible_rect
+		elif typeof(possible_rect) == TYPE_DICTIONARY:
+			if possible_rect.has("rect"):
+				region = possible_rect["rect"]
+			elif possible_rect.has("region"):
+				region = possible_rect["region"]
+				
+		if source_path != "":
+			var atlas_index: int = atlas.find(source_path)
+			if atlas_index == -1:
+				atlas.append(source_path)
+				_update_cache("last_files_used", atlas)
+				_fill_atlas_list(atlas.size() - 1)
+			else:
+				atlas_list.select(atlas_index)
+				atlas_list.item_selected.emit(atlas_index)
+				
+		canvas.highlight_and_focus_rect(region)
 
+
+func _on_current_animation_mode_item_selected(index: int) -> void:
+	var selected: PackedInt32Array = auto_tiles_list.get_selected_items()
+	
+	if selected.size() > 0:
+		var tile_idx: int = selected[0]
+		autotiles[tile_idx]["anim_mode"] = index
 
 
 ## Updates the animation mode for the currently selected tile in the dictionary
@@ -998,6 +1043,12 @@ func _on_animation_mode_item_selected(index: int) -> void:
 func _on_autotile_action_selected(index: int) -> void:
 	if index == 7:
 		_show_tileset_preview()
+		autotile_action_options.select(0)
+		return
+	elif index == 8:
+		var selected_items: PackedInt32Array = auto_tiles_list.get_selected_items()
+		if not selected_items.is_empty():
+			_open_autotile_editor(selected_items[0])
 		autotile_action_options.select(0)
 		return
 		
@@ -1027,6 +1078,22 @@ func _on_autotile_action_selected(index: int) -> void:
 			
 	autotile_action_options.select(0)
 
+
+func _on_auto_tiles_list_item_activated(index: int) -> void:
+	_open_autotile_editor(index)
+
+
+func _open_autotile_editor(index: int) -> void:
+	if index < 0 or index >= autotiles.size():
+		return
+		
+	var path: String = "res://addons/CustomControls/Dialogs/autotile_editor_dialog.tscn"
+	var dialog: AutotileEditorDialog = load(path).instantiate()
+	add_child(dialog)
+	
+	var t_size: Vector2i = _get_active_tile_size()
+	dialog.setup_dialog(autotiles[index], t_size)
+	dialog.popup_centered()
 
 
 ## Generates temporary atlases in memory and displays them in a scrollable popup
@@ -1437,7 +1504,10 @@ func _on_merge_anim_frames_pressed() -> void:
 			
 	var final_tex: ImageTexture = ImageTexture.create_from_image(merged_image)
 	var is_truly_animated: bool = frames_count > 1
+	
 	var current_anim_fps: float = anim_speed_spinbox.value if is_instance_valid(anim_speed_spinbox) else 5.0
+	var anim_mode_node: OptionButton = get_node_or_null("%AnimationMode")
+	var current_anim_mode: int = anim_mode_node.selected if is_instance_valid(anim_mode_node) else 0
 	
 	if is_alternative_mode and is_alternative_animated_mode:
 		var target_idx: int = auto_tiles_list.get_selected_items()[0]
@@ -1452,7 +1522,7 @@ func _on_merge_anim_frames_pressed() -> void:
 			"frames": frames_count,
 			"probability": prob_val,
 			"anim_speed": current_anim_fps,
-			"anim_mode": 0,
+			"anim_mode": current_anim_mode,
 			"is_center_only": is_alternative_center_only,
 			"source_rects": source_rects
 		}
@@ -1487,7 +1557,7 @@ func _on_merge_anim_frames_pressed() -> void:
 			"frames": frames_count,
 			"collision_mode": col_mode,
 			"anim_speed": current_anim_fps,
-			"anim_mode": 0,
+			"anim_mode": current_anim_mode,
 			"source_rects": source_rects,
 			"alternatives": []
 		}
@@ -1502,7 +1572,6 @@ func _on_merge_anim_frames_pressed() -> void:
 	_clear_anim_frames()
 	_on_close_anim_panel_pressed()
 	_update_target_size_lock()
-
 
 
 ## Configures the required collision layer (physics or passability object) on a target TileData

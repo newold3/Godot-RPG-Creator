@@ -27,6 +27,9 @@ func get_available_code() -> String:
 
 # Identifies which command each button belongs to (ID Button : {ID Command, dialog name).
 var command_codes = {
+	# Command Visual Separator (Code 9999),
+	# Code 9999 (Parent) parameters { background_color, text, text_color }
+	"none": {"command_code" : 9999, "dialog" : "command_separator_dialog"},
 	# Command Config Text Dialog (Code 1)
 	# Code 1 (Parent) parameters {
 	# 	scene_path, max_width, max_lines, character_delay, dot_delay comma_delay,
