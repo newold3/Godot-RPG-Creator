@@ -189,7 +189,7 @@ class TagInfo:
 
 
 #region Editor Settings
-# The message will be tested with the text of the variable “test_dialog_box” after 0.5 seconds...
+## The message will be tested with the text of the variable “test_dialog_box” after 0.5 seconds...
 @export_multiline var test_dialog_box: String = "":
 	set(value):
 		test_dialog_box = value
@@ -207,14 +207,30 @@ class TagInfo:
 				reset()
 				editor_refresh_timer = 0.0
 
-@export var minimun_dialog_width: int = 180
-@export var minimun_dialog_height: int = 60
+@export_tool_button("Replay Message") var preview_button = _fast_preview_message
 
+@export var auto_configure_name_style: bool = true :
+	set(value):
+		auto_configure_name_style = value
+		if is_inside_tree() and value:
+			configure_name_style()
+
+## Dialog minimun width
+@export var minimun_dialog_width: int = 180
+## Dialog minimun height
+@export var minimun_dialog_height: int = 60
+## Dialog maximun width
 @export var message_max_width = 800
+## Max lines shown by page
 @export_range(1, 16) var message_max_lines: int = 4
+## Delay when a comma is encountered
 @export var comma_pause_delay: float = 0.15
+## Delay when a dot is encountered
 @export var dot_pause_delay: float = 0.35
+
+## Used in game to show dialog over target
 @export var character_container: Control
+
 
 const BACKGROUND_IMAGE = preload("res://Scenes/DialogTemplates/background_image.tscn")
 const AUTO_AUDIO_PLAYER = preload("res://Scenes/DialogTemplates/auto_audio_player.tscn")
@@ -346,6 +362,10 @@ var time: float:
 
 var current_dialog_size
 
+var skip_trigger_timer: float = 0.0
+var skip_cooldown_timer: float = 0.0
+var skip_triggered: bool = false
+
 var size_canvas_layer: CanvasLayer
 var size_message: RichTextLabel
 
@@ -373,6 +393,15 @@ func _ready() -> void:
 	update_ghost_size_node()
 	reset()
 
+
+func _fast_preview_message() -> void:
+	if Engine.is_editor_hint():
+		if not test_dialog_box.is_empty():
+			if not editor_setup_initialized:
+				setup()
+			editor_refresh_timer = 0.01
+		else:
+			printerr("Enter text in test_dialog_box to preview message in the editor")
 
 
 func update_ghost_size_node() -> void:
@@ -432,6 +461,26 @@ func get_real_size() -> Vector2:
 
 
 func _process(delta: float) -> void:
+	if skip_cooldown_timer > 0.0:
+		skip_cooldown_timer -= delta
+
+	if skip_trigger_timer > 0.0:
+		var confirm_pressed: bool = false
+		if Engine.is_editor_hint():
+			confirm_pressed = Input.is_action_pressed("ui_select")
+		else:
+			confirm_pressed = ControllerManager.is_confirm_held(false, [], false)
+			
+		if not confirm_pressed:
+			skip_trigger_timer = 0.0
+		else:
+			skip_trigger_timer -= delta
+			if skip_trigger_timer <= 0.0:
+				skip_trigger_timer = 0.0
+				skip_triggered = true
+				if current_delay > 0.00001:
+					current_delay = 0.00001
+
 	if is_floating:
 		set_position_over_node()
 		
@@ -482,6 +531,9 @@ func _process(delta: float) -> void:
 			busy = false
 			if resume_dialog:
 				perform_resume_dialog.emit()
+		elif command_waiting_enabled and continue_key:
+			get_viewport().set_input_as_handled()
+			command_waiting_enabled = false
 		return
 	
 	if busy_until_resume:
@@ -514,7 +566,6 @@ func _process(delta: float) -> void:
 	
 	if current_delay <= 0.0 and current_character < max_characters:
 		current_delay = max_character_delay
-
 
 
 func _show_wait_form_input_cursor() -> void:
@@ -880,11 +931,11 @@ func reset() -> void:
 					tweens[key].kill()
 				tweens[key] = null
 		
-		set("custom_minimum_size", Vector2.ZERO)
-		message.set("custom_minimum_size", Vector2.ZERO)
-		message.size = Vector2.ZERO
-		propagate_call("set_size", [Vector2.ZERO])
-		message.pivot_offset = Vector2.ZERO
+		#set("custom_minimum_size", Vector2.ZERO)
+		#message.set("custom_minimum_size", Vector2.ZERO)
+		#message.size = Vector2.ZERO
+		#propagate_call("set_size", [Vector2.ZERO])
+		#message.pivot_offset = Vector2.ZERO
 		message.visible_characters = 0
 
 	busy = false
@@ -910,8 +961,8 @@ func reset() -> void:
 			obj.kill()
 		%NameLeftContainer.visible = false
 		%NameRightContainer.visible = false
-		%LeftIconFace.get_parent().visible = false
-		%RightIconFace.get_parent().visible = false
+		%FaceLeftFrame.visible = false
+		%FaceRightFrame.visible = false
 		%LeftIconFace.texture = null
 		%RightIconFace.texture = null
 		%NameLeft.text = ""
@@ -923,11 +974,11 @@ func reset() -> void:
 	paragraphs.clear()
 	%TypeWritePlayer.stop()
 	
-	%LeftIconFace.get_parent().modulate = Color.WHITE
-	%LeftIconFace.get_parent().scale = Vector2.ONE
+	%FaceLeftFrame.modulate = Color.WHITE
+	%FaceLeftFrame.scale = Vector2.ONE
 	
-	%RightIconFace.get_parent().modulate = Color.WHITE
-	%RightIconFace.get_parent().scale = Vector2.ONE
+	%FaceRightFrame.modulate = Color.WHITE
+	%FaceRightFrame.scale = Vector2.ONE
 	
 	%AdvanceCursorContainer.visible = false
 	
@@ -947,10 +998,10 @@ func reset() -> void:
 	
 	%NameLeft.self_modulate.a = 1.0
 	%NameLeftBackground.self_modulate.a = 1.0
-	%LeftIconFace.get_parent().modulate.a = 1.0
+	%FaceLeftFrame.modulate.a = 1.0
 	%NameRight.self_modulate.a = 1.0
 	%NameRightBackground.self_modulate.a = 1.0
-	%RightIconFace.get_parent().modulate.a = 1.0
+	%FaceRightFrame.modulate.a = 1.0
 
 
 
@@ -1099,6 +1150,50 @@ func set_message_config(config: Dictionary) -> void:
 		set_position_preset()
 	else:
 		set_position_over_node()
+	
+	if auto_configure_name_style:
+		configure_name_style()
+
+
+func configure_name_style() -> void:
+	var shadow_offset_x = %Message.get("theme_override_constants/shadow_offset_x")
+	if shadow_offset_x != null:
+		%NameLeft.set("theme_override_constants/shadow_offset_x", shadow_offset_x)
+		%NameLeft.set("theme_override_constants/shadow_offset_x", shadow_offset_x)
+		
+	var shadow_offset_y = %Message.get("theme_override_constants/shadow_offset_y")
+	if shadow_offset_y != null:
+		%NameLeft.set("theme_override_constants/shadow_offset_y", shadow_offset_y)
+		%NameRight.set("theme_override_constants/shadow_offset_y", shadow_offset_y)
+	
+	var outline_size = %Message.get("theme_override_constants/outline_size")
+	if outline_size != null:
+		%NameLeft.set("theme_override_constants/outline_size", outline_size)
+		%NameRight.set("theme_override_constants/outline_size", outline_size)
+	
+	var outline_color = %Message.get("theme_override_colors/font_outline_color")
+	if outline_color != null:
+		%NameLeft.set("theme_override_colors/font_outline_color", outline_color)
+		%NameRight.set("theme_override_colors/font_outline_color", outline_color)
+	
+	var shadow_color = %Message.get("theme_override_colors/font_shadow_color")
+	if shadow_color != null:
+		%NameLeft.set("theme_override_colors/font_shadow_color", shadow_color)
+		%NameRight.set("theme_override_colors/font_shadow_color", shadow_color)
+	
+	if default_font != null and ResourceLoader.exists(default_font):
+		var font = load(default_font)
+		%NameLeft.set("theme_override_fonts/font", font)
+		%NameRight.set("theme_override_fonts/font", font)
+	
+	if default_text_color != null:
+		%NameLeft.set("theme_override_colors/font_color", default_text_color)
+		%NameRight.set("theme_override_colors/font_color", default_text_color)
+	
+	if default_text_size != null:
+		%NameLeft.set("theme_override_font_sizes/font_size", default_text_size)
+		%NameRight.set("theme_override_font_sizes/font_size", default_text_size)
+	
 
 
 
@@ -1251,6 +1346,10 @@ func _get_initial_config_commands() -> String:
 func setup_text(text: String, use_soft_reset: bool = false, _is_additional_text: bool = false) -> void:
 	if not is_inside_tree() or is_queued_for_deletion(): return
 	
+	skip_cooldown_timer = 0.25
+	skip_trigger_timer = 0.0
+	skip_triggered = false
+	
 	var ini_size_self = self.size
 	var ini_size_message = message.size
 	
@@ -1390,10 +1489,10 @@ func setup_text(text: String, use_soft_reset: bool = false, _is_additional_text:
 				else: has_l_name = true
 		
 		if not has_l_face:
-			%LeftIconFace.get_parent().visible = false
+			%FaceLeftFrame.visible = false
 			%LeftIconFace.texture = null
 		if not has_r_face:
-			%RightIconFace.get_parent().visible = false
+			%FaceRightFrame.visible = false
 			%RightIconFace.texture = null
 		if not has_l_name:
 			%NameLeftContainer.visible = false
@@ -1448,7 +1547,6 @@ func setup_text(text: String, use_soft_reset: bool = false, _is_additional_text:
 	busy_until_resume = false
 	message_started.emit()
 	is_new_dialog = false
-
 
 
 func clean_structural_newlines(t: String) -> String:
@@ -1792,8 +1890,8 @@ func precalculate_dialog_size(is_soft_reset: bool = false) -> Vector2:
 		pivot_offset = real_size * 0.5
 		%NameLeftContainer.modulate.a = 0.0
 		%NameRightContainer.modulate.a = 0.0
-		%LeftIconFace.get_parent().modulate.a = 0.0
-		%RightIconFace.get_parent().modulate.a = 0.0
+		%FaceLeftFrame.modulate.a = 0.0
+		%FaceRightFrame.modulate.a = 0.0
 		
 	return real_size
 
@@ -2257,10 +2355,10 @@ func start_command_face(command: SpecialEffectCommand, force_run: bool = false) 
 				img = load(command.parameters.path)
 				
 			var face_texture = %LeftIconFace
+			var obj = %FaceLeftFrame
 			if "position" in command.parameters and command.parameters.position == 1:
 				face_texture = %RightIconFace
-				
-			var obj = face_texture.get_parent()
+				obj = %FaceRightFrame
 			
 			if (is_speaker and
 				face_texture.get_texture() and
@@ -2338,10 +2436,10 @@ func start_command_highlight_character(command: SpecialEffectCommand) -> void:
 	
 	var name_left = %NameLeft
 	var name_left_background = %NameLeftBackground
-	var face_left = %LeftIconFace.get_parent()
+	var face_left = %FaceLeftFrame
 	var name_right = %NameRight
 	var name_right_background = %NameRightBackground
-	var face_right = %RightIconFace.get_parent()
+	var face_right = %FaceRightFrame
 	
 	highlight_character_tween = create_tween()
 	highlight_character_tween.set_parallel(true)
@@ -2385,9 +2483,9 @@ func start_command_image_remove(command: SpecialEffectCommand) -> void:
 		if id == 0:
 			var target_id = int(command.parameters.id) if "id" in command.parameters else 0
 			if target_id == 0:
-				%LeftIconFace.get_parent().visible = false
+				%FaceLeftFrame.visible = false
 			else:
-				%RightIconFace.get_parent().visible = false
+				%FaceRightFrame.visible = false
 		elif id == 1:
 			var target_id = int(command.parameters.id) if "id" in command.parameters else 0
 			var to_delete: Array = []
@@ -2416,10 +2514,9 @@ func start_command_imgfx(command: SpecialEffectCommand) -> void:
 					obj_parent = img
 					break
 		else:
-			var face_node = %LeftIconFace
+			obj = %FaceLeftFrame
 			if "position" in command.parameters and command.parameters.position == 1:
-				face_node = %RightIconFace
-			obj = face_node.get_parent()
+				obj = %FaceRightFrame
 		
 		if obj:
 			var use_tween = false
@@ -2622,14 +2719,16 @@ func start_command_wait(command: SpecialEffectCommand) -> void:
 	if type == 0:
 		if not is_inside_tree(): return
 		command_waiting_enabled = true
-		await get_tree().create_timer(seconds).timeout
+		var elapsed: float = 0.0
+		while elapsed < seconds and command_waiting_enabled and is_inside_tree():
+			await get_tree().process_frame
+			elapsed += get_process_delta_time()
 		if not is_instance_valid(self) or not is_inside_tree(): return
 		busy = false
 		command_waiting_enabled = false
 	else:
 		%AdvanceCursorContainer.show()
 		waiting_for_input = true
-
 
 
 func start_command_no_wait_input(command: SpecialEffectCommand) -> void:
@@ -2802,22 +2901,35 @@ func _animate_shake_dialog(time: float, node: Node, magnitude: float, frequency:
 
 func show_next_character() -> void:
 	var ignore_commands: bool = false
-	var confirm_pressed: bool
+	var confirm_pressed: bool = false
 	
 	if Engine.is_editor_hint():
 		confirm_pressed = Input.is_action_pressed("ui_select")
 	else:
 		confirm_pressed = ControllerManager.is_confirm_held(false, [], false)
-		
-	if !busy_when_preview and delay_for_input <= 0 and skip_type != SkipMode.FAST_MESSAGE and confirm_pressed and not is_floating:
-		if !waiting_for_input and !busy:
-			if skip_type == SkipMode.SHOW_ALL_IGNORE_COMMANDS:
-				current_character = max_characters
-				ignore_commands = true
-				get_viewport().set_input_as_handled()
-			elif skip_type == SkipMode.SHOW_ALL:
-				current_character = max_characters
-				get_viewport().set_input_as_handled()
+			
+	if !busy_when_preview and delay_for_input <= 0 and not is_floating:
+		if skip_type == SkipMode.FAST_MESSAGE:
+			current_character += 1
+		elif !waiting_for_input and !busy:
+			if confirm_pressed and skip_cooldown_timer <= 0.0:
+				if skip_trigger_timer <= 0.0 and not skip_triggered:
+					skip_trigger_timer = 0.05
+					current_character += 1
+				elif skip_triggered:
+					skip_triggered = false
+					skip_cooldown_timer = 0.25
+					if skip_type == SkipMode.SHOW_ALL_IGNORE_COMMANDS:
+						current_character = max_characters
+						ignore_commands = true
+					elif skip_type == SkipMode.SHOW_ALL:
+						current_character = max_characters
+					else:
+						current_character += 1
+				else:
+					current_character += 1
+			else:
+				current_character += 1
 		else:
 			current_character += 1
 	else:
@@ -2839,10 +2951,10 @@ func show_next_character() -> void:
 						command_executed_and_paused = true
 						break
 			
-			while busy:
-				await get_tree().process_frame
-			
-			if not command_executed_and_paused:
+			if command_executed_and_paused:
+				while busy:
+					await get_tree().process_frame
+			else:
 				break
 
 	if paragraphs.is_empty() and instant_text_enabled and not is_floating:
@@ -2860,11 +2972,7 @@ func show_next_character() -> void:
 	
 	if current_character < max_characters:
 		var delay = max_character_delay
-		if Engine.is_editor_hint():
-			confirm_pressed = Input.is_action_pressed("ui_select")
-		else:
-			confirm_pressed = ControllerManager.is_confirm_held(false, [], false)
-		if !busy_when_preview and skip_type == SkipMode.FAST_MESSAGE and confirm_pressed and not is_floating:
+		if skip_cooldown_timer <= 0.0 and skip_type == SkipMode.FAST_MESSAGE and confirm_pressed and not busy_when_preview and not is_floating:
 			delay = skip_speed
 
 		current_delay = delay
@@ -2879,11 +2987,12 @@ func show_next_character() -> void:
 							paused = true
 							break
 				
-				while busy:
-					await get_tree().process_frame
-				
-				if not paused:
+				if paused:
+					while busy:
+						await get_tree().process_frame
+				else:
 					break
+
 #endregion
 
 

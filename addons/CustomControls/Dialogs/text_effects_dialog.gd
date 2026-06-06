@@ -69,6 +69,7 @@ func connect_all(node: Node) -> void:
 ## Updates the effect selection index and applies cached arguments to the interface components.
 func set_data(index: int, args: Array) -> void:
 	set_initial_values()
+
 	if index == -1:
 		index = cache.get("effect_id", 0)
 		var args_id = "args%s" % index
@@ -148,8 +149,9 @@ func set_data(index: int, args: Array) -> void:
 			learn_variable_value = args[2]
 			_update_learn_variable_id()
 		19:
-			%RandomYMin.value = args[0]
-			%RandomYMax.value = args[1]
+			%RandomYMin.set_value_no_signal(args[0])
+			%RandomYMax.set_value_no_signal(args[1])
+			_on_random_y_max_value_changed(args[1])
 			%RandomYFixLetters.set_pressed(args[2])
 			
 	old_command = "%s-%s" % [index, args]
@@ -244,8 +246,8 @@ func set_initial_values() -> void:
 				_update_learn_variable_id()
 			19:
 				var args = cache.get(args_id, [-1, 1, true])
-				%RandomYMin.value = args[0]
-				%RandomYMax.value = args[1]
+				%RandomYMin.set_value(args[0])
+				%RandomYMax.set_value(args[1])
 				%RandomYFixLetters.set_pressed(args[2])
 
 
@@ -624,3 +626,13 @@ func _on_learn_variable_value_pressed() -> void:
 	dialog.variable_or_switch_name_changed.connect(_update_learn_variable_id)
 	dialog.setup(learn_variable_value)
 #endregion
+
+
+func _on_random_y_min_value_changed(value: float) -> void:
+	if value > %RandomYMax.value:
+		%RandomYMax.set_value_no_signal(value)
+
+
+func _on_random_y_max_value_changed(value: float) -> void:
+	if value < %RandomYMin.value:
+		%RandomYMin.set_value_no_signal(value)

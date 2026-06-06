@@ -1161,8 +1161,7 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
-tooltip_text = "[title]Learn Value[/title]
-Represents the learning value (from 0 to 1). The higher the value, the easier this text will be to read. "
+tooltip_text = "When this effect is applied, each letter will be drawn using a vertical offset between the minimum and maximum values."
 value = -1.0
 allow_greater = true
 allow_lesser = true
@@ -1186,8 +1185,7 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
-tooltip_text = "[title]Learn Value[/title]
-Represents the learning value (from 0 to 1). The higher the value, the easier this text will be to read. "
+tooltip_text = "When this effect is applied, each letter will be drawn using a vertical offset between the minimum and maximum values."
 value = 1.0
 allow_greater = true
 allow_lesser = true
@@ -1197,6 +1195,7 @@ _custom_value = 1.0
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
+tooltip_text = "Enabling this option will cause identical letters to have the same vertical offset. Disabling this option will cause all letters to have a random offset based on their position in the text."
 mouse_default_cursor_shape = 2
 button_pressed = true
 text = "Fix Offsets By Letters Type"
@@ -1265,5 +1264,7 @@ autostart = true
 [connection signal="toggled" from="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Learn/HBoxContainer/LearnExactValueCheckBox" to="." method="_on_learn_exact_value_check_box_toggled"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Learn/HBoxContainer2/LearnVariableValueCheckBox" to="." method="_on_learn_variable_value_check_box_toggled"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/Learn/HBoxContainer2/LearnVariableValue" to="." method="_on_learn_variable_value_pressed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/RandomYPosition/HBoxContainer/RandomYMin" to="." method="_on_random_y_min_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/ParameterContainer/MarginContainer/EffectContainer/RandomYPosition/HBoxContainer2/RandomYMax" to="." method="_on_random_y_max_value_changed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

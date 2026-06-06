@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://c81lnkbxprrq5" path="res://Assets/Images/Other/dialog_skin.png" id="2_u6i86"]
 [ext_resource type="Texture2D" uid="uid://bhlv742eojjmq" path="res://Assets/Images/Other/dialog_name_left_skin.png" id="3_e3ip1"]
 [ext_resource type="Texture2D" uid="uid://jjtvd8h4mx7l" path="res://Assets/Images/Other/dialog_name_right_skin.png" id="4_18tjo"]
+[ext_resource type="Texture2D" uid="uid://bm0yrsmhngopc" path="res://icon.png" id="5_g36dh"]
 [ext_resource type="Texture2D" uid="uid://dr1ltn4xe4u5s" path="res://Assets/Images/Other/dialog_advance_icon.png" id="28_da7b6"]
 [ext_resource type="AudioStream" uid="uid://c3u4nydr45dly" path="res://Assets/Sounds/typewrite2.ogg" id="29_i2qsa"]
 
@@ -100,19 +101,19 @@ func _process(_delta: float) -> void:
 "
 
 [node name="DialogBase" type="PanelContainer" unique_id=631298000]
-modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(269, 38)
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -53.5
-offset_top = -170.0
-offset_right = 53.5
+offset_left = -297.5
+offset_top = -268.0
+offset_right = 297.5
 offset_bottom = -38.0
 grow_horizontal = 2
 grow_vertical = 0
-pivot_offset = Vector2(53.5, 66)
+pivot_offset = Vector2(297.5, 115)
 size_flags_horizontal = 4
 size_flags_vertical = 10
 theme_override_styles/panel = SubResource("StyleBoxEmpty_0aoe3")
@@ -186,7 +187,6 @@ theme_override_constants/margin_right = -20
 
 [node name="NameLeftContainer" type="MarginContainer" parent="MainMargin/NameContainer" unique_id=965002225]
 unique_name_in_owner = true
-visible = false
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 size_flags_horizontal = 0
@@ -218,11 +218,11 @@ theme_override_constants/margin_bottom = 32
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+text = "Left name"
 horizontal_alignment = 1
 
 [node name="NameRightContainer" type="MarginContainer" parent="MainMargin/NameContainer" unique_id=1698033198]
 unique_name_in_owner = true
-visible = false
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 size_flags_horizontal = 8
@@ -255,6 +255,7 @@ theme_override_constants/margin_bottom = 32
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+text = "Right name"
 horizontal_alignment = 1
 
 [node name="DialogMainContainer" type="MarginContainer" parent="MainMargin" unique_id=487810912]
@@ -280,7 +281,6 @@ theme_override_constants/margin_bottom = 10
 
 [node name="FaceLeftFrame" type="PanelContainer" parent="MainMargin/DialogMainContainer/HBoxContainer/MarginContainer" unique_id=1243773444]
 unique_name_in_owner = true
-visible = false
 custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 mouse_filter = 2
@@ -290,6 +290,7 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_e3ip1")
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
+texture = ExtResource("5_g36dh")
 expand_mode = 1
 stretch_mode = 5
 
@@ -309,6 +310,7 @@ theme_override_constants/margin_bottom = 4
 unique_name_in_owner = true
 process_priority = 12
 clip_children = 2
+custom_minimum_size = Vector2(269, 38)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -320,11 +322,11 @@ theme_override_constants/shadow_offset_y = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_cjjty")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_twlh8")
 bbcode_enabled = true
-fit_content = true
+text = "[transition_fade duration=0.3][font=\"res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf\"][font_size=22][color=\"#ffffffff\"]Test Message.[/color][/font_size][/font][/transition_fade]"
 scroll_active = false
-visible_characters = 0
+autowrap_mode = 0
+visible_characters = 13
 visible_characters_behavior = 1
-visible_ratio = 0.21311475
 
 [node name="MarginContainer2" type="MarginContainer" parent="MainMargin/DialogMainContainer/HBoxContainer" unique_id=136593629]
 layout_mode = 2
@@ -336,7 +338,6 @@ theme_override_constants/margin_bottom = 10
 
 [node name="FaceRightFrame" type="PanelContainer" parent="MainMargin/DialogMainContainer/HBoxContainer/MarginContainer2" unique_id=1369693037]
 unique_name_in_owner = true
-visible = false
 custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 mouse_filter = 2
@@ -346,13 +347,13 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_18tjo")
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
+texture = ExtResource("5_g36dh")
 expand_mode = 1
 stretch_mode = 5
 flip_h = true
 
 [node name="AdvanceCursorContainer" type="MarginContainer" parent="MainMargin" unique_id=361625381]
 unique_name_in_owner = true
-visible = false
 z_index = 100
 layout_mode = 2
 size_flags_horizontal = 4
@@ -365,10 +366,10 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="MainMargin/AdvanceCursorContainer/Control" unique_id=515389805]
-position = Vector2(0, 4.904807)
+position = Vector2(0, 4.1728663)
 sprite_frames = SubResource("SpriteFrames_m3qel")
 autoplay = "default"
-frame_progress = 0.9422153
+frame_progress = 0.9065526
 speed_scale = 6.0
 script = SubResource("GDScript_c8yyc")
 amplitude = 5.0
@@ -377,8 +378,8 @@ period = 1.085
 [node name="TypeWritePlayer" type="AudioStreamPlayer" parent="." unique_id=2071535168]
 unique_name_in_owner = true
 stream = ExtResource("29_i2qsa")
-pitch_scale = 0.87559193
+pitch_scale = 1.045631
 bus = &"SE"
 
 [connection signal="item_rect_changed" from="MainMargin/DialogMainContainer/HBoxContainer/MessageContainer/Message" to="." method="_on_message_item_rect_changed"]
-[connection signal="item_rect_changed" from="@CanvasLayer@96452/Message" to="." method="_on_message_item_rect_changed"]
+[connection signal="item_rect_changed" from="@CanvasLayer@287014/Message" to="." method="_on_message_item_rect_changed"]

@@ -814,13 +814,15 @@ func click_on_command_text_fx(command: Dictionary) -> void:
 	var index = ["pulse", "wave", "tornado", "shake", "fade", "rainbow", "ghost", "colormod", "cuss", "heart", "jump", "l33t", "nervous", "number", "rain", "sparkle", "uwu", "woo", "learn", "randomypos"].find(command.command_name)
 	for m in matches:
 		var value = m.get_string(1)
-		if value in ["start", "length", "connected", "var", "use_var"]:
+		if value in ["start", "length", "connected", "var", "use_var", "min_offset_y", "max_offset_y"]:
 			args.append(int(m.get_string(2)))
 		elif value in ["freq", "ease", "amp", "radius", "rate", "level", "sat", "val", "span", "scale", "angle", "progress"]:
 			args.append(float(m.get_string(2)))
 		elif value in ["color", "c1", "c2", "c3"]:
 			args.append(Color.from_string(m.get_string(2), Color.WHITE))
-	
+		elif value in ["fix_letters"]:
+			args.append(m.get_string(2) == "true")
+
 	_on_fx_pressed(index, args)
 
 
@@ -828,7 +830,7 @@ func click_on_other_command(command: Dictionary) -> void:
 	var regex = RegEx.new()
 	regex.compile("(\\w+)=(\"[^\"]+\"|[^=,\\s\\]]+)(?:,([^=,\\s\\]]+))?")
 	var matches = regex.search_all(command.args)
-	var index = ["variable", "actor", "party", "gold", "class", "item", "weapon", "armor", "enemy", "state", "profession_name", "profession_level"].find(command.command_name)
+	var index = ["variable", "actor", "party", "gold", "class", "item", "weapon", "armor", "enemy", "state", "profession_name", "profession_level", "min_offset_y", "max_offset_y", "fix_letters"].find(command.command_name)
 	var value = 1
 	var show_icon_pressed = true
 	var show_icon_pressed2 = false
