@@ -1119,9 +1119,49 @@ func get_trait_name(item: RPGTrait) -> Array:
 	return column
 
 
+## Calculates the true visual indentation level considering sub-commands.
+func _get_visual_indent(index: int, full_data: Array) -> int:
 
-## Renders complete format commands strings spacing variations variables values visual trees combinations logic
+	var cmd = _get_cmd(full_data, index)
+	var vi = cmd.indent
+	
+	if cmd.code in SUB_CODES:
+		vi += 1
+	elif _is_structural_child_at_indent(cmd.code, cmd.indent, index, full_data):
+		vi += 1
+
+	var search_ind = cmd.indent - 1
+	for i in range(index - 1, -1, -1):
+		if search_ind < 0:
+			break
+		var p_cmd = _get_cmd(full_data, i)
+		if p_cmd.indent == search_ind:
+			if p_cmd.code in SUB_CODES:
+				vi += 1
+			elif _is_structural_child_at_indent(p_cmd.code, p_cmd.indent, i, full_data):
+				vi += 1
+			search_ind -= 1
+
+	return vi
+
+
+func _is_structural_child_at_indent(child_code: int, target_indent: int, current_idx: int, full_data: Array) -> bool:
+
+	var struct = get_param_struct()
+	for parent_code in struct.keys():
+		if child_code in struct[parent_code].childs:
+			for k in range(current_idx - 1, -1, -1):
+				var p_cmd = _get_cmd(full_data, k)
+				if p_cmd.indent < target_indent:
+					break
+				if p_cmd.indent == target_indent and p_cmd.code == parent_code:
+					return true
+	return false
+
+
+## Generates a formatted dictionary containing the visual tree representation of an RPG event command, ensuring correct multiline indentation.
 func get_formated_command(command: RPGEventCommand, font: Font, font_size: int, align: HorizontalAlignment, v_separation: int, index: int, full_data: Array) -> Dictionary:
+
 	if command.code == 9999:
 		var result = {}
 		var bg_val = command.parameters.get("background_color", Color.DARK_GRAY)
@@ -1133,34 +1173,61 @@ func get_formated_command(command: RPGEventCommand, font: Font, font_size: int, 
 		})
 		result["total_size"] = Vector2(0, font.get_string_size("A", align, -1, font_size).y)
 		return result
+
 	var result: Dictionary
 	result["bg_color"] = event_line_color if index % 2 == 0 else odd_line_color
 	result["phrases"] = []
 	result["offset_y"] = 0
-	var tabs: String = ""
-	for level in range(1, command.indent + 1):
+
+	var first_line_tabs: String = "  "
+	var other_lines_tabs: String = "  "
+	var visual_indent: int = _get_visual_indent(index, full_data)
+
+	for level in range(1, visual_indent + 1):
 		var is_last_child = true
+
 		for j in range(index + 1, full_data.size()):
-			var next_cmd = _get_cmd(full_data, j)
-			if next_cmd.indent < level:
+			var next_vi = _get_visual_indent(j, full_data)
+			if next_vi < level:
 				break
-			if next_cmd.indent == level:
-				if next_cmd.code != 0:
-					is_last_child = false
+			if next_vi == level:
+				is_last_child = false
 				break
+
 		if draw_vertical_guides:
-			if level == command.indent:
-				tabs += "       └─ " if is_last_child else "       ├─ "
+			if level == visual_indent:
+				if _is_data_line(command.code):
+					#first_line_tabs += ""
+					#other_lines_tabs += ""
+					pass
+				else:
+					first_line_tabs += "  └─ " if is_last_child else "  ├─ "
+					other_lines_tabs += "     " if is_last_child else "  │  "
 			else:
-				tabs += "          " if is_last_child else "       │  "
+				var branch = "     " if is_last_child else "  │  "
+				first_line_tabs += branch
+				other_lines_tabs += branch
 		else:
-			tabs += "          "
+			#first_line_tabs += ""
+			#other_lines_tabs += ""
+			pass
+
 	if code_format:
 		var code_result = code_format.get_formatted_code(command, font, font_size, align, v_separation, index)
-		if code_result.has("phrases") and code_result.phrases.size() > 0 and code_result.phrases[0].texts.size() > 0:
-			var first_text = code_result.phrases[0].texts[0]
-			first_text.text = tabs + first_text.text
-			first_text.size = font.get_string_size(first_text.text, align, -1, font_size)
+
+		if code_result.has("phrases") and code_result.phrases.size() > 0:
+			for i in range(code_result.phrases.size()):
+				var phrase = code_result.phrases[i]
+				if phrase.texts.size() > 0:
+					var tab_str = first_line_tabs if i == 0 else other_lines_tabs
+					if tab_str != "":
+						var tab_obj = {
+							"text": tab_str,
+							"color": "#555555",
+							"size": font.get_string_size(tab_str, align, -1, font_size)
+						}
+						phrase.texts.insert(0, tab_obj)
+
 			var new_total_x = 0
 			for phrase in code_result.phrases:
 				var w = 0
@@ -1168,25 +1235,45 @@ func get_formated_command(command: RPGEventCommand, font: Font, font_size: int, 
 					w += obj.size.x
 				new_total_x = max(new_total_x, w)
 			code_result.total_size.x = new_total_x
+
 		return code_result
+
 	result["phrases"].append({
 		"texts": [
 			{
-				"text": tabs + default_text + command.to_string(),
+				"text": first_line_tabs,
+				"color": "#555555"
+			},
+			{
+				"text": default_text + command.to_string(),
 				"color": color_theme.get("color2", Color.WHITE)
 			},
 		],
 		"offset_y": default_text_offset_y
 	})
 	result["total_size"] = Vector2.ZERO
+
 	for phrase in result["phrases"]:
 		for obj in phrase.texts:
-			obj["size"] = font.get_string_size(obj["text"], align, -1, font_size)
+			if not obj.has("size"):
+				obj["size"] = font.get_string_size(obj["text"], align, -1, font_size)
 			result["total_size"].x += obj["size"].x
 			if result["total_size"].y == 0:
 				result["total_size"].y = obj["size"].y
+
 	return result
 
+
+## Determines if a command code represents continuous data lines without a structural end
+func _is_data_line(child_code: int) -> bool:
+
+	var param_struct = get_param_struct()
+	for parent_code in param_struct.keys():
+		var parent_data = param_struct[parent_code]
+		if child_code in parent_data.childs:
+			if parent_data.end_code == -1:
+				return true
+	return false
 
 
 ## Returns logical valid properties check variables codes arrays components states variations limits bounds attributes identifiers targets checks inputs values parameters strings vectors combinations
@@ -1205,12 +1292,14 @@ func is_not_editable_event(event: RPGEventCommand) -> bool:
 func _on_back_draw() -> void:
 	if busy:
 		return
+		
 	var control: Control = %BackControl
 	control.size = size
 	var rect: Rect2
 	var offset_x: int = 0
 	var offset_y: int = 0
 	var parent = self
+	
 	if main_container:
 		parent = get_node(main_container)
 		if "get_v_scroll_bar" in parent:
@@ -1218,11 +1307,13 @@ func _on_back_draw() -> void:
 		if "get_h_scroll_bar" in parent:
 			offset_x = max(0, parent.get_h_scroll_bar().value)
 		parent = self
+		
 	var font = get_theme_default_font()
 	var font_size = get_theme_default_font_size()
 	var align = HORIZONTAL_ALIGNMENT_LEFT
 	var items_selected = get_real_selected_items()
 	var max_page_size = Vector2.ZERO
+	
 	if scroll_container:
 		var main_scroll_container = get_node(scroll_container)
 		if main_scroll_container.scroll_vertical > 0 and not main_scroll_container.get_v_scroll_bar().visible:
@@ -1230,9 +1321,11 @@ func _on_back_draw() -> void:
 		if main_scroll_container.scroll_horizontal > 0 and not main_scroll_container.get_h_scroll_bar().visible:
 			main_scroll_container.scroll_horizontal = 0
 		max_page_size = main_scroll_container.size
+		
 	var v_separation = get("theme_override_constants/v_separation")
 	if !v_separation:
 		v_separation = 2
+		
 	var all_rows = []
 	if item_count > 0:
 		for v_idx in item_count:
@@ -1240,10 +1333,12 @@ func _on_back_draw() -> void:
 			if real_index == null: continue
 			var formatted_data = data[real_index].formatted_data
 			rect = get_item_rect(v_idx)
+			
 			if rect.position.y + rect.size.y - offset_y < 0:
 				continue
 			elif rect.position.y - offset_y > parent.size.y:
 				continue
+				
 			rect.size.x = parent.size.x
 			all_rows.append({
 				"type": "real",
@@ -1252,6 +1347,7 @@ func _on_back_draw() -> void:
 				"rect": rect,
 				"formatted_data": formatted_data
 			})
+			
 		if all_rows.size() > 0:
 			var last_real_rect = all_rows[-1].rect
 			var base_height = last_real_rect.size.y
@@ -1259,18 +1355,21 @@ func _on_back_draw() -> void:
 			var fill_id = item_count
 			var max_deep = 1000
 			var current_deep = 0
+			
 			while fill_y - offset_y < parent.size.y + 42 and current_deep < max_deep:
 				var fill_rect = Rect2()
 				fill_rect.position.x = 0
 				fill_rect.position.y = fill_y
 				fill_rect.size.x = parent.size.x
 				fill_rect.size.y = base_height
+				
 				if fill_rect.position.y + fill_rect.size.y - offset_y >= 0:
 					all_rows.append({
 						"type": "fill",
 						"index": fill_id,
 						"rect": fill_rect
 					})
+					
 				fill_y += v_separation + base_height
 				fill_id += 1
 				current_deep += 1
@@ -1280,21 +1379,26 @@ func _on_back_draw() -> void:
 		var i = 0
 		var max_deep = 1000
 		var current_deep = 0
+		
 		while y < parent.size.y + v_separation + 42 and current_deep < max_deep:
 			rect = Rect2()
 			rect.position = Vector2(0, y)
 			rect.size = Vector2(parent.size.x, sy)
+			
 			if rect.position.y + rect.size.y - offset_y >= 0 and rect.position.y - offset_y <= parent.size.y:
 				all_rows.append({
 					"type": "fill",
 					"index": i,
 					"rect": rect
 				})
+				
 			y += v_separation + sy
 			i += 1
 			current_deep += 1
+			
 	if all_rows.size() > 0:
 		all_rows[-1].rect.size.y += 6
+		
 	for row in all_rows:
 		rect = row.rect
 		if row.type == "real":
@@ -1305,31 +1409,31 @@ func _on_back_draw() -> void:
 				control.draw_rect(rect, event_line_color)
 			else:
 				control.draw_rect(rect, odd_line_color)
+				
+	# --- CORRECCION DE SELECCION ---
 	if hovered_visual_index != -1:
 		var real_hovered = get_item_metadata(hovered_visual_index)
 		if real_hovered != null:
-			var block_start = real_hovered
 			var cmd = data[real_hovered].command
-			var has_children = false
-			if real_hovered + 1 < data.size() and data[real_hovered + 1].command.indent > cmd.indent:
-				has_children = true
-			var structural_blocks = [4, 10, 21, 24, 31, 34, 50, 57, 96, 500]
-			var branch_codes = [3, 5, 6, 7, 11, 22, 23, 25, 32, 35, 51, 58, 97, 501, 502, 503, 504]
-			if not cmd.code in structural_blocks and not cmd.code in branch_codes:
-				for i in range(real_hovered - 1, -1, -1):
-					if data[i].command.indent < cmd.indent:
-						block_start = i
-						break
-			var selection = _get_block_selection(block_start, data)
-			var start_v = get_visual_index(block_start)
-			var end_v = start_v
-			for child_idx in selection:
-				var v = get_visual_index(child_idx)
-				if v != -1:
-					end_v = max(end_v, v)
-			if start_v != -1 and end_v != -1:
-				var start_rect = get_item_rect(start_v)
-				var end_rect = get_item_rect(end_v)
+			
+			var selection = []
+			# Si es un bloque estructural, seleccionamos todo el grupo
+			selection = _get_block_selection(real_hovered, data)
+			if typeof(selection) != TYPE_ARRAY or selection.is_empty():
+				# Si es un comando simple, solo nos seleccionamos a nosotros mismos
+				selection = [real_hovered]
+			elif not selection.has(real_hovered):
+				selection.append(real_hovered)
+			
+			var visual_indices = []
+			for idx in selection:
+				var v = get_visual_index(idx)
+				if v != -1: visual_indices.append(v)
+				
+			if visual_indices.size() > 0:
+				visual_indices.sort()
+				var start_rect = get_item_rect(visual_indices[0])
+				var end_rect = get_item_rect(visual_indices[-1])
 				var hover_rect = start_rect.merge(end_rect)
 				hover_rect.position.x = 0
 				hover_rect.size.x = parent.size.x
@@ -1337,28 +1441,79 @@ func _on_back_draw() -> void:
 					control.draw_style_box(hover_group_style, hover_rect)
 				else:
 					control.draw_rect(hover_rect, hover_color)
+	# ------------------------------
+
+	var covered_selection_reals = {}
+	var sorted_selected = []
+	
+	for r_i in items_selected:
+		var v_idx = get_visual_index(r_i)
+		if v_idx != -1:
+			sorted_selected.append({"r": r_i, "v": v_idx})
+			
+	sorted_selected.sort_custom(func(a, b): return a.v < b.v)
+	
+	for sel in sorted_selected:
+		var r_i = sel.r
+		if covered_selection_reals.has(r_i):
+			continue
+			
+		var cmd = data[r_i].command
+		var selection = _get_block_selection(r_i, data)
+		
+		if typeof(selection) != TYPE_ARRAY or selection.is_empty():
+			selection = [r_i]
+		elif not selection.has(r_i):
+			selection.append(r_i)
+			
+		var v_indices = []
+		for idx in selection:
+			covered_selection_reals[idx] = true
+			var v = get_visual_index(idx)
+			if v != -1:
+				v_indices.append(v)
+				
+		if v_indices.size() > 0:
+			v_indices.sort()
+			var start_rect = get_item_rect(v_indices[0])
+			var end_rect = get_item_rect(v_indices[-1])
+			var sel_rect = start_rect.merge(end_rect)
+			sel_rect.position.x = 0
+			sel_rect.size.x = parent.size.x
+			
+			if enabled_action_cursor_texture:
+				if can_edit_event(cmd) or item_has_parent_selected(cmd) or is_not_editable_event(cmd):
+					control.draw_style_box(enabled_action_cursor_texture, sel_rect)
+				else:
+					var rect2 = sel_rect
+					var is_last_row = false
+					
+					if all_rows.size() > 0 and all_rows[-1].type == "real" and all_rows[-1].visual_index == v_indices[-1]:
+						is_last_row = true
+						
+					if is_last_row:
+						rect2.size.y -= 6
+						
+					rect2.size.x = size.x - 42
+					if main_container:
+						var scrolling_panel = get_node(main_container)
+						if scrolling_panel.get_v_scroll_bar().visible:
+							rect2.size.x = max(scrolling_panel.size.x, rect2.size.x) - scrolling_panel.get_v_scroll_bar().size.x - 4
+						if scrolling_panel.get_h_scroll_bar().visible:
+							rect2.size.x = max(rect2.size.x, scrolling_panel.get_h_scroll_bar().max_value - 2)
+							
+					if no_editable_cursor_texture:
+						control.draw_style_box(no_editable_cursor_texture, rect2)
+
 	for row in all_rows:
 		if row.type == "real":
 			var r_i = row.real_index
 			var formatted_data = row.formatted_data
 			rect = row.rect
-			if items_selected.has(r_i):
-				if enabled_action_cursor_texture:
-					if can_edit_event(data[r_i].command) or item_has_parent_selected(data[r_i].command) or is_not_editable_event(data[r_i].command):
-						control.draw_style_box(enabled_action_cursor_texture, rect)
-					else:
-						var rect2 = rect
-						rect2.size.y -= 6 if row == all_rows[-1] else 0
-						rect2.size.x = size.x - 42
-						if main_container:
-							var scrolling_panel = get_node(main_container)
-							if scrolling_panel.get_v_scroll_bar().visible:
-								rect2.size.x = max(scrolling_panel.size.x, rect2.size.x) - scrolling_panel.get_v_scroll_bar().size.x - 4
-							if scrolling_panel.get_h_scroll_bar().visible:
-								rect2.size.x = max(rect2.size.x, scrolling_panel.get_h_scroll_bar().max_value - 2)
-						control.draw_style_box(no_editable_cursor_texture, rect)
+			
 			var x = rect.position.x + text_margin_left
 			var y_pos = font.get_ascent() + rect.position.y
+			
 			if data[r_i].command.code == 9999:
 				var txt = data[r_i].command.parameters.get("text", " SEPARATOR ")
 				var txt_val = data[r_i].command.parameters.get("text_color", Color.WHITE)
@@ -1372,10 +1527,11 @@ func _on_back_draw() -> void:
 				var start_x = rect.position.x + text_margin_left + 10.0
 				var end_x = rect.position.x + rect.size.x - text_margin_left - 10.0
 				var line_y = rect.position.y + (rect.size.y / 2.0)
+				
 				if txt == "":
 					control.draw_dashed_line(Vector2(start_x, line_y), Vector2(end_x, line_y), txt_color, 1.0, 4.0)
 				else:
-					control.draw_string_outline(font, Vector2(center_x, y_pos + new_offset_y), txt, align, -1, font_size, 4, Color.BLACK)
+					control.draw_string_outline(font, Vector2(center_x, y_pos + new_offset_y), txt, align, -1, font_size, 12, Color.BLACK)
 					control.draw_string(font, Vector2(center_x, y_pos + new_offset_y), txt, align, -1, font_size, txt_color)
 					var end_left = center_x - padding
 					if end_left > start_x:
@@ -1384,6 +1540,7 @@ func _on_back_draw() -> void:
 					if end_x > start_right:
 						control.draw_dashed_line(Vector2(start_right, line_y), Vector2(end_x, line_y), txt_color, 1.0, 4.0)
 				continue
+				
 			if data[r_i].command.ignore_command:
 				var s = font.get_string_size(no_available_icon, align, -1, font_size)
 				control.draw_string(
@@ -1392,6 +1549,7 @@ func _on_back_draw() -> void:
 				)
 				control.draw_style_box(ignored_command, rect)
 				x += s.x + 4
+				
 			var start_height = 0
 			for phrase in formatted_data.phrases:
 				var start_width = 0
@@ -1404,6 +1562,7 @@ func _on_back_draw() -> void:
 					var no_edit_idx = obj.text.find(default_no_editable_text)
 					var text_color = Color(obj.color) if not data[r_i].command.ignore_command else disable_text_color
 					if items_selected.has(r_i): text_color = text_selected_color
+					
 					if default_idx != -1:
 						var prefix = obj.text.substr(0, default_idx)
 						var suffix = obj.text.substr(default_idx + default_text.length())
@@ -1428,12 +1587,15 @@ func _on_back_draw() -> void:
 					x += obj.size.x
 				max_page_size.x = max(max_page_size.x, start_width)
 			max_page_size.y = max(max_page_size.y, start_height)
+			
 	if scroll_container:
 		var node = get_node_or_null(scroll_container)
 		if node and max_page_size.x > node.size.x:
 			max_page_size.x += 240
+			
 	custom_minimum_size = max_page_size
 	size = max_page_size
+	
 	for v_idx in item_count:
 		rect = get_item_rect(v_idx)
 		if rect.position.y + rect.size.y - offset_y < 0:
@@ -1444,6 +1606,7 @@ func _on_back_draw() -> void:
 		rect.size.y = 1
 		rect.position.y = rect.position.y + rect.size.y - 1
 		control.draw_rect(rect, Color("#67676792"))
+		
 	if drag_preview_line != -1:
 		var preview_rect: Rect2
 		var indent_x: float = text_margin_left
@@ -1481,6 +1644,7 @@ func _on_back_draw() -> void:
 						indent_x += phrases[0].texts[0].get("offset_x", 0)
 			else:
 				preview_rect = Rect2(0, 0, size.x, 20)
+				
 		var y_pos = preview_rect.position.y - offset_y
 		if y_pos >= 0 and y_pos <= parent.size.y:
 			var secondary_color = Color(0.6, 0.6, 0.6, 0.8)

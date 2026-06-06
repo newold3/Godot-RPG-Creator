@@ -584,7 +584,8 @@ func setup_effects() -> void:
 		"res://addons/CustomControls/Resources/RichTextEffects/Sparkle.gd",
 		"res://addons/CustomControls/Resources/RichTextEffects/UwU.gd",
 		"res://addons/CustomControls/Resources/RichTextEffects/Woo.gd",
-		"res://addons/CustomControls/Resources/RichTextEffects/lenguage_learning.gd"
+		"res://addons/CustomControls/Resources/RichTextEffects/lenguage_learning.gd",
+		"res://addons/CustomControls/Resources/RichTextEffects/RandomVerticalPosition.gd"
 	]
 	
 	for path in paths:
@@ -1673,7 +1674,7 @@ func balance_bbcode_paragraphs():
 		"bg_color", "fgcolor", "outline_size", "outline_color",
 		"pulse", "wave", "tornado", "shake", "fade", "woo",
 		"uwu", "sparkle", "rain", "number", "nervous", "l33t", "jump",
-		"heart", "cuss", "colormod", "ghost", "rainbow",
+		"heart", "cuss", "colormod", "ghost", "rainbow", "random_y_position",
 		"transition_fade", "bounce", "console", "embers", "energize",
 		"glitch", "prickle", "redacted", "wfc", "word"
 	]
@@ -1723,7 +1724,7 @@ func balance_bbcode_paragraphs():
 func fix_tags(text: String) -> String:
 	var valid_tags = ["font", "font_size", "s", "u", "i", "b", "color", "bgcolor", "pulse",
 					 "woo", "uwu", "sparkle", "rain", "number", "nervous", "l33t", "jump",
-					 "heart", "cuss", "colormod", "ghost", "rainbow", "fade", "shake",
+					 "heart", "cuss", "random_y_position", "colormod", "ghost", "rainbow", "fade", "shake",
 					 "tornado", "wave", "transition_fade", "fill", "right", "center", "left"]
 	
 	var stack = []

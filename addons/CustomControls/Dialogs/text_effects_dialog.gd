@@ -10,10 +10,12 @@ var learn_variable_value: int = 1
 
 static var cache: Dictionary
 
-
 signal command_selected(command: String, args: String)
 
 
+
+#region Functions
+## Initializes the window, clears existing effects, and loads all custom rich text formatting effects.
 func _ready() -> void:
 	if !cache:
 		cache = {}
@@ -33,18 +35,24 @@ func _ready() -> void:
 	%TestRich.install_effect(RichTextUwU.new())
 	%TestRich.install_effect(RichTextWoo.new())
 	%TestRich.install_effect(RichTextLanguageLearning.new())
+	%TestRich.install_effect(RichRandomVerticalPosition.new())
+	
 	connect_all(self)
+	
 	var b = ButtonGroup.new()
 	%LearnExactValueCheckBox.button_group = b
 	%LearnVariableValueCheckBox.button_group = b
 	%EffectSelection.item_selected.emit(%EffectSelection.get_selected_id())
+	
 	await get_tree().process_frame
 	size.y = min_size.y
 
 
+## Recursively connects UI change signals from control nodes to trigger the visual preview refresh.
 func connect_all(node: Node) -> void:
 	if node == %EffectSelection:
 		return
+		
 	if node.has_signal("item_selected"):
 		node.item_selected.connect(_refresh_preview)
 	elif node.has_signal("value_changed"):
@@ -58,16 +66,19 @@ func connect_all(node: Node) -> void:
 		connect_all(child)
 
 
+## Updates the effect selection index and applies cached arguments to the interface components.
 func set_data(index: int, args: Array) -> void:
 	set_initial_values()
 	if index == -1:
 		index = cache.get("effect_id", 0)
 		var args_id = "args%s" % index
 		args = cache.get(args_id, [1, Color.RED, 2])
+		
 	index = clamp(index, 0, %EffectSelection.get_item_count() - 1)
 	%EffectSelection.select(index)
 	%EffectSelection.item_selected.emit(index)
 	size.y = min_size.y
+	
 	if !args: return
 	
 	match index:
@@ -136,15 +147,19 @@ func set_data(index: int, args: Array) -> void:
 				%LearnVariableValueCheckBox.set_pressed(true)
 			learn_variable_value = args[2]
 			_update_learn_variable_id()
+		19:
+			%RandomYMin.value = args[0]
+			%RandomYMax.value = args[1]
+			%RandomYFixLetters.set_pressed(args[2])
 			
-	
 	old_command = "%s-%s" % [index, args]
 	await get_tree().process_frame
 	size.y = min_size.y
 
 
+## Iterates across all effects and populates the properties with fallback cached defaults.
 func set_initial_values() -> void:
-	for index in range(0, 19, 1):
+	for index in range(0, 20, 1):
 		var args_id = "args%s" % index
 		match index:
 			0: 
@@ -227,16 +242,21 @@ func set_initial_values() -> void:
 					%LearnVariableValueCheckBox.set_pressed(true)
 				learn_variable_value = args[2]
 				_update_learn_variable_id()
-				
+			19:
+				var args = cache.get(args_id, [-1, 1, true])
+				%RandomYMin.value = args[0]
+				%RandomYMax.value = args[1]
+				%RandomYFixLetters.set_pressed(args[2])
 
 
+## Constructs the output representation containing the format code strings and parameter references.
 func get_bbcode() -> Array:
 	var bbcode: Array = []
 	var args: String
 	var args_array: Array = []
 	var index = %EffectSelection.get_selected_id()
 	
-	var code = ["pulse", "wave", "tornado", "shake", "fade", "rainbow", "ghost", "colormod", "cuss", "heart", "jump", "l33t", "nervous", "number", "rain", "sparkle", "uwu", "woo", "learn"][index]
+	var code = ["pulse", "wave", "tornado", "shake", "fade", "rainbow", "ghost", "colormod", "cuss", "heart", "jump", "l33t", "nervous", "number", "rain", "sparkle", "uwu", "woo", "learn", "randomypos"][index]
 	
 	match index:
 		0: 
@@ -341,12 +361,19 @@ func get_bbcode() -> Array:
 			args_array = [a, b, c]
 			args = "progress=%s use_var=%s var=%s" % [a, b, c]
 			new_command = "%s-%s" % [index, [a, b]]
+		19:
+			var a = %RandomYMin.value
+			var b = %RandomYMax.value
+			var c = true if %RandomYFixLetters.is_pressed() else false
+			args_array = [a, b, c]
+			args = "min_offset_y=%s max_offset_y=%s fix_letters=%s" % [a, b, str(c).to_lower()]
+			new_command = "%s-%s" % [index, [a, b, c]]
 			
-	
 	bbcode = [code, args, args_array]
 	return bbcode
 
 
+## Processes application logic upon user confirmation, saving data values locally and dispatching signals.
 func _on_ok_button_pressed() -> void:
 	propagate_call("apply")
 	var command = get_bbcode()
@@ -357,14 +384,17 @@ func _on_ok_button_pressed() -> void:
 	queue_free()
 
 
+## Finalizes window operations when dismissing changes completely.
 func _on_cancel_button_pressed() -> void:
 	queue_free()
 
 
+## Starts the countdown interval designated to refresh the rich text node string.
 func _refresh_preview(_value: Variant) -> void:
 	need_refresh_timer = 0.15
 
 
+## Calculates the time difference sequentially to dispatch node updates to the text object.
 func _process(delta: float) -> void:
 	if need_refresh_timer > 0:
 		need_refresh_timer -= delta
@@ -375,6 +405,7 @@ func _process(delta: float) -> void:
 			_on_effect_selection_item_selected(index, false)
 
 
+## Modifies the visual states across elements while discarding certain core application components.
 func _set_node_visibility(node: Node, value: bool) -> void:
 	if not (node is PopupPanel or node is PopupMenu or node is Timer) and "visible" in node:
 		node.visible = value
@@ -383,13 +414,16 @@ func _set_node_visibility(node: Node, value: bool) -> void:
 		_set_node_visibility(c, value)
 
 
+## Executes visibility changes reflecting effect inputs correctly and compiles string translations.
 func _on_effect_selection_item_selected(index: int, change_visibility: bool = true, force_size: bool = false) -> void:
 	if change_visibility:
 		_set_node_visibility(%EffectContainer, false)
 		%EffectContainer.visible = true
 		%ParametersTitle.visible = true
+		
 	var test_bbcode: String
 	var base: String = %PreviewText.text
+	
 	match index:
 		0: 
 			if change_visibility:
@@ -521,6 +555,14 @@ func _on_effect_selection_item_selected(index: int, change_visibility: bool = tr
 			var c = learn_variable_value
 			test_bbcode = "[learn progress=%s use_var=%s var=%s]%s[/learn]" % [a, b, c, base]
 			%Description.text = TranslationManager.tr("Display text that is difficult to read, determined by a learning value.")
+		19:
+			if change_visibility:
+				_set_node_visibility(%RandomYPosition, true)
+			var a = %RandomYMin.value
+			var b = %RandomYMax.value
+			var c = true if %RandomYFixLetters.is_pressed() else false
+			test_bbcode = "[randomypos min_offset_y=%s max_offset_y=%s fix_letters=%s]%s[/randomypos]" % [a, b, str(c).to_lower(), base]
+			%Description.text = TranslationManager.tr("Randomly offsets the vertical position of each character within the specified range.")
 	
 	if index in [8, 11, 14, 16]:
 		%ParameterLine.visible = false
@@ -531,10 +573,12 @@ func _on_effect_selection_item_selected(index: int, change_visibility: bool = tr
 			
 	%TestRich.text = "[center]" + test_bbcode + "[/center]"
 	size.y = 0
+	
 	if force_size:
 		size.y = min_size.y
 
 
+## Identifies the appropriate variable string representation stored globally in RPGSYSTEM.
 func _update_learn_variable_id() -> void:
 	var data = RPGSYSTEM.system.text_variables
 	var variable_name = data.get_item_name(learn_variable_value)
@@ -542,28 +586,34 @@ func _update_learn_variable_id() -> void:
 	%LearnVariableValue.text = tr("Var") + " %s: %s" % [learn_variable_value, variable_name]
 
 
+## Catches timer events dispatched whenever node logic depends on delayed executions natively.
 func _on_timer_timeout() -> void:
 	pass
 
 
+## Triggers whenever the source content gets modified forcing an artificial text update string sequence.
 func _on_preview_text_text_changed(new_text: String) -> void:
 	var index = %EffectSelection.get_selected_id()
 	_on_effect_selection_item_selected(index, false)
 
 
+## Modifies the boolean state configurations to lock control references upon changing specific exact nodes.
 func _on_learn_exact_value_check_box_toggled(toggled_on: bool) -> void:
 	%LearnExactValue.set_disabled(!toggled_on)
 	%LearnVariableValue.set_disabled(toggled_on)
 
 
+## Replaces specific enabled restrictions resolving internal UI dependency states correctly.
 func _on_learn_variable_value_check_box_toggled(toggled_on: bool) -> void:
 	%LearnExactValue.set_disabled(toggled_on)
 	%LearnVariableValue.set_disabled(!toggled_on)
 
 
+## Instantiates popup screens configuring target elements linking variable data structurally.
 func _on_learn_variable_value_pressed() -> void:
 	var path = "res://addons/CustomControls/Dialogs/switch_variable_dialog.tscn"
 	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
+	
 	dialog.data_type = 2
 	dialog.target = null
 	dialog.selected.connect(func(id: int, _target: Variant):
@@ -573,3 +623,4 @@ func _on_learn_variable_value_pressed() -> void:
 	)
 	dialog.variable_or_switch_name_changed.connect(_update_learn_variable_id)
 	dialog.setup(learn_variable_value)
+#endregion

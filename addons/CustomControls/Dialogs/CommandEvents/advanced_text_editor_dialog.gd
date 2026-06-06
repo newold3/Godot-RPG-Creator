@@ -390,7 +390,7 @@ func select_command(start_index: int, end_index: int, command_data: Dictionary) 
 	# --- 3. Extract content (Logic fixed for speaker) ---
 	var selected_text = node.get_selected_text()
 	var closing_tag_standard = "[/%s]" % command_data.command_name
-	
+
 	if selected_text.ends_with(closing_tag_standard):
 		# Standard Dual Tag: [img]...[/img]
 		command_data.command_end = closing_tag_standard
@@ -430,7 +430,6 @@ func try_select_command() -> void:
 	var node: TextEdit = %TextEdit
 	var text = node.text
 	
-	# 1. Obtener posición absoluta del cursor
 	var column = node.get_caret_column()
 	var line = node.get_caret_line()
 	
@@ -453,7 +452,6 @@ func try_select_command() -> void:
 			if i == text.length() - 1:
 				cursor_pos = text.length()
 
-	# 2. Buscar límites [ ] alrededor del cursor
 	var open_bracket_pos = -1
 	var close_bracket_pos = -1
 	
@@ -485,13 +483,10 @@ func try_select_command() -> void:
 	var selection_end = close_bracket_pos + 1
 	
 	if command_data.command_name:
-		# MODIFICACIÓN AQUÍ: Añadimos 'speaker_end' como etiqueta de cierre válida
 		if command_data.command_start.begins_with("[/") or command_data.command_name == "speaker_end":
 			
-			# --- CASO 1: Clic en etiqueta de CIERRE ---
 			var opener_name = ""
 			
-			# Definimos quién es la pareja de apertura
 			if command_data.command_name == "speaker_end":
 				opener_name = "speaker"
 			else:
@@ -500,7 +495,6 @@ func try_select_command() -> void:
 			var nesting = 0
 			var j = open_bracket_pos - 1
 			
-			# Buscamos hacia atrás
 			while j >= 0:
 				if text[j] == "[":
 					var k = text.find("]", j)
@@ -508,9 +502,6 @@ func try_select_command() -> void:
 						var t_str = text.substr(j, k - j + 1)
 						var t_data = get_command_selected(t_str)
 						
-						# Verificamos si es la etiqueta de APERTURA que buscamos
-						# Nota: Para etiquetas normales, t_data.command_name es igual (ej: img), 
-						# pero no debe empezar por [/
 						if t_data.command_name == opener_name and not t_str.begins_with("[/"):
 							if nesting == 0:
 								# ¡Encontrado! Actualizamos datos con la apertura
@@ -528,10 +519,11 @@ func try_select_command() -> void:
 				j -= 1
 				
 		else:
-			# --- CASO 2: Clic en etiqueta de APERTURA ---
 			var dual_tags = ["img", "b", "i", "u", "s", "center", "left", "right", "fill", 
-							"font", "font_size", "color", "bgcolor", "url", "wave", "tornado", 
-							"shake", "fade", "rainbow", "speaker", "p"] 
+							"font", "font_size", "color", "bgcolor", "url", "speaker", "p",
+							"pulse", "wave", "tornado", "shake", "fade", "rainbow", "ghost", 
+							"colormod", "cuss", "heart", "jump", "l33t", "nervous", "number", 
+							"rain", "sparkle", "uwu", "woo", "learn", "randomypos"] 
 			
 			if command_data.command_name in dual_tags:
 				var search_close = "[/%s]" % command_data.command_name
@@ -819,7 +811,7 @@ func click_on_command_text_fx(command: Dictionary) -> void:
 	regex.compile("(\\w+)=(\"[^\"]+\"|[^=,\\s\\]]+)(?:,([^=,\\s\\]]+))?")
 	var matches = regex.search_all(command.args)
 	var args: Array = []
-	var index = ["pulse", "wave", "tornado", "shake", "fade", "rainbow", "ghost", "colormod", "cuss", "heart", "jump", "l33t", "nervous", "number", "rain", "sparkle", "uwu", "woo", "learn"].find(command.command_name)
+	var index = ["pulse", "wave", "tornado", "shake", "fade", "rainbow", "ghost", "colormod", "cuss", "heart", "jump", "l33t", "nervous", "number", "rain", "sparkle", "uwu", "woo", "learn", "randomypos"].find(command.command_name)
 	for m in matches:
 		var value = m.get_string(1)
 		if value in ["start", "length", "connected", "var", "use_var"]:
@@ -928,7 +920,7 @@ func edit_command(command: Dictionary) -> void:
 		click_on_command_show_whole_line(command)
 	elif command.command_name == "no_wait_input":
 		click_on_command_no_wait_input(command)
-	elif command.command_name in ["pulse", "wave", "tornado", "shake", "fade", "rainbow", "ghost", "colormod", "cuss", "heart", "jump", "l33t", "nervous", "number", "rain", "sparkle", "uwu", "woo", "learn"]:
+	elif command.command_name in ["pulse", "wave", "tornado", "shake", "fade", "rainbow", "ghost", "colormod", "cuss", "heart", "jump", "l33t", "nervous", "number", "rain", "sparkle", "uwu", "woo", "learn", "randomypos"]:
 		click_on_command_text_fx(command)
 	elif command.command_name in ["variable", "actor", "party", "gold", "class", "item", "weapon", "armor", "enemy", "state", "profession_name", "profession_level"]:
 		click_on_other_command(command)
@@ -973,7 +965,7 @@ func get_command_selected(selection: String) -> Dictionary:
 			"command_start": matches[0].get_string(0),
 			"command_end": ""
 		}
-		
+
 	return result
 
 
@@ -1049,7 +1041,7 @@ func insert_command(start_command: String, end_command: String) -> void:
 					current_command_data.args != selection_data.selection.command_selected.args) or
 					(current_command_data.command_name in ["pulse", "wave", "tornado", "shake", "fade",
 					"rainbow", "ghost", "colormod", "cuss", "heart", "jump", "l33t", "nervous", "number",
-					"rain", "sparkle", "uwu", "woo", "learn"])
+					"rain", "sparkle", "uwu", "woo", "learn", "randomypos"])
 				):
 					var n = selection_data.selection.command_selected.text
 					selection_copy = start_command + n + end_command

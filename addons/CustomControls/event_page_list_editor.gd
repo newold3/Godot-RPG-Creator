@@ -58,7 +58,7 @@ func _ready() -> void:
 	%EventPageList.items_dropped.connect(_on_event_page_list_items_dropped)
 	var btn = get_node_or_null("%CollabsableCommands")
 	if btn:
-		btn.toggled.connect(_on_collabsable_commands_toggled)
+		btn.toggled.connect(_on_collabsable_commands_toggled.bind(btn))
 	update_theme()
 	visibility_changed.connect(func(): if visible: recharge_code_script())
 	tree_entered.connect(recharge_code_script)
@@ -731,50 +731,95 @@ func _get_full_expanded_selection(indexes: PackedInt32Array) -> Array[int]:
 
 ## Copies the selected itemlist to editor clipboard securely traversing the structural block logic
 func _on_event_page_list_copy_requested(indexes: PackedInt32Array) -> void:
+
 	var list = current_data
-	if indexes.size() == 1 and list[indexes[0]].code == 0: return
+
+	if indexes.is_empty() or list.is_empty(): return
+
+	var valid_indexes = PackedInt32Array()
+	for idx in indexes:
+		if list[idx].code != 0:
+			valid_indexes.append(idx)
+			
+	if valid_indexes.is_empty(): return
+	if list[valid_indexes[0]].code in %EventPageList.SUB_CODES: return
+
 	var copy_event_commands: Array[RPGEventCommand] = []
-	var full_indexes = _get_full_expanded_selection(indexes)
+	var full_indexes = _get_full_expanded_selection(valid_indexes)
+
 	if full_indexes.size() == 0: return
+
 	for index in full_indexes:
 		if index >= list.size() - 1 and list[index].code == 0: continue
 		copy_event_commands.append(list[index].clone(true))
-	if copy_event_commands.size() == 0: return
-	StaticEditorVars.CLIPBOARD["event_page_commands"] = copy_event_commands
 
+	if copy_event_commands.size() == 0: return
+
+	StaticEditorVars.CLIPBOARD["event_page_commands"] = copy_event_commands
 
 
 ## Cuts the selected itemlist securely traversing the structural block and copies to editor clipboard
 func _on_event_page_list_cut_requested(indexes: PackedInt32Array) -> void:
+
 	var list = current_data
-	if indexes.size() == 1 and list[indexes[0]].code == 0: return
+
+	if indexes.is_empty() or list.is_empty(): return
+
+	var valid_indexes = PackedInt32Array()
+	for idx in indexes:
+		if list[idx].code != 0:
+			valid_indexes.append(idx)
+			
+	if valid_indexes.is_empty(): return
+	if list[valid_indexes[0]].code in %EventPageList.SUB_CODES: return
+
 	var copy_event_commands: Array[RPGEventCommand] = []
 	var remove_event_commands: Array[RPGEventCommand] = []
-	var full_indexes = _get_full_expanded_selection(indexes)
+	var full_indexes = _get_full_expanded_selection(valid_indexes)
+
 	if full_indexes.size() == 0: return
+
 	for index in full_indexes:
 		if index >= list.size() - 1 and list[index].code == 0: continue
 		copy_event_commands.append(list[index].clone(true))
 		remove_event_commands.append(list[index])
+
 	if copy_event_commands.size() == 0: return
+
 	if remove_event_commands.size() > 0: data_changed.emit()
+
 	for item in remove_event_commands:
 		list.erase(item)
+
+	_cleanup_zeros()
+
 	StaticEditorVars.CLIPBOARD["event_page_commands"] = copy_event_commands
 	current_index = max(0, min(current_index, list.size() - 1))
 	update_data()
 
 
-
 ## Evaluates delete logic and securely clears out targeted blocks including all active sub-children elements
 func _on_event_page_list_delete_pressed(indexes: PackedInt32Array, need_scan_indexes: bool = true, remove_all_indexes: bool = false) -> void:
+
 	var event_list = %EventPageList
 	var list = current_data
+
+	if indexes.is_empty() or list.is_empty(): return
+
+	var valid_indexes = PackedInt32Array()
+	for idx in indexes:
+		if list[idx].code != 0:
+			valid_indexes.append(idx)
+			
+	if valid_indexes.is_empty(): return
+	if need_scan_indexes and list[valid_indexes[0]].code in %EventPageList.SUB_CODES: return
+
 	var remove_comands = []
 	var bak_index = current_index
 	current_index = -1
+
 	if remove_all_indexes:
-		for i in indexes:
+		for i in valid_indexes:
 			if can_edit_event(i) or is_not_editable_event(i):
 				if current_index == -1:
 					current_index = i
@@ -782,31 +827,35 @@ func _on_event_page_list_delete_pressed(indexes: PackedInt32Array, need_scan_ind
 			remove_comands.append(list[i])
 	else:
 		if need_scan_indexes:
-			var full_indexes = _get_full_expanded_selection(indexes)
+			var full_indexes = _get_full_expanded_selection(valid_indexes)
 			for i in full_indexes:
 				if i >= list.size() - 1 and list[i].code == 0: continue
 				if current_index == -1 and (can_edit_event(i) or is_not_editable_event(i)):
 					current_index = i
 				remove_comands.append(list[i])
 		else:
-			for i in indexes:
+			for i in valid_indexes:
 				if i >= list.size() - 1 and list[i].code == 0: continue
 				if i > 0 and i < list.size() - 1:
 					if (%EventPageList.is_code_editable(list[i - 1].code) or %EventPageList.is_code_editable(list[i + 1].code)):
 						remove_comands.append(list[i])
 				else:
 					remove_comands.append(list[i])
+
 	if remove_comands:
 		for command in remove_comands:
 			list.erase(command)
+
+		_cleanup_zeros()
+
 		if list.size() == 0 or list[-1].code != 0:
 			list.append(RPGEventCommand.new())
+
 		current_index = max(0, min(current_index, list.size() - 1))
 		update_data()
 		data_changed.emit()
 	else:
 		current_index = bak_index
-
 
 
 ## Handles marking commands as ignored in compilation
@@ -1034,27 +1083,61 @@ func _on_filter_gui_input(event: InputEvent) -> void:
 
 ## Initiates item filtering procedure
 func update_filter_commands() -> void:
-	var filter = %Filter.text
 
+	var filter = %Filter.text.to_lower()
+
+	if filter.length() == 0:
+		%EventPageList.deselect_all()
+		%EventListContainer.scroll_vertical = 0
+		return
+
+	var check_index = current_search_index
+
+	if check_index >= 0 and check_index < %EventPageList.data.size():
+		var formatted_data = %EventPageList.data[check_index].formatted_data
+		for phrases in formatted_data.phrases:
+			var full_text = ""
+			for text_data in phrases.texts:
+				var text = text_data.text.to_lower()
+				full_text += text
+				if text.find(filter) != -1:
+					current_index = check_index
+					_expand_parents_of(check_index)
+					%EventPageList.select_real_index(check_index, true)
+					return
+			if full_text.find(filter) != -1:
+				current_index = check_index
+				_expand_parents_of(check_index)
+				%EventPageList.select_real_index(check_index, true)
+				return
+
+	_on_find_next_command_pressed(true, check_index, true)
 
 
 ## Fallback handling for manual inputs missing target
-func _unhandled_input(event: InputEvent) -> void:
+func _input(event: InputEvent) -> void:
+
+	if not is_visible_in_tree():
+		return
+
 	if event is InputEventKey and event.is_pressed():
-		if event.is_action_pressed("FindPrevious"):
+		if event.is_action_pressed("FindPrevious", true):
+			get_viewport().set_input_as_handled()
 			_on_find_previous_command_pressed()
-		elif event.is_action_pressed("FindNext"):
+		elif event.is_action_pressed("FindNext", true):
+			get_viewport().set_input_as_handled()
 			_on_find_next_command_pressed()
 
 
 
 ## Searches internally previous event instance
-func _on_find_previous_command_pressed(reverse_enabled: bool = true, p_current_index: int = -1) -> void:
+func _on_find_previous_command_pressed(reverse_enabled: bool = true, p_current_index: int = -2, from_filter: bool = false) -> void:
+
 	var filter = %Filter.text.to_lower()
+
 	if filter.length() > 0:
-		var selected_items = get_selected_items()
-		var current_index = current_search_index if p_current_index == -1 else p_current_index
-		for i in range(current_index - 1, -1, -1):
+		var check_index = current_search_index if p_current_index == -2 else p_current_index
+		for i in range(check_index - 1, -1, -1):
 			var formatted_data = %EventPageList.data[i].formatted_data
 			for phrases in formatted_data.phrases:
 				var full_text = ""
@@ -1062,23 +1145,31 @@ func _on_find_previous_command_pressed(reverse_enabled: bool = true, p_current_i
 					var text = text_data.text.to_lower()
 					full_text += text
 					if text.find(filter) != -1:
-						%EventPageList.select_real_index(i, false)
+						current_index = i
+						_expand_parents_of(i)
+						%EventPageList.select_real_index(i, true)
 						return
 				if full_text.find(filter) != -1:
-					%EventPageList.select_real_index(i, false)
+					current_index = i
+					_expand_parents_of(i)
+					%EventPageList.select_real_index(i, true)
 					return
+
 	if reverse_enabled:
-		_on_find_previous_command_pressed(false, %EventPageList.data.size() - 1)
-		
+		_on_find_previous_command_pressed(false, %EventPageList.data.size(), from_filter)
+	elif from_filter:
+		%EventPageList.deselect_all()
+		%EventListContainer.scroll_vertical = 0
 
 
 ## Searches internally forward for event instance
-func _on_find_next_command_pressed(reverse_enabled: bool = true, p_current_index: int = -1) -> void:
+func _on_find_next_command_pressed(reverse_enabled: bool = true, p_current_index: int = -2, from_filter: bool = false) -> void:
+
 	var filter = %Filter.text.to_lower()
+
 	if filter.length() > 0:
-		var selected_items = get_selected_items()
-		var current_index = current_search_index if p_current_index == -1 else p_current_index
-		for i in range(current_index + 1, %EventPageList.data.size(), 1):
+		var check_index = current_search_index if p_current_index == -2 else p_current_index
+		for i in range(check_index + 1, %EventPageList.data.size(), 1):
 			var formatted_data = %EventPageList.data[i].formatted_data
 			for phrases in formatted_data.phrases:
 				var full_text = ""
@@ -1086,14 +1177,38 @@ func _on_find_next_command_pressed(reverse_enabled: bool = true, p_current_index
 					var text = text_data.text.to_lower()
 					full_text += text
 					if text.find(filter) != -1:
-						%EventPageList.select_real_index(i, false)
+						current_index = i
+						_expand_parents_of(i)
+						%EventPageList.select_real_index(i, true)
 						return
 				if full_text.find(filter) != -1:
-					%EventPageList.select_real_index(i, false)
+					current_index = i
+					_expand_parents_of(i)
+					%EventPageList.select_real_index(i, true)
 					return
-	if reverse_enabled:
-		_on_find_next_command_pressed(false, 0)
 
+	if reverse_enabled:
+		_on_find_next_command_pressed(false, -1, from_filter)
+	elif from_filter:
+		%EventPageList.deselect_all()
+		%EventListContainer.scroll_vertical = 0
+
+
+## Expands all collapsed ancestors of a given index to make it visible
+func _expand_parents_of(index: int) -> void:
+
+	var changed = false
+
+	for i in range(index - 1, -1, -1):
+		var cmd = current_data[i]
+		var selection = %EventPageList._get_block_selection(i, current_data)
+		if index in selection:
+			if not cmd.is_expanded:
+				cmd.is_expanded = true
+				changed = true
+
+	if changed:
+		update_data()
 
 
 ## Collapses all expandable commands
@@ -1444,10 +1559,12 @@ func _resolve_drop_target(target_index: int, moving_block: PackedInt32Array) -> 
 
 ## Frame by frame handler for general visual polling elements and states
 func _process(delta: float) -> void:
+
 	if filter_delay_timer > 0.0:
 		filter_delay_timer -= delta
 		if filter_delay_timer <= 0:
-			_on_find_next_command_pressed()
+			update_filter_commands()
+
 	if fix_ignore_commands_timer > 0.0:
 		fix_ignore_commands_timer -= delta
 		if fix_ignore_commands_timer <= 0:
@@ -1481,7 +1598,9 @@ func _is_current_sub_code() -> bool:
 
 
 ## Modifies collapsable command structure logic parameter to toggle
-func _on_collabsable_commands_toggled(command: RPGEventCommand, toggled_on: bool) -> void:
+func _on_collabsable_commands_toggled(toggled_on: bool, btn: BaseButton) -> void:
+	if not btn: return
+	var command = btn.get_meta("command_expanded").command
 	command.is_expanded = not toggled_on
 	update_data()
 	data_changed.emit()
