@@ -10,7 +10,7 @@ var HEART = GlyphConverter.ord("♡")
 var TO_CHANGE = [GlyphConverter.ord("o"), GlyphConverter.ord("O"), GlyphConverter.ord("a"), GlyphConverter.ord("A")]
 
 
-func _process_custom_fx(char_fx):
+func _process_custom_fx(char_fx: CharFXTransform):
 	var scale:float = char_fx.env.get("scale", 16.0)
 	var freq:float = char_fx.env.get("freq", 2.0)
 

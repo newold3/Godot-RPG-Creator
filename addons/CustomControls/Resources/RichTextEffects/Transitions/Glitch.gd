@@ -3,9 +3,9 @@ extends RichTextEffectTransitionBase
 # Syntax: [glitch intensity=0.5 color=#ff0000][/glitch]
 var bbcode = "glitch"
 
-func _process_custom_fx(char_fx):
+func _process_custom_fx(char_fx: CharFXTransform):
 	var tween_data = get_tween_data()
-	if not tween_data: return
+	if not tween_data: return false
 	
 	if tween_data.time == 1.0:
 		return true

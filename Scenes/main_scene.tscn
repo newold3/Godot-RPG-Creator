@@ -358,7 +358,6 @@ offset_bottom = 512.0
 [node name="MessageCanvas" type="CanvasLayer" parent="." unique_id=469834250]
 unique_name_in_owner = true
 layer = 120
-visible = false
 
 [node name="MessageCharacterImages" type="Control" parent="MessageCanvas" unique_id=1605910488]
 unique_name_in_owner = true
@@ -369,17 +368,28 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Control" type="VBoxContainer" parent="MessageCanvas" unique_id=1599319309]
+[node name="VboxDialogContainer" type="VBoxContainer" parent="MessageCanvas" unique_id=1725040232]
+unique_name_in_owner = true
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Dialog" parent="MessageCanvas/Control" unique_id=1651516393 node_paths=PackedStringArray("character_container") instance=ExtResource("4_re3ur")]
+[node name="Dialog" parent="MessageCanvas/VboxDialogContainer" unique_id=1651516393 node_paths=PackedStringArray("character_container") instance=ExtResource("4_re3ur")]
 unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 character_container = NodePath("../../MessageCharacterImages")
+
+[node name="ControlDialogContainer" type="Control" parent="MessageCanvas" unique_id=284927723]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="OverMessageCanvas" type="CanvasLayer" parent="." unique_id=2008279795]
 unique_name_in_owner = true
@@ -445,4 +455,4 @@ bus = &"SE"
 unique_name_in_owner = true
 bus = &"SE"
 
-[connection signal="item_rect_changed" from="MessageCanvas/Control/Dialog/@CanvasLayer@22239/Message" to="MessageCanvas/Control/Dialog" method="_on_message_item_rect_changed"]
+[connection signal="item_rect_changed" from="MessageCanvas/VboxDialogContainer/Dialog/@CanvasLayer@22185/Message" to="MessageCanvas/VboxDialogContainer/Dialog" method="_on_message_item_rect_changed"]

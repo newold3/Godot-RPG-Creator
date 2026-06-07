@@ -120,6 +120,8 @@ func set_config(config: Dictionary) -> void:
 	%ShadowOffsetX.value = shadow_offset.x
 	%ShadowOffsetY.value = shadow_offset.y
 	%ShadowColor.set_color(config.get("shadow_color", Color("#00000093")))
+	
+	%LetterByLetterMode.select(max(0, min(config.get("letter_by_letter_mode", 0), 1)))
 
 
 func set_text_transition_values(config: Dictionary, index: int) -> void:
@@ -211,7 +213,8 @@ func build_command_list() -> Array[RPGEventCommand]:
 		"fx_path": fx_file,
 		"fx_volume": %Volume.value,
 		"fx_pitch_min": %PitchMin.value,
-		"fx_pitch_max": %PitchMax.value
+		"fx_pitch_max": %PitchMax.value,
+		"letter_by_letter_mode": %LetterByLetterMode.get_selected_id()
 	}
 	
 	commands[-1].parameters = config

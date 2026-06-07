@@ -13,7 +13,7 @@ var SPACE = GlyphConverter.ord(" ")
 
 var _was_space = false
 
-func _process_custom_fx(char_fx):
+func _process_custom_fx(char_fx: CharFXTransform):
 	var glyph_index_as_char = GlyphConverter.glyph_index_to_char(char_fx)
 		
 	if not _was_space and not char_fx.relative_index == 0 and not glyph_index_as_char == SPACE:

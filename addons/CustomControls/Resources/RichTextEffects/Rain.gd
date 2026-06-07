@@ -15,7 +15,7 @@ func get_rand_unclamped(char_fx):
 	return char_fx.glyph_index * 33.33 + char_fx.range.x * 4545.5454
 
 
-func _process_custom_fx(char_fx):
+func _process_custom_fx(char_fx: CharFXTransform):
 	var time = char_fx.elapsed_time
 	var r = get_rand(char_fx)
 	var t = fmod(r + time * .5, 1.0)

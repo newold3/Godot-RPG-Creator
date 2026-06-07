@@ -279,7 +279,7 @@ texture_margin_bottom = 6.0
 oversampling_override = 1.0
 title = "Message Config"
 position = Vector2i(0, 36)
-size = Vector2i(1153, 960)
+size = Vector2i(1200, 999)
 wrap_controls = true
 transient = true
 exclusive = true
@@ -359,7 +359,7 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1796054434]
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(260, 0)
 layout_mode = 2
 text = "Dialog Scene:"
 
@@ -406,7 +406,7 @@ popup/item_9/id = 9
 layout_mode = 2
 
 [node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer17" unique_id=1036230951]
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(260, 0)
 layout_mode = 2
 text = "Margins:"
 
@@ -419,7 +419,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-mouse_default_cursor_shape = 1
+tooltip_text = "From the message anchor point, the message box will be offset by this many pixels from the left side."
 max_value = 500.0
 allow_greater = true
 allow_lesser = true
@@ -434,6 +434,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "From the message anchor point, the message box will be offset by this many pixels from the right side."
 max_value = 500.0
 allow_greater = true
 allow_lesser = true
@@ -448,6 +449,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "From the message anchor point, the message box will be offset by this many pixels from the top side."
 max_value = 500.0
 allow_greater = true
 allow_lesser = true
@@ -462,6 +464,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "From the message anchor point, the message box will be offset by this many pixels from the bottom side."
 max_value = 500.0
 allow_greater = true
 allow_lesser = true
@@ -471,7 +474,7 @@ _custom_value = 0.0
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer8" unique_id=1535385242]
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(260, 0)
 layout_mode = 2
 text = "Font:"
 
@@ -494,6 +497,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(142, 0)
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "Default text font size"
 min_value = 8.0
 max_value = 500.0
 _custom_value = 0.0
@@ -519,7 +523,7 @@ current_color = Color(1, 1, 1, 1)
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer19" unique_id=163727750]
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(260, 0)
 layout_mode = 2
 text = "Outline Size:"
 
@@ -527,6 +531,7 @@ text = "Outline Size:"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "Default text font outline size."
 max_value = 500.0
 _custom_value = 0.0
 
@@ -550,7 +555,7 @@ theme_override_styles/disabled = SubResource("StyleBoxFlat_3ohyn")
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer20" unique_id=1055473316]
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(260, 0)
 layout_mode = 2
 text = "Shadow Offset:"
 
@@ -558,6 +563,7 @@ text = "Shadow Offset:"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "Default text shadow offset X."
 allow_greater = true
 allow_lesser = true
 prefix = "X ="
@@ -571,6 +577,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "Default text shadow offset Y."
 allow_greater = true
 allow_lesser = true
 prefix = "Y ="
@@ -596,7 +603,7 @@ current_color = Color(0, 0, 0, 0.576471)
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer18" unique_id=770917910]
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(260, 0)
 layout_mode = 2
 text = "Text Align:"
 
@@ -618,7 +625,7 @@ popup/item_2/id = 2
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer3" unique_id=51681107]
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(260, 0)
 layout_mode = 2
 text = "Max Width:"
 
@@ -626,6 +633,7 @@ text = "Max Width:"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "The maximum width of the message box (if the text does not fit on a single line, it will automatically wrap to multiple lines, and additional paragraphs will be created if necessary)."
 min_value = 200.0
 max_value = 200.0
 allow_greater = true
@@ -635,7 +643,7 @@ _custom_value = 0.0
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=676534276]
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(260, 0)
 layout_mode = 2
 text = "Max Lines:"
 
@@ -643,6 +651,7 @@ text = "Max Lines:"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "Maximum number of lines per paragraph. A message with more lines will be split into multiple messages, with each message adhering to the maximum number of lines per paragraph."
 min_value = 1.0
 allow_greater = true
 _custom_value = 0.0
@@ -651,7 +660,7 @@ _custom_value = 0.0
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer5" unique_id=1899086471]
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(260, 0)
 layout_mode = 2
 text = "Characterter Delay:"
 
@@ -659,6 +668,7 @@ text = "Characterter Delay:"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "Controls how quickly each character is displayed. A value of 0 causes the text to be displayed all at once. For a value greater than 0, each character or word will be displayed after the delay specified here."
 step = 0.01
 rounded = false
 allow_greater = true
@@ -672,7 +682,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer22/HBoxContainer6" unique_id=1899150806]
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(260, 0)
 layout_mode = 2
 text = "Dot Delay:"
 
@@ -680,6 +690,7 @@ text = "Dot Delay:"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "When a dot is displayed, the delay specified here is added to the delay between characters to simulate a longer pause."
 step = 0.01
 rounded = false
 allow_greater = true
@@ -697,6 +708,7 @@ text = "  Comma Delay:"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "When a comma is displayed, the delay specified here is added to the delay between characters to simulate a longer pause."
 step = 0.01
 rounded = false
 allow_greater = true
@@ -706,7 +718,7 @@ _custom_value = 0.0
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer6" unique_id=990396521]
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(260, 0)
 layout_mode = 2
 text = "Paragraph Delay:"
 
@@ -722,20 +734,20 @@ rounded = false
 allow_greater = true
 _custom_value = 0.0
 
+[node name="HSeparator6" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1693054655]
+layout_mode = 2
+
 [node name="Label5" type="Label" parent="MarginContainer/VBoxContainer" unique_id=796428760]
 custom_minimum_size = Vector2(220, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.604111, 0.72216, 0.972656, 1)
 text = "Skip Text"
 
-[node name="HSeparator4" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=37585092]
-layout_mode = 2
-
 [node name="HBoxContainer9" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1252879098]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer9" unique_id=1204602773]
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(260, 0)
 layout_mode = 2
 text = "Skip Mode:"
 
@@ -768,7 +780,7 @@ popup/item_3/id = 3
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer10" unique_id=578330216]
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(260, 0)
 layout_mode = 2
 text = "Skip Delay Speed:"
 
@@ -776,6 +788,7 @@ text = "Skip Delay Speed:"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "When you skip a section of text, a pause of the duration specified here is automatically inserted."
 mouse_filter = 2
 min_value = 0.01
 step = 0.01
@@ -784,6 +797,9 @@ allow_greater = true
 editable = false
 disabled = true
 _custom_value = 0.0
+
+[node name="HSeparator5" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1624114733]
+layout_mode = 2
 
 [node name="Label2" type="Label" parent="MarginContainer/VBoxContainer" unique_id=944261395]
 custom_minimum_size = Vector2(220, 0)
@@ -795,7 +811,7 @@ text = "Animations"
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer11" unique_id=658671927]
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(260, 0)
 layout_mode = 2
 text = "Start Animation:"
 
@@ -839,6 +855,7 @@ text = "Duration: "
 unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
+tooltip_text = "Duration of the opening animation"
 min_value = 0.01
 step = 0.01
 rounded = false
@@ -852,7 +869,7 @@ text = "Type: "
 [node name="StartAnimationTransitionType" parent="MarginContainer/VBoxContainer/HBoxContainer11" unique_id=375212253 instance=ExtResource("5_rpjr3")]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Transition type for this animation."
+tooltip_text = "Transition type for the opening animation."
 selected = 10
 item_count = 12
 popup/item_0/text = "Linear"
@@ -887,7 +904,7 @@ text = "Ease:"
 [node name="StartAnimationTransitionEase" parent="MarginContainer/VBoxContainer/HBoxContainer11" unique_id=1111068438 instance=ExtResource("5_rpjr3")]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Ease type for this animation."
+tooltip_text = "Ease type for the opening animation."
 selected = 1
 item_count = 4
 popup/item_0/text = "Ease In"
@@ -903,7 +920,7 @@ popup/item_3/id = 3
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer12" unique_id=672859453]
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(260, 0)
 layout_mode = 2
 text = "End Animation:"
 
@@ -937,6 +954,7 @@ text = "Duration: "
 unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
+tooltip_text = "Duration of the close animation"
 min_value = 0.01
 step = 0.01
 rounded = false
@@ -950,6 +968,7 @@ text = "Type: "
 [node name="EndAnimationTransitionType" parent="MarginContainer/VBoxContainer/HBoxContainer12" unique_id=1903955075 instance=ExtResource("5_rpjr3")]
 unique_name_in_owner = true
 layout_mode = 2
+tooltip_text = "Transition type for the close animation."
 selected = 10
 item_count = 12
 popup/item_0/text = "Linear"
@@ -984,7 +1003,7 @@ text = "Ease:"
 [node name="EndAnimationTransitionEase" parent="MarginContainer/VBoxContainer/HBoxContainer12" unique_id=1917403606 instance=ExtResource("5_rpjr3")]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Ease type for this animation."
+tooltip_text = "Ease type for the close animation."
 selected = 0
 item_count = 4
 popup/item_0/text = "Ease In"
@@ -1000,7 +1019,7 @@ popup/item_3/id = 3
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer13" unique_id=1613493115]
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(260, 0)
 layout_mode = 2
 text = "Text Transition:"
 
@@ -1041,7 +1060,7 @@ unique_name_in_owner = true
 layout_mode = 2
 
 [node name="Control" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TextTransitionvalueExtra" unique_id=1502940187]
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(260, 0)
 layout_mode = 2
 alignment = 2
 
@@ -1072,7 +1091,7 @@ text = "Length"
 
 [node name="Length" parent="MarginContainer/VBoxContainer/TextTransitionvalueExtra/VBoxContainer/LengthContainer" unique_id=943320243 instance=ExtResource("4_lmsvt")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(160, 0)
+custom_minimum_size = Vector2(110, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 min_value = 1.0
@@ -1182,7 +1201,7 @@ text = " Ember Scale:"
 
 [node name="EmberScale" parent="MarginContainer/VBoxContainer/TextTransitionvalueExtra/TransitionsValueContainer/Ember" unique_id=1981326666 instance=ExtResource("4_lmsvt")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(160, 0)
+custom_minimum_size = Vector2(110, 0)
 layout_mode = 2
 min_value = 1.0
 max_value = 120.0
@@ -1284,13 +1303,33 @@ layout_mode = 2
 custom_minimum_size = Vector2(220, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.604111, 0.72216, 0.972656, 1)
-text = "Typewriter Sound"
+text = "Typewriter"
+
+[node name="HBoxContainer23" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1726457344]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer23" unique_id=1687838868]
+custom_minimum_size = Vector2(260, 0)
+layout_mode = 2
+text = "Mode:"
+
+[node name="LetterByLetterMode" parent="MarginContainer/VBoxContainer/HBoxContainer23" unique_id=621784070 instance=ExtResource("5_rpjr3")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Changes how text is displayed when the character delay is greater than 0. You can choose between the classic mode, which displays characters one by one, and the modern mode, which displays text word by word."
+selected = 0
+item_count = 2
+popup/item_0/text = "Show text letter by letter"
+popup/item_0/id = 0
+popup/item_1/text = "Show text word by word"
+popup/item_1/id = 1
 
 [node name="HBoxContainer14" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=462775721]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer14" unique_id=307703812]
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(260, 0)
 layout_mode = 2
 text = "FX:"
 
@@ -1298,9 +1337,9 @@ text = "FX:"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-tooltip_text = "Click to select a sound
+tooltip_text = "Sound played when each character/word is displayed.
 
-Middle Click to erase the current sound"
+[Note]: \"Left Click\" to select a sound or \"Middle Click\" to erase the current sound."
 text = "Select Audio File"
 
 [node name="PlayButton" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer14" unique_id=1456274850]
@@ -1317,7 +1356,7 @@ texture_hover = SubResource("AtlasTexture_74im4")
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer15" unique_id=1036263367]
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(260, 0)
 layout_mode = 2
 text = "Volume DB:"
 
@@ -1325,6 +1364,7 @@ text = "Volume DB:"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "Volume in decibels for the sound of the text \"letter by letter\""
 min_value = -80.0
 max_value = 24.0
 _custom_value = 0.0
@@ -1333,7 +1373,7 @@ _custom_value = 0.0
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer16" unique_id=116984254]
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(260, 0)
 layout_mode = 2
 text = "Pitch"
 
@@ -1345,6 +1385,7 @@ text = " Min: "
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "Each time the \"letter-by-letter\" sound is played, it will be played at a random pitch between \"Pitch Min\" and \"Pitch Max\""
 min_value = 0.01
 max_value = 4.0
 step = 0.01
@@ -1359,6 +1400,7 @@ text = " Max: "
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "Each time the \"letter-by-letter\" sound is played, it will be played at a random pitch between \"Pitch Min\" and \"Pitch Max\""
 min_value = 0.01
 max_value = 4.0
 step = 0.01

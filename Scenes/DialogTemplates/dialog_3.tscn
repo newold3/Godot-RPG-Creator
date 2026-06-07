@@ -3,7 +3,32 @@
 [ext_resource type="Script" uid="uid://dbgpgaktkviy2" path="res://Scenes/DialogTemplates/dialog_3.gd" id="1_h2okj"]
 [ext_resource type="Texture2D" uid="uid://deraa74jf520v" path="res://Assets/Images/Other/dialog_skin4.png" id="2_46b3b"]
 [ext_resource type="FontFile" uid="uid://dvh0mi6yu0ywx" path="res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf" id="3_h2okj"]
+[ext_resource type="Texture2D" uid="uid://bm0yrsmhngopc" path="res://icon.png" id="4_ukan6"]
+[ext_resource type="Script" uid="uid://d35nuhq2h2las" path="res://addons/CustomControls/Resources/RichTextEffects/ColorMod.gd" id="5_xfjsb"]
+[ext_resource type="Script" uid="uid://brxpkqd4scuuk" path="res://addons/CustomControls/Resources/RichTextEffects/Cuss.gd" id="6_b0l0m"]
 [ext_resource type="AudioStream" uid="uid://c3u4nydr45dly" path="res://Assets/Sounds/typewrite2.ogg" id="6_tb4s1"]
+[ext_resource type="Script" uid="uid://d0rdiy48vo4kb" path="res://addons/CustomControls/Resources/RichTextEffects/ghost.gd" id="7_pkjbi"]
+[ext_resource type="Script" uid="uid://wlvhpgoqeeac" path="res://addons/CustomControls/Resources/RichTextEffects/Heart.gd" id="8_lm2rj"]
+[ext_resource type="Script" uid="uid://cq5sn2f8csx84" path="res://addons/CustomControls/Resources/RichTextEffects/Jump.gd" id="9_rtafy"]
+[ext_resource type="Script" uid="uid://ct3xyr2mvr3y" path="res://addons/CustomControls/Resources/RichTextEffects/L33T.gd" id="10_5ropk"]
+[ext_resource type="Script" uid="uid://cpf2gv4ymksw8" path="res://addons/CustomControls/Resources/RichTextEffects/Nervous.gd" id="11_t0m2c"]
+[ext_resource type="Script" uid="uid://dn7p1k5t6fwbj" path="res://addons/CustomControls/Resources/RichTextEffects/Number.gd" id="12_yylki"]
+[ext_resource type="Script" uid="uid://df311ymgk4drn" path="res://addons/CustomControls/Resources/RichTextEffects/Rain.gd" id="13_4g7oj"]
+[ext_resource type="Script" uid="uid://bgiieuiehu4eo" path="res://addons/CustomControls/Resources/RichTextEffects/Sparkle.gd" id="14_prf2m"]
+[ext_resource type="Script" uid="uid://mi6qjc28vviy" path="res://addons/CustomControls/Resources/RichTextEffects/UwU.gd" id="15_6f6fc"]
+[ext_resource type="Script" uid="uid://b5xanxibidtwu" path="res://addons/CustomControls/Resources/RichTextEffects/Woo.gd" id="16_586an"]
+[ext_resource type="Script" uid="uid://ccq80qsnp6xmj" path="res://addons/CustomControls/Resources/RichTextEffects/lenguage_learning.gd" id="17_2yxy7"]
+[ext_resource type="Script" uid="uid://fc46rtyfdygi" path="res://addons/CustomControls/Resources/RichTextEffects/RandomVerticalPosition.gd" id="18_wubfy"]
+[ext_resource type="Script" uid="uid://bem5k8epu3wk4" path="res://addons/CustomControls/Resources/RichTextEffects/Transitions/Bounce.gd" id="19_tchkf"]
+[ext_resource type="Script" uid="uid://p6ct0soamxxb" path="res://addons/CustomControls/Resources/RichTextEffects/Transitions/Console.gd" id="20_e4poi"]
+[ext_resource type="Script" uid="uid://cflymkqho0mfj" path="res://addons/CustomControls/Resources/RichTextEffects/Transitions/Embers.gd" id="21_m2pt3"]
+[ext_resource type="Script" uid="uid://ce7qbjib1dwy2" path="res://addons/CustomControls/Resources/RichTextEffects/Transitions/Prickle.gd" id="22_b6ek4"]
+[ext_resource type="Script" uid="uid://cd6dfhje3akmu" path="res://addons/CustomControls/Resources/RichTextEffects/Transitions/Redacted.gd" id="23_8227e"]
+[ext_resource type="Script" uid="uid://db4miyaf78vpo" path="res://addons/CustomControls/Resources/RichTextEffects/Transitions/WFC.gd" id="24_2bqp7"]
+[ext_resource type="Script" uid="uid://dqg0mmilwhyjf" path="res://addons/CustomControls/Resources/RichTextEffects/Transitions/Word.gd" id="25_7k707"]
+[ext_resource type="Script" uid="uid://d2nj4h454ello" path="res://addons/CustomControls/Resources/RichTextEffects/Transitions/Glitch.gd" id="26_xd035"]
+[ext_resource type="Script" uid="uid://d0vpfn66juhqj" path="res://addons/CustomControls/Resources/RichTextEffects/Transitions/Energize.gd" id="27_gjgm1"]
+[ext_resource type="Script" uid="uid://7r4y8mg1qg31" path="res://addons/CustomControls/Resources/RichTextEffects/Transitions/Fade.gd" id="28_u6yvb"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0aoe3"]
 
@@ -11,25 +36,385 @@
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_h2okj"]
 texture = ExtResource("2_46b3b")
-region_rect = Rect2(12, 67, 120, 122)
-modulate_color = Color(1.5838226, 1.5838226, 0.31065494, 1)
+region_rect = Rect2(12, 67, 121, 122)
+modulate_color = Color(1.584, 1.584, 0.311, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ehnfx"]
 atlas = ExtResource("2_46b3b")
-region = Rect2(150, 74, 107, 112)
+region = Rect2(136, 71, 107, 112)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cjjty"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_twlh8"]
 
+[sub_resource type="RichTextEffect" id="RichTextEffect_ntg8j"]
+script = ExtResource("5_xfjsb")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_auxo3"]
+script = ExtResource("6_b0l0m")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_1y55q"]
+script = ExtResource("7_pkjbi")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_5g4vf"]
+script = ExtResource("8_lm2rj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_5bti6"]
+script = ExtResource("9_rtafy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_bbldt"]
+script = ExtResource("10_5ropk")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_c6ge8"]
+script = ExtResource("11_t0m2c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_yt34u"]
+script = ExtResource("12_yylki")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_i0axy"]
+script = ExtResource("13_4g7oj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_hbnji"]
+script = ExtResource("14_prf2m")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_sfa1x"]
+script = ExtResource("15_6f6fc")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_kca0v"]
+script = ExtResource("16_586an")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_048pg"]
+script = ExtResource("17_2yxy7")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_p6e38"]
+script = ExtResource("18_wubfy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_cr10e"]
+script = ExtResource("19_tchkf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_kn0on"]
+script = ExtResource("20_e4poi")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_kuui5"]
+script = ExtResource("21_m2pt3")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_q15qs"]
+script = ExtResource("22_b6ek4")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_lqspg"]
+script = ExtResource("23_8227e")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_sfm8r"]
+script = ExtResource("24_2bqp7")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_04chr"]
+script = ExtResource("25_7k707")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_m36fs"]
+script = ExtResource("26_xd035")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_qo4m3"]
+script = ExtResource("27_gjgm1")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_rc2e0"]
+script = ExtResource("28_u6yvb")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_xfjsb"]
+script = ExtResource("5_xfjsb")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_b0l0m"]
+script = ExtResource("6_b0l0m")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_pkjbi"]
+script = ExtResource("7_pkjbi")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_lm2rj"]
+script = ExtResource("8_lm2rj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_rtafy"]
+script = ExtResource("9_rtafy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_5ropk"]
+script = ExtResource("10_5ropk")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_t0m2c"]
+script = ExtResource("11_t0m2c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_yylki"]
+script = ExtResource("12_yylki")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_4g7oj"]
+script = ExtResource("13_4g7oj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_prf2m"]
+script = ExtResource("14_prf2m")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_6f6fc"]
+script = ExtResource("15_6f6fc")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_586an"]
+script = ExtResource("16_586an")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_2yxy7"]
+script = ExtResource("17_2yxy7")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_wubfy"]
+script = ExtResource("18_wubfy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_tchkf"]
+script = ExtResource("19_tchkf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_e4poi"]
+script = ExtResource("20_e4poi")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_m2pt3"]
+script = ExtResource("21_m2pt3")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_b6ek4"]
+script = ExtResource("22_b6ek4")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_8227e"]
+script = ExtResource("23_8227e")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_2bqp7"]
+script = ExtResource("24_2bqp7")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_7k707"]
+script = ExtResource("25_7k707")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_xd035"]
+script = ExtResource("26_xd035")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_gjgm1"]
+script = ExtResource("27_gjgm1")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_u6yvb"]
+script = ExtResource("28_u6yvb")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_6wgaf"]
+script = ExtResource("5_xfjsb")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_dpmpu"]
+script = ExtResource("6_b0l0m")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_s6kqs"]
+script = ExtResource("7_pkjbi")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_auvxe"]
+script = ExtResource("8_lm2rj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_tcgpk"]
+script = ExtResource("9_rtafy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_gcics"]
+script = ExtResource("10_5ropk")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_srf74"]
+script = ExtResource("11_t0m2c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_5hdhb"]
+script = ExtResource("12_yylki")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_urn3i"]
+script = ExtResource("13_4g7oj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_73c6n"]
+script = ExtResource("14_prf2m")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ud1j5"]
+script = ExtResource("15_6f6fc")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_rbpmi"]
+script = ExtResource("16_586an")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_hicc7"]
+script = ExtResource("17_2yxy7")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_xfim0"]
+script = ExtResource("18_wubfy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_r5sew"]
+script = ExtResource("19_tchkf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_0v2mq"]
+script = ExtResource("20_e4poi")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_8u8tn"]
+script = ExtResource("21_m2pt3")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_205xy"]
+script = ExtResource("22_b6ek4")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_7qe4a"]
+script = ExtResource("23_8227e")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_bmbqh"]
+script = ExtResource("24_2bqp7")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_gwrdu"]
+script = ExtResource("25_7k707")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_fs3rs"]
+script = ExtResource("26_xd035")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_4wwym"]
+script = ExtResource("27_gjgm1")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ye44c"]
+script = ExtResource("28_u6yvb")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_wwrot"]
+script = ExtResource("5_xfjsb")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_7efri"]
+script = ExtResource("6_b0l0m")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_uu2u4"]
+script = ExtResource("7_pkjbi")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_phvkb"]
+script = ExtResource("8_lm2rj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_qvlvl"]
+script = ExtResource("9_rtafy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_o555k"]
+script = ExtResource("10_5ropk")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_sou7r"]
+script = ExtResource("11_t0m2c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_o608p"]
+script = ExtResource("12_yylki")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_58s7r"]
+script = ExtResource("13_4g7oj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_g7yx7"]
+script = ExtResource("14_prf2m")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_q02oc"]
+script = ExtResource("15_6f6fc")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_0sids"]
+script = ExtResource("16_586an")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_5veah"]
+script = ExtResource("17_2yxy7")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_3cubd"]
+script = ExtResource("18_wubfy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_0r5pa"]
+script = ExtResource("19_tchkf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_s0or1"]
+script = ExtResource("20_e4poi")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_a3eed"]
+script = ExtResource("21_m2pt3")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vhdqn"]
+script = ExtResource("22_b6ek4")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_0vjxy"]
+script = ExtResource("23_8227e")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_mkgki"]
+script = ExtResource("24_2bqp7")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_xju4x"]
+script = ExtResource("25_7k707")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_7e8bw"]
+script = ExtResource("26_xd035")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_gbt45"]
+script = ExtResource("27_gjgm1")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_xfqn4"]
+script = ExtResource("28_u6yvb")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_vee5r"]
+script = ExtResource("5_xfjsb")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_q2jqv"]
+script = ExtResource("6_b0l0m")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_thgow"]
+script = ExtResource("7_pkjbi")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_raayh"]
+script = ExtResource("8_lm2rj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_rqv2j"]
+script = ExtResource("9_rtafy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ptv0e"]
+script = ExtResource("10_5ropk")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_oekax"]
+script = ExtResource("11_t0m2c")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_h0juv"]
+script = ExtResource("12_yylki")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_i8vj4"]
+script = ExtResource("13_4g7oj")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_wtd13"]
+script = ExtResource("14_prf2m")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_x8atg"]
+script = ExtResource("15_6f6fc")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_ru4bs"]
+script = ExtResource("16_586an")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_h11nk"]
+script = ExtResource("17_2yxy7")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_0woy3"]
+script = ExtResource("18_wubfy")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_7kdfo"]
+script = ExtResource("19_tchkf")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_dbbt6"]
+script = ExtResource("20_e4poi")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_dfr42"]
+script = ExtResource("21_m2pt3")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_gg2jx"]
+script = ExtResource("22_b6ek4")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_v2v8x"]
+script = ExtResource("23_8227e")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_i8ha1"]
+script = ExtResource("24_2bqp7")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_mtsa2"]
+script = ExtResource("25_7k707")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_uqjip"]
+script = ExtResource("26_xd035")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_4h37j"]
+script = ExtResource("27_gjgm1")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_8enax"]
+script = ExtResource("28_u6yvb")
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_sivwc"]
 texture = ExtResource("2_46b3b")
-region_rect = Rect2(371, 67, 104, 122)
-modulate_color = Color(1.5838226, 1.5838226, 0.31065494, 1)
+region_rect = Rect2(378, 66, 137, 122)
+modulate_color = Color(1.584, 1.584, 0.311, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jxre1"]
 atlas = ExtResource("2_46b3b")
-region = Rect2(258, 73, 91, 112)
+region = Rect2(250, 70, 123, 112)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_d6ln2"]
 atlas = ExtResource("2_46b3b")
@@ -68,35 +453,26 @@ atlas = ExtResource("2_46b3b")
 region = Rect2(282, 15, 31, 36)
 
 [node name="Dialog3" type="PanelContainer" unique_id=220425190]
-modulate = Color(1, 1, 1, 0)
-custom_minimum_size = Vector2(224, 128)
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -247.0
-offset_top = -196.0
-offset_right = 247.0
-offset_bottom = -38.0
-grow_horizontal = 2
-grow_vertical = 0
-pivot_offset = Vector2(247, 79)
+custom_minimum_size = Vector2(324, 128)
+offset_left = 269.0
+offset_top = 442.0
+offset_right = 883.0
+offset_bottom = 602.0
+pivot_offset = Vector2(307, 80)
 size_flags_horizontal = 4
 size_flags_vertical = 10
 theme_override_styles/panel = SubResource("StyleBoxEmpty_0aoe3")
 script = ExtResource("1_h2okj")
+shadow_color = Color(1.5838226, 0.31674665, 0.31065494, 0.21568628)
 test_dialog_box = "[showbox type=0 val=\"Left name\" pos=0]
 [showbox type=0 val=\"Right name\" pos=1]
-[face path=\"res://icon.png\" trans_type=1 trans_time=0 trans_wait=0] 
+[face path=\"res://icon.png\" trans_type=1 trans_time=0 trans_wait=0]
 [face path=\"res://icon.png\" position=1 trans_type=1 trans_time=0 trans_wait=0]
-Test Message."
-minimun_dialog_width = 220
+Test Message. "
+minimun_dialog_width = 320
 minimun_dialog_height = 120
-message_max_width = 60
-message_max_lines = 800
-comma_pause_delay = 4.0
-dot_pause_delay = 0.15
+message_max_width = 320
+metadata/_edit_horizontal_guides_ = [620.0]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1336255492]
 layer = 0
@@ -128,6 +504,10 @@ mouse_filter = 2
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
 
 [node name="BackgroundContainer" type="MarginContainer" parent="MainMargin" unique_id=1709531979]
 unique_name_in_owner = true
@@ -147,20 +527,22 @@ theme_override_constants/margin_right = -6
 theme_override_constants/margin_bottom = -12
 
 [node name="BackgroundShadow" type="NinePatchRect" parent="MainMargin/BackgroundContainer/MarginContainer" unique_id=1254521663]
-self_modulate = Color(1.5838226, 0.31674665, 0.31065494, 1)
+unique_name_in_owner = true
+self_modulate = Color(1.5838226, 0.31674665, 0.31065494, 0.21568628)
 layout_mode = 2
 texture = ExtResource("2_46b3b")
-region_rect = Rect2(0, 199, 486, 146)
+region_rect = Rect2(11, 199, 486, 146)
 patch_margin_left = 53
 patch_margin_top = 32
 patch_margin_right = 53
 patch_margin_bottom = 28
 
 [node name="Background" type="NinePatchRect" parent="MainMargin/BackgroundContainer" unique_id=69565008]
-self_modulate = Color(1.5838226, 1.5838226, 0.31065494, 1)
+unique_name_in_owner = true
+self_modulate = Color(1.584, 1.584, 0.311, 1)
 layout_mode = 2
 texture = ExtResource("2_46b3b")
-region_rect = Rect2(0, 199, 486, 146)
+region_rect = Rect2(11, 199, 486, 146)
 patch_margin_left = 53
 patch_margin_top = 32
 patch_margin_right = 53
@@ -170,36 +552,50 @@ patch_margin_bottom = 28
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/margin_left = -22
-theme_override_constants/margin_top = -75
-theme_override_constants/margin_right = -20
+theme_override_constants/margin_top = 0
 
 [node name="NameLeftContainer" type="PanelContainer" parent="MainMargin/NameContainer" unique_id=370427765]
 unique_name_in_owner = true
-visible = false
+z_index = 1
 layout_mode = 2
 size_flags_horizontal = 0
-size_flags_vertical = 0
+size_flags_vertical = 8
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_jkrir")
 metadata/_edit_group_ = true
 
-[node name="MarginContainer2" type="MarginContainer" parent="MainMargin/NameContainer/NameLeftContainer" unique_id=82056752]
+[node name="Pivot" type="Control" parent="MainMargin/NameContainer/NameLeftContainer" unique_id=1777338091]
 layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
 mouse_filter = 2
-theme_override_constants/margin_left = 58
-theme_override_constants/margin_top = 35
-theme_override_constants/margin_right = 30
 
-[node name="MarginContainer2" type="MarginContainer" parent="MainMargin/NameContainer/NameLeftContainer/MarginContainer2" unique_id=185936790]
+[node name="MarginContainer2" type="MarginContainer" parent="MainMargin/NameContainer/NameLeftContainer/Pivot" unique_id=82056752]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -49.0
+offset_right = 49.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 123
+theme_override_constants/margin_top = -25
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = -11
+
+[node name="MarginContainer2" type="MarginContainer" parent="MainMargin/NameContainer/NameLeftContainer/Pivot/MarginContainer2" unique_id=185936790]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = -4
 
-[node name="NameLeftBackgroundShadow" type="NinePatchRect" parent="MainMargin/NameContainer/NameLeftContainer/MarginContainer2/MarginContainer2" unique_id=1714824012]
+[node name="NameLeftBackgroundShadow" type="NinePatchRect" parent="MainMargin/NameContainer/NameLeftContainer/Pivot/MarginContainer2/MarginContainer2" unique_id=1714824012]
 unique_name_in_owner = true
-self_modulate = Color(1.5838226, 0.29237983, 0.31065494, 1)
+self_modulate = Color(1.5838226, 0.31674665, 0.31065494, 0.21568628)
 z_index = -1
 layout_mode = 2
 size_flags_horizontal = 3
@@ -211,9 +607,9 @@ patch_margin_top = 20
 patch_margin_right = 27
 patch_margin_bottom = 20
 
-[node name="NameLeftBackground" type="NinePatchRect" parent="MainMargin/NameContainer/NameLeftContainer/MarginContainer2" unique_id=1051267088]
+[node name="NameLeftBackground" type="NinePatchRect" parent="MainMargin/NameContainer/NameLeftContainer/Pivot/MarginContainer2" unique_id=1051267088]
 unique_name_in_owner = true
-self_modulate = Color(1.5838226, 1.5838226, 0.31065494, 1)
+self_modulate = Color(1.584, 1.584, 0.311, 1)
 show_behind_parent = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -225,7 +621,7 @@ patch_margin_top = 20
 patch_margin_right = 27
 patch_margin_bottom = 20
 
-[node name="MarginContainer" type="MarginContainer" parent="MainMargin/NameContainer/NameLeftContainer/MarginContainer2" unique_id=2070118093]
+[node name="MarginContainer" type="MarginContainer" parent="MainMargin/NameContainer/NameLeftContainer/Pivot/MarginContainer2" unique_id=2070118093]
 layout_mode = 2
 size_flags_vertical = 0
 mouse_filter = 2
@@ -234,7 +630,7 @@ theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 8
 
-[node name="NameLeft" type="Label" parent="MainMargin/NameContainer/NameLeftContainer/MarginContainer2/MarginContainer" unique_id=12031181]
+[node name="NameLeft" type="Label" parent="MainMargin/NameContainer/NameLeftContainer/Pivot/MarginContainer2/MarginContainer" unique_id=12031181]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -244,35 +640,54 @@ theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
 theme_override_fonts/font = ExtResource("3_h2okj")
 theme_override_font_sizes/font_size = 22
+text = "Left name"
 horizontal_alignment = 1
 
 [node name="NameRightContainer" type="PanelContainer" parent="MainMargin/NameContainer" unique_id=46099012]
 unique_name_in_owner = true
-visible = false
+z_index = 1
 layout_mode = 2
 size_flags_horizontal = 8
-size_flags_vertical = 0
+size_flags_vertical = 8
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_jkrir")
 metadata/_edit_group_ = true
 
-[node name="MarginContainer2" type="MarginContainer" parent="MainMargin/NameContainer/NameRightContainer" unique_id=584314697]
+[node name="Pivot" type="Control" parent="MainMargin/NameContainer/NameRightContainer" unique_id=384359558]
 layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
 mouse_filter = 2
-theme_override_constants/margin_left = 33
-theme_override_constants/margin_top = 35
-theme_override_constants/margin_right = 30
 
-[node name="MarginContainer2" type="MarginContainer" parent="MainMargin/NameContainer/NameRightContainer/MarginContainer2" unique_id=1535793194]
+[node name="MarginContainer2" type="MarginContainer" parent="MainMargin/NameContainer/NameRightContainer/Pivot" unique_id=584314697]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -10.0
+offset_right = 16.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 163
+theme_override_constants/margin_bottom = 16
+
+[node name="MarginContainer2" type="MarginContainer" parent="MainMargin/NameContainer/NameRightContainer/Pivot/MarginContainer2" unique_id=1535793194]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 0
 theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = -6
 
-[node name="NameRightBackgroundShadow" type="NinePatchRect" parent="MainMargin/NameContainer/NameRightContainer/MarginContainer2/MarginContainer2" unique_id=1961192864]
+[node name="NameRightBackgroundShadow" type="NinePatchRect" parent="MainMargin/NameContainer/NameRightContainer/Pivot/MarginContainer2/MarginContainer2" unique_id=1961192864]
 unique_name_in_owner = true
-self_modulate = Color(1.5838226, 0.42030576, 0.31065494, 1)
+self_modulate = Color(1.5838226, 0.31674665, 0.31065494, 0.21568628)
 show_behind_parent = true
 z_index = -1
 layout_mode = 2
@@ -285,9 +700,9 @@ patch_margin_top = 23
 patch_margin_right = 27
 patch_margin_bottom = 20
 
-[node name="NameRightBackground" type="NinePatchRect" parent="MainMargin/NameContainer/NameRightContainer/MarginContainer2" unique_id=1074015552]
+[node name="NameRightBackground" type="NinePatchRect" parent="MainMargin/NameContainer/NameRightContainer/Pivot/MarginContainer2" unique_id=1074015552]
 unique_name_in_owner = true
-self_modulate = Color(1.5838226, 1.5838226, 0.31065494, 1)
+self_modulate = Color(1.584, 1.584, 0.311, 1)
 show_behind_parent = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -299,7 +714,7 @@ patch_margin_top = 23
 patch_margin_right = 27
 patch_margin_bottom = 20
 
-[node name="MarginContainer" type="MarginContainer" parent="MainMargin/NameContainer/NameRightContainer/MarginContainer2" unique_id=346706880]
+[node name="MarginContainer" type="MarginContainer" parent="MainMargin/NameContainer/NameRightContainer/Pivot/MarginContainer2" unique_id=346706880]
 layout_mode = 2
 size_flags_vertical = 0
 mouse_filter = 2
@@ -308,7 +723,7 @@ theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 8
 
-[node name="NameRight" type="Label" parent="MainMargin/NameContainer/NameRightContainer/MarginContainer2/MarginContainer" unique_id=1521365011]
+[node name="NameRight" type="Label" parent="MainMargin/NameContainer/NameRightContainer/Pivot/MarginContainer2/MarginContainer" unique_id=1521365011]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -317,6 +732,7 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.576471)
 theme_override_constants/shadow_offset_y = 2
 theme_override_fonts/font = ExtResource("3_h2okj")
 theme_override_font_sizes/font_size = 22
+text = "Right name"
 horizontal_alignment = 1
 
 [node name="DialogMainContainer" type="MarginContainer" parent="MainMargin" unique_id=1493940115]
@@ -336,14 +752,12 @@ mouse_filter = 2
 [node name="MarginContainer" type="MarginContainer" parent="MainMargin/DialogMainContainer/HBoxContainer" unique_id=1513436453]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/margin_left = -20
+theme_override_constants/margin_left = -18
 theme_override_constants/margin_top = 0
-theme_override_constants/margin_right = -80
-theme_override_constants/margin_bottom = 10
+theme_override_constants/margin_bottom = 8
 
 [node name="FaceLeftFrame" type="PanelContainer" parent="MainMargin/DialogMainContainer/HBoxContainer/MarginContainer" unique_id=1167213821]
 unique_name_in_owner = true
-visible = false
 custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 mouse_filter = 2
@@ -352,9 +766,9 @@ theme_override_styles/panel = SubResource("StyleBoxTexture_h2okj")
 [node name="MarginContainer" type="MarginContainer" parent="MainMargin/DialogMainContainer/HBoxContainer/MarginContainer/FaceLeftFrame" unique_id=431864982]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/margin_left = 5
+theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 7
+theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 6
 
 [node name="Mask" type="TextureRect" parent="MainMargin/DialogMainContainer/HBoxContainer/MarginContainer/FaceLeftFrame/MarginContainer" unique_id=1845100677]
@@ -374,6 +788,7 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(54, 62.5)
 mouse_filter = 2
+texture = ExtResource("4_ukan6")
 expand_mode = 1
 stretch_mode = 6
 
@@ -382,21 +797,18 @@ unique_name_in_owner = true
 z_index = 1
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 4
 mouse_filter = 2
-theme_override_constants/margin_left = 85
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 81
-theme_override_constants/margin_bottom = 13
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
 
 [node name="Message" type="RichTextLabel" parent="MainMargin/DialogMainContainer/HBoxContainer/MessageContainer" unique_id=908575538]
 unique_name_in_owner = true
 process_priority = 12
 clip_children = 2
-custom_minimum_size = Vector2(224, 128)
+custom_minimum_size = Vector2(324, 128)
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
 mouse_filter = 2
 theme_override_colors/default_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.576471)
@@ -405,23 +817,22 @@ theme_override_constants/shadow_offset_y = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_cjjty")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_twlh8")
 bbcode_enabled = true
+text = "[transition_fade duration=0.3][font=\"res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf\"][font_size=22][color=\"#ffffffff\"]Test Message.[/color][/font_size][/font][/transition_fade]"
 scroll_active = false
 autowrap_mode = 0
-visible_characters = 0
+custom_effects = [SubResource("RichTextEffect_ntg8j"), SubResource("RichTextEffect_auxo3"), SubResource("RichTextEffect_1y55q"), SubResource("RichTextEffect_5g4vf"), SubResource("RichTextEffect_5bti6"), SubResource("RichTextEffect_bbldt"), SubResource("RichTextEffect_c6ge8"), SubResource("RichTextEffect_yt34u"), SubResource("RichTextEffect_i0axy"), SubResource("RichTextEffect_hbnji"), SubResource("RichTextEffect_sfa1x"), SubResource("RichTextEffect_kca0v"), SubResource("RichTextEffect_048pg"), SubResource("RichTextEffect_p6e38"), SubResource("RichTextEffect_cr10e"), SubResource("RichTextEffect_kn0on"), SubResource("RichTextEffect_kuui5"), SubResource("RichTextEffect_q15qs"), SubResource("RichTextEffect_lqspg"), SubResource("RichTextEffect_sfm8r"), SubResource("RichTextEffect_04chr"), SubResource("RichTextEffect_m36fs"), SubResource("RichTextEffect_qo4m3"), SubResource("RichTextEffect_rc2e0"), SubResource("RichTextEffect_xfjsb"), SubResource("RichTextEffect_b0l0m"), SubResource("RichTextEffect_pkjbi"), SubResource("RichTextEffect_lm2rj"), SubResource("RichTextEffect_rtafy"), SubResource("RichTextEffect_5ropk"), SubResource("RichTextEffect_t0m2c"), SubResource("RichTextEffect_yylki"), SubResource("RichTextEffect_4g7oj"), SubResource("RichTextEffect_prf2m"), SubResource("RichTextEffect_6f6fc"), SubResource("RichTextEffect_586an"), SubResource("RichTextEffect_2yxy7"), SubResource("RichTextEffect_wubfy"), SubResource("RichTextEffect_tchkf"), SubResource("RichTextEffect_e4poi"), SubResource("RichTextEffect_m2pt3"), SubResource("RichTextEffect_b6ek4"), SubResource("RichTextEffect_8227e"), SubResource("RichTextEffect_2bqp7"), SubResource("RichTextEffect_7k707"), SubResource("RichTextEffect_xd035"), SubResource("RichTextEffect_gjgm1"), SubResource("RichTextEffect_u6yvb"), SubResource("RichTextEffect_6wgaf"), SubResource("RichTextEffect_dpmpu"), SubResource("RichTextEffect_s6kqs"), SubResource("RichTextEffect_auvxe"), SubResource("RichTextEffect_tcgpk"), SubResource("RichTextEffect_gcics"), SubResource("RichTextEffect_srf74"), SubResource("RichTextEffect_5hdhb"), SubResource("RichTextEffect_urn3i"), SubResource("RichTextEffect_73c6n"), SubResource("RichTextEffect_ud1j5"), SubResource("RichTextEffect_rbpmi"), SubResource("RichTextEffect_hicc7"), SubResource("RichTextEffect_xfim0"), SubResource("RichTextEffect_r5sew"), SubResource("RichTextEffect_0v2mq"), SubResource("RichTextEffect_8u8tn"), SubResource("RichTextEffect_205xy"), SubResource("RichTextEffect_7qe4a"), SubResource("RichTextEffect_bmbqh"), SubResource("RichTextEffect_gwrdu"), SubResource("RichTextEffect_fs3rs"), SubResource("RichTextEffect_4wwym"), SubResource("RichTextEffect_ye44c"), SubResource("RichTextEffect_wwrot"), SubResource("RichTextEffect_7efri"), SubResource("RichTextEffect_uu2u4"), SubResource("RichTextEffect_phvkb"), SubResource("RichTextEffect_qvlvl"), SubResource("RichTextEffect_o555k"), SubResource("RichTextEffect_sou7r"), SubResource("RichTextEffect_o608p"), SubResource("RichTextEffect_58s7r"), SubResource("RichTextEffect_g7yx7"), SubResource("RichTextEffect_q02oc"), SubResource("RichTextEffect_0sids"), SubResource("RichTextEffect_5veah"), SubResource("RichTextEffect_3cubd"), SubResource("RichTextEffect_0r5pa"), SubResource("RichTextEffect_s0or1"), SubResource("RichTextEffect_a3eed"), SubResource("RichTextEffect_vhdqn"), SubResource("RichTextEffect_0vjxy"), SubResource("RichTextEffect_mkgki"), SubResource("RichTextEffect_xju4x"), SubResource("RichTextEffect_7e8bw"), SubResource("RichTextEffect_gbt45"), SubResource("RichTextEffect_xfqn4"), SubResource("RichTextEffect_vee5r"), SubResource("RichTextEffect_q2jqv"), SubResource("RichTextEffect_thgow"), SubResource("RichTextEffect_raayh"), SubResource("RichTextEffect_rqv2j"), SubResource("RichTextEffect_ptv0e"), SubResource("RichTextEffect_oekax"), SubResource("RichTextEffect_h0juv"), SubResource("RichTextEffect_i8vj4"), SubResource("RichTextEffect_wtd13"), SubResource("RichTextEffect_x8atg"), SubResource("RichTextEffect_ru4bs"), SubResource("RichTextEffect_h11nk"), SubResource("RichTextEffect_0woy3"), SubResource("RichTextEffect_7kdfo"), SubResource("RichTextEffect_dbbt6"), SubResource("RichTextEffect_dfr42"), SubResource("RichTextEffect_gg2jx"), SubResource("RichTextEffect_v2v8x"), SubResource("RichTextEffect_i8ha1"), SubResource("RichTextEffect_mtsa2"), SubResource("RichTextEffect_uqjip"), SubResource("RichTextEffect_4h37j"), SubResource("RichTextEffect_8enax")]
+visible_characters = 13
 visible_characters_behavior = 1
-visible_ratio = 0.22580644
 
 [node name="MarginContainer2" type="MarginContainer" parent="MainMargin/DialogMainContainer/HBoxContainer" unique_id=137305726]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/margin_left = -80
 theme_override_constants/margin_top = 0
-theme_override_constants/margin_right = -20
-theme_override_constants/margin_bottom = 10
+theme_override_constants/margin_right = -16
+theme_override_constants/margin_bottom = 8
 
 [node name="FaceRightFrame" type="PanelContainer" parent="MainMargin/DialogMainContainer/HBoxContainer/MarginContainer2" unique_id=645514687]
 unique_name_in_owner = true
-visible = false
 custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 mouse_filter = 2
@@ -430,10 +841,10 @@ theme_override_styles/panel = SubResource("StyleBoxTexture_sivwc")
 [node name="MarginContainer" type="MarginContainer" parent="MainMargin/DialogMainContainer/HBoxContainer/MarginContainer2/FaceRightFrame" unique_id=397358229]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/margin_left = 6
-theme_override_constants/margin_top = 6
-theme_override_constants/margin_right = 7
-theme_override_constants/margin_bottom = 5
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
 
 [node name="Mask" type="TextureRect" parent="MainMargin/DialogMainContainer/HBoxContainer/MarginContainer2/FaceRightFrame/MarginContainer" unique_id=809980620]
 clip_children = 1
@@ -452,6 +863,7 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(53.5, 62.5)
 mouse_filter = 2
+texture = ExtResource("4_ukan6")
 expand_mode = 1
 stretch_mode = 6
 flip_h = true
@@ -472,27 +884,31 @@ size_flags_vertical = 4
 mouse_filter = 2
 
 [node name="Cursor" type="TextureRect" parent="MainMargin/AdvanceCursorContainer/Control" unique_id=200430612]
-self_modulate = Color(1.5838226, 1.5838226, 0.31065494, 1)
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.9974928)
+self_modulate = Color(1.584, 1.584, 0.311, 1)
 layout_mode = 0
-offset_left = -53.0
-offset_top = -36.06055
-offset_right = -2.0
-offset_bottom = 14.939449
+offset_left = -44.0
+offset_top = -172.99998
+offset_right = 7.0
+offset_bottom = -121.999985
+scale = Vector2(1.0087297, 1.0087297)
 pivot_offset = Vector2(25, 25)
 mouse_filter = 2
 texture = SubResource("AtlasTexture_d6ln2")
 script = SubResource("GDScript_vw8cx")
 
 [node name="Decoration" type="TextureRect" parent="MainMargin/AdvanceCursorContainer/Control/Cursor" unique_id=1520673719]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -10.972168
+offset_left = -12.984924
 offset_top = -15.973755
-offset_right = 19.027832
+offset_right = 17.015076
 offset_bottom = 14.026245
 grow_horizontal = 2
 grow_vertical = 2
@@ -504,10 +920,8 @@ stretch_mode = 5
 [node name="TypeWritePlayer" type="AudioStreamPlayer" parent="." unique_id=423780663]
 unique_name_in_owner = true
 stream = ExtResource("6_tb4s1")
-pitch_scale = 0.8933818
+pitch_scale = 0.98847157
 bus = &"SE"
 
-[connection signal="visibility_changed" from="MainMargin/DialogMainContainer/HBoxContainer/MarginContainer/FaceLeftFrame" to="." method="_on_face_left_frame_visibility_changed"]
 [connection signal="item_rect_changed" from="MainMargin/DialogMainContainer/HBoxContainer/MessageContainer/Message" to="." method="_on_message_item_rect_changed"]
-[connection signal="visibility_changed" from="MainMargin/DialogMainContainer/HBoxContainer/MarginContainer2/FaceRightFrame" to="." method="_on_face_right_frame_visibility_changed"]
-[connection signal="item_rect_changed" from="@CanvasLayer@157993/Message" to="." method="_on_message_item_rect_changed"]
+[connection signal="item_rect_changed" from="@CanvasLayer@325439/@RichTextLabel@326297" to="." method="_on_message_item_rect_changed"]

@@ -21,7 +21,7 @@ func get_color(s) -> Color:
 	else: return Color.from_string(s, Color.BLACK)
 
 
-func _process_custom_fx(char_fx):
+func _process_custom_fx(char_fx: CharFXTransform):
 	var number_color:Color = get_color(char_fx.env.get("color", Color.YELLOW))
 	var space_as_glyph_index = GlyphConverter.char_to_glyph_index(char_fx.font, SPACE)
 	var period_as_glyph_index = GlyphConverter.char_to_glyph_index(char_fx.font, PERIOD)

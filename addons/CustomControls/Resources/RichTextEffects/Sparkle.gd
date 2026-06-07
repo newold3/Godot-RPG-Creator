@@ -28,7 +28,7 @@ func get_rand_unclamped(char_fx):
 	return char_fx.glyph_index * 33.33 + char_fx.range.x * 4545.5454
 
 
-func _process_custom_fx(char_fx):
+func _process_custom_fx(char_fx: CharFXTransform):
 	var freq = char_fx.env.get("freq", 2.0)
 	var c1 = char_fx.env.get("c1", char_fx.color)
 	var c2 = char_fx.env.get("c2")

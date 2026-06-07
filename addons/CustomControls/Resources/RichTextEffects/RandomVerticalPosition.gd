@@ -4,7 +4,7 @@ class_name RichRandomVerticalPosition
 
 var bbcode = "randomypos"
 
-func _process_custom_fx(char_fx):
+func _process_custom_fx(char_fx: CharFXTransform):
 	var min_offset_y = int(char_fx.env.get("min_offset_y", -1))
 	var max_offset_y = int(char_fx.env.get("max_offset_y", 1))
 	var fix_letters = char_fx.env.get("fix_letters", true)

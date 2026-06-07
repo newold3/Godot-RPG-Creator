@@ -50,19 +50,11 @@ func _process(_delta: float) -> void:
 "
 
 [node name="Dialog2" type="PanelContainer" unique_id=220425190]
-modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(184, 31)
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -239.0
-offset_top = -190.0
-offset_right = 239.0
-offset_bottom = -38.0
-grow_horizontal = 2
-grow_vertical = 0
+offset_left = 337.0
+offset_top = 450.0
+offset_right = 815.0
+offset_bottom = 602.0
 pivot_offset = Vector2(239, 76)
 size_flags_horizontal = 4
 size_flags_vertical = 10
@@ -105,6 +97,10 @@ mouse_filter = 2
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
 
 [node name="BackgroundContainer" type="MarginContainer" parent="MainMargin" unique_id=1709531979]
 unique_name_in_owner = true
@@ -324,7 +320,6 @@ flip_h = true
 
 [node name="AdvanceCursorContainer" type="MarginContainer" parent="MainMargin" unique_id=1072415261]
 unique_name_in_owner = true
-visible = false
 z_index = 100
 layout_mode = 2
 size_flags_horizontal = 4
@@ -336,10 +331,10 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="MainMargin/AdvanceCursorContainer/Control" unique_id=472457749]
-position = Vector2(0, 3.8359032)
+position = Vector2(0, -0.90702546)
 sprite_frames = SubResource("SpriteFrames_m3qel")
 autoplay = "default"
-frame_progress = 0.89277005
+frame_progress = 0.01195997
 speed_scale = 6.0
 script = SubResource("GDScript_c8yyc")
 amplitude = 5.0
@@ -348,8 +343,8 @@ period = 1.085
 [node name="TypeWritePlayer" type="AudioStreamPlayer" parent="." unique_id=423780663]
 unique_name_in_owner = true
 stream = ExtResource("29_rbp0b")
-pitch_scale = 0.95555353
+pitch_scale = 0.7394204
 bus = &"SE"
 
 [connection signal="item_rect_changed" from="MainMargin/DialogMainContainer/HBoxContainer/MessageContainer/Message" to="." method="_on_message_item_rect_changed"]
-[connection signal="item_rect_changed" from="@CanvasLayer@22228/Message" to="." method="_on_message_item_rect_changed"]
+[connection signal="item_rect_changed" from="@CanvasLayer@149700/@RichTextLabel@151479" to="." method="_on_message_item_rect_changed"]

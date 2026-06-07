@@ -13,7 +13,7 @@ func get_color(s) -> Color:
 	else: return Color.from_string(s, Color.BLACK)
 
 
-func _process_custom_fx(char_fx):
+func _process_custom_fx(char_fx: CharFXTransform):
 	var t = smoothstep(0.3, 0.6, sin(char_fx.elapsed_time * 4.0) * .5 + .5)
 	var color: Color = get_color(char_fx.env.get("color", Color.BLUE))
 	char_fx.color = lerp(char_fx.color, color, t)

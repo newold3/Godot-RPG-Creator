@@ -677,6 +677,16 @@ func get_camera() -> Camera2D:
 	return get_viewport().get_camera_2d()
 
 
+func get_fixed_message_container() -> Control:
+	if main_scene: return main_scene.get_fixed_message_container()
+	return null
+
+
+func get_message_container() -> VBoxContainer:
+	if main_scene: return main_scene.get_message_container()
+	return null
+
+
 func camera_past_reposition() -> void:
 	var camera: Camera2D = get_camera()
 	if camera: camera.fast_reposition.call_deferred()

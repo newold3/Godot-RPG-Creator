@@ -10,7 +10,7 @@ var SPLITTERS = [GlyphConverter.ord(" "), GlyphConverter.ord("."), GlyphConverte
 
 var _word = 0.0
 
-func _process_custom_fx(char_fx):
+func _process_custom_fx(char_fx: CharFXTransform):
 	if char_fx.relative_index == 0:
 		_word = 0
 	

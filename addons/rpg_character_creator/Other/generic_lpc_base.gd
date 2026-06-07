@@ -221,7 +221,11 @@ func run_animation() -> void:
 
 
 func _update_frame(delta: float = 0.0):
-	current_animation = "walk" if is_moving else "idle"
+	if not is_moving and current_animation != "idle":
+		await get_tree().process_frame
+		_animation_to_idle.call_deferred()
+	elif is_moving:
+		current_animation = "walk"
 	
 	match display_mode:
 		DisplayMode.CUSTOM_SCENE:

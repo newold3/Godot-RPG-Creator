@@ -23,7 +23,7 @@ var leet = {
 	GlyphConverter.ord("o"): GlyphConverter.ord("0"),
 }
 
-func _process_custom_fx(char_fx):
+func _process_custom_fx(char_fx: CharFXTransform):
 	var glyph_index_as_char = GlyphConverter.glyph_index_to_char(char_fx)
 	if glyph_index_as_char in leet:
 		char_fx.glyph_index = GlyphConverter.char_to_glyph_index(char_fx.font, leet[glyph_index_as_char])

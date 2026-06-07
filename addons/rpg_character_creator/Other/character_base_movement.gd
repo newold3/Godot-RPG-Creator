@@ -338,7 +338,7 @@ func start_movement(motion_data: Dictionary) -> void:
 	var current_motion = motion_data.current_motion
 	
 	if not final_motion:
-		current_entity.is_moving = false
+		current_entity.set_deferred("is_moving", false)
 		return
 
 	current_entity.target_position = current_entity.position + final_motion
@@ -453,7 +453,7 @@ func _on_grid_movement_finished(target_position: Vector2) -> void:
 		current_entity.position = target_position
 
 	GameManager.game_state.stats.steps += 1
-	current_entity.is_moving = false
+	current_entity.set_deferred("is_moving", false)
 	current_entity.movement_vector = Vector2.ZERO
 	current_entity.end_movement.emit()
 
@@ -520,7 +520,7 @@ func vehicle_movement(motion: Vector2, route: RPGMovementRoute = null, keep_dire
 	if vehicle_position == new_vehicle_position and !route.skippable:
 		current_entity.route_command_index -= 1
 		
-	current_entity.is_moving = false
+	current_entity.set_deferred("is_moving", false)
 	current_entity.end_movement.emit()
 
 

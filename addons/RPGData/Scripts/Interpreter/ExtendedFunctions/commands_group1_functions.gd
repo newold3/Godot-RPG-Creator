@@ -35,7 +35,6 @@ func _start_showing_message() -> void:
 # 	end_animation, text_transition, fx_path, fx_volume, fx_pitch_min, fx_pitch_max }
 func _command_0001() -> void:
 	debug_print("Processing command: Set Config Text Dialog (code 1)")
-	
 	# If the message system is available, configure it with the current command parameters
 	if GameManager.message:
 		# Retrieve the configuration parameters from the current command
@@ -47,7 +46,8 @@ func _command_0001() -> void:
 			parent.remove_child(GameManager.message)
 			GameManager.message.queue_free()
 			var new_message = load(scene_path).instantiate()
-			parent.add_child(new_message)
+			var new_parent = GameManager.get_fixed_message_container() if new_message.fixed_position else GameManager.get_message_container()
+			new_parent.add_child(new_message)
 			GameManager.message = new_message
 			new_message.all_messages_finished.connect(GameInterpreter.set.bind("showing_message", false), CONNECT_DEFERRED)
 			new_message.setup()
@@ -200,8 +200,50 @@ func _command_0002() -> void:
 			return
 	
 	if lines.size() > 0 and current_message_box:
-		var prev_cmd = _get_previous_dialog_command(start_command_index - 1)
-		var is_multi = prev_cmd != null and prev_cmd.code in [2, 3]
+		var is_multi = false
+		var prev_idx = start_command_index - 1
+		
+		while prev_idx >= 0:
+			var cmd = current_interpreter.get_command(prev_idx)
+			if not cmd:
+				break
+				
+			if cmd.get("ignore_command") or cmd.code == 0:
+				prev_idx -= 1
+				continue
+				
+			if cmd.code in [5, 6, 7]:
+				var target_indent = cmd.indent
+				while prev_idx >= 0:
+					prev_idx -= 1
+					var skip_cmd = current_interpreter.get_command(prev_idx)
+					if not skip_cmd:
+						break
+					if skip_cmd.code == 4 and skip_cmd.indent == target_indent:
+						break
+				continue
+				
+			if cmd.code in [4, 8, 9]:
+				break
+				
+			if cmd.code == 3:
+				prev_idx -= 1
+				continue
+				
+			if cmd.code == 2:
+				var prev_is_floating = cmd.parameters.get("is_floating_dialog", false)
+				if prev_is_floating == is_floating:
+					if is_floating:
+						if cmd.parameters.get("floating_target", 0) == current_message_config.get("floating_target", 0):
+							is_multi = true
+							break
+					else:
+						is_multi = true
+						break
+				prev_idx -= 1
+				continue
+				
+			break
 		
 		var next_command = _get_next_dialog_command(current_index)
 

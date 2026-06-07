@@ -11,7 +11,7 @@ var SPLITTERS = [GlyphConverter.ord(" "), GlyphConverter.ord("."), GlyphConverte
 var _w_char = 0
 var _last = 999
 
-func _process_custom_fx(char_fx):
+func _process_custom_fx(char_fx: CharFXTransform):
 	var glyph_index_as_char = GlyphConverter.glyph_index_to_char(char_fx)
 	
 	if char_fx.range.x < _last or glyph_index_as_char in SPLITTERS:

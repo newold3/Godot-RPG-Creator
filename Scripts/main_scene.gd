@@ -100,6 +100,14 @@ func get_secondary_transition_node() -> ColorRect:
 
 func get_dynamic_shadows_node() -> Node2D:
 	return %DynamicShadows
+
+
+func get_fixed_message_container() -> Control:
+	return %ControlDialogContainer
+
+
+func get_message_container() -> VBoxContainer:
+	return %VboxDialogContainer
 #endregion
 
 

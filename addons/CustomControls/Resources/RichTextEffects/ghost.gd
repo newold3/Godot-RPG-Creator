@@ -7,7 +7,7 @@ class_name RichTextGhost
 # Define the tag name.
 var bbcode = "ghost"
 
-func _process_custom_fx(char_fx):
+func _process_custom_fx(char_fx: CharFXTransform):
 	# Get parameters, or use the provided default value if missing.
 	var speed = char_fx.env.get("freq", 5.0)
 	var span = char_fx.env.get("span", 10.0)
