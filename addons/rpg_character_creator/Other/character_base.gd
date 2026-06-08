@@ -714,6 +714,13 @@ func _check_contact_before_move(tile: Vector2i, is_after_move: bool = false) -> 
 
 func _check_contact_after_move() -> void:
 	_interaction_module._check_contact_after_move()
+	
+	if is_in_group("player"):
+		var events = get_events_at_adjacent_tile()
+		events.reverse()
+		for event in events:
+			if event is EventRegion and not event.can_entry and event.trigger_mode == EventRegion.TriggerMode.COLLISION:
+				GameManager.start_event_region(event, self, 0)
 
 
 

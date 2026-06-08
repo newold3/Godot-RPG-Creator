@@ -575,6 +575,30 @@ func get_event_relationship_level(event_id: int) -> int:
 			var relationship: GameRelationship = ingame_event.relationship
 			result = relationship.current_level
 	return result
+
+
+func start_event_region(region: EventRegion, body: Variant = null, mode: int = 0) -> void:
+	var commands: Array[RPGEventCommand]
+	
+	# mode 0 = entry, 1 = exit
+	
+	if region.event_mode == region.EventMode.COMMON_EVENTS:
+		var event_id = region.entry_common_event if mode == 0 else region.exit_common_event
+		if RPGSYSTEM.database.common_events.size() > event_id and event_id > 0:
+			var ev = RPGSYSTEM.database.common_events[event_id]
+			commands = ev.list
+	
+	elif region.event_mode == region.EventMode.CALLER_EVENTS:
+		var event_id = region.trigger_caller_event_on_entry if mode == 0 else region.trigger_caller_event_on_exit
+		if event_id > 0 and current_map:
+			var ev = current_map.entity_manager.get_in_game_event_by_pos(event_id)
+			if ev and "current_event_page" in ev and ev.current_event_page is RPGEventPage:
+				var event_page: RPGEventPage = ev.current_event_page
+				if event_page.launcher == event_page.LAUNCHER_MODE.CALLER:
+					commands = event_page.list
+		
+	if commands:
+		GameInterpreter.start_event(body, commands, true)
 #endregion
 
 

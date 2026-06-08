@@ -111,7 +111,7 @@ texture = SubResource("GradientTexture2D_rrv1p")
 oversampling_override = 1.0
 title = "Edit Event Region"
 position = Vector2i(0, 36)
-size = Vector2i(680, 846)
+size = Vector2i(680, 862)
 wrap_controls = true
 transient = true
 exclusive = true
@@ -341,7 +341,7 @@ size_flags_horizontal = 3
 tooltip_text = "[title]Block Passage[/title]
 Activating this option will make this area behave like a solid block, preventing traversal.
 
-[Note]: If \"Block entry?\" is enabled, this area will not trigger events when entering or leaving it."
+[Note]: If \"Block entry?\" is enabled, this area can be set to trigger when the button near it is pressed or touched, or the trigger can be disabled entirely (Only the player can trigger the event when the block is a solid block)"
 mouse_default_cursor_shape = 2
 button_group = SubResource("ButtonGroup_t1kh6")
 text = "Block entry?"
@@ -356,7 +356,37 @@ mouse_default_cursor_shape = 2
 button_group = SubResource("ButtonGroup_t1kh6")
 text = "Always Passable?"
 
-[node name="HSeparator3" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1218596807]
+[node name="TriggerModeContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1852364019]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HSeparator3" type="HSeparator" parent="MarginContainer/VBoxContainer/TriggerModeContainer" unique_id=1218596807]
+layout_mode = 2
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TriggerModeContainer" unique_id=366050259]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TriggerModeContainer/HBoxContainer6" unique_id=92858069]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+text = "Trigger Mode:"
+
+[node name="TriggerMode" parent="MarginContainer/VBoxContainer/TriggerModeContainer/HBoxContainer6" unique_id=621784070 instance=ExtResource("9_2xlkw")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "How to trigger this event when it is set to \"solid\""
+selected = 0
+item_count = 3
+popup/item_0/text = "None"
+popup/item_0/id = 0
+popup/item_1/text = "Press Button"
+popup/item_1/id = 1
+popup/item_2/text = "Touch"
+popup/item_2/id = 2
+
+[node name="HSeparator4" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1281354421]
 layout_mode = 2
 
 [node name="UseCommonEvent" type="CheckBox" parent="MarginContainer/VBoxContainer" unique_id=392296096]
@@ -374,7 +404,8 @@ layout_mode = 2
 [node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CommonEventContainer" unique_id=1183766973]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/CommonEventContainer/HBoxContainer6" unique_id=1695335558]
+[node name="EntryCommonEventLabel" type="Label" parent="MarginContainer/VBoxContainer/CommonEventContainer/HBoxContainer6" unique_id=1695335558]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(240, 0)
 layout_mode = 2
 text = "Entry common event:"
@@ -387,15 +418,16 @@ size_flags_vertical = 4
 tooltip_text = "[title]Entry Common Event[/title]
 Select the common event that will play when a trigger enters this area."
 
-[node name="HBoxContainer8" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CommonEventContainer" unique_id=802090083]
+[node name="ExitCommonEventContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CommonEventContainer" unique_id=802090083]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/CommonEventContainer/HBoxContainer8" unique_id=2083260923]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/CommonEventContainer/ExitCommonEventContainer" unique_id=2083260923]
 custom_minimum_size = Vector2(240, 0)
 layout_mode = 2
 text = "Exit common event:"
 
-[node name="ExitCommonEvent" parent="MarginContainer/VBoxContainer/CommonEventContainer/HBoxContainer8" unique_id=394817981 instance=ExtResource("9_2xlkw")]
+[node name="ExitCommonEvent" parent="MarginContainer/VBoxContainer/CommonEventContainer/ExitCommonEventContainer" unique_id=394817981 instance=ExtResource("9_2xlkw")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -418,7 +450,8 @@ layout_mode = 2
 [node name="HBoxContainer9" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CallerEventContainer" unique_id=687245197]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/CallerEventContainer/HBoxContainer9" unique_id=1378644682]
+[node name="EntryCallerEventLabel" type="Label" parent="MarginContainer/VBoxContainer/CallerEventContainer/HBoxContainer9" unique_id=1378644682]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(240, 0)
 layout_mode = 2
 text = "Entry caller event:"
@@ -433,15 +466,16 @@ Select the event that will be initialized when entering this area.
 
 [Note]: If the current page of the selected event does not have its trigger set to \"Caller\", the event initialization will be ignored."
 
-[node name="HBoxContainer10" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CallerEventContainer" unique_id=1669556950]
+[node name="ExitCallerEventContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CallerEventContainer" unique_id=1669556950]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/CallerEventContainer/HBoxContainer10" unique_id=632520884]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/CallerEventContainer/ExitCallerEventContainer" unique_id=632520884]
 custom_minimum_size = Vector2(240, 0)
 layout_mode = 2
 text = "Exit caller event:"
 
-[node name="ExitCallerEvent" parent="MarginContainer/VBoxContainer/CallerEventContainer/HBoxContainer10" unique_id=362305169 instance=ExtResource("9_2xlkw")]
+[node name="ExitCallerEvent" parent="MarginContainer/VBoxContainer/CallerEventContainer/ExitCallerEventContainer" unique_id=362305169 instance=ExtResource("9_2xlkw")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -524,12 +558,13 @@ text = "APPLY"
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/VBoxContainer/DamageFrequency" to="." method="_on_damage_frequency_value_changed"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/VBoxContainer4/CanEntry" to="." method="_on_can_entry_toggled"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/VBoxContainer4/CanPass" to="." method="_on_can_pass_toggled"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/TriggerModeContainer/HBoxContainer6/TriggerMode" to="." method="_on_trigger_mode_item_selected"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/UseCommonEvent" to="." method="_on_use_common_event_toggled"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/CommonEventContainer/HBoxContainer6/EntryCommonEvent" to="." method="_on_entry_common_event_item_selected"]
-[connection signal="item_selected" from="MarginContainer/VBoxContainer/CommonEventContainer/HBoxContainer8/ExitCommonEvent" to="." method="_on_exit_common_event_item_selected"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/CommonEventContainer/ExitCommonEventContainer/ExitCommonEvent" to="." method="_on_exit_common_event_item_selected"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/UseCallerEvent" to="." method="_on_use_caller_event_toggled"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/CallerEventContainer/HBoxContainer9/EntryCallerEvent" to="." method="_on_entry_caller_event_item_selected"]
-[connection signal="item_selected" from="MarginContainer/VBoxContainer/CallerEventContainer/HBoxContainer10/ExitCallerEvent" to="." method="_on_exit_caller_event_item_selected"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/CallerEventContainer/ExitCallerEventContainer/ExitCallerEvent" to="." method="_on_exit_caller_event_item_selected"]
 [connection signal="multi_selected" from="MarginContainer/VBoxContainer/TriggerList" to="." method="_on_trigger_list_multi_selected"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer5/OKButton" to="." method="_on_ok_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer5/CancelButton" to="." method="_on_cancel_button_pressed"]

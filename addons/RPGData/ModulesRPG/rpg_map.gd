@@ -814,6 +814,10 @@ func get_event_region_in(pos: Vector2i) -> EventRegion:
 	return editor_data_manager.get_event_region_in(pos) if editor_data_manager else null
 
 
+func get_event_regions_in(pos: Vector2i) -> Array[EventRegion]:
+	var regions_found: Array[EventRegion] = []
+	return editor_data_manager.get_event_regions_in(pos) if editor_data_manager else regions_found
+
 
 func random_color_in_range(hue_min: float, hue_max: float) -> Color:
 	return editor_data_manager.random_color_in_range(hue_min, hue_max) if editor_data_manager else Color.WHITE
@@ -1003,6 +1007,7 @@ func _update_depleted_items(delta: float) -> void:
 
 func _update_pressed_events() -> void:
 	if entity_manager: entity_manager._update_pressed_events()
+
 
 func get_events_in_place(pos: Vector2i) -> int:
 	return entity_manager.get_events_in_place(pos) if entity_manager else 0

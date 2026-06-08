@@ -68,6 +68,7 @@ func setup_event_monitor() -> Area2D:
 func create_region_events(collision_body: StaticBody2D, collision_area: Area2D) -> void:
 	for region: EventRegion in map.event_regions:
 		var obj: CollisionShape2D = CollisionShape2D.new()
+		obj.debug_color = region.color
 		obj.shape = RectangleShape2D.new()
 		obj.shape.size = region.rect.size * map.tile_size
 		var p = region.rect.position * map.tile_size + Vector2i(obj.shape.size / 2)
@@ -91,6 +92,7 @@ func create_enemy_spawn_areas(collision_area: Area2D) -> void:
 		var obj: CollisionShape2D = CollisionShape2D.new()
 		obj.shape = RectangleShape2D.new()
 		obj.shape.size = region.rect.size * map.tile_size
+		obj.debug_color = region.color
 		var p = region.rect.position * map.tile_size + Vector2i(obj.shape.size / 2)
 		obj.position = p
 		obj.name = "EnemyEventRegion#%s" % region.id

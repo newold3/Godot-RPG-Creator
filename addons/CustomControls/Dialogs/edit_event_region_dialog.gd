@@ -38,6 +38,8 @@ func set_region(region: EventRegion) -> void:
 	update_switch()
 	%SwitchID.set_disabled(%ActivationMode.get_selected_id() == 0)
 	
+	%TriggerMode.select(current_region.trigger_mode)
+	
 	if region.always_passable:
 		%CanPass.set_pressed(region.always_passable)
 	elif not region.can_entry:
@@ -271,6 +273,50 @@ func _on_exit_caller_event_item_selected(index: int) -> void:
 func _on_can_entry_toggled(toggled_on: bool) -> void:
 	%ApplyButton.set_disabled(false)
 	current_region.can_entry = !toggled_on
+	
+	_update_trigger_controls()
+
+
+func _update_trigger_controls() -> void:
+	var is_common = current_region.event_mode == current_region.EventMode.COMMON_EVENTS
+	
+	%CommonEventContainer.propagate_call("set_disabled", [!is_common])
+	%CallerEventContainer.propagate_call("set_disabled", [is_common])
+	%ExitCommonEventContainer.propagate_call("set_disabled", [!is_common])
+	%ExitCallerEventContainer.propagate_call("set_disabled", [is_common])
+	
+	if current_region.can_entry:
+		%TriggerModeContainer.visible = false
+		%ExitCommonEventContainer.visible = true
+		%ExitCallerEventContainer.visible = true
+		%EntryCommonEventLabel.text = tr("Entry common event") + ":"
+		%EntryCallerEventLabel.text = tr("Entry caller event") + ":"
+		%EntryCommonEvent.tooltip_text = "[title]Entry Common Event[/title]\n" + \
+			tr("Select the common event that will play when a trigger enters this area.")
+		%EntryCallerEvent.tooltip_text = "[title]Entry Caller Event[/title]\n" + \
+			tr("Select the event that will be initialized when entering this area.\n\n[Note]: If the current page of the selected event does not have its trigger set to \"Caller\", the event initialization will be ignored.")
+		%UseCommonEvent.set_disabled(false)
+		%UseCallerEvent.set_disabled(false)
+	else:
+		%TriggerModeContainer.visible = true
+		%ExitCommonEventContainer.visible = false
+		%ExitCallerEventContainer.visible = false
+		%EntryCommonEventLabel.text = tr("Trigger common event") + ":"
+		%EntryCallerEventLabel.text = tr("Trigger caller event") + ":"
+		%EntryCommonEvent.tooltip_text = "[title]Trigger Common Event[/title]\n" + \
+			tr("Select the common event that will play when trigger this area.")
+		%EntryCallerEvent.tooltip_text = "[title]Trigger Caller Event[/title]\n" + \
+			tr("Select the event that will be initialized when trigger this area.\n\n[Note]: If the current page of the selected event does not have its trigger set to \"Caller\", the event initialization will be ignored.")
+		
+		match current_region.trigger_mode:
+			0:
+				%EntryCommonEvent.set_disabled(true)
+				%EntryCallerEvent.set_disabled(true)
+				%UseCommonEvent.set_disabled(true)
+				%UseCallerEvent.set_disabled(true)
+			_:
+				%UseCommonEvent.set_disabled(false)
+				%UseCallerEvent.set_disabled(false)
 
 
 func _on_trigger_list_multi_selected(index: int, selected: bool) -> void:
@@ -287,17 +333,15 @@ func _on_trigger_list_multi_selected(index: int, selected: bool) -> void:
 func _on_use_common_event_toggled(toggled_on: bool) -> void:
 	if not current_region: return
 	if toggled_on:
-		%CommonEventContainer.propagate_call("set_disabled", [false])
-		%CallerEventContainer.propagate_call("set_disabled", [true])
 		current_region.event_mode = current_region.EventMode.COMMON_EVENTS
+		_update_trigger_controls()
 
 
 func _on_use_caller_event_toggled(toggled_on: bool) -> void:
 	if not current_region: return
 	if toggled_on:
-		%CommonEventContainer.propagate_call("set_disabled", [true])
-		%CallerEventContainer.propagate_call("set_disabled", [false])
 		current_region.event_mode = current_region.EventMode.CALLER_EVENTS
+		_update_trigger_controls()
 
 
 func _on_player_damage_value_changed(value: float) -> void:
@@ -368,3 +412,8 @@ func _on_can_pass_toggled(toggled_on: bool) -> void:
 	%ApplyButton.set_disabled(false)
 	if current_region:
 		current_region.always_passable = toggled_on
+
+
+func _on_trigger_mode_item_selected(index: int) -> void:
+	current_region.trigger_mode = index
+	_update_trigger_controls()

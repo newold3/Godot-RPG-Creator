@@ -271,7 +271,7 @@ theme_override_constants/separation = 20
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 
-[node name="CustomPanel" parent="HBoxContainer/VBoxContainer" unique_id=1941240867 instance=ExtResource("1_whka3")]
+[node name="TopPanel" parent="HBoxContainer/VBoxContainer" unique_id=1941240867 instance=ExtResource("1_whka3")]
 custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
 size_flags_vertical = 3
@@ -280,26 +280,26 @@ style1 = SubResource("StyleBoxFlat_w08ns")
 style2 = SubResource("StyleBoxTexture_kkq5y")
 style3 = SubResource("StyleBoxFlat_b1qj2")
 
-[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer/CustomPanel" unique_id=1599195741]
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer/TopPanel" unique_id=1599195741]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer" unique_id=1581829734]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer" unique_id=1581829734]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer" unique_id=194350753]
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer" unique_id=194350753]
 layout_mode = 2
 text = "Start Page Conditions"
 horizontal_alignment = 1
 uppercase = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer" unique_id=1108963139]
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer" unique_id=1108963139]
 layout_mode = 2
 
-[node name="Condition1Pressed" type="CheckBox" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=3394317]
+[node name="Condition1Pressed" type="CheckBox" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=3394317]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
@@ -309,7 +309,7 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "Switch 1:"
 
-[node name="Condition1Value" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1275124139 instance=ExtResource("2_ghqqv")]
+[node name="Condition1Value" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1275124139 instance=ExtResource("2_ghqqv")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -320,16 +320,16 @@ Choose the switch that needs to be activated to start this page."
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 disabled = true
 
-[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1020068628]
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1020068628]
 custom_minimum_size = Vector2(35, 0)
 layout_mode = 2
 text = "Is On"
 horizontal_alignment = 1
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer" unique_id=1228781821]
+[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer" unique_id=1228781821]
 layout_mode = 2
 
-[node name="Condition2Pressed" type="CheckBox" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1417559329]
+[node name="Condition2Pressed" type="CheckBox" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1417559329]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
@@ -339,7 +339,7 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "Switch 2:"
 
-[node name="Condition2Value" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1958518962 instance=ExtResource("2_ghqqv")]
+[node name="Condition2Value" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1958518962 instance=ExtResource("2_ghqqv")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -350,16 +350,16 @@ Choose the switch that needs to be activated to start this page."
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 disabled = true
 
-[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=581799767]
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=581799767]
 custom_minimum_size = Vector2(35, 0)
 layout_mode = 2
 text = "Is On"
 horizontal_alignment = 1
 
-[node name="HBoxContainer5" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer" unique_id=1799990614]
+[node name="HBoxContainer5" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer" unique_id=1799990614]
 layout_mode = 2
 
-[node name="Condition3Pressed" type="CheckBox" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer5" unique_id=1774624326]
+[node name="Condition3Pressed" type="CheckBox" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer5" unique_id=1774624326]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
@@ -370,7 +370,7 @@ mouse_default_cursor_shape = 2
 text = "Local
 Switch:"
 
-[node name="Condition3Value" type="OptionButton" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer5" unique_id=635454342]
+[node name="Condition3Value" type="OptionButton" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer5" unique_id=635454342]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -402,16 +402,16 @@ popup/item_7/text = "H"
 popup/item_7/id = 7
 script = ExtResource("5_csadr")
 
-[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer5" unique_id=1589348492]
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer5" unique_id=1589348492]
 custom_minimum_size = Vector2(35, 0)
 layout_mode = 2
 text = "Is On"
 horizontal_alignment = 1
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer" unique_id=339478112]
+[node name="HBoxContainer3" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer" unique_id=339478112]
 layout_mode = 2
 
-[node name="Condition4Pressed" type="CheckBox" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=2086502233]
+[node name="Condition4Pressed" type="CheckBox" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=2086502233]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
@@ -421,7 +421,7 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "Variable:"
 
-[node name="Condition4Value1" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1821807972 instance=ExtResource("2_ghqqv")]
+[node name="Condition4Value1" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1821807972 instance=ExtResource("2_ghqqv")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -432,21 +432,21 @@ Choose the variable that needs to be checked to activate this page"
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 disabled = true
 
-[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1271740417]
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1271740417]
 custom_minimum_size = Vector2(35, 0)
 layout_mode = 2
 text = "Is"
 horizontal_alignment = 1
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer" unique_id=1970936895]
+[node name="HBoxContainer4" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer" unique_id=1970936895]
 layout_mode = 2
 
-[node name="Control" type="Control" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer4" unique_id=1055440325]
+[node name="Control" type="Control" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer4" unique_id=1055440325]
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 
-[node name="Condition4Value2" type="OptionButton" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer4" unique_id=311847588]
+[node name="Condition4Value2" type="OptionButton" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer4" unique_id=311847588]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
@@ -473,7 +473,7 @@ popup/item_5/text = "!="
 popup/item_5/id = 5
 script = ExtResource("5_csadr")
 
-[node name="Condition4Value3" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer4" unique_id=947238000 instance=ExtResource("5_nl5s3")]
+[node name="Condition4Value3" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer4" unique_id=947238000 instance=ExtResource("5_nl5s3")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -484,16 +484,16 @@ allow_lesser = true
 editable = false
 _custom_value = 0.0
 
-[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer4" unique_id=143066657]
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer4" unique_id=143066657]
 custom_minimum_size = Vector2(18, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 horizontal_alignment = 1
 
-[node name="HBoxContainer6" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer" unique_id=2014480022]
+[node name="HBoxContainer6" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer" unique_id=2014480022]
 layout_mode = 2
 
-[node name="Condition5Pressed" type="CheckBox" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer6" unique_id=1643880877]
+[node name="Condition5Pressed" type="CheckBox" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer6" unique_id=1643880877]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
@@ -503,16 +503,16 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "Exists Item:"
 
-[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer6" unique_id=1708494027]
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer6" unique_id=1708494027]
 custom_minimum_size = Vector2(35, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 horizontal_alignment = 1
 
-[node name="HBoxContainer8" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer" unique_id=1328506990]
+[node name="HBoxContainer8" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer" unique_id=1328506990]
 layout_mode = 2
 
-[node name="Condition5Value1" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer8" unique_id=1017068513 instance=ExtResource("2_ghqqv")]
+[node name="Condition5Value1" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer8" unique_id=1017068513 instance=ExtResource("2_ghqqv")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -523,7 +523,7 @@ Select the item that must be owned by the group to activate this page."
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 disabled = true
 
-[node name="Condition5Value2" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer8" unique_id=2019214916 instance=ExtResource("7_kfqxl")]
+[node name="Condition5Value2" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer8" unique_id=2019214916 instance=ExtResource("7_kfqxl")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "[title]Item Type[/title]
@@ -538,20 +538,20 @@ popup/item_1/id = 1
 popup/item_2/text = "Armor"
 popup/item_2/id = 2
 
-[node name="HBoxContainer7" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer" unique_id=214370609]
+[node name="HBoxContainer7" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer" unique_id=214370609]
 layout_mode = 2
 
-[node name="Condition6Pressed" type="CheckBox" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer7" unique_id=567171960]
+[node name="Condition6Pressed" type="CheckBox" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer7" unique_id=567171960]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
-tooltip_text = "[title]Exists Actor Condition[/title]
-Choose a start condition of “exists actor” to activate this page."
+tooltip_text = "[title]Exists Actor In Party Condition[/title]
+Choose a start condition of “exists actor in party” to activate this page."
 focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "Exists Actor:"
 
-[node name="Condition6Value" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer7" unique_id=1510129617 instance=ExtResource("2_ghqqv")]
+[node name="Condition6Value" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer7" unique_id=1510129617 instance=ExtResource("2_ghqqv")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -562,10 +562,10 @@ Select the character that must be in the group for this page to be activated."
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 disabled = true
 
-[node name="HBoxContainer10" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer" unique_id=1295904130]
+[node name="HBoxContainer10" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer" unique_id=1295904130]
 layout_mode = 2
 
-[node name="Condition7Pressed" type="CheckBox" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer10" unique_id=1635570672]
+[node name="Condition7Pressed" type="CheckBox" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer10" unique_id=1635570672]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
@@ -580,7 +580,7 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "Pressurable:"
 
-[node name="AllowPressureTargets" type="OptionButton" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer10" unique_id=928557188]
+[node name="AllowPressureTargets" type="OptionButton" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer10" unique_id=928557188]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -598,7 +598,7 @@ allow_reselect = true
 script = ExtResource("5_csadr")
 enable_multi_selection = true
 
-[node name="AllowExternalPressureTargets" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer10" unique_id=1647195080 instance=ExtResource("2_ghqqv")]
+[node name="AllowExternalPressureTargets" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer10" unique_id=1647195080 instance=ExtResource("2_ghqqv")]
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(0, 30)
@@ -609,10 +609,10 @@ tooltip_text = "Select the events that can trigger this event."
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 disabled = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer10" unique_id=1243488661]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer10" unique_id=1243488661]
 layout_mode = 2
 
-[node name="AllowExternalPressureEvents" type="CheckBox" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer10/VBoxContainer" unique_id=1775939460]
+[node name="AllowExternalPressureEvents" type="CheckBox" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer10/VBoxContainer" unique_id=1775939460]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
@@ -620,12 +620,12 @@ tooltip_text = "Allows selecting any event from any map; this is useful if those
 mouse_default_cursor_shape = 2
 text = "Allow ext"
 
-[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer10/VBoxContainer" unique_id=1173688178]
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer10/VBoxContainer" unique_id=1173688178]
 layout_mode = 2
 theme_override_constants/margin_left = -173
 theme_override_constants/margin_top = 3
 
-[node name="ExternalAllowPlayer" type="CheckBox" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer10/VBoxContainer/MarginContainer" unique_id=1631754805]
+[node name="ExternalAllowPlayer" type="CheckBox" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer10/VBoxContainer/MarginContainer" unique_id=1631754805]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -633,36 +633,37 @@ tooltip_text = "Allows selecting any event from any map; this is useful if those
 mouse_default_cursor_shape = 2
 text = "Add Player to The List"
 
-[node name="HBoxContainer9" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer" unique_id=1450755270]
+[node name="HBoxContainer9" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer" unique_id=1450755270]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer" unique_id=841201499]
+[node name="MidPanel" type="HBoxContainer" parent="HBoxContainer/VBoxContainer" unique_id=841201499]
 layout_mode = 2
+size_flags_vertical = 3
 
-[node name="CustomPanel2" parent="HBoxContainer/VBoxContainer/HBoxContainer" unique_id=669124036 instance=ExtResource("1_whka3")]
+[node name="CustomPanel2" parent="HBoxContainer/VBoxContainer/MidPanel" unique_id=669124036 instance=ExtResource("1_whka3")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_j355e")
 style1 = SubResource("StyleBoxFlat_j355e")
 style2 = SubResource("StyleBoxTexture_6pdng")
 style3 = SubResource("StyleBoxFlat_cy5rv")
 
-[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer/CustomPanel2" unique_id=1649689593]
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer/MidPanel/CustomPanel2" unique_id=1649689593]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer/CustomPanel2/MarginContainer" unique_id=801052283]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/MidPanel/CustomPanel2/MarginContainer" unique_id=801052283]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer/CustomPanel2/MarginContainer/VBoxContainer" unique_id=541340568]
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/MidPanel/CustomPanel2/MarginContainer/VBoxContainer" unique_id=541340568]
 layout_mode = 2
 text = "GRAPHICS"
 horizontal_alignment = 1
 uppercase = true
 
-[node name="DataTypeSelected" type="OptionButton" parent="HBoxContainer/VBoxContainer/HBoxContainer/CustomPanel2/MarginContainer/VBoxContainer" unique_id=188455802]
+[node name="DataTypeSelected" type="OptionButton" parent="HBoxContainer/VBoxContainer/MidPanel/CustomPanel2/MarginContainer/VBoxContainer" unique_id=188455802]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -686,7 +687,7 @@ popup/item_2/text = "Custom Scene"
 popup/item_2/id = 2
 script = ExtResource("5_csadr")
 
-[node name="CharacterImage" parent="HBoxContainer/VBoxContainer/HBoxContainer/CustomPanel2/MarginContainer/VBoxContainer" unique_id=511629248 instance=ExtResource("3_w73pn")]
+[node name="CharacterImage" parent="HBoxContainer/VBoxContainer/MidPanel/CustomPanel2/MarginContainer/VBoxContainer" unique_id=511629248 instance=ExtResource("3_w73pn")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
@@ -696,11 +697,11 @@ Choose the scene used to represent this event (usually an LPCEvent scene)."
 clipboard_key = "event_graphic"
 custom_copy_and_paste_enabled = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer" unique_id=1114779553]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/MidPanel" unique_id=1114779553]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="CustomPanel4" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1235435351 instance=ExtResource("1_whka3")]
+[node name="CustomPanel4" parent="HBoxContainer/VBoxContainer/MidPanel/VBoxContainer" unique_id=1235435351 instance=ExtResource("1_whka3")]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_ymw04")
@@ -708,27 +709,27 @@ style1 = SubResource("StyleBoxFlat_ymw04")
 style2 = SubResource("StyleBoxTexture_2t2yw")
 style3 = SubResource("StyleBoxFlat_mhumu")
 
-[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4" unique_id=1080404336]
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer/MidPanel/VBoxContainer/CustomPanel4" unique_id=1080404336]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer" unique_id=207533236]
+[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/MidPanel/VBoxContainer/CustomPanel4/MarginContainer" unique_id=207533236]
 layout_mode = 2
 
-[node name="VBoxContainer4" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2" unique_id=1088440550]
+[node name="VBoxContainer4" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/MidPanel/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2" unique_id=1088440550]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 12
 
-[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer4" unique_id=469416453]
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/MidPanel/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer4" unique_id=469416453]
 custom_minimum_size = Vector2(132, 0)
 layout_mode = 2
 text = "Launcher:"
 
-[node name="Launcher" type="OptionButton" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer4" unique_id=462528779]
+[node name="Launcher" type="OptionButton" parent="HBoxContainer/VBoxContainer/MidPanel/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer4" unique_id=462528779]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -773,17 +774,17 @@ popup/item_8/text = "Signal"
 popup/item_8/id = 8
 script = ExtResource("5_csadr")
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2" unique_id=2038557171]
+[node name="VBoxContainer3" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/MidPanel/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2" unique_id=2038557171]
 custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 size_flags_vertical = 6
 
-[node name="TriggerEventContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer3" unique_id=2054979792]
+[node name="TriggerEventContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/MidPanel/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer3" unique_id=2054979792]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="TriggerEventList" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer3/TriggerEventContainer" unique_id=579199044 instance=ExtResource("2_ghqqv")]
+[node name="TriggerEventList" parent="HBoxContainer/VBoxContainer/MidPanel/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer3/TriggerEventContainer" unique_id=579199044 instance=ExtResource("2_ghqqv")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
@@ -793,19 +794,19 @@ tooltip_text = "Select the events that can trigger this event."
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 disabled = true
 
-[node name="AllowExternalEventsTrigger" type="CheckBox" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer3/TriggerEventContainer" unique_id=502093300]
+[node name="AllowExternalEventsTrigger" type="CheckBox" parent="HBoxContainer/VBoxContainer/MidPanel/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer3/TriggerEventContainer" unique_id=502093300]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Allows selecting any event from any map; this is useful if those events can move between maps. When entering this map, they could be eligible to trigger this event."
 mouse_default_cursor_shape = 2
 text = "Allow ext"
 
-[node name="PlaceHolderLauncher" type="Control" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer3" unique_id=1479972787]
+[node name="PlaceHolderLauncher" type="Control" parent="HBoxContainer/VBoxContainer/MidPanel/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer3" unique_id=1479972787]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 38)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer3/PlaceHolderLauncher" unique_id=355376170]
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/MidPanel/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer3/PlaceHolderLauncher" unique_id=355376170]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -817,22 +818,22 @@ text = "No extra actions"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer3" unique_id=1028758660]
+[node name="HSeparator" type="HSeparator" parent="HBoxContainer/VBoxContainer/MidPanel/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer3" unique_id=1028758660]
 layout_mode = 2
 size_flags_vertical = 10
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2" unique_id=931436464]
+[node name="HBoxContainer3" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/MidPanel/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2" unique_id=931436464]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 10
 theme_override_constants/separation = 12
 
-[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer3" unique_id=1150058687]
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/MidPanel/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer3" unique_id=1150058687]
 custom_minimum_size = Vector2(132, 0)
 layout_mode = 2
 text = "Direction:"
 
-[node name="Direction" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer3" unique_id=1520054555 instance=ExtResource("7_kfqxl")]
+[node name="Direction" parent="HBoxContainer/VBoxContainer/MidPanel/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer3" unique_id=1520054555 instance=ExtResource("7_kfqxl")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -849,17 +850,17 @@ popup/item_2/id = 2
 popup/item_3/text = "Down"
 popup/item_3/id = 3
 
-[node name="VBoxContainer2" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2" unique_id=906582120]
+[node name="VBoxContainer2" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/MidPanel/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2" unique_id=906582120]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 12
 
-[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer2" unique_id=1483839315]
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/MidPanel/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer2" unique_id=1483839315]
 custom_minimum_size = Vector2(132, 0)
 layout_mode = 2
 text = "Z-Index:"
 
-[node name="ZIndex" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer2" unique_id=715967311 instance=ExtResource("5_nl5s3")]
+[node name="ZIndex" parent="HBoxContainer/VBoxContainer/MidPanel/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer2" unique_id=715967311 instance=ExtResource("5_nl5s3")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -869,21 +870,21 @@ Drawing priority of this event on the screen. (0 = As ground, 1 = As events/envi
 allow_greater = true
 _custom_value = 0.0
 
-[node name="VBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2" unique_id=1612863581]
+[node name="VBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/MidPanel/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2" unique_id=1612863581]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer" unique_id=1374536466]
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/MidPanel/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer" unique_id=1374536466]
 custom_minimum_size = Vector2(132, 0)
 layout_mode = 2
 text = "Modulate:"
 
-[node name="Control" type="MarginContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer" unique_id=1791092281]
+[node name="Control" type="MarginContainer" parent="HBoxContainer/VBoxContainer/MidPanel/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer" unique_id=1791092281]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 6
 
-[node name="Modulate" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer/Control" unique_id=1825958670 instance=ExtResource("9_h2o4p")]
+[node name="Modulate" parent="HBoxContainer/VBoxContainer/MidPanel/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer/Control" unique_id=1825958670 instance=ExtResource("9_h2o4p")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -896,21 +897,22 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_p6oxe")
 theme_override_styles/hover = SubResource("StyleBoxFlat_5n8h1")
 theme_override_styles/disabled = SubResource("StyleBoxFlat_44tlk")
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2" unique_id=1740053087]
+[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/MidPanel/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2" unique_id=1740053087]
 layout_mode = 2
 
-[node name="HBoxContainer2" type="VBoxContainer" parent="HBoxContainer/VBoxContainer" unique_id=2051688898]
+[node name="BottomPanel" type="VBoxContainer" parent="HBoxContainer/VBoxContainer" unique_id=2051688898]
 layout_mode = 2
-size_flags_vertical = 8
+size_flags_vertical = 3
 
-[node name="CustomPanel3" parent="HBoxContainer/VBoxContainer/HBoxContainer2" unique_id=1023177755 instance=ExtResource("1_whka3")]
+[node name="CustomPanel3" parent="HBoxContainer/VBoxContainer/BottomPanel" unique_id=1023177755 instance=ExtResource("1_whka3")]
 layout_mode = 2
+size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_reuri")
 style1 = SubResource("StyleBoxFlat_reuri")
 style2 = SubResource("StyleBoxTexture_qixmy")
 style3 = SubResource("StyleBoxFlat_df5cq")
 
-[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel3" unique_id=1458922610]
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer/BottomPanel/CustomPanel3" unique_id=1458922610]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 12
@@ -918,22 +920,22 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="HBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel3/MarginContainer" unique_id=1858453737]
+[node name="HBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/BottomPanel/CustomPanel3/MarginContainer" unique_id=1858453737]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel3/MarginContainer/HBoxContainer" unique_id=672788418]
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/BottomPanel/CustomPanel3/MarginContainer/HBoxContainer" unique_id=672788418]
 layout_mode = 2
 text = "EVENT OPTIONS"
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel3/MarginContainer/HBoxContainer" unique_id=1460008832]
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/BottomPanel/CustomPanel3/MarginContainer/HBoxContainer" unique_id=1460008832]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel3/MarginContainer/HBoxContainer/HBoxContainer" unique_id=1754915319]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/BottomPanel/CustomPanel3/MarginContainer/HBoxContainer/HBoxContainer" unique_id=1754915319]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="EventOption1" type="CheckBox" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel3/MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer" unique_id=1791108207]
+[node name="EventOption1" type="CheckBox" parent="HBoxContainer/VBoxContainer/BottomPanel/CustomPanel3/MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer" unique_id=1791108207]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "[title]Walking Animation[/title]
@@ -941,7 +943,7 @@ Causes the walking animation to play when the character is walking"
 mouse_default_cursor_shape = 2
 text = "Walking Animation"
 
-[node name="EventOption2" type="CheckBox" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel3/MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer" unique_id=1691882772]
+[node name="EventOption2" type="CheckBox" parent="HBoxContainer/VBoxContainer/BottomPanel/CustomPanel3/MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer" unique_id=1691882772]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "[title]Idle Animation[/title]
@@ -949,13 +951,13 @@ Causes the idle animation to play when the character is at a standstill."
 mouse_default_cursor_shape = 2
 text = "Idle Animation"
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel3/MarginContainer/HBoxContainer/HBoxContainer" unique_id=1378016336]
+[node name="VBoxContainer3" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/BottomPanel/CustomPanel3/MarginContainer/HBoxContainer/HBoxContainer" unique_id=1378016336]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
 
-[node name="EventOption3" type="CheckBox" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel3/MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer3" unique_id=1848429455]
+[node name="EventOption3" type="CheckBox" parent="HBoxContainer/VBoxContainer/BottomPanel/CustomPanel3/MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer3" unique_id=1848429455]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "[title]Fixed Direction[/title]
@@ -963,7 +965,7 @@ Prevents looking at the character in any direction other than the one specified 
 mouse_default_cursor_shape = 2
 text = "Fixed Direction"
 
-[node name="EventOption4" type="CheckBox" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel3/MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer3" unique_id=2114605778]
+[node name="EventOption4" type="CheckBox" parent="HBoxContainer/VBoxContainer/BottomPanel/CustomPanel3/MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer3" unique_id=2114605778]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "[title]Passable[/title]
@@ -973,15 +975,16 @@ Mark this event as traversable. Leave it deactivated so that this event blocks t
 mouse_default_cursor_shape = 2
 text = "Passable"
 
-[node name="CustomPanel4" parent="HBoxContainer/VBoxContainer/HBoxContainer2" unique_id=1410917057 instance=ExtResource("1_whka3")]
+[node name="CustomPanel4" parent="HBoxContainer/VBoxContainer/BottomPanel" unique_id=1410917057 instance=ExtResource("1_whka3")]
 custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
+size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_ddgoq")
 style1 = SubResource("StyleBoxFlat_ddgoq")
 style2 = SubResource("StyleBoxTexture_5c8eq")
 style3 = SubResource("StyleBoxFlat_aju8b")
 
-[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4" unique_id=1893491427]
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer/BottomPanel/CustomPanel4" unique_id=1893491427]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 12
@@ -989,24 +992,24 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer" unique_id=714389643]
+[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/BottomPanel/CustomPanel4/MarginContainer" unique_id=714389643]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2" unique_id=1465909243]
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/BottomPanel/CustomPanel4/MarginContainer/VBoxContainer2" unique_id=1465909243]
 layout_mode = 2
 text = "Movement"
 horizontal_alignment = 1
 uppercase = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2" unique_id=1792109165]
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/BottomPanel/CustomPanel4/MarginContainer/VBoxContainer2" unique_id=1792109165]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer" unique_id=1887300317]
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/BottomPanel/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer" unique_id=1887300317]
 custom_minimum_size = Vector2(110, 0)
 layout_mode = 2
 text = "Type"
 
-[node name="MovementType" type="OptionButton" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer" unique_id=345246062]
+[node name="MovementType" type="OptionButton" parent="HBoxContainer/VBoxContainer/BottomPanel/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer" unique_id=345246062]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1033,11 +1036,11 @@ popup/item_5/text = "Follow Event"
 popup/item_5/id = 5
 script = ExtResource("5_csadr")
 
-[node name="Control" type="Control" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer" unique_id=844041692]
+[node name="Control" type="Control" parent="HBoxContainer/VBoxContainer/BottomPanel/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer" unique_id=844041692]
 custom_minimum_size = Vector2(12, 0)
 layout_mode = 2
 
-[node name="MovementRouteButton" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer" unique_id=445824187 instance=ExtResource("5_qe35c")]
+[node name="MovementRouteButton" parent="HBoxContainer/VBoxContainer/BottomPanel/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer" unique_id=445824187 instance=ExtResource("5_qe35c")]
 unique_name_in_owner = true
 visible = false
 modulate = Color(1, 1, 1, 0.65)
@@ -1049,7 +1052,7 @@ Define a movement pattern for this event."
 disabled = true
 text = "Movement route..."
 
-[node name="SelectTargetEvent" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer" unique_id=714873590 instance=ExtResource("7_kfqxl")]
+[node name="SelectTargetEvent" parent="HBoxContainer/VBoxContainer/BottomPanel/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer" unique_id=714873590 instance=ExtResource("7_kfqxl")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -1057,16 +1060,16 @@ size_flags_horizontal = 7
 tooltip_text = "[title]Select Target To Follow[/title]
 Choose the target that this event will follow"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2" unique_id=101053600]
+[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/BottomPanel/CustomPanel4/MarginContainer/VBoxContainer2" unique_id=101053600]
 layout_mode = 2
 size_flags_vertical = 6
 
-[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer2" unique_id=709746543]
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/BottomPanel/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer2" unique_id=709746543]
 custom_minimum_size = Vector2(110, 0)
 layout_mode = 2
 text = "Velocity"
 
-[node name="Velocity" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer2" unique_id=1181991973 instance=ExtResource("5_nl5s3")]
+[node name="Velocity" parent="HBoxContainer/VBoxContainer/BottomPanel/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer2" unique_id=1181991973 instance=ExtResource("5_nl5s3")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1078,12 +1081,12 @@ value = 5.0
 allow_greater = true
 _custom_value = 5.0
 
-[node name="Label2" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer2" unique_id=999061739]
+[node name="Label2" type="Label" parent="HBoxContainer/VBoxContainer/BottomPanel/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer2" unique_id=999061739]
 custom_minimum_size = Vector2(110, 0)
 layout_mode = 2
 text = " Frequency"
 
-[node name="Frequency" parent="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer2" unique_id=1092073966 instance=ExtResource("5_nl5s3")]
+[node name="Frequency" parent="HBoxContainer/VBoxContainer/BottomPanel/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer2" unique_id=1092073966 instance=ExtResource("5_nl5s3")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1142,51 +1145,48 @@ layout_mode = 2
 [node name="EventPageListEditor" parent="HBoxContainer/VBoxContainer2" unique_id=1128338880 instance=ExtResource("8_qgfkt")]
 unique_name_in_owner = true
 layout_mode = 2
-block_highlight_style = null
-guide_line_color = null
-indent_width = null
 
-[connection signal="toggled" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer/Condition1Pressed" to="." method="_on_condition_1_pressed_toggled"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer/Condition1Value" to="." method="_on_condition_1_value_pressed"]
-[connection signal="toggled" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer2/Condition2Pressed" to="." method="_on_condition_2_pressed_toggled"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer2/Condition2Value" to="." method="_on_condition_2_value_pressed"]
-[connection signal="toggled" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer5/Condition3Pressed" to="." method="_on_condition_3_pressed_toggled"]
-[connection signal="item_selected" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer5/Condition3Value" to="." method="_on_condition_3_value_item_selected"]
-[connection signal="toggled" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer3/Condition4Pressed" to="." method="_on_condition_4_pressed_toggled"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer3/Condition4Value1" to="." method="_on_condition_4_value_1_pressed"]
-[connection signal="item_selected" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer4/Condition4Value2" to="." method="_on_condition_4_value_2_item_selected"]
-[connection signal="value_changed" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer4/Condition4Value3" to="." method="_on_condition_4_value_3_value_changed"]
-[connection signal="toggled" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer6/Condition5Pressed" to="." method="_on_condition_5_pressed_toggled"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer8/Condition5Value1" to="." method="_on_condition_5_value1_pressed"]
-[connection signal="item_selected" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer8/Condition5Value2" to="." method="_on_condition_5_value_2_item_selected"]
-[connection signal="toggled" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer7/Condition6Pressed" to="." method="_on_condition_6_pressed_toggled"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer7/Condition6Value" to="." method="_on_condition_6_value_pressed"]
-[connection signal="toggled" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer10/Condition7Pressed" to="." method="_on_condition_7_pressed_toggled"]
-[connection signal="multi_selection_changed" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer10/AllowPressureTargets" to="." method="_on_allow_pressure_targets_multi_selection_changed"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer10/AllowExternalPressureTargets" to="." method="_on_allow_external_pressure_targets_pressed"]
-[connection signal="toggled" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer10/VBoxContainer/AllowExternalPressureEvents" to="." method="_on_allow_external_pressure_events_toggled"]
-[connection signal="toggled" from="HBoxContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer10/VBoxContainer/MarginContainer/ExternalAllowPlayer" to="." method="_on_external_allow_player_toggled"]
-[connection signal="item_selected" from="HBoxContainer/VBoxContainer/HBoxContainer/CustomPanel2/MarginContainer/VBoxContainer/DataTypeSelected" to="." method="_on_data_type_selected_item_selected"]
-[connection signal="clicked" from="HBoxContainer/VBoxContainer/HBoxContainer/CustomPanel2/MarginContainer/VBoxContainer/CharacterImage" to="." method="_on_character_image_clicked"]
-[connection signal="custom_copy" from="HBoxContainer/VBoxContainer/HBoxContainer/CustomPanel2/MarginContainer/VBoxContainer/CharacterImage" to="." method="_on_character_image_custom_copy"]
-[connection signal="custom_paste" from="HBoxContainer/VBoxContainer/HBoxContainer/CustomPanel2/MarginContainer/VBoxContainer/CharacterImage" to="." method="_on_character_image_custom_paste"]
-[connection signal="remove_requested" from="HBoxContainer/VBoxContainer/HBoxContainer/CustomPanel2/MarginContainer/VBoxContainer/CharacterImage" to="." method="_on_character_image_remove_requested"]
-[connection signal="item_selected" from="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer4/Launcher" to="." method="_on_launcher_item_selected"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer3/TriggerEventContainer/TriggerEventList" to="." method="_on_trigger_event_list_pressed"]
-[connection signal="toggled" from="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer3/TriggerEventContainer/AllowExternalEventsTrigger" to="." method="_on_allow_external_events_trigger_toggled"]
-[connection signal="item_selected" from="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer3/Direction" to="." method="_on_direction_item_selected"]
-[connection signal="value_changed" from="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer2/ZIndex" to="." method="_on_z_index_value_changed"]
-[connection signal="middle_clicked" from="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer/Control/Modulate" to="." method="_on_modulate_middle_clicked"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer/Control/Modulate" to="." method="_on_modulate_pressed"]
-[connection signal="toggled" from="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel3/MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer/EventOption1" to="." method="_on_event_option_1_toggled"]
-[connection signal="toggled" from="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel3/MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer/EventOption2" to="." method="_on_event_option_2_toggled"]
-[connection signal="toggled" from="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel3/MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer3/EventOption3" to="." method="_on_event_option_3_toggled"]
-[connection signal="toggled" from="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel3/MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer3/EventOption4" to="." method="_on_event_option_4_toggled"]
-[connection signal="item_selected" from="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer/MovementType" to="." method="_on_movement_type_item_selected"]
-[connection signal="pressed" from="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer/MovementRouteButton" to="." method="_on_movement_route_button_pressed"]
-[connection signal="item_selected" from="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer/SelectTargetEvent" to="." method="_on_select_target_event_item_selected"]
-[connection signal="value_changed" from="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer2/Velocity" to="." method="_on_velocity_value_changed"]
-[connection signal="value_changed" from="HBoxContainer/VBoxContainer/HBoxContainer2/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer2/Frequency" to="." method="_on_frequency_value_changed"]
+[connection signal="toggled" from="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer/Condition1Pressed" to="." method="_on_condition_1_pressed_toggled"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer/Condition1Value" to="." method="_on_condition_1_value_pressed"]
+[connection signal="toggled" from="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer2/Condition2Pressed" to="." method="_on_condition_2_pressed_toggled"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer2/Condition2Value" to="." method="_on_condition_2_value_pressed"]
+[connection signal="toggled" from="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer5/Condition3Pressed" to="." method="_on_condition_3_pressed_toggled"]
+[connection signal="item_selected" from="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer5/Condition3Value" to="." method="_on_condition_3_value_item_selected"]
+[connection signal="toggled" from="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer3/Condition4Pressed" to="." method="_on_condition_4_pressed_toggled"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer3/Condition4Value1" to="." method="_on_condition_4_value_1_pressed"]
+[connection signal="item_selected" from="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer4/Condition4Value2" to="." method="_on_condition_4_value_2_item_selected"]
+[connection signal="value_changed" from="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer4/Condition4Value3" to="." method="_on_condition_4_value_3_value_changed"]
+[connection signal="toggled" from="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer6/Condition5Pressed" to="." method="_on_condition_5_pressed_toggled"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer8/Condition5Value1" to="." method="_on_condition_5_value1_pressed"]
+[connection signal="item_selected" from="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer8/Condition5Value2" to="." method="_on_condition_5_value_2_item_selected"]
+[connection signal="toggled" from="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer7/Condition6Pressed" to="." method="_on_condition_6_pressed_toggled"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer7/Condition6Value" to="." method="_on_condition_6_value_pressed"]
+[connection signal="toggled" from="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer10/Condition7Pressed" to="." method="_on_condition_7_pressed_toggled"]
+[connection signal="multi_selection_changed" from="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer10/AllowPressureTargets" to="." method="_on_allow_pressure_targets_multi_selection_changed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer10/AllowExternalPressureTargets" to="." method="_on_allow_external_pressure_targets_pressed"]
+[connection signal="toggled" from="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer10/VBoxContainer/AllowExternalPressureEvents" to="." method="_on_allow_external_pressure_events_toggled"]
+[connection signal="toggled" from="HBoxContainer/VBoxContainer/TopPanel/MarginContainer/VBoxContainer/HBoxContainer10/VBoxContainer/MarginContainer/ExternalAllowPlayer" to="." method="_on_external_allow_player_toggled"]
+[connection signal="item_selected" from="HBoxContainer/VBoxContainer/MidPanel/CustomPanel2/MarginContainer/VBoxContainer/DataTypeSelected" to="." method="_on_data_type_selected_item_selected"]
+[connection signal="clicked" from="HBoxContainer/VBoxContainer/MidPanel/CustomPanel2/MarginContainer/VBoxContainer/CharacterImage" to="." method="_on_character_image_clicked"]
+[connection signal="custom_copy" from="HBoxContainer/VBoxContainer/MidPanel/CustomPanel2/MarginContainer/VBoxContainer/CharacterImage" to="." method="_on_character_image_custom_copy"]
+[connection signal="custom_paste" from="HBoxContainer/VBoxContainer/MidPanel/CustomPanel2/MarginContainer/VBoxContainer/CharacterImage" to="." method="_on_character_image_custom_paste"]
+[connection signal="remove_requested" from="HBoxContainer/VBoxContainer/MidPanel/CustomPanel2/MarginContainer/VBoxContainer/CharacterImage" to="." method="_on_character_image_remove_requested"]
+[connection signal="item_selected" from="HBoxContainer/VBoxContainer/MidPanel/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer4/Launcher" to="." method="_on_launcher_item_selected"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/MidPanel/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer3/TriggerEventContainer/TriggerEventList" to="." method="_on_trigger_event_list_pressed"]
+[connection signal="toggled" from="HBoxContainer/VBoxContainer/MidPanel/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer3/TriggerEventContainer/AllowExternalEventsTrigger" to="." method="_on_allow_external_events_trigger_toggled"]
+[connection signal="item_selected" from="HBoxContainer/VBoxContainer/MidPanel/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer3/Direction" to="." method="_on_direction_item_selected"]
+[connection signal="value_changed" from="HBoxContainer/VBoxContainer/MidPanel/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer2/ZIndex" to="." method="_on_z_index_value_changed"]
+[connection signal="middle_clicked" from="HBoxContainer/VBoxContainer/MidPanel/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer/Control/Modulate" to="." method="_on_modulate_middle_clicked"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/MidPanel/VBoxContainer/CustomPanel4/MarginContainer/VBoxContainer2/VBoxContainer/Control/Modulate" to="." method="_on_modulate_pressed"]
+[connection signal="toggled" from="HBoxContainer/VBoxContainer/BottomPanel/CustomPanel3/MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer/EventOption1" to="." method="_on_event_option_1_toggled"]
+[connection signal="toggled" from="HBoxContainer/VBoxContainer/BottomPanel/CustomPanel3/MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer/EventOption2" to="." method="_on_event_option_2_toggled"]
+[connection signal="toggled" from="HBoxContainer/VBoxContainer/BottomPanel/CustomPanel3/MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer3/EventOption3" to="." method="_on_event_option_3_toggled"]
+[connection signal="toggled" from="HBoxContainer/VBoxContainer/BottomPanel/CustomPanel3/MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer3/EventOption4" to="." method="_on_event_option_4_toggled"]
+[connection signal="item_selected" from="HBoxContainer/VBoxContainer/BottomPanel/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer/MovementType" to="." method="_on_movement_type_item_selected"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/BottomPanel/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer/MovementRouteButton" to="." method="_on_movement_route_button_pressed"]
+[connection signal="item_selected" from="HBoxContainer/VBoxContainer/BottomPanel/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer/SelectTargetEvent" to="." method="_on_select_target_event_item_selected"]
+[connection signal="value_changed" from="HBoxContainer/VBoxContainer/BottomPanel/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer2/Velocity" to="." method="_on_velocity_value_changed"]
+[connection signal="value_changed" from="HBoxContainer/VBoxContainer/BottomPanel/CustomPanel4/MarginContainer/VBoxContainer2/HBoxContainer2/Frequency" to="." method="_on_frequency_value_changed"]
 [connection signal="text_changed" from="HBoxContainer/VBoxContainer2/HBoxContainer/HBoxContainer/PageName" to="." method="_on_page_name_text_changed"]
 [connection signal="toggled" from="HBoxContainer/VBoxContainer2/HBoxContainer/HBoxContainer2/MarkAsQuestPage" to="." method="_on_mark_as_quest_page_toggled"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer2/HBoxContainer/PageExtraOptions" to="." method="_on_page_extra_options_pressed"]

@@ -216,6 +216,12 @@ func _input(event: InputEvent) -> void:
 					GameManager.manage_extraction_scene(node)
 					action_found = true
 					break
+			
+			elif node is EventRegion:
+				if node.trigger_mode == EventRegion.TriggerMode.PRESS_BUTTON:
+					_reset(true)
+					GameManager.start_event_region(node, self, 0)
+					return
 
 		if not action_found and interactive_event and is_instance_valid(interactive_event) and interactive_event.has_method("interact"):
 			var dist = global_position.distance_to(interactive_event.global_position)

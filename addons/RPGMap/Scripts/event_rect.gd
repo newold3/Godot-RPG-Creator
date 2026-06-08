@@ -4,6 +4,7 @@ extends Resource
 
 enum EventMode { COMMON_EVENTS, CALLER_EVENTS }
 enum ActivationMode { ALWAYS_ACTIVE, SWITCH}
+enum TriggerMode {NONE, PRESS_BUTTON, COLLISION}
 
 ## The display name of this event region.
 @export var name : String = ""
@@ -43,6 +44,9 @@ enum ActivationMode { ALWAYS_ACTIVE, SWITCH}
 
 ## The caller event ID to trigger when exiting the region.
 @export var trigger_caller_event_on_exit: int = 0
+
+## How to trigger this event when it is set to "solid"
+@export var trigger_mode: TriggerMode = 0
 
 ## Determines if entities can enter this region.
 @export var can_entry: bool = true

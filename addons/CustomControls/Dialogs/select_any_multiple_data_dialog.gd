@@ -9,11 +9,13 @@ func _ready() -> void:
 	close_requested.connect(queue_free)
 
 
-func set_texts(_title: String = "", _sub_title: String = "", _help: String = "") -> void:
+func set_texts(_title: String = "", _sub_title: String = "", _help1: String = "", _help2: String = "") -> void:
 	title = _title
 	%Subtitle.text = _sub_title
-	%Info.tooltip_text = _help
+	%Info.tooltip_text = _help1
+	%DataList.tooltip_text = _help2 if not _help2.is_empty() else _help1
 	CustomTooltipManager.replace_all_tooltips_with_custom(%Info)
+	CustomTooltipManager.replace_all_tooltips_with_custom(%DataList)
 
 
 func fill_data(data: PackedStringArray, selected_ids: PackedInt32Array = [], offset_index: int = 0) -> void:

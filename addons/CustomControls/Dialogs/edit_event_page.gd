@@ -843,7 +843,16 @@ func _on_trigger_tool_list_pressed() -> void:
 	var path = "res://addons/CustomControls/Dialogs/select_any_multiple_data_dialog.tscn"
 	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
 	
-	dialog.set_texts("Select Tools", "Current Tool List", "[title]Tool List[/title]\nList of tools added to the database")
+	var data_name = tr("Select Tools")
+	
+	dialog.set_texts(
+		data_name,
+		tr("Current Tool List"),
+		"[title]%s[/title]\n" % data_name +
+		tr("List of tools added to the database"),
+		"[title]%s[/title]\n" % data_name +
+		tr("Tools in the database. Left-click items to add or remove them from the selection. Multiple items can be selected.")
+	)
 	var data: PackedStringArray = RPGSYSTEM.database.types.tool_types.duplicate()
 	var selected_ids = current_page.event_tool_list
 	
@@ -865,7 +874,16 @@ func _on_trigger_signal_list_pressed() -> void:
 	var path = "res://addons/CustomControls/Dialogs/select_any_multiple_data_dialog.tscn"
 	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
 	
-	dialog.set_texts("Select Signals", "Current Signal List", "[title]Signal List[/title]\nList of signals added to the database")
+	var data_name = tr("Select Signals")
+	
+	dialog.set_texts(
+		data_name,
+		tr("Current Signal List"),
+		"[title]%s[/title]\n" % data_name +
+		tr("List of signals added to the database"),
+		"[title]%s[/title]\n" % data_name +
+		tr("Signals added in the database. Left-click items to add or remove them from the selection. Multiple items can be selected.")
+	)
 
 	var data: PackedStringArray = RPGSYSTEM.database.system.custom_signal_list.duplicate()
 	var selected_ids = current_page.event_signal_list

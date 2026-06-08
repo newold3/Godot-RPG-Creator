@@ -40,7 +40,7 @@ func _process(delta: float) -> void:
 ## Refreshes the container with the favorite commands.
 func fill() -> void:
 	var favorites = FileCache.options.get("current_favorite_commands", [])
-	var node = %FavoriteButtonContainer
+	var node = self
 
 	if command_buttons.is_empty():
 		var buttons_dialog = load("res://addons/CustomControls/Dialogs/event_commands_dialog.tscn").instantiate()
@@ -85,7 +85,7 @@ func fill() -> void:
 #region update_drop_indicator
 ## Calculates the indicator position while dragging.
 func _update_drop_indicator() -> void:
-	var node = %FavoriteButtonContainer
+	var node = self
 	var mouse_pos = node.get_local_mouse_position()
 	var children = node.get_children()
 
@@ -114,7 +114,7 @@ func _on_button_gui_input(event: InputEvent, id: int) -> void:
 #region get_drag_data
 ## Prepares data for the drag operation.
 func _get_drag_data(_at_position: Vector2) -> Variant:
-	var node = %FavoriteButtonContainer
+	var node = self
 
 	for child in node.get_children():
 		if child.get_rect().has_point(node.get_local_mouse_position()):
@@ -177,7 +177,7 @@ func _save_favorites(new_list: Array) -> void:
 #region draw
 ## Draws the drop indicator.
 func _draw() -> void:
-	var container = %FavoriteButtonContainer
+	var container = self
 	
 	if _drop_index != -1 and container.get_child_count() > _drop_index:
 		var node = container.get_child(_drop_index)

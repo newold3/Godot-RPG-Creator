@@ -92,6 +92,7 @@ func _on_quest_list_pressed() -> void:
 	var valid_ids: Array = []
 	var data: Array[String] = []
 	var target_indexes: PackedInt32Array = []
+	var target_help_list: String = ""
 	
 	if %QuestScope.get_selected_id() == 0:
 		var db_quests = RPGSYSTEM.database.quests
@@ -104,7 +105,9 @@ func _on_quest_list_pressed() -> void:
 		for i in range(valid_ids.size()):
 			if valid_ids[i] in _global_quest:
 				target_indexes.append(i)
-				
+		
+		target_help_list = tr("the database")
+		
 	else:
 		var map_id = _map_id
 		var event_id = _event_id
@@ -136,8 +139,18 @@ func _on_quest_list_pressed() -> void:
 		for i in range(valid_ids.size()):
 			if valid_ids[i] in _specific_quest:
 				target_indexes.append(i)
+		
+		target_help_list = tr("the selected event")
 	
-	dialog.set_texts(tr("Select Quest"), tr("Quest list:"), tr("List of available quests"))
+	var data_name = tr("Select Quest")
+	
+	dialog.set_texts(
+		data_name,
+		data_name + ":",
+		tr("List of available quests"),
+		"[title]%s[/title]\n" % data_name +
+		tr("Quests added in {0}. Left-click items to add or remove them from the selection. Multiple items can be selected.".format([target_help_list]))
+	)
 	dialog.fill_data(data, target_indexes)
 	
 	dialog.items_selected.connect(
@@ -198,7 +211,6 @@ func _update_quest_list() -> void:
 				else:
 					data.append("%s: <Missing>" % [q_id])
 	
-	print("me actualizo")
 	%QuestList.text = str(data)
 
 

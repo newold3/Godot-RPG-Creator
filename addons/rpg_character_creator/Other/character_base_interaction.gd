@@ -791,5 +791,13 @@ func get_events_at_adjacent_tile() -> Array:
 			
 			if vehicle and not vehicle in nodes_found:
 				nodes_found.append(vehicle)
+		
+		if node.has_method("get_event_regions_in"):
+			var regions = node.get_event_regions_in(target_pos)
+			regions.reverse()
+			for region: EventRegion in regions:
+				if not region.can_entry and region.trigger_mode != EventRegion.TriggerMode.NONE:
+					nodes_found.append(region)
+					break
 	
 	return nodes_found

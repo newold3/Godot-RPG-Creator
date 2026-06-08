@@ -114,6 +114,14 @@ func get_event_region_in(pos: Vector2i) -> EventRegion:
 	return null
 
 
+func get_event_regions_in(pos: Vector2i) -> Array[EventRegion]:
+	var regions: Array[EventRegion] = []
+	for region in map.event_regions:
+		if region.rect.has_point(pos):
+			regions.append(region)
+	return regions
+
+
 func random_color_in_range(hue_min: float, hue_max: float) -> Color:
 	return Color.from_hsv(randf_range(hue_min, hue_max), randf_range(0.5, 1.0), randf_range(0.5, 1.0))
 
