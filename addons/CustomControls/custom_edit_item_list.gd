@@ -6,7 +6,6 @@ extends ItemList
 # To add new commands, include the command ID in the EDITABLE_CODES or NO_EDITABLE_CODES
 # constants and append the command to the get_formatted_command function
 # (refer to other added commands as examples).
-
 # For multi-commands (commands that are divided into subcommands and together
 # form a single command), they need to be added in the
 # "get_selection_from_command" and "item_has_parent_selected" functions
@@ -86,6 +85,9 @@ extends ItemList
 ## Color for disabled text
 @export var disable_text_color = Color(0.427, 0.427, 0.427)
 
+## Separators draw a dotted line down the middle if this option is enabled
+@export var draw_separator_line: bool = false
+
 ## Node path to the main container
 @export_node_path("Control") var main_container
 
@@ -104,8 +106,10 @@ var potential_drag_index: int = -1
 var mouse_down_time: int = 0
 var drag_preview_line: int = -1
 var hovered_visual_index: int = -1
+var _last_drawn_rows: Array = []
+var separator_overlay: Control
 
-const  EDITABLE_CODES: Array = [
+const EDITABLE_CODES: Array = [
 	0, 1, 2, 4, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 28, 29,
 	30, 31, 33, 34, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49,
 	50, 52, 53, 54, 55, 57, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70,
@@ -134,7 +138,7 @@ signal items_dropped(to_index: int, new_indent: int, indexes: PackedInt32Array)
 signal command_collapsed_toggled(command: RPGEventCommand, toggled_on: bool)
 
 
-
+#region _ready
 ## Setup core signals on creation
 func _ready() -> void:
 	%BackControl.draw.connect(_on_back_draw)
@@ -143,43 +147,57 @@ func _ready() -> void:
 	multi_selected.connect(_on_multi_selected)
 	gui_input.connect(_on_itemlist_gui_input)
 	get_v_scroll_bar().value_changed.connect(_change_back_position)
+	get_h_scroll_bar().value_changed.connect(_change_back_position)
+	
+	separator_overlay = Control.new()
+	separator_overlay.name = "SeparatorOverlay"
+	separator_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	%BackControl.add_child(separator_overlay)
+	separator_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	separator_overlay.draw.connect(_on_separator_overlay_draw)
+	
 	visibility_changed.connect(_config_code_format)
 	tree_entered.connect(_config_code_format)
 	mouse_exited.connect(func():
 		hovered_visual_index = -1
 		%BackControl.queue_redraw()
 	)
+	
 	_config_code_format()
+#endregion
 
 
-
+#region _get_cmd
 ## Safely resolves raw command from either dictionary wrap or pure object
 func _get_cmd(target_array: Array, index: int) -> RPGEventCommand:
 	var item = target_array[index]
 	if item is Dictionary:
 		return item.command
 	return item as RPGEventCommand
+#endregion
 
 
-
+#region get_visual_index
 ## Translates underlying memory index back to valid screen visual index
 func get_visual_index(real_index: int) -> int:
 	for i in range(get_item_count()):
 		if get_item_metadata(i) == real_index:
 			return i
 	return -1
+#endregion
 
 
-
+#region get_command_list
 ## Formats list into raw command sequence
 func get_command_list() -> Array[RPGEventCommand]:
 	var list: Array[RPGEventCommand] = []
 	for obj: Dictionary in data:
 		list.append(obj.command)
 	return list
+#endregion
 
 
-
+#region get_real_selected_items
 ## Custom overriding of internal implementation returning real selection indexes mapping
 func get_real_selected_items() -> PackedInt32Array:
 	var visuals = super.get_selected_items()
@@ -190,13 +208,15 @@ func get_real_selected_items() -> PackedInt32Array:
 			if meta != null:
 				reals.append(meta)
 	return reals
+#endregion
 
 
-
+#region select_real_index
 ## Wrapper to process abstract index inputs mapping
 func select_real_index(real_index: int, single: bool = true) -> void:
 	if not (real_index >= 0 and data.size() > real_index):
 		return
+		
 	var v_index = get_visual_index(real_index)
 	if v_index == -1:
 		var parent_idx = _find_visible_parent(real_index)
@@ -204,32 +224,39 @@ func select_real_index(real_index: int, single: bool = true) -> void:
 			v_index = get_visual_index(parent_idx)
 		if v_index == -1:
 			return
+			
 	if single:
 		for i in 4:
 			await RenderingServer.frame_post_draw
+			
 	var parent = get_node_or_null(scroll_container)
 	if parent and parent is ScrollContainer:
 		if v_index == get_item_count() - 1 or (v_index == get_item_count() - 2 and v_index != 0):
 			parent.get_v_scroll_bar().value = parent.get_v_scroll_bar().max_value
 		elif v_index == 0:
 			parent.get_v_scroll_bar().value = 0
+			
 		var item_rect = get_item_rect(v_index)
 		var visible_height = parent.size.y
 		var item_global_pos = item_rect.position.y
 		var vbar = parent.get_v_scroll_bar()
+		
 		if item_global_pos < vbar.value:
 			vbar.value = item_global_pos - (visible_height / 2.0)
 		elif (item_global_pos + item_rect.size.y) > (vbar.value + visible_height):
 			vbar.value = (item_global_pos + item_rect.size.y) - visible_height + (item_rect.size.y * 2)
+			
 		parent.get_h_scroll_bar().value = 0
 		parent.scroll_horizontal = 0
 		parent.scroll_vertical = vbar.value
+		
 	select(v_index, single)
 	ensure_current_is_visible()
 	multi_selected.emit(v_index, true)
+#endregion
 
 
-
+#region _find_visible_parent
 ## Looks for an expanded parent backwards if the target item is hidden
 func _find_visible_parent(real_index: int) -> int:
 	var cmd = data[real_index].command
@@ -238,18 +265,20 @@ func _find_visible_parent(real_index: int) -> int:
 			if get_visual_index(i) != -1:
 				return i
 	return -1
+#endregion
 
 
-
+#region is_selected_real
 ## Polls custom logic bounds for item states
 func is_selected_real(real_index: int) -> bool:
 	var v_index = get_visual_index(real_index)
 	if v_index != -1:
 		return is_selected(v_index)
 	return false
+#endregion
 
 
-
+#region get_selected_commands
 ## Fetches commands data directly derived from array boundaries
 func get_selected_commands() -> Array[RPGEventCommand]:
 	var indexes = get_real_selected_items()
@@ -260,9 +289,10 @@ func get_selected_commands() -> Array[RPGEventCommand]:
 				var obj : Dictionary = data[i]
 				list.append(obj.command)
 	return list
+#endregion
 
 
-
+#region _config_code_format
 ## Sets dynamic theme properties required to paint custom strings formats
 func _config_code_format() -> void:
 	if code_format:
@@ -278,15 +308,17 @@ func _config_code_format() -> void:
 		}
 		code_format.set_config(config)
 		queue_redraw()
+#endregion
 
 
-
+#region is_code_editable
 ## Returns pure logical valid check state
 func is_code_editable(code: int) -> bool:
 	return EDITABLE_CODES.has(code)
+#endregion
 
 
-
+#region _process
 ## Monitors manual forced checks updates and timer processing delays
 func _process(delta: float) -> void:
 	if need_reselect_timer > 0:
@@ -294,10 +326,12 @@ func _process(delta: float) -> void:
 		if need_reselect_timer <= 0:
 			need_reselect_timer = 0.0
 			start_reselect()
+			
 	var btn = get_node_or_null("%CollabsableCommands")
 	if btn:
 		var is_hovering_btn = btn.get_global_rect().has_point(get_global_mouse_position())
 		var is_hovering_list = get_global_rect().has_point(get_global_mouse_position())
+		
 		if is_hovering_btn:
 			pass
 		elif hovered_visual_index != -1 and is_hovering_list:
@@ -320,21 +354,25 @@ func _process(delta: float) -> void:
 				btn.visible = false
 		else:
 			btn.visible = false
+#endregion
 
 
-
+#region _on_itemlist_gui_input
 ## Triggers abstract mappings execution on system input interaction contexts
 func _on_itemlist_gui_input(event: InputEvent) -> void:
 	if get_item_count() == 0:
 		return
+		
 	if event is InputEventMouseMotion:
 		var v_index = get_item_at_position(event.position, true)
 		if v_index != hovered_visual_index:
 			hovered_visual_index = v_index
 			%BackControl.queue_redraw()
+			
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		var v_index = get_item_at_position(event.position, true)
 		var index = get_item_metadata(v_index) if v_index >= 0 and v_index < get_item_count() else -1
+		
 		if event.is_pressed():
 			if index != -1 and event.is_double_click():
 				get_viewport().set_input_as_handled()
@@ -342,13 +380,17 @@ func _on_itemlist_gui_input(event: InputEvent) -> void:
 				multi_selected.emit(v_index, true)
 				item_activated.emit(v_index)
 				return
+				
 			if index != -1 and is_selected_real(index) and not event.is_shift_pressed() and not event.is_ctrl_pressed():
 				return
+				
 			if !event.is_shift_pressed():
 				last_click_without_shift = index
+				
 			if last_clicked_track.size() == 2:
 				last_clicked_track.pop_front()
 			last_clicked_track.append(index)
+			
 			if event.is_ctrl_pressed():
 				if index != -1:
 					select(v_index)
@@ -372,18 +414,22 @@ func _on_itemlist_gui_input(event: InputEvent) -> void:
 				select(v_index)
 				multi_selected.emit(v_index, true)
 		return 
+		
 	if event is InputEventMouseButton and event.is_pressed() and event.button_index == MOUSE_BUTTON_RIGHT:
 		var v_index = get_item_at_position(event.position, true)
 		var index = get_item_metadata(v_index) if v_index >= 0 and v_index < get_item_count() else -1
 		var items = get_real_selected_items()
+		
 		if index != -1 and not index in items and data[index].command.code in EDITABLE_CODES:
 			select(v_index)
 			multi_selected.emit(v_index, true)
 			items = [index]
+			
 		if not items.is_empty():
 			right_click.emit(v_index, items)
 		get_viewport().set_input_as_handled()
 		return
+		
 	if is_anything_selected() and event is InputEventKey and event.is_pressed():
 		if event.keycode == KEY_DELETE or event.keycode == KEY_BACKSPACE:
 			delete_pressed.emit(get_real_selected_items())
@@ -447,49 +493,60 @@ func _on_itemlist_gui_input(event: InputEvent) -> void:
 				var v_index = get_visual_index(indexes[-1])
 				if v_index != -1:
 					item_activated.emit(v_index)
+#endregion
 
 
-
+#region _get_drag_data
 ## Prepares logic variants properties payload on items dragged action event
 func _get_drag_data(at_position: Vector2) -> Variant:
 	var v_index = get_item_at_position(at_position, true)
 	var index = get_item_metadata(v_index) if v_index >= 0 and v_index < get_item_count() else -1
+	
 	if index == -1 or not is_selected_real(index):
 		return null
+		
 	var selected = get_real_selected_items()
 	if selected.is_empty():
 		return null
+		
 	var first_cmd = data[selected[0]].command
 	if first_cmd.code == 0 or first_cmd.code in SUB_CODES:
 		return null
+		
 	var preview = Label.new()
 	preview.text = " Moving %s command(s)... " % selected.size()
 	set_drag_preview(preview)
 	return selected
+#endregion
 
 
-
+#region _can_drop_data
 ## Evaluates boundaries integrity limits protecting specific layout bounds
 func _can_drop_data(at_position: Vector2, drag_data: Variant) -> bool:
 	if typeof(drag_data) != TYPE_PACKED_INT32_ARRAY:
 		return false
+		
 	var v_drop_index = get_item_at_position(at_position, true)
 	var drop_index = get_item_metadata(v_drop_index) if v_drop_index >= 0 and v_drop_index < get_item_count() else -1
+	
 	if drop_index != -1:
 		if drop_index in drag_data:
 			drag_preview_line = -1
 			%BackControl.queue_redraw()
 			return false
+			
 		var cmd = data[drop_index].command
 		if cmd.code in SUB_CODES:
 			drag_preview_line = -1
 			%BackControl.queue_redraw()
 			return false
+			
 		if drag_data.size() > 0:
 			var first_dragged = drag_data[0]
 			if drop_index > first_dragged:
 				var base_indent = data[first_dragged].command.indent
 				var is_inside = true
+				
 				for i in range(first_dragged + 1, drop_index + 1):
 					var check_cmd = data[i].command
 					if check_cmd.indent < base_indent:
@@ -498,41 +555,50 @@ func _can_drop_data(at_position: Vector2, drag_data: Variant) -> bool:
 					if check_cmd.indent == base_indent and check_cmd.code != 0 and check_cmd.code not in SUB_CODES:
 						is_inside = false
 						break
+						
 				if is_inside:
 					drag_preview_line = -1
 					%BackControl.queue_redraw()
 					return false
 	else:
 		v_drop_index = get_item_count()
+		
 	drag_preview_line = v_drop_index
 	%BackControl.queue_redraw()
 	return true
+#endregion
 
 
-
+#region _drop_data
 ## Consumes variables generated parameters ending interaction logic context drop
 func _drop_data(at_position: Vector2, drag_data: Variant) -> void:
 	var v_drop_index = drag_preview_line
 	drag_preview_line = -1
 	%BackControl.queue_redraw()
+	
 	if v_drop_index == -1:
 		v_drop_index = get_item_at_position(at_position, true)
 		if v_drop_index == -1:
 			v_drop_index = get_item_count()
+			
 	var drop_index = get_item_metadata(v_drop_index) if v_drop_index < get_item_count() else data.size()
 	if drop_index == null: drop_index = data.size()
+	
 	items_dropped.emit(drop_index, 0, drag_data)
+#endregion
 
 
-
+#region _get_command_index
 ## Looks up offset boundaries limits required parameters
 func _get_command_index(from: int, to: int) -> int:
 	var current_command = data[from].command
 	if current_command.code == 0: return -1
 	if not current_command.code in EDITABLE_CODES and not current_command.code in NO_EDITABLE_CODES and from > to:
 		return - 1
+		
 	var next_index = to
 	var other_command = data[next_index].command
+	
 	if to < from:
 		if not other_command.code in EDITABLE_CODES and not other_command.code in NO_EDITABLE_CODES:
 			next_index = get_item_parent(to - 1, other_command.indent + 1)
@@ -540,79 +606,93 @@ func _get_command_index(from: int, to: int) -> int:
 		if not other_command.code in EDITABLE_CODES and not other_command.code in NO_EDITABLE_CODES:
 			var indexes = get_selection_from_command(other_command, to)
 			next_index = indexes[-1] + 1
+			
 	return next_index
+#endregion
 
 
-
+#region select_right_items
 ## Recursively applies items properties based into logic tree components context
 func select_right_items(items: Array) -> void:
 	var current_selection_indexes = []
 	var start_indent: int = -1
+	
 	for index in items:
 		if data[index].command.indent < start_indent:
 			break
 		if not current_selection_indexes.has(index):
 			current_selection_indexes.append(index)
+			
 		var child_indexes = _get_block_selection(index, data)
 		for child_index in child_indexes:
 			if not current_selection_indexes.has(child_index):
 				current_selection_indexes.append(child_index)
+				
 		if start_indent == -1 and index in current_selection_indexes:
 			start_indent = data[index].command.indent
+			
 	if items.size() == 1 and current_selection_indexes.size() == 0:
 		current_selection_indexes += items 
+		
 	deselect_all()
 	for index in current_selection_indexes:
 		var v = get_visual_index(index)
 		if v != -1:
 			select(v, false)
+#endregion
 
 
-
+#region _on_item_selected
 ## Requests list visual drawing process
 func _on_item_selected(_item: int) -> void:
 	%BackControl.queue_redraw()
 	ensure_current_is_visible()
+#endregion
 
 
-
+#region get_item_parent
 ## Resolves nested command parents
 func get_item_parent(index: int, indent: int) -> int:
 	for i in range(index - 1, -1, -1):
 		if data[i].command.indent < indent and (data[i].command.code in EDITABLE_CODES or data[i].command.code in NO_EDITABLE_CODES):
 			return i
 	return 0
+#endregion
 
 
-
+#region start_reselect
 ## Checks boundaries and forces internal selection loop
 func start_reselect() -> void:
 	var indexes = get_real_selected_items()
 	select_right_items(indexes)
 	return
+#endregion
 
 
-
+#region _on_multi_selected
 ## Forces internal reselect interval execution schedule
-func _on_multi_selected(index: int, selected: bool) -> void:
+func _on_multi_selected(_index: int, _selected: bool) -> void:
 	need_reselect_timer = 0.02
+#endregion
 
 
-
+#region _on_btn_toggled
 ## Emits clean signals parsing real dictionary commands natively
 func _on_btn_toggled(toggled_on: bool) -> void:
 	var node = get_node_or_null("%CollabsableCommands")
 	if not node or not node.has_meta("command_expanded"): return
 	var command_data = node.get_meta("command_expanded")
 	command_collapsed_toggled.emit(command_data.command, toggled_on)
+#endregion
 
 
-
+#region _get_block_selection
 ## Defines universally robust dynamic structure tree matching rules
 func _get_block_selection(start_index: int, target_array: Array) -> Array:
 	var start_cmd = _get_cmd(target_array, start_index)
 	var struct = get_param_struct()
 	var indexes = []
+	
 	if start_cmd.code in SUB_CODES:
 		for i in range(start_index + 1, target_array.size()):
 			var next_cmd = _get_cmd(target_array, i)
@@ -621,6 +701,7 @@ func _get_block_selection(start_index: int, target_array: Array) -> Array:
 			else:
 				break
 		return indexes
+		
 	var has_struct = struct.has(start_cmd.code)
 	if has_struct:
 		var end_code = struct[start_cmd.code].end_code
@@ -646,18 +727,21 @@ func _get_block_selection(start_index: int, target_array: Array) -> Array:
 				indexes.append(i)
 			else:
 				break
+				
 	return indexes
+#endregion
 
 
-
+#region get_selection_from_command
 ## Determines nested command block indexes mapping directly linked
 func get_selection_from_command(command: RPGEventCommand, start_index: int, custom_data: Array = []) -> PackedInt32Array:
 	var target_array = custom_data if custom_data.size() > 0 else data
 	if target_array.is_empty(): return PackedInt32Array()
 	return PackedInt32Array(_get_block_selection(start_index, target_array))
+#endregion
 
 
-
+#region get_param_struct
 ## Retrieves dynamic internal definitions arrays configuration elements values
 func get_param_struct() -> Dictionary:
 	var param_struct: Dictionary = {}
@@ -673,9 +757,10 @@ func get_param_struct() -> Dictionary:
 	param_struct[96] = {"start_code": 96, "end_code": -1, "childs": [97]}
 	param_struct[500] = {"start_code": 500, "end_code": 504, "childs": [501, 502, 503]}
 	return param_struct
+#endregion
 
 
-
+#region find_parent_code_for_child
 ## Reverse bounds query context retrieving root definition code
 func find_parent_code_for_child(child_code: int) -> int:
 	var param_struct = get_param_struct()
@@ -686,23 +771,27 @@ func find_parent_code_for_child(child_code: int) -> int:
 		if parent_data.end_code != -1 and child_code >= parent_data.start_code and child_code <= parent_data.end_code:
 			return parent_code
 	return -1
+#endregion
 
 
-
+#region item_has_parent_selected
 ## Validates element inheritance active selection limits dependency bounds
 func item_has_parent_selected(command: RPGEventCommand) -> bool:
 	var selected_items = get_real_selected_items()
 	if command.code in EDITABLE_CODES:
 		return true
+		
 	var parent_code: int = find_parent_code_for_child(command.code)
 	if parent_code == -1:
 		return false
+		
 	var indent: int = command.indent
 	var index: int
 	for i in data.size():
 		if data[i].command == command:
 			index = i
 			break
+			
 	for i in range(index - 1, -1, -1):
 		var next_command = data[i].command
 		if next_command.code == parent_code and next_command.indent == indent:
@@ -711,9 +800,10 @@ func item_has_parent_selected(command: RPGEventCommand) -> bool:
 			else:
 				return false
 	return false
+#endregion
 
 
-
+#region get_parent_code_data
 ## Queries command arrays formatting bounds indexes properties variants
 func get_parent_code_data(index: int) -> Dictionary:
 	var command: RPGEventCommand = data[index].command
@@ -725,9 +815,10 @@ func get_parent_code_data(index: int) -> Dictionary:
 				command_data.start_index = i
 				break
 	return command_data
+#endregion
 
 
-
+#region clear_all
 ## Drops content tracking dictionaries memory flushing limits arrays
 func clear_all() -> void:
 	data.clear()
@@ -735,9 +826,10 @@ func clear_all() -> void:
 	if %BackControl:
 		%BackControl.position.y = 0
 		%BackControl.queue_redraw()
+#endregion
 
 
-
+#region set_data
 ## Integrates formatted mapping loops rendering array properties logic visually
 func set_data(_data: Array) -> void:
 	var parent_scroll = get_node_or_null(scroll_container)
@@ -746,24 +838,30 @@ func set_data(_data: Array) -> void:
 	if parent_scroll and parent_scroll is ScrollContainer:
 		saved_v_scroll = parent_scroll.get_v_scroll_bar().value
 		saved_h_scroll = parent_scroll.get_h_scroll_bar().value
+		
 	clear_all()
 	_config_code_format()
 	custom_minimum_size = Vector2.ZERO
 	size = custom_minimum_size
+	
 	var font = get("theme_override_fonts/font")
 	if !font:
 		font = get_theme_default_font()
+		
 	var font_size = get("theme_override_font_sizes/font_size")
 	if !font_size:
 		font_size = get_theme_default_font_size()
+		
 	var total_size: Vector2
 	var align = HORIZONTAL_ALIGNMENT_LEFT
 	var v_separation = get("theme_override_constants/v_separation")
 	if v_separation == null:
 		v_separation = 0
+		
 	var hidden_indexes = {}
 	var structural_markers_to_keep = [3, 5, 6, 7, 11, 22, 23, 25, 51, 97, 501, 502, 503, 504]
 	var v_idx = 0
+	
 	for i in _data.size():
 		var cmd = _data[i]
 		var selection = _get_block_selection(i, _data)
@@ -775,6 +873,7 @@ func set_data(_data: Array) -> void:
 					selection.append(j)
 				else:
 					break
+					
 		if is_expandable and not cmd.is_expanded:
 			var struct = get_param_struct()
 			var end_code = struct[cmd.code].end_code if struct.has(cmd.code) else -1
@@ -784,6 +883,7 @@ func set_data(_data: Array) -> void:
 					pass
 				else:
 					hidden_indexes[child_idx] = true
+					
 	for i in _data.size():
 		var cmd = _data[i]
 		var is_hidden = hidden_indexes.has(i)
@@ -791,6 +891,7 @@ func set_data(_data: Array) -> void:
 		var is_expandable = selection.size() > 0
 		if not is_expandable and i + 1 < _data.size() and _data[i + 1].indent > cmd.indent:
 			is_expandable = true
+			
 		var formatted_data = get_formated_command(cmd, font, font_size, align, v_separation, i, _data)
 		formatted_data["is_expandable"] = is_expandable
 		formatted_data["is_collapsed"] = not cmd.is_expanded
@@ -798,35 +899,43 @@ func set_data(_data: Array) -> void:
 			"command": cmd,
 			"formatted_data": formatted_data
 		})
+		
 		if not is_hidden:
 			total_size.x = max(total_size.x, formatted_data.total_size.x)
 			total_size.y += formatted_data.total_size.y + v_separation
 			add_item(" ")
 			set_item_metadata(v_idx, i)
 			v_idx += 1
+			
 	if main_container:
 		var node = get_node(main_container)
 		node.custom_minimum_size.x = max(total_size.x, get_parent().size.x)
 		node.custom_minimum_size.y = max(total_size.y, get_parent().size.y)
+		
 	custom_minimum_size.x = max(total_size.x, get_parent().size.x)
 	custom_minimum_size.y = max(total_size.y, get_parent().size.y)
 	if custom_minimum_size.x > get_parent().size.x:
 		custom_minimum_size.x += 20
 	if custom_minimum_size.y > get_parent().size.y:
 		custom_minimum_size.y += 20
+		
 	if parent_scroll and parent_scroll is ScrollContainer:
 		if custom_minimum_size.x > parent_scroll.size.x:
 			custom_minimum_size.x += 20
+			
 	size = custom_minimum_size
 	size += Vector2(40, 40)
+	
 	if parent_scroll and parent_scroll is ScrollContainer:
 		parent_scroll.get_v_scroll_bar().max_value = max(parent_scroll.get_v_scroll_bar().max_value, size.y)
 		parent_scroll.get_v_scroll_bar().value = saved_v_scroll
 		parent_scroll.get_h_scroll_bar().value = saved_h_scroll
+		
 	%BackControl.queue_redraw()
+#endregion
 
 
-
+#region dummy_text
 ## Produces fallback formatting dictionaries limits tracking
 func dummy_text(tabs: String, command_name: String) -> Dictionary:
 	return {
@@ -838,55 +947,61 @@ func dummy_text(tabs: String, command_name: String) -> Dictionary:
 		],
 		"offset_y": default_text_offset_y
 	}
+#endregion
 
 
-
+#region get_item_data
 ## Retrieves element content reference safely preventing crashes arrays bounds
-func get_item_data(data: Array, id: int) -> Variant:
-	if data.size() > id:
-		return data[id]
+func get_item_data(data_array: Array, id: int) -> Variant:
+	if data_array.size() > id:
+		return data_array[id]
 	else:
 		return null
+#endregion
 
 
-
+#region get_item_data_name
 ## Extracts specific index array attributes strings correctly formatted values
-func get_item_data_name(data: Array, id: int) -> String:
-	if data.size() > id:
-		return data[id].name
+func get_item_data_name(data_array: Array, id: int) -> String:
+	if data_array.size() > id:
+		return data_array[id].name
 	else:
 		return "⚠ Invalid Data"
+#endregion
 
 
-
+#region get_event_name
 ## Queries current scene elements generating generic readable lists identifiers strings
 func get_event_name(id: int) -> String:
-	var data = ["Player"]
+	var event_data = ["Player"]
 	var node = get_tree().get_first_node_in_group("event_editor")
 	if node:
 		var events = node.events.get_events()
-		data.append("This Event")
+		event_data.append("This Event")
 		for ev in events:
-			data.append("%s: %s" % [ev.id, ev.name])
+			event_data.append("%s: %s" % [ev.id, ev.name])
+			
 	if !node:
 		return "Player"
 	else:
-		if data.size() > id:
-			return data[id]
+		if event_data.size() > id:
+			return event_data[id]
 		else:
 			return "⚠ Invalid Data"
+#endregion
 
 
-
+#region get_actor_name
 ## Gets database formatting properties mapped strings ids targets
 func get_actor_name(id: int) -> String:
-	var data = RPGSYSTEM.database.actors
-	if id > 0 and data.size() > id:
-		return "< %s: %s >" % [id, data[id].name]
+	var system_data = RPGSYSTEM.database.actors
+	if id > 0 and system_data.size() > id:
+		return "< %s: %s >" % [id, system_data[id].name]
 	return "⚠ Invalid Data"
+#endregion
 
 
-
+#region get_formated_movement_command
 ## Formats explicitly routing motion strings combinations visual identifiers outputs
 func get_formated_movement_command(command: RPGMovementCommand) -> String:
 	if !command:
@@ -991,9 +1106,10 @@ func get_formated_movement_command(command: RPGMovementCommand) -> String:
 			return("Script: %s" % command.parameters[0])
 		_:
 			return ""
+#endregion
 
 
-
+#region get_trait_name
 ## Determines database formatting strings parameters variations properties elements bounds limits values combinations
 func get_trait_name(item: RPGTrait) -> Array:
 	var column = []
@@ -1045,10 +1161,10 @@ func get_trait_name(item: RPGTrait) -> Array:
 		else:
 			column.append("⚠ Invalid Data")
 	elif [10, 11, 22].has(item.code):
-		var str = str(item.value)
+		var str_val = str(item.value)
 		if item.code == 22:
-			str += "%"
-		column.append(str)
+			str_val += "%"
+		column.append(str_val)
 	elif [12, 15, 16].has(item.code):
 		var list = database.skills
 		if list.size() > item.data_id:
@@ -1109,19 +1225,20 @@ func get_trait_name(item: RPGTrait) -> Array:
 			column.append("⚠ Invalid Data")
 	elif item.code == 26:
 		var list = ["MP Cost Down", "Double Cast Chance"]
-		var str = ""
+		var str_val = ""
 		if list.size() > item.data_id:
-			str = list[item.data_id]
+			str_val = list[item.data_id]
 		else:
-			str = "⚠ Invalid Data"
-		str += " * " + str(item.value) + " %"
-		column.append(str)
+			str_val = "⚠ Invalid Data"
+		str_val += " * " + str(item.value) + " %"
+		column.append(str_val)
 	return column
+#endregion
 
 
+#region _get_visual_indent
 ## Calculates the true visual indentation level considering sub-commands.
 func _get_visual_indent(index: int, full_data: Array) -> int:
-
 	var cmd = _get_cmd(full_data, index)
 	var vi = cmd.indent
 	
@@ -1143,10 +1260,12 @@ func _get_visual_indent(index: int, full_data: Array) -> int:
 			search_ind -= 1
 
 	return vi
+#endregion
 
 
+#region _is_structural_child_at_indent
+## Validates matching child nesting alignment values structurally based identifiers
 func _is_structural_child_at_indent(child_code: int, target_indent: int, current_idx: int, full_data: Array) -> bool:
-
 	var struct = get_param_struct()
 	for parent_code in struct.keys():
 		if child_code in struct[parent_code].childs:
@@ -1157,11 +1276,12 @@ func _is_structural_child_at_indent(child_code: int, target_indent: int, current
 				if p_cmd.indent == target_indent and p_cmd.code == parent_code:
 					return true
 	return false
+#endregion
 
 
+#region get_formated_command
 ## Generates a formatted dictionary containing the visual tree representation of an RPG event command, ensuring correct multiline indentation.
 func get_formated_command(command: RPGEventCommand, font: Font, font_size: int, align: HorizontalAlignment, v_separation: int, index: int, full_data: Array) -> Dictionary:
-
 	if command.code == 9999:
 		var result = {}
 		var bg_val = command.parameters.get("background_color", Color.DARK_GRAY)
@@ -1262,11 +1382,12 @@ func get_formated_command(command: RPGEventCommand, font: Font, font_size: int, 
 				result["total_size"].y = obj["size"].y
 
 	return result
+#endregion
 
 
+#region _is_data_line
 ## Determines if a command code represents continuous data lines without a structural end
 func _is_data_line(child_code: int) -> bool:
-
 	var param_struct = get_param_struct()
 	for parent_code in param_struct.keys():
 		var parent_data = param_struct[parent_code]
@@ -1274,20 +1395,24 @@ func _is_data_line(child_code: int) -> bool:
 			if parent_data.end_code == -1:
 				return true
 	return false
+#endregion
 
 
+#region can_edit_event
 ## Returns logical valid properties check variables codes arrays components states variations limits bounds attributes identifiers targets checks inputs values parameters strings vectors combinations
 func can_edit_event(event: RPGEventCommand) -> bool:
 	return event.code in EDITABLE_CODES
+#endregion
 
 
-
+#region is_not_editable_event
 ## Exposes abstract parameters strings configurations logic components checks
 func is_not_editable_event(event: RPGEventCommand) -> bool:
 	return event.code in NO_EDITABLE_CODES
+#endregion
 
 
-
+#region _on_back_draw
 ## Main component executing raw canvas coordinates rendering items strings limits bounds formatting states visual matrices operations mappings combinations vectors values parameters variables identifiers parameters dependencies arrays checks
 func _on_back_draw() -> void:
 	if busy:
@@ -1410,17 +1535,14 @@ func _on_back_draw() -> void:
 			else:
 				control.draw_rect(rect, odd_line_color)
 				
-	# --- CORRECCION DE SELECCION ---
 	if hovered_visual_index != -1:
 		var real_hovered = get_item_metadata(hovered_visual_index)
 		if real_hovered != null:
 			var cmd = data[real_hovered].command
-			
 			var selection = []
-			# Si es un bloque estructural, seleccionamos todo el grupo
 			selection = _get_block_selection(real_hovered, data)
+			
 			if typeof(selection) != TYPE_ARRAY or selection.is_empty():
-				# Si es un comando simple, solo nos seleccionamos a nosotros mismos
 				selection = [real_hovered]
 			elif not selection.has(real_hovered):
 				selection.append(real_hovered)
@@ -1437,11 +1559,11 @@ func _on_back_draw() -> void:
 				var hover_rect = start_rect.merge(end_rect)
 				hover_rect.position.x = 0
 				hover_rect.size.x = parent.size.x
+				
 				if hover_group_style:
 					control.draw_style_box(hover_group_style, hover_rect)
 				else:
 					control.draw_rect(hover_rect, hover_color)
-	# ------------------------------
 
 	var covered_selection_reals = {}
 	var sorted_selected = []
@@ -1515,30 +1637,6 @@ func _on_back_draw() -> void:
 			var y_pos = font.get_ascent() + rect.position.y
 			
 			if data[r_i].command.code == 9999:
-				var txt = data[r_i].command.parameters.get("text", " SEPARATOR ")
-				var txt_val = data[r_i].command.parameters.get("text_color", Color.WHITE)
-				var txt_color = txt_val if typeof(txt_val) == TYPE_COLOR else Color(txt_val)
-				if items_selected.has(r_i):
-					txt_color = text_selected_color
-				var text_size = font.get_string_size(txt, align, -1, font_size)
-				var center_x = rect.position.x + (rect.size.x / 2.0) - (text_size.x / 2.0)
-				var new_offset_y = formatted_data.phrases[0].offset_y
-				var padding = 15.0
-				var start_x = rect.position.x + text_margin_left + 10.0
-				var end_x = rect.position.x + rect.size.x - text_margin_left - 10.0
-				var line_y = rect.position.y + (rect.size.y / 2.0)
-				
-				if txt == "":
-					control.draw_dashed_line(Vector2(start_x, line_y), Vector2(end_x, line_y), txt_color, 1.0, 4.0)
-				else:
-					control.draw_string_outline(font, Vector2(center_x, y_pos + new_offset_y), txt, align, -1, font_size, 12, Color.BLACK)
-					control.draw_string(font, Vector2(center_x, y_pos + new_offset_y), txt, align, -1, font_size, txt_color)
-					var end_left = center_x - padding
-					if end_left > start_x:
-						control.draw_dashed_line(Vector2(start_x, line_y), Vector2(end_left, line_y), txt_color, 1.0, 4.0)
-					var start_right = center_x + text_size.x + padding
-					if end_x > start_right:
-						control.draw_dashed_line(Vector2(start_right, line_y), Vector2(end_x, line_y), txt_color, 1.0, 4.0)
 				continue
 				
 			if data[r_i].command.ignore_command:
@@ -1558,6 +1656,7 @@ func _on_back_draw() -> void:
 					start_width += obj.size.x
 					if obj == phrase.texts[0]:
 						start_height += obj.size.y
+						
 					var default_idx = obj.text.find(default_text)
 					var no_edit_idx = obj.text.find(default_no_editable_text)
 					var text_color = Color(obj.color) if not data[r_i].command.ignore_command else disable_text_color
@@ -1569,18 +1668,24 @@ func _on_back_draw() -> void:
 						var icon_to_draw = default_text
 						if formatted_data.get("is_expandable", false):
 							icon_to_draw = collapsed_icon if formatted_data.get("is_collapsed", false) else expanded_icon
+							
 						control.draw_string(font, Vector2(x + displacement, y_pos + phrase.offset_y), prefix, align, -1, font_size, text_color)
 						var prefix_width = font.get_string_size(prefix, align, -1, font_size).x
+						
 						control.draw_string(font, Vector2(x + displacement + prefix_width, y_pos + phrase.offset_y), icon_to_draw, align, -1, font_size, text_color)
 						var icon_width = font.get_string_size(icon_to_draw, align, -1, font_size).x
+						
 						control.draw_string(font, Vector2(x + displacement + prefix_width + icon_width, y_pos + phrase.offset_y), suffix, align, -1, font_size, text_color)
 					elif no_edit_idx != -1:
 						var prefix = obj.text.substr(0, no_edit_idx)
 						var suffix = obj.text.substr(no_edit_idx + default_no_editable_text.length())
+						
 						control.draw_string(font, Vector2(x + displacement, y_pos + phrase.offset_y), prefix, align, -1, font_size, text_color)
 						var prefix_width = font.get_string_size(prefix, align, -1, font_size).x
+						
 						control.draw_string(font, Vector2(x + displacement + prefix_width, y_pos + phrase.offset_y), default_no_editable_text, align, -1, font_size, text_color)
 						var icon_width = font.get_string_size(default_no_editable_text, align, -1, font_size).x
+						
 						control.draw_string(font, Vector2(x + displacement + prefix_width + icon_width, y_pos + phrase.offset_y), suffix, align, -1, font_size, text_color)
 					else:
 						control.draw_string(font, Vector2(x + displacement, y_pos + phrase.offset_y), obj.text, align, obj.size.x, font_size, text_color)
@@ -1602,6 +1707,7 @@ func _on_back_draw() -> void:
 			continue
 		elif rect.position.y - offset_y > parent.size.y:
 			continue
+			
 		rect.size.x = parent.size.x
 		rect.size.y = 1
 		rect.position.y = rect.position.y + rect.size.y - 1
@@ -1610,6 +1716,7 @@ func _on_back_draw() -> void:
 	if drag_preview_line != -1:
 		var preview_rect: Rect2
 		var indent_x: float = text_margin_left
+		
 		if drag_preview_line < item_count:
 			preview_rect = get_item_rect(drag_preview_line)
 			var r_idx = get_item_metadata(drag_preview_line)
@@ -1652,15 +1759,84 @@ func _on_back_draw() -> void:
 			var start_x = text_margin_left
 			control.draw_line(Vector2(start_x, y_pos - arrow_size), Vector2(start_x + arrow_size, y_pos), secondary_color, 2.0)
 			control.draw_line(Vector2(start_x + arrow_size, y_pos), Vector2(start_x, y_pos + arrow_size), secondary_color, 2.0)
+			
 			var line_start_x = start_x + arrow_size + 4.0
 			if line_start_x < indent_x:
 				control.draw_line(Vector2(line_start_x, y_pos), Vector2(indent_x, y_pos), secondary_color, 2.0)
+				
 			var indicator_size = 6.0
 			var rect_pos = Vector2(max(indent_x, line_start_x), y_pos - indicator_size / 2.0)
 			control.draw_rect(Rect2(rect_pos, Vector2(indicator_size, indicator_size)), Color.YELLOW)
 			control.draw_line(Vector2(rect_pos.x + indicator_size, y_pos), Vector2(size.x, y_pos), Color.YELLOW, 2.0)
+			
+	_last_drawn_rows = all_rows
+	if separator_overlay:
+		separator_overlay.queue_redraw()
+#endregion
 
 
+#region _on_separator_overlay_draw
+## Renders dynamic separator commands cleanly avoiding entire list repaints
+func _on_separator_overlay_draw() -> void:
+	if not separator_overlay:
+		return
+		
+	var font = get_theme_default_font()
+	var font_size = get_theme_default_font_size()
+	var align = HORIZONTAL_ALIGNMENT_LEFT
+	var items_selected = get_real_selected_items()
+	var scroll_x: float = 0.0
+	var visible_width: float = size.x
+	var parent_scroll = get_node_or_null(scroll_container)
+	
+	if parent_scroll and parent_scroll is ScrollContainer:
+		scroll_x = parent_scroll.get_h_scroll_bar().value
+		visible_width = parent_scroll.size.x
+	else:
+		scroll_x = get_h_scroll_bar().value
+		visible_width = size.x
+		
+	for row in _last_drawn_rows:
+		if row.type == "real":
+			var r_i = row.real_index
+			if data[r_i].command.code == 9999:
+				var rect = row.rect
+				var txt = data[r_i].command.parameters.get("text", " SEPARATOR ")
+				var txt_val = data[r_i].command.parameters.get("text_color", Color.WHITE)
+				var txt_color = txt_val if typeof(txt_val) == TYPE_COLOR else Color(txt_val)
+				if items_selected.has(r_i):
+					txt_color = text_selected_color
+					
+				var text_size = font.get_string_size(txt, align, -1, font_size)
+				var center_x = rect.position.x + scroll_x + (visible_width / 2.0) - (text_size.x / 2.0)
+				var new_offset_y = row.formatted_data.phrases[0].offset_y
+				var padding = 15.0
+				var start_x = rect.position.x + text_margin_left + 10.0
+				var end_x = rect.position.x + rect.size.x - text_margin_left - 10.0
+				var line_y = rect.position.y + (rect.size.y / 2.0)
+				var y_pos = font.get_ascent() + rect.position.y
+				
+				if txt == "":
+					if draw_separator_line:
+						separator_overlay.draw_dashed_line(Vector2(start_x, line_y), Vector2(end_x, line_y), txt_color, 1.0, 4.0)
+				else:
+					if draw_separator_line:
+						separator_overlay.draw_string_outline(font, Vector2(center_x, y_pos + new_offset_y), txt, align, -1, font_size, 12, Color.BLACK)
+					separator_overlay.draw_string(font, Vector2(center_x, y_pos + new_offset_y), txt, align, -1, font_size, txt_color)
+					
+					var end_left = center_x - padding
+					if end_left > start_x and draw_separator_line:
+						separator_overlay.draw_dashed_line(Vector2(start_x, line_y), Vector2(end_left, line_y), txt_color, 1.0, 4.0)
+						
+					var start_right = center_x + text_size.x + padding
+					if end_x > start_right and draw_separator_line:
+						separator_overlay.draw_dashed_line(Vector2(start_right, line_y), Vector2(end_x, line_y), txt_color, 1.0, 4.0)
+#endregion
+
+
+#region _change_back_position
 ## Fixes virtual offsets limits boundaries checks constraints variables dependencies layouts visually values matrices parameters bindings rendering arrays inputs structures states updates values combinations logic
-func _change_back_position(value: float) -> void:
-	pass
+func _change_back_position(_value: float) -> void:
+	if separator_overlay:
+		separator_overlay.queue_redraw()
+#endregion
